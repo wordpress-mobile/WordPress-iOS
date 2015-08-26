@@ -19,13 +19,14 @@ import Foundation
     private var actionSheet: UIActionSheet?
     private var footerView: PostListFooterView!
 
-    private let ReaderCardCellNibName = "ReaderPostCardCell"
-    private let ReaderCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
+    private let readerCardCellNibName = "ReaderPostCardCell"
+    private let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
     private let estimatedRowHeight = CGFloat(100.0)
 
     private let refreshInterval = 300
     private var displayContext: NSManagedObjectContext?
     private var cleanupAndRefreshAfterScrolling = false
+    private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
 
     public var readerTopic: ReaderTopic? {
         didSet {
@@ -93,8 +94,8 @@ import Foundation
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: Selector("handleRefresh:"), forControlEvents: .ValueChanged)
 
-        let nib = UINib(nibName: ReaderCardCellNibName, bundle: nil)
-        tableView.registerNib(nib, forCellReuseIdentifier: ReaderCardCellReuseIdentifier)
+        let nib = UINib(nibName: readerCardCellNibName, bundle: nil)
+        tableView.registerNib(nib, forCellReuseIdentifier: readerCardCellReuseIdentifier)
     }
 
     private func configureTableViewHandler() {
@@ -127,14 +128,6 @@ import Foundation
         footerView = NSBundle.mainBundle().loadNibNamed("PostListFooterView", owner: nil, options: nil).first as! PostListFooterView
         footerView.showSpinner(false)
         tableView.tableFooterView = footerView
-/*
-        self.postListFooterView = (PostListFooterView *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([PostListFooterView class]) owner:nil options:nil] firstObject];
-        [self.postListFooterView showSpinner:NO];
-        CGRect frame = self.postListFooterView.frame;
-        frame.size.height = [self heightForFooterView];
-        self.postListFooterView.frame = frame;
-        self.tableView.tableFooterView = self.postListFooterView;
-*/
     }
 
 
@@ -202,14 +195,10 @@ import Foundation
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
 
-        // TODO: Configure header view for the new topic (if needed)
+        recentlyBlockedSitePostObjectIDs.removeAllObjects()
         displayStreamHeader()
-        tableViewHandler.resultsController.fetchRequest.predicate = predicateForFetchRequest()
-        var error:NSError?
-        tableViewHandler.resultsController.performFetch(&error)
-        if let anError = error {
-            // TODO: Log Error
-        }
+        updateAndPerformFetchRequest()
+
         tableView.setContentOffset(CGPointZero, animated: false)
         tableViewHandler.refreshTableView()
         syncIfAppropriate()
@@ -314,86 +303,74 @@ import Foundation
 //        [postView updateActionButtons];
     }
 
+    private func updateAndPerformFetchRequest() {
+        assert(NSThread.isMainThread(), "ReaderStreamViewController Error: updating fetch request on a background thread.")
+
+        var error:NSError?
+        tableViewHandler.resultsController.fetchRequest.predicate = predicateForFetchRequest()
+        tableViewHandler.resultsController.performFetch(&error)
+        if let anError = error {
+
+            DDLogSwift.logError("Error fetching posts after updating the fetch reqeust predicate: \(anError.localizedDescription)")
+        }
+    }
+
 
     // MARK: - Blocking
 
     private func blockSiteForPost(post: ReaderPost) {
-/*
-        NSNumber *postID = post.postID;
-        self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
-        [self addBlockedPostID:postID];
+        let objectID = post.objectID
+        recentlyBlockedSitePostObjectIDs.addObject(objectID)
+        updateAndPerformFetchRequest()
 
-        __weak __typeof(self) weakSelf = self;
-        ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-        [service flagSiteWithID:post.siteID asBlocked:YES success:^{
+        let indexPath = tableViewHandler.resultsController.indexPathForObject(post)!
+        tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
+        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
-        } failure:^(NSError *error) {
-        weakSelf.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
-        [weakSelf removeBlockedPostID:postID];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Blocking Site", @"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
-        message:[error localizedDescription]
-        delegate:nil
-        cancelButtonTitle:NSLocalizedString(@"OK", @"Text for an alert's dismissal button.")
-        otherButtonTitles:nil, nil];
-        [alertView show];
-        }];
+        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
+        service.flagSiteWithID(post.siteID,
+            asBlocked: true,
+            success: nil,
+            failure: { [weak self] (error:NSError!) in
+                self?.recentlyBlockedSitePostObjectIDs.removeObject(objectID)
+                self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
+                self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
-*/
+                let alertView = UIAlertView(
+                    title: NSLocalizedString("Error Blocking Site", comment:"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader."),
+                    message: error.localizedDescription,
+                    delegate: nil,
+                    cancelButtonTitle: NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
+                )
+                alertView.show()
+            })
     }
 
     private func unblockSiteForPost(post: ReaderPost) {
-/*
-        NSNumber *postID = post.postID;
-        self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
+        let objectID = post.objectID
+        recentlyBlockedSitePostObjectIDs.removeObject(objectID)
 
-        __weak __typeof(self) weakSelf = self;
-        ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-        [service flagSiteWithID:post.siteID asBlocked:NO success:^{
-        [weakSelf removeBlockedPostID:postID];
+        let indexPath = tableViewHandler.resultsController.indexPathForObject(post)!
+        tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
+        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
-        } failure:^(NSError *error) {
-        weakSelf.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Unblocking Site", @"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
-        message:[error localizedDescription]
-        delegate:nil
-        cancelButtonTitle:NSLocalizedString(@"OK", @"Text for an alert's dismissal button.")
-        otherButtonTitles:nil, nil];
-        [alertView show];
-        }];
+        let service = ReaderSiteService(managedObjectContext: managedObjectContext())
+        service.flagSiteWithID(post.siteID,
+            asBlocked: true,
+            success: nil,
+            failure: { [weak self] (error:NSError!) in
+                self?.recentlyBlockedSitePostObjectIDs.addObject(objectID)
+                self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
+                self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
-*/
-    }
-
-    private func addBlockedPostID(post: ReaderPost) {
-/*
-        if ([self.postIDsForUndoBlockCells containsObject:postID]) {
-        return;
-        }
-
-        [self.postIDsForUndoBlockCells addObject:postID];
-        [self updateAndPerformFetchRequest];
-*/
-    }
-
-    private func removeBlockedPostID(post: ReaderPost) {
-/*
-        if (![self.postIDsForUndoBlockCells containsObject:postID]) {
-        return;
-        }
-
-        [self.postIDsForUndoBlockCells removeObject:postID];
-        [self updateAndPerformFetchRequest];
-*/
-    }
-
-    private func removeAllBlockedPostIDs() {
-/*
-        if ([self.postIDsForUndoBlockCells count] == 0) {
-        return;
-        }
-        [self.postIDsForUndoBlockCells removeAllObjects];
-        [self updateAndPerformFetchRequest];
-*/
+                let alertView = UIAlertView(
+                    title: NSLocalizedString("Error Unblocking Site", comment:"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader."),
+                    message: error.localizedDescription,
+                    delegate: nil,
+                    cancelButtonTitle: NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
+                )
+                alertView.show()
+            })
     }
 
 
@@ -450,8 +427,16 @@ import Foundation
 
             service.fetchPostsForTopic(topic,
                 earlierThan: NSDate(),
-                success: { (count:Int, hasMore:Bool) in
+                success: {[weak self] (count:Int, hasMore:Bool) in
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
+
+                        if let strongSelf = self {
+                            if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
+                                strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
+                                strongSelf.updateAndPerformFetchRequest()
+                            }
+                        }
+
                         if success != nil {
                             success!(hasMore: hasMore)
                         }
@@ -576,10 +561,14 @@ import Foundation
         }
     }
 
-    // MARK: - Helpers for TableViewHelper
+    // MARK: - Helpers for TableViewHandler
 
     func predicateForFetchRequest() -> NSPredicate {
-        return NSPredicate(format: "topic = %@", readerTopic!)
+        if recentlyBlockedSitePostObjectIDs.count > 0 {
+            return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", readerTopic!, recentlyBlockedSitePostObjectIDs)
+        }
+
+        return NSPredicate(format: "topic = %@ AND isSiteBlocked = NO", readerTopic!)
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
@@ -651,7 +640,7 @@ import Foundation
     }
 
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell? {
-        var cell = tableView.dequeueReusableCellWithIdentifier(ReaderCardCellReuseIdentifier) as! ReaderPostCardCell
+        var cell = tableView.dequeueReusableCellWithIdentifier(readerCardCellReuseIdentifier) as! ReaderPostCardCell
         configureCell(cell, atIndexPath: indexPath)
         return cell
     }
@@ -735,7 +724,15 @@ import Foundation
         if buttonIndex == actionSheet.cancelButtonIndex {
             return
         }
-        // TODO: Wire up the menu
+        if objectIDOfPostForMenu == nil {
+            return
+        }
+
+        var error: NSError?
+        var post = managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!, error: &error) as? ReaderPost
+        if let readerPost = post {
+            blockSiteForPost(readerPost)
+        }
     }
 
     public func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
