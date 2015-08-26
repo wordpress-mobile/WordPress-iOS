@@ -241,7 +241,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                     blog.defaultPostFormat = settings.defaultPostFormat;
                 }
                 if (settings.privacy) {
-                    blog.privacy = settings.privacy;
+                    blog.siteVisibility = (SiteVisibility)[settings.privacy integerValue];
                 }
                 [self.managedObjectContext save:nil];
                 if (success) {
@@ -659,7 +659,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 return;
             }
             blog.options = [NSDictionary dictionaryWithDictionary:options];
-            blog.privacy = @([[blog getOptionValue:@"blog_public"] integerValue]);
+            blog.siteVisibility = (SiteVisibility)([[blog getOptionValue:@"blog_public"] integerValue]);
             blog.isAdmin = YES;
             float version = [[blog version] floatValue];
             if (version < [MinimumVersion floatValue]) {
