@@ -457,9 +457,12 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         [titles addObject:[self.blog textForBlogPrivacy:[value integerValue]]];
     }
     NSArray *hints = @[
-                       NSLocalizedString(@"Your site is visible to everyone, and it maybe indexed in search engines.", @"Hint for users when public privacy setting is set"),
-                       NSLocalizedString(@"Your site is visible to everyone, but asks to search engine to not index your site", @"Hint for users when hidden privacy setting is set"),
-                       NSLocalizedString(@"Your site is only visible to you and users you approve.", @"Hint for users when private privacy setting is set"),
+                       NSLocalizedString(@"Your site is visible to everyone, and it may be indexed by search engines.",
+                                         @"Hint for users when public privacy setting is set"),
+                       NSLocalizedString(@"Your site is visible to everyone, but asks to search engines to not index your site.",
+                                         @"Hint for users when hidden privacy setting is set"),
+                       NSLocalizedString(@"Your site is only visible to you and users you approve.",
+                                         @"Hint for users when private privacy setting is set"),
                        ];
 
     NSNumber *currentPrivacy = self.blog.privacy;
