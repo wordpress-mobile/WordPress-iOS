@@ -1098,32 +1098,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)postView:(ReaderPostContentView *)postView didReceiveLikeAction:(id)sender
 {
     ReaderPost *post = [self postFromCellSubview:sender];
-    BOOL wasLiked = post.isLiked;
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    NSManagedObjectContext *context = [self managedObjectContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    
-    [context performBlock:^{
-        ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:post.objectID error:nil];
-        if (!postInContext) {
-            return;
-        }
-        
-        [service toggleLikedForPost:postInContext success:^{
-            if (wasLiked) {
-                return;
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
-            });
-        } failure:^(NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-                [postView updateActionButtons];
-            });
-        }];
+    [service toggleLikedForPost:post success:nil failure:^(NSError *error) {
+        DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
+        [postView updateActionButtons];
     }];
-
     [postView updateActionButtons];
 }
 
