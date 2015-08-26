@@ -28,7 +28,8 @@ extension WPStyleGuide
         public static let noteSeparatorColor        = blockSeparatorColor
 
         public static let gravatarPlaceholderImage  = UIImage(named: "gravatar")
-
+        public static let blavatarPlaceholderImage  = UIImage(named: "blavatar-default")
+        
         //  NoteUndoOverlayView
         public static let noteUndoBackgroundColor   = WPStyleGuide.errorRed()
         public static let noteUndoTextColor         = UIColor.whiteColor()
