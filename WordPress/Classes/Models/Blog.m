@@ -7,7 +7,7 @@
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
-
+#import "BlogSiteVisibilityHelper.h"
 #import <SFHFKeychainUtils.h>
 
 static NSInteger const ImageSizeSmallWidth = 240;
@@ -20,8 +20,11 @@ static NSInteger const ImageSizeLargeHeight = 480;
 NSString * const PostFormatStandard = @"standard";
 
 @interface Blog ()
+
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
+@property (nonatomic, strong, readwrite) NSNumber *privacy;
+
 @end
 
 @implementation Blog
@@ -293,31 +296,51 @@ NSString * const PostFormatStandard = @"standard";
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isHostedAtWPcom && [self.privacy isEqualToNumber:@(BlogPrivacyPrivate)]);
+    return (self.isHostedAtWPcom && [self.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
 }
 
-- (NSString *)textForBlogPrivacy:(BlogPrivacy)privacy
+- (SiteVisibility)siteVisibility
 {
-    switch (privacy) {
-        case BlogPrivacyPrivate:
-            return NSLocalizedString(@"Private", @"Text for privacy settings: Private");
+    switch ([self.privacy integerValue]) {
+        case (SiteVisibilityHidden):
+            return SiteVisibilityHidden;
             break;
-        case BlogPrivacyHidden:
-            return NSLocalizedString(@"Hidden", @"Text for privacy settings: Hidden");
+        case (SiteVisibilityPublic):
+            return SiteVisibilityPublic;
             break;
-        case BlogPrivacyPublic:
-            return NSLocalizedString(@"Public", @"Text for privacy settings: Public");
+        case (SiteVisibilityPrivate):
+            return SiteVisibilityPrivate;
+            break;
+        default:
             break;
     }
-    return NSLocalizedString(@"Unknown", @"Text for unknow privacy setting");;
+    return SiteVisibilityUnknown;
 }
 
-- (NSString *)textForCurrentBlogPrivacy
+- (void)setSiteVisibility:(SiteVisibility)siteVisibility
+{
+    switch (siteVisibility) {
+        case (SiteVisibilityHidden):
+            self.privacy = @(SiteVisibilityHidden);
+            break;
+        case (SiteVisibilityPublic):
+            self.privacy = @(SiteVisibilityPublic);
+            break;
+        case (SiteVisibilityPrivate):
+            self.privacy = @(SiteVisibilityPrivate);
+            break;
+        default:
+            NSParameterAssert(siteVisibility >= SiteVisibilityPrivate && siteVisibility <= SiteVisibilityPublic);
+            break;
+    }
+}
+
+- (NSString *)textForCurrentSiteVisibility
 {
     if (!self.privacy) {
-        return NSLocalizedString(@"Unknown", @"Text for unknow privacy setting");
+        [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
     }
-    return [self textForBlogPrivacy:[self.privacy integerValue]];
+    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.privacy integerValue]];
 }
 
 

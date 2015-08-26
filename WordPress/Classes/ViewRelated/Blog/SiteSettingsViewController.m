@@ -23,6 +23,7 @@
 #import "PostCategory.h"
 #import "PostCategoriesViewController.h"
 #import "PostSettingsSelectionViewController.h"
+#import "BlogSiteVisibilityHelper.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -368,11 +369,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             return self.addressTextCell;
         } break;
         case SiteSettingsGeneralPrivacy: {
-            if (self.blog.privacy) {
-                [self.privacyTextCell setTextValue:[self.blog textForCurrentBlogPrivacy]];
-            } else {
-                [self.privacyTextCell setTextValue:NSLocalizedString(@"Unknown", @"Text show wheh privacy setting of a site is not know")];
-            }
+            [self.privacyTextCell setTextValue:[self.blog textForCurrentSiteVisibility]];
             return self.privacyTextCell;
         } break;
     }
@@ -453,10 +450,10 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 
 - (void)showPrivacySelector
 {
-    NSArray *values = @[ @(BlogPrivacyPublic), @(BlogPrivacyHidden), @(BlogPrivacyPrivate)];
+    NSArray *values = @[ @(SiteVisibilityPublic), @(SiteVisibilityHidden), @(SiteVisibilityPrivate)];
     NSMutableArray *titles = [NSMutableArray array];
     for (NSNumber * value in values) {
-        [titles addObject:[self.blog textForBlogPrivacy:[value integerValue]]];
+        [titles addObject:[BlogSiteVisibilityHelper textForSiteVisibility:[value integerValue]]];
     }
     NSArray *hints = @[
                        NSLocalizedString(@"Your site is visible to everyone, and it may be indexed by search engines.",
@@ -467,7 +464,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
                                          @"Hint for users when private privacy setting is set"),
                        ];
 
-    NSNumber *currentPrivacy = self.blog.privacy;
+    NSNumber *currentPrivacy = @(self.blog.siteVisibility);
     if (!currentPrivacy) {
         currentPrivacy = [values firstObject];
     }
@@ -486,8 +483,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     vc.onItemSelected = ^(NSNumber *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
         if ([status isKindOfClass:[NSNumber class]]) {
-            if (weakSelf.blog.privacy != status) {
-                weakSelf.blog.privacy = status;
+            SiteVisibility newSiteVisibility = (SiteVisibility)[status integerValue];
+            if (weakSelf.blog.siteVisibility != newSiteVisibility) {
+                weakSelf.blog.siteVisibility = newSiteVisibility;
                 [weakSelf saveSettings];
             }
         }
