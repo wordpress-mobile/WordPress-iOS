@@ -31,10 +31,11 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePushNotifications,
 };
 
-typedef NS_ENUM(NSInteger, BlogPrivacy) {
-    BlogPrivacyPrivate = -1,
-    BlogPrivacyHidden = 0,
-    BlogPrivacyPublic = 1
+typedef NS_ENUM(NSInteger, SiteVisibility) {
+    SiteVisibilityPrivate = -1,
+    SiteVisibilityHidden = 0,
+    SiteVisibilityPublic = 1,
+    SiteVisibilityUnknown = NSIntegerMax
 };
 
 @interface Blog : NSManagedObject
@@ -73,8 +74,7 @@ typedef NS_ENUM(NSInteger, BlogPrivacy) {
 @property (nonatomic, strong, readwrite) NSString *icon;
 @property (nonatomic, strong, readwrite) NSNumber *defaultCategoryID;
 @property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
-@property (nonatomic, strong, readwrite) NSNumber *privacy;
-
+@property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 /**
  Flags whether the current user is an admin on the blog.
  
@@ -128,17 +128,11 @@ typedef NS_ENUM(NSInteger, BlogPrivacy) {
 #pragma mark - Blog information
 - (BOOL)isPrivate;
 /**
- * Returns the text value for a blog privacy
- *
- * @param privacy the privacy to translate
- */
-- (NSString *)textForBlogPrivacy:(BlogPrivacy)privacy;
-/**
  *  The text description for the current privacy settting set in the blog
  *
  *  @return the text description.
  */
-- (NSString *)textForCurrentBlogPrivacy;
+- (NSString *)textForCurrentSiteVisibility;
 
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;

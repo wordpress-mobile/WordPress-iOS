@@ -120,7 +120,7 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
                                   @"blogdescription" : blog.blogTagline,
                                   @"default_category" : blog.defaultCategoryID,
                                   @"default_post_format" : blog.defaultPostFormat,
-                                  @"blog_public" : blog.privacy
+                                  @"blog_public" : @(blog.siteVisibility)
                                   };
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blog.dotComID];
     [self.api POST:path
