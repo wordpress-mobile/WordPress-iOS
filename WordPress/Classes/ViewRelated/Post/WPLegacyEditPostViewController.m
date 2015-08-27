@@ -22,6 +22,7 @@
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "WordPress-Swift.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
+#import "NSString+Helpers.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
@@ -681,21 +682,9 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 - (void)logSavePostStats
 {
     NSString *buttonTitle = self.navigationItem.rightBarButtonItem.title;
-
-    // This word counting algorithm is from : http://stackoverflow.com/a/13367063
-    __block NSInteger originalWordCount = 0;
-    [self.post.original.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.original.content length])
-                                                   options:NSStringEnumerationByWords | NSStringEnumerationLocalized
-                                                usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
-                                                    originalWordCount++;
-                                                }];
-
-    __block NSInteger wordCount = 0;
-    [self.post.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.content length])
-                                          options:NSStringEnumerationByWords | NSStringEnumerationLocalized
-                                       usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
-                                           wordCount++;
-                                       }];
+    
+    NSInteger originalWordCount = [self.post.original.content wordCount];
+    NSInteger wordCount = [self.post.content wordCount];
 
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] initWithCapacity:2];
     properties[@"word_count"] = @(wordCount);
