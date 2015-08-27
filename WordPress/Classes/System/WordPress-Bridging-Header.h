@@ -26,6 +26,7 @@
 #import "ContextManager.h"
 #import "NotificationsManager.h"
 
+#import "ServiceRemoteREST.h"
 #import "AccountService.h"
 #import "BlogService.h"
 
