@@ -18,8 +18,9 @@
                 <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="w2t-P4-qyc">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OeG-5o-P7K">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-reader-header-tag" translatesAutoresizingMaskIntoConstraints="NO" id="OeG-5o-P7K">
                             <rect key="frame" x="14" y="14" width="32" height="32"/>
+                            <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="Lw5-mV-4oQ"/>
                                 <constraint firstAttribute="width" constant="32" id="g5H-RL-frL"/>
@@ -102,4 +103,7 @@
             </connections>
         </view>
     </objects>
+    <resources>
+        <image name="icon-reader-header-tag" width="24" height="24"/>
+    </resources>
 </document>
