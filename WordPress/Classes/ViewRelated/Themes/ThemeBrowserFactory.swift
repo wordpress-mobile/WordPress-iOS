@@ -1,6 +1,6 @@
 import Foundation
 
-class ThemeBrowser : NSObject {
+class ThemeBrowserFactory : NSObject {
     
     private var storyboard : UIStoryboard!
     
