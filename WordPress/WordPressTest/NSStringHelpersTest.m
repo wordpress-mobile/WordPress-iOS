@@ -116,4 +116,14 @@
     }
 }
 
+- (void)testWordCount
+{
+    NSString *testEmptyPhrase = @"";
+    XCTAssert([testEmptyPhrase wordCount] == 0, @"Word count should be zero on a empty string");
+    
+    NSString *testPhraseWithSize6 = @"The lazy fox jumped the fence.";
+    XCTAssert([testPhraseWithSize6 wordCount] == 6, @"Word count should be six");
+
+}
+
 @end
