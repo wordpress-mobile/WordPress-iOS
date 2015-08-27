@@ -46,7 +46,7 @@ import Foundation
     *  @returns     WordPressComApi instance.  It can be an anonymous API instance if there are no
     *               credentials.
     */
-    private func apiForRequest() -> WordPressComApi? {
+    private func apiForRequest() -> WordPressComApi {
         
         var api : WordPressComApi? = nil
         
