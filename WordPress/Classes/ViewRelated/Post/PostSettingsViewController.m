@@ -990,7 +990,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             strongSelf.isUploadingMedia = NO;
             return;
         }
-        media.mediaType = MediaTypeFeatured;
         [self uploadFeaturedMedia:media];
     }];
 }

@@ -63,7 +63,8 @@
     } else if ([self.mediaTypeString isEqualToString:@"document"]) {
         return MediaTypeDocument;
     } else if ([self.mediaTypeString isEqualToString:@"featured"]) {
-        return MediaTypeFeatured;
+        // this is for object that where still storing the old value.
+        return MediaTypeImage;
     }
     return MediaTypeDocument;
 }
@@ -73,9 +74,6 @@
     switch (mediaType) {
         case MediaTypeImage:
             self.mediaTypeString = @"image";
-            break;
-        case MediaTypeFeatured:
-            self.mediaTypeString = @"featured";
             break;
         case MediaTypeVideo:
             self.mediaTypeString = @"video";
@@ -89,31 +87,16 @@
     }
 }
 
-- (NSString *)mediaTypeName
-{
-    if (self.mediaType == MediaTypeImage) {
-        return NSLocalizedString(@"Image", @"");
-    } else if (self.mediaType == MediaTypeVideo) {
-        return NSLocalizedString(@"Video", @"");
-    }
-
-    return self.mediaTypeString;
-}
-
 - (BOOL)featured
 {
-    return self.mediaType == MediaTypeFeatured;
+    for (AbstractPost *post in self.posts) {
+        if ([post.post_thumbnail isEqualToNumber:self.mediaID]){
+            return YES;
+        }
+    }
+    return NO;
 }
 
-- (void)setFeatured:(BOOL)featured
-{
-    self.mediaType = featured ? MediaTypeFeatured : MediaTypeImage;
-}
-
-+ (NSString *)mediaTypeForFeaturedImage
-{
-    return @"image";
-}
 
 #pragma mark -
 
