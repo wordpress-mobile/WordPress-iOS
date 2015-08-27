@@ -21,9 +21,8 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SEx-10-HwS">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-reader-header-list" translatesAutoresizingMaskIntoConstraints="NO" id="XOB-uo-xlf">
+                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XOB-uo-xlf">
                                     <rect key="frame" x="14" y="14" width="32" height="32"/>
-                                    <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="32" id="M6k-PE-lUE"/>
                                         <constraint firstAttribute="height" constant="32" id="rOF-rd-Wvs"/>
@@ -118,7 +117,7 @@
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.84313725490196079" green="0.8901960784313725" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="SEx-10-HwS" secondAttribute="trailing" id="2Q6-h3-yIF"/>
                         <constraint firstAttribute="width" constant="600" id="9dU-Qi-t1D"/>
@@ -184,7 +183,4 @@
             <point key="canvasLocation" x="537" y="219"/>
         </view>
     </objects>
-    <resources>
-        <image name="icon-reader-header-list" width="24" height="24"/>
-    </resources>
 </document>
