@@ -1,0 +1,53 @@
+{
+    "blogs": [
+              {
+                  "blog_id": 1,
+                  "timeline": {
+                      "new_comment": false,
+                      "comment_like": true,
+                      "post_like": false,
+                      "follow": true,
+                      "achievement": false,
+                      "mentions": true
+                  },
+                  "email": {
+                      "new_comment": true,
+                      "comment_like": false,
+                      "post_like": true,
+                      "follow": false,
+                      "achievement": true,
+                      "mentions": false
+                  },
+                  "device": {
+                      "device_id": 1,
+                      "new_comment": false,
+                      "comment_like": true,
+                      "post_like": false,
+                      "follow": true,
+                      "achievement": false,
+                      "mentions": true
+                  }
+              }
+              ],
+    "other": {
+        "timeline": {
+            "comment_like": false,
+            "comment_reply": true
+        },
+        "email": {
+            "comment_like": false,
+            "comment_reply": false
+        },
+        "device": {
+            "device_id": 123,
+            "comment_like": true,
+            "comment_reply": true
+        }
+    },
+    "wpcom": {
+        "news": false,
+        "recommendation": false,
+        "promotion": true,
+        "digest": true
+    }
+}
