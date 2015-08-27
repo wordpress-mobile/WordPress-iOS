@@ -10,18 +10,6 @@ import Foundation
 @objc public class PushAuthenticationServiceRemote : ServiceRemoteREST
 {
     /**
-    *  @details     Designated Initializer. Fails if the remoteApi is nil.
-    *  @param       remoteApi A Reference to the WordPressComApi that should be used to interact with WordPress.com
-    */
-    public override init?(api: WordPressComApi!) {
-        super.init(api: api)
-        if api == nil {
-            return nil
-        }
-    }
-    
-    
-    /**
     *  @details     Verifies a WordPress.com Login.
     *  @param       token       The token passed on by WordPress.com's 2FA Push Notification.
     *  @param       success     Closure to be executed on success. Can be nil.
