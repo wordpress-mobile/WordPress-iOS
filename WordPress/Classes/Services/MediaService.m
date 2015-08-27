@@ -375,6 +375,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 {
     Media *media = [self newMediaForBlog:post.blog];
     [media.posts addObject:post];
+    [post.media addObject:media];
     return media;
 }
 
