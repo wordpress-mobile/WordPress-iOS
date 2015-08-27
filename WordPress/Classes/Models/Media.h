@@ -54,7 +54,7 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) NSString * caption;
 @property (nonatomic, strong) NSString * desc;
 @property (nonatomic, strong) Blog * blog;
-@property (nonatomic, strong) NSMutableSet * posts;
+@property (nonatomic, strong) NSSet *posts;
 @property (nonatomic, assign, readonly) BOOL unattached;
 @property (nonatomic, assign) BOOL featured;
 @property (nonatomic, strong) NSString *absoluteLocalURL;
@@ -71,5 +71,16 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 
 - (void)remove;
 - (void)save;
+
+@end
+
+@class AbstractPost;
+
+@interface Media (CoreDataGeneratedAccessors)
+
+- (void)addPostsObject:(AbstractPost *)value;
+- (void)removePostsObject:(AbstractPost *)value;
+- (void)addPosts:(NSSet *)values;
+- (void)removePosts:(NSSet *)values;
 
 @end
