@@ -12,7 +12,6 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
 
 typedef NS_ENUM(NSUInteger, MediaType) {
     MediaTypeImage,
-    MediaTypeFeatured,
     MediaTypeVideo,
     MediaTypeDocument,
     MediaTypePowerpoint
@@ -35,7 +34,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) NSNumber * mediaID;
 @property (nonatomic, strong) NSString * mediaTypeString;
 @property (nonatomic, assign) MediaType mediaType;
-@property (weak, nonatomic, readonly) NSString * mediaTypeName;
 @property (nonatomic, strong) NSString * remoteURL;
 @property (nonatomic, strong) NSString * localURL;
 @property (nonatomic, strong) NSString * shortcode;
@@ -48,7 +46,7 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) NSString * orientation DEPRECATED_ATTRIBUTE;
 @property (nonatomic, strong) NSDate * creationDate;
 @property (nonatomic, strong) NSString *videopressGUID;
-@property (weak, nonatomic, readonly) NSString * html;
+@property (nonatomic, weak, readonly) NSString * html;
 @property (nonatomic, strong) NSNumber * remoteStatusNumber;
 @property (nonatomic, assign) MediaRemoteStatus remoteStatus;
 @property (nonatomic, strong) NSString * caption;
@@ -56,14 +54,13 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) Blog * blog;
 @property (nonatomic, strong) NSMutableSet * posts;
 @property (nonatomic, assign, readonly) BOOL unattached;
-@property (nonatomic, assign) BOOL featured;
+@property (nonatomic, assign, readonly) BOOL featured;
 @property (nonatomic, strong) NSString *absoluteLocalURL;
 @property (nonatomic, strong) NSString *remoteThumbnailURL;
 @property (nonatomic, strong) NSString *localThumbnailURL;
 @property (nonatomic, strong) NSString *absoluteThumbnailLocalURL;
-@property (nonatomic, readonly, strong) NSString *posterImageURL;
+@property (nonatomic, strong, readonly) NSString *posterImageURL;
 
-+ (NSString *)mediaTypeForFeaturedImage;
 
 - (void)mediaTypeFromUrl:(NSString *)ext;
 

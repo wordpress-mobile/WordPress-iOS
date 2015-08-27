@@ -198,7 +198,7 @@
     }
 
     for (Media *media in self.media) {
-        if (media.mediaType == MediaTypeImage || media.mediaType == MediaTypeFeatured) {
+        if (media.mediaType == MediaTypeImage) {
             return true;
         }
     }
