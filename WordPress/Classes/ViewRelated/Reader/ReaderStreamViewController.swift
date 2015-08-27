@@ -19,6 +19,7 @@ import Foundation
     private var actionSheet: UIActionSheet?
     private var footerView: PostListFooterView!
 
+    private let footerViewNibName = "PostListFooterView"
     private let readerCardCellNibName = "ReaderPostCardCell"
     private let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
     private let readerBlockedCellNibName = "ReaderBlockedSiteCell"
@@ -120,7 +121,7 @@ import Foundation
     }
 
     private func configureCellForLayout() {
-        cellForLayout = NSBundle.mainBundle().loadNibNamed("ReaderPostCardCell", owner: nil, options: nil).first as! ReaderPostCardCell
+        cellForLayout = NSBundle.mainBundle().loadNibNamed(readerCardCellNibName, owner: nil, options: nil).first as! ReaderPostCardCell
 
         // Add layout cell to superview (briefly) so constraint constants reflect the correct size class.
         view.addSubview(cellForLayout)
@@ -132,7 +133,7 @@ import Foundation
     }
 
     private func configureFooterView() {
-        footerView = NSBundle.mainBundle().loadNibNamed("PostListFooterView", owner: nil, options: nil).first as! PostListFooterView
+        footerView = NSBundle.mainBundle().loadNibNamed(footerViewNibName, owner: nil, options: nil).first as! PostListFooterView
         footerView.showSpinner(false)
         tableView.tableFooterView = footerView
     }
@@ -148,8 +149,10 @@ import Foundation
         }
         resultsStatusView.titleText = NSLocalizedString("Fetching posts...", comment:"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         resultsStatusView.messageText = ""
-        resultsStatusView.accessoryView = WPAnimatedBox()
+        var boxView = WPAnimatedBox.new()
+        resultsStatusView.accessoryView = boxView
         displayResultsStatus()
+        boxView.prepareAndAnimateAfterDelay(0.3)
     }
 
     func displayNoResultsView() {
@@ -203,17 +206,13 @@ import Foundation
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
 
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
-        displayStreamHeader()
         updateAndPerformFetchRequest()
-
+        displayStreamHeader()
         tableView.setContentOffset(CGPointZero, animated: false)
         tableViewHandler.refreshTableView()
         syncIfAppropriate()
 
-        var count = 0
-        if let fetchedCount = tableViewHandler.resultsController.fetchedObjects?.count {
-            count = fetchedCount
-        }
+        var count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
 
         // Make sure we're showing the no results view if appropriate
         if !syncHelper.isSyncing && count == 0 {
@@ -545,6 +544,7 @@ import Foundation
         }
     }
 
+
     // MARK: - Helpers for TableViewHandler
 
     func predicateForFetchRequest() -> NSPredicate {
@@ -698,7 +698,7 @@ import Foundation
     // MARK: - ReaderStreamHeader Delegate Methods
 
     public func handleFollowActionForHeader(header:ReaderStreamHeader) {
-        // TODO: Implement method
+        // TODO: Pending data model improvements
     }
 
 
