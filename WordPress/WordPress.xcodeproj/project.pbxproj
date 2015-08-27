@@ -528,6 +528,8 @@
 		E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */; };
 		E1DF5DFD19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DF5DFA19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m */; };
 		E1DF5DFE19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DF5DFC19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m */; };
+		E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E1AA8C1B7DEDFC001C8645 /* WPMapFilterReduce.m */; };
+		E1E1AA8F1B7DF54B001C8645 /* WPMapFilterReduceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E1AA8E1B7DF54B001C8645 /* WPMapFilterReduceTest.m */; };
 		E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E1E4CE0517739FAB00430844 /* test-image.jpg */; };
 		E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */; };
 		E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */; };
@@ -1531,6 +1533,9 @@
 		E1DF5DFA19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCategoryServiceRemoteREST.m; sourceTree = "<group>"; };
 		E1DF5DFB19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCategoryServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
 		E1DF5DFC19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCategoryServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
+		E1E1AA8B1B7DEDFC001C8645 /* WPMapFilterReduce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMapFilterReduce.h; sourceTree = "<group>"; };
+		E1E1AA8C1B7DEDFC001C8645 /* WPMapFilterReduce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMapFilterReduce.m; sourceTree = "<group>"; };
+		E1E1AA8E1B7DF54B001C8645 /* WPMapFilterReduceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMapFilterReduceTest.m; sourceTree = "<group>"; };
 		E1E4CE0517739FAB00430844 /* test-image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "test-image.jpg"; sourceTree = "<group>"; };
 		E1E4CE091773C59B00430844 /* WPAvatarSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAvatarSource.h; sourceTree = "<group>"; };
 		E1E4CE0A1773C59B00430844 /* WPAvatarSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAvatarSource.m; sourceTree = "<group>"; };
@@ -2470,6 +2475,7 @@
 				85D790AB1AE5D95E0033AE83 /* MixpanelProxyTests.m */,
 				8514B8D31AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m */,
 				E19A10C91B010AA0006192B0 /* WPURLRequestTest.m */,
+				E1E1AA8E1B7DF54B001C8645 /* WPMapFilterReduceTest.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -2578,6 +2584,8 @@
 				E1CC9B501B3006690051398F /* JetpackREST.m */,
 				FFDA7E4E1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.h */,
 				FFDA7E4F1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m */,
+				E1E1AA8B1B7DEDFC001C8645 /* WPMapFilterReduce.h */,
+				E1E1AA8C1B7DEDFC001C8645 /* WPMapFilterReduce.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -4223,6 +4231,7 @@
 				FF8DDCE41B5EA6590098826F /* SettingsTextViewController.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
+				E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
 				E1DF5DFD19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m in Sources */,
@@ -4394,6 +4403,7 @@
 				5D7A57801AFBFD940097C028 /* BasePostTest.m in Sources */,
 				8514B8D41AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m in Sources */,
 				931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */,
+				E1E1AA8F1B7DF54B001C8645 /* WPMapFilterReduceTest.m in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
 				5D2BEB4919758102005425F7 /* PhotonImageURLHelperTest.m in Sources */,
 				5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */,
