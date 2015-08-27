@@ -236,10 +236,10 @@
     NSPredicate *predicate;
     switch (filter) {
         case WPMediaTypeImage: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"image && blog = %@", blog];
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ && blog = %@",  @"image", blog];
         } break;
         case WPMediaTypeVideo: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"video && blog = %@", blog];
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ && blog = %@", @"video", blog];
         } break;
         case WPMediaTypeAll: {
             predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@)  && blog = %@", @"image", @"video", blog];
