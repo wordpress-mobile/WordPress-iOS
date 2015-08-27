@@ -187,7 +187,9 @@
     
     remoteSettings.name = [json stringForKeyPath:@"blog_title.value"];
     remoteSettings.desc = [json stringForKeyPath:@"blog_tagline.value"];
-    
+    if (json[@"blog_public"]) {
+        remoteSettings.privacy = [json numberForKeyPath:@"blog_public.value"];
+    }
     return remoteSettings;
 }
 
