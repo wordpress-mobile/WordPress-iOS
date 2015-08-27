@@ -142,10 +142,9 @@ import Foundation
     // MARK: - Handling Loading and No Results
 
     func displayLoadingViewIfNeeded() {
-        if let count = tableViewHandler.resultsController.fetchedObjects?.count {
-            if count > 0 {
-                return
-            }
+        var count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
+        if count > 0 {
+            return
         }
         resultsStatusView.titleText = NSLocalizedString("Fetching posts...", comment:"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         resultsStatusView.messageText = ""
@@ -293,7 +292,6 @@ import Foundation
         tableViewHandler.resultsController.fetchRequest.predicate = predicateForFetchRequest()
         tableViewHandler.resultsController.performFetch(&error)
         if let anError = error {
-
             DDLogSwift.logError("Error fetching posts after updating the fetch reqeust predicate: \(anError.localizedDescription)")
         }
     }
@@ -379,10 +377,9 @@ import Foundation
     }
 
     func canLoadMore() -> Bool {
-        if let fetchedObjects = tableViewHandler.resultsController.fetchedObjects {
-            if fetchedObjects.count == 0 {
-                return false
-            }
+        var fetchedObjects = tableViewHandler.resultsController.fetchedObjects ?? []
+        if fetchedObjects.count == 0 {
+            return false
         }
         return canSync()
     }
@@ -548,11 +545,13 @@ import Foundation
     // MARK: - Helpers for TableViewHandler
 
     func predicateForFetchRequest() -> NSPredicate {
+        var error:NSError?
+        var topic = managedObjectContext().existingObjectWithID(readerTopic!.objectID, error:&error) as! ReaderTopic
         if recentlyBlockedSitePostObjectIDs.count > 0 {
-            return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", readerTopic!, recentlyBlockedSitePostObjectIDs)
+            return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", topic, recentlyBlockedSitePostObjectIDs)
         }
 
-        return NSPredicate(format: "topic = %@ AND isSiteBlocked = NO", readerTopic!)
+        return NSPredicate(format: "topic = %@ AND isSiteBlocked = NO", topic)
     }
 
     func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
