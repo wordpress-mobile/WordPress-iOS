@@ -26,23 +26,6 @@
 
 @synthesize unattached;
 
-+ (Media *)newMediaForPost:(AbstractPost *)post
-{
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:post.managedObjectContext];
-    media.blog = post.blog;
-    media.posts = [NSMutableSet setWithObject:post];
-    media.mediaID = @0;
-    return media;
-}
-
-+ (Media *)newMediaForBlog:(Blog *)blog
-{
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:blog.managedObjectContext];
-    media.blog = blog;
-    media.mediaID = @0;
-    return media;
-}
-
 - (void)mediaTypeFromUrl:(NSString *)ext
 {
     CFStringRef fileExt = (__bridge CFStringRef)ext;
