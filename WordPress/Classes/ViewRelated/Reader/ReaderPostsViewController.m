@@ -850,22 +850,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [[ContextManager sharedInstance] saveContext:self.contextForSync];
     self.contextForSync = nil;
 
-    [self cleanupAfterRefresh];
+    // The main context may not yet reflect the changes from the derived context,
+    // because of the asynchronous nature of the save.
+    // Explictly save the main context and do thte clean up in its completion block.
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+        [self cleanupAfterRefresh];
+    }];
 }
 
 - (void)cleanupAfterRefresh
 {
     [self.refreshControl endRefreshing];
     [self.activityFooter stopAnimating];
-
-    [self.noResultsView removeFromSuperview];
-    if ([[self.tableViewHandler.resultsController fetchedObjects] count] == 0) {
-        // This is a special case.  Core data can be a bit slow about notifying
-        // NSFetchedResultsController delegates about changes to the fetched results.
-        // To compensate, call configureNoResultsView after a short delay.
-        // It will be redisplayed if necessary.
-        [self performSelector:@selector(configureNoResultsView) withObject:self afterDelay:0.1];
-    }
+    [self configureNoResultsView];
 }
 
 
