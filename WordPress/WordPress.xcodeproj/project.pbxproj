@@ -81,7 +81,7 @@
 		595B02221A6C4ECD00415A30 /* WPWhatsNewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 595B02211A6C4ECD00415A30 /* WPWhatsNewView.m */; };
 		596C035E1B84F21D00899EEB /* ThemeBrowserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596C035D1B84F21D00899EEB /* ThemeBrowserViewController.swift */; };
 		596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 596C035F1B84F24000899EEB /* ThemeBrowser.storyboard */; };
-		596C03641B8503CF00899EEB /* ThemeBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596C03631B8503CF00899EEB /* ThemeBrowser.swift */; };
+		596C03641B8503CF00899EEB /* ThemeBrowserFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 596C03631B8503CF00899EEB /* ThemeBrowserFactory.swift */; };
 		5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */; };
 		598351AE1A704E7A00B6DD4F /* WPWhatsNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 598351AD1A704E7A00B6DD4F /* WPWhatsNew.m */; };
 		598F86A71B67B7A000550C9C /* RemoteTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 598F86A61B67B7A000550C9C /* RemoteTheme.m */; };
@@ -717,7 +717,7 @@
 		595B02211A6C4ECD00415A30 /* WPWhatsNewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPWhatsNewView.m; path = WhatsNew/WPWhatsNewView.m; sourceTree = "<group>"; };
 		596C035D1B84F21D00899EEB /* ThemeBrowserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserViewController.swift; sourceTree = "<group>"; };
 		596C035F1B84F24000899EEB /* ThemeBrowser.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ThemeBrowser.storyboard; sourceTree = "<group>"; };
-		596C03631B8503CF00899EEB /* ThemeBrowser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowser.swift; sourceTree = "<group>"; };
+		596C03631B8503CF00899EEB /* ThemeBrowserFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserFactory.swift; sourceTree = "<group>"; };
 		5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUserAgentTests.m; sourceTree = "<group>"; };
 		598351AC1A704E7A00B6DD4F /* WPWhatsNew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPWhatsNew.h; path = WhatsNew/WPWhatsNew.h; sourceTree = "<group>"; };
 		598351AD1A704E7A00B6DD4F /* WPWhatsNew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPWhatsNew.m; path = WhatsNew/WPWhatsNew.m; sourceTree = "<group>"; };
@@ -2193,7 +2193,7 @@
 				5DA5BF3518E32DCF005F11F9 /* ThemeBrowserCell.h */,
 				5DA5BF3618E32DCF005F11F9 /* ThemeBrowserCell.m */,
 				596C035F1B84F24000899EEB /* ThemeBrowser.storyboard */,
-				596C03631B8503CF00899EEB /* ThemeBrowser.swift */,
+				596C03631B8503CF00899EEB /* ThemeBrowserFactory.swift */,
 				596C035D1B84F21D00899EEB /* ThemeBrowserViewController.swift */,
 				5D6C4AF81B603CC0005E3C43 /* ThemeDetailsViewController.xib */,
 				5D6C4AF91B603CC0005E3C43 /* ThemeDetailsViewController~ipad.xib */,
@@ -4205,7 +4205,7 @@
 				5D0A20D41AF11A7300E5C6BC /* PhotonImageURLHelper.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
 				E1DF5DFE19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m in Sources */,
-				596C03641B8503CF00899EEB /* ThemeBrowser.swift in Sources */,
+				596C03641B8503CF00899EEB /* ThemeBrowserFactory.swift in Sources */,
 				5D6C4B0C1B604110005E3C43 /* WPChromelessWebViewController.m in Sources */,
 				85D239AD1AE5A5FC0074768D /* AccountServiceFacade.m in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
