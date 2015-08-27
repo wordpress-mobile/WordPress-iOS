@@ -4,7 +4,8 @@
 
 typedef enum {
     CategoriesSelectionModePost = 0,
-    CategoriesSelectionModeParent
+    CategoriesSelectionModeParent,
+    CategoriesSelectionModeBlogDefault
 } CategoriesSelectionMode;
 
 @protocol PostCategoriesViewControllerDelegate;
@@ -12,10 +13,12 @@ typedef enum {
 
 @interface PostCategoriesViewController : UITableViewController
 
-@property (nonatomic, assign) BOOL allowsMultipleSelection;
 @property (nonatomic, weak) id<PostCategoriesViewControllerDelegate>delegate;
 
-- (instancetype)initWithPost:(Post *)post selectionMode:(CategoriesSelectionMode)selectionMode;
+- (instancetype)initWithBlog:(Blog *)blog
+            currentSelection:(NSArray *)originalSelection
+               selectionMode:(CategoriesSelectionMode)selectionMode;
+
 - (BOOL)hasChanges;
 
 @end
@@ -25,5 +28,7 @@ typedef enum {
 
 @optional
 - (void)postCategoriesViewController:(PostCategoriesViewController *)controller didSelectCategory:(PostCategory *)category;
+
+- (void)postCategoriesViewController:(PostCategoriesViewController *)controller didUpdateSelectedCategories:(NSSet *)categories;
 
 @end

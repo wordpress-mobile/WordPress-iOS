@@ -10,7 +10,10 @@
                      failure:(void (^)(NSError *))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/categories?context=edit", blog.dotComID];
-    [self.api GET:path
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -30,13 +33,16 @@
 {
     NSParameterAssert(category.name.length > 0);
     NSString *path = [NSString stringWithFormat:@"sites/%@/categories/new?context=edit", blog.dotComID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"name"] = category.name;
     if (category.parentID) {
         parameters[@"parent"] = category.parentID;
     }
 
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePostCategory *receivedCategory = [self remoteCategoryWithJSONDictionary:responseObject];
