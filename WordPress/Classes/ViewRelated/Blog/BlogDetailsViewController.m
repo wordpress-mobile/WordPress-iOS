@@ -1,18 +1,3 @@
-// Blog Details contents:
-//
-// + (No Title)
-// | View Site
-// | WP Admin
-// | Stats
-//
-// + Publish
-// | Blog Posts
-// | Pages
-// | Comments
-//
-// + Configuration
-// | Edit Site
-
 #import "BlogDetailsViewController.h"
 #import "SiteSettingsViewController.h"
 #import "CommentsViewController.h"
@@ -467,8 +452,8 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showThemesForBlog:(Blog *)blog
 {
-    ThemeBrowser *themeBrowser = [[ThemeBrowser alloc] init];
-    ThemeBrowserViewController *viewController = [themeBrowser instantiateThemeBrowserViewController];
+    ThemeBrowserFactory *factory = [[ThemeBrowserFactory alloc] init];
+    ThemeBrowserViewController *viewController = [factory instantiateThemeBrowserViewController];
     
     [self.navigationController pushViewController:viewController
                                          animated:YES];
