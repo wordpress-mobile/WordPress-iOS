@@ -33,10 +33,22 @@ import Foundation
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
 
+    private var siteID:NSNumber? {
+        didSet {
+            if siteID != nil {
+                fetchSiteTopic()
+            }
+        }
+    }
+
     public var readerTopic: ReaderTopic? {
         didSet {
-            if isViewLoaded() && readerTopic != nil {
-                displayTopic()
+            if readerTopic != nil {
+                if isViewLoaded() {
+                    displayTopic()
+                }
+                // Discard the siteID (if there was one) now that we have a good topic
+                siteID = nil
             }
         }
     }
@@ -53,6 +65,14 @@ import Foundation
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
+
+        return controller
+    }
+
+    public class func controllerWithSiteID(siteID:NSNumber) -> ReaderStreamViewController {
+        let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
+        let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
+        controller.siteID = siteID
 
         return controller
     }
@@ -78,6 +98,8 @@ import Foundation
 
         if readerTopic != nil {
             displayTopic()
+        } else if siteID != nil {
+            self.displayLoadingStream()
         }
     }
 
@@ -86,6 +108,27 @@ import Foundation
 
     public override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
+    }
+
+    private func fetchSiteTopic() {
+        if isViewLoaded() {
+            self.displayLoadingStream()
+        }
+        assert(siteID != nil, "A siteID is required before fetching a site topic")
+        var service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.siteTopicForSiteWithID(siteID!,
+            success: { [weak self] (objectID:NSManagedObjectID!, isFollowing:Bool) -> Void in
+                var error:NSError?
+                var topic = self?.managedObjectContext().existingObjectWithID(objectID, error: &error) as? ReaderTopic
+                if let anError = error {
+                    DDLogSwift.logError(anError.localizedDescription)
+                }
+                self?.readerTopic = topic
+            },
+            failure: {[weak self] (error:NSError!) -> Void in
+                //TODO: show laoding failed
+                self?.displayLoadingStreamFailed()
+            })
     }
 
 
@@ -140,6 +183,18 @@ import Foundation
 
 
     // MARK: - Handling Loading and No Results
+
+    func displayLoadingStream() {
+        resultsStatusView.titleText = NSLocalizedString("Loading stream...", comment:"A short message to inform the user the requested stream is being loaded.")
+        resultsStatusView.messageText = ""
+        displayResultsStatus()
+    }
+
+    func displayLoadingStreamFailed() {
+        resultsStatusView.titleText = NSLocalizedString("Problem loading stream", comment:"Error message title informing the user that a stream could not be loaded.");
+        resultsStatusView.messageText = NSLocalizedString("Sorry. The stream could not be loaded.", comment:"A short error message leting the user know the requested stream could not be loaded.");
+        displayResultsStatus()
+    }
 
     func displayLoadingViewIfNeeded() {
         var count = tableViewHandler.resultsController.fetchedObjects?.count ?? 0
@@ -257,11 +312,7 @@ import Foundation
 
         // If there is a blogID preview the site
         if post.sourceAttribution!.blogID != nil {
-            let siteID = post.sourceAttribution.blogID
-            let siteURL = post.sourceAttribution.blogURL
-
-            // TODO: Make this a new instance of ReaderListViewController
-            let controller = ReaderBrowseSiteViewController(siteID: siteID, siteURL: siteURL, isWPcom: true)
+            let controller = ReaderStreamViewController.controllerWithSiteID(post.sourceAttribution!.blogID)
             navigationController?.pushViewController(controller, animated: true)
             return
         }
@@ -545,6 +596,10 @@ import Foundation
     // MARK: - Helpers for TableViewHandler
 
     func predicateForFetchRequest() -> NSPredicate {
+        if readerTopic == nil {
+            return NSPredicate(format: "topic = NULL")
+        }
+
         var error:NSError?
         var topic = managedObjectContext().existingObjectWithID(readerTopic!.objectID, error:&error) as! ReaderTopic
         if recentlyBlockedSitePostObjectIDs.count > 0 {
@@ -705,8 +760,8 @@ import Foundation
 
     public func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
-        // TODO: Should be a new instance of ReaderListViewController
-        let controller = ReaderBrowseSiteViewController(post: post)
+
+        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID)
         navigationController?.pushViewController(controller, animated: true)
         WPAnalytics.track(.ReaderPreviewedSite)
     }

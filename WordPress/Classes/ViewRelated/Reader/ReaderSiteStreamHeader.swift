@@ -11,7 +11,7 @@ import Foundation
     @IBOutlet private weak var descriptionBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var followCountBottomConstraint: NSLayoutConstraint!
     public var delegate: ReaderStreamHeaderDelegate?
-
+    private var defaultBlavatar = "blavatar-default"
 
     // MARK: - Lifecycle Methods
 
@@ -32,19 +32,22 @@ import Foundation
    // MARK: - Configuration
 
     public func configureHeader(topic: ReaderTopic) {
+        // TODO: Wire up actual display when supported in core data        
+        avatarImageView.setImageWithURL(nil, placeholderImage: UIImage(named: defaultBlavatar))
         titleLabel.text = topic.title
-// TODO: Wire up when supported by the topic
-//        detailLabel.text = "sites . followers"
-//        followCountLabel.text = "100 sites"
+        detailLabel.text = ""
+        if topic.isSubscribed {
+            WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
+        } else {
+            WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
+        }
+
+        followCountLabel.text = ""
 //        var attributes = WPStyleGuide.readerStreamHeaderDescriptionAttributes()
 //        var attributedText = NSAttributedString(string: topic.description, attributes: attributes)
+        descriptionLabel.attributedText = nil
 //        descriptionLabel.attributedText = attributedText
-//
-//        if topic.isSubscribed {
-//            WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
-//        } else {
-//            WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
-//        }
+
     }
 
 

@@ -18,8 +18,9 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iWB-Uw-beb">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q3K-e0-BuO">
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-reader-header-list" translatesAutoresizingMaskIntoConstraints="NO" id="Q3K-e0-BuO">
                             <rect key="frame" x="14" y="14" width="32" height="32"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="KxR-cT-K27"/>
                                 <constraint firstAttribute="width" constant="32" id="bVN-si-EGf"/>
@@ -98,4 +99,7 @@
             </connections>
         </view>
     </objects>
+    <resources>
+        <image name="icon-reader-header-list" width="24" height="24"/>
+    </resources>
 </document>
