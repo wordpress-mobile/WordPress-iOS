@@ -511,14 +511,14 @@ static NSString * const MediaDirectory = @"Media";
     media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL;
 }
 
-- (RemoteMedia *) remoteMediaFromMedia:(Media *)media
+- (RemoteMedia *)remoteMediaFromMedia:(Media *)media
 {
     RemoteMedia *remoteMedia = [[RemoteMedia alloc] init];
     remoteMedia.mediaID = media.mediaID;
     remoteMedia.url = [NSURL URLWithString:media.remoteURL];
     remoteMedia.date = media.creationDate;
     remoteMedia.file = media.filename;
-    remoteMedia.extension = media.mediaTypeString;
+    remoteMedia.extension = [media.filename pathExtension] ? :@"unknown";
     remoteMedia.title = media.title;
     remoteMedia.caption = media.caption;
     remoteMedia.descriptionText = media.desc;
