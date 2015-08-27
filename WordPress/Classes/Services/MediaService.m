@@ -486,8 +486,10 @@ static NSString * const MediaDirectory = @"Media";
             [self.managedObjectContext deleteObject:deleteMedia];
         }
     }
-
-    [self.managedObjectContext save:nil];
+    NSError *error;
+    if (![self.managedObjectContext save:&error]){
+        DDLogError(@"Error saving context afer adding media %@", [error localizedDescription]);
+    }
     if (completion) {
         completion();
     }
