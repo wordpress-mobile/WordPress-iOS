@@ -12,12 +12,6 @@ typedef NS_ENUM(NSUInteger, WordPressComApiError) {
     WordPressComApiErrorAuthorizationRequired,
 };
 
-typedef NS_ENUM(NSUInteger, WordPressComApiBlogVisibility) {
-    WordPressComApiBlogVisibilityPublic = 0,
-    WordPressComApiComBlogVisibilityPrivate = 1,
-    WordPressComApiBlogVisibilityHidden = 2,
-};
-
 extern NSString *const WordPressComApiErrorDomain;
 extern NSString *const WordPressComApiErrorCodeKey;
 extern NSString *const WordPressComApiErrorMessageKey;
@@ -53,24 +47,11 @@ extern NSString *const WordPressComApiPushAppId;
 
 // Wipe the OAuth2 token
 - (void)invalidateOAuth2Token;
-- (void)validateWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
-- (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
-- (void)validateWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure;
-- (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId andBlogVisibility:(WordPressComApiBlogVisibility)visibility success:(void (^)(id))success failure:(void (^)(NSError *))failure;
 
 
 ///--------------------
 /// @name Notifications
 ///--------------------
-
-- (void)saveNotificationSettings:(NSDictionary *)settings
-                        deviceId:(NSString *)deviceId
-                         success:(void (^)())success
-                         failure:(void (^)(NSError *error))failure;
-
-- (void)fetchNotificationSettingsWithDeviceId:(NSString *)deviceId
-                                      success:(void (^)(NSDictionary *settings))success
-                                      failure:(void (^)(NSError *error))failure;
 
 - (void)unregisterForPushNotificationsWithDeviceId:(NSString *)deviceId
                                            success:(void (^)())success
@@ -79,28 +60,5 @@ extern NSString *const WordPressComApiPushAppId;
 - (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
                                         success:(void (^)(NSString *deviceId, NSDictionary *settings))success
                                         failure:(void (^)(NSError *error))failure;
-
-///------------------
-/// @name Blog Themes
-///------------------
-
-- (void)fetchThemesForBlogId:(NSString*)blogId
-                     success:(WordPressComApiRestSuccessResponseBlock)success
-                     failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-- (void)fetchCurrentThemeForBlogId:(NSString*)blogId
-                           success:(WordPressComApiRestSuccessResponseBlock)success
-                           failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-- (void)activateThemeForBlogId:(NSString*)blogId themeId:(NSString*)themeId
-                       success:(WordPressComApiRestSuccessResponseBlock)success
-                       failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-///-----------------
-/// @name OAuth info
-///-----------------
-
-+ (NSString *)WordPressAppId;
-+ (NSString *)WordPressAppSecret;
 
 @end
