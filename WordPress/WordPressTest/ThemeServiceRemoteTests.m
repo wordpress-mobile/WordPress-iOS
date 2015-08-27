@@ -18,7 +18,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
 
-    NSString *url = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/mine", blogId];
 
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
@@ -35,7 +35,7 @@
 {
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
-    
+
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
     XCTAssertThrows([service getActiveThemeForBlogId:nil
                                              success:nil
@@ -45,17 +45,17 @@
 - (void)testThatGetPurchasedThemesForBlogIdWorks
 {
     NSNumber *blogId = @124;
-    
+
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
-    
-    NSString *url = [NSString stringWithFormat:@"sites/%@/themes/purchased", blogId];
-    
+
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/purchased", blogId];
+
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
-    
+
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
     XCTAssertNoThrow([service getPurchasedThemesForBlogId:blogId
                                                   success:nil
@@ -66,7 +66,7 @@
 {
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
-    
+
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
     XCTAssertThrows([service getPurchasedThemesForBlogId:nil
                                                  success:nil
@@ -80,7 +80,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
     
-    NSString *url = [NSString stringWithFormat:@"themes/%@", themeId];
+    NSString *url = [NSString stringWithFormat:@"v1.1/themes/%@", themeId];
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
@@ -110,9 +110,9 @@
 {
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
-    
-    static NSString* const url = @"themes";
-    
+
+    static NSString* const url = @"v1.1/themes";
+
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg isNotNil]
@@ -126,17 +126,17 @@
 - (void)testThatGetThemesForBlogIdWorks
 {
     NSNumber *blogId = @124;
-    
+
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
-    
-    NSString *url = [NSString stringWithFormat:@"sites/%@/themes", blogId];
-    
+
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes", blogId];
+
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
-    
+
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
     XCTAssertNoThrow([service getThemesForBlogId:blogId
                                          success:nil
@@ -147,7 +147,7 @@
 {
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
-    
+
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
     XCTAssertThrows([service getThemesForBlogId:nil
                                         success:nil
@@ -165,8 +165,8 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
     
-    NSString *url = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
-    
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/mine", blogId];
+
     BOOL(^checkBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         NSCAssert([parameters isKindOfClass:[NSDictionary class]],
                   @"Type mistmatch for the 'parameters' param.");
@@ -191,7 +191,7 @@
 - (void)testThatActivateThemeIdThrowsExceptionWithoutThemeId
 {
     NSNumber *blogId = @124;
-    
+
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
     
@@ -215,6 +215,5 @@
                                      success:nil
                                      failure:nil]);
 }
-
 
 @end

@@ -18,6 +18,7 @@
 
 #import "ReaderPostDetailViewController.h"
 #import "ReaderCommentsViewController.h"
+#import "ReaderBrowseSiteViewController.h"
 #import "StatsViewController.h"
 #import "StatsViewAllTableViewController.h"
 #import "EditCommentViewController.h"
@@ -493,9 +494,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     if (group.type == NoteBlockGroupTypeUser) {
         
         NotificationBlock *block    = [group blockOfType:NoteBlockTypeUser];
-        NSURL *homeURL              = [NSURL URLWithString:block.metaLinksHome];
-        
-        [self openURL:homeURL];
+        NSURL *siteURL              = [NSURL URLWithString:block.metaLinksHome];
+        [self openURL:siteURL];
         
     // Header-Level: Push the resource associated with the note
     } else if (group.type == NoteBlockGroupTypeHeader) {
@@ -669,12 +669,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Merge the Attachments with their ranges: [NSRange: UIImage]
     NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:commentBlock.imageUrls];
     NSDictionary *mediaRanges       = [commentBlock buildRangesToImagesMap:mediaMap];
+    NSAttributedString *text        = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
     
     // Setup the cell
     cell.name                       = userBlock.text;
     cell.timestamp                  = [self.note.timestampAsDate shortString];
     cell.site                       = userBlock.metaTitlesHome ?: userBlock.metaLinksHome.hostname;
-    cell.attributedCommentText      = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
+    cell.attributedCommentText      = [text trimTrailingNewlines];
     cell.isApproved                 = [commentBlock isCommentApproved];
     cell.hasReply                   = self.note.hasReply;
     
@@ -822,7 +823,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     }
     
     if (!success && range.isFollow) {
-        success = [self displayFollowersWithSiteID:self.note.metaSiteID];    
+        success = [self displayFollowersWithSiteID:self.note.metaSiteID];
+    }
+
+    if (!success && range.isUser) {
+        success = [self displayBrowseSite:range.siteID siteURL:range.url];
     }
     
     if (!success && url) {
@@ -842,7 +847,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     BOOL success = false;
     
     if (!success && self.note.isFollow) {
-        success = [self displayFollowersWithSiteID:self.note.metaSiteID];
+        NSURL *resourceURL = [NSURL URLWithString:self.note.url];
+        success = [self displayBrowseSite:self.note.metaSiteID siteURL:resourceURL];
     }
     
     if (!success && self.note.metaCommentID) {
@@ -964,6 +970,22 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     [self presentViewController:navController animated:YES completion:nil];
     
     return success;
+}
+
+- (BOOL)displayBrowseSite:(NSNumber *)siteID siteURL:(NSURL *)siteURL
+{
+    if (![siteID isKindOfClass:[NSNumber class]] || ![siteURL isKindOfClass:[NSURL class]]) {
+        return NO;
+    }
+    
+    BOOL isWPcom = siteURL.isWordPressDotComUrl;
+    ReaderBrowseSiteViewController *browseViewController = [[ReaderBrowseSiteViewController alloc] initWithSiteID:siteID
+                                                                                                          siteURL:siteURL.absoluteString
+                                                                                                          isWPcom:isWPcom];
+    
+    [self.navigationController pushViewController:browseViewController animated:YES];
+    
+    return YES;
 }
 
 - (BOOL)displayFullscreenImage:(UIImage *)image

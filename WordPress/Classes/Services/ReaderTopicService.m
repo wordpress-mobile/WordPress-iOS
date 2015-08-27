@@ -302,7 +302,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return nil;
     }
 
-    NSString *path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, site.siteID];;
+    NSString *path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, site.siteID];
 
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
@@ -333,6 +333,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (ReaderTopic *)siteTopicForPost:(ReaderPost *)post
 {
+    NSAssert([NSThread isMainThread], @"siteTopicForPost should only be called from the main thread");
     NSString *path;
     if (post.isWPCom) {
         path = [NSString stringWithFormat:@"%@read/sites/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
@@ -363,6 +364,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.topicDescription = post.blogDescription;
     topic.path = path;
 
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
     return topic;
 }
 
@@ -384,7 +387,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topic.type = ReaderTopicTypeSite;
         topic.title = [siteInfo.siteName length] ? siteInfo.siteName : [NSURL URLWithString:siteInfo.siteURL].host;
         topic.topicDescription = siteInfo.siteDescription;
-        topic.path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
+        topic.path = [NSString stringWithFormat:@"%@read/sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
 
         NSError *error;
         [self.managedObjectContext obtainPermanentIDsForObjects:@[topic] error:&error];

@@ -37,18 +37,23 @@ extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
  */
 + (void)unregisterDeviceToken;
 
+
 /**
- Returns whether the device is currently registered for remote notifications
- 
- @return YES if the device is registered for WordPress.com notifications
- @return NO if not
+ Returns whether the app has Push Notifications Enabled in Settings.app
+ @return Boolean, indicating whether Push Notifications are enabled, or not.
  */
-+ (BOOL)deviceRegisteredForPushNotifications;
+
++ (BOOL)pushNotificationsEnabledInDeviceSettings;
 
 /**
  Retrieves and returns the last registered Device Token
 */
 + (NSString *)registeredPushNotificationsToken;
+
+/**
+ Retrieves and returns the current Device ID
+ */
++ (NSString *)registeredPushNotificationsDeviceId;
 
 
 ///----------------------------
@@ -79,19 +84,5 @@ extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
  @param remoteNotification the notification object
  */
 + (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification;
-
-///--------------------------------------
-/// @name WordPress.com Notifications API
-///--------------------------------------
-
-/**
- Sends the current settings to WordPress.com
- */
-+ (void)saveNotificationSettings;
-
-/**
- Fetch the current WordPress.com settings
- */
-+ (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end
