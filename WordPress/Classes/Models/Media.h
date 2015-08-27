@@ -63,8 +63,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) NSString *absoluteThumbnailLocalURL;
 @property (nonatomic, readonly, strong) NSString *posterImageURL;
 
-+ (Media *)newMediaForPost:(AbstractPost *)post;
-+ (Media *)newMediaForBlog:(Blog *)blog;
 + (NSString *)mediaTypeForFeaturedImage;
 
 - (void)mediaTypeFromUrl:(NSString *)ext;
