@@ -8,7 +8,6 @@
 #import "WPTableViewHandler.h"
 #import "WPGUIConstants.h"
 #import "WPNoResultsView.h"
-#import "UIView+Subviews.h"
 #import "ContextManager.h"
 
 

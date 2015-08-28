@@ -5,7 +5,6 @@
 #import "SiteSettingsViewController.h"
 #import "PostPreviewViewController.h"
 #import "PostSettingsSelectionViewController.h"
-#import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
 #import "WPSearchControllerConfigurator.h"
 

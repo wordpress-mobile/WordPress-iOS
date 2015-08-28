@@ -25,8 +25,6 @@
 #import "ReaderPostService.h"
 #import "ReaderPostDetailViewController.h"
 
-#import "UIView+Subviews.h"
-
 #import "AppRatingUtility.h"
 
 #import <WordPress-AppbotX/ABXPromptView.h>
