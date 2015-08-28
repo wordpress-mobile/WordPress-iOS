@@ -58,11 +58,9 @@
 
 - (NSArray *)remoteCategoriesWithJSONArray:(NSArray *)jsonArray
 {
-    NSMutableArray *categories = [NSMutableArray arrayWithCapacity:jsonArray.count];
-    for (NSDictionary *jsonCategory in jsonArray) {
-        [categories addObject:[self remoteCategoryWithJSONDictionary:jsonCategory]];
-    }
-    return [NSArray arrayWithArray:categories];
+    return [jsonArray wp_map:^id(NSDictionary *jsonCategory) {
+        return [self remoteCategoryWithJSONDictionary:jsonCategory];
+    }];
 }
 
 - (RemotePostCategory *)remoteCategoryWithJSONDictionary:(NSDictionary *)jsonCategory

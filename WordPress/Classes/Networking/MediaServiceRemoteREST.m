@@ -189,11 +189,9 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
 - (NSArray *)remoteMediaFromJSONArray:(NSArray *)jsonMedia
 {
-    NSMutableArray *remoteMedia = [NSMutableArray arrayWithCapacity:jsonMedia.count];
-    for (NSDictionary *json in jsonMedia) {
-        [remoteMedia addObject:[self remoteMediaFromJSONDictionary:json]];
-    }
-    return [NSArray arrayWithArray:remoteMedia];
+    return [jsonMedia wp_map:^id(NSDictionary *json) {
+        return [self remoteMediaFromJSONDictionary:json];
+    }];
 }
 
 - (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia

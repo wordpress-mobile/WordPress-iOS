@@ -243,11 +243,10 @@
                       return;
                   }
 
-                  NSArray *arr = [responseObject arrayForKey:@"posts"];
-                  NSMutableArray *posts = [NSMutableArray array];
-                  for (NSDictionary *dict in arr) {
-                      [posts addObject:[self formatPostDictionary:dict]];
-                  }
+                  NSArray *jsonPosts = [responseObject arrayForKey:@"posts"];
+                  NSArray *posts = [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
+                      return [self formatPostDictionary:jsonPost];
+                  }];
                   success(posts);
 
               } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -602,12 +601,9 @@
 
 - (NSArray *)slugsFromDiscoverPostTaxonomies:(NSArray *)discoverPostTaxonomies
 {
-    NSMutableArray *slugs = [NSMutableArray array];
-    for (NSDictionary *dict in discoverPostTaxonomies) {
-        NSString *slug = [dict stringForKey:@"slug"];
-        [slugs addObject:slug];
-    }
-    return slugs;
+    return [discoverPostTaxonomies wp_map:^id(NSDictionary *dict) {
+        return [dict stringForKey:@"slug"];
+    }];
 }
 
 @end

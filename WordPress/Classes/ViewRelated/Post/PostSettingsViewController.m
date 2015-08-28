@@ -752,10 +752,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     }
 
     NSArray *statuses = [self.apost availableStatusesForEditing];
-    NSMutableArray *titles = [NSMutableArray array];
-    for (NSString *status in statuses) {
-        [titles addObject:[BasePost titleForStatus:status]];
-    }
+    NSArray *titles = [statuses wp_map:^id(NSString *status) {
+        return [BasePost titleForStatus:status];
+    }];
 
     NSDictionary *statusDict = @{
                                  @"DefaultValue": PostStatusPublish,

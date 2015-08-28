@@ -261,13 +261,9 @@ NSString * const PostFormatStandard = @"standard";
 
 - (NSArray *)sortedPostFormatNames
 {
-    NSMutableArray *sortedNames = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
-
-    for (NSString *key in self.sortedPostFormats) {
-        [sortedNames addObject:self.postFormats[key]];
-    }
-
-    return [NSArray arrayWithArray:sortedNames];
+    return [[self sortedPostFormats] wp_map:^id(NSString *key) {
+        return self.postFormats[key];
+    }];
 }
 
 - (NSString *)defaultPostFormatText

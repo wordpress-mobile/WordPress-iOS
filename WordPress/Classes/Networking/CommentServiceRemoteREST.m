@@ -378,11 +378,9 @@ static const NSInteger NumberOfCommentsToSync = 100;
 
 - (NSArray *)remoteCommentsFromJSONArray:(NSArray *)jsonComments
 {
-    NSMutableArray *comments = [NSMutableArray arrayWithCapacity:jsonComments.count];
-    for (NSDictionary *jsonComment in jsonComments) {
-        [comments addObject:[self remoteCommentFromJSONDictionary:jsonComment]];
-    }
-    return [NSArray arrayWithArray:comments];
+    return [jsonComments wp_map:^id(NSDictionary *jsonComment) {
+        return [self remoteCommentFromJSONDictionary:jsonComment];
+    }];
 }
 
 - (RemoteComment *)remoteCommentFromJSONDictionary:(NSDictionary *)jsonDictionary
