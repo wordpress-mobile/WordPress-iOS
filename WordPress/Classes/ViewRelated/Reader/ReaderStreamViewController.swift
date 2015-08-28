@@ -283,6 +283,10 @@ import Foundation
 
     // MARK: - Instance Methods
 
+    public func scrollViewToTop() {
+        tableView.setContentOffset(CGPoint.zeroPoint, animated: true)
+    }
+
     private func tagPropertyForStats() -> [NSObject: AnyObject] {
         return ["tag" : readerTopic!.title]
     }
