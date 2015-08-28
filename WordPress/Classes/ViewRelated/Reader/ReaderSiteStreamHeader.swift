@@ -35,19 +35,18 @@ import Foundation
         // TODO: Wire up actual display when supported in core data        
         avatarImageView.setImageWithURL(nil, placeholderImage: UIImage(named: defaultBlavatar))
         titleLabel.text = topic.title
-        detailLabel.text = ""
+        detailLabel.text = "site.com"
         if topic.isSubscribed {
             WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
         } else {
             WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
         }
 
-        followCountLabel.text = ""
+        followCountLabel.text = "100 followers"
+        descriptionLabel.text = "Just another WordPress site"
 //        var attributes = WPStyleGuide.readerStreamHeaderDescriptionAttributes()
 //        var attributedText = NSAttributedString(string: topic.description, attributes: attributes)
-        descriptionLabel.attributedText = nil
 //        descriptionLabel.attributedText = attributedText
-
     }
 
 
