@@ -148,7 +148,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 {
     NSAssert([URLString rangeOfString:@"v1.1"].length > 0
              || [URLString rangeOfString:@"v1.2"].length > 0,
-             @"Unexpected API version.");
+             @"Unexpected API version in URL: %@", URLString);
 }
 
 - (AFHTTPRequestOperation *)DELETE:(NSString *)URLString
