@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Theme Browser View Controller-->
@@ -40,11 +41,17 @@
                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V5y-sB-6Bg">
+                                <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="V5y-sB-6Bg">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                     <textInputTraits key="textInputTraits"/>
                                 </searchBar>
                             </subviews>
+                            <constraints>
+                                <constraint firstAttribute="bottomMargin" secondItem="V5y-sB-6Bg" secondAttribute="bottom" constant="-8" id="TC5-aw-mXU"/>
+                                <constraint firstAttribute="trailingMargin" secondItem="V5y-sB-6Bg" secondAttribute="trailing" constant="-8" id="b8v-Da-RI3"/>
+                                <constraint firstItem="V5y-sB-6Bg" firstAttribute="top" secondItem="47y-8d-jwn" secondAttribute="topMargin" constant="-8" id="bHq-nS-5Vk"/>
+                                <constraint firstItem="V5y-sB-6Bg" firstAttribute="leading" secondItem="47y-8d-jwn" secondAttribute="leadingMargin" constant="-8" id="fjN-Qu-LtK"/>
+                            </constraints>
                         </collectionReusableView>
                         <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ThemeBrowserFooterView" id="xkX-Yz-wzQ">
                             <rect key="frame" x="0.0" y="100" width="600" height="50"/>
