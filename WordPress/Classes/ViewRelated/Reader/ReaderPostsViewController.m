@@ -728,7 +728,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [context performBlock:^{
         ReaderTopic *topicInContext = [self topicInContext:context];
-        [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] skippingSave:YES success:^(NSInteger count, BOOL hasMore) {
+        [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
                 if (success) {
@@ -754,7 +754,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [context performBlock:^{
         ReaderTopic *topicInContext = [self topicInContext:context];
-        [service backfillPostsForTopic:topicInContext skippingSave:YES success:^(NSInteger count, BOOL hasMore) {
+        [service backfillPostsForTopic:topicInContext success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
                 if (success) {
@@ -846,7 +846,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return;
     }
 
-    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
     [[ContextManager sharedInstance] saveContext:self.contextForSync];
     self.contextForSync = nil;
 
