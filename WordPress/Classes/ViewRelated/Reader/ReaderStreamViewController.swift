@@ -567,6 +567,7 @@ import Foundation
     }
 
     public func cleanupAfterSync() {
+        cleanupAndRefreshAfterScrolling = false
         tableViewHandler.refreshTableViewPreservingOffset()
         refreshControl.endRefreshing()
         footerView.showSpinner(false)
@@ -630,14 +631,12 @@ import Foundation
         if cleanupAndRefreshAfterScrolling {
             cleanupAfterSync()
         }
-        cleanupAndRefreshAfterScrolling = false
     }
 
     public func scrollViewDidEndDecelerating(scrollView: UIScrollView!) {
         if cleanupAndRefreshAfterScrolling {
             cleanupAfterSync()
         }
-        cleanupAndRefreshAfterScrolling = false
     }
 
     public func managedObjectContext() -> NSManagedObjectContext {
