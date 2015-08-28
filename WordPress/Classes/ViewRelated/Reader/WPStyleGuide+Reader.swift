@@ -212,7 +212,7 @@ extension WPStyleGuide
         button.setTitle(title, forState: .Normal)
         button.setTitle(title, forState: .Highlighted)
 
-        button.setTitleColor(mediumBlue(), forState: .Normal)
+        button.setTitleColor(greyLighten10(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
         button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
 
