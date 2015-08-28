@@ -32,6 +32,7 @@ import Foundation
     private var displayContext: NSManagedObjectContext?
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
+    private var isShowingSiteHeader = false
 
     private var siteID:NSNumber? {
         didSet {
@@ -237,11 +238,14 @@ import Foundation
     func displayStreamHeader() {
         assert(readerTopic != nil, "A reader topic is required")
 
+        isShowingSiteHeader = false
         var header:ReaderStreamHeader? = ReaderStreamViewController.headerForStream(readerTopic!)
         if header == nil {
             tableView.tableHeaderView = nil
             return
         }
+
+        isShowingSiteHeader = header!.isKindOfClass(ReaderSiteStreamHeader)
 
         header!.configureHeader(readerTopic!)
         header!.delegate = self
@@ -731,6 +735,7 @@ import Foundation
         let post = posts[indexPath.row]
         let shouldLoadMedia = postCell != cellForLayout
 
+        postCell.blogNameButtonIsEnabled = !isShowingSiteHeader
         postCell.configureCell(post, loadingMedia: shouldLoadMedia)
         postCell.delegate = self
     }
