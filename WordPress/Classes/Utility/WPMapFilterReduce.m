@@ -11,7 +11,7 @@
             [results addObject:objectToAdd];
         }
     }
-    return [[self class] arrayWithArray:results];
+    return [NSArray arrayWithArray:results];
 }
 
 - (instancetype)wp_filter:(WPFilterBlock)filterBlock
@@ -22,7 +22,7 @@
             [results addObject:obj];
         }
     }
-    return [[self class] arrayWithArray:results];
+    return [NSArray arrayWithArray:results];
 }
 
 - (id)wp_reduce:(WPReduceBlock)reduceBlock withInitialValue:(id)initial
