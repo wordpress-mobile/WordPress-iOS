@@ -655,14 +655,32 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (void)preserveRowInfoBeforeContentChanges
 {
     self.fetchedResultsBeforeChange = [[self.resultsController fetchedObjects] copy];
+    NSIndexPath *lastVisibleIndexPath = [[self.tableView indexPathsForVisibleRows] lastObject];
+
     NSMutableArray *indexPaths = [NSMutableArray array];
     NSMutableArray *rowHeights = [NSMutableArray array];
     for (NSManagedObject *object in self.fetchedResultsBeforeChange) {
         NSIndexPath *indexPath = [self.resultsController indexPathForObject:object];
+
+        // Only preserve info relevant to the current scroll offset. Anything else is extra work.
+        NSComparisonResult order = [indexPath compare:lastVisibleIndexPath];
+        if (order == NSOrderedDescending) {
+            continue;
+        }
+
         [indexPaths addObject:indexPath];
-        CGFloat height = [self tableView:self.tableView heightForRowAtIndexPath:indexPath];
+
+        CGFloat height;
+        // Use a cached height if we have one.
+        if (self.cacheRowHeights && [[self.cachedRowHeights allKeys] containsObject:indexPath]) {
+            height = [[self.cachedRowHeights objectForKey:indexPath] floatValue];
+        } else {
+
+            height = [self tableView:self.tableView heightForRowAtIndexPath:indexPath];
+        }
         [rowHeights addObject:@(height)];
     }
+
     self.rowHeightsBeforeChange = rowHeights;
     self.fetchedResultsIndexPathsBeforeChange = indexPaths;
 }
