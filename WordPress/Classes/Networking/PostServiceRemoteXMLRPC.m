@@ -222,11 +222,9 @@ const NSInteger HTTP404ErrorCode = 404;
 #pragma mark - Private methods
 
 - (NSArray *)remotePostsFromXMLRPCArray:(NSArray *)xmlrpcArray {
-    NSMutableArray *posts = [NSMutableArray arrayWithCapacity:xmlrpcArray.count];
-    for (NSDictionary *xmlrpcPost in xmlrpcArray) {
-        [posts addObject:[self remotePostFromXMLRPCDictionary:xmlrpcPost]];
-    }
-    return [NSArray arrayWithArray:posts];
+    return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcPost) {
+        return [self remotePostFromXMLRPCDictionary:xmlrpcPost];
+    }];
 }
 
 - (RemotePost *)remotePostFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary {
@@ -288,12 +286,11 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (NSArray *)remoteCategoriesFromXMLRPCTermsArray:(NSArray *)terms {
-    NSArray *categories = [terms filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"taxonomy = 'category'"]];
-    NSMutableArray *remoteCategories = [NSMutableArray arrayWithCapacity:categories.count];
-    for (NSDictionary *category in categories) {
-        [remoteCategories addObject:[self remoteCategoryFromXMLRPCDictionary:category]];
-    }
-    return [NSArray arrayWithArray:remoteCategories];
+    return [[terms wp_filter:^BOOL(NSDictionary *category) {
+        return [category[@"taxonomy"] isEqualToString:@"category"];
+    }] wp_map:^id(NSDictionary *category) {
+        return [self remoteCategoryFromXMLRPCDictionary:category];
+    }];
 }
 
 - (RemotePostCategory *)remoteCategoryFromXMLRPCDictionary:(NSDictionary *)xmlrpcCategory {
@@ -341,11 +338,9 @@ const NSInteger HTTP404ErrorCode = 404;
     }
 
     if (post.categories) {
-        NSArray *categories = post.categories;
-        NSMutableArray *categoryNames = [NSMutableArray arrayWithCapacity:[categories count]];
-        for (RemotePostCategory *cat in categories) {
-            [categoryNames addObject:cat.name];
-        }
+        NSArray *categoryNames = [post.categories wp_map:^id(RemotePostCategory *category) {
+            return category.name;
+        }];
         
         postParams[@"categories"] = categoryNames;
     }
