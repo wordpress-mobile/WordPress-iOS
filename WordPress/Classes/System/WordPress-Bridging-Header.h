@@ -57,6 +57,7 @@
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
 #import "WPAccount.h"
+#import "WPActivityDefaults.h"
 #import "WPAnimatedBox.h"
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPBlogTableViewCell.h"
