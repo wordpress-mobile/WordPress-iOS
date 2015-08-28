@@ -130,21 +130,14 @@ extension WPStyleGuide
     }
 
 
-
     // MARK: - Apply Card Styles
 
-    public class func applyReaderCardSiteButtonActiveStyle(button:UIButton) {
+    public class func applyReaderCardSiteButtonStyle(button:UIButton) {
         let fontSize = Cards.buttonFontSize
         button.titleLabel!.font = WPFontManager.openSansRegularFontOfSize(fontSize)
         button.setTitleColor(mediumBlue(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
-    }
-
-    public class func applyReaderCardSiteButtonInactiveStyle(button:UIButton) {
-        let fontSize = Cards.buttonFontSize
-        button.titleLabel!.font = WPFontManager.openSansRegularFontOfSize(fontSize)
-        button.setTitleColor(greyDarken20(), forState: .Normal)
-        button.setTitleColor(greyDarken20(), forState: .Highlighted)
+        button.setTitleColor(greyDarken20(), forState: .Disabled)
     }
 
     public class func applyReaderCardBylineLabelStyle(label:UILabel) {
