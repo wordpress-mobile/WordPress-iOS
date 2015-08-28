@@ -644,20 +644,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         [self deletePostsFromBlockedSites];
         readerTopic.lastSynced = [NSDate date];
 
-
-        // performBlockAndWait here so we know our objects are saved before we call success.
-        [self.managedObjectContext performBlockAndWait:^{
-//            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                if (success) {
-                    BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
-                    success(postsCount, hasMore);
-                }
-            }];
-
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+            // Is called on main queue
+            if (success) {
+                BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
+                success(postsCount, hasMore);
+            }
         }];
-
     }];
 }
 
