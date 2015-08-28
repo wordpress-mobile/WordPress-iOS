@@ -17,7 +17,6 @@
 
 #import "UIAlertView+Blocks.h"
 #import "UIAlertViewProxy.h"
-#import "UIDevice+Helpers.h"
 #import "UIImage+Tint.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"

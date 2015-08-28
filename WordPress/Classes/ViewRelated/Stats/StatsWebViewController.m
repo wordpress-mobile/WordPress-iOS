@@ -10,7 +10,6 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "WPCookie.h"
-#import "UIDevice+Helpers.h"
 #import "WordPress-Swift.h"
 
 NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";

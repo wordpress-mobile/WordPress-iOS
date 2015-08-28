@@ -1,7 +1,6 @@
 #import "WordPressComApi.h"
 #import "NSString+Helpers.h"
 #import <UIDeviceHardware.h>
-#import "UIDevice+Helpers.h"
 #import "WordPressAppDelegate.h"
 #import "NotificationsManager.h"
 #import "WPUserAgent.h"
@@ -317,7 +316,7 @@ constructingBodyWithBlock:block
                                  @"device_model"    : [UIDeviceHardware platform],
                                  @"os_version"      : [[UIDevice currentDevice] systemVersion],
                                  @"app_version"     : [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
-                                 @"device_uuid"     : [[UIDevice currentDevice] wordPressIdentifier],
+                                 @"device_uuid"     : [[[UIDevice currentDevice] identifierForVendor] UUIDString],
                                  };
     
     [self POST:@"v1.1/devices/new"

@@ -28,7 +28,6 @@
 #import "NSProcessInfo+Util.h"
 #import "NSString+Helpers.h"
 #import "UIAlertView+Blocks.h"
-#import "UIDevice+Helpers.h"
 
 // Data model
 #import "Blog.h"
@@ -887,7 +886,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     DDLogInfo(@"Device model: %@ (%@)", [UIDeviceHardware platformString], [UIDeviceHardware platform]);
     DDLogInfo(@"OS:        %@ %@", device.systemName, device.systemVersion);
     DDLogInfo(@"Language:  %@", currentLanguage);
-    DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
+    DDLogInfo(@"UDID:      %@", device.identifierForVendor.UUIDString);
     DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
     
