@@ -86,8 +86,8 @@ typedef enum {
 - (IBAction)suceed
 {
     [super dismiss];
-    if ([self.delegate respondsToSelector:@selector(authorizeDidCancel:)]) {
-        [self.delegate authorizeDidCancel:self.publicizer];
+    if ([self.delegate respondsToSelector:@selector(authorizeDidSucceed:)]) {
+        [self.delegate authorizeDidSucceed:self.publicizer];
     }
 }
 

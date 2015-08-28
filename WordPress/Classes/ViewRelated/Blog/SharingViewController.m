@@ -155,12 +155,13 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 {
     NSParameterAssert(publicizer);
     
+    __weak __typeof__(self) weakSelf = self;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService checkAuthorizationForPublicizer:publicizer success:^(NSDictionary *authorization) {
         [blogService connectPublicizer:publicizer
                      withAuthorization:authorization
-                               success:^(NSDictionary *authorization) {
-            [self refreshPublicizers];
+                               success:^{
+            [weakSelf refreshPublicizers];
         } failure:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connect failed", @"Message to show when Publicize connect failed")];
         }];
@@ -168,7 +169,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
         if (error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
         } else if (interact) {
-            [self authorizePublicizer:publicizer];
+            [weakSelf authorizePublicizer:publicizer];
         }
     }];
 }
@@ -204,9 +205,10 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 {
     NSParameterAssert(publicizer);
     
+    __weak __typeof__(self) weakSelf = self;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService disconnectPublicizer:publicizer success:^{
-        [self refreshPublicizers];
+        [weakSelf refreshPublicizers];
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
     }];
