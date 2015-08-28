@@ -203,11 +203,9 @@
 
 - (NSArray *)remoteMediaFromXMLRPCArray:(NSArray *)xmlrpcArray
 {
-    NSMutableArray *remoteMedia = [NSMutableArray arrayWithCapacity:xmlrpcArray.count];
-    for (NSDictionary *xmlrpcMedia in xmlrpcArray) {
-        [remoteMedia addObject:[self remoteMediaFromXMLRPCDictionary:xmlrpcMedia]];
-    }
-    return [NSArray arrayWithArray:remoteMedia];
+    return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcMedia) {
+        return [self remoteMediaFromUploadXMLRPCDictionary:xmlrpcMedia];
+    }];
 }
 
 - (RemoteMedia *)remoteMediaFromXMLRPCDictionary:(NSDictionary*)xmlRPC

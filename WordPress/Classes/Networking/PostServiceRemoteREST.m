@@ -221,11 +221,9 @@
 #pragma mark - Private methods
 
 - (NSArray *)remotePostsFromJSONArray:(NSArray *)jsonPosts {
-    NSMutableArray *posts = [NSMutableArray arrayWithCapacity:jsonPosts.count];
-    for (NSDictionary *jsonPost in jsonPosts) {
-        [posts addObject:[self remotePostFromJSONDictionary:jsonPost]];
-    }
-    return [NSArray arrayWithArray:posts];
+    return [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
+        return [self remotePostFromJSONDictionary:jsonPost];
+    }];
 }
 
 - (RemotePost *)remotePostFromJSONDictionary:(NSDictionary *)jsonPost {
@@ -349,8 +347,7 @@
 }
 
 - (NSArray *)metadataForPost:(RemotePost *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:post.metadata.count];
-    for (NSDictionary *meta in post.metadata) {
+    return [post.metadata wp_map:^id(NSDictionary *meta) {
         NSNumber *metaID = [meta objectForKey:@"id"];
         NSString *metaValue = [meta objectForKey:@"value"];
         NSString *operation = @"update";
@@ -361,17 +358,14 @@
         }
         NSMutableDictionary *modifiedMeta = [meta mutableCopy];
         modifiedMeta[@"operation"] = operation;
-        [metadata addObject:[NSDictionary dictionaryWithDictionary:modifiedMeta]];
-    }
-    return [NSArray arrayWithArray:metadata];
+        return [NSDictionary dictionaryWithDictionary:modifiedMeta];
+    }];
 }
 
 - (NSArray *)remoteCategoriesFromJSONArray:(NSArray *)jsonCategories {
-    NSMutableArray *categories = [NSMutableArray arrayWithCapacity:jsonCategories.count];
-    for (NSDictionary *jsonCategory in jsonCategories) {
-        [categories addObject:[self remoteCategoryFromJSONDictionary:jsonCategory]];
-    }
-    return [NSArray arrayWithArray:categories];
+    return [jsonCategories wp_map:^id(NSDictionary *jsonCategory) {
+        return [self remoteCategoryFromJSONDictionary:jsonCategory];
+    }];
 }
 
 - (RemotePostCategory *)remoteCategoryFromJSONDictionary:(NSDictionary *)jsonCategory {

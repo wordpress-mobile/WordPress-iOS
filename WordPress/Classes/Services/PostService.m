@@ -690,11 +690,9 @@ const NSInteger PostServiceNumberToFetch = 40;
 
 - (NSArray *)remoteCategoriesForPost:(Post *)post
 {
-    NSMutableArray *remoteCategories = [NSMutableArray arrayWithCapacity:post.categories.count];
-    for (PostCategory *category in post.categories) {
-        [remoteCategories addObject:[self remoteCategoryWithCategory:category]];
-    }
-    return [NSArray arrayWithArray:remoteCategories];
+    return [[post.categories allObjects] wp_map:^id(PostCategory *category) {
+        return [self remoteCategoryWithCategory:category];
+    }];
 }
 
 - (RemotePostCategory *)remoteCategoryWithCategory:(PostCategory *)category

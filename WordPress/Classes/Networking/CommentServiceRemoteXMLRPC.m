@@ -181,11 +181,9 @@ static const NSInteger NumberOfCommentsToSync = 100;
 
 - (NSArray *)remoteCommentsFromXMLRPCArray:(NSArray *)xmlrpcArray
 {
-    NSMutableArray *comments = [NSMutableArray arrayWithCapacity:xmlrpcArray.count];
-    for (NSDictionary *xmlrpcComment in xmlrpcArray) {
-        [comments addObject:[self remoteCommentFromXMLRPCDictionary:xmlrpcComment]];
-    }
-    return [NSArray arrayWithArray:comments];
+    return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcComment) {
+        return [self remoteCommentFromXMLRPCDictionary:xmlrpcComment];
+    }];
 }
 
 - (RemoteComment *)remoteCommentFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary

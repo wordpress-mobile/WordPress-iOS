@@ -80,14 +80,16 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 
 - (NSArray *)remoteBlogsFromJSONArray:(NSArray *)jsonBlogs
 {
-    NSMutableArray *remoteBlogs = [NSMutableArray arrayWithCapacity:[jsonBlogs count]];
-    for (NSDictionary *jsonBlog in jsonBlogs) {
-        BOOL isJetpack = [jsonBlog[@"jetpack"] boolValue];
-        if (!isJetpack || JetpackREST.enabled) {
-            [remoteBlogs addObject:[self remoteBlogFromJSONDictionary:jsonBlog]];
-        }
+    NSArray *blogs = jsonBlogs;
+    if (!JetpackREST.enabled) {
+        blogs = [blogs wp_filter:^BOOL(NSDictionary *jsonBlog) {
+            BOOL isJetpack = [jsonBlog[@"jetpack"] boolValue];
+            return !isJetpack;
+        }];
     }
-    return [NSArray arrayWithArray:remoteBlogs];
+    return [blogs wp_map:^id(NSDictionary *jsonBlog) {
+        return [self remoteUserFromDictionary:jsonBlog];
+    }];
 }
 
 - (RemoteBlog *)remoteBlogFromJSONDictionary:(NSDictionary *)jsonBlog
