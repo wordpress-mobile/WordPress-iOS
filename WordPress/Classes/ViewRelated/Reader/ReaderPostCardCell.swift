@@ -75,7 +75,6 @@ import Foundation
     private let summaryMaxNumberOfLines = 3
     private let maxAttributionViewHeight: CGFloat = 200.0 // 200 is an arbitrary height, but should be a sufficiently high number.
 
-
     // MARK: - Accessors
 
     public override var backgroundColor: UIColor? {
@@ -98,6 +97,15 @@ import Foundation
             return
         }
         applyHighlightedEffect(highlighted, animated: animated)
+    }
+
+    public var blogNameButtonIsEnabled: Bool {
+        get {
+            return blogNameButton.enabled
+        }
+        set {
+            blogNameButton.enabled = newValue
+        }
     }
 
 
@@ -237,7 +245,7 @@ import Foundation
         backgroundColor = WPStyleGuide.greyLighten30()
         cardBorderView.backgroundColor = WPStyleGuide.readerCardCellBorderColor()
 
-        WPStyleGuide.applyReaderCardSiteButtonActiveStyle(blogNameButton)
+        WPStyleGuide.applyReaderCardSiteButtonStyle(blogNameButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
@@ -289,6 +297,7 @@ import Foundation
         var blogName = contentProvider?.blogNameForDisplay()
         blogNameButton.setTitle(blogName, forState: .Normal)
         blogNameButton.setTitle(blogName, forState: .Highlighted)
+        blogNameButton.setTitle(blogName, forState: .Disabled)
 
         var byline = contentProvider?.dateForDisplay().shortString()
         if let author = contentProvider?.authorForDisplay() {
@@ -538,7 +547,9 @@ import Foundation
     // MARK: - 
 
     func notifyDelegateHeaderWasTapped() {
-        delegate?.readerCell(self, headerActionForProvider: contentProvider!)
+        if blogNameButtonIsEnabled {
+            delegate?.readerCell(self, headerActionForProvider: contentProvider!)
+        }
     }
 
 
