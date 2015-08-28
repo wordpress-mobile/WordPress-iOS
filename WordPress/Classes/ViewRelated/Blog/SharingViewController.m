@@ -23,6 +23,8 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
 @property (nonatomic, strong) NSArray *publicizeServices;
 
+@property (nonatomic, strong) Publicizer *connectingService;
+
 @end
 
 @implementation SharingViewController
@@ -53,6 +55,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
 - (void)refreshPublicizers
 {
+    self.connectingService = nil;
     self.publicizeServices = [self.blog.publicizers sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:TRUE]]];
     [self.tableView reloadData];
 }
@@ -113,7 +116,14 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
             UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
             [button addTarget:self action:@selector(cellButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-            NSString *title = publicizer.isConnected ? NSLocalizedString(@"Disconnect", @"Button title to disconnect a Publicize service") : NSLocalizedString(@"Connect", @"Button title to connect a Publicize service");
+            NSString *title = nil;
+            if ([self.connectingService.service isEqualToString:publicizer.service]) {
+                title = NSLocalizedString(@"Connecting…", @"Button title while a Publicize service is connecting");
+            } else if (publicizer.isConnected) {
+                title = NSLocalizedString(@"Disconnect", @"Button title to disconnect a Publicize service");
+            } else {
+                title = NSLocalizedString(@"Connect", @"Button title to connect a Publicize service");
+            }
             [button setTitle:title forState:UIControlStateNormal];
             [button sizeToFit];
             cell.accessoryView = button;
@@ -145,6 +155,8 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     if (publicizer.isConnected) {
         [self disconnectPublicizer:publicizer];
     } else {
+        self.connectingService = publicizer;
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         [self connectPublicizer:publicizer interact:YES];
     }
 }
@@ -164,12 +176,16 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
             [weakSelf refreshPublicizers];
         } failure:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connect failed", @"Message to show when Publicize connect failed")];
+            [weakSelf refreshPublicizers];
         }];
     } failure:^(NSError *error) {
-        if (error) {
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
-        } else if (interact) {
+        if (interact) {
             [weakSelf authorizePublicizer:publicizer];
+        } else {
+            if (error) {
+                [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
+            }
+            [weakSelf refreshPublicizers];
         }
     }];
 }
@@ -194,11 +210,13 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 - (void)authorize:(Publicizer *)publicizer didFailWithError:(NSError *)error
 {
     [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
+    [self refreshPublicizers];
 }
 
 - (void)authorizeDidCancel:(Publicizer *)publicizer
 {
     // called in response to user dismissal
+    [self refreshPublicizers];
 }
 
 - (void)disconnectPublicizer:(Publicizer *)publicizer
