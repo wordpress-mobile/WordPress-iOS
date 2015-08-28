@@ -15,9 +15,9 @@ import Foundation
     private var tableViewController: UITableViewController!
     private var cellForLayout: ReaderPostCardCell!
     private var resultsStatusView: WPNoResultsView!
-    private var objectIDOfPostForMenu: NSManagedObjectID?
-    private var actionSheet: UIActionSheet?
     private var footerView: PostListFooterView!
+    private var objectIDOfPostForMenu: NSManagedObjectID?
+    private var anchorViewForMenu: UIView?
 
     private let footerViewNibName = "PostListFooterView"
     private let readerCardCellNibName = "ReaderPostCardCell"
@@ -32,7 +32,7 @@ import Foundation
     private var displayContext: NSManagedObjectContext?
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
-    private var isShowingSiteHeader = false
+    private var showShareActivityAfterActionSheetIsDismissed = false
 
     private var siteID:NSNumber? {
         didSet {
@@ -238,14 +238,11 @@ import Foundation
     func displayStreamHeader() {
         assert(readerTopic != nil, "A reader topic is required")
 
-        isShowingSiteHeader = false
         var header:ReaderStreamHeader? = ReaderStreamViewController.headerForStream(readerTopic!)
         if header == nil {
             tableView.tableHeaderView = nil
             return
         }
-
-        isShowingSiteHeader = header!.isKindOfClass(ReaderSiteStreamHeader)
 
         header!.configureHeader(readerTopic!)
         header!.delegate = self
@@ -290,22 +287,46 @@ import Foundation
         return ["tag" : readerTopic!.title]
     }
 
+    private func shouldShowBlockSiteMenuItem() -> Bool {
+        return readerTopic!.isTag() || ReaderStreamViewController.topicIsFreshlyPressed(readerTopic!)
+    }
+
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
         objectIDOfPostForMenu = post.objectID
+        anchorViewForMenu = anchorView
 
         let cancel = NSLocalizedString("Cancel", comment:"The title of a cancel button.")
         let blockSite = NSLocalizedString("Block This Site", comment:"The title of a button that triggers blocking a site from the user's reader.")
-
-        actionSheet = UIActionSheet(title: nil,
+        let share = NSLocalizedString("Share", comment:"Verb. Title of a button. Pressing the lets the user share a post to others.")
+        var actionSheet = UIActionSheet(title: nil,
             delegate: self,
             cancelButtonTitle: cancel,
-            destructiveButtonTitle: blockSite)
+            destructiveButtonTitle: shouldShowBlockSiteMenuItem() ? blockSite : nil
+        )
+        actionSheet.addButtonWithTitle(share)
 
         if UIDevice.isPad() {
-            actionSheet!.showFromRect(anchorView.bounds, inView:anchorView, animated:true)
+            actionSheet.showFromRect(anchorViewForMenu!.bounds, inView:anchorViewForMenu, animated:true)
         } else {
-            actionSheet!.showFromTabBar(tabBarController?.tabBar)
+            actionSheet.showFromTabBar(tabBarController?.tabBar)
         }
+    }
+
+    private func sharePost(post: ReaderPost) {
+        var controller = ReaderHelpers.shareControllerForPost(post)
+
+        if (!UIDevice.isPad()) {
+            presentViewController(controller, animated: true, completion: nil)
+            return
+        }
+
+        // Gah! Stupid iPad and UIPopovoers!!!!
+        var popover = UIPopoverController(contentViewController: controller)
+        popover.presentPopoverFromRect(anchorViewForMenu!.bounds,
+            inView: anchorViewForMenu!,
+            permittedArrowDirections: UIPopoverArrowDirection.Unknown,
+            animated: false)
+
     }
 
     private func showAttributionForPost(post: ReaderPost) {
@@ -735,7 +756,7 @@ import Foundation
         let post = posts[indexPath.row]
         let shouldLoadMedia = postCell != cellForLayout
 
-        postCell.blogNameButtonIsEnabled = !isShowingSiteHeader
+        postCell.blogNameButtonIsEnabled = !(readerTopic!.isSite())
         postCell.configureCell(post, loadingMedia: shouldLoadMedia)
         postCell.delegate = self
     }
@@ -812,15 +833,30 @@ import Foundation
 
         var error: NSError?
         var post = managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!, error: &error) as? ReaderPost
-        if let readerPost = post {
-            blockSiteForPost(readerPost)
+        if post == nil {
+            return
         }
+
+        if (buttonIndex == actionSheet.destructiveButtonIndex) {
+            blockSiteForPost(post!)
+            return
+        }
+
+        showShareActivityAfterActionSheetIsDismissed = true
     }
 
     public func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+        if showShareActivityAfterActionSheetIsDismissed {
+            var error: NSError?
+            var post = managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!, error: &error) as? ReaderPost
+            if let readerPost = post {
+                sharePost(readerPost)
+            }
+        }
+
+        showShareActivityAfterActionSheetIsDismissed = false
         objectIDOfPostForMenu = nil
-        actionSheet.delegate = nil
-        self.actionSheet = nil
+        anchorViewForMenu = nil
     }
 
 }
