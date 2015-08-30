@@ -211,6 +211,11 @@ import Foundation
     }
 
     func displayNoResultsView() {
+        // Its possible the topic was deleted before a sync could be completed,
+        // so make certain its not nil.
+        if readerTopic == nil {
+            return
+        }
         let response:NoResultsResponse = ReaderStreamViewController.responseForNoResults(readerTopic!)
         resultsStatusView.titleText = response.title
         resultsStatusView.messageText = response.message
@@ -632,6 +637,9 @@ import Foundation
 
         var error:NSError?
         var topic = managedObjectContext().existingObjectWithID(readerTopic!.objectID, error:&error) as! ReaderTopic
+        if let anError = error  {
+            DDLogSwift.logError(anError.description)
+        }
         if recentlyBlockedSitePostObjectIDs.count > 0 {
             return NSPredicate(format: "topic = %@ AND (isSiteBlocked = NO OR SELF in %@)", topic, recentlyBlockedSitePostObjectIDs)
         }
