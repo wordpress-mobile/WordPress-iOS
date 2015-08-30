@@ -127,7 +127,6 @@ import Foundation
                 self?.readerTopic = topic
             },
             failure: {[weak self] (error:NSError!) -> Void in
-                //TODO: show laoding failed
                 self?.displayLoadingStreamFailed()
             })
     }
@@ -815,7 +814,7 @@ import Foundation
     }
 
     public func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
-        // TODO:  Still needed?
+        // TODO:  No longer needed. Remove when cards are updated
     }
 
     public func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider) {
