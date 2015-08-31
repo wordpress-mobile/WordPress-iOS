@@ -740,8 +740,17 @@ import Foundation
             return
         }
 
-        let controller = ReaderPostDetailViewController.detailControllerWithPost(post)
-        navigationController?.pushViewController(controller, animated: true)
+        var controller: ReaderPostDetailViewController?
+        if post.sourceAttributionStyle() == .Post &&
+            post.sourceAttribution.postID != nil &&
+            post.sourceAttribution.blogID != nil {
+
+            controller = ReaderPostDetailViewController.detailControllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
+        } else {
+            controller = ReaderPostDetailViewController.detailControllerWithPost(post)
+        }
+
+        navigationController?.pushViewController(controller!, animated: true)
     }
 
     public func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
