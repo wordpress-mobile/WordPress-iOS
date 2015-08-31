@@ -242,4 +242,16 @@ static NSString *const Ellipsis =  @"\u2026";
     return isDotcom && isProtocolValid;
 }
 
+- (NSUInteger)wordCount
+{
+    // This word counting algorithm is from : http://stackoverflow.com/a/13367063
+    __block NSUInteger wordCount = 0;
+    [self enumerateSubstringsInRange:NSMakeRange(0, [self length])
+                                                   options:NSStringEnumerationByWords | NSStringEnumerationLocalized
+                                                usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
+                                                    wordCount++;
+                                                }];
+    return wordCount;
+}
+
 @end
