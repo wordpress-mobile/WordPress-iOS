@@ -111,13 +111,24 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     DDLogMethod();
     [super viewDidLoad];
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
-    if (self.blog.account) {
-        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionWriting)];
+    if (self.blog.isAdmin) {
+        if (self.blog.account) {
+            self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionWriting)];
+        } else {
+            self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount), @(SiteSettingsSectionWriting)];
+        }    
+        if ([self.blog supports:BlogFeatureRemovable]) {
+            self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
+        }
     } else {
-        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount), @(SiteSettingsSectionWriting)];
-    }    
-    if ([self.blog supports:BlogFeatureRemovable]) {
-        self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
+        if (self.blog.account) {
+            self.tableSections = @[@(SiteSettingsSectionGeneral)];
+        } else {
+            self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount)];
+        }
+        if ([self.blog supports:BlogFeatureRemovable]) {
+            self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
+        }
     }
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -160,13 +171,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 {
     NSInteger settingsSection = [self.tableSections[section] intValue];
     switch (settingsSection) {
-        case SiteSettingsSectionGeneral: {
-            if ([self.blog supports:BlogFeaturePushNotifications]) {
-                return SiteSettingsGeneralCount;
-            } else {
-                return SiteSettingsGeneralCount-1;
-            }
-        }
+        case SiteSettingsSectionGeneral:
+            return SiteSettingsGeneralCount;
         break;
         case SiteSettingsSectionAccount:
             return SiteSettingsAccountCount;
@@ -297,9 +303,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     if (_siteTitleCell) {
         return _siteTitleCell;
     }
-    _siteTitleCell = [[SettingTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-    _siteTitleCell.textLabel.text = NSLocalizedString(@"Site Title", @"");
-    _siteTitleCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    _siteTitleCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Site Title", @"")
+                                                          editable:self.blog.isAdmin
+                                                   reuseIdentifier:nil];
     return _siteTitleCell;
 }
 
@@ -309,7 +315,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         return _siteTaglineCell;
     }
     _siteTaglineCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Tagline", @"")
-                                                          editable:YES
+                                                          editable:self.blog.isAdmin
                                                    reuseIdentifier:nil];
     return _siteTaglineCell;
 }
@@ -432,6 +438,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 {
     switch (row) {
         case SiteSettingsGeneralTitle:{
+            if (!self.blog.isAdmin) {
+                return;
+            }
             SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.blogName
                                                                                                  placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
                                                                                                               hint:@""
@@ -447,6 +456,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             [self.navigationController pushViewController:siteTitleViewController animated:YES];
         }break;
         case SiteSettingsGeneralTagline:{
+            if (!self.blog.isAdmin) {
+                return;
+            }
             SettingsMultiTextViewController *siteTaglineViewController = [[SettingsMultiTextViewController alloc] initWithText:self.blog.blogTagline
                                                                                                  placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
                                                                                                               hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
