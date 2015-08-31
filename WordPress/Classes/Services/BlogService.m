@@ -640,6 +640,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                                                            error:nil];
             if (blog) {
                 blog.options = [NSDictionary dictionaryWithDictionary:options];
+                blog.isAdmin = YES;
                 float version = [[blog version] floatValue];
                 if (version < [MinimumVersion floatValue]) {
                     if (blog.lastUpdateWarning == nil
