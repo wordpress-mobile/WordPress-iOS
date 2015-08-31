@@ -46,7 +46,7 @@ import Foundation
         didSet {
             if readerTopic != nil {
                 if isViewLoaded() {
-                    displayTopic()
+                    configureControllerForTopic()
                 }
                 // Discard the siteID (if there was one) now that we have a good topic
                 siteID = nil
@@ -88,17 +88,17 @@ import Foundation
     public override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureCellForLayout()
-        configureTableView()
-        configureFooterView()
-        configureTableViewHandler()
-        configureSyncHelper()
-        configureResultsStatusView()
+        setupCellForLayout()
+        setupTableView()
+        setupFooterView()
+        setupTableViewHandler()
+        setupSyncHelper()
+        setupResultsStatusView()
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
         if readerTopic != nil {
-            displayTopic()
+            configureControllerForTopic()
         } else if siteID != nil {
             displayLoadingStream()
         }
@@ -132,9 +132,9 @@ import Foundation
     }
 
 
-    // MARK: - Configuration
+    // MARK: - Setup
 
-    private func configureTableView() {
+    private func setupTableView() {
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
@@ -149,7 +149,7 @@ import Foundation
         tableView.registerNib(nib, forCellReuseIdentifier: readerBlockedCellReuseIdentifier)
     }
 
-    private func configureTableViewHandler() {
+    private func setupTableViewHandler() {
         assert(tableView != nil, "A tableView must be assigned before configuring a handler")
 
         tableViewHandler = WPTableViewHandler(tableView: tableView)
@@ -158,12 +158,12 @@ import Foundation
         tableViewHandler.delegate = self
     }
 
-    private func configureSyncHelper() {
+    private func setupSyncHelper() {
         syncHelper = WPContentSyncHelper()
         syncHelper.delegate = self
     }
 
-    private func configureCellForLayout() {
+    private func setupCellForLayout() {
         cellForLayout = NSBundle.mainBundle().loadNibNamed(readerCardCellNibName, owner: nil, options: nil).first as! ReaderPostCardCell
 
         // Add layout cell to superview (briefly) so constraint constants reflect the correct size class.
@@ -171,11 +171,11 @@ import Foundation
         cellForLayout.removeFromSuperview()
     }
 
-    private func configureResultsStatusView() {
+    private func setupResultsStatusView() {
         resultsStatusView = WPNoResultsView()
     }
 
-    private func configureFooterView() {
+    private func setupFooterView() {
         footerView = NSBundle.mainBundle().loadNibNamed(footerViewNibName, owner: nil, options: nil).first as! PostListFooterView
         footerView.showSpinner(false)
         tableView.tableFooterView = footerView
@@ -239,7 +239,7 @@ import Foundation
 
     // MARK: - Topic Presentation
 
-    func displayStreamHeader() {
+    func configureStreamHeader() {
         assert(readerTopic != nil, "A reader topic is required")
 
         var header:ReaderStreamHeader? = ReaderStreamViewController.headerForStream(readerTopic!)
@@ -260,14 +260,14 @@ import Foundation
         tableView.tableHeaderView = headerWrapper
     }
 
-    func displayTopic() {
+    func configureControllerForTopic() {
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
 
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
-        displayStreamHeader()
+        configureStreamHeader()
         tableView.setContentOffset(CGPointZero, animated: false)
         tableViewHandler.refreshTableView()
         syncIfAppropriate()
