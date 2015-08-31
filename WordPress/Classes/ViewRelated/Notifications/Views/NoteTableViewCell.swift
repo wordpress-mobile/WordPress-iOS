@@ -99,9 +99,19 @@ import Foundation
         if let unrawppedURL = url {
             let size                = iconImageView.frame.width * UIScreen.mainScreen().scale
             let scaledURL           = unrawppedURL.patchGravatarUrlWithSize(size)
-            iconImageView.downloadImage(scaledURL, placeholderImage: placeholderImage)
+            
+            iconImageView.downloadImage(scaledURL,
+                placeholderImage: placeholderImage,
+                success         : nil,
+                failure         : { (error: NSError!) in
+                                        // Note: 
+                                        // Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
+                                        if self.gravatarURL?.isEqual(url) == true {
+                                            self.gravatarURL = nil
+                                        }
+                                  })
         } else {
-            iconImageView.image     = placeholderImage
+            iconImageView.image = placeholderImage
         }
         
         gravatarURL = url
