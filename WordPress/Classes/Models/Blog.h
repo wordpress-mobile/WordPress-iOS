@@ -70,9 +70,6 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 
 /**
  Flags whether the current user is an admin on the blog.
- 
- @warn `isAdmin` is only being set for wpcom sites and checked when bumping page
- views in the reader detail.
  */
 @property (nonatomic, assign, readwrite) BOOL isAdmin;
 
