@@ -49,6 +49,12 @@
      */
     blog.password = password;
     blog.options = options;
+    //HACK:Sergio Estevao (2015-08-31): Because there is no direct way to
+    // know if a user has permissions to change the options we check if the blog title property is read only or not.
+    if (blog.options[@"blog_title"] &&
+        blog.options[@"blog_title"][@"readonly"]) {
+        blog.isAdmin = ![blog.options[@"blog_title"][@"readonly"] boolValue];
+    }
     [[ContextManager sharedInstance] saveContext:context];
 
     if (blog.jetpack.isInstalled) {
