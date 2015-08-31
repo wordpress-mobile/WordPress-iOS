@@ -76,7 +76,12 @@ import Foundation
             success             : { (image: UIImage) in
                                         self.gravatarImageView.displayImageWithFadeInAnimation(image)
                                   },
-            failure             : nil)
+            failure             : { (error: NSError!) in
+                                        // Note: Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
+                                        if self.gravatarURL?.isEqual(url) == true {
+                                            self.gravatarURL = nil
+                                        }
+                                  })
         
         gravatarURL = url
     }
