@@ -7,7 +7,7 @@
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
-
+#import "BlogSiteVisibilityHelper.h"
 #import <SFHFKeychainUtils.h>
 
 static NSInteger const ImageSizeSmallWidth = 240;
@@ -20,8 +20,11 @@ static NSInteger const ImageSizeLargeHeight = 480;
 NSString * const PostFormatStandard = @"standard";
 
 @interface Blog ()
+
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
+@property (nonatomic, strong, readwrite) NSNumber *privacy;
+
 @end
 
 @implementation Blog
@@ -59,6 +62,7 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic username;
 @dynamic defaultCategoryID;
 @dynamic defaultPostFormat;
+@dynamic privacy;
 
 @synthesize api = _api;
 @synthesize isSyncingPosts;
@@ -292,8 +296,53 @@ NSString * const PostFormatStandard = @"standard";
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isHostedAtWPcom && [[self getOptionValue:@"blog_public"] isEqualToString:@"-1"]);
+    return (self.isHostedAtWPcom && [self.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
 }
+
+- (SiteVisibility)siteVisibility
+{
+    switch ([self.privacy integerValue]) {
+        case (SiteVisibilityHidden):
+            return SiteVisibilityHidden;
+            break;
+        case (SiteVisibilityPublic):
+            return SiteVisibilityPublic;
+            break;
+        case (SiteVisibilityPrivate):
+            return SiteVisibilityPrivate;
+            break;
+        default:
+            break;
+    }
+    return SiteVisibilityUnknown;
+}
+
+- (void)setSiteVisibility:(SiteVisibility)siteVisibility
+{
+    switch (siteVisibility) {
+        case (SiteVisibilityHidden):
+            self.privacy = @(SiteVisibilityHidden);
+            break;
+        case (SiteVisibilityPublic):
+            self.privacy = @(SiteVisibilityPublic);
+            break;
+        case (SiteVisibilityPrivate):
+            self.privacy = @(SiteVisibilityPrivate);
+            break;
+        default:
+            NSParameterAssert(siteVisibility >= SiteVisibilityPrivate && siteVisibility <= SiteVisibilityPublic);
+            break;
+    }
+}
+
+- (NSString *)textForCurrentSiteVisibility
+{
+    if (!self.privacy) {
+        [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
+    }
+    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.privacy integerValue]];
+}
+
 
 - (NSDictionary *)getImageResizeDimensions
 {

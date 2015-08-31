@@ -27,8 +27,9 @@ extension WPStyleGuide
         
         public static let noteSeparatorColor        = blockSeparatorColor
 
-        public static let gravatarGrayImage         = UIImage(named: "gravatar")
-        public static let gravatarOrangeImage       = UIImage(named: "gravatar-unapproved")
+        public static let gravatarPlaceholderImage  = UIImage(named: "gravatar")
+        public static let gravatarUnapprovedImage   = UIImage(named: "gravatar-unapproved")
+        public static let blavatarPlaceholderImage  = UIImage(named: "blavatar-default")
         
         //  NoteUndoOverlayView
         public static let noteUndoBackgroundColor   = WPStyleGuide.errorRed()
@@ -172,7 +173,7 @@ extension WPStyleGuide
         
         //  Comment Helpers
         public static func blockGravatarPlaceholderImage(isApproved approved: Bool) -> UIImage {
-            return approved ? gravatarGrayImage! : gravatarOrangeImage!
+            return approved ? gravatarPlaceholderImage! : gravatarUnapprovedImage!
         }
         
         public static func blockSeparatorColorForComment(isApproved approved: Bool) -> UIColor {

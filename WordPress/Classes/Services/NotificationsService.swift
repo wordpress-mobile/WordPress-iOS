@@ -170,36 +170,43 @@ public class NotificationsService : LocalCoreDataService
     *  @returns             Dictionary of values, as expected by the Backend, for the specified Channel and Stream.
     */
     private func remoteFromSettings(settings: [String: Bool], channel: Channel, stream: Stream) -> [String: AnyObject] {
-        // First:
-        // Inject the Device Id, if needd, into the Settings Dictionary. Since that's where the backend expects it.
-        var updatedSettings = settings as [String: AnyObject]
+        var wrappedSettings : AnyObject     = settings
+        var streamKey                       = stream.kind.rawValue
         
         switch stream.kind {
         case .Device:
-            updatedSettings["device_id"] = deviceId
+            // Devices require a special structure:
+            // The backend actually expects an array of dictionaries of devices, each one with its own
+            // device_id set.
+            //
+            var updatedSettings             = settings as [String: AnyObject]
+            updatedSettings["device_id"]    = deviceId
+            
+            // Done!
+            streamKey                       = "devices"
+            wrappedSettings                 = [updatedSettings]
         default:
             break
         }
             
-        // Second:
         // Prepare the Remote Settings Dictionary
         switch channel {
         case let .Blog(blogId):
             return [
                 "blogs": [
-                    [   "blog_id"               : blogId,
-                        stream.kind.rawValue    : updatedSettings
+                    [   "blog_id" : blogId,
+                        streamKey : wrappedSettings
                     ]
                 ]
             ]
         case .Other:
             return [
                 "other": [
-                    stream.kind.rawValue : updatedSettings
+                    streamKey : wrappedSettings
                 ]
             ]
         case .WordPressCom:
-            return [ "wpcom": updatedSettings ]
+            return [ "wpcom": wrappedSettings ]
         }
     }
     
