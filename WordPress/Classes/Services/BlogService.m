@@ -20,6 +20,7 @@
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
 #import "RemoteBlogSettings.h"
+#import "ContextManager.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -262,13 +263,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (void)updatePassword:(NSString *)password forBlog:(Blog *)blog
 {
-    NSManagedObjectID *blogID = [blog objectID];
-    [self.managedObjectContext performBlockAndWait:^{
-          Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
-          blogInContext.password = password;
-          [self.managedObjectContext save:nil];
-    }];
-
+    blog.password = password;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success

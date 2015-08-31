@@ -709,6 +709,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     [api getBlogOptionsWithSuccess:^(id options){
         [SVProgressHUD dismiss];
         __typeof__(self) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:strongSelf.blog.managedObjectContext];
         [blogService updatePassword:strongSelf.password forBlog:strongSelf.blog];
         [strongSelf.navigationItem setHidesBackButton:NO animated:NO];
