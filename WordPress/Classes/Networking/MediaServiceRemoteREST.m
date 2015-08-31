@@ -14,9 +14,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                failure:(void (^)(NSError *error))failure
 {
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/%@", blog.dotComID, mediaID];
+    NSString *requestUrl = [self pathForEndpoint:apiPath
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary * parameters = @{};
     
-    [self.api GET:apiPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api GET:requestUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             NSDictionary *response = (NSDictionary *)responseObject;
             success([self remoteMediaFromJSONDictionary:response]);
@@ -52,7 +55,11 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     if ([pageHandle length]) {
         parameters[@"page_handle"] = pageHandle;
     }
-    [self.api GET:path
+    
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSArray *mediaItems = responseObject[@"media"];
@@ -84,8 +91,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                             failure:(void (^)(NSError *))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/media", blog.dotComID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *parameters = @{ @"number" : @1 };
-    [self.api GET:path
+    
+    [self.api GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSDictionary *jsonDictionary = (NSDictionary *)responseObject;
@@ -113,8 +124,11 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *filename = media.file;
 
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
+    NSString *requestUrl = [self pathForEndpoint:apiPath
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST"
-                                                                                    URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString]
+                                                                                    URLString:[[NSURL URLWithString:requestUrl relativeToURL:self.api.baseURL] absoluteString]
                                                                                    parameters:nil
                                                                     constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSURL *url = [[NSURL alloc] initFileURLWithPath:path];

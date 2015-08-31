@@ -333,6 +333,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (ReaderTopic *)siteTopicForPost:(ReaderPost *)post
 {
+    NSAssert([NSThread isMainThread], @"siteTopicForPost should only be called from the main thread");
     NSString *path;
     if (post.isWPCom) {
         path = [NSString stringWithFormat:@"%@read/sites/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
@@ -362,6 +363,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.title = post.blogName;
     topic.topicDescription = post.blogDescription;
     topic.path = path;
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     return topic;
 }
