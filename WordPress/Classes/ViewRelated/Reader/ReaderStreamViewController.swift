@@ -323,7 +323,12 @@ import Foundation
     }
 
     private func sharePost(post: ReaderPost) {
-        var controller = ReaderHelpers.shareControllerForPost(post)
+        var controller = ReaderHelpers.shareController(
+            post.titleForDisplay(),
+            summary: post.contentPreviewForDisplay(),
+            tags: post.tags,
+            link: post.permaLink
+        )
 
         if !UIDevice.isPad() {
             presentViewController(controller, animated: true, completion: nil)
