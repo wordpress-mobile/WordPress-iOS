@@ -100,7 +100,7 @@ import Foundation
         if readerTopic != nil {
             displayTopic()
         } else if siteID != nil {
-            self.displayLoadingStream()
+            displayLoadingStream()
         }
     }
 
@@ -113,7 +113,7 @@ import Foundation
 
     private func fetchSiteTopic() {
         if isViewLoaded() {
-            self.displayLoadingStream()
+            displayLoadingStream()
         }
         assert(siteID != nil, "A siteID is required before fetching a site topic")
         var service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
@@ -264,6 +264,7 @@ import Foundation
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
 
+        hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
         displayStreamHeader()
@@ -292,6 +293,7 @@ import Foundation
     }
 
     private func tagPropertyForStats() -> [NSObject: AnyObject] {
+        assert(readerTopic != nil, "A reader topic is required")
         return ["tag" : readerTopic!.title]
     }
 
@@ -323,7 +325,7 @@ import Foundation
     private func sharePost(post: ReaderPost) {
         var controller = ReaderHelpers.shareControllerForPost(post)
 
-        if (!UIDevice.isPad()) {
+        if !UIDevice.isPad() {
             presentViewController(controller, animated: true, completion: nil)
             return
         }
@@ -492,7 +494,7 @@ import Foundation
             service.fetchPostsForTopic(topic,
                 earlierThan: NSDate(),
                 success: {[weak self] (count:Int, hasMore:Bool) in
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    dispatch_async(dispatch_get_main_queue(), {
 
                         if let strongSelf = self {
                             if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
@@ -501,15 +503,11 @@ import Foundation
                             }
                         }
 
-                        if success != nil {
-                            success!(hasMore: hasMore)
-                        }
+                        success?(hasMore: hasMore)
                     })
                 }, failure: { (error:NSError!) in
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if failure != nil {
-                            failure!(error: error)
-                        }
+                    dispatch_async(dispatch_get_main_queue(), {
+                        failure?(error: error)
                     })
                 })
         }
@@ -525,16 +523,12 @@ import Foundation
             
             service.backfillPostsForTopic(topic,
                 success: { (count:Int, hasMore:Bool) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if success != nil {
-                            success!(hasMore: hasMore)
-                        }
+                    dispatch_async(dispatch_get_main_queue(), {
+                        success?(hasMore: hasMore)
                     })
                 }, failure: { (error:NSError!) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if failure != nil {
-                            failure!(error: error)
-                        }
+                    dispatch_async(dispatch_get_main_queue(), {
+                        failure?(error: error)
                     })
                 })
         }
@@ -559,17 +553,13 @@ import Foundation
             service.fetchPostsForTopic(topic,
                 earlierThan: earlierThan,
                 success: { (count:Int, hasMore:Bool) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if success != nil {
-                            success!(hasMore: hasMore)
-                        }
+                    dispatch_async(dispatch_get_main_queue(), {
+                        success?(hasMore: hasMore)
                     })
                 },
                 failure: { (error:NSError!) -> Void in
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if failure != nil {
-                            failure!(error: error)
-                        }
+                    dispatch_async(dispatch_get_main_queue(), {
+                        failure?(error: error)
                     })
                 })
         }
@@ -606,10 +596,10 @@ import Foundation
         footerView.showSpinner(false)
     }
 
-    public func tableViewHandlerWillRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
+    public func tableViewHandlerTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
         // Reload the table view to reflect new content.
-        managedObjectContext().performBlockAndWait { () -> Void in
-           self.managedObjectContext().reset()
+        managedObjectContext().performBlockAndWait {
+            self.managedObjectContext().reset()
             var error:NSError?
             self.tableViewHandler.resultsController.performFetch(&error);
             if let anError = error {
@@ -620,9 +610,9 @@ import Foundation
 
     public func tableViewHandlerDidRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
         if self.tableViewHandler.resultsController.fetchedObjects?.count == 0 {
-            self.displayNoResultsView()
+            displayNoResultsView()
         } else {
-            self.hideResultsStatus()
+            hideResultsStatus()
         }
     }
 
@@ -848,7 +838,7 @@ import Foundation
             return
         }
 
-        if (buttonIndex == actionSheet.destructiveButtonIndex) {
+        if buttonIndex == actionSheet.destructiveButtonIndex {
             blockSiteForPost(post!)
             return
         }
