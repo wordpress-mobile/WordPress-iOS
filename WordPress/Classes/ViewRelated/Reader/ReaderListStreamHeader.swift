@@ -4,6 +4,7 @@ import Foundation
 {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var detailLabel: UILabel!
+    // Required by ReaderStreamHeader protocol.
     public var delegate: ReaderStreamHeaderDelegate?
 
 
