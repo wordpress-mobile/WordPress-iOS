@@ -287,7 +287,7 @@ const NSInteger HTTP404ErrorCode = 404;
 
 - (NSArray *)remoteCategoriesFromXMLRPCTermsArray:(NSArray *)terms {
     return [[terms wp_filter:^BOOL(NSDictionary *category) {
-        return [category[@"taxonomy"] isEqualToString:@"category"];
+        return [[category stringForKey:@"taxonomy"] isEqualToString:@"category"];
     }] wp_map:^id(NSDictionary *category) {
         return [self remoteCategoryFromXMLRPCDictionary:category];
     }];
