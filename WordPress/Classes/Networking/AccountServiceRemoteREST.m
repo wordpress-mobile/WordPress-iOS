@@ -88,7 +88,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
         }];
     }
     return [blogs wp_map:^id(NSDictionary *jsonBlog) {
-        return [self remoteUserFromDictionary:jsonBlog];
+        return [self remoteBlogFromJSONDictionary:jsonBlog];
     }];
 }
 
