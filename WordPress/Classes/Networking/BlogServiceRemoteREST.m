@@ -132,7 +132,8 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     NSDictionary *parameters = @{ @"blogname" : blog.blogName,
                                   @"blogdescription" : blog.blogTagline,
                                   @"default_category" : blog.defaultCategoryID,
-                                  @"default_post_format" : blog.defaultPostFormat
+                                  @"default_post_format" : blog.defaultPostFormat,
+                                  @"blog_public" : @(blog.siteVisibility)
                                   };
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blog.dotComID];
     NSString *requestUrl = [self pathForEndpoint:path
@@ -252,6 +253,8 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     } else {
         remoteSettings.defaultPostFormat = [rawSettings stringForKey:BlogRemoteDefaultPostFormatKey];
     }
+    
+    remoteSettings.privacy = [json numberForKeyPath:@"settings.blog_public"];
     
     return remoteSettings;
 }

@@ -190,35 +190,35 @@
 - (BOOL)hasPhoto
 {
     if ([self.media count] == 0) {
-        return false;
+        return NO;
     }
 
     if (self.featuredImage != nil) {
-        return true;
+        return YES;
     }
 
     for (Media *media in self.media) {
         if (media.mediaType == MediaTypeImage) {
-            return true;
+            return YES;
         }
     }
 
-    return false;
+    return NO;
 }
 
 - (BOOL)hasVideo
 {
     if ([self.media count] == 0) {
-        return false;
+        return NO;
     }
 
     for (Media *media in self.media) {
         if (media.mediaType ==  MediaTypeVideo) {
-            return true;
+            return YES;
         }
     }
 
-    return false;
+    return NO;
 }
 
 - (BOOL)hasCategories
