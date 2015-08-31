@@ -596,16 +596,10 @@ import Foundation
         footerView.showSpinner(false)
     }
 
-    public func tableViewHandlerTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
+    public func tableViewHandlerWillRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
         // Reload the table view to reflect new content.
-        managedObjectContext().performBlockAndWait {
-            self.managedObjectContext().reset()
-            var error:NSError?
-            self.tableViewHandler.resultsController.performFetch(&error);
-            if let anError = error {
-                DDLogSwift.logError(anError.description)
-            }
-        }
+        managedObjectContext().reset()
+        updateAndPerformFetchRequest()
     }
 
     public func tableViewHandlerDidRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
