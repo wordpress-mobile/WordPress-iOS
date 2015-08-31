@@ -121,8 +121,17 @@
     NSString *testEmptyPhrase = @"";
     XCTAssert([testEmptyPhrase wordCount] == 0, @"Word count should be zero on a empty string");
     
-    NSString *testPhraseWithSize6 = @"The lazy fox jumped the fence.";
-    XCTAssert([testPhraseWithSize6 wordCount] == 6, @"Word count should be six");
+    NSString *testPhraseEnglish = @"The lazy fox jumped over the fence.";
+    XCTAssert([testPhraseEnglish wordCount] == 7, @"Word count should be seven");
+
+    NSString *testPhraseSpanish = @"El zorro perezoso saltó por encima de la valla.";
+    XCTAssert([testPhraseSpanish wordCount] == 9, @"Word count should be nine");
+
+    NSString *testPhraseFrench = @"Le renard paresseux sauté par-dessus la clôture.";
+    XCTAssert([testPhraseFrench wordCount] == 8, @"Word count should be eight");
+
+    NSString *testPhrasePortuguese = @"A raposa preguiçosa saltou a cerca.";
+    XCTAssert([testPhrasePortuguese wordCount] == 6, @"Word count should be six");
 
 }
 
