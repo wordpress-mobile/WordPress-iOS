@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 38 (@sergioestevao 2015-08-21)
+
+Changes to the data model:
+
+- `Blog` added a new number attribute called `privacy` to store the privacy setting on the site
+
 ## WordPress 37 (@sergioestevao 2015-08-01)
 
 Changes to the data model:
