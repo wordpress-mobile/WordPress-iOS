@@ -644,10 +644,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         [self deletePostsFromBlockedSites];
         readerTopic.lastSynced = [NSDate date];
 
+        BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
             // Is called on main queue
             if (success) {
-                BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
                 success(postsCount, hasMore);
             }
         }];
