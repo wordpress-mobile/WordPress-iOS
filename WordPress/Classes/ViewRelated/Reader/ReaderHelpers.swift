@@ -1,13 +1,8 @@
 import Foundation
 
-class ReaderHelpers {
+public class ReaderHelpers {
 
-    public class func shareControllerForPost(post:ReaderPost) -> UIActivityViewController {
-        var title = post.postTitle
-        var summary = post.summary
-        var tags = post.tags
-        var link = NSURL(string:post.permaLink)
-
+    public class func shareController(title:String?, summary:String?, tags:String?, link:String?) -> UIActivityViewController {
         var activityItems = [AnyObject]()
         var postDictionary = NSMutableDictionary()
 
