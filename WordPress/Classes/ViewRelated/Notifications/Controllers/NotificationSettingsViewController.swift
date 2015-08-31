@@ -249,7 +249,13 @@ public class NotificationSettingsViewController : UIViewController
             cell.textLabel?.text            = settings.blog?.blogName ?? settings.channel.description()
             cell.detailTextLabel?.text      = settings.blog?.displayURL ?? String()
             cell.accessoryType              = .DisclosureIndicator
-            cell.imageView?.setImageWithSiteIcon(settings.blog?.icon)
+            
+            if let siteIconURL = settings.blog?.icon {
+                cell.imageView?.setImageWithSiteIcon(settings.blog?.icon)
+            } else {
+                cell.imageView?.image = WPStyleGuide.Notifications.blavatarPlaceholderImage
+            }
+        
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
             
         default:

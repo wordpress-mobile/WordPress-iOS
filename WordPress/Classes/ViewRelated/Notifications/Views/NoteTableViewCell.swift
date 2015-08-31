@@ -115,7 +115,7 @@ import Foundation
 
         contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
 
-        iconImageView.image             = WPStyleGuide.Notifications.gravatarGrayImage
+        iconImageView.image             = WPStyleGuide.Notifications.gravatarPlaceholderImage
 
         noticonContainerView.layer.cornerRadius = noticonContainerView.frame.size.width / 2
 

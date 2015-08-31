@@ -53,7 +53,7 @@ import Foundation
             self.gravatarImageView.displayImageWithFadeInAnimation(image)
         }
         
-        let placeholderImage = WPStyleGuide.Notifications.gravatarGrayImage
+        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
         gravatarImageView.downloadImage(url, placeholderImage: placeholderImage, success: success, failure: nil)
         
         gravatarURL = url

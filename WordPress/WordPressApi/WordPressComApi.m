@@ -6,7 +6,7 @@
 #import "NotificationsManager.h"
 #import "WPUserAgent.h"
 
-static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1.1/";
+static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/";
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp,meta";
 static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
@@ -139,6 +139,97 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     return operation;
 }
 
+#pragma mark - Only for debugging purposes
+// The methods in this section are all temporary and should be removed once enough time has passed.
+//
+
+#if !defined(NS_BLOCK_ASSERTIONS)
+- (void)assertApiVersion:(NSString *)URLString
+{
+    NSAssert([URLString rangeOfString:@"v1.1"].length > 0
+             || [URLString rangeOfString:@"v1.2"].length > 0,
+             @"Unexpected API version.");
+}
+
+- (AFHTTPRequestOperation *)DELETE:(NSString *)URLString
+                        parameters:(id)parameters
+                           success:(void (^)(AFHTTPRequestOperation *, id))success
+                           failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super DELETE:URLString parameters:parameters success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)GET:(NSString *)URLString
+                     parameters:(id)parameters
+                        success:(void (^)(AFHTTPRequestOperation *, id))success
+                        failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super GET:URLString parameters:parameters success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)HEAD:(NSString *)URLString
+                      parameters:(id)parameters
+                         success:(void (^)(AFHTTPRequestOperation *))success
+                         failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super HEAD:URLString parameters:parameters success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)PATCH:(NSString *)URLString
+                       parameters:(id)parameters
+                          success:(void (^)(AFHTTPRequestOperation *, id))success
+                          failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super PATCH:URLString parameters:parameters success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)POST:(NSString *)URLString
+                      parameters:(id)parameters
+                         success:(void (^)(AFHTTPRequestOperation *, id))success
+                         failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super POST:URLString parameters:parameters success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)POST:(NSString *)URLString
+                      parameters:(id)parameters
+       constructingBodyWithBlock:(void (^)(id<AFMultipartFormData>))block
+                         success:(void (^)(AFHTTPRequestOperation *, id))success
+                         failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super POST:URLString
+            parameters:parameters
+constructingBodyWithBlock:block
+               success:success
+               failure:failure];
+}
+
+- (AFHTTPRequestOperation *)PUT:(NSString *)URLString
+                     parameters:(id)parameters
+                        success:(void (^)(AFHTTPRequestOperation *, id))success
+                        failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super PUT:URLString parameters:parameters success:success failure:failure];
+}
+
+#endif
+
+#pragma mark - Misc
+
 + (WordPressComApi *)anonymousApi {
     static WordPressComApi *_anonymousApi = nil;
     static dispatch_once_t oncePredicate;
@@ -188,7 +279,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         return;
     }
 
-    NSString *path = [NSString stringWithFormat:@"devices/%@/delete", deviceId];
+    NSString *path = [NSString stringWithFormat:@"v1.1/devices/%@/delete", deviceId];
     WordPressComApiRestSuccessResponseBlock successBlock = ^(AFHTTPRequestOperation *operation, id responseObject) {
         DDLogInfo(@"Successfully unregistered device ID %@", deviceId);
         if (success) {
@@ -229,7 +320,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                                  @"device_uuid"     : [[UIDevice currentDevice] wordPressIdentifier],
                                  };
     
-    [self POST:@"devices/new"
+    [self POST:@"v1.1/devices/new"
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary");

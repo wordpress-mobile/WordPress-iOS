@@ -48,6 +48,13 @@ public class NotificationSettings
         return Keys.localizedDescriptionMap[preferenceKey] ?? String()
     }
     
+    /**
+    *  @details Returns the details for a given preference key
+    */
+    public func localizedDetails(preferenceKey: String) -> String? {
+        return Keys.localizedDetailsMap[preferenceKey]
+    }
+    
     
     /**
     *  @details Returns an array of the sorted Preference Keys
@@ -160,16 +167,35 @@ public class NotificationSettings
         static let community        = "community"
         
         static let localizedDescriptionMap = [
-            commentAdded     : NSLocalizedString("Comments on my site",      comment: "Setting: indicates if New Comments will be notified"),
-            commentLiked     : NSLocalizedString("Likes on my comments",     comment: "Setting: indicates if Comment Likes will be notified"),
-            postLiked        : NSLocalizedString("Likes on my posts",        comment: "Setting: indicates if Replies to your comments will be notified"),
-            follower         : NSLocalizedString("Site follows",             comment: "Setting: indicates if New Follows will be notified"),
-            achievement      : NSLocalizedString("Site achievements",        comment: "Setting: indicates if Achievements will be notified"),
-            mention          : NSLocalizedString("Username mentions",        comment: "Setting: indicates if Mentions will be notified"),
-            commentReplied   : NSLocalizedString("Replies to your comments", comment: "Setting: indicates if Replies to Comments will be notified"),
-            marketing        : NSLocalizedString("Suggestions",              comment: "Setting: WordPress.com Suggestions"),
-            research         : NSLocalizedString("Research",                 comment: "Setting: WordPress.com Surveys"),
-            community        : NSLocalizedString("Community",                comment: "Setting: WordPress.com Community")
+            commentAdded    : NSLocalizedString("Comments on my site",
+                                comment: "Setting: indicates if New Comments will be notified"),
+            commentLiked    : NSLocalizedString("Likes on my comments",
+                                comment: "Setting: indicates if Comment Likes will be notified"),
+            postLiked       : NSLocalizedString("Likes on my posts",
+                                comment: "Setting: indicates if Replies to your comments will be notified"),
+            follower        : NSLocalizedString("Site follows",
+                                comment: "Setting: indicates if New Follows will be notified"),
+            achievement     : NSLocalizedString("Site achievements",
+                                comment: "Setting: indicates if Achievements will be notified"),
+            mention         : NSLocalizedString("Username mentions",
+                                comment: "Setting: indicates if Mentions will be notified"),
+            commentReplied  : NSLocalizedString("Replies to your comments",
+                                comment: "Setting: indicates if Replies to Comments will be notified"),
+            marketing       : NSLocalizedString("Suggestions",
+                                comment: "Setting: WordPress.com Suggestions"),
+            research        : NSLocalizedString("Research",
+                                comment: "Setting: WordPress.com Surveys"),
+            community       : NSLocalizedString("Community",
+                                comment: "Setting: WordPress.com Community")
+        ]
+        
+        static let localizedDetailsMap = [
+            marketing       : NSLocalizedString("Tips for getting the most out of WordPress.com.",
+                                comment: "WordPress.com Marketing Footer Text"),
+            research        : NSLocalizedString("Opportunities to participate in WordPress.com research & surveys.",
+                                comment: "WordPress.com Research Footer Text"),
+            community       : NSLocalizedString("Information on WordPress.com courses and events (online & in-person).",
+                                comment: "WordPress.com Community Footer Text")
         ]
     }
 }
