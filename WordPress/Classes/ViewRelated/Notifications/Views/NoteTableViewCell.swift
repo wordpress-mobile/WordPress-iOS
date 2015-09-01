@@ -85,15 +85,33 @@ import Foundation
             return
         }
 
-        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
+        // Note:
+        // The backend might return the URL for "unknown@gravatar.com", which may render the placeholder.
+        // Let's intercept that scenario, and prevent a redundant download.
+        //
+        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
+        if url?.isUnknownGravatarUrl() == true {
+            iconImageView.image     = placeholderImage
+            return
+        }
         
         // Scale down Gravatar images: faster downloads!
         if let unrawppedURL = url {
             let size                = iconImageView.frame.width * UIScreen.mainScreen().scale
             let scaledURL           = unrawppedURL.patchGravatarUrlWithSize(size)
-            iconImageView.downloadImage(scaledURL, placeholderImage: placeholderImage)
+            
+            iconImageView.downloadImage(scaledURL,
+                placeholderImage: placeholderImage,
+                success         : nil,
+                failure         : { (error: NSError!) in
+                                        // Note: 
+                                        // Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
+                                        if self.gravatarURL?.isEqual(url) == true {
+                                            self.gravatarURL = nil
+                                        }
+                                  })
         } else {
-            iconImageView.image     = placeholderImage
+            iconImageView.image = placeholderImage
         }
         
         gravatarURL = url
