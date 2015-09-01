@@ -241,7 +241,7 @@
     NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
                        [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
     if ([comments count] > 0) {
-        [self.comments unionSet:comments];
+        [self addComments:comments];
     }
 }
 
