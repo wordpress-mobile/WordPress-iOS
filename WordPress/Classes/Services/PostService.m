@@ -33,7 +33,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
     PostCategory *category = [postCategoryService findWithBlogObjectID:blog.objectID andCategoryID:blog.defaultCategoryID];
     if (category) {
-        [post.categories addObject:category];
+        [post addCategoriesObject:category];
     }
     post.postFormat = blog.defaultPostFormat;
     return post;
