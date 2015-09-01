@@ -35,6 +35,6 @@ import Foundation
     // MARK: - Actions
 
     @IBAction func didTapFollowButton(sender: UIButton) {
-        delegate!.handleFollowActionForHeader(self)
+        delegate?.handleFollowActionForHeader(self)
     }
 }
