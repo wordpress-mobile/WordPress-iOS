@@ -142,9 +142,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
         self.tableSections = [self.tableSections arrayByAddingObject:@(TableViewSectionAppearance)];
     }
 
-    if ([self.blog isAdmin]) {
-        self.tableSections = [self.tableSections arrayByAddingObject:@(TableViewSectionConfigurationType)];
-    }
+    self.tableSections = [self.tableSections arrayByAddingObject:@(TableViewSectionConfigurationType)];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
