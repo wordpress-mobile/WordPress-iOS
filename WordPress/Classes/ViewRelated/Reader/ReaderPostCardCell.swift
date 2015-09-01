@@ -5,7 +5,6 @@ import Foundation
     func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
     func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
@@ -38,9 +37,7 @@ import Foundation
 
     // Action buttons
     @IBOutlet private weak var actionButtonRight: UIButton!
-    @IBOutlet private weak var actionButtonCenter: UIButton!
     @IBOutlet private weak var actionButtonLeft: UIButton!
-    @IBOutlet private weak var actionButtonFlushLeft: UIButton!
 
     // Layout Constraints
     @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
@@ -49,8 +46,6 @@ import Foundation
     @IBOutlet private weak var summaryLabelBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var attributionHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var attributionBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var tagButtonHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var tagButtonBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var wordCountBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var actionButtonViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var actionButtonViewBottomConstraint: NSLayoutConstraint!
@@ -65,8 +60,6 @@ import Foundation
     private var titleLabelBottomConstraintConstant = CGFloat(0.0)
     private var summaryLabelBottomConstraintConstant = CGFloat(0.0)
     private var attributionBottomConstraintConstant = CGFloat(0.0)
-    private var tagButtonHeightConstraintConstant = CGFloat(0.0)
-    private var tagButtonBottomConstraintConstant = CGFloat(0.0)
     private var wordCountBottomConstraintConstant = CGFloat(0.0)
 
     private var didPreserveStartingConstraintConstants = false
@@ -74,7 +67,8 @@ import Foundation
 
     private let summaryMaxNumberOfLines = 3
     private let maxAttributionViewHeight: CGFloat = 200.0 // 200 is an arbitrary height, but should be a sufficiently high number.
-
+    private let avgWordsPerMinuteRead = 250
+    private let minimumMinutesToRead = 2
 
     // MARK: - Accessors
 
@@ -165,16 +159,13 @@ import Foundation
         // the height returned from sizeThatFits otherwise.
         if attributionHeightConstraint.constant > 0 {
             height += attributionView.sizeThatFits(innerSize).height
+            height += attributionBottomConstraint.constant
         }
-        height += attributionBottomConstraint.constant
 
-        // On the iPad, the tag and word count views are horizontal,
-        // aligned with the action buttons. Only add their heights
-        // for the iPhone.
-        if !UIDevice.isPad() {
-            height += tagButtonHeightConstraint.constant
-            height += tagButtonBottomConstraint.constant
-
+        // For now, we won't show word counts when showing the attribution view.
+        // By convention, check for a zero height for the bottom constraint constant,
+        // if its greater than zero we're showing the word count.
+        if wordCountBottomConstraint.constant > 0 {
             height += wordCountLabel.sizeThatFits(innerSize).height
             height += wordCountBottomConstraint.constant
         }
@@ -217,8 +208,6 @@ import Foundation
         titleLabelBottomConstraintConstant = titleLabelBottomConstraint.constant
         summaryLabelBottomConstraintConstant = summaryLabelBottomConstraint.constant
         attributionBottomConstraintConstant = attributionBottomConstraint.constant
-        tagButtonHeightConstraintConstant = tagButtonHeightConstraint.constant
-        tagButtonBottomConstraintConstant = tagButtonBottomConstraint.constant
         wordCountBottomConstraintConstant = wordCountBottomConstraint.constant
 
         didPreserveStartingConstraintConstants = true
@@ -243,8 +232,6 @@ import Foundation
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
         WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
 
-        WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonCenter)
-        WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonFlushLeft)
         WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonLeft)
         WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonRight)
     }
@@ -292,7 +279,7 @@ import Foundation
 
         var byline = contentProvider?.dateForDisplay().shortString()
         if let author = contentProvider?.authorForDisplay() {
-            byline = String(format: "%@, %@", byline!, author)
+            byline = String(format: "%@ · %@", author, byline!)
         }
 
         bylineLabel.text = byline
@@ -393,17 +380,20 @@ import Foundation
         // var title = "#ReaderTag"
         // tagButton.setTitle(title, forState: .Normal)
         // tagButton.setTitle(title, forState: .Highlighted)
-        if !UIDevice.isPad() {
-            // For layout purposes, we always want the default height on the iPad.
-            tagButtonHeightConstraint.constant = 0.0
-        }
-        tagButtonBottomConstraint.constant = 0.0
     }
 
     private func configureWordCount() {
+        // Always reset the attributed string.
+        wordCountLabel.attributedText = nil;
+
+        // For now, if showing the attribution view do not show the word count label
+        if attributionHeightConstraint.constant > 0 {
+            wordCountBottomConstraint.constant = 0.0
+            return
+        }
+
         // NOTE: stubbed implementation until we start storing the word count and reading time in core data
         // wordCountLabel.attributedText = attributedTextForWordCount(100, readingTime: "(~2 min)")
-        wordCountLabel.attributedText = nil;
         if wordCountLabel.attributedText == nil {
             wordCountBottomConstraint.constant = 0.0
         } else {
@@ -411,28 +401,30 @@ import Foundation
         }
     }
 
-    private func attributedTextForWordCount(wordCount:Int?, readingTime:String?) -> NSAttributedString? {
-        if wordCount == nil && readingTime == nil {
-            return nil
-        }
-
+    private func attributedTextForWordCount(wordCount:Int) -> NSAttributedString? {
         var attrStr = NSMutableAttributedString()
 
-        if let theWordCount = wordCount {
-            var wordsStr = NSLocalizedString("words",
-                                            comment: "Part of a label letting the user know how any words are in a post. For example: '300 words'")
+        // Compose the word count.
+        var wordsStr = NSLocalizedString("words",
+                                        comment: "Part of a label letting the user know how any words are in a post. For example: '300 words'")
 
-            var countStr = String(format: "%d %@ ", theWordCount, wordsStr)
-            var attributes = WPStyleGuide.readerCardWordCountAttributes()
-            var attrWordCount = NSAttributedString(string: countStr, attributes: attributes)
-            attrStr.appendAttributedString(attrWordCount)
+        var countStr = String(format: "%d %@ ", wordCount, wordsStr)
+        var attributes = WPStyleGuide.readerCardWordCountAttributes()
+        var attrWordCount = NSAttributedString(string: countStr, attributes: attributes)
+        attrStr.appendAttributedString(attrWordCount)
+
+        // Append the reading time if needed.
+        let minutesToRead = Int(wordCount / avgWordsPerMinuteRead)
+        if minutesToRead < minimumMinutesToRead {
+            return attrStr
         }
 
-        if let theReadingTime = readingTime {
-            var attributes = WPStyleGuide.readerCardReadingTimeAttributes()
-            var attrReadingTime = NSAttributedString(string: theReadingTime, attributes: attributes)
-            attrStr.appendAttributedString(attrReadingTime)
-        }
+        var format = NSLocalizedString("(~ %d min)",
+                                        comment:"A short label that tells the user the estimated reading time of an article. '%d' is a placeholder for the number of minutes. '~' denotes an estimation.")
+        var str = String(format: format, minutesToRead)
+        attributes = WPStyleGuide.readerCardReadingTimeAttributes()
+        var attrReadingTime = NSAttributedString(string: str, attributes: attributes)
+        attrStr.appendAttributedString(attrReadingTime)
 
         return attrStr
     }
@@ -445,7 +437,6 @@ import Foundation
 
         var buttons = [
             actionButtonLeft,
-            actionButtonCenter,
             actionButtonRight
         ]
 
@@ -460,19 +451,9 @@ import Foundation
             let button = buttons.removeLast() as UIButton
             configureCommentActionButton(button)
         }
-
-        // Show visit
-        if UIDevice.isPad() {
-            let button = buttons.removeLast() as UIButton
-            configureVisitActionButton(button)
-        } else {
-            configureVisitActionButton(actionButtonFlushLeft)
-        }
     }
 
     private func resetActionButtons() {
-        resetActionButton(actionButtonCenter)
-        resetActionButton(actionButtonFlushLeft)
         resetActionButton(actionButtonLeft)
         resetActionButton(actionButtonRight)
     }
@@ -511,14 +492,6 @@ import Foundation
         let title = contentProvider?.commentCount().stringValue
         var image = UIImage(named: "icon-reader-comment")
         var highlightImage = UIImage(named: "icon-reader-comment-highlight")
-        configureActionButton(button, title: title, image: image, highlightedImage: highlightImage)
-    }
-
-    private func configureVisitActionButton(button: UIButton) {
-        button.tag = CardAction.Visit.rawValue
-        let title = NSLocalizedString("Visit", comment: "Text for the 'visit' button. Tapping takes the user to the web page for a post being viewed in the reader.")
-        var image = UIImage(named: "icon-reader-visit")
-        var highlightImage = UIImage(named: "icon-reader-visit-highlight")
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage)
     }
 
@@ -575,8 +548,6 @@ import Foundation
             delegate?.readerCell(self, commentActionForProvider: contentProvider!)
         case .Like :
             delegate?.readerCell(self, likeActionForProvider: contentProvider!)
-        case .Visit :
-            delegate?.readerCell(self, visitActionForProvider: contentProvider!)
         }
     }
 
@@ -595,6 +566,5 @@ import Foundation
     {
         case Comment = 1
         case Like
-        case Visit
     }
 }
