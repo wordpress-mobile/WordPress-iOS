@@ -111,25 +111,19 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     DDLogMethod();
     [super viewDidLoad];
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
-    if (self.blog.isAdmin) {
-        if (self.blog.account) {
-            self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionWriting)];
-        } else {
-            self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount), @(SiteSettingsSectionWriting)];
-        }    
-        if ([self.blog supports:BlogFeatureRemovable]) {
-            self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
-        }
+    
+    if (self.blog.account) {
+        self.tableSections = @[@(SiteSettingsSectionGeneral)];
     } else {
-        if (self.blog.account) {
-            self.tableSections = @[@(SiteSettingsSectionGeneral)];
-        } else {
-            self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount)];
-        }
-        if ([self.blog supports:BlogFeatureRemovable]) {
-            self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
-        }
+        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount)];
+    }    
+    if (self.blog.isAdmin) {
+        self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionWriting)];
     }
+    if ([self.blog supports:BlogFeatureRemovable]) {
+        self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
+    }
+    
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
