@@ -145,7 +145,15 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
-
+    if ([[self class] areWeBeingUnitTested]) {
+        CGRect bounds = [[UIScreen mainScreen] bounds];
+        [self.window setFrame:bounds];
+        [self.window setBounds:bounds];
+        self.window.rootViewController = [[UIViewController alloc] init];
+        [self.window makeKeyAndVisible];
+        return YES;
+    }
+    
     // Launched by tapping a notification
     if (application.applicationState == UIApplicationStateActive) {
         [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
@@ -157,6 +165,23 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self setupAppbotX];
 
     return YES;
+}
+
++ (BOOL)areWeBeingUnitTested {
+    BOOL answer = NO;
+    Class testProbeClass;
+    testProbeClass = NSClassFromString(@"XCTestProbe");
+    if (testProbeClass != Nil) {
+        // Doing this little dance so we don't actually have to link
+        // SenTestingKit in
+        SEL selector = NSSelectorFromString(@"isTesting");
+        NSMethodSignature *sig = [testProbeClass methodSignatureForSelector:selector];
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+        [invocation setSelector:selector];
+        [invocation invokeWithTarget:testProbeClass];
+        [invocation getReturnValue:&answer];
+    }
+    return answer;
 }
 
 - (void)setupLookback
