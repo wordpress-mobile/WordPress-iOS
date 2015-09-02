@@ -13,12 +13,12 @@ typedef id (^WPReduceBlock)(id accumulator, id obj);
  the receiver array objects. If mapBlock returns nil that value will be missing
  from the resulting array.
  */
-- (instancetype)wp_map:(WPMapBlock)mapBlock;
+- (NSArray *)wp_map:(WPMapBlock)mapBlock;
 
 /**
  Filters an array to only include values that satisfy the filter block
  */
-- (instancetype)wp_filter:(WPFilterBlock)filterBlock;
+- (NSArray *)wp_filter:(WPFilterBlock)filterBlock;
 
 /**
  Combines the array values into a single value

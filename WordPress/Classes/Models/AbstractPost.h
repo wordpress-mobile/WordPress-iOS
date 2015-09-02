@@ -9,7 +9,7 @@
 
 // Relationships
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) NSMutableSet *media;
+@property (nonatomic, strong) NSSet *media;
 @property (weak, readonly) AbstractPost *original;
 @property (weak, readonly) AbstractPost *revision;
 @property (nonatomic, strong) NSMutableSet *comments;
@@ -75,5 +75,14 @@
  *  @returns    YES if there are unsaved changes, NO otherwise.
  */
 - (BOOL)hasRemoteChanges;
+
+@end
+
+@interface AbstractPost (CoreDataGeneratedAccessors)
+
+- (void)addMediaObject:(Media *)value;
+- (void)removeMediaObject:(Media *)value;
+- (void)addMedia:(NSSet *)values;
+- (void)removeMedia:(NSSet *)values;
 
 @end
