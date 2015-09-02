@@ -52,6 +52,7 @@ import Foundation
         }
     }
     
+    
 
     // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
@@ -59,21 +60,39 @@ import Foundation
             return
         }
         
-        let success = { (image: UIImage) in
-            self.gravatarImageView.displayImageWithFadeInAnimation(image)
+        // Note:
+        // The backend might return the URL for "unknown@gravatar.com", which may render the placeholder.
+        // Let's intercept that scenario, and prevent a redundant download.
+        //
+        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
+        if url?.isUnknownGravatarUrl() == true {
+            gravatarImageView.image = placeholderImage
+            return
         }
         
-        let placeholderImage = Style.gravatarPlaceholderImage
-        gravatarImageView.downloadImage(url, placeholderImage: placeholderImage, success: success, failure: nil)
+        // Proceed with the real download
+        gravatarImageView.downloadImage(url,
+            placeholderImage    : placeholderImage,
+            success             : { (image: UIImage) in
+                                        self.gravatarImageView.displayImageWithFadeInAnimation(image)
+                                  },
+            failure             : { (error: NSError!) in
+                                        // Note: Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
+                                        if self.gravatarURL?.isEqual(url) == true {
+                                            self.gravatarURL = nil
+                                        }
+                                  })
         
         gravatarURL = url
     }
 
     public func downloadGravatarWithGravatarEmail(email: String?) {
-        gravatarImageView.setImageWithGravatarEmail(email)
+        let fallbackImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
+        gravatarImageView.setImageWithGravatarEmail(email, fallbackImage: fallbackImage)
     }
     
 
+    
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -99,23 +118,27 @@ import Foundation
     }
     
 
-    // MARK: - Separator Helpers
+    
+    // MARK: - Approval Color Helpers
     public override func refreshSeparators() {
         // Left Separator
-        separatorsView.leftVisible          = !isApproved
-        separatorsView.leftColor            = Style.blockUnapprovedSideColor
+        separatorsView.leftVisible = !isApproved
+        separatorsView.leftColor = Style.blockUnapprovedSideColor
         
         // Bottom Separator
-        var bottomInsets                    = separatorUnapprovedInsets
+        var bottomInsets = separatorUnapprovedInsets
         if isApproved {
-            bottomInsets                    = hasReply ? separatorRepliedInsets : separatorApprovedInsets
+            bottomInsets = hasReply ? separatorRepliedInsets : separatorApprovedInsets
         }
         
-        separatorsView.bottomVisible        = true
-        separatorsView.bottomInsets         = bottomInsets
+        separatorsView.bottomVisible = true
+        separatorsView.bottomInsets = bottomInsets
+        separatorsView.bottomColor = Style.blockSeparatorColorForComment(isApproved: isApproved)
+        
+        // Background
+        separatorsView.backgroundColor = Style.blockBackgroundColorForComment(isApproved: isApproved)
     }
 
-    // MARK: - Private Methods
     private func refreshDetails() {
         var details = timestamp ?? String()
         if let unwrappedSite = site {
@@ -126,17 +149,11 @@ import Foundation
     }
 
     private func refreshApprovalColors() {
-        // Separators
-        separatorsView.bottomColor  = Style.blockSeparatorColorForComment(isApproved: isApproved)
-        
-        // Background
-        contentView.backgroundColor = Style.blockBackgroundColorForComment(isApproved: isApproved)
-        
         // Refresh Colors
         titleLabel.textColor        = Style.blockTitleColorForComment(isApproved: isApproved)
         detailsLabel.textColor      = Style.blockDetailsColorForComment(isApproved: isApproved)
-        super.linkColor             = Style.blockLinkColorForComment(isApproved: isApproved)
-        super.attributedText        = isApproved ? attributedCommentText : attributedCommentUnapprovedText
+        linkColor                   = Style.blockLinkColorForComment(isApproved: isApproved)
+        attributedText              = isApproved ? attributedCommentText : attributedCommentUnapprovedText
     }
     
     private var attributedCommentUnapprovedText : NSAttributedString? {
@@ -152,12 +169,20 @@ import Foundation
         return unwrappedMutableString
     }
 
+    
+    
+    
     // MARK: - Event Handlers
     @IBAction public func detailsWasPressed(sender: AnyObject) {
         if let handler = onDetailsClick {
             handler(sender: sender)
         }
     }
+
+
+
+    // MARK: - Aliases
+    typealias Style = WPStyleGuide.Notifications
     
     // MARK: - Private Constants
     private let separatorApprovedInsets             = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
@@ -167,9 +192,6 @@ import Foundation
     
     // MARK: - Private Properties
     private var gravatarURL                         : NSURL?
-
-    // MARK: - Aliases
-    typealias Style                                 = WPStyleGuide.Notifications
 
     // MARK: - IBOutlets
     @IBOutlet private weak var actionsView          : UIView!
