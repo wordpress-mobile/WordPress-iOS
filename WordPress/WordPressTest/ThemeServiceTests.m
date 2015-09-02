@@ -106,7 +106,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeService *service = nil;
     NSNumber *blogId = @1;
-    NSString *url = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/mine", blogId];
     
     OCMStub([blog restApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(blogId);
@@ -140,7 +140,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeService *service = nil;
     NSNumber *blogId = @1;
-    NSString *url = [NSString stringWithFormat:@"sites/%@/themes/purchased", blogId];
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/purchased", blogId];
     
     OCMStub([blog restApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(blogId);
@@ -174,7 +174,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeService *service = nil;
     NSString *themeId = @"SomeTheme";
-    NSString *url = [NSString stringWithFormat:@"themes/%@", themeId];
+    NSString *url = [NSString stringWithFormat:@"v1.1/themes/%@", themeId];
     
     OCMStub([account isWPComAccount]).andReturn(YES);
     OCMStub([account restApi]).andReturn(api);
@@ -227,7 +227,7 @@
     WPAccount *account = OCMStrictClassMock([WPAccount class]);
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeService *service = nil;
-    NSString *url = @"themes";
+    NSString *url = @"v1.1/themes";
     
     OCMStub([account isWPComAccount]).andReturn(YES);
     OCMStub([account restApi]).andReturn(api);
@@ -261,7 +261,7 @@
     NSNumber *blogId = @1;
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeService *service = nil;
-    NSString *url = [NSString stringWithFormat:@"sites/%@/themes", blogId];
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes", blogId];
     
     OCMStub([blog restApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(blogId);
@@ -296,7 +296,7 @@
     NSNumber *blogId = @1;
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeService *service = nil;
-    NSString *url = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/mine", blogId];
     
     OCMStub([theme themeId]).andReturn(@"SomeThemeId");
     

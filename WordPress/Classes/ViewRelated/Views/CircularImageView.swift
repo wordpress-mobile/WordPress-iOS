@@ -34,11 +34,16 @@ class CircularImageView : UIImageView
 
     override var frame: CGRect {
         didSet {
-            if (shouldRoundCorners) {
-                layer.cornerRadius = (frame.width * 0.5)
-            } else {
-                layer.cornerRadius = 0;
-            }
+            refreshRadius()
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        refreshRadius()
+    }
+    
+    private func refreshRadius() {
+        layer.cornerRadius = shouldRoundCorners ? (frame.width * 0.5) : 0
     }
 }

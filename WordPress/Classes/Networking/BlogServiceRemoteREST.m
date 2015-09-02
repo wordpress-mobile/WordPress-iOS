@@ -22,8 +22,12 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     NSParameterAssert(blog.dotComID != nil);
     
     NSDictionary *parameters = @{@"authors_only":@(YES)};
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/users", blog.dotComID];
-    [self.api GET:path
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -46,7 +50,10 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [self pathForOptionsWithBlog:blog];
-    [self.api GET:path
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSDictionary *response = (NSDictionary *)responseObject;
@@ -69,7 +76,10 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [self pathForPostFormatsWithBlog:blog];
-    [self.api GET:path
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSDictionary *formats = [self mapPostFormatsFromResponse:responseObject[@"formats"]];
@@ -91,7 +101,10 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [self pathForSettingsWithBlog:blog];
-    [self.api GET:path
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (![responseObject isKindOfClass:[NSDictionary class]]){
@@ -119,10 +132,14 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     NSDictionary *parameters = @{ @"blogname" : blog.blogName,
                                   @"blogdescription" : blog.blogTagline,
                                   @"default_category" : blog.defaultCategoryID,
-                                  @"default_post_format" : blog.defaultPostFormat
+                                  @"default_post_format" : blog.defaultPostFormat,
+                                  @"blog_public" : @(blog.siteVisibility)
                                   };
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blog.dotComID];
-    [self.api POST:path
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (![responseObject isKindOfClass:[NSDictionary class]]) {
@@ -236,6 +253,8 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     } else {
         remoteSettings.defaultPostFormat = [rawSettings stringForKey:BlogRemoteDefaultPostFormatKey];
     }
+    
+    remoteSettings.privacy = [json numberForKeyPath:@"settings.blog_public"];
     
     return remoteSettings;
 }
