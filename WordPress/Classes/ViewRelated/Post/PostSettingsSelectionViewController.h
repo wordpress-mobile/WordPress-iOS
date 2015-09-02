@@ -3,6 +3,7 @@
 extern NSString * const SettingsSelectionTitleKey;
 extern NSString * const SettingsSelectionTitlesKey;
 extern NSString * const SettingsSelectionValuesKey;
+extern NSString * const SettingsSelectionHintsKey;
 extern NSString * const SettingsSelectionDefaultValueKey;
 extern NSString * const SettingsSelectionCurrentValueKey;
 
