@@ -18,8 +18,12 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", blog.dotComID, postID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *parameters = @{ @"context": @"edit" };
-    [self.api GET:path
+    
+    [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -50,6 +54,9 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *parameters = @{
                                  @"status": @"any,trash",
                                  @"context": @"edit",
@@ -61,7 +68,7 @@
         [mutableParameters addEntriesFromDictionary:options];
         parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     }
-    [self.api GET:path
+    [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -83,9 +90,12 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", blog.dotComID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
@@ -108,9 +118,12 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", blog.dotComID, post.postID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
@@ -134,7 +147,10 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
-    [self.api POST:path
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
@@ -157,7 +173,10 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
-    [self.api POST:path
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
@@ -181,7 +200,10 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", blog.dotComID, post.postID];
-    [self.api POST:path
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
@@ -199,11 +221,9 @@
 #pragma mark - Private methods
 
 - (NSArray *)remotePostsFromJSONArray:(NSArray *)jsonPosts {
-    NSMutableArray *posts = [NSMutableArray arrayWithCapacity:jsonPosts.count];
-    for (NSDictionary *jsonPost in jsonPosts) {
-        [posts addObject:[self remotePostFromJSONDictionary:jsonPost]];
-    }
-    return [NSArray arrayWithArray:posts];
+    return [jsonPosts wp_map:^id(NSDictionary *jsonPost) {
+        return [self remotePostFromJSONDictionary:jsonPost];
+    }];
 }
 
 - (RemotePost *)remotePostFromJSONDictionary:(NSDictionary *)jsonPost {
@@ -327,8 +347,7 @@
 }
 
 - (NSArray *)metadataForPost:(RemotePost *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:post.metadata.count];
-    for (NSDictionary *meta in post.metadata) {
+    return [post.metadata wp_map:^id(NSDictionary *meta) {
         NSNumber *metaID = [meta objectForKey:@"id"];
         NSString *metaValue = [meta objectForKey:@"value"];
         NSString *operation = @"update";
@@ -339,17 +358,14 @@
         }
         NSMutableDictionary *modifiedMeta = [meta mutableCopy];
         modifiedMeta[@"operation"] = operation;
-        [metadata addObject:[NSDictionary dictionaryWithDictionary:modifiedMeta]];
-    }
-    return [NSArray arrayWithArray:metadata];
+        return [NSDictionary dictionaryWithDictionary:modifiedMeta];
+    }];
 }
 
 - (NSArray *)remoteCategoriesFromJSONArray:(NSArray *)jsonCategories {
-    NSMutableArray *categories = [NSMutableArray arrayWithCapacity:jsonCategories.count];
-    for (NSDictionary *jsonCategory in jsonCategories) {
-        [categories addObject:[self remoteCategoryFromJSONDictionary:jsonCategory]];
-    }
-    return [NSArray arrayWithArray:categories];
+    return [jsonCategories wp_map:^id(NSDictionary *jsonCategory) {
+        return [self remoteCategoryFromJSONDictionary:jsonCategory];
+    }];
 }
 
 - (RemotePostCategory *)remoteCategoryFromJSONDictionary:(NSDictionary *)jsonCategory {
