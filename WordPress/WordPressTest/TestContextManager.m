@@ -73,8 +73,6 @@
         if (self.testExpectation) {
             [self.testExpectation fulfill];
             self.testExpectation = nil;
-        } else {
-            NSLog(@"No test expectation present for context save");
         }
     }];
 }
@@ -85,8 +83,6 @@
     if (self.testExpectation) {
         [self.testExpectation fulfill];
         self.testExpectation = nil;
-    } else {
-        NSLog(@"No test expectation present for context save");
     }
 }
 
