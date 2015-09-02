@@ -114,14 +114,19 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     DDLogMethod();
     [super viewDidLoad];
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
+    
     if (self.blog.account) {
-        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionWriting)];
+        self.tableSections = @[@(SiteSettingsSectionGeneral)];
     } else {
-        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount), @(SiteSettingsSectionWriting)];
+        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount)];
     }    
+    if (self.blog.isAdmin) {
+        self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionWriting)];
+    }
     if ([self.blog supports:BlogFeatureRemovable]) {
         self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
     }
+    
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -302,9 +307,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     if (_siteTitleCell) {
         return _siteTitleCell;
     }
-    _siteTitleCell = [[SettingTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-    _siteTitleCell.textLabel.text = NSLocalizedString(@"Site Title", @"Label for site title blog setting");
-    _siteTitleCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    _siteTitleCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Site Title", @"Label for site title blog setting")
+                                                          editable:self.blog.isAdmin
+                                                   reuseIdentifier:nil];
     return _siteTitleCell;
 }
 
@@ -314,7 +319,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         return _siteTaglineCell;
     }
     _siteTaglineCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Tagline", @"Label for tagline blog setting")
-                                                          editable:YES
+                                                          editable:self.blog.isAdmin
                                                    reuseIdentifier:nil];
     return _siteTaglineCell;
 }
@@ -336,7 +341,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         return _privacyTextCell;
     }
     _privacyTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Privacy", @"Label for the privacy setting")
-                                                          editable:YES
+                                                          editable:self.blog.isAdmin
                                                    reuseIdentifier:nil];
     return _privacyTextCell;
 }
@@ -412,7 +417,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     NSInteger settingsSection = [self.tableSections[section] intValue];
     NSString *title = [self titleForHeaderInSection:settingsSection];
     if (title.length == 0) {
-        return nil;
+        return [[UIView alloc] initWithFrame:CGRectZero];
     }
     
     WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
@@ -427,7 +432,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    NSString *title = [self titleForHeaderInSection:section];
+    NSInteger settingsSection = [self.tableSections[section] intValue];
+    NSString *title = [self titleForHeaderInSection:settingsSection];
     return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
@@ -498,6 +504,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 {
     switch (row) {
         case SiteSettingsGeneralTitle:{
+            if (!self.blog.isAdmin) {
+                return;
+            }
             SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.blogName
                                                                                                  placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
                                                                                                               hint:@""
@@ -513,6 +522,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             [self.navigationController pushViewController:siteTitleViewController animated:YES];
         }break;
         case SiteSettingsGeneralTagline:{
+            if (!self.blog.isAdmin) {
+                return;
+            }
             SettingsMultiTextViewController *siteTaglineViewController = [[SettingsMultiTextViewController alloc] initWithText:self.blog.blogTagline
                                                                                                  placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
                                                                                                               hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
@@ -529,6 +541,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             [self.navigationController pushViewController:siteTaglineViewController animated:YES];
         }break;
         case SiteSettingsGeneralPrivacy:{
+            if (!self.blog.isAdmin) {
+                return;
+            }
             [self showPrivacySelector];
         }break;
     }
