@@ -204,7 +204,7 @@
 - (NSArray *)remoteMediaFromXMLRPCArray:(NSArray *)xmlrpcArray
 {
     return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcMedia) {
-        return [self remoteMediaFromUploadXMLRPCDictionary:xmlrpcMedia];
+        return [self remoteMediaFromXMLRPCDictionary:xmlrpcMedia];
     }];
 }
 
