@@ -10,14 +10,14 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
     override func setUp() {
         super.setUp()
         mockRemoteApi = MockWordPressComApi()
-        pushAuthenticationServiceRemote = PushAuthenticationServiceRemote(remoteApi: mockRemoteApi)
+        pushAuthenticationServiceRemote = PushAuthenticationServiceRemote(api: mockRemoteApi)
     }
     
     func testAuthorizeLoginUsesTheCorrectPath() {
         pushAuthenticationServiceRemote?.authorizeLogin(token, success: nil, failure: nil)
         
         XCTAssertTrue(mockRemoteApi!.postMethodCalled, "Method was not called")
-        XCTAssertEqual(mockRemoteApi!.URLStringPassedIn!, "me/two-step/push-authentication", "Incorrect URL passed in")
+        XCTAssertEqual(mockRemoteApi!.URLStringPassedIn!, "v1.1/me/two-step/push-authentication", "Incorrect URL passed in")
     }
     
     func testAuthorizeLoginUsesTheCorrectParameters() {

@@ -226,7 +226,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 
         [metaData addEntriesFromDictionary:@{@"WPCom Username": defaultAccount.username}];
 
-        [defaultAccount.restApi GET:@"me"
+        [defaultAccount.restApi GET:@"v1.1/me"
                          parameters:nil
                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                 [self hideLoadingSpinner];
