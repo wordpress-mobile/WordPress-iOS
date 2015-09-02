@@ -279,7 +279,7 @@ import Foundation
             displayNoResultsView()
         }
 
-        WPAnalytics.track(.ReaderLoadedTag, withProperties: tagPropertyForStats())
+        WPAnalytics.track(.ReaderLoadedTag, withProperties: propertyForStats())
         if ReaderStreamViewController.topicIsFreshlyPressed(readerTopic!) {
             WPAnalytics.track(.ReaderLoadedFreshlyPressed)
         }
@@ -292,9 +292,16 @@ import Foundation
         tableView.setContentOffset(CGPoint.zeroPoint, animated: true)
     }
 
-    private func tagPropertyForStats() -> [NSObject: AnyObject] {
+    private func propertyForStats() -> [NSObject: AnyObject] {
         assert(readerTopic != nil, "A reader topic is required")
-        return ["tag" : readerTopic!.title]
+        var title = readerTopic!.title ?? ""
+        var key: String = "list"
+        if readerTopic!.isTag() {
+            key = "tag"
+        } else if readerTopic!.isSite() {
+            key = "site"
+        }
+        return [key : title]
     }
 
     private func shouldShowBlockSiteMenuItem() -> Bool {
@@ -569,7 +576,7 @@ import Foundation
                 })
         }
 
-        WPAnalytics.track(.ReaderInfiniteScroll, withProperties: tagPropertyForStats())
+        WPAnalytics.track(.ReaderInfiniteScroll, withProperties: propertyForStats())
     }
 
     func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
