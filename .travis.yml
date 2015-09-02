@@ -6,7 +6,6 @@ xcode_sdk: iphonesimulator8.4
 notifications:
   email: true
 before_install:
-  - xctool --version
   - brew update
   - brew outdated xctool || brew upgrade xctool
 install:
