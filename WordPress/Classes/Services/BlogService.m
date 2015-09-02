@@ -659,7 +659,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 return;
             }
             blog.options = [NSDictionary dictionaryWithDictionary:options];
-			blog.siteVisibility = (SiteVisibility)([[blog getOptionValue:@"blog_public"] integerValue]);
+            blog.siteVisibility = (SiteVisibility)([[blog getOptionValue:@"blog_public"] integerValue]);
             //HACK:Sergio Estevao (2015-08-31): Because there is no direct way to
             // know if a user has permissions to change the options we check if the blog title property is read only or not.
             if ([blog.options numberForKeyPath:@"blog_title.readonly"]) {
@@ -678,13 +678,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 }
             }
 
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-            
-            if (completion) {
-                completion();
-            }
-
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:completion];
         }];
     };
 }
