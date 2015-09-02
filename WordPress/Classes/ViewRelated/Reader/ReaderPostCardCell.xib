@@ -95,9 +95,7 @@
                                             <constraint firstItem="vL4-BG-nfJ" firstAttribute="leading" secondItem="FV8-lg-7ZL" secondAttribute="leading" id="10n-Z4-rOq"/>
                                             <constraint firstItem="vL4-BG-nfJ" firstAttribute="top" secondItem="FV8-lg-7ZL" secondAttribute="top" id="9yT-Bl-Qlp"/>
                                             <constraint firstAttribute="trailing" secondItem="vL4-BG-nfJ" secondAttribute="trailing" id="Q1Y-zK-ZaE"/>
-                                            <constraint firstAttribute="height" constant="196" id="Uc8-KW-ShJ">
-                                                <variation key="heightClass=regular-widthClass=regular" constant="226"/>
-                                            </constraint>
+                                            <constraint firstAttribute="height" constant="196" id="Uc8-KW-ShJ"/>
                                             <constraint firstAttribute="bottom" secondItem="vL4-BG-nfJ" secondAttribute="bottom" id="rFK-Hl-qfe"/>
                                         </constraints>
                                     </view>
@@ -202,9 +200,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="24" id="ChH-8z-5Of">
-                                                <variation key="heightClass=regular-widthClass=regular" constant="22"/>
-                                            </constraint>
+                                            <constraint firstAttribute="height" constant="24" id="ChH-8z-5Of"/>
                                             <constraint firstItem="QCr-5u-La2" firstAttribute="leading" secondItem="wHE-hH-7uj" secondAttribute="leading" id="Cxn-g8-FPU"/>
                                             <constraint firstAttribute="centerY" secondItem="iDF-k2-iBh" secondAttribute="centerY" id="IIv-7Z-b1c"/>
                                             <constraint firstAttribute="centerY" secondItem="QCr-5u-La2" secondAttribute="centerY" id="gOi-Kr-66n"/>

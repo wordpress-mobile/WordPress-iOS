@@ -55,7 +55,7 @@ import Foundation
     public weak var delegate: ReaderPostCellDelegate?
     public weak var contentProvider: ReaderPostContentProvider?
 
-    private var featuredMediaHeightConstraintConstant = CGFloat(0.0)
+    private var featuredMediaHeightConstraintConstant = UIDevice.isPad() ? CGFloat(226.0) : CGFloat(196.0)
     private var featuredMediaBottomConstraintConstant = CGFloat(0.0)
     private var titleLabelBottomConstraintConstant = CGFloat(0.0)
     private var summaryLabelBottomConstraintConstant = CGFloat(0.0)
@@ -203,7 +203,6 @@ import Foundation
     }
 
     private func preserveStartingConstraintConstants() {
-        featuredMediaHeightConstraintConstant = featuredMediaHeightConstraint.constant
         featuredMediaBottomConstraintConstant = featuredMediaBottomConstraint.constant
         titleLabelBottomConstraintConstant = titleLabelBottomConstraint.constant
         summaryLabelBottomConstraintConstant = summaryLabelBottomConstraint.constant
