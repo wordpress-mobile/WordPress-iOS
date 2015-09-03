@@ -74,6 +74,7 @@ import Foundation
 
     private let summaryMaxNumberOfLines = 3
     private let maxAttributionViewHeight: CGFloat = 200.0 // 200 is an arbitrary height, but should be a sufficiently high number.
+    private var currentLoadedCardImageURL: String?
 
     // MARK: - Accessors
 
@@ -309,14 +310,18 @@ import Foundation
     }
 
     private func configureCardImage() {
-        // Always clear the previous image so there is no stale or unexpected image 
-        // momentarily visible.
-        featuredImageView.image = nil
         if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
             featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
             featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
 
             if loadMediaWhenConfigured {
+                if featuredImageURL.absoluteString == currentLoadedCardImageURL && featuredImageView.image != nil {
+                    return; // Don't reload an image already being displayed.
+                }
+
+                // Always clear the previous image so there is no stale or unexpected image
+                // momentarily visible.
+                featuredImageView.image = nil
                 var url = featuredImageURL
                 if !(contentProvider!.isPrivate()) {
                     let size = CGSize(width:featuredMediaView.frame.width, height:featuredMediaHeightConstraintConstant)
@@ -332,9 +337,12 @@ import Foundation
                     // private but not a wpcom hosted image
                     featuredImageView.setImageWithURL(url, placeholderImage:nil)
                 }
+                currentLoadedCardImageURL = featuredImageURL.absoluteString
             }
 
         } else {
+            featuredImageView.image = nil
+            currentLoadedCardImageURL = nil
             featuredMediaHeightConstraint.constant = 0.0
             featuredMediaBottomConstraint.constant = 0.0
         }
