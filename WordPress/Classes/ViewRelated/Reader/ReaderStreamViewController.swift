@@ -34,6 +34,7 @@ import Foundation
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
     private var showShareActivityAfterActionSheetIsDismissed = false
     private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
+    private let heightForFooterView = CGFloat(34.0)
 
     private var siteID:NSNumber? {
         didSet {
@@ -184,6 +185,9 @@ import Foundation
     private func setupFooterView() {
         footerView = NSBundle.mainBundle().loadNibNamed(footerViewNibName, owner: nil, options: nil).first as! PostListFooterView
         footerView.showSpinner(false)
+        var frame = footerView.frame
+        frame.size.height = heightForFooterView
+        footerView.frame = frame
         tableView.tableFooterView = footerView
     }
 
