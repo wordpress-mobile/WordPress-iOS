@@ -459,31 +459,43 @@ import Foundation
 
     private func resetActionButton(button:UIButton) {
         button.setTitle(nil, forState: .Normal)
+        button.setTitle(nil, forState: .Highlighted)
         button.setImage(nil, forState: .Normal)
         button.setImage(nil, forState: .Highlighted)
         button.selected = false
         button.hidden = true
     }
 
-    private func configureActionButton(button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?) {
+    private func configureActionButton(button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected:Bool) {
         button.setTitle(title, forState: .Normal)
+        button.setTitle(title, forState: .Highlighted)
         button.setImage(image, forState: .Normal)
         button.setImage(highlightedImage, forState: .Highlighted)
-        button.selected = false
+        button.selected = selected
         button.hidden = false
     }
 
     private func configureLikeActionButton(button: UIButton) {
         button.tag = CardAction.Like.rawValue
         let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
-        let likedStr = NSLocalizedString("Liked", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
-        let title = contentProvider!.isLiked() ? likedStr : likeStr
+        let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
+
+        let count = contentProvider!.likeCount().integerValue
+
+        var title: String?
+        if count == 0 {
+            title = likeStr
+        } else if count == 1 {
+            title = "\(count) \(likeStr)"
+        } else {
+            title = "\(count) \(likesStr)"
+        }
 
         let imageName = contentProvider!.isLiked() ? "icon-reader-liked" : "icon-reader-like"
         var image = UIImage(named: imageName)
         var highlightImage = UIImage(named: "icon-reader-like-highlight")
-
-        configureActionButton(button, title: title, image: image, highlightedImage: highlightImage)
+        let selected = contentProvider!.isLiked()
+        configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:selected)
     }
 
     private func configureCommentActionButton(button: UIButton) {
@@ -491,7 +503,7 @@ import Foundation
         let title = contentProvider?.commentCount().stringValue
         var image = UIImage(named: "icon-reader-comment")
         var highlightImage = UIImage(named: "icon-reader-comment-highlight")
-        configureActionButton(button, title: title, image: image, highlightedImage: highlightImage)
+        configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:false)
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
