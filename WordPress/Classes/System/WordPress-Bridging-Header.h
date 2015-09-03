@@ -29,10 +29,12 @@
 #import "ServiceRemoteREST.h"
 #import "AccountService.h"
 #import "BlogService.h"
+#import "ThemeService.h"
 
 #import "Blog.h"
 #import "Notification.h"
 #import "Notification+Internals.h"
+#import "Theme.h"
 #import "WPAccount.h"
 
 #import "AppRatingUtility.h"

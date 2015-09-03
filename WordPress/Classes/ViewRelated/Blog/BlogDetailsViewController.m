@@ -456,7 +456,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 - (void)showThemesForBlog:(Blog *)blog
 {
     ThemeBrowserFactory *factory = [[ThemeBrowserFactory alloc] init];
-    ThemeBrowserViewController *viewController = [factory instantiateThemeBrowserViewController];
+    ThemeBrowserViewController *viewController = [factory instantiateThemeBrowserViewControllerWithBlog:blog];
     
     [self.navigationController pushViewController:viewController
                                          animated:YES];
