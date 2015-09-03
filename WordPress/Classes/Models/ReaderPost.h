@@ -19,7 +19,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSString *blogURL;
 @property (nonatomic, strong) NSNumber *commentCount;
 @property (nonatomic) BOOL commentsOpen;
-@property (nonatomic, strong) NSDate *dateCommentsSynced;
 @property (nonatomic, strong) NSString *featuredImage;
 @property (nonatomic, strong) NSString *globalID;
 @property (nonatomic) BOOL isBlogPrivate;
@@ -30,7 +29,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSDate *sortDate;
-@property (nonatomic, strong) NSString *storedComment; // Formatted as commentID,string
 @property (nonatomic, strong) NSString *summary;
 @property (nonatomic, strong) NSMutableSet *comments;
 @property (nonatomic, readonly, strong) NSURL *featuredImageURL;
@@ -41,9 +39,16 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) BOOL isSiteBlocked;
 @property (nonatomic, strong) SourcePostAttribution *sourceAttribution;
 
+@property (nonatomic, strong) NSString *primaryTag;
+@property (nonatomic, strong) NSString *primaryTagSlug;
+@property (nonatomic, strong) NSString *secondaryTag;
+@property (nonatomic, strong) NSString *secondaryTagSlug;
+@property (nonatomic) BOOL isExternal;
+@property (nonatomic) BOOL isJetpack;
+@property (nonatomic) NSNumber *wordCount;
+@property (nonatomic) NSNumber *readingTime;
+
 - (BOOL)isPrivate;
-- (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment;
-- (NSDictionary *)getStoredComment;
 - (NSString *)authorString;
 - (NSString *)avatar;
 - (UIImage *)cachedAvatarWithSize:(CGSize)size;

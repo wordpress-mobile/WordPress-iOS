@@ -24,7 +24,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic blogURL;
 @dynamic commentCount;
 @dynamic commentsOpen;
-@dynamic dateCommentsSynced;
 @dynamic featuredImage;
 @dynamic isBlogPrivate;
 @dynamic isFollowing;
@@ -34,7 +33,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic likeCount;
 @dynamic siteID;
 @dynamic sortDate;
-@dynamic storedComment;
 @dynamic summary;
 @dynamic comments;
 @dynamic tags;
@@ -45,27 +43,19 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isSiteBlocked;
 @dynamic sourceAttribution;
 
+@dynamic primaryTag;
+@dynamic primaryTagSlug;
+@dynamic secondaryTag;
+@dynamic secondaryTagSlug;
+@dynamic isExternal;
+@dynamic isJetpack;
+@dynamic wordCount;
+@dynamic readingTime;
+
 
 - (BOOL)isPrivate
 {
     return self.isBlogPrivate;
-}
-
-- (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment
-{
-    self.storedComment = [NSString stringWithFormat:@"%i|storedcomment|%@", [commentID integerValue], comment];
-}
-
-- (NSDictionary *)getStoredComment
-{
-    if (!self.storedComment) {
-        return nil;
-    }
-
-    NSArray *arr = [self.storedComment componentsSeparatedByString:@"|storedcomment|"];
-    NSNumber *commentID = [[arr objectAtIndex:0] numericValue];
-    NSString *commentText = [arr objectAtIndex:1];
-    return @{ReaderPostStoredCommentIDKey:commentID, ReaderPostStoredCommentTextKey:commentText};
 }
 
 - (NSString *)authorString
