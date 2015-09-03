@@ -105,6 +105,11 @@ import Foundation
         }
     }
 
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        refreshTableViewHeaderLayout()
+    }
+
 
     // MARK: -
 
@@ -262,28 +267,6 @@ import Foundation
         refreshTableViewHeaderLayout()
     }
 
-    func refreshTableViewHeaderLayout() {
-        if tableView.tableHeaderView == nil {
-            return
-        }
-        let headerView = tableView.tableHeaderView!
-
-        headerView.setNeedsLayout()
-        headerView.layoutIfNeeded()
-
-        var height = headerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
-        var frame = headerView.frame
-        frame.size.height = height
-        headerView.frame = frame
-
-        tableView.tableHeaderView = headerView
-    }
-
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        refreshTableViewHeaderLayout()
-    }
-
     func configureControllerForTopic() {
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
@@ -311,6 +294,23 @@ import Foundation
 
 
     // MARK: - Instance Methods
+
+    func refreshTableViewHeaderLayout() {
+        if tableView.tableHeaderView == nil {
+            return
+        }
+        let headerView = tableView.tableHeaderView!
+
+        headerView.setNeedsLayout()
+        headerView.layoutIfNeeded()
+
+        var height = headerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+        var frame = headerView.frame
+        frame.size.height = height
+        headerView.frame = frame
+
+        tableView.tableHeaderView = headerView
+    }
 
     public func scrollViewToTop() {
         tableView.setContentOffset(CGPoint.zeroPoint, animated: true)
