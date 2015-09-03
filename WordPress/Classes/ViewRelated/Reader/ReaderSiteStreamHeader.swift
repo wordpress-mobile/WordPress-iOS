@@ -22,6 +22,7 @@ import Foundation
     }
 
     func applyStyles() {
+        backgroundColor = WPStyleGuide.greyLighten30()
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
         WPStyleGuide.applyReaderStreamHeaderDetailStyle(detailLabel)
         WPStyleGuide.applyReaderSiteStreamDescriptionStyle(descriptionLabel)

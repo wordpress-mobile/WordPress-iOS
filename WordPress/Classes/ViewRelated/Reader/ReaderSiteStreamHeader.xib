@@ -12,7 +12,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qu2-DO-LzV">
-                    <rect key="frame" x="-1" y="0.0" width="322" height="60"/>
+                    <rect key="frame" x="-1" y="-1" width="322" height="61"/>
                     <color key="backgroundColor" red="0.84313725490196079" green="0.8901960784313725" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lbk-Jq-qTd">
@@ -143,15 +143,15 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Lbk-Jq-qTd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="2P7-FZ-lXk"/>
-                <constraint firstItem="qu2-DO-LzV" firstAttribute="bottom" secondItem="Lbk-Jq-qTd" secondAttribute="bottom" constant="-1" id="Efr-Q9-Hxv"/>
                 <constraint firstItem="qu2-DO-LzV" firstAttribute="bottom" secondItem="SEx-10-HwS" secondAttribute="bottom" id="FrI-pe-0r5"/>
                 <constraint firstItem="qu2-DO-LzV" firstAttribute="trailing" secondItem="Lbk-Jq-qTd" secondAttribute="trailing" constant="1" id="HdJ-8e-kJ0"/>
                 <constraint firstAttribute="trailing" secondItem="Lbk-Jq-qTd" secondAttribute="trailing" id="R9u-5i-biC"/>
-                <constraint firstAttribute="bottom" secondItem="Lbk-Jq-qTd" secondAttribute="bottom" id="YWY-qa-U6a"/>
+                <constraint firstAttribute="bottom" secondItem="Lbk-Jq-qTd" secondAttribute="bottom" priority="900" id="YWY-qa-U6a"/>
                 <constraint firstItem="Lbk-Jq-qTd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="cOJ-xW-wWU"/>
+                <constraint firstItem="Lbk-Jq-qTd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="30" id="kr0-b1-nxR"/>
                 <constraint firstAttribute="centerX" secondItem="Lbk-Jq-qTd" secondAttribute="centerX" id="vdq-pW-2RB"/>
                 <constraint firstItem="qu2-DO-LzV" firstAttribute="leading" secondItem="Lbk-Jq-qTd" secondAttribute="leading" constant="-1" id="yY7-fB-IMX"/>
-                <constraint firstItem="qu2-DO-LzV" firstAttribute="top" secondItem="Lbk-Jq-qTd" secondAttribute="top" id="zVd-kU-Vak"/>
+                <constraint firstItem="qu2-DO-LzV" firstAttribute="top" secondItem="Lbk-Jq-qTd" secondAttribute="top" constant="-1" id="zVd-kU-Vak"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
@@ -159,14 +159,16 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
                 <mask key="constraints">
+                    <exclude reference="kr0-b1-nxR"/>
                     <exclude reference="vdq-pW-2RB"/>
-                    <exclude reference="Efr-Q9-Hxv"/>
                 </mask>
             </variation>
             <variation key="heightClass=regular-widthClass=regular">
                 <mask key="constraints">
                     <exclude reference="2P7-FZ-lXk"/>
                     <exclude reference="R9u-5i-biC"/>
+                    <exclude reference="cOJ-xW-wWU"/>
+                    <include reference="kr0-b1-nxR"/>
                     <include reference="vdq-pW-2RB"/>
                 </mask>
             </variation>
