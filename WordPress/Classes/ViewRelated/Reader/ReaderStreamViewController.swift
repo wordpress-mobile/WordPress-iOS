@@ -33,6 +33,7 @@ import Foundation
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
     private var showShareActivityAfterActionSheetIsDismissed = false
+    private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
 
     private var siteID:NSNumber? {
         didSet {
@@ -244,20 +245,43 @@ import Foundation
 
         var header:ReaderStreamHeader? = ReaderStreamViewController.headerForStream(readerTopic!)
         if header == nil {
-            tableView.tableHeaderView = nil
+            if UIDevice.isPad() {
+                var headerView = UIView(frame: frameForEmptyHeaderView)
+                headerView.backgroundColor = UIColor.clearColor()
+                tableView.tableHeaderView = headerView
+            } else {
+                tableView.tableHeaderView = nil
+            }
             return
         }
 
         header!.configureHeader(readerTopic!)
         header!.delegate = self
 
-        // Wrap the header in another view as a layout helper
-        var headerView = header as! UIView
-        var headerWrapper = UIView(frame: headerView.frame)
-        headerWrapper.autoresizingMask = .FlexibleWidth
-        headerWrapper.addSubview(headerView)
+        tableView.tableHeaderView = header as? UIView
+        refreshTableViewHeaderLayout()
+    }
 
-        tableView.tableHeaderView = headerWrapper
+    func refreshTableViewHeaderLayout() {
+        if tableView.tableHeaderView == nil {
+            return
+        }
+        let headerView = tableView.tableHeaderView!
+
+        headerView.setNeedsLayout()
+        headerView.layoutIfNeeded()
+
+        var height = headerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+        var frame = headerView.frame
+        frame.size.height = height
+        headerView.frame = frame
+
+        tableView.tableHeaderView = headerView
+    }
+
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        refreshTableViewHeaderLayout()
     }
 
     func configureControllerForTopic() {
