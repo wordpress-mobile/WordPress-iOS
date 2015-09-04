@@ -69,6 +69,7 @@ import Foundation
     private let maxAttributionViewHeight: CGFloat = 200.0 // 200 is an arbitrary height, but should be a sufficiently high number.
     private let avgWordsPerMinuteRead = 250
     private let minimumMinutesToRead = 2
+    private var currentLoadedCardImageURL: String?
 
     // MARK: - Accessors
 
@@ -92,6 +93,15 @@ import Foundation
             return
         }
         applyHighlightedEffect(highlighted, animated: animated)
+    }
+
+    public var blogNameButtonIsEnabled: Bool {
+        get {
+            return blogNameButton.enabled
+        }
+        set {
+            blogNameButton.enabled = newValue
+        }
     }
 
 
@@ -225,7 +235,7 @@ import Foundation
         backgroundColor = WPStyleGuide.greyLighten30()
         cardBorderView.backgroundColor = WPStyleGuide.readerCardCellBorderColor()
 
-        WPStyleGuide.applyReaderCardSiteButtonActiveStyle(blogNameButton)
+        WPStyleGuide.applyReaderCardSiteButtonStyle(blogNameButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
@@ -265,8 +275,9 @@ import Foundation
 
         var placeholder = UIImage(named: "post-blavatar-placeholder")
 
-        if loadMediaWhenConfigured && contentProvider?.avatarURLForDisplay() != nil {
-            var url = contentProvider?.avatarURLForDisplay()
+        var size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
+        var url = contentProvider?.blavatarForDisplayOfSize(Int(size))
+        if loadMediaWhenConfigured && url != nil {
             avatarImageView.setImageWithURL(url, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
@@ -275,6 +286,7 @@ import Foundation
         var blogName = contentProvider?.blogNameForDisplay()
         blogNameButton.setTitle(blogName, forState: .Normal)
         blogNameButton.setTitle(blogName, forState: .Highlighted)
+        blogNameButton.setTitle(blogName, forState: .Disabled)
 
         var byline = contentProvider?.dateForDisplay().shortString()
         if let author = contentProvider?.authorForDisplay() {
@@ -285,11 +297,18 @@ import Foundation
     }
 
     private func configureCardImage() {
-        // Always clear the previous image so there is no stale or unexpected image 
-        // momentarily visible.
-        featuredImageView.image = nil
         if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
+            featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
+            featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
+
             if loadMediaWhenConfigured {
+                if featuredImageURL.absoluteString == currentLoadedCardImageURL && featuredImageView.image != nil {
+                    return; // Don't reload an image already being displayed.
+                }
+
+                // Always clear the previous image so there is no stale or unexpected image
+                // momentarily visible.
+                featuredImageView.image = nil
                 var url = featuredImageURL
                 if !(contentProvider!.isPrivate()) {
                     let size = CGSize(width:featuredMediaView.frame.width, height:featuredMediaHeightConstraintConstant)
@@ -305,11 +324,12 @@ import Foundation
                     // private but not a wpcom hosted image
                     featuredImageView.setImageWithURL(url, placeholderImage:nil)
                 }
+                currentLoadedCardImageURL = featuredImageURL.absoluteString
             }
-            featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
-            featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
 
         } else {
+            featuredImageView.image = nil
+            currentLoadedCardImageURL = nil
             featuredMediaHeightConstraint.constant = 0.0
             featuredMediaBottomConstraint.constant = 0.0
         }
@@ -521,7 +541,9 @@ import Foundation
     // MARK: - 
 
     func notifyDelegateHeaderWasTapped() {
-        delegate?.readerCell(self, headerActionForProvider: contentProvider!)
+        if blogNameButtonIsEnabled {
+            delegate?.readerCell(self, headerActionForProvider: contentProvider!)
+        }
     }
 
 

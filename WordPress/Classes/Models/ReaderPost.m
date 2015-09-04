@@ -153,6 +153,13 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return self.blogName;
 }
 
+- (NSURL *)blavatarForDisplayOfSize:(NSInteger)size
+{
+    NSString *hash = [[[NSURL URLWithString:self.blogURL] host] md5];
+    NSString *str = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@/?s=%d&d=404", hash, size];
+    return [NSURL URLWithString:str];
+}
+
 - (NSString *)titleForDisplay
 {
     NSString *title = [[self.postTitle trim] stringByDecodingXMLCharacters];

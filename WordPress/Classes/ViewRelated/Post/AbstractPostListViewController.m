@@ -762,10 +762,9 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)displayFilters
 {
-    NSMutableArray *titles = [NSMutableArray array];
-    for (PostListFilter *filter in self.postListFilters) {
-        [titles addObject:filter.title];
-    }
+    NSArray *titles = [self.postListFilters wp_map:^id(PostListFilter *filter) {
+        return filter.title;
+    }];
     NSDictionary *dict = @{
                            SettingsSelectionDefaultValueKey   : [self.postListFilters firstObject],
                            SettingsSelectionTitleKey          : NSLocalizedString(@"Filters", @"Title of the list of post status filters."),
