@@ -12,6 +12,7 @@
 #import "TestContextManager.h"
 
 @interface ReaderPostServiceRemote ()
+
 - (RemoteReaderPost *)formatPostDictionary:(NSDictionary *)dict;
 - (BOOL)siteIsPrivateFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)siteURLFromPostDictionary:(NSDictionary *)dict;
@@ -21,11 +22,16 @@
 - (BOOL)isWPComFromPostDictionary:(NSDictionary *)dict;
 - (NSString *)authorEmailFromAuthorDictionary:(NSDictionary *)dict;
 - (NSString *)sanitizeFeaturedImageString:(NSString *)img;
+- (NSDictionary *)primaryAndSecondaryTagsFromPostDictionary:(NSDictionary *)dict;
+- (NSNumber *)readingTimeForWordCount:(NSNumber *)wordCount;
+
 @end
 
 @interface ReaderPostService()
+
 - (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderTopic *)topic;
 - (NSString *)removeInlineStyles:(NSString *)string;
+
 @end
 
 @interface ReaderPostServiceTest : XCTestCase
@@ -66,6 +72,37 @@
 - (NSDictionary *)editorialDictionaryWithKey:(NSString *)key value:(id)value {
     NSDictionary *editorial = [NSDictionary dictionaryWithObject:value forKey:key];
     return @{@"editorial":editorial};
+}
+
+- (NSDictionary *)tagDictionaryWithName:(NSString *)name slug:(NSString *)slug postCount:(NSNumber *)postCount
+{
+    return @{
+             @"name":name,
+             @"slug":slug,
+             @"post_count":postCount
+             };
+}
+
+- (NSDictionary *)demoTagDictionary
+{
+    NSDictionary *tags = @{
+                      @"fake":[self tagDictionaryWithName:@"Fake" slug:@"fake" postCount:@(1)],
+                      @"primary":[self tagDictionaryWithName:@"Primary" slug:@"primary" postCount:@(3)],
+                      @"secondary":[self tagDictionaryWithName:@"Secondary" slug:@"secondary" postCount:@(2)],
+                      };
+    return @{@"tags":tags};
+}
+
+- (NSDictionary *)demoTagsAndEditorialDictionary
+{
+    NSDictionary *editorial = @{
+                                @"highlight_topic_title":@"Editorial",
+                                @"highlight_topic":@"editorial"
+                                };
+    NSMutableDictionary *mdict = [[self demoTagDictionary] mutableCopy];
+    [mdict setObject:editorial forKey:@"editorial"];
+
+    return [mdict copy];
 }
 
 #pragma mark - Common
@@ -243,6 +280,82 @@
     str = [remoteService sanitizeFeaturedImageString:imagePath];
     XCTAssertTrue([str isEqualToString:sanitizedStr], @"Image path returned did not match the path expected.");
 }
+
+- (void)testNoTagsFromDictionary
+{
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSDictionary *demoTags = @{@"tags":@{}};
+    NSDictionary *tags = [remoteService primaryAndSecondaryTagsFromPostDictionary:demoTags];
+
+    for (NSString *value in [tags allValues]) {
+        XCTAssertTrue([value length] == 0, @"All values should be empty in the returned dictionary.");
+    }
+}
+
+- (void)testPrimaryTagFromDictionary
+{
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+
+    NSDictionary *demoTags  = @{@"tags": @{
+                                        @"Primary":[self tagDictionaryWithName:@"Primary" slug:@"primary" postCount:@3]
+                                        }
+                                };
+    NSDictionary *tags = [remoteService primaryAndSecondaryTagsFromPostDictionary:demoTags];
+    XCTAssertTrue([[tags objectForKey:@"primaryTag"] isEqualToString:@"Primary"], @"Primary tag should have the highest post count");
+    XCTAssertTrue([[tags objectForKey:@"secondaryTag"] isEqualToString:@""], @"Secondary tag should be an empty string");
+}
+
+- (void)testPrimaryAndSecondaryTagsFromDictionary
+{
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSDictionary *demoTags = [self demoTagDictionary];
+    NSDictionary *tags = [remoteService primaryAndSecondaryTagsFromPostDictionary:demoTags];
+
+    XCTAssertTrue([[tags objectForKey:@"primaryTag"] isEqualToString:@"Primary"], @"Primary tag should have the highest post count");
+    XCTAssertTrue([[tags objectForKey:@"secondaryTag"] isEqualToString:@"Secondary"], @"Secondary tag should have the second highest post count");
+}
+
+- (void)testEditorialTagsFromDictionary
+{
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSDictionary *demoTags = [self demoTagsAndEditorialDictionary];
+    NSDictionary *tags = [remoteService primaryAndSecondaryTagsFromPostDictionary:demoTags];
+
+    XCTAssertTrue([[tags objectForKey:@"primaryTag"] isEqualToString:@"Editorial"], @"Primary tag should be editorial defined");
+    XCTAssertTrue([[tags objectForKey:@"secondaryTag"] isEqualToString:@"Primary"], @"Secondary tag should have the highest post count");
+}
+
+- (void)testReadingTimeFromDictionary
+{
+    ReaderPostServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+
+    NSNumber *readingTime;
+    readingTime = [remoteService readingTimeForWordCount:@0];
+    XCTAssertTrue([readingTime integerValue] == 0, @"Zero wordcount should return zero reading time.");
+
+    readingTime = [remoteService readingTimeForWordCount:@250];
+    XCTAssertTrue([readingTime integerValue] == 0, @"Brief word count should return zero reading time.");
+
+    readingTime = [remoteService readingTimeForWordCount:@500];
+    XCTAssertTrue([readingTime integerValue] == 2, @"500 words should take about 2 minutes to read");
+
+    readingTime = [remoteService readingTimeForWordCount:@700];
+    XCTAssertTrue([readingTime integerValue] == 2, @"700 words should take about 2 minutes to read.");
+
+    readingTime = [remoteService readingTimeForWordCount:@1000];
+    XCTAssertTrue([readingTime integerValue] == 4, @"1000 words should take about 4 minutes to read");
+}
+
+
 
 #pragma mark - ReaderPostService tests
 
