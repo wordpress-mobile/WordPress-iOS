@@ -80,11 +80,9 @@
 
 - (NSArray *)remoteCategoriesFromXMLRPCArray:(NSArray *)xmlrpcArray
 {
-    NSMutableArray *categories = [NSMutableArray arrayWithCapacity:xmlrpcArray.count];
-    for (NSDictionary *xmlrpcCategory in xmlrpcArray) {
-        [categories addObject:[self remoteCategoryFromXMLRPCDictionary:xmlrpcCategory]];
-    }
-    return [NSArray arrayWithArray:categories];
+    return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcCategory) {
+        return [self remoteCategoryFromXMLRPCDictionary:xmlrpcCategory];
+    }];
 }
 
 - (RemotePostCategory *)remoteCategoryFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary
