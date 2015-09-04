@@ -108,21 +108,6 @@ extern NSString * const ReaderPostServiceErrorDomain;
                        failure:(void (^)(NSError *error))failure;
 
 /**
- Reblog the specified post to a target blog. Optionally including a note.
-
- @param post The ReaderPost to reblog.
- @param siteID The ID of the destination site.
- @param note (Optional.) A short note about the reblog.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)reblogPost:(ReaderPost *)post
-            toSite:(NSUInteger)siteID
-              note:(NSString *)note
-           success:(void (^)())success
-           failure:(void (^)(NSError *error))failure;
-
-/**
  Deletes all posts that do not belong to a ReaderTopic
  Saves the NSManagedObjectContext.
  */

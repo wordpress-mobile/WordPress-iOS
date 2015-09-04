@@ -301,24 +301,4 @@
 
 }
 
-- (void)testPostFromPrivateBlogCannotBeReblogged {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-
-    RemoteReaderPost *remotePost = [self remoteReaderPostForTests];
-    remotePost.isBlogPrivate = YES;
-    ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
-
-    XCTestExpectation *expectation = [self expectationWithDescription:@"reblog expectation"];
-    [service reblogPost:post toSite:0 note:nil success:^{
-        XCTFail(@"Posts from private blogs should not be rebloggable.");
-        [expectation fulfill];
-    } failure:^(NSError *error) {
-        XCTAssertTrue([error.domain isEqualToString:ReaderPostServiceErrorDomain], @"Reblogging a private post failed but not for the expected reason.");
-        [expectation fulfill];
-    }];
-    
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
-}
-
 @end
