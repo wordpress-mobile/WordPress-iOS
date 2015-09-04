@@ -15,8 +15,7 @@
 #import "WordPress-Swift.h"
 
 @interface ReaderViewController () <UIViewControllerRestoration>
-//@property (nonatomic, strong) ReaderPostsViewController *postsViewController;
-@property (nonatomic, strong) ReaderStreamViewController *postsViewController;
+@property (nonatomic, strong) ReaderPostsViewController *postsViewController;
 @end
 
 @implementation ReaderViewController
@@ -111,7 +110,7 @@
 
 - (void)configurePostsViewController
 {
-    self.postsViewController = [ReaderStreamViewController controllerWithTopic:nil];
+    self.postsViewController = [[ReaderPostsViewController alloc] init];
     [self addChildViewController:self.postsViewController];
     UIView *childView = self.postsViewController.view;
     childView.frame = self.view.bounds;
@@ -186,8 +185,7 @@
 
 - (void)scrollViewToTop
 {
-    [self.postsViewController scrollViewToTop];
-//    [self.postsViewController.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+    [self.postsViewController.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
 }
 
 @end
