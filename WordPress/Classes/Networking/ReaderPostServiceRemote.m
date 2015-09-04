@@ -299,7 +299,7 @@
     NSString *editorialTag;
     NSString *editorialSlug;
 
-    NSArray *remoteTags = [dict arrayForKey:@"tags"];
+    NSArray *remoteTags = [[dict dictionaryForKey:@"tags"] allValues];
     if (remoteTags) {
         NSInteger postCount = 0;
 
@@ -317,7 +317,7 @@
         }
     }
 
-    NSDictionary *editorial = [dict dictionaryForKey:editorial];
+    NSDictionary *editorial = [dict dictionaryForKey:@"editorial"];
     if (editorial) {
         editorialSlug = [editorial stringForKey:@"highlight_topic"];
         editorialTag = [editorial stringForKey:@"highlight_topic_title"] ?: [editorialSlug capitalizedString];
@@ -346,10 +346,10 @@
 
     NSInteger minutesToRead = count / avgWordsPerMinuteRead;
     if (minutesToRead < minimumMinutesToRead) {
-        return @(minutesToRead);
+        return @(0);
     }
 
-    return @(0);
+    return @(minutesToRead);
 }
 
 /**
