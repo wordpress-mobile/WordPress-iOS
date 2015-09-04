@@ -3,6 +3,17 @@
 #import "Theme.h"
 #import "ThemeServiceRemote.h"
 #import "WordPressComApi.h"
+#import "WordPress-Swift.h"
+
+// OCMock helper typedefs
+typedef BOOL (^DictionaryVerificationBlock)(NSDictionary *dictionary);
+
+// AFHTTP helper typedefs
+typedef void (^RequestSuccessBlock)(AFHTTPRequestOperation *operation, id responseObject);
+typedef void (^RequestFailureBlock)(AFHTTPRequestOperation *, NSError *);
+
+// NSInvocation helper constants
+static const NSInteger InvocationFirstParameterIndex = 2;
 
 @interface ThemeServiceRemoteTests : XCTestCase
 @end
@@ -113,13 +124,28 @@
 
     static NSString* const url = @"v1.1/themes";
 
-    OCMStub([api GET:[OCMArg isEqual:url]
-          parameters:[OCMArg isNil]
-             success:[OCMArg isNotNil]
-             failure:[OCMArg isNotNil]]);
+    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray *themes) {
+    };
     
+    [OCMStub([api GET:[OCMArg isEqual:url]
+           parameters:[OCMArg isNil]
+              success:[OCMArg isNotNil]
+              failure:[OCMArg isNotNil]]) andDo:^(NSInvocation *invocation) {
+        
+        NSInteger successBlockParameterIndex = InvocationFirstParameterIndex + 2;
+        RequestSuccessBlock successBlock;
+
+        [invocation getArgument:&successBlock atIndex:successBlockParameterIndex];
+        NSCAssert(successBlock != nil, @"Expected a success block");
+        
+        JSONLoader *loader = [JSONLoader alloc];
+        NSDictionary *jsonDictionary = [loader load:@"get-themes-v1.1.json"];
+        
+        //successBlock(operation, responseObject);
+    }];
+
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
-    XCTAssertNoThrow([service getThemes:nil
+    XCTAssertNoThrow([service getThemes:successBlock
                                 failure:nil]);
 }
 
@@ -167,7 +193,7 @@
     
     NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes/mine", blogId];
 
-    BOOL(^checkBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
+    DictionaryVerificationBlock checkBlock = ^BOOL(NSDictionary *parameters) {
         NSCAssert([parameters isKindOfClass:[NSDictionary class]],
                   @"Type mistmatch for the 'parameters' param.");
         
@@ -175,11 +201,24 @@
         
         return [themeIdParameter isEqualToString:themeId];
     };
-    
-    OCMStub([api POST:[OCMArg isEqual:url]
-           parameters:[OCMArg checkWithBlock:checkBlock]
-              success:[OCMArg isNotNil]
-              failure:[OCMArg isNotNil]]);
+
+    [OCMStub([api POST:[OCMArg isEqual:url]
+            parameters:[OCMArg checkWithBlock:checkBlock]
+               success:[OCMArg isNotNil]
+               failure:[OCMArg isNotNil]]) andDo:^(NSInvocation *invocation) {
+       
+        RequestSuccessBlock successBlock;
+        RequestFailureBlock failureBlock;
+        
+        NSInteger successBlockParameterIndex = InvocationFirstParameterIndex + 2;
+        NSInteger failureBlockParameterIndex = InvocationFirstParameterIndex + 3;
+        
+        [invocation getArgument:&successBlock atIndex:successBlockParameterIndex];
+        [invocation getArgument:&failureBlock atIndex:failureBlockParameterIndex];
+        
+        NSCAssert(successBlock != nil, @"Expected a success block");
+        NSCAssert(failureBlock != nil, @"Expected a failure block");
+    }];
     
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
     XCTAssertNoThrow([service activateThemeId:themeId
