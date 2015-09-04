@@ -840,14 +840,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)tableViewHandlerWillRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler
 {
-    [[self managedObjectContext] performBlockAndWait:^{
-        [[self managedObjectContext] reset];
-        NSError *error;
-        [self.tableViewHandler.resultsController performFetch:&error];
-        if (error) {
-            DDLogError(@"%@", error);
-        }
-    }];
+    [[self managedObjectContext] reset];
+    NSError *error;
+    [self.tableViewHandler.resultsController performFetch:&error];
+    if (error) {
+        DDLogError(@"%@", error);
+    }
 }
 
 - (void)tableViewHandlerDidRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler
