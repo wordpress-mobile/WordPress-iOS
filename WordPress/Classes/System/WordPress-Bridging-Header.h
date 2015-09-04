@@ -34,7 +34,7 @@
 #import "Notification.h"
 #import "Notification+Internals.h"
 #import "WPAccount.h"
-
+#import "ReaderPost.h"
 #import "AppRatingUtility.h"
 #import "PhotonImageURLHelper.h"
 #import "ReaderPostContentProvider.h"
