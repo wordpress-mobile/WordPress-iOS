@@ -46,11 +46,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
             return;
         }
 
-        [self mergeMenuTopics:topics forAccount:reloadedAccount];
-
-        if (success) {
-            success();
-        }
+        [self mergeMenuTopics:topics forAccount:reloadedAccount withSuccess:success];
 
     } failure:^(NSError *error) {
         if (failure) {
@@ -561,35 +557,40 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
  @param topics An array of `ReaderTopics` to save.
  */
-- (void)mergeMenuTopics:(NSArray *)topics forAccount:(WPAccount *)account
+- (void)mergeMenuTopics:(NSArray *)topics forAccount:(WPAccount *)account withSuccess:(void (^)())success
 {
-    NSArray *currentTopics = [self allMenuTopics];
-    NSMutableArray *topicsToKeep = [NSMutableArray array];
+    [self.managedObjectContext performBlock:^{
+        NSArray *currentTopics = [self allMenuTopics];
+        NSMutableArray *topicsToKeep = [NSMutableArray array];
 
-    for (RemoteReaderTopic *remoteTopic in topics) {
-        ReaderTopic *newTopic = [self createOrReplaceFromRemoteTopic:remoteTopic];
-        newTopic.account = account;
-        if (newTopic != nil) {
-            [topicsToKeep addObject:newTopic];
-        } else {
-            DDLogInfo(@"%@ returned a nil topic: %@", NSStringFromSelector(_cmd), remoteTopic);
-        }
-    }
-
-    if ([currentTopics count] > 0) {
-        for (ReaderTopic *topic in currentTopics) {
-            if (![topic.type isEqualToString:ReaderTopicTypeSite] && ![topicsToKeep containsObject:topic]) {
-                DDLogInfo(@"Deleting ReaderTopic: %@", topic);
-                if ([topic isEqual:self.currentTopic]) {
-                    self.currentTopic = nil;
-                }
-                [self.managedObjectContext deleteObject:topic];
+        for (RemoteReaderTopic *remoteTopic in topics) {
+            ReaderTopic *newTopic = [self createOrReplaceFromRemoteTopic:remoteTopic];
+            newTopic.account = account;
+            if (newTopic != nil) {
+                [topicsToKeep addObject:newTopic];
+            } else {
+                DDLogInfo(@"%@ returned a nil topic: %@", NSStringFromSelector(_cmd), remoteTopic);
             }
         }
-    }
 
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        if ([currentTopics count] > 0) {
+            for (ReaderTopic *topic in currentTopics) {
+                if (![topic.type isEqualToString:ReaderTopicTypeSite] && ![topicsToKeep containsObject:topic]) {
+                    DDLogInfo(@"Deleting ReaderTopic: %@", topic);
+                    if ([topic isEqual:self.currentTopic]) {
+                        self.currentTopic = nil;
+                    }
+                    [self.managedObjectContext deleteObject:topic];
+                }
+            }
+        }
+
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+            if (success) {
+                success();
+            }
+        }];
+
     }];
 }
 

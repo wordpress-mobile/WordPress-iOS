@@ -20,4 +20,19 @@ NSString *const ReaderTopicTypeSite = @"site";
 @dynamic topicID;
 @dynamic type;
 
+- (BOOL)isList
+{
+    return [self.type isEqualToString:ReaderTopicTypeList];
+}
+
+- (BOOL)isTag
+{
+    return [self.type isEqualToString:ReaderTopicTypeTag];
+}
+
+- (BOOL)isSite
+{
+    return [self.type isEqualToString:ReaderTopicTypeSite];
+}
+
 @end
