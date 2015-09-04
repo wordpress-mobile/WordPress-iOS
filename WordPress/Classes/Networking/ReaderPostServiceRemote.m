@@ -6,6 +6,56 @@
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteSourcePostAttribution.h"
 
+// REST Post dictionary keys
+NSString * const PostRESTKeyAttachments = @"attachments";
+NSString * const PostRESTKeyAuthor = @"author";
+NSString * const PostRESTKeyAvatarURL = @"avatar_URL";
+NSString * const PostRESTKeyCommentCount = @"comment_count";
+NSString * const PostRESTKeyCommentsOpen = @"comments_open";
+NSString * const PostRESTKeyContent = @"content";
+NSString * const PostRESTKeyDate = @"date";
+NSString * const PostRESTKeyDateLiked = @"date_liked";
+NSString * const PostRESTKeyDiscoverMetadata = @"discover_metadata";
+NSString * const PostRESTKeyDiscussion = @"discussion";
+NSString * const PostRESTKeyEditorial = @"editorial";
+NSString * const PostRESTKeyEmail = @"email";
+NSString * const PostRESTKeyExcerpt = @"excerpt";
+NSString * const PostRESTKeyFeaturedMedia = @"featured_media";
+NSString * const PostRESTKeyFeaturedImage = @"featured_image";
+NSString * const PostRESTKeyGlobalID = @"global_ID";
+NSString * const PostRESTKeyHighlightTopic = @"highlight_topic";
+NSString * const PostRESTKeyHighlightTopicTitle = @"highlight_topic_title";
+NSString * const PostRESTKeyILike = @"i_like";
+NSString * const PostRESTKeyID = @"ID";
+NSString * const PostRESTKeyIsExternal = @"is_external";
+NSString * const PostRESTKeyIsFollowing = @"is_following";
+NSString * const PostRESTKeyIsJetpack = @"is_jetpack";
+NSString * const PostRESTKeyIsReblogged = @"is_reblogged";
+NSString * const PostRESTKeyLikeCount = @"like_count";
+NSString * const PostRESTKeyLikesEnabled = @"likes_enabled";
+NSString * const PostRESTKeyName = @"name";
+NSString * const PostRESTKeyNiceName = @"nice_name";
+NSString * const PostRESTKeyPermalink = @"permalink";
+NSString * const PostRESTKeyPostCount = @"post_count";
+NSString * const PostRESTKeySharingEnabled = @"sharing_enabled";
+NSString * const PostRESTKeySiteID = @"site_ID";
+NSString * const PostRESTKeySiteIsPrivate = @"site_is_private";
+NSString * const PostRESTKeySiteName = @"site_name";
+NSString * const PostRESTKeySiteURL = @"site_URL";
+NSString * const PostRESTKeySlug = @"slug";
+NSString * const PostRESTKeyStatus = @"status";
+NSString * const PostRESTKeyTitle = @"title";
+NSString * const PostRESTKeyTags = @"tags";
+NSString * const PostRESTKeyURL = @"URL";
+NSString * const PostRESTKeyWordCount = @"word_count";
+
+// Tag dictionary keys
+NSString * const TagKeyPrimary = @"primaryTag";
+NSString * const TagKeyPrimarySlug = @"primaryTagSlug";
+NSString * const TagKeySecondary = @"secondaryTag";
+NSString * const TagKeySecondarySlug = @"secondaryTagSlug";
+
+
 @implementation ReaderPostServiceRemote
 
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
@@ -237,55 +287,55 @@
 {
     RemoteReaderPost *post = [[RemoteReaderPost alloc] init];
 
-    NSDictionary *authorDict = [dict dictionaryForKey:@"author"];
-    NSDictionary *discussionDict = [dict dictionaryForKey:@"discussion"] ?: dict;
+    NSDictionary *authorDict = [dict dictionaryForKey:PostRESTKeyAuthor];
+    NSDictionary *discussionDict = [dict dictionaryForKey:PostRESTKeyDiscussion] ?: dict;
     
-    post.author = [self stringOrEmptyString:[authorDict stringForKey:@"nice_name"]]; // typically the author's screen name
-    post.authorAvatarURL = [self stringOrEmptyString:[authorDict stringForKey:@"avatar_URL"]];
-    post.authorDisplayName = [self stringOrEmptyString:[authorDict stringForKey:@"name"]]; // Typically the author's given name
+    post.author = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyNiceName]]; // typically the author's screen name
+    post.authorAvatarURL = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyAvatarURL]];
+    post.authorDisplayName = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyName]]; // Typically the author's given name
     post.authorEmail = [self authorEmailFromAuthorDictionary:authorDict];
-    post.authorURL = [self stringOrEmptyString:[authorDict stringForKey:@"URL"]];
+    post.authorURL = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyURL]];
     post.blogName = [self siteNameFromPostDictionary:dict];
     post.blogDescription = [self siteDescriptionFromPostDictionary:dict];
     post.blogURL = [self siteURLFromPostDictionary:dict];
-    post.commentCount = [discussionDict numberForKey:@"comment_count"];
-    post.commentsOpen = [[discussionDict numberForKey:@"comments_open"] boolValue];
-    post.content = [self stringOrEmptyString:[dict stringForKey:@"content"]];
-    post.date_created_gmt = [self stringOrEmptyString:[dict stringForKey:@"date"]];
+    post.commentCount = [discussionDict numberForKey:PostRESTKeyCommentCount];
+    post.commentsOpen = [[discussionDict numberForKey:PostRESTKeyCommentsOpen] boolValue];
+    post.content = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyContent]];
+    post.date_created_gmt = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyDate]];
     post.featuredImage = [self featuredImageFromPostDictionary:dict];
-    post.globalID = [self stringOrEmptyString:[dict stringForKey:@"global_ID"]];
+    post.globalID = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyGlobalID]];
     post.isBlogPrivate = [self siteIsPrivateFromPostDictionary:dict];
-    post.isFollowing = [[dict numberForKey:@"is_following"] boolValue];
-    post.isLiked = [[dict numberForKey:@"i_like"] boolValue];
-    post.isReblogged = [[dict numberForKey:@"is_reblogged"] boolValue];
+    post.isFollowing = [[dict numberForKey:PostRESTKeyIsFollowing] boolValue];
+    post.isLiked = [[dict numberForKey:PostRESTKeyILike] boolValue];
+    post.isReblogged = [[dict numberForKey:PostRESTKeyIsReblogged] boolValue];
     post.isWPCom = [self isWPComFromPostDictionary:dict];
-    post.likeCount = [dict numberForKey:@"like_count"];
-    post.permalink = [self stringOrEmptyString:[dict stringForKey:@"URL"]];
-    post.postID = [dict numberForKey:@"ID"];
-    post.postTitle = [self stringOrEmptyString:[dict stringForKey:@"title"]];
-    post.siteID = [dict numberForKey:@"site_ID"];
+    post.likeCount = [dict numberForKey:PostRESTKeyLikeCount];
+    post.permalink = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyURL]];
+    post.postID = [dict numberForKey:PostRESTKeyID];
+    post.postTitle = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyTitle]];
+    post.siteID = [dict numberForKey:PostRESTKeySiteID];
     post.sortDate = [self sortDateFromPostDictionary:dict];
-    post.status = [self stringOrEmptyString:[dict stringForKey:@"status"]];
-    post.summary = [self stringOrEmptyString:[dict stringForKey:@"excerpt"]];
+    post.status = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyStatus]];
+    post.summary = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyExcerpt]];
     post.tags = [self tagsFromPostDictionary:dict];
-    post.isSharingEnabled = [[dict numberForKey:@"sharing_enabled"] boolValue];
-    post.isLikesEnabled = [[dict numberForKey:@"likes_enabled"] boolValue];
+    post.isSharingEnabled = [[dict numberForKey:PostRESTKeySharingEnabled] boolValue];
+    post.isLikesEnabled = [[dict numberForKey:PostRESTKeyLikesEnabled] boolValue];
 
     NSDictionary *tags = [self primaryAndSecondaryTagsFromPostDictionary:dict];
     if (tags) {
-        post.primaryTag = [tags stringForKey:@"primaryTag"];
-        post.primaryTagSlug = [tags stringForKey:@"primaryTagSlug"];;
-        post.secondaryTag = [tags stringForKey:@"secondaryTag"];
-        post.secondaryTagSlug = [tags stringForKey:@"secondaryTagSlug"];
+        post.primaryTag = [tags stringForKey:TagKeyPrimary];
+        post.primaryTagSlug = [tags stringForKey:TagKeyPrimarySlug];
+        post.secondaryTag = [tags stringForKey:TagKeySecondary];
+        post.secondaryTagSlug = [tags stringForKey:TagKeySecondarySlug];
     }
 
-    post.isExternal = [[dict numberForKey:@"is_external"] boolValue];
-    post.isJetpack = [[dict numberForKey:@"is_jetpack"] boolValue];
-    post.wordCount = [dict numberForKey:@""];
+    post.isExternal = [[dict numberForKey:PostRESTKeyIsExternal] boolValue];
+    post.isJetpack = [[dict numberForKey:PostRESTKeyIsJetpack] boolValue];
+    post.wordCount = [dict numberForKey:PostRESTKeyWordCount];
     post.readingTime = [self readingTimeForWordCount:post.wordCount];
 
     if ([dict arrayForKeyPath:@"discover_metadata.discover_fp_post_formats"]) {
-        post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:@"discover_metadata"]];
+        post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:PostRESTKeyDiscoverMetadata]];
     }
     return post;
 }
@@ -299,28 +349,28 @@
     NSString *editorialTag;
     NSString *editorialSlug;
 
-    NSArray *remoteTags = [[dict dictionaryForKey:@"tags"] allValues];
+    NSArray *remoteTags = [[dict dictionaryForKey:PostRESTKeyTags] allValues];
     if (remoteTags) {
         NSInteger postCount = 0;
 
         for (NSDictionary *tag in remoteTags) {
-            NSInteger count = [[tag numberForKey:@"post_count"] integerValue];
+            NSInteger count = [[tag numberForKey:PostRESTKeyPostCount] integerValue];
             if (count > postCount) {
                 secondaryTag = primaryTag;
                 secondaryTagSlug = primaryTagSlug;
 
-                primaryTag = [tag stringForKey:@"name"] ?: @"";
-                primaryTagSlug = [tag stringForKey:@"slug"] ?: @"";
+                primaryTag = [tag stringForKey:PostRESTKeyName] ?: @"";
+                primaryTagSlug = [tag stringForKey:PostRESTKeySlug] ?: @"";
 
                 postCount = count;
             }
         }
     }
 
-    NSDictionary *editorial = [dict dictionaryForKey:@"editorial"];
+    NSDictionary *editorial = [dict dictionaryForKey:PostRESTKeyEditorial];
     if (editorial) {
-        editorialSlug = [editorial stringForKey:@"highlight_topic"];
-        editorialTag = [editorial stringForKey:@"highlight_topic_title"] ?: [editorialSlug capitalizedString];
+        editorialSlug = [editorial stringForKey:PostRESTKeyHighlightTopic];
+        editorialTag = [editorial stringForKey:PostRESTKeyHighlightTopicTitle] ?: [editorialSlug capitalizedString];
     }
 
     if (editorialSlug) {
@@ -331,10 +381,10 @@
     }
 
     return @{
-             @"primaryTag":primaryTag,
-             @"primaryTagSlug":primaryTagSlug,
-             @"secondaryTag":secondaryTag,
-             @"secondaryTagSlug":secondaryTagSlug,
+             TagKeyPrimary:primaryTag,
+             TagKeyPrimarySlug:primaryTagSlug,
+             TagKeySecondary:secondaryTag,
+             TagKeySecondarySlug:secondaryTagSlug,
              };
 }
 
@@ -366,7 +416,7 @@
     }
 
     RemoteSourcePostAttribution *sourceAttr = [RemoteSourcePostAttribution new];
-    sourceAttr.permalink = [dict stringForKey:@"permalink"];
+    sourceAttr.permalink = [dict stringForKey:PostRESTKeyPermalink];
     sourceAttr.authorName = [dict stringForKeyPath:@"attribution.author_name"];
     sourceAttr.authorURL = [dict stringForKeyPath:@"attribution.author_url"];
     sourceAttr.avatarURL = [dict stringForKeyPath:@"attribution.avatar_url"];
@@ -463,7 +513,7 @@
  */
 - (NSString *)authorEmailFromAuthorDictionary:(NSDictionary *)dict
 {
-    NSString *authorEmail = [dict stringForKey:@"email"];
+    NSString *authorEmail = [dict stringForKey:PostRESTKeyEmail];
 
     // if 0 or less than minimum email length. a@a.aa
     if ([authorEmail isEqualToString:@"0"] || [authorEmail length] < 6) {
@@ -481,8 +531,8 @@
  */
 - (BOOL)isWPComFromPostDictionary:(NSDictionary *)dict
 {
-    BOOL isExternal = [[dict numberForKey:@"is_external"] boolValue];
-    BOOL isJetpack = [[dict numberForKey:@"is_jetpack"] boolValue];
+    BOOL isExternal = [[dict numberForKey:PostRESTKeyIsExternal] boolValue];
+    BOOL isJetpack = [[dict numberForKey:PostRESTKeyIsJetpack] boolValue];
 
     return !isJetpack && !isExternal;
 }
@@ -495,7 +545,7 @@
  */
 - (NSString *)tagsFromPostDictionary:(NSDictionary *)dict
 {
-    NSDictionary *tagsDict = [dict dictionaryForKey:@"tags"];
+    NSDictionary *tagsDict = [dict dictionaryForKey:PostRESTKeyTags];
     NSArray *tagsList = [NSArray arrayWithArray:[tagsDict allKeys]];
     NSString *tags = [tagsList componentsJoinedByString:@", "];
     if (tags == nil) {
@@ -513,10 +563,10 @@
 - (NSString *)sortDateFromPostDictionary:(NSDictionary *)dict
 {
     // Sort date varies depending on the endpoint we're fetching from.
-    NSString *sortDate = [self stringOrEmptyString:[dict stringForKey:@"date"]];
+    NSString *sortDate = [self stringOrEmptyString:[dict stringForKey:PostRESTKeyDate]];
 
     // Date liked is returned by the read/liked end point.  Use this for sorting recent likes.
-    NSString *likedDate = [dict stringForKey:@"date_liked"];
+    NSString *likedDate = [dict stringForKey:PostRESTKeyDateLiked];
     if (likedDate != nil) {
         sortDate = likedDate;
     }
@@ -539,14 +589,14 @@
 - (NSString *)featuredImageFromPostDictionary:(NSDictionary *)dict
 {
     NSString *featuredImage = [NSString string];
-    NSDictionary *featured_media = [dict dictionaryForKey:@"featured_media"];
+    NSDictionary *featured_media = [dict dictionaryForKey:PostRESTKeyFeaturedMedia];
 
     // Editorial trumps all
     featuredImage = [dict stringForKeyPath:@"editorial.image"];
 
     // User specified featured image.
     if ([featuredImage length] == 0) {
-        featuredImage = [dict stringForKey:@"featured_image"];
+        featuredImage = [dict stringForKey:PostRESTKeyFeaturedImage];
     }
 
     // If no featured image specified, try featured media.
@@ -556,14 +606,14 @@
 
     // If still no image specified, try attachments.
     if ([featuredImage length] == 0) {
-        NSDictionary *attachments = [dict dictionaryForKey:@"attachments"];
+        NSDictionary *attachments = [dict dictionaryForKey:PostRESTKeyAttachments];
         NSString *imageToDisplay = [DisplayableImageHelper searchPostAttachmentsForImageToDisplay:attachments];
         featuredImage = [self stringOrEmptyString:imageToDisplay];
     }
 
     // If stilll no match, parse content
     if ([featuredImage length] == 0) {
-        NSString *content = [dict stringForKey:@"content"];
+        NSString *content = [dict stringForKey:PostRESTKeyContent];
         NSString *imageToDisplay = [DisplayableImageHelper searchPostContentForImageToDisplay:content];
         featuredImage = [self stringOrEmptyString:imageToDisplay];
     }
@@ -582,7 +632,7 @@
 - (NSString *)siteNameFromPostDictionary:(NSDictionary *)dict
 {
     // Blog Name
-    NSString *siteName = [self stringOrEmptyString:[dict stringForKey:@"site_name"]];
+    NSString *siteName = [self stringOrEmptyString:[dict stringForKey:PostRESTKeySiteName]];
 
     // For some endpoints blogname is defined in meta
     NSString *metaBlogName = [dict stringForKeyPath:@"meta.data.site.name"];
@@ -618,7 +668,7 @@
  */
 - (NSString *)siteURLFromPostDictionary:(NSDictionary *)dict
 {
-    NSString *siteURL = [self stringOrEmptyString:[dict stringForKey:@"site_URL"]];
+    NSString *siteURL = [self stringOrEmptyString:[dict stringForKey:PostRESTKeySiteURL]];
 
     NSString *metaSiteURL = [dict stringForKeyPath:@"meta.data.site.URL"];
     if (metaSiteURL != nil) {
@@ -636,7 +686,7 @@
  */
 - (BOOL)siteIsPrivateFromPostDictionary:(NSDictionary *)dict
 {
-    NSNumber *isPrivate = [dict numberForKey:@"site_is_private"];
+    NSNumber *isPrivate = [dict numberForKey:PostRESTKeySiteIsPrivate];
 
     NSNumber *metaIsPrivate = [dict numberForKeyPath:@"meta.data.site.is_private"];
     if (metaIsPrivate != nil) {
@@ -649,7 +699,7 @@
 - (NSArray *)slugsFromDiscoverPostTaxonomies:(NSArray *)discoverPostTaxonomies
 {
     return [discoverPostTaxonomies wp_map:^id(NSDictionary *dict) {
-        return [dict stringForKey:@"slug"];
+        return [dict stringForKey:PostRESTKeySlug];
     }];
 }
 
