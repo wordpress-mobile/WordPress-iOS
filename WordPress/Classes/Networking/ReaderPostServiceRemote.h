@@ -85,22 +85,4 @@
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
 
-/**
- Reblog a post from one site to another
- 
- @param postID The ID of the post to reblog.
- @param siteID The ID of the origin site.
- @param targetSiteID The ID of the destination site.
- @param note A short note about the reblog.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)reblogPost:(NSUInteger)postID
-          fromSite:(NSUInteger)siteID
-            toSite:(NSUInteger)targetSiteID
-              note:(NSString *)note
-           success:(void (^)(BOOL isReblogged))success
-           failure:(void (^)(NSError *error))failure;
-
-
 @end

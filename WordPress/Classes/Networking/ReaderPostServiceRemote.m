@@ -190,35 +190,6 @@
     }];
 }
 
-- (void)reblogPost:(NSUInteger)postID
-          fromSite:(NSUInteger)siteID
-            toSite:(NSUInteger)targetSiteID
-              note:(NSString *)note
-           success:(void (^)(BOOL isReblogged))success
-           failure:(void (^)(NSError *error))failure
-{
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObject:@(targetSiteID) forKey:@"destination_site_id"];
-
-    if ([note length] > 0) {
-        [params setObject:note forKey:@"note"];
-    }
-
-    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/reblogs/new", siteID, postID];
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
-    [self.api POST:requestUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            NSDictionary *dict = (NSDictionary *)responseObject;
-            BOOL isReblogged = [[dict numberForKey:@"is_reblogged"] boolValue];
-            success(isReblogged);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
 
 #pragma mark - Private Methods
 
@@ -299,10 +270,86 @@
     post.tags = [self tagsFromPostDictionary:dict];
     post.isSharingEnabled = [[dict numberForKey:@"sharing_enabled"] boolValue];
     post.isLikesEnabled = [[dict numberForKey:@"likes_enabled"] boolValue];
+
+    NSDictionary *tags = [self primaryAndSecondaryTagsFromPostDictionary:dict];
+    if (tags) {
+        post.primaryTag = [tags stringForKey:@"primaryTag"];
+        post.primaryTagSlug = [tags stringForKey:@"primaryTagSlug"];;
+        post.secondaryTag = [tags stringForKey:@"secondaryTag"];
+        post.secondaryTagSlug = [tags stringForKey:@"secondaryTagSlug"];
+    }
+
+    post.isExternal = [[dict numberForKey:@"is_external"] boolValue];
+    post.isJetpack = [[dict numberForKey:@"is_jetpack"] boolValue];
+    post.wordCount = [dict numberForKey:@""];
+    post.readingTime = [self readingTimeForWordCount:post.wordCount];
+
     if ([dict arrayForKeyPath:@"discover_metadata.discover_fp_post_formats"]) {
         post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:@"discover_metadata"]];
     }
     return post;
+}
+
+- (NSDictionary *)primaryAndSecondaryTagsFromPostDictionary:(NSDictionary *)dict
+{
+    NSString *primaryTag = @"";
+    NSString *primaryTagSlug = @"";
+    NSString *secondaryTag = @"";
+    NSString *secondaryTagSlug = @"";
+    NSString *editorialTag;
+    NSString *editorialSlug;
+
+    NSArray *remoteTags = [dict arrayForKey:@"tags"];
+    if (remoteTags) {
+        NSInteger postCount = 0;
+
+        for (NSDictionary *tag in remoteTags) {
+            NSInteger count = [[tag numberForKey:@"post_count"] integerValue];
+            if (count > postCount) {
+                secondaryTag = primaryTag;
+                secondaryTagSlug = primaryTagSlug;
+
+                primaryTag = [tag stringForKey:@"name"] ?: @"";
+                primaryTagSlug = [tag stringForKey:@"slug"] ?: @"";
+
+                postCount = count;
+            }
+        }
+    }
+
+    NSDictionary *editorial = [dict dictionaryForKey:editorial];
+    if (editorial) {
+        editorialSlug = [editorial stringForKey:@"highlight_topic"];
+        editorialTag = [editorial stringForKey:@"highlight_topic_title"] ?: [editorialSlug capitalizedString];
+    }
+
+    if (editorialSlug) {
+        secondaryTag = primaryTag;
+        secondaryTagSlug = primaryTagSlug;
+        primaryTag = editorialTag;
+        primaryTagSlug = editorialSlug;
+    }
+
+    return @{
+             @"primaryTag":primaryTag,
+             @"primaryTagSlug":primaryTagSlug,
+             @"secondaryTag":secondaryTag,
+             @"secondaryTagSlug":secondaryTagSlug,
+             };
+}
+
+- (NSNumber *)readingTimeForWordCount:(NSNumber *)wordCount
+{
+    NSInteger avgWordsPerMinuteRead = 250;
+    NSInteger minimumMinutesToRead = 2;
+    NSInteger count = [wordCount integerValue];
+
+    NSInteger minutesToRead = count / avgWordsPerMinuteRead;
+    if (minutesToRead < minimumMinutesToRead) {
+        return @(minutesToRead);
+    }
+
+    return @(0);
 }
 
 /**
