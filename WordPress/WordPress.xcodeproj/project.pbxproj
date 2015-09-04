@@ -542,6 +542,7 @@
 		E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = E240859B183D82AE002EB0EF /* WPAnimatedBox.m */; };
 		E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */ = {isa = PBXBuildFile; fileRef = E2AA87A418523E5300886693 /* UIView+Subviews.m */; };
 		E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E7EB45185FB140004F5E72 /* WPBlogSelectorButton.m */; };
+		E657A0D21B99E9DF007FA578 /* ReaderPostServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E657A0D11B99E9DF007FA578 /* ReaderPostServiceRemoteTests.m */; };
 		ECFA8F2B890D45298F324B8B /* libPods-WordPressTodayWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 872A78E046E04A05B17EB1A1 /* libPods-WordPressTodayWidget.a */; };
 		F128C31C1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */; };
 		F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */; };
@@ -1558,6 +1559,7 @@
 		E2AA87A418523E5300886693 /* UIView+Subviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Subviews.m"; sourceTree = "<group>"; };
 		E2E7EB44185FB140004F5E72 /* WPBlogSelectorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBlogSelectorButton.h; sourceTree = "<group>"; };
 		E2E7EB45185FB140004F5E72 /* WPBlogSelectorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBlogSelectorButton.m; sourceTree = "<group>"; };
+		E657A0D11B99E9DF007FA578 /* ReaderPostServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostServiceRemoteTests.m; sourceTree = "<group>"; };
 		F128C31A1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
 		F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPMediaPickerViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
 		F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringHelpersTest.m; sourceTree = "<group>"; };
@@ -2028,6 +2030,7 @@
 				591CFB051B28A960009E61B3 /* AccountServiceRemoteRESTTests.m */,
 				591CFB081B28AC8C009E61B3 /* BlogServiceRemoteRESTTests.m */,
 				59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */,
+				E657A0D11B99E9DF007FA578 /* ReaderPostServiceRemoteTests.m */,
 				59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */,
 				598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */,
 			);
@@ -2319,7 +2322,6 @@
 		5DF94E351962BA5F00359241 /* Reader */ = {
 			isa = PBXGroup;
 			children = (
-				5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */,
 				5DFA9D19196B1BA30061FF96 /* ReaderTopicServiceTest.m */,
 			);
 			name = Reader;
@@ -2958,6 +2960,7 @@
 				930FD0A519882742000CC81D /* BlogServiceTest.m */,
 				59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */,
 				B5EFB1C81B333C5A007608A3 /* NotificationsServiceTests.swift */,
+				5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */,
 				59FBD5611B5684F300734466 /* ThemeServiceTests.m */,
 			);
 			name = Services;
@@ -4400,6 +4403,7 @@
 				BEC8A3FF1B4BAA2C001CB8C3 /* BlogListViewControllerTests.m in Sources */,
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,
 				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,
+				E657A0D21B99E9DF007FA578 /* ReaderPostServiceRemoteTests.m in Sources */,
 				5DFA7EBC1AF7B8D30072023B /* NSDateStringFormattingTest.m in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
 				59E2AAEC1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m in Sources */,
