@@ -183,8 +183,9 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
         return;
     }
 
-    if (!self.needsLogin && self.hasCredentials && ![WPCookie hasCookieForURL:self.url andUsername:self.username]) {
-        DDLogWarn(@"We have login credentials but no cookie, let's try login first");
+    BOOL hasCookies = [WPCookie hasCookieForURL:self.url andUsername:self.username];
+    if (self.url.isWordPressDotComUrl && !self.needsLogin && self.hasCredentials && !hasCookies) {
+        DDLogWarn(@"WordPress.com URL: We have login credentials but no cookie, let's try login first");
         [self retryWithLogin];
         return;
     }
