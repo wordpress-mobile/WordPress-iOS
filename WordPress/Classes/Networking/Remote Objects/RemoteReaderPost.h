@@ -30,6 +30,15 @@
 @property (nonatomic) BOOL isSharingEnabled;
 @property (nonatomic, strong) RemoteSourcePostAttribution *sourceAttribution;
 
+@property (nonatomic, strong) NSString *primaryTag;
+@property (nonatomic, strong) NSString *primaryTagSlug;
+@property (nonatomic, strong) NSString *secondaryTag;
+@property (nonatomic, strong) NSString *secondaryTagSlug;
+@property (nonatomic) BOOL isExternal;
+@property (nonatomic) BOOL isJetpack;
+@property (nonatomic) NSNumber *wordCount;
+@property (nonatomic) NSNumber *readingTime;
+
 // Base Post Model
 @property (nonatomic, strong) NSString *author;
 @property (nonatomic, strong) NSString *content;

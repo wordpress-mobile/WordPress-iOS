@@ -275,70 +275,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 }
 
-
-
-- (void)reblogPost:(ReaderPost *)post toSite:(NSUInteger)siteID note:(NSString *)note success:(void (^)())success failure:(void (^)(NSError *error))failure
-{
-    // Get a the post in our own context
-    NSError *error;
-    ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
-    if (error) {
-        if (failure) {
-            failure(error);
-        }
-        return;
-    }
-
-    // Do not reblog a post on a private blog
-    if (readerPost.isBlogPrivate) {
-        if (failure) {
-            NSDictionary *userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"Posts belonging to private blogs may not be reblogged.", @"An error description explaining that posts from private blogs may not be reblogged.")};
-            failure([NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo]);
-        }
-        return;
-    }
-
-    // Optimisitically save
-    readerPost.isReblogged = YES;
-    [self.managedObjectContext performBlockAndWait:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
-
-    // Define failure block
-    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        readerPost.isReblogged = NO;
-        [self.managedObjectContext performBlockAndWait:^{
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        }];
-        if (failure) {
-            failure(error);
-        }
-    };
-
-    // Define success block
-    void (^successBlock)(BOOL isReblogged) = ^void(BOOL isReblogged) {
-        if (!isReblogged) {
-            // This is a failsafe. If we receive a success from the REST api, and
-            // isReblogged is false then either the user has disabled rebloging,
-            // or its not a wpcom blog. We shouldn't reach this point but just in case...
-            NSString *description = NSLocalizedString(@"Reblogging might not be permitted for this post.", @"An error description explaining that a post could not be reblogged.");
-            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
-            NSError *error = [NSError errorWithDomain:ReaderPostServiceErrorDomain code:0 userInfo:userInfo];
-            failureBlock(error);
-        } else if (success) {
-            success();
-        }
-    };
-
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
-    [remoteService reblogPost:[readerPost.postID integerValue]
-                     fromSite:[readerPost.siteID integerValue]
-                       toSite:siteID
-                         note:note
-                      success:successBlock
-                      failure:failureBlock];
-}
-
 - (void)deletePostsWithNoTopic
 {
     NSError *error;
@@ -874,6 +810,16 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.isSharingEnabled = remotePost.isSharingEnabled;
     post.isLikesEnabled = remotePost.isLikesEnabled;
     post.isSiteBlocked = NO;
+
+    post.primaryTag = remotePost.primaryTag;
+    post.primaryTagSlug = remotePost.primaryTagSlug;
+    post.secondaryTag = remotePost.secondaryTag;
+    post.secondaryTagSlug = remotePost.secondaryTagSlug;
+    post.isExternal = remotePost.isExternal;
+    post.isJetpack = remotePost.isJetpack;
+    post.wordCount = remotePost.wordCount;
+    post.readingTime = remotePost.readingTime;
+
     if (remotePost.sourceAttribution) {
         post.sourceAttribution = [self createOrReplaceFromRemoteDiscoverAttribution:remotePost.sourceAttribution forPost:post];
     } else {
