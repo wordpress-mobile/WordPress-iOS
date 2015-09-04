@@ -49,6 +49,7 @@
     [self configureNavBar];
     [self configurePostsViewController];
 
+    return;
     ReaderTopic *topic = [self currentTopic];
     if (topic) {
         [self assignTopic:topic];
@@ -121,6 +122,7 @@
 
 - (void)syncTopics
 {
+    return;
     __weak __typeof(self) weakSelf = self;
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [topicService fetchReaderMenuWithSuccess:^{
@@ -132,6 +134,7 @@
 
 - (void)assignTopic:(ReaderTopic *)topic
 {
+    return;
     self.postsViewController.readerTopic = topic;
 
     // Update our title
