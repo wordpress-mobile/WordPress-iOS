@@ -20,6 +20,7 @@
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
 #import "RemoteBlogSettings.h"
+#import "ContextManager.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -272,6 +273,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                               }
                               failure:failure];
     }];
+}
+
+- (void)updatePassword:(NSString *)password forBlog:(Blog *)blog
+{
+    blog.password = password;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success
