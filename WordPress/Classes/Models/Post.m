@@ -89,7 +89,7 @@
 
 - (void)setCategoriesFromNames:(NSArray *)categoryNames
 {
-    [self.categories removeAllObjects];
+    [self removeCategories:self.categories];
     NSMutableSet *categories = nil;
 
     for (NSString *categoryName in categoryNames) {
@@ -104,7 +104,7 @@
     }
 
     if (categories && (categories.count > 0)) {
-        self.categories = categories;
+        [self addCategories:categories];
     }
 }
 

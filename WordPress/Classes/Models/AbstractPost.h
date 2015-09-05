@@ -4,6 +4,7 @@
 #import "WPPostContentViewProvider.h"
 
 @class Media;
+@class Comment;
 
 @interface AbstractPost : BasePost<WPPostContentViewProvider>
 
@@ -12,7 +13,7 @@
 @property (nonatomic, strong) NSSet *media;
 @property (weak, readonly) AbstractPost *original;
 @property (weak, readonly) AbstractPost *revision;
-@property (nonatomic, strong) NSMutableSet *comments;
+@property (nonatomic, strong) NSSet *comments;
 @property (nonatomic, strong) Media *featuredImage;
 
 // By convention these should be treated as read only and not manually set.
@@ -84,5 +85,10 @@
 - (void)removeMediaObject:(Media *)value;
 - (void)addMedia:(NSSet *)values;
 - (void)removeMedia:(NSSet *)values;
+
+- (void)addCommentsObject:(Comment *)value;
+- (void)removeCommentsObject:(Comment *)value;
+- (void)addComments:(NSSet *)values;
+- (void)removeComments:(NSSet *)values;
 
 @end
