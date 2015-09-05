@@ -149,7 +149,9 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscriptions_count";
         siteInfo.siteName = [response stringForKey:SiteDictionaryNameKey];
         siteInfo.siteURL = [response stringForKey:SiteDictionaryURLKey];
         siteInfo.subscriberCount = [response numberForKey:SiteDictionarySubscriptionsKey];
-
+        if (![siteInfo.siteName length] && [siteInfo.siteURL length] > 0) {
+            siteInfo.siteName = [[NSURL URLWithString:siteInfo.siteURL] host];
+        }
         success(siteInfo);
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

@@ -2,7 +2,6 @@ import Foundation
 
 @objc public class ReaderListTopic : ReaderAbstractTopic
 {
-    // Properties
     @NSManaged var isOwner: Bool
     @NSManaged var isPublic: Bool
     @NSManaged var listDescription: String

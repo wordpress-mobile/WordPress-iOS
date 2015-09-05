@@ -44,7 +44,7 @@ import Foundation
         }
     }
 
-    public var readerTopic: ReaderTopic? {
+    public var readerTopic: ReaderAbstractTopic? {
         didSet {
             if readerTopic != nil {
                 if isViewLoaded() {
@@ -64,7 +64,7 @@ import Foundation
 
         @return A ReaderListViewController instance.
     */
-    public class func controllerWithTopic(topic:ReaderTopic) -> ReaderStreamViewController {
+    public class func controllerWithTopic(topic:ReaderAbstractTopic) -> ReaderStreamViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
@@ -127,7 +127,7 @@ import Foundation
         service.siteTopicForSiteWithID(siteID!,
             success: { [weak self] (objectID:NSManagedObjectID!, isFollowing:Bool) -> Void in
                 var error:NSError?
-                var topic = self?.managedObjectContext().existingObjectWithID(objectID, error: &error) as? ReaderTopic
+                var topic = self?.managedObjectContext().existingObjectWithID(objectID, error: &error) as? ReaderSiteTopic
                 if let anError = error {
                     DDLogSwift.logError(anError.localizedDescription)
                 }
@@ -291,7 +291,7 @@ import Foundation
         }
 
         WPAnalytics.track(.ReaderLoadedTag, withProperties: propertyForStats())
-        if ReaderStreamViewController.topicIsFreshlyPressed(readerTopic!) {
+        if ReaderHelpers.topicIsFreshlyPressed(readerTopic!) {
             WPAnalytics.track(.ReaderLoadedFreshlyPressed)
         }
     }
@@ -324,16 +324,16 @@ import Foundation
         assert(readerTopic != nil, "A reader topic is required")
         var title = readerTopic!.title ?? ""
         var key: String = "list"
-        if readerTopic!.isTag() {
+        if ReaderHelpers.isTopicTag(readerTopic!) {
             key = "tag"
-        } else if readerTopic!.isSite() {
+        } else if ReaderHelpers.isTopicSite(readerTopic!) {
             key = "site"
         }
         return [key : title]
     }
 
     private func shouldShowBlockSiteMenuItem() -> Bool {
-        return readerTopic!.isTag() || ReaderStreamViewController.topicIsFreshlyPressed(readerTopic!)
+        return ReaderHelpers.isTopicTag(readerTopic!) || ReaderHelpers.topicIsFreshlyPressed(readerTopic!)
     }
 
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
@@ -800,7 +800,7 @@ import Foundation
         let post = posts[indexPath.row]
         let shouldLoadMedia = postCell != cellForLayout
 
-        postCell.blogNameButtonIsEnabled = !(readerTopic!.isSite())
+        postCell.blogNameButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
         postCell.configureCell(post, loadingMedia: shouldLoadMedia)
         postCell.delegate = self
     }
