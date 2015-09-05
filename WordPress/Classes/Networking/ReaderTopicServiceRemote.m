@@ -15,11 +15,20 @@ static NSString * const TopicDictionaryTitleKey = @"title";
 static NSString * const TopicDictionaryURLKey = @"URL";
 static NSString * const TopicNotFoundMarker = @"-notfound-";
 
+// Site Topic Keys
+static NSString * const SiteDictionaryFeedIDKey = @"feed_ID";
+static NSString * const SiteDictionaryFollowingKey = @"is_following";
+static NSString * const SiteDictionaryJetpackKey = @"is_jetpack";
+static NSString * const SiteDictionaryPrivateKey = @"is_private";
+static NSString * const SiteDictionaryVisibleKey = @"visible";
+static NSString * const SiteDictionaryPostCountKey = @"post_count";
+static NSString * const SiteDictionaryIconPathKey = @"icon.img";
+static NSString * const SiteDictionaryDescriptionKey = @"description";
 static NSString * const SiteDictionaryIDKey = @"ID";
 static NSString * const SiteDictionaryNameKey = @"name";
-static NSString * const SiteDictionaryDescriptionKey = @"description";
 static NSString * const SiteDictionaryURLKey = @"URL";
-static NSString * const SiteDictionaryFollowingKey = @"is_following";
+static NSString * const SiteDictionarySubscriptionsKey = @"subscriptions_count";
+
 
 @implementation ReaderTopicServiceRemote
 
@@ -128,11 +137,19 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
         }
         NSDictionary *response = (NSDictionary *)responseObject;
         RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
+        siteInfo.feedID = [response numberForKey:SiteDictionaryFeedIDKey];
+        siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
+        siteInfo.isJetpack = [[response numberForKey:SiteDictionaryJetpackKey] boolValue];
+        siteInfo.isPrivate = [[response numberForKey:SiteDictionaryPrivateKey] boolValue];
+        siteInfo.isVisible = [[response numberForKey:SiteDictionaryVisibleKey] boolValue];
+        siteInfo.postCount = [response numberForKey:SiteDictionaryPostCountKey];
+        siteInfo.siteBlavatar = [response stringForKey:SiteDictionaryDescriptionKey];
+        siteInfo.siteDescription = [response stringForKey:SiteDictionaryDescriptionKey];
         siteInfo.siteID = [response numberForKey:SiteDictionaryIDKey];
         siteInfo.siteName = [response stringForKey:SiteDictionaryNameKey];
-        siteInfo.siteDescription = [response stringForKey:SiteDictionaryDescriptionKey];
         siteInfo.siteURL = [response stringForKey:SiteDictionaryURLKey];
-        siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
+        siteInfo.subscriberCount = [response numberForKey:SiteDictionarySubscriptionsKey];
+
         success(siteInfo);
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
