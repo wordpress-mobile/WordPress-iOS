@@ -10,6 +10,7 @@
 #import "ReaderPost.h"
 #import "ReaderSite.h"
 #import "RemoteReaderSiteInfo.h"
+#import "WordPress-Swift.h"
 
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
@@ -300,15 +301,25 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         if (!success) {
             return;
         }
-        NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([ReaderTopic class])
+
+        NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([ReaderSiteTopic class])
                                                   inManagedObjectContext:self.managedObjectContext];
-        ReaderTopic *topic = [[ReaderTopic alloc] initWithEntity:entity
+
+        ReaderSiteTopic *topic = [[ReaderSiteTopic alloc] initWithEntity:entity
                      insertIntoManagedObjectContext:self.managedObjectContext];
 
-        topic.topicID = siteInfo.siteID;
-        topic.type = ReaderTopicTypeSite;
-        topic.title = [siteInfo.siteName length] ? siteInfo.siteName : [NSURL URLWithString:siteInfo.siteURL].host;
-        topic.topicDescription = siteInfo.siteDescription;
+        topic.feedID = siteInfo.feedID;
+        topic.following = siteInfo.isFollowing;
+        topic.isJetpack = siteInfo.isJetpack;
+        topic.isPrivate = siteInfo.isPrivate;
+        topic.isVisible = siteInfo.isVisible;
+        topic.postCount = siteInfo.postCount;
+        topic.siteBlavatar = siteInfo.siteBlavatar;
+        topic.siteDescription = siteInfo.siteDescription;
+        topic.siteID = siteInfo.siteID;
+        topic.siteURL = siteInfo.siteURL;
+        topic.subscriberCount = siteInfo.subscriberCount;
+        topic.title = siteInfo.siteName;
         topic.path = [NSString stringWithFormat:@"%@read/sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
 
         NSError *error;
