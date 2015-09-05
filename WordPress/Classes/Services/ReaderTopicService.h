@@ -76,22 +76,12 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (ReaderTopic *)topicForFollowedSites;
 
 /**
- Compose the topic for a single followed site.
+ Fetch a stie topic for a site with the specified ID. 
 
- @param site The ReaderSite of the topic to return.
- @return A `ReaderTopic` instance.
+ @param siteID The ID of the site .
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (ReaderTopic *)siteTopicForSite:(ReaderSite *)site;
-
-/**
- Compose the topic for a posts site.
-
- @param post The ReaderPost whose site we want to compose into a topic
- @return A `ReaderTopic` instance.
- */
-- (ReaderTopic *)siteTopicForPost:(ReaderPost *)post;
-
-
 - (void)siteTopicForSiteWithID:(NSNumber *)siteID
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure;

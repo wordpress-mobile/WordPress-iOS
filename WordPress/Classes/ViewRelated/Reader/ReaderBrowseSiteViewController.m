@@ -46,21 +46,6 @@
     [service deleteTopic:self.siteTopic];
 }
 
-- (instancetype)initWithPost:(ReaderPost *)post
-{
-    self = [super init];
-    if (self) {
-        _siteID = post.siteID;
-        _siteURL = post.blogURL;
-        _isWPcom = post.isWPCom;
-        _isFollowing = post.isFollowing;
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-        _siteTopic = [topicService siteTopicForPost:post];
-    }
-    return self;
-}
-
 - (instancetype)initWithSiteID:(NSNumber *)siteID siteURL:(NSString *)siteURL isWPcom:(BOOL)isWPcom
 {
     self = [super init];
