@@ -449,15 +449,15 @@
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="135"/>
+        <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
+        <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
+        <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
+        <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="75"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="195"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
-        <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="135"/>
-        <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
-        <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="75"/>
-        <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
-        <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
     </elements>
 </model>
