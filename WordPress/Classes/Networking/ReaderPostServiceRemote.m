@@ -55,6 +55,8 @@ NSString * const TagKeyPrimarySlug = @"primaryTagSlug";
 NSString * const TagKeySecondary = @"secondaryTag";
 NSString * const TagKeySecondarySlug = @"secondaryTagSlug";
 
+static const NSInteger AvgWordsPerMinuteRead = 250;
+static const NSInteger MinutesToReadThreshold = 2;
 
 @implementation ReaderPostServiceRemote
 
@@ -349,20 +351,29 @@ NSString * const TagKeySecondarySlug = @"secondaryTagSlug";
     NSString *editorialTag;
     NSString *editorialSlug;
 
+    // Loop over all the tags.
+    // If the current tag's post count is greater than the previous post count,
+    // make it the new primary tag, and make a previous primary tag the secondary tag.
     NSArray *remoteTags = [[dict dictionaryForKey:PostRESTKeyTags] allValues];
     if (remoteTags) {
-        NSInteger postCount = 0;
-
+        NSInteger highestCount = 0;
+        NSInteger secondHighestCount = 0;
         for (NSDictionary *tag in remoteTags) {
             NSInteger count = [[tag numberForKey:PostRESTKeyPostCount] integerValue];
-            if (count > postCount) {
+            if (count > highestCount) {
                 secondaryTag = primaryTag;
                 secondaryTagSlug = primaryTagSlug;
+                secondHighestCount = highestCount;
 
                 primaryTag = [tag stringForKey:PostRESTKeyName] ?: @"";
                 primaryTagSlug = [tag stringForKey:PostRESTKeySlug] ?: @"";
+                highestCount = count;
 
-                postCount = count;
+            } else if (count > secondHighestCount) {
+                secondaryTag = [tag stringForKey:PostRESTKeyName] ?: @"";
+                secondaryTagSlug = [tag stringForKey:PostRESTKeySlug] ?: @"";
+                secondHighestCount = count;
+
             }
         }
     }
@@ -390,15 +401,11 @@ NSString * const TagKeySecondarySlug = @"secondaryTagSlug";
 
 - (NSNumber *)readingTimeForWordCount:(NSNumber *)wordCount
 {
-    NSInteger avgWordsPerMinuteRead = 250;
-    NSInteger minimumMinutesToRead = 2;
     NSInteger count = [wordCount integerValue];
-
-    NSInteger minutesToRead = count / avgWordsPerMinuteRead;
-    if (minutesToRead < minimumMinutesToRead) {
+    NSInteger minutesToRead = count / AvgWordsPerMinuteRead;
+    if (minutesToRead < MinutesToReadThreshold) {
         return @(0);
     }
-
     return @(minutesToRead);
 }
 
