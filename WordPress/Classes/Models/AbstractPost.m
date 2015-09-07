@@ -198,7 +198,7 @@
     }
 
     for (Media *media in self.media) {
-        if (media.mediaType == MediaTypeImage || media.mediaType == MediaTypeFeatured) {
+        if (media.mediaType == MediaTypeImage) {
             return YES;
         }
     }
@@ -241,7 +241,7 @@
     NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
                        [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
     if ([comments count] > 0) {
-        [self.comments unionSet:comments];
+        [self addComments:comments];
     }
 }
 
