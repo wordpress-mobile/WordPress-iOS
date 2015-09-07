@@ -187,6 +187,7 @@
     OCMStub([post status]).andReturn(@"Status");
     OCMStub([post password]).andReturn(@"Password");
     OCMStub([post type]).andReturn(@"Type");
+    OCMStub([post metadata]).andReturn(@[]);
     
     NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/new?context=edit", blog.dotComID];
     
@@ -247,6 +248,7 @@
     OCMStub([post status]).andReturn(@"Status");
     OCMStub([post password]).andReturn(@"Password");
     OCMStub([post type]).andReturn(@"Type");
+    OCMStub([post metadata]).andReturn(@[]);
     
     NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@?context=edit", blog.dotComID, post.postID];
     
