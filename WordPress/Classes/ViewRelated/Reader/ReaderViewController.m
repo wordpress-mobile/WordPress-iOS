@@ -54,7 +54,6 @@
     } else {
         [self syncTopics];
     }
-
 }
 
 
