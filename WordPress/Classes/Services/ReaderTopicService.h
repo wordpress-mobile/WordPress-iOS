@@ -5,7 +5,7 @@ extern NSString * const ReaderTopicDidChangeViaUserInteractionNotification;
 extern NSString * const ReaderTopicDidChangeNotification;
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
-@class ReaderTopic;
+@class ReaderAbstractTopic;
 @class ReaderSite;
 @class ReaderPost;
 
@@ -15,7 +15,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  Sets the currentTopic and dispatches the `ReaderTopicDidChangeNotification` notification.
  Passing `nil` for the topic will not dispatch the notification.
  */
-@property (nonatomic) ReaderTopic *currentTopic;
+@property (nonatomic) ReaderAbstractTopic *currentTopic;
 
 /**
  Fetches the topics for the reader's menu.
@@ -40,14 +40,14 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 /**
  Deletes a specific topic from core data and saves the context. Use to clean up previewed topics.
  */
-- (void)deleteTopic:(ReaderTopic *)topic;
+- (void)deleteTopic:(ReaderAbstractTopic *)topic;
 
 /**
  Marks the specified topic as being subscribed, and marks it current.
  
  @param topic The ReaderTopic to follow and make current.
  */
-- (void)subscribeToAndMakeTopicCurrent:(ReaderTopic *)topic;
+- (void)subscribeToAndMakeTopicCurrent:(ReaderAbstractTopic *)topic;
 
 /**
  Unfollows the specified topic
@@ -56,7 +56,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)unfollowTopic:(ReaderTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)unfollowTopic:(ReaderAbstractTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
  Follow the topic with the specified name
@@ -73,7 +73,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
  @return A `ReaderTopic` instance or nil.
  */
-- (ReaderTopic *)topicForFollowedSites;
+- (ReaderAbstractTopic *)topicForFollowedSites;
 
 /**
  Fetch a stie topic for a site with the specified ID. 
