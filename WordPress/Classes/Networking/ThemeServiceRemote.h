@@ -6,6 +6,7 @@
 typedef void(^ThemeServiceRemoteSuccessBlock)();
 typedef void(^ThemeServiceRemoteThemeRequestSuccessBlock)(RemoteTheme *theme);
 typedef void(^ThemeServiceRemoteThemesRequestSuccessBlock)(NSArray *themes);
+typedef void(^ThemeServiceRemoteThemeIdentifiersRequestSuccessBlock)(NSArray *themeIdentifiers);
 typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
 
 @interface ThemeServiceRemote : ServiceRemoteREST
@@ -26,7 +27,7 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
                                  failure:(ThemeServiceRemoteFailureBlock)failure;
 
 /**
- *  @brief      Gets the list of purchased themes for a blog.
+ *  @brief      Gets the list of purchased-theme-identifiers for a blog.
  *
  *  @param      blogId      The ID of the blog to get the themes for.  Cannot be nil.
  *  @param      success     The success handler.  Can be nil.
@@ -35,7 +36,7 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @returns    The asynch operation triggered by this call.
  */
 - (NSOperation *)getPurchasedThemesForBlogId:(NSNumber *)blogId
-                                     success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                                     success:(ThemeServiceRemoteThemeIdentifiersRequestSuccessBlock)success
                                      failure:(ThemeServiceRemoteFailureBlock)failure;
 
 /**
