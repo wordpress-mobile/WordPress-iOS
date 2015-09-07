@@ -403,18 +403,6 @@
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
-    <entity name="ReaderTopic" representedClassName="ReaderTopic" syncable="YES">
-        <attribute name="isMenuItem" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="isRecommended" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="isSubscribed" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="lastSynced" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="path" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="title" attributeType="String" syncable="YES"/>
-        <attribute name="topicDescription" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="topicID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="type" attributeType="String" indexed="YES" syncable="YES"/>
-    </entity>
     <entity name="SourcePostAttribution" representedClassName="SourcePostAttribution" syncable="YES">
         <attribute name="attributionType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorName" optional="YES" attributeType="String" syncable="YES"/>
@@ -463,7 +451,6 @@
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
-        <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="195"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
     </elements>

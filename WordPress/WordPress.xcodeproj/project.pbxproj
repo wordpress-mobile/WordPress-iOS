@@ -199,7 +199,6 @@
 		5DB767411588F64D00EBE36C /* postPreview.html in Resources */ = {isa = PBXBuildFile; fileRef = 5DB767401588F64D00EBE36C /* postPreview.html */; };
 		5DB93EEC19B6190700EC88EB /* CommentContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB93EE919B6190700EC88EB /* CommentContentView.m */; };
 		5DB93EED19B6190700EC88EB /* ReaderCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DB93EEB19B6190700EC88EB /* ReaderCommentCell.m */; };
-		5DBCD9D218F3569F00B32229 /* ReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DBCD9D118F3569F00B32229 /* ReaderTopic.m */; };
 		5DBCD9D518F35D7500B32229 /* ReaderTopicService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */; };
 		5DBFC8A71A9BC34F00E00DE4 /* PostListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DBFC8A61A9BC34F00E00DE4 /* PostListViewController.m */; };
 		5DBFC8A91A9BE07B00E00DE4 /* Posts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DBFC8A81A9BE07B00E00DE4 /* Posts.storyboard */; };
@@ -976,8 +975,6 @@
 		5DB93EE919B6190700EC88EB /* CommentContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentContentView.m; sourceTree = "<group>"; };
 		5DB93EEA19B6190700EC88EB /* ReaderCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCommentCell.h; sourceTree = "<group>"; };
 		5DB93EEB19B6190700EC88EB /* ReaderCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderCommentCell.m; sourceTree = "<group>"; };
-		5DBCD9D018F3569F00B32229 /* ReaderTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderTopic.h; sourceTree = "<group>"; };
-		5DBCD9D118F3569F00B32229 /* ReaderTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopic.m; sourceTree = "<group>"; };
 		5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderTopicService.h; sourceTree = "<group>"; };
 		5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicService.m; sourceTree = "<group>"; };
 		5DBFC8A51A9BC34F00E00DE4 /* PostListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostListViewController.h; sourceTree = "<group>"; };
@@ -1974,8 +1971,6 @@
 				5DE471B71B4C710E00665C44 /* ReaderPostContentProvider.h */,
 				5DCC4CD619A50CC0003E548C /* ReaderSite.h */,
 				5DCC4CD719A50CC0003E548C /* ReaderSite.m */,
-				5DBCD9D018F3569F00B32229 /* ReaderTopic.h */,
-				5DBCD9D118F3569F00B32229 /* ReaderTopic.m */,
 				E61084B91B9B47BA008050C5 /* ReaderAbstractTopic.swift */,
 				E61084BA1B9B47BA008050C5 /* ReaderDefaultTopic.swift */,
 				E61084BB1B9B47BA008050C5 /* ReaderListTopic.swift */,
@@ -4349,7 +4344,6 @@
 				E1A6DBDB19DC7D080071AC1E /* RemotePost.m in Sources */,
 				E1249B4619408D0F0035E895 /* CommentServiceRemoteXMLRPC.m in Sources */,
 				85AD6AEF173CCFDC002CB896 /* WPNUXSecondaryButton.m in Sources */,
-				5DBCD9D218F3569F00B32229 /* ReaderTopic.m in Sources */,
 				FFC6ADDD1B56F3D2002F3C84 /* ThemeServiceRemote.m in Sources */,
 				B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */,
 				85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */,
