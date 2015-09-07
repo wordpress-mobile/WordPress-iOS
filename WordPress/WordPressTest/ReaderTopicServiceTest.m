@@ -9,7 +9,6 @@
 #import "ReaderPostServiceRemote.h"
 #import "RemoteReaderPost.h"
 #import <XCTest/XCTest.h>
-#import "TestContextManager.h"
 
 
 @interface ReaderTopicServiceRemote()
@@ -23,28 +22,9 @@
 
 
 @interface ReaderTopicServiceTest : XCTestCase
-
-@property (nonatomic, strong) TestContextManager *testContextManager;
-
 @end
 
 @implementation ReaderTopicServiceTest
-
-- (void)setUp
-{
-    [super setUp];
-    
-    self.testContextManager = [[TestContextManager alloc] init];
-}
-
-- (void)tearDown
-{
-    // Put teardown code here; it will be run once, after the last test case.
-    [super tearDown];
-    
-    self.testContextManager = nil;
-}
-
 
 #pragma mark - Configuration
 
@@ -204,7 +184,7 @@
     XCTAssertEqual(count, [remoteTopics count], @"Number of topics in context did not match expected.");
 
     // Merge new set of topics.
-    expectation = [self expectationWithDescription:@"topics saved expectation"];
+    expectation = [self expectationWithDescription:@"topics merged expectation"];
     RemoteReaderTopic *foo = remoteTopics.firstObject;
     [service mergeMenuTopics:@[foo] forAccount:nil withSuccess:^{
         [expectation fulfill];
@@ -328,11 +308,23 @@
     [self seedPostsForTopic:topic1];
     XCTAssertTrue([topic1.posts count] > 0, @"Topic should have posts relationship with three posts.");
 
-    [context deleteObject:topic1];
-    NSError *error;
-    [context save:&error];
-    XCTAssertNil(error, @"There was an error saving the context after deleting a topic.");
+    //Save the new topic + posts in the context
+    XCTestExpectation *expectation = [self expectationWithDescription:@"topics saved expectation"];
+    [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
+        [expectation fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
+    // Delete the topic and posts from the context
+    [context deleteObject:topic1];
+
+    expectation = [self expectationWithDescription:@"topics saved expectation"];
+    [[ContextManager sharedInstance] saveContext:context withCompletionBlock:^{
+        [expectation fulfill];
+    }];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+
+    NSError *error;
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
     NSUInteger count = [context countForFetchRequest:fetchRequest error:&error];
     XCTAssertTrue(count == 0, @"Topic was not deleted successfully");
