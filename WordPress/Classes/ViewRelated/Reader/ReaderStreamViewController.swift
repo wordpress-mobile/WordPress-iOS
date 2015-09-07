@@ -529,7 +529,7 @@ import Foundation
 
         syncContext.performBlock {[weak self] () -> Void in
             var error: NSError?
-            let topic = syncContext.existingObjectWithID(self!.readerTopic!.objectID, error: &error) as! ReaderTopic
+            let topic = syncContext.existingObjectWithID(self!.readerTopic!.objectID, error: &error) as! ReaderAbstractTopic
 
             service.fetchPostsForTopic(topic,
                 earlierThan: NSDate(),
@@ -559,7 +559,7 @@ import Foundation
 
         syncContext.performBlock {[weak self] () -> Void in
             var error: NSError?
-            let topic = syncContext.existingObjectWithID(self!.readerTopic!.objectID, error: &error) as! ReaderTopic
+            let topic = syncContext.existingObjectWithID(self!.readerTopic!.objectID, error: &error) as! ReaderAbstractTopic
             
             service.backfillPostsForTopic(topic,
                 success: { (count:Int, hasMore:Bool) -> Void in
@@ -589,7 +589,7 @@ import Foundation
 
         syncContext.performBlock { [weak self] () -> Void in
             var error: NSError?
-            let topic = syncContext.existingObjectWithID(self!.readerTopic!.objectID, error: &error) as! ReaderTopic
+            let topic = syncContext.existingObjectWithID(self!.readerTopic!.objectID, error: &error) as! ReaderAbstractTopic
             service.fetchPostsForTopic(topic,
                 earlierThan: earlierThan,
                 success: { (count:Int, hasMore:Bool) -> Void in

@@ -1,9 +1,4 @@
 #import "ReaderTopic.h"
-#import "ReaderSite.h"
-
-NSString *const ReaderTopicTypeList = @"list";
-NSString *const ReaderTopicTypeTag = @"tag";
-NSString *const ReaderTopicTypeSite = @"site";
 
 @implementation ReaderTopic
 
@@ -19,20 +14,5 @@ NSString *const ReaderTopicTypeSite = @"site";
 @dynamic topicDescription;
 @dynamic topicID;
 @dynamic type;
-
-- (BOOL)isList
-{
-    return [self.type isEqualToString:ReaderTopicTypeList];
-}
-
-- (BOOL)isTag
-{
-    return [self.type isEqualToString:ReaderTopicTypeTag];
-}
-
-- (BOOL)isSite
-{
-    return [self.type isEqualToString:ReaderTopicTypeSite];
-}
 
 @end
