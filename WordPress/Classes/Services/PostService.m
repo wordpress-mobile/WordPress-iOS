@@ -33,7 +33,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
     PostCategory *category = [postCategoryService findWithBlogObjectID:blog.objectID andCategoryID:blog.defaultCategoryID];
     if (category) {
-        [post.categories addObject:category];
+        [post addCategoriesObject:category];
     }
     post.postFormat = blog.defaultPostFormat;
     return post;
@@ -690,11 +690,9 @@ const NSInteger PostServiceNumberToFetch = 40;
 
 - (NSArray *)remoteCategoriesForPost:(Post *)post
 {
-    NSMutableArray *remoteCategories = [NSMutableArray arrayWithCapacity:post.categories.count];
-    for (PostCategory *category in post.categories) {
-        [remoteCategories addObject:[self remoteCategoryWithCategory:category]];
-    }
-    return [NSArray arrayWithArray:remoteCategories];
+    return [[post.categories allObjects] wp_map:^id(PostCategory *category) {
+        return [self remoteCategoryWithCategory:category];
+    }];
 }
 
 - (RemotePostCategory *)remoteCategoryWithCategory:(PostCategory *)category

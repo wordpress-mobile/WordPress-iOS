@@ -26,23 +26,6 @@
 
 @synthesize unattached;
 
-+ (Media *)newMediaForPost:(AbstractPost *)post
-{
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:post.managedObjectContext];
-    media.blog = post.blog;
-    media.posts = [NSMutableSet setWithObject:post];
-    media.mediaID = @0;
-    return media;
-}
-
-+ (Media *)newMediaForBlog:(Blog *)blog
-{
-    Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:blog.managedObjectContext];
-    media.blog = blog;
-    media.mediaID = @0;
-    return media;
-}
-
 - (void)mediaTypeFromUrl:(NSString *)ext
 {
     CFStringRef fileExt = (__bridge CFStringRef)ext;
@@ -80,7 +63,8 @@
     } else if ([self.mediaTypeString isEqualToString:@"document"]) {
         return MediaTypeDocument;
     } else if ([self.mediaTypeString isEqualToString:@"featured"]) {
-        return MediaTypeFeatured;
+        // this is for object that where still storing the old value.
+        return MediaTypeImage;
     }
     return MediaTypeDocument;
 }
@@ -90,9 +74,6 @@
     switch (mediaType) {
         case MediaTypeImage:
             self.mediaTypeString = @"image";
-            break;
-        case MediaTypeFeatured:
-            self.mediaTypeString = @"featured";
             break;
         case MediaTypeVideo:
             self.mediaTypeString = @"video";
@@ -106,31 +87,16 @@
     }
 }
 
-- (NSString *)mediaTypeName
-{
-    if (self.mediaType == MediaTypeImage) {
-        return NSLocalizedString(@"Image", @"");
-    } else if (self.mediaType == MediaTypeVideo) {
-        return NSLocalizedString(@"Video", @"");
-    }
-
-    return self.mediaTypeString;
-}
-
 - (BOOL)featured
 {
-    return self.mediaType == MediaTypeFeatured;
+    for (AbstractPost *post in self.posts) {
+        if ([post.post_thumbnail isEqualToNumber:self.mediaID]){
+            return YES;
+        }
+    }
+    return NO;
 }
 
-- (void)setFeatured:(BOOL)featured
-{
-    self.mediaType = featured ? MediaTypeFeatured : MediaTypeImage;
-}
-
-+ (NSString *)mediaTypeForFeaturedImage
-{
-    return @"image";
-}
 
 #pragma mark -
 

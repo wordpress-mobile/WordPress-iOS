@@ -703,7 +703,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     }
     
     NotificationMedia *media        = userBlock.media.firstObject;
-    [cell downloadGravatarWithURL:media.mediaURL];
+    [cell downloadGravatarWithURL:media.mediaURL.removeGravatarFallback];
 }
 
 - (void)setupActionsCell:(NoteBlockActionsTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
