@@ -12,6 +12,8 @@ Changes to the data model:
 - `ReaderPost` added new integer fields for `wordCount`, and `readingTime`
 - `ReaderPost` added new boolean fields for `isExternal`, and `isJetpack`
 - `ReaderPost` removed fields `dateCommentsSynced`, and `storedComment`
+- Added new entities: `ReaderAbstractTopic`, `ReaderTagTopic`, `ReaderListTopic`, `ReaderDefaultTopic`, `ReaderSiteTopic`.
+- Removed obsolete mapping model: `SafeReaderTopicToReaderTopic`
 
 ## WordPress 37 (@sergioestevao 2015-08-01)
 
