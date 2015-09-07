@@ -34,7 +34,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 @property (nonatomic) NSUInteger backfillBatchNumber;
 @property (nonatomic, strong) NSMutableArray *backfilledRemotePosts;
 @property (nonatomic, strong) NSDate *backfillDate;
-@property (nonatomic) BOOL skippingSave;
 
 @end
 
@@ -52,18 +51,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 - (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
-    [self fetchPostsForTopic:topic earlierThan:date skippingSave:NO success:success failure:failure];
-}
-
-- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date skippingSave:(BOOL)skippingSave success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
-{
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
                                     count:ReaderPostServiceNumberToSync
                                    before:date
                                   success:^(NSArray *posts) {
-                                      [self mergePosts:posts earlierThan:date forTopic:topicObjectID skippingSave:skippingSave callingSuccess:success];
+                                      [self mergePosts:posts earlierThan:date forTopic:topicObjectID callingSuccess:success];
                                   } failure:^(NSError *error) {
                                       if (failure) {
                                           failure(error);
@@ -99,11 +93,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 - (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
-    [self backfillPostsForTopic:topic skippingSave:NO success:success failure:failure];
-}
-
-- (void)backfillPostsForTopic:(ReaderTopic *)topic skippingSave:(BOOL)skippingSave success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
-{
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPost *post = [self newestPostForTopic:topicObjectID];
     ReaderPostServiceBackfillState *state = [[ReaderPostServiceBackfillState alloc] init];
@@ -114,7 +103,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
     state.backfillBatchNumber = 0;
     state.backfilledRemotePosts = [NSMutableArray array];
-    state.skippingSave = skippingSave;
 
     [self fetchPostsToBackfillTopic:topicObjectID
                         earlierThan:[NSDate date]
@@ -127,59 +115,73 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 - (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    // Get a the post in our own context
-    NSError *error;
-    ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
-    if (error) {
-        if (failure) {
-            failure(error);
+    [self.managedObjectContext performBlock:^{
+
+        // Get a the post in our own context
+        NSError *error;
+        ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure(error);
+                }
+            });
+            return;
         }
-        return;
-    }
 
-    // Keep previous values in case of failure
-    BOOL oldValue = readerPost.isLiked;
-    BOOL like = !oldValue;
-    NSNumber *oldCount = [readerPost.likeCount copy];
+        // Keep previous values in case of failure
+        BOOL oldValue = readerPost.isLiked;
+        BOOL like = !oldValue;
+        NSNumber *oldCount = [readerPost.likeCount copy];
 
-    // Optimistically update
-    readerPost.isLiked = like;
-    if (like) {
-        readerPost.likeCount = @([readerPost.likeCount integerValue] + 1);
-    } else {
-        readerPost.likeCount = @([readerPost.likeCount integerValue] - 1);
-    }
-    [self.managedObjectContext performBlockAndWait:^{
+        // Optimistically update
+        readerPost.isLiked = like;
+        if (like) {
+            readerPost.likeCount = @([readerPost.likeCount integerValue] + 1);
+        } else {
+            readerPost.likeCount = @([readerPost.likeCount integerValue] - 1);
+        }
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+
+        // Define success block. Make sure work is performed on the main queue
+        void (^successBlock)() = ^void() {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (like) {
+                    [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
+                }
+                if (success) {
+                    success();
+                }
+            });
+        };
+
+        // Define failure block. Make sure rollback happens in the moc's queue,
+        // and failure is called on the main queue.
+        void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+            [self.managedObjectContext performBlockAndWait:^{
+                // Revert changes on failure
+                readerPost.isLiked = oldValue;
+                readerPost.likeCount = oldCount;
+
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure(error);
+                }
+            });
+        };
+
+        // Call the remote service.
+        ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
+        if (like) {
+            [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
+        } else {
+            [remoteService unlikePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
+        }
+
     }];
-
-    // Define success block
-    void (^successBlock)() = ^void() {
-        if (success) {
-            success();
-        }
-    };
-
-    // Define failure block
-    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        // Revert changes on failure
-        readerPost.isLiked = oldValue;
-        readerPost.likeCount = oldCount;
-        [self.managedObjectContext performBlockAndWait:^{
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        }];
-        if (failure) {
-            failure(error);
-        }
-    };
-
-    // Call the remote service
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
-    if (like) {
-        [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
-    } else {
-        [remoteService unlikePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
-    }
 }
 
 - (void)setFollowing:(BOOL)following
@@ -525,7 +527,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     if (state.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || oldestDate == [state.backfillDate earlierDate:oldestDate]) {
         // our work is done
-        [self mergePosts:state.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topicObjectID skippingSave:state.skippingSave callingSuccess:success];
+        [self mergePosts:state.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topicObjectID callingSuccess:success];
     } else {
         [self fetchPostsToBackfillTopic:topicObjectID earlierThan:oldestDate backfillState:state success:success failure:failure];
     }
@@ -545,7 +547,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (void)mergePosts:(NSArray *)posts
        earlierThan:(NSDate *)date
           forTopic:(NSManagedObjectID *)topicObjectID
-      skippingSave:(BOOL)skippingSave
     callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success
 {
     // Use a performBlock here so the work to merge does not block the main thread.
@@ -579,16 +580,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         [self deletePostsFromBlockedSites];
         readerTopic.lastSynced = [NSDate date];
 
-        if (!skippingSave) {
-            // performBlockAndWait here so we know our objects are saved before we call success.
-            [self.managedObjectContext performBlockAndWait:^{
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-            }];
-        }
-        if (success) {
-            BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
-            success(postsCount, hasMore);
-        }
+        BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+            // Is called on main queue
+            if (success) {
+                success(postsCount, hasMore);
+            }
+        }];
     }];
 }
 
