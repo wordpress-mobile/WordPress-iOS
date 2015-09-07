@@ -20,6 +20,7 @@
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
 #import "RemoteBlogSettings.h"
+#import "ContextManager.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -272,6 +273,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                               }
                               failure:failure];
     }];
+}
+
+- (void)updatePassword:(NSString *)password forBlog:(Blog *)blog
+{
+    blog.password = password;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success
@@ -660,7 +667,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             }
             blog.options = [NSDictionary dictionaryWithDictionary:options];
             blog.siteVisibility = (SiteVisibility)([[blog getOptionValue:@"blog_public"] integerValue]);
-            blog.isAdmin = YES;
+            //HACK:Sergio Estevao (2015-08-31): Because there is no direct way to
+            // know if a user has permissions to change the options we check if the blog title property is read only or not.
+            if ([blog.options numberForKeyPath:@"blog_title.readonly"]) {
+                blog.isAdmin = ![[blog.options numberForKeyPath:@"blog_title.readonly"] boolValue];
+            }
+
             float version = [[blog version] floatValue];
             if (version < [MinimumVersion floatValue]) {
                 if (blog.lastUpdateWarning == nil
@@ -673,7 +685,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 }
             }
 
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:completion];
         }];
     };
 }
