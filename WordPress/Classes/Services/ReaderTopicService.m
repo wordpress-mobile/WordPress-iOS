@@ -412,17 +412,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return nil;
     }
 
-    ReaderAbstractTopic *topic = [self findWithPath:path];
-    if (topic == nil) {
-        topic = [self topicForRemoteTopic:remoteTopic];
-    }
-
+    ReaderAbstractTopic *topic = [self topicForRemoteTopic:remoteTopic];
     return topic;
 }
 
 - (ReaderAbstractTopic *)topicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
-    if ([remoteTopic.path rangeOfString:@"/tag/"].location != NSNotFound) {
+    if ([remoteTopic.path rangeOfString:@"/tags/"].location != NSNotFound) {
         return [self tagTopicForRemoteTopic:remoteTopic];
 
     } else if ([remoteTopic.path rangeOfString:@"/list/"].location != NSNotFound) {
@@ -435,9 +431,11 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (ReaderTagTopic *)tagTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
-    ReaderTagTopic *topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderTagTopic classNameWithoutNamespaces]
+    ReaderTagTopic *topic = (ReaderTagTopic *)[self findWithPath:remoteTopic.path];
+    if (!topic || ![topic isKindOfClass:[ReaderTagTopic class]]) {
+        topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderTagTopic classNameWithoutNamespaces]
                                                              inManagedObjectContext:self.managedObjectContext];
-
+    }
     topic.type = [ReaderTagTopic TopicType];
     topic.tagID = remoteTopic.topicID;
     topic.title = [self formatTitle:remoteTopic.title];
@@ -451,30 +449,34 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (ReaderListTopic *)listTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
-    ReaderListTopic *topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderListTopic classNameWithoutNamespaces]
-                                                          inManagedObjectContext:self.managedObjectContext];
-
+    ReaderListTopic *topic = (ReaderListTopic *)[self findWithPath:remoteTopic.path];
+    if (!topic || ![topic isKindOfClass:[ReaderListTopic class]]) {
+        topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderListTopic classNameWithoutNamespaces]
+                                              inManagedObjectContext:self.managedObjectContext];
+    }
     topic.type = [ReaderListTopic TopicType];
     topic.listID = remoteTopic.topicID;
     topic.title = [self formatTitle:remoteTopic.title];
     topic.slug = remoteTopic.slug;
     topic.path = remoteTopic.path;
-    topic.showInMenu = remoteTopic.isMenuItem;
-    topic.following = remoteTopic.isSubscribed;
+    topic.showInMenu = YES;
+    topic.following = YES;
 
     return topic;
 }
 
 - (ReaderDefaultTopic *)defaultTopicForRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
-    ReaderDefaultTopic *topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderDefaultTopic classNameWithoutNamespaces]
-                                                           inManagedObjectContext:self.managedObjectContext];
-
+    ReaderDefaultTopic *topic = (ReaderDefaultTopic *)[self findWithPath:remoteTopic.path];
+    if (!topic || ![topic isKindOfClass:[ReaderDefaultTopic class]]) {
+        topic = [NSEntityDescription insertNewObjectForEntityForName:[ReaderDefaultTopic classNameWithoutNamespaces]
+                                              inManagedObjectContext:self.managedObjectContext];
+    }
     topic.type = [ReaderDefaultTopic TopicType];
     topic.title = [self formatTitle:remoteTopic.title];
     topic.path = remoteTopic.path;
-    topic.showInMenu = remoteTopic.isMenuItem;
-    topic.following = remoteTopic.isSubscribed;
+    topic.showInMenu = YES;
+    topic.following = YES;
 
     return topic;
 }
