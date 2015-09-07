@@ -659,7 +659,7 @@ import Foundation
         }
 
         var error:NSError?
-        var topic = managedObjectContext().existingObjectWithID(readerTopic!.objectID, error:&error) as! ReaderTopic
+        var topic = managedObjectContext().existingObjectWithID(readerTopic!.objectID, error:&error) as! ReaderAbstractTopic
         if let anError = error  {
             DDLogSwift.logError(anError.description)
         }
