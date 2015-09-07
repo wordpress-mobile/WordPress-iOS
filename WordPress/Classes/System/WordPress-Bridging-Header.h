@@ -38,6 +38,7 @@
 #import "ReaderPostService.h"
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
+#import "RemoteReaderTopic.h"
 
 #import "ServiceRemoteREST.h"
 #import "SourcePostAttribution.h"

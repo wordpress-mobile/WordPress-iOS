@@ -2,16 +2,16 @@ import Foundation
 
 @objc public class ReaderSiteTopic: ReaderAbstractTopic
 {
-    @NSManaged var feedID: NSNumber
-    @NSManaged var isJetpack: Bool
-    @NSManaged var isPrivate: Bool
-    @NSManaged var isVisible: Bool
-    @NSManaged var postCount: NSNumber
-    @NSManaged var siteBlavatar: String
-    @NSManaged var siteDescription: String
-    @NSManaged var siteID: NSNumber
-    @NSManaged var siteURL: String
-    @NSManaged var subscriberCount: NSNumber
+    @NSManaged public var feedID: NSNumber
+    @NSManaged public var isJetpack: Bool
+    @NSManaged public var isPrivate: Bool
+    @NSManaged public var isVisible: Bool
+    @NSManaged public var postCount: NSNumber
+    @NSManaged public var siteBlavatar: String
+    @NSManaged public var siteDescription: String
+    @NSManaged public var siteID: NSNumber
+    @NSManaged public var siteURL: String
+    @NSManaged public var subscriberCount: NSNumber
 
     public class var TopicType: String {
         return "site"
