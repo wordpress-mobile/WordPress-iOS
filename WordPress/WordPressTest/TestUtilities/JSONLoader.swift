@@ -1,27 +1,51 @@
 import Foundation
 
-class JSONLoader
-{
-    typealias JSONDictionary = Dictionary<String, AnyObject>
+@objc public class JSONLoader : NSObject {
+    public typealias JSONDictionary = Dictionary<String, AnyObject>
+    
+    /**
+    *  @brief      Loads the specified json file name and returns a dictionary representing it.
+    *
+    *  @param      path    The path of the json file to load.
+    *
+    *  @returns    A dictionary representing the contents of the json file.
+    */
+    public func loadFileWithName(name : String, type : String) -> JSONDictionary? {
+        
+        let path = NSBundle(forClass: self.dynamicType).pathForResource(name, ofType: type)
+        
+        if let unwrappedPath = path {
+            return loadFileWithPath(unwrappedPath)
+        } else {
+            return nil
+        }
+    }
     
     /**
      *  @brief      Loads the specified json file name and returns a dictionary representing it.
      *
-     *  @param      filepath        The path of the json file to load.
+     *  @param      path    The path of the json file to load.
      *
      *  @returns    A dictionary representing the contents of the json file.
      */
-    func load(filepath : String) -> JSONDictionary? {
+    public func loadFileWithPath(path : String) -> JSONDictionary? {
         
-        var parseResult : JSONDictionary?
-        
-        if let contents = NSData(contentsOfFile: filepath) {
-            let options : NSJSONReadingOptions = .MutableContainers | .MutableLeaves
-            var error : NSErrorPointer = nil
-
-            parseResult = NSJSONSerialization.JSONObjectWithData(contents, options: options, error: error) as? JSONDictionary
+        if let contents = NSData(contentsOfFile: path) {
+            return parseData(contents)
         }
         
-        return parseResult
+        return nil
+    }
+
+    private func parseData(data : NSData) -> JSONDictionary? {
+        let options : NSJSONReadingOptions = .MutableContainers | .MutableLeaves
+        var error : NSErrorPointer = nil
+        
+        if let parseResult : AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: options, error: error) {
+            
+            return parseResult as? JSONDictionary
+        }
+        
+        return nil
     }
 }

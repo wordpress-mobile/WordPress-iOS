@@ -84,13 +84,15 @@
 		598F86AB1B67BD7600550C9C /* ThemeServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */; };
 		599738401B87AD2600EC1C30 /* WordPressComServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5997383F1B87AD2600EC1C30 /* WordPressComServiceRemote.m */; };
 		59A9AB351B4C33A500A433DC /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A9AB341B4C33A500A433DC /* ThemeService.m */; };
-		59B48B5F1B99D209008EBB84 /* get-themes-v1.1.json in Resources */ = {isa = PBXBuildFile; fileRef = 59B48B5E1B99D209008EBB84 /* get-themes-v1.1.json */; };
+		59B48B5F1B99D209008EBB84 /* get-multiple-themes-v1.1.json in Resources */ = {isa = PBXBuildFile; fileRef = 59B48B5E1B99D209008EBB84 /* get-multiple-themes-v1.1.json */; };
 		59B48B621B99E132008EBB84 /* JSONLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B48B611B99E132008EBB84 /* JSONLoader.swift */; };
 		59D328FD1ACC2D0700356827 /* WPLookbackPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */; };
 		59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DD94331AC479ED0032DD6B /* WPLogger.m */; };
 		59E2AAE31B2096BF0051DC06 /* ServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E2AAE21B2096BF0051DC06 /* ServiceRemoteREST.m */; };
 		59E2AAE81B20E3EA0051DC06 /* ServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */; };
 		59E2AAEC1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */; };
+		59F9C1571B9DCE4E00885CC1 /* get-single-theme-v1.1.json in Resources */ = {isa = PBXBuildFile; fileRef = 59F9C1561B9DCE4E00885CC1 /* get-single-theme-v1.1.json */; };
+		59F9C1591B9DD3D600885CC1 /* get-purchased-themes-v1.1.json in Resources */ = {isa = PBXBuildFile; fileRef = 59F9C1581B9DD3D600885CC1 /* get-purchased-themes-v1.1.json */; };
 		59FBD5621B5684F300734466 /* ThemeServiceTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59FBD5611B5684F300734466 /* ThemeServiceTests.m */; };
 		5D000DDE1AC076C000A7BAF9 /* PostCardActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D000DDD1AC076C000A7BAF9 /* PostCardActionBar.m */; };
 		5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D000DE01AC0879600A7BAF9 /* PostCardActionBarItem.m */; };
@@ -746,7 +748,7 @@
 		59A9AB331B4C33A500A433DC /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
 		59A9AB341B4C33A500A433DC /* ThemeService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeService.m; sourceTree = "<group>"; };
 		59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalCoreDataServiceTests.m; sourceTree = "<group>"; };
-		59B48B5E1B99D209008EBB84 /* get-themes-v1.1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-themes-v1.1.json"; sourceTree = "<group>"; };
+		59B48B5E1B99D209008EBB84 /* get-multiple-themes-v1.1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-multiple-themes-v1.1.json"; sourceTree = "<group>"; };
 		59B48B611B99E132008EBB84 /* JSONLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONLoader.swift; path = TestUtilities/JSONLoader.swift; sourceTree = "<group>"; };
 		59D328FB1ACC2D0700356827 /* WPLookbackPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLookbackPresenter.h; sourceTree = "<group>"; };
 		59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLookbackPresenter.m; sourceTree = "<group>"; };
@@ -755,6 +757,8 @@
 		59E2AAE21B2096BF0051DC06 /* ServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteREST.m; sourceTree = "<group>"; };
 		59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteRESTTests.m; sourceTree = "<group>"; };
 		59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceRemoteRESTTests.m; sourceTree = "<group>"; };
+		59F9C1561B9DCE4E00885CC1 /* get-single-theme-v1.1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-single-theme-v1.1.json"; sourceTree = "<group>"; };
+		59F9C1581B9DD3D600885CC1 /* get-purchased-themes-v1.1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-purchased-themes-v1.1.json"; sourceTree = "<group>"; };
 		59FBD5611B5684F300734466 /* ThemeServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeServiceTests.m; sourceTree = "<group>"; };
 		5D000DDC1AC076C000A7BAF9 /* PostCardActionBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardActionBar.h; sourceTree = "<group>"; };
 		5D000DDD1AC076C000A7BAF9 /* PostCardActionBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCardActionBar.m; sourceTree = "<group>"; };
@@ -3406,7 +3410,9 @@
 				B5AEEC781ACACFDA008BF2A4 /* notifications-replied-comment.json */,
 				B5EFB1D01B33630C007608A3 /* notifications-settings.json */,
 				93CD939219099BE70049096E /* authtoken.json */,
-				59B48B5E1B99D209008EBB84 /* get-themes-v1.1.json */,
+				59B48B5E1B99D209008EBB84 /* get-multiple-themes-v1.1.json */,
+				59F9C1581B9DD3D600885CC1 /* get-purchased-themes-v1.1.json */,
+				59F9C1561B9DCE4E00885CC1 /* get-single-theme-v1.1.json */,
 				E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */,
 				E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */,
 				E1E4CE0E1774531500430844 /* misteryman.jpg */,
@@ -3786,13 +3792,15 @@
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
 				E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */,
 				855408881A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json in Resources */,
-				59B48B5F1B99D209008EBB84 /* get-themes-v1.1.json in Resources */,
+				59B48B5F1B99D209008EBB84 /* get-multiple-themes-v1.1.json in Resources */,
+				59F9C1591B9DD3D600885CC1 /* get-purchased-themes-v1.1.json in Resources */,
 				8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */,
 				B5AEEC7A1ACACFDA008BF2A4 /* notifications-like.json in Resources */,
 				E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
+				59F9C1571B9DCE4E00885CC1 /* get-single-theme-v1.1.json in Resources */,
 				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
@@ -4641,7 +4649,6 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 				WPCOM_SCHEME = wpdebug;
 			};
@@ -4698,7 +4705,6 @@
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 				WPCOM_SCHEME = wordpress;
 			};
@@ -4778,7 +4784,6 @@
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
 				WPCOM_SCHEME = wordpress;
 			};
@@ -4856,7 +4861,6 @@
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
 				WPCOM_SCHEME = wpinternal;
 			};
@@ -4879,6 +4883,52 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WordPressTest/WordPressTest-Prefix.pch";
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/1PasswordExtension\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/AMPopTip\"",
+					"\"${PODS_ROOT}/Headers/Public/Automattic-Tracks-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/CrashlyticsLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/Public/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/Public/EmailChecker\"",
+					"\"${PODS_ROOT}/Headers/Public/Expecta\"",
+					"\"${PODS_ROOT}/Headers/Public/FormatterKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Google-Diff-Match-Patch\"",
+					"\"${PODS_ROOT}/Headers/Public/Helpshift\"",
+					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
+					"\"${PODS_ROOT}/Headers/Public/KIF\"",
+					"\"${PODS_ROOT}/Headers/Public/Lookback\"",
+					"\"${PODS_ROOT}/Headers/Public/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/MRProgress\"",
+					"\"${PODS_ROOT}/Headers/Public/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/Public/NSLogger\"",
+					"\"${PODS_ROOT}/Headers/Public/NSLogger-CocoaLumberjack-connector\"",
+					"\"${PODS_ROOT}/Headers/Public/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/Public/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/Public/OCMock\"",
+					"\"${PODS_ROOT}/Headers/Public/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Public/Reachability\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactiveCocoa\"",
+					"\"${PODS_ROOT}/Headers/Public/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/Simperium\"",
+					"\"${PODS_ROOT}/Headers/Public/SocketRocket\"",
+					"\"${PODS_ROOT}/Headers/Public/Specta\"",
+					"\"${PODS_ROOT}/Headers/Public/UIAlertView+Blocks\"",
+					"\"${PODS_ROOT}/Headers/Public/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/Public/WPMediaPicker\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-AppbotX\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-iOS-Editor\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-iOS-Shared\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Analytics-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Stats-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/Public/wpxmlrpc\"",
+				);
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_MODULE_NAME = WordPressTests;
@@ -5189,6 +5239,52 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/1PasswordExtension\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/AMPopTip\"",
+					"\"${PODS_ROOT}/Headers/Public/Automattic-Tracks-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/CrashlyticsLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/Public/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/Public/EmailChecker\"",
+					"\"${PODS_ROOT}/Headers/Public/Expecta\"",
+					"\"${PODS_ROOT}/Headers/Public/FormatterKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Google-Diff-Match-Patch\"",
+					"\"${PODS_ROOT}/Headers/Public/Helpshift\"",
+					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
+					"\"${PODS_ROOT}/Headers/Public/KIF\"",
+					"\"${PODS_ROOT}/Headers/Public/Lookback\"",
+					"\"${PODS_ROOT}/Headers/Public/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/MRProgress\"",
+					"\"${PODS_ROOT}/Headers/Public/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/Public/NSLogger\"",
+					"\"${PODS_ROOT}/Headers/Public/NSLogger-CocoaLumberjack-connector\"",
+					"\"${PODS_ROOT}/Headers/Public/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/Public/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/Public/OCMock\"",
+					"\"${PODS_ROOT}/Headers/Public/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Public/Reachability\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactiveCocoa\"",
+					"\"${PODS_ROOT}/Headers/Public/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/Simperium\"",
+					"\"${PODS_ROOT}/Headers/Public/SocketRocket\"",
+					"\"${PODS_ROOT}/Headers/Public/Specta\"",
+					"\"${PODS_ROOT}/Headers/Public/UIAlertView+Blocks\"",
+					"\"${PODS_ROOT}/Headers/Public/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/Public/WPMediaPicker\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-AppbotX\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-iOS-Editor\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-iOS-Shared\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Analytics-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Stats-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/Public/wpxmlrpc\"",
+				);
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_MODULE_NAME = WordPressTests;
@@ -5217,6 +5313,52 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WordPressTest/WordPressTest-Prefix.pch";
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/1PasswordExtension\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/AMPopTip\"",
+					"\"${PODS_ROOT}/Headers/Public/Automattic-Tracks-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/CrashlyticsLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/Public/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/Public/EmailChecker\"",
+					"\"${PODS_ROOT}/Headers/Public/Expecta\"",
+					"\"${PODS_ROOT}/Headers/Public/FormatterKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Google-Diff-Match-Patch\"",
+					"\"${PODS_ROOT}/Headers/Public/Helpshift\"",
+					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
+					"\"${PODS_ROOT}/Headers/Public/KIF\"",
+					"\"${PODS_ROOT}/Headers/Public/Lookback\"",
+					"\"${PODS_ROOT}/Headers/Public/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/MRProgress\"",
+					"\"${PODS_ROOT}/Headers/Public/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/Public/NSLogger\"",
+					"\"${PODS_ROOT}/Headers/Public/NSLogger-CocoaLumberjack-connector\"",
+					"\"${PODS_ROOT}/Headers/Public/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/Public/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/Public/OCMock\"",
+					"\"${PODS_ROOT}/Headers/Public/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Public/Reachability\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactiveCocoa\"",
+					"\"${PODS_ROOT}/Headers/Public/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/Simperium\"",
+					"\"${PODS_ROOT}/Headers/Public/SocketRocket\"",
+					"\"${PODS_ROOT}/Headers/Public/Specta\"",
+					"\"${PODS_ROOT}/Headers/Public/UIAlertView+Blocks\"",
+					"\"${PODS_ROOT}/Headers/Public/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/Public/WPMediaPicker\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-AppbotX\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-iOS-Editor\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-iOS-Shared\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Analytics-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Stats-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/Public/wpxmlrpc\"",
+				);
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_MODULE_NAME = WordPressTests;
@@ -5244,6 +5386,52 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "WordPressTest/WordPressTest-Prefix.pch";
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/1PasswordExtension\"",
+					"\"${PODS_ROOT}/Headers/Public/AFNetworking\"",
+					"\"${PODS_ROOT}/Headers/Public/AMPopTip\"",
+					"\"${PODS_ROOT}/Headers/Public/Automattic-Tracks-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/CocoaLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/CrashlyticsLumberjack\"",
+					"\"${PODS_ROOT}/Headers/Public/DTCoreText\"",
+					"\"${PODS_ROOT}/Headers/Public/DTFoundation\"",
+					"\"${PODS_ROOT}/Headers/Public/EmailChecker\"",
+					"\"${PODS_ROOT}/Headers/Public/Expecta\"",
+					"\"${PODS_ROOT}/Headers/Public/FormatterKit\"",
+					"\"${PODS_ROOT}/Headers/Public/Google-Diff-Match-Patch\"",
+					"\"${PODS_ROOT}/Headers/Public/Helpshift\"",
+					"\"${PODS_ROOT}/Headers/Public/HockeySDK\"",
+					"\"${PODS_ROOT}/Headers/Public/KIF\"",
+					"\"${PODS_ROOT}/Headers/Public/Lookback\"",
+					"\"${PODS_ROOT}/Headers/Public/MGImageUtilities\"",
+					"\"${PODS_ROOT}/Headers/Public/MRProgress\"",
+					"\"${PODS_ROOT}/Headers/Public/Mixpanel\"",
+					"\"${PODS_ROOT}/Headers/Public/NSLogger\"",
+					"\"${PODS_ROOT}/Headers/Public/NSLogger-CocoaLumberjack-connector\"",
+					"\"${PODS_ROOT}/Headers/Public/NSObject-SafeExpectations\"",
+					"\"${PODS_ROOT}/Headers/Public/NSURL+IDN\"",
+					"\"${PODS_ROOT}/Headers/Public/OCMock\"",
+					"\"${PODS_ROOT}/Headers/Public/OHHTTPStubs\"",
+					"\"${PODS_ROOT}/Headers/Public/Reachability\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactiveCocoa\"",
+					"\"${PODS_ROOT}/Headers/Public/SVProgressHUD\"",
+					"\"${PODS_ROOT}/Headers/Public/Simperium\"",
+					"\"${PODS_ROOT}/Headers/Public/SocketRocket\"",
+					"\"${PODS_ROOT}/Headers/Public/Specta\"",
+					"\"${PODS_ROOT}/Headers/Public/UIAlertView+Blocks\"",
+					"\"${PODS_ROOT}/Headers/Public/UIDeviceIdentifier\"",
+					"\"${PODS_ROOT}/Headers/Public/WPMediaPicker\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-AppbotX\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-iOS-Editor\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPress-iOS-Shared\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressApi\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Analytics-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Stats-iOS\"",
+					"\"${PODS_ROOT}/Headers/Public/google-plus-ios-sdk\"",
+					"\"${PODS_ROOT}/Headers/Public/wpxmlrpc\"",
+				);
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_MODULE_NAME = WordPressTests;
