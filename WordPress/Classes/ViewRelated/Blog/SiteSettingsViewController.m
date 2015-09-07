@@ -23,11 +23,13 @@
 #import "PostCategory.h"
 #import "PostCategoriesViewController.h"
 #import "PostSettingsSelectionViewController.h"
+#import "BlogSiteVisibilityHelper.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
     SiteSettingsGeneralTagline,
     SiteSettingsGeneralURL,
+    SiteSettingsGeneralPrivacy,
     SiteSettingsGeneralCount,
 };
 
@@ -63,6 +65,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 @property (nonatomic, strong) SettingTableViewCell *siteTitleCell;
 @property (nonatomic, strong) SettingTableViewCell *siteTaglineCell;
 @property (nonatomic, strong) SettingTableViewCell *addressTextCell;
+@property (nonatomic, strong) SettingTableViewCell *privacyTextCell;
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
@@ -74,17 +77,13 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 
 @property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) NSString *url;
 @property (nonatomic, strong) NSString *authToken;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *url;
-
-@property (nonatomic,   copy) NSString *startingPwd;
-@property (nonatomic,   copy) NSString *startingUser;
-@property (nonatomic,   copy) NSString *startingUrl;
-
 @property (nonatomic, assign) BOOL geolocationEnabled;
 @property (nonatomic, assign) BOOL isSiteDotCom;
+
 @property (nonatomic, assign) BOOL isKeyboardVisible;
 
 @end
@@ -111,14 +110,19 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     DDLogMethod();
     [super viewDidLoad];
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
+    
     if (self.blog.account) {
-        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionWriting)];
+        self.tableSections = @[@(SiteSettingsSectionGeneral)];
     } else {
-        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount), @(SiteSettingsSectionWriting)];
+        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount)];
     }    
+    if (self.blog.isAdmin) {
+        self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionWriting)];
+    }
     if ([self.blog supports:BlogFeatureRemovable]) {
         self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
     }
+    
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -128,10 +132,6 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     self.authToken = self.blog.authToken;
     self.username = self.blog.usernameForSite;
     self.password = self.blog.password;
-
-    self.startingUser = self.username;
-    self.startingPwd = self.password;
-    self.startingUrl = self.url;
     self.geolocationEnabled = self.blog.geolocationEnabled;
     
     [self refreshData];
@@ -161,11 +161,13 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     NSInteger settingsSection = [self.tableSections[section] intValue];
     switch (settingsSection) {
         case SiteSettingsSectionGeneral: {
-            if ([self.blog supports:BlogFeaturePushNotifications]) {
-                return SiteSettingsGeneralCount;
-            } else {
-                return SiteSettingsGeneralCount-1;
+            NSInteger rowsToHide = 0;
+            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
+                //  NOTE: Sergio Estevao (2015-08-25): Hides the privacy setting for self-hosted sites not in jetpack 
+                // because XML-RPC doens't support this setting to be read or changed.
+                rowsToHide += 1;
             }
+            return SiteSettingsGeneralCount - rowsToHide;
         }
         break;
         case SiteSettingsSectionAccount:
@@ -297,9 +299,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     if (_siteTitleCell) {
         return _siteTitleCell;
     }
-    _siteTitleCell = [[SettingTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-    _siteTitleCell.textLabel.text = NSLocalizedString(@"Site Title", @"");
-    _siteTitleCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    _siteTitleCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Site Title", @"Label for site title blog setting")
+                                                          editable:self.blog.isAdmin
+                                                   reuseIdentifier:nil];
     return _siteTitleCell;
 }
 
@@ -308,8 +310,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     if (_siteTaglineCell) {
         return _siteTaglineCell;
     }
-    _siteTaglineCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Tagline", @"")
-                                                          editable:YES
+    _siteTaglineCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Tagline", @"Label for tagline blog setting")
+                                                          editable:self.blog.isAdmin
                                                    reuseIdentifier:nil];
     return _siteTaglineCell;
 }
@@ -319,10 +321,21 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     if (_addressTextCell) {
         return _addressTextCell;
     }
-    _addressTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Address", @"")
+    _addressTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Address", @"Label for url blog setting")
                                                           editable:NO
                                                    reuseIdentifier:nil];
     return _addressTextCell;
+}
+
+- (SettingTableViewCell *)privacyTextCell
+{
+    if (_privacyTextCell) {
+        return _privacyTextCell;
+    }
+    _privacyTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Privacy", @"Label for the privacy setting")
+                                                          editable:self.blog.isAdmin
+                                                   reuseIdentifier:nil];
+    return _privacyTextCell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForGeneralSettingsInRow:(NSInteger)row
@@ -351,6 +364,10 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
                 [self.addressTextCell setTextValue:NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field")];
             }
             return self.addressTextCell;
+        } break;
+        case SiteSettingsGeneralPrivacy: {
+            [self.privacyTextCell setTextValue:[self.blog textForCurrentSiteVisibility]];
+            return self.privacyTextCell;
         } break;
     }
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
@@ -392,7 +409,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     NSInteger settingsSection = [self.tableSections[section] intValue];
     NSString *title = [self titleForHeaderInSection:settingsSection];
     if (title.length == 0) {
-        return nil;
+        return [[UIView alloc] initWithFrame:CGRectZero];
     }
     
     WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
@@ -407,7 +424,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    NSString *title = [self titleForHeaderInSection:section];
+    NSInteger settingsSection = [self.tableSections[section] intValue];
+    NSString *title = [self titleForHeaderInSection:settingsSection];
     return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
@@ -428,10 +446,59 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     return headingTitle;
 }
 
+- (void)showPrivacySelector
+{
+    NSArray *values = @[ @(SiteVisibilityPublic), @(SiteVisibilityHidden), @(SiteVisibilityPrivate)];
+    NSMutableArray *titles = [NSMutableArray array];
+    for (NSNumber * value in values) {
+        [titles addObject:[BlogSiteVisibilityHelper textForSiteVisibility:[value integerValue]]];
+    }
+    NSArray *hints = @[
+                       NSLocalizedString(@"Your site is visible to everyone, and it may be indexed by search engines.",
+                                         @"Hint for users when public privacy setting is set"),
+                       NSLocalizedString(@"Your site is visible to everyone, but asks to search engines to not index your site.",
+                                         @"Hint for users when hidden privacy setting is set"),
+                       NSLocalizedString(@"Your site is only visible to you and users you approve.",
+                                         @"Hint for users when private privacy setting is set"),
+                       ];
+
+    NSNumber *currentPrivacy = @(self.blog.siteVisibility);
+    if (!currentPrivacy) {
+        currentPrivacy = [values firstObject];
+    }
+    
+    NSDictionary *settingsSelectionConfiguration = @{
+                                      SettingsSelectionDefaultValueKey   : [values firstObject],
+                                      SettingsSelectionTitleKey          : NSLocalizedString(@"Privacy", @"Title for screen to select the privacy options for a blog"),
+                                      SettingsSelectionTitlesKey         : titles,
+                                      SettingsSelectionValuesKey         : values,
+                                      SettingsSelectionCurrentValueKey   : currentPrivacy,
+                                      SettingsSelectionHintsKey          : hints
+                                      };
+    
+    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:settingsSelectionConfiguration];
+    __weak __typeof__(self) weakSelf = self;
+    vc.onItemSelected = ^(NSNumber *status) {
+        // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
+        if ([status isKindOfClass:[NSNumber class]]) {
+            SiteVisibility newSiteVisibility = (SiteVisibility)[status integerValue];
+            if (weakSelf.blog.siteVisibility != newSiteVisibility) {
+                weakSelf.blog.siteVisibility = newSiteVisibility;
+                [weakSelf saveSettings];
+            }
+        }
+    };
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectInGeneralSectionRow:(NSInteger)row
 {
     switch (row) {
         case SiteSettingsGeneralTitle:{
+            if (!self.blog.isAdmin) {
+                return;
+            }
             SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.blogName
                                                                                                  placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
                                                                                                               hint:@""
@@ -447,6 +514,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             [self.navigationController pushViewController:siteTitleViewController animated:YES];
         }break;
         case SiteSettingsGeneralTagline:{
+            if (!self.blog.isAdmin) {
+                return;
+            }
             SettingsMultiTextViewController *siteTaglineViewController = [[SettingsMultiTextViewController alloc] initWithText:self.blog.blogTagline
                                                                                                  placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
                                                                                                               hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
@@ -462,8 +532,11 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             };
             [self.navigationController pushViewController:siteTaglineViewController animated:YES];
         }break;
-        case SiteSettingsGeneralURL:{
-            
+        case SiteSettingsGeneralPrivacy:{
+            if (!self.blog.isAdmin) {
+                return;
+            }
+            [self showPrivacySelector];
         }break;
     }
 }
@@ -481,7 +554,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
                 if (![value isEqualToString:self.blog.password]) {
                     [self.navigationItem setHidesBackButton:YES animated:YES];
                     self.password = value;
-                    [self validateUrl];
+                    [self validateLoginCredentials];
                 }
             };
             [self.navigationController pushViewController:siteTitleViewController animated:YES];
@@ -614,102 +687,54 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 
 - (NSString *)getURLToValidate
 {
-    NSString *urlToValidate = self.url;
-
+    NSString *urlToValidate = self.blog.url;
+    
     if (![urlToValidate hasPrefix:@"http"]) {
         urlToValidate = [NSString stringWithFormat:@"http://%@", urlToValidate];
     }
-
+    
     NSError *error = nil;
-
+    
     NSRegularExpression *wplogin = [NSRegularExpression regularExpressionWithPattern:@"/wp-login.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *wpadmin = [NSRegularExpression regularExpressionWithPattern:@"/wp-admin/?$" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *trailingslash = [NSRegularExpression regularExpressionWithPattern:@"/?$" options:NSRegularExpressionCaseInsensitive error:&error];
-
+    
     urlToValidate = [wplogin stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
     urlToValidate = [wpadmin stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
     urlToValidate = [trailingslash stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
-
+    
     return urlToValidate;
 }
 
-- (void)validateXmlprcURL:(NSURL *)xmlRpcURL
+- (void)validateLoginCredentials
 {
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
+
+    NSURL *xmlRpcURL = [NSURL URLWithString:self.blog.xmlrpc];
     WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL
                                                                username:self.username
                                                                password:self.password];
-
+    __weak __typeof__(self) weakSelf = self;
     [api getBlogOptionsWithSuccess:^(id options){
-        if ([options objectForKey:@"wordpress.com"] != nil) {
-            self.isSiteDotCom = YES;
-            [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
-        } else {
-            self.isSiteDotCom = NO;
-            [self loginForSiteWithXmlRpcUrl:xmlRpcURL];
+        [SVProgressHUD dismiss];
+        __typeof__(self) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
         }
-    } failure:^(NSError *failure){
-        [SVProgressHUD dismiss];
-        [self validationDidFail:failure];
-    }];
-}
-
-- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL
-{
-    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextCell.detailTextLabel.text password:self.password];
-    [api getBlogsWithSuccess:^(NSArray *blogs) {
-        [SVProgressHUD dismiss];
-        [self validationSuccess:[xmlRpcURL absoluteString]];
-    } failure:^(NSError *error) {
-        [SVProgressHUD dismiss];
-        [self validationDidFail:error];
-    }];
-}
-
-- (void)checkURL
-{
-    NSString *urlToValidate = [self getURLToValidate];
-
-    DDLogInfo(@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate);
-
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
-    [WordPressXMLRPCApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
-        [self validateXmlprcURL:xmlrpcURL];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:strongSelf.blog.managedObjectContext];
+        [blogService updatePassword:strongSelf.password forBlog:strongSelf.blog];
+        [strongSelf.navigationItem setHidesBackButton:NO animated:NO];
     } failure:^(NSError *error){
         [SVProgressHUD dismiss];
-        if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
-            [self validationDidFail:nil];
-        } else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
-            [self validationDidFail:error];
-        } else if ([error.domain isEqual:WordPressXMLRPCApiErrorDomain]) {
-            [self validationDidFail:error];
-        } else if ([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
-            NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", @""), [error localizedDescription]];
-            NSDictionary *userInfo = @{NSLocalizedDescriptionKey: str};
-            NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadServerResponse userInfo:userInfo];
-            [self validationDidFail:err];
-        } else {
-            NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"Unable to find a WordPress site at that URL. Tap 'Need Help?' to view the FAQ.", @"")};
-            NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
-            [self validationDidFail:err];
-        }
+        [weakSelf loginValidationFailedWithError:error];
     }];
 }
 
-- (void)validationSuccess:(NSString *)xmlrpc
-{
-    self.blog.password = self.password;
-    [self.blog.managedObjectContext save:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 
-    [self.navigationItem setHidesBackButton:NO animated:NO];
-
-}
-
-- (void)validationDidFail:(NSError *)error
+- (void)loginValidationFailedWithError:(NSError *)error
 {
     [self.navigationItem setHidesBackButton:NO animated:NO];
-    self.password = self.blog.password;
-    
+    self.password = self.blog.password;    
     if (error) {
         NSString *message;
         if (error.code == 403) {
@@ -718,7 +743,10 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             message = [error localizedDescription];
         }
         if (error.code == 405) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message withSupportButton:YES okPressedBlock:^(UIAlertView *alertView) {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
+                                message:message
+                      withSupportButton:YES
+                         okPressedBlock:^(UIAlertView *alertView) {
                 [self openSiteAdminFromAlert:alertView];
             }];
 
@@ -754,17 +782,6 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)validateUrl
-{
-    if (self.blog) {
-        // If we are editing an existing blog, use the known XML-RPC URL
-        // We don't allow editing URL on existing blogs, so XML-RPC shouldn't change
-        [self validateXmlprcURL:[NSURL URLWithString:self.blog.xmlrpc]];
-    } else {
-        [self checkURL];
-    }
 }
 
 #pragma mark - Saving methods
