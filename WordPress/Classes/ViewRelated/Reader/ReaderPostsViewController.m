@@ -428,7 +428,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (ReaderAbstractTopic *)topic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
-    ReaderAbstractTopic *topicInContext = (ReaderAbstractTopic *)[context objectWithID:topic.objectID];
+    NSError *error;
+    ReaderAbstractTopic *topicInContext = (ReaderTopic *)[context existingObjectWithID:topic.objectID error:&error];
     return topicInContext;
 }
 
