@@ -4,14 +4,14 @@ import CoreData
 @objc public class ReaderAbstractTopic : NSManagedObject
 {
     // Relations
-    @NSManaged var posts: [ReaderPost]
+    @NSManaged public var posts: [ReaderPost]
 
     // Properties
-    @NSManaged var following: Bool
-    @NSManaged var lastSynced: NSDate
-    @NSManaged var path: String
-    @NSManaged var showInMenu: Bool
-    @NSManaged var title: String
-    @NSManaged var type: String
+    @NSManaged public var following: Bool
+    @NSManaged public var lastSynced: NSDate
+    @NSManaged public var path: String
+    @NSManaged public var showInMenu: Bool
+    @NSManaged public var title: String
+    @NSManaged public var type: String
 
 }

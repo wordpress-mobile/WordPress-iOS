@@ -87,3 +87,8 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
                        failure:(void (^)(NSError *error))failure;
 
 @end
+
+@interface ReaderTopicService (Tests)
+- (void)mergeMenuTopics:(NSArray *)topics withSuccess:(void (^)())success;
+- (NSString *)formatTitle:(NSString *)str;
+@end
