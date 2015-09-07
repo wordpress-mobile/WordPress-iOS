@@ -111,6 +111,8 @@
 		5D17F0BE1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F0BD1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m */; };
 		5D18FE9F1AFBB17400EFEED0 /* RestorePageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D18FE9D1AFBB17400EFEED0 /* RestorePageTableViewCell.m */; };
 		5D18FEA01AFBB17400EFEED0 /* RestorePageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D18FE9E1AFBB17400EFEED0 /* RestorePageTableViewCell.xib */; };
+		5D1D04751B7A50B100CDE646 /* Reader.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D1D04731B7A50B100CDE646 /* Reader.storyboard */; };
+		5D1D04761B7A50B100CDE646 /* ReaderStreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */; };
 		5D1D33CF1AE56250000DE623 /* RemoteUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1D33CE1AE56250000DE623 /* RemoteUser.m */; };
 		5D1D9C50198837D0009D13B7 /* RemoteReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */; };
 		5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE211988245B00378BD6 /* RemoteReaderSite.m */; };
@@ -546,6 +548,20 @@
 		E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = E240859B183D82AE002EB0EF /* WPAnimatedBox.m */; };
 		E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */ = {isa = PBXBuildFile; fileRef = E2AA87A418523E5300886693 /* UIView+Subviews.m */; };
 		E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E7EB45185FB140004F5E72 /* WPBlogSelectorButton.m */; };
+		E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */; };
+		E65219FB1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */; };
+		E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */; };
+		E6B9B8AA1B94E1FE0001B92F /* ReaderPostTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E6B9B8A91B94E1FE0001B92F /* ReaderPostTest.m */; };
+		E6B9B8AD1B94EACA0001B92F /* ReaderHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B9B8AC1B94EACA0001B92F /* ReaderHelperTests.swift */; };
+		E6B9B8AF1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B9B8AE1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift */; };
+		E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */; };
+		E6D2E1611B8AA4410000ED14 /* ReaderTagStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */; };
+		E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */; };
+		E6D2E1651B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E1641B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift */; };
+		E6D2E1671B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E1661B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift */; };
+		E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E1681B8AAD9B0000ED14 /* ReaderListStreamHeader.swift */; };
+		E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */; };
+		E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */; };
 		ECFA8F2B890D45298F324B8B /* libPods-WordPressTodayWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 872A78E046E04A05B17EB1A1 /* libPods-WordPressTodayWidget.a */; };
 		F128C31C1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */; };
 		F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */; };
@@ -798,6 +814,8 @@
 		5D18FE9E1AFBB17400EFEED0 /* RestorePageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RestorePageTableViewCell.xib; sourceTree = "<group>"; };
 		5D18FEA11AFBB3FE00EFEED0 /* PageListTableViewCellDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageListTableViewCellDelegate.h; sourceTree = "<group>"; };
 		5D18FEA21AFBB81000EFEED0 /* PageListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageListCell.h; sourceTree = "<group>"; };
+		5D1D04731B7A50B100CDE646 /* Reader.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Reader.storyboard; sourceTree = "<group>"; };
+		5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderStreamViewController.swift; sourceTree = "<group>"; };
 		5D1D33CD1AE56250000DE623 /* RemoteUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteUser.h; sourceTree = "<group>"; };
 		5D1D33CE1AE56250000DE623 /* RemoteUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteUser.m; sourceTree = "<group>"; };
 		5D1D9C5319885B01009D13B7 /* ReaderEditableSubscriptionPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderEditableSubscriptionPage.h; sourceTree = "<group>"; };
@@ -1566,6 +1584,20 @@
 		E2AA87A418523E5300886693 /* UIView+Subviews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Subviews.m"; sourceTree = "<group>"; };
 		E2E7EB44185FB140004F5E72 /* WPBlogSelectorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBlogSelectorButton.h; sourceTree = "<group>"; };
 		E2E7EB45185FB140004F5E72 /* WPBlogSelectorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBlogSelectorButton.m; sourceTree = "<group>"; };
+		E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderBlockedSiteCell.xib; sourceTree = "<group>"; };
+		E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderBlockedSiteCell.swift; sourceTree = "<group>"; };
+		E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderStreamViewController+Helper.swift"; sourceTree = "<group>"; };
+		E6B9B8A91B94E1FE0001B92F /* ReaderPostTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostTest.m; sourceTree = "<group>"; };
+		E6B9B8AC1B94EACA0001B92F /* ReaderHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderHelperTests.swift; sourceTree = "<group>"; };
+		E6B9B8AE1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderStreamViewControllerTests.swift; sourceTree = "<group>"; };
+		E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderSiteStreamHeader.xib; sourceTree = "<group>"; };
+		E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderTagStreamHeader.xib; sourceTree = "<group>"; };
+		E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderListStreamHeader.xib; sourceTree = "<group>"; };
+		E6D2E1641B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteStreamHeader.swift; sourceTree = "<group>"; };
+		E6D2E1661B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTagStreamHeader.swift; sourceTree = "<group>"; };
+		E6D2E1681B8AAD9B0000ED14 /* ReaderListStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderListStreamHeader.swift; sourceTree = "<group>"; };
+		E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderStreamHeader.swift; sourceTree = "<group>"; };
+		E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderHelpers.swift; sourceTree = "<group>"; };
 		F128C31A1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
 		F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPMediaPickerViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
 		F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringHelpersTest.m; sourceTree = "<group>"; };
@@ -2104,6 +2136,9 @@
 		5D08B8FD19647C0800D5B381 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */,
+				E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */,
+				E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */,
 				5DDC44651A72BB07007F538E /* ReaderViewController.h */,
 				5DDC44661A72BB07007F538E /* ReaderViewController.m */,
 				5D1D9C5319885B01009D13B7 /* ReaderEditableSubscriptionPage.h */,
@@ -2180,6 +2215,8 @@
 				5D5A6E911B613CA400DAF819 /* ReaderPostCardCell.swift */,
 				5D5A6E921B613CA400DAF819 /* ReaderPostCardCell.xib */,
 				5D2B30B81B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift */,
+				E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */,
+				E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */,
 			);
 			name = Cards;
 			sourceTree = "<group>";
@@ -2218,6 +2255,7 @@
 			isa = PBXGroup;
 			children = (
 				5D7A577F1AFBFD940097C028 /* BasePostTest.m */,
+				E6B9B8A91B94E1FE0001B92F /* ReaderPostTest.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2330,15 +2368,6 @@
 				5DF7F7771B223916003A05C8 /* PostToPost30To31.m */,
 			);
 			name = "30-31";
-			sourceTree = "<group>";
-		};
-		5DF94E351962BA5F00359241 /* Reader */ = {
-			isa = PBXGroup;
-			children = (
-				5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */,
-				5DFA9D19196B1BA30061FF96 /* ReaderTopicServiceTest.m */,
-			);
-			name = Reader;
 			sourceTree = "<group>";
 		};
 		5DFA7EBD1AF7CB2E0072023B /* Controllers */ = {
@@ -2974,6 +3003,8 @@
 				930FD0A519882742000CC81D /* BlogServiceTest.m */,
 				59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */,
 				B5EFB1C81B333C5A007608A3 /* NotificationsServiceTests.swift */,
+				5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */,
+				5DFA9D19196B1BA30061FF96 /* ReaderTopicServiceTest.m */,
 				59FBD5611B5684F300734466 /* ThemeServiceTests.m */,
 			);
 			name = Services;
@@ -3241,7 +3272,9 @@
 		CCB3A03814C8DD5100D43C3F /* Reader */ = {
 			isa = PBXGroup;
 			children = (
+				5D1D04731B7A50B100CDE646 /* Reader.storyboard */,
 				5D08B8FD19647C0800D5B381 /* Controllers */,
+				E6D2E16A1B8B41AC0000ED14 /* Headers */,
 				5D5A6E901B613C1800DAF819 /* Cards */,
 				5D98A1491B6C09730085E904 /* Style */,
 				5D08B8FC19647C0300D5B381 /* Views */,
@@ -3269,12 +3302,12 @@
 			isa = PBXGroup;
 			children = (
 				59B48B601B99E0B0008EBB84 /* TestUtilities */,
-				85F8E1991B017A8E000859BB /* Networking */,
-				5D7A577D1AFBFD7C0097C028 /* Models */,
-				85D239BD1AE5A6EE0074768D /* NUX */,
 				B5AEEC7F1ACAD099008BF2A4 /* Categories */,
 				B5AEEC731ACACF3B008BF2A4 /* Core Data */,
-				5DF94E351962BA5F00359241 /* Reader */,
+				5D7A577D1AFBFD7C0097C028 /* Models */,
+				85F8E1991B017A8E000859BB /* Networking */,
+				85D239BD1AE5A6EE0074768D /* NUX */,
+				E6B9B8AB1B94EA710001B92F /* Reader */,
 				B5AEEC7E1ACAD088008BF2A4 /* Services */,
 				852416D01A12ED2D0030700C /* Utility */,
 				B5AEEC711ACACF2F008BF2A4 /* NotificationTests.m */,
@@ -3480,6 +3513,29 @@
 				E1D0D82616D3D19200E33F4C /* PocketAPITypes.h */,
 			);
 			path = PocketAPI;
+			sourceTree = "<group>";
+		};
+		E6B9B8AB1B94EA710001B92F /* Reader */ = {
+			isa = PBXGroup;
+			children = (
+				E6B9B8AC1B94EACA0001B92F /* ReaderHelperTests.swift */,
+				E6B9B8AE1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift */,
+			);
+			name = Reader;
+			sourceTree = "<group>";
+		};
+		E6D2E16A1B8B41AC0000ED14 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */,
+				E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */,
+				E6D2E1641B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift */,
+				E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */,
+				E6D2E1661B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift */,
+				E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */,
+				E6D2E1681B8AAD9B0000ED14 /* ReaderListStreamHeader.swift */,
+			);
+			name = Headers;
 			sourceTree = "<group>";
 		};
 		EC4696A80EA74DAC0040EE8E /* Pages */ = {
@@ -3745,6 +3801,7 @@
 				B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */,
 				FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
+				5D1D04751B7A50B100CDE646 /* Reader.storyboard in Resources */,
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
 				B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */,
@@ -3752,11 +3809,15 @@
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
 				5D6C4AF41B603C75005E3C43 /* WPWhatsNewView.xib in Resources */,
+				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
 				BE13B3E81B2B58D800A4211D /* BlogListViewController.xib in Resources */,
+				E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
+				E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */,
 				5D18FEA01AFBB17400EFEED0 /* RestorePageTableViewCell.xib in Resources */,
 				B5C66B721ACF071100F68370 /* NoteBlockTextTableViewCell.xib in Resources */,
 				5D6C4AFC1B603CC0005E3C43 /* ThemeDetailsViewController~ipad.xib in Resources */,
+				E6D2E1611B8AA4410000ED14 /* ReaderTagStreamHeader.xib in Resources */,
 				B5CEEB901B79244D00E7B7B0 /* CommentsTableViewCell.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
@@ -4107,6 +4168,7 @@
 				E149D64E19349E69006A843D /* AccountServiceRemoteREST.m in Sources */,
 				5D9BFF0A1A856801001D6D63 /* ReaderPostRichUnattributedContentView.m in Sources */,
 				5D9282F91B54697D00066CED /* RemoteReaderSiteInfo.m in Sources */,
+				E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */,
 				5DF6571B1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m in Sources */,
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
 				313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */,
@@ -4121,6 +4183,7 @@
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
 				591A428C1A6DC1B0003807A6 /* WPBackgroundDimmerView.m in Sources */,
 				B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */,
+				E6D2E1671B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift in Sources */,
 				85D239B61AE5A6170074768D /* ReachabilityFacade.m in Sources */,
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */,
@@ -4133,6 +4196,7 @@
 				5DA5BF4518E32DCF005F11F9 /* ThemeBrowserCell.m in Sources */,
 				93C486501810442200A24725 /* SupportViewController.m in Sources */,
 				B5509A9319CA38B3006D2E49 /* EditReplyViewController.m in Sources */,
+				E6D2E1651B8AAD7E0000ED14 /* ReaderSiteStreamHeader.swift in Sources */,
 				E1A6DBE119DC7D140071AC1E /* PostServiceRemoteREST.m in Sources */,
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
 				B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */,
@@ -4177,6 +4241,7 @@
 				E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */,
 				5D17F0BE1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m in Sources */,
 				937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */,
+				5D1D04761B7A50B100CDE646 /* ReaderStreamViewController.swift in Sources */,
 				B587798619B799EB00E57C5A /* Notification+Interface.swift in Sources */,
 				B57B92BD1B73B08100DFF00B /* SeparatorsView.swift in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
@@ -4261,6 +4326,7 @@
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
 				E1DF5DFD19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m in Sources */,
+				E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */,
 				FFC6ADE01B56F421002F3C84 /* WPThemeSettings.m in Sources */,
 				5D7B414619E482C9007D9EC7 /* WPRichTextEmbed.swift in Sources */,
 				85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */,
@@ -4305,6 +4371,7 @@
 				E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */,
 				FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */,
 				5DBCD9D518F35D7500B32229 /* ReaderTopicService.m in Sources */,
+				E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				BEBFE8721B2F50E0002C04EF /* WPSearchControllerConfigurator.m in Sources */,
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
@@ -4324,6 +4391,7 @@
 				5D0A20D41AF11A7300E5C6BC /* PhotonImageURLHelper.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
 				E1DF5DFE19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m in Sources */,
+				E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */,
 				5D6C4B0C1B604110005E3C43 /* WPChromelessWebViewController.m in Sources */,
 				85D239AD1AE5A5FC0074768D /* AccountServiceFacade.m in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
@@ -4343,6 +4411,7 @@
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
 				5D6C4B1F1B604425005E3C43 /* WPContentAttributionView.m in Sources */,
 				5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */,
+				E65219FB1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift in Sources */,
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,
 				B587798219B799D800E57C5A /* UIView+Helpers.swift in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
@@ -4421,6 +4490,7 @@
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
 				59E2AAE81B20E3EA0051DC06 /* ServiceRemoteRESTTests.m in Sources */,
 				BEC8A3FF1B4BAA2C001CB8C3 /* BlogListViewControllerTests.m in Sources */,
+				E6B9B8AD1B94EACA0001B92F /* ReaderHelperTests.swift in Sources */,
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,
 				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,
 				5DFA7EBC1AF7B8D30072023B /* NSDateStringFormattingTest.m in Sources */,
@@ -4437,6 +4507,7 @@
 				B59516961B7E6B2100B07784 /* NSURLUtilTests.m in Sources */,
 				5DA988061AEEA594002AFB12 /* DisplayableImageHelperTest.m in Sources */,
 				B566EC751B83867800278395 /* NSMutableAttributedStringTest.swift in Sources */,
+				E6B9B8AF1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift in Sources */,
 				BE20F5E71B2F76660020694C /* WPSearchControllerConfiguratorTests.m in Sources */,
 				59B48B621B99E132008EBB84 /* JSONLoader.swift in Sources */,
 				9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */,
@@ -4448,6 +4519,7 @@
 				59FBD5621B5684F300734466 /* ThemeServiceTests.m in Sources */,
 				85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
+				E6B9B8AA1B94E1FE0001B92F /* ReaderPostTest.m in Sources */,
 				85D239C11AE5A7020074768D /* LoginViewModelTests.m in Sources */,
 				85D790AC1AE5D95E0033AE83 /* MixpanelProxyTests.m in Sources */,
 				85F8E19F1B0186D0000859BB /* MockWordPressComApi.swift in Sources */,
