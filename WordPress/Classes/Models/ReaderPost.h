@@ -5,6 +5,7 @@
 
 @class ReaderTopic;
 @class SourcePostAttribution;
+@class Comment;
 
 extern NSString * const ReaderPostStoredCommentIDKey;
 extern NSString * const ReaderPostStoredCommentTextKey;
@@ -30,7 +31,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSDate *sortDate;
 @property (nonatomic, strong) NSString *summary;
-@property (nonatomic, strong) NSMutableSet *comments;
+@property (nonatomic, strong) NSSet *comments;
 @property (nonatomic, readonly, strong) NSURL *featuredImageURL;
 @property (nonatomic, strong) NSString *tags;
 @property (nonatomic, strong) ReaderTopic *topic;
@@ -57,3 +58,13 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 - (BOOL)isSourceAttributionWPCom;
 
 @end
+
+@interface ReaderPost (CoreDataGeneratedAccessors)
+
+- (void)addCommentsObject:(Comment *)value;
+- (void)removeCommentsObject:(Comment *)value;
+- (void)addComments:(NSSet *)values;
+- (void)removeComments:(NSSet *)values;
+
+@end
+
