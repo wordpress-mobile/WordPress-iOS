@@ -121,7 +121,6 @@
 
 - (void)syncTopics
 {
-    return;
     __weak __typeof(self) weakSelf = self;
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [topicService fetchReaderMenuWithSuccess:^{
@@ -133,7 +132,6 @@
 
 - (void)assignTopic:(ReaderAbstractTopic *)topic
 {
-    return;
     self.postsViewController.readerTopic = topic;
 
     // Update our title
