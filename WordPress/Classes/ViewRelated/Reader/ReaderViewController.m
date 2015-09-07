@@ -48,7 +48,6 @@
     [self configureNavBar];
     [self configurePostsViewController];
 
-    return;
     ReaderAbstractTopic *topic = [self currentTopic];
     if (topic) {
         [self assignTopic:topic];
