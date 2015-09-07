@@ -2,9 +2,9 @@ import Foundation
 
 @objc public class ReaderTagTopic : ReaderAbstractTopic
 {
-    @NSManaged var isRecommended: Bool
-    @NSManaged var slug: String
-    @NSManaged var tagID: NSNumber
+    @NSManaged public var isRecommended: Bool
+    @NSManaged public var slug: String
+    @NSManaged public var tagID: NSNumber
 
     public class var TopicType: String {
         return "tag"
