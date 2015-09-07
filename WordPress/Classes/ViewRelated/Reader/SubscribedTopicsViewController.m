@@ -188,6 +188,9 @@
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
+        return nil;
+
+    } else if (section == 1) {
         return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
     }
 
