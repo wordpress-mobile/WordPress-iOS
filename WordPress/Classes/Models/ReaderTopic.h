@@ -1,11 +1,6 @@
 #import <Foundation/Foundation.h>
 
-extern NSString *const ReaderTopicTypeList;
-extern NSString *const ReaderTopicTypeTag;
-extern NSString *const ReaderTopicTypeSite;
-
 @class WPAccount;
-@class ReaderSite;
 
 @interface ReaderTopic : NSManagedObject
 
@@ -21,9 +16,5 @@ extern NSString *const ReaderTopicTypeSite;
 @property (nonatomic, strong) NSString *topicDescription;
 @property (nonatomic, strong) NSNumber *topicID;
 @property (nonatomic, strong) NSString *type;
-
-- (BOOL)isList;
-- (BOOL)isTag;
-- (BOOL)isSite;
 
 @end
