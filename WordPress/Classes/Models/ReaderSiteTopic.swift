@@ -13,4 +13,7 @@ import Foundation
     @NSManaged var siteURL: String
     @NSManaged var subscriberCount: NSNumber
 
+    public class var TopicType: String {
+        return "site"
+    }
 }

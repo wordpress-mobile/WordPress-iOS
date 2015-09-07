@@ -1,8 +1,8 @@
 #import "ReaderTopicServiceRemote.h"
-#import "WordPressComApi.h"
 #import "RemoteReaderTopic.h"
-#import "ReaderTopic.h"
 #import "RemoteReaderSiteInfo.h"
+#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
 
 static NSString * const TopicMenuSectionDefaultKey = @"default";
 static NSString * const TopicMenuSectionSubscribedKey = @"subscribed";
@@ -233,7 +233,6 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscriptions_count";
 {
     RemoteReaderTopic *topic = [self normalizeTopicDictionary:topicDict subscribed:subscribed recommended:recommended];
     topic.isMenuItem = YES;
-    topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
     return topic;
 }
 
@@ -258,7 +257,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscriptions_count";
     topic.topicID = topicID;
     topic.isSubscribed = subscribed;
     topic.isRecommended = recommended;
-    topic.path = [topicDict stringForKey:TopicDictionaryURLKey];
+    topic.path = [[topicDict stringForKey:TopicDictionaryURLKey] lowercaseString];
     topic.slug = [topicDict stringForKey:TopicDictionarySlugKey];
     topic.title = [topicDict stringForKey:TopicDictionaryTitleKey];
 
