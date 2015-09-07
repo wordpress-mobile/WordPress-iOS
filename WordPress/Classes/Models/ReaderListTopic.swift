@@ -8,4 +8,8 @@ import Foundation
     @NSManaged var listID:NSNumber
     @NSManaged var owner: String
     @NSManaged var slug:String
+
+    public class var TopicType: String {
+        return "list"
+    }
 }
