@@ -1,6 +1,4 @@
 #import "SafeReaderTopicToReaderTopic.h"
-#import "ReaderTopicService.h"
-#import "ReaderTopic.h"
 
 NSString * const SavedTopicPathKey = @"SavedTopicPathKey";
 
