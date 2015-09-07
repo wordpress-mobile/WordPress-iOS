@@ -20,6 +20,7 @@
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
 #import "RemoteBlogSettings.h"
+#import "ContextManager.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -220,23 +221,37 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncSettingsForBlog:blog
-                        success:^(RemoteBlogSettings *settings) {
-                            blog.blogName = settings.name;
-                            blog.blogTagline = settings.desc;
-                            if (settings.defaultCategory) {
-                                blog.defaultCategoryID = settings.defaultCategory;
-                            }
-                            if (settings.defaultPostFormat) {
-                                blog.defaultPostFormat = settings.defaultPostFormat;
-                            }
-                            [self.managedObjectContext save:nil];
-                            if (success) {
-                                success();
-                            }
-                        }
-                        failure:failure];
+    NSManagedObjectID *blogID = [blog objectID];
+    [self.managedObjectContext performBlock:^{
+        Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
+        if (!blogInContext) {
+            if (success) {
+                success();
+            }
+            return;
+        }
+        id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
+        [remote syncSettingsForBlog:blog success:^(RemoteBlogSettings *settings) {
+            [self.managedObjectContext performBlock:^{
+                blog.blogName = settings.name;
+                blog.blogTagline = settings.desc;
+                if (settings.defaultCategory) {
+                    blog.defaultCategoryID = settings.defaultCategory;
+                }
+                if (settings.defaultPostFormat) {
+                    blog.defaultPostFormat = settings.defaultPostFormat;
+                }
+                if (settings.privacy) {
+                    blog.siteVisibility = (SiteVisibility)[settings.privacy integerValue];
+                }
+                [self.managedObjectContext save:nil];
+                if (success) {
+                    success();
+                }
+            }];
+        }
+        failure:failure];
+    }];
 }
 
 - (void)updateSettingForBlog:(Blog *)blog
@@ -258,6 +273,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                               }
                               failure:failure];
     }];
+}
+
+- (void)updatePassword:(NSString *)password forBlog:(Blog *)blog
+{
+    blog.password = password;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success
@@ -638,25 +659,33 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         [self.managedObjectContext performBlock:^{
             Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
                                                                            error:nil];
-            if (blog) {
-                blog.options = [NSDictionary dictionaryWithDictionary:options];
-                float version = [[blog version] floatValue];
-                if (version < [MinimumVersion floatValue]) {
-                    if (blog.lastUpdateWarning == nil
-                        || [blog.lastUpdateWarning floatValue] < [MinimumVersion floatValue])
-                    {
-                        // TODO :: Remove UI call from service layer
-                        [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                            message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], MinimumVersion]];
-                        blog.lastUpdateWarning = MinimumVersion;
-                    }
+            if (!blog) {
+                if (completion) {
+                    completion();
                 }
+                return;
+            }
+            blog.options = [NSDictionary dictionaryWithDictionary:options];
+            blog.siteVisibility = (SiteVisibility)([[blog getOptionValue:@"blog_public"] integerValue]);
+            //HACK:Sergio Estevao (2015-08-31): Because there is no direct way to
+            // know if a user has permissions to change the options we check if the blog title property is read only or not.
+            if ([blog.options numberForKeyPath:@"blog_title.readonly"]) {
+                blog.isAdmin = ![[blog.options numberForKeyPath:@"blog_title.readonly"] boolValue];
+            }
 
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            float version = [[blog version] floatValue];
+            if (version < [MinimumVersion floatValue]) {
+                if (blog.lastUpdateWarning == nil
+                    || [blog.lastUpdateWarning floatValue] < [MinimumVersion floatValue])
+                {
+                    // TODO :: Remove UI call from service layer
+                    [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
+                                        message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], MinimumVersion]];
+                    blog.lastUpdateWarning = MinimumVersion;
+                }
             }
-            if (completion) {
-                completion();
-            }
+
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:completion];
         }];
     };
 }

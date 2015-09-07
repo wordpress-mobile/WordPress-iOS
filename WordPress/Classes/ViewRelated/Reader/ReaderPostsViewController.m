@@ -70,8 +70,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic) UIDeviceOrientation previousOrientation;
 @property (nonatomic) BOOL hasWPComAccount;
 @property (nonatomic) BOOL hasVisibleWPComAccount;
-
-@property (nonatomic, strong) NSManagedObjectContext *contextForSync;
+@property (nonatomic, strong) NSManagedObjectContext *displayContext;
+@property (nonatomic) BOOL cleanupAndRefreshAfterScrolling;
 
 @end
 
@@ -429,7 +429,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (ReaderTopic *)topic:(ReaderTopic *)topic inContext:(NSManagedObjectContext *)context
 {
-    ReaderTopic *topicInContext = (ReaderTopic *)[context objectWithID:topic.objectID];
+    NSError *error;
+    ReaderTopic *topicInContext = (ReaderTopic *)[context existingObjectWithID:topic.objectID error:&error];
     return topicInContext;
 }
 
@@ -708,14 +709,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return;
     }
 
-    // The synchelper only supports a single sync operation at a time. Since contextForSync is assigned
-    // in the delegate callbacks, and cleared when the sync operation is cleared up (or after scrolling
-    // finishes) there *should't* be an existing instance of the context when the synchelper's delegate
-    // methods are called. However, check here just in case there is an unnexpected edgecase. 
-    if (self.contextForSync) {
-        return;
-    }
-
     [self.syncHelper syncContentWithUserInteraction:userInteraction];
 }
 
@@ -724,11 +717,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    self.contextForSync = context;
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [context performBlock:^{
         ReaderTopic *topicInContext = [self topicInContext:context];
-        [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] skippingSave:YES success:^(NSInteger count, BOOL hasMore) {
+        [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
                 if (success) {
@@ -750,11 +742,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    self.contextForSync = context;
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [context performBlock:^{
         ReaderTopic *topicInContext = [self topicInContext:context];
-        [service backfillPostsForTopic:topicInContext skippingSave:YES success:^(NSInteger count, BOOL hasMore) {
+        [service backfillPostsForTopic:topicInContext success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
                 if (success) {
@@ -829,37 +820,17 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)syncContentEnded
 {
-    if (!self.contextForSync) {
-        [self cleanupAfterRefresh];
-        return;
-    }
-    [self saveContextForSync];
-}
-
-- (void)saveContextForSync
-{
-    if (self.syncHelper.isSyncing) {
-        return;
-    }
-
     if (self.tableViewHandler.isScrolling) {
+        self.cleanupAndRefreshAfterScrolling = YES;
         return;
     }
-
-    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
-    [[ContextManager sharedInstance] saveContext:self.contextForSync];
-    self.contextForSync = nil;
-
-    // The main context may not yet reflect the changes from the derived context,
-    // because of the asynchronous nature of the save.
-    // Explictly save the main context and do thte clean up in its completion block.
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-        [self cleanupAfterRefresh];
-    }];
+    [self cleanupAfterRefresh];
 }
 
 - (void)cleanupAfterRefresh
 {
+    self.cleanupAndRefreshAfterScrolling = NO;
+    [self.tableViewHandler refreshTableViewPreservingOffset];
     [self.refreshControl endRefreshing];
     [self.activityFooter stopAnimating];
     [self configureNoResultsView];
@@ -870,9 +841,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)tableViewHandlerWillRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler
 {
-    [UIView performWithoutAnimation:^{
-        [self cleanupAfterRefresh];
-    }];
+    [[self managedObjectContext] reset];
+    NSError *error;
+    [self.tableViewHandler.resultsController performFetch:&error];
+    if (error) {
+        DDLogError(@"%@", error);
+    }
 }
 
 - (void)tableViewHandlerDidRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler
@@ -915,7 +889,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (NSManagedObjectContext *)managedObjectContext
 {
-    return [[ContextManager sharedInstance] mainContext];
+    if (!self.displayContext) {
+        self.displayContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        self.displayContext.parentContext = [[ContextManager sharedInstance] mainContext];
+    }
+    return self.displayContext;
 }
 
 - (NSFetchRequest *)fetchRequest
@@ -1095,32 +1073,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)postView:(ReaderPostContentView *)postView didReceiveLikeAction:(id)sender
 {
     ReaderPost *post = [self postFromCellSubview:sender];
-    BOOL wasLiked = post.isLiked;
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    NSManagedObjectContext *context = [self managedObjectContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    
-    [context performBlock:^{
-        ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:post.objectID error:nil];
-        if (!postInContext) {
-            return;
-        }
-        
-        [service toggleLikedForPost:postInContext success:^{
-            if (wasLiked) {
-                return;
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
-            });
-        } failure:^(NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-                [postView updateActionButtons];
-            });
-        }];
+    [service toggleLikedForPost:post success:nil failure:^(NSError *error) {
+        DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
+        [postView updateActionButtons];
     }];
-
     [postView updateActionButtons];
 }
 
@@ -1269,15 +1227,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if (decelerate) {
         return;
     }
-    if (self.contextForSync) {
-        [self saveContextForSync];
+    if (self.cleanupAndRefreshAfterScrolling) {
+        [self cleanupAfterRefresh];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    if (self.contextForSync) {
-        [self saveContextForSync];
+    if (self.cleanupAndRefreshAfterScrolling) {
+        [self cleanupAfterRefresh];
     }
 }
 

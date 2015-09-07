@@ -79,6 +79,16 @@
                      failure:(void (^)(NSError *error))failure;
 
 
+/**
+ *  Update the password for the blog.
+ *
+ *  @discussion This is only valid for self-hosted sites that don't use jetpack.
+ *
+ *  @param password the new password to use for the blog
+ *  @param blog to change the password.
+ */
+- (void)updatePassword:(NSString *)password forBlog:(Blog *)blog;
+
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success;
 
 /**

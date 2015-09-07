@@ -203,15 +203,11 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
 
 - (NSArray *)normalizeMenuTopicsList:(NSArray *)rawTopics subscribed:(BOOL)subscribed recommended:(BOOL)recommended
 {
-    NSMutableArray *topics = [NSMutableArray array];
-    for (NSDictionary *topicDict in rawTopics) {
-        // Failsafe
-        if (![topicDict isKindOfClass:[NSDictionary class]]) {
-            continue;
-        }
-        [topics addObject:[self normalizeMenuTopicDictionary:topicDict subscribed:subscribed recommended:recommended]];
-    }
-    return [topics copy]; // Return immutable array.
+    return [[rawTopics wp_filter:^BOOL(id obj) {
+        return [obj isKindOfClass:[NSDictionary class]];
+    }] wp_map:^id(NSDictionary *topic) {
+        return [self normalizeMenuTopicDictionary:topic subscribed:subscribed recommended:recommended];
+    }];
 }
 
 - (RemoteReaderTopic *)normalizeMenuTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended
