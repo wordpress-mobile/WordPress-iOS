@@ -8,6 +8,7 @@
 #import "ReaderPostService.h"
 #import "ReaderPostServiceRemote.h"
 #import "RemoteReaderPost.h"
+#import "TestContextManager.h"
 #import <XCTest/XCTest.h>
 
 
@@ -22,9 +23,24 @@
 
 
 @interface ReaderTopicServiceTest : XCTestCase
+@property (nonatomic, strong) TestContextManager *testContextManager;
 @end
 
 @implementation ReaderTopicServiceTest
+
+- (void)setUp
+{
+    [super setUp];
+
+    self.testContextManager = [[TestContextManager alloc] init];
+
+}
+
+- (void)tearDown
+{
+    [super tearDown];
+    self.testContextManager = nil;
+}
 
 #pragma mark - Configuration
 
