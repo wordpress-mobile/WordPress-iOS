@@ -82,7 +82,7 @@
     
     Theme *theme = nil;
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@""];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"themeId=%@", themeId];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Theme entityName]];
     
     fetchRequest.predicate = predicate;
