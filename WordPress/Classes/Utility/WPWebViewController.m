@@ -35,7 +35,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 #pragma mark - Private Properties
 
-@interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
+@interface WPWebViewController () <UIPopoverControllerDelegate>
 
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
 @property (nonatomic,   weak) IBOutlet UIProgressView           *progressView;

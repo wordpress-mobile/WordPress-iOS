@@ -1,6 +1,8 @@
 #import "SharingAuthorizationWebViewController.h"
 #import "Blog.h"
 #import "Publicizer.h"
+#import "WordPressAppDelegate.h"
+#import "WPUserAgent.h"
 
 #pragma mark - SharingAuthorizationWebViewController
 
@@ -15,12 +17,6 @@ typedef enum {
     AuthorizeActionDeny,
 } AuthorizeAction;
 
-/**
- *	@brief	override points
- */
-@interface WPWebViewController () <UIWebViewDelegate>
-- (IBAction)dismiss;
-@end
 
 @interface SharingAuthorizationWebViewController ()
 
@@ -39,6 +35,7 @@ typedef enum {
 
 @end
 
+
 @implementation SharingAuthorizationWebViewController
 
 + (instancetype)controllerWithPublicizer:(Publicizer *)publicizer
@@ -47,6 +44,9 @@ typedef enum {
     NSParameterAssert(publicizer);
     NSParameterAssert(blog);
     
+    // some services require Safari user agent to log in
+    [[WordPressAppDelegate sharedInstance].userAgent useDefaultUserAgent];
+
     SharingAuthorizationWebViewController *webViewController = [[self alloc] initWithNibName:@"WPWebViewController" bundle:nil];
     
     webViewController.blog = blog;
@@ -62,17 +62,9 @@ typedef enum {
     return webViewController;
 }
 
-- (void)viewDidLoad
+- (void)dealloc
 {
-    [super viewDidLoad];
-
-    // suppress sharing
-    self.navigationItem.rightBarButtonItem = nil;
-}
-
-- (void)showBottomToolbarIfNeeded
-{
-    // suppress navigation
+    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
 }
 
 - (IBAction)dismiss
@@ -83,7 +75,7 @@ typedef enum {
     }
 }
 
-- (IBAction)suceed
+- (void)suceed
 {
     [super dismiss];
     if ([self.delegate respondsToSelector:@selector(authorizeDidSucceed:)]) {
@@ -140,21 +132,23 @@ typedef enum {
 
 - (AuthorizeAction)requestedAuthorizeAction:(NSURLRequest *)request
 {
-    if (![request.URL.absoluteString hasPrefix:@"https://public-api.wordpress.com/connect/"]) {
+    NSString *requested = [request.URL absoluteString];
+    
+    if (![requested hasPrefix:@"https://public-api.wordpress.com/connect/"]) {
         return AuthorizeActionNone;
     }
     
-    NSRange requestRange = [request.URL.absoluteString rangeOfString:@"action=request"];
+    NSRange requestRange = [requested rangeOfString:@"action=request"];
     if (requestRange.location != NSNotFound) {
         return AuthorizeActionRequest;
     }
 
-    NSRange verifyRange = [request.URL.absoluteString rangeOfString:@"action=verify"];
+    NSRange verifyRange = [requested rangeOfString:@"action=verify"];
     if (verifyRange.location != NSNotFound) {
         return AuthorizeActionVerify;
     }
 
-    NSRange denyRange = [request.URL.absoluteString rangeOfString:@"action=deny"];
+    NSRange denyRange = [requested rangeOfString:@"action=deny"];
     if (denyRange.location != NSNotFound) {
         return AuthorizeActionDeny;
     }

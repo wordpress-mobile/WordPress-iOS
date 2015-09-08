@@ -4,7 +4,7 @@
 
 #pragma mark - WPWebViewController
 
-@interface WPWebViewController : UIViewController
+@interface WPWebViewController : UIViewController <UIWebViewDelegate>
 
 /**
  *	@brief		Represents the Endpoint URL to render
@@ -40,6 +40,11 @@
  *	@brief		Optionally suppresses navigation and sharing
  */
 @property (nonatomic, assign) BOOL      secureInteraction;
+
+/**
+ *	@brief		Dismiss modal presentation
+ */
+- (IBAction)dismiss;
 
 /**
  *	@brief      Helper method to initialize a WebViewController Instance
