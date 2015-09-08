@@ -29,6 +29,11 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         return ThemeService(managedObjectContext: self.managedObjectContext)
     }()
     
+    // MARK: - Properties: Layout configuration
+    private let marginWidth = CGFloat(10)
+    private let numberOfCellsPerRowInPhone = 1
+    private let numberOfCellsPerRowInPad = 4
+    
     // MARK: - Themes
     
     /**
@@ -111,27 +116,51 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         
-        let marginWidth = CGFloat(10)
-        
         let isPhone = UIDevice.currentDevice().userInterfaceIdiom == .Phone
+        let parentViewWidth = collectionView.frame.size.width
         var width = CGFloat(100)
         
         if isPhone {
-            let numberOfCellsToShow = 1
-            let numberOfMarginsToHave = CGFloat(numberOfMarginsForNumberOfCells(numberOfCellsToShow))
-            
-            width = collectionView.frame.size.width - numberOfMarginsToHave * marginWidth
+            width = cellWidthForPhone(parentViewWidth)
         } else {
-            let numberOfCellsToShow = 4
-            let numberOfMarginsToHave = CGFloat(numberOfMarginsForNumberOfCells(numberOfCellsToShow))
-            
-            width = collectionView.frame.size.width - numberOfMarginsToHave * marginWidth
+            width = cellWidthForPad(parentViewWidth)
         }
         
         return CGSize(width: width, height: 100)
     }
     
-    private func numberOfMarginsForNumberOfCells(numberOfCells: Int) -> Int {
+    // MARK: - Layout calculation helper methods
+    
+    /**
+     *  @brief      Calculates the cell width for phone devices.
+     *
+     *  @param      parentViewWidth     The width of the parent view.
+     *
+     *  @returns    The requested cell width.
+     */
+    private func cellWidthForPhone(parentViewWidth : CGFloat) -> CGFloat {
+        return cellWidthForNumberOfCellsPerRow(self.numberOfCellsPerRowInPhone, parentViewWidth: parentViewWidth)
+    }
+    
+    /**
+    *  @brief      Calculates the cell width for pad devices.
+    *
+    *  @param      parentViewWidth     The width of the parent view.
+    *
+    *  @returns    The requested cell width.
+    */
+    private func cellWidthForPad(parentViewWidth : CGFloat) -> CGFloat {
+        return cellWidthForNumberOfCellsPerRow(self.numberOfCellsPerRowInPad, parentViewWidth: parentViewWidth)
+    }
+    
+    private func cellWidthForNumberOfCellsPerRow(numberOfCellsPerRow : Int, parentViewWidth : CGFloat) -> CGFloat {
+        
+        let numberOfMarginsToHave = CGFloat(numberOfMarginsPerRowForNumberOfCells(numberOfCellsPerRow))
+        
+        return parentViewWidth - numberOfMarginsToHave * marginWidth
+    }
+    
+    private func numberOfMarginsPerRowForNumberOfCells(numberOfCells: Int) -> Int {
         return 1 + numberOfCells
     }
     
