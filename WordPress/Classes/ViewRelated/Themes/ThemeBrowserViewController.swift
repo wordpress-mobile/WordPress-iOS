@@ -15,7 +15,16 @@ public class ThemeBrowserViewController : UICollectionViewController, UISearchBa
     /**
      *  @brief      The managed object context this VC will use for it's operations.
      */
-    private let managedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+    private let managedObjectContext : NSManagedObjectContext = {
+       let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        context.parentContext = ContextManager.sharedInstance()!.mainContext
+        
+        return context
+    }()
+    
+    /**
+     *  @brief      The themes service we'll use in this VC.
+     */
     private lazy var themeService : ThemeService = {
         return ThemeService(managedObjectContext: self.managedObjectContext)
     }()
