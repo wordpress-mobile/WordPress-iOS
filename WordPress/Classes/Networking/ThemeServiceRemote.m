@@ -51,8 +51,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
                                 parameters:nil
                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
                                        if (success) {
-                                           NSArray *themeDictionaries = [response arrayForKey:ThemeServiceRemoteThemesKey];
-                                           NSArray *themes = [self themesFromDictionaries:themeDictionaries];
+                                           NSArray *themes = [self themeIdentifiersFromPurchasedThemesRequestResponse:response];
                                            success(themes);
                                        }
                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -101,8 +100,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
                                 parameters:nil
                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
                                        if (success) {
-                                           NSArray *themeDictionaries = [response arrayForKey:ThemeServiceRemoteThemesKey];
-                                           NSArray *themes = [self themesFromDictionaries:themeDictionaries];
+                                           NSArray *themes = [self themesFromMultipleThemesRequestResponse:response];
                                            success(themes);
                                        }
                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -128,8 +126,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
                                 parameters:nil
                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
                                        if (success) {
-                                           NSArray *themeDictionaries = [response arrayForKey:ThemeServiceRemoteThemesKey];
-                                           NSArray *themes = [self themesFromDictionaries:themeDictionaries];
+                                           NSArray *themes = [self themesFromMultipleThemesRequestResponse:response];
                                            success(themes);
                                        }
                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -172,6 +169,38 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
                                     }];
     
     return operation;
+}
+
+#pragma mark - Parsing responses
+
+/**
+ *  @brief      Parses a purchased-themes-request response.
+ *
+ *  @param      response        The response object.  Cannot be nil.
+ */
+- (NSArray *)themeIdentifiersFromPurchasedThemesRequestResponse:(id)response
+{
+    NSParameterAssert(response != nil);
+    
+    NSArray *themeIdentifiers = [response arrayForKey:ThemeServiceRemoteThemesKey];
+    
+    return themeIdentifiers;
+}
+
+/**
+ *  @brief      Parses a generic multi-themes-request response.
+ *
+ *  @param      response        The response object.  Cannot be nil.
+ */
+- (NSArray *)themesFromMultipleThemesRequestResponse:(id)response
+{
+    NSParameterAssert(response != nil);
+    
+    NSDictionary *themesDictionary = [response dictionaryForKey:ThemeServiceRemoteThemesKey];
+    NSArray *themeDictionaries = [themesDictionary allValues];
+    NSArray *themes = [self themesFromDictionaries:themeDictionaries];
+    
+    return themes;
 }
 
 #pragma mark - Parsing the dictionary replies
