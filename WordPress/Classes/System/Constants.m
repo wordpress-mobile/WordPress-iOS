@@ -15,6 +15,9 @@ NSString *const WPGithubMainURL                                     = @"https://
 NSString *const WPTwitterWordPressHandle                            = @"@WordPressiOS";
 NSString *const WPTwitterWordPressMobileURL                         = @"twitter://user?screen_name=wordpressios";
 
+NSString *const WPBlavatarBaseURL                                   = @"http://gravatar.com/blavatar";
+NSString *const WPGravatarBaseURL                                   = @"http://gravatar.com/avatar";
+
 NSString *const WPNotificationsBucketName                           = @"note20";
 
 #ifdef INTERNAL_BUILD

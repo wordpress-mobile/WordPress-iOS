@@ -7,8 +7,11 @@
 - (void)getPublicizersWithSuccess:(void (^)(NSArray *publicizers))success
                           failure:(void (^)(NSError *error))failure
 {
-    static NSString* const path = @"meta/publicize/";
-    [self.api GET:path
+    static NSString *const path = @"meta/publicize/";
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {

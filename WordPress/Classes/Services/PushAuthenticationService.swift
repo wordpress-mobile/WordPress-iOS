@@ -18,7 +18,7 @@ import Foundation
     */
     public required override init(managedObjectContext: NSManagedObjectContext) {
         super.init(managedObjectContext: managedObjectContext)
-        self.authenticationServiceRemote = PushAuthenticationServiceRemote(remoteApi: apiForRequest())
+        self.authenticationServiceRemote = PushAuthenticationServiceRemote(api: apiForRequest())
     }
 
     /**
@@ -43,16 +43,24 @@ import Foundation
     
     /**
     *  @details     Helper method to get the WordPress.com REST Api, if any
-    *  @returns     WordPressComApi instance, if applicable, or nil.
+    *  @returns     WordPressComApi instance.  It can be an anonymous API instance if there are no
+    *               credentials.
     */
-    private func apiForRequest() -> WordPressComApi? {
+    private func apiForRequest() -> WordPressComApi {
+        
+        var api : WordPressComApi? = nil
+        
         let accountService = AccountService(managedObjectContext: managedObjectContext)
         if let unwrappedRestApi = accountService.defaultWordPressComAccount()?.restApi {
             if unwrappedRestApi.hasCredentials() {
-                return unwrappedRestApi
+                api = unwrappedRestApi
             }
         }
         
-        return nil
+        if api == nil {
+            api = WordPressComApi.anonymousApi()
+        }
+        
+        return api!
     }
 }

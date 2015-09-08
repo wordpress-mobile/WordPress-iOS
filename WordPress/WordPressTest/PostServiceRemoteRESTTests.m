@@ -38,7 +38,7 @@
     
     NSNumber *postID = @1;
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@/posts/%@", [blog dotComID], postID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@", [blog dotComID], postID];
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNotNil]
@@ -90,7 +90,7 @@
     
     NSString* postType = @"SomeType";
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts", blog.dotComID];
     
     BOOL (^parametersCheckBlock)(id obj) = ^BOOL(NSDictionary *parameters) {
         
@@ -132,7 +132,7 @@
     
     NSString* postType = @"SomeType";
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts", blog.dotComID];
     
     NSString *testOptionKey = @"SomeKey";
     NSString *testOptionValue = @"SomeValue";
@@ -187,8 +187,9 @@
     OCMStub([post status]).andReturn(@"Status");
     OCMStub([post password]).andReturn(@"Password");
     OCMStub([post type]).andReturn(@"Type");
+    OCMStub([post metadata]).andReturn(@[]);
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/new?context=edit", blog.dotComID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
@@ -247,8 +248,9 @@
     OCMStub([post status]).andReturn(@"Status");
     OCMStub([post password]).andReturn(@"Password");
     OCMStub([post type]).andReturn(@"Type");
+    OCMStub([post metadata]).andReturn(@[]);
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", blog.dotComID, post.postID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@?context=edit", blog.dotComID, post.postID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
@@ -303,7 +305,7 @@
     RemotePost *post = OCMClassMock([RemotePost class]);
     OCMStub([post postID]).andReturn(@1);
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/delete", blog.dotComID, post.postID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
@@ -358,7 +360,7 @@
     RemotePost *post = OCMClassMock([RemotePost class]);
     OCMStub([post postID]).andReturn(@1);
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/delete", blog.dotComID, post.postID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
@@ -413,7 +415,7 @@
     RemotePost *post = OCMClassMock([RemotePost class]);
     OCMStub([post postID]).andReturn(@1);
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", blog.dotComID, post.postID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/posts/%@/restore", blog.dotComID, post.postID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]

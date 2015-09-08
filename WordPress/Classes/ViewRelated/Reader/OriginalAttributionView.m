@@ -17,6 +17,12 @@ static NSString * const BlavatarImageName = @"post-blavatar-placeholder";
 
 #pragma mark - LifeCycle Methods
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    self.richTextView.scrollsToTop = NO;
+}
+
 - (CGSize)intrinsicContentSize
 {
     if ([self.richTextView.textStorage length] == 0) {

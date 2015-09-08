@@ -14,9 +14,13 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 
 @implementation AccountServiceRemoteREST
 
-- (void)getBlogsWithSuccess:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
+- (void)getBlogsWithSuccess:(void (^)(NSArray *))success
+                    failure:(void (^)(NSError *))failure
 {
-    [self.api GET:@"me/sites"
+    NSString *requestUrl = [self pathForEndpoint:@"me/sites"
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -39,8 +43,10 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
     //
     NSParameterAssert([account isKindOfClass:[WPAccount class]]);
     
-    NSString *path = @"me";
-    [self.api GET:path
+    NSString *requestUrl = [self pathForEndpoint:@"me"
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
               if (!success) {
@@ -55,6 +61,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
               }
           }];
 }
+
 
 
 #pragma mark - Private Methods
@@ -73,14 +80,16 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 
 - (NSArray *)remoteBlogsFromJSONArray:(NSArray *)jsonBlogs
 {
-    NSMutableArray *remoteBlogs = [NSMutableArray arrayWithCapacity:[jsonBlogs count]];
-    for (NSDictionary *jsonBlog in jsonBlogs) {
-        BOOL isJetpack = [jsonBlog[@"jetpack"] boolValue];
-        if (!isJetpack || JetpackREST.enabled) {
-            [remoteBlogs addObject:[self remoteBlogFromJSONDictionary:jsonBlog]];
-        }
+    NSArray *blogs = jsonBlogs;
+    if (!JetpackREST.enabled) {
+        blogs = [blogs wp_filter:^BOOL(NSDictionary *jsonBlog) {
+            BOOL isJetpack = [jsonBlog[@"jetpack"] boolValue];
+            return !isJetpack;
+        }];
     }
-    return [NSArray arrayWithArray:remoteBlogs];
+    return [blogs wp_map:^id(NSDictionary *jsonBlog) {
+        return [self remoteBlogFromJSONDictionary:jsonBlog];
+    }];
 }
 
 - (RemoteBlog *)remoteBlogFromJSONDictionary:(NSDictionary *)jsonBlog

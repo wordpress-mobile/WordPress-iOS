@@ -673,22 +673,6 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatNotificationsSettingsUpdated:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Updated"];
             break;
-        case WPAnalyticsStatPublishedPostWithPhoto:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_photos"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_published_post_with_photo"];
-            break;
-        case WPAnalyticsStatPublishedPostWithVideo:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_videos"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_published_post_with_video"];
-            break;
-        case WPAnalyticsStatPublishedPostWithCategories:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_categories"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_published_post_with_category"];
-            break;
-        case WPAnalyticsStatPublishedPostWithTags:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_tags"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_published_post_with_tags"];
-            break;
         case WPAnalyticsStatPushAuthenticationApproved:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Authentication - Approved"];
             break;
@@ -795,7 +779,29 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatTwoFactorCodeRequested:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Two Factor - Requested Verification Code"];
             break;
-        default:
+        case WPAnalyticsStatAppUpgraded:
+        case WPAnalyticsStatDefaultAccountChanged:
+        case WPAnalyticsStatLogSpecialCondition:
+        case WPAnalyticsStatMaxValue:
+        case WPAnalyticsStatNoStat:
+        case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
+        case WPAnalyticsStatPostListAuthorFilterChanged:
+        case WPAnalyticsStatPostListDraftAction:
+        case WPAnalyticsStatPostListEditAction:
+        case WPAnalyticsStatPostListLoadedMore:
+        case WPAnalyticsStatPostListNoResultsButtonPressed:
+        case WPAnalyticsStatPostListOpenedCellMenu:
+        case WPAnalyticsStatPostListPublishAction:
+        case WPAnalyticsStatPostListPullToRefresh:
+        case WPAnalyticsStatPostListRestoreAction:
+        case WPAnalyticsStatPostListSearchOpened:
+        case WPAnalyticsStatPostListStatsAction:
+        case WPAnalyticsStatPostListStatusFilterChanged:
+        case WPAnalyticsStatPostListTrashAction:
+        case WPAnalyticsStatPostListViewAction:
+        case WPAnalyticsStatSupportSentMessage:
+        case WPAnalyticsStatSupportUserRepliedToHelpshift:
+            // Unimplemented events
             break;
     }
 

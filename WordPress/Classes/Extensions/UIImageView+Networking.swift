@@ -12,6 +12,7 @@ extension UIImageView
 
         // Failsafe: Halt if the URL is empty
         if url == nil {
+            image = placeholderImage
             return
         }
 

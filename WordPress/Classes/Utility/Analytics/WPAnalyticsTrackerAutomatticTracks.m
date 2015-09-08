@@ -224,22 +224,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatEditorCreatedPost:
             eventName = @"editor_post_created";
             break;
-        case WPAnalyticsStatPublishedPostWithCategories:
-            eventName = @"editor_post_published";
-            eventProperties = @{ @"with_categories" : @YES };
-            break;
-        case WPAnalyticsStatPublishedPostWithPhoto:
-            eventName = @"editor_post_published";
-            eventProperties = @{ @"with_photos" : @YES };
-            break;
-        case WPAnalyticsStatPublishedPostWithTags:
-            eventName = @"editor_post_published";
-            eventProperties = @{ @"with_tags" : @YES };
-            break;
-        case WPAnalyticsStatPublishedPostWithVideo:
-            eventName = @"editor_post_published";
-            eventProperties = @{ @"with_videos" : @YES };
-            break;
         case WPAnalyticsStatEditorDiscardedChanges:
             eventName = @"editor_discarded_changes";
             break;
@@ -639,6 +623,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
+        case WPAnalyticsStatMaxValue:
             return nil;
     }
 

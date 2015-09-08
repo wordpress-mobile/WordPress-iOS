@@ -24,7 +24,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     BlogServiceRemoteREST *service = nil;
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@/users", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/users", blog.dotComID];
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isKindOfClass:[NSDictionary class]]
@@ -60,7 +60,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     BlogServiceRemoteREST *service = nil;
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@", blog.dotComID];
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@", blog.dotComID];
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
@@ -95,7 +95,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     BlogServiceRemoteREST *service = nil;
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@/post-formats", blog.dotComID];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/post-formats", blog.dotComID];
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
@@ -130,7 +130,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     BlogServiceRemoteREST *service = nil;
     
-    NSString* url = [NSString stringWithFormat:@"sites/%@/connections", blog.dotComID];
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/connections", blog.dotComID];
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
