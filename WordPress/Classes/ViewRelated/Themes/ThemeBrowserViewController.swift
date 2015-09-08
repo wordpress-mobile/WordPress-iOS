@@ -1,6 +1,6 @@
 import Foundation
 
-public class ThemeBrowserViewController : UICollectionViewController, UISearchBarDelegate {
+public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
     
     // MARK: - Properties: must be set by parent
     
@@ -105,6 +105,34 @@ public class ThemeBrowserViewController : UICollectionViewController, UISearchBa
     
     public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1;
+    }
+    
+    // MARK: - UICollectionViewDelegateFlowLayout
+    
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        let marginWidth = CGFloat(10)
+        
+        let isPhone = UIDevice.currentDevice().userInterfaceIdiom == .Phone
+        var width = CGFloat(100)
+        
+        if isPhone {
+            let numberOfCellsToShow = 1
+            let numberOfMarginsToHave = CGFloat(numberOfMarginsForNumberOfCells(numberOfCellsToShow))
+            
+            width = collectionView.frame.size.width - numberOfMarginsToHave * marginWidth
+        } else {
+            let numberOfCellsToShow = 4
+            let numberOfMarginsToHave = CGFloat(numberOfMarginsForNumberOfCells(numberOfCellsToShow))
+            
+            width = collectionView.frame.size.width - numberOfMarginsToHave * marginWidth
+        }
+        
+        return CGSize(width: width, height: 100)
+    }
+    
+    private func numberOfMarginsForNumberOfCells(numberOfCells: Int) -> Int {
+        return 1 + numberOfCells
     }
     
     // MARK: - UISearchBarDelegate
