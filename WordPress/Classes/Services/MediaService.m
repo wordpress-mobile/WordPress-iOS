@@ -374,7 +374,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 - (Media *)newMediaForPost:(AbstractPost *)post
 {
     Media *media = [self newMediaForBlog:post.blog];
-    [media.posts addObject:post];
+    [media addPostsObject:post];
     return media;
 }
 
@@ -486,8 +486,10 @@ static NSString * const MediaDirectory = @"Media";
             [self.managedObjectContext deleteObject:deleteMedia];
         }
     }
-
-    [self.managedObjectContext save:nil];
+    NSError *error;
+    if (![self.managedObjectContext save:&error]){
+        DDLogError(@"Error saving context afer adding media %@", [error localizedDescription]);
+    }
     if (completion) {
         completion();
     }
@@ -511,14 +513,14 @@ static NSString * const MediaDirectory = @"Media";
     media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL;
 }
 
-- (RemoteMedia *) remoteMediaFromMedia:(Media *)media
+- (RemoteMedia *)remoteMediaFromMedia:(Media *)media
 {
     RemoteMedia *remoteMedia = [[RemoteMedia alloc] init];
     remoteMedia.mediaID = media.mediaID;
     remoteMedia.url = [NSURL URLWithString:media.remoteURL];
     remoteMedia.date = media.creationDate;
     remoteMedia.file = media.filename;
-    remoteMedia.extension = media.mediaTypeString;
+    remoteMedia.extension = [media.filename pathExtension] ? :@"unknown";
     remoteMedia.title = media.title;
     remoteMedia.caption = media.caption;
     remoteMedia.descriptionText = media.desc;

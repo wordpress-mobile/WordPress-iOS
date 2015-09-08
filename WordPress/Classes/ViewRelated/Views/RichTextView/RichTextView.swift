@@ -104,8 +104,16 @@ import Foundation
             return textView.linkTextAttributes
         }
     }
-    
-    
+
+    public var scrollsToTop: Bool {
+        set {
+            textView.scrollsToTop = newValue
+        }
+        get {
+            return textView.scrollsToTop
+        }
+    }
+
     // MARK: - TextKit Getters
     public var layoutManager: NSLayoutManager {
         get {

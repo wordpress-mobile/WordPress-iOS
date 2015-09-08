@@ -3,11 +3,21 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 38 (@alexcurylo 2015-08-04)
+## WordPress 39 (@alexcurylo 2015-09-08)
 
 - Added `Publicizer` to store the services capable of publicizing
 - `Blog` added a new relationship called `publicizers` to store available Publicizers
 - `Blog` added a new attribute called `connections` to store the blog's connections array
+
+## WordPress 38 (@sergioestevao 2015-08-21)
+
+Changes to the data model:
+
+- `Blog` added a new number attribute called `privacy` to store the privacy setting on the site
+- `ReaderPost` added new string fields for `primaryTag`, `primaryTagSlug`, `secondaryTag`, and `secondaryTagSlug`
+- `ReaderPost` added new integer fields for `wordCount`, and `readingTime`
+- `ReaderPost` added new boolean fields for `isExternal`, and `isJetpack`
+- `ReaderPost` removed fields `dateCommentsSynced`, and `storedComment`
 
 ## WordPress 37 (@sergioestevao 2015-08-01)
 

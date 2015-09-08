@@ -3,4 +3,5 @@
 #import "ServiceRemoteREST.h"
 
 @interface AccountServiceRemoteREST : ServiceRemoteREST <AccountServiceRemote>
+
 @end

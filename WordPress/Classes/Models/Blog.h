@@ -33,6 +33,13 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureSharing,
 };
 
+typedef NS_ENUM(NSInteger, SiteVisibility) {
+    SiteVisibilityPrivate = -1,
+    SiteVisibilityHidden = 0,
+    SiteVisibilityPublic = 1,
+    SiteVisibilityUnknown = NSIntegerMax
+};
+
 @interface Blog : NSManagedObject
 
 @property (nonatomic, strong, readwrite) NSNumber *blogID;
@@ -71,12 +78,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, strong, readwrite) NSString *icon;
 @property (nonatomic, strong, readwrite) NSNumber *defaultCategoryID;
 @property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
-
+@property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 /**
  Flags whether the current user is an admin on the blog.
- 
- @warn `isAdmin` is only being set for wpcom sites and checked when bumping page
- views in the reader detail.
  */
 @property (nonatomic, assign, readwrite) BOOL isAdmin;
 
@@ -124,6 +128,13 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 
 #pragma mark - Blog information
 - (BOOL)isPrivate;
+/**
+ *  The text description for the current privacy settting set in the blog
+ *
+ *  @return the text description.
+ */
+- (NSString *)textForCurrentSiteVisibility;
+
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;
 - (NSString *)loginUrl;

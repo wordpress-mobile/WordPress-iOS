@@ -54,7 +54,7 @@ NSInteger const SupportButtonIndex = 0;
                         case 416:
                         case 417:
                             customTitle = NSLocalizedString(@"Incompatible site", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error being returned from the site.");
-                            message = [NSString stringWithFormat:NSLocalizedString(@"Your WordPress site returned a error %d.\nThat probably means you have some special configuration that is not compatible with this app.\nPlease let us know in the forums about it.", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error being returned from the site."), response.statusCode];
+                            message = [NSString stringWithFormat:NSLocalizedString(@"Your site returned a %d error.\nThis is usually due to an incompatable server configuration.\nPlease contact your hosting provider, or reach out to us using our in-app support.", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error being returned from the site."), response.statusCode];
                             break;
                         case 403:
                             customTitle = NSLocalizedString(@"Forbidden Access", @"Error message shown in the set up process if the WP install was unable to be added to the app due to an error accessing the site.");

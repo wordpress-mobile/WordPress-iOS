@@ -4,7 +4,7 @@
 
 static LocationService *instance;
 static NSInteger const LocationHorizontalAccuracyThreshold = 100; // Meters
-static NSInteger const LocationServiceTimeoutDuration = 5; // Seconds
+static NSInteger const LocationServiceTimeoutDuration = 10; // Seconds
 NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 @interface LocationService()<CLLocationManagerDelegate>
