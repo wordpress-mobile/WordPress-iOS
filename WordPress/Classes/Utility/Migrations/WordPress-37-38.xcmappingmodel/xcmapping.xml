@@ -116,14 +116,14 @@
         <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING" idrefs="z373"></relationship>
     </object>
     <object type="XDDEVENTITYMAPPING" id="z118">
-        <attribute name="migrationpolicyclassname" type="string">ReaderTopicToReaderDefaultTopic37to38</attribute>
+        <attribute name="migrationpolicyclassname" type="string">WordPress.ReaderTopicToReaderDefaultTopic37to38</attribute>
         <attribute name="sourcename" type="string">ReaderTopic</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
         <attribute name="mappingnumber" type="int16">1</attribute>
         <attribute name="destinationname" type="string">ReaderDefaultTopic</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z219"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z303 z249 z281 z202 z336 z115"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z336 z281 z115 z303 z202 z249"></relationship>
         <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z234"></relationship>
     </object>
     <object type="XDDEVATTRIBUTEMAPPING" id="z119">
@@ -467,15 +467,15 @@
         <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING" idrefs="z147"></relationship>
     </object>
     <object type="XDDEVENTITYMAPPING" id="z198">
-        <attribute name="migrationpolicyclassname" type="string">ReaderPostToReaderPost37to38</attribute>
+        <attribute name="migrationpolicyclassname" type="string">WordPress.ReaderPostToReaderPost37to38</attribute>
         <attribute name="sourcename" type="string">ReaderPost</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
         <attribute name="mappingnumber" type="int16">8</attribute>
         <attribute name="destinationname" type="string">ReaderPost</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z219"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z243 z284 z400 z289 z206 z278 z259 z230 z304 z343 z132 z275 z255 z134 z297 z376 z103 z122 z123 z145 z364 z382 z184 z136 z183 z381 z252 z228 z171 z282 z158 z377 z308 z350 z201 z395 z215 z108 z127 z334 z194 z175 z102 z181 z337 z305 z318 z363 z389"></relationship>
-        <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z290 z399 z208"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z318 z363 z145 z108 z243 z389 z395 z350 z255 z127 z158 z364 z201 z289 z230 z308 z228 z183 z275 z102 z282 z343 z381 z284 z337 z382 z252 z122 z132 z400 z278 z194 z376 z103 z304 z171 z134 z377 z175 z305 z206 z334 z259 z184 z215 z123 z181 z297 z136"></relationship>
+        <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z208 z399 z290"></relationship>
     </object>
     <object type="XDDEVATTRIBUTEMAPPING" id="z199">
         <attribute name="name" type="string">remoteThumbnailURL</attribute>
@@ -1243,13 +1243,13 @@ dHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8RF+kAAAAHAAAACAAAABcAAAAzAAAANAAAADUAAABjAAAAZAAA
     </object>
     <object type="XDDEVENTITYMAPPING" id="z373">
         <attribute name="sourcename" type="string">ReaderTopic</attribute>
-        <attribute name="migrationpolicyclassname" type="string">ReaderTopicToReaderListTopic37to38</attribute>
+        <attribute name="migrationpolicyclassname" type="string">WordPress.ReaderTopicToReaderListTopic37to38</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
         <attribute name="mappingnumber" type="int16">4</attribute>
         <attribute name="destinationname" type="string">ReaderListTopic</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z219"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z241 z346 z226 z272 z207 z267 z310 z254 z248 z117 z326 z274"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z254 z248 z346 z274 z207 z310 z226 z272 z117 z326 z241 z267"></relationship>
         <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z323"></relationship>
     </object>
     <object type="XDDEVRELATIONSHIPMAPPING" id="z374">
@@ -1348,14 +1348,14 @@ dHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8RF+kAAAAHAAAACAAAABcAAAAzAAAANAAAADUAAABjAAAAZAAA
         <relationship name="entitymapping" type="1/1" destination="XDDEVENTITYMAPPING" idrefs="z411"></relationship>
     </object>
     <object type="XDDEVENTITYMAPPING" id="z394">
-        <attribute name="migrationpolicyclassname" type="string">ReaderTopicToReaderTagTopic37to38</attribute>
+        <attribute name="migrationpolicyclassname" type="string">WordPress.ReaderTopicToReaderTagTopic37to38</attribute>
         <attribute name="sourcename" type="string">ReaderTopic</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
         <attribute name="mappingnumber" type="int16">16</attribute>
         <attribute name="destinationname" type="string">ReaderTagTopic</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z219"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z315 z190 z114 z321 z170 z235 z348 z187 z106"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z348 z170 z315 z190 z114 z235 z187 z321 z106"></relationship>
         <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z339"></relationship>
     </object>
     <object type="XDDEVATTRIBUTEMAPPING" id="z395">
@@ -1427,13 +1427,13 @@ dHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8RF+kAAAAHAAAACAAAABcAAAAzAAAANAAAADUAAABjAAAAZAAA
     </object>
     <object type="XDDEVENTITYMAPPING" id="z411">
         <attribute name="sourcename" type="string">ReaderTopic</attribute>
-        <attribute name="migrationpolicyclassname" type="string">ReaderTopicToReaderSiteTopic37to38</attribute>
+        <attribute name="migrationpolicyclassname" type="string">WordPress.ReaderTopicToReaderSiteTopic37to38</attribute>
         <attribute name="mappingtypename" type="string">Undefined</attribute>
         <attribute name="mappingnumber" type="int16">13</attribute>
         <attribute name="destinationname" type="string">ReaderSiteTopic</attribute>
         <attribute name="autogenerateexpression" type="bool">1</attribute>
         <relationship name="mappingmodel" type="1/1" destination="XDDEVMAPPINGMODEL" idrefs="z219"></relationship>
-        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z250 z345 z262 z221 z309 z292 z143 z380 z150 z330 z347 z341 z409 z116 z393 z331"></relationship>
+        <relationship name="attributemappings" type="0/0" destination="XDDEVATTRIBUTEMAPPING" idrefs="z347 z409 z380 z393 z292 z309 z150 z262 z143 z341 z221 z116 z250 z345 z330 z331"></relationship>
         <relationship name="relationshipmappings" type="0/0" destination="XDDEVRELATIONSHIPMAPPING" idrefs="z360"></relationship>
     </object>
     <object type="XDDEVRELATIONSHIPMAPPING" id="z412">
