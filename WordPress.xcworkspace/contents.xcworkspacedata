@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:WordPress/Classes/Models/ReaderSiteTopic.swift">
-   </FileRef>
-   <FileRef
       location = "group:WordPress/WordPress.xcodeproj">
    </FileRef>
    <FileRef
