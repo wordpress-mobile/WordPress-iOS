@@ -69,7 +69,6 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - FormatterKit/UnitOfInformationFormatter (1.8.0)
   - FormatterKit/URLRequestFormatter (1.8.0)
-  - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.7.1)
   - Helpshift (4.10.2)
   - HockeySDK (3.6.4)
@@ -127,9 +126,17 @@ PODS:
   - ReactiveCocoa/no-arc (2.4.7)
   - ReactiveCocoa/UI (2.4.7):
     - ReactiveCocoa/Core
-  - Simperium (0.7.9):
-    - Google-Diff-Match-Patch
-  - SocketRocket (0.3.1-beta2)
+  - Simperium (0.8.3):
+    - Simperium/DiffMatchPach (= 0.8.3)
+    - Simperium/JRSwizzle (= 0.8.3)
+    - Simperium/SocketRocket (= 0.8.3)
+    - Simperium/SPReachability (= 0.8.3)
+    - Simperium/SSKeychain (= 0.8.3)
+  - Simperium/DiffMatchPach (0.8.3)
+  - Simperium/JRSwizzle (0.8.3)
+  - Simperium/SocketRocket (0.8.3)
+  - Simperium/SPReachability (0.8.3)
+  - Simperium/SSKeychain (0.8.3)
   - Specta (0.5.0)
   - SVProgressHUD (1.1.3)
   - UIAlertView+Blocks (0.8.1)
@@ -186,9 +193,7 @@ DEPENDENCIES:
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
   - ReactiveCocoa (~> 2.4.7)
-  - Simperium (= 0.7.9)
-  - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, commit
-    `3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927`)
+  - Simperium (= 0.8.3)
   - Specta (= 0.5.0)
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
@@ -215,9 +220,6 @@ EXTERNAL SOURCES:
   NSLogger-CocoaLumberjack-connector:
     :git: https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git
     :tag: '1.5'
-  SocketRocket:
-    :commit: 3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927
-    :git: https://github.com/jleandroperez/SocketRocket.git
   WordPress-AppbotX:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -235,9 +237,6 @@ CHECKOUT OPTIONS:
   NSLogger-CocoaLumberjack-connector:
     :git: https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git
     :tag: '1.5'
-  SocketRocket:
-    :commit: 3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927
-    :git: https://github.com/jleandroperez/SocketRocket.git
   WordPress-AppbotX:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -257,7 +256,6 @@ SPEC CHECKSUMS:
   EmailChecker: 406cf1f1b5cd2efb8401803b580abf4a43b0665c
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
-  Google-Diff-Match-Patch: d8d1a2cc3ca2382f4855f0bf05821b91250927ee
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
   Helpshift: 9c84a5e4ffd881c7e7eb395c2afc8d6a46eb2187
   HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
@@ -274,14 +272,13 @@ SPEC CHECKSUMS:
   OHHTTPStubs: ad00ed452d4e3805ffb95977163879bd5bb121ea
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
-  Simperium: 7d0a207d7f0ce918b36ba9e690cdb0d0d730cc28
-  SocketRocket: 77c536491ce78315d4f26a06057ed49aa36cef5e
+  Simperium: 7a2d7e5ac67526477084a35a5ef9a77b6423b1ac
   Specta: eb90708ed77569bbda089f8ead10bb99b8e9489e
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIAlertView+Blocks: 45c3d3b7194906702d3e9a14c7ece5581505646d
   UIDeviceIdentifier: 2eb1070f189a069184611e21b5e8832443e6f8ec
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
-  WordPress-iOS-Editor: 3ed3f3f1eb226b34542b471a7db41419815bbf28
+  WordPress-iOS-Editor: 81d1f10e548c9fabd2ea99dbf0bcfa0669078667
   WordPress-iOS-Shared: 345f7c1c49d298114353c3856c53317f0d826078
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
   WordPressCom-Analytics-iOS: a54b61f75be5a43fe32be98c0b286cb18fc2abee
