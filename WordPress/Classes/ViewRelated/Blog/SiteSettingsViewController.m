@@ -43,6 +43,7 @@ NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingGeotagging = 0,
     SiteSettingsWritingDefaultCategory,
     SiteSettingsWritingDefaultPostFormat,
+    SiteSettingsWritingRelatedPosts,
     SiteSettingsWritingCount,
 };
 
@@ -73,6 +74,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 @property (nonatomic, strong) SettingTableViewCell *geotaggingCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
+@property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
 
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 
@@ -267,6 +269,17 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     return _defaultPostFormatCell;
 }
 
+- (SettingTableViewCell *)relatedPostsCell
+{
+    if (_relatedPostsCell){
+        return _relatedPostsCell;
+    }
+    _relatedPostsCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Related Posts", @"Label for selecting the related posts options")
+                                                                editable:YES
+                                                         reuseIdentifier:nil];
+    return _relatedPostsCell;
+}
+
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
@@ -287,6 +300,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         case (SiteSettingsWritingDefaultPostFormat):{
             [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
             return self.defaultPostFormatCell;
+        }
+        case (SiteSettingsWritingRelatedPosts):{
+            return self.relatedPostsCell;
         }
         break;
 
