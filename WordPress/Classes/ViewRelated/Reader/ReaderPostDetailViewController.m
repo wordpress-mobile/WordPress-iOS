@@ -479,10 +479,6 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     UIButton *followButton = (UIButton *)sender;
     ReaderPost *post = self.post;
 
-    if (!post.isFollowing) {
-        [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
-    }
-
     [followButton setSelected:!post.isFollowing]; // Set it optimistically
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
