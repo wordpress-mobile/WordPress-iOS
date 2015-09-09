@@ -241,6 +241,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID){
         // Sync the menu for good measure.
+        [WPAnalytics track:WPAnalyticsStatReaderUnfollowedTag];
         [self fetchReaderMenuWithSuccess:success failure:failure];
     } failure:^(NSError *error) {
         if (failure) {
@@ -268,6 +269,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID){
         __weak __typeof(self) weakSelf = self;
         [self fetchReaderMenuWithSuccess:^{
+            [WPAnalytics track:WPAnalyticsStatReaderFollowedTag];
             [weakSelf selectTopicWithID:topicID];
         } failure:failure];
     } failure:^(NSError *error) {
