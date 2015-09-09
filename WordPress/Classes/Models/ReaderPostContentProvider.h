@@ -16,6 +16,7 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 - (NSString *)sourceBlogNameForDisplay;
 - (NSURL *)sourceBlogURLForDisplay;
 
+- (NSString *)likeCountForDisplay;
 - (NSNumber *)commentCount;
 - (NSNumber *)likeCount;
 - (BOOL)commentsOpen;

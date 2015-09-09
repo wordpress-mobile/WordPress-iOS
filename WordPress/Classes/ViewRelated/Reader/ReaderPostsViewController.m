@@ -606,6 +606,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)blockSite:(ReaderPost *)post
 {
     NSNumber *postID = post.postID;
+
+    if (!postID) {
+        // Safety net.
+        DDLogError(@"Error blocking a site. The postID for the specified post was nil. %@", post);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not block site", @"A short title of an error prompt shown when there was a problem trying to block a site.")
+                                                        message:NSLocalizedString(@"There was a problem blocking a site. Please refresh the post list and try again.", @"Error message explaining a site could not be blocked and to try refreshing the list of posts before attempting to block the site again.")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"An 'OK' button that dismisses a dialog.")
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
     [self addBlockedPostID:postID];
 

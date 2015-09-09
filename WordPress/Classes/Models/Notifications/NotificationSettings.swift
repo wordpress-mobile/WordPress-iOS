@@ -92,7 +92,7 @@ public class NotificationSettings
             case .Other:
                 return NSLocalizedString("Comments on Other Sites", comment: "Notification Settings Channel")
             case .WordPressCom:
-                return NSLocalizedString("Updates from WordPress.com", comment: "Notification Settings Channel")
+                return NSLocalizedString("Email from WordPress.com", comment: "Notification Settings Channel")
             }
         }
     }
