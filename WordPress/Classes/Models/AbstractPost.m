@@ -258,7 +258,9 @@
     
     Media *featuredMedia = [[self.blog.media objectsPassingTest:^BOOL(id obj, BOOL *stop) {
         Media *media = (Media *)obj;
-        *stop = [self.post_thumbnail isEqualToNumber:media.mediaID];
+        if (media.mediaID) {
+            *stop = [self.post_thumbnail isEqualToNumber:media.mediaID];
+        }
         return *stop;
     }] anyObject];
 
