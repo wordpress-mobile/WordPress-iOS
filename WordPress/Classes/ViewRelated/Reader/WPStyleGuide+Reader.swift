@@ -165,6 +165,7 @@ extension WPStyleGuide
         let fontSize = Cards.buttonFontSize
         button.setTitleColor(grey(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
+        button.setTitleColor(jazzyOrange(), forState: .Selected)
         button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
     }
 
