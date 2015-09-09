@@ -149,6 +149,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (like) {
                     [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
+                } else {
+                    [WPAnalytics track:WPAnalyticsStatReaderUnlikedArticle];
                 }
                 if (success) {
                     success();
