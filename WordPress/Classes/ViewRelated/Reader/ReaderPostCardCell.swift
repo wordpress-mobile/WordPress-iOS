@@ -497,20 +497,7 @@ import Foundation
 
     private func configureLikeActionButton(button: UIButton) {
         button.tag = CardAction.Like.rawValue
-        let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
-        let likesStr = NSLocalizedString("Likes", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
-
-        let count = contentProvider!.likeCount().integerValue
-
-        var title: String?
-        if count == 0 {
-            title = likeStr
-        } else if count == 1 {
-            title = "\(count) \(likeStr)"
-        } else {
-            title = "\(count) \(likesStr)"
-        }
-
+        let title = contentProvider!.likeCountForDisplay()
         let imageName = contentProvider!.isLiked() ? "icon-reader-liked" : "icon-reader-like"
         var image = UIImage(named: imageName)
         var highlightImage = UIImage(named: "icon-reader-like-highlight")
