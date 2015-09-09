@@ -255,6 +255,10 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     }
     
     remoteSettings.privacy = [json numberForKeyPath:@"settings.blog_public"];
+    remoteSettings.relatedPostsAllowed = [json numberForKeyPath:@"settings.jetpack_relatedposts_allowed"];
+    remoteSettings.relatedPostsEnabled = [json numberForKeyPath:@"settings.jetpack_relatedposts_enabled"];
+    remoteSettings.relatedPostsShowHeadline = [json numberForKeyPath:@"settings.jetpack_relatedposts_show_headline"];
+    remoteSettings.relatedPostsShowThumbnails = [json numberForKeyPath:@"settings.jetpack_relatedposts_show_thumbnails"];
     
     return remoteSettings;
 }
