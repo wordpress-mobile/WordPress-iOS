@@ -127,7 +127,10 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     NSParameterAssert(service.blog.dotComID != nil);
     
     NSString *path = @"me/keyring-connections";
-    [self.api GET:path
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSArray *keyrings = [responseObject arrayForKey:@"connections"];
@@ -158,8 +161,11 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     NSParameterAssert(service.blog.dotComID != nil);
     
     NSString *path = [self pathForConnectionWithPublicizer:service];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     NSDictionary *parameters = @{ @"keyring_connection_ID" : authorization[@"ID"] };
-    [self.api POST:path
+
+    [self.api POST:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               [self syncConnectionsForBlog:service.blog
@@ -180,7 +186,10 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     NSParameterAssert(service.blog.dotComID != nil);
     
     NSString *path = [self pathForDisconnectionWithPublicizer:service];
-    [self.api POST:path
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                [self syncConnectionsForBlog:service.blog

@@ -167,7 +167,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     BlogServiceRemoteREST *service = nil;
     
-    NSString *url = @"me/keyring-connections";
+    NSString *url = @"v1.1/me/keyring-connections";
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
@@ -208,7 +208,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     BlogServiceRemoteREST *service = nil;
     
-    NSString *url = [NSString stringWithFormat:@"sites/%@/publicize-connections/new", blog.dotComID];
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/publicize-connections/new", blog.dotComID];
 
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNotNil]
@@ -255,7 +255,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     BlogServiceRemoteREST *service = nil;
     
-    NSString *url = [NSString stringWithFormat:@"sites/%@/connections/%d/delete", blog.dotComID, (int)publicizer.connectionID];
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/connections/%d/delete", blog.dotComID, (int)publicizer.connectionID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
