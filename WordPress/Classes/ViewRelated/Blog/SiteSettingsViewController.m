@@ -24,6 +24,7 @@
 #import "PostCategoriesViewController.h"
 #import "PostSettingsSelectionViewController.h"
 #import "BlogSiteVisibilityHelper.h"
+#import "RelatedPostsSettingsViewController.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -612,6 +613,13 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)showRelatedPostsSettings
+{
+    RelatedPostsSettingsViewController *relatedPostsViewController = [[RelatedPostsSettingsViewController alloc] initWithBlog:self.blog];
+    
+    [self.navigationController pushViewController:relatedPostsViewController animated:YES];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectInWritingSectionRow:(NSInteger)row
 {
     switch (row) {
@@ -635,6 +643,10 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         break;
         case SiteSettingsWritingDefaultPostFormat:{
             [self showPostFormatSelector];
+        }
+        break;
+        case SiteSettingsWritingRelatedPosts:{
+            [self showRelatedPostsSettings];
         }
         break;
 
