@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 39 (@sergioestevao 2015-09-09)
+
+- `Blog` added a new boolean attribute called `relatedPostsAllowed` to store the related setting on the site;
+- `Blog` added a new boolean attribute called `relatedPostsEnabled` to store the related setting on the site;
+- `Blog` added a new boolean attribute called `relatedPostsShowHeadline` to store the related setting on the site;
+- `Blog` added a new boolean attribute called `relatedPostsShowThumbnails` to store the related setting on the site;
+
 ## WordPress 38 (@sergioestevao 2015-08-21)
 
 Changes to the data model:
