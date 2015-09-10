@@ -47,9 +47,6 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
     NSParameterAssert(publicizer);
     NSParameterAssert(blog);
     
-    // some services require Safari user agent to log in
-    [[WordPressAppDelegate sharedInstance].userAgent useDefaultUserAgent];
-
     SharingAuthorizationWebViewController *webViewController = [[self alloc] initWithNibName:@"WPWebViewController" bundle:nil];
     
     webViewController.blog = blog;
@@ -63,6 +60,14 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
     webViewController.url = authorizeURL;
     
     return webViewController;
+}
+
+- (void)viewDidLoad
+{
+    // some services require Safari user agent to log in
+    [[WordPressAppDelegate sharedInstance].userAgent useDefaultUserAgent];
+
+    [super viewDidLoad];
 }
 
 - (void)dealloc
