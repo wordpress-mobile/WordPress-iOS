@@ -5,11 +5,11 @@ typedef NS_ENUM(NSUInteger, ReaderViewStyle) {
     ReaderViewStyleSitePreview
 };
 
-@class ReaderTopic;
+@class ReaderAbstractTopic;
 
 @interface ReaderPostsViewController : UITableViewController
 
-@property (nonatomic, strong) ReaderTopic *readerTopic;
+@property (nonatomic, strong) ReaderAbstractTopic *readerTopic;
 @property (nonatomic, assign) BOOL skipIpadTopPadding;
 @property (nonatomic, assign) ReaderViewStyle readerViewStyle;
 

@@ -497,7 +497,10 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 - (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
 {
-    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:self.post];
+    NSNumber *siteID = self.post.siteID;
+    NSString *siteURL = self.post.blogURL;
+    BOOL isWPcom = self.post.isWPCom;
+    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithSiteID:siteID siteURL:siteURL isWPcom:isWPcom];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

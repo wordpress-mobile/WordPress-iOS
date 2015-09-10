@@ -2,7 +2,7 @@
 #import "LocalCoreDataService.h"
 
 @class ReaderPost;
-@class ReaderTopic;
+@class ReaderAbstractTopic;
 
 extern NSString * const ReaderPostServiceErrorDomain;
 
@@ -15,7 +15,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchPostsForTopic:(ReaderTopic *)topic
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
                    success:(void (^)(NSInteger count, BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure;
 
@@ -27,7 +27,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)fetchPostsForTopic:(ReaderTopic *)topic
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
                earlierThan:(NSDate *)date
                    success:(void (^)(NSInteger count, BOOL hasMore))success
                    failure:(void (^)(NSError *error))failure;
@@ -52,7 +52,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)backfillPostsForTopic:(ReaderTopic *)topic
+- (void)backfillPostsForTopic:(ReaderAbstractTopic *)topic
                       success:(void (^)(NSInteger count, BOOL hasMore))success
                       failure:(void (^)(NSError *error))failure;
 
@@ -79,7 +79,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
                        failure:(void (^)(NSError *error))failure;
 
 /**
- Deletes all posts that do not belong to a ReaderTopic
+ Deletes all posts that do not belong to a `ReaderAbstractTopic`
  Saves the NSManagedObjectContext.
  */
 - (void)deletePostsWithNoTopic;
@@ -89,11 +89,11 @@ extern NSString * const ReaderPostServiceErrorDomain;
  
  @param siteID The id of the site or feed.
  @param siteURL The URL of the site or feed.
- @param topic The `ReaderTopic` owning the posts.
+ @param topic The `ReaderAbstractTopic` owning the posts.
  */
 - (void)deletePostsWithSiteID:(NSNumber *)siteID
                    andSiteURL:(NSString *)siteURL
-                    fromTopic:(ReaderTopic *)topic;
+                    fromTopic:(ReaderAbstractTopic *)topic;
 
 /**
  Delete posts from the specified site (not feed)
