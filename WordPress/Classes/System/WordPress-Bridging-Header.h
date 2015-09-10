@@ -30,7 +30,6 @@
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
 
-#import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostContentProvider.h"

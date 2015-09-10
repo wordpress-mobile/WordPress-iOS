@@ -6,7 +6,6 @@
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
 #import "ReaderPostService.h"
-#import "ReaderPostsViewController.h"
 #import "ReaderPostDetailViewController.h"
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderTopicService.h"
@@ -14,7 +13,7 @@
 #import "WordPress-Swift.h"
 
 @interface ReaderViewController () <UIViewControllerRestoration>
-@property (nonatomic, strong) ReaderPostsViewController *postsViewController;
+@property (nonatomic, strong) ReaderStreamViewController *postsViewController;
 @end
 
 @implementation ReaderViewController
@@ -108,7 +107,7 @@
 
 - (void)configurePostsViewController
 {
-    self.postsViewController = [[ReaderPostsViewController alloc] init];
+    self.postsViewController = [ReaderStreamViewController controllerWithTopic:nil];
     [self addChildViewController:self.postsViewController];
     UIView *childView = self.postsViewController.view;
     childView.frame = self.view.bounds;
@@ -183,7 +182,7 @@
 
 - (void)scrollViewToTop
 {
-    [self.postsViewController.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+    [self.postsViewController scrollViewToTop];
 }
 
 @end
