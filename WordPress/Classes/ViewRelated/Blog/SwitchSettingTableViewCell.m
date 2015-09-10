@@ -33,7 +33,7 @@
     _switchComponent.on = value;
 }
 
-- (BOOL)textValue
+- (BOOL)switchValue
 {
     return _switchComponent.on;
 }
