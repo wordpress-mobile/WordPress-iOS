@@ -34,9 +34,8 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.0.0):
     - CocoaLumberjack/Default
-  - CrashlyticsLumberjack (2.0.1-beta):
+  - CrashlyticsLumberjack (2.0.0):
     - CocoaLumberjack/Default (~> 2.0.0)
-    - CrashlyticsLumberjack/Framework (= 2.0.1-beta)
   - DTCoreText (1.6.13):
     - DTFoundation/Core (~> 1.7.1)
     - DTFoundation/DTAnimatedGIF (~> 1.7.1)
@@ -171,7 +170,7 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`,
     tag `0.0.7`)
   - CocoaLumberjack (= 2.0.0)
-  - CrashlyticsLumberjack (= 2.0.1-beta)
+  - CrashlyticsLumberjack (= 2.0.0)
   - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
@@ -250,7 +249,7 @@ SPEC CHECKSUMS:
   AMPopTip: cd807573e1bbd8f6b1e963a6439f2710dc303c5c
   Automattic-Tracks-iOS: 8bad8c049458d8767e5a25effdf30c01464eb30a
   CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
-  CrashlyticsLumberjack: 26034b4b6d8b0bf547ea9ba201ff53c6cd50f971
+  CrashlyticsLumberjack: 5094b659ecf9a11550f7dd7a885c0cef077f1ffa
   DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
   DTFoundation: c9b3362b83f0017389082ec067ede719826a579d
   EmailChecker: 406cf1f1b5cd2efb8401803b580abf4a43b0665c
@@ -286,4 +285,4 @@ SPEC CHECKSUMS:
   WPMediaPicker: 0757988f1519c20b92c91f470c41633ac42e3a0e
   wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.2
