@@ -14,7 +14,6 @@
 #import "ReaderPreviewHeaderView.h"
 #import "ReaderSiteHeaderView.h"
 #import "ReaderSiteService.h"
-#import "ReaderTopic.h"
 #import "ReaderTopicService.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import "WPNoResultsView+AnimatedBox.h"
@@ -27,7 +26,7 @@
 @property (nonatomic, strong) ReaderSiteHeaderView *siteHeaderView;
 @property (nonatomic, strong) ReaderPreviewHeaderView *tableHeaderView;
 @property (nonatomic, strong) ReaderPost *post;
-@property (nonatomic, strong) ReaderTopic *siteTopic;
+@property (nonatomic, strong) ReaderSiteTopic *siteTopic;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSString *siteURL;
 @property (nonatomic) BOOL isFollowing;
@@ -44,21 +43,6 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
     [service deleteTopic:self.siteTopic];
-}
-
-- (instancetype)initWithPost:(ReaderPost *)post
-{
-    self = [super init];
-    if (self) {
-        _siteID = post.siteID;
-        _siteURL = post.blogURL;
-        _isWPcom = post.isWPCom;
-        _isFollowing = post.isFollowing;
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-        _siteTopic = [topicService siteTopicForPost:post];
-    }
-    return self;
 }
 
 - (instancetype)initWithSiteID:(NSNumber *)siteID siteURL:(NSString *)siteURL isWPcom:(BOOL)isWPcom
@@ -110,7 +94,7 @@
                                      weakSelf.isFollowing = isFollowing;
                                      NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
                                      NSError *error;
-                                     weakSelf.siteTopic = (ReaderTopic *)[context existingObjectWithID:objectID error:&error];
+                                     weakSelf.siteTopic = (ReaderSiteTopic *)[context existingObjectWithID:objectID error:&error];
                                      if (error) {
                                          DDLogError(@"Error retrieving site topic from objectID : %@", error);
                                      }
@@ -193,10 +177,10 @@
     [self.view addSubview:childView];
     [self.postsViewController didMoveToParentViewController:self];
 
-    if (self.siteTopic.topicDescription) {
+    if (self.siteTopic.siteDescription) {
         // Build the table header
         self.tableHeaderView = [[ReaderPreviewHeaderView alloc] init];
-        self.tableHeaderView.text = self.siteTopic.topicDescription;
+        self.tableHeaderView.text = self.siteTopic.siteDescription;
         CGSize size = [self.tableHeaderView sizeThatFits:CGSizeMake(CGRectGetWidth(self.view.frame), CGFLOAT_HEIGHT_UNKNOWN)];
         self.tableHeaderView.frame = CGRectMake(0.0, 0.0, size.width, size.height);
         [self.postsViewController setTableHeaderView:self.tableHeaderView];

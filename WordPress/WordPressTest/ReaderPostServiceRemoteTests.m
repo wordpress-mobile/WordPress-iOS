@@ -1,6 +1,5 @@
 #import "ContextManager.h"
 #import "WPAccount.h"
-#import "ReaderTopic.h"
 #import "ReaderTopicService.h"
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
