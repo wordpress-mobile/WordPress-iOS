@@ -98,8 +98,11 @@ import Foundation
         let pattern = NSLocalizedString("Visit %@", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
         let str = String(format: pattern, blogName)
 
+        let range = (str as NSString).rangeOfString(blogName)
+        let font = WPFontManager.openSansItalicFontOfSize(WPStyleGuide.originalAttributionFontSize())
         let attributes = WPStyleGuide.siteAttributionParagraphAttributes()
         let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
+        attributedString.addAttribute(NSFontAttributeName, value: font, range: range)
         attributedString.addAttribute(NSLinkAttributeName, value: "http://wordpress.com/", range: NSMakeRange(0, str.characters.count))
 
         richTextView.attributedText = attributedString
