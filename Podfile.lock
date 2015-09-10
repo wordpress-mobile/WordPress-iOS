@@ -1,24 +1,24 @@
 PODS:
   - 1PasswordExtension (1.1.2)
-  - AFNetworking (2.5.4):
-    - AFNetworking/NSURLConnection (= 2.5.4)
-    - AFNetworking/NSURLSession (= 2.5.4)
-    - AFNetworking/Reachability (= 2.5.4)
-    - AFNetworking/Security (= 2.5.4)
-    - AFNetworking/Serialization (= 2.5.4)
-    - AFNetworking/UIKit (= 2.5.4)
-  - AFNetworking/NSURLConnection (2.5.4):
+  - AFNetworking (2.6.0):
+    - AFNetworking/NSURLConnection (= 2.6.0)
+    - AFNetworking/NSURLSession (= 2.6.0)
+    - AFNetworking/Reachability (= 2.6.0)
+    - AFNetworking/Security (= 2.6.0)
+    - AFNetworking/Serialization (= 2.6.0)
+    - AFNetworking/UIKit (= 2.6.0)
+  - AFNetworking/NSURLConnection (2.6.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.4):
+  - AFNetworking/NSURLSession (2.6.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.4)
-  - AFNetworking/Security (2.5.4)
-  - AFNetworking/Serialization (2.5.4)
-  - AFNetworking/UIKit (2.5.4):
+  - AFNetworking/Reachability (2.6.0)
+  - AFNetworking/Security (2.6.0)
+  - AFNetworking/Serialization (2.6.0)
+  - AFNetworking/UIKit (2.6.0):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AMPopTip (0.9.11)
@@ -150,8 +150,8 @@ PODS:
   - WordPress-iOS-Shared (0.4.4):
     - AFNetworking (~> 2.5)
     - CocoaLumberjack (= 2.0.0)
-  - WordPressApi (0.3.4):
-    - AFNetworking (~> 2.5.1)
+  - WordPressApi (0.3.5):
+    - AFNetworking (~> 2.6.0)
     - wpxmlrpc (~> 0.7)
   - WordPressCom-Analytics-iOS (0.0.36)
   - WordPressCom-Stats-iOS (0.4.6):
@@ -161,11 +161,11 @@ PODS:
     - WordPress-iOS-Shared (~> 0.3)
     - WordPressCom-Analytics-iOS (~> 0.0.34)
   - WPMediaPicker (0.5.0)
-  - wpxmlrpc (0.8)
+  - wpxmlrpc (0.8.1)
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.1.2)
-  - AFNetworking (~> 2.5.3)
+  - AFNetworking (~> 2.6.0)
   - AMPopTip (~> 0.7)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`,
     tag `0.0.7`)
@@ -201,7 +201,7 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`,
     commit `1b614724fbc005be4346c7870498658c8b537267`)
   - WordPress-iOS-Shared (= 0.4.4)
-  - WordPressApi (~> 0.3.4)
+  - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
   - WordPressCom-Analytics-iOS (= 0.0.36)
   - WordPressCom-Stats-iOS (= 0.4.6)
   - WPMediaPicker (~> 0.5.0)
@@ -225,6 +225,8 @@ EXTERNAL SOURCES:
   WordPress-iOS-Editor:
     :commit: 1b614724fbc005be4346c7870498658c8b537267
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
+  WordPressApi:
+    :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -242,10 +244,13 @@ CHECKOUT OPTIONS:
   WordPress-iOS-Editor:
     :commit: 1b614724fbc005be4346c7870498658c8b537267
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
+  WordPressApi:
+    :commit: 4bc8da6f5ec461cb980170a14d8b149c59d847b5
+    :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 66365c1e1264a83edec6c84c6eb2df41b50a70d3
-  AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
+  AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   AMPopTip: cd807573e1bbd8f6b1e963a6439f2710dc303c5c
   Automattic-Tracks-iOS: 8bad8c049458d8767e5a25effdf30c01464eb30a
   CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
@@ -279,10 +284,10 @@ SPEC CHECKSUMS:
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
   WordPress-iOS-Editor: 3ed3f3f1eb226b34542b471a7db41419815bbf28
   WordPress-iOS-Shared: 345f7c1c49d298114353c3856c53317f0d826078
-  WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
+  WordPressApi: cb145d3c92ed54d4dbe70108d15f17ce3da3ad5d
   WordPressCom-Analytics-iOS: a54b61f75be5a43fe32be98c0b286cb18fc2abee
   WordPressCom-Stats-iOS: d8114636166036ab42f091ad4e018617d2ffbeb9
   WPMediaPicker: 0757988f1519c20b92c91f470c41633ac42e3a0e
-  wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7
+  wpxmlrpc: bd391dab54e9bdceb5d1de23d161ecf1ba80f0e0
 
 COCOAPODS: 0.38.2
