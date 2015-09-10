@@ -2,6 +2,7 @@
 #import "Blog.h"
 #import "SwitchSettingTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
+#import "ContextManager.h"
 
 typedef NS_ENUM(NSInteger, RelatedPostsSettingsSection) {
     RelatedPostsSettingsSectionOptions = 0,
@@ -48,18 +49,27 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return RelatedPostsSettingsSectionCount;
+    if ([self.blog.relatedPostsEnabled boolValue]) {
+        return RelatedPostsSettingsSectionCount;
+    } else {
+        return RelatedPostsSettingsSectionCount-1;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
-        case RelatedPostsSettingsSectionOptions:
-            return RelatedPostsSettingsOptionsCount;
-            break;
+        case RelatedPostsSettingsSectionOptions:{
+            if ([self.blog.relatedPostsEnabled boolValue]) {
+                return RelatedPostsSettingsOptionsCount;
+            } else {
+                return 1;
+            }
+        }
+        break;
         case RelatedPostsSettingsSectionPreview:
             return 1;
-            break;
+        break;
     }
     return 0;
 }
@@ -222,7 +232,12 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 
 - (IBAction)updateRelatedPostsSettings:(id)sender
 {
-
+    self.blog.relatedPostsEnabled = [NSNumber numberWithBool:self.relatedPostsEnabledCell.switchValue];
+    self.blog.relatedPostsShowHeadline = [NSNumber numberWithBool:self.relatedPostsShowHeaderCell.switchValue];
+    self.blog.relatedPostsShowThumbnails = [NSNumber numberWithBool:self.relatedPostsShowThumbnailsCell.switchValue];
+    
+    [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
+    [self.tableView reloadData];
 }
 
 @end
