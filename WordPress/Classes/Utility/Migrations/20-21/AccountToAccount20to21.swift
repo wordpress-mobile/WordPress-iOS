@@ -8,7 +8,7 @@ import Foundation
  */
 
 class AccountToAccount20to21: NSEntityMigrationPolicy {
-    
+
     private let defaultDotcomUsernameKey    = "defaultDotcomUsernameKey"
     private let defaultDotcomKey            = "AccountDefaultDotcom"
     
