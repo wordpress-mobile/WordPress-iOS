@@ -2,13 +2,13 @@ import Foundation
 
 class ReaderTopicToReaderSiteTopic37to38: NSEntityMigrationPolicy {
 
-    override func createDestinationInstancesForSourceInstance(sourceTopic: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
+    override func createDestinationInstancesForSourceInstance(sInstance: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         // Preserve no site topics
-        return true
+        return
     }
 
-    override func createRelationshipsForDestinationInstance(newTopic: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
+    override func createRelationshipsForDestinationInstance(dInstance: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         // Preserve no posts.
-        return true
+        return
     }
 }
