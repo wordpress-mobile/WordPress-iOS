@@ -1,19 +1,19 @@
 #import "ContextManager.h"
+
+#import <XCTest/XCTest.h>
+
 #import "WPAccount.h"
-#import "ReaderTopic.h"
 #import "ReaderTopicService.h"
 #import "ReaderTopicServiceRemote.h"
 #import "RemoteReaderTopic.h"
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
-
 #import "RemoteReaderPost.h"
-#import <XCTest/XCTest.h>
 #import "TestContextManager.h"
 
 @interface ReaderPostService()
 
-- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderTopic *)topic;
+- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic;
 - (NSString *)removeInlineStyles:(NSString *)string;
 
 @end
