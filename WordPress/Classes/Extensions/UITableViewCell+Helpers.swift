@@ -6,7 +6,7 @@ extension UITableViewCell
     public func layoutHeightWithWidth(width: CGFloat) -> CGFloat {
         // Layout: Setup the cell with the given width
         let cappedWidth = min(WPTableViewFixedWidth, width)
-        bounds          = CGRect(x: 0, y: 0, width: cappedWidth, height: self.bounds.height)
+        bounds          = CGRect(x: 0, y: 0, width: cappedWidth, height: bounds.height)
         setNeedsLayout()
         layoutIfNeeded()
         
