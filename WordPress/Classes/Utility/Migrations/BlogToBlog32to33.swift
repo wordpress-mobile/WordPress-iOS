@@ -1,6 +1,7 @@
 import UIKit
 
 class BlogToBlog32to33: NSEntityMigrationPolicy {
+    
     override func createDestinationInstancesForSourceInstance(sInstance: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         DDLogSwift.logInfo("\(self.dynamicType) \(__FUNCTION__) (\(mapping.sourceEntityName) -> \(mapping.destinationEntityName))")
 
@@ -40,10 +41,9 @@ class BlogToBlog32to33: NSEntityMigrationPolicy {
                 DDLogSwift.logError("Blog's XML-RPC doesn't match Account's XML-RPC: \(blogXmlrpc) !== \(accountXmlrpc)")
 
                 let username = sInstance.valueForKeyPath("account.username") as! String
-                let password:String
                 
                 do {
-                    try SFHFKeychainUtils.getPasswordForUsername(username, andServiceName: accountXmlrpc)
+                    let password = try SFHFKeychainUtils.getPasswordForUsername(username, andServiceName: accountXmlrpc)
                     try SFHFKeychainUtils.storeUsername(username, andPassword: password, forServiceName: blogXmlrpc, updateExisting: true)
                 } catch {
                     DDLogSwift.logError("Error getting/saving password for \(accountXmlrpc): \(error)")
