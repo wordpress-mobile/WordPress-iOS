@@ -135,7 +135,7 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSArray *keyrings = [responseObject arrayForKey:@"connections"];
               for (NSDictionary *keyring in keyrings) {
-                  if ([keyring[@"service"] isEqualToString:service.service]) {
+                  if ([[keyring stringForKey:@"service"] isEqualToString:service.service]) {
                       if (success) {
                           success(keyring);
                       }
