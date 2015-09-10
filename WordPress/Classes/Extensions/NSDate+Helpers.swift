@@ -22,7 +22,7 @@ extension NSDate
         let calendar        = NSCalendar.currentCalendar()
         calendar.timeZone   = NSTimeZone.localTimeZone()
 
-        let flags: NSCalendarUnit   = .DayCalendarUnit | .WeekOfYearCalendarUnit | .MonthCalendarUnit | .YearCalendarUnit
+        let flags: NSCalendarUnit = [.Day, .WeekOfYear, .Month, .Year]
   
         let components      = calendar.components(flags, fromDate: self)
 

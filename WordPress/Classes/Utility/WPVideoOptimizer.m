@@ -74,7 +74,7 @@ static long long VideoMaxSize = 1024 * 1024 * 20;
 
 + (CGSize) resolutionForVideo:(NSString *) videoPath {
     AVAssetTrack *videoTrack = nil;
-    AVURLAsset *asset = [AVAsset assetWithURL:[NSURL fileURLWithPath:videoPath]];
+    AVAsset *asset = [AVAsset assetWithURL:[NSURL fileURLWithPath:videoPath]];
     NSArray *videoTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
     
     CMFormatDescriptionRef formatDescription = NULL;

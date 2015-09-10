@@ -40,7 +40,7 @@ extension UIView
     }
     
     public func constraintForAttribute(attribute: NSLayoutAttribute) -> CGFloat? {
-        for constraint in constraints() as! [NSLayoutConstraint] {
+        for constraint in constraints {
             if constraint.firstItem as! NSObject == self {
                 if constraint.firstAttribute == attribute || constraint.secondAttribute == attribute {
                     return constraint.constant
@@ -55,7 +55,7 @@ extension UIView
     }
 
     public func updateConstraintWithFirstItem(firstItem: NSObject!, attribute: NSLayoutAttribute, constant: CGFloat) {
-        for constraint in constraints() as! [NSLayoutConstraint] {
+        for constraint in constraints {
             if constraint.firstItem as! NSObject == firstItem {
                 if constraint.firstAttribute == attribute || constraint.secondAttribute == attribute {
                     constraint.constant = constant
@@ -65,7 +65,7 @@ extension UIView
     }
     
     public func updateConstraintWithFirstItem(firstItem: NSObject!, secondItem: NSObject!, firstItemAttribute: NSLayoutAttribute, secondItemAttribute: NSLayoutAttribute, constant: CGFloat) {
-        for constraint in constraints() as! [NSLayoutConstraint] {
+        for constraint in constraints {
             if (constraint.firstItem as! NSObject == firstItem) && (constraint.secondItem as? NSObject == secondItem) {
                 if constraint.firstAttribute == firstItemAttribute && constraint.secondAttribute == secondItemAttribute {
                     constraint.constant = constant
