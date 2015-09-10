@@ -26,7 +26,7 @@ public class AboutViewController : UITableViewController
         let color                   = WPStyleGuide.wordPressBlue()
         let tintedImage             = UIImage(named: "icon-wp")?.imageTintedWithColor(color)
         let imageView               = UIImageView(image: tintedImage)
-        imageView.autoresizingMask  = .FlexibleLeftMargin | .FlexibleRightMargin
+        imageView.autoresizingMask  = [.FlexibleLeftMargin, .FlexibleRightMargin]
         imageView.contentMode       = .Top
         
         // Let's add a bottom padding!
@@ -41,7 +41,7 @@ public class AboutViewController : UITableViewController
     
     private func setupTableViewFooter() {
         let calendar                = NSCalendar.currentCalendar()
-        let year                    = calendar.components(.CalendarUnitYear, fromDate: NSDate()).year
+        let year                    = calendar.components(.Calendar, fromDate: NSDate()).year
 
         let footerView              = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
         footerView.title            = NSLocalizedString("© \(year) Automattic, Inc.", comment: "About View's Footer Text")
@@ -79,7 +79,7 @@ public class AboutViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as? UITableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
         if cell == nil {
             cell = WPTableViewCell(style: .Value1, reuseIdentifier: reuseIdentifier)
         }
