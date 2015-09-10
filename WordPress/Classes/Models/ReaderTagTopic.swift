@@ -6,7 +6,7 @@ import Foundation
     @NSManaged public var slug: String
     @NSManaged public var tagID: NSNumber
 
-    public class var TopicType: String {
+    override public class var TopicType: String {
         return "tag"
     }
 }
