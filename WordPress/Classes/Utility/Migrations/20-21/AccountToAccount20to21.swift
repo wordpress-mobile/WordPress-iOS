@@ -67,12 +67,14 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         if objectID == nil {
             return nil
         }
+
+        var defaultAccount:NSManagedObject
         
-        var error: NSError?
-        var defaultAccount = context.existingObjectWithID(objectID!, error: &error)
-        
-        if let unwrappedError = error {
-            DDLogSwift.logError("\(unwrappedError)")
+        do {
+            try defaultAccount = context.existingObjectWithID(objectID!)
+        } catch {
+            DDLogSwift.logError("\(error)")
+            return nil
         }
         
         return defaultAccount
@@ -82,7 +84,9 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
 
         // Just in case
         if account.objectID.temporaryID {
-            account.managedObjectContext?.obtainPermanentIDsForObjects([account], error: nil)
+            do {
+                try account.managedObjectContext?.obtainPermanentIDsForObjects([account])
+            } catch {}
         }
 
         let accountURL = account.objectID.URIRepresentation()
