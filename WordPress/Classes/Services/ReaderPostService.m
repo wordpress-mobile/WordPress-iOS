@@ -596,7 +596,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
  from the result set (deleted, unliked, etc.) rendering the result set empty.
 
  @param date The date to delete posts earlier than.
- @param topic The ReaderTopic to delete posts from.
+ @param topic The `ReaderAbstractTopic` to delete posts from.
  */
 - (void)deletePostsEarlierThan:(NSDate *)date forTopic:(ReaderAbstractTopic *)topic
 {
@@ -670,7 +670,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
  The managed object context is not saved.
 
- @param topic the `ReaderTopic` to delete posts from.
+ @param topic the `ReaderAbstractTopic` to delete posts from.
  */
 - (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderAbstractTopic *)topic
 {
@@ -736,7 +736,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
  for each one.
 
  @param posts An array of `RemoteReaderPost` objects.
- @param topic The `ReaderTopic` to assign to the created posts.
+ @param topic The `ReaderAbsractTopic` to assign to the created posts.
  @return An array of `ReaderPost` objects
  */
 - (NSMutableArray *)makeNewPostsFromRemotePosts:(NSArray *)posts forTopic:(ReaderAbstractTopic *)topic
@@ -757,7 +757,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
  Create a `ReaderPost` model object from the specified dictionary.
 
  @param dict A `RemoteReaderPost` object.
- @param topic The `ReaderTopic` to assign to the created post.
+ @param topic The `ReaderAbstractTopic` to assign to the created post.
  @return A `ReaderPost` model object whose properties are populated with the values from the passed dictionary.
  */
 - (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic
