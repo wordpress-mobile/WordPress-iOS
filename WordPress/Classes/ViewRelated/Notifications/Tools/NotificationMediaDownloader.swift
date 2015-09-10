@@ -27,10 +27,10 @@ import Foundation
     *  @param       maximumWidth    Represents the maximum width that a returned image should have
     *  @param       completion      Is a closure that will get executed once all of the assets are ready
     */
-    public func downloadMedia(#urls: Set<NSURL>, maximumWidth: CGFloat, completion: SuccessBlock) {
-        let missingUrls         = filter(urls) { self.shouldDownloadImage(url: $0) }
+    public func downloadMedia(urls urls: Set<NSURL>, maximumWidth: CGFloat, completion: SuccessBlock) {
+        let missingUrls         = urls.filter { self.shouldDownloadImage(url: $0) }
         let group               = dispatch_group_create()
-        var shouldHitCompletion = !missingUrls.isEmpty
+        let shouldHitCompletion = !missingUrls.isEmpty
 
         for url in missingUrls {
             
@@ -116,7 +116,7 @@ import Foundation
         var filtered = [NSURL: UIImage]()
         
         for (url, image) in resizedImagesMap {
-            if contains(urls, url) {
+            if urls.contains(url) {
                 filtered[url] = image
             }
         }
@@ -187,7 +187,7 @@ import Foundation
     *  @param       urls            The collection of URL's of the assets you'd need.
     *  @returns     A dictionary with URL as Key, and Image as Value.
     */
-    private func shouldDownloadImage(#url: NSURL) -> Bool {
+    private func shouldDownloadImage(url url: NSURL) -> Bool {
         return originalImagesMap[url] == nil && !urlsBeingDownloaded.contains(url) && !urlsFailed.contains(url)
     }
     
@@ -206,7 +206,7 @@ import Foundation
         }
         
         dispatch_async(resizeQueue) {
-            let resizedImage = image.resizedImage(targetSize, interpolationQuality: kCGInterpolationHigh)
+            let resizedImage = image.resizedImage(targetSize, interpolationQuality: .High)
             dispatch_async(dispatch_get_main_queue()) {
                 callback(resizedImage)
             }

@@ -15,7 +15,7 @@ extension NSAttributedString
         let range = NSMakeRange(0, length)
 
         enumerateAttribute(UIKitAttachmentAttributeName, inRange: range, options: .LongestEffectiveRangeNotRequired) {
-            (value: AnyObject!, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+            (value: AnyObject?, range: NSRange, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
             
             if let attachment = value as? NSTextAttachment {
                 block(attachment: attachment, range: range)
