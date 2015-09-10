@@ -14,10 +14,8 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
     private let defaultDotcomKey            = "AccountDefaultDotcom"
     private let defaultDotcomUUIDKey        = "AccountDefaultDotcomUUID"
     
-    
-    override func beginEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
-
-        // Note: 
+    override func beginEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager) throws {
+        // Note:
         // NSEntityMigrationPolicy instance might not be the same all over. Let's use NSUserDefaults
         let defaultAccount = legacyDefaultWordPressAccount(manager.sourceContext)
         if defaultAccount == nil {
@@ -42,26 +40,24 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         } else {
             DDLogSwift.logError(">> Migration process found [\(username!)] as an invalid Default Account (Non DotCom!)")
         }
-        
-        return true
     }
-    
-    override func endEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
+
+    override func endEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         // Load every WPAccount instance
         let context = manager.destinationContext
         let request = NSFetchRequest(entityName: "Account")
         var error: NSError?
-        let accounts = context.executeFetchRequest(request, error: &error) as! [NSManagedObject]?
+        let accounts = try context.executeFetchRequest(request) as! [NSManagedObject]
         
-        if accounts == nil {
-            return true
+        if accounts.count == 0 {
+            return
         }
 
         // Assign the UUID's + Find the old defaultAccount (if any)
         let defaultUsername: String = NSUserDefaults.standardUserDefaults().stringForKey(defaultDotcomUsernameKey) ?? String()
         var defaultAccount: NSManagedObject?
 
-        for account in accounts! {
+        for account in accounts {
             let uuid = NSUUID().UUIDString
             account.setValue(uuid, forKey: "uuid")
             
@@ -94,8 +90,6 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         
         // At last: Execute the Default Account Fix (if needed)
         fixDefaultAccountIfNeeded(context)
-        
-        return true
     }
     
     
