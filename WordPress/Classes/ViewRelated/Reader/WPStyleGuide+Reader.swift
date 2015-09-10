@@ -27,7 +27,7 @@ extension WPStyleGuide
     public class func siteAttributionParagraphAttributes() -> [String: AnyObject] {
         let attributes = NSMutableDictionary(dictionary: originalAttributionParagraphAttributes())
         attributes.setValue(mediumBlue(), forKey: NSForegroundColorAttributeName)
-        return attributes as [NSObject: AnyObject]
+        return NSDictionary(dictionary: attributes) as! [String: AnyObject]
     }
 
     public class func originalAttributionFontSize() -> CGFloat {
@@ -54,7 +54,7 @@ extension WPStyleGuide
         let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
 
         let lineHeight = Cards.titleLineHeight
-        var paragraphStyle = NSMutableParagraphStyle()
+        let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
 
@@ -69,7 +69,7 @@ extension WPStyleGuide
         let font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
 
         let lineHeight = Cards.defaultLineHeight
-        var paragraphStyle = NSMutableParagraphStyle()
+        let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
 
@@ -84,7 +84,7 @@ extension WPStyleGuide
         let font = WPFontManager.openSansRegularFontOfSize(fontSize)
 
         let lineHeight = Cards.defaultLineHeight
-        var paragraphStyle = NSMutableParagraphStyle()
+        let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
 
@@ -100,7 +100,7 @@ extension WPStyleGuide
         let font = WPFontManager.openSansRegularFontOfSize(fontSize)
 
         let lineHeight = Cards.defaultLineHeight
-        var paragraphStyle = NSMutableParagraphStyle()
+        let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
 
@@ -119,7 +119,7 @@ extension WPStyleGuide
         let font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
 
         let lineHeight = Cards.defaultLineHeight
-        var paragraphStyle = NSMutableParagraphStyle()
+        let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
 
