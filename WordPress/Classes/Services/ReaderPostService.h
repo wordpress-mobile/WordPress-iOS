@@ -79,7 +79,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
                        failure:(void (^)(NSError *error))failure;
 
 /**
- Deletes all posts that do not belong to a ReaderTopic
+ Deletes all posts that do not belong to a `ReaderAbstractTopic`
  Saves the NSManagedObjectContext.
  */
 - (void)deletePostsWithNoTopic;
@@ -89,7 +89,7 @@ extern NSString * const ReaderPostServiceErrorDomain;
  
  @param siteID The id of the site or feed.
  @param siteURL The URL of the site or feed.
- @param topic The `ReaderTopic` owning the posts.
+ @param topic The `ReaderAbstractTopic` owning the posts.
  */
 - (void)deletePostsWithSiteID:(NSNumber *)siteID
                    andSiteURL:(NSString *)siteURL
