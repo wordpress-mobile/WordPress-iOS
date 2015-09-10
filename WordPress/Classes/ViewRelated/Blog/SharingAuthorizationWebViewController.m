@@ -17,6 +17,11 @@ typedef NS_ENUM(NSInteger, AuthorizeAction) {
     AuthorizeActionDeny,
 };
 
+static NSString * const SharingAuthorizationPrefix = @"https://public-api.wordpress.com/connect/";
+static NSString * const SharingAuthorizationRequest = @"action=request";
+static NSString * const SharingAuthorizationVerify = @"action=verify";
+static NSString * const SharingAuthorizationDeny = @"action=deny";
+
 @interface SharingAuthorizationWebViewController ()
 
 /**
@@ -33,7 +38,6 @@ typedef NS_ENUM(NSInteger, AuthorizeAction) {
 @property (nonatomic, strong) Publicizer *publicizer;
 
 @end
-
 
 @implementation SharingAuthorizationWebViewController
 
@@ -133,21 +137,21 @@ typedef NS_ENUM(NSInteger, AuthorizeAction) {
 {
     NSString *requested = [request.URL absoluteString];
     
-    if (![requested hasPrefix:@"https://public-api.wordpress.com/connect/"]) {
+    if (![requested hasPrefix:SharingAuthorizationPrefix]) {
         return AuthorizeActionNone;
     }
     
-    NSRange requestRange = [requested rangeOfString:@"action=request"];
+    NSRange requestRange = [requested rangeOfString:SharingAuthorizationRequest];
     if (requestRange.location != NSNotFound) {
         return AuthorizeActionRequest;
     }
 
-    NSRange verifyRange = [requested rangeOfString:@"action=verify"];
+    NSRange verifyRange = [requested rangeOfString:SharingAuthorizationVerify];
     if (verifyRange.location != NSNotFound) {
         return AuthorizeActionVerify;
     }
 
-    NSRange denyRange = [requested rangeOfString:@"action=deny"];
+    NSRange denyRange = [requested rangeOfString:SharingAuthorizationDeny];
     if (denyRange.location != NSNotFound) {
         return AuthorizeActionDeny;
     }
