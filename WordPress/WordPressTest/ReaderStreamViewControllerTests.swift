@@ -7,7 +7,7 @@ class ReaderStreamViewControllerTests: XCTestCase {
     // Tests that a ReaderStreamViewController is returned
     func testControllerWithTopic() {
         let context = TestContextManager.sharedInstance().mainContext
-        var topic = NSEntityDescription.insertNewObjectForEntityForName("ReaderTopic", inManagedObjectContext: context) as! ReaderTopic
+        var topic = NSEntityDescription.insertNewObjectForEntityForName("ReaderTagTopic", inManagedObjectContext: context) as! ReaderTagTopic
         var controller = ReaderStreamViewController.controllerWithTopic(topic)
         XCTAssertNotNil(controller, "Controller should not be nil")
     }
