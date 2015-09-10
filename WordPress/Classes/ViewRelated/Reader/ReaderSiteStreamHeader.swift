@@ -33,9 +33,8 @@ import Foundation
    // MARK: - Configuration
 
     public func configureHeader(topic: ReaderAbstractTopic) {
-
-        // TODO: Wire up actual display when supported in core data        
-        avatarImageView.setImageWithURL(nil, placeholderImage: UIImage(named: defaultBlavatar))
+        // TODO: Wire up actual display when supported in core data
+        avatarImageView.setImageWithURL(NSURL(), placeholderImage: UIImage(named: defaultBlavatar))
         titleLabel.text = topic.title
         detailLabel.text = "site.com"
         if topic.following {
