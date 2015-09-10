@@ -84,9 +84,9 @@ import Foundation
     // MARK: - Public Methods
     public func replaceTextAtCaret(text: String!, withText replacement: String!) {
         let textToReplace: NSString = text ?? NSString();
-        var selectedRange: UITextRange = textView.selectedTextRange!
-        var newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
-        var newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)!
+        let selectedRange: UITextRange = textView.selectedTextRange!
+        let newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
+        let newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)!
         textView.replaceRange(newRange, withText: replacement)
     }
     
@@ -257,7 +257,7 @@ import Foundation
     }
     
     private func refreshSizeIfNeeded() {
-        var newSize         = intrinsicContentSize()
+        let newSize         = intrinsicContentSize()
         let oldSize         = frame.size
 
         if newSize.height == oldSize.height {
