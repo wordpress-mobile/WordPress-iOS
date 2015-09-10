@@ -41,7 +41,7 @@ public class AboutViewController : UITableViewController
     
     private func setupTableViewFooter() {
         let calendar                = NSCalendar.currentCalendar()
-        let year                    = calendar.components(.Calendar, fromDate: NSDate()).year
+        let year                    = calendar.components(.Year, fromDate: NSDate()).year
 
         let footerView              = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
         footerView.title            = NSLocalizedString("© \(year) Automattic, Inc.", comment: "About View's Footer Text")
