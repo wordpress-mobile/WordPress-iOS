@@ -204,7 +204,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 - (UIView *)noResultsAccessoryView {
     if (self.syncHelper.isSyncing) {
         if (!self.animatedBox) {
-            self.animatedBox = [WPAnimatedBox new];
+            self.animatedBox = [WPAnimatedBox newAnimatedBox];
         }
         return self.animatedBox;
     }

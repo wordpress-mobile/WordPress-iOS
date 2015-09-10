@@ -64,6 +64,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         // Title
         switch streamSettings.channel {
         case let .Blog(blogId):
+            _ = blogId
             title = streamSettings.blog?.blogName ?? streamSettings.channel.description()
         case .Other:
             title = NSLocalizedString("Other Sites", comment: "Other Notifications Streams Title")
@@ -74,7 +75,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         
         // Structures
         settings       = streamSettings
-        sortedStreams  = streamSettings.streams.sorted { $0.kind.description() > $1.kind.description() }
+        sortedStreams  = streamSettings.streams.sort {  $0.kind.description() > $1.kind.description() }
         
         tableView.reloadData()
     }
