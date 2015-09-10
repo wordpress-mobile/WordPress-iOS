@@ -136,7 +136,7 @@ PODS:
   - Simperium/SocketRocket (0.8.3)
   - Simperium/SPReachability (0.8.3)
   - Simperium/SSKeychain (0.8.3)
-  - Specta (0.5.0)
+  - Specta (1.0.3)
   - SVProgressHUD (1.1.3)
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.4)
@@ -193,7 +193,7 @@ DEPENDENCIES:
   - Reachability (= 3.1.1)
   - ReactiveCocoa (~> 2.4.7)
   - Simperium (= 0.8.3)
-  - Specta (= 0.5.0)
+  - Specta (= 1.0.3)
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
@@ -277,7 +277,7 @@ SPEC CHECKSUMS:
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
   Simperium: 7a2d7e5ac67526477084a35a5ef9a77b6423b1ac
-  Specta: eb90708ed77569bbda089f8ead10bb99b8e9489e
+  Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIAlertView+Blocks: 45c3d3b7194906702d3e9a14c7ece5581505646d
   UIDeviceIdentifier: 2eb1070f189a069184611e21b5e8832443e6f8ec
