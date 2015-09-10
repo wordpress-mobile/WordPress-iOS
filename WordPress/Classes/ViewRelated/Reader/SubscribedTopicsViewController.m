@@ -1,11 +1,11 @@
 #import "SubscribedTopicsViewController.h"
-#import "WPStyleGuide.h"
-#import "ReaderTopicService.h"
-#import "ReaderTopic.h"
 #import "ContextManager.h"
-#import "WPTableViewHandler.h"
-#import "WPAccount.h"
 #import "AccountService.h"
+#import "ReaderTopicService.h"
+#import "WPAccount.h"
+#import "WPStyleGuide.h"
+#import "WPTableViewHandler.h"
+#import "WordpRess-Swift.h"
 
 @interface SubscribedTopicsViewController ()<WPTableViewHandlerDelegate>
 
@@ -80,7 +80,7 @@
     return defaultAccount != nil;
 }
 
-- (ReaderTopic *)currentTopic
+- (ReaderAbstractTopic *)currentTopic
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     return [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
@@ -93,7 +93,7 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
-    ReaderTopic *topic = [self currentTopic];
+    ReaderAbstractTopic *topic = [self currentTopic];
     NSIndexPath *indexPath  = [self.tableViewHandler.resultsController indexPathForObject:topic];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -110,7 +110,7 @@
 
 - (void)unfollowTopicAtIndexPath:(NSIndexPath *)indexPath
 {
-    ReaderTopic *topic = (ReaderTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    ReaderTagTopic *topic = (ReaderTagTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [service unfollowTopic:topic withSuccess:^{
         //noop
@@ -135,15 +135,15 @@
     return [[ContextManager sharedInstance] mainContext];
 }
 
-- (NSString *)entityName
-{
-    return @"ReaderTopic";
-}
-
 - (NSFetchRequest *)fetchRequest
 {
-    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
-    request.predicate = [NSPredicate predicateWithFormat:@"(topicID = 0 OR isSubscribed = YES) AND (isMenuItem = YES)"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
+    NSArray *types = @[
+                       [ReaderDefaultTopic TopicType],
+                       [ReaderListTopic TopicType],
+                       [ReaderTagTopic TopicType]
+                       ];
+    request.predicate = [NSPredicate predicateWithFormat:@"type IN %@ AND following = YES", types];
 
     NSSortDescriptor *sortDescriptorType = [NSSortDescriptor sortDescriptorWithKey:@"type" ascending:YES];
     NSSortDescriptor *sortDescriptorTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
@@ -165,7 +165,7 @@
         // A work around is to only style the cells when not displaying text.
         [WPStyleGuide configureTableViewCell:cell];
     }
-    ReaderTopic *topic = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    ReaderAbstractTopic *topic = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = topic.title;
     cell.accessoryType = UITableViewCellAccessoryNone;
     if ([[[self.currentTopic objectID] URIRepresentation] isEqual:[[topic objectID] URIRepresentation]]) {
@@ -178,7 +178,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    ReaderTopic *topic = (ReaderTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     service.currentTopic = topic;
 
@@ -188,6 +188,9 @@
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
+        return nil;
+
+    } else if (section == 1) {
         return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
     }
 

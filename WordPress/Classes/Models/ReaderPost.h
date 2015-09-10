@@ -3,7 +3,7 @@
 #import "BasePost.h"
 #import "ReaderPostContentProvider.h"
 
-@class ReaderTopic;
+@class ReaderAbstractTopic;
 @class SourcePostAttribution;
 @class Comment;
 
@@ -34,7 +34,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSSet *comments;
 @property (nonatomic, readonly, strong) NSURL *featuredImageURL;
 @property (nonatomic, strong) NSString *tags;
-@property (nonatomic, strong) ReaderTopic *topic;
+@property (nonatomic, strong) ReaderAbstractTopic *topic;
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
 @property (nonatomic) BOOL isSiteBlocked;
