@@ -6,6 +6,7 @@ extern NSString * const ReaderTopicDidChangeNotification;
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 @class ReaderAbstractTopic;
+@class ReaderTagTopic;
 @class ReaderSite;
 @class ReaderPost;
 
@@ -26,9 +27,9 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
- Counts the number of ReaderTopics of type `ReaderTopicTypeTag` the user has subscribed to.
+ Counts the number of `ReaderTagTopics` the user has subscribed to.
  
- @return The number of ReaderTopics whose `isSubscribed` property is set to `YES`
+ @return The number of ReaderTagTopics whose `followed` property is set to `YES`
  */
 - (NSUInteger)numberOfSubscribedTopics;
 
@@ -45,18 +46,18 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 /**
  Marks the specified topic as being subscribed, and marks it current.
  
- @param topic The ReaderTopic to follow and make current.
+ @param topic The ReaderAbstractTopic to follow and make current.
  */
 - (void)subscribeToAndMakeTopicCurrent:(ReaderAbstractTopic *)topic;
 
 /**
  Unfollows the specified topic
 
- @param topic The ReaderTopic to unfollow.
+ @param topic The ReaderAbstractTopic to unfollow.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
-- (void)unfollowTopic:(ReaderAbstractTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)unfollowTopic:(ReaderTagTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
  Follow the topic with the specified name
@@ -71,7 +72,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
  Fetch the topic for 'sites I follow' if it exists.
 
- @return A `ReaderTopic` instance or nil.
+ @return A `ReaderAbstractTopic` instance or nil.
  */
 - (ReaderAbstractTopic *)topicForFollowedSites;
 

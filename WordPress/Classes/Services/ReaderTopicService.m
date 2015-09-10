@@ -350,7 +350,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
  Find an existing topic with the specified title.
 
  @param topicName The title of the topic to find in core data.
- @return A matching `ReaderTopic` instance or nil.
+ @return A matching `ReaderAbstractTopic` instance or nil.
  */
 - (ReaderTagTopic *)findTopicNamed:(NSString *)topicName
 {
@@ -373,7 +373,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
  Find an existing topic with the specified topicID.
 
  @param topicID The topicID of the topic to find in core data.
- @return A matching `ReaderTopic` instance or nil.
+ @return A matching `ReaderAbstractTopic` instance or nil.
  */
 - (ReaderTagTopic *)findTopicWithID:(NSNumber *)topicID
 {
@@ -393,10 +393,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 /**
- Create a new `ReaderTopic` or update an existing `ReaderTopic`.
+ Create a new `ReaderAbstractTopic` or update an existing `ReaderAbstractTopic`.
 
  @param dict A `RemoteReaderTopic` object.
- @return A new or updated, but unsaved, `ReaderTopic`.
+ @return A new or updated, but unsaved, `ReaderAbstractTopic`.
  */
 - (ReaderAbstractTopic *)createOrReplaceFromRemoteTopic:(RemoteReaderTopic *)remoteTopic
 {
@@ -505,10 +505,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 /**
- Saves the specified `ReaderTopics`. Any `ReaderTopics` not included in the passed
+ Saves the specified `ReaderAbstractTopics`. Any `ReaderAbstractTopics` not included in the passed
  array are removed from Core Data.
 
- @param topics An array of `ReaderTopics` to save.
+ @param topics An array of `ReaderAbstractTopics` to save.
  */
 - (void)mergeMenuTopics:(NSArray *)topics withSuccess:(void (^)())success
 {
@@ -547,9 +547,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 /**
- Fetch all `ReaderTopics` for the menu currently in Core Data.
+ Fetch all `ReaderAbstractTopics` for the menu currently in Core Data.
 
- @return An array of all `ReaderTopics` for the menu currently persisted in Core Data.
+ @return An array of all `ReaderAbstractTopics` for the menu currently persisted in Core Data.
  */
 - (NSArray *)allMenuTopics
 {
@@ -567,9 +567,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 /**
- Fetch all `ReaderTopics` currently in Core Data.
+ Fetch all `ReaderAbstractTopics` currently in Core Data.
 
- @return An array of all `ReaderTopics` currently persisted in Core Data.
+ @return An array of all `ReaderAbstractTopics` currently persisted in Core Data.
  */
 - (NSArray *)allTopics
 {
@@ -588,7 +588,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
  Find a specific ReaderAbstractTopic by its `path` property.
 
  @param path The unique, cannonical path of the topic.
- @return A matching `ReaderTopic` or nil if there is no match.
+ @return A matching `ReaderAbstractTopic` or nil if there is no match.
  */
 - (ReaderAbstractTopic *)findWithPath:(NSString *)path
 {
