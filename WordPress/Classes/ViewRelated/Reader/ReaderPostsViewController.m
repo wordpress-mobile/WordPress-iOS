@@ -399,7 +399,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (UIView *)noResultsAccessoryView
 {
     if (!self.animatedBox) {
-        self.animatedBox = [WPAnimatedBox new];
+        self.animatedBox = [WPAnimatedBox newAnimatedBox];
     }
     return self.animatedBox;
 }
