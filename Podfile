@@ -6,7 +6,7 @@ inhibit_all_warnings!
 
 platform :ios, '7.0'
 pod '1PasswordExtension', '1.1.2'
-pod 'AFNetworking',	'~> 2.5.3'
+pod 'AFNetworking',	'~> 2.6.0'
 pod 'Reachability',	'3.1.1'
 pod 'NSURL+IDN', '0.3'
 pod 'DTCoreText',   '1.6.13'
@@ -29,7 +29,7 @@ pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailCh
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'Simperium', '0.8.3'
-pod 'WordPressApi', '~> 0.3.4'
+pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
 pod 'WordPress-iOS-Shared', '0.4.4'
 pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '1b614724fbc005be4346c7870498658c8b537267'
 pod 'WordPressCom-Stats-iOS', '0.4.6'
