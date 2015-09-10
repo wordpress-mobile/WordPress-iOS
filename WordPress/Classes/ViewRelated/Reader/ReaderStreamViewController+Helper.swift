@@ -51,8 +51,6 @@ extension ReaderStreamViewController
     @return An NoResultsResponse instance.
     */
     public class func responseForNoResults(topic: ReaderAbstractTopic) -> NoResultsResponse {
-        let path = topic.path as NSString!
-
         // if following
         if ReaderHelpers.topicIsFollowing(topic) {
             return NoResultsResponse(
