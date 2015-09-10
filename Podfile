@@ -56,7 +56,7 @@ end
 
 pre_install do |installer|
     pod_targets = installer.pod_targets.flat_map do |pod_target|
-        pod_target.name == "AFNetworking" ? pod_target.scoped : pod_target
+        pod_target.name == "AFNetworking" || pod_target.name == "WordPressCom-Stats-iOS" ? pod_target.scoped : pod_target
     end
     installer.aggregate_targets.each do |aggregate_target|
         aggregate_target.pod_targets = pod_targets.select do |pod_target|
