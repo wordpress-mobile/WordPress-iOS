@@ -9,7 +9,7 @@ extension WPStyleGuide
 
     // MARK: Original Post/Site Attribution Styles. 
 
-    public class func originalAttributionParagraphAttributes() -> [NSObject: AnyObject] {
+    public class func originalAttributionParagraphAttributes() -> [String: AnyObject] {
         let fontSize = originalAttributionFontSize()
         let font = WPFontManager.openSansRegularFontOfSize(fontSize)
 
@@ -24,7 +24,7 @@ extension WPStyleGuide
         ]
     }
 
-    public class func siteAttributionParagraphAttributes() -> [NSObject: AnyObject] {
+    public class func siteAttributionParagraphAttributes() -> [String: AnyObject] {
         let attributes = NSMutableDictionary(dictionary: originalAttributionParagraphAttributes())
         attributes.setValue(mediumBlue(), forKey: NSForegroundColorAttributeName)
         return attributes as [NSObject: AnyObject]
