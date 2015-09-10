@@ -143,7 +143,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let section = sections[indexPath.section]
         let row     = section.rows[indexPath.row]
-        let cell    = tableView.dequeueReusableCellWithIdentifier(row.kind.rawValue) as! UITableViewCell
+        let cell    = tableView.dequeueReusableCellWithIdentifier(row.kind.rawValue)
         
         switch row.kind {
         case .Text:
@@ -152,7 +152,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
             configureSwitchCell(cell as! SwitchTableViewCell, row: row)
         }
         
-        return cell
+        return cell!
     }
     
     public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -208,12 +208,10 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     private func openApplicationSettings() {
-        if !UIDevice.isOS8() {
-            return
+        if #available(iOS 8.0, *) {
+            let targetURL = NSURL(string: UIApplicationOpenSettingsURLString)
+            UIApplication.sharedApplication().openURL(targetURL!)
         }
-        
-        let targetURL = NSURL(string: UIApplicationOpenSettingsURLString)
-        UIApplication.sharedApplication().openURL(targetURL!)
     }
     
     
