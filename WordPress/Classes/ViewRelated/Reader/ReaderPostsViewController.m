@@ -18,7 +18,6 @@
 #import "ReaderPostUnattributedTableViewCell.h"
 #import "ReaderSiteService.h"
 #import "ReaderSubscriptionViewController.h"
-#import "ReaderTopic.h"
 #import "ReaderTopicService.h"
 #import "SourcePostAttribution.h"
 #import "UIView+Subviews.h"
@@ -422,21 +421,21 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     return _activityFooter;
 }
 
-- (ReaderTopic *)topicInContext:(NSManagedObjectContext *)context
+- (ReaderAbstractTopic *)topicInContext:(NSManagedObjectContext *)context
 {
     return [self topic:self.readerTopic inContext:context];
 }
 
-- (ReaderTopic *)topic:(ReaderTopic *)topic inContext:(NSManagedObjectContext *)context
+- (ReaderAbstractTopic *)topic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
     NSError *error;
-    ReaderTopic *topicInContext = (ReaderTopic *)[context existingObjectWithID:topic.objectID error:&error];
+    ReaderAbstractTopic *topicInContext = (ReaderAbstractTopic *)[context existingObjectWithID:topic.objectID error:&error];
     return topicInContext;
 }
 
-- (void)setReaderTopic:(ReaderTopic *)readerTopic
+- (void)setReaderTopic:(ReaderAbstractTopic *)readerTopic
 {
-    ReaderTopic *topic = readerTopic;
+    ReaderAbstractTopic *topic = readerTopic;
     if (!readerTopic) {
         topic = nil;
 
@@ -732,7 +731,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [context performBlock:^{
-        ReaderTopic *topicInContext = [self topicInContext:context];
+        ReaderAbstractTopic *topicInContext = [self topicInContext:context];
         [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
@@ -757,7 +756,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [context performBlock:^{
-        ReaderTopic *topicInContext = [self topicInContext:context];
+        ReaderAbstractTopic *topicInContext = [self topicInContext:context];
         [service backfillPostsForTopic:topicInContext success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
@@ -811,7 +810,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     __weak __typeof(self) weakSelf = self;
     
     [context performBlock:^{
-        ReaderTopic *topicInContext = [self topicInContext:context];
+        ReaderAbstractTopic *topicInContext = [self topicInContext:context];
         [service fetchPostsForTopic:topicInContext earlierThan:earlierThan success:^(NSInteger count, BOOL hasMore){
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -949,7 +948,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)configurePostCell:(ReaderPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || (self.readerTopic.type != ReaderTopicTypeList)) ? YES : NO;
+    BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || ([self.readerTopic isKindOfClass:[ReaderListTopic class]])) ? YES : NO;
     cell.postView.shouldShowAttributionMenu = self.hasWPComAccount && shouldShowAttributionMenu;
     cell.postView.shouldEnableLoggedinFeatures = self.hasWPComAccount;
     cell.postView.shouldShowAttributionButton = self.hasWPComAccount;
@@ -1098,7 +1097,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
 {
     ReaderPost *post = [self postFromCellSubview:contentView];
-    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:post];
+    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithSiteID:post.siteID siteURL:post.blogURL isWPcom:post.isWPCom];
     [self.navigationController pushViewController:controller animated:YES];
     [WPAnalytics track:WPAnalyticsStatReaderPreviewedSite];
 }
