@@ -54,6 +54,17 @@ target 'UITests', :exclusive => true do
     pod 'KIF/IdentifierTests', '~>3.1'
 end
 
+pre_install do |installer|
+    pod_targets = installer.pod_targets.flat_map do |pod_target|
+        pod_target.name == "AFNetworking" ? pod_target.scoped : pod_target
+    end
+    installer.aggregate_targets.each do |aggregate_target|
+        aggregate_target.pod_targets = pod_targets.select do |pod_target|
+            pod_target.target_definitions.include?(aggregate_target.target_definition)
+        end
+    end
+end
+
 # We need to add in AF_APP_EXTENSIONS=1 to AFNetworking used by the Today Extension otherwise the build will fail. See - https://github.com/AFNetworking/AFNetworking/pull/2589
 post_install do |installer_representation|
   installer_representation.pods_project.targets.each do |target|
