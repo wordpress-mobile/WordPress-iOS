@@ -4,7 +4,7 @@ public class ReaderHelpers {
 
     public class func shareController(title:String?, summary:String?, tags:String?, link:String?) -> UIActivityViewController {
         var activityItems = [AnyObject]()
-        var postDictionary = NSMutableDictionary()
+        let postDictionary = NSMutableDictionary()
 
         if let str = title {
             postDictionary["title"] = str
@@ -21,11 +21,12 @@ public class ReaderHelpers {
             activityItems.append(url)
         }
 
-        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: WPActivityDefaults.defaultActivities())
+        let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
+        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: activities)
         if let str = title {
             controller.setValue(str, forKey:"subject")
         }
-        controller.completionHandler = { (activityType:String!, completed:Bool) in
+        controller.completionHandler = { (activityType:String?, completed:Bool) in
             if completed {
                 WPActivityDefaults.trackActivityType(activityType)
             }
