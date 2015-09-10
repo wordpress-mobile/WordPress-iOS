@@ -9,7 +9,7 @@ import Foundation
     @NSManaged public var owner: String
     @NSManaged public var slug:String
 
-    public class var TopicType: String {
+    override public class var TopicType: String {
         return "list"
     }
 }

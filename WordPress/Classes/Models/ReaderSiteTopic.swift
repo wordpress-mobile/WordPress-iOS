@@ -13,7 +13,7 @@ import Foundation
     @NSManaged public var siteURL: String
     @NSManaged public var subscriberCount: NSNumber
 
-    public class var TopicType: String {
+    override public class var TopicType: String {
         return "site"
     }
 }
