@@ -7,7 +7,7 @@
 #import "SVProgressHUD.h"
 #import "SharingAuthorizationWebViewController.h"
 
-NS_ENUM(NSInteger, SharingSection) {
+typedef NS_ENUM(NSInteger, SharingSection){
     SharingPublicize = 0,
     //SharingConnections,
     //SharingButtons,

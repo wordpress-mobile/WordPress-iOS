@@ -9,14 +9,13 @@
 /**
  *	@brief	classify actions taken by web API
  */
-typedef enum {
+typedef NS_ENUM(NSInteger, AuthorizeAction) {
     AuthorizeActionNone,
     AuthorizeActionUnknown,
     AuthorizeActionRequest,
     AuthorizeActionVerify,
     AuthorizeActionDeny,
-} AuthorizeAction;
-
+};
 
 @interface SharingAuthorizationWebViewController ()
 
