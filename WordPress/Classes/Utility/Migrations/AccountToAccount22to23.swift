@@ -20,7 +20,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         let defaultAccount = legacyDefaultWordPressAccount(manager.sourceContext)
         if defaultAccount == nil {
             DDLogSwift.logError(">> Migration process couldn't locate a default WordPress.com account")
-            return true
+            return
         }
         
         let unwrappedAccount = defaultAccount!
@@ -46,7 +46,6 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         // Load every WPAccount instance
         let context = manager.destinationContext
         let request = NSFetchRequest(entityName: "Account")
-        var error: NSError?
         let accounts = try context.executeFetchRequest(request) as! [NSManagedObject]
         
         if accounts.count == 0 {
@@ -106,11 +105,13 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
             return nil
         }
         
-        var error: NSError?
-        var defaultAccount = context.existingObjectWithID(objectID!, error: &error)
+        var defaultAccount:NSManagedObject
         
-        if let unwrappedError = error {
-            DDLogSwift.logError("\(unwrappedError)")
+        do {
+            defaultAccount = try context.existingObjectWithID(objectID!)
+        } catch {
+            DDLogSwift.logError("\(error)")
+            return nil
         }
         
         return defaultAccount
@@ -125,18 +126,16 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         let request = NSFetchRequest(entityName: "Account")
         request.predicate = NSPredicate(format: "uuid == %@", objectUUID!)
         
-        var error: NSError?
-        var accounts = context.executeFetchRequest(request, error: &error) as? [NSManagedObject]
+        var accounts:[NSManagedObject]
         
-        if let unwrappedError = error {
-            DDLogSwift.logError("\(unwrappedError)")
+        do {
+            accounts = try context.executeFetchRequest(request) as! [NSManagedObject]
+        } catch {
+            DDLogSwift.logError("\(error)")
+            return nil
         }
         
-        if let unwrappedAccounts = accounts {
-            return unwrappedAccounts.first
-        }
-        
-        return nil
+        return accounts.first
     }
     
     private func setDefaultWordPressAccount(account: NSManagedObject) {
@@ -167,15 +166,17 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         let request         = NSFetchRequest(entityName: "Account")
         request.predicate   = NSPredicate(format: "isWpcom == true")
 
-        let results         = context.executeFetchRequest(request, error: nil) as? [NSManagedObject]
-
-        if results == nil {
+        var results:[NSManagedObject]
+        
+        do {
+            results = try context.executeFetchRequest(request) as! [NSManagedObject]
+        } catch {
             DDLogSwift.logError(">> Error while executing accounts fix: couldn't locate any WPAccount instances")
             return
         }
         
         // Attempt to infer the right default WordPress.com account
-        let unwrappedAccounts = NSMutableArray(array: results!)
+        let unwrappedAccounts = NSMutableArray(array: results)
 
         unwrappedAccounts.sortUsingDescriptors([
             NSSortDescriptor(key: "blogs.@count", ascending: false),
