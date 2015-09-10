@@ -26,7 +26,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         super.viewWillDisappear(animated)
 
         // Manual state restoration
-        var userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = NSUserDefaults.standardUserDefaults()
         userDefaults.setObject(self.siteName, forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey)
         userDefaults.setObject(self.visitorCount, forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey)
         userDefaults.setObject(self.viewCount, forKey: WPStatsTodayWidgetUserDefaultsViewCountKey)
@@ -52,7 +52,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         self.extensionContext!.openURL(NSURL(string: "\(WPCOM_SCHEME)://viewstats?siteId=\(siteId!)")!, completionHandler: nil)
     }
     
-    func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)!) {
+    func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)) {
         // Perform any setup necessary in order to update the view.
         
         // If an error is encoutered, use NCUpdateResult.Failed
@@ -69,14 +69,14 @@ class TodayViewController: UIViewController, NCWidgetProviding {
             WPDDLogWrapper.logError("Missing site ID, timeZone or oauth2Token")
             
             let bundle = NSBundle(forClass: TodayViewController.classForCoder())
-            NCWidgetController.widgetController().setHasContent(false, forWidgetWithBundleIdentifier: bundle.bundleIdentifier)
+            NCWidgetController.widgetController().setHasContent(false, forWidgetWithBundleIdentifier: bundle.bundleIdentifier!)
             
             completionHandler(NCUpdateResult.Failed)
             return
         }
         
         let timeZone = NSTimeZone(name: timeZoneName!)
-        var statsService: WPStatsService = WPStatsService(siteId: siteId, siteTimeZone: timeZone, oauth2Token: oauth2Token, andCacheExpirationInterval:0)
+        let statsService: WPStatsService = WPStatsService(siteId: siteId, siteTimeZone: timeZone, oauth2Token: oauth2Token, andCacheExpirationInterval:0)
         statsService.retrieveTodayStatsWithCompletionHandler({ (wpStatsSummary: StatsSummary!, error: NSError!) -> Void in
             WPDDLogWrapper.logInfo("Downloaded data in the Today widget")
             
@@ -97,9 +97,13 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     func getOAuth2Token() -> String? {
-        var error:NSError?
+        var oauth2Token:NSString? = nil
         
-        var oauth2Token:NSString? = SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetOAuth2TokenKeychainUsername, andServiceName: WPStatsTodayWidgetOAuth2TokenKeychainServiceName, accessGroup: WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup, error: &error)
+        do {
+            try oauth2Token = SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetOAuth2TokenKeychainUsername, andServiceName: WPStatsTodayWidgetOAuth2TokenKeychainServiceName, accessGroup: WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup)
+        } catch {
+            WPDDLogWrapper.logError("No OAuth2 token available - error: \(error)")
+        }
         
         return oauth2Token as String?
     }
