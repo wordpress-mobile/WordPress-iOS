@@ -29,7 +29,7 @@ import Foundation
     }
 
     public required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         setupSubviews()
     }
     
@@ -98,7 +98,7 @@ import Foundation
     
     public var linkTextAttributes: [NSObject : AnyObject]! {
         set {
-            textView.linkTextAttributes = newValue
+            textView.linkTextAttributes = newValue as! [String:AnyObject]
         }
         get {
             return textView.linkTextAttributes
