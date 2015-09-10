@@ -18,7 +18,7 @@ pod 'Mixpanel', '2.8.2'
 pod 'CocoaLumberjack', '= 2.0.0'
 pod 'NSLogger-CocoaLumberjack-connector', :git => 'https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git', :tag => '1.5'
 pod 'google-plus-ios-sdk', '~>1.5'
-pod 'CrashlyticsLumberjack', '2.0.1-beta'
+pod 'CrashlyticsLumberjack', '2.0.0'
 pod 'HockeySDK', '~>3.6.0'
 pod 'Helpshift', '~>4.10.0'
 pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
@@ -56,7 +56,7 @@ end
 
 # We need to add in AF_APP_EXTENSIONS=1 to AFNetworking used by the Today Extension otherwise the build will fail. See - https://github.com/AFNetworking/AFNetworking/pull/2589
 post_install do |installer_representation|
-  installer_representation.project.targets.each do |target|
+  installer_representation.pods_project.targets.each do |target|
     if ["Pods-WordPressTodayWidget-WordPressCom-Stats-iOS", "Pods-WordPressTodayWidget-AFNetworking"].include?(target.name)
       target.build_configurations.each do |config|
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'AF_APP_EXTENSIONS=1']
@@ -66,7 +66,7 @@ post_install do |installer_representation|
 
   # Directly set the Targeted Device Family
   # See https://github.com/CocoaPods/CocoaPods/issues/2292
-  installer_representation.project.build_configurations.each do |config|
+  installer_representation.pods_project.build_configurations.each do |config|
       config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
   end
 end
