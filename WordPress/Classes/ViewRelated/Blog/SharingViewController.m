@@ -108,8 +108,15 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
             Publicizer *publicizer = self.publicizeServices[indexPath.row];
             cell.textLabel.text = publicizer.label;
 
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-            [button addTarget:self action:@selector(cellButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            UIButton *button = nil;
+            if ([cell.accessoryView isKindOfClass:[UIButton class]]) {
+                button = (UIButton *)cell.accessoryView;
+            } else {
+                button = [UIButton buttonWithType:UIButtonTypeSystem];
+                [button addTarget:self action:@selector(publicizeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+                cell.accessoryView = button;
+            }
+            button.tag = indexPath.row;
             NSString *title = nil;
             if ([self.connectingService.service isEqualToString:publicizer.service]) {
                 title = NSLocalizedString(@"Connecting…", @"Button title while a Publicize service is connecting");
@@ -120,7 +127,6 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
             }
             [button setTitle:title forState:UIControlStateNormal];
             [button sizeToFit];
-            cell.accessoryView = button;
         } break;
         default:
             break;
@@ -129,10 +135,9 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     return cell;
 }
 
-- (void)cellButtonTapped:(UIButton *)sender
+- (void)publicizeButtonTapped:(UIButton *)sender
 {
-    UITableViewCell *tappedCell = (UITableViewCell *)[sender superview];
-    NSIndexPath *tappedPath = [self.tableView indexPathForCell:tappedCell];
+    NSIndexPath *tappedPath = [NSIndexPath indexPathForRow:sender.tag inSection:SharingPublicize];
     [self tableView:self.tableView accessoryButtonTappedForRowWithIndexPath:tappedPath];
 }
 
