@@ -13,9 +13,8 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
     private let defaultDotcomKey            = "AccountDefaultDotcom"
     
     
-    override func beginEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
-
-        // Note: 
+    override func beginEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager) throws {
+        // Note:
         // NSEntityMigrationPolicy instance might not be the same all over. Let's use NSUserDefaults
         if let unwrappedAccount = legacyDefaultWordPressAccount(manager.sourceContext) {
             let username = unwrappedAccount.valueForKey("username") as! String
@@ -28,11 +27,9 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         } else {
             DDLogSwift.logError(">> Migration process couldn't locate a default WordPress.com account")
         }
-        
-        return true
     }
     
-    override func endEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
+    override func endEntityMapping(mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         // Load the default username
         let userDefaults = NSUserDefaults.standardUserDefaults()
         let defaultUsername = userDefaults.stringForKey(defaultDotcomUsernameKey) ?? String()
@@ -43,9 +40,9 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         let predicate = NSPredicate(format: "username == %@ AND isWpcom == true", defaultUsername)
         request.predicate = predicate
         
-        let accounts = context.executeFetchRequest(request, error: nil) as! [NSManagedObject]?
+        let accounts = try context.executeFetchRequest(request) as! [NSManagedObject]
         
-        if let defaultAccount = accounts?.first {
+        if let defaultAccount = accounts.first {
             setLegacyDefaultWordPressAccount(defaultAccount)
             DDLogSwift.logInfo(">> Migration process located default account with username [\(defaultUsername)\")")
         } else {
@@ -55,8 +52,6 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         // Cleanup!
         userDefaults.removeObjectForKey(defaultDotcomUsernameKey)
         userDefaults.synchronize()
-        
-        return true
     }
     
     
