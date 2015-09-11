@@ -33,21 +33,24 @@ import Foundation
    // MARK: - Configuration
 
     public func configureHeader(topic: ReaderAbstractTopic) {
-        // TODO: Wire up actual display when supported in core data
+        assert(topic.isKindOfClass(ReaderSiteTopic), "Topic must be a site topic")
+
+        let siteTopic = topic as! ReaderSiteTopic
+
         avatarImageView.setImageWithURL(NSURL(), placeholderImage: UIImage(named: defaultBlavatar))
-        titleLabel.text = topic.title
+        titleLabel.text = siteTopic.title
         detailLabel.text = "site.com"
-        if topic.following {
+        if siteTopic.following {
             WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
         } else {
             WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
         }
 
-        followCountLabel.text = "100 followers"
-        descriptionLabel.text = "Just another WordPress site"
-//        var attributes = WPStyleGuide.readerStreamHeaderDescriptionAttributes()
-//        var attributedText = NSAttributedString(string: topic.description, attributes: attributes)
-//        descriptionLabel.attributedText = attributedText
+        followCountLabel.text = "\(siteTopic.subscriberCount)"
+
+        let attributes = WPStyleGuide.readerStreamHeaderDescriptionAttributes() as! [String: AnyObject]
+        let attributedText = NSAttributedString(string: siteTopic.siteDescription, attributes: attributes)
+        descriptionLabel.attributedText = attributedText
     }
 
 
