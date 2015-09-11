@@ -9,13 +9,17 @@ extension NSMutableAttributedString
     *  @param       styles      Collection of styles to be applied on the matched strings
     */
     public func applyStylesToMatchesWithPattern(pattern: String, styles: [String: AnyObject]) {
-        let regex = NSRegularExpression(pattern: pattern, options: .DotMatchesLineSeparators, error: nil)
-        let range = NSRange(location: 0, length: length)
-        
-        regex?.enumerateMatchesInString(string, options: nil, range: range) {
-            (result: NSTextCheckingResult!, flags: NSMatchingFlags, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-            
-            self.addAttributes(styles, range: result.range)
-        }
+        do {
+            let regex = try NSRegularExpression(pattern: pattern, options: .DotMatchesLineSeparators)
+            let range = NSRange(location: 0, length: length)
+
+            regex.enumerateMatchesInString(string, options: .ReportCompletion, range: range) {
+                (result: NSTextCheckingResult?, flags: NSMatchingFlags, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+                
+                if let theResult = result {
+                    self.addAttributes(styles, range: theResult.range)
+                }
+            }
+        } catch { }
     }
 }

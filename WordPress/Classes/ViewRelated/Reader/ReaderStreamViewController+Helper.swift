@@ -19,24 +19,24 @@ extension ReaderStreamViewController
     @param topic A ReaderTopic
     @param An unconfigured instance of a ReaderStreamHeader.
     */
-    public class func headerForStream(topic: ReaderTopic) -> ReaderStreamHeader? {
-        if topicIsFollowing(topic) || topicIsFreshlyPressed(topic) || topicIsLiked(topic) {
+    public class func headerForStream(topic: ReaderAbstractTopic) -> ReaderStreamHeader? {
+        if ReaderHelpers.topicIsFollowing(topic) || ReaderHelpers.topicIsFreshlyPressed(topic) || ReaderHelpers.topicIsLiked(topic) {
             // no header for these special lists
             return nil
         }
 
         // if tag
-        if topic.isTag() {
+        if ReaderHelpers.isTopicTag(topic) {
             return NSBundle.mainBundle().loadNibNamed("ReaderTagStreamHeader", owner: nil, options: nil).first as! ReaderTagStreamHeader
         }
 
         // if list
-        if topic.isList() {
+        if ReaderHelpers.isTopicList(topic) {
             return NSBundle.mainBundle().loadNibNamed("ReaderListStreamHeader", owner: nil, options: nil).first as! ReaderListStreamHeader
         }
 
         // if site
-        if topic.isSite() {
+        if ReaderHelpers.isTopicSite(topic) {
             return NSBundle.mainBundle().loadNibNamed("ReaderSiteStreamHeader", owner: nil, options: nil).first as! ReaderSiteStreamHeader
         }
 
@@ -50,11 +50,9 @@ extension ReaderStreamViewController
     @param topic A ReaderTopic.
     @return An NoResultsResponse instance.
     */
-    public class func responseForNoResults(topic: ReaderTopic) -> NoResultsResponse {
-        let path = topic.path as NSString!
-
+    public class func responseForNoResults(topic: ReaderAbstractTopic) -> NoResultsResponse {
         // if following
-        if topicIsFollowing(topic) {
+        if ReaderHelpers.topicIsFollowing(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("Welcome to the reader", comment:"A message title"),
                 message: NSLocalizedString("Recent posts from blogs and sites you follow will appear here.", comment:"A message explaining the Following topic in the reader")
@@ -62,7 +60,7 @@ extension ReaderStreamViewController
         }
 
         // if liked
-        if topicIsLiked(topic) {
+        if ReaderHelpers.topicIsLiked(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("No likes yet", comment:"A message title"),
                 message: NSLocalizedString("Posts that you like will appear here.", comment:"A message explaining the Posts I Like feature in the reader")
@@ -70,7 +68,7 @@ extension ReaderStreamViewController
         }
 
         // if tag
-        if topic.isTag() {
+        if ReaderHelpers.isTopicTag(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("No recent posts", comment:"A message title"),
                 message: NSLocalizedString("No posts have been made recently with this tag.", comment:"Message shown whent the reader finds no posts for the chosen tag")
@@ -78,24 +76,15 @@ extension ReaderStreamViewController
         }
 
         // if site (blog)
-        if topic.isSite() {
+        if ReaderHelpers.isTopicSite(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("No posts", comment:"A message title"),
                 message: NSLocalizedString("This site has not posted anything yet. Try back later.", comment:"Message shown when the reader finds no posts for the chosen site")
             )
         }
 
-// TODO: Wire up when we can distinguish between wpcom and external sites
-//        // if set (feed)
-//        if topic.isSite() {
-//            return NoResultsResponse(
-//                title: NSLocalizedString("No recent posts", comment:"A message title"),
-//                message: NSLocalizedString("This site has not posted anything recently", comment:"Message shown wehen the reader finds no posts for the chosen external site")
-//            )
-//        }
-
         // if list
-        if topic.isList() {
+        if ReaderHelpers.isTopicList(topic) {
             return NoResultsResponse(
                 title: NSLocalizedString("No recent posts", comment:"A message title"),
                 message: NSLocalizedString("The sites in this list have not posted anything recently.", comment:"Message shown when the reader finds no posts for the chosen list")
@@ -107,39 +96,6 @@ extension ReaderStreamViewController
             title: NSLocalizedString("No recent posts", comment:"A message title"),
             message: NSLocalizedString("No posts have been made recently", comment:"A default message shown whe the reader can find no post to display")
         )
-    }
-
-    /**
-    Check if the specified topic is for Freshly Pressed
-
-    @param topic A ReaderTopic
-    @return True if the topic is for Freshly Pressed
-    */
-    public class func topicIsFreshlyPressed(topic: ReaderTopic) -> Bool {
-        let path = topic.path as NSString!
-        return path.hasSuffix("/freshly-pressed")
-    }
-
-    /**
-    Check if the specified topic is for Following
-
-    @param topic A ReaderTopic
-    @return True if the topic is for Following
-    */
-    public class func topicIsFollowing(topic: ReaderTopic) -> Bool {
-        let path = topic.path as NSString!
-        return path.hasSuffix("/read/following")
-    }
-
-    /**
-    Check if the specified topic is for Posts I Like
-
-    @param topic A ReaderTopic
-    @return True if the topic is for Posts I Like
-    */
-    public class func topicIsLiked(topic: ReaderTopic) -> Bool {
-        let path = topic.path as NSString!
-        return path.hasSuffix("/read/liked")
     }
 
 }

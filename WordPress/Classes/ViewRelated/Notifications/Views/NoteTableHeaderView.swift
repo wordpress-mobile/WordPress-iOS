@@ -47,7 +47,7 @@ import Foundation
     }
     
     required public init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         setupView()
     }
     
@@ -65,7 +65,7 @@ import Foundation
         assert(titleLabel   != nil)
         
         // Layout
-        contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(contentView)
         
         // Background + Separators

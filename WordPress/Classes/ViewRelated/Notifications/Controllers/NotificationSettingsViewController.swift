@@ -144,7 +144,7 @@ public class NotificationSettingsViewController : UIViewController
     
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let identifier  = reusableIdentifierForIndexPath(indexPath)
-        let cell        = tableView.dequeueReusableCellWithIdentifier(identifier) as! UITableViewCell
+        let cell        = tableView.dequeueReusableCellWithIdentifier(identifier)!
         
         configureCell(cell, indexPath: indexPath)
         
@@ -245,13 +245,13 @@ public class NotificationSettingsViewController : UIViewController
         // Proceed rendering the settings
         let settings = settingsForRowAtIndexPath(indexPath)!
         switch settings.channel {
-        case let .Blog(blogId):
+        case .Blog(_):
             cell.textLabel?.text            = settings.blog?.blogName ?? settings.channel.description()
             cell.detailTextLabel?.text      = settings.blog?.displayURL ?? String()
             cell.accessoryType              = .DisclosureIndicator
             
             if let siteIconURL = settings.blog?.icon {
-                cell.imageView?.setImageWithSiteIcon(settings.blog?.icon)
+                cell.imageView?.setImageWithSiteIcon(siteIconURL)
             } else {
                 cell.imageView?.image = WPStyleGuide.Notifications.blavatarPlaceholderImage
             }

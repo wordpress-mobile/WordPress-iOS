@@ -8,12 +8,12 @@
 #import "ReaderPost.h"
 #import "ReaderPostServiceRemote.h"
 #import "ReaderSiteService.h"
-#import "ReaderTopic.h"
 #import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
 #import "SourcePostAttribution.h"
 #import "WordPressComApi.h"
 #import "WPAccount.h"
+#import "WordPress-Swift.h"
 
 NSUInteger const ReaderPostServiceNumberToSync = 20;
 NSUInteger const ReaderPostServiceTitleLength = 30;
@@ -44,12 +44,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 #pragma mark - Fetch Methods
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     [self fetchPostsForTopic:topic earlierThan:[NSDate date] success:success failure:failure];
 }
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic earlierThan:(NSDate *)date success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
@@ -91,7 +91,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }];
 }
 
-- (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
+- (void)backfillPostsForTopic:(ReaderAbstractTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPost *post = [self newestPostForTopic:topicObjectID];
@@ -322,7 +322,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }];
 }
 
-- (void)deletePostsWithSiteID:(NSNumber *)siteID andSiteURL:(NSString *)siteURL fromTopic:(ReaderTopic *)topic
+- (void)deletePostsWithSiteID:(NSNumber *)siteID andSiteURL:(NSString *)siteURL fromTopic:(ReaderAbstractTopic *)topic
 {
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
@@ -413,7 +413,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return api;
 }
 
-- (NSUInteger)numberOfPostsForTopic:(ReaderTopic *)topic
+- (NSUInteger)numberOfPostsForTopic:(ReaderAbstractTopic *)topic
 {
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
@@ -430,19 +430,19 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 /**
  Retrieve the newest post for the specified topic
 
- @param topicObjectID The `NSManagedObjectID` of the ReaderTopic for the post
+ @param topicObjectID The `NSManagedObjectID` of the ReaderAbstractTopic for the post
  @return The newest post in Core Data for the topic, or nil.
  */
 - (ReaderPost *)newestPostForTopic:(NSManagedObjectID *)topicObjectID
 {
     NSError *error;
-    ReaderTopic *topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
     if (error) {
         DDLogError(@"%@, error fetching topic from NSManagedObjectID : %@", NSStringFromSelector(_cmd), error);
         return nil;
     }
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@", topic];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@", topic];
     [fetchRequest setPredicate:pred];
     fetchRequest.fetchLimit = 1;
 
@@ -477,7 +477,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                           failure:(void (^)(NSError *error))failure
 {
     NSError *error;
-    ReaderTopic *topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
     if (error) {
         DDLogError(@"%@, error fetching topic from NSManagedObjectID : %@", NSStringFromSelector(_cmd), error);
         if (failure) {
@@ -541,7 +541,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
  @param posts An array of RemoteReaderPost objects
  @param date The `before` date posts were requested.
- @param topicObjectID The ObjectID of the ReaderTopic to assign to the newly created posts.
+ @param topicObjectID The ObjectID of the ReaderAbstractTopic to assign to the newly created posts.
  @param success block called on a successful fetch which should be performed after merging
  */
 - (void)mergePosts:(NSArray *)posts
@@ -553,14 +553,14 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     [self.managedObjectContext performBlock:^{
 
         if (self.managedObjectContext.parentContext == [[ContextManager sharedInstance] mainContext]) {
-            // Its possible the ReaderTopic was deleted the parent main context.
+            // Its possible the ReaderAbstractTopic was deleted the parent main context.
             // If so, and we merge and save, it will cause a crash.
             // Reset the context so it will be current with its parent context.
             [self.managedObjectContext reset];
         }
 
         NSError *error;
-        ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
+        ReaderAbstractTopic *readerTopic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
         if (error || !readerTopic) {
             // if there was an error or the topic was deleted just bail.
             if (success) {
@@ -596,15 +596,15 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
  from the result set (deleted, unliked, etc.) rendering the result set empty.
 
  @param date The date to delete posts earlier than.
- @param topic The ReaderTopic to delete posts from.
+ @param topic The `ReaderAbstractTopic` to delete posts from.
  */
-- (void)deletePostsEarlierThan:(NSDate *)date forTopic:(ReaderTopic *)topic
+- (void)deletePostsEarlierThan:(NSDate *)date forTopic:(ReaderAbstractTopic *)topic
 {
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate < %@", topic, date];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@ AND sortDate < %@", topic, date];
 
     [fetchRequest setPredicate:pred];
 
@@ -632,11 +632,11 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
  The managed object context is not saved.
 
- @param topic The ReaderTopic to delete posts from.
+ @param topic The ReaderAbstractTopic to delete posts from.
  @param posts The batch of posts to use as a filter.
  @param startingDate The starting date of the batch of posts. May be earlier than the earliest post in the batch.
  */
-- (void)deletePostsForTopic:(ReaderTopic *)topic missingFromBatch:(NSArray *)posts withStartingDate:(NSDate *)startingDate
+- (void)deletePostsForTopic:(ReaderAbstractTopic *)topic missingFromBatch:(NSArray *)posts withStartingDate:(NSDate *)startingDate
 {
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
@@ -670,15 +670,15 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
  The managed object context is not saved.
 
- @param topic the `ReaderTopic` to delete posts from.
+ @param topic the `ReaderAbstractTopic` to delete posts from.
  */
-- (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderTopic *)topic
+- (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderAbstractTopic *)topic
 {
     // Don't trust the relationships on the topic to be current or correct.
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@", topic];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@", topic];
     [fetchRequest setPredicate:pred];
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sortDate" ascending:NO];
@@ -736,10 +736,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
  for each one.
 
  @param posts An array of `RemoteReaderPost` objects.
- @param topic The `ReaderTopic` to assign to the created posts.
+ @param topic The `ReaderAbsractTopic` to assign to the created posts.
  @return An array of `ReaderPost` objects
  */
-- (NSMutableArray *)makeNewPostsFromRemotePosts:(NSArray *)posts forTopic:(ReaderTopic *)topic
+- (NSMutableArray *)makeNewPostsFromRemotePosts:(NSArray *)posts forTopic:(ReaderAbstractTopic *)topic
 {
     NSMutableArray *newPosts = [NSMutableArray array];
     for (RemoteReaderPost *post in posts) {
@@ -757,10 +757,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
  Create a `ReaderPost` model object from the specified dictionary.
 
  @param dict A `RemoteReaderPost` object.
- @param topic The `ReaderTopic` to assign to the created post.
+ @param topic The `ReaderAbstractTopic` to assign to the created post.
  @return A `ReaderPost` model object whose properties are populated with the values from the passed dictionary.
  */
-- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderTopic *)topic
+- (ReaderPost *)createOrReplaceFromRemotePost:(RemoteReaderPost *)remotePost forTopic:(ReaderAbstractTopic *)topic
 {
     NSError *error;
     ReaderPost *post;
