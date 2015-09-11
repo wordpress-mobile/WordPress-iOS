@@ -280,12 +280,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topic.isPrivate = siteInfo.isPrivate;
         topic.isVisible = siteInfo.isVisible;
         topic.postCount = siteInfo.postCount;
+        topic.showInMenu = NO;
         topic.siteBlavatar = siteInfo.siteBlavatar;
         topic.siteDescription = siteInfo.siteDescription;
         topic.siteID = siteInfo.siteID;
         topic.siteURL = siteInfo.siteURL;
-        topic.subscriberCount = siteInfo.subscriberCount;
+        topic.subscriberCount = siteInfo.subscriberCount ?: 0;
         topic.title = siteInfo.siteName;
+        topic.type = ReaderSiteTopic.TopicType;
         topic.path = [NSString stringWithFormat:@"%@read/sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
 
         NSError *error;
