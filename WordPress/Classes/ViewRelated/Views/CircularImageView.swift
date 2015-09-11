@@ -11,7 +11,7 @@ class CircularImageView : UIImageView
     }
 
     required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
 
         layer.masksToBounds = true
     }

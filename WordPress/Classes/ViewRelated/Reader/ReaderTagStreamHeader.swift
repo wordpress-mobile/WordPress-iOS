@@ -23,9 +23,9 @@ import Foundation
     
     // MARK: - Configuration
 
-    public func configureHeader(topic: ReaderTopic) {
+    public func configureHeader(topic: ReaderAbstractTopic) {
         titleLabel.text = topic.title
-        if topic.isSubscribed {
+        if topic.following {
             WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
         } else {
             WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
