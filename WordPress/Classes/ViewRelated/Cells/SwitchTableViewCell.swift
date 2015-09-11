@@ -34,7 +34,7 @@ public class SwitchTableViewCell : WPTableViewCell
     
     // MARK: - Initializers
     public required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         setupSubviews()
     }
     
