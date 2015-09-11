@@ -1,14 +1,16 @@
 #import "ReaderSiteService.h"
-#import "ReaderSiteServiceRemote.h"
-#import "WordPressComApi.h"
-#import "WPAccount.h"
+
 #import "AccountService.h"
 #import "ContextManager.h"
-#import "ReaderSite.h"
 #import "RemoteReaderSite.h"
-#import "ReaderTopicService.h"
 #import "ReaderPostService.h"
 #import "ReaderPost.h"
+#import "ReaderSite.h"
+#import "ReaderSiteServiceRemote.h"
+#import "ReaderTopicService.h"
+#import "WordPressComApi.h"
+#import "WPAccount.h"
+#import "WordPress-Swift.h"
 
 NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
@@ -172,7 +174,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 - (void)deletePostsFromFollowedTopicForSite:(ReaderSite *)site
 {
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    ReaderTopic *followedSites = [topicService topicForFollowedSites];
+    ReaderAbstractTopic *followedSites = [topicService topicForFollowedSites];
     if (!followedSites) {
         return;
     }
@@ -188,7 +190,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 - (void)syncPostsForFollowedSites
 {
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    ReaderTopic *followedSites = [topicService topicForFollowedSites];
+    ReaderAbstractTopic *followedSites = [topicService topicForFollowedSites];
     if (!followedSites) {
         return;
     }

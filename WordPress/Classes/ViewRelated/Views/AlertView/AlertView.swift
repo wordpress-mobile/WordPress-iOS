@@ -44,7 +44,7 @@ public class AlertView : NSObject
         targetView.addSubview(internalView)
         
         // We should cover everything
-        internalView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        internalView.translatesAutoresizingMaskIntoConstraints = false
         targetView.pinSubviewToAllEdges(internalView)
         
         // Animate!
@@ -65,7 +65,7 @@ public class AlertView : NSObject
     *  @returns     The Key View.
     */
     private func keyView() -> UIView {
-        return UIApplication.sharedApplication().keyWindow?.subviews.first as! UIView
+        return (UIApplication.sharedApplication().keyWindow?.subviews.first)!
     }
     
     

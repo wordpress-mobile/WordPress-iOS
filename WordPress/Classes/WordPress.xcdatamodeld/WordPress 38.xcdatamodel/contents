@@ -20,7 +20,6 @@
         <relationship name="defaultBlog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="accountForDefaultBlog" inverseEntity="Blog" syncable="YES"/>
         <relationship name="jetpackBlogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="jetpackAccount" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="readerSites" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderSite" inverseName="account" inverseEntity="ReaderSite" syncable="YES"/>
-        <relationship name="readerTopics" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderTopic" inverseName="account" inverseEntity="ReaderTopic" syncable="YES"/>
     </entity>
     <entity name="BasePost" representedClassName="BasePost" isAbstract="YES">
         <attribute name="author" optional="YES" attributeType="String">
@@ -322,6 +321,24 @@
         </relationship>
         <userInfo/>
     </entity>
+    <entity name="ReaderAbstractTopic" representedClassName="WordPress.ReaderAbstractTopic" isAbstract="YES" syncable="YES">
+        <attribute name="following" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="lastSynced" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="path" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="showInMenu" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
+    </entity>
+    <entity name="ReaderDefaultTopic" representedClassName="WordPress.ReaderDefaultTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
+    <entity name="ReaderListTopic" representedClassName="WordPress.ReaderListTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
+        <attribute name="isOwner" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isPublic" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="listDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="listID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="owner" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="ReaderPost" representedClassName="ReaderPost" parentEntity="BasePost" syncable="YES">
         <attribute name="authorDisplayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorEmail" optional="YES" attributeType="String" syncable="YES"/>
@@ -357,7 +374,7 @@
         <attribute name="tags" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="wordCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="sourceAttribution" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePostAttribution" inverseName="post" inverseEntity="SourcePostAttribution" syncable="YES"/>
-        <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderTopic" inverseName="posts" inverseEntity="ReaderTopic" syncable="YES"/>
+        <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderAbstractTopic" inverseName="posts" inverseEntity="ReaderAbstractTopic" syncable="YES"/>
     </entity>
     <entity name="ReaderSite" representedClassName="ReaderSite" syncable="YES">
         <attribute name="feedID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -369,19 +386,22 @@
         <attribute name="siteID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerSites" inverseEntity="Account" syncable="YES"/>
     </entity>
-    <entity name="ReaderTopic" representedClassName="ReaderTopic" syncable="YES">
-        <attribute name="isMenuItem" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="isRecommended" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="isSubscribed" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
-        <attribute name="lastSynced" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="path" attributeType="String" indexed="YES" syncable="YES"/>
+    <entity name="ReaderSiteTopic" representedClassName="WordPress.ReaderSiteTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
+        <attribute name="feedID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="isJetpack" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isPrivate" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isVisible" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="postCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="siteBlavatar" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="siteDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="siteID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="siteURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="subscriberCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="ReaderTagTopic" representedClassName="WordPress.ReaderTagTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
+        <attribute name="isRecommended" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="title" attributeType="String" syncable="YES"/>
-        <attribute name="topicDescription" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="topicID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="type" attributeType="String" indexed="YES" syncable="YES"/>
-        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerTopics" inverseEntity="Account" syncable="YES"/>
-        <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
+        <attribute name="tagID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="SourcePostAttribution" representedClassName="SourcePostAttribution" syncable="YES">
         <attribute name="attributionType" optional="YES" attributeType="String" syncable="YES"/>
@@ -414,7 +434,7 @@
     <fetchRequest name="UnreadNotes" entity="Notification" predicateString="unread == 1"/>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="570"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
@@ -424,9 +444,13 @@
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="150"/>
+        <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
+        <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="30"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
-        <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="225"/>
+        <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
+        <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
     </elements>
