@@ -818,7 +818,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 {
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     if ([self.blog hasChanges]) {
-        [blogService updateSettingForBlog:self.blog success:^{
+        [blogService updateSettingsForBlog:self.blog success:^{
         } failure:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
         }];

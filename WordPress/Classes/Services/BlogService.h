@@ -74,7 +74,7 @@
  *  @param success a block that is invoked when the update is sucessfull
  *  @param failure a block that in invoked when the update fails.
  */
-- (void)updateSettingForBlog:(Blog *)blog
+- (void)updateSettingsForBlog:(Blog *)blog
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure;
 

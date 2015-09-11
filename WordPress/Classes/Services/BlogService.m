@@ -244,7 +244,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     }];
 }
 
-- (void)updateSettingForBlog:(Blog *)blog
+- (void)updateSettingsForBlog:(Blog *)blog
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure
 {
