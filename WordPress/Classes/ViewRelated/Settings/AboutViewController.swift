@@ -35,7 +35,7 @@ public class AboutViewController : UITableViewController
         // Finally, setup the TableView
         tableView.tableHeaderView   = imageView
         tableView.contentInset      = WPTableViewContentInsets
-        
+     
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     

@@ -156,7 +156,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                        attribute:NSLayoutAttributeLeading
                                                                        relatedBy:NSLayoutRelationEqual
                                                                           toItem:self.commentMeta
-                                                                       attribute:NSLayoutAttributeLeftMargin
+                                                                       attribute:NSLayoutAttributeLeading
                                                                       multiplier:1.0
                                                                         constant:0];
     [self.commentMeta addConstraint:self.likeButtonLeftMarginConstraint];
@@ -172,7 +172,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                                attribute:NSLayoutAttributeLeading
                                                                                relatedBy:NSLayoutRelationEqual
                                                                                   toItem:self.commentMeta
-                                                                               attribute:NSLayoutAttributeLeftMargin
+                                                                               attribute:NSLayoutAttributeLeading
                                                                               multiplier:1.0
                                                                                 constant:0];
     [self.commentMeta addConstraint:self.numberOfLikesLabelLeftMarginConstraint];
