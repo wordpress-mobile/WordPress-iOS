@@ -240,7 +240,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     self.blog.relatedPostsShowHeadline = [NSNumber numberWithBool:self.relatedPostsShowHeaderCell.switchValue];
     self.blog.relatedPostsShowThumbnails = [NSNumber numberWithBool:self.relatedPostsShowThumbnailsCell.switchValue];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [blogService updateSettingForBlog:self.blog success:^{
+    [blogService updateSettingsForBlog:self.blog success:^{
         
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
