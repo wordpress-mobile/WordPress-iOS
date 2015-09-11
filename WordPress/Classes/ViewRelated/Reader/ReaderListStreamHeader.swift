@@ -27,8 +27,7 @@ import Foundation
 
     public func configureHeader(topic: ReaderAbstractTopic) {
         titleLabel.text = topic.title
-// TODO: Wire up when supported by the topic
-//        detailLabel.text = "sites . followers"
+        detailLabel.text = "" //TODO: Owner when supported
     }
 
 }
