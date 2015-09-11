@@ -461,10 +461,8 @@ import Foundation
         ]
 
         // Show Likes
-        if contentProvider!.isLikesEnabled() {
-            let button = buttons.removeLast() as UIButton
-            configureLikeActionButton(button)
-        }
+        let button = buttons.removeLast() as UIButton
+        configureLikeActionButton(button)
 
         // Show comments
         if contentProvider!.commentsOpen() || contentProvider!.commentCount().integerValue > 0 {
