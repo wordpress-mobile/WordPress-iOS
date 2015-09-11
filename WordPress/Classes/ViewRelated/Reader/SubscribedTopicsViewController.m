@@ -187,14 +187,17 @@
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return nil;
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
 
-    } else if (section == 1) {
+    if ([sectionInfo.name isEqualToString:@"list"]) {
         return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
     }
 
-    return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
+    if ([sectionInfo.name isEqualToString:@"tag"]) {
+        return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
+    }
+
+    return nil;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
