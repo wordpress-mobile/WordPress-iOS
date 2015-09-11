@@ -122,6 +122,7 @@ extension WPStyleGuide
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
+        paragraphStyle.alignment = .Center
 
         return [
             NSParagraphStyleAttributeName: paragraphStyle,

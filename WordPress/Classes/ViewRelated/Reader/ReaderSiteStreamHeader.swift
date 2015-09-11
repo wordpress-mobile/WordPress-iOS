@@ -6,6 +6,7 @@ import Foundation
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var detailLabel: UILabel!
     @IBOutlet private weak var followButton: PostMetaButton!
+    @IBOutlet private weak var descriptionView: UIView!
     @IBOutlet private weak var followCountLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var descriptionBottomConstraint: NSLayoutConstraint!
@@ -29,6 +30,23 @@ import Foundation
         WPStyleGuide.applyReaderSiteStreamCountStyle(followCountLabel)
     }
 
+    public override func sizeThatFits(size: CGSize) -> CGSize {
+        // Vertical and horizontal margins
+        let hMargin = avatarImageView.frame.origin.x
+        let vMargin = avatarImageView.frame.origin.y
+
+        let innerWidth = size.width - (hMargin * 2)
+        let adjustedSize = CGSize(width:innerWidth, height:CGFloat.max)
+        var height = descriptionView.frame.origin.y
+        height += vMargin
+        height += descriptionLabel.sizeThatFits(adjustedSize).height
+        height += vMargin
+        height += followCountLabel.sizeThatFits(adjustedSize).height
+        height += vMargin;
+
+        return CGSize(width: size.width, height: height)
+    }
+
 
    // MARK: - Configuration
 
@@ -39,18 +57,30 @@ import Foundation
 
         avatarImageView.setImageWithURL(NSURL(), placeholderImage: UIImage(named: defaultBlavatar))
         titleLabel.text = siteTopic.title
-        detailLabel.text = "site.com"
+        detailLabel.text = NSURL(string: siteTopic.siteURL)?.host
         if siteTopic.following {
             WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
         } else {
             WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
         }
 
-        followCountLabel.text = "\(siteTopic.subscriberCount)"
+        descriptionLabel.attributedText = attributedSiteDescriptionForTopic(siteTopic)
+        followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
+    }
 
+    func formattedFollowerCountForTopic(topic:ReaderSiteTopic) -> String {
+        let numberFormatter = NSNumberFormatter()
+        numberFormatter.groupingSeparator = NSLocale.currentLocale().objectForKey(NSLocaleGroupingSeparator) as! String
+        numberFormatter.numberStyle = .DecimalStyle
+        let count = numberFormatter.stringFromNumber(topic.subscriberCount)
+        let pattern = NSLocalizedString("%@ followers", comment: "The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers`")
+        let str = String(format: pattern, count!)
+        return str
+    }
+
+    func attributedSiteDescriptionForTopic(topic:ReaderSiteTopic) -> NSAttributedString {
         let attributes = WPStyleGuide.readerStreamHeaderDescriptionAttributes() as! [String: AnyObject]
-        let attributedText = NSAttributedString(string: siteTopic.siteDescription, attributes: attributes)
-        descriptionLabel.attributedText = attributedText
+        return NSAttributedString(string: topic.siteDescription, attributes: attributes)
     }
 
 

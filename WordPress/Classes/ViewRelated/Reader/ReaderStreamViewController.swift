@@ -248,7 +248,7 @@ import Foundation
     }
 
 
-    // MARK: - Topic Presentation
+    // MARK: - Configureation / Topic Presentation
 
     func configureStreamHeader() {
         assert(readerTopic != nil, "A reader topic is required")
@@ -276,6 +276,7 @@ import Foundation
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
 
+        configureTitleForTopic()
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
@@ -297,6 +298,19 @@ import Foundation
         }
     }
 
+    func configureTitleForTopic() {
+        if readerTopic == nil {
+            title = "Reader"
+            return
+        }
+        if readerTopic?.type == ReaderSiteTopic.TopicType {
+            title = "Site Details"
+            return
+        }
+
+        title = readerTopic?.title
+    }
+
 
     // MARK: - Instance Methods
 
@@ -309,7 +323,7 @@ import Foundation
         headerView.setNeedsLayout()
         headerView.layoutIfNeeded()
 
-        let height = headerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+        let height = headerView.sizeThatFits(CGSize(width: tableView.frame.size.width, height: CGFloat.max)).height
         var frame = headerView.frame
         frame.size.height = height
         headerView.frame = frame
