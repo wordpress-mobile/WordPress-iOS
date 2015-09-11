@@ -32,17 +32,17 @@ import Foundation
 
     public override func sizeThatFits(size: CGSize) -> CGSize {
         // Vertical and horizontal margins
-        let hMargin = avatarImageView.frame.origin.x
-        let vMargin = avatarImageView.frame.origin.y
+        let hMargin = descriptionLabel.frame.minX
+        let vMargin = descriptionLabel.frame.minY
 
         let innerWidth = size.width - (hMargin * 2)
         let adjustedSize = CGSize(width:innerWidth, height:CGFloat.max)
-        var height = descriptionView.frame.origin.y
+        var height = descriptionView.frame.minY
         height += vMargin
         height += descriptionLabel.sizeThatFits(adjustedSize).height
-        height += vMargin
+        height += descriptionBottomConstraint.constant
         height += followCountLabel.sizeThatFits(adjustedSize).height
-        height += vMargin;
+        height += followCountBottomConstraint.constant;
 
         return CGSize(width: size.width, height: height)
     }
@@ -65,6 +65,15 @@ import Foundation
         }
 
         descriptionLabel.attributedText = attributedSiteDescriptionForTopic(siteTopic)
+
+        if descriptionLabel.attributedText?.length > 0 {
+            // Bottom and top margins should match.
+            descriptionBottomConstraint.constant = descriptionLabel.frame.minY
+        } else {
+            descriptionBottomConstraint.constant = 0
+        }
+
+
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
     }
 
