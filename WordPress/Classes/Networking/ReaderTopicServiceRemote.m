@@ -27,7 +27,7 @@ static NSString * const SiteDictionaryDescriptionKey = @"description";
 static NSString * const SiteDictionaryIDKey = @"ID";
 static NSString * const SiteDictionaryNameKey = @"name";
 static NSString * const SiteDictionaryURLKey = @"URL";
-static NSString * const SiteDictionarySubscriptionsKey = @"subscriptions_count";
+static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
 
 
 @implementation ReaderTopicServiceRemote
@@ -148,7 +148,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscriptions_count";
         siteInfo.siteID = [response numberForKey:SiteDictionaryIDKey];
         siteInfo.siteName = [response stringForKey:SiteDictionaryNameKey];
         siteInfo.siteURL = [response stringForKey:SiteDictionaryURLKey];
-        siteInfo.subscriberCount = [response numberForKey:SiteDictionarySubscriptionsKey];
+        siteInfo.subscriberCount = [response numberForKey:SiteDictionarySubscriptionsKey] ?: @0;
         if (![siteInfo.siteName length] && [siteInfo.siteURL length] > 0) {
             siteInfo.siteName = [[NSURL URLWithString:siteInfo.siteURL] host];
         }
