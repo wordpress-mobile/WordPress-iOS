@@ -133,7 +133,10 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
                                   @"blogdescription" : blog.blogTagline,
                                   @"default_category" : blog.defaultCategoryID,
                                   @"default_post_format" : blog.defaultPostFormat,
-                                  @"blog_public" : @(blog.siteVisibility)
+                                  @"blog_public" : @(blog.siteVisibility),
+                                  @"jetpack_relatedposts_enabled" : blog.relatedPostsEnabled,
+                                  @"jetpack_relatedposts_show_headline" : blog.relatedPostsShowHeadline,
+                                  @"jetpack_relatedposts_show_thumbnails" : blog.relatedPostsShowThumbnails                                  
                                   };
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blog.dotComID];
     NSString *requestUrl = [self pathForEndpoint:path

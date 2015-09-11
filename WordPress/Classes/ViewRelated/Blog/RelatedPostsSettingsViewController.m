@@ -1,8 +1,12 @@
 #import "RelatedPostsSettingsViewController.h"
+
 #import "Blog.h"
+#import "BlogService.h"
+#import "ContextManager.h"
 #import "SwitchSettingTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
-#import "ContextManager.h"
+
+#import <SVProgressHUD/SVProgressHUD.h>
 
 typedef NS_ENUM(NSInteger, RelatedPostsSettingsSection) {
     RelatedPostsSettingsSectionOptions = 0,
@@ -138,7 +142,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 {
     switch (section) {
         case RelatedPostsSettingsSectionOptions:{
-            return [WPTableViewSectionHeaderFooterView heightForFooter:NSLocalizedString(@"Related Posts displays relevant content from your site below your posts", @"Information of what related post are and how they are presented")
+            return [WPTableViewSectionHeaderFooterView heightForFooter:NSLocalizedString(@"Related Posts displays relevant content from your site below your posts.", @"Information of what related post are and how they are presented.")
                                                                  width:tableView.frame.size.width];
         }
             break;
@@ -235,8 +239,13 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     self.blog.relatedPostsEnabled = [NSNumber numberWithBool:self.relatedPostsEnabledCell.switchValue];
     self.blog.relatedPostsShowHeadline = [NSNumber numberWithBool:self.relatedPostsShowHeaderCell.switchValue];
     self.blog.relatedPostsShowThumbnails = [NSNumber numberWithBool:self.relatedPostsShowThumbnailsCell.switchValue];
-    
-    [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [blogService updateSettingForBlog:self.blog success:^{
+        
+    } failure:^(NSError *error) {
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
+        [self.tableView reloadData];
+    }];
     [self.tableView reloadData];
 }
 
