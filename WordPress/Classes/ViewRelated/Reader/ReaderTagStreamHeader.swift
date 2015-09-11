@@ -20,7 +20,11 @@ import Foundation
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
     }
 
-    
+    public override func sizeThatFits(size: CGSize) -> CGSize {
+        return systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+    }
+
+
     // MARK: - Configuration
 
     public func configureHeader(topic: ReaderAbstractTopic) {
