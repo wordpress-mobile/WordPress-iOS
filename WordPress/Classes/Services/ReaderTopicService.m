@@ -460,6 +460,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.title = [self formatTitle:remoteTopic.title];
     topic.slug = remoteTopic.slug;
     topic.path = remoteTopic.path;
+    topic.owner = remoteTopic.owner;
     topic.showInMenu = YES;
     topic.following = YES;
 
