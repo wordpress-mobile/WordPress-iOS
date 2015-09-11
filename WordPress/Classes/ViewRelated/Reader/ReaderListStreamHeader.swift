@@ -30,8 +30,12 @@ import Foundation
     // MARK: - Configuration
 
     public func configureHeader(topic: ReaderAbstractTopic) {
+        assert(topic.isKindOfClass(ReaderListTopic))
+
+        let listTopic = topic as! ReaderListTopic
+
         titleLabel.text = topic.title
-        detailLabel.text = "" //TODO: Owner when supported
+        detailLabel.text = listTopic.owner
     }
 
 }
