@@ -76,7 +76,7 @@ import Foundation
     public override var backgroundColor: UIColor? {
         didSet{
             contentView.backgroundColor = backgroundColor
-            innerContentView.backgroundColor = backgroundColor
+            innerContentView?.backgroundColor = backgroundColor
         }
     }
 
