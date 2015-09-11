@@ -46,8 +46,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 @dynamic primaryTag;
 @dynamic primaryTagSlug;
-@dynamic secondaryTag;
-@dynamic secondaryTagSlug;
 @dynamic isExternal;
 @dynamic isJetpack;
 @dynamic wordCount;
