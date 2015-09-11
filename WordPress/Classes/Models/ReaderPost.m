@@ -19,6 +19,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic authorDisplayName;
 @dynamic authorEmail;
 @dynamic authorURL;
+@dynamic blavatar;
 @dynamic blogName;
 @dynamic blogDescription;
 @dynamic blogURL;
@@ -140,13 +141,21 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (NSString *)blogNameForDisplay
 {
-    return self.blogName;
+    if (self.blogName.length > 0) {
+        return self.blogName;
+    }
+    return [[NSURL URLWithString:self.blogURL] host];
 }
 
 - (NSURL *)blavatarForDisplayOfSize:(NSInteger)size
 {
-    NSString *hash = [[[NSURL URLWithString:self.blogURL] host] md5];
-    NSString *str = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@/?s=%d&d=404", hash, size];
+    NSString *str;
+    if ([self.blavatar length] > 0) {
+        str = [NSString stringWithFormat:@"%@?s=%d&d=404", self.blavatar, size];
+    } else {
+        NSString *hash = [[[NSURL URLWithString:self.blogURL] host] md5];
+        str = [NSString stringWithFormat:@"https://secure.gravatar.com/blavatar/%@/?s=%d&d=404", hash, size];
+    }
     return [NSURL URLWithString:str];
 }
 

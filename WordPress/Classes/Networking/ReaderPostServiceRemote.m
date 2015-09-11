@@ -297,6 +297,7 @@ static const NSInteger MinutesToReadThreshold = 2;
     post.authorDisplayName = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyName]]; // Typically the author's given name
     post.authorEmail = [self authorEmailFromAuthorDictionary:authorDict];
     post.authorURL = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyURL]];
+    post.blavatar = [self stringOrEmptyString:[dict stringForKeyPath:@"meta.data.site.icon.img"]];
     post.blogName = [self siteNameFromPostDictionary:dict];
     post.blogDescription = [self siteDescriptionFromPostDictionary:dict];
     post.blogURL = [self siteURLFromPostDictionary:dict];
