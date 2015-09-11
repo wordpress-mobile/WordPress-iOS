@@ -1,10 +1,12 @@
 #import "ReaderPostServiceRemote.h"
-#import "WordPressComApi.h"
+
 #import "DateUtils.h"
-#import "RemoteReaderPost.h"
 #import "DisplayableImageHelper.h"
-#import "ReaderTopicServiceRemote.h"
+#import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
+#import "ReaderTopicServiceRemote.h"
+#import "WordPressComApi.h"
+#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
 
 // REST Post dictionary keys
 NSString * const PostRESTKeyAttachments = @"attachments";
@@ -391,6 +393,9 @@ static const NSInteger MinutesToReadThreshold = 2;
         primaryTag = editorialTag;
         primaryTagSlug = editorialSlug;
     }
+
+    primaryTag = [primaryTag stringByDecodingXMLCharacters];
+    secondaryTag = [secondaryTag stringByDecodingXMLCharacters];
 
     return @{
              TagKeyPrimary:primaryTag,

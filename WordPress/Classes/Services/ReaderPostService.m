@@ -810,10 +810,18 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.isLikesEnabled = remotePost.isLikesEnabled;
     post.isSiteBlocked = NO;
 
-    post.primaryTag = remotePost.primaryTag;
-    post.primaryTagSlug = remotePost.primaryTagSlug;
-    post.secondaryTag = remotePost.secondaryTag;
-    post.secondaryTagSlug = remotePost.secondaryTagSlug;
+    NSString *tag = remotePost.primaryTag;
+    NSString *slug = remotePost.primaryTagSlug;
+    if ([topic isKindOfClass:[ReaderTagTopic class]]) {
+        ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
+        if ([tagTopic.slug isEqualToString:remotePost.primaryTagSlug]) {
+            tag = remotePost.secondaryTag;
+            slug = remotePost.secondaryTagSlug;
+        }
+    }
+    post.primaryTag = tag;
+    post.primaryTagSlug = slug;
+
     post.isExternal = remotePost.isExternal;
     post.isJetpack = remotePost.isJetpack;
     post.wordCount = remotePost.wordCount;
