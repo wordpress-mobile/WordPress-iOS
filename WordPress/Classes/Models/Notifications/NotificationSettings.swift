@@ -61,7 +61,7 @@ public class NotificationSettings
     */
     public func sortedPreferenceKeys(stream: Stream?) -> [String] {
         switch channel {
-        case let .Blog(blogId):
+        case .Blog(_):
             // Email Streams require a special treatment
             return stream?.kind == .Email ? blogEmailPreferenceKeys : blogPreferenceKeys
         case .Other:
@@ -92,7 +92,7 @@ public class NotificationSettings
             case .Other:
                 return NSLocalizedString("Comments on Other Sites", comment: "Notification Settings Channel")
             case .WordPressCom:
-                return NSLocalizedString("Updates from WordPress.com", comment: "Notification Settings Channel")
+                return NSLocalizedString("Email from WordPress.com", comment: "Notification Settings Channel")
             }
         }
     }

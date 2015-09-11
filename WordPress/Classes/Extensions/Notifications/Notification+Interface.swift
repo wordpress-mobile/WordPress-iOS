@@ -11,8 +11,8 @@ extension Notification
 
         // Analyze the Delta-Components
         let calendar                = NSCalendar.currentCalendar()
-        let flags: NSCalendarUnit   = .DayCalendarUnit | .WeekOfYearCalendarUnit | .MonthCalendarUnit
-        let components              = calendar.components(flags, fromDate: fromDate, toDate: toDate, options: nil)
+        let flags: NSCalendarUnit   = [.Day, .WeekOfYear, .Month]
+        let components              = calendar.components(flags, fromDate: fromDate, toDate: toDate, options: .MatchFirst)
         
         var identifier: Int
 
@@ -37,18 +37,19 @@ extension Notification
     }
     
     public class func descriptionForSectionIdentifier(identifier: String) -> String {
-        let components      = identifier.componentsSeparatedByString(":")
-        let wrappedKind     = components.first?.toInt()
-        let wrappedPayload  = components.last?.toInt()
-
+        let components = identifier.componentsSeparatedByString(":")
+        if components.first == nil || components.last == nil {
+            return String()
+        }
+        
+        let wrappedKind    = Int(components.first!)
+        let wrappedPayload = Int(components.last!)
+        
         if wrappedKind == nil || wrappedPayload == nil {
             return String()
         }
         
-        let kind    = wrappedKind!
-        let payload = wrappedPayload!
-        
-        switch kind {
+        switch wrappedKind! {
         case Sections.Months:
             return NSLocalizedString("Older than a Month",  comment: "Notifications Months Section Header")
         case Sections.Weeks:

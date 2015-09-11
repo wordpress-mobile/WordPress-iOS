@@ -8,5 +8,5 @@ public protocol ReaderStreamHeaderDelegate: NSObjectProtocol
 public protocol ReaderStreamHeader: NSObjectProtocol
 {
     var delegate: ReaderStreamHeaderDelegate? {get set}
-    func configureHeader(topic: ReaderTopic)
+    func configureHeader(topic: ReaderAbstractTopic)
 }
