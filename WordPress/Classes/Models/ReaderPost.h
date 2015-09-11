@@ -43,8 +43,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 
 @property (nonatomic, strong) NSString *primaryTag;
 @property (nonatomic, strong) NSString *primaryTagSlug;
-@property (nonatomic, strong) NSString *secondaryTag;
-@property (nonatomic, strong) NSString *secondaryTagSlug;
 @property (nonatomic) BOOL isExternal;
 @property (nonatomic) BOOL isJetpack;
 @property (nonatomic) NSNumber *wordCount;

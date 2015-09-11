@@ -396,10 +396,15 @@ import Foundation
     }
 
     private func configureTag() {
-        // NOTE: stubbed implementation until we start storing the tag in core data.
-        // var title = "#ReaderTag"
-        // tagButton.setTitle(title, forState: .Normal)
-        // tagButton.setTitle(title, forState: .Highlighted)
+        var tag = ""
+        if let rawTag = contentProvider?.primaryTag() {
+            if (rawTag.characters.count > 0) {
+                tag = "#\(rawTag)"
+            }
+        }
+        tagButton.enabled = tag.characters.count > 0
+        tagButton.setTitle(tag, forState: .Normal)
+        tagButton.setTitle(tag, forState: .Highlighted)
     }
 
     private func configureWordCount() {
