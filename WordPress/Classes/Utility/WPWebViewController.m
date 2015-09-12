@@ -241,7 +241,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 - (void)showBottomToolbarIfNeeded
 {
-    if (!self.secureInteraction) {
+    if (self.secureInteraction) {
         return;
     }
 

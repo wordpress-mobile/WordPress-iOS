@@ -55,6 +55,7 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
     webViewController.password = blog.password;
     webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
     webViewController.publicizer = publicizer;
+    webViewController.secureInteraction = YES;
 
     NSURL *authorizeURL = [NSURL URLWithString:publicizer.connect];
     webViewController.url = authorizeURL;
