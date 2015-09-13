@@ -181,6 +181,7 @@
                 <outlet property="followButton" destination="Wi2-lD-4tk" id="6JV-i3-kWI"/>
                 <outlet property="followCountBottomConstraint" destination="Avt-S3-OwX" id="Tfc-XY-Q3U"/>
                 <outlet property="followCountLabel" destination="ueu-nr-TX0" id="qLk-RB-XN5"/>
+                <outlet property="innerContentView" destination="Lbk-Jq-qTd" id="Uhi-vf-pZ6"/>
                 <outlet property="titleLabel" destination="pYr-Y7-YdX" id="aeP-7O-jNV"/>
             </connections>
             <point key="canvasLocation" x="537" y="219"/>
