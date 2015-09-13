@@ -2,6 +2,7 @@ import Foundation
 
 @objc public class ReaderSiteStreamHeader: UIView, ReaderStreamHeader
 {
+    @IBOutlet private weak var innerContentView:UIView!
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var detailLabel: UILabel!
@@ -37,7 +38,8 @@ import Foundation
 
         let innerWidth = size.width - (hMargin * 2)
         let adjustedSize = CGSize(width:innerWidth, height:CGFloat.max)
-        var height = descriptionView.frame.minY
+        var height = innerContentView.frame.minY
+        height += descriptionView.frame.minY
         height += vMargin
         height += descriptionLabel.sizeThatFits(adjustedSize).height
         height += descriptionBottomConstraint.constant
