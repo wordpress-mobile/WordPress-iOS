@@ -168,11 +168,11 @@
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
 
-    if ([sectionInfo.name isEqualToString:@"list"]) {
+    if ([sectionInfo.name isEqualToString:ReaderListTopic.TopicType]) {
         return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
     }
 
-    if ([sectionInfo.name isEqualToString:@"tag"]) {
+    if ([sectionInfo.name isEqualToString:ReaderTagTopic.TopicType]) {
         return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
     }
 
