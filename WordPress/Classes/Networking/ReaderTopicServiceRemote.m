@@ -83,7 +83,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
                   withSuccess:(void (^)(NSNumber *topicID))success
                       failure:(void (^)(NSError *error))failure
 {
-    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/delete", slug];
+    NSString *path = [NSString stringWithFormat:@"read/tags/%@/mine/delete", slug];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
 
@@ -106,7 +106,14 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
                  failure:(void (^)(NSError *error))failure
 {
     topicName = [self sanitizeTopicNameForAPI:topicName];
-    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/new", topicName];
+    [self followTopicWithSlug:topicName withSuccess:success failure:failure];
+}
+
+- (void)followTopicWithSlug:(NSString *)slug
+             withSuccess:(void (^)(NSNumber *topicID))success
+                 failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"read/tags/%@/mine/new", slug];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
 
