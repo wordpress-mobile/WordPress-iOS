@@ -31,8 +31,8 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     
     // MARK: - Properties: Layout configuration
     private let marginWidth = CGFloat(10)
-    private let numberOfCellsPerRowInPhone = 1
-    private let numberOfCellsPerRowInPad = 4
+    private let numberOfCellsPerRowForPhone = 1
+    private let numberOfCellsPerRowForPad = 4
     
     // MARK: - Themes
     
@@ -140,7 +140,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
      *  @returns    The requested cell width.
      */
     private func cellWidthForPhone(parentViewWidth : CGFloat) -> CGFloat {
-        return cellWidthForNumberOfCellsPerRow(self.numberOfCellsPerRowInPhone, parentViewWidth: parentViewWidth)
+        return cellWidthForNumberOfCellsPerRow(self.numberOfCellsPerRowForPhone, parentViewWidth: parentViewWidth)
     }
     
     /**
@@ -151,7 +151,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     *  @returns    The requested cell width.
     */
     private func cellWidthForPad(parentViewWidth : CGFloat) -> CGFloat {
-        return cellWidthForNumberOfCellsPerRow(self.numberOfCellsPerRowInPad, parentViewWidth: parentViewWidth)
+        return cellWidthForNumberOfCellsPerRow(self.numberOfCellsPerRowForPad, parentViewWidth: parentViewWidth)
     }
     
     private func cellWidthForNumberOfCellsPerRow(numberOfCellsPerRow : Int, parentViewWidth : CGFloat) -> CGFloat {
