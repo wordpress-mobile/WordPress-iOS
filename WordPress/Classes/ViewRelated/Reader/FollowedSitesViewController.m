@@ -1,14 +1,12 @@
 #import "FollowedSitesViewController.h"
-#import "WPStyleGuide.h"
-#import "WPTableViewHandler.h"
 #import "ContextManager.h"
 #import "ReaderSite.h"
 #import "ReaderSiteService.h"
-#import "WPTableViewCell.h"
 #import "UIImageView+Gravatar.h"
+#import "WPStyleGuide.h"
+#import "WPTableViewCell.h"
+#import "WPTableViewHandler.h"
 #import "WPNoResultsView.h"
-#import "ReaderTopic.h"
-#import "ReaderTopicService.h"
 
 static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 static CGFloat const FollowSitesRowHeight = 54.0;

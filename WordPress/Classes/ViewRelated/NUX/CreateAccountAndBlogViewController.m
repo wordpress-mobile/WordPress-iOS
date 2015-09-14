@@ -115,7 +115,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
     [self layoutControls];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     if (IS_IPHONE) {
         return UIInterfaceOrientationMaskPortrait;
