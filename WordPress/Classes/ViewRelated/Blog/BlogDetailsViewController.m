@@ -133,6 +133,8 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 {
     [super viewDidLoad];
     
+    self.tableView.backgroundColor = [WPStyleGuide greyLighten30];
+    
     self.tableSections = @[@(TableViewSectionGeneralType),
                            @(TableViewSectionPublishType)
                           ];
