@@ -248,7 +248,7 @@ import Foundation
     }
 
 
-    // MARK: - Configureation / Topic Presentation
+    // MARK: - Configuration / Topic Presentation
 
     func configureStreamHeader() {
         assert(readerTopic != nil, "A reader topic is required")
@@ -435,6 +435,16 @@ import Foundation
         } catch let error as NSError {
             DDLogSwift.logError("Error fetching posts after updating the fetch reqeust predicate: \(error.localizedDescription)")
         }
+    }
+
+    func updateStreamHeaderIfNeeded() {
+        assert(readerTopic != nil, "A reader topic is required")
+
+        guard let header = tableView.tableHeaderView as? ReaderStreamHeader else {
+            return
+        }
+
+        header.configureHeader(readerTopic!)
     }
 
 
@@ -850,9 +860,29 @@ import Foundation
     // MARK: - ReaderStreamHeader Delegate Methods
 
     public func handleFollowActionForHeader(header:ReaderStreamHeader) {
-        // TODO: Pending data model improvements
+        // Toggle following for the topic
+        if readerTopic!.isKindOfClass(ReaderTagTopic) {
+            toggleFollowingForTag(readerTopic as! ReaderTagTopic)
+        } else if readerTopic!.isKindOfClass(ReaderSiteTopic) {
+            toggleFollowingForSite(readerTopic as! ReaderSiteTopic)
+        }
     }
 
+    func toggleFollowingForTag(topic:ReaderTagTopic) {
+        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
+        service.toggleFollowingForTag(topic, success: nil, failure: { (error:NSError!) -> Void in
+            self.updateStreamHeaderIfNeeded()
+        })
+        self.updateStreamHeaderIfNeeded()
+    }
+
+    func toggleFollowingForSite(topic:ReaderSiteTopic) {
+        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
+        service.toggleFollowingForSite(topic, success:nil, failure: { (error:NSError!) -> Void in
+            self.updateStreamHeaderIfNeeded()
+        })
+        self.updateStreamHeaderIfNeeded()
+    }
 
     // MARK: - ReaderCard Delegate Methods
 
@@ -873,10 +903,6 @@ import Foundation
     public func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
         toggleLikeForPost(post)
-    }
-
-    public func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
-        // TODO:  No longer needed. Remove when cards are updated
     }
 
     public func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider) {
