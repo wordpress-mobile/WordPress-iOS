@@ -112,9 +112,7 @@
 {
     ReaderTagTopic *topic = (ReaderTagTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [service unfollowTopic:topic withSuccess:^{
-        //noop
-    } failure:^(NSError *error) {
+    [service unfollowAndRefreshCurrentTopicForTag:topic withSuccess:nil failure:^(NSError *error) {
         DDLogError(@"Could not unfollow topic: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Unfollow Topic", @"");
