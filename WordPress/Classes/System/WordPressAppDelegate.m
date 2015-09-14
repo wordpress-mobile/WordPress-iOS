@@ -61,6 +61,7 @@
 #import "WordPress-Swift.h"
 
 // View controllers
+#import "RotationAwareNavigationViewController.h"
 #import "LoginViewController.h"
 #import "ReaderViewController.h"
 #import "StatsViewController.h"
@@ -557,7 +558,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         [strongSelf showWhatsNewIfNeeded];
     };
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    UINavigationController *navigationController = [[RotationAwareNavigationViewController alloc] initWithRootViewController:loginViewController];
     navigationController.navigationBar.translucent = NO;
 
     [self.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
