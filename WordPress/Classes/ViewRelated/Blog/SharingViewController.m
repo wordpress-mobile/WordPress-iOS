@@ -146,6 +146,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self tableView:self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
