@@ -179,6 +179,24 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return [self featuredImageURL];
 }
 
+- (NSString *)likeCountForDisplay
+{
+    NSString *likeStr = NSLocalizedString(@"Like", @"Text for the 'like' button. Tapping marks a post in the reader as 'liked'.");
+    NSString *likesStr = NSLocalizedString(@"Likes", @"Text for the 'like' button. Tapping removes the 'liked' status from a post.");
+
+    NSInteger count = [self.likeCount integerValue];
+    NSString *title;
+    if (count == 0) {
+        title = likesStr;
+    } else if (count == 1) {
+        title = [NSString stringWithFormat:@"%d %@", count, likeStr];
+    } else {
+        title = [NSString stringWithFormat:@"%d %@", count, likesStr];
+    }
+
+    return title;
+}
+
 - (SourceAttributionStyle)sourceAttributionStyle
 {
     if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {

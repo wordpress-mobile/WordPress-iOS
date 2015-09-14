@@ -16,7 +16,7 @@ extension UIImageView
         hidden              = false
         transform           = CGAffineTransformMakeScale(scaleInitial, scaleInitial)
         
-        var animations = {
+        let animations = {
             self.transform  = CGAffineTransformMakeScale(scaleFinal, scaleFinal)
         }
         
@@ -24,7 +24,7 @@ extension UIImageView
             delay:                  delay,
             usingSpringWithDamping: damping,
             initialSpringVelocity:  velocity,
-            options:                nil,
+            options:                .CurveEaseInOut,
             animations:             animations,
             completion:             nil
         )
@@ -40,9 +40,7 @@ extension UIImageView
         alpha               = alphaInitial
         
         UIView.animateWithDuration(duration) { [weak self] in
-            if let weakSelf = self {
-                self?.alpha = alphaFinal
-            }
+            self?.alpha = alphaFinal
         }
     }
 }

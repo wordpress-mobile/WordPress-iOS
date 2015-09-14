@@ -11,7 +11,7 @@
 
 @interface MediaLibraryGroup: NSObject <WPMediaGroup>
 
-- (instancetype)initWithBlog:(Blog *)blog NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBlog:(Blog *)blog;
 
 -(id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback;
 
@@ -23,7 +23,7 @@
 
 @interface MediaLibraryPickerDataSource : NSObject <WPMediaCollectionDataSource>
 
-- (instancetype)initWithBlog:(Blog *)blog NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithBlog:(Blog *)blog;
 
 - (instancetype)initWithPost:(AbstractPost *)post;
 

@@ -19,7 +19,7 @@ public class NavigationTitleView : UIView
     }
     
     required public init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         setupSubviews()
     }
     
@@ -39,7 +39,7 @@ public class NavigationTitleView : UIView
         subtitleLabel.autoresizingMask  = UIViewAutoresizing.FlexibleWidth;
 
         backgroundColor                 = UIColor.clearColor()
-        autoresizingMask                = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleBottomMargin | UIViewAutoresizing.FlexibleTopMargin
+        autoresizingMask                = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleBottomMargin, UIViewAutoresizing.FlexibleTopMargin]
         clipsToBounds                   = true
         
         addSubview(titleLabel)
