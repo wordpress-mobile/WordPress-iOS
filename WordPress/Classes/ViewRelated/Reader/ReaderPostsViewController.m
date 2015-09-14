@@ -18,7 +18,6 @@
 #import "ReaderPostUnattributedTableViewCell.h"
 #import "ReaderSiteService.h"
 #import "ReaderSubscriptionViewController.h"
-#import "ReaderTopic.h"
 #import "ReaderTopicService.h"
 #import "SourcePostAttribution.h"
 #import "UIView+Subviews.h"
@@ -400,7 +399,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (UIView *)noResultsAccessoryView
 {
     if (!self.animatedBox) {
-        self.animatedBox = [WPAnimatedBox new];
+        self.animatedBox = [WPAnimatedBox newAnimatedBox];
     }
     return self.animatedBox;
 }
@@ -422,21 +421,21 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     return _activityFooter;
 }
 
-- (ReaderTopic *)topicInContext:(NSManagedObjectContext *)context
+- (ReaderAbstractTopic *)topicInContext:(NSManagedObjectContext *)context
 {
     return [self topic:self.readerTopic inContext:context];
 }
 
-- (ReaderTopic *)topic:(ReaderTopic *)topic inContext:(NSManagedObjectContext *)context
+- (ReaderAbstractTopic *)topic:(ReaderAbstractTopic *)topic inContext:(NSManagedObjectContext *)context
 {
     NSError *error;
-    ReaderTopic *topicInContext = (ReaderTopic *)[context existingObjectWithID:topic.objectID error:&error];
+    ReaderAbstractTopic *topicInContext = (ReaderAbstractTopic *)[context existingObjectWithID:topic.objectID error:&error];
     return topicInContext;
 }
 
-- (void)setReaderTopic:(ReaderTopic *)readerTopic
+- (void)setReaderTopic:(ReaderAbstractTopic *)readerTopic
 {
-    ReaderTopic *topic = readerTopic;
+    ReaderAbstractTopic *topic = readerTopic;
     if (!readerTopic) {
         topic = nil;
 
@@ -606,6 +605,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)blockSite:(ReaderPost *)post
 {
     NSNumber *postID = post.postID;
+
+    if (!postID) {
+        // Safety net.
+        DDLogError(@"Error blocking a site. The postID for the specified post was nil. %@", post);
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not block site", @"A short title of an error prompt shown when there was a problem trying to block a site.")
+                                                        message:NSLocalizedString(@"There was a problem blocking a site. Please refresh the post list and try again.", @"Error message explaining a site could not be blocked and to try refreshing the list of posts before attempting to block the site again.")
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"An 'OK' button that dismisses a dialog.")
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
     [self addBlockedPostID:postID];
 
@@ -719,7 +731,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [context performBlock:^{
-        ReaderTopic *topicInContext = [self topicInContext:context];
+        ReaderAbstractTopic *topicInContext = [self topicInContext:context];
         [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
@@ -744,7 +756,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [context performBlock:^{
-        ReaderTopic *topicInContext = [self topicInContext:context];
+        ReaderAbstractTopic *topicInContext = [self topicInContext:context];
         [service backfillPostsForTopic:topicInContext success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
@@ -798,7 +810,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     __weak __typeof(self) weakSelf = self;
     
     [context performBlock:^{
-        ReaderTopic *topicInContext = [self topicInContext:context];
+        ReaderAbstractTopic *topicInContext = [self topicInContext:context];
         [service fetchPostsForTopic:topicInContext earlierThan:earlierThan success:^(NSInteger count, BOOL hasMore){
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -936,7 +948,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)configurePostCell:(ReaderPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || (self.readerTopic.type != ReaderTopicTypeList)) ? YES : NO;
+    BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || ([self.readerTopic isKindOfClass:[ReaderListTopic class]])) ? YES : NO;
     cell.postView.shouldShowAttributionMenu = self.hasWPComAccount && shouldShowAttributionMenu;
     cell.postView.shouldEnableLoggedinFeatures = self.hasWPComAccount;
     cell.postView.shouldShowAttributionButton = self.hasWPComAccount;
@@ -1085,7 +1097,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
 {
     ReaderPost *post = [self postFromCellSubview:contentView];
-    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:post];
+    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithSiteID:post.siteID siteURL:post.blogURL isWPcom:post.isWPCom];
     [self.navigationController pushViewController:controller animated:YES];
     [WPAnalytics track:WPAnalyticsStatReaderPreviewedSite];
 }

@@ -78,7 +78,7 @@ import Foundation
         textView.dataSource         = self
         textView.delegate           = self
         
-        textView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        textView.translatesAutoresizingMaskIntoConstraints = false
     }
     
     public override func layoutSubviews() {

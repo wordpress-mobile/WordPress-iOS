@@ -37,8 +37,8 @@
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPostService.h"
 #import "ReaderSiteService.h"
-#import "ReaderTopic.h"
 #import "ReaderTopicService.h"
+#import "RemoteReaderTopic.h"
 
 #import "ServiceRemoteREST.h"
 #import "SourcePostAttribution.h"
@@ -50,8 +50,6 @@
 #import "UIImage+Tint.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"
-
-#import "UIImage+Tint.h"
 #import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"

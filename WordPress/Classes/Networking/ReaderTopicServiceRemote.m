@@ -1,8 +1,8 @@
 #import "ReaderTopicServiceRemote.h"
-#import "WordPressComApi.h"
 #import "RemoteReaderTopic.h"
-#import "ReaderTopic.h"
 #import "RemoteReaderSiteInfo.h"
+#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
 
 static NSString * const TopicMenuSectionDefaultKey = @"default";
 static NSString * const TopicMenuSectionSubscribedKey = @"subscribed";
@@ -15,11 +15,20 @@ static NSString * const TopicDictionaryTitleKey = @"title";
 static NSString * const TopicDictionaryURLKey = @"URL";
 static NSString * const TopicNotFoundMarker = @"-notfound-";
 
+// Site Topic Keys
+static NSString * const SiteDictionaryFeedIDKey = @"feed_ID";
+static NSString * const SiteDictionaryFollowingKey = @"is_following";
+static NSString * const SiteDictionaryJetpackKey = @"is_jetpack";
+static NSString * const SiteDictionaryPrivateKey = @"is_private";
+static NSString * const SiteDictionaryVisibleKey = @"visible";
+static NSString * const SiteDictionaryPostCountKey = @"post_count";
+static NSString * const SiteDictionaryIconPathKey = @"icon.img";
+static NSString * const SiteDictionaryDescriptionKey = @"description";
 static NSString * const SiteDictionaryIDKey = @"ID";
 static NSString * const SiteDictionaryNameKey = @"name";
-static NSString * const SiteDictionaryDescriptionKey = @"description";
 static NSString * const SiteDictionaryURLKey = @"URL";
-static NSString * const SiteDictionaryFollowingKey = @"is_following";
+static NSString * const SiteDictionarySubscriptionsKey = @"subscriptions_count";
+
 
 @implementation ReaderTopicServiceRemote
 
@@ -128,11 +137,21 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
         }
         NSDictionary *response = (NSDictionary *)responseObject;
         RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
+        siteInfo.feedID = [response numberForKey:SiteDictionaryFeedIDKey];
+        siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
+        siteInfo.isJetpack = [[response numberForKey:SiteDictionaryJetpackKey] boolValue];
+        siteInfo.isPrivate = [[response numberForKey:SiteDictionaryPrivateKey] boolValue];
+        siteInfo.isVisible = [[response numberForKey:SiteDictionaryVisibleKey] boolValue];
+        siteInfo.postCount = [response numberForKey:SiteDictionaryPostCountKey];
+        siteInfo.siteBlavatar = [response stringForKey:SiteDictionaryDescriptionKey];
+        siteInfo.siteDescription = [response stringForKey:SiteDictionaryDescriptionKey];
         siteInfo.siteID = [response numberForKey:SiteDictionaryIDKey];
         siteInfo.siteName = [response stringForKey:SiteDictionaryNameKey];
-        siteInfo.siteDescription = [response stringForKey:SiteDictionaryDescriptionKey];
         siteInfo.siteURL = [response stringForKey:SiteDictionaryURLKey];
-        siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
+        siteInfo.subscriberCount = [response numberForKey:SiteDictionarySubscriptionsKey];
+        if (![siteInfo.siteName length] && [siteInfo.siteURL length] > 0) {
+            siteInfo.siteName = [[NSURL URLWithString:siteInfo.siteURL] host];
+        }
         success(siteInfo);
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -214,7 +233,6 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
 {
     RemoteReaderTopic *topic = [self normalizeTopicDictionary:topicDict subscribed:subscribed recommended:recommended];
     topic.isMenuItem = YES;
-    topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
     return topic;
 }
 
@@ -239,7 +257,7 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
     topic.topicID = topicID;
     topic.isSubscribed = subscribed;
     topic.isRecommended = recommended;
-    topic.path = [topicDict stringForKey:TopicDictionaryURLKey];
+    topic.path = [[topicDict stringForKey:TopicDictionaryURLKey] lowercaseString];
     topic.slug = [topicDict stringForKey:TopicDictionarySlugKey];
     topic.title = [topicDict stringForKey:TopicDictionaryTitleKey];
 
