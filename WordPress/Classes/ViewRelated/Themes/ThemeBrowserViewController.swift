@@ -57,6 +57,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.collectionView?.backgroundColor = WPStyleGuide.greyLighten30()
         updateThemes()
     }
     
