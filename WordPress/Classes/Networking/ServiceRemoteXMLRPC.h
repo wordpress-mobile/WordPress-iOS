@@ -2,6 +2,10 @@
 
 @class WPXMLRPCClient;
 
-@protocol ServiceRemoteXMLRPC <NSObject>
-- (id)initWithApi:(WPXMLRPCClient *)api;
+@interface ServiceRemoteXMLRPC : NSObject
+
+- (id)initWithApi:(WPXMLRPCClient *)api username:(NSString *)username password:(NSString *)password;
+
+@property (nonatomic, readonly) WPXMLRPCClient *api;
+
 @end

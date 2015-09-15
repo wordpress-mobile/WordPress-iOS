@@ -3,23 +3,7 @@
 #import "Blog.h"
 #import "RemoteBlogSettings.h"
 
-@interface BlogServiceRemoteXMLRPC ()
-
-@property (nonatomic, strong) WPXMLRPCClient *api;
-
-@end
-
 @implementation BlogServiceRemoteXMLRPC
-
-- (id)initWithApi:(WPXMLRPCClient *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
 
 - (void)checkMultiAuthorForBlog:(Blog *)blog
                         success:(void(^)(BOOL isMultiAuthor))success
