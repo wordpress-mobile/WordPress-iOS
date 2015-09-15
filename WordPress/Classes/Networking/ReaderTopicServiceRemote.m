@@ -12,6 +12,7 @@ static NSString * const TopicAddedTagKey = @"added_tag";
 static NSString * const TopicDictionaryIDKey = @"ID";
 static NSString * const TopicDictionaryOwnerKey = @"owner";
 static NSString * const TopicDictionarySlugKey = @"slug";
+static NSString * const TopicDictionaryTagKey = @"tag";
 static NSString * const TopicDictionaryTitleKey = @"title";
 static NSString * const TopicDictionaryURLKey = @"URL";
 static NSString * const TopicNotFoundMarker = @"-notfound-";
@@ -131,6 +132,31 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
     }];
 }
 
+- (void)fetchTagInfoForTagWithSlug:(NSString *)slug
+                           success:(void (^)(RemoteReaderTopic *remoteTopic))success
+                           failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"read/tags/%@", slug];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+
+    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (!success) {
+            return;
+        }
+
+        NSDictionary *response = (NSDictionary *)responseObject;
+        NSDictionary *topicDict = [response dictionaryForKey:TopicDictionaryTagKey];
+        RemoteReaderTopic *remoteTopic = [self normalizeMenuTopicDictionary:topicDict subscribed:NO recommended:NO];
+        remoteTopic.isMenuItem = NO;
+        success(remoteTopic);
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
 - (void)fetchSiteInfoForSiteWithID:(NSNumber *)siteID
                            success:(void (^)(RemoteReaderSiteInfo *siteInfo))success
                            failure:(void (^)(NSError *error))failure
