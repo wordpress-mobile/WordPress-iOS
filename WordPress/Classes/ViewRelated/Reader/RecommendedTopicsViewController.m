@@ -114,7 +114,7 @@
                            [ReaderListTopic TopicType],
                            [ReaderTagTopic TopicType],
                            ];
-        request.predicate = [NSPredicate predicateWithFormat:@"type IN %@ AND following = NO AND showInMenu = YES", types];
+        request.predicate = [NSPredicate predicateWithFormat:@"type IN %@ AND showInMenu = YES", types];
     }
 
     NSSortDescriptor *sortDescriptorType = [NSSortDescriptor sortDescriptorWithKey:@"type" ascending:YES];

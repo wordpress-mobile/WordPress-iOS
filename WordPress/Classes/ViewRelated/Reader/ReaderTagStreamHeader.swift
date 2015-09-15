@@ -36,6 +36,10 @@ import Foundation
         }
     }
 
+    public func enableLoggedInFeatures(enable: Bool) {
+        followButton.hidden = !enable
+    }
+
 
     // MARK: - Actions
 

@@ -167,6 +167,7 @@ extension WPStyleGuide
         button.setTitleColor(grey(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
         button.setTitleColor(jazzyOrange(), forState: .Selected)
+        button.setTitleColor(grey(), forState: .Disabled)
         button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
     }
 
