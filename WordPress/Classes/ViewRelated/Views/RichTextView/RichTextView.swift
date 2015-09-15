@@ -29,7 +29,7 @@ import Foundation
     }
 
     public required init(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        super.init(coder: aDecoder)!
         setupSubviews()
     }
     
@@ -98,7 +98,7 @@ import Foundation
     
     public var linkTextAttributes: [NSObject : AnyObject]! {
         set {
-            textView.linkTextAttributes = newValue
+            textView.linkTextAttributes = newValue as! [String:AnyObject]
         }
         get {
             return textView.linkTextAttributes
@@ -176,13 +176,13 @@ import Foundation
         addSubview(textView)
         
         // Setup Layout
-        textView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        textView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(textView)
     }
 
     private func renderAttachments() {
         // Nuke old attachments
-        attachmentViews.map { $0.removeFromSuperview() }
+        _ = attachmentViews.map { $0.removeFromSuperview() }
         attachmentViews.removeAll(keepCapacity: false)
         
         // Proceed only if needed
@@ -200,7 +200,7 @@ import Foundation
             }
             
             let unwrappedView           = attachmentView!
-            unwrappedView.frame.origin  = self.textView.frameForTextInRange(range).integerRect.origin
+            unwrappedView.frame.origin  = self.textView.frameForTextInRange(range).integral.origin
             self.textView.addSubview(unwrappedView)
             self.attachmentViews.append(unwrappedView)
         }

@@ -2,13 +2,13 @@ import Foundation
 
 class ReaderPostToReaderPost37to38: NSEntityMigrationPolicy {
 
-    override func createDestinationInstancesForSourceInstance(sourcePost: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
+    override func createDestinationInstancesForSourceInstance(sInstance: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         // Preserve no reader posts.
-        return true
+        return
     }
 
-    override func createRelationshipsForDestinationInstance(newPost: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
+    override func createRelationshipsForDestinationInstance(dInstance: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         // Preserve no reader posts.
-        return true
+        return
     }
 }
