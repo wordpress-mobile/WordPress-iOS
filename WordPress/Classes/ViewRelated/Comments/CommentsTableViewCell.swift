@@ -164,7 +164,7 @@ public class CommentsTableViewCell : WPTableViewCell
         ]
         
         // Replace Author + Title + Content
-        var attributedDetails = NSMutableAttributedString(string: details, attributes: regularRedStyle)
+        let attributedDetails = NSMutableAttributedString(string: details, attributes: regularRedStyle)
         
         for (key, attributedString) in replacementMap {
             let range = (attributedDetails.string as NSString).rangeOfString(key)
