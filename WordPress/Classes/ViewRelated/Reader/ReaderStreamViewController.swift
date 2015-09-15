@@ -55,7 +55,7 @@ import Foundation
 
     public var readerTopic: ReaderAbstractTopic? {
         didSet {
-            if readerTopic != nil {
+            if readerTopic != nil && readerTopic != oldValue {
                 if isViewLoaded() {
                     configureControllerForTopic()
                 }
@@ -248,6 +248,8 @@ import Foundation
         if count > 0 {
             return
         }
+
+        tableView.tableHeaderView?.hidden = true
         resultsStatusView.titleText = NSLocalizedString("Fetching posts...", comment:"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         resultsStatusView.messageText = ""
 
@@ -282,6 +284,7 @@ import Foundation
     func hideResultsStatus() {
         resultsStatusView.removeFromSuperview()
         footerView.hidden = false
+        tableView.tableHeaderView?.hidden = false
     }
 
 
