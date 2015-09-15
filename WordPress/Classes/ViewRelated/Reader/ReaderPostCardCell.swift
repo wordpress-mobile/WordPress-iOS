@@ -419,8 +419,12 @@ import Foundation
             return
         }
 
-        // NOTE: stubbed implementation until we start storing the word count and reading time in core data
-        // wordCountLabel.attributedText = attributedTextForWordCount(100, readingTime: "(~2 min)")
+        if contentProvider!.wordCount() != nil {
+            let wordCount = contentProvider!.wordCount().integerValue
+            let readingTime = contentProvider!.readingTime().integerValue
+            wordCountLabel.attributedText = attributedTextForWordCount(wordCount, readingTime:readingTime)
+        }
+
         if wordCountLabel.attributedText == nil {
             wordCountBottomConstraint.constant = 0.0
         } else {
@@ -428,7 +432,7 @@ import Foundation
         }
     }
 
-    private func attributedTextForWordCount(wordCount:Int) -> NSAttributedString? {
+    private func attributedTextForWordCount(wordCount:Int, readingTime:Int) -> NSAttributedString? {
         let attrStr = NSMutableAttributedString()
 
         // Compose the word count.
@@ -441,14 +445,13 @@ import Foundation
         attrStr.appendAttributedString(attrWordCount)
 
         // Append the reading time if needed.
-        let minutesToRead = Int(wordCount / avgWordsPerMinuteRead)
-        if minutesToRead < minimumMinutesToRead {
+        if readingTime == 0 {
             return attrStr
         }
 
         let format = NSLocalizedString("(~ %d min)",
                                         comment:"A short label that tells the user the estimated reading time of an article. '%d' is a placeholder for the number of minutes. '~' denotes an estimation.")
-        let str = String(format: format, minutesToRead)
+        let str = String(format: format, readingTime)
         attributes = WPStyleGuide.readerCardReadingTimeAttributes() as! [String: AnyObject]
         let attrReadingTime = NSAttributedString(string: str, attributes: attributes)
         attrStr.appendAttributedString(attrReadingTime)
