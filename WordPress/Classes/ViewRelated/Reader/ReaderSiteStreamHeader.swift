@@ -94,6 +94,10 @@ import Foundation
         return NSAttributedString(string: topic.siteDescription, attributes: attributes)
     }
 
+    public func enableLoggedInFeatures(enable: Bool) {
+        followButton.hidden = !enable
+    }
+
 
     // MARK: - Actions
 

@@ -73,6 +73,8 @@ import Foundation
 
     // MARK: - Accessors
 
+    public var enableLoggedInFeatures: Bool = true
+
     public override var backgroundColor: UIColor? {
         didSet{
             contentView.backgroundColor = backgroundColor
@@ -465,12 +467,14 @@ import Foundation
             actionButtonRight
         ]
 
-        // Show Likes
-        let button = buttons.removeLast() as UIButton
-        configureLikeActionButton(button)
+        // Show likes if logged in, or if likes exist. 
+        if enableLoggedInFeatures || contentProvider!.likeCount().integerValue > 0 {
+            let button = buttons.removeLast() as UIButton
+            configureLikeActionButton(button)
+        }
 
-        // Show comments
-        if contentProvider!.commentsOpen() || contentProvider!.commentCount().integerValue > 0 {
+        // Show comments if logged in and comments are enabled, or if comments exist.
+        if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().integerValue > 0 {
             let button = buttons.removeLast() as UIButton
             configureCommentActionButton(button)
         }
@@ -484,23 +488,30 @@ import Foundation
     private func resetActionButton(button:UIButton) {
         button.setTitle(nil, forState: .Normal)
         button.setTitle(nil, forState: .Highlighted)
+        button.setTitle(nil, forState: .Disabled)
         button.setImage(nil, forState: .Normal)
         button.setImage(nil, forState: .Highlighted)
+        button.setImage(nil, forState: .Disabled)
         button.selected = false
         button.hidden = true
+        button.enabled = true
     }
 
     private func configureActionButton(button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected:Bool) {
         button.setTitle(title, forState: .Normal)
         button.setTitle(title, forState: .Highlighted)
+        button.setTitle(title, forState: .Disabled)
         button.setImage(image, forState: .Normal)
         button.setImage(highlightedImage, forState: .Highlighted)
+        button.setImage(image, forState: .Disabled)
         button.selected = selected
         button.hidden = false
     }
 
     private func configureLikeActionButton(button: UIButton) {
         button.tag = CardAction.Like.rawValue
+        button.enabled = enableLoggedInFeatures
+
         let title = contentProvider!.likeCountForDisplay()
         let imageName = contentProvider!.isLiked() ? "icon-reader-liked" : "icon-reader-like"
         let image = UIImage(named: imageName)

@@ -38,4 +38,8 @@ import Foundation
         detailLabel.text = listTopic.owner
     }
 
+    public func enableLoggedInFeatures(enable: Bool) {
+        // noop
+    }
+
 }
