@@ -461,7 +461,7 @@ NSString * const PostFormatStandard = @"standard";
         case BlogFeatureWPComRESTAPI:
             return [self restApi] != nil;
         case BlogFeatureSharing:
-            return [self restApi] && self.isAdmin;
+            return [self restApi] && self.usernameForSite && self.isAdmin;
         case BlogFeatureStats:
             return [self restApiForStats] != nil;
         case BlogFeatureCommentLikes:
