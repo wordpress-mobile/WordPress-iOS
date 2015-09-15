@@ -44,6 +44,14 @@ import Foundation
         }
     }
 
+    private var tagSlug:String? {
+        didSet {
+            if tagSlug != nil {
+                fetchTagTopic()
+            }
+        }
+    }
+
     public var readerTopic: ReaderAbstractTopic? {
         didSet {
             if readerTopic != nil {
@@ -52,6 +60,7 @@ import Foundation
                 }
                 // Discard the siteID (if there was one) now that we have a good topic
                 siteID = nil
+                tagSlug = nil
             }
         }
     }
@@ -80,6 +89,14 @@ import Foundation
         return controller
     }
 
+    public class func controllerWithTagSlug(tagSlug:String) -> ReaderStreamViewController {
+        let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
+        let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
+        controller.tagSlug = tagSlug
+
+        return controller
+    }
+
 
     // MARK: - LifeCycle Methods
 
@@ -101,7 +118,7 @@ import Foundation
 
         if readerTopic != nil {
             configureControllerForTopic()
-        } else if siteID != nil {
+        } else if siteID != nil || tagSlug != nil {
             displayLoadingStream()
         }
     }
@@ -134,6 +151,25 @@ import Foundation
                 }
             },
             failure: {[weak self] (error:NSError!) -> Void in
+                self?.displayLoadingStreamFailed()
+            })
+    }
+
+    private func fetchTagTopic() {
+        if isViewLoaded() {
+            displayLoadingStream()
+        }
+        assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic");
+        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.tagTopicForTagWithSlug(tagSlug,
+            success: { [weak self] (objectID:NSManagedObjectID!) -> Void in
+                do {
+                    let topic = try self?.managedObjectContext().existingObjectWithID(objectID) as? ReaderAbstractTopic
+                    self?.readerTopic = topic
+                } catch let error as NSError {
+                    DDLogSwift.logError(error.localizedDescription)
+                }
+            }, failure: { [weak self] (error:NSError!) -> Void in
                 self?.displayLoadingStreamFailed()
             })
     }
@@ -906,7 +942,11 @@ import Foundation
     }
 
     public func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider) {
-        // TODO: Waiting on Core Data support
+        let post = provider as! ReaderPost
+
+        let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
+        navigationController?.pushViewController(controller, animated: true)
+        // TODO: Analytics
     }
 
     public func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {

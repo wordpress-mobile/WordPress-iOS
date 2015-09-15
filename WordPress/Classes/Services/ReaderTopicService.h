@@ -114,7 +114,18 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (ReaderAbstractTopic *)topicForFollowedSites;
 
 /**
- Fetch a stie topic for a site with the specified ID. 
+ Fetch a tag topic for a tag with the specified slug.
+
+ @param slug The slug for the tag.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)tagTopicForTagWithSlug:(NSString *)slug
+                       success:(void(^)(NSManagedObjectID *objectID))success
+                       failure:(void (^)(NSError *error))failure;
+
+/**
+ Fetch a site topic for a site with the specified ID.
 
  @param siteID The ID of the site .
  @param success block called on a successful fetch.

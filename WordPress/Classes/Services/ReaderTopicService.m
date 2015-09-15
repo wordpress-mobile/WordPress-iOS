@@ -301,6 +301,34 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 }
 
+- (void)tagTopicForTagWithSlug:(NSString *)slug success:(void(^)(NSManagedObjectID *objectID))success failure:(void (^)(NSError *error))failure
+{
+    if (!success) {
+        return;
+    }
+
+    // Find existing tag by slug
+    ReaderTagTopic *existingTopic = [self findTagWithSlug:slug];
+    if (existingTopic) {
+        success(existingTopic.objectID);
+        return;
+    }
+
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
+    [remoteService fetchTagInfoForTagWithSlug:slug success:^(RemoteReaderTopic *remoteTopic) {
+        ReaderTagTopic *topic = [self tagTopicForRemoteTopic:remoteTopic];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+            success(topic.objectID);
+        }];
+    } failure:^(NSError *error) {
+        DDLogError(@"%@ error fetching site info for site with ID %@: %@", NSStringFromSelector(_cmd), slug, error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
 - (void)toggleFollowingForSite:(ReaderSiteTopic *)siteTopic success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     NSError *error;
@@ -461,7 +489,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
  Find an existing topic with the specified title.
 
  @param topicName The title of the topic to find in core data.
- @return A matching `ReaderAbstractTopic` instance or nil.
+ @return A matching `ReaderTagTopic` instance or nil.
  */
 - (ReaderTagTopic *)findTopicNamed:(NSString *)topicName
 {
@@ -481,10 +509,33 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 /**
+ Find an existing topic with the specified slug.
+
+ @param slug The slug of the topic to find in core data.
+ @return A matching `ReaderTagTopic` instance or nil.
+ */
+- (ReaderTagTopic *)findTagWithSlug:(NSString *)slug
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderTagTopic classNameWithoutNamespaces]];
+    request.predicate = [NSPredicate predicateWithFormat:@"slug = %@", slug];
+
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+    request.sortDescriptors = @[sortDescriptor];
+    NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+
+    return [topics firstObject];
+}
+
+/**
  Find an existing topic with the specified topicID.
 
  @param topicID The topicID of the topic to find in core data.
- @return A matching `ReaderAbstractTopic` instance or nil.
+ @return A matching `ReaderTagTopic` instance or nil.
  */
 - (ReaderTagTopic *)findTopicWithID:(NSNumber *)topicID
 {
