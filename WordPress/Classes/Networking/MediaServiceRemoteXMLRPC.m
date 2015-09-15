@@ -3,21 +3,7 @@
 #import "Blog.h"
 #import <WordPressApi/WPXMLRPCClient.h>
 
-@interface MediaServiceRemoteXMLRPC ()
-@property (nonatomic) WPXMLRPCClient *api;
-@end
-
 @implementation MediaServiceRemoteXMLRPC
-
-- (id)initWithApi:(WPXMLRPCClient *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
 
 - (void)getMediaWithID:(NSNumber *)mediaID
                forBlog:(Blog *)blog

@@ -551,7 +551,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     if (blog.restApi) {
         remote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
-        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
 
     return remote;

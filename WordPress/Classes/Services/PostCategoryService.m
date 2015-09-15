@@ -219,7 +219,7 @@
     if (blog.restApi) {
         return [[PostCategoryServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
-        return [[PostCategoryServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+        return [[PostCategoryServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
 }
 

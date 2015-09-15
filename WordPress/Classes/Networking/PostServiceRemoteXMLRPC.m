@@ -9,21 +9,7 @@
 
 const NSInteger HTTP404ErrorCode = 404;
 
-@interface PostServiceRemoteXMLRPC ()
-@property (nonatomic, strong) WPXMLRPCClient *api;
-@end
-
 @implementation PostServiceRemoteXMLRPC
-
-- (id)initWithApi:(WPXMLRPCClient *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
 
 - (void)getPostWithID:(NSNumber *)postID
               forBlog:(Blog *)blog

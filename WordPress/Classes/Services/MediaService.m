@@ -455,7 +455,7 @@ static NSString * const MediaDirectory = @"Media";
         remote = [[MediaServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
-        remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:client];
+        remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:client username:blog.username password:blog.password];
     }
     return remote;
 }
