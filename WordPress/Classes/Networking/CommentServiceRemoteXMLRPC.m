@@ -5,21 +5,7 @@
 
 static const NSInteger NumberOfCommentsToSync = 100;
 
-@interface CommentServiceRemoteXMLRPC ()
-@property (nonatomic, strong) WPXMLRPCClient *api;
-@end
-
 @implementation CommentServiceRemoteXMLRPC
-
-- (id)initWithApi:(WPXMLRPCClient *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
 
 - (void)getCommentsForBlog:(Blog *)blog
                    success:(void (^)(NSArray *))success

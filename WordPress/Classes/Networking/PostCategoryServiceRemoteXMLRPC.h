@@ -5,6 +5,6 @@
 @class Blog;
 @class RemoteCategory;
 
-@interface PostCategoryServiceRemoteXMLRPC : NSObject<PostCategoryServiceRemote, ServiceRemoteXMLRPC>
+@interface PostCategoryServiceRemoteXMLRPC : ServiceRemoteXMLRPC<PostCategoryServiceRemote>
 
 @end

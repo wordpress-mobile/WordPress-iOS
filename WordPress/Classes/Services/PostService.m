@@ -790,7 +790,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     if (blog.restApi) {
         remote = [[PostServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
-        remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+        remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
     return remote;
 }

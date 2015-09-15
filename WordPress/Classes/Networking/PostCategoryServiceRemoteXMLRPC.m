@@ -3,21 +3,7 @@
 #import "RemotePostCategory.h"
 #import <NSString+Util.h>
 
-@interface PostCategoryServiceRemoteXMLRPC ()
-@property (nonatomic, strong) WPXMLRPCClient *api;
-@end
-
 @implementation PostCategoryServiceRemoteXMLRPC
-
-- (instancetype)initWithApi:(WPXMLRPCClient *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
 
 - (void)getCategoriesForBlog:(Blog *)blog
                      success:(void (^)(NSArray *categories))success
