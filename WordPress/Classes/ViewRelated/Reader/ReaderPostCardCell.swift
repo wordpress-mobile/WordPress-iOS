@@ -470,8 +470,8 @@ import Foundation
             actionButtonRight
         ]
 
-        // Show likes if logged in, or if likes exist. 
-        if enableLoggedInFeatures || contentProvider!.likeCount().integerValue > 0 {
+        // Show likes if logged in, or if likes exist, but not if external
+        if (enableLoggedInFeatures || contentProvider!.likeCount().integerValue > 0) && !contentProvider!.isExternal() {
             let button = buttons.removeLast() as UIButton
             configureLikeActionButton(button)
         }
