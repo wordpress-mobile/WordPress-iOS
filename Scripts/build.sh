@@ -1,15 +1,14 @@
 if [ ! $TRAVIS ]; then
 	TRAVIS_XCODE_WORKSPACE=WordPress.xcworkspace
 	TRAVIS_XCODE_SCHEME=WordPress
-    TRAVIS_XCODE_SDK=iphonesimulator8.1
+        TRAVIS_XCODE_SDK=iphonesimulator
 fi
 
-xctool build test \
-	-destination "platform=iOS Simulator,name=iPhone 6,OS=8.4" \
+xcodebuild build test \
 	-workspace "$TRAVIS_XCODE_WORKSPACE" \
 	-scheme "$TRAVIS_XCODE_SCHEME" \
 	-sdk "$TRAVIS_XCODE_SDK" \
-	-configuration Debug
+	-configuration Debug | xcpretty -f `xcpretty-travis-formatter` && exit ${PIPESTATUS[0]}
 
 
 
