@@ -194,7 +194,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     NSInteger count = [self.likeCount integerValue];
     NSString *title;
     if (count == 0) {
-        title = likesStr;
+        title = likeStr;
     } else if (count == 1) {
         title = [NSString stringWithFormat:@"%d %@", count, likeStr];
     } else {

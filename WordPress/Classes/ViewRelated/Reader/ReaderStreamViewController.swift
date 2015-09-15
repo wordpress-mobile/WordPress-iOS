@@ -35,6 +35,7 @@ import Foundation
     private var showShareActivityAfterActionSheetIsDismissed = false
     private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
+    private var isLoggedIn = false
 
     private var siteID:NSNumber? {
         didSet {
@@ -301,6 +302,7 @@ import Foundation
             return
         }
 
+        header!.enableLoggedInFeatures(isLoggedIn)
         header!.configureHeader(readerTopic!)
         header!.delegate = self
 
@@ -311,6 +313,11 @@ import Foundation
     func configureControllerForTopic() {
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
+
+        // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let account = service.defaultWordPressComAccount()
+        isLoggedIn = account != nil
 
         configureTitleForTopic()
         hideResultsStatus()
@@ -384,7 +391,10 @@ import Foundation
     }
 
     private func shouldShowBlockSiteMenuItem() -> Bool {
-        return ReaderHelpers.isTopicTag(readerTopic!) || ReaderHelpers.topicIsFreshlyPressed(readerTopic!)
+        if (isLoggedIn) {
+            return ReaderHelpers.isTopicTag(readerTopic!) || ReaderHelpers.topicIsFreshlyPressed(readerTopic!)
+        }
+        return false
     }
 
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
@@ -875,6 +885,7 @@ import Foundation
         let post = posts[indexPath.row]
         let shouldLoadMedia = postCell != cellForLayout
 
+        postCell.enableLoggedInFeatures = isLoggedIn
         postCell.blogNameButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
         postCell.configureCell(post, loadingMedia: shouldLoadMedia)
         postCell.delegate = self
