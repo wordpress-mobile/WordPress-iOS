@@ -24,8 +24,8 @@ import Foundation
         let attributes = WPStyleGuide.subtitleAttributes()
         let boldAttributes = WPStyleGuide.subtitleAttributesBold()
 
-        var attrStr = NSMutableAttributedString(string: str as String, attributes: attributes)
-        attrStr.setAttributes(boldAttributes, range: range)
+        let attrStr = NSMutableAttributedString(string: str as String, attributes: attributes as? [String:AnyObject])
+        attrStr.setAttributes(boldAttributes as? [String:AnyObject], range: range)
         label.attributedText = attrStr
     }
 
