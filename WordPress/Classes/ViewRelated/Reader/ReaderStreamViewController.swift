@@ -145,7 +145,8 @@ import Foundation
         service.siteTopicForSiteWithID(siteID!,
             success: { [weak self] (objectID:NSManagedObjectID!, isFollowing:Bool) -> Void in
                 do {
-                    let topic = try self?.managedObjectContext().existingObjectWithID(objectID) as? ReaderAbstractTopic
+                    let context = ContextManager.sharedInstance().mainContext
+                    let topic = try context.existingObjectWithID(objectID) as? ReaderAbstractTopic
                     self?.readerTopic = topic
                 } catch let error as NSError {
                     DDLogSwift.logError(error.localizedDescription)
@@ -165,7 +166,8 @@ import Foundation
         service.tagTopicForTagWithSlug(tagSlug,
             success: { [weak self] (objectID:NSManagedObjectID!) -> Void in
                 do {
-                    let topic = try self?.managedObjectContext().existingObjectWithID(objectID) as? ReaderAbstractTopic
+                    let context = ContextManager.sharedInstance().mainContext
+                    let topic = try context.existingObjectWithID(objectID) as? ReaderAbstractTopic
                     self?.readerTopic = topic
                 } catch let error as NSError {
                     DDLogSwift.logError(error.localizedDescription)

@@ -310,7 +310,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     // Find existing tag by slug
     ReaderTagTopic *existingTopic = [self findTagWithSlug:slug];
     if (existingTopic) {
-        success(existingTopic.objectID);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            success(existingTopic.objectID);
+        });
         return;
     }
 
