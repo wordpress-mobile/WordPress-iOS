@@ -17,7 +17,6 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
                           failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    NSParameterAssert(blogID != nil);
     
     NSDictionary *parameters = @{@"authors_only":@(YES)};
     
@@ -45,7 +44,6 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
                      failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    NSParameterAssert(blogID != nil);
     
     NSString *path = [self pathForOptionsWithBlogID:blogID];
     NSString *requestUrl = [self pathForEndpoint:path
@@ -71,7 +69,6 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
                          failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    NSParameterAssert(blogID != nil);
     
     NSString *path = [self pathForPostFormatsWithBlogID:blogID];
     NSString *requestUrl = [self pathForEndpoint:path
@@ -96,7 +93,6 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
                     failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    NSParameterAssert(blogID != nil);
     
     NSString *path = [self pathForSettingsWithBlogID:blogID];
     NSString *requestUrl = [self pathForEndpoint:path
@@ -128,7 +124,6 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
                    failure:(void (^)(NSError *error))failure;
 {
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    NSParameterAssert(blogID != nil);
 
     NSDictionary *parameters = @{ @"blogname" : remoteBlogSettings.name,
                                   @"blogdescription" : remoteBlogSettings.desc,
