@@ -61,6 +61,7 @@ import Foundation
     private var summaryLabelBottomConstraintConstant = CGFloat(0.0)
     private var attributionBottomConstraintConstant = CGFloat(0.0)
     private var wordCountBottomConstraintConstant = CGFloat(0.0)
+    private var actionButtonViewHeightConstraintConstant = CGFloat(0.0)
 
     private var didPreserveStartingConstraintConstants = false
     private var loadMediaWhenConfigured = true
@@ -220,6 +221,7 @@ import Foundation
         summaryLabelBottomConstraintConstant = summaryLabelBottomConstraint.constant
         attributionBottomConstraintConstant = attributionBottomConstraint.constant
         wordCountBottomConstraintConstant = wordCountBottomConstraint.constant
+        actionButtonViewHeightConstraintConstant = actionButtonViewHeightConstraint.constant
 
         didPreserveStartingConstraintConstants = true
     }
@@ -267,6 +269,7 @@ import Foundation
         configureTag()
         configureWordCount()
         configureActionButtons()
+        configureActionViewHeightIfNeeded()
 
         setNeedsUpdateConstraints()
     }
@@ -404,7 +407,7 @@ import Foundation
                 tag = "#\(rawTag)"
             }
         }
-        tagButton.enabled = tag.characters.count > 0
+        tagButton.hidden = tag.characters.count == 0
         tagButton.setTitle(tag, forState: .Normal)
         tagButton.setTitle(tag, forState: .Highlighted)
     }
@@ -529,6 +532,14 @@ import Foundation
         let image = UIImage(named: "icon-reader-comment")
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:false)
+    }
+
+    private func configureActionViewHeightIfNeeded() {
+        if actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden {
+            actionButtonViewHeightConstraint.constant = 0
+        } else {
+            actionButtonViewHeightConstraint.constant = actionButtonViewHeightConstraintConstant;
+        }
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
