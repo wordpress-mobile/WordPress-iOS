@@ -1,6 +1,6 @@
 #import "ServiceRemoteXMLRPC.h"
-
 #import "WPXMLRPCClient.h"
+
 @interface ServiceRemoteXMLRPC()
 
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
