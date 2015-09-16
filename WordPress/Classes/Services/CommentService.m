@@ -124,34 +124,34 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     }
     
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getCommentsForBlog:blog
-                       success:^(NSArray *comments) {
-                           [self.managedObjectContext performBlock:^{
-                               Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-                               if (blogInContext) {
-                                   [self mergeComments:comments
-                                               forBlog:blog
-                                         purgeExisting:YES
-                                     completionHandler:^{
-                                         [[self class] stopSyncingCommentsForBlog:blogID];
-                                         
-                                         blogInContext.lastCommentsSync = [NSDate date];
-                                         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                                         
-                                         if (success) {
-                                             success();
-                                         }
-                                     }];
-                               }
-                           }];
-                       } failure:^(NSError *error) {
-                           [[self class] stopSyncingCommentsForBlog:blogID];
-                           if (failure) {
-                               [self.managedObjectContext performBlock:^{
-                                   failure(error);
-                               }];
-                           }
-                       }];
+    [remote getCommentsForBlogID:blog.blogID
+                         success:^(NSArray *comments) {
+                             [self.managedObjectContext performBlock:^{
+                                 Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                                 if (blogInContext) {
+                                     [self mergeComments:comments
+                                                 forBlog:blog
+                                           purgeExisting:YES
+                                       completionHandler:^{
+                                           [[self class] stopSyncingCommentsForBlog:blogID];
+                                           
+                                           blogInContext.lastCommentsSync = [NSDate date];
+                                           [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                           
+                                           if (success) {
+                                               success();
+                                           }
+                                       }];
+                                 }
+                             }];
+                         } failure:^(NSError *error) {
+                             [[self class] stopSyncingCommentsForBlog:blogID];
+                             if (failure) {
+                                 [self.managedObjectContext performBlock:^{
+                                     failure(error);
+                                 }];
+                             }
+                         }];
 }
 
 - (Comment *)oldestCommentForBlog:(Blog *)blog {
@@ -188,7 +188,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
         NSUInteger commentCount = [blog.comments count];
         options[@"offset"] = @(commentCount);
     }
-    [remote getCommentsForBlog:blog
+    [remote getCommentsForBlogID:blog.blogID
         options:options
         success:^(NSArray *comments) {
            [self.managedObjectContext performBlock:^{
@@ -241,12 +241,12 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
     if (comment.commentID) {
         [remote updateComment:remoteComment
-                      forBlog:comment.blog
+                    forBlogID:comment.blog.blogID
                       success:successBlock
                       failure:failure];
     } else {
         [remote createComment:remoteComment
-                      forBlog:comment.blog
+                    forBlogID:comment.blog.blogID
                       success:successBlock
                       failure:failure];
     }
@@ -301,7 +301,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     if (commentID) {
         RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
         id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
-        [remote trashComment:remoteComment forBlog:comment.blog success:success failure:failure];
+        [remote trashComment:remoteComment forBlogID:comment.blog.blogID success:success failure:failure];
     }
     [self.managedObjectContext deleteObject:comment];
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -647,7 +647,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
     NSManagedObjectID *commentID = comment.objectID;
     [remote moderateComment:remoteComment
-                    forBlog:comment.blog success:^(RemoteComment *comment) {
+                  forBlogID:comment.blog.blogID success:^(RemoteComment *comment) {
                         if (success) {
                             success();
                         }
