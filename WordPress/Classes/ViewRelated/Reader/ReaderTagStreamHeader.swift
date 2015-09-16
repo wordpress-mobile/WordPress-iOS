@@ -2,8 +2,12 @@ import Foundation
 
 @objc public class ReaderTagStreamHeader: UIView, ReaderStreamHeader
 {
+    @IBOutlet private weak var innerContentView: UIView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var followButton: PostMetaButton!
+    @IBOutlet private weak var contentIPadTopConstraint: NSLayoutConstraint?
+    @IBOutlet private weak var contentBottomConstraint: NSLayoutConstraint!
+
     public var delegate: ReaderStreamHeaderDelegate?
 
 
@@ -21,7 +25,12 @@ import Foundation
     }
 
     public override func sizeThatFits(size: CGSize) -> CGSize {
-        return systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        var height = innerContentView.frame.size.height
+        if UIDevice.isPad() && contentIPadTopConstraint != nil {
+            height += contentIPadTopConstraint!.constant
+        }
+        height += contentBottomConstraint.constant
+        return CGSize(width: size.width, height: height)
     }
 
 
