@@ -8,6 +8,8 @@ class ReaderStreamViewControllerTests: XCTestCase {
     func testControllerWithTopic() {
         let context = TestContextManager.sharedInstance().mainContext
         let topic = NSEntityDescription.insertNewObjectForEntityForName("ReaderTagTopic", inManagedObjectContext: context) as! ReaderTagTopic
+        topic.path = "foo"
+
         let controller = ReaderStreamViewController.controllerWithTopic(topic)
         XCTAssertNotNil(controller, "Controller should not be nil")
     }
