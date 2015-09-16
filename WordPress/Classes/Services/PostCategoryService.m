@@ -92,16 +92,16 @@
 {
     id<PostCategoryServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
-    [remote getCategoriesForBlog:blog
-                         success:^(NSArray *categories) {
-                             [self.managedObjectContext performBlock:^{
-                                 Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-                                 if (!blog) {
-                                     return;
-                                 }
-                                 [self mergeCategories:categories forBlog:blog completionHandler:success];
-                             }];
-                         } failure:failure];
+    [remote getCategoriesForBlogID:blog.blogID
+                           success:^(NSArray *categories) {
+                               [self.managedObjectContext performBlock:^{
+                                   Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                                   if (!blog) {
+                                       return;
+                                   }
+                                   [self mergeCategories:categories forBlog:blog completionHandler:success];
+                               }];
+                           } failure:failure];
 }
 
 - (void)createCategoryWithName:(NSString *)name
@@ -121,7 +121,7 @@
 
     id<PostCategoryServiceRemote> remote = [self remoteForBlog:blog];
     [remote createCategory:remoteCategory
-                   forBlog:blog
+                 forBlogID:blog.blogID
                    success:^(RemotePostCategory *receivedCategory) {
                        [self.managedObjectContext performBlock:^{
                            Blog *blog = [self blogWithObjectID:blogObjectID];
