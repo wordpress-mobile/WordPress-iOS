@@ -8,7 +8,7 @@ xcodebuild build test \
 	-workspace "$TRAVIS_XCODE_WORKSPACE" \
 	-scheme "$TRAVIS_XCODE_SCHEME" \
 	-sdk "$TRAVIS_XCODE_SDK" \
-	-configuration Debug | xcpretty -f `xcpretty-travis-formatter` && exit ${PIPESTATUS[0]}
+	-configuration Debug | xcpretty -c && exit ${PIPESTATUS[0]}
 
 
 
