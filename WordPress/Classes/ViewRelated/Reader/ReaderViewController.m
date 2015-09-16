@@ -107,6 +107,12 @@
 
 - (void)configurePostsViewController
 {
+    if (self.postsViewController) {
+        [self.postsViewController.view removeFromSuperview];
+        [self.postsViewController removeFromParentViewController];
+        self.postsViewController = nil;
+    }
+
     self.postsViewController = [ReaderStreamViewController controllerWithTopic:nil];
     [self addChildViewController:self.postsViewController];
     UIView *childView = self.postsViewController.view;
@@ -129,8 +135,6 @@
 
 - (void)assignTopic:(ReaderAbstractTopic *)topic
 {
-    self.postsViewController.readerTopic = topic;
-
     // Update our title
     if (topic) {
         self.title = topic.title;
@@ -140,6 +144,14 @@
 
     // Make sure that the tab bar item does not change its title.
     self.navigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
+
+    // Don't recycle an existing controller.  Instead create a new one.
+    // This resolves some layout issues swapping out tableHeaderViews on iOS 9
+    if (self.postsViewController.readerTopic && ![self.postsViewController.readerTopic isEqual:topic]) {
+        [self configurePostsViewController];
+    }
+
+    self.postsViewController.readerTopic = topic;
 }
 
 

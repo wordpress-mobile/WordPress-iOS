@@ -102,7 +102,10 @@
                 </mask>
             </variation>
             <connections>
+                <outlet property="contentBottomConstraint" destination="A2H-sg-sOi" id="huH-SM-MhD"/>
+                <outlet property="contentIPadTopConstraint" destination="qIT-p4-I8Y" id="VSj-5L-8uM"/>
                 <outlet property="followButton" destination="S0E-MM-cCj" id="PEW-za-Q8v"/>
+                <outlet property="innerContentView" destination="w2t-P4-qyc" id="9QZ-OJ-H1S"/>
                 <outlet property="titleLabel" destination="f85-bJ-w04" id="fKz-3G-lF4"/>
             </connections>
         </view>
