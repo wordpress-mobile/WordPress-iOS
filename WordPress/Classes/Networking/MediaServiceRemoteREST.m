@@ -1,19 +1,19 @@
 #import "MediaServiceRemoteREST.h"
 #import "WordPressComApi.h"
-#import "Blog.h"
 #import "RemoteMedia.h"
 #import "NSDate+WordPressJSON.h"
+#import <WordPressApi.h>
 
 const NSInteger WPRestErrorCodeMediaNew = 10;
 
 @implementation MediaServiceRemoteREST
 
 - (void)getMediaWithID:(NSNumber *)mediaID
-               forBlog:(Blog *)blog
+             forBlogID:(NSNumber *)blogID
                success:(void (^)(RemoteMedia *remoteMedia))success
                failure:(void (^)(NSError *error))failure
 {
-    NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/%@", blog.dotComID, mediaID];
+    NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/%@", blogID, mediaID];
     NSString *requestUrl = [self pathForEndpoint:apiPath
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -31,12 +31,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     }];
 }
 
-- (void)getMediaLibraryForBlog:(Blog *)blog
-                       success:(void (^)(NSArray *))success
-                       failure:(void (^)(NSError *))failure
+- (void)getMediaLibraryForBlogID:(NSNumber *)blogID
+                         success:(void (^)(NSArray *))success
+                         failure:(void (^)(NSError *))failure
 {
     NSMutableArray *media = [NSMutableArray array];
-    NSString *path = [NSString stringWithFormat:@"sites/%@/media", blog.dotComID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/media", blogID];
     [self getMediaLibraryPage:nil
                         media:media
                          path:path
@@ -86,11 +86,11 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
           }];
 }
 
-- (void)getMediaLibraryCountForBlog:(Blog *)blog
-                            success:(void (^)(NSInteger))success
-                            failure:(void (^)(NSError *))failure
+- (void)getMediaLibraryCountForBlogID:(NSNumber *)blogID
+                              success:(void (^)(NSInteger))success
+                              failure:(void (^)(NSError *))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/media", blog.dotComID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/media", blogID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -113,7 +113,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 }
 
 - (void)createMedia:(RemoteMedia *)media
-            forBlog:(Blog *)blog
+          forBlogID:(NSNumber *)blogID
            progress:(NSProgress **)progress
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
@@ -123,7 +123,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *type = media.mimeType;
     NSString *filename = media.file;
 
-    NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
+    NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blogID];
     NSString *requestUrl = [self pathForEndpoint:apiPath
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
