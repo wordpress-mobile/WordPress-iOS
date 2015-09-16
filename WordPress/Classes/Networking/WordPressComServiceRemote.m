@@ -79,7 +79,6 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api POST:requestUrl parameters:params success:successBlock failure:failureBlock];
-    
 }
 
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl
