@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 @class RemoteBlogSettings;
-@class Blog;
 
 typedef void (^SettingsHandler)(RemoteBlogSettings *settings);
 typedef void (^OptionsHandler)(NSDictionary *options);
@@ -29,8 +28,8 @@ typedef void (^SuccessHandler)();
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)syncOptionsForBlogID:(NSNumber *)blogID
-                   success:(OptionsHandler)success
-                   failure:(void (^)(NSError *error))failure;
+                     success:(OptionsHandler)success
+                     failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Synchronizes a blog's post formats.
@@ -40,8 +39,8 @@ typedef void (^SuccessHandler)();
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)syncPostFormatsForBlogID:(NSNumber *)blogID
-                       success:(PostFormatsHandler)success
-                       failure:(void (^)(NSError *error))failure;
+                         success:(PostFormatsHandler)success
+                         failure:(void (^)(NSError *error))failure;
 
 
 /**
@@ -52,8 +51,8 @@ typedef void (^SuccessHandler)();
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)syncSettingsForBlogID:(NSNumber *)blogID
-                     success:(SettingsHandler)success
-                     failure:(void (^)(NSError *error))failure;
+                      success:(SettingsHandler)success
+                      failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Updates the blog settings.
