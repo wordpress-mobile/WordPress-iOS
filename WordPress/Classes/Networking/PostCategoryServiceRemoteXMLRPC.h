@@ -2,7 +2,6 @@
 #import "PostCategoryServiceRemote.h"
 #import "ServiceRemoteXMLRPC.h"
 
-@class Blog;
 @class RemoteCategory;
 
 @interface PostCategoryServiceRemoteXMLRPC : ServiceRemoteXMLRPC<PostCategoryServiceRemote>
