@@ -26,8 +26,8 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
         let parameters:NSDictionary = mockRemoteApi!.parametersPassedIn as! NSDictionary
         
         XCTAssertTrue(mockRemoteApi!.postMethodCalled, "Method was not called")
-        XCTAssertEqual(parameters["action"] as! String, "authorize_login", "incorrect action parameter")
-        XCTAssertEqual(parameters["push_token"] as! String, token, "incorrect token parameter")
+        XCTAssertEqual(parameters["action"] as! String?, "authorize_login", "incorrect action parameter")
+        XCTAssertEqual(parameters["push_token"] as! String?, token, "incorrect token parameter")
     }
     
     func testAuthorizeLoginCallsSuccessBlock() {
