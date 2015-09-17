@@ -34,7 +34,8 @@
 {
     self = [super init];
     if (self) {
-        [self cleanupTopics];
+        [self cleanupPreviewedTopics];
+
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
     }
@@ -123,7 +124,7 @@
     [self.postsViewController didMoveToParentViewController:self];
 }
 
-- (void)cleanupTopics
+- (void)cleanupPreviewedTopics
 {
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [topicService deleteNonMenuTopics];
