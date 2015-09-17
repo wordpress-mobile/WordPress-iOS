@@ -14,7 +14,7 @@
 - (void)testThatCheckMultiAuthorForBlogWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog blogID]).andReturn(@10);
+    OCMStub([blog dotComID]).andReturn(@10);
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     BlogServiceRemoteREST *service = nil;
@@ -28,7 +28,7 @@
     
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     
-    [service checkMultiAuthorForBlogID:blog.blogID
+    [service checkMultiAuthorForBlogID:[blog dotComID]
                              success:^(BOOL isMultiAuthor) {}
                              failure:^(NSError *error) {}];
 }
@@ -50,7 +50,7 @@
 - (void)testThatSyncOptionForBlogWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog blogID]).andReturn(@10);
+    OCMStub([blog dotComID]).andReturn(@10);
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     BlogServiceRemoteREST *service = nil;
@@ -64,7 +64,7 @@
     
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     
-    [service syncOptionsForBlogID:blog.blogID
+    [service syncOptionsForBlogID:[blog dotComID]
                           success:^(NSDictionary *options) {}
                           failure:^(NSError *error) {}];
 }
@@ -85,7 +85,7 @@
 - (void)testThatSyncPostFormatsForBlogWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog blogID]).andReturn(@10);
+    OCMStub([blog dotComID]).andReturn(@10);
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     BlogServiceRemoteREST *service = nil;
@@ -99,7 +99,7 @@
     
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     
-    [service syncPostFormatsForBlogID:blog.blogID
+    [service syncPostFormatsForBlogID:[blog dotComID]
                               success:^(NSDictionary *options) {}
                               failure:^(NSError *error) {}];
 }
