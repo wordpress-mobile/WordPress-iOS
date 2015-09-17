@@ -57,7 +57,8 @@ import Foundation
 
         let siteTopic = topic as! ReaderSiteTopic
 
-        avatarImageView.setImageWithURL(NSURL(), placeholderImage: UIImage(named: defaultBlavatar))
+        let url = NSURL(string: siteTopic.siteBlavatar)!
+        avatarImageView.setImageWithURL(url, placeholderImage: UIImage(named: defaultBlavatar))
         titleLabel.text = siteTopic.title
         detailLabel.text = NSURL(string: siteTopic.siteURL)?.host
         if siteTopic.following {
