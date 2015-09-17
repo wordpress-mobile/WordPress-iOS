@@ -31,7 +31,7 @@
 - (void)testThatGetPostWithIDWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     PostServiceRemoteREST *service = nil;
@@ -48,7 +48,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service getPostWithID:postID
-                   forBlog:blog
+                 forBlogID:blog.blogID
                    success:^(RemotePost *post) {}
                    failure:^(NSError *error) {}];
 }
@@ -56,13 +56,13 @@
 - (void)testThatGetPostWithIDThrowsExceptionWithoutPostID
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service getPostWithID:nil
-                                   forBlog:blog
+                                 forBlogID:blog.blogID
                                    success:^(RemotePost *post) {}
                                    failure:^(NSError *error) {}]);
 }
@@ -73,7 +73,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service getPostWithID:@2
-                                   forBlog:nil
+                                 forBlogID:nil
                                    success:^(RemotePost *post) {}
                                    failure:^(NSError *error) {}]);
 }
@@ -83,7 +83,7 @@
 - (void)testThatGetPostsOfTypeWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     PostServiceRemoteREST *service = nil;
@@ -106,7 +106,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service getPostsOfType:postType
-                    forBlog:blog
+                  forBlogID:blog.blogID
                     success:^(NSArray *posts) {}
                     failure:^(NSError *error) {}];
 }
@@ -117,7 +117,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service getPostsOfType:@"SomeType"
-                                    forBlog:nil
+                                  forBlogID:nil
                                     success:^(NSArray *posts) {}
                                     failure:^(NSError *error) {}]);
 }
@@ -125,7 +125,7 @@
 - (void)testThatGetPostsOfTypeWithOptionsWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     PostServiceRemoteREST *service = nil;
@@ -153,7 +153,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service getPostsOfType:postType
-                    forBlog:blog
+                  forBlogID:blog.blogID
                     options:options
                     success:^(NSArray *posts) {}
                     failure:^(NSError *error) {}];
@@ -165,7 +165,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service getPostsOfType:@"SomeType"
-                                    forBlog:nil
+                                  forBlogID:nil
                                     options:@{}
                                     success:^(NSArray *posts) {}
                                     failure:^(NSError *error) {}]);
@@ -176,7 +176,7 @@
 - (void)testThatCreatePostWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     PostServiceRemoteREST *service = nil;
@@ -199,7 +199,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service createPost:post
-                forBlog:blog
+              forBlogID:blog.blogID
                 success:^(RemotePost *posts) {}
                 failure:^(NSError *error) {}];
 }
@@ -207,13 +207,13 @@
 - (void)testThatCreatePostThrowsExceptionWithoutPost
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service createPost:nil
-                                forBlog:blog
+                              forBlogID:blog.blogID
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -226,7 +226,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service createPost:post
-                                forBlog:nil
+                              forBlogID:nil
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -236,7 +236,7 @@
 - (void)testThatUpdatePostWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     PostServiceRemoteREST *service = nil;
@@ -260,7 +260,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service updatePost:post
-                forBlog:blog
+              forBlogID:blog.blogID
                 success:^(RemotePost *posts) {}
                 failure:^(NSError *error) {}];
 }
@@ -268,13 +268,13 @@
 - (void)testThatUpdatePostThrowsExceptionWithoutPost
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service updatePost:nil
-                                forBlog:blog
+                              forBlogID:blog.blogID
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -287,7 +287,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service updatePost:post
-                                forBlog:nil
+                              forBlogID:nil
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -297,7 +297,7 @@
 - (void)testThatDeletePostWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     PostServiceRemoteREST *service = nil;
@@ -315,7 +315,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service deletePost:post
-                forBlog:blog
+              forBlogID:blog.blogID
                 success:^(RemotePost *posts) {}
                 failure:^(NSError *error) {}];
 }
@@ -323,13 +323,13 @@
 - (void)testThatDeletePostThrowsExceptionWithoutPost
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service deletePost:nil
-                                forBlog:blog
+                              forBlogID:blog.blogID
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -342,7 +342,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service deletePost:post
-                                forBlog:nil
+                              forBlogID:nil
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -352,7 +352,7 @@
 - (void)testThatTrashPostWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     PostServiceRemoteREST *service = nil;
@@ -370,7 +370,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service trashPost:post
-               forBlog:blog
+             forBlogID:blog.blogID
                success:^(RemotePost *posts) {}
                failure:^(NSError *error) {}];
 }
@@ -378,13 +378,13 @@
 - (void)testThatTashPostThrowsExceptionWithoutPost
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service trashPost:nil
-                               forBlog:blog
+                             forBlogID:blog.blogID
                                success:^(RemotePost *posts) {}
                                failure:^(NSError *error) {}]);
 }
@@ -397,7 +397,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service trashPost:post
-                               forBlog:nil
+                             forBlogID:nil
                                success:^(RemotePost *posts) {}
                                failure:^(NSError *error) {}]);
 }
@@ -407,7 +407,7 @@
 - (void)testThatRestorePostWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     PostServiceRemoteREST *service = nil;
@@ -425,7 +425,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service restorePost:post
-                 forBlog:blog
+               forBlogID:blog.blogID
                  success:^(RemotePost *posts) {}
                  failure:^(NSError *error) {}];
 }
@@ -433,13 +433,13 @@
 - (void)testThatRestorePostThrowsExceptionWithoutPost
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
+    OCMStub([blog blogID]).andReturn(@10);
     
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service restorePost:nil
-                                 forBlog:blog
+                               forBlogID:blog.blogID
                                  success:^(RemotePost *posts) {}
                                  failure:^(NSError *error) {}]);
 }
@@ -452,7 +452,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service restorePost:post
-                                 forBlog:nil
+                               forBlogID:nil
                                  success:^(RemotePost *posts) {}
                                  failure:^(NSError *error) {}]);
 }
