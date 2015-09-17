@@ -53,14 +53,14 @@ class AccountServiceTests: XCTestCase {
     }
     
     func testNumberOfAccountsOneAccount() {
-        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
+        _ = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
         
         XCTAssertTrue(1 == accountService.numberOfAccounts(), "There should be one account")
     }
     
     func testNumberOfAccountsTwoAccounts() {
-        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
-        let account2 = accountService.createOrUpdateAccountWithUsername("username2", authToken: "authtoken2")
+        _ = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
+        _ = accountService.createOrUpdateAccountWithUsername("username2", authToken: "authtoken2")
         
         XCTAssertTrue(2 == accountService.numberOfAccounts(), "There should be two accounts")
     }
