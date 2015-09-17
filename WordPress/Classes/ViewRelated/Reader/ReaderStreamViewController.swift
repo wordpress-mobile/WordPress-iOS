@@ -324,6 +324,9 @@ import Foundation
         let account = service.defaultWordPressComAccount()
         isLoggedIn = account != nil
 
+        // Reset our display context to ensure its current. 
+        managedObjectContext().reset()
+
         configureTitleForTopic()
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
@@ -751,6 +754,7 @@ import Foundation
             topic = try managedObjectContext().existingObjectWithID(readerTopic!.objectID) as! ReaderAbstractTopic
         } catch let error as NSError {
             DDLogSwift.logError(error.description)
+            return NSPredicate(format: "topic = NULL")
         }
 
         if recentlyBlockedSitePostObjectIDs.count > 0 {
