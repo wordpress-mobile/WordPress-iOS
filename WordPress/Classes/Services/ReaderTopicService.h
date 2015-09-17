@@ -33,6 +33,12 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (NSUInteger)numberOfSubscribedTopics;
 
 /**
+ Deletes all topics that do not appear in the menu from core data and saves the context.
+ Use to clean-up previewed topics that are lingering in core data.
+ */
+- (void)deleteNonMenuTopics;
+
+/**
  Deletes all topics from core data and saves the context. Call when switching accounts.
  */
 - (void)deleteAllTopics;
