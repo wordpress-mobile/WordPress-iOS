@@ -29,7 +29,7 @@ class NotificationsServiceTests : XCTestCase
         service             = NotificationsService(managedObjectContext: contextManager.mainContext, wordPressComApi: remoteApi)
 
         OHHTTPStubs.shouldStubRequestsPassingTest({ (request: NSURLRequest!) -> Bool in
-                return request?.URL?.absoluteString?.rangeOfString(self.settingsEndpoint) != nil &&
+                return request?.URL?.absoluteString.rangeOfString(self.settingsEndpoint) != nil &&
                        request.HTTPMethod == "GET"
             },
             withStubResponse: { (request: NSURLRequest!) -> OHHTTPStubsResponse! in
@@ -160,7 +160,7 @@ class NotificationsServiceTests : XCTestCase
     // MARK: - Private Helpers
     private func loadNotificationSettings() -> [NotificationSettings] {
         var settings    : [NotificationSettings]?
-        let expectation = expectationWithDescription(nil)
+        let expectation = expectationWithDescription("Notification settings reading expecation")
 
         service?.getAllSettings({ (theSettings: [NotificationSettings]) in
                 settings = theSettings
