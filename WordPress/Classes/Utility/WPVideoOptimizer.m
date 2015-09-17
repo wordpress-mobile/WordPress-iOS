@@ -72,25 +72,17 @@ static long long VideoMaxSize = 1024 * 1024 * 20;
     }];
 }
 
-+ (CGSize) resolutionForVideo:(NSString *) videoPath {
++ (CGSize)resolutionForVideo:(NSString *)videoPath {
     AVAssetTrack *videoTrack = nil;
     AVAsset *asset = [AVAsset assetWithURL:[NSURL fileURLWithPath:videoPath]];
     NSArray *videoTracks = [asset tracksWithMediaType:AVMediaTypeVideo];
     
-    CMFormatDescriptionRef formatDescription = NULL;
-    NSArray *formatDescriptions = [videoTrack formatDescriptions];
-    if ([formatDescriptions count] > 0){
-        formatDescription = (__bridge CMFormatDescriptionRef)[formatDescriptions objectAtIndex:0];
+    if ([videoTracks count] <= 0){
+        return CGSizeZero;
     }
+    videoTrack = [videoTracks firstObject];
+    CGSize trackDimensions = [videoTrack naturalSize];
     
-    if ([videoTracks count] > 0)
-        videoTrack = [videoTracks objectAtIndex:0];
-    
-    CGSize trackDimensions = {
-        .width = 0.0,
-        .height = 0.0,
-    };
-    trackDimensions = [videoTrack naturalSize];
     return trackDimensions;
 }
 

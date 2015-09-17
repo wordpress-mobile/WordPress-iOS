@@ -595,11 +595,10 @@ static const NSInteger MinutesToReadThreshold = 2;
  */
 - (NSString *)featuredImageFromPostDictionary:(NSDictionary *)dict
 {
-    NSString *featuredImage = [NSString string];
     NSDictionary *featured_media = [dict dictionaryForKey:PostRESTKeyFeaturedMedia];
 
     // Editorial trumps all
-    featuredImage = [dict stringForKeyPath:@"editorial.image"];
+    NSString *featuredImage = [dict stringForKeyPath:@"editorial.image"];
 
     // User specified featured image.
     if ([featuredImage length] == 0) {
