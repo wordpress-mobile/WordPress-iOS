@@ -2,7 +2,6 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <CoreData/CoreData.h>
 #import <WordPressApi/WordPressApi.h>
-
 #import "JetpackState.h"
 
 @class WPAccount;
@@ -136,7 +135,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (NSString *)loginUrl;
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
-- (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
