@@ -34,6 +34,7 @@
 {
     self = [super init];
     if (self) {
+        [self cleanupTopics];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
     }
@@ -120,6 +121,12 @@
     childView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:childView];
     [self.postsViewController didMoveToParentViewController:self];
+}
+
+- (void)cleanupTopics
+{
+    ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    [topicService deleteNonMenuTopics];
 }
 
 - (void)syncTopics
