@@ -401,6 +401,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure
 {
+    ReaderSiteTopic *siteTopic = [self findSiteTopicWithSiteID:siteID];
+    if (siteTopic) {
+        if (success) {
+            success(siteTopic.objectID, siteTopic.following);
+        }
+        return;
+    }
+
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService fetchSiteInfoForSiteWithID:siteID success:^(RemoteReaderSiteInfo *siteInfo) {
         if (!success) {
@@ -760,5 +768,20 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path = %@", [path lowercaseString]]];
     return [results firstObject];
 }
+
+- (ReaderSiteTopic *)findSiteTopicWithSiteID:(NSNumber *)siteID
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSiteTopic classNameWithoutNamespaces]];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@", siteID];
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+
+    return (ReaderSiteTopic *)[results firstObject];
+}
+
 
 @end
