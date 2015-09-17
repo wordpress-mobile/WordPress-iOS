@@ -378,9 +378,10 @@ NSString * const PostFormatStandard = @"standard";
 {
     NSMutableArray *result = [NSMutableArray array];
     NSString *password = self.password ?: [NSString string];
-    
+    NSString *username = self.usernameForSite ?: [NSString string];
+
     [result addObject:self.blogID];
-    [result addObject:self.usernameForSite];
+    [result addObject:username];
     [result addObject:password];
 
     if ([extra isKindOfClass:[NSArray class]]) {
