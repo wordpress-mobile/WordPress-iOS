@@ -409,15 +409,22 @@ import Foundation
         objectIDOfPostForMenu = post.objectID
         anchorViewForMenu = anchorView
 
-        let cancel = NSLocalizedString("Cancel", comment:"The title of a cancel button.")
-        let blockSite = NSLocalizedString("Block This Site", comment:"The title of a button that triggers blocking a site from the user's reader.")
-        let share = NSLocalizedString("Share", comment:"Verb. Title of a button. Pressing the lets the user share a post to others.")
+        // Create the action sheet.
         let actionSheet = UIActionSheet(title: nil,
             delegate: self,
-            cancelButtonTitle: cancel,
-            destructiveButtonTitle: shouldShowBlockSiteMenuItem() ? blockSite : nil
+            cancelButtonTitle: ActionSheetButtonTitles.cancel,
+            destructiveButtonTitle: shouldShowBlockSiteMenuItem() ? ActionSheetButtonTitles.blockSite : nil
         )
-        actionSheet.addButtonWithTitle(share)
+
+        // Show follow/unfollow if needed.
+        if ReaderHelpers.topicIsFollowing(readerTopic!) {
+            let buttonTitle = post.isFollowing ? ActionSheetButtonTitles.unfollow : ActionSheetButtonTitles.follow
+            actionSheet.addButtonWithTitle(buttonTitle)
+        }
+
+        // Add the rest of the buttons
+        actionSheet.addButtonWithTitle(ActionSheetButtonTitles.share)
+        actionSheet.addButtonWithTitle(ActionSheetButtonTitles.visit)
 
         if UIDevice.isPad() {
             actionSheet.showFromRect(anchorViewForMenu!.bounds, inView:anchorViewForMenu!, animated:true)
@@ -446,6 +453,37 @@ import Foundation
             permittedArrowDirections: UIPopoverArrowDirection.Unknown,
             animated: false)
 
+    }
+
+    private func toggleFollowingForPost(post:ReaderPost) {
+        var successMessage:String!
+        var errorMessage:String!
+        var errorTitle:String!
+        if post.isFollowing {
+            successMessage = NSLocalizedString("Unfollowed site", comment: "Short confirmation that unfollowing a site was successful")
+            errorTitle = NSLocalizedString("Problem Unfollowing Site", comment: "Title of a prompt")
+            errorMessage = NSLocalizedString("There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem.")
+        } else {
+            successMessage = NSLocalizedString("Followed site", comment: "Short confirmation that unfollowing a site was successful")
+            errorTitle = NSLocalizedString("Problem Following Site", comment: "Title of a prompt")
+            errorMessage = NSLocalizedString("There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem following a site and instructions on how to notify us of the problem.")
+        }
+
+        let postService = ReaderPostService(managedObjectContext: managedObjectContext())
+        postService.toggleFollowingForPost(post, success: { () -> Void in
+                SVProgressHUD.showSuccessWithStatus(successMessage)
+            }, failure: { (error:NSError!) -> Void in
+                let alertView = UIAlertView(title: errorTitle,
+                    message: errorMessage,
+                    delegate: nil,
+                    cancelButtonTitle: NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt."))
+                alertView.show()
+        })
+    }
+
+    private func visitSiteForPost(post:ReaderPost) {
+        let siteURL = NSURL(string: post.blogURL)!
+        UIApplication.sharedApplication().openURL(siteURL)
     }
 
     private func showAttributionForPost(post: ReaderPost) {
@@ -990,22 +1028,27 @@ import Foundation
             return
         }
 
-        var post: ReaderPost?
+        var post: ReaderPost!
         do {
-            post = try managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!) as? ReaderPost
+            post = try managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!) as! ReaderPost
         } catch let error as NSError {
             DDLogSwift.logError(error.localizedDescription)
-        }
-        if post == nil {
             return
         }
 
         if buttonIndex == actionSheet.destructiveButtonIndex {
-            blockSiteForPost(post!)
+            blockSiteForPost(post)
             return
         }
 
-        showShareActivityAfterActionSheetIsDismissed = true
+        let buttonTitle = actionSheet.buttonTitleAtIndex(buttonIndex)
+        if buttonTitle == ActionSheetButtonTitles.share {
+            showShareActivityAfterActionSheetIsDismissed = true
+        } else if buttonTitle == ActionSheetButtonTitles.visit {
+            visitSiteForPost(post)
+        } else if buttonTitle == ActionSheetButtonTitles.follow || buttonTitle == ActionSheetButtonTitles.unfollow {
+            toggleFollowingForPost(post)
+        }
     }
 
     public func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
