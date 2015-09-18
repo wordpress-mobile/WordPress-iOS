@@ -247,7 +247,6 @@
                                 <variation key="heightClass=regular-widthClass=regular">
                                     <mask key="constraints">
                                         <include reference="t4d-zR-d9j"/>
-                                        <exclude reference="E9h-YX-BoE"/>
                                         <exclude reference="jce-cA-MFh"/>
                                     </mask>
                                 </variation>
