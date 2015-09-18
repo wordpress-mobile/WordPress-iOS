@@ -12,6 +12,9 @@ import Foundation
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var descriptionBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var followCountBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var contentIPadTopConstraint: NSLayoutConstraint?
+    @IBOutlet private weak var contentIPadWidthConstraint: NSLayoutConstraint?
+
     public var delegate: ReaderStreamHeaderDelegate?
     private var defaultBlavatar = "blavatar-default"
 
@@ -36,9 +39,11 @@ import Foundation
         let hMargin = descriptionLabel.frame.minX
         let vMargin = descriptionLabel.frame.minY
 
-        let innerWidth = size.width - (hMargin * 2)
+        let width = UIDevice.isPad() ? contentIPadWidthConstraint!.constant : size.width
+        let innerWidth = width - (hMargin * 2)
         let adjustedSize = CGSize(width:innerWidth, height:CGFloat.max)
-        var height = innerContentView.frame.minY
+
+        var height = UIDevice.isPad() ? contentIPadTopConstraint!.constant : 0
         height += descriptionView.frame.minY
         height += vMargin
         height += descriptionLabel.sizeThatFits(adjustedSize).height
