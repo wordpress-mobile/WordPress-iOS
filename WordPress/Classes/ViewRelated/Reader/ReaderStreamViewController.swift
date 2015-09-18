@@ -467,10 +467,12 @@ import Foundation
             errorMessage = NSLocalizedString("There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem following a site and instructions on how to notify us of the problem.")
         }
 
+        SVProgressHUD.show()
         let postService = ReaderPostService(managedObjectContext: managedObjectContext())
         postService.toggleFollowingForPost(post, success: { () -> Void in
                 SVProgressHUD.showSuccessWithStatus(successMessage)
             }, failure: { (error:NSError!) -> Void in
+                SVProgressHUD.dismiss()
                 let alertView = UIAlertView(title: errorTitle,
                     message: errorMessage,
                     delegate: nil,
