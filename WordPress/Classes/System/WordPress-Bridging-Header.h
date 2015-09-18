@@ -3,6 +3,7 @@
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <DTCoreText/DTCoreText.h>
 #import <SFHFKeychainUtils.h>
+#import <SVProgressHUD.h>
 #import <WordPress-AppbotX/ABXAppStore.h>
 
 #import "AccountService.h"
