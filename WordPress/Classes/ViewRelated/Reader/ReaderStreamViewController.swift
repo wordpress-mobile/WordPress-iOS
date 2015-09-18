@@ -417,15 +417,19 @@ import Foundation
         )
 
         // Add the rest of the buttons alphabetically
-        actionSheet.addButtonWithTitle(ActionSheetButtonTitles.share)
+        var arr = [String]()
+        arr.append(ActionSheetButtonTitles.share)
+        arr.append(ActionSheetButtonTitles.visit)
 
-        // Show follow/unfollow if needed.
         if ReaderHelpers.topicIsFollowing(readerTopic!) {
             let buttonTitle = post.isFollowing ? ActionSheetButtonTitles.unfollow : ActionSheetButtonTitles.follow
-            actionSheet.addButtonWithTitle(buttonTitle)
+            arr.append(buttonTitle)
         }
 
-        actionSheet.addButtonWithTitle(ActionSheetButtonTitles.visit)
+        arr = arr.sort()
+        for title in arr {
+            actionSheet.addButtonWithTitle(title)
+        }
 
         if UIDevice.isPad() {
             actionSheet.showFromRect(anchorViewForMenu!.bounds, inView:anchorViewForMenu!, animated:true)
