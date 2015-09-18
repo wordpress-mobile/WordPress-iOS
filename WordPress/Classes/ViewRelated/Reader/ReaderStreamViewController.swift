@@ -488,7 +488,8 @@ import Foundation
 
     private func visitSiteForPost(post:ReaderPost) {
         let siteURL = NSURL(string: post.blogURL)!
-        UIApplication.sharedApplication().openURL(siteURL)
+        let controller = WPWebViewController(URL: siteURL)
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     private func showAttributionForPost(post: ReaderPost) {
