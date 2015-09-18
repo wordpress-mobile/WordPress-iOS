@@ -80,7 +80,7 @@ extension WPStyleGuide
     }
 
     public class func readerCardWordCountAttributes() -> [NSObject: AnyObject] {
-        let fontSize = Cards.contentFontSize
+        let fontSize = Cards.buttonFontSize
         let font = WPFontManager.openSansRegularFontOfSize(fontSize)
 
         let lineHeight = Cards.defaultLineHeight
@@ -96,7 +96,7 @@ extension WPStyleGuide
     }
 
     public class func readerCardReadingTimeAttributes() -> [NSObject: AnyObject] {
-        let fontSize:CGFloat = UIDevice.isPad() ? 14.0 : 12.0
+        let fontSize:CGFloat = Cards.subtextFontSize
         let font = WPFontManager.openSansRegularFontOfSize(fontSize)
 
         let lineHeight = Cards.defaultLineHeight
@@ -142,7 +142,7 @@ extension WPStyleGuide
     }
 
     public class func applyReaderCardBylineLabelStyle(label:UILabel) {
-        let fontSize:CGFloat = 12.0
+        let fontSize:CGFloat = Cards.subtextFontSize
         label.font = WPFontManager.openSansRegularFontOfSize(fontSize)
         label.textColor = greyDarken10()
     }
@@ -181,7 +181,7 @@ extension WPStyleGuide
     }
 
     public class func applyReaderStreamHeaderDetailStyle(label:UILabel) {
-        let fontSize:CGFloat = 12.0
+        let fontSize:CGFloat = Cards.subtextFontSize
         label.font = WPFontManager.openSansRegularFontOfSize(fontSize)
         label.textColor = greyDarken10()
     }
@@ -238,6 +238,7 @@ extension WPStyleGuide
         public static let titleLineHeight:CGFloat = UIDevice.isPad() ? 32.0 : 24.0
         public static let contentFontSize:CGFloat = UIDevice.isPad() ? 16.0 : 14.0
         public static let buttonFontSize:CGFloat = 14.0
+        public static let subtextFontSize:CGFloat = 12.0
     }
 
 }
