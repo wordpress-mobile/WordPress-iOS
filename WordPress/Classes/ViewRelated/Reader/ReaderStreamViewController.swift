@@ -416,20 +416,13 @@ import Foundation
             destructiveButtonTitle: shouldShowBlockSiteMenuItem() ? ActionSheetButtonTitles.blockSite : nil
         )
 
-        // Add the rest of the buttons alphabetically
-        var arr = [String]()
-        arr.append(ActionSheetButtonTitles.share)
-        arr.append(ActionSheetButtonTitles.visit)
-
         if ReaderHelpers.topicIsFollowing(readerTopic!) {
             let buttonTitle = post.isFollowing ? ActionSheetButtonTitles.unfollow : ActionSheetButtonTitles.follow
-            arr.append(buttonTitle)
+            actionSheet.addButtonWithTitle(buttonTitle)
         }
 
-        arr = arr.sort()
-        for title in arr {
-            actionSheet.addButtonWithTitle(title)
-        }
+        actionSheet.addButtonWithTitle(ActionSheetButtonTitles.visit)
+        actionSheet.addButtonWithTitle(ActionSheetButtonTitles.share)
 
         if UIDevice.isPad() {
             actionSheet.showFromRect(anchorViewForMenu!.bounds, inView:anchorViewForMenu!, animated:true)
