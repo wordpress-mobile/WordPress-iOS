@@ -416,14 +416,15 @@ import Foundation
             destructiveButtonTitle: shouldShowBlockSiteMenuItem() ? ActionSheetButtonTitles.blockSite : nil
         )
 
+        // Add the rest of the buttons alphabetically
+        actionSheet.addButtonWithTitle(ActionSheetButtonTitles.share)
+
         // Show follow/unfollow if needed.
         if ReaderHelpers.topicIsFollowing(readerTopic!) {
             let buttonTitle = post.isFollowing ? ActionSheetButtonTitles.unfollow : ActionSheetButtonTitles.follow
             actionSheet.addButtonWithTitle(buttonTitle)
         }
 
-        // Add the rest of the buttons
-        actionSheet.addButtonWithTitle(ActionSheetButtonTitles.share)
         actionSheet.addButtonWithTitle(ActionSheetButtonTitles.visit)
 
         if UIDevice.isPad() {
