@@ -1,10 +1,12 @@
 #import "ReaderPostServiceRemote.h"
-#import "WordPressComApi.h"
+
 #import "DateUtils.h"
-#import "RemoteReaderPost.h"
 #import "DisplayableImageHelper.h"
-#import "ReaderTopicServiceRemote.h"
+#import "RemoteReaderPost.h"
 #import "RemoteSourcePostAttribution.h"
+#import "ReaderTopicServiceRemote.h"
+#import "WordPressComApi.h"
+#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
 
 // REST Post dictionary keys
 NSString * const PostRESTKeyAttachments = @"attachments";
@@ -142,80 +144,6 @@ static const NSInteger MinutesToReadThreshold = 2;
     }];
 }
 
-- (void)followSite:(NSUInteger)siteID
-           success:(void (^)())success
-           failure:(void(^)(NSError *error))failure
-{
-    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/new", siteID];
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
-    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)unfollowSite:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure
-{
-    NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine/delete", siteID];
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
-    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)followSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
-{
-    NSString *path = @"read/following/mine/new";
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
-    NSDictionary *params = @{@"url": siteURL};
-    
-    [self.api POST:requestUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
-{
-    NSString *path = @"read/following/mine/delete";
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
-    NSDictionary *params = @{@"url": siteURL};
-    
-    [self.api POST:requestUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
 
 #pragma mark - Private Methods
 
@@ -271,6 +199,7 @@ static const NSInteger MinutesToReadThreshold = 2;
     post.authorDisplayName = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyName]]; // Typically the author's given name
     post.authorEmail = [self authorEmailFromAuthorDictionary:authorDict];
     post.authorURL = [self stringOrEmptyString:[authorDict stringForKey:PostRESTKeyURL]];
+    post.blavatar = [self stringOrEmptyString:[dict stringForKeyPath:@"meta.data.site.icon.img"]];
     post.blogName = [self siteNameFromPostDictionary:dict];
     post.blogDescription = [self siteDescriptionFromPostDictionary:dict];
     post.blogURL = [self siteURLFromPostDictionary:dict];
@@ -364,6 +293,9 @@ static const NSInteger MinutesToReadThreshold = 2;
         primaryTag = editorialTag;
         primaryTagSlug = editorialSlug;
     }
+
+    primaryTag = [primaryTag stringByDecodingXMLCharacters];
+    secondaryTag = [secondaryTag stringByDecodingXMLCharacters];
 
     return @{
              TagKeyPrimary:primaryTag,
