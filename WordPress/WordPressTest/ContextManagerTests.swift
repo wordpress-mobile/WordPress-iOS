@@ -25,17 +25,16 @@ class ContextManagerTests: XCTestCase {
         let psc = contextManager.persistentStoreCoordinator
         
         // Insert a Theme Entity
-        let objectOriginal = NSEntityDescription.insertNewObjectForEntityForName("Theme", inManagedObjectContext: mocOriginal) as! NSManagedObject
-        mocOriginal.obtainPermanentIDsForObjects([objectOriginal], error: nil)
-        var error: NSError?
-        mocOriginal.save(&error)
+        let objectOriginal = NSEntityDescription.insertNewObjectForEntityForName("Theme", inManagedObjectContext: mocOriginal) 
+        try! mocOriginal.obtainPermanentIDsForObjects([objectOriginal])
+        try! mocOriginal.save()
 
         let objectID = objectOriginal.objectID
         XCTAssertFalse(objectID.temporaryID, "Should be a permanent object")
 
         // Migrate to the latest
-        let persistentStore = psc.persistentStores.first as? NSPersistentStore
-        psc.removePersistentStore(persistentStore!, error: nil);
+        let persistentStore = psc.persistentStores.first!
+        try! psc.removePersistentStore(persistentStore);
     
         let standardPSC = contextManager.standardPSC
     
@@ -45,7 +44,7 @@ class ContextManagerTests: XCTestCase {
         // Verify if the Theme Entity is there
         let mocSecond = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
         mocSecond.persistentStoreCoordinator = standardPSC
-        let object = mocSecond.existingObjectWithID(objectID, error: nil)
+        let object = try! mocSecond.existingObjectWithID(objectID)
         
         XCTAssertNotNil(object, "Object should exist in new PSC")
     }
@@ -58,7 +57,7 @@ class ContextManagerTests: XCTestCase {
         startupCoredataStack(model20Name)
         
         let mainContext = contextManager.mainContext
-        let psc = contextManager.persistentStoreCoordinator
+        _ = contextManager.persistentStoreCoordinator
         
         // Insert a WordPress.com account with a Jetpack blog
         let wrongAccount = newAccountInContext(mainContext)
@@ -75,8 +74,8 @@ class ContextManagerTests: XCTestCase {
         let offsiteAccount = newAccountInContext(mainContext)
         offsiteAccount.setValue(false, forKey: "isWpcom")
 
-        mainContext.obtainPermanentIDsForObjects([wrongAccount, rightAccount, offsiteAccount], error: nil)
-        mainContext.save(nil)
+        try! mainContext.obtainPermanentIDsForObjects([wrongAccount, rightAccount, offsiteAccount])
+        try! mainContext.save()
         
         // Set the DefaultDotCom
         let oldRightAccountURL = rightAccount.objectID.URIRepresentation()
@@ -98,7 +97,7 @@ class ContextManagerTests: XCTestCase {
         let objectID = secondContext.persistentStoreCoordinator?.managedObjectIDForURIRepresentation(newRightAccountURL!)
         XCTAssert(objectID != nil, "Invalid newRightAccount URL")
         
-        let reloadedRightAccount = secondContext.existingObjectWithID(objectID!, error: nil) as? WPAccount
+        let reloadedRightAccount = try! secondContext.existingObjectWithID(objectID!) as? WPAccount
         XCTAssert(reloadedRightAccount != nil, "Couldn't load the right default account")
         XCTAssert(reloadedRightAccount!.username! == "Right", "Invalid default account")
     }
@@ -111,7 +110,7 @@ class ContextManagerTests: XCTestCase {
         startupCoredataStack(model21Name)
         
         let mainContext = contextManager.mainContext
-        let psc = contextManager.persistentStoreCoordinator
+        _ = contextManager.persistentStoreCoordinator
         
         // Insert a WPAccount entity
         let dotcomAccount = newAccountInContext(mainContext)
@@ -119,8 +118,8 @@ class ContextManagerTests: XCTestCase {
         offsiteAccount.setValue(false, forKey: "isWpcom")
         offsiteAccount.username = "OffsiteUsername"
         
-        mainContext.obtainPermanentIDsForObjects([dotcomAccount, offsiteAccount], error: nil)
-        mainContext.save(nil)
+        try! mainContext.obtainPermanentIDsForObjects([dotcomAccount, offsiteAccount])
+        try! mainContext.save()
         
         // Set the DefaultDotCom
         let dotcomAccountURL = dotcomAccount.objectID.URIRepresentation()
@@ -142,7 +141,7 @@ class ContextManagerTests: XCTestCase {
         let request = NSFetchRequest(entityName: "Account")
         request.predicate = NSPredicate(format: "uuid == %@", defaultAccountUUID!)
         
-        let results = secondContext.executeFetchRequest(request, error: nil) as? [WPAccount]
+        let results = try! secondContext.executeFetchRequest(request) as? [WPAccount]
         XCTAssert(results!.count == 1, "Default account not found")
 
         let defaultAccount = results!.first!
@@ -157,7 +156,7 @@ class ContextManagerTests: XCTestCase {
         startupCoredataStack(model21Name)
         
         let mainContext = contextManager.mainContext
-        let psc = contextManager.persistentStoreCoordinator
+        _ = contextManager.persistentStoreCoordinator
         
         // Insert a WordPress.com account with a Jetpack blog
         let wrongAccount = newAccountInContext(mainContext)
@@ -174,8 +173,8 @@ class ContextManagerTests: XCTestCase {
         let offsiteAccount = newAccountInContext(mainContext)
         offsiteAccount.setValue(false, forKey: "isWpcom")
 
-        mainContext.obtainPermanentIDsForObjects([wrongAccount, rightAccount, offsiteAccount], error: nil)
-        mainContext.save(nil)
+        try! mainContext.obtainPermanentIDsForObjects([wrongAccount, rightAccount, offsiteAccount])
+        try! mainContext.save()
         
         // Set the DefaultDotCom
         let offsiteAccountURL = offsiteAccount.objectID.URIRepresentation()
@@ -197,7 +196,7 @@ class ContextManagerTests: XCTestCase {
         let request = NSFetchRequest(entityName: "Account")
         request.predicate = NSPredicate(format: "uuid == %@", accountUUID!)
         
-        let results = secondContext.executeFetchRequest(request, error: nil) as? [WPAccount]
+        let results = try! secondContext.executeFetchRequest(request) as? [WPAccount]
         XCTAssert(results != nil, "Default Account has been lost")
         XCTAssert(results?.count == 1, "UUID is not unique!")
         
@@ -213,7 +212,7 @@ class ContextManagerTests: XCTestCase {
         startupCoredataStack(model24Name)
 
         let mainContext = contextManager.mainContext
-        let psc = contextManager.persistentStoreCoordinator
+        _ = contextManager.persistentStoreCoordinator
 
         let account = newAccountInContext(mainContext)
         let blog = newBlogInAccount(account)
@@ -227,28 +226,27 @@ class ContextManagerTests: XCTestCase {
         let readerPost = NSEntityDescription.insertNewObjectForEntityForName("ReaderPost", inManagedObjectContext: mainContext) as! ReaderPost
         readerPost.authorAvatarURL = authorAvatarURL
 
-        mainContext.save(nil)
+        try! mainContext.save()
 
         // Initialize 24 > 25 Migration
         let secondContext = performCoredataMigration(model25Name)
 
         // Test the existence of Post object after migration
-        var error: NSError?
         let allPostsRequest = NSFetchRequest(entityName: "Post")
-        let postsResults = secondContext.executeFetchRequest(allPostsRequest, error: &error)
-        XCTAssertEqual(1, postsResults!.count, "We should get one Post")
+        let postsResults = try! secondContext.executeFetchRequest(allPostsRequest)
+        XCTAssertEqual(1, postsResults.count, "We should get one Post")
 
         // Test authorAvatarURL integrity after migration
-        let existingPost = postsResults!.first! as! Post
+        let existingPost = postsResults.first! as! Post
         XCTAssertEqual(existingPost.authorAvatarURL, authorAvatarURL)
 
         // Test the existence of ReaderPost object after migration
         let allReaderPostsRequest = NSFetchRequest(entityName: "ReaderPost")
-        let readerPostsResults = secondContext.executeFetchRequest(allReaderPostsRequest, error: &error)
-        XCTAssertEqual(1, readerPostsResults!.count, "We should get one ReaderPost")
+        let readerPostsResults = try! secondContext.executeFetchRequest(allReaderPostsRequest)
+        XCTAssertEqual(1, readerPostsResults.count, "We should get one ReaderPost")
 
         // Test authorAvatarURL integrity after migration
-        let existingReaderPost = readerPostsResults!.first! as! ReaderPost
+        let existingReaderPost = readerPostsResults.first! as! ReaderPost
         XCTAssertEqual(existingReaderPost.authorAvatarURL, authorAvatarURL)
 
         // Test for existence of authorAvatarURL in the model
@@ -258,10 +256,11 @@ class ContextManagerTests: XCTestCase {
         page.blog = secondBlog
         page.authorAvatarURL = authorAvatarURL
 
-        error = nil
-        secondContext.save(&error)
-
-        XCTAssertNil(error, "Setting authorAvatarURL shouldn't throw an error")
+        do {
+            try secondContext.save()
+        } catch let error as NSError {
+            XCTAssertNil(error, "Setting authorAvatarURL shouldn't throw an error")
+        }
     }
 
     // MARK: - Helper Methods
@@ -273,9 +272,11 @@ class ContextManagerTests: XCTestCase {
         
         let storeUrl = contextManager.storeURL
         removeStoresBasedOnStoreURL(storeUrl)
-        
-        let persistentStore = persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeUrl, options: nil, error: nil)
-        XCTAssertNotNil(persistentStore, "Store should exist")
+        do {
+            _ = try persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeUrl, options: nil)
+        } catch let error as NSError {
+            XCTAssertNil(error, "Store should exist")
+        }
         
         let mainContext = NSManagedObjectContext(concurrencyType: NSManagedObjectContextConcurrencyType.MainQueueConcurrencyType)
         mainContext.persistentStoreCoordinator = persistentStoreCoordinator
@@ -287,10 +288,10 @@ class ContextManagerTests: XCTestCase {
     
     private func performCoredataMigration(newModelName: String) -> NSManagedObjectContext {
         let psc = contextManager.persistentStoreCoordinator
-        let mainContext = contextManager.mainContext
+        _ = contextManager.mainContext
         
-        let persistentStore = psc.persistentStores.first as? NSPersistentStore
-        psc.removePersistentStore(persistentStore!, error: nil);
+        let persistentStore = psc.persistentStores.first!
+        try! psc.removePersistentStore(persistentStore);
         
         let newModelURL = urlForModelName(newModelName)
         contextManager.managedObjectModel = NSManagedObjectModel(contentsOfURL: newModelURL!)
@@ -305,11 +306,11 @@ class ContextManagerTests: XCTestCase {
     }
     
     private func urlForModelName(name: NSString!) -> NSURL? {
-        var bundle = NSBundle.mainBundle()
+        let bundle = NSBundle.mainBundle()
         var url = bundle.URLForResource(name as String, withExtension: "mom")
         
         if url == nil {
-            var momdPaths = bundle.pathsForResourcesOfType("momd", inDirectory: nil);
+            let momdPaths = bundle.URLsForResourcesWithExtension("momd", subdirectory: nil)!
             for momdPath in momdPaths {
                 url = bundle.URLForResource(name as String, withExtension: "mom", subdirectory: momdPath.lastPathComponent)
             }
@@ -325,11 +326,11 @@ class ContextManagerTests: XCTestCase {
         
         let fileManager = NSFileManager.defaultManager()
         let directoryUrl = storeURL.URLByDeletingLastPathComponent
-        let files = fileManager.contentsOfDirectoryAtURL(directoryUrl!, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants, error: nil) as! Array<NSURL>
+        let files = try! fileManager.contentsOfDirectoryAtURL(directoryUrl!, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants)
         for file in files {
-            let range = file.lastPathComponent?.rangeOfString(storeURL.lastPathComponent!, options: nil, range: nil, locale: nil)
+            let range = file.lastPathComponent?.rangeOfString(storeURL.lastPathComponent!)
             if range?.startIndex != range?.endIndex {
-                fileManager.removeItemAtURL(file, error: nil)
+                try! fileManager.removeItemAtURL(file)
             }
         }
     }

@@ -1178,7 +1178,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 - (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(id<WPMediaAsset>)mediaAsset
 {
     if ([mediaAsset isKindOfClass:[ALAsset class]]) {
-        ALAsset *asset = (ALAsset *)asset;
+        ALAsset *asset = (ALAsset *)mediaAsset;
         if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
             // If the image is from a shared photo stream it may not be available locally to be used
             if (!asset.defaultRepresentation) {
