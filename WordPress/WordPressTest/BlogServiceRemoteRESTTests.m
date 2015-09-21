@@ -4,6 +4,7 @@
 #import "BlogServiceRemoteREST.h"
 #import "WordPressComApi.h"
 #import "Publicizer.h"
+#import "PublicizerServiceRemote.h"
 
 @implementation Publicizer(UnitTesting)
 - (Blog *)blog { return nil; }
@@ -156,6 +157,24 @@
 }
 
 #pragma mark - Publicizer management for a blog
+
+- (void)testThatGetPublicizersWorks
+{
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    PublicizerServiceRemote *service = nil;
+    
+    NSString *url = @"v1.1/meta/publicize/";
+    
+    OCMStub([api GET:[OCMArg isEqual:url]
+          parameters:[OCMArg isNil]
+             success:[OCMArg isNotNil]
+             failure:[OCMArg isNotNil]]);
+    
+    XCTAssertNoThrow(service = [[PublicizerServiceRemote alloc] initWithApi:api]);
+  
+    [service getPublicizersWithSuccess:^(NSArray *publicizers){}
+                               failure:^(NSError *error) {}];
+}
 
 - (void)testThatCheckAuthorizationForPublicizerWorks
 {
