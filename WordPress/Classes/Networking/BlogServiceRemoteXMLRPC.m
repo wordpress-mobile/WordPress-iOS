@@ -83,7 +83,7 @@
 
 - (void)connectPublicizer:(Publicizer *)service
         withAuthorization:(NSDictionary *)authorization
-                  success:(ConnectionsHandler)success
+                  success:(SuccessHandler)success
                   failure:(void (^)(NSError *))failure
 {
     // not currently available
@@ -94,7 +94,7 @@
 }
 
 - (void)disconnectPublicizer:(Publicizer *)service
-                     success:(ConnectionsHandler)success
+                     success:(SuccessHandler)success
                      failure:(void (^)(NSError *))failure
 {
     // not currently available

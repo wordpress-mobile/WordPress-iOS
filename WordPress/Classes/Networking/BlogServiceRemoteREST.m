@@ -154,7 +154,7 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
 
 - (void)connectPublicizer:(Publicizer *)service
         withAuthorization:(NSDictionary *)authorization
-                  success:(ConnectionsHandler)success
+                  success:(SuccessHandler)success
                   failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([service isKindOfClass:[Publicizer class]]);
@@ -168,9 +168,9 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     [self.api POST:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              [self syncConnectionsForBlog:service.blog
-                                   success:success
-                                   failure:failure];
+              if (success) {
+                  success();
+              }
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               if (failure) {
                   failure(error);
@@ -179,7 +179,7 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
 }
 
 - (void)disconnectPublicizer:(Publicizer *)service
-                     success:(ConnectionsHandler)success
+                     success:(SuccessHandler)success
                      failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([service isKindOfClass:[Publicizer class]]);
@@ -192,9 +192,9 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               [self syncConnectionsForBlog:service.blog
-                                    success:success
-                                    failure:failure];
+               if (success) {
+                   success();
+               }
            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                if (failure) {
                    failure(error);

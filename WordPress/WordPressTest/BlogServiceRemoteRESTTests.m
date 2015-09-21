@@ -219,7 +219,7 @@
     
     [service connectPublicizer:publicizer
              withAuthorization:@{@"ID":@"keyring"}
-                       success:^(NSArray *connections) {}
+                       success:^{}
                        failure:^(NSError *error) {}];
 }
 
@@ -236,11 +236,11 @@
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     XCTAssertThrows([service connectPublicizer:nil
                              withAuthorization:@{@"ID":@"keyring"}
-                                       success:^(NSArray *connections) {}
+                                       success:^{}
                                        failure:^(NSError *error) {}]);
     XCTAssertThrows([service connectPublicizer:publicizer
                              withAuthorization:@{}
-                                       success:^(NSArray *connections) {}
+                                       success:^{}
                                        failure:^(NSError *error) {}]);
 }
 
@@ -265,7 +265,7 @@
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     
     [service disconnectPublicizer:publicizer
-                          success:^(NSArray *connections) {}
+                          success:^{}
                           failure:^(NSError *error) {}];
 }
 
@@ -279,10 +279,10 @@
     
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     XCTAssertThrows([service disconnectPublicizer:nil
-                                          success:^(NSArray *connections) {}
+                                          success:^{}
                                           failure:^(NSError *error) {}]);
     XCTAssertThrows([service disconnectPublicizer:publicizer
-                                          success:^(NSArray *connections) {}
+                                          success:^{}
                                           failure:^(NSError *error) {}]);
 }
 

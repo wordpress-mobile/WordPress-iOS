@@ -348,12 +348,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure
 {
-    NSManagedObjectID *blogObjectID = service.blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:service.blog];
     [remote connectPublicizer:service
             withAuthorization:authorization
-                      success:[self connectionsHandlerWithBlogObjectID:blogObjectID
-                                                          completionHandler:success]
+                      success:success
                       failure:failure];
 }
 
@@ -361,11 +359,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure
 {
-    NSManagedObjectID *blogObjectID = service.blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:service.blog];
     [remote disconnectPublicizer:service
-                        success:[self connectionsHandlerWithBlogObjectID:blogObjectID
-                                                     completionHandler:success]
+                        success:success
                         failure:failure];
 }
 

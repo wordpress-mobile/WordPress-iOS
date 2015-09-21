@@ -78,7 +78,7 @@ typedef void (^SuccessHandler)();
  */
 - (void)connectPublicizer:(Publicizer *)service
         withAuthorization:(NSDictionary *)token
-                  success:(ConnectionsHandler)success
+                  success:(SuccessHandler)success
                   failure:(void (^)(NSError *error))failure;
 
 /**
@@ -89,7 +89,7 @@ typedef void (^SuccessHandler)();
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)disconnectPublicizer:(Publicizer *)service
-                     success:(ConnectionsHandler)success
+                     success:(SuccessHandler)success
                      failure:(void (^)(NSError *error))failure;
 
 /**
