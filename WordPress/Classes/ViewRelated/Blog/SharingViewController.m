@@ -17,6 +17,18 @@ typedef NS_ENUM(NSInteger, SharingSection){
 
 static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
+@interface PublicizeCell : WPTableViewCell
+@end
+
+@implementation PublicizeCell
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    return [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
+}
+
+@end
+
 @interface SharingViewController () <SharingAuthorizationDelegate>
 
 @property (nonatomic, strong, readonly) Blog *blog;
@@ -44,14 +56,14 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
-
+    
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PublicizeCellIdentifier];
+    [self.tableView registerClass:[PublicizeCell class] forCellReuseIdentifier:PublicizeCellIdentifier];
     
     [self refreshPublicizers];
-
+    
 }
 
 - (void)refreshPublicizers
@@ -102,23 +114,13 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PublicizeCellIdentifier forIndexPath:indexPath];
+    PublicizeCell *cell = [tableView dequeueReusableCellWithIdentifier:PublicizeCellIdentifier forIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
-
+    
     switch (indexPath.section) {
         case SharingPublicize: {
             Publicizer *publicizer = self.publicizeServices[indexPath.row];
             cell.textLabel.text = publicizer.label;
-
-            UIButton *button = nil;
-            if ([cell.accessoryView isKindOfClass:[UIButton class]]) {
-                button = (UIButton *)cell.accessoryView;
-            } else {
-                button = [UIButton buttonWithType:UIButtonTypeSystem];
-                [button addTarget:self action:@selector(publicizeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-                cell.accessoryView = button;
-            }
-            button.tag = indexPath.row;
             NSString *title = nil;
             if ([self.connectingService.service isEqualToString:publicizer.service]) {
                 title = NSLocalizedString(@"Connecting…", @"Button title while a Publicize service is connecting");
@@ -129,8 +131,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
             } else {
                 title = NSLocalizedString(@"Connect", @"Button title to connect a Publicize service");
             }
-            [button setTitle:title forState:UIControlStateNormal];
-            [button sizeToFit];
+            cell.detailTextLabel.text = title;
         } break;
         default:
             break;
@@ -139,22 +140,12 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     return cell;
 }
 
-- (void)publicizeButtonTapped:(UIButton *)sender
-{
-    NSIndexPath *tappedPath = [NSIndexPath indexPathForRow:sender.tag inSection:SharingPublicize];
-    [self tableView:self.tableView accessoryButtonTappedForRowWithIndexPath:tappedPath];
-}
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    [self tableView:self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
-}
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
+    
     if (self.connectingService || self.disconnectingService) {
         return;
     }
@@ -196,7 +187,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     [blogService connectPublicizer:publicizer
                  withAuthorization:authorization
                            success:^{
-        [weakSelf syncConnectionsWithService:blogService];
+       [weakSelf syncConnectionsWithService:blogService];
     } failure:^(NSError *error) {
        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connect failed", @"Message to show when Publicize connect failed")];
        [weakSelf refreshPublicizers];
@@ -210,9 +201,9 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     __weak __typeof__(self) weakSelf = self;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService checkAuthorizationForPublicizer:publicizer success:^(NSDictionary *authorization) {
-            [weakSelf connectPublicizer:publicizer
-                      withAuthorization:authorization
-                             andService:blogService];
+        [weakSelf connectPublicizer:publicizer
+                  withAuthorization:authorization
+                         andService:blogService];
     } failure:^(NSError *error) {
         if (error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
