@@ -4,7 +4,6 @@
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
 #import "ReachabilityUtils.h"
-#import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostRichContentView.h"
@@ -113,14 +112,6 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 #pragma mark - Configuration
 
-- (Class)classForPostView
-{
-    if (self.readerViewStyle == ReaderViewStyleSitePreview) {
-        return [ReaderPostRichUnattributedContentView class];
-    }
-    return [ReaderPostRichContentView class];
-}
-
 - (void)configureNavbar
 {
     // Don't show 'Reader' in the next-view back button
@@ -140,7 +131,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)configurePostView
 {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
-    self.postView = [[[self classForPostView] alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
+    self.postView = [[ReaderPostRichContentView alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
@@ -386,7 +377,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     }
     self.didBumpStats = YES;
     NSString *isOfflineView = [ReachabilityUtils isInternetReachable] ? @"no" : @"yes";
-    NSString *detailType = (self.readerViewStyle == ReaderViewStyleNormal) ? ReaderDetailTypeNormal : ReaderDetailTypePreviewSite;
+    NSString *detailType = (self.post.topic.type == ReaderSiteTopic.TopicType) ? ReaderDetailTypePreviewSite : ReaderDetailTypeNormal;
     NSDictionary *properties = @{
                                  ReaderDetailTypeKey:detailType,
                                  ReaderDetailOfflineKey:isOfflineView
@@ -498,9 +489,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
 {
     NSNumber *siteID = self.post.siteID;
-    NSString *siteURL = self.post.blogURL;
-    BOOL isWPcom = self.post.isWPCom;
-    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithSiteID:siteID siteURL:siteURL isWPcom:isWPcom];
+    ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:siteID];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -528,9 +517,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
         return;
     }
     if (self.post.sourceAttribution.blogID) {
-        ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithSiteID:self.post.sourceAttribution.blogID
-                                                                                                    siteURL:self.post.sourceAttribution.blogURL
-                                                                                                    isWPcom:YES];
+        ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:self.post.sourceAttribution.blogID];
         [self.navigationController pushViewController:controller animated:YES];
         return;
     }

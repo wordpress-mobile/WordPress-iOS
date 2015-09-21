@@ -178,12 +178,8 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 
 - (void)checkSiteExistsAtURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
-    NSString *path = [siteURL absoluteString];
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
     // Just ping the URL and make sure we don't get back a 40x error.
-    [self.api HEAD:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation) {
+    [self.api HEAD:[siteURL absoluteString] parameters:nil success:^(AFHTTPRequestOperation *operation) {
         if (success) {
             success();
         }

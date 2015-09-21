@@ -8,7 +8,7 @@ data model as well as any custom migrations.
 Changes to the data model:
 
 - `Blog` added a new number attribute called `privacy` to store the privacy setting on the site
-- `ReaderPost` added new string fields for `primaryTag`, `primaryTagSlug`, `secondaryTag`, and `secondaryTagSlug`
+- `ReaderPost` added new string fields for `blavatar`, `primaryTag`, and `primaryTagSlug`
 - `ReaderPost` added new integer fields for `wordCount`, and `readingTime`
 - `ReaderPost` added new boolean fields for `isExternal`, and `isJetpack`
 - `ReaderPost` removed fields `dateCommentsSynced`, and `storedComment`
