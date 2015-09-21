@@ -50,7 +50,6 @@
 #import "UIImage+Tint.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"
-#import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"

@@ -20,7 +20,6 @@
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderTopicService.h"
 #import "SourcePostAttribution.h"
-#import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
 #import "WPAnimatedBox.h"

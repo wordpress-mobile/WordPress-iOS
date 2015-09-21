@@ -73,4 +73,17 @@ extension UIView
             }
         }
     }
+
+    public func addSubviewWithFadeAnimation(subview: UIView) {
+        addSubview(subview)
+        subview.fadeInWithAnimation()
+    }
+
+    public func fadeInWithAnimation() {
+        let finalAlpha = self.alpha
+        self.alpha = 0.0;
+        UIView.animateWithDuration(0.2, animations: { () -> Void in
+            self.alpha = finalAlpha
+        })
+    }
 }
