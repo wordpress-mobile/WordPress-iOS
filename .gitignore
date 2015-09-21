@@ -52,6 +52,7 @@ WordPress/WordPress.xcodeproj/*.pbxuser
 WordPress/WordPress.xcodeproj/*.perspectivev3
 WordPress/WordPress.xcodeproj/project.xcworkspace
 WordPress/WordPress.xcodeproj/xcuserdata
+WordPress.xcworkspace/xcshareddata/WordPress.xcscmblueprint
 /build
 .hockey_app_credentials
 WordPress/InfoPlist.h
