@@ -24,6 +24,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 @property (nonatomic, strong) NSArray *publicizeServices;
 
 @property (nonatomic, strong) Publicizer *connectingService;
+@property (nonatomic, strong) Publicizer *disconnectingService;
 
 @end
 
@@ -56,6 +57,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 - (void)refreshPublicizers
 {
     self.connectingService = nil;
+    self.disconnectingService = nil;
     self.publicizeServices = [self.blog.publicizers sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:TRUE]]];
     [self.tableView reloadData];
 }
@@ -120,6 +122,8 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
             NSString *title = nil;
             if ([self.connectingService.service isEqualToString:publicizer.service]) {
                 title = NSLocalizedString(@"Connecting…", @"Button title while a Publicize service is connecting");
+            } else if ([self.disconnectingService.service isEqualToString:publicizer.service]) {
+                title = NSLocalizedString(@"Disconnecting…", @"Button title while a Publicize service is disconnecting");
             } else if (publicizer.isConnected) {
                 title = NSLocalizedString(@"Disconnect", @"Button title to disconnect a Publicize service");
             } else {
@@ -151,25 +155,33 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.connectingService || self.disconnectingService) {
+        return;
+    }
+    
     Publicizer *publicizer = self.publicizeServices[indexPath.row];
     if (publicizer.isConnected) {
+        self.disconnectingService = publicizer;
         [self disconnectPublicizer:publicizer];
     } else {
         self.connectingService = publicizer;
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         [self connectPublicizer:publicizer interact:YES];
     }
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark - Publicizer management
 
 - (void)syncConnectionsWith:(BlogService *)blogService
 {
+    NSParameterAssert(blogService);
+    
     __weak __typeof__(self) weakSelf = self;
     [blogService syncConnectionsForBlog:self.blog success:^{
-       [weakSelf refreshPublicizers];
+        [weakSelf refreshPublicizers];
     } failure:^(NSError *error) {
-       [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Synchronization failed", @"Message to show when Publicize connection synchronization failed")];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Synchronization failed", @"Message to show when Publicize connection synchronization failed")];
+        [weakSelf refreshPublicizers];
     }];
 }
 
