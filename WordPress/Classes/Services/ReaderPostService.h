@@ -45,16 +45,6 @@ extern NSString * const ReaderPostServiceErrorDomain;
           success:(void (^)(ReaderPost *post))success
           failure:(void (^)(NSError *error))failure;
 
-/**
- Backfills and saves posts for the specified topic.
-
- @param topic The Topic for which to request posts.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)backfillPostsForTopic:(ReaderAbstractTopic *)topic
-                      success:(void (^)(NSInteger count, BOOL hasMore))success
-                      failure:(void (^)(NSError *error))failure;
 
 /**
  Toggle the liked status of the specified post.
