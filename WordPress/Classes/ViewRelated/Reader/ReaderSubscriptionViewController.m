@@ -261,9 +261,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 - (void)followTopicNamed:(NSString *)topicName
 {
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [service followTopicNamed:topicName withSuccess:^{
-        // noop
-    } failure:^(NSError *error) {
+    [service followTagNamed:topicName withSuccess:nil failure:^(NSError *error) {
         DDLogError(@"Could not follow topic: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Follow Topic", @"");
