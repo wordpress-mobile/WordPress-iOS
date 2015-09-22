@@ -6,8 +6,8 @@ typealias People = [Person]
 struct Person {
     let ID: Int
     let username: String
-    let firstName: String
-    let lastName: String
+    let firstName: String?
+    let lastName: String?
     let displayName: String
     let role: Role
     let pending: Bool
@@ -18,7 +18,7 @@ struct Person {
         return nil
     }
 
-    enum Role: Int {
+    enum Role: Int, Comparable {
         case SuperAdmin
         case Admin
         case Editor
@@ -28,13 +28,13 @@ struct Person {
 
         init(string: String) {
             switch string {
-            case "Administrator":
+            case "administrator":
                 self = .Admin
-            case "Editor":
+            case "editor":
                 self = .Editor
-            case "Author":
+            case "author":
                 self = .Author
-            case "Contributor":
+            case "contributor":
                 self = .Contributor
             default:
                 self = .Unsupported
@@ -76,3 +76,8 @@ struct Person {
         }
     }
 }
+
+func <(lhs: Person.Role, rhs: Person.Role) -> Bool {
+    return lhs.rawValue < rhs.rawValue
+}
+
