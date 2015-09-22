@@ -517,7 +517,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             // NOTE that this approach leaves the possibility for older posts to not be cleaned up.
             [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingDate:date];
 
-            // if Deleting earlier, delete every post older than the last post in this batch.
+            // If deleting earlier, delete every post older than the last post in this batch.
             if (deleteEarlier) {
                 ReaderPost *lastPost = [newPosts lastObject];
                 [self deletePostsEarlierThan:lastPost.sortDate forTopic:readerTopic];
@@ -525,10 +525,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
             } else {
 
-                // If there is no overlap, append a gap placeholder to the end of the current batch
+                // Handle an overlap in posts that were synced
                 if (overlap) {
-                    // No need for a gap placeholder. Remove any that existed
-                    [self removeGapMarkerForTopic:readerTopic];
+                    [self removeGapMarkerForTopic:readerTopic ifNewPostsOverlapMarker:newPosts];
 
                 } else {
                     // If there are existing posts older than the oldest of the
@@ -558,6 +557,37 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 
 #pragma mark Gap Detection Methods
+
+- (void)removeGapMarkerForTopic:(ReaderAbstractTopic *)topic ifNewPostsOverlapMarker:(NSArray *)newPosts
+{
+    ReaderGapMarker *gapMarker = [self gapMarkerForTopic:topic];
+    if (gapMarker) {
+        NSDate *newestPostDate = ((ReaderPost *)newPosts.firstObject).sortDate;
+        NSDate *oldestPostDate = ((ReaderPost *)newPosts.lastObject).sortDate;
+        NSDate *gapDate = gapMarker.sortDate;
+        // Confirm the overlap includes the gap marker.
+        if (gapDate == [newestPostDate earlierDate:gapDate] && gapDate == [oldestPostDate laterDate:gapDate]) {
+            // No need for a gap placeholder. Remove any that existed
+            [self removeGapMarkerForTopic:topic];
+        }
+    }
+}
+
+- (ReaderGapMarker *)gapMarkerForTopic:(ReaderAbstractTopic *)topic
+{
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderGapMarker class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(error.localizedDescription);
+        return nil;
+    }
+
+    // Assume there will ever only be one and return the first result.
+    return results.firstObject;
+}
 
 - (void)insertGapMarkerBeforePost:(ReaderPost *)post forTopic:(ReaderAbstractTopic *)topic
 {
