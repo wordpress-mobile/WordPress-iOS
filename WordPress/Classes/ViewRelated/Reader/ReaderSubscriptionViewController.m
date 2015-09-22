@@ -1,20 +1,19 @@
+#import "ReaderSubscriptionViewController.h"
+
+#import <SVProgressHUD/SVProgressHUD.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
-#import <SVProgressHUD/SVProgressHUD.h>
-
-#import "ReaderSubscriptionViewController.h"
-#import "ReaderEditableSubscriptionPage.h"
-#import "SubscribedTopicsViewController.h"
-#import "RecommendedTopicsViewController.h"
-#import "FollowedSitesViewController.h"
-#import "ContextManager.h"
-#import "WPAccount.h"
 #import "AccountService.h"
-#import "ReaderTopicService.h"
+#import "ContextManager.h"
+#import "FollowedSitesViewController.h"
+#import "ReaderEditableSubscriptionPage.h"
 #import "ReaderSiteService.h"
+#import "ReaderTopicService.h"
+#import "RecommendedTopicsViewController.h"
+#import "SubscribedTopicsViewController.h"
+#import "WPAccount.h"
 #import "WPTableViewCell.h"
-
 #import "WordPress-Swift.h"
 
 static NSString *const SubscribedTopicsPageIdentifier = @"SubscribedTopicsPageIdentifier";
@@ -262,9 +261,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 - (void)followTopicNamed:(NSString *)topicName
 {
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [service followTopicNamed:topicName withSuccess:^{
-        // noop
-    } failure:^(NSError *error) {
+    [service followTagNamed:topicName withSuccess:nil failure:^(NSError *error) {
         DDLogError(@"Could not follow topic: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Follow Topic", @"");
