@@ -24,8 +24,11 @@ import Foundation
     private let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
     private let readerBlockedCellNibName = "ReaderBlockedSiteCell"
     private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
+    private let readerGapMarkerCellNibName = "ReaderGapMarkerCell"
+    private let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
     private let estimatedRowHeight = CGFloat(100.0)
     private let blockedRowHeight = CGFloat(66.0)
+    private let gapMarkerRowHeight = CGFloat(44.0)
     private let loadMoreThreashold = 4
 
     private let refreshInterval = 300
@@ -36,6 +39,8 @@ import Foundation
     private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
     private var isLoggedIn = false
+    private var syncIsFillingGap = false
+    private var indexPathForGapMarker: NSIndexPath?
 
     private var siteID:NSNumber? {
         didSet {
@@ -193,6 +198,9 @@ import Foundation
 
         nib = UINib(nibName: readerBlockedCellNibName, bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: readerBlockedCellReuseIdentifier)
+
+        nib = UINib(nibName: readerGapMarkerCellNibName, bundle: nil)
+        tableView.registerNib(nib, forCellReuseIdentifier: readerGapMarkerCellReuseIdentifier)
     }
 
     private func setupTableViewHandler() {
@@ -615,6 +623,16 @@ import Foundation
 
     // MARK: - Sync Methods
 
+    func updateLastSyncedForTopic(objectID:NSManagedObjectID) {
+        do {
+            let topic = try managedObjectContext().existingObjectWithID(objectID) as! ReaderAbstractTopic
+            topic.lastSynced = NSDate()
+            ContextManager.sharedInstance().saveContext(managedObjectContext())
+        } catch let error as NSError {
+            DDLogSwift.logError("Failed to update topic last synced date: \(error.localizedDescription)")
+        }
+    }
+
     func canSync() -> Bool {
         let appDelegate = WordPressAppDelegate.sharedInstance()
         return (readerTopic != nil) && appDelegate.connectionAvailable
@@ -641,6 +659,28 @@ import Foundation
         }
     }
 
+    func syncFillingGap(indexPath:NSIndexPath) {
+        if !canSync() {
+            UIAlertView(title: NSLocalizedString("Unable to Load Posts", comment: "Title of a prompt saying the app needs an internet connection before it can load posts"),
+                message: NSLocalizedString("Please check your internet connection and try again.", comment: "Politely asks the user to check their internet connection before trying again. "),
+                delegate: nil,
+                cancelButtonTitle: NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
+                ).show()
+            return
+        }
+        if syncHelper.isSyncing {
+            UIAlertView(title: NSLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes."),
+                message: NSLocalizedString("Please wait til the current fetch completes.", comment: "Asks the usre to wait until the currently running fetch request completes."),
+                delegate: nil,
+                cancelButtonTitle: NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
+                ).show()
+            return
+        }
+        indexPathForGapMarker = indexPath
+        syncIsFillingGap = true
+        syncHelper.syncContentWithUserInteraction(true)
+    }
+
     func syncItems(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
@@ -648,12 +688,57 @@ import Foundation
         syncContext.performBlock {[weak self] () -> Void in
             do {
                 let topic = try syncContext.existingObjectWithID(self!.readerTopic!.objectID) as! ReaderAbstractTopic
-
+                let objectID = topic.objectID
                 service.fetchPostsForTopic(topic,
                     earlierThan: NSDate(),
                     success: {[weak self] (count:Int, hasMore:Bool) in
                         dispatch_async(dispatch_get_main_queue(), {
+                            if let strongSelf = self {
+                                if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
+                                    strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
+                                    strongSelf.updateAndPerformFetchRequest()
+                                }
+                                strongSelf.updateLastSyncedForTopic(objectID)
+                            }
+                            success?(hasMore: hasMore)
+                        })
+                    }, failure: { (error:NSError!) in
+                        dispatch_async(dispatch_get_main_queue(), {
+                            failure?(error: error)
+                        })
+                })
 
+            } catch let error as NSError {
+                DDLogSwift.logError(error.localizedDescription)
+            }
+        }
+    }
+
+    func syncItemsForGap(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
+        assert(syncIsFillingGap)
+        assert(indexPathForGapMarker != nil)
+
+        let post = tableViewHandler.resultsController.objectAtIndexPath(indexPathForGapMarker!) as? ReaderGapMarker
+        if post == nil {
+            // failsafe
+            return
+        }
+
+        // Reload the gap cell so it will start animating.
+        tableView.reloadRowsAtIndexPaths([indexPathForGapMarker!], withRowAnimation: .None)
+
+        let syncContext = ContextManager.sharedInstance().newDerivedContext()
+        let service =  ReaderPostService(managedObjectContext: syncContext)
+        let sortDate = post!.sortDate
+
+        syncContext.performBlock {[weak self] () -> Void in
+            do {
+                let topic = try syncContext.existingObjectWithID(self!.readerTopic!.objectID) as! ReaderAbstractTopic
+                service.fetchPostsForTopic(topic,
+                    earlierThan:sortDate,
+                    deletingEarlier:true,
+                    success: {[weak self] (count:Int, hasMore:Bool) in
+                        dispatch_async(dispatch_get_main_queue(), {
                             if let strongSelf = self {
                                 if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
                                     strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
@@ -669,31 +754,6 @@ import Foundation
                         })
                 })
 
-            } catch let error as NSError {
-                DDLogSwift.logError(error.localizedDescription)
-            }
-        }
-    }
-
-    func backfillItems(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
-        let syncContext = ContextManager.sharedInstance().newDerivedContext()
-        let service =  ReaderPostService(managedObjectContext: syncContext)
-
-        syncContext.performBlock {[weak self] () -> Void in
-
-            do  {
-                let topic = try syncContext.existingObjectWithID(self!.readerTopic!.objectID) as! ReaderAbstractTopic
-
-                service.backfillPostsForTopic(topic,
-                    success: { (count:Int, hasMore:Bool) -> Void in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            success?(hasMore: hasMore)
-                        })
-                    }, failure: { (error:NSError!) -> Void in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            failure?(error: error)
-                        })
-                })
             } catch let error as NSError {
                 DDLogSwift.logError(error.localizedDescription)
             }
@@ -739,11 +799,10 @@ import Foundation
 
     func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
         displayLoadingViewIfNeeded()
-        if userInteraction {
-            syncItems(success, failure: failure)
-
+        if syncIsFillingGap {
+            syncItemsForGap(success, failure: failure)
         } else {
-            backfillItems(success, failure: failure)
+            syncItems(success, failure: failure)
         }
     }
 
@@ -760,6 +819,8 @@ import Foundation
     }
 
     public func cleanupAfterSync() {
+        syncIsFillingGap = false
+        indexPathForGapMarker = nil
         cleanupAndRefreshAfterScrolling = false
         tableViewHandler.refreshTableViewPreservingOffset()
         refreshControl.endRefreshing()
@@ -864,6 +925,11 @@ import Foundation
 
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
+
+        if post.isKindOfClass(ReaderGapMarker) {
+            return gapMarkerRowHeight
+        }
+
         if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
             return blockedRowHeight
         }
@@ -876,6 +942,12 @@ import Foundation
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell? {
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
+
+        if post.isKindOfClass(ReaderGapMarker) {
+            let cell = tableView.dequeueReusableCellWithIdentifier(readerGapMarkerCellReuseIdentifier) as! ReaderGapMarkerCell
+            configureGapMarker(cell)
+            return cell
+        }
 
         if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
             let cell = tableView.dequeueReusableCellWithIdentifier(readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
@@ -902,6 +974,11 @@ import Foundation
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
+
+        if post.isKindOfClass(ReaderGapMarker) {
+            syncFillingGap(indexPath)
+            return
+        }
 
         if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
             unblockSiteForPost(post)
@@ -949,6 +1026,10 @@ import Foundation
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
         cell.setSiteName(post.blogName)
+    }
+
+    public func configureGapMarker(cell: ReaderGapMarkerCell) {
+        cell.animateActivityView(syncIsFillingGap)
     }
 
 
