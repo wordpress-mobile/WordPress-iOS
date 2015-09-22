@@ -265,6 +265,32 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 #pragma mark - Accessor methods
 
+- (void)setPost:(ReaderPost *)post
+{
+    if (post == _post) {
+        return;
+    }
+
+    if (!post) {
+        _post = nil;
+        return;
+    }
+
+    _post = [self postInContext:post.objectID];
+}
+
+- (ReaderPost *)postInContext:(NSManagedObjectID *)objectID
+{
+    NSError *error;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPost *post = [context existingObjectWithID:objectID error:&error];
+    if (error) {
+        DDLogError([error localizedDescription]);
+        return nil;
+    }
+    return post;
+}
+
 - (UIBarButtonItem *)shareButton
 {
     if (_shareButton) {

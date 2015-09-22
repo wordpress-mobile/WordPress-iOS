@@ -115,7 +115,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 - (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    [self.managedObjectContext performBlock:^{
+    [self.managedObjectContext performBlockAndWait:^{
 
         // Get a the post in our own context
         NSError *error;
@@ -159,18 +159,18 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         // Define failure block. Make sure rollback happens in the moc's queue,
         // and failure is called on the main queue.
         void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-            [self.managedObjectContext performBlockAndWait:^{
+            [self.managedObjectContext performBlock:^{
                 // Revert changes on failure
                 readerPost.isLiked = oldValue;
                 readerPost.likeCount = oldCount;
-
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (failure) {
+                            failure(error);
+                        }
+                    });
+                }];
             }];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (failure) {
-                    failure(error);
-                }
-            });
         };
 
         // Call the remote service.
