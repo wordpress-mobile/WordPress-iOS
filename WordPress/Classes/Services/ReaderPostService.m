@@ -16,8 +16,8 @@
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 
-NSUInteger const ReaderPostServiceNumberToSync = 20;
-NSUInteger const ReaderPostServiceTitleLength = 40;
+NSUInteger const ReaderPostServiceNumberToSync = 40;
+NSUInteger const ReaderPostServiceTitleLength = 30;
 NSUInteger const ReaderPostServiceMaxPosts = 300;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
@@ -453,12 +453,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
  Merge a freshly fetched batch of posts into the existing set of posts for the specified topic.
  Saves the managed object context.
 
- @param posts An array of RemoteReaderPost objects
+ @param remotePosts An array of RemoteReaderPost objects
  @param date The `before` date posts were requested.
  @param topicObjectID The ObjectID of the ReaderAbstractTopic to assign to the newly created posts.
  @param success block called on a successful fetch which should be performed after merging
  */
-- (void)mergePosts:(NSArray *)posts
+- (void)mergePosts:(NSArray *)remotePosts
        earlierThan:(NSDate *)date
           forTopic:(NSManagedObjectID *)topicObjectID
    deletingEarlier:(BOOL)deleteEarlier
@@ -484,14 +484,29 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             return;
         }
 
-        NSUInteger postsCount = [posts count];
+        NSUInteger postsCount = [remotePosts count];
         if (postsCount == 0) {
             [self deletePostsEarlierThan:date forTopic:readerTopic];
 
         } else {
-            NSSet *existingGlobalIDs;
+            NSArray *posts = remotePosts;
+            BOOL overlap = NO;
+
             if (!deleteEarlier) {
-                existingGlobalIDs = [self globalIDsOfExistingPostsForTopic:readerTopic];
+                // Before processing the new posts, check if there is an overlap between
+                // what is currently cached, and what is being synced.
+                NSSet *existingGlobalIDs = [self globalIDsOfExistingPostsForTopic:readerTopic];
+                NSSet *newGlobalIDs = [self globalIDsOfRemotePosts:posts];
+                overlap = [existingGlobalIDs intersectsSet:newGlobalIDs];
+
+                // A strategy to avoid false positives in gap detection is to sync
+                // one extra post. Only remove the extra post if we received a
+                // full set of results. A partial set means we've reached
+                // the end of syncable content.
+                if ([posts count] == ReaderPostServiceNumberToSync) {
+                    posts = [posts subarrayWithRange:NSMakeRange(0, [posts count] - 2)];
+                    postsCount = [posts count];
+                }
             }
 
             // Create or update the synced posts.
@@ -510,9 +525,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
             } else {
 
-                // Check for overlap between fetched and existing.
                 // If there is no overlap, append a gap placeholder to the end of the current batch
-                BOOL overlap = [existingGlobalIDs intersectsSet:[self globalIDsOfPosts:newPosts]];
                 if (overlap) {
                     // No need for a gap placeholder. Remove any that existed
                     [self removeGapMarkerForTopic:readerTopic];
@@ -532,9 +545,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         // Clean up
         [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
         [self deletePostsFromBlockedSites];
-
-        // TODO: Last synced needs to be updated from pull to refresh only, not from load more or other merge actions
-        readerTopic.lastSynced = [NSDate date];
 
         BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
@@ -588,7 +598,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (BOOL)topic:(ReaderAbstractTopic *)topic hasPostsOlderThan:(NSDate *)date
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND sortDate > %@", topic, date];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND sortDate < %@", topic, date];
 
     NSError *error;
     NSInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
@@ -599,10 +609,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return (count > 0);
 }
 
-- (NSSet *)globalIDsOfPosts:(NSArray *)readerPosts
+- (NSSet *)globalIDsOfRemotePosts:(NSArray *)remotePosts
 {
     NSMutableArray *arr = [NSMutableArray array];
-    for (ReaderPost *post in readerPosts) {
+    for (RemoteReaderPost *post in remotePosts) {
         [arr addObject:post.globalID];
     }
     // return non-mutable array
@@ -613,8 +623,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
-    [fetchRequest setPropertiesToFetch:@[ReaderPostGlobalIDKey]];
-    fetchRequest.returnsDistinctResults = YES;
+    fetchRequest.includesSubentities = NO;
 
     NSError *error;
     NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
@@ -624,10 +633,10 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 
     NSMutableArray *arr = [NSMutableArray array];
-    for (NSDictionary *post in results) {
-        [arr addObject:[post stringForKey:ReaderPostGlobalIDKey]];
+    for (ReaderPost *post in results) {
+        NSString *globalID = post.globalID ?: @"";
+        [arr addObject:globalID];
     }
-
     // return non-mutable array
     return [NSSet setWithArray:arr];
 }
