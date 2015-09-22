@@ -17,24 +17,23 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NEV-Mu-ne8">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="load more posts" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AN0-FG-iOC">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="7AJ-lZ-zT3">
                                 <rect key="frame" x="150" y="12" width="20" height="20"/>
                             </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="srv-7s-DDa" customClass="PostMetaButton">
+                                <rect key="frame" x="106" y="7.5" width="108" height="29"/>
+                                <color key="backgroundColor" red="0.52941176470588236" green="0.65098039215686276" blue="0.73725490196078436" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                <state key="normal" title="Load More Posts"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="7AJ-lZ-zT3" firstAttribute="centerY" secondItem="NEV-Mu-ne8" secondAttribute="centerY" id="02F-Ob-qUU"/>
-                            <constraint firstItem="AN0-FG-iOC" firstAttribute="top" secondItem="NEV-Mu-ne8" secondAttribute="top" id="5rj-Ym-h1k"/>
                             <constraint firstItem="7AJ-lZ-zT3" firstAttribute="centerX" secondItem="NEV-Mu-ne8" secondAttribute="centerX" id="Kh7-xU-0dq"/>
-                            <constraint firstAttribute="bottom" secondItem="AN0-FG-iOC" secondAttribute="bottom" constant="-0.5" id="T2e-3s-f0N"/>
-                            <constraint firstItem="AN0-FG-iOC" firstAttribute="leading" secondItem="NEV-Mu-ne8" secondAttribute="leading" id="VFN-G5-EFc"/>
-                            <constraint firstAttribute="trailing" secondItem="AN0-FG-iOC" secondAttribute="trailing" id="Yqv-Tm-rqn"/>
+                            <constraint firstItem="srv-7s-DDa" firstAttribute="centerY" secondItem="NEV-Mu-ne8" secondAttribute="centerY" id="Ocp-tt-08p"/>
+                            <constraint firstItem="srv-7s-DDa" firstAttribute="centerX" secondItem="NEV-Mu-ne8" secondAttribute="centerX" id="YJl-oR-qhB"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -63,8 +62,8 @@
             </tableViewCellContentView>
             <connections>
                 <outlet property="activityView" destination="7AJ-lZ-zT3" id="2Sp-Yu-l1o"/>
+                <outlet property="button" destination="srv-7s-DDa" id="fKE-Ox-R1A"/>
                 <outlet property="innerContentView" destination="NEV-Mu-ne8" id="Vhi-lx-h4k"/>
-                <outlet property="label" destination="AN0-FG-iOC" id="bTr-HL-X5F"/>
             </connections>
             <point key="canvasLocation" x="294" y="22"/>
         </tableViewCell>
