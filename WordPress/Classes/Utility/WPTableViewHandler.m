@@ -194,8 +194,10 @@ static CGFloat const DefaultCellHeight = 44.0;
     NSMutableDictionary *cachedRowHeights = [NSMutableDictionary dictionary];
     for (NSObject *obj in self.resultsController.fetchedObjects) {
         NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
+        if (!indexPath) {
+            continue;
+        }
         CGFloat height = [self.delegate tableView:self.tableView heightForRowAtIndexPath:indexPath forWidth:width];
-
         [cachedRowHeights setObject:@(height) forKey:[indexPath toString]];
     }
 
@@ -424,13 +426,15 @@ static CGFloat const DefaultCellHeight = 44.0;
         return [self.delegate tableView:tableView viewForHeaderInSection:section];
     }
 
+    WPTableViewSectionHeaderFooterView *header;
     if ([self.sectionHeaders count] > section) {
-        return [self.sectionHeaders objectAtIndex:section];
+        header = [self.sectionHeaders objectAtIndex:section];
+    } else {
+        header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
+        [self.sectionHeaders addObject:header];
     }
 
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
     header.title = [self titleForHeaderInSection:section];
-    [self.sectionHeaders addObject:header];
     return header;
 }
 
@@ -661,7 +665,9 @@ static CGFloat const DefaultCellHeight = 44.0;
     NSMutableArray *rowHeights = [NSMutableArray array];
     for (NSManagedObject *object in self.fetchedResultsBeforeChange) {
         NSIndexPath *indexPath = [self.resultsController indexPathForObject:object];
-
+        if (!indexPath) {
+            continue;
+        }
         // Only preserve info relevant to the current scroll offset. Anything else is extra work.
         NSComparisonResult order = [indexPath compare:lastVisibleIndexPath];
         if (order == NSOrderedDescending) {

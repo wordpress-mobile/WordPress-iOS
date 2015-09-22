@@ -3,6 +3,7 @@
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <DTCoreText/DTCoreText.h>
 #import <SFHFKeychainUtils.h>
+#import <SVProgressHUD.h>
 #import <WordPress-AppbotX/ABXAppStore.h>
 
 #import "AccountService.h"
@@ -30,15 +31,14 @@
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
 
-#import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostContentProvider.h"
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPostService.h"
 #import "ReaderSiteService.h"
-#import "ReaderTopic.h"
 #import "ReaderTopicService.h"
+#import "RemoteReaderTopic.h"
 
 #import "ServiceRemoteREST.h"
 #import "SourcePostAttribution.h"
@@ -50,8 +50,6 @@
 #import "UIImage+Tint.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"
-
-#import "UIImage+Tint.h"
 #import "UIView+Subviews.h"
 
 #import "WordPressAppDelegate.h"
