@@ -231,10 +231,18 @@ extension WPStyleGuide
 
     // MARK: - Gap Marker Styles
 
-    public class func applyGapMarkerFontStyle(label:UILabel) {
+    public class func applyGapMarkerButtonStyle(button:UIButton) {
         let fontSize = Cards.contentFontSize
-        label.font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
-        label.textColor = greyDarken20()
+        let normalImage = UIImage(color: WPStyleGuide.grey(), havingSize: button.bounds.size)
+        let highlightedImage = UIImage(color: WPStyleGuide.lightBlue(), havingSize: button.bounds.size)
+        button.setBackgroundImage(normalImage, forState: .Normal)
+        button.setBackgroundImage(highlightedImage, forState: .Highlighted)
+
+        button.titleLabel?.font = WPFontManager.openSansBoldFontOfSize(fontSize)
+        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+
+        button.layer.cornerRadius = 5.0
+        button.layer.masksToBounds = true
     }
 
 
