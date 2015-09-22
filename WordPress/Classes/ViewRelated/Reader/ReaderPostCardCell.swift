@@ -61,6 +61,7 @@ import Foundation
     private var summaryLabelBottomConstraintConstant = CGFloat(0.0)
     private var attributionBottomConstraintConstant = CGFloat(0.0)
     private var wordCountBottomConstraintConstant = CGFloat(0.0)
+    private var actionButtonViewHeightConstraintConstant = CGFloat(0.0)
 
     private var didPreserveStartingConstraintConstants = false
     private var loadMediaWhenConfigured = true
@@ -73,10 +74,12 @@ import Foundation
 
     // MARK: - Accessors
 
+    public var enableLoggedInFeatures: Bool = true
+
     public override var backgroundColor: UIColor? {
         didSet{
             contentView.backgroundColor = backgroundColor
-            innerContentView.backgroundColor = backgroundColor
+            innerContentView?.backgroundColor = backgroundColor
         }
     }
 
@@ -218,6 +221,7 @@ import Foundation
         summaryLabelBottomConstraintConstant = summaryLabelBottomConstraint.constant
         attributionBottomConstraintConstant = attributionBottomConstraint.constant
         wordCountBottomConstraintConstant = wordCountBottomConstraint.constant
+        actionButtonViewHeightConstraintConstant = actionButtonViewHeightConstraint.constant
 
         didPreserveStartingConstraintConstants = true
     }
@@ -265,6 +269,7 @@ import Foundation
         configureTag()
         configureWordCount()
         configureActionButtons()
+        configureActionViewHeightIfNeeded()
 
         setNeedsUpdateConstraints()
     }
@@ -273,17 +278,17 @@ import Foundation
         // Always reset
         avatarImageView.image = nil
 
-        var placeholder = UIImage(named: "post-blavatar-placeholder")
+        let placeholder = UIImage(named: "post-blavatar-placeholder")
 
-        var size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        var url = contentProvider?.blavatarForDisplayOfSize(Int(size))
+        let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
+        let url = contentProvider?.blavatarForDisplayOfSize(Int(size))
         if loadMediaWhenConfigured && url != nil {
-            avatarImageView.setImageWithURL(url, placeholderImage: placeholder)
+            avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
         }
 
-        var blogName = contentProvider?.blogNameForDisplay()
+        let blogName = contentProvider?.blogNameForDisplay()
         blogNameButton.setTitle(blogName, forState: .Normal)
         blogNameButton.setTitle(blogName, forState: .Highlighted)
         blogNameButton.setTitle(blogName, forState: .Disabled)
@@ -339,17 +344,18 @@ import Foundation
 
     private func requestForURL(url:NSURL) -> NSURLRequest {
         var requestURL = url
-        if let absoluteString = requestURL.absoluteString {
-            if !(absoluteString.hasPrefix("https")) {
-                var sslURL = absoluteString.stringByReplacingOccurrencesOfString("http", withString: "https")
-                requestURL = NSURL(string: sslURL)!
-            }
+
+        let absoluteString = requestURL.absoluteString
+        if !(absoluteString.hasPrefix("https")) {
+            let sslURL = absoluteString.stringByReplacingOccurrencesOfString("http", withString: "https")
+            requestURL = NSURL(string: sslURL)!
         }
+
 
         let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let token = acctServ.defaultWordPressComAccount().authToken
-        var request = NSMutableURLRequest(URL: requestURL)
-        var headerValue = String(format: "Bearer %@", token)
+        let request = NSMutableURLRequest(URL: requestURL)
+        let headerValue = String(format: "Bearer %@", token)
         request.addValue(headerValue, forHTTPHeaderField: "Authorization")
 
         return request
@@ -357,7 +363,7 @@ import Foundation
 
     private func configureTitle() {
         if let title = contentProvider?.titleForDisplay() {
-            let attributes = WPStyleGuide.readerCardTitleAttributes()
+            let attributes = WPStyleGuide.readerCardTitleAttributes() as! [String: AnyObject]
             titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
             titleLabelBottomConstraint.constant = titleLabelBottomConstraintConstant
 
@@ -369,7 +375,7 @@ import Foundation
 
     private func configureSummary() {
         if let summary = contentProvider?.contentPreviewForDisplay() {
-            let attributes = WPStyleGuide.readerCardSummaryAttributes()
+            let attributes = WPStyleGuide.readerCardSummaryAttributes() as! [String: AnyObject]
             summaryLabel.attributedText = NSAttributedString(string: summary, attributes: attributes)
             summaryLabelBottomConstraint.constant = summaryLabelBottomConstraintConstant
 
@@ -395,10 +401,15 @@ import Foundation
     }
 
     private func configureTag() {
-        // NOTE: stubbed implementation until we start storing the tag in core data.
-        // var title = "#ReaderTag"
-        // tagButton.setTitle(title, forState: .Normal)
-        // tagButton.setTitle(title, forState: .Highlighted)
+        var tag = ""
+        if let rawTag = contentProvider?.primaryTag() {
+            if (rawTag.characters.count > 0) {
+                tag = "#\(rawTag)"
+            }
+        }
+        tagButton.hidden = tag.characters.count == 0
+        tagButton.setTitle(tag, forState: .Normal)
+        tagButton.setTitle(tag, forState: .Highlighted)
     }
 
     private func configureWordCount() {
@@ -411,8 +422,12 @@ import Foundation
             return
         }
 
-        // NOTE: stubbed implementation until we start storing the word count and reading time in core data
-        // wordCountLabel.attributedText = attributedTextForWordCount(100, readingTime: "(~2 min)")
+        if contentProvider!.wordCount() != nil {
+            let wordCount = contentProvider!.wordCount().integerValue
+            let readingTime = contentProvider!.readingTime().integerValue
+            wordCountLabel.attributedText = attributedTextForWordCount(wordCount, readingTime:readingTime)
+        }
+
         if wordCountLabel.attributedText == nil {
             wordCountBottomConstraint.constant = 0.0
         } else {
@@ -420,29 +435,28 @@ import Foundation
         }
     }
 
-    private func attributedTextForWordCount(wordCount:Int) -> NSAttributedString? {
-        var attrStr = NSMutableAttributedString()
+    private func attributedTextForWordCount(wordCount:Int, readingTime:Int) -> NSAttributedString? {
+        let attrStr = NSMutableAttributedString()
 
         // Compose the word count.
-        var wordsStr = NSLocalizedString("words",
+        let wordsStr = NSLocalizedString("words",
                                         comment: "Part of a label letting the user know how any words are in a post. For example: '300 words'")
 
-        var countStr = String(format: "%d %@ ", wordCount, wordsStr)
-        var attributes = WPStyleGuide.readerCardWordCountAttributes()
-        var attrWordCount = NSAttributedString(string: countStr, attributes: attributes)
+        let countStr = String(format: "%d %@ ", wordCount, wordsStr)
+        var attributes = WPStyleGuide.readerCardWordCountAttributes() as! [String: AnyObject]
+        let attrWordCount = NSAttributedString(string: countStr, attributes: attributes)
         attrStr.appendAttributedString(attrWordCount)
 
         // Append the reading time if needed.
-        let minutesToRead = Int(wordCount / avgWordsPerMinuteRead)
-        if minutesToRead < minimumMinutesToRead {
+        if readingTime == 0 {
             return attrStr
         }
 
-        var format = NSLocalizedString("(~ %d min)",
+        let format = NSLocalizedString("(~ %d min)",
                                         comment:"A short label that tells the user the estimated reading time of an article. '%d' is a placeholder for the number of minutes. '~' denotes an estimation.")
-        var str = String(format: format, minutesToRead)
-        attributes = WPStyleGuide.readerCardReadingTimeAttributes()
-        var attrReadingTime = NSAttributedString(string: str, attributes: attributes)
+        let str = String(format: format, readingTime)
+        attributes = WPStyleGuide.readerCardReadingTimeAttributes() as! [String: AnyObject]
+        let attrReadingTime = NSAttributedString(string: str, attributes: attributes)
         attrStr.appendAttributedString(attrReadingTime)
 
         return attrStr
@@ -459,16 +473,20 @@ import Foundation
             actionButtonRight
         ]
 
-        // Show Likes
-        if contentProvider!.isLikesEnabled() {
+        // Show likes if logged in, or if likes exist, but not if external
+        if (enableLoggedInFeatures || contentProvider!.likeCount().integerValue > 0) && !contentProvider!.isExternal() {
             let button = buttons.removeLast() as UIButton
             configureLikeActionButton(button)
         }
 
-        // Show comments
-        if contentProvider!.commentsOpen() || contentProvider!.commentCount().integerValue > 0 {
-            let button = buttons.removeLast() as UIButton
-            configureCommentActionButton(button)
+        // Show comments if logged in and comments are enabled, or if comments exist.
+        // But only if it is from wpcom (jetpack and external is not yet supported).
+        // Nesting this conditional cos it seems clearer that way
+        if contentProvider!.isWPCom() {
+            if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().integerValue > 0 {
+                let button = buttons.removeLast() as UIButton
+                configureCommentActionButton(button)
+            }
         }
     }
 
@@ -480,27 +498,34 @@ import Foundation
     private func resetActionButton(button:UIButton) {
         button.setTitle(nil, forState: .Normal)
         button.setTitle(nil, forState: .Highlighted)
+        button.setTitle(nil, forState: .Disabled)
         button.setImage(nil, forState: .Normal)
         button.setImage(nil, forState: .Highlighted)
+        button.setImage(nil, forState: .Disabled)
         button.selected = false
         button.hidden = true
+        button.enabled = true
     }
 
     private func configureActionButton(button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected:Bool) {
         button.setTitle(title, forState: .Normal)
         button.setTitle(title, forState: .Highlighted)
+        button.setTitle(title, forState: .Disabled)
         button.setImage(image, forState: .Normal)
         button.setImage(highlightedImage, forState: .Highlighted)
+        button.setImage(image, forState: .Disabled)
         button.selected = selected
         button.hidden = false
     }
 
     private func configureLikeActionButton(button: UIButton) {
         button.tag = CardAction.Like.rawValue
+        button.enabled = enableLoggedInFeatures
+
         let title = contentProvider!.likeCountForDisplay()
         let imageName = contentProvider!.isLiked() ? "icon-reader-liked" : "icon-reader-like"
-        var image = UIImage(named: imageName)
-        var highlightImage = UIImage(named: "icon-reader-like-highlight")
+        let image = UIImage(named: imageName)
+        let highlightImage = UIImage(named: "icon-reader-like-highlight")
         let selected = contentProvider!.isLiked()
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:selected)
     }
@@ -508,9 +533,17 @@ import Foundation
     private func configureCommentActionButton(button: UIButton) {
         button.tag = CardAction.Comment.rawValue
         let title = contentProvider?.commentCount().stringValue
-        var image = UIImage(named: "icon-reader-comment")
-        var highlightImage = UIImage(named: "icon-reader-comment-highlight")
+        let image = UIImage(named: "icon-reader-comment")
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:false)
+    }
+
+    private func configureActionViewHeightIfNeeded() {
+        if actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden {
+            actionButtonViewHeightConstraint.constant = 0
+        } else {
+            actionButtonViewHeightConstraint.constant = actionButtonViewHeightConstraintConstant;
+        }
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
@@ -562,7 +595,7 @@ import Foundation
             return
         }
 
-        var tag = CardAction(rawValue: sender.tag)!
+        let tag = CardAction(rawValue: sender.tag)!
         switch tag {
         case .Comment :
             delegate?.readerCell(self, commentActionForProvider: contentProvider!)

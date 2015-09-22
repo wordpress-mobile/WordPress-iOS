@@ -21,7 +21,7 @@ import Foundation
     }
     
     public required init(coder: NSCoder) {
-        super.init(coder: coder)
+        super.init(coder: coder)!
         setupView()
     }
     
@@ -84,9 +84,9 @@ import Foundation
     // MARK: - Public Methods
     public func replaceTextAtCaret(text: String!, withText replacement: String!) {
         let textToReplace: NSString = text ?? NSString();
-        var selectedRange: UITextRange = textView.selectedTextRange!
-        var newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
-        var newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)
+        let selectedRange: UITextRange = textView.selectedTextRange!
+        let newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
+        let newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)!
         textView.replaceRange(newRange, withText: replacement)
     }
     
@@ -117,7 +117,7 @@ import Foundation
             let prerange = NSMakeRange(0, range.location)
             let pretext: NSString = textViewText.substringWithRange(prerange) + text
             let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-            let lastWord: NSString = words.last as! NSString
+            let lastWord: NSString = words.last! as NSString
             
             delegate?.textView?(textView, didTypeWord: lastWord as String)
         }
@@ -187,7 +187,7 @@ import Foundation
         let fullWidth       = frame.width
         let textHeight      = floor(contentHeight + topPadding + bottomPadding)
 
-        var newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
+        let newHeight       = min(max(textHeight, textViewMinHeight), textViewMaxHeight)
         let intrinsicSize   = CGSize(width: fullWidth, height: newHeight)
 
         return intrinsicSize
@@ -203,8 +203,8 @@ import Foundation
         addSubview(containerView)
         
         // Setup Layout
-        setTranslatesAutoresizingMaskIntoConstraints(false)
-        containerView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        self.translatesAutoresizingMaskIntoConstraints = false
+        containerView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(containerView)
 
         // Setup the TextView
@@ -257,7 +257,7 @@ import Foundation
     }
     
     private func refreshSizeIfNeeded() {
-        var newSize         = intrinsicContentSize()
+        let newSize         = intrinsicContentSize()
         let oldSize         = frame.size
 
         if newSize.height == oldSize.height {

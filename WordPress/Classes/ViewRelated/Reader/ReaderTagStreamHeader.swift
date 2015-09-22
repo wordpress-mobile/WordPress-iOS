@@ -2,8 +2,12 @@ import Foundation
 
 @objc public class ReaderTagStreamHeader: UIView, ReaderStreamHeader
 {
+    @IBOutlet private weak var innerContentView: UIView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var followButton: PostMetaButton!
+    @IBOutlet private weak var contentIPadTopConstraint: NSLayoutConstraint?
+    @IBOutlet private weak var contentBottomConstraint: NSLayoutConstraint!
+
     public var delegate: ReaderStreamHeaderDelegate?
 
 
@@ -20,16 +24,29 @@ import Foundation
         WPStyleGuide.applyReaderStreamHeaderTitleStyle(titleLabel)
     }
 
-    
+    public override func sizeThatFits(size: CGSize) -> CGSize {
+        var height = innerContentView.frame.size.height
+        if UIDevice.isPad() && contentIPadTopConstraint != nil {
+            height += contentIPadTopConstraint!.constant
+        }
+        height += contentBottomConstraint.constant
+        return CGSize(width: size.width, height: height)
+    }
+
+
     // MARK: - Configuration
 
-    public func configureHeader(topic: ReaderTopic) {
+    public func configureHeader(topic: ReaderAbstractTopic) {
         titleLabel.text = topic.title
-        if topic.isSubscribed {
+        if topic.following {
             WPStyleGuide.applyReaderStreamHeaderFollowingStyle(followButton)
         } else {
             WPStyleGuide.applyReaderStreamHeaderNotFollowingStyle(followButton)
         }
+    }
+
+    public func enableLoggedInFeatures(enable: Bool) {
+        followButton.hidden = !enable
     }
 
 

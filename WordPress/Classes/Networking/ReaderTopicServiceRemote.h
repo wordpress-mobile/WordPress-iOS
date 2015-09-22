@@ -5,6 +5,7 @@ extern NSString * const WordPressComReaderEndpointURL;
 
 @class WordPressComApi;
 @class RemoteReaderSiteInfo;
+@class RemoteReaderTopic;
 
 @interface ReaderTopicServiceRemote : ServiceRemoteREST
 
@@ -42,6 +43,29 @@ extern NSString * const WordPressComReaderEndpointURL;
              withSuccess:(void (^)(NSNumber *topicID))success
                  failure:(void (^)(NSError *error))failure;
 
+/**
+ Follows the topic with the specified slug.
+
+ @param slug The slug of the topic to follow.
+ @param success block called on a successful fetch. An `NSArray` of `NSDictionary`
+ objects describing topics is passed as an argument.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)followTopicWithSlug:(NSString *)slug
+                withSuccess:(void (^)(NSNumber *topicID))success
+                    failure:(void (^)(NSError *error))failure;
+
+/**
+ Fetches public information about the tag with the specified slug.
+
+ @param slug The slug of the topic.
+ @param success block called on a successful fetch. An instance of RemoteReaderTopic
+ is passed to the callback block.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchTagInfoForTagWithSlug:(NSString *)slug
+                           success:(void (^)(RemoteReaderTopic *remoteTopic))success
+                           failure:(void (^)(NSError *error))failure;
 
 /**
  Fetches public information about the site with the specified ID. 
