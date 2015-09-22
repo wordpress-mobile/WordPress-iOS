@@ -480,9 +480,13 @@ import Foundation
         }
 
         // Show comments if logged in and comments are enabled, or if comments exist.
-        if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().integerValue > 0 {
-            let button = buttons.removeLast() as UIButton
-            configureCommentActionButton(button)
+        // But only if it is from wpcom (jetpack and external is not yet supported).
+        // Nesting this conditional cos it seems clearer that way
+        if contentProvider!.isWPCom() {
+            if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().integerValue > 0 {
+                let button = buttons.removeLast() as UIButton
+                configureCommentActionButton(button)
+            }
         }
     }
 
