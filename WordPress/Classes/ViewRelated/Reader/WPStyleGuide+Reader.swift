@@ -229,6 +229,15 @@ extension WPStyleGuide
     }
 
 
+    // MARK: - Gap Marker Styles
+
+    public class func applyGapMarkerFontStyle(label:UILabel) {
+        let fontSize = Cards.contentFontSize
+        label.font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
+        label.textColor = greyDarken20()
+    }
+
+
     // MARK: - Metrics
 
     public struct Cards
