@@ -146,11 +146,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 #if !defined(NS_BLOCK_ASSERTIONS)
 - (void)assertApiVersion:(NSString *)URLString
 {
-    // Skip asserts for non API calls
-    if ([URLString rangeOfString:WordPressComApiClientEndpointURL].location == NSNotFound) {
-        return;
-    }
-
     NSAssert([URLString rangeOfString:@"/v1/"].length > 0
              || [URLString rangeOfString:@"v1.1"].length > 0
              || [URLString rangeOfString:@"v1.2"].length > 0,
