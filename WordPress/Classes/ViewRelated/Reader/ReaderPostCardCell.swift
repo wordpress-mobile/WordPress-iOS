@@ -281,7 +281,7 @@ import Foundation
         let placeholder = UIImage(named: "post-blavatar-placeholder")
 
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        let url = contentProvider?.blavatarForDisplayOfSize(Int(size))
+        let url = contentProvider?.siteIconForDisplayOfSize(Int(size))
         if loadMediaWhenConfigured && url != nil {
             avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
         } else {
