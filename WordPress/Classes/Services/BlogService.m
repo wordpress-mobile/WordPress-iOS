@@ -211,7 +211,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                    failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlog:blog
+    [remote syncOptionsForBlogID:blog.blogID
                        success:[self optionsHandlerWithBlogObjectID:blog.objectID
                                                   completionHandler:success]
                        failure:failure];
@@ -231,7 +231,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             return;
         }
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
-        [remote syncSettingsForBlog:blogInContext success:^(RemoteBlogSettings *settings) {
+        [remote syncSettingsForBlogID:blog.blogID success:^(RemoteBlogSettings *settings) {
             [self.managedObjectContext performBlock:^{
                 [self updateBlog:blogInContext settingsWithRemoteSettings:settings];
                 [self.managedObjectContext save:nil];
@@ -252,16 +252,17 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [self.managedObjectContext performBlock:^{
         Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
-        [remote updateSettingsForBlog:blogInContext
-                              success:^() {
-                                [self.managedObjectContext performBlock:^{
-                                    [self.managedObjectContext save:nil];
-                                    if (success) {
-                                        success();
-                                    }
-                                }];
-                              }
-                              failure:failure];
+        [remote updateBlogSettings:[self remoteBlogSettingFromBlog:blogInContext]
+                         forBlogID:blogInContext.blogID
+                           success:^() {
+                               [self.managedObjectContext performBlock:^{
+                                   [self.managedObjectContext save:nil];
+                                   if (success) {
+                                       success();
+                                   }
+                               }];
+                           }
+                           failure:failure];
     }];
 }
 
@@ -304,21 +305,21 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                        failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncPostFormatsForBlog:blog
-                           success:[self postFormatsHandlerWithBlogObjectID:blog.objectID
+    [remote syncPostFormatsForBlogID:blog.blogID
+                             success:[self postFormatsHandlerWithBlogObjectID:blog.objectID
                                                           completionHandler:success]
-                           failure:failure];
+                             failure:failure];
 }
 
 - (void)syncBlog:(Blog *)blog
 {
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blogObjectID
+    [remote syncOptionsForBlogID:blog.blogID success:[self optionsHandlerWithBlogObjectID:blogObjectID
                                                                completionHandler:nil]
                        failure:^(NSError *error) { DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error); }];
 
-    [remote syncPostFormatsForBlog:blog
+    [remote syncPostFormatsForBlogID:blog.blogID
                            success:[self postFormatsHandlerWithBlogObjectID:blogObjectID
                                                           completionHandler:nil]
                            failure:^(NSError *error) { DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error); }];
@@ -328,12 +329,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                    success:nil
                                    failure:^(NSError *error) { DDLogError(@"Failed syncing categories for blog %@: %@", blog.url, error); }];
 
-    [remote checkMultiAuthorForBlog:blog
-                            success:^(BOOL isMultiAuthor) {
+    [remote checkMultiAuthorForBlogID:blog.blogID
+                              success:^(BOOL isMultiAuthor) {
                                 [self updateMutliAuthor:isMultiAuthor forBlog:blogObjectID];
-                            } failure:^(NSError *error) {
+                              } failure:^(NSError *error) {
                                 DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
-                            }];
+                              }];
 }
 
 - (BOOL)hasVisibleWPComAccounts
@@ -541,7 +542,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     if (blog.restApi) {
         remote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
-        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
 
     return remote;
@@ -754,4 +755,20 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 
+-(RemoteBlogSettings *)remoteBlogSettingFromBlog:(Blog *)blog
+{
+    RemoteBlogSettings *remoteBlogSettings = [[RemoteBlogSettings alloc] init];
+    
+    remoteBlogSettings.name = blog.blogName;
+    remoteBlogSettings.desc = blog.blogTagline;
+    remoteBlogSettings.defaultCategory = blog.defaultCategoryID;
+    remoteBlogSettings.defaultPostFormat = blog.defaultPostFormat;
+    remoteBlogSettings.privacy = @(blog.siteVisibility);
+    remoteBlogSettings.relatedPostsAllowed = blog.relatedPostsAllowed;
+    remoteBlogSettings.relatedPostsEnabled = blog.relatedPostsEnabled;
+    remoteBlogSettings.relatedPostsShowHeadline = blog.relatedPostsShowHeadline;
+    remoteBlogSettings.relatedPostsShowThumbnails = blog.relatedPostsShowThumbnails;
+    
+    return remoteBlogSettings;
+}
 @end
