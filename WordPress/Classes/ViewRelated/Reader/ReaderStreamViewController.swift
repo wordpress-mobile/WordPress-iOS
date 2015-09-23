@@ -36,6 +36,7 @@ import Foundation
     private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
     private var isLoggedIn = false
+    private var isFeed = false
 
     private var siteID:NSNumber? {
         didSet {
@@ -82,9 +83,10 @@ import Foundation
         return controller
     }
 
-    public class func controllerWithSiteID(siteID:NSNumber) -> ReaderStreamViewController {
+    public class func controllerWithSiteID(siteID:NSNumber, isFeed:Bool) -> ReaderStreamViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
+        controller.isFeed = isFeed
         controller.siteID = siteID
 
         return controller
@@ -143,6 +145,7 @@ import Foundation
         assert(siteID != nil, "A siteID is required before fetching a site topic")
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.siteTopicForSiteWithID(siteID!,
+            isFeed:isFeed,
             success: { [weak self] (objectID:NSManagedObjectID!, isFollowing:Bool) -> Void in
                 do {
                     let context = ContextManager.sharedInstance().mainContext
@@ -496,7 +499,7 @@ import Foundation
 
         // If there is a blogID preview the site
         if post.sourceAttribution!.blogID != nil {
-            let controller = ReaderStreamViewController.controllerWithSiteID(post.sourceAttribution!.blogID)
+            let controller = ReaderStreamViewController.controllerWithSiteID(post.sourceAttribution!.blogID, isFeed: false)
             navigationController?.pushViewController(controller, animated: true)
             return
         }
@@ -985,7 +988,7 @@ import Foundation
     public func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
 
-        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID)
+        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
         navigationController?.pushViewController(controller, animated: true)
         WPAnalytics.track(.ReaderPreviewedSite)
     }
