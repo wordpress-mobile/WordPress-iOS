@@ -224,6 +224,9 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
     [service flagSiteWithID:[siteID integerValue] asBlocked:blocked success:^{
+        NSDictionary *properties = @{@"siteID":siteID};
+        [WPAnalytics track:WPAnalyticsStatReaderBlockedSite withProperties:properties];
+
         if (success) {
             success();
         }

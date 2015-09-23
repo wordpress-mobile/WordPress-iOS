@@ -343,10 +343,7 @@ import Foundation
             displayNoResultsView()
         }
 
-        WPAnalytics.track(.ReaderLoadedTag, withProperties: propertyForStats())
-        if ReaderHelpers.topicIsFreshlyPressed(readerTopic!) {
-            WPAnalytics.track(.ReaderLoadedFreshlyPressed)
-        }
+        ReaderHelpers.trackLoadedTopic(readerTopic!, withProperties: propertyForStats())
     }
 
     func configureTitleForTopic() {
@@ -986,7 +983,9 @@ import Foundation
 
         let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID)
         navigationController?.pushViewController(controller, animated: true)
-        WPAnalytics.track(.ReaderPreviewedSite)
+
+        let properties = NSDictionary(object: post.blogURL, forKey: "URL") as! [NSObject : AnyObject]
+        WPAnalytics.track(.ReaderPreviewedSite, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
@@ -1005,7 +1004,9 @@ import Foundation
 
         let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
         navigationController?.pushViewController(controller, animated: true)
-        // TODO: Analytics
+
+        let properties = NSDictionary(object: post.primaryTagSlug, forKey: "tag") as! [NSObject : AnyObject]
+        WPAnalytics.track(.ReaderPreviewedTag, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
