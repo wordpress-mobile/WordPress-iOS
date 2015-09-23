@@ -9,28 +9,14 @@
 
 const NSInteger HTTP404ErrorCode = 404;
 
-@interface PostServiceRemoteXMLRPC ()
-@property (nonatomic, strong) WPXMLRPCClient *api;
-@end
-
 @implementation PostServiceRemoteXMLRPC
 
-- (id)initWithApi:(WPXMLRPCClient *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
-
 - (void)getPostWithID:(NSNumber *)postID
-              forBlog:(Blog *)blog
+            forBlogID:(NSNumber *)blogID
               success:(void (^)(RemotePost *post))success
               failure:(void (^)(NSError *))failure
 {
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:postID];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:postID];
     [self.api callMethod:@"wp.getPost"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -45,14 +31,14 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)getPostsOfType:(NSString *)postType
-               forBlog:(Blog *)blog
+               forBlogID:(NSNumber *)blogID
                success:(void (^)(NSArray *))success
                failure:(void (^)(NSError *))failure {
-    [self getPostsOfType:postType forBlog:blog options:nil success:success failure:failure];
+    [self getPostsOfType:postType forBlogID:blogID options:nil success:success failure:failure];
 }
 
 - (void)getPostsOfType:(NSString *)postType
-               forBlog:(Blog *)blog
+             forBlogID:(NSNumber *)blogID
                options:(NSDictionary *)options
                success:(void (^)(NSArray *posts))success
                failure:(void (^)(NSError *error))failure {
@@ -68,7 +54,7 @@ const NSInteger HTTP404ErrorCode = 404;
         [mutableParameters addEntriesFromDictionary:options];
         extraParameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     }
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:extraParameters];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:extraParameters];
     [self.api callMethod:@"wp.getPosts"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -84,12 +70,12 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)createPost:(RemotePost *)post
-           forBlog:(Blog *)blog
+         forBlogID:(NSNumber *)blogID
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
     NSDictionary *extraParameters = [self parametersWithRemotePost:post];
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:extraParameters];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:extraParameters];
     [self.api callMethod:@"metaWeblog.newPost"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -116,13 +102,11 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)updatePost:(RemotePost *)post
-           forBlog:(Blog *)blog
+         forBlogID:(NSNumber *)blogID
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(post.postID.integerValue > 0);
-    NSParameterAssert(blog.usernameForSite);
-    NSParameterAssert(blog.password);
     
     if ([post.postID integerValue] <= 0) {
         if (failure) {
@@ -136,8 +120,8 @@ const NSInteger HTTP404ErrorCode = 404;
     }
 
     NSDictionary *extraParameters = [self parametersWithRemotePost:post];
-    NSArray *parameters = @[post.postID, blog.usernameForSite, blog.password, extraParameters];
-    
+    NSMutableArray *parameters = [NSMutableArray arrayWithArray:[self getXMLRPCArgsForBlogWithID:blogID extra:extraParameters]];
+    [parameters replaceObjectAtIndex:0 withObject:post.postID];
     [self.api callMethod:@"metaWeblog.editPost"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -153,14 +137,14 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)deletePost:(RemotePost *)post
-           forBlog:(Blog *)blog
+         forBlogID:(NSNumber *)blogID
            success:(void (^)())success
            failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([post.postID longLongValue] > 0);
     NSNumber *postID = post.postID;
     if ([postID longLongValue] > 0) {
-        NSArray *parameters = [blog getXMLRPCArgsWithExtra:postID];
+        NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:postID];
         [self.api callMethod:@"wp.deletePost"
                   parameters:parameters
                      success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -172,14 +156,14 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)trashPost:(RemotePost *)post
-          forBlog:(Blog *)blog
+        forBlogID:(NSNumber *)blogID
           success:(void (^)(RemotePost *))success
           failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([post.postID longLongValue] > 0);
     NSNumber *postID = post.postID;
     if ([postID longLongValue] > 0) {
-        NSArray *parameters = [blog getXMLRPCArgsWithExtra:postID];
+        NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:postID];
 
         WPXMLRPCRequest *deletePostRequest = [self.api XMLRPCRequestWithMethod:@"wp.deletePost" parameters:parameters];
         WPXMLRPCRequestOperation *delOperation = [self.api XMLRPCRequestOperationWithRequest:deletePostRequest success:nil failure:nil];
@@ -212,11 +196,11 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)restorePost:(RemotePost *)post
-           forBlog:(Blog *)blog
+          forBlogID:(NSNumber *)blogID
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *error))failure
 {
-    [self updatePost:post forBlog:blog success:success failure:failure];
+    [self updatePost:post forBlogID:blogID success:success failure:failure];
 }
 
 #pragma mark - Private methods
