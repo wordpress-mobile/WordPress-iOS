@@ -157,34 +157,34 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
         }
     }];
 }
+
 - (void)fetchSiteInfoForSiteWithID:(NSNumber *)siteID
+                            isFeed:(BOOL)isFeed
                            success:(void (^)(RemoteReaderSiteInfo *siteInfo))success
                            failure:(void (^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"read/sites/%@", siteID];
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_2];
+    NSString *requestUrl;
+    if (isFeed) {
+        NSString *path = [NSString stringWithFormat:@"read/feed/%@", siteID];
+        requestUrl = [self pathForEndpoint:path
+                               withVersion:ServiceRemoteRESTApiVersion_1_1];
+    } else {
+        NSString *path = [NSString stringWithFormat:@"read/sites/%@", siteID];
+        requestUrl = [self pathForEndpoint:path
+                               withVersion:ServiceRemoteRESTApiVersion_1_2];
+    }
     
     [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
             return;
         }
+
+        RemoteReaderSiteInfo *siteInfo;
         NSDictionary *response = (NSDictionary *)responseObject;
-        RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
-        siteInfo.feedID = [response numberForKey:SiteDictionaryFeedIDKey];
-        siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
-        siteInfo.isJetpack = [[response numberForKey:SiteDictionaryJetpackKey] boolValue];
-        siteInfo.isPrivate = [[response numberForKey:SiteDictionaryPrivateKey] boolValue];
-        siteInfo.isVisible = [[response numberForKey:SiteDictionaryVisibleKey] boolValue];
-        siteInfo.postCount = [response numberForKey:SiteDictionaryPostCountKey];
-        siteInfo.siteBlavatar = [response stringForKeyPath:SiteDictionaryIconPathKey];
-        siteInfo.siteDescription = [response stringForKey:SiteDictionaryDescriptionKey];
-        siteInfo.siteID = [response numberForKey:SiteDictionaryIDKey];
-        siteInfo.siteName = [response stringForKey:SiteDictionaryNameKey];
-        siteInfo.siteURL = [response stringForKey:SiteDictionaryURLKey];
-        siteInfo.subscriberCount = [response numberForKey:SiteDictionarySubscriptionsKey] ?: @0;
-        if (![siteInfo.siteName length] && [siteInfo.siteURL length] > 0) {
-            siteInfo.siteName = [[NSURL URLWithString:siteInfo.siteURL] host];
+        if (isFeed) {
+            siteInfo = [self siteInfoForFeedResponse:response];
+        } else {
+            siteInfo = [self siteInfoForSiteResponse:response];
         }
         success(siteInfo);
 
@@ -193,6 +193,48 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
             failure(error);
         }
     }];
+}
+
+- (RemoteReaderSiteInfo *)siteInfoForSiteResponse:(NSDictionary *)response
+{
+    RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
+    siteInfo.feedID = [response numberForKey:SiteDictionaryFeedIDKey];
+    siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
+    siteInfo.isJetpack = [[response numberForKey:SiteDictionaryJetpackKey] boolValue];
+    siteInfo.isPrivate = [[response numberForKey:SiteDictionaryPrivateKey] boolValue];
+    siteInfo.isVisible = [[response numberForKey:SiteDictionaryVisibleKey] boolValue];
+    siteInfo.postCount = [response numberForKey:SiteDictionaryPostCountKey];
+    siteInfo.siteBlavatar = [response stringForKeyPath:SiteDictionaryIconPathKey];
+    siteInfo.siteDescription = [response stringForKey:SiteDictionaryDescriptionKey];
+    siteInfo.siteID = [response numberForKey:SiteDictionaryIDKey];
+    siteInfo.siteName = [response stringForKey:SiteDictionaryNameKey];
+    siteInfo.siteURL = [response stringForKey:SiteDictionaryURLKey];
+    siteInfo.subscriberCount = [response numberForKey:SiteDictionarySubscriptionsKey] ?: @0;
+    if (![siteInfo.siteName length] && [siteInfo.siteURL length] > 0) {
+        siteInfo.siteName = [[NSURL URLWithString:siteInfo.siteURL] host];
+    }
+    return siteInfo;
+}
+
+- (RemoteReaderSiteInfo *)siteInfoForFeedResponse:(NSDictionary *)response
+{
+    RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
+    siteInfo.feedID = [response numberForKey:SiteDictionaryFeedIDKey];
+    siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
+    siteInfo.isJetpack = NO;
+    siteInfo.isPrivate = NO;
+    siteInfo.isVisible = YES;
+    siteInfo.postCount = @0;
+    siteInfo.siteBlavatar = @"";
+    siteInfo.siteDescription = @"";
+    siteInfo.siteID = @0;
+    siteInfo.siteName = [response stringForKey:SiteDictionaryNameKey];
+    siteInfo.siteURL = [response stringForKey:SiteDictionaryURLKey];
+    siteInfo.subscriberCount = [response numberForKey:SiteDictionarySubscriptionsKey] ?: @0;
+    if (![siteInfo.siteName length] && [siteInfo.siteURL length] > 0) {
+        siteInfo.siteName = [[NSURL URLWithString:siteInfo.siteURL] host];
+    }
+    return siteInfo;
 }
 
 
