@@ -5,7 +5,8 @@
 #import "ContextManager.h"
 #import "SwitchSettingTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
-
+#import "SettingTableViewCell.h"
+#import "RelatedPostsPreviewTableViewCell.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 
 typedef NS_ENUM(NSInteger, RelatedPostsSettingsSection) {
@@ -28,6 +29,8 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 @property (nonatomic, strong) SwitchSettingTableViewCell *relatedPostsEnabledCell;
 @property (nonatomic, strong) SwitchSettingTableViewCell *relatedPostsShowHeaderCell;
 @property (nonatomic, strong) SwitchSettingTableViewCell *relatedPostsShowThumbnailsCell;
+
+@property (nonatomic, strong) RelatedPostsPreviewTableViewCell *relatedPostsPreviewTableViewCell;
 
 @end
 
@@ -156,6 +159,22 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     return 0;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case RelatedPostsSettingsSectionOptions:{
+            return  44;
+        }
+            break;
+        case RelatedPostsSettingsSectionPreview:{
+            return [self.relatedPostsPreviewTableViewCell heightForWidth:tableView.frame.size.width];
+        }
+            break;
+        case RelatedPostsSettingsSectionCount:
+            break;
+    }
+    return 0;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RelatedPostsSettingsSection section = (RelatedPostsSettingsSection)indexPath.section;
@@ -166,7 +185,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
             }
         break;
         case RelatedPostsSettingsSectionPreview:{
-            return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            return [self relatedPostsPreviewTableViewCell];
             }
         break;
         case RelatedPostsSettingsSectionCount:
@@ -234,6 +253,20 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     return _relatedPostsShowThumbnailsCell;
 }
 
+
+- (RelatedPostsPreviewTableViewCell *)relatedPostsPreviewTableViewCell
+{
+    if (!_relatedPostsPreviewTableViewCell) {
+        _relatedPostsPreviewTableViewCell = [[RelatedPostsPreviewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                                                                    reuseIdentifier:nil];
+    }
+    _relatedPostsPreviewTableViewCell.enabledImages = [self.blog.relatedPostsShowThumbnails boolValue];
+    _relatedPostsPreviewTableViewCell.enabledHeader = [self.blog.relatedPostsShowHeadline boolValue];
+    
+    return _relatedPostsPreviewTableViewCell;
+
+}
+
 - (IBAction)updateRelatedPostsSettings:(id)sender
 {
     self.blog.relatedPostsEnabled = [NSNumber numberWithBool:self.relatedPostsEnabledCell.switchValue];
@@ -241,7 +274,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     self.blog.relatedPostsShowThumbnails = [NSNumber numberWithBool:self.relatedPostsShowThumbnailsCell.switchValue];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService updateSettingsForBlog:self.blog success:^{
-        
+        [self.tableView reloadData];
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
         [self.tableView reloadData];
