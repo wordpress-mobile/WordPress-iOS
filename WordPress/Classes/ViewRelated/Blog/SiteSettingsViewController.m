@@ -176,8 +176,15 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         case SiteSettingsSectionAccount:
             return SiteSettingsAccountCount;
         break;
-        case SiteSettingsSectionWriting:
-            return SiteSettingsWritingCount;
+        case SiteSettingsSectionWriting: {
+            NSInteger rowsToHide = 0;
+            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
+                //  NOTE: Sergio Estevao (2015-09-23): Hides the related post for self-hosted sites not in jetpack
+                // because this options is not available for them.
+                rowsToHide += 1;
+            }
+            return SiteSettingsWritingCount - rowsToHide;
+        }
         break;
         case SiteSettingsSectionRemoveSite:
             return 1;
