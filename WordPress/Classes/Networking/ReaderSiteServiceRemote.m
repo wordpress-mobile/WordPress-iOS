@@ -180,11 +180,11 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 {
     // Just ping the URL and make sure we don't get back a 40x error.
     AFHTTPRequestOperationManager *mgr = [[AFHTTPRequestOperationManager alloc] init];
-    [mgr HEAD:[siteURL absoluteString] parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation) {
+    [mgr HEAD:[siteURL absoluteString] parameters:nil success:^(AFHTTPRequestOperation *operation) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);
         }
