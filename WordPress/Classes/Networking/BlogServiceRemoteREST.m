@@ -8,7 +8,8 @@ static NSString const *BlogRemoteDescriptionKey         = @"description";
 static NSString const *BlogRemoteSettingsKey            = @"settings";
 static NSString const *BlogRemoteDefaultCategoryKey     = @"default_category";
 static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format";
-
+static NSString * const BlogRemoteDefaultPostFormat = @"standard";
+static NSInteger const BlogRemoteUncategorizedCategory = 1;
 
 @implementation BlogServiceRemoteREST
 
@@ -237,7 +238,7 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     
     remoteSettings.name = [json stringForKey:BlogRemoteNameKey];
     remoteSettings.desc = [json stringForKey:BlogRemoteDescriptionKey];
-    remoteSettings.defaultCategory = [rawSettings numberForKey:BlogRemoteDefaultCategoryKey] ?: @(1);
+    remoteSettings.defaultCategory = [rawSettings numberForKey:BlogRemoteDefaultCategoryKey] ?: @(BlogRemoteUncategorizedCategory);
 
     // Note:
     // YES, the backend might send '0' as a number, OR a string value.
@@ -245,7 +246,7 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
     //
     if ([[rawSettings numberForKey:BlogRemoteDefaultPostFormatKey] isEqualToNumber:@(0)] ||
         [[rawSettings stringForKey:BlogRemoteDefaultPostFormatKey] isEqualToString:@"0"]) {
-        remoteSettings.defaultPostFormat = @"standard";
+        remoteSettings.defaultPostFormat = BlogRemoteDefaultPostFormat;
     } else {
         remoteSettings.defaultPostFormat = [rawSettings stringForKey:BlogRemoteDefaultPostFormatKey];
     }

@@ -5,6 +5,9 @@
 #import "RemotePostCategory.h"
 #import "NSDate+WordPressJSON.h"
 
+NSString * const PostRemoteStatusPublish = @"publish";
+NSString * const PostRemoteStatusScheduled = @"future";
+
 @implementation PostServiceRemoteREST
 
 - (void)getPostWithID:(NSNumber *)postID
@@ -332,8 +335,8 @@
     // Passing a status of 'future' will set the post status to 'draft'
     // This is an apparent inconsistency in the API as 'future' should
     // be a valid status.
-    if ([post.status isEqualToString:@"future"]) {
-        post.status = @"publish";
+    if ([post.status isEqualToString:PostRemoteStatusScheduled]) {
+        post.status = PostRemoteStatusPublish;
     }
     parameters[@"status"] = post.status;
 
