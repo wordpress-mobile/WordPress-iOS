@@ -179,11 +179,12 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
 - (void)checkSiteExistsAtURL:(NSURL *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
     // Just ping the URL and make sure we don't get back a 40x error.
-    [self.api HEAD:[siteURL absoluteString] parameters:nil success:^(AFHTTPRequestOperation *operation) {
+    AFHTTPRequestOperationManager *mgr = [[AFHTTPRequestOperationManager alloc] init];
+    [mgr HEAD:[siteURL absoluteString] parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation) {
         if (success) {
             success();
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
         if (failure) {
             failure(error);
         }
