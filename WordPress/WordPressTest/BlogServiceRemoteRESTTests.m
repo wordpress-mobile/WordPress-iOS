@@ -196,7 +196,7 @@
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     
     [service checkAuthorizationForPublicizer:publicizer
-                                     success:^(NSDictionary *authorization) {}
+                                     success:^(NSNumber *authorization) {}
                                      failure:^(NSError *error) {}];
 }
 
@@ -210,10 +210,10 @@
     
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     XCTAssertThrows([service checkAuthorizationForPublicizer:nil
-                                                     success:^(NSDictionary *authorization) {}
+                                                     success:^(NSNumber *authorization) {}
                                                      failure:^(NSError *error) {}]);
     XCTAssertThrows([service checkAuthorizationForPublicizer:publicizer
-                                                     success:^(NSDictionary *authorization) {}
+                                                     success:^(NSNumber *authorization) {}
                                                      failure:^(NSError *error) {}]);
 }
 
@@ -237,7 +237,7 @@
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     
     [service connectPublicizer:publicizer
-             withAuthorization:@{@"ID":@"keyring"}
+             withAuthorization:@(1001)
                        success:^{}
                        failure:^(NSError *error) {}];
 }
@@ -252,13 +252,21 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     BlogServiceRemoteREST *service = nil;
     
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/publicize-connections/new", blog.dotComID];
+    
+    OCMStub([api POST:[OCMArg isEqual:url]
+           parameters:[OCMArg isNotNil]
+              success:[OCMArg isNotNil]
+              failure:[OCMArg isNotNil]]);
+    
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
+    
     XCTAssertThrows([service connectPublicizer:nil
-                             withAuthorization:@{@"ID":@"keyring"}
+                             withAuthorization:@(1002)
                                        success:^{}
                                        failure:^(NSError *error) {}]);
     XCTAssertThrows([service connectPublicizer:publicizer
-                             withAuthorization:@{}
+                             withAuthorization:nil
                                        success:^{}
                                        failure:^(NSError *error) {}]);
 }

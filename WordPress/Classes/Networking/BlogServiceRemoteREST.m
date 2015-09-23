@@ -136,8 +136,9 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
               NSArray *keyrings = [responseObject arrayForKey:@"connections"];
               for (NSDictionary *keyring in keyrings) {
                   if ([[keyring stringForKey:@"service"] isEqualToString:service.service]) {
-                      if (success) {
-                          success(keyring);
+                      NSNumber *authorization = [keyring numberForKey:@"ID"];
+                      if (authorization && success) {
+                          success(authorization);
                       }
                       return;
                   }
@@ -153,17 +154,18 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
 }
 
 - (void)connectPublicizer:(Publicizer *)service
-        withAuthorization:(NSDictionary *)authorization
+        withAuthorization:(NSNumber *)authorization
                   success:(SuccessHandler)success
                   failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([service isKindOfClass:[Publicizer class]]);
     NSParameterAssert(service.blog.dotComID != nil);
+    NSParameterAssert([authorization isKindOfClass:[NSNumber class]]);
     
     NSString *path = [self pathForConnectionWithPublicizer:service];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
-    NSDictionary *parameters = @{ @"keyring_connection_ID" : authorization[@"ID"] };
+    NSDictionary *parameters = @{ @"keyring_connection_ID" : authorization };
 
     [self.api POST:requestUrl
        parameters:parameters

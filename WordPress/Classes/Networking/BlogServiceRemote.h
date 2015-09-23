@@ -7,7 +7,7 @@ typedef void (^SettingsHandler)(RemoteBlogSettings *settings);
 typedef void (^OptionsHandler)(NSDictionary *options);
 typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
 typedef void (^ConnectionsHandler)(NSArray *connections);
-typedef void (^AuthorizationHandler)(NSDictionary *authorization);
+typedef void (^AuthorizationHandler)(NSNumber *authorization);
 typedef void (^MultiAuthorCheckHandler)(BOOL isMultiAuthor);
 typedef void (^SuccessHandler)();
 
@@ -71,13 +71,13 @@ typedef void (^SuccessHandler)();
 /**
  *  @brief      Connect a blog's 3rd party (Publicize) connection
  *
- *  @param      service       The service to connect.  Cannot be nil.
- *  @param      authorization Authorization to connect.  Cannot be nil.
- *  @param      success       The block that will be executed on success.  Can be nil.
- *  @param      failure       The block that will be executed on failure.  Can be nil.
+ *  @param service       The service to connect.
+ *  @param authorization The Keyring authorization ID.
+ *  @param success       Block executed on success.  Can be nil.
+ *  @param failure       Block executed on failure.  Can be nil.
  */
 - (void)connectPublicizer:(Publicizer *)service
-        withAuthorization:(NSDictionary *)token
+        withAuthorization:(NSNumber *)authorization
                   success:(SuccessHandler)success
                   failure:(void (^)(NSError *error))failure;
 

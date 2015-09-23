@@ -344,7 +344,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 - (void)connectPublicizer:(Publicizer *)service
-        withAuthorization:(NSDictionary *)authorization
+        withAuthorization:(NSNumber *)authorization
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure
 {

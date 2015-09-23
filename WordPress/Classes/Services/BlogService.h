@@ -83,12 +83,13 @@
 /**
  *  @brief Connect a Publicizer service
  *
- *  @param service  The service to connect
- *  @param success  The block that will be executed on success.  Can be nil.
- *  @param failure  The block that will be executed on failure.  Can be nil.
+ *  @param service       The service to connect.
+ *  @param authorization The Keyring authorization ID.
+ *  @param success       Block executed on success.  Can be nil.
+ *  @param failure       Block executed on failure.  Can be nil.
  */
 - (void)connectPublicizer:(Publicizer *)service
-        withAuthorization:(NSDictionary *)authorization
+        withAuthorization:(NSNumber *)authorization
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure;
 
