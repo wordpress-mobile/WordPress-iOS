@@ -368,6 +368,15 @@ import Foundation
 
     // MARK: - Instance Methods
 
+    func postInMainContext(post:ReaderPost) -> ReaderPost? {
+        do {
+            return try ContextManager.sharedInstance().mainContext.existingObjectWithID(post.objectID) as? ReaderPost
+        } catch let error as NSError {
+            DDLogSwift.logError("\(error.localizedDescription)")
+        }
+        return nil
+    }
+
     func refreshTableViewHeaderLayout() {
         if tableView.tableHeaderView == nil {
             return
@@ -905,7 +914,7 @@ import Foundation
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
-        let post = posts[indexPath.row]
+        var post = posts[indexPath.row]
 
         if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
             unblockSiteForPost(post)
@@ -919,6 +928,7 @@ import Foundation
 
             controller = ReaderPostDetailViewController.detailControllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
         } else {
+            post = postInMainContext(post)!
             controller = ReaderPostDetailViewController.detailControllerWithPost(post)
         }
 
@@ -994,7 +1004,8 @@ import Foundation
     }
 
     public func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
+        var post = provider as! ReaderPost
+        post = postInMainContext(post)!
         let controller = ReaderCommentsViewController(post: post)
         navigationController?.pushViewController(controller, animated: true)
     }
