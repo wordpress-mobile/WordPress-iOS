@@ -426,13 +426,15 @@ static CGFloat const DefaultCellHeight = 44.0;
         return [self.delegate tableView:tableView viewForHeaderInSection:section];
     }
 
+    WPTableViewSectionHeaderFooterView *header;
     if ([self.sectionHeaders count] > section) {
-        return [self.sectionHeaders objectAtIndex:section];
+        header = [self.sectionHeaders objectAtIndex:section];
+    } else {
+        header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
+        [self.sectionHeaders addObject:header];
     }
 
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
     header.title = [self titleForHeaderInSection:section];
-    [self.sectionHeaders addObject:header];
     return header;
 }
 

@@ -18,7 +18,6 @@
 
 #import "ReaderPostDetailViewController.h"
 #import "ReaderCommentsViewController.h"
-#import "ReaderBrowseSiteViewController.h"
 #import "StatsViewController.h"
 #import "StatsViewAllTableViewController.h"
 #import "EditCommentViewController.h"
@@ -974,15 +973,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (BOOL)displayBrowseSite:(NSNumber *)siteID siteURL:(NSURL *)siteURL
 {
-    if (![siteID isKindOfClass:[NSNumber class]] || ![siteURL isKindOfClass:[NSURL class]]) {
+    if (![siteID isKindOfClass:[NSNumber class]]) {
         return NO;
     }
-    
-    BOOL isWPcom = siteURL.isWordPressDotComUrl;
-    ReaderBrowseSiteViewController *browseViewController = [[ReaderBrowseSiteViewController alloc] initWithSiteID:siteID
-                                                                                                          siteURL:siteURL.absoluteString
-                                                                                                          isWPcom:isWPcom];
-    
+
+    ReaderStreamViewController *browseViewController = [ReaderStreamViewController controllerWithSiteID:siteID isFeed:NO];
     [self.navigationController pushViewController:browseViewController animated:YES];
     
     return YES;

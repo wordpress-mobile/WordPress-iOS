@@ -121,4 +121,13 @@ extern NSString * const ReaderPostServiceErrorDomain;
              success:(void (^)())success
              failure:(void (^)(NSError *error))failure;
 
+/**
+ Updates in core data the following status of posts belonging to the specified site & url
+
+ @param following Whether the user is following the site.
+ @param siteID The ID of the site
+ @siteURL the URL of the site.
+ */
+- (void)setFollowing:(BOOL)following forPostsFromSiteWithID:(NSNumber *)siteID andURL:(NSString *)siteURL;
+
 @end
