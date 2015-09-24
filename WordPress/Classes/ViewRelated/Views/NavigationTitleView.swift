@@ -13,6 +13,12 @@ public class NavigationTitleView : UIView
         self.init(frame: NavigationTitleView.defaultViewFrame)
     }
     
+    convenience init(title: String?, subtitle: String?) {
+        self.init()
+        titleLabel.text     = title ?? String()
+        subtitleLabel.text  = subtitle ?? String()
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupSubviews()
