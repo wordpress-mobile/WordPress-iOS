@@ -8,7 +8,7 @@
 @property (nonatomic, copy) NSString *menuId;
 @property (nonatomic, copy) NSString *details;
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, strong) NSOrderedSet<RemoteMenuItem *> *items;
+@property (nonatomic, strong) NSArray<RemoteMenuItem *> *items;
 @property (nonatomic, strong) NSSet<NSString *> *locationNames;
 
 @end

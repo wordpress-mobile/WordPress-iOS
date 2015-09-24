@@ -13,7 +13,7 @@
 @property (nonatomic, copy) NSString *typeLabel;
 @property (nonatomic, copy) NSString *urlStr;
 
-@property (nonatomic, strong) NSOrderedSet<RemoteMenuItem *> *children;
+@property (nonatomic, strong) NSArray<RemoteMenuItem *> *children;
 @property (nonatomic, weak) RemoteMenuItem *parentItem;
 
 @end
