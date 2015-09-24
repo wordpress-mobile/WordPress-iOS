@@ -48,7 +48,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service getPostWithID:postID
-                   forBlog:blog
+                 forBlogID:[blog dotComID]
                    success:^(RemotePost *post) {}
                    failure:^(NSError *error) {}];
 }
@@ -62,7 +62,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service getPostWithID:nil
-                                   forBlog:blog
+                                 forBlogID:[blog dotComID]
                                    success:^(RemotePost *post) {}
                                    failure:^(NSError *error) {}]);
 }
@@ -73,7 +73,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service getPostWithID:@2
-                                   forBlog:nil
+                                 forBlogID:nil
                                    success:^(RemotePost *post) {}
                                    failure:^(NSError *error) {}]);
 }
@@ -106,7 +106,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service getPostsOfType:postType
-                    forBlog:blog
+                  forBlogID:[blog dotComID]
                     success:^(NSArray *posts) {}
                     failure:^(NSError *error) {}];
 }
@@ -117,7 +117,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service getPostsOfType:@"SomeType"
-                                    forBlog:nil
+                                  forBlogID:nil
                                     success:^(NSArray *posts) {}
                                     failure:^(NSError *error) {}]);
 }
@@ -153,7 +153,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service getPostsOfType:postType
-                    forBlog:blog
+                  forBlogID:[blog dotComID]
                     options:options
                     success:^(NSArray *posts) {}
                     failure:^(NSError *error) {}];
@@ -165,7 +165,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service getPostsOfType:@"SomeType"
-                                    forBlog:nil
+                                  forBlogID:nil
                                     options:@{}
                                     success:^(NSArray *posts) {}
                                     failure:^(NSError *error) {}]);
@@ -199,7 +199,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service createPost:post
-                forBlog:blog
+              forBlogID:[blog dotComID]
                 success:^(RemotePost *posts) {}
                 failure:^(NSError *error) {}];
 }
@@ -213,7 +213,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service createPost:nil
-                                forBlog:blog
+                              forBlogID:[blog dotComID]
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -226,7 +226,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service createPost:post
-                                forBlog:nil
+                              forBlogID:nil
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -260,7 +260,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service updatePost:post
-                forBlog:blog
+              forBlogID:[blog dotComID]
                 success:^(RemotePost *posts) {}
                 failure:^(NSError *error) {}];
 }
@@ -274,7 +274,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service updatePost:nil
-                                forBlog:blog
+                              forBlogID:[blog dotComID]
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -287,7 +287,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service updatePost:post
-                                forBlog:nil
+                              forBlogID:nil
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -315,7 +315,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service deletePost:post
-                forBlog:blog
+              forBlogID:[blog dotComID]
                 success:^(RemotePost *posts) {}
                 failure:^(NSError *error) {}];
 }
@@ -329,7 +329,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service deletePost:nil
-                                forBlog:blog
+                              forBlogID:[blog dotComID]
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -342,7 +342,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service deletePost:post
-                                forBlog:nil
+                              forBlogID:nil
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -370,7 +370,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service trashPost:post
-               forBlog:blog
+             forBlogID:[blog dotComID]
                success:^(RemotePost *posts) {}
                failure:^(NSError *error) {}];
 }
@@ -384,7 +384,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service trashPost:nil
-                               forBlog:blog
+                             forBlogID:[blog dotComID]
                                success:^(RemotePost *posts) {}
                                failure:^(NSError *error) {}]);
 }
@@ -397,7 +397,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service trashPost:post
-                               forBlog:nil
+                             forBlogID:nil
                                success:^(RemotePost *posts) {}
                                failure:^(NSError *error) {}]);
 }
@@ -425,7 +425,7 @@
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
     
     [service restorePost:post
-                 forBlog:blog
+               forBlogID:[blog dotComID]
                  success:^(RemotePost *posts) {}
                  failure:^(NSError *error) {}];
 }
@@ -439,7 +439,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service restorePost:nil
-                                 forBlog:blog
+                               forBlogID:[blog dotComID]
                                  success:^(RemotePost *posts) {}
                                  failure:^(NSError *error) {}]);
 }
@@ -452,7 +452,7 @@
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service restorePost:post
-                                 forBlog:nil
+                               forBlogID:nil
                                  success:^(RemotePost *posts) {}
                                  failure:^(NSError *error) {}]);
 }

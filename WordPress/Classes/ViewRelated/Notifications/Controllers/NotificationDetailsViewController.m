@@ -977,7 +977,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         return NO;
     }
 
-    ReaderStreamViewController *browseViewController = [ReaderStreamViewController controllerWithSiteID:siteID];
+    ReaderStreamViewController *browseViewController = [ReaderStreamViewController controllerWithSiteID:siteID isFeed:NO];
     [self.navigationController pushViewController:browseViewController animated:YES];
     
     return YES;
