@@ -343,7 +343,6 @@
         <attribute name="authorDisplayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorEmail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorURL" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="blavatar" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="blogDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="blogName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="blogURL" optional="YES" attributeType="String" syncable="YES"/>
@@ -367,6 +366,7 @@
         <attribute name="primaryTag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="primaryTagSlug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="readingTime" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="siteIconURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="siteID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="sortDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>

@@ -36,6 +36,7 @@ import Foundation
     private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
     private var isLoggedIn = false
+    private var isFeed = false
 
     private var siteID:NSNumber? {
         didSet {
@@ -82,9 +83,10 @@ import Foundation
         return controller
     }
 
-    public class func controllerWithSiteID(siteID:NSNumber) -> ReaderStreamViewController {
+    public class func controllerWithSiteID(siteID:NSNumber, isFeed:Bool) -> ReaderStreamViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
+        controller.isFeed = isFeed
         controller.siteID = siteID
 
         return controller
@@ -143,6 +145,7 @@ import Foundation
         assert(siteID != nil, "A siteID is required before fetching a site topic")
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.siteTopicForSiteWithID(siteID!,
+            isFeed:isFeed,
             success: { [weak self] (objectID:NSManagedObjectID!, isFollowing:Bool) -> Void in
                 do {
                     let context = ContextManager.sharedInstance().mainContext
@@ -362,6 +365,15 @@ import Foundation
 
     // MARK: - Instance Methods
 
+    func postInMainContext(post:ReaderPost) -> ReaderPost? {
+        do {
+            return try ContextManager.sharedInstance().mainContext.existingObjectWithID(post.objectID) as? ReaderPost
+        } catch let error as NSError {
+            DDLogSwift.logError("\(error.localizedDescription)")
+        }
+        return nil
+    }
+
     func refreshTableViewHeaderLayout() {
         if tableView.tableHeaderView == nil {
             return
@@ -481,7 +493,8 @@ import Foundation
     private func visitSiteForPost(post:ReaderPost) {
         let siteURL = NSURL(string: post.blogURL)!
         let controller = WPWebViewController(URL: siteURL)
-        navigationController?.pushViewController(controller, animated: true)
+        let navController = UINavigationController(rootViewController: controller)
+        presentViewController(navController, animated: true, completion: nil)
     }
 
     private func showAttributionForPost(post: ReaderPost) {
@@ -492,7 +505,7 @@ import Foundation
 
         // If there is a blogID preview the site
         if post.sourceAttribution!.blogID != nil {
-            let controller = ReaderStreamViewController.controllerWithSiteID(post.sourceAttribution!.blogID)
+            let controller = ReaderStreamViewController.controllerWithSiteID(post.sourceAttribution!.blogID, isFeed: false)
             navigationController?.pushViewController(controller, animated: true)
             return
         }
@@ -898,7 +911,7 @@ import Foundation
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
-        let post = posts[indexPath.row]
+        var post = posts[indexPath.row]
 
         if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
             unblockSiteForPost(post)
@@ -912,6 +925,7 @@ import Foundation
 
             controller = ReaderPostDetailViewController.detailControllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
         } else {
+            post = postInMainContext(post)!
             controller = ReaderPostDetailViewController.detailControllerWithPost(post)
         }
 
@@ -981,7 +995,7 @@ import Foundation
     public func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
 
-        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID)
+        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
         let properties = NSDictionary(object: post.blogURL, forKey: "URL") as! [NSObject : AnyObject]
@@ -989,7 +1003,8 @@ import Foundation
     }
 
     public func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
+        var post = provider as! ReaderPost
+        post = postInMainContext(post)!
         let controller = ReaderCommentsViewController(post: post)
         navigationController?.pushViewController(controller, animated: true)
     }

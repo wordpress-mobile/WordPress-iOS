@@ -15,7 +15,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSString *authorDisplayName;
 @property (nonatomic, strong) NSString *authorEmail;
 @property (nonatomic, strong) NSString *authorURL;
-@property (nonatomic, strong) NSString *blavatar;
+@property (nonatomic, strong) NSString *siteIconURL;
 @property (nonatomic, strong) NSString *blogName;
 @property (nonatomic, strong) NSString *blogDescription;
 @property (nonatomic, strong) NSString *blogURL;

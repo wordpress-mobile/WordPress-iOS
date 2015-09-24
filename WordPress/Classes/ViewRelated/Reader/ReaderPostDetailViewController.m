@@ -485,7 +485,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
 {
     NSNumber *siteID = self.post.siteID;
-    ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:siteID];
+    ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:siteID isFeed:self.post.isExternal];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -513,7 +513,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
         return;
     }
     if (self.post.sourceAttribution.blogID) {
-        ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:self.post.sourceAttribution.blogID];
+        ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:self.post.sourceAttribution.blogID isFeed:NO];
         [self.navigationController pushViewController:controller animated:YES];
         return;
     }
