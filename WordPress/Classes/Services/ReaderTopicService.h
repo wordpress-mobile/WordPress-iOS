@@ -134,10 +134,12 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  Fetch a site topic for a site with the specified ID.
 
  @param siteID The ID of the site .
+ @param isFeed True if the site is a feed.
  @param success block called on a successful fetch.
  @param failure block called if there is any error. `error` can be any underlying network error.
  */
 - (void)siteTopicForSiteWithID:(NSNumber *)siteID
+                        isFeed:(BOOL)isFeed
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure;
 
