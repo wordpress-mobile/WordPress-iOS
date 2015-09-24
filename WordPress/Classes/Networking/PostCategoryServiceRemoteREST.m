@@ -1,15 +1,14 @@
 #import "PostCategoryServiceRemoteREST.h"
 #import "WordPressComApi.h"
-#import "Blog.h"
 #import "RemotePostCategory.h"
 
 @implementation PostCategoryServiceRemoteREST
 
-- (void)getCategoriesForBlog:(Blog *)blog
-                     success:(void (^)(NSArray *))success
-                     failure:(void (^)(NSError *))failure
+- (void)getCategoriesForBlogID:(NSNumber *)blogID
+                       success:(void (^)(NSArray *))success
+                       failure:(void (^)(NSError *))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/categories?context=edit", blog.dotComID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/categories?context=edit", blogID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -27,12 +26,12 @@
 }
 
 - (void)createCategory:(RemotePostCategory *)category
-               forBlog:(Blog *)blog
+             forBlogID:(NSNumber *)blogID
                success:(void (^)(RemotePostCategory *))success
                failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(category.name.length > 0);
-    NSString *path = [NSString stringWithFormat:@"sites/%@/categories/new?context=edit", blog.dotComID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/categories/new?context=edit", blogID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
