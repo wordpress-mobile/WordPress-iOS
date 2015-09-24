@@ -62,8 +62,8 @@ import Foundation
 
         let siteTopic = topic as! ReaderSiteTopic
 
-        let url = NSURL(string: siteTopic.siteBlavatar)!
-        avatarImageView.setImageWithURL(url, placeholderImage: UIImage(named: defaultBlavatar))
+        configureHeaderImage(siteTopic.siteBlavatar)
+
         titleLabel.text = siteTopic.title
         detailLabel.text = NSURL(string: siteTopic.siteURL)?.host
         if siteTopic.following {
@@ -85,9 +85,24 @@ import Foundation
         followCountLabel.text = formattedFollowerCountForTopic(siteTopic)
     }
 
+    func configureHeaderImage(siteBlavatar: String?) {
+        let placeholder = UIImage(named: defaultBlavatar)
+
+        var path = ""
+        if siteBlavatar != nil {
+            path = siteBlavatar!
+        }
+
+        let url = NSURL(string: path)
+        if url != nil {
+            avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
+        } else {
+            avatarImageView.image = placeholder
+        }
+    }
+
     func formattedFollowerCountForTopic(topic:ReaderSiteTopic) -> String {
         let numberFormatter = NSNumberFormatter()
-        numberFormatter.groupingSeparator = NSLocale.currentLocale().objectForKey(NSLocaleGroupingSeparator) as! String
         numberFormatter.numberStyle = .DecimalStyle
         let count = numberFormatter.stringFromNumber(topic.subscriberCount)
         let pattern = NSLocalizedString("%@ followers", comment: "The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers`")

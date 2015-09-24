@@ -21,6 +21,7 @@
 
 static CGFloat const VerticalMargin = 40;
 static NSInteger const ReaderPostDetailImageQuality = 65;
+NSString * const ReaderPostLikeCountKeyPath = @"likeCount";
 NSString * const ReaderDetailTypeKey = @"post_detail_type";
 NSString * const ReaderDetailTypeNormal = @"normal";
 NSString * const ReaderDetailTypePreviewSite = @"preview_site";
@@ -65,6 +66,11 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 #pragma mark - LifeCycle Methods
 
+- (void)dealloc
+{
+    [self.post removeObserver:self forKeyPath:ReaderPostLikeCountKeyPath];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -106,6 +112,16 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
         // Resize media in the post detail to match the width of the new orientation.
         // No need to refresh on iPad when using a fixed width.
         [self.postView refreshMediaLayout];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    if (object == self.post && [keyPath isEqualToString:ReaderPostLikeCountKeyPath]) {
+        // Note: The intent here is to update the action buttons, specifically the
+        // like button, *after* both likeCount and isLiked has changed. The order
+        // of the properties is important.
+        [self.postView updateActionButtons];
     }
 }
 
@@ -255,6 +271,22 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 
 #pragma mark - Accessor methods
+
+- (void)setPost:(ReaderPost *)post
+{
+    if (post == _post) {
+        return;
+    }
+
+    if (!post) {
+        [_post removeObserver:self forKeyPath:ReaderPostLikeCountKeyPath];
+        _post = nil;
+        return;
+    }
+
+    _post = post;
+    [_post addObserver:self forKeyPath:ReaderPostLikeCountKeyPath options:0 context:nil];
+}
 
 - (UIBarButtonItem *)shareButton
 {
@@ -489,7 +521,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
 {
     NSNumber *siteID = self.post.siteID;
-    ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:siteID];
+    ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:siteID isFeed:self.post.isExternal];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -500,9 +532,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service toggleLikedForPost:post success:nil failure:^(NSError *error) {
         DDLogError(@"Error (un)liking post : %@", [error localizedDescription]);
-        [postView updateActionButtons];
     }];
-    [postView updateActionButtons];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
@@ -517,7 +547,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
         return;
     }
     if (self.post.sourceAttribution.blogID) {
-        ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:self.post.sourceAttribution.blogID];
+        ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:self.post.sourceAttribution.blogID isFeed:NO];
         [self.navigationController pushViewController:controller animated:YES];
         return;
     }
