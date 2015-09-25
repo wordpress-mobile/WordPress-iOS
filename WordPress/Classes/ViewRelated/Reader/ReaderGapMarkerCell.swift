@@ -55,8 +55,9 @@ public class ReaderGapMarkerCell: UITableViewCell
 
         button.highlighted = highlighted
         if (highlighted) {
-            // Redraw the background when highlighted
+            // Redraw the backgrounds when highlighted
             drawTearBackground()
+            tearMaskView.backgroundColor = WPStyleGuide.greyLighten30()
         }
     }
 
