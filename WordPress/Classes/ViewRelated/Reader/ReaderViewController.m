@@ -98,7 +98,7 @@
                                                               target:self
                                                               action:@selector(topicsAction:)];
     [button setAccessibilityLabel:NSLocalizedString(@"Menu", @"Accessibility label for the menu button. The user does not see this text but it can be spoken by a screen reader.")];
-    navigationItem.rightBarButtonItem = button;
+    navigationItem.leftBarButtonItem = button;
 }
 
 - (void)configurePostsViewController
