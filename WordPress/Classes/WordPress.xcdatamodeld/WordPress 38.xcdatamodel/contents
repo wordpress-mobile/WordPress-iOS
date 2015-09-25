@@ -299,6 +299,7 @@
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="displayName" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isSuperAdmin" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="role" attributeType="String" syncable="YES"/>
         <attribute name="siteID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -453,7 +454,7 @@
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Person" positionX="18" positionY="153" width="128" height="165"/>
+        <element name="Person" positionX="18" positionY="153" width="128" height="180"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="180"/>
         <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="150"/>
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>

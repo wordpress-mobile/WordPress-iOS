@@ -13,6 +13,7 @@ struct Person {
     let pending: Bool
     let siteID: Int
     let avatarURL: NSURL?
+    let isSuperAdmin: Bool
 
     var avatar: UIImage? {
         return nil
@@ -107,6 +108,7 @@ class ManagedPerson: NSManagedObject {
     @NSManaged var siteID: Int32
     @NSManaged var userID: Int32
     @NSManaged var username: String
+    @NSManaged var isSuperAdmin: Bool
 
     @NSManaged var blog: Blog
 
@@ -119,6 +121,7 @@ class ManagedPerson: NSManagedObject {
         siteID = Int32(person.siteID)
         userID = Int32(person.ID)
         username = person.username
+        isSuperAdmin = person.isSuperAdmin
     }
 }
 
@@ -133,6 +136,7 @@ extension Person {
         pending = false
         siteID = Int(managedPerson.siteID)
         avatarURL = managedPerson.avatarURL.flatMap { NSURL(string: $0) }
+        isSuperAdmin = managedPerson.isSuperAdmin
     }
 }
 
@@ -148,5 +152,6 @@ func ==(lhs: Person, rhs: Person) -> Bool {
         && lhs.pending == rhs.pending
         && lhs.siteID == rhs.siteID
         && lhs.avatarURL == rhs.avatarURL
+        && lhs.isSuperAdmin == rhs.isSuperAdmin
 }
 
