@@ -47,6 +47,7 @@ class PeopleRemote: ServiceRemoteREST {
 
             let first_name = user["first_name"] as? String
             let last_name = user["last_name"] as? String
+            // TODO: normalize avatar URL (remove query parameters)
             let avatar_URL = (user["avatar_URL"] as? String).flatMap { return NSURL(string: $0)}
             let roles = user["roles"] as? [String]
 
