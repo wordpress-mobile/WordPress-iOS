@@ -93,18 +93,12 @@
     navigationItem.backBarButtonItem = backButton;
 
     // Topics button
-    UIImage *image = [UIImage imageNamed:@"icon-reader-topics"];
-    CustomHighlightButton *topicsButton = [CustomHighlightButton buttonWithType:UIButtonTypeCustom];
-    topicsButton.tintColor = [WPStyleGuide navbarButtonTintColor];
-    [topicsButton setImage:image forState:UIControlStateNormal];
-    topicsButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
-    [topicsButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
-
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
-    [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"Accessibility label for the topics button. The user does not see this text but it can be spoken by a screen reader.")];
-    navigationItem.rightBarButtonItem = button;
-
-    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:navigationItem];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Menu", @"")
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self
+                                                              action:@selector(topicsAction:)];
+    [button setAccessibilityLabel:NSLocalizedString(@"Menu", @"Accessibility label for the menu button. The user does not see this text but it can be spoken by a screen reader.")];
+    navigationItem.leftBarButtonItem = button;
 }
 
 - (void)configurePostsViewController
