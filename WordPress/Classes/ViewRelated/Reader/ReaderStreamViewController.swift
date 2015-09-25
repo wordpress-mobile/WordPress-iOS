@@ -28,7 +28,7 @@ import Foundation
     private let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
     private let estimatedRowHeight = CGFloat(100.0)
     private let blockedRowHeight = CGFloat(66.0)
-    private let gapMarkerRowHeight = CGFloat(44.0)
+    private let gapMarkerRowHeight = CGFloat(60.0)
     private let loadMoreThreashold = 4
 
     private let refreshInterval = 300
