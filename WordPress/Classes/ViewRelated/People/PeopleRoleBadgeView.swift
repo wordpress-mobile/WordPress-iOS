@@ -48,13 +48,4 @@ class PeopleRoleBadgeView: UILabel {
             layer.borderColor = newValue.CGColor
         }
     }
-
-    // MARK: Interface Builder additions
-    override func prepareForInterfaceBuilder() {
-        text = "Editor - Pending"
-        textColor = WPStyleGuide.People.editorColor
-        borderColor = WPStyleGuide.People.editorColor
-        backgroundColor = WPStyleGuide.People.RoleBadge.textColor
-    }
-
 }
