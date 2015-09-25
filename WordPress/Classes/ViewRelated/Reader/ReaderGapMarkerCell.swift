@@ -4,8 +4,11 @@ import Foundation
 public class ReaderGapMarkerCell: UITableViewCell
 {
     @IBOutlet private weak var innerContentView: UIView!
-    @IBOutlet private weak var button:UIButton!
+    @IBOutlet private weak var tearBackgroundView: UIView!
+    @IBOutlet private weak var tearMaskView: UIView!
+    @IBOutlet private weak var activityViewBackgroundView: UIView!
     @IBOutlet private weak var activityView: UIActivityIndicatorView!
+    @IBOutlet private weak var button:UIButton!
 
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -17,14 +20,25 @@ public class ReaderGapMarkerCell: UITableViewCell
         selectedBackgroundView = UIView(frame: innerContentView.frame)
         selectedBackgroundView?.backgroundColor = WPStyleGuide.greyLighten30()
         innerContentView.backgroundColor = WPStyleGuide.greyLighten30()
+        tearMaskView.backgroundColor = WPStyleGuide.greyLighten30()
+
+        // Draw the tear
+        drawTearBackground()
+
+        activityViewBackgroundView.backgroundColor = WPStyleGuide.greyDarken10()
+        activityViewBackgroundView.layer.cornerRadius = 4.0
+        activityViewBackgroundView.layer.masksToBounds = true
 
         // Button style
-        // Disable button interactions so the full cell handles the tap.
-        button.userInteractionEnabled = false
-        let text = NSLocalizedString("Load More Posts", comment: "A short label.  A call to action to load more posts.")
+        let text = NSLocalizedString("Load more posts", comment: "A short label.  A call to action to load more posts.")
         button.setTitle(text, forState: .Normal)
         WPStyleGuide.applyGapMarkerButtonStyle(button)
+        button.layer.cornerRadius = 4.0
+        button.layer.masksToBounds = true
         button.sizeToFit()
+
+        // Disable button interactions so the full cell handles the tap.
+        button.userInteractionEnabled = false
     }
 
     public func animateActivityView(animate:Bool) {
@@ -40,5 +54,14 @@ public class ReaderGapMarkerCell: UITableViewCell
         super.setHighlighted(highlighted, animated: animated)
 
         button.highlighted = highlighted
+        if (highlighted) {
+            // Redraw the background when highlighted
+            drawTearBackground()
+        }
+    }
+
+    func drawTearBackground() {
+        let tearImage = UIImage(named: "background-reader-tear")
+        tearBackgroundView.backgroundColor = UIColor(patternImage: tearImage!)
     }
 }
