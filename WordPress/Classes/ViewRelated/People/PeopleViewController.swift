@@ -1,20 +1,30 @@
 import UIKit
 
-public class PeopleViewController: UITableViewController {
-    var models = [Person]()
+public class PeopleViewController: UITableViewController, NSFetchedResultsControllerDelegate {
     public var blog: Blog?
+    private lazy var resultsController: NSFetchedResultsController = {
+        let request = NSFetchRequest(entityName: "Person")
+        request.predicate = NSPredicate(format: "siteID = %@", self.blog!.dotComID())
+        // FIXME: my user should be first
+        request.sortDescriptors = [NSSortDescriptor(key: "displayName", ascending: true, selector: "localizedCaseInsensitiveCompare:")]
+        let context = ContextManager.sharedInstance().mainContext
+        let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
+        frc.delegate = self
+        return frc
+    }()
 
     override public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1;
+        return resultsController.sections?.count ?? 0;
     }
 
     override public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return models.count;
+        return resultsController.sections?[section].numberOfObjects ?? 0
     }
 
     override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("PeopleCell") as! PeopleCell
-        let person = models[indexPath.row]
+        let managedPerson = resultsController.objectAtIndexPath(indexPath) as! ManagedPerson
+        let person = Person(managedPerson: managedPerson)
         let viewModel = PeopleCellViewModel(person: person)
 
         cell.bindViewModel(viewModel)
@@ -22,30 +32,31 @@ public class PeopleViewController: UITableViewController {
         return cell
     }
 
+    public func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        tableView.reloadData()
+    }
+
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        do {
+            try resultsController.performFetch()
+        } catch {
+            DDLogSwift.logError("Error fetching People: \(error)")
+        }
+    }
+
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        if models.count == 0 {
+        if resultsController.fetchedObjects?.count == 0 {
             refreshControl?.beginRefreshing()
             refresh()
         }
     }
 
     @IBAction func refresh() {
-        let remote = PeopleRemote(api: blog!.account.restApi)
-        remote.getTeamFor(blog!.dotComID().integerValue,
-            success: {
-                (people) -> () in
-
-                self.models = people
-                self.tableView.reloadData()
-                self.refreshControl?.endRefreshing()
-            },
-            failure: {
-                (error) -> () in
-
-                // TODO: handle failure
-                DDLogSwift.logError(String(error))
-                self.refreshControl?.endRefreshing()
-        })
+        let service = PeopleService(blog: blog!)
+        service.refreshTeam { _ in
+            self.refreshControl?.endRefreshing()
+        }
     }
 }

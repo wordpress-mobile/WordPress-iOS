@@ -15,6 +15,7 @@ Changes to the data model:
 - Added new entities: `ReaderAbstractTopic`, `ReaderTagTopic`, `ReaderListTopic`, `ReaderDefaultTopic`, `ReaderSiteTopic`.
 - Edited obsolete mapping model: `SafeReaderTopicToReaderTopic`
 - Removes obsolete `ReaderTopic` model
+- Added new entity `Person`
 
 ## WordPress 37 (@sergioestevao 2015-08-01)
 
