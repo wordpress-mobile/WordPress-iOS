@@ -22,9 +22,9 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  *
  */
 - (void)createMenuWithName:(NSString *)menuName
-                            blog:(Blog *)blog
-                         success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-                         failure:(MenusServiceRemoteFailureBlock)failure;
+                      blog:(Blog *)blog
+                   success:(MenusServiceRemoteMenuRequestSuccessBlock)success
+                   failure:(MenusServiceRemoteFailureBlock)failure;
 
 /**
  *  @brief      Update a menu on a blog.
@@ -36,9 +36,9 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  *
  */
 - (void)updateMenu:(RemoteMenu *)menu
-                      blog:(Blog *)blog
-                   success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-                   failure:(MenusServiceRemoteFailureBlock)failure;
+              blog:(Blog *)blog
+           success:(MenusServiceRemoteMenuRequestSuccessBlock)success
+           failure:(MenusServiceRemoteFailureBlock)failure;
 
 /**
  *  @brief      Delete a menu from a blog.
@@ -65,8 +65,8 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  *
  */
 - (void)getMenusForBlog:(Blog *)blog
-                         success:(MenusServiceRemoteMenusRequestSuccessBlock)success
-                         failure:(MenusServiceRemoteFailureBlock)failure;
+                success:(MenusServiceRemoteMenusRequestSuccessBlock)success
+                failure:(MenusServiceRemoteFailureBlock)failure;
 
 /**
  *  @brief      Gets a single menu for a specific blog.
@@ -78,8 +78,8 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  *
  */
 - (void)getMenuWithId:(NSString *)menuId
-                            blog:(Blog *)blog
-                         success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-                         failure:(MenusServiceRemoteFailureBlock)failure;
+                 blog:(Blog *)blog
+              success:(MenusServiceRemoteMenuRequestSuccessBlock)success
+              failure:(MenusServiceRemoteFailureBlock)failure;
 
 @end
