@@ -42,6 +42,7 @@
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.delegate = self;
 
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
