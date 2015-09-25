@@ -25,7 +25,7 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Followed Tags", @"Page title for the list of subscribed tags.");
+    self.title = NSLocalizedString(@"Followed Topics", @"Page title for the list of subscribed topics.");
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
