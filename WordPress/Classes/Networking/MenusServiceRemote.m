@@ -10,9 +10,9 @@
 #pragma mark - Remote queries: Creating and modifying menus
 
 - (void)createMenuWithName:(NSString *)menuName
-                       blog:(Blog *)blog
-                    success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-                    failure:(MenusServiceRemoteFailureBlock)failure
+                      blog:(Blog *)blog
+                   success:(MenusServiceRemoteMenuRequestSuccessBlock)success
+                   failure:(MenusServiceRemoteFailureBlock)failure
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
@@ -117,8 +117,8 @@
 #pragma mark - Remote queries: Getting menus
 
 - (void)getMenusForBlog:(Blog *)blog
-                         success:(MenusServiceRemoteMenusRequestSuccessBlock)success
-                         failure:(MenusServiceRemoteFailureBlock)failure
+                success:(MenusServiceRemoteMenusRequestSuccessBlock)success
+                failure:(MenusServiceRemoteFailureBlock)failure
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
@@ -147,9 +147,9 @@
 }
 
 - (void)getMenuWithId:(NSString *)menuId
-                          blog:(Blog *)blog
-                         success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-                         failure:(MenusServiceRemoteFailureBlock)failure
+                 blog:(Blog *)blog
+              success:(MenusServiceRemoteMenuRequestSuccessBlock)success
+              failure:(MenusServiceRemoteFailureBlock)failure
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
