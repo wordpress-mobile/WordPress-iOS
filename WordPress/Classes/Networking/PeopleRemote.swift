@@ -49,6 +49,7 @@ class PeopleRemote: ServiceRemoteREST {
             let last_name = user["last_name"] as? String
             // TODO: normalize avatar URL (remove query parameters)
             let avatar_URL = (user["avatar_URL"] as? String).flatMap { return NSURL(string: $0)}
+            let is_super_admin = user["is_super_admin"] as? Bool ?? false
             let roles = user["roles"] as? [String]
 
             let role = roles?.map({
@@ -56,7 +57,7 @@ class PeopleRemote: ServiceRemoteREST {
                 return Person.Role(string: role)
             }).sort().first ?? .Unsupported
 
-            return Person(ID: ID, username: nice_name, firstName: first_name, lastName: last_name, displayName: name, role: role, pending: false, siteID: siteID, avatarURL: avatar_URL)
+            return Person(ID: ID, username: nice_name, firstName: first_name, lastName: last_name, displayName: name, role: role, pending: false, siteID: siteID, avatarURL: avatar_URL, isSuperAdmin: is_super_admin)
         }
 
         let errorCount = people.reduce(0) { (sum, person) -> Int in

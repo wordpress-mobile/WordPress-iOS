@@ -5,6 +5,7 @@ struct PeopleCellViewModel {
     let username: String
     let role: Person.Role
     let pending: Bool
+    let superAdmin: Bool
     let avatar: UIImage
 
     init(person: Person) {
@@ -12,6 +13,7 @@ struct PeopleCellViewModel {
         self.username = person.username
         self.role = person.role
         self.pending = person.pending
+        self.superAdmin = person.isSuperAdmin
         self.avatar = person.avatar ?? UIImage(named: "gravatar")!
     }
 
@@ -37,5 +39,9 @@ struct PeopleCellViewModel {
         } else {
             return role.localizedName()
         }
+    }
+
+    var superAdminHidden: Bool {
+        return !superAdmin
     }
 }
