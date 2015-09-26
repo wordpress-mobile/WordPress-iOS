@@ -2,11 +2,11 @@
 
 @interface RemotePublicizer : NSObject
 
-@property (nonatomic, strong) NSString *service;
-@property (nonatomic, strong) NSString *label;
-@property (nonatomic, strong) NSString *detail;
-@property (nonatomic, strong) NSString *icon;
-@property (nonatomic, strong) NSString *connect;
-@property (nonatomic, assign) NSNumber *location;
+@property (nonatomic, copy) NSString *service;
+@property (nonatomic, copy) NSString *label;
+@property (nonatomic, copy) NSString *detail;
+@property (nonatomic, copy) NSString *icon;
+@property (nonatomic, copy) NSString *connect;
+@property (nonatomic, copy) NSNumber *location;
 
 @end

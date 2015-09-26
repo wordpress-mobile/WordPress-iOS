@@ -6,6 +6,7 @@
 #import "Publicizer.h"
 #import "SVProgressHUD.h"
 #import "SharingAuthorizationWebViewController.h"
+#import "RemotePublicizeExternal.h"
 
 typedef NS_ENUM(NSInteger, SharingSection){
     SharingPublicize = 0,
@@ -177,20 +178,23 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 }
 
 - (void)connectPublicizer:(Publicizer *)publicizer
-        withAuthorization:(NSDictionary *)authorization
+        withAuthorization:(NSNumber *)keyring
+               andAccount:(NSString *)account
                andService:(BlogService *)blogService
 {
     NSParameterAssert(publicizer);
+    NSParameterAssert(account);
     NSParameterAssert(blogService);
     
     __weak __typeof__(self) weakSelf = self;
     [blogService connectPublicizer:publicizer
-                 withAuthorization:authorization
+                 withAuthorization:keyring
+                        andAccount:account
                            success:^{
        [weakSelf syncConnectionsWithService:blogService];
     } failure:^(NSError *error) {
        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connect failed", @"Message to show when Publicize connect failed")];
-       [weakSelf refreshPublicizers];
+        [weakSelf syncConnectionsWithService:blogService];
     }];
 }
 
@@ -200,9 +204,12 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     
     __weak __typeof__(self) weakSelf = self;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [blogService checkAuthorizationForPublicizer:publicizer success:^(NSDictionary *authorization) {
+    [blogService checkAuthorizationForPublicizer:publicizer success:^(NSNumber *keyring, NSArray *accounts) {
+        NSString *account = nil;
+        // TODO: Verify/select account
         [weakSelf connectPublicizer:publicizer
-                  withAuthorization:authorization
+                  withAuthorization:keyring
+                         andAccount:account
                          andService:blogService];
     } failure:^(NSError *error) {
         if (error) {
@@ -232,7 +239,8 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 - (void)authorize:(Publicizer *)publicizer didFailWithError:(NSError *)error
 {
     [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
-    [self refreshPublicizers];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [self syncConnectionsWithService:blogService];
 }
 
 - (void)authorizeDidCancel:(Publicizer *)publicizer
@@ -251,6 +259,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
         [weakSelf syncConnectionsWithService:blogService];
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
+        [weakSelf syncConnectionsWithService:blogService];
     }];
 }
 

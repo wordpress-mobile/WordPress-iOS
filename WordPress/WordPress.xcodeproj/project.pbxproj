@@ -578,6 +578,7 @@
 		F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */; };
 		F1A0C49C1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F1A0C49B1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m */; };
 		F1FA2C4E1AED07FC00255FCD /* MFMailComposeViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FA2C491AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.m */; };
+		FA326DD21BB60CB000D62660 /* RemotePublicizeExternal.m in Sources */ = {isa = PBXBuildFile; fileRef = FA326DD11BB60CB000D62660 /* RemotePublicizeExternal.m */; settings = {ASSET_TAGS = (); }; };
 		FA7D87C51B82802A00B608B9 /* SharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7D87C41B82802A00B608B9 /* SharingViewController.m */; };
 		FA7D87C81B8280C400B608B9 /* PublicizerService.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7D87C71B8280C400B608B9 /* PublicizerService.m */; };
 		FA7D87CB1B82810500B608B9 /* Publicizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7D87CA1B82810500B608B9 /* Publicizer.m */; };
@@ -1631,6 +1632,8 @@
 		F1A0C49B1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MFMessageComposeViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
 		F1FA2C481AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MFMailComposeViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
 		F1FA2C491AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MFMailComposeViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
+		FA326DD01BB60CB000D62660 /* RemotePublicizeExternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemotePublicizeExternal.h; path = "Remote Objects/RemotePublicizeExternal.h"; sourceTree = "<group>"; };
+		FA326DD11BB60CB000D62660 /* RemotePublicizeExternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemotePublicizeExternal.m; path = "Remote Objects/RemotePublicizeExternal.m"; sourceTree = "<group>"; };
 		FA69E1641B9F9892006D774F /* WordPress 39.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 39.xcdatamodel"; sourceTree = "<group>"; };
 		FA7D87C31B82802A00B608B9 /* SharingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingViewController.h; sourceTree = "<group>"; };
 		FA7D87C41B82802A00B608B9 /* SharingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingViewController.m; sourceTree = "<group>"; };
@@ -3392,6 +3395,8 @@
 				E1B289DA19F7AF7000DB0707 /* RemoteBlog.m */,
 				FF3DD6BF19F2B77A003A52CB /* RemoteMedia.h */,
 				FF3DD6BD19F2B6B3003A52CB /* RemoteMedia.m */,
+				FA326DD01BB60CB000D62660 /* RemotePublicizeExternal.h */,
+				FA326DD11BB60CB000D62660 /* RemotePublicizeExternal.m */,
 				FA7D87CF1B82816400B608B9 /* RemotePublicizer.h */,
 				FA7D87D01B82816400B608B9 /* RemotePublicizer.m */,
 				B52D29A41B66BEB70010BD3D /* RemoteNotificationSettings.swift */,
@@ -4335,6 +4340,7 @@
 				5D5D0027187DA9D30027CEF6 /* PostCategoriesViewController.m in Sources */,
 				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
 				85D239AE1AE5A5FC0074768D /* BlogSyncFacade.m in Sources */,
+				FA326DD21BB60CB000D62660 /* RemotePublicizeExternal.m in Sources */,
 				5DB93EED19B6190700EC88EB /* ReaderCommentCell.m in Sources */,
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
 				5D2415CB1A8842C9009BD444 /* ReaderPreviewHeaderView.m in Sources */,

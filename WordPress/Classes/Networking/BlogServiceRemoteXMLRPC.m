@@ -82,7 +82,8 @@
 }
 
 - (void)connectPublicizer:(Publicizer *)service
-        withAuthorization:(NSDictionary *)authorization
+        withAuthorization:(NSNumber *)keyring
+               andAccount:(NSString *)account
                   success:(SuccessHandler)success
                   failure:(void (^)(NSError *))failure
 {

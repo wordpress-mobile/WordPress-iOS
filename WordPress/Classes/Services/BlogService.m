@@ -344,13 +344,15 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 - (void)connectPublicizer:(Publicizer *)service
-        withAuthorization:(NSNumber *)authorization
+        withAuthorization:(NSNumber *)keyring
+               andAccount:(NSString *)account
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:service.blog];
     [remote connectPublicizer:service
-            withAuthorization:authorization
+            withAuthorization:keyring
+                   andAccount:account
                       success:success
                       failure:failure];
 }

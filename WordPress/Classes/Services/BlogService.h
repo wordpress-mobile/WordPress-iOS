@@ -77,19 +77,21 @@
  *  @param failure The block that will be executed on failure.  Can be nil.
  */
 - (void)checkAuthorizationForPublicizer:(Publicizer *)service
-                                success:(void (^)(NSDictionary *))success
+                                success:(void (^)(NSNumber *keyring, NSArray *accounts))success
                                 failure:(void (^)(NSError *))failure;
 
 /**
  *  @brief Connect a Publicizer service
  *
- *  @param service       The service to connect.
- *  @param authorization The Keyring authorization ID.
- *  @param success       Block executed on success.  Can be nil.
- *  @param failure       Block executed on failure.  Can be nil.
+ *  @param service The service to connect.
+ *  @param keyring The Keyring authorization ID.
+ *  @param account Additional specified account. Nil for default.
+ *  @param success Block executed on success.  Can be nil.
+ *  @param failure Block executed on failure.  Can be nil.
  */
 - (void)connectPublicizer:(Publicizer *)service
-        withAuthorization:(NSNumber *)authorization
+        withAuthorization:(NSNumber *)keyring
+               andAccount:(NSString *)account
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure;
 

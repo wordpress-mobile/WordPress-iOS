@@ -4,6 +4,7 @@
 #import "PostCategory.h"
 #import "RemoteBlogSettings.h"
 #import "Publicizer.h"
+#import "RemotePublicizeExternal.h"
 
 
 static NSString const *BlogRemoteNameKey                = @"name";
@@ -138,7 +139,13 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
                   if ([[keyring stringForKey:@"service"] isEqualToString:service.service]) {
                       NSNumber *authorization = [keyring numberForKey:@"ID"];
                       if (authorization && success) {
-                          success(authorization);
+                          NSMutableArray *accounts = [NSMutableArray new];
+                          [accounts addObject:[[RemotePublicizeExternal alloc] initWithDictionary:keyring]];
+                          NSArray *additional = [keyring arrayForKey:@"additional_external_users"];
+                          for (NSDictionary *account in additional) {
+                              [accounts addObject:[[RemotePublicizeExternal alloc] initWithDictionary:account]];
+                          }
+                          success(authorization, accounts);
                       }
                       return;
                   }
@@ -154,21 +161,26 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
 }
 
 - (void)connectPublicizer:(Publicizer *)service
-        withAuthorization:(NSNumber *)authorization
+        withAuthorization:(NSNumber *)keyring
+               andAccount:(NSString *)account
                   success:(SuccessHandler)success
                   failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([service isKindOfClass:[Publicizer class]]);
     NSParameterAssert(service.blog.dotComID != nil);
-    NSParameterAssert([authorization isKindOfClass:[NSNumber class]]);
+    NSParameterAssert([keyring isKindOfClass:[NSNumber class]]);
     
     NSString *path = [self pathForConnectionWithPublicizer:service];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
-    NSDictionary *parameters = @{ @"keyring_connection_ID" : authorization };
-
+    NSMutableDictionary *parameters =  [NSMutableDictionary dictionary];
+    parameters[@"keyring_connection_ID"] = keyring;
+    if (account.length) {
+        parameters[@"external_user_ID"] = account;
+    }
+    
     [self.api POST:requestUrl
-       parameters:parameters
+       parameters:[NSDictionary dictionaryWithDictionary:parameters]
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
                   success();
