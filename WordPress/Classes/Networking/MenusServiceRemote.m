@@ -224,7 +224,8 @@
     menu.menuId = menuId;
     menu.details = [dictionary stringForKey:@"description"];
     menu.name = [dictionary stringForKey:@"name"];
-    
+    menu.locationNames = [dictionary arrayForKey:@"locations"];
+
     NSArray *itemDicts = [dictionary arrayForKey:@"items"];
     if(itemDicts.count) {
         menu.items = [self menuItemsFromJSONDictionaries:itemDicts parent:nil];
