@@ -9,6 +9,8 @@
 #import "RelatedPostsPreviewTableViewCell.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 
+static const CGFloat RelatePostsSettingsCellHeight = 44;
+
 typedef NS_ENUM(NSInteger, RelatedPostsSettingsSection) {
     RelatedPostsSettingsSectionOptions = 0,
     RelatedPostsSettingsSectionPreview,
@@ -162,7 +164,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case RelatedPostsSettingsSectionOptions:{
-            return  44;
+            return RelatePostsSettingsCellHeight;
         }
             break;
         case RelatedPostsSettingsSectionPreview:{
