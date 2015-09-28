@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSSet<Menu *> *menus;
 @property (nonatomic, strong, readwrite) Blog *blog;
 
++ (NSString *)entityName;
+
 @end
 
 @interface MenuLocation (CoreDataGeneratedAccessors)
