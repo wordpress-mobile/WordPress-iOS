@@ -3,6 +3,7 @@
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import <DTCoreText/DTCoreText.h>
 #import <SFHFKeychainUtils.h>
+#import <SVProgressHUD.h>
 #import <WordPress-AppbotX/ABXAppStore.h>
 
 #import "AccountService.h"
@@ -30,7 +31,6 @@
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
 
-#import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostContentProvider.h"

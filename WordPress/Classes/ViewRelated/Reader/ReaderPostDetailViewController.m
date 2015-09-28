@@ -4,7 +4,6 @@
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
 #import "ReachabilityUtils.h"
-#import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostRichContentView.h"
@@ -22,6 +21,7 @@
 
 static CGFloat const VerticalMargin = 40;
 static NSInteger const ReaderPostDetailImageQuality = 65;
+NSString * const ReaderPostLikeCountKeyPath = @"likeCount";
 NSString * const ReaderDetailTypeKey = @"post_detail_type";
 NSString * const ReaderDetailTypeNormal = @"normal";
 NSString * const ReaderDetailTypePreviewSite = @"preview_site";
@@ -65,6 +65,11 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 
 #pragma mark - LifeCycle Methods
+
+- (void)dealloc
+{
+    [self.post removeObserver:self forKeyPath:ReaderPostLikeCountKeyPath];
+}
 
 - (void)viewDidLoad
 {
@@ -110,16 +115,18 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     }
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    if (object == self.post && [keyPath isEqualToString:ReaderPostLikeCountKeyPath]) {
+        // Note: The intent here is to update the action buttons, specifically the
+        // like button, *after* both likeCount and isLiked has changed. The order
+        // of the properties is important.
+        [self.postView updateActionButtons];
+    }
+}
+
 
 #pragma mark - Configuration
-
-- (Class)classForPostView
-{
-    if (self.readerViewStyle == ReaderViewStyleSitePreview) {
-        return [ReaderPostRichUnattributedContentView class];
-    }
-    return [ReaderPostRichContentView class];
-}
 
 - (void)configureNavbar
 {
@@ -140,7 +147,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)configurePostView
 {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
-    self.postView = [[[self classForPostView] alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
+    self.postView = [[ReaderPostRichContentView alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
@@ -265,6 +272,22 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 #pragma mark - Accessor methods
 
+- (void)setPost:(ReaderPost *)post
+{
+    if (post == _post) {
+        return;
+    }
+
+    if (!post) {
+        [_post removeObserver:self forKeyPath:ReaderPostLikeCountKeyPath];
+        _post = nil;
+        return;
+    }
+
+    _post = post;
+    [_post addObserver:self forKeyPath:ReaderPostLikeCountKeyPath options:0 context:nil];
+}
+
 - (UIBarButtonItem *)shareButton
 {
     if (_shareButton) {
@@ -386,7 +409,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     }
     self.didBumpStats = YES;
     NSString *isOfflineView = [ReachabilityUtils isInternetReachable] ? @"no" : @"yes";
-    NSString *detailType = (self.readerViewStyle == ReaderViewStyleNormal) ? ReaderDetailTypeNormal : ReaderDetailTypePreviewSite;
+    NSString *detailType = (self.post.topic.type == ReaderSiteTopic.TopicType) ? ReaderDetailTypePreviewSite : ReaderDetailTypeNormal;
     NSDictionary *properties = @{
                                  ReaderDetailTypeKey:detailType,
                                  ReaderDetailOfflineKey:isOfflineView
@@ -498,9 +521,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
 {
     NSNumber *siteID = self.post.siteID;
-    NSString *siteURL = self.post.blogURL;
-    BOOL isWPcom = self.post.isWPCom;
-    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithSiteID:siteID siteURL:siteURL isWPcom:isWPcom];
+    ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:siteID isFeed:self.post.isExternal];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -511,9 +532,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     [service toggleLikedForPost:post success:nil failure:^(NSError *error) {
         DDLogError(@"Error (un)liking post : %@", [error localizedDescription]);
-        [postView updateActionButtons];
     }];
-    [postView updateActionButtons];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
@@ -528,9 +547,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
         return;
     }
     if (self.post.sourceAttribution.blogID) {
-        ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithSiteID:self.post.sourceAttribution.blogID
-                                                                                                    siteURL:self.post.sourceAttribution.blogURL
-                                                                                                    isWPcom:YES];
+        ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:self.post.sourceAttribution.blogID isFeed:NO];
         [self.navigationController pushViewController:controller animated:YES];
         return;
     }

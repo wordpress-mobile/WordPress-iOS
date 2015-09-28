@@ -25,7 +25,7 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Followed Tags", @"Page title for the list of subscribed tags.");
+    self.title = NSLocalizedString(@"Followed Topics", @"Page title for the list of subscribed topics.");
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -112,9 +112,7 @@
 {
     ReaderTagTopic *topic = (ReaderTagTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [service unfollowTopic:topic withSuccess:^{
-        //noop
-    } failure:^(NSError *error) {
+    [service unfollowAndRefreshCurrentTopicForTag:topic withSuccess:nil failure:^(NSError *error) {
         DDLogError(@"Could not unfollow topic: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Unfollow Topic", @"");
@@ -187,14 +185,17 @@
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return nil;
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
 
-    } else if (section == 1) {
+    if ([sectionInfo.name isEqualToString:ReaderListTopic.TopicType]) {
         return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
     }
 
-    return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
+    if ([sectionInfo.name isEqualToString:ReaderTagTopic.TopicType]) {
+        return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
+    }
+
+    return nil;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
