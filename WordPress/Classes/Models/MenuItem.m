@@ -17,4 +17,9 @@
 @dynamic children;
 @dynamic parent;
 
++ (NSString *)entityName
+{
+    return NSStringFromClass([self class]);
+}
+
 @end

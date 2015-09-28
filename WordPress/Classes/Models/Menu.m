@@ -11,4 +11,9 @@
 @dynamic locations;
 @dynamic blog;
 
++ (NSString *)entityName
+{
+    return NSStringFromClass([self class]);
+}
+
 @end
