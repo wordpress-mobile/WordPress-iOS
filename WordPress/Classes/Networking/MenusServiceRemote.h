@@ -2,6 +2,7 @@
 
 @class Blog;
 @class RemoteMenu;
+@class RemoteMenuItem;
 
 typedef void(^MenusServiceRemoteSuccessBlock)();
 typedef void(^MenusServiceRemoteMenuRequestSuccessBlock)(RemoteMenu *menu);
@@ -35,21 +36,23 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  *  @param      failure     The failure handler.  Can be nil.
  *
  */
-- (void)updateMenu:(RemoteMenu *)menu
-              blog:(Blog *)blog
+- (void)updateMenuForId:(NSString *)menuId
+                   blog:(Blog *)blog
+               withName:(NSString *)updatedName
+              withItems:(NSArray <RemoteMenuItem *> *)updatedItems
            success:(MenusServiceRemoteMenuRequestSuccessBlock)success
            failure:(MenusServiceRemoteFailureBlock)failure;
 
 /**
  *  @brief      Delete a menu from a blog.
  *
- *  @param      menu        The menu object to delete remotely.  Cannot be nil.
+ *  @param      menuId      The menuId of the menu to delete remotely.  Cannot be nil.
  *  @param      blog        The blog to delete the menu from.  Cannot be nil.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  */
-- (void)deleteMenu:(RemoteMenu *)menu
+- (void)deleteMenuForId:(NSString *)menuId
               blog:(Blog *)blog
            success:(MenusServiceRemoteSuccessBlock)success
            failure:(MenusServiceRemoteFailureBlock)failure;
@@ -77,7 +80,7 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  *  @param      failure     The failure handler.  Can be nil.
  *
  */
-- (void)getMenuWithId:(NSString *)menuId
+- (void)getMenuForId:(NSString *)menuId
                  blog:(Blog *)blog
               success:(MenusServiceRemoteMenuRequestSuccessBlock)success
               failure:(MenusServiceRemoteFailureBlock)failure;
