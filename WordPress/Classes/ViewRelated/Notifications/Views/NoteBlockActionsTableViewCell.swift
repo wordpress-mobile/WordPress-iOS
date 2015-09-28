@@ -144,8 +144,8 @@ import Foundation
     
     private func refreshButtonSize(button: UIButton, isVisible: Bool) {
         // When disabled, let's hide the button by shrinking it's width
-        let newWidth   = isVisible ? buttonWidth   : CGFloat.min
-        let newSpacing = isVisible ? buttonSpacing : CGFloat.min
+        let newWidth   = isVisible ? buttonWidth : CGFloat.min
+        let newSpacing = isVisible ? buttonSpacingForCurrentTraits() : CGFloat.min
         
         button.updateConstraint(.Width, constant: newWidth)
         
@@ -168,9 +168,19 @@ import Foundation
         setNeedsLayout()
     }
     
+    private func buttonSpacingForCurrentTraits() -> CGFloat {
+        if #available(iOS 9.0, *) {
+            let isHorizontallyCompact = traitCollection.horizontalSizeClass == .Compact && UIDevice.isPad()
+            return isHorizontallyCompact ? buttonSpacingCompact : buttonSpacing
+        }
+        
+        return buttonSpacing
+    }
+    
     // MARK: - Private Constants
     private let buttonWidth                         = CGFloat(55)
     private let buttonSpacing                       = CGFloat(20)
+    private let buttonSpacingCompact                = CGFloat(10)
     private let actionsHeight                       = CGFloat(34)
     private let actionsTop                          = CGFloat(11)
     
