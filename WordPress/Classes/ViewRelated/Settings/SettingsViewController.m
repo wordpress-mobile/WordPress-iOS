@@ -93,6 +93,7 @@ static CGFloat const SettingsRowHeight = 44.0;
     self.showInternalBetaSection = NO;
 #endif
 
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
