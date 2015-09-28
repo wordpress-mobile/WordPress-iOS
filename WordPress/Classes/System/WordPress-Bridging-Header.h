@@ -5,6 +5,7 @@
 #import <SFHFKeychainUtils.h>
 #import <SVProgressHUD.h>
 #import <WordPress-AppbotX/ABXAppStore.h>
+#import <WordPress-iOS-Shared/UIImage+Util.h>
 
 #import "AccountService.h"
 #import "AppRatingUtility.h"
@@ -32,6 +33,7 @@
 #import "PostMetaButton.h"
 
 #import "ReaderCommentsViewController.h"
+#import "ReaderGapMarker.h"
 #import "ReaderPost.h"
 #import "ReaderPostContentProvider.h"
 #import "ReaderPostDetailViewController.h"
