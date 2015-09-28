@@ -25,8 +25,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.title = NSLocalizedString(@"Popular Tags", @"Page title for the list of recommended tags.");
+    if ([self isWPComUser]) {
+        self.title = NSLocalizedString(@"Popular Tags", @"Page title for the list of recommended topics when signed into wpcom.");
+    } else {
+        self.title = NSLocalizedString(@"Menu", @"Page title for the list of recommended topics when not signed into wpcom.");
+    }
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;

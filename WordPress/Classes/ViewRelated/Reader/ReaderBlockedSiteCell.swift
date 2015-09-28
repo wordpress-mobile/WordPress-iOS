@@ -1,6 +1,6 @@
 import Foundation
 
- public class ReaderBlockedSiteCell: UITableViewCell
+public class ReaderBlockedSiteCell: UITableViewCell
 {
 
     @IBOutlet private weak var label: UILabel!

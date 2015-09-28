@@ -229,6 +229,19 @@ extension WPStyleGuide
     }
 
 
+    // MARK: - Gap Marker Styles
+
+    public class func applyGapMarkerButtonStyle(button:UIButton) {
+        let normalImage = UIImage(color: WPStyleGuide.greyDarken10(), havingSize: button.bounds.size)
+        let highlightedImage = UIImage(color: WPStyleGuide.lightBlue(), havingSize: button.bounds.size)
+        button.setBackgroundImage(normalImage, forState: .Normal)
+        button.setBackgroundImage(highlightedImage, forState: .Highlighted)
+
+        button.titleLabel?.font = WPFontManager.openSansSemiBoldFontOfSize(Cards.loadMoreButtonFontSize)
+        button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+    }
+
+
     // MARK: - Metrics
 
     public struct Cards
@@ -239,6 +252,7 @@ extension WPStyleGuide
         public static let contentFontSize:CGFloat = UIDevice.isPad() ? 16.0 : 14.0
         public static let buttonFontSize:CGFloat = 14.0
         public static let subtextFontSize:CGFloat = 12.0
+        public static let loadMoreButtonFontSize:CGFloat = 15.0
     }
 
 }
