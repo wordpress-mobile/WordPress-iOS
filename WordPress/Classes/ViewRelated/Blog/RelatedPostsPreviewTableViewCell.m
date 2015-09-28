@@ -34,6 +34,41 @@ static CGFloat ImageHeight = 96.0;
     return self;
 }
 
+- (UILabel *)titleLabel
+{
+    if (!_titleLabel) {
+        _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _titleLabel.textColor = [WPStyleGuide darkGrey];
+        _titleLabel.font = [WPFontManager openSansSemiBoldFontOfSize:14.0];
+        _titleLabel.numberOfLines = 0;
+    }
+    _titleLabel.text = self.title;
+    return _titleLabel;
+}
+
+- (UILabel *)siteLabel
+{
+    if (!_siteLabel) {
+        _siteLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _siteLabel.textColor = [WPStyleGuide greyDarken20];
+        _siteLabel.font = [WPFontManager openSansItalicFontOfSize:11.0];
+        _siteLabel.numberOfLines = 0;
+    }
+    _siteLabel.text = self.site;
+    return _siteLabel;
+}
+
+- (UIImageView *)imageView
+{
+    if (!_imageView){
+        _imageView = [[UIImageView alloc] init];
+        [_imageView setContentMode:UIViewContentModeScaleAspectFill];
+        [_imageView setClipsToBounds:YES];
+    }
+    _imageView.image = [UIImage imageNamed:self.imageName];
+    return _imageView;
+}
+
 @end
 
 @interface RelatedPostsPreviewTableViewCell()
@@ -70,43 +105,12 @@ static CGFloat ImageHeight = 96.0;
         _previewPosts = @[preview1, preview2, preview3];
         
         for (RelatedPostsPreview *relatedPostPreview in _previewPosts) {
-            relatedPostPreview.imageView = [[self class ] imageViewWithImageNamed:relatedPostPreview.imageName];
             [self.contentView addSubview:relatedPostPreview.imageView];
-            relatedPostPreview.titleLabel = [[self class] titleLabelWithText:relatedPostPreview.title];
             [self.contentView addSubview:relatedPostPreview.titleLabel];
-            relatedPostPreview.siteLabel = [[self class] siteLabelWithText:relatedPostPreview.site];
             [self.contentView addSubview:relatedPostPreview.siteLabel];
         }
     }
     return self;
-}
-
-+ (UILabel *)titleLabelWithText:(NSString *)text
-{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.text = text;
-    label.textColor = [WPStyleGuide darkGrey];
-    label.font = [WPFontManager openSansSemiBoldFontOfSize:14.0];
-    label.numberOfLines = 0;
-    return label;
-}
-
-+ (UILabel *)siteLabelWithText:(NSString *)text
-{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.text = text;
-    label.textColor = [WPStyleGuide greyDarken20];
-    label.font = [WPFontManager openSansItalicFontOfSize:11.0];
-    label.numberOfLines = 0;
-    return label;
-}
-
-+ (UIImageView *)imageViewWithImageNamed:(NSString *)imageName
-{
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:imageName]];
-    [imageView setContentMode:UIViewContentModeScaleAspectFill];
-    [imageView setClipsToBounds:YES];
-    return imageView;
 }
 
 - (void)layoutSubviews
