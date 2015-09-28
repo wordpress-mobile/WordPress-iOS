@@ -64,32 +64,6 @@ static const NSInteger MinutesToReadThreshold = 2;
 
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
                          count:(NSUInteger)count
-                       success:(void (^)(NSArray *posts))success
-                       failure:(void (^)(NSError *error))failure
-{
-    NSNumber *numberToFetch = @(count);
-    NSDictionary *params = @{@"number":numberToFetch};
-
-    [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
-}
-
-- (void)fetchPostsFromEndpoint:(NSURL *)endpoint
-                         count:(NSUInteger)count
-                         after:(NSDate *)date
-                       success:(void (^)(NSArray *posts))success
-                       failure:(void (^)(NSError *error))failure
-{
-    NSNumber *numberToFetch = @(count);
-    NSDictionary *params = @{@"number":numberToFetch,
-                             @"after": [DateUtils isoStringFromDate:date],
-                             @"order": @"ASC"
-                             };
-
-    [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
-}
-
-- (void)fetchPostsFromEndpoint:(NSURL *)endpoint
-                         count:(NSUInteger)count
                         before:(NSDate *)date
                        success:(void (^)(NSArray *posts))success
                        failure:(void (^)(NSError *error))failure
