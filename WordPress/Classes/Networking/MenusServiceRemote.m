@@ -45,22 +45,28 @@
            }];
 }
 
-- (void)updateMenu:(RemoteMenu *)menu
-              blog:(Blog *)blog
-           success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-           failure:(MenusServiceRemoteFailureBlock)failure
+- (void)updateMenuForId:(NSString *)menuId
+                   blog:(Blog *)blog
+               withName:(NSString *)updatedName
+              withItems:(NSArray <RemoteMenuItem *> *)updatedItems
+                success:(MenusServiceRemoteMenuRequestSuccessBlock)success
+                failure:(MenusServiceRemoteFailureBlock)failure
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
-    NSParameterAssert([menu isKindOfClass:[RemoteMenu class]]);
+    NSParameterAssert([menuId isKindOfClass:[NSString class]]);
     
-    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@", blogId, menu.menuId];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@", blogId, menuId];
     NSString *requestURL = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:2];
-    [params setObject:menu.name forKey:@"name"];
-    [params setObject:[self menuItemJSONDictionariesFromMenuItems:menu.items] forKey:@"items"];
+    if(updatedName.length) {
+        [params setObject:updatedName forKey:@"name"];
+    }
+    if(updatedItems.count) {
+        [params setObject:[self menuItemJSONDictionariesFromMenuItems:updatedItems] forKey:@"items"];
+    }
     
     [self.api POST:requestURL
         parameters:params
@@ -78,16 +84,16 @@
            }];
 }
 
-- (void)deleteMenu:(RemoteMenu *)menu
+- (void)deleteMenuForId:(NSString *)menuId
               blog:(Blog *)blog
            success:(MenusServiceRemoteSuccessBlock)success
            failure:(MenusServiceRemoteFailureBlock)failure
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
-    NSParameterAssert([menu isKindOfClass:[RemoteMenu class]]);
+    NSParameterAssert([menuId isKindOfClass:[NSString class]]);
     
-    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@/delete", blogId, menu.menuId];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@/delete", blogId, menuId];
     NSString *requestURL = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     [self.api POST:requestURL
@@ -132,9 +138,9 @@
           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
               
               if(success) {
+                  
                   NSArray *menus = [self remoteMenusFromJSONArray:[responseObject arrayForKey:@"menus"]];
                   NSArray *locations = [self remoteMenuLocationsFromJSONArray:[responseObject arrayForKey:@"locations"]];
-                  
                   success(menus, locations);
               }
               
@@ -146,7 +152,7 @@
           }];
 }
 
-- (void)getMenuWithId:(NSString *)menuId
+- (void)getMenuForId:(NSString *)menuId
                  blog:(Blog *)blog
               success:(MenusServiceRemoteMenuRequestSuccessBlock)success
               failure:(MenusServiceRemoteFailureBlock)failure
@@ -163,6 +169,7 @@
           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
               
               if(success) {
+                  DDLogDebug(@"%@", responseObject);
                   success([self menuFromJSONDictionary:responseObject]);
               }
               
