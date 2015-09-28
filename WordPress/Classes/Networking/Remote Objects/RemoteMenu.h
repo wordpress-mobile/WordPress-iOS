@@ -9,6 +9,6 @@
 @property (nonatomic, copy) NSString *details;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, strong) NSArray<RemoteMenuItem *> *items;
-@property (nonatomic, strong) NSSet<NSString *> *locationNames;
+@property (nonatomic, strong) NSArray<NSString *> *locationNames;
 
 @end
