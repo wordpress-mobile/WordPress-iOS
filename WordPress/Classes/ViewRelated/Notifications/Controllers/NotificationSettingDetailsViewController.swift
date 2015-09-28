@@ -79,8 +79,12 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+
+        if #available(iOS 9.0, *) {
+            tableView.cellLayoutMarginsFollowReadableWidth = false
+        }
     }
-    
+
     @IBAction private func reloadTable() {
         sections = isDeviceStreamDisabled() ? sectionsForDisabledDeviceStream() : sectionsForSettings(settings!, stream: stream!)
         tableView.reloadData()
