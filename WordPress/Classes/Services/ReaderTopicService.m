@@ -231,8 +231,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 
     // Now do it for realz.
+    NSDictionary *properties = @{@"tag":topic.slug};
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+        [WPAnalytics track:WPAnalyticsStatReaderUnfollowedTag withProperties:properties];
         if (success) {
             success();
         }
@@ -251,6 +253,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
+            [WPAnalytics track:WPAnalyticsStatReaderFollowedTag];
             [self selectTopicWithID:topicID];
             if (success) {
                 success();
@@ -268,6 +271,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+        [WPAnalytics track:WPAnalyticsStatReaderFollowedTag];
         if (success) {
             success();
         }
