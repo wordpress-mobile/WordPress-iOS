@@ -115,9 +115,16 @@ static NSString *const Ellipsis =  @"\u2026";
                                    @"wink": @"😉"
                                    };
 
-    NSError *error = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"<img src=['\"].*?wp-includes/images/smilies/icon_(.+?).gif['\"].*?class=['\"]wp-smiley['\"] ?/?>" options:NSRegularExpressionCaseInsensitive error:&error];
-    NSArray *matches = [regex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
+    static NSRegularExpression *smiliesRegex;
+    static NSRegularExpression *coreEmojiRegex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        smiliesRegex = [NSRegularExpression regularExpressionWithPattern:@"<img src=['\"].*?wp-includes/images/smilies/icon_(.+?).gif['\"].*?class=['\"]wp-smiley['\"] ?/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+        coreEmojiRegex = [NSRegularExpression regularExpressionWithPattern:@"<img .*?src=['\"].*?images/core/emoji/[^/]+/(.+?).png['\"].*?class=['\"]wp-smiley['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    NSArray *matches = [smiliesRegex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
         NSRange range = [match rangeAtIndex:1];
         NSString *icon = [result substringWithRange:range];
@@ -126,7 +133,35 @@ static NSString *const Ellipsis =  @"\u2026";
             [result replaceCharactersInRange:[match range] withString:replacement];
         }
     }
+
+    matches = [coreEmojiRegex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
+    for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
+        NSRange range = [match rangeAtIndex:1];
+        NSString *filename = [result substringWithRange:range];
+        NSString *replacement = [self emojiUnicodeFromCoreEmojiFilename:filename];
+        if (replacement) {
+            [result replaceCharactersInRange:[match range] withString:replacement];
+        }
+    }
+
     return [NSString stringWithString:result];
+}
+
+/**
+ Pass the hex string for a unicode character and returns that unicode character. 
+ Core WordPress emoji images are named after their unicode code point. This makes
+ it convenient to scan the filename for its hex value and return the appropriate
+ emoji character.
+ */
+- (NSString *)emojiUnicodeFromCoreEmojiFilename:(NSString *)filename
+{
+    NSScanner *scanner = [NSScanner scannerWithString:filename];
+    unsigned long long hex = 0;
+    BOOL success = [scanner scanHexLongLong:&hex];
+    if (!success) {
+        return nil;
+    }
+    return [[NSString alloc] initWithBytes:&hex length:4 encoding:NSUTF32LittleEndianStringEncoding];
 }
 
 /*
