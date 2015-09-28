@@ -7,6 +7,6 @@
 @dynamic details;
 @dynamic name;
 @dynamic menus;
-
+@dynamic blog;
 
 @end

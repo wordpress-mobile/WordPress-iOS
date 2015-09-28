@@ -1,6 +1,6 @@
 #import <CoreData/CoreData.h>
 
-@class MenuItem, MenuLocation;
+@class MenuItem, MenuLocation, Blog;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *name;
 @property (nullable, nonatomic, retain) NSOrderedSet<MenuItem *> *items;
 @property (nullable, nonatomic, retain) NSSet<MenuLocation *> *locations;
+@property (nonatomic, strong, readwrite) Blog *blog;
 
 @end
 
