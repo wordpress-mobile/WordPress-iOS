@@ -7,6 +7,7 @@
 #import "SVProgressHUD.h"
 #import "SharingAuthorizationWebViewController.h"
 #import "RemotePublicizeExternal.h"
+#import "UIActionSheet+Helpers.h"
 
 typedef NS_ENUM(NSInteger, SharingSection){
     SharingPublicize = 0,
@@ -183,7 +184,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
                andService:(BlogService *)blogService
 {
     NSParameterAssert(publicizer);
-    NSParameterAssert(account);
+    NSParameterAssert(keyring);
     NSParameterAssert(blogService);
     
     __weak __typeof__(self) weakSelf = self;
@@ -191,11 +192,47 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
                  withAuthorization:keyring
                         andAccount:account
                            success:^{
-       [weakSelf syncConnectionsWithService:blogService];
+        [weakSelf syncConnectionsWithService:blogService];
     } failure:^(NSError *error) {
-       [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connect failed", @"Message to show when Publicize connect failed")];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connect failed", @"Message to show when Publicize connect failed")];
         [weakSelf syncConnectionsWithService:blogService];
     }];
+}
+
+- (void)selectAccountFrom:(NSArray *)accounts
+            forPublicizer:(Publicizer *)publicizer
+        withAuthorization:(NSNumber *)keyring
+               andService:(BlogService *)blogService
+{
+    NSParameterAssert([[accounts firstObject] isKindOfClass:[RemotePublicizeExternal class]]);
+    NSParameterAssert(publicizer);
+    NSParameterAssert(keyring);
+    NSParameterAssert(blogService);
+
+    __weak __typeof__(self) weakSelf = self;
+    NSArray *accountNames = [accounts valueForKeyPath:@"name"];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Connect account:", @"Title of Publicize account selection")
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:accountNames
+                                                           completion:^(NSString *buttonTitle){
+                                                               __typeof__(self) strongSelf = weakSelf;
+                                                               if (!strongSelf) {
+                                                                   return;
+                                                               }
+                                                               for (int account = 0; account < accounts.count; account++) {
+                                                                   if ([accountNames[account] isEqualToString:buttonTitle]) {
+                                                                       NSString *secondaryAccount = account > 0 ? ((RemotePublicizeExternal *)accounts[account]).account : nil;
+                                                                       [strongSelf connectPublicizer:publicizer
+                                                                                 withAuthorization:keyring
+                                                                                        andAccount:secondaryAccount
+                                                                                        andService:blogService];
+                                                                       return;
+                                                                   }
+                                                               }
+                                                               [strongSelf refreshPublicizers];
+                                                           }];
+    [actionSheet showInView:self.view];
 }
 
 - (void)checkAuthorizationForPublicizer:(Publicizer *)publicizer
@@ -205,11 +242,9 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     __weak __typeof__(self) weakSelf = self;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService checkAuthorizationForPublicizer:publicizer success:^(NSNumber *keyring, NSArray *accounts) {
-        NSString *account = nil;
-        // TODO: Verify/select account
-        [weakSelf connectPublicizer:publicizer
+        [weakSelf selectAccountFrom:accounts
+                      forPublicizer:publicizer
                   withAuthorization:keyring
-                         andAccount:account
                          andService:blogService];
     } failure:^(NSError *error) {
         if (error) {
