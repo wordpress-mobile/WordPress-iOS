@@ -9,5 +9,6 @@
 @dynamic name;
 @dynamic items;
 @dynamic locations;
+@dynamic blog;
 
 @end

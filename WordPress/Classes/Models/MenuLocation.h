@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Menu;
+@class Menu, Blog;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -11,6 +11,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *details;
 @property (nullable, nonatomic, retain) NSString *name;
 @property (nullable, nonatomic, retain) NSSet<Menu *> *menus;
+@property (nonatomic, strong, readwrite) Blog *blog;
 
 @end
 
