@@ -3,7 +3,6 @@
 #import "ReachabilityUtils.h"
 #import "WPActivityDefaults.h"
 #import "NSString+Helpers.h"
-#import "UIDevice+Helpers.h"
 #import "WPURLRequest.h"
 #import "WPUserAgent.h"
 #import "WPCookie.h"

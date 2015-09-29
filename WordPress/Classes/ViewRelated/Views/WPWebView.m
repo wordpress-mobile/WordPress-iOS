@@ -4,7 +4,6 @@
 #import "AFHTTPRequestOperation.h"
 #import "WordPressAppDelegate.h"
 #import "UIColor+Helpers.h"
-#import "UIDevice+Helpers.h"
 #import "WPUserAgent.h"
 
 NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequestNotification";
