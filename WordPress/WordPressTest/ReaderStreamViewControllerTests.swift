@@ -7,13 +7,15 @@ class ReaderStreamViewControllerTests: XCTestCase {
     // Tests that a ReaderStreamViewController is returned
     func testControllerWithTopic() {
         let context = TestContextManager.sharedInstance().mainContext
-        var topic = NSEntityDescription.insertNewObjectForEntityForName("ReaderTagTopic", inManagedObjectContext: context) as! ReaderTagTopic
-        var controller = ReaderStreamViewController.controllerWithTopic(topic)
+        let topic = NSEntityDescription.insertNewObjectForEntityForName("ReaderTagTopic", inManagedObjectContext: context) as! ReaderTagTopic
+        topic.path = "foo"
+
+        let controller = ReaderStreamViewController.controllerWithTopic(topic)
         XCTAssertNotNil(controller, "Controller should not be nil")
     }
 
     func testControllerWithSiteID() {
-        var controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(int: 1))
+        let controller = ReaderStreamViewController.controllerWithSiteID(NSNumber(int: 1), isFeed:false)
         XCTAssertNotNil(controller, "Controller should not be nil")
     }
 

@@ -261,9 +261,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 - (void)followTopicNamed:(NSString *)topicName
 {
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [service followTopicNamed:topicName withSuccess:^{
-        // noop
-    } failure:^(NSError *error) {
+    [service followTagNamed:topicName withSuccess:nil failure:^(NSError *error) {
         DDLogError(@"Could not follow topic: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Follow Topic", @"");
@@ -444,7 +442,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 
     // To style the search bar's placeholder, update the appearance proxy using
     // as specific a view hierarchy as possible to avoid collisions.
-    NSString *placeholderText = NSLocalizedString(@"Enter a tag or URL to follow", @"Placeholder text prompting the user to type the name of the tag or URL they would like to follow.");
+    NSString *placeholderText = NSLocalizedString(@"Enter a URL or a tag to follow", @"Placeholder text prompting the user to type the name of the URL or tag they would like to follow.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide allTAllShadeGrey]]];
     [[UITextField appearanceWhenContainedIn:[self.view class], [UISearchBar class], nil] setAttributedPlaceholder:attrPlacholderText];
 
@@ -456,7 +454,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     searchBar.barTintColor = [WPStyleGuide itsEverywhereGrey];
     searchBar.backgroundImage = [[UIImage alloc] init];
     [searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
-    [searchBar setImage:[UIImage imageNamed:@"icon-reader-tag"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+    [searchBar setImage:[UIImage imageNamed:@"icon-reader-search-plus"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     searchBar.accessibilityIdentifier = @"Search";
     // Replace the default "Search" keyboard button with a "Done" button.
     // Apple doesn't expose `returnKeyType` on `UISearchBar` so we'll check to make sure it supports the right protocol, cast and set.

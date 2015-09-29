@@ -2,5 +2,6 @@
 #import "BlogServiceRemote.h"
 #import "ServiceRemoteXMLRPC.h"
 
-@interface BlogServiceRemoteXMLRPC : NSObject<BlogServiceRemote, ServiceRemoteXMLRPC>
+@interface BlogServiceRemoteXMLRPC : ServiceRemoteXMLRPC<BlogServiceRemote>
+
 @end
