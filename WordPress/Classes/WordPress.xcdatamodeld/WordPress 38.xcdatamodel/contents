@@ -342,6 +342,7 @@
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="ReaderDefaultTopic" representedClassName="WordPress.ReaderDefaultTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
+    <entity name="ReaderGapMarker" representedClassName="ReaderGapMarker" parentEntity="ReaderPost" syncable="YES"/>
     <entity name="ReaderListTopic" representedClassName="WordPress.ReaderListTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="isOwner" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isPublic" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -464,5 +465,6 @@
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
     </elements>
 </model>

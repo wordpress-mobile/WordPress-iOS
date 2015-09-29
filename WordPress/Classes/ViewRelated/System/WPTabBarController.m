@@ -274,6 +274,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 - (void)showReaderTab
 {
     [self showTabForIndex:WPTabReader];
+    [WPAnalytics track:WPAnalyticsStatReaderAccessed];
 }
 
 - (void)showPostTab
