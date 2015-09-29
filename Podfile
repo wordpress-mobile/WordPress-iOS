@@ -24,7 +24,7 @@ pod 'Helpshift', '~>4.10.0'
 pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
 pod 'MRProgress', '~>0.7.0'
 
-pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.7'
+pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.8'
 pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
 pod 'NSObject-SafeExpectations', '0.0.2'
@@ -33,7 +33,7 @@ pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-i
 pod 'WordPress-iOS-Shared', '0.4.4'
 pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '1b614724fbc005be4346c7870498658c8b537267'
 pod 'WordPressCom-Stats-iOS', '0.4.7'
-pod 'WordPressCom-Analytics-iOS', '0.0.36'
+pod 'WordPressCom-Analytics-iOS', '0.0.37'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '303b8068530389ea87afde38b77466d685fe3210'
 pod 'WPMediaPicker', '~>0.6.0'
 pod 'ReactiveCocoa', '~> 2.4.7'

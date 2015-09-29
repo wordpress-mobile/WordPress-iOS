@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
 @class RemoteBlogSettings;
-@class Blog;
 
 typedef void (^SettingsHandler)(RemoteBlogSettings *settings);
 typedef void (^OptionsHandler)(NSDictionary *options);
@@ -17,9 +16,9 @@ typedef void (^SuccessHandler)();
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
-- (void)checkMultiAuthorForBlog:(Blog *)blog
-                        success:(MultiAuthorCheckHandler)success
-                        failure:(void (^)(NSError *error))failure;
+- (void)checkMultiAuthorForBlogID:(NSNumber *)blogID
+                          success:(MultiAuthorCheckHandler)success
+                          failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Synchronizes a blog's options.
@@ -28,9 +27,9 @@ typedef void (^SuccessHandler)();
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
-- (void)syncOptionsForBlog:(Blog *)blog
-                   success:(OptionsHandler)success
-                   failure:(void (^)(NSError *error))failure;
+- (void)syncOptionsForBlogID:(NSNumber *)blogID
+                     success:(OptionsHandler)success
+                     failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Synchronizes a blog's post formats.
@@ -39,9 +38,9 @@ typedef void (^SuccessHandler)();
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
-- (void)syncPostFormatsForBlog:(Blog *)blog
-                       success:(PostFormatsHandler)success
-                       failure:(void (^)(NSError *error))failure;
+- (void)syncPostFormatsForBlogID:(NSNumber *)blogID
+                         success:(PostFormatsHandler)success
+                         failure:(void (^)(NSError *error))failure;
 
 
 /**
@@ -51,9 +50,9 @@ typedef void (^SuccessHandler)();
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
-- (void)syncSettingsForBlog:(Blog *)blog
-                   success:(SettingsHandler)success
-                   failure:(void (^)(NSError *error))failure;
+- (void)syncSettingsForBlogID:(NSNumber *)blogID
+                      success:(SettingsHandler)success
+                      failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Updates the blog settings.
@@ -62,8 +61,9 @@ typedef void (^SuccessHandler)();
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
-- (void)updateSettingsForBlog:(Blog *)blog
-                    success:(SuccessHandler)success
-                    failure:(void (^)(NSError *error))failure;
+- (void)updateBlogSettings:(RemoteBlogSettings *)remoteBlogSettings
+                 forBlogID:(NSNumber *)blogID
+                   success:(SuccessHandler)success
+                   failure:(void (^)(NSError *error))failure;
 
 @end

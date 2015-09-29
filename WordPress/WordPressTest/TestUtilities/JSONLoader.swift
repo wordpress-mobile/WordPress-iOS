@@ -38,14 +38,13 @@ import Foundation
     }
 
     private func parseData(data : NSData) -> JSONDictionary? {
-        let options : NSJSONReadingOptions = .MutableContainers | .MutableLeaves
-        var error : NSErrorPointer = nil
+        let options : NSJSONReadingOptions = [.MutableContainers , .MutableLeaves];
         
-        if let parseResult : AnyObject = NSJSONSerialization.JSONObjectWithData(data, options: options, error: error) {
-            
+        do {
+            let parseResult : AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: options)
             return parseResult as? JSONDictionary
+        } catch {
+            return nil;
         }
-        
-        return nil
     }
 }
