@@ -55,8 +55,12 @@ public class NotificationSettingStreamsViewController : UITableViewController
         
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+
+        if #available(iOS 9.0, *) {
+            tableView.cellLayoutMarginsFollowReadableWidth = false
+        }
     }
-    
+
     
     
     // MARK: - Public Helpers
@@ -144,6 +148,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         let stream                  = streamAtSection(indexPath.section)
         let disabled                = isDisabledDeviceStream(stream)
         
+        cell.imageView?.image       = imageForStreamKind(stream.kind)
         cell.textLabel?.text        = stream.kind.description() ?? String()
         cell.detailTextLabel?.text  = disabled ? NSLocalizedString("Off", comment: "Disabled") : String()
         cell.accessoryType          = .DisclosureIndicator
@@ -155,6 +160,20 @@ public class NotificationSettingStreamsViewController : UITableViewController
         return sortedStreams![section]
     }
     
+    private func imageForStreamKind(streamKind: NotificationSettings.Stream.Kind) -> UIImage? {
+        let imageName : String
+        switch streamKind {
+        case .Email:
+            imageName = "notifications-email"
+        case .Timeline:
+            imageName = "notifications-bell"
+        case .Device:
+            imageName = "notifications-phone"
+        }
+        
+        let tintColor = WPStyleGuide.greyLighten10()
+        return UIImage(named: imageName)?.imageTintedWithColor(tintColor)
+    }
     
     
     // MARK: - Disabled Push Notifications Helpers

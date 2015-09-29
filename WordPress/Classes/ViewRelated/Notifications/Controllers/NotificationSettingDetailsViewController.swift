@@ -49,8 +49,14 @@ public class NotificationSettingDetailsViewController : UITableViewController
         switch settings!.channel {
         case .WordPressCom:
             title = NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
+        case .Other:
+            let title = NSLocalizedString("Other Sites", comment: "Other Sites Notification Settings Title")
+            let subtitle = stream?.kind.description()
+            navigationItem.titleView = NavigationTitleView(title: title, subtitle: subtitle)
         default:
-            title = stream!.kind.description()
+            let title = settings?.blog?.blogName
+            let subtitle = stream?.kind.description()
+            navigationItem.titleView = NavigationTitleView(title: title, subtitle: subtitle)
         }
     }
     
@@ -73,8 +79,12 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+
+        if #available(iOS 9.0, *) {
+            tableView.cellLayoutMarginsFollowReadableWidth = false
+        }
     }
-    
+
     @IBAction private func reloadTable() {
         sections = isDeviceStreamDisabled() ? sectionsForDisabledDeviceStream() : sectionsForSettings(settings!, stream: stream!)
         tableView.reloadData()

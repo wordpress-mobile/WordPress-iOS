@@ -111,4 +111,25 @@ public class ReaderHelpers {
         return path.hasSuffix("/read/liked")
     }
 
+
+    // MARK: Analytics Helpers
+
+    public class func trackLoadedTopic(topic: ReaderAbstractTopic, withProperties properties:[NSObject : AnyObject]) {
+        var stat:WPAnalyticsStat?
+
+        if topicIsFollowing(topic) {
+            stat = .ReaderLoadedFreshlyPressed
+
+        } else if isTopicList(topic) {
+            stat = .ReaderLoadedList
+
+        } else if isTopicTag(topic) {
+            stat = .ReaderLoadedTag
+
+        }
+        if (stat != nil) {
+            WPAnalytics.track(stat!, withProperties: properties)
+        }
+    }
+
 }

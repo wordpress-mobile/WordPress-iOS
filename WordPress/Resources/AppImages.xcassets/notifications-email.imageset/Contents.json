@@ -2,13 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "icon-reader-topics.png"
+      "filename" : "notifications-email.pdf",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "icon-reader-topics@2x.png"
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
