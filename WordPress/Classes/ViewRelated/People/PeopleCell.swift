@@ -12,7 +12,7 @@ class PeopleCell: UITableViewCell {
     }
 
     func bindViewModel(viewModel: PeopleCellViewModel) {
-        avatarImageView.image = viewModel.avatar
+        setAvatarURL(viewModel.avatarURL)
         displayNameLabel.text = viewModel.displayName
         usernameLabel.text = viewModel.usernameText
         roleBadge.borderColor = viewModel.roleBorderColor
@@ -20,5 +20,17 @@ class PeopleCell: UITableViewCell {
         roleBadge.textColor = viewModel.roleTextColor
         roleBadge.text = viewModel.roleText
         superAdminRoleBadge.hidden = viewModel.superAdminHidden
+    }
+
+    func setAvatarURL(avatarURL: NSURL?) {
+        let placeholder = UIImage(named: "gravatar")!
+        if let avatarURL = avatarURL {
+            let size = avatarImageView.frame.width * avatarImageView.contentScaleFactor
+            let scaledURL = avatarURL.patchGravatarUrlWithSize(size)
+
+            avatarImageView.setImageWithURL(scaledURL, placeholderImage: placeholder)
+        } else {
+            avatarImageView.image = placeholder
+        }
     }
 }

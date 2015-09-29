@@ -6,7 +6,7 @@ struct PeopleCellViewModel {
     let role: Person.Role
     let pending: Bool
     let superAdmin: Bool
-    let avatar: UIImage
+    let avatarURL: NSURL?
 
     init(person: Person) {
         self.displayName = person.displayName
@@ -14,7 +14,7 @@ struct PeopleCellViewModel {
         self.role = person.role
         self.pending = person.pending
         self.superAdmin = person.isSuperAdmin
-        self.avatar = person.avatar ?? UIImage(named: "gravatar")!
+        self.avatarURL = person.avatarURL
     }
 
     var usernameText: String {
