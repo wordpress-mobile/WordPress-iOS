@@ -91,28 +91,34 @@ static NSString *const Ellipsis =  @"\u2026";
     NSMutableString *result = [NSMutableString stringWithString:self];
 
     NSDictionary *replacements = @{
-                                   @"arrow": @"➡",
-                                   @"biggrin": @"😃",
-                                   @"confused": @"😕",
-                                   @"cool": @"😎",
-                                   @"cry": @"😭",
-                                   @"eek": @"😮",
-                                   @"evil": @"😈",
-                                   @"exclaim": @"❗",
-                                   @"idea": @"💡",
-                                   @"lol": @"😄",
-                                   @"mad": @"😠",
-                                   @"mrgreen": @"🐸",
-                                   @"neutral": @"😐",
-                                   @"question": @"❓",
-                                   @"razz": @"😛",
-                                   @"redface": @"😊",
-                                   @"rolleyes": @"😒",
-                                   @"sad": @"😞",
-                                   @"smile": @"😊",
-                                   @"surprised": @"😮",
-                                   @"twisted": @"👿",
-                                   @"wink": @"😉"
+                                   @"icon_arrow": @"➡",
+                                   @"icon_biggrin": @"😃",
+                                   @"icon_confused": @"😕",
+                                   @"icon_cool": @"😎",
+                                   @"icon_cry": @"😭",
+                                   @"icon_eek": @"😮",
+                                   @"icon_evil": @"😈",
+                                   @"icon_exclaim": @"❗",
+                                   @"icon_idea": @"💡",
+                                   @"icon_lol": @"😄",
+                                   @"icon_mad": @"😠",
+                                   @"icon_mrgreen": @"🐸",
+                                   @"icon_neutral": @"😐",
+                                   @"icon_question": @"❓",
+                                   @"icon_razz": @"😛",
+                                   @"icon_redface": @"😊",
+                                   @"icon_rolleyes": @"😒",
+                                   @"icon_sad": @"😞",
+                                   @"icon_smile": @"😊",
+                                   @"icon_surprised": @"😮",
+                                   @"icon_twisted": @"👿",
+                                   @"icon_wink": @"😉",
+                                   // NOTE: There is not a perfect match for the following four with
+                                   // currently supported emoji. We'll try to get as close as we can.
+                                   @"frownie":@"😞",
+                                   @"mrgreen":@"😊",
+                                   @"rolleyes":@"😒",
+                                   @"simple-smile":@"😊"
                                    };
 
     static NSRegularExpression *smiliesRegex;
@@ -120,7 +126,7 @@ static NSString *const Ellipsis =  @"\u2026";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
-        smiliesRegex = [NSRegularExpression regularExpressionWithPattern:@"<img src=['\"].*?wp-includes/images/smilies/icon_(.+?).gif['\"].*?class=['\"]wp-smiley['\"] ?/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+        smiliesRegex = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?wp-includes/images/smilies/(.+?)(?:.gif|.png)[^'\"]*['\"].*?class=['\"]wp-smiley['\"].*?/?>" options:NSRegularExpressionCaseInsensitive error:&error];
         coreEmojiRegex = [NSRegularExpression regularExpressionWithPattern:@"<img .*?src=['\"].*?images/core/emoji/[^/]+/(.+?).png['\"].*?class=['\"]wp-smiley['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
