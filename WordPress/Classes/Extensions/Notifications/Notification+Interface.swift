@@ -37,19 +37,11 @@ extension Notification
     }
     
     public class func descriptionForSectionIdentifier(identifier: String) -> String {
-        let components = identifier.componentsSeparatedByString(":")
-        if components.first == nil || components.last == nil {
+        guard let kind = Int(identifier) else {
             return String()
         }
         
-        let wrappedKind    = Int(components.first!)
-        let wrappedPayload = Int(components.last!)
-        
-        if wrappedKind == nil || wrappedPayload == nil {
-            return String()
-        }
-        
-        switch wrappedKind! {
+        switch kind {
         case Sections.Months:
             return NSLocalizedString("Older than a Month",  comment: "Notifications Months Section Header")
         case Sections.Weeks:
