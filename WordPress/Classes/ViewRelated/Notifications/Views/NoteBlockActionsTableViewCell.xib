@@ -16,10 +16,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="7aS-Nh-Fkn" userLabel="Actions">
-                        <rect key="frame" x="70" y="3" width="180" height="29.5"/>
+                        <rect key="frame" x="50" y="3" width="220" height="29.5"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DXE-y2-DWd" userLabel="Reply" customClass="VerticallyStackedButton">
-                                <rect key="frame" x="0.0" y="0.0" width="20" height="34"/>
+                                <rect key="frame" x="20" y="0.0" width="20" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="bGa-bG-COl"/>
                                 </constraints>
@@ -35,7 +35,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8r-Uo-uFk" customClass="VerticallyStackedButton">
-                                <rect key="frame" x="40" y="0.0" width="20" height="34"/>
+                                <rect key="frame" x="60" y="0.0" width="20" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="bXC-wE-QDO"/>
                                 </constraints>
@@ -51,7 +51,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agc-K2-0vs" customClass="VerticallyStackedButton">
-                                <rect key="frame" x="80" y="0.0" width="20" height="34"/>
+                                <rect key="frame" x="100" y="0.0" width="20" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="2hn-PC-Yxs"/>
                                 </constraints>
@@ -67,7 +67,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYK-fl-vc7" customClass="VerticallyStackedButton">
-                                <rect key="frame" x="120" y="0.0" width="20" height="34"/>
+                                <rect key="frame" x="140" y="0.0" width="20" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="Cvd-xS-e5I"/>
                                 </constraints>
@@ -81,7 +81,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hU3-yd-ZtO" customClass="VerticallyStackedButton">
-                                <rect key="frame" x="160" y="0.0" width="20" height="34"/>
+                                <rect key="frame" x="180" y="0.0" width="20" height="34"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34" id="OBj-Qu-Mty"/>
                                     <constraint firstAttribute="width" constant="20" id="Rq6-Ta-vBZ"/>
@@ -102,21 +102,13 @@
                             <constraint firstItem="e8r-Uo-uFk" firstAttribute="top" secondItem="7aS-Nh-Fkn" secondAttribute="top" id="Boh-Di-4ek"/>
                             <constraint firstItem="hU3-yd-ZtO" firstAttribute="height" secondItem="DXE-y2-DWd" secondAttribute="height" id="CzD-na-SOX"/>
                             <constraint firstItem="DXE-y2-DWd" firstAttribute="top" secondItem="7aS-Nh-Fkn" secondAttribute="top" id="LRj-KB-nRs"/>
-                            <constraint firstItem="e8r-Uo-uFk" firstAttribute="leading" secondItem="DXE-y2-DWd" secondAttribute="trailing" constant="20" id="LpT-dK-A3g">
-                                <variation key="heightClass=regular-widthClass=compact" constant="10"/>
-                            </constraint>
-                            <constraint firstItem="DXE-y2-DWd" firstAttribute="leading" secondItem="7aS-Nh-Fkn" secondAttribute="leading" id="Ozb-Jd-fS7"/>
+                            <constraint firstItem="e8r-Uo-uFk" firstAttribute="leading" secondItem="DXE-y2-DWd" secondAttribute="trailing" constant="20" id="LpT-dK-A3g"/>
+                            <constraint firstItem="DXE-y2-DWd" firstAttribute="leading" secondItem="7aS-Nh-Fkn" secondAttribute="leading" constant="20" id="Ozb-Jd-fS7"/>
                             <constraint firstItem="e8r-Uo-uFk" firstAttribute="height" secondItem="hU3-yd-ZtO" secondAttribute="height" id="Z8d-nZ-uPw"/>
-                            <constraint firstAttribute="trailing" secondItem="hU3-yd-ZtO" secondAttribute="trailing" id="b8X-Xh-yav"/>
-                            <constraint firstItem="Agc-K2-0vs" firstAttribute="leading" secondItem="e8r-Uo-uFk" secondAttribute="trailing" constant="20" id="bjL-bL-DlE">
-                                <variation key="heightClass=regular-widthClass=compact" constant="10"/>
-                            </constraint>
-                            <constraint firstItem="hU3-yd-ZtO" firstAttribute="leading" secondItem="TYK-fl-vc7" secondAttribute="trailing" constant="20" id="cCJ-rQ-DbA">
-                                <variation key="heightClass=regular-widthClass=compact" constant="10"/>
-                            </constraint>
-                            <constraint firstItem="TYK-fl-vc7" firstAttribute="leading" secondItem="Agc-K2-0vs" secondAttribute="trailing" constant="20" id="iC1-AT-QOl">
-                                <variation key="heightClass=regular-widthClass=compact" constant="10"/>
-                            </constraint>
+                            <constraint firstAttribute="trailing" secondItem="hU3-yd-ZtO" secondAttribute="trailing" constant="20" id="b8X-Xh-yav"/>
+                            <constraint firstItem="Agc-K2-0vs" firstAttribute="leading" secondItem="e8r-Uo-uFk" secondAttribute="trailing" constant="20" id="bjL-bL-DlE"/>
+                            <constraint firstItem="hU3-yd-ZtO" firstAttribute="leading" secondItem="TYK-fl-vc7" secondAttribute="trailing" constant="20" id="cCJ-rQ-DbA"/>
+                            <constraint firstItem="TYK-fl-vc7" firstAttribute="leading" secondItem="Agc-K2-0vs" secondAttribute="trailing" constant="20" id="iC1-AT-QOl"/>
                             <constraint firstItem="hU3-yd-ZtO" firstAttribute="height" secondItem="Agc-K2-0vs" secondAttribute="height" id="jnB-D7-ep5"/>
                             <constraint firstAttribute="height" priority="750" constant="34" id="k05-Zf-Pnk"/>
                             <constraint firstItem="hU3-yd-ZtO" firstAttribute="height" secondItem="TYK-fl-vc7" secondAttribute="height" id="ojT-Hh-TeB"/>
