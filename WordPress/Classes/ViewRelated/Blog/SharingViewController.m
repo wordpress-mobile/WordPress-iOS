@@ -158,7 +158,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
         [self disconnectPublicizer:publicizer];
     } else {
         self.connectingService = publicizer;
-        [self authorizePublicizer:publicizer];
+        [self updateAuthorizationForPublicizer:publicizer];
     }
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
@@ -201,12 +201,10 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
 - (void)selectAccountFrom:(NSArray *)accounts
             forPublicizer:(Publicizer *)publicizer
-        withAuthorization:(NSNumber *)keyring
-               andService:(BlogService *)blogService
+            withService:(BlogService *)blogService
 {
     NSParameterAssert([[accounts firstObject] isKindOfClass:[RemotePublicizeExternal class]]);
     NSParameterAssert(publicizer);
-    NSParameterAssert(keyring);
     NSParameterAssert(blogService);
 
     __weak __typeof__(self) weakSelf = self;
@@ -220,13 +218,14 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
                                                                if (!strongSelf) {
                                                                    return;
                                                                }
-                                                               for (int account = 0; account < accounts.count; account++) {
-                                                                   if ([accountNames[account] isEqualToString:buttonTitle]) {
-                                                                       NSString *secondaryAccount = account > 0 ? ((RemotePublicizeExternal *)accounts[account]).account : nil;
+                                                               for (int accountIndex = 0; accountIndex < accounts.count; accountIndex++) {
+                                                                   if ([accountNames[accountIndex] isEqualToString:buttonTitle]) {
+                                                                       RemotePublicizeExternal *account = (RemotePublicizeExternal *)accounts[accountIndex];
+                                                                       NSString *secondaryAccount = accountIndex > 0 ? account.account : nil;
                                                                        [strongSelf connectPublicizer:publicizer
-                                                                                 withAuthorization:keyring
-                                                                                        andAccount:secondaryAccount
-                                                                                        andService:blogService];
+                                                                                   withAuthorization:account.keyring
+                                                                                          andAccount:secondaryAccount
+                                                                                          andService:blogService];
                                                                        return;
                                                                    }
                                                                }
@@ -241,11 +240,10 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     
     __weak __typeof__(self) weakSelf = self;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [blogService checkAuthorizationForPublicizer:publicizer success:^(NSNumber *keyring, NSArray *accounts) {
+    [blogService checkAuthorizationForPublicizer:publicizer success:^(NSArray *accounts) {
         [weakSelf selectAccountFrom:accounts
                       forPublicizer:publicizer
-                  withAuthorization:keyring
-                         andService:blogService];
+                        withService:blogService];
     } failure:^(NSError *error) {
         if (error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
@@ -255,10 +253,13 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 }
 
 - (void)authorizePublicizer:(Publicizer *)publicizer
+                withRefresh:(NSString *)refresh
 {
     NSParameterAssert(publicizer);
     
-    SharingAuthorizationWebViewController *webViewController = [SharingAuthorizationWebViewController controllerWithPublicizer:publicizer forBlog:self.blog];
+    SharingAuthorizationWebViewController *webViewController = [SharingAuthorizationWebViewController controllerWithPublicizer:publicizer
+                                                                                                                    andRefresh:refresh
+                                                                                                                       forBlog:self.blog];
     webViewController.delegate = self;
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
@@ -282,6 +283,22 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 {
     // called in response to user dismissal
     [self refreshPublicizers];
+}
+
+- (void)updateAuthorizationForPublicizer:(Publicizer *)publicizer
+{
+    NSParameterAssert(publicizer);
+    
+    __weak __typeof__(self) weakSelf = self;
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [blogService checkAuthorizationForPublicizer:publicizer success:^(NSArray *accounts) {
+        RemotePublicizeExternal *account = (RemotePublicizeExternal *)accounts.firstObject;
+        [weakSelf authorizePublicizer:publicizer
+                          withRefresh:account.refresh];
+    } failure:^(NSError *error) {
+        [weakSelf authorizePublicizer:publicizer
+                          withRefresh:nil];
+    }];
 }
 
 - (void)disconnectPublicizer:(Publicizer *)publicizer

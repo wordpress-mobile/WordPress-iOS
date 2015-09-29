@@ -196,7 +196,7 @@
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     
     [service checkAuthorizationForPublicizer:publicizer
-                                     success:^(NSNumber *keyring, NSArray *accounts) {}
+                                     success:^(NSArray *accounts) {}
                                      failure:^(NSError *error) {}];
 }
 
@@ -210,10 +210,10 @@
     
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     XCTAssertThrows([service checkAuthorizationForPublicizer:nil
-                                                     success:^(NSNumber *keyring, NSArray *accounts) {}
+                                                     success:^(NSArray *accounts) {}
                                                      failure:^(NSError *error) {}]);
     XCTAssertThrows([service checkAuthorizationForPublicizer:publicizer
-                                                     success:^(NSNumber *keyring, NSArray *accounts) {}
+                                                     success:^(NSArray *accounts) {}
                                                      failure:^(NSError *error) {}]);
 }
 

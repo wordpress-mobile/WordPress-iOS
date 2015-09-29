@@ -8,7 +8,7 @@ typedef void (^SettingsHandler)(RemoteBlogSettings *settings);
 typedef void (^OptionsHandler)(NSDictionary *options);
 typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
 typedef void (^ConnectionsHandler)(NSArray *connections);
-typedef void (^AuthorizationHandler)(NSNumber *keyring, NSArray *accounts);
+typedef void (^AuthorizationHandler)(NSArray *accounts);
 typedef void (^MultiAuthorCheckHandler)(BOOL isMultiAuthor);
 typedef void (^SuccessHandler)();
 

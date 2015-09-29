@@ -34,6 +34,7 @@
  *  @returns New instance of SharingAuthorizationWebViewController
  */
 + (instancetype)controllerWithPublicizer:(Publicizer *)publicizer
+                              andRefresh:(NSString *)refresh
                                  forBlog:(Blog *)blog;
 
 @end

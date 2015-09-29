@@ -77,7 +77,7 @@
  *  @param failure The block that will be executed on failure.  Can be nil.
  */
 - (void)checkAuthorizationForPublicizer:(Publicizer *)service
-                                success:(void (^)(NSNumber *keyring, NSArray *accounts))success
+                                success:(void (^)(NSArray *accounts))success
                                 failure:(void (^)(NSError *))failure;
 
 /**

@@ -42,6 +42,7 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
 @implementation SharingAuthorizationWebViewController
 
 + (instancetype)controllerWithPublicizer:(Publicizer *)publicizer
+                              andRefresh:(NSString *)refresh
                                  forBlog:(Blog *)blog
 {
     NSParameterAssert(publicizer);
@@ -57,7 +58,7 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
     webViewController.publicizer = publicizer;
     webViewController.secureInteraction = YES;
 
-    NSURL *authorizeURL = [NSURL URLWithString:publicizer.connect];
+    NSURL *authorizeURL = [NSURL URLWithString:refresh.length ? refresh : publicizer.connect];
     webViewController.url = authorizeURL;
     
     return webViewController;

@@ -137,15 +137,18 @@ static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format"
               NSArray *keyrings = [responseObject arrayForKey:@"connections"];
               for (NSDictionary *keyring in keyrings) {
                   if ([[keyring stringForKey:@"service"] isEqualToString:service.service]) {
-                      NSNumber *authorization = [keyring numberForKey:@"ID"];
-                      if (authorization && success) {
+                      if (success) {
                           NSMutableArray *accounts = [NSMutableArray new];
-                          [accounts addObject:[[RemotePublicizeExternal alloc] initWithDictionary:keyring]];
+                          RemotePublicizeExternal *primary = [[RemotePublicizeExternal alloc] initWithDictionary:keyring];
+                          [accounts addObject:primary];
                           NSArray *additional = [keyring arrayForKey:@"additional_external_users"];
                           for (NSDictionary *account in additional) {
-                              [accounts addObject:[[RemotePublicizeExternal alloc] initWithDictionary:account]];
+                              RemotePublicizeExternal *secondary = [[RemotePublicizeExternal alloc] initWithDictionary:account];
+                              secondary.keyring = primary.keyring;
+                              secondary.refresh = primary.refresh;
+                              [accounts addObject:secondary];
                           }
-                          success(authorization, accounts);
+                          success(accounts);
                       }
                       return;
                   }
