@@ -16,32 +16,27 @@ import Foundation
 
     public var isReplyEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnReply, isVisible: isReplyEnabled)
-            refreshBottomSpacing()
+            updateButton(btnReply, enabled: isReplyEnabled)
         }
     }
     public var isLikeEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnLike, isVisible: isLikeEnabled)
-            refreshBottomSpacing()
+            updateButton(btnLike, enabled: isLikeEnabled)
         }
     }
     public var isApproveEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnApprove, isVisible: isApproveEnabled)
-            refreshBottomSpacing()
+            updateButton(btnApprove, enabled: isApproveEnabled)
         }
     }
     public var isTrashEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnTrash, isVisible: isTrashEnabled)
-            refreshBottomSpacing()
+            updateButton(btnTrash, enabled: isTrashEnabled)
         }
     }
     public var isSpamEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnSpam, isVisible: isSpamEnabled)
-            refreshBottomSpacing()
+            updateButton(btnSpam, enabled: isSpamEnabled)
         }
     }
     public var isLikeOn: Bool {
@@ -61,6 +56,7 @@ import Foundation
         }
     }
 
+    
     
     // MARK: - View Methods
     public override func awakeFromNib() {
@@ -110,6 +106,24 @@ import Foundation
         btnTrash.accessibilityLabel = trashTitle
     }
     
+    public override func updateConstraints() {
+        super.updateConstraints()
+        
+        // Update Button Constraints:  [ Leading - Button ]
+        let buttons = [btnReply, btnLike, btnApprove, btnTrash, btnSpam]
+        for button in buttons {
+            refreshButtonConstraints(button)
+        }
+        
+        // Update the last buttons Trailing constraint
+        refreshActionsTrailingConstraint()
+        
+        // Spacing!
+        refreshBottomSpacing()
+    }
+    
+    
+    
     // MARK: - IBActions
     @IBAction public func replyWasPressed(sender: AnyObject) {
         hitEventHandler(onReplyClick, sender: sender)
@@ -135,27 +149,40 @@ import Foundation
         hitEventHandler(onSpamClick, sender: sender)
     }
 
-    // MARK: - Private Methods
+    
+    
+    // MARK: - Event Handlers
     private func hitEventHandler(handler: EventHandler?, sender: AnyObject) {
         if let listener = handler {
             listener(sender: sender)
         }
     }
     
-    private func refreshButtonSize(button: UIButton, isVisible: Bool) {
-        // When disabled, let's hide the button by shrinking it's width
-        let newWidth   = isVisible ? buttonWidth : CGFloat.min
-        let newSpacing = isVisible ? buttonSpacingForCurrentTraits() : CGFloat.min
+
+    
+    // MARK: - Layout Helpers
+    private func updateButton(button: UIButton, enabled: Bool) {
+        button.hidden = !enabled
+        button.enabled = enabled
+        setNeedsUpdateConstraints()
+    }
+    
+    private func refreshButtonConstraints(button: UIButton) {
+        let newWidth   = button.hidden ? CGFloat.min : buttonWidth
+        let newSpacing = button.hidden ? CGFloat.min : buttonSpacingForCurrentTraits()
         
+        // When disabled, let's hide the button by shrinking it's width
         button.updateConstraint(.Width, constant: newWidth)
         
-        actionsView.updateConstraintWithFirstItem(button, attribute: .Trailing, constant: newSpacing)
-        actionsView.updateConstraintWithFirstItem(button, attribute: .Leading,  constant: newSpacing)
-        
-        button.hidden   = !isVisible
-        button.enabled  = isVisible
+        // Update Leading Constraint
+        actionsView.updateConstraintWithFirstItem(button, attribute: .Leading, constant: newSpacing)
     }
-
+    
+    private func refreshActionsTrailingConstraint() {
+        let newSpacing   = buttonSpacingForCurrentTraits()
+        actionsView.updateConstraintWithFirstItem(actionsView, attribute: .Trailing, constant: newSpacing)
+    }
+    
     private func refreshBottomSpacing() {
         //  Let's remove the bottom space when every action button is disabled
         let hasActions   = isReplyEnabled || isLikeEnabled || isTrashEnabled || isApproveEnabled || isSpamEnabled
@@ -176,6 +203,7 @@ import Foundation
         
         return buttonSpacing
     }
+    
     
     // MARK: - Private Constants
     private let buttonWidth                         = CGFloat(55)
