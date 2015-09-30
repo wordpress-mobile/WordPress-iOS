@@ -106,7 +106,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
             reuseIdentifier = "ThemeBrowserFooterView"
         }
         
-        return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier!, forIndexPath: indexPath) as! UICollectionReusableView
+        return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier!, forIndexPath: indexPath) 
     }
     
     public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
