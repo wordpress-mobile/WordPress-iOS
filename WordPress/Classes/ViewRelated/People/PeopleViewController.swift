@@ -23,8 +23,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     override public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("PeopleCell") as! PeopleCell
-        let managedPerson = resultsController.objectAtIndexPath(indexPath) as! ManagedPerson
-        let person = Person(managedPerson: managedPerson)
+        let person = personAtIndexPath(indexPath)
         let viewModel = PeopleCellViewModel(person: person)
 
         cell.bindViewModel(viewModel)
@@ -58,5 +57,21 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         service.refreshTeam { _ in
             self.refreshControl?.endRefreshing()
         }
+    }
+
+    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowPerson" {
+            let indexPath = tableView.indexPathForSelectedRow!
+            let person = personAtIndexPath(indexPath)
+            let controller = segue.destinationViewController as! PersonViewController
+            controller.blog = blog
+            controller.personID = person.ID
+        }
+    }
+
+    private func personAtIndexPath(indexPath: NSIndexPath) -> Person {
+        let managedPerson = resultsController.objectAtIndexPath(indexPath) as! ManagedPerson
+        let person = Person(managedPerson: managedPerson)
+        return person
     }
 }
