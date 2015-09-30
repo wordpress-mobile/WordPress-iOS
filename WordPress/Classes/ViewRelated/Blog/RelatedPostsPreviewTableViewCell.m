@@ -8,9 +8,9 @@ static CGFloat ImageHeight = 96.0;
 
 @interface RelatedPostsPreview : NSObject
 
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *site;
-@property (nonatomic, strong) NSString *imageName;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *site;
+@property (nonatomic, copy) NSString *imageName;
 
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *siteLabel;
