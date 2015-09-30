@@ -516,6 +516,8 @@
 		E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E1B289DB19F7AF7000DB0707 /* RemoteBlog.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B289DA19F7AF7000DB0707 /* RemoteBlog.m */; };
 		E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */; };
+		E1B60A0D1BBC335900BCF29C /* PersonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B60A0C1BBC335900BCF29C /* PersonViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		E1B60A0F1BBC3D1200BCF29C /* PersonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B60A0E1BBC3D1200BCF29C /* PersonViewModel.swift */; settings = {ASSET_TAGS = (); }; };
 		E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */; };
 		E1B912811BB00EFD003C25B9 /* People.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E1B912801BB00EFD003C25B9 /* People.storyboard */; settings = {ASSET_TAGS = (); }; };
 		E1B912831BB01047003C25B9 /* PeopleRoleBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1B912821BB01047003C25B9 /* PeopleRoleBadgeView.swift */; settings = {ASSET_TAGS = (); }; };
@@ -1542,6 +1544,8 @@
 		E1B289DA19F7AF7000DB0707 /* RemoteBlog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteBlog.m; path = "Remote Objects/RemoteBlog.m"; sourceTree = "<group>"; };
 		E1B4A9DF12FC8B1000EB3F67 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		E1B4A9E012FC8B1000EB3F67 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		E1B60A0C1BBC335900BCF29C /* PersonViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonViewController.swift; sourceTree = "<group>"; };
+		E1B60A0E1BBC3D1200BCF29C /* PersonViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonViewModel.swift; sourceTree = "<group>"; };
 		E1B62A7913AA61A100A6FCA4 /* WPWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebViewController.h; sourceTree = "<group>"; };
 		E1B62A7A13AA61A100A6FCA4 /* WPWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebViewController.m; sourceTree = "<group>"; };
 		E1B912801BB00EFD003C25B9 /* People.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = People.storyboard; sourceTree = "<group>"; };
@@ -3554,9 +3558,11 @@
 				E166FA1A1BB0656B00374B5B /* PeopleCellViewModel.swift */,
 				E1B9128A1BB0129C003C25B9 /* WPStyleGuide+People.swift */,
 				E1B912881BB01288003C25B9 /* PeopleViewController.swift */,
+				E1B60A0E1BBC3D1200BCF29C /* PersonViewModel.swift */,
 				E1B912841BB01266003C25B9 /* PeopleCell.swift */,
 				E1B912821BB01047003C25B9 /* PeopleRoleBadgeView.swift */,
 				E1B912801BB00EFD003C25B9 /* People.storyboard */,
+				E1B60A0C1BBC335900BCF29C /* PersonViewController.swift */,
 			);
 			path = People;
 			sourceTree = "<group>";
@@ -4399,6 +4405,7 @@
 				FF8DDCE41B5EA6590098826F /* SettingsTextViewController.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
+				E1B60A0D1BBC335900BCF29C /* PersonViewController.swift in Sources */,
 				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
 				E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
@@ -4452,6 +4459,7 @@
 				E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */,
 				FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */,
 				5DBCD9D518F35D7500B32229 /* ReaderTopicService.m in Sources */,
+				E1B60A0F1BBC3D1200BCF29C /* PersonViewModel.swift in Sources */,
 				E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */,
 				5D42A3DF175E7452005CFF05 /* AbstractPost.m in Sources */,
 				BEBFE8721B2F50E0002C04EF /* WPSearchControllerConfigurator.m in Sources */,
