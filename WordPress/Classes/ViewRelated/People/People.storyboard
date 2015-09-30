@@ -135,7 +135,7 @@
                                     <outlet property="roleBadge" destination="FCF-E3-KhT" id="HyX-QU-LDg"/>
                                     <outlet property="superAdminRoleBadge" destination="Ti8-F2-rEr" id="5DS-5Q-iKJ"/>
                                     <outlet property="usernameLabel" destination="Ake-ZW-wkV" id="RwJ-ag-HVR"/>
-                                    <segue destination="pIr-kM-tlF" kind="show" id="VpQ-3s-lge"/>
+                                    <segue destination="pIr-kM-tlF" kind="show" identifier="ShowPerson" id="VpQ-3s-lge"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -159,7 +159,7 @@
         <!--Jorge Bernal-->
         <scene sceneID="26Y-nv-cUL">
             <objects>
-                <tableViewController title="Jorge Bernal" id="pIr-kM-tlF" sceneMemberID="viewController">
+                <tableViewController title="Jorge Bernal" id="pIr-kM-tlF" customClass="PersonViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="CfH-Pl-Qg3">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -322,6 +322,15 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Jorge Bernal" id="dNp-CX-gtn"/>
+                    <connections>
+                        <outlet property="displayNameCell" destination="gKp-Kx-eRN" id="5Ox-IQ-VZm"/>
+                        <outlet property="firstNameCell" destination="PZr-jw-HZ2" id="Igz-fc-p4c"/>
+                        <outlet property="headerAvatarImageView" destination="aSJ-VT-cam" id="GlM-G5-bnb"/>
+                        <outlet property="headerDisplayNameLabel" destination="FsL-t4-oQa" id="QPe-Uy-x9x"/>
+                        <outlet property="headerUsernameLabel" destination="2IE-zo-QO1" id="66e-1R-I07"/>
+                        <outlet property="lastnameCell" destination="Ao0-nj-wU7" id="aOg-tq-FjZ"/>
+                        <outlet property="roleCell" destination="R2T-8K-ls2" id="o5U-lh-a3C"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Bg-iX-6jm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
