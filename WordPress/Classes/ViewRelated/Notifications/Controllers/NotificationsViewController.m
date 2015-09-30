@@ -54,6 +54,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 @interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate,
                                             ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
+@property (nonatomic,   weak) IBOutlet UITableView  *tableView;
+@property (nonatomic, strong) UIRefreshControl      *refreshControl;
 @property (nonatomic, strong) WPTableViewHandler    *tableViewHandler;
 @property (nonatomic, strong) WPNoResultsView       *noResultsView;
 @property (nonatomic, strong) NSString              *pushNotificationID;
@@ -140,7 +142,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
-
+    [self.tableView addSubview:refreshControl];
+    
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
