@@ -1,33 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="LHB-9I-z00">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <scenes>
-        <!--Notification List Controller-->
-        <scene sceneID="vDn-Eb-UHK">
+        <!--Notifications View Controller-->
+        <scene sceneID="vIB-NX-iOa">
             <objects>
-                <tableViewController storyboardIdentifier="NotificationsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MbC-cA-c9S" userLabel="Notification List Controller" customClass="NotificationsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dwB-H6-MqD">
+                <viewController id="LHB-9I-z00" customClass="NotificationsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rys-eF-Jxl"/>
+                        <viewControllerLayoutGuide type="bottom" id="E0j-Ox-8c1"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="BGq-EA-6vn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Drc-pN-xa4">
+                                <rect key="frame" x="0.0" y="44" width="320" height="524"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <sections/>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hgv-te-72t">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="EJ4-p9-P8a">
+                                        <rect key="frame" x="8" y="8" width="304" height="29"/>
+                                        <segments>
+                                            <segment title="All"/>
+                                            <segment title="Unread"/>
+                                            <segment title="Comments"/>
+                                            <segment title="Follows"/>
+                                            <segment title="Likes"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="segmentedControlDidChange:" destination="LHB-9I-z00" eventType="valueChanged" id="Yr9-gj-gZF"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Gyc-bc-V37"/>
+                                    <constraint firstItem="EJ4-p9-P8a" firstAttribute="centerY" secondItem="hgv-te-72t" secondAttribute="centerY" id="L5a-1w-pFH"/>
+                                    <constraint firstAttribute="trailing" secondItem="EJ4-p9-P8a" secondAttribute="trailing" constant="8" id="uSq-nc-9E0"/>
+                                    <constraint firstItem="EJ4-p9-P8a" firstAttribute="leading" secondItem="hgv-te-72t" secondAttribute="leading" constant="8" id="yUg-NQ-zmd"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        <sections/>
-                        <connections>
-                            <outlet property="dataSource" destination="MbC-cA-c9S" id="6Te-r4-8TI"/>
-                            <outlet property="delegate" destination="MbC-cA-c9S" id="DvP-Ny-5nk"/>
-                        </connections>
-                    </tableView>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="Drc-pN-xa4" secondAttribute="trailing" id="4M5-oo-5TB"/>
+                            <constraint firstItem="hgv-te-72t" firstAttribute="leading" secondItem="BGq-EA-6vn" secondAttribute="leading" id="6X4-4t-OMG"/>
+                            <constraint firstItem="hgv-te-72t" firstAttribute="top" secondItem="BGq-EA-6vn" secondAttribute="top" id="7Da-VU-CCR"/>
+                            <constraint firstItem="Drc-pN-xa4" firstAttribute="top" secondItem="hgv-te-72t" secondAttribute="bottom" id="Co6-14-jPW"/>
+                            <constraint firstItem="E0j-Ox-8c1" firstAttribute="top" secondItem="Drc-pN-xa4" secondAttribute="bottom" id="MUV-8P-2XH"/>
+                            <constraint firstItem="Drc-pN-xa4" firstAttribute="leading" secondItem="BGq-EA-6vn" secondAttribute="leading" id="VNc-Fu-YyQ"/>
+                            <constraint firstAttribute="trailing" secondItem="hgv-te-72t" secondAttribute="trailing" id="sHV-c7-Zdw"/>
+                        </constraints>
+                    </view>
                     <connections>
-                        <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="4ec-Ni-5a5"/>
-                        <segue destination="veA-Pg-QAw" kind="push" identifier="NotificationDetailsViewController" id="Wf0-ec-EMc"/>
+                        <outlet property="tableView" destination="Drc-pN-xa4" id="SS6-o0-ygv"/>
+                        <segue destination="veA-Pg-QAw" kind="push" identifier="NotificationDetailsViewController" id="yfw-BN-JXT"/>
+                        <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="W7s-Jb-RUn"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tfv-il-pov" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BAt-Yn-DQt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="120" y="-941"/>
+            <point key="canvasLocation" x="270" y="-915"/>
         </scene>
         <!--Reader Comments View Controller-->
         <scene sceneID="RLS-eH-qVH">
@@ -122,12 +163,7 @@
             <point key="canvasLocation" x="1573" y="141"/>
         </scene>
     </scenes>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="4ec-Ni-5a5"/>
+        <segue reference="W7s-Jb-RUn"/>
     </inferredMetricsTieBreakers>
 </document>
