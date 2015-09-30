@@ -57,7 +57,10 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.collectionView?.backgroundColor = WPStyleGuide.greyLighten30()
+        title = NSLocalizedString("Themes", comment: "Title of Themes browser page")
+        
+        WPStyleGuide.configureColorsForView(view, collectionView:collectionView)
+        
         updateThemes()
     }
     
