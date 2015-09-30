@@ -47,6 +47,15 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 static NSTimeInterval NotificationsUndoTimeout          = 4;
 static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
+typedef NS_ENUM(NSUInteger, NotificationFilter)
+{
+    NotificationFilterNone      = 0,
+    NotificationFilterUnread    = 1,
+    NotificationFilterComment   = 2,
+    NotificationFilterFollow    = 3,
+    NotificationFilterLike      = 4
+};
+
 
 #pragma mark ====================================================================================
 #pragma mark Private Properties
@@ -460,8 +469,16 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)reloadResultsController
 {
+    // Update the Predicate
+    NSFetchRequest *fetchRequest = self.tableViewHandler.resultsController.fetchRequest;
+    fetchRequest.predicate = [self predicateForSelectedFilters];
+    
+    /// Refetch + Reload
     [self.tableViewHandler.resultsController performFetch:nil];
+    [self.tableViewHandler clearCachedRowHeights];
     [self.tableView reloadData];
+    
+    // Don't overwork!
     self.lastReloadDate = [NSDate date];
 }
 
@@ -692,7 +709,15 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 }
 
 
-#pragma mark - WPTableViewHandlerDelegate methods
+#pragma mark - UISegmentedControl Methods
+
+- (IBAction)segmentedControlDidChange:(UISegmentedControl *)sender
+{
+    [self reloadResultsController];
+}
+
+
+#pragma mark - WPTableViewHandlerDelegate Methods
 
 - (NSManagedObjectContext *)managedObjectContext
 {
@@ -702,13 +727,26 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 - (NSFetchRequest *)fetchRequest
 {
     NSString *sortKey               = NSStringFromSelector(@selector(timestamp));
-    NSArray *filteredNoteObjectIDs  = self.notificationIdsBeingDeleted.allObjects;
-    NSPredicate *predicate          = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)", filteredNoteObjectIDs];
     NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
     fetchRequest.sortDescriptors    = @[[NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
-    fetchRequest.predicate          = predicate;
+    fetchRequest.predicate          = [self predicateForSelectedFilters];
     
     return fetchRequest;
+}
+
+- (NSPredicate *)predicateForSelectedFilters
+{
+    NSDictionary *filtersMap = @{
+        @(NotificationFilterUnread)     : @" AND (read = NO)",
+        @(NotificationFilterComment)    : @" AND (type = 'comment')",
+        @(NotificationFilterFollow)     : @" AND (type = 'follow')",
+        @(NotificationFilterLike)       : @" AND (type = 'like')"
+    };
+ 
+    NSString *condition = filtersMap[@(self.filtersSegmentedControl.selectedSegmentIndex)] ?: [NSString string];
+    NSString *format    = [@"NOT (SELF IN %@)" stringByAppendingString:condition];
+    
+    return [NSPredicate predicateWithFormat:format, self.notificationIdsBeingDeleted.allObjects];
 }
 
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
