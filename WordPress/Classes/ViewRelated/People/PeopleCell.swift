@@ -33,4 +33,18 @@ class PeopleCell: UITableViewCell {
             avatarImageView.image = placeholder
         }
     }
+
+    /*
+    It seems UIKit clears the background of all the cells' subviews when
+    highlighted, so he have to set our wanted color again.
+
+    Otherwise we get this: https://cldup.com/NT3pbaeIc1.png
+    */
+    override func setHighlighted(highlighted: Bool, animated: Bool) {
+        let roleBackgroundColor = roleBadge.backgroundColor
+        super.setHighlighted(highlighted, animated: animated)
+        if highlighted {
+            roleBadge.backgroundColor = roleBackgroundColor
+        }
+    }
 }
