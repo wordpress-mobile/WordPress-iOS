@@ -61,6 +61,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="filtersSegmentedControl" destination="EJ4-p9-P8a" id="dkq-TX-y2j"/>
                         <outlet property="tableView" destination="Drc-pN-xa4" id="SS6-o0-ygv"/>
                         <segue destination="veA-Pg-QAw" kind="push" identifier="NotificationDetailsViewController" id="yfw-BN-JXT"/>
                         <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="W7s-Jb-RUn"/>
