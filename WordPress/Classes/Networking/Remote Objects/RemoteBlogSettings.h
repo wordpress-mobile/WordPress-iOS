@@ -5,16 +5,16 @@
 // General
 @property (copy) NSString *name;
 @property (copy) NSString *desc;
-@property (copy) NSNumber *privacy;
+@property (strong) NSNumber *privacy;
 
 // Reading
-@property (copy) NSNumber *relatedPostsAllowed;
-@property (copy) NSNumber *relatedPostsEnabled;
-@property (copy) NSNumber *relatedPostsShowHeadline;
-@property (copy) NSNumber *relatedPostsShowThumbnails;
+@property (strong) NSNumber *relatedPostsAllowed;
+@property (strong) NSNumber *relatedPostsEnabled;
+@property (strong) NSNumber *relatedPostsShowHeadline;
+@property (strong) NSNumber *relatedPostsShowThumbnails;
 
 // Writing
-@property (copy) NSNumber *defaultCategory;
+@property (strong) NSNumber *defaultCategory;
 @property (copy) NSString *defaultPostFormat;
 
 @end
