@@ -125,15 +125,17 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
                    failure:(void (^)(NSError *error))failure;
 {
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    NSDictionary *parameters = @{ @"blogname" : remoteBlogSettings.name,
+    NSMutableDictionary *parameters = [@{ @"blogname" : remoteBlogSettings.name,
                                   @"blogdescription" : remoteBlogSettings.desc,
                                   @"default_category" : remoteBlogSettings.defaultCategory,
                                   @"default_post_format" : remoteBlogSettings.defaultPostFormat,
                                   @"blog_public" : remoteBlogSettings.privacy,
-                                  @"jetpack_relatedposts_enabled" : remoteBlogSettings.relatedPostsEnabled,
-                                  @"jetpack_relatedposts_show_headline" : remoteBlogSettings.relatedPostsShowHeadline,
-                                  @"jetpack_relatedposts_show_thumbnails" : remoteBlogSettings.relatedPostsShowThumbnails
-                                  };
+                                  } mutableCopy];
+    if (remoteBlogSettings.relatedPostsEnabled) {
+        parameters[@"jetpack_relatedposts_enabled"] = remoteBlogSettings.relatedPostsEnabled;
+        parameters[@"jetpack_relatedposts_show_headline"] = remoteBlogSettings.relatedPostsShowHeadline;
+        parameters[@"jetpack_relatedposts_show_thumbnails"] = remoteBlogSettings.relatedPostsShowThumbnails;
+    }
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blogID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
