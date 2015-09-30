@@ -261,8 +261,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         return _defaultCategoryCell;
     }
     _defaultCategoryCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Default Category", @"Label for selecting the default category of a post")
-                                                           editable:YES
-                                                    reuseIdentifier:nil];
+                                                              editable:YES
+                                                       reuseIdentifier:nil];
     return _defaultCategoryCell;
 }
 
@@ -272,8 +272,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         return _defaultPostFormatCell;
     }
     _defaultPostFormatCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Default Post Format", @"Label for selecting the default post format")
-                                                              editable:YES
-                                                       reuseIdentifier:nil];
+                                                                editable:YES
+                                                         reuseIdentifier:nil];
     return _defaultPostFormatCell;
 }
 
@@ -283,8 +283,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         return _relatedPostsCell;
     }
     _relatedPostsCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Related Posts", @"Label for selecting the related posts options")
-                                                                editable:YES
-                                                         reuseIdentifier:nil];
+                                                           editable:YES
+                                                    reuseIdentifier:nil];
     return _relatedPostsCell;
 }
 
