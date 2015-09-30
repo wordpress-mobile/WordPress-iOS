@@ -8,6 +8,80 @@ static NSString *const Ellipsis =  @"\u2026";
 
 #pragma mark Helpers
 
+/**
+ Parses an WordPress core emoji IMG tag and returns the corresponding emoji character.
+ */
++ (NSString *)emojiFromCoreEmojiImageTag:(NSString *)tag
+{
+    if ([tag rangeOfString:@"<img"].location == NSNotFound || [tag rangeOfString:@"/images/core/emoji/"].location == NSNotFound) {
+        DDLogError(@"Tried to extract emoji from a string that was not a core emoji image tag.");
+        return nil;
+    }
+
+    static NSRegularExpression *altRegex;
+    static NSRegularExpression *filenameRegex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        altRegex = [NSRegularExpression regularExpressionWithPattern:@" alt=['\"]([^'\"]+)['\"]" options:NSRegularExpressionCaseInsensitive error:&error];
+        filenameRegex = [NSRegularExpression regularExpressionWithPattern:@"/images/core/emoji/[^/]+/(.+?).png" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    // Check for the alt tag first as it should be the unicode emoji character.
+    NSRange sourceRange = NSMakeRange(0, [tag length]);
+    NSArray *matches = [altRegex matchesInString:tag options:0 range:sourceRange];
+    if ([matches count] > 0) {
+        NSTextCheckingResult *match = [matches firstObject];
+        if (match.numberOfRanges == 2) {
+            NSRange range = [match rangeAtIndex:1];
+            return [tag substringWithRange:range];
+        }
+    }
+
+    matches = [filenameRegex matchesInString:tag options:0 range:sourceRange];
+    if ([matches count] > 0) {
+        NSTextCheckingResult *match = [matches firstObject];
+        if (match.numberOfRanges == 2) {
+            NSRange range = [match rangeAtIndex:1];
+            NSString *filename = [tag substringWithRange:range];
+            return [self emojiCharacterFromCoreEmojiFilename:filename];
+        }
+    }
+
+    return nil;
+}
+
+/**
+ Processes the filename of an core emoji image from `s.w.org/images/core/emoji`
+ and returns the unicode character for the emoji.
+ Filenames can be formatted as a single hex value, or for emoji comprised of
+ Unicode pairs, as two hex values separated by a dash.
+ */
++ (NSString *)emojiCharacterFromCoreEmojiFilename:(NSString *)filename
+{
+    NSArray *components = [filename componentsSeparatedByString:@"-"];
+    NSMutableArray *marr = [NSMutableArray array];
+    for (NSString *string in components) {
+        NSString *unicodeChar = [NSString unicodeCharacterFromHexString:string];
+        if (unicodeChar) {
+            [marr addObject:unicodeChar];
+        }
+    }
+
+    return [marr componentsJoinedByString:@""];
+}
+
++ (NSString *)unicodeCharacterFromHexString:(NSString *)hexString
+{
+    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+    unsigned long long hex = 0;
+    BOOL success = [scanner scanHexLongLong:&hex];
+    if (!success) {
+        return nil;
+    }
+    return [[NSString alloc] initWithBytes:&hex length:4 encoding:NSUTF32LittleEndianStringEncoding];
+}
+
 + (NSString *)makePlainText:(NSString *)string
 {
     NSCharacterSet *charSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
@@ -122,12 +196,13 @@ static NSString *const Ellipsis =  @"\u2026";
                                    };
 
     static NSRegularExpression *smiliesRegex;
-    static NSRegularExpression *coreEmojiRegex;
+    static NSRegularExpression *coreEmojiImgRegex;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
-        smiliesRegex = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?wp-includes/images/smilies/(.+?)(?:.gif|.png)[^'\"]*['\"].*?class=['\"]wp-smiley['\"].*?/?>" options:NSRegularExpressionCaseInsensitive error:&error];
-        coreEmojiRegex = [NSRegularExpression regularExpressionWithPattern:@"<img .*?src=['\"].*?images/core/emoji/[^/]+/(.+?).png['\"].*?class=['\"]wp-smiley['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+        smiliesRegex = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?wp-includes/images/smilies/(.+?)(?:.gif|.png)[^'\"]*['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+        coreEmojiImgRegex = [NSRegularExpression regularExpressionWithPattern:@"<img.*?src=['\"].*?images/core/emoji/[^/]+/.+?.png['\"][^//]+/?>" options:NSRegularExpressionCaseInsensitive error:&error];
+
     });
 
     NSArray *matches = [smiliesRegex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
@@ -140,11 +215,11 @@ static NSString *const Ellipsis =  @"\u2026";
         }
     }
 
-    matches = [coreEmojiRegex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
+    matches = [coreEmojiImgRegex matchesInString:result options:0 range:NSMakeRange(0, [result length])];
     for (NSTextCheckingResult *match in [matches reverseObjectEnumerator]) {
-        NSRange range = [match rangeAtIndex:1];
-        NSString *filename = [result substringWithRange:range];
-        NSString *replacement = [self emojiUnicodeFromCoreEmojiFilename:filename];
+        NSRange range = [match rangeAtIndex:0];
+        NSString *tag = [result substringWithRange:range];
+        NSString *replacement = [NSString emojiFromCoreEmojiImageTag:tag];
         if (replacement) {
             [result replaceCharactersInRange:[match range] withString:replacement];
         }
@@ -153,22 +228,6 @@ static NSString *const Ellipsis =  @"\u2026";
     return [NSString stringWithString:result];
 }
 
-/**
- Pass the hex string for a unicode character and returns that unicode character. 
- Core WordPress emoji images are named after their unicode code point. This makes
- it convenient to scan the filename for its hex value and return the appropriate
- emoji character.
- */
-- (NSString *)emojiUnicodeFromCoreEmojiFilename:(NSString *)filename
-{
-    NSScanner *scanner = [NSScanner scannerWithString:filename];
-    unsigned long long hex = 0;
-    BOOL success = [scanner scanHexLongLong:&hex];
-    if (!success) {
-        return nil;
-    }
-    return [[NSString alloc] initWithBytes:&hex length:4 encoding:NSUTF32LittleEndianStringEncoding];
-}
 
 /*
  * Uses a RegEx to strip all HTML tags from a string and unencode entites
