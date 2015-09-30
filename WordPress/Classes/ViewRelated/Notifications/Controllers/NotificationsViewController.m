@@ -114,9 +114,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     [self setupNavigationBar];
     [self setupFiltersSegmentedControl];
     
-    [self showNoResultsViewIfNeeded];
-    [self showBucketNameIfNeeded];
-    
     [self.tableView reloadData];
 }
 
@@ -210,6 +207,16 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
+    
+    // This is only required for debugging:
+    // If we're sync'ing against a custom bucket, we should let the user know about it!
+    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
+    NSString *name          = simperium.bucketOverrides[NSStringFromClass([Notification class])];
+    if ([name isEqualToString:WPNotificationsBucketName]) {
+        return;
+    }
+    
+    self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
 }
 
 - (void)setupFiltersSegmentedControl
@@ -434,19 +441,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
     metadata.last_seen      = @(note.timestampAsDate.timeIntervalSince1970);
     [simperium save];
-}
-
-- (void)showBucketNameIfNeeded
-{
-    // This is only required for debugging:
-    // If we're sync'ing against a custom bucket, we should let the user know about it!
-    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
-    NSString *name          = simperium.bucketOverrides[NSStringFromClass([Notification class])];
-    if ([name isEqualToString:WPNotificationsBucketName]) {
-        return;
-    }
-
-    self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
 }
 
 - (void)reloadResultsControllerIfNeeded
