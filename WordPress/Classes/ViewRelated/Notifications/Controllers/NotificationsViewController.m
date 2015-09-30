@@ -54,15 +54,16 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 @interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate,
                                             ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
-@property (nonatomic,   weak) IBOutlet UITableView  *tableView;
-@property (nonatomic, strong) UIRefreshControl      *refreshControl;
-@property (nonatomic, strong) WPTableViewHandler    *tableViewHandler;
-@property (nonatomic, strong) WPNoResultsView       *noResultsView;
-@property (nonatomic, strong) NSString              *pushNotificationID;
-@property (nonatomic, strong) NSDate                *pushNotificationDate;
-@property (nonatomic, strong) NSDate                *lastReloadDate;
-@property (nonatomic, strong) NSMutableSet          *notificationIdsMarkedForDeletion;
-@property (nonatomic, strong) NSMutableSet          *notificationIdsBeingDeleted;
+@property (nonatomic,   weak) IBOutlet UITableView          *tableView;
+@property (nonatomic, strong) IBOutlet UISegmentedControl   *filtersSegmentedControl;
+@property (nonatomic, strong) UIRefreshControl              *refreshControl;
+@property (nonatomic, strong) WPTableViewHandler            *tableViewHandler;
+@property (nonatomic, strong) WPNoResultsView               *noResultsView;
+@property (nonatomic, strong) NSString                      *pushNotificationID;
+@property (nonatomic, strong) NSDate                        *pushNotificationDate;
+@property (nonatomic, strong) NSDate                        *lastReloadDate;
+@property (nonatomic, strong) NSMutableSet                  *notificationIdsMarkedForDeletion;
+@property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
 @end
 
 
@@ -107,49 +108,16 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 {
     [super viewDidLoad];
     
-    // Register the cells
-    NSArray *cellNibs = @[ [NoteTableViewCell classNameWithoutNamespaces] ];
-    
-    for (NSString *nibName in cellNibs) {
-        UINib *tableViewCellNib = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
-        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:nibName];
-    }
-    
-    // iPad Fix: contentInset breaks tableSectionViews
-    if (UIDevice.isPad) {
-        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
-        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
-    
-    // iPhone Fix: Hide the cellSeparators, when the table is empty
-    } else {
-        self.tableView.tableFooterView = [UIView new];
-    }
-    
-    // UITableView
-    self.tableView.accessibilityIdentifier  = @"Notifications Table";
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
-    // WPTableViewHandler
-    WPTableViewHandler *tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    tableViewHandler.cacheRowHeights = YES;
-    tableViewHandler.delegate = self;
-    self.tableViewHandler = tableViewHandler;
-    
-    // Reload the tableView right away: setting the new dataSource doesn't nuke the row + section count cache
-    [self.tableView reloadData];
-    
-    // UIRefreshControl
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
-    [self.tableView addSubview:refreshControl];
-    
-    // Don't show 'Notifications' in the next-view back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
+    [self setupTableView];
+    [self setupTableHandler];
+    [self setupRefreshControl];
+    [self setupNavigationBar];
+    [self setupFiltersSegmentedControl];
     
     [self showNoResultsViewIfNeeded];
     [self showBucketNameIfNeeded];
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -190,6 +158,75 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self.tableViewHandler clearCachedRowHeights];
+}
+
+
+#pragma mark - Setup Helpers
+
+- (void)setupTableView
+{
+    // Register the cells
+    NSArray *cellNibs = @[ [NoteTableViewCell classNameWithoutNamespaces] ];
+    
+    for (NSString *nibName in cellNibs) {
+        UINib *tableViewCellNib = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:nibName];
+    }
+    
+    // iPad Fix: contentInset breaks tableSectionViews
+    if (UIDevice.isPad) {
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
+        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
+        
+    // iPhone Fix: Hide the cellSeparators, when the table is empty
+    } else {
+        self.tableView.tableFooterView = [UIView new];
+    }
+    
+    // UITableView
+    self.tableView.accessibilityIdentifier  = @"Notifications Table";
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+}
+
+- (void)setupTableHandler
+{
+    WPTableViewHandler *tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
+    tableViewHandler.cacheRowHeights = YES;
+    tableViewHandler.delegate = self;
+    self.tableViewHandler = tableViewHandler;
+}
+
+- (void)setupRefreshControl
+{
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+    [self.tableView addSubview:refreshControl];
+}
+
+- (void)setupNavigationBar
+{
+    // Don't show 'Notifications' in the next-view back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+}
+
+- (void)setupFiltersSegmentedControl
+{
+    NSParameterAssert(self.filtersSegmentedControl);
+    
+    NSArray *titles = @[
+        NSLocalizedString(@"All",       @"Displays all of the Notifications, unfiltered"),
+        NSLocalizedString(@"Unread",    @"Filters Unread Notifications"),
+        NSLocalizedString(@"Comments",  @"Filters Comments Notifications"),
+        NSLocalizedString(@"Follows",   @"Filters Follows Notifications"),
+        NSLocalizedString(@"Likes",     @"Filters Likes Notifications")
+    ];
+    
+    NSInteger index = 0;
+    for (NSString *title in titles) {
+        [self.filtersSegmentedControl setTitle:title forSegmentAtIndex:index++];
+    }
 }
 
 
