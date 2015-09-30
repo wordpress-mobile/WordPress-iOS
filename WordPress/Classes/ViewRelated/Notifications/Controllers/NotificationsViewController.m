@@ -157,6 +157,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.tableViewHandler clearCachedRowHeights];
 }
 
