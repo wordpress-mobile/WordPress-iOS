@@ -185,9 +185,9 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     [self adjustTableInsetsIfNeeded];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [super traitCollectionDidChange:previousTraitCollection];
     [self.tableView reloadData];
 }
 
