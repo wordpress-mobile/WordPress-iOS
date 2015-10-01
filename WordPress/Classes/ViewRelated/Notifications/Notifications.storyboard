@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="LHB-9I-z00">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="LHB-9I-z00">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -14,37 +14,62 @@
                         <viewControllerLayoutGuide type="bottom" id="E0j-Ox-8c1"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="BGq-EA-6vn">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Drc-pN-xa4">
-                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="hgv-te-72t" userLabel="Header View">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="EJ4-p9-P8a">
-                                            <rect key="frame" x="8" y="8" width="304" height="29"/>
-                                            <segments>
-                                                <segment title="All"/>
-                                                <segment title="Unread"/>
-                                                <segment title="Comments"/>
-                                                <segment title="Follows"/>
-                                                <segment title="Likes"/>
-                                            </segments>
-                                            <connections>
-                                                <action selector="segmentedControlDidChange:" destination="LHB-9I-z00" eventType="valueChanged" id="Yr9-gj-gZF"/>
-                                            </connections>
-                                        </segmentedControl>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uee-il-FES">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                            <subviews>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="EJ4-p9-P8a">
+                                                    <rect key="frame" x="8" y="8" width="584" height="29"/>
+                                                    <segments>
+                                                        <segment title="All"/>
+                                                        <segment title="Unread"/>
+                                                        <segment title="Comments"/>
+                                                        <segment title="Follows"/>
+                                                        <segment title="Likes"/>
+                                                    </segments>
+                                                    <connections>
+                                                        <action selector="segmentedControlDidChange:" destination="LHB-9I-z00" eventType="valueChanged" id="Yr9-gj-gZF"/>
+                                                    </connections>
+                                                </segmentedControl>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="600" id="0er-9Z-xTI"/>
+                                                <constraint firstAttribute="height" constant="44" id="TOK-kG-LQP"/>
+                                                <constraint firstItem="EJ4-p9-P8a" firstAttribute="leading" secondItem="Uee-il-FES" secondAttribute="leading" constant="8" id="jcG-SV-q5K"/>
+                                                <constraint firstItem="EJ4-p9-P8a" firstAttribute="top" secondItem="Uee-il-FES" secondAttribute="top" constant="8" id="mij-bn-oRN"/>
+                                                <constraint firstAttribute="bottom" secondItem="EJ4-p9-P8a" secondAttribute="bottom" constant="8" id="uQw-Ez-sDK"/>
+                                                <constraint firstAttribute="trailing" secondItem="EJ4-p9-P8a" secondAttribute="trailing" constant="8" id="zDS-G1-sR8"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="0er-9Z-xTI"/>
+                                                </mask>
+                                            </variation>
+                                            <variation key="heightClass=regular-widthClass=regular">
+                                                <mask key="constraints">
+                                                    <include reference="0er-9Z-xTI"/>
+                                                </mask>
+                                            </variation>
+                                        </view>
                                     </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="Gyc-bc-V37"/>
-                                        <constraint firstItem="EJ4-p9-P8a" firstAttribute="centerY" secondItem="hgv-te-72t" secondAttribute="centerY" id="L5a-1w-pFH"/>
-                                        <constraint firstAttribute="trailing" secondItem="EJ4-p9-P8a" secondAttribute="trailing" constant="8" id="uSq-nc-9E0"/>
-                                        <constraint firstItem="EJ4-p9-P8a" firstAttribute="leading" secondItem="hgv-te-72t" secondAttribute="leading" constant="8" id="yUg-NQ-zmd"/>
+                                        <constraint firstAttribute="trailing" secondItem="Uee-il-FES" secondAttribute="trailing" priority="750" id="REQ-7U-Is7"/>
+                                        <constraint firstItem="Uee-il-FES" firstAttribute="centerX" secondItem="hgv-te-72t" secondAttribute="centerX" id="Tdv-UH-Qc8"/>
+                                        <constraint firstItem="Uee-il-FES" firstAttribute="centerY" secondItem="hgv-te-72t" secondAttribute="centerY" id="ob8-gx-513"/>
+                                        <constraint firstItem="Uee-il-FES" firstAttribute="leading" secondItem="hgv-te-72t" secondAttribute="leading" priority="750" id="s0S-Un-TCi"/>
                                     </constraints>
                                 </view>
                                 <sections/>
@@ -61,13 +86,13 @@
                     <connections>
                         <outlet property="filtersSegmentedControl" destination="EJ4-p9-P8a" id="dkq-TX-y2j"/>
                         <outlet property="tableView" destination="Drc-pN-xa4" id="SS6-o0-ygv"/>
-                        <segue destination="veA-Pg-QAw" kind="push" identifier="NotificationDetailsViewController" id="yfw-BN-JXT"/>
-                        <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="W7s-Jb-RUn"/>
+                        <segue destination="veA-Pg-QAw" kind="show" identifier="NotificationDetailsViewController" id="yfw-BN-JXT"/>
+                        <segue destination="xj3-6N-2Jy" kind="show" identifier="ReaderPostDetailViewController" id="W7s-Jb-RUn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BAt-Yn-DQt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="270" y="-915"/>
+            <point key="canvasLocation" x="506.25" y="-966.54929577464782"/>
         </scene>
         <!--Reader Comments View Controller-->
         <scene sceneID="RLS-eH-qVH">
@@ -77,7 +102,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="59U-6R-KoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1573" y="-1877"/>
+            <point key="canvasLocation" x="2949.375" y="-1982.7464788732393"/>
         </scene>
         <!--Reader Post Details-->
         <scene sceneID="ET8-9p-ZLz">
@@ -87,7 +112,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="h51-jr-fqU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1573" y="-1203"/>
+            <point key="canvasLocation" x="2949.375" y="-1270.7746478873239"/>
         </scene>
         <!--WebView-->
         <scene sceneID="1zS-D4-F1Z">
@@ -97,7 +122,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fEj-cd-uMn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1573" y="-556"/>
+            <point key="canvasLocation" x="2949.375" y="-587.32394366197184"/>
         </scene>
         <!--Notification Details-->
         <scene sceneID="0B7-mU-JSs">
@@ -108,11 +133,11 @@
                         <viewControllerLayoutGuide type="bottom" id="6LW-NS-qSh"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="lvM-1n-Dgf">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="Dcn-Il-AtN">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <gestureRecognizers/>
                                 <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -135,10 +160,10 @@
                     <connections>
                         <outlet property="tableGesturesRecognizer" destination="a20-Yr-RdT" id="Ap0-WK-Z2n"/>
                         <outlet property="tableView" destination="Dcn-Il-AtN" id="Mjf-q7-Lkn"/>
-                        <segue destination="8p8-88-FGK" kind="push" identifier="StatsViewController" id="EAn-K1-ofm"/>
-                        <segue destination="Bbj-DX-KQ7" kind="push" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
-                        <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="ODX-zz-S1G"/>
-                        <segue destination="kOE-dH-qnb" kind="push" identifier="ReaderCommentsViewController" id="Puk-pn-rGi"/>
+                        <segue destination="8p8-88-FGK" kind="show" identifier="StatsViewController" id="EAn-K1-ofm"/>
+                        <segue destination="Bbj-DX-KQ7" kind="show" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
+                        <segue destination="xj3-6N-2Jy" kind="show" identifier="ReaderPostDetailViewController" id="ODX-zz-S1G"/>
+                        <segue destination="kOE-dH-qnb" kind="show" identifier="ReaderCommentsViewController" id="Puk-pn-rGi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -149,7 +174,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="925" y="-601"/>
+            <point key="canvasLocation" x="1734.375" y="-634.85915492957747"/>
         </scene>
         <!--StatsView-->
         <scene sceneID="iWL-VB-TOS">
@@ -159,7 +184,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KeQ-Nv-SGg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1573" y="141"/>
+            <point key="canvasLocation" x="2949.375" y="148.94366197183098"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
