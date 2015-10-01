@@ -63,10 +63,9 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 @interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate,
                                             ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
-@property (nonatomic, strong) IBOutlet UITableView          *tableView;
 @property (nonatomic, strong) IBOutlet UIView               *tableHeaderView;
 @property (nonatomic, strong) IBOutlet UISegmentedControl   *filtersSegmentedControl;
-@property (nonatomic, strong) UIRefreshControl              *refreshControl;
+@property (nonatomic, strong) IBOutlet ABXPromptView        *ratingsView;
 @property (nonatomic, strong) WPTableViewHandler            *tableViewHandler;
 @property (nonatomic, strong) WPNoResultsView               *noResultsView;
 @property (nonatomic, strong) NSString                      *pushNotificationID;
@@ -120,6 +119,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     
     [self setupTableView];
     [self setupTableHandler];
+    [self setupRatingsView];
     [self setupRefreshControl];
     [self setupNavigationBar];
     [self setupFiltersSegmentedControl];
@@ -214,14 +214,23 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     self.tableViewHandler = tableViewHandler;
 }
 
+- (void)setupRatingsView
+{
+    NSParameterAssert(self.ratingsView);
+    
+    UIFont *ratingsFont                             = [WPFontManager openSansRegularFontOfSize:15.0];
+    self.ratingsView.label.font                     = ratingsFont;
+    self.ratingsView.leftButton.titleLabel.font     = ratingsFont;
+    self.ratingsView.rightButton.titleLabel.font    = ratingsFont;
+    self.ratingsView.delegate                       = self;
+    self.ratingsView.alpha                          = WPAlphaZero;
+}
+
 - (void)setupRefreshControl
 {
-    NSParameterAssert(self.tableView);
-    
     UIRefreshControl *refreshControl = [UIRefreshControl new];
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
-    [self.tableView addSubview:refreshControl];
 }
 
 - (void)setupNavigationBar
@@ -265,29 +274,19 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)showRatingViewIfApplicable
 {
     if (![AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
-        return;
+//        return;
     }
     
     if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
         // Rating View is already visible, don't bother to do anything
-        return;
+//        return;
     }
     
-    ABXPromptView *appRatingView = [[ABXPromptView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100.0)];
-    UIFont *appRatingFont = [WPFontManager openSansRegularFontOfSize:15.0];
-    appRatingView.label.font = appRatingFont;
-    appRatingView.leftButton.titleLabel.font = appRatingFont;
-    appRatingView.rightButton.titleLabel.font = appRatingFont;
-    appRatingView.delegate = self;
-    appRatingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-    appRatingView.alpha = 0.0;
-    [appRatingView layoutIfNeeded];
+    self.ratingsView.alpha = WPAlphaZero;
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
-            self.tableView.tableHeaderView = appRatingView;
-            self.tableView.tableHeaderView.alpha = 1.0;
-            [self.view layoutIfNeeded];
+            self.ratingsView.alpha = WPAlphaFull;
         } completion:nil];
     });
     
@@ -297,7 +296,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)hideRatingView
 {
     [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
-        self.tableView.tableHeaderView = nil;
+        self.ratingsView.alpha = WPAlphaZero;
     } completion:nil];
 }
 
@@ -734,7 +733,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     }
     
     NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 

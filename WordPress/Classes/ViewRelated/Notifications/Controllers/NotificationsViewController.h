@@ -13,7 +13,7 @@
  *              interactions with Push Notifications OS banners.
  */
 
-@interface NotificationsViewController : UIViewController
+@interface NotificationsViewController : UITableViewController
 
 /**
  *  @brief      This instance will push the Details View associated with a given Notification ID.
