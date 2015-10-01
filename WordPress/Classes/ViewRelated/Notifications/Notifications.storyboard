@@ -18,46 +18,44 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Drc-pN-xa4">
-                                <rect key="frame" x="0.0" y="44" width="320" height="524"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="hgv-te-72t" userLabel="Header View">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="EJ4-p9-P8a">
+                                            <rect key="frame" x="8" y="8" width="304" height="29"/>
+                                            <segments>
+                                                <segment title="All"/>
+                                                <segment title="Unread"/>
+                                                <segment title="Comments"/>
+                                                <segment title="Follows"/>
+                                                <segment title="Likes"/>
+                                            </segments>
+                                            <connections>
+                                                <action selector="segmentedControlDidChange:" destination="LHB-9I-z00" eventType="valueChanged" id="Yr9-gj-gZF"/>
+                                            </connections>
+                                        </segmentedControl>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="44" id="Gyc-bc-V37"/>
+                                        <constraint firstItem="EJ4-p9-P8a" firstAttribute="centerY" secondItem="hgv-te-72t" secondAttribute="centerY" id="L5a-1w-pFH"/>
+                                        <constraint firstAttribute="trailing" secondItem="EJ4-p9-P8a" secondAttribute="trailing" constant="8" id="uSq-nc-9E0"/>
+                                        <constraint firstItem="EJ4-p9-P8a" firstAttribute="leading" secondItem="hgv-te-72t" secondAttribute="leading" constant="8" id="yUg-NQ-zmd"/>
+                                    </constraints>
+                                </view>
                                 <sections/>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hgv-te-72t">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <subviews>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="EJ4-p9-P8a">
-                                        <rect key="frame" x="8" y="8" width="304" height="29"/>
-                                        <segments>
-                                            <segment title="All"/>
-                                            <segment title="Unread"/>
-                                            <segment title="Comments"/>
-                                            <segment title="Follows"/>
-                                            <segment title="Likes"/>
-                                        </segments>
-                                        <connections>
-                                            <action selector="segmentedControlDidChange:" destination="LHB-9I-z00" eventType="valueChanged" id="Yr9-gj-gZF"/>
-                                        </connections>
-                                    </segmentedControl>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="Gyc-bc-V37"/>
-                                    <constraint firstItem="EJ4-p9-P8a" firstAttribute="centerY" secondItem="hgv-te-72t" secondAttribute="centerY" id="L5a-1w-pFH"/>
-                                    <constraint firstAttribute="trailing" secondItem="EJ4-p9-P8a" secondAttribute="trailing" constant="8" id="uSq-nc-9E0"/>
-                                    <constraint firstItem="EJ4-p9-P8a" firstAttribute="leading" secondItem="hgv-te-72t" secondAttribute="leading" constant="8" id="yUg-NQ-zmd"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="Drc-pN-xa4" secondAttribute="trailing" id="4M5-oo-5TB"/>
-                            <constraint firstItem="hgv-te-72t" firstAttribute="leading" secondItem="BGq-EA-6vn" secondAttribute="leading" id="6X4-4t-OMG"/>
-                            <constraint firstItem="hgv-te-72t" firstAttribute="top" secondItem="BGq-EA-6vn" secondAttribute="top" id="7Da-VU-CCR"/>
-                            <constraint firstItem="Drc-pN-xa4" firstAttribute="top" secondItem="hgv-te-72t" secondAttribute="bottom" id="Co6-14-jPW"/>
                             <constraint firstItem="E0j-Ox-8c1" firstAttribute="top" secondItem="Drc-pN-xa4" secondAttribute="bottom" id="MUV-8P-2XH"/>
+                            <constraint firstItem="Drc-pN-xa4" firstAttribute="top" secondItem="rys-eF-Jxl" secondAttribute="bottom" id="Oir-y1-fhQ"/>
                             <constraint firstItem="Drc-pN-xa4" firstAttribute="leading" secondItem="BGq-EA-6vn" secondAttribute="leading" id="VNc-Fu-YyQ"/>
-                            <constraint firstAttribute="trailing" secondItem="hgv-te-72t" secondAttribute="trailing" id="sHV-c7-Zdw"/>
                         </constraints>
                     </view>
                     <connections>
