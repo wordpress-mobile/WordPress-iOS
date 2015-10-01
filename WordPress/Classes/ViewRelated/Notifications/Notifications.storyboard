@@ -21,6 +21,7 @@
                     </tableView>
                     <connections>
                         <outlet property="filtersSegmentedControl" destination="W2i-rX-Pc4" id="Ewf-g4-EIc"/>
+                        <outlet property="ratingsTopConstraint" destination="SJu-PU-nzt" id="4a1-TZ-SUd"/>
                         <outlet property="ratingsView" destination="ZnY-3K-upT" id="lUG-fd-Stc"/>
                         <outlet property="tableHeaderView" destination="Uvo-9e-l6I" id="dxx-mK-msp"/>
                         <segue destination="veA-Pg-QAw" kind="show" identifier="NotificationDetailsViewController" id="7uj-uJ-yZ8"/>
@@ -38,7 +39,7 @@
                                 <constraint firstAttribute="height" constant="100" id="R1T-Iv-5Q8"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pEF-oN-cih" userLabel="Wrapper View">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pEF-oN-cih" userLabel="Filters View">
                             <rect key="frame" x="0.0" y="100" width="600" height="44"/>
                             <subviews>
                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="W2i-rX-Pc4">
@@ -83,7 +84,8 @@
                         <constraint firstItem="pEF-oN-cih" firstAttribute="leading" secondItem="Uvo-9e-l6I" secondAttribute="leading" priority="750" id="0TE-M7-WfE"/>
                         <constraint firstAttribute="trailing" secondItem="pEF-oN-cih" secondAttribute="trailing" priority="750" id="222-MX-igM"/>
                         <constraint firstItem="ZnY-3K-upT" firstAttribute="leading" secondItem="Uvo-9e-l6I" secondAttribute="leading" id="27p-cV-siE"/>
-                        <constraint firstItem="ZnY-3K-upT" firstAttribute="top" secondItem="Uvo-9e-l6I" secondAttribute="top" id="JJ6-DH-S77"/>
+                        <constraint firstItem="pEF-oN-cih" firstAttribute="top" secondItem="ZnY-3K-upT" secondAttribute="bottom" id="MBK-Ez-h7B"/>
+                        <constraint firstItem="ZnY-3K-upT" firstAttribute="top" secondItem="Uvo-9e-l6I" secondAttribute="top" priority="750" constant="40" id="SJu-PU-nzt"/>
                         <constraint firstAttribute="trailing" secondItem="ZnY-3K-upT" secondAttribute="trailing" id="b8L-0Q-JCB"/>
                         <constraint firstItem="pEF-oN-cih" firstAttribute="centerX" secondItem="Uvo-9e-l6I" secondAttribute="centerX" id="rGu-9k-JxJ"/>
                         <constraint firstAttribute="bottom" secondItem="pEF-oN-cih" secondAttribute="bottom" id="zwD-z0-d6i"/>
