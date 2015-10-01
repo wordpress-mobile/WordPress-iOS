@@ -721,7 +721,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     }
     
     NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 
 
