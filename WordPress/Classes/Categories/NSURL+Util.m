@@ -1,13 +1,17 @@
 #import "NSURL+Util.h"
 #import "NSString+Util.h"
 #import "NSString+Helpers.h"
+<<<<<<< HEAD
 #import "Constants.h"
+=======
+>>>>>>> release/5.6.1
 
 @implementation NSURL (Util)
 
 - (BOOL)isWordPressDotComUrl
 {
     return [self.absoluteString isWordPressComPath];
+<<<<<<< HEAD
 }
 
 - (BOOL)isUnknownGravatarUrl
@@ -34,6 +38,8 @@
     NSString *schemalessUknownURL   = [NSString stringWithFormat:@"%@%@", unknownURL.host, unknownURL.path];
     
     return [schemalessSelfURL rangeOfString:schemalessUknownURL].location != NSNotFound;
+=======
+>>>>>>> release/5.6.1
 }
 
 - (NSURL *)ensureSecureURL
