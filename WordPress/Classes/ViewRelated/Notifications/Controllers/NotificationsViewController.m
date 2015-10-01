@@ -474,8 +474,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     fetchRequest.predicate = [self predicateForSelectedFilters];
     
     /// Refetch + Reload
-    [self.tableViewHandler.resultsController performFetch:nil];
     [self.tableViewHandler clearCachedRowHeights];
+    [self.tableViewHandler.resultsController performFetch:nil];
     [self.tableView reloadData];
     
     // Don't overwork!
@@ -714,6 +714,14 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (IBAction)segmentedControlDidChange:(UISegmentedControl *)sender
 {
     [self reloadResultsController];
+    
+    // It's a long way, to the top (if you wanna rock'n roll!)
+    if (self.tableViewHandler.resultsController.fetchedObjects.count == 0) {
+        return;
+    }
+    
+    NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:NO];
 }
 
 
