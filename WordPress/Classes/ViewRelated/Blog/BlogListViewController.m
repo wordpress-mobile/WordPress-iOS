@@ -203,7 +203,7 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    if ([blogService blogCountForAllAccounts] > 0) {
+    if ([blogService blogCountForWPComAccounts] > 0) {
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.leftBarButtonItem = nil;
