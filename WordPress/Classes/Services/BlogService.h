@@ -6,6 +6,8 @@
 
 @interface BlogService : LocalCoreDataService
 
+-(instancetype) init __attribute__((unavailable("must use initWithManagedObjectContext")));
+
 /**
  Returns the blog that matches with a given blogID
  */
