@@ -3,11 +3,12 @@
 @class Blog;
 @class WPAccount;
 @class Menu;
+@class MenuLocation;
 
 typedef void(^MenusServiceSuccessBlock)();
 typedef void(^MenusServiceMenuRequestSuccessBlock)(Menu *menu);
-typedef void(^MenusServiceMenusRequestSuccessBlock)(NSArray *menus);
-typedef void(^MenusServiceLocationsRequestSuccessBlock)(NSArray *locations);
+typedef void(^MenusServiceMenusRequestSuccessBlock)(NSArray<Menu *> *menus);
+typedef void(^MenusServiceLocationsRequestSuccessBlock)(NSArray<MenuLocation *> *locations);
 typedef void(^MenusServiceFailureBlock)(NSError *error);
 
 @interface MenusService : LocalCoreDataService
