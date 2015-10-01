@@ -63,7 +63,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 @interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate,
                                             ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
-@property (nonatomic,   weak) IBOutlet UITableView          *tableView;
+@property (nonatomic, strong) IBOutlet UITableView          *tableView;
+@property (nonatomic, strong) IBOutlet UIView               *tableHeaderView;
 @property (nonatomic, strong) IBOutlet UISegmentedControl   *filtersSegmentedControl;
 @property (nonatomic, strong) UIRefreshControl              *refreshControl;
 @property (nonatomic, strong) WPTableViewHandler            *tableViewHandler;
@@ -172,6 +173,9 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)setupTableView
 {
+    NSParameterAssert(self.tableView);
+    NSParameterAssert(self.tableHeaderView);
+    
     // Register the cells
     NSArray *cellNibs = @[ [NoteTableViewCell classNameWithoutNamespaces] ];
     
@@ -180,21 +184,20 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
         [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:nibName];
     }
     
-    // iPad Fix: contentInset breaks tableSectionViews
+    // iPad: extra top padding is required
     if (UIDevice.isPad) {
-        UIView *headerView              = self.tableView.tableHeaderView;
-        CGRect headerFrame              = headerView.frame;
-        headerFrame.size.height         += CGRectGetHeight(WPTableHeaderPadFrame);
-        headerView.frame                = headerFrame;
-        
-        // We're assigning the same headerView, on purpose. (RE: iOS tableHeaderView flickers!)
-        self.tableView.tableHeaderView  = headerView;
-        self.tableView.tableFooterView  = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
-        
-    // iPhone Fix: Hide the cellSeparators, when the table is empty
-    } else {
-        self.tableView.tableFooterView  = [UIView new];
+        CGRect headerFrame                  = self.tableHeaderView.frame;
+        headerFrame.size.height             += CGRectGetHeight(WPTableHeaderPadFrame);
+        self.tableHeaderView.frame          = headerFrame;
     }
+    
+    // Fixes:
+    //  - iPad: contentInset breaks tableSectionViews
+    //  - iPhone: Hide the cellSeparators, when the table is empty
+    CGRect footerFrame = UIDevice.isPad ? CGRectZero : WPTableFooterPadFrame;
+    
+    self.tableView.tableHeaderView          = self.tableHeaderView;
+    self.tableView.tableFooterView          = [[UIView alloc] initWithFrame:footerFrame];
     
     // UITableView
     self.tableView.accessibilityIdentifier  = @"Notifications Table";
@@ -203,6 +206,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)setupTableHandler
 {
+    NSParameterAssert(self.tableView);
+    
     WPTableViewHandler *tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     tableViewHandler.cacheRowHeights = YES;
     tableViewHandler.delegate = self;
@@ -211,7 +216,9 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)setupRefreshControl
 {
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    NSParameterAssert(self.tableView);
+    
+    UIRefreshControl *refreshControl = [UIRefreshControl new];
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
     [self.tableView addSubview:refreshControl];
