@@ -66,6 +66,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 @property (nonatomic, strong) IBOutlet UIView               *tableHeaderView;
 @property (nonatomic, strong) IBOutlet UISegmentedControl   *filtersSegmentedControl;
 @property (nonatomic, strong) IBOutlet ABXPromptView        *ratingsView;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *ratingsTopConstraint;
 @property (nonatomic, strong) WPTableViewHandler            *tableViewHandler;
 @property (nonatomic, strong) WPNoResultsView               *noResultsView;
 @property (nonatomic, strong) NSString                      *pushNotificationID;
@@ -118,6 +119,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [super viewDidLoad];
     
     [self setupTableView];
+    [self setupTableHeaderFooterView];
     [self setupTableHandler];
     [self setupRatingsView];
     [self setupRefreshControl];
@@ -174,7 +176,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)setupTableView
 {
     NSParameterAssert(self.tableView);
-    NSParameterAssert(self.tableHeaderView);
     
     // Register the cells
     NSArray *cellNibs = @[ [NoteTableViewCell classNameWithoutNamespaces] ];
@@ -184,24 +185,34 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
         [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:nibName];
     }
     
+    // UITableView
+    self.tableView.accessibilityIdentifier  = @"Notifications Table";
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+}
+
+- (void)setupTableHeaderFooterView
+{
+    NSParameterAssert(self.tableHeaderView);
+    
     // iPad: extra top padding is required
     if (UIDevice.isPad) {
-        CGRect headerFrame                  = self.tableHeaderView.frame;
-        headerFrame.size.height             += CGRectGetHeight(WPTableHeaderPadFrame);
-        self.tableHeaderView.frame          = headerFrame;
+        // Update the Top Spacing constraint
+        self.ratingsTopConstraint.constant = CGRectGetHeight(WPTableHeaderPadFrame);
+        
+        // Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
+        CGRect headerFrame          = self.tableHeaderView.frame;
+        headerFrame.size            = [self.tableHeaderView systemLayoutSizeFittingSize:self.view.bounds.size];
+        self.tableHeaderView.frame  = headerFrame;
+        [self.tableHeaderView layoutIfNeeded];
     }
-    
+
     // Fixes:
     //  - iPad: contentInset breaks tableSectionViews
     //  - iPhone: Hide the cellSeparators, when the table is empty
     CGRect footerFrame = UIDevice.isPad ? CGRectZero : WPTableFooterPadFrame;
-    
-    self.tableView.tableHeaderView          = self.tableHeaderView;
-    self.tableView.tableFooterView          = [[UIView alloc] initWithFrame:footerFrame];
-    
-    // UITableView
-    self.tableView.accessibilityIdentifier  = @"Notifications Table";
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
+    self.tableView.tableHeaderView = self.tableHeaderView;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:footerFrame];
 }
 
 - (void)setupTableHandler
