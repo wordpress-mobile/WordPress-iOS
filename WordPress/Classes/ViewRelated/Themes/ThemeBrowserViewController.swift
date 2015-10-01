@@ -31,9 +31,8 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     
     // MARK: - Properties: Layout configuration
     private let marginWidth = CGFloat(10)
-    private let numberOfCellsPerRowForPhone = 1
-    private let numberOfCellsPerRowForPad = 4
-    
+    private let minimumColumnWidth = CGFloat(250)
+ 
     // MARK: - Themes
     
     /**
@@ -63,7 +62,20 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         
         updateThemes()
     }
+
+    public override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
+        super.didRotateFromInterfaceOrientation(fromInterfaceOrientation)
+        
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
     
+    @available(iOS 8.0, *)
+    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+
     // MARK: - Updating the list of themes
     
     private func updateThemes() {
@@ -111,53 +123,29 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - UICollectionViewDelegateFlowLayout
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        
-        let isPhone = UIDevice.currentDevice().userInterfaceIdiom == .Phone
         let parentViewWidth = collectionView.frame.size.width
-        var width = CGFloat(100)
+        let width = cellWidthForFrameWidth(parentViewWidth)
         
-        if isPhone {
-            width = cellWidthForPhone(parentViewWidth)
-        } else {
-            width = cellWidthForPad(parentViewWidth)
-        }
-        
-        return CGSize(width: width, height: 100)
+        return CGSize(width: width, height: width)
     }
     
     // MARK: - Layout calculation helper methods
     
     /**
-     *  @brief      Calculates the cell width for phone devices.
+     *  @brief      Calculates the cell width for parent frame
      *
      *  @param      parentViewWidth     The width of the parent view.
      *
      *  @returns    The requested cell width.
      */
-    private func cellWidthForPhone(parentViewWidth : CGFloat) -> CGFloat {
-        return cellWidthForNumberOfCellsPerRow(self.numberOfCellsPerRowForPhone, parentViewWidth: parentViewWidth)
-    }
-    
-    /**
-    *  @brief      Calculates the cell width for pad devices.
-    *
-    *  @param      parentViewWidth     The width of the parent view.
-    *
-    *  @returns    The requested cell width.
-    */
-    private func cellWidthForPad(parentViewWidth : CGFloat) -> CGFloat {
-        return cellWidthForNumberOfCellsPerRow(self.numberOfCellsPerRowForPad, parentViewWidth: parentViewWidth)
-    }
-    
-    private func cellWidthForNumberOfCellsPerRow(numberOfCellsPerRow : Int, parentViewWidth : CGFloat) -> CGFloat {
+    private func cellWidthForFrameWidth(parentViewWidth : CGFloat) -> CGFloat {
+        let numberOfColumns = trunc(parentViewWidth / minimumColumnWidth)
+        let numberOfMargins = numberOfColumns + 1
+        let marginsWidth = numberOfMargins * marginWidth
+        let columnsWidth = parentViewWidth - marginsWidth
+        let columnWidth = trunc(columnsWidth / numberOfColumns)
         
-        let numberOfMarginsToHave = CGFloat(numberOfMarginsPerRowForNumberOfCells(numberOfCellsPerRow))
-        
-        return parentViewWidth - numberOfMarginsToHave * marginWidth
-    }
-    
-    private func numberOfMarginsPerRowForNumberOfCells(numberOfCells: Int) -> Int {
-        return 1 + numberOfCells
+        return columnWidth
     }
     
     // MARK: - UISearchBarDelegate
