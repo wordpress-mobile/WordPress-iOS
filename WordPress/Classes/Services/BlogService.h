@@ -104,6 +104,8 @@
 
 - (NSInteger)blogCountSelfHosted;
 
+- (NSInteger)blogCountForWPComAccounts;
+
 - (NSInteger)blogCountVisibleForWPComAccounts;
 
 - (NSInteger)blogCountVisibleForAllAccounts;
