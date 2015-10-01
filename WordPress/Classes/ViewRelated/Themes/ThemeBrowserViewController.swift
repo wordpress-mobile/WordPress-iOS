@@ -100,16 +100,8 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     }
     
     public override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-
-        var reuseIdentifier : String? = nil
-        
-        if kind == UICollectionElementKindSectionHeader {
-            reuseIdentifier = "ThemeBrowserHeaderView"
-        } else {
-            reuseIdentifier = "ThemeBrowserFooterView"
-        }
-        
-        return collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier!, forIndexPath: indexPath) 
+        let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ThemeBrowserHeaderView", forIndexPath: indexPath)
+        return header
     }
     
     public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
