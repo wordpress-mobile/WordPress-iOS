@@ -948,7 +948,11 @@ import Foundation
         return displayContext!
     }
 
-    public func fetchRequest() -> NSFetchRequest {
+    public func fetchRequest() -> NSFetchRequest? {
+        if readerTopic == nil {
+            return nil
+        }
+
         let fetchRequest = NSFetchRequest(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
