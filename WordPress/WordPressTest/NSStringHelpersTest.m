@@ -1,6 +1,11 @@
 #import <XCTest/XCTest.h>
 #import "NSString+Helpers.h"
 
+@interface NSString ()
++ (NSString *)emojiCharacterFromCoreEmojiFilename:(NSString *)filename;
++ (NSString *)emojiFromCoreEmojiImageTag:(NSString *)tag;
+@end
+
 @interface NSStringHelpersTest : XCTestCase
 
 @end
@@ -132,7 +137,52 @@
 
     NSString *testPhrasePortuguese = @"A raposa preguiçosa saltou a cerca.";
     XCTAssert([testPhrasePortuguese wordCount] == 6, @"Word count should be six");
+}
 
+- (void)testStringByReplacingHTMLEmoticonsWithEmoji
+{
+    NSString *emoji = @"\U0001F600";
+    NSString *imageTag = @"<img src=\"http://s.w.org/images/core/emoji/72x72/1f600.png\" alt=\"&#128512;\" class=\"wp-smiley\" style=\"height: 1em; max-height: 1em;\">";
+    NSString *replacedString = [imageTag stringByReplacingHTMLEmoticonsWithEmoji];
+
+    XCTAssert([replacedString isEqualToString:emoji], @"The image tag was not replaced with an emoji string");
+}
+
+- (void)testEmojiFromCoreEmojiImageTag
+{
+    NSString *emoji = @"😜";
+    NSString *imageTagTestingAlt = @"<img class=\"emoji\" draggable=\"false\" alt=\"😜\" src=\"http://s.w.org/images/core/emoji/72x72/1f600.png\" scale=\"0\">";
+    NSString *imageTagTestingFilename = @"<img class=\"emoji\" draggable=\"false\" src=\"http://s.w.org/images/core/emoji/72x72/1f61c.png\" scale=\"0\">";
+
+    // Test emoji found from alt text
+    NSString *str = [NSString emojiFromCoreEmojiImageTag:imageTagTestingAlt];
+    XCTAssert([str isEqualToString:emoji], @"The expected emoji was not retrieved from the image tag's alt text");
+
+    // Test emoji found from file path
+    str = [NSString emojiFromCoreEmojiImageTag:imageTagTestingFilename];
+    XCTAssert([str isEqualToString:emoji], @"The expected emoji was not retrieved from the image tag's  image file name");
+}
+
+- (void)testEmojiUnicodeFromCoreEmojiFilename
+{
+    NSString *copyright = @"A9";
+    // Test emoji <= 0xFFFF
+    NSString *emojiString = [NSString emojiCharacterFromCoreEmojiFilename:copyright];
+    XCTAssert([emojiString isEqualToString:@"\u00A9"], @"The emoji filename was not converted to a unicode code point.");
+
+    NSString *smilingImp = @"1F608";
+    // Test emoji > 0xFFFF
+    emojiString = [NSString emojiCharacterFromCoreEmojiFilename:smilingImp];
+    XCTAssert([emojiString isEqualToString:@"\U0001F608"], @"The emoji filename was not converted to a unicode code point.");
+
+    NSString *flag = @"1f1fa-1f1f8";
+    // Test surrogate pair
+    emojiString = [NSString emojiCharacterFromCoreEmojiFilename:flag];
+    XCTAssert([emojiString isEqualToString:@"\U0001f1fa\U0001f1f8"], @"The emoji filename was not converted to a unicode code point.");
+
+    NSString *invalid = @"ZZZZZ";
+    emojiString = [NSString emojiCharacterFromCoreEmojiFilename:invalid];
+    XCTAssert([emojiString length] == 0, @"Should return an empty string for an invalid file name.");
 }
 
 @end

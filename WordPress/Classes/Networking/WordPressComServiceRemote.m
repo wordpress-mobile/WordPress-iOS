@@ -75,8 +75,10 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
                              @"client_secret" : [WordPressComApiCredentials secret]
                              };
     
-    [self.api POST:@"users/new" parameters:params success:successBlock failure:failureBlock];
+    NSString *requestUrl = [self pathForEndpoint:@"users/new"
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
+    [self.api POST:requestUrl parameters:params success:successBlock failure:failureBlock];
 }
 
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl
@@ -183,10 +185,11 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
                              @"client_secret": [WordPressComApiCredentials secret]
                              };
     
-    [self.api POST:@"sites/new"
-        parameters:params
-           success:successBlock
-           failure:failureBlock];
+    
+    NSString *requestUrl = [self pathForEndpoint:@"sites/new"
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api POST:requestUrl parameters:params success:successBlock failure:failureBlock];
 }
 
 #pragma mark - Error localization
