@@ -182,12 +182,18 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     
     // iPad Fix: contentInset breaks tableSectionViews
     if (UIDevice.isPad) {
-//        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
-        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
+        UIView *headerView              = self.tableView.tableHeaderView;
+        CGRect headerFrame              = headerView.frame;
+        headerFrame.size.height         += CGRectGetHeight(WPTableHeaderPadFrame);
+        headerView.frame                = headerFrame;
+        
+        // We're assigning the same headerView, on purpose. (RE: iOS tableHeaderView flickers!)
+        self.tableView.tableHeaderView  = headerView;
+        self.tableView.tableFooterView  = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
         
     // iPhone Fix: Hide the cellSeparators, when the table is empty
     } else {
-        self.tableView.tableFooterView = [UIView new];
+        self.tableView.tableFooterView  = [UIView new];
     }
     
     // UITableView

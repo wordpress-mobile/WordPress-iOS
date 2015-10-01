@@ -25,7 +25,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uee-il-FES">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uee-il-FES" userLabel="Wrapper View">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                             <subviews>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="EJ4-p9-P8a">
@@ -45,7 +45,6 @@
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="600" id="0er-9Z-xTI"/>
-                                                <constraint firstAttribute="height" constant="44" id="TOK-kG-LQP"/>
                                                 <constraint firstItem="EJ4-p9-P8a" firstAttribute="leading" secondItem="Uee-il-FES" secondAttribute="leading" constant="8" id="jcG-SV-q5K"/>
                                                 <constraint firstItem="EJ4-p9-P8a" firstAttribute="top" secondItem="Uee-il-FES" secondAttribute="top" constant="8" id="mij-bn-oRN"/>
                                                 <constraint firstAttribute="bottom" secondItem="EJ4-p9-P8a" secondAttribute="bottom" constant="8" id="uQw-Ez-sDK"/>
@@ -65,12 +64,19 @@
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="44" id="Gyc-bc-V37"/>
-                                        <constraint firstAttribute="trailing" secondItem="Uee-il-FES" secondAttribute="trailing" priority="750" id="REQ-7U-Is7"/>
-                                        <constraint firstItem="Uee-il-FES" firstAttribute="centerX" secondItem="hgv-te-72t" secondAttribute="centerX" id="Tdv-UH-Qc8"/>
-                                        <constraint firstItem="Uee-il-FES" firstAttribute="centerY" secondItem="hgv-te-72t" secondAttribute="centerY" id="ob8-gx-513"/>
-                                        <constraint firstItem="Uee-il-FES" firstAttribute="leading" secondItem="hgv-te-72t" secondAttribute="leading" priority="750" id="s0S-Un-TCi"/>
+                                        <constraint firstItem="Uee-il-FES" firstAttribute="leading" secondItem="hgv-te-72t" secondAttribute="leading" priority="750" id="Gc0-4a-YYC"/>
+                                        <constraint firstAttribute="trailing" secondItem="Uee-il-FES" secondAttribute="trailing" priority="750" id="ZE7-AM-xdc"/>
+                                        <constraint firstAttribute="bottom" secondItem="Uee-il-FES" secondAttribute="bottom" id="aFo-dR-zY1"/>
+                                        <constraint firstItem="Uee-il-FES" firstAttribute="top" secondItem="hgv-te-72t" secondAttribute="top" id="gb2-MY-JhB">
+                                            <variation key="heightClass=regular-widthClass=regular" constant="40"/>
+                                        </constraint>
+                                        <constraint firstItem="Uee-il-FES" firstAttribute="centerX" secondItem="hgv-te-72t" secondAttribute="centerX" id="lUL-tK-JlA"/>
                                     </constraints>
+                                    <variation key="heightClass=regular-widthClass=regular">
+                                        <mask key="constraints">
+                                            <include reference="gb2-MY-JhB"/>
+                                        </mask>
+                                    </variation>
                                 </view>
                                 <sections/>
                             </tableView>
