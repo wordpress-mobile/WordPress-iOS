@@ -197,7 +197,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
-    `303b8068530389ea87afde38b77466d685fe3210`)
+    `aec680b795de9aaa5c5370a06d30f61ce47033c9`)
   - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`,
     commit `1b614724fbc005be4346c7870498658c8b537267`)
   - WordPress-iOS-Shared (= 0.4.4)
@@ -220,7 +220,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git
     :tag: '1.5'
   WordPress-AppbotX:
-    :commit: 303b8068530389ea87afde38b77466d685fe3210
+    :commit: aec680b795de9aaa5c5370a06d30f61ce47033c9
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
     :commit: 1b614724fbc005be4346c7870498658c8b537267
@@ -239,7 +239,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git
     :tag: '1.5'
   WordPress-AppbotX:
-    :commit: 303b8068530389ea87afde38b77466d685fe3210
+    :commit: aec680b795de9aaa5c5370a06d30f61ce47033c9
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
     :commit: 1b614724fbc005be4346c7870498658c8b537267
@@ -257,7 +257,7 @@ SPEC CHECKSUMS:
   CrashlyticsLumberjack: 5094b659ecf9a11550f7dd7a885c0cef077f1ffa
   DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
   DTFoundation: c9b3362b83f0017389082ec067ede719826a579d
-  EmailChecker: 1b9c5a58c994bc638f842a4d69523b6ab57e706e
+  EmailChecker: 406cf1f1b5cd2efb8401803b580abf4a43b0665c
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
