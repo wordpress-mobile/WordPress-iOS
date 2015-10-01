@@ -17,67 +17,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Drc-pN-xa4">
+                            <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Drc-pN-xa4">
                                 <rect key="frame" x="0.0" y="20" width="600" height="580"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <view key="tableHeaderView" contentMode="scaleToFill" id="hgv-te-72t" userLabel="Header View">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uee-il-FES" userLabel="Wrapper View">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                            <subviews>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="EJ4-p9-P8a">
-                                                    <rect key="frame" x="8" y="8" width="584" height="29"/>
-                                                    <segments>
-                                                        <segment title="All"/>
-                                                        <segment title="Unread"/>
-                                                        <segment title="Comments"/>
-                                                        <segment title="Follows"/>
-                                                        <segment title="Likes"/>
-                                                    </segments>
-                                                    <connections>
-                                                        <action selector="segmentedControlDidChange:" destination="LHB-9I-z00" eventType="valueChanged" id="Yr9-gj-gZF"/>
-                                                    </connections>
-                                                </segmentedControl>
-                                            </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="600" id="0er-9Z-xTI"/>
-                                                <constraint firstItem="EJ4-p9-P8a" firstAttribute="leading" secondItem="Uee-il-FES" secondAttribute="leading" constant="8" id="jcG-SV-q5K"/>
-                                                <constraint firstItem="EJ4-p9-P8a" firstAttribute="top" secondItem="Uee-il-FES" secondAttribute="top" constant="8" id="mij-bn-oRN"/>
-                                                <constraint firstAttribute="bottom" secondItem="EJ4-p9-P8a" secondAttribute="bottom" constant="8" id="uQw-Ez-sDK"/>
-                                                <constraint firstAttribute="trailing" secondItem="EJ4-p9-P8a" secondAttribute="trailing" constant="8" id="zDS-G1-sR8"/>
-                                            </constraints>
-                                            <variation key="default">
-                                                <mask key="constraints">
-                                                    <exclude reference="0er-9Z-xTI"/>
-                                                </mask>
-                                            </variation>
-                                            <variation key="heightClass=regular-widthClass=regular">
-                                                <mask key="constraints">
-                                                    <include reference="0er-9Z-xTI"/>
-                                                </mask>
-                                            </variation>
-                                        </view>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstItem="Uee-il-FES" firstAttribute="leading" secondItem="hgv-te-72t" secondAttribute="leading" priority="750" id="Gc0-4a-YYC"/>
-                                        <constraint firstAttribute="trailing" secondItem="Uee-il-FES" secondAttribute="trailing" priority="750" id="ZE7-AM-xdc"/>
-                                        <constraint firstAttribute="bottom" secondItem="Uee-il-FES" secondAttribute="bottom" id="aFo-dR-zY1"/>
-                                        <constraint firstItem="Uee-il-FES" firstAttribute="top" secondItem="hgv-te-72t" secondAttribute="top" id="gb2-MY-JhB">
-                                            <variation key="heightClass=regular-widthClass=regular" constant="40"/>
-                                        </constraint>
-                                        <constraint firstItem="Uee-il-FES" firstAttribute="centerX" secondItem="hgv-te-72t" secondAttribute="centerX" id="lUL-tK-JlA"/>
-                                    </constraints>
-                                    <variation key="heightClass=regular-widthClass=regular">
-                                        <mask key="constraints">
-                                            <include reference="gb2-MY-JhB"/>
-                                        </mask>
-                                    </variation>
-                                </view>
                                 <sections/>
                             </tableView>
                         </subviews>
@@ -91,12 +34,70 @@
                     </view>
                     <connections>
                         <outlet property="filtersSegmentedControl" destination="EJ4-p9-P8a" id="dkq-TX-y2j"/>
+                        <outlet property="tableHeaderView" destination="hgv-te-72t" id="YK0-Az-gRl"/>
                         <outlet property="tableView" destination="Drc-pN-xa4" id="SS6-o0-ygv"/>
                         <segue destination="veA-Pg-QAw" kind="show" identifier="NotificationDetailsViewController" id="yfw-BN-JXT"/>
                         <segue destination="xj3-6N-2Jy" kind="show" identifier="ReaderPostDetailViewController" id="W7s-Jb-RUn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BAt-Yn-DQt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="hgv-te-72t" userLabel="Header View">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uee-il-FES" userLabel="Wrapper View">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                            <subviews>
+                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" apportionsSegmentWidthsByContent="YES" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="EJ4-p9-P8a">
+                                    <rect key="frame" x="8" y="8" width="584" height="29"/>
+                                    <segments>
+                                        <segment title="All"/>
+                                        <segment title="Unread"/>
+                                        <segment title="Comments"/>
+                                        <segment title="Follows"/>
+                                        <segment title="Likes"/>
+                                    </segments>
+                                    <connections>
+                                        <action selector="segmentedControlDidChange:" destination="LHB-9I-z00" eventType="valueChanged" id="Yr9-gj-gZF"/>
+                                    </connections>
+                                </segmentedControl>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="600" id="0er-9Z-xTI"/>
+                                <constraint firstItem="EJ4-p9-P8a" firstAttribute="leading" secondItem="Uee-il-FES" secondAttribute="leading" constant="8" id="jcG-SV-q5K"/>
+                                <constraint firstItem="EJ4-p9-P8a" firstAttribute="top" secondItem="Uee-il-FES" secondAttribute="top" constant="8" id="mij-bn-oRN"/>
+                                <constraint firstAttribute="bottom" secondItem="EJ4-p9-P8a" secondAttribute="bottom" constant="8" id="uQw-Ez-sDK"/>
+                                <constraint firstAttribute="trailing" secondItem="EJ4-p9-P8a" secondAttribute="trailing" constant="8" id="zDS-G1-sR8"/>
+                            </constraints>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="0er-9Z-xTI"/>
+                                </mask>
+                            </variation>
+                            <variation key="heightClass=regular-widthClass=regular">
+                                <mask key="constraints">
+                                    <include reference="0er-9Z-xTI"/>
+                                </mask>
+                            </variation>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Uee-il-FES" firstAttribute="leading" secondItem="hgv-te-72t" secondAttribute="leading" priority="750" id="Gc0-4a-YYC"/>
+                        <constraint firstAttribute="trailing" secondItem="Uee-il-FES" secondAttribute="trailing" priority="750" id="ZE7-AM-xdc"/>
+                        <constraint firstAttribute="bottom" secondItem="Uee-il-FES" secondAttribute="bottom" id="aFo-dR-zY1"/>
+                        <constraint firstItem="Uee-il-FES" firstAttribute="top" secondItem="hgv-te-72t" secondAttribute="top" id="gb2-MY-JhB">
+                            <variation key="heightClass=regular-widthClass=regular" constant="40"/>
+                        </constraint>
+                        <constraint firstItem="Uee-il-FES" firstAttribute="centerX" secondItem="hgv-te-72t" secondAttribute="centerX" id="lUL-tK-JlA"/>
+                    </constraints>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="gb2-MY-JhB"/>
+                        </mask>
+                    </variation>
+                </view>
             </objects>
             <point key="canvasLocation" x="506.25" y="-966.54929577464782"/>
         </scene>
