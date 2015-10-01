@@ -185,6 +185,12 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     [self adjustTableInsetsIfNeeded];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self.tableView reloadData];
+}
+
 - (void)reloadData
 {
     // Hide the header, if needed
