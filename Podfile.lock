@@ -197,7 +197,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
-    `aec680b795de9aaa5c5370a06d30f61ce47033c9`)
+    `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
   - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`,
     commit `1b614724fbc005be4346c7870498658c8b537267`)
   - WordPress-iOS-Shared (= 0.4.4)
@@ -220,7 +220,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git
     :tag: '1.5'
   WordPress-AppbotX:
-    :commit: aec680b795de9aaa5c5370a06d30f61ce47033c9
+    :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
     :commit: 1b614724fbc005be4346c7870498658c8b537267
@@ -239,7 +239,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git
     :tag: '1.5'
   WordPress-AppbotX:
-    :commit: aec680b795de9aaa5c5370a06d30f61ce47033c9
+    :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
     :commit: 1b614724fbc005be4346c7870498658c8b537267
