@@ -76,7 +76,7 @@
                                [self refreshLocationsForMenu:menu matchingRemoteLocationNames:remoteMenu.locationNames blog:blog];
                                
                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
+                               
                                if(success) {
                                    success(menu);
                                }
@@ -93,13 +93,21 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert([menu isKindOfClass:[Menu class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
-
+    
     [self.managedObjectContext performBlockAndWait:^{
+        
+        NSMutableArray *locationNames = [NSMutableArray arrayWithCapacity:menu.locations.count];
+        for(MenuLocation *location in menu.locations) {
+            if(location.name.length) {
+                [locationNames addObject:location.name];
+            }
+        }
         
         MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
         [remote updateMenuForId:menu.menuId
                            blog:blog
                        withName:menu.name
+                  withLocations:locationNames
                       withItems:[self remoteItemsFromMenuItems:menu.items]
                         success:^(RemoteMenu *remoteMenu) {
                             
@@ -140,7 +148,7 @@
 
 #pragma mark - Menu managed objects from RemoteMenu objects
 
-- (NSArray *)menusFromRemoteMenus:(NSArray *)remoteMenus
+- (NSArray *)menusFromRemoteMenus:(NSArray<RemoteMenu *> *)remoteMenus
 {
     NSMutableArray *menus = [NSMutableArray arrayWithCapacity:remoteMenus.count];
     for(RemoteMenu *remoteMenu in remoteMenus) {
@@ -181,7 +189,7 @@
     item.urlStr = remoteMenuItem.urlStr;
     
     if(remoteMenuItem.children) {
-
+        
         for(RemoteMenuItem *childRemoteItem in remoteMenuItem.children) {
             
             MenuItem *childItem = [self addMenuItemFromRemoteMenuItem:childRemoteItem forMenu:menu];
@@ -195,7 +203,7 @@
 
 #pragma mark - MenuLocations managed objects from RemoteMenuLocation objects
 
-- (NSArray *)menuLocationsFromRemoteMenuLocations:(NSArray *)remoteMenuLocations
+- (NSArray *)menuLocationsFromRemoteMenuLocations:(NSArray<RemoteMenuLocation *> *)remoteMenuLocations
 {
     NSMutableArray *locations = [NSMutableArray arrayWithCapacity:remoteMenuLocations.count];
     
@@ -268,7 +276,7 @@
 
 #pragma mark - RemoteMenu objects from Menu objects
 
-- (NSArray *)remoteItemsFromMenuItems:(NSOrderedSet *)menuItems
+- (NSArray *)remoteItemsFromMenuItems:(NSOrderedSet<MenuItem *> *)menuItems
 {
     NSMutableArray *remoteItems = [NSMutableArray arrayWithCapacity:menuItems.count];
     for(MenuItem *item in menuItems) {

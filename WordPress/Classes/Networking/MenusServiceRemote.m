@@ -26,17 +26,18 @@
         parameters:@{@"name": menuName}
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
                if(success) {
+                   NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Expected a dictionary");
                    
-                   NSAssert([responseObject isKindOfClass:[NSString class]], @"Expected a string");
+                   NSString *menuId = [responseObject stringForKey:@"id"];
+                   RemoteMenu *menu = nil;
+                   if(menuId.length) {
+                       menu = [RemoteMenu new];
+                       menu.menuId = menuId;
+                       menu.name = menuName;
+                   }
                    
-                   NSString *menuId = responseObject;
-                   RemoteMenu *menu = [RemoteMenu new];
-                   menu.menuId = menuId;
-                   menu.name = menuName;
-                
                    success(menu);
                }
-               
            } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
                
                if (failure) {
@@ -48,6 +49,7 @@
 - (void)updateMenuForId:(NSString *)menuId
                    blog:(Blog *)blog
                withName:(NSString *)updatedName
+          withLocations:(NSArray <NSString *> *)locationNames
               withItems:(NSArray <RemoteMenuItem *> *)updatedItems
                 success:(MenusServiceRemoteMenuRequestSuccessBlock)success
                 failure:(MenusServiceRemoteFailureBlock)failure
@@ -67,15 +69,23 @@
     if(updatedItems.count) {
         [params setObject:[self menuItemJSONDictionariesFromMenuItems:updatedItems] forKey:@"items"];
     }
+    if(locationNames.count) {
+        [params setObject:locationNames forKey:@"locations"];
+    }
+    
+    // temporarily need to force the id for the menu update to work until fixed in Jetpack endpoints
+    // Brent Coursey - 10/1/2015
+    [params setObject:menuId forKey:@"id"];
     
     [self.api POST:requestURL
         parameters:params
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-               
                if(success) {
-                   success([self menuFromJSONDictionary:responseObject]);
+                   NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Expected a dictionary...");
+                   
+                   NSDictionary *menuDictionary = [responseObject dictionaryForKey:@"menu"];
+                   success([self menuFromJSONDictionary:menuDictionary]);
                }
-               
            } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
                
                if (failure) {
@@ -85,9 +95,9 @@
 }
 
 - (void)deleteMenuForId:(NSString *)menuId
-              blog:(Blog *)blog
-           success:(MenusServiceRemoteSuccessBlock)success
-           failure:(MenusServiceRemoteFailureBlock)failure
+                   blog:(Blog *)blog
+                success:(MenusServiceRemoteSuccessBlock)success
+                failure:(MenusServiceRemoteFailureBlock)failure
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
@@ -99,7 +109,6 @@
     [self.api POST:requestURL
         parameters:nil
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-               
                if(success) {
                    NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Expected a dictionary");
                    
@@ -111,7 +120,6 @@
                        failure(nil);
                    }
                }
-               
            } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
                
                if (failure) {
@@ -136,7 +144,6 @@
     [self.api GET:requestURL
        parameters:nil
           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-              
               if(success) {
                   
                   NSArray *menus = [self remoteMenusFromJSONArray:[responseObject arrayForKey:@"menus"]];
@@ -152,38 +159,9 @@
           }];
 }
 
-- (void)getMenuForId:(NSString *)menuId
-                 blog:(Blog *)blog
-              success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-              failure:(MenusServiceRemoteFailureBlock)failure
-{
-    NSNumber *blogId = [blog dotComID];
-    NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
-    NSParameterAssert([menuId isKindOfClass:[NSString class]]);
-    
-    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@", blogId, menuId];
-    NSString *requestURL = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-    [self.api GET:requestURL
-       parameters:nil
-          success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-              
-              if(success) {
-                  DDLogDebug(@"%@", responseObject);
-                  success([self menuFromJSONDictionary:responseObject]);
-              }
-              
-          } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-             
-              if (failure) {
-                  failure(error);
-              }
-          }];
-}
-
 #pragma mark - Remote Model from JSON
 
-- (NSArray *)remoteMenusFromJSONArray:(NSArray *)jsonMenus
+- (NSArray *)remoteMenusFromJSONArray:(NSArray<NSDictionary *> *)jsonMenus
 {
     return [jsonMenus wp_map:^id(NSDictionary *dictionary) {
         return [self menuFromJSONDictionary:dictionary];
@@ -203,7 +181,7 @@
     }];
 }
 
-- (NSArray *)remoteMenuLocationsFromJSONArray:(NSArray *)jsonLocations
+- (NSArray *)remoteMenuLocationsFromJSONArray:(NSArray<NSDictionary *> *)jsonLocations
 {
     return [jsonLocations wp_map:^id(NSDictionary *dictionary) {
         return [self menuLocationFromJSONDictionary:dictionary];
@@ -232,12 +210,12 @@
     menu.details = [dictionary stringForKey:@"description"];
     menu.name = [dictionary stringForKey:@"name"];
     menu.locationNames = [dictionary arrayForKey:@"locations"];
-
+    
     NSArray *itemDicts = [dictionary arrayForKey:@"items"];
     if(itemDicts.count) {
         menu.items = [self menuItemsFromJSONDictionaries:itemDicts parent:nil];
     }
-
+    
     return menu;
 }
 
@@ -300,7 +278,7 @@
  *
  *  @returns    An array with menu item JSON dictionary representations.
  */
-- (NSArray *)menuItemJSONDictionariesFromMenuItems:(NSArray *)menuItems
+- (NSArray *)menuItemJSONDictionariesFromMenuItems:(NSArray<RemoteMenuItem *> *)menuItems
 {
     NSMutableArray *dictionaries = [NSMutableArray arrayWithCapacity:menuItems.count];
     for(RemoteMenuItem *item in menuItems) {
@@ -370,6 +348,14 @@
         
         dictionary[@"items"] = [NSArray arrayWithArray:items];
     }
+    
+    return [NSDictionary dictionaryWithDictionary:dictionary];
+}
+
+- (NSDictionary *)menuLocationJSONDictionaryFromLocation:(RemoteMenuLocation *)location
+{
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    [dictionary setObject:@"name" forKey:location.name];
     
     return [NSDictionary dictionaryWithDictionary:dictionary];
 }
