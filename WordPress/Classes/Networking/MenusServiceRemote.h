@@ -3,10 +3,11 @@
 @class Blog;
 @class RemoteMenu;
 @class RemoteMenuItem;
+@class RemoteMenuLocation;
 
 typedef void(^MenusServiceRemoteSuccessBlock)();
 typedef void(^MenusServiceRemoteMenuRequestSuccessBlock)(RemoteMenu *menu);
-typedef void(^MenusServiceRemoteMenusRequestSuccessBlock)(NSArray *menus, NSArray *locations);
+typedef void(^MenusServiceRemoteMenusRequestSuccessBlock)(NSArray<RemoteMenu *> *menus, NSArray<RemoteMenuLocation *> *locations);
 typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
 
 @interface MenusServiceRemote : ServiceRemoteREST
@@ -39,9 +40,10 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
 - (void)updateMenuForId:(NSString *)menuId
                    blog:(Blog *)blog
                withName:(NSString *)updatedName
-              withItems:(NSArray <RemoteMenuItem *> *)updatedItems
-           success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-           failure:(MenusServiceRemoteFailureBlock)failure;
+          withLocations:(NSArray<NSString *> *)locationNames
+              withItems:(NSArray<RemoteMenuItem *> *)updatedItems
+                success:(MenusServiceRemoteMenuRequestSuccessBlock)success
+                failure:(MenusServiceRemoteFailureBlock)failure;
 
 /**
  *  @brief      Delete a menu from a blog.
@@ -53,9 +55,9 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  *
  */
 - (void)deleteMenuForId:(NSString *)menuId
-              blog:(Blog *)blog
-           success:(MenusServiceRemoteSuccessBlock)success
-           failure:(MenusServiceRemoteFailureBlock)failure;
+                   blog:(Blog *)blog
+                success:(MenusServiceRemoteSuccessBlock)success
+                failure:(MenusServiceRemoteFailureBlock)failure;
 
 #pragma mark - Remote queries: Getting menus
 
@@ -70,19 +72,5 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
 - (void)getMenusForBlog:(Blog *)blog
                 success:(MenusServiceRemoteMenusRequestSuccessBlock)success
                 failure:(MenusServiceRemoteFailureBlock)failure;
-
-/**
- *  @brief      Gets a single menu for a specific blog.
- *
- *  @param      menuId      The id of the specific menu.  Cannot be nil.
- *  @param      blog        The blog to get the specific menu for.  Cannot be nil.
- *  @param      success     The success handler.  Can be nil.
- *  @param      failure     The failure handler.  Can be nil.
- *
- */
-- (void)getMenuForId:(NSString *)menuId
-                 blog:(Blog *)blog
-              success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-              failure:(MenusServiceRemoteFailureBlock)failure;
 
 @end
