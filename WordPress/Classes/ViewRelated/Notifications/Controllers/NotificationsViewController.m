@@ -157,7 +157,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [super viewWillDisappear:animated];
     [self unhookApplicationStateNotes];
     
-    // Bufix: If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
+    // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
 }
 
@@ -469,7 +469,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)reloadResultsController
 {
-    // Update the Predicate
+    // Update the Predicate: We can't replace the previous fetchRequest, since it's readonly!
     NSFetchRequest *fetchRequest = self.tableViewHandler.resultsController.fetchRequest;
     fetchRequest.predicate = [self predicateForSelectedFilters];
     
