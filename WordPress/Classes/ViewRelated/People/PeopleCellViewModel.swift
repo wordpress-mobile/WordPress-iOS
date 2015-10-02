@@ -4,7 +4,6 @@ struct PeopleCellViewModel {
     let displayName: String
     let username: String
     let role: Person.Role
-    let pending: Bool
     let superAdmin: Bool
     let avatarURL: NSURL?
 
@@ -12,7 +11,6 @@ struct PeopleCellViewModel {
         self.displayName = person.displayName
         self.username = person.username
         self.role = person.role
-        self.pending = person.pending
         self.superAdmin = person.isSuperAdmin
         self.avatarURL = person.avatarURL
     }
@@ -26,19 +24,15 @@ struct PeopleCellViewModel {
     }
 
     var roleBackgroundColor: UIColor {
-        return pending ? WPStyleGuide.People.RoleBadge.textColor : role.color()
+        return role.color()
     }
 
     var roleTextColor: UIColor {
-        return pending ? role.color() : WPStyleGuide.People.RoleBadge.textColor
+        return WPStyleGuide.People.RoleBadge.textColor
     }
 
     var roleText: String {
-        if pending {
-            return String(format: NSLocalizedString("%@ - pending", comment: "User role indicator, when there's a pending invite. Placeholder is role (e.g. Admin, Editor,...)"), role.localizedName())
-        } else {
-            return role.localizedName()
-        }
+        return role.localizedName()
     }
 
     var superAdminHidden: Bool {
