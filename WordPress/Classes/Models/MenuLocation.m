@@ -6,8 +6,8 @@
 @dynamic defaultState;
 @dynamic details;
 @dynamic name;
-@dynamic menus;
 @dynamic blog;
+@dynamic menu;
 
 + (NSString *)entityName
 {
