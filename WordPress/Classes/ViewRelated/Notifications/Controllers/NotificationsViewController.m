@@ -286,6 +286,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     for (NSString *title in titles) {
         [self.filtersSegmentedControl setTitle:title forSegmentAtIndex:index++];
     }
+    
+    [WPStyleGuide configureSegmentedControl:self.filtersSegmentedControl];
 }
 
 
