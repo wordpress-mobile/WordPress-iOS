@@ -63,6 +63,11 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic defaultCategoryID;
 @dynamic defaultPostFormat;
 @dynamic privacy;
+@dynamic relatedPostsAllowed;
+@dynamic relatedPostsEnabled;
+@dynamic relatedPostsShowHeadline;
+@dynamic relatedPostsShowThumbnails;
+
 
 @synthesize api = _api;
 @synthesize isSyncingPosts;
@@ -367,24 +372,6 @@ NSString * const PostFormatStandard = @"standard";
 
     // Reset the api client so next time we use the new XML-RPC URL
     self.api = nil;
-}
-
-- (NSArray *)getXMLRPCArgsWithExtra:(id)extra
-{
-    NSMutableArray *result = [NSMutableArray array];
-    NSString *password = self.password ?: [NSString string];
-    
-    [result addObject:self.blogID];
-    [result addObject:self.usernameForSite];
-    [result addObject:password];
-
-    if ([extra isKindOfClass:[NSArray class]]) {
-        [result addObjectsFromArray:extra];
-    } else if (extra != nil) {
-        [result addObject:extra];
-    }
-
-    return [NSArray arrayWithArray:result];
 }
 
 - (NSString *)version

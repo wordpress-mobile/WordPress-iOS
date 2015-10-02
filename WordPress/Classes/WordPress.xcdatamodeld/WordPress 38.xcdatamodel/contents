@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8195" systemVersion="14F27" minimumToolsVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
@@ -331,6 +331,7 @@
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="ReaderDefaultTopic" representedClassName="WordPress.ReaderDefaultTopic" parentEntity="ReaderAbstractTopic" syncable="YES"/>
+    <entity name="ReaderGapMarker" representedClassName="ReaderGapMarker" parentEntity="ReaderPost" syncable="YES"/>
     <entity name="ReaderListTopic" representedClassName="WordPress.ReaderListTopic" parentEntity="ReaderAbstractTopic" syncable="YES">
         <attribute name="isOwner" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isPublic" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -366,8 +367,7 @@
         <attribute name="primaryTag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="primaryTagSlug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="readingTime" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="secondaryTag" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="secondaryTagSlug" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="siteIconURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="siteID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="sortDate" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
@@ -447,11 +447,12 @@
         <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="150"/>
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
         <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="30"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="555"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
     </elements>
 </model>

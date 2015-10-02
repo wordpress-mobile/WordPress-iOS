@@ -44,7 +44,8 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
     [super viewDidLoad];
     
     [self.tableView setRowHeight:WPTableViewDefaultRowHeight];
-    
+
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self loadLogFiles];
 

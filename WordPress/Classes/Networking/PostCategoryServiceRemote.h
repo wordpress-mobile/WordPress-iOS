@@ -1,15 +1,15 @@
 #import <Foundation/Foundation.h>
 
-@class Blog, RemotePostCategory;
+@class RemotePostCategory;
 
 @protocol PostCategoryServiceRemote <NSObject>
 
-- (void)getCategoriesForBlog:(Blog *)blog
-                     success:(void (^)(NSArray *categories))success
-                     failure:(void (^)(NSError *error))failure;
+- (void)getCategoriesForBlogID:(NSNumber *)blogID
+                       success:(void (^)(NSArray *categories))success
+                       failure:(void (^)(NSError *error))failure;
 
 - (void)createCategory:(RemotePostCategory *)category
-               forBlog:(Blog *)blog
+             forBlogID:(NSNumber *)blogID
                success:(void (^)(RemotePostCategory *category))success
                failure:(void (^)(NSError *error))failure;
 

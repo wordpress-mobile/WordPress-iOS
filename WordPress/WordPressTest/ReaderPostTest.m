@@ -16,11 +16,11 @@
 
     post.blogURL = @"http://blog.example.com/";
     NSString *hash = [@"blog.example.com" md5];
-    NSURL *blavatarURL = [post blavatarForDisplayOfSize:50];
+    NSURL *blavatarURL = [post siteIconForDisplayOfSize:50];
 
     XCTAssertNotNil(blavatarURL);
     XCTAssertNotNil([blavatarURL absoluteString]);
-    XCTAssertTrue([[blavatarURL host] isEqualToString:@"gravatar.com"]);
+    XCTAssertTrue([[blavatarURL host] isEqualToString:@"secure.gravatar.com"]);
 
     NSString *path = [NSString stringWithFormat:@"/blavatar/%@", hash];
     XCTAssertTrue([[blavatarURL path] isEqualToString:path]);
