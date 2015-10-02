@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8195" systemVersion="14F27" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8195" systemVersion="15A284" minimumToolsVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
@@ -275,7 +275,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="menus" inverseEntity="Blog" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="MenuItem" inverseName="menu" inverseEntity="MenuItem" syncable="YES"/>
-        <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MenuLocation" inverseName="menus" inverseEntity="MenuLocation" syncable="YES"/>
+        <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MenuLocation" inverseName="menu" inverseEntity="MenuLocation" syncable="YES"/>
     </entity>
     <entity name="MenuItem" representedClassName="MenuItem" syncable="YES">
         <attribute name="contentId" optional="YES" attributeType="String" syncable="YES"/>
@@ -297,7 +297,7 @@
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="menuLocations" inverseEntity="Blog" syncable="YES"/>
-        <relationship name="menus" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Menu" inverseName="locations" inverseEntity="Menu" syncable="YES"/>
+        <relationship name="menu" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Menu" inverseName="locations" inverseEntity="Menu" syncable="YES"/>
     </entity>
     <entity name="Meta" representedClassName="Meta" syncable="YES">
         <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
