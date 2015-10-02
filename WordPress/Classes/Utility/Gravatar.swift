@@ -8,7 +8,7 @@ struct Gravatar {
         static let unknownHash = "ad516503a11cd5ca435acc9bb6523536"
     }
 
-    private let canonicalURL: NSURL
+    let canonicalURL: NSURL
 
     func urlWithSize(size: Int) -> NSURL {
         let components = NSURLComponents(URL: canonicalURL, resolvingAgainstBaseURL: false)!
