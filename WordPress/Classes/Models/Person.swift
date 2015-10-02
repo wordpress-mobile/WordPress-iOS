@@ -15,10 +15,6 @@ struct Person {
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
 
-    var avatar: UIImage? {
-        return nil
-    }
-
     enum Role: Int, Comparable, CustomStringConvertible {
         case SuperAdmin
         case Admin
