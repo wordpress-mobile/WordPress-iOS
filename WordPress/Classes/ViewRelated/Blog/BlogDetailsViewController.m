@@ -132,7 +132,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.tableSections = @[@(TableViewSectionGeneralType),
                            @(TableViewSectionPublishType)
                           ];
@@ -143,7 +143,8 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     }
 
     self.tableSections = [self.tableSections arrayByAddingObject:@(TableViewSectionConfigurationType)];
-    
+
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
 

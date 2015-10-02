@@ -25,8 +25,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.title = NSLocalizedString(@"Popular Tags", @"Page title for the list of recommended tags.");
+    if ([self isWPComUser]) {
+        self.title = NSLocalizedString(@"Popular Tags", @"Page title for the list of recommended topics when signed into wpcom.");
+    } else {
+        self.title = NSLocalizedString(@"Menu", @"Page title for the list of recommended topics when not signed into wpcom.");
+    }
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -44,6 +47,7 @@
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.delegate = self;
 
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -114,7 +118,7 @@
                            [ReaderListTopic TopicType],
                            [ReaderTagTopic TopicType],
                            ];
-        request.predicate = [NSPredicate predicateWithFormat:@"type IN %@ AND following = NO AND showInMenu = YES", types];
+        request.predicate = [NSPredicate predicateWithFormat:@"type IN %@ AND showInMenu = YES", types];
     }
 
     NSSortDescriptor *sortDescriptorType = [NSSortDescriptor sortDescriptorWithKey:@"type" ascending:YES];
@@ -166,12 +170,17 @@
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    if ([self.tableView numberOfSections] > 1 && section == 0) {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
+
+    if ([sectionInfo.name isEqualToString:ReaderListTopic.TopicType]) {
         return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
     }
 
-    return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
-}
+    if ([sectionInfo.name isEqualToString:ReaderTagTopic.TopicType]) {
+        return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
+    }
+
+    return nil;}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
