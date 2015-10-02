@@ -98,7 +98,6 @@
 		5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D000DE01AC0879600A7BAF9 /* PostCardActionBarItem.m */; };
 		5D028F061B3468A000474113 /* OriginalAttributionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D028F051B3468A000474113 /* OriginalAttributionView.xib */; };
 		5D028F091B3468BF00474113 /* OriginalAttributionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D028F081B3468BF00474113 /* OriginalAttributionView.m */; };
-		5D0431AE1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D0431AD1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.m */; };
 		5D08B90419648C3400D5B381 /* ReaderSubscriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D08B90319648C3400D5B381 /* ReaderSubscriptionViewController.m */; };
 		5D0A20D41AF11A7300E5C6BC /* PhotonImageURLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D0A20D31AF11A7300E5C6BC /* PhotonImageURLHelper.m */; };
 		5D1181E71B4D6DEB003F3084 /* WPStyleGuide+Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D1181E61B4D6DEB003F3084 /* WPStyleGuide+Reader.swift */; };
@@ -132,7 +131,6 @@
 		5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A3D9175E7452005CFF05 /* BasePost.m */; };
 		5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A3DD175E7452005CFF05 /* ReaderPost.m */; };
 		5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A3EC175E75EE005CFF05 /* ReaderPostDetailViewController.m */; };
-		5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A3EE175E75EE005CFF05 /* ReaderPostsViewController.m */; };
 		5D42A3FD175E75EE005CFF05 /* ReaderPostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A3F0175E75EE005CFF05 /* ReaderPostTableViewCell.m */; };
 		5D42A405175E76A7005CFF05 /* WPImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A402175E76A2005CFF05 /* WPImageViewController.m */; };
 		5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D42A404175E76A5005CFF05 /* WPWebVideoViewController.m */; };
@@ -341,6 +339,7 @@
 		ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
 		B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B50421E61B680839008EEA82 /* NoteUndoOverlayView.xib */; };
 		B50421E91B68170F008EEA82 /* NoteUndoOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50421E81B68170F008EEA82 /* NoteUndoOverlayView.swift */; };
+		B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */; settings = {ASSET_TAGS = (); }; };
 		B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */; };
 		B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */; };
 		B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = B526DC281B1E47FC002A8C5F /* WPStyleGuide+WebView.m */; };
@@ -562,6 +561,10 @@
 		E66969E21B9E67A000EC9C00 /* ReaderTopicToReaderSiteTopic37to38.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66969E11B9E67A000EC9C00 /* ReaderTopicToReaderSiteTopic37to38.swift */; };
 		E66969E41B9E68B200EC9C00 /* ReaderPostToReaderPost37to38.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66969E31B9E68B200EC9C00 /* ReaderPostToReaderPost37to38.swift */; };
 		E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */; };
+		E69BA1981BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m in Sources */ = {isa = PBXBuildFile; fileRef = E69BA1971BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m */; settings = {ASSET_TAGS = (); }; };
+		E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A3384B1BB08E3F00371587 /* ReaderGapMarker.m */; settings = {ASSET_TAGS = (); }; };
+		E6A3384E1BB0A50900371587 /* ReaderGapMarkerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6A3384D1BB0A50900371587 /* ReaderGapMarkerCell.xib */; settings = {ASSET_TAGS = (); }; };
+		E6A338501BB0A70F00371587 /* ReaderGapMarkerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6A3384F1BB0A70F00371587 /* ReaderGapMarkerCell.swift */; settings = {ASSET_TAGS = (); }; };
 		E6B9B8AA1B94E1FE0001B92F /* ReaderPostTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E6B9B8A91B94E1FE0001B92F /* ReaderPostTest.m */; };
 		E6B9B8AD1B94EACA0001B92F /* ReaderHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B9B8AC1B94EACA0001B92F /* ReaderHelperTests.swift */; };
 		E6B9B8AF1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B9B8AE1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift */; };
@@ -798,8 +801,6 @@
 		5D028F051B3468A000474113 /* OriginalAttributionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OriginalAttributionView.xib; sourceTree = "<group>"; };
 		5D028F071B3468BF00474113 /* OriginalAttributionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OriginalAttributionView.h; sourceTree = "<group>"; };
 		5D028F081B3468BF00474113 /* OriginalAttributionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OriginalAttributionView.m; sourceTree = "<group>"; };
-		5D0431AC1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderBrowseSiteViewController.h; sourceTree = "<group>"; };
-		5D0431AD1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderBrowseSiteViewController.m; sourceTree = "<group>"; };
 		5D08B90219648C3400D5B381 /* ReaderSubscriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderSubscriptionViewController.h; sourceTree = "<group>"; };
 		5D08B90319648C3400D5B381 /* ReaderSubscriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSubscriptionViewController.m; sourceTree = "<group>"; };
 		5D0A20D21AF11A7300E5C6BC /* PhotonImageURLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotonImageURLHelper.h; sourceTree = "<group>"; };
@@ -868,8 +869,6 @@
 		5D42A3DD175E7452005CFF05 /* ReaderPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPost.m; sourceTree = "<group>"; };
 		5D42A3EB175E75EE005CFF05 /* ReaderPostDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostDetailViewController.h; sourceTree = "<group>"; };
 		5D42A3EC175E75EE005CFF05 /* ReaderPostDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostDetailViewController.m; sourceTree = "<group>"; };
-		5D42A3ED175E75EE005CFF05 /* ReaderPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostsViewController.h; sourceTree = "<group>"; };
-		5D42A3EE175E75EE005CFF05 /* ReaderPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostsViewController.m; sourceTree = "<group>"; };
 		5D42A3EF175E75EE005CFF05 /* ReaderPostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostTableViewCell.h; sourceTree = "<group>"; };
 		5D42A3F0175E75EE005CFF05 /* ReaderPostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostTableViewCell.m; sourceTree = "<group>"; };
 		5D42A401175E76A1005CFF05 /* WPImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPImageViewController.h; sourceTree = "<group>"; };
@@ -1268,6 +1267,7 @@
 		B43F6A7D9B3DC5B8B4A7DDCA /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
 		B50421E61B680839008EEA82 /* NoteUndoOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteUndoOverlayView.xib; sourceTree = "<group>"; };
 		B50421E81B68170F008EEA82 /* NoteUndoOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteUndoOverlayView.swift; sourceTree = "<group>"; };
+		B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		B526DC271B1E47FC002A8C5F /* WPStyleGuide+WebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+WebView.h"; sourceTree = "<group>"; };
 		B526DC281B1E47FC002A8C5F /* WPStyleGuide+WebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+WebView.m"; sourceTree = "<group>"; };
@@ -1611,6 +1611,12 @@
 		E66969E11B9E67A000EC9C00 /* ReaderTopicToReaderSiteTopic37to38.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTopicToReaderSiteTopic37to38.swift; sourceTree = "<group>"; };
 		E66969E31B9E68B200EC9C00 /* ReaderPostToReaderPost37to38.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostToReaderPost37to38.swift; sourceTree = "<group>"; };
 		E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderStreamViewController+Helper.swift"; sourceTree = "<group>"; };
+		E69BA1961BB5D7D300078740 /* WPStyleGuide+ReadableMargins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+ReadableMargins.h"; sourceTree = "<group>"; };
+		E69BA1971BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+ReadableMargins.m"; sourceTree = "<group>"; };
+		E6A3384A1BB08E3F00371587 /* ReaderGapMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderGapMarker.h; sourceTree = "<group>"; };
+		E6A3384B1BB08E3F00371587 /* ReaderGapMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderGapMarker.m; sourceTree = "<group>"; };
+		E6A3384D1BB0A50900371587 /* ReaderGapMarkerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderGapMarkerCell.xib; sourceTree = "<group>"; };
+		E6A3384F1BB0A70F00371587 /* ReaderGapMarkerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderGapMarkerCell.swift; sourceTree = "<group>"; };
 		E6B9B8A91B94E1FE0001B92F /* ReaderPostTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostTest.m; sourceTree = "<group>"; };
 		E6B9B8AC1B94EACA0001B92F /* ReaderHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderHelperTests.swift; sourceTree = "<group>"; };
 		E6B9B8AE1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderStreamViewControllerTests.swift; sourceTree = "<group>"; };
@@ -1912,6 +1918,7 @@
 				CC098B8116A9EB0400450976 /* HTML */,
 				5D6651461637324000EBDA7D /* Sounds */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
+				B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */,
 				4645AFC41961E1FB005F7509 /* AppImages.xcassets */,
 				85ED988717DFA00000090D0B /* Images.xcassets */,
 				6EDC0E8E105881A800F68A1D /* iTunesArtwork */,
@@ -1998,6 +2005,8 @@
 				5D42A3DC175E7452005CFF05 /* ReaderPost.h */,
 				5D42A3DD175E7452005CFF05 /* ReaderPost.m */,
 				5DE471B71B4C710E00665C44 /* ReaderPostContentProvider.h */,
+				E6A3384A1BB08E3F00371587 /* ReaderGapMarker.h */,
+				E6A3384B1BB08E3F00371587 /* ReaderGapMarker.m */,
 				5DCC4CD619A50CC0003E548C /* ReaderSite.h */,
 				5DCC4CD719A50CC0003E548C /* ReaderSite.m */,
 				E61084B91B9B47BA008050C5 /* ReaderAbstractTopic.swift */,
@@ -2185,10 +2194,6 @@
 				5DF738961965FACD00393584 /* RecommendedTopicsViewController.m */,
 				5D20A6511982D56600463A91 /* FollowedSitesViewController.h */,
 				5D20A6521982D56600463A91 /* FollowedSitesViewController.m */,
-				5D0431AC1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.h */,
-				5D0431AD1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.m */,
-				5D42A3ED175E75EE005CFF05 /* ReaderPostsViewController.h */,
-				5D42A3EE175E75EE005CFF05 /* ReaderPostsViewController.m */,
 				5D42A3EB175E75EE005CFF05 /* ReaderPostDetailViewController.h */,
 				5D42A3EC175E75EE005CFF05 /* ReaderPostDetailViewController.m */,
 				5DF8D25F19E82B1000A2CD95 /* ReaderCommentsViewController.h */,
@@ -2252,6 +2257,8 @@
 				5D2B30B81B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift */,
 				E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */,
 				E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */,
+				E6A3384F1BB0A70F00371587 /* ReaderGapMarkerCell.swift */,
+				E6A3384D1BB0A50900371587 /* ReaderGapMarkerCell.xib */,
 			);
 			name = Cards;
 			sourceTree = "<group>";
@@ -3269,6 +3276,8 @@
 				B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */,
 				B57B99DC19A2DBF200506504 /* NSObject+Helpers.h */,
 				B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */,
+				E69BA1961BB5D7D300078740 /* WPStyleGuide+ReadableMargins.h */,
+				E69BA1971BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m */,
 				31EC15061A5B6675009FC8B3 /* WPStyleGuide+Suggestions.h */,
 				31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */,
 				85CE4C1E1A703CF200780DFE /* NSBundle+VersionNumberHelper.h */,
@@ -3861,6 +3870,7 @@
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
 				B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
+				E6A3384E1BB0A50900371587 /* ReaderGapMarkerCell.xib in Resources */,
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
 				5D6C4AF41B603C75005E3C43 /* WPWhatsNewView.xib in Resources */,
@@ -3883,6 +3893,7 @@
 				5D6C4AFA1B603CC0005E3C43 /* ThemeBrowserViewController.xib in Resources */,
 				5D6C4AFB1B603CC0005E3C43 /* ThemeDetailsViewController.xib in Resources */,
 				5D6C4AFF1B603CE9005E3C43 /* EditCommentViewController.xib in Resources */,
+				B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */,
 				5D6C4B021B603D1F005E3C43 /* WPWebViewController.xib in Resources */,
 				A2787D0219002AB1000D6CA6 /* HelpshiftConfig.plist in Resources */,
 				5DFA7EC31AF7CB910072023B /* Pages.storyboard in Resources */,
@@ -4289,6 +4300,7 @@
 				5D1D04761B7A50B100CDE646 /* ReaderStreamViewController.swift in Sources */,
 				B587798619B799EB00E57C5A /* Notification+Interface.swift in Sources */,
 				B57B92BD1B73B08100DFF00B /* SeparatorsView.swift in Sources */,
+				E69BA1981BB5D7D300078740 /* WPStyleGuide+ReadableMargins.m in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
 				74F313EF1A9B97A200AA8B45 /* WPTooltip.m in Sources */,
 				B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */,
@@ -4367,6 +4379,7 @@
 				FF8DDCE41B5EA6590098826F /* SettingsTextViewController.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
+				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
 				E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
@@ -4433,7 +4446,6 @@
 				E1D062D4177C685C00644185 /* ContentActionButton.m in Sources */,
 				FF1933FF1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m in Sources */,
 				E1B289DB19F7AF7000DB0707 /* RemoteBlog.m in Sources */,
-				5D0431AE1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.m in Sources */,
 				E1A6DBDA19DC7D080071AC1E /* RemotePostCategory.m in Sources */,
 				599738401B87AD2600EC1C30 /* WordPressComServiceRemote.m in Sources */,
 				E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */,
@@ -4451,7 +4463,6 @@
 				FF8DDCE61B6148E80098826F /* SettingsMultiTextViewController.m in Sources */,
 				85D239B01AE5A5FC0074768D /* LoginFacade.m in Sources */,
 				B5899AE41B422D990075A3D6 /* NotificationSettings.swift in Sources */,
-				5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */,
 				5D18FE9F1AFBB17400EFEED0 /* RestorePageTableViewCell.m in Sources */,
 				E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */,
 				5D42A3FD175E75EE005CFF05 /* ReaderPostTableViewCell.m in Sources */,
@@ -4501,6 +4512,7 @@
 				5D1181E71B4D6DEB003F3084 /* WPStyleGuide+Reader.swift in Sources */,
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
 				85CE4C201A703CF200780DFE /* NSBundle+VersionNumberHelper.m in Sources */,
+				E6A338501BB0A70F00371587 /* ReaderGapMarkerCell.swift in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
 				591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */,
 				85D790AA1AE5C6790033AE83 /* MixpanelProxy.m in Sources */,

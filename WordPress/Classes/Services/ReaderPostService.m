@@ -5,6 +5,7 @@
 #import "DateUtils.h"
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
+#import "ReaderGapMarker.h"
 #import "ReaderPost.h"
 #import "ReaderPostServiceRemote.h"
 #import "ReaderSiteService.h"
@@ -15,41 +16,42 @@
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
 
-NSUInteger const ReaderPostServiceNumberToSync = 20;
+NSUInteger const ReaderPostServiceNumberToSync = 40;
 NSUInteger const ReaderPostServiceTitleLength = 30;
-NSUInteger const ReaderPostServiceMaxPosts = 200;
-NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
+NSUInteger const ReaderPostServiceMaxPosts = 300;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
+static NSString * const ReaderPostGlobalIDKey = @"globalID";
 static NSString * const SourceAttributionSiteTaxonomy = @"site-pick";
 static NSString * const SourceAttributionImageTaxonomy = @"image-pick";
 static NSString * const SourceAttributionQuoteTaxonomy = @"quote-pick";
 static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
-/**
- ReaderPostServiceBackfillState A simple state object used to keep track of backfilling posts.
- */
-@interface ReaderPostServiceBackfillState : NSObject
-
-@property (nonatomic) NSUInteger backfillBatchNumber;
-@property (nonatomic, strong) NSMutableArray *backfilledRemotePosts;
-@property (nonatomic, strong) NSDate *backfillDate;
-
-@end
-
-@implementation ReaderPostServiceBackfillState
-@end
-
 @implementation ReaderPostService
 
 #pragma mark - Fetch Methods
 
-- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
+                   success:(void (^)(NSInteger count, BOOL hasMore))success
+                   failure:(void (^)(NSError *error))failure
 {
     [self fetchPostsForTopic:topic earlierThan:[NSDate date] success:success failure:failure];
 }
 
-- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic earlierThan:(NSDate *)date success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
+               earlierThan:(NSDate *)date
+                   success:(void (^)(NSInteger count, BOOL hasMore))success
+                   failure:(void (^)(NSError *error))failure
+{
+
+    [self fetchPostsForTopic:topic earlierThan:date deletingEarlier:NO success:success failure:failure];
+}
+
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
+               earlierThan:(NSDate *)date
+           deletingEarlier:(BOOL)deleteEarlier
+                   success:(void (^)(NSInteger count, BOOL hasMore))success
+                   failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
@@ -57,7 +59,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                     count:ReaderPostServiceNumberToSync
                                    before:date
                                   success:^(NSArray *posts) {
-                                      [self mergePosts:posts earlierThan:date forTopic:topicObjectID callingSuccess:success];
+
+                                      [self mergePosts:posts
+                                           earlierThan:date
+                                              forTopic:topicObjectID
+                                       deletingEarlier:deleteEarlier
+                                        callingSuccess:success];
+
                                   } failure:^(NSError *error) {
                                       if (failure) {
                                           failure(error);
@@ -91,25 +99,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }];
 }
 
-- (void)backfillPostsForTopic:(ReaderAbstractTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
-{
-    NSManagedObjectID *topicObjectID = topic.objectID;
-    ReaderPost *post = [self newestPostForTopic:topicObjectID];
-    ReaderPostServiceBackfillState *state = [[ReaderPostServiceBackfillState alloc] init];
-    if (post) {
-        state.backfillDate = post.sortDate;
-    } else {
-        state.backfillDate = [NSDate date];
-    }
-    state.backfillBatchNumber = 0;
-    state.backfilledRemotePosts = [NSMutableArray array];
-
-    [self fetchPostsToBackfillTopic:topicObjectID
-                        earlierThan:[NSDate date]
-                      backfillState:(ReaderPostServiceBackfillState *)state
-                            success:success
-                            failure:failure];
-}
 
 #pragma mark - Update Methods
 
@@ -149,6 +138,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (like) {
                     [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
+                } else {
+                    [WPAnalytics track:WPAnalyticsStatReaderUnlikedArticle];
                 }
                 if (success) {
                     success();
@@ -417,7 +408,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 {
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-
+    fetchRequest.includesSubentities = NO; // Exclude gap markers when counting.
     NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic = %@", topic];
     [fetchRequest setPredicate:pred];
 
@@ -457,81 +448,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     return post;
 }
 
-/**
- Private fetch method that is part of the backfill process. This is basically a
- passthrough call to `fetchPostsFromEndpoint:count:before:success:failure:` that
- passes the results to `processBackfillPostsForTopic:posts:success:failure:`.
- This should only be called once the backfill date, array and batch count have
- been initialized as in `fetchPostsToBackfillTopic:success:failure:`.
-
- @param topicObjectID The NSManagedObjectID of the Topic for which to request posts.
- @param date The date to get posts earlier than.
- @param state The current `ReaderPostServiceBackfillState`
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)fetchPostsToBackfillTopic:(NSManagedObjectID *)topicObjectID
-                      earlierThan:(NSDate *)date
-                    backfillState:(ReaderPostServiceBackfillState *)state
-                          success:(void (^)(NSInteger count, BOOL hasMore))success
-                          failure:(void (^)(NSError *error))failure
-{
-    NSError *error;
-    ReaderAbstractTopic *topic = (ReaderAbstractTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
-    if (error) {
-        DDLogError(@"%@, error fetching topic from NSManagedObjectID : %@", NSStringFromSelector(_cmd), error);
-        if (failure) {
-            failure(error);
-            return;
-        }
-    }
-
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
-    [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
-                                    count:ReaderPostServiceNumberToSync
-                                   before:date
-                                  success:^(NSArray *posts) {
-                                      [self processBackfillPostsForTopic:topicObjectID posts:posts backfillState:state success:success failure:failure];
-                                  } failure:^(NSError *error) {
-                                      if (failure) {
-                                          failure(error);
-                                      }
-                                  }];
-}
-
-/**
- Processes a batch of backfilled posts.
- When backfilling, the goal is to request up to three batches of post, or until
- a fetched batch includes the newest posts currently in Core Data.
-
- @param topicObjectID The NSManagedObjectID of the Topic for which to request posts.
- @param posts An array of fetched posts.
- @param state The current `ReaderPostServiceBackfillState`
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)processBackfillPostsForTopic:(NSManagedObjectID *)topicObjectID
-                               posts:(NSArray *)posts
-                       backfillState:(ReaderPostServiceBackfillState *)state
-                             success:(void (^)(NSInteger count, BOOL hasMore))success
-                             failure:(void (^)(NSError *error))failure
-{
-    state.backfillBatchNumber++;
-    [state.backfilledRemotePosts addObjectsFromArray:posts];
-
-    NSDate *oldestDate = [NSDate date];
-    if ([state.backfilledRemotePosts count] > 0) {
-        RemoteReaderPost *remotePost = [state.backfilledRemotePosts lastObject];
-        oldestDate = [DateUtils dateFromISOString:remotePost.sortDate];
-    }
-
-    if (state.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || oldestDate == [state.backfillDate earlierDate:oldestDate]) {
-        // our work is done
-        [self mergePosts:state.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topicObjectID callingSuccess:success];
-    } else {
-        [self fetchPostsToBackfillTopic:topicObjectID earlierThan:oldestDate backfillState:state success:success failure:failure];
-    }
-}
 
 #pragma mark - Merging and Deletion
 
@@ -539,14 +455,15 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
  Merge a freshly fetched batch of posts into the existing set of posts for the specified topic.
  Saves the managed object context.
 
- @param posts An array of RemoteReaderPost objects
+ @param remotePosts An array of RemoteReaderPost objects
  @param date The `before` date posts were requested.
  @param topicObjectID The ObjectID of the ReaderAbstractTopic to assign to the newly created posts.
  @param success block called on a successful fetch which should be performed after merging
  */
-- (void)mergePosts:(NSArray *)posts
+- (void)mergePosts:(NSArray *)remotePosts
        earlierThan:(NSDate *)date
           forTopic:(NSManagedObjectID *)topicObjectID
+   deletingEarlier:(BOOL)deleteEarlier
     callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success
 {
     // Use a performBlock here so the work to merge does not block the main thread.
@@ -569,16 +486,66 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
             return;
         }
 
-        NSUInteger postsCount = [posts count];
+        NSUInteger postsCount = [remotePosts count];
         if (postsCount == 0) {
             [self deletePostsEarlierThan:date forTopic:readerTopic];
+
         } else {
+            NSArray *posts = remotePosts;
+            BOOL overlap = NO;
+
+            if (!deleteEarlier) {
+                // Before processing the new posts, check if there is an overlap between
+                // what is currently cached, and what is being synced.
+                NSSet *existingGlobalIDs = [self globalIDsOfExistingPostsForTopic:readerTopic];
+                NSSet *newGlobalIDs = [self globalIDsOfRemotePosts:posts];
+                overlap = [existingGlobalIDs intersectsSet:newGlobalIDs];
+
+                // A strategy to avoid false positives in gap detection is to sync
+                // one extra post. Only remove the extra post if we received a
+                // full set of results. A partial set means we've reached
+                // the end of syncable content.
+                if ([posts count] == ReaderPostServiceNumberToSync) {
+                    posts = [posts subarrayWithRange:NSMakeRange(0, [posts count] - 2)];
+                    postsCount = [posts count];
+                }
+            }
+
+            // Create or update the synced posts.
             NSMutableArray *newPosts = [self makeNewPostsFromRemotePosts:posts forTopic:readerTopic];
+
+            // When refreshing, some content previously synced may have been deleted remotely.
+            // Remove anything we've synced that is missing.
+            // NOTE that this approach leaves the possibility for older posts to not be cleaned up.
             [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingDate:date];
+
+            // If deleting earlier, delete every post older than the last post in this batch.
+            if (deleteEarlier) {
+                ReaderPost *lastPost = [newPosts lastObject];
+                [self deletePostsEarlierThan:lastPost.sortDate forTopic:readerTopic];
+                [self removeGapMarkerForTopic:readerTopic]; // Paranoia
+
+            } else {
+
+                // Handle an overlap in posts that were synced
+                if (overlap) {
+                    [self removeGapMarkerForTopic:readerTopic ifNewPostsOverlapMarker:newPosts];
+
+                } else {
+                    // If there are existing posts older than the oldest of the
+                    // new posts then append a gap placeholder to the end of the
+                    // new posts
+                    ReaderPost *lastPost = [newPosts lastObject];
+                    if ([self topic:readerTopic hasPostsOlderThan:lastPost.sortDate]) {
+                        [self insertGapMarkerBeforePost:lastPost forTopic:readerTopic];
+                    }
+                }
+            }
         }
+
+        // Clean up
         [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
         [self deletePostsFromBlockedSites];
-        readerTopic.lastSynced = [NSDate date];
 
         BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
@@ -589,6 +556,125 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         }];
     }];
 }
+
+
+#pragma mark Gap Detection Methods
+
+- (void)removeGapMarkerForTopic:(ReaderAbstractTopic *)topic ifNewPostsOverlapMarker:(NSArray *)newPosts
+{
+    ReaderGapMarker *gapMarker = [self gapMarkerForTopic:topic];
+    if (gapMarker) {
+        NSDate *newestPostDate = ((ReaderPost *)newPosts.firstObject).sortDate;
+        NSDate *oldestPostDate = ((ReaderPost *)newPosts.lastObject).sortDate;
+        NSDate *gapDate = gapMarker.sortDate;
+        // Confirm the overlap includes the gap marker.
+        if (gapDate == [newestPostDate earlierDate:gapDate] && gapDate == [oldestPostDate laterDate:gapDate]) {
+            // No need for a gap placeholder. Remove any that existed
+            [self removeGapMarkerForTopic:topic];
+        }
+    }
+}
+
+- (ReaderGapMarker *)gapMarkerForTopic:(ReaderAbstractTopic *)topic
+{
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderGapMarker class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(error.localizedDescription);
+        return nil;
+    }
+
+    // Assume there will ever only be one and return the first result.
+    return results.firstObject;
+}
+
+- (void)insertGapMarkerBeforePost:(ReaderPost *)post forTopic:(ReaderAbstractTopic *)topic
+{
+    [self removeGapMarkerForTopic:topic];
+
+    ReaderGapMarker *marker = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([ReaderGapMarker class])
+                                                            inManagedObjectContext:self.managedObjectContext];
+
+    // Synced posts do not use millisecond precision for their dates. We can take
+    // advantage of this and make our marker post a fraction of a second earlier
+    // than the last post.
+    // We'll store the unmodifed sort date as date_create_gmt so we have a convenient
+    // and accurate date reference should we need it.
+    marker.sortDate = [post.sortDate dateByAddingTimeInterval:-0.1];
+    marker.date_created_gmt = post.sortDate;
+    marker.topic = topic;
+}
+
+
+- (void)removeGapMarkerForTopic:(ReaderAbstractTopic *)topic
+{
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderGapMarker class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(error.localizedDescription);
+        return;
+    }
+
+    // There should only ever be one, but loop over all results just in case.
+    for (ReaderGapMarker *marker in results) {
+        [self.managedObjectContext deleteObject:marker];
+    }
+}
+
+- (BOOL)topic:(ReaderAbstractTopic *)topic hasPostsOlderThan:(NSDate *)date
+{
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND sortDate < %@", topic, date];
+
+    NSError *error;
+    NSInteger count = [self.managedObjectContext countForFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(error.localizedDescription);
+        return NO;
+    }
+    return (count > 0);
+}
+
+- (NSSet *)globalIDsOfRemotePosts:(NSArray *)remotePosts
+{
+    NSMutableArray *arr = [NSMutableArray array];
+    for (RemoteReaderPost *post in remotePosts) {
+        [arr addObject:post.globalID];
+    }
+    // return non-mutable array
+    return [NSSet setWithArray:arr];
+}
+
+- (NSSet *)globalIDsOfExistingPostsForTopic:(ReaderAbstractTopic *)topic
+{
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"topic = %@", topic];
+    fetchRequest.includesSubentities = NO;
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+        DDLogError(error.localizedDescription);
+        return [NSSet set];
+    }
+
+    NSMutableArray *arr = [NSMutableArray array];
+    for (ReaderPost *post in results) {
+        NSString *globalID = post.globalID ?: @"";
+        [arr addObject:globalID];
+    }
+    // return non-mutable array
+    return [NSSet setWithArray:arr];
+}
+
+
+#pragma mark Deletion and Clean up
 
 /**
  Deletes any existing post whose sortDate is earlier than the passed date. This
@@ -703,6 +789,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         DDLogInfo(@"Deleting ReaderPost: %@", post.postTitle);
         [self.managedObjectContext deleteObject:post];
     }
+
+    // If the last remaining post is a gap marker, remove it.
+    ReaderPost *lastPost = [posts objectAtIndex:ReaderPostServiceMaxPosts - 1];
+    if ([lastPost isKindOfClass:[ReaderGapMarker class]]) {
+        [self.managedObjectContext deleteObject:lastPost];
+    }
 }
 
 /**
@@ -730,6 +822,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         [self.managedObjectContext deleteObject:post];
     }
 }
+
+
+#pragma mark Entity Creation
 
 /**
  Accepts an array of `RemoteReaderPost` objects and creates model objects
@@ -783,6 +878,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.authorDisplayName = remotePost.authorDisplayName;
     post.authorEmail = remotePost.authorEmail;
     post.authorURL = remotePost.authorURL;
+    post.siteIconURL = remotePost.siteIconURL;
     post.blogName = [self makePlainText:remotePost.blogName];
     post.blogDescription = [self makePlainText:remotePost.blogDescription];
     post.blogURL = remotePost.blogURL;
@@ -809,10 +905,18 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.isLikesEnabled = remotePost.isLikesEnabled;
     post.isSiteBlocked = NO;
 
-    post.primaryTag = remotePost.primaryTag;
-    post.primaryTagSlug = remotePost.primaryTagSlug;
-    post.secondaryTag = remotePost.secondaryTag;
-    post.secondaryTagSlug = remotePost.secondaryTagSlug;
+    NSString *tag = remotePost.primaryTag;
+    NSString *slug = remotePost.primaryTagSlug;
+    if ([topic isKindOfClass:[ReaderTagTopic class]]) {
+        ReaderTagTopic *tagTopic = (ReaderTagTopic *)topic;
+        if ([tagTopic.slug isEqualToString:remotePost.primaryTagSlug]) {
+            tag = remotePost.secondaryTag;
+            slug = remotePost.secondaryTagSlug;
+        }
+    }
+    post.primaryTag = tag;
+    post.primaryTagSlug = slug;
+
     post.isExternal = remotePost.isExternal;
     post.isJetpack = remotePost.isJetpack;
     post.wordCount = remotePost.wordCount;

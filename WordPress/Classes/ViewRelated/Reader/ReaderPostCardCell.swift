@@ -61,6 +61,7 @@ import Foundation
     private var summaryLabelBottomConstraintConstant = CGFloat(0.0)
     private var attributionBottomConstraintConstant = CGFloat(0.0)
     private var wordCountBottomConstraintConstant = CGFloat(0.0)
+    private var actionButtonViewHeightConstraintConstant = CGFloat(0.0)
 
     private var didPreserveStartingConstraintConstants = false
     private var loadMediaWhenConfigured = true
@@ -73,10 +74,12 @@ import Foundation
 
     // MARK: - Accessors
 
+    public var enableLoggedInFeatures: Bool = true
+
     public override var backgroundColor: UIColor? {
         didSet{
             contentView.backgroundColor = backgroundColor
-            innerContentView.backgroundColor = backgroundColor
+            innerContentView?.backgroundColor = backgroundColor
         }
     }
 
@@ -218,6 +221,7 @@ import Foundation
         summaryLabelBottomConstraintConstant = summaryLabelBottomConstraint.constant
         attributionBottomConstraintConstant = attributionBottomConstraint.constant
         wordCountBottomConstraintConstant = wordCountBottomConstraint.constant
+        actionButtonViewHeightConstraintConstant = actionButtonViewHeightConstraint.constant
 
         didPreserveStartingConstraintConstants = true
     }
@@ -265,6 +269,7 @@ import Foundation
         configureTag()
         configureWordCount()
         configureActionButtons()
+        configureActionViewHeightIfNeeded()
 
         setNeedsUpdateConstraints()
     }
@@ -276,7 +281,7 @@ import Foundation
         let placeholder = UIImage(named: "post-blavatar-placeholder")
 
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
-        let url = contentProvider?.blavatarForDisplayOfSize(Int(size))
+        let url = contentProvider?.siteIconForDisplayOfSize(Int(size))
         if loadMediaWhenConfigured && url != nil {
             avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
         } else {
@@ -396,10 +401,15 @@ import Foundation
     }
 
     private func configureTag() {
-        // NOTE: stubbed implementation until we start storing the tag in core data.
-        // var title = "#ReaderTag"
-        // tagButton.setTitle(title, forState: .Normal)
-        // tagButton.setTitle(title, forState: .Highlighted)
+        var tag = ""
+        if let rawTag = contentProvider?.primaryTag() {
+            if (rawTag.characters.count > 0) {
+                tag = "#\(rawTag)"
+            }
+        }
+        tagButton.hidden = tag.characters.count == 0
+        tagButton.setTitle(tag, forState: .Normal)
+        tagButton.setTitle(tag, forState: .Highlighted)
     }
 
     private func configureWordCount() {
@@ -412,8 +422,12 @@ import Foundation
             return
         }
 
-        // NOTE: stubbed implementation until we start storing the word count and reading time in core data
-        // wordCountLabel.attributedText = attributedTextForWordCount(100, readingTime: "(~2 min)")
+        if contentProvider!.wordCount() != nil {
+            let wordCount = contentProvider!.wordCount().integerValue
+            let readingTime = contentProvider!.readingTime().integerValue
+            wordCountLabel.attributedText = attributedTextForWordCount(wordCount, readingTime:readingTime)
+        }
+
         if wordCountLabel.attributedText == nil {
             wordCountBottomConstraint.constant = 0.0
         } else {
@@ -421,7 +435,7 @@ import Foundation
         }
     }
 
-    private func attributedTextForWordCount(wordCount:Int) -> NSAttributedString? {
+    private func attributedTextForWordCount(wordCount:Int, readingTime:Int) -> NSAttributedString? {
         let attrStr = NSMutableAttributedString()
 
         // Compose the word count.
@@ -434,14 +448,13 @@ import Foundation
         attrStr.appendAttributedString(attrWordCount)
 
         // Append the reading time if needed.
-        let minutesToRead = Int(wordCount / avgWordsPerMinuteRead)
-        if minutesToRead < minimumMinutesToRead {
+        if readingTime == 0 {
             return attrStr
         }
 
         let format = NSLocalizedString("(~ %d min)",
                                         comment:"A short label that tells the user the estimated reading time of an article. '%d' is a placeholder for the number of minutes. '~' denotes an estimation.")
-        let str = String(format: format, minutesToRead)
+        let str = String(format: format, readingTime)
         attributes = WPStyleGuide.readerCardReadingTimeAttributes() as! [String: AnyObject]
         let attrReadingTime = NSAttributedString(string: str, attributes: attributes)
         attrStr.appendAttributedString(attrReadingTime)
@@ -460,16 +473,20 @@ import Foundation
             actionButtonRight
         ]
 
-        // Show Likes
-        if contentProvider!.isLikesEnabled() {
+        // Show likes if logged in, or if likes exist, but not if external
+        if (enableLoggedInFeatures || contentProvider!.likeCount().integerValue > 0) && !contentProvider!.isExternal() {
             let button = buttons.removeLast() as UIButton
             configureLikeActionButton(button)
         }
 
-        // Show comments
-        if contentProvider!.commentsOpen() || contentProvider!.commentCount().integerValue > 0 {
-            let button = buttons.removeLast() as UIButton
-            configureCommentActionButton(button)
+        // Show comments if logged in and comments are enabled, or if comments exist.
+        // But only if it is from wpcom (jetpack and external is not yet supported).
+        // Nesting this conditional cos it seems clearer that way
+        if contentProvider!.isWPCom() {
+            if (enableLoggedInFeatures && contentProvider!.commentsOpen()) || contentProvider!.commentCount().integerValue > 0 {
+                let button = buttons.removeLast() as UIButton
+                configureCommentActionButton(button)
+            }
         }
     }
 
@@ -481,23 +498,30 @@ import Foundation
     private func resetActionButton(button:UIButton) {
         button.setTitle(nil, forState: .Normal)
         button.setTitle(nil, forState: .Highlighted)
+        button.setTitle(nil, forState: .Disabled)
         button.setImage(nil, forState: .Normal)
         button.setImage(nil, forState: .Highlighted)
+        button.setImage(nil, forState: .Disabled)
         button.selected = false
         button.hidden = true
+        button.enabled = true
     }
 
     private func configureActionButton(button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected:Bool) {
         button.setTitle(title, forState: .Normal)
         button.setTitle(title, forState: .Highlighted)
+        button.setTitle(title, forState: .Disabled)
         button.setImage(image, forState: .Normal)
         button.setImage(highlightedImage, forState: .Highlighted)
+        button.setImage(image, forState: .Disabled)
         button.selected = selected
         button.hidden = false
     }
 
     private func configureLikeActionButton(button: UIButton) {
         button.tag = CardAction.Like.rawValue
+        button.enabled = enableLoggedInFeatures
+
         let title = contentProvider!.likeCountForDisplay()
         let imageName = contentProvider!.isLiked() ? "icon-reader-liked" : "icon-reader-like"
         let image = UIImage(named: imageName)
@@ -512,6 +536,14 @@ import Foundation
         let image = UIImage(named: "icon-reader-comment")
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:false)
+    }
+
+    private func configureActionViewHeightIfNeeded() {
+        if actionButtonLeft.hidden && actionButtonRight.hidden && tagButton.hidden {
+            actionButtonViewHeightConstraint.constant = 0
+        } else {
+            actionButtonViewHeightConstraint.constant = actionButtonViewHeightConstraintConstant;
+        }
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {

@@ -8,5 +8,6 @@ public protocol ReaderStreamHeaderDelegate: NSObjectProtocol
 public protocol ReaderStreamHeader: NSObjectProtocol
 {
     var delegate: ReaderStreamHeaderDelegate? {get set}
+    func enableLoggedInFeatures(enable: Bool)
     func configureHeader(topic: ReaderAbstractTopic)
 }
