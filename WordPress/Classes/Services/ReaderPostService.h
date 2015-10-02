@@ -33,6 +33,21 @@ extern NSString * const ReaderPostServiceErrorDomain;
                    failure:(void (^)(NSError *error))failure;
 
 /**
+ Fetches and saves the posts for the specified topic
+
+ @param topic The Topic for which to request posts.
+ @param date The date to get posts earlier than.
+ @param deletingEarlier Deletes any cached posts earlier than the earliers post returned.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchPostsForTopic:(ReaderAbstractTopic *)topic
+               earlierThan:(NSDate *)date
+           deletingEarlier:(BOOL)deleteEarlier
+                   success:(void (^)(NSInteger count, BOOL hasMore))success
+                   failure:(void (^)(NSError *error))failure;
+
+/**
  Fetches a specific post from the specified remote site
 
  @param postID The ID of the post to fetch.
@@ -45,16 +60,6 @@ extern NSString * const ReaderPostServiceErrorDomain;
           success:(void (^)(ReaderPost *post))success
           failure:(void (^)(NSError *error))failure;
 
-/**
- Backfills and saves posts for the specified topic.
-
- @param topic The Topic for which to request posts.
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)backfillPostsForTopic:(ReaderAbstractTopic *)topic
-                      success:(void (^)(NSInteger count, BOOL hasMore))success
-                      failure:(void (^)(NSError *error))failure;
 
 /**
  Toggle the liked status of the specified post.
@@ -120,5 +125,14 @@ extern NSString * const ReaderPostServiceErrorDomain;
               andURL:(NSString *)siteURL
              success:(void (^)())success
              failure:(void (^)(NSError *error))failure;
+
+/**
+ Updates in core data the following status of posts belonging to the specified site & url
+
+ @param following Whether the user is following the site.
+ @param siteID The ID of the site
+ @siteURL the URL of the site.
+ */
+- (void)setFollowing:(BOOL)following forPostsFromSiteWithID:(NSNumber *)siteID andURL:(NSString *)siteURL;
 
 @end

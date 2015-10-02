@@ -125,7 +125,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     if ([self.blog supports:BlogFeatureRemovable]) {
         self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
     }
-    
+
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];

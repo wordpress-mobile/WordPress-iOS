@@ -18,7 +18,6 @@
 
 #import "ReaderPostDetailViewController.h"
 #import "ReaderCommentsViewController.h"
-#import "ReaderBrowseSiteViewController.h"
 #import "StatsViewController.h"
 #import "StatsViewAllTableViewController.h"
 #import "EditCommentViewController.h"
@@ -184,6 +183,12 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     [super viewDidLayoutSubviews];
     [self adjustTableInsetsIfNeeded];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self.tableView reloadData];
 }
 
 - (void)reloadData
@@ -909,8 +914,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:siteID];
-    BOOL success                    = blog.isHostedAtWPcom;
-    
+    BOOL success                    = [blog supports:BlogFeatureStats];
+
     if (success) {
         // TODO: Update StatsViewController to work with initWithCoder!
         StatsViewController *vc     = [[StatsViewController alloc] init];
@@ -974,15 +979,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (BOOL)displayBrowseSite:(NSNumber *)siteID siteURL:(NSURL *)siteURL
 {
-    if (![siteID isKindOfClass:[NSNumber class]] || ![siteURL isKindOfClass:[NSURL class]]) {
+    if (![siteID isKindOfClass:[NSNumber class]]) {
         return NO;
     }
-    
-    BOOL isWPcom = siteURL.isWordPressDotComUrl;
-    ReaderBrowseSiteViewController *browseViewController = [[ReaderBrowseSiteViewController alloc] initWithSiteID:siteID
-                                                                                                          siteURL:siteURL.absoluteString
-                                                                                                          isWPcom:isWPcom];
-    
+
+    ReaderStreamViewController *browseViewController = [ReaderStreamViewController controllerWithSiteID:siteID isFeed:NO];
     [self.navigationController pushViewController:browseViewController animated:YES];
     
     return YES;
