@@ -61,7 +61,7 @@
                             <constraints>
                                 <constraint firstItem="W2i-rX-Pc4" firstAttribute="top" secondItem="pEF-oN-cih" secondAttribute="top" constant="8" id="5Uj-Sc-fd3"/>
                                 <constraint firstAttribute="trailing" secondItem="W2i-rX-Pc4" secondAttribute="trailing" constant="8" id="Hd9-33-6h0"/>
-                                <constraint firstAttribute="width" constant="600" id="NiC-Kd-d2r"/>
+                                <constraint firstAttribute="width" priority="750" constant="600" id="NiC-Kd-d2r"/>
                                 <constraint firstAttribute="height" constant="44" id="Ulw-T6-S4x"/>
                                 <constraint firstItem="W2i-rX-Pc4" firstAttribute="leading" secondItem="pEF-oN-cih" secondAttribute="leading" constant="8" id="ZuC-wG-15P"/>
                                 <constraint firstAttribute="bottom" secondItem="W2i-rX-Pc4" secondAttribute="bottom" constant="8" id="fLC-a5-Sxh"/>
