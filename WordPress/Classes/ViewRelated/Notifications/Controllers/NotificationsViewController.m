@@ -294,7 +294,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)showRatingViewIfApplicable
 {
     if (![AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
-//        return;
+        return;
     }
     
     // Rating View is already visible, don't bother to do anything
