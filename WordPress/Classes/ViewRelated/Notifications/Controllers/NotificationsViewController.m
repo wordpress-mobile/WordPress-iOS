@@ -305,7 +305,9 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     // Animate FadeIn + Enhance
     self.ratingsView.alpha = WPAlphaZero;
     
-    [UIView animateWithDuration:0.5 delay:0.5 options:UIViewAnimationCurveEaseIn animations:^{
+    CGFloat const delay = 0.5f;
+    
+    [UIView animateWithDuration:WPAnimationDurationDefault delay:delay options:UIViewAnimationCurveEaseIn animations:^{
         self.ratingsView.alpha                  = WPAlphaFull;
         self.ratingsHeightConstraint.constant   = RatingsViewHeight;
                     
