@@ -454,9 +454,9 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showThemesForBlog:(Blog *)blog
 {
+    [WPAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser];
     ThemeBrowserFactory *factory = [[ThemeBrowserFactory alloc] init];
     ThemeBrowserViewController *viewController = [factory instantiateThemeBrowserViewControllerWithBlog:blog];
-    
     [self.navigationController pushViewController:viewController
                                          animated:YES];
 }
