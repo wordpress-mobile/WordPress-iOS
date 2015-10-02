@@ -120,7 +120,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+    [self setupConstraints];
     [self setupTableView];
     [self setupTableHeaderView];
     [self setupTableFooterView];
@@ -177,6 +178,18 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 #pragma mark - Setup Helpers
 
+- (void)setupConstraints
+{
+    NSParameterAssert(self.ratingsTopConstraint);
+    NSParameterAssert(self.ratingsHeightConstraint);
+    
+    // Fix: contentInset breaks tableSectionViews. Let's just increase the headerView's height
+    self.ratingsTopConstraint.constant = UIDevice.isPad ? CGRectGetHeight(WPTableHeaderPadFrame) : 0.0f;
+    
+    // Ratings is initially hidden!
+    self.ratingsHeightConstraint.constant = 0;
+}
+
 - (void)setupTableView
 {
     NSParameterAssert(self.tableView);
@@ -197,10 +210,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)setupTableHeaderView
 {
     NSParameterAssert(self.tableHeaderView);
-    NSParameterAssert(self.ratingsTopConstraint);
-    
-    // Fix: contentInset breaks tableSectionViews. Let's just increase the headerView's height
-    self.ratingsTopConstraint.constant = UIDevice.isPad ? CGRectGetHeight(WPTableHeaderPadFrame) : 0.0f;
     
     // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
     CGRect headerFrame          = self.tableHeaderView.frame;
