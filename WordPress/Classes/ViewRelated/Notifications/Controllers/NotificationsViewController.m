@@ -47,6 +47,8 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 static NSTimeInterval NotificationsUndoTimeout          = 4;
 static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
+static CGFloat const RatingsViewHeight                  = 100.0f;
+
 typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     NotificationFilterNone      = 0,
@@ -67,6 +69,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 @property (nonatomic, strong) IBOutlet UISegmentedControl   *filtersSegmentedControl;
 @property (nonatomic, strong) IBOutlet ABXPromptView        *ratingsView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint   *ratingsTopConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *ratingsHeightConstraint;
 @property (nonatomic, strong) WPTableViewHandler            *tableViewHandler;
 @property (nonatomic, strong) WPNoResultsView               *noResultsView;
 @property (nonatomic, strong) NSString                      *pushNotificationID;
@@ -119,7 +122,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [super viewDidLoad];
     
     [self setupTableView];
-    [self setupTableHeaderFooterView];
+    [self setupTableHeaderView];
+    [self setupTableFooterView];
     [self setupTableHandler];
     [self setupRatingsView];
     [self setupRefreshControl];
@@ -190,28 +194,33 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-- (void)setupTableHeaderFooterView
+- (void)setupTableHeaderView
 {
     NSParameterAssert(self.tableHeaderView);
+    NSParameterAssert(self.ratingsTopConstraint);
     
-    // iPad: extra top padding is required
-    if (UIDevice.isPad) {
-        // Update the Top Spacing constraint
-        self.ratingsTopConstraint.constant = CGRectGetHeight(WPTableHeaderPadFrame);
-        
-        // Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
-        CGRect headerFrame          = self.tableHeaderView.frame;
-        headerFrame.size            = [self.tableHeaderView systemLayoutSizeFittingSize:self.view.bounds.size];
-        self.tableHeaderView.frame  = headerFrame;
-        [self.tableHeaderView layoutIfNeeded];
-    }
-
-    // Fixes:
-    //  - iPad: contentInset breaks tableSectionViews
-    //  - iPhone: Hide the cellSeparators, when the table is empty
-    CGRect footerFrame = UIDevice.isPad ? CGRectZero : WPTableFooterPadFrame;
-
+    // Fix: contentInset breaks tableSectionViews. Let's just increase the headerView's height
+    self.ratingsTopConstraint.constant = UIDevice.isPad ? CGRectGetHeight(WPTableHeaderPadFrame) : 0.0f;
+    
+    // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
+    CGRect headerFrame          = self.tableHeaderView.frame;
+    CGSize requiredSize         = [self.tableHeaderView systemLayoutSizeFittingSize:self.view.bounds.size];
+    headerFrame.size.height     = requiredSize.height;
+    
+    self.tableHeaderView.frame  = headerFrame;
+    [self.tableHeaderView layoutIfNeeded];
+    
+    // Due to iOS awesomeness, unless we re-assign the tableHeaderView, iOS might never refresh the UI
     self.tableView.tableHeaderView = self.tableHeaderView;
+    [self.tableView setNeedsLayout];
+}
+
+- (void)setupTableFooterView
+{
+    NSParameterAssert(self.tableView);
+    
+    //  Fix: Hide the cellSeparators, when the table is empty
+    CGRect footerFrame = UIDevice.isPad ? CGRectZero : WPTableFooterPadFrame;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:footerFrame];
 }
 
@@ -288,18 +297,20 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 //        return;
     }
     
-    if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
-        // Rating View is already visible, don't bother to do anything
-//        return;
+    // Rating View is already visible, don't bother to do anything
+    if (self.ratingsHeightConstraint.constant == RatingsViewHeight && self.ratingsView.alpha == WPAlphaFull) {
+        return;
     }
     
+    // Animate FadeIn + Enhance
     self.ratingsView.alpha = WPAlphaZero;
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
-            self.ratingsView.alpha = WPAlphaFull;
-        } completion:nil];
-    });
+    [UIView animateWithDuration:0.5 delay:0.5 options:UIViewAnimationCurveEaseIn animations:^{
+        self.ratingsView.alpha                  = WPAlphaFull;
+        self.ratingsHeightConstraint.constant   = RatingsViewHeight;
+                    
+        [self setupTableHeaderView];
+    } completion:nil];
     
     [WPAnalytics track:WPAnalyticsStatAppReviewsSawPrompt];
 }
@@ -307,7 +318,10 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)hideRatingView
 {
     [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
-        self.ratingsView.alpha = WPAlphaZero;
+        self.ratingsView.alpha                  = WPAlphaZero;
+        self.ratingsHeightConstraint.constant   = 0;
+                
+        [self setupTableHeaderView];
     } completion:nil];
 }
 
