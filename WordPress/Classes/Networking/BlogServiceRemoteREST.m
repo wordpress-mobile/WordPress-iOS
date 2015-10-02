@@ -125,13 +125,17 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
                    failure:(void (^)(NSError *error))failure;
 {
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-
-    NSDictionary *parameters = @{ @"blogname" : remoteBlogSettings.name,
+    NSMutableDictionary *parameters = [@{ @"blogname" : remoteBlogSettings.name,
                                   @"blogdescription" : remoteBlogSettings.desc,
                                   @"default_category" : remoteBlogSettings.defaultCategory,
                                   @"default_post_format" : remoteBlogSettings.defaultPostFormat,
-                                  @"blog_public" : remoteBlogSettings.privacy
-                                  };
+                                  @"blog_public" : remoteBlogSettings.privacy,
+                                  } mutableCopy];
+    if (remoteBlogSettings.relatedPostsEnabled) {
+        parameters[@"jetpack_relatedposts_enabled"] = remoteBlogSettings.relatedPostsEnabled;
+        parameters[@"jetpack_relatedposts_show_headline"] = remoteBlogSettings.relatedPostsShowHeadline;
+        parameters[@"jetpack_relatedposts_show_thumbnails"] = remoteBlogSettings.relatedPostsShowThumbnails;
+    }
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blogID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
@@ -252,6 +256,10 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
     }
     
     remoteSettings.privacy = [json numberForKeyPath:@"settings.blog_public"];
+    remoteSettings.relatedPostsAllowed = [json numberForKeyPath:@"settings.jetpack_relatedposts_allowed"];
+    remoteSettings.relatedPostsEnabled = [json numberForKeyPath:@"settings.jetpack_relatedposts_enabled"];
+    remoteSettings.relatedPostsShowHeadline = [json numberForKeyPath:@"settings.jetpack_relatedposts_show_headline"];
+    remoteSettings.relatedPostsShowThumbnails = [json numberForKeyPath:@"settings.jetpack_relatedposts_show_thumbnails"];
     
     return remoteSettings;
 }

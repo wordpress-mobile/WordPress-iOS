@@ -199,16 +199,11 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     return [[self.resultsController fetchedObjects] count];
 }
 
-- (NSUInteger)numberOfHideableBlogs
-{
-    NSPredicate *predicate = [self fetchRequestPredicateForHideableBlogs];
-    NSArray *dotComSites = [[self.resultsController fetchedObjects] filteredArrayUsingPredicate:predicate];
-    return [dotComSites count];
-}
-
 - (void)updateEditButton
 {
-    if ([self numberOfHideableBlogs] > 0) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    if ([blogService blogCountForWPComAccounts] > 0) {
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.leftBarButtonItem = nil;

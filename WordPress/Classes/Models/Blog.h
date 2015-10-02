@@ -74,6 +74,11 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSNumber *defaultCategoryID;
 @property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
+@property (nonatomic, strong, readwrite) NSNumber *relatedPostsAllowed;
+@property (nonatomic, strong, readwrite) NSNumber *relatedPostsEnabled;
+@property (nonatomic, strong, readwrite) NSNumber *relatedPostsShowHeadline;
+@property (nonatomic, strong, readwrite) NSNumber *relatedPostsShowThumbnails;
+
 /**
  Flags whether the current user is an admin on the blog.
  */
