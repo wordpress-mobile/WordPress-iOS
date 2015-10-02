@@ -699,7 +699,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         [weakSelf cancelDeletionForNotificationWithID:note.objectID];
     };
 
-    [cell downloadGravatarWithURL:note.iconURL];
+    [cell downloadIconWithURL:note.iconURL];
 }
 
 - (NSString *)sectionNameKeyPath

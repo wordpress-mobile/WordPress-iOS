@@ -79,7 +79,17 @@ import Foundation
     public class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
     }
-    
+
+    public func downloadIconWithURL(url: NSURL?) {
+        let isGravatarURL = url.map { Gravatar.isGravatarURL($0) } ?? true
+        if isGravatarURL {
+            downloadGravatarWithURL(url)
+        } else {
+            let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
+            iconImageView.downloadImage(url, placeholderImage: placeholderImage)
+        }
+    }
+
     public func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
