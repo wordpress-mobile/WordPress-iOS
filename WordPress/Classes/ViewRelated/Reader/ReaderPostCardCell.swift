@@ -196,7 +196,7 @@ import Foundation
         var horizontalMargin = headerView.frame.minX
 
         if UIDevice.isPad() {
-            width = maxIPadWidthConstraint.constant
+            width = min(size.width, maxIPadWidthConstraint.constant)
         } else {
             width = size.width
             horizontalMargin += cardContentView.frame.minX
