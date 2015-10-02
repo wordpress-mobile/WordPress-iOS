@@ -42,6 +42,7 @@ import Foundation
     private var isFeed = false
     private var syncIsFillingGap = false
     private var indexPathForGapMarker: NSIndexPath?
+    private var needsRefreshCachedCellHeightsBeforeLayout = false
 
     private var siteID:NSNumber? {
         didSet {
@@ -136,12 +137,47 @@ import Foundation
         refreshTableViewHeaderLayout()
     }
 
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleApplicationDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
 
-    // MARK: -
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
 
     public override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
+
+    public override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        if needsRefreshCachedCellHeightsBeforeLayout {
+            needsRefreshCachedCellHeightsBeforeLayout = false
+
+            let width = view.frame.width
+            tableViewHandler.refreshCachedRowHeightsForWidth(width)
+            tableView.reloadRowsAtIndexPaths(tableView.indexPathsForVisibleRows!, withRowAnimation: .None)
+        }
+    }
+
+    @available(iOS 8.0, *)
+    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        needsRefreshCachedCellHeightsBeforeLayout = true
+    }
+
+
+    // MARK: - Split view support
+
+    public func handleApplicationDidBecomeActive(notification:NSNotification) {
+        needsRefreshCachedCellHeightsBeforeLayout = true
+    }
+
+
+    // MARK: - Topic acquisition
 
     private func fetchSiteTopic() {
         if isViewLoaded() {
@@ -912,7 +948,11 @@ import Foundation
         return displayContext!
     }
 
-    public func fetchRequest() -> NSFetchRequest {
+    public func fetchRequest() -> NSFetchRequest? {
+        if readerTopic == nil {
+            return nil
+        }
+
         let fetchRequest = NSFetchRequest(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
