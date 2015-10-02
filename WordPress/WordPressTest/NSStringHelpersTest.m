@@ -142,7 +142,7 @@
 - (void)testStringByReplacingHTMLEmoticonsWithEmoji
 {
     NSString *emoji = @"\U0001F600";
-    NSString *imageTag = @"<img src=\"http://s.w.org/images/core/emoji/72x72/1f600.png\" alt=\"&#128512;\" class=\"wp-smiley\" style=\"height: 1em; max-height: 1em;\">";
+    NSString *imageTag = @"<img src=\"http://s.w.org/images/core/emoji/72x72/1f600.png\" class=\"wp-smiley\" style=\"height: 1em; max-height: 1em;\">";
     NSString *replacedString = [imageTag stringByReplacingHTMLEmoticonsWithEmoji];
 
     XCTAssert([replacedString isEqualToString:emoji], @"The image tag was not replaced with an emoji string");
