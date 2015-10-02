@@ -156,6 +156,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 

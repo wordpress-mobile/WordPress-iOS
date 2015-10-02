@@ -23,11 +23,11 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
     func testAuthorizeLoginUsesTheCorrectParameters() {
         pushAuthenticationServiceRemote?.authorizeLogin(token, success: nil, failure: nil)
         
-        var parameters:NSDictionary = mockRemoteApi!.parametersPassedIn as! NSDictionary
+        let parameters:NSDictionary = mockRemoteApi!.parametersPassedIn as! NSDictionary
         
         XCTAssertTrue(mockRemoteApi!.postMethodCalled, "Method was not called")
-        XCTAssertEqual(parameters["action"] as! String, "authorize_login", "incorrect action parameter")
-        XCTAssertEqual(parameters["push_token"] as! String, token, "incorrect token parameter")
+        XCTAssertEqual(parameters["action"] as! String?, "authorize_login", "incorrect action parameter")
+        XCTAssertEqual(parameters["push_token"] as! String?, token, "incorrect token parameter")
     }
     
     func testAuthorizeLoginCallsSuccessBlock() {
@@ -46,7 +46,7 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
         pushAuthenticationServiceRemote!.authorizeLogin(token, success: nil, failure: { () -> () in
             failureBlockCalled = true
         })
-        mockRemoteApi?.failureBlockPassedIn?(AFHTTPRequestOperation(), NSError())
+        mockRemoteApi?.failureBlockPassedIn?(AFHTTPRequestOperation(), NSError(domain:"UnitTest", code:0, userInfo:nil))
         
         XCTAssertTrue(mockRemoteApi!.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")

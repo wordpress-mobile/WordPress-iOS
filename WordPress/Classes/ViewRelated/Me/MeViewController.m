@@ -127,6 +127,7 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
     self.headerView = [[MeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), MeHeaderViewHeight)];
 
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     [self setupAutolayoutConstraints];
