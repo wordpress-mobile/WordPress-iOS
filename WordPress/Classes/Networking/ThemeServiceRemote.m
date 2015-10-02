@@ -94,10 +94,11 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 {
     static NSString* const path = @"themes";
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteRESTApiVersion_1_2];
+    NSDictionary* parameters = @{@"tier": @"all"};
 
     NSOperation *operation = [self.api GET:requestUrl
-                                parameters:nil
+                                parameters:parameters
                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
                                        if (success) {
                                            NSArray *themes = [self themesFromMultipleThemesRequestResponse:response];
@@ -120,10 +121,11 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
     NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+                                     withVersion:ServiceRemoteRESTApiVersion_1_2];
+    NSDictionary* parameters = @{@"tier": @"all"};
 
     NSOperation *operation = [self.api GET:requestUrl
-                                parameters:nil
+                                parameters:parameters
                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
                                        if (success) {
                                            NSArray *themes = [self themesFromMultipleThemesRequestResponse:response];
@@ -196,8 +198,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 {
     NSParameterAssert(response != nil);
     
-    NSDictionary *themesDictionary = [response dictionaryForKey:ThemeServiceRemoteThemesKey];
-    NSArray *themeDictionaries = [themesDictionary allValues];
+    NSArray *themeDictionaries = [response arrayForKey:ThemeServiceRemoteThemesKey];
     NSArray *themes = [self themesFromDictionaries:themeDictionaries];
     
     return themes;
@@ -216,29 +217,36 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     
-    static NSString* const ThemeIdKey = @"id";
-    static NSString* const ThemeScreenshotKey = @"screenshot";
-    static NSString* const ThemeVersionKey = @"version";
-    static NSString* const ThemeDownloadURLKey = @"download_url";
-    static NSString* const ThemeTrendingRankKey = @"trending_rank";
-    static NSString* const ThemePopularityRankKey = @"popularity_rank";
-    static NSString* const ThemeNameKey = @"name";
+    static NSString* const ThemeAuthorKey = @"author";
+    static NSString* const ThemeAuthorURLKey = @"author_uri";
+    static NSString* const ThemeDemoURLKey = @"demo_uri";
     static NSString* const ThemeDescriptionKey = @"description";
-    static NSString* const ThemeTagsKey = @"tags";
+    static NSString* const ThemeDownloadURLKey = @"download_uri";
+    static NSString* const ThemeIdKey = @"id";
+    static NSString* const ThemeNameKey = @"name";
     static NSString* const ThemePreviewURLKey = @"preview_url";
+    static NSString* const ThemePriceKey = @"price";
+    static NSString* const ThemePopularityRankKey = @"rank_popularity";
+    static NSString* const ThemeScreenshotKey = @"screenshot";
+    static NSString* const ThemeStylesheetKey = @"stylesheet";
+    static NSString* const ThemeTrendingRankKey = @"rank_trending";
+    static NSString* const ThemeVersionKey = @"version";
     
     RemoteTheme *theme = [RemoteTheme new];
     
-    [self loadCostForTheme:theme fromDictionary:dictionary];
     [self loadLaunchDateForTheme:theme fromDictionary:dictionary];
 
+    theme.author = [dictionary stringForKey:ThemeAuthorKey];
+    theme.authorUrl = [dictionary stringForKey:ThemeAuthorURLKey];
+    theme.demoUrl = [dictionary stringForKey:ThemeDemoURLKey];
     theme.desc = [dictionary stringForKey:ThemeDescriptionKey];
     theme.downloadUrl = [dictionary stringForKey:ThemeDownloadURLKey];
     theme.name = [dictionary stringForKey:ThemeNameKey];
     theme.popularityRank = [dictionary numberForKey:ThemePopularityRankKey];
     theme.previewUrl = [dictionary stringForKey:ThemePreviewURLKey];
+    theme.price = [dictionary stringForKey:ThemePriceKey];
     theme.screenshotUrl = [dictionary stringForKey:ThemeScreenshotKey];
-    theme.tags = [dictionary arrayForKey:ThemeTagsKey];
+    theme.stylesheet = [dictionary stringForKey:ThemeStylesheetKey];
     theme.themeId = [dictionary stringForKey:ThemeIdKey];
     theme.trendingRank = [dictionary numberForKey:ThemeTrendingRankKey];
     theme.version = [dictionary stringForKey:ThemeVersionKey];
@@ -275,30 +283,6 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 #pragma mark - Field parsing
 
 /**
- *  @brief      Loads the cost structure from a dictionary into the specified remote theme object.
- *
- *  @param      theme       The theme to load the info into.  Cannot be nil.
- *  @param      dictionary  The dictionary to load the info from.  Cannot be nil.
- */
-- (void)loadCostForTheme:(RemoteTheme *)theme
-          fromDictionary:(NSDictionary *)dictionary
-{
-    NSParameterAssert([theme isKindOfClass:[RemoteTheme class]]);
-    NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
-    
-    static NSString* const ThemeCostKey = @"cost";
-    static NSString* const ThemeCostCurrencyKey = @"currency";
-    static NSString* const ThemeCostDisplayKey = @"display";
-    static NSString* const ThemeCostNumberKey = @"number";
-    
-    NSDictionary *costDictionary = dictionary[ThemeCostKey];
-    
-    theme.costCurrency = [costDictionary stringForKey:ThemeCostCurrencyKey];
-    theme.costDisplay = [costDictionary stringForKey:ThemeCostDisplayKey];
-    theme.costNumber = [costDictionary numberForKey:ThemeCostNumberKey];
-}
-
-/**
  *  @brief      Loads a theme's launch date from a dictionary into the specified remote theme
  *              object.
  *
@@ -311,7 +295,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     NSParameterAssert([theme isKindOfClass:[RemoteTheme class]]);
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     
-    static NSString* const ThemeLaunchDateKey = @"launch_date";
+    static NSString* const ThemeLaunchDateKey = @"date_launched";
     
     NSString *launchDateString = [dictionary stringForKey:ThemeLaunchDateKey];
     

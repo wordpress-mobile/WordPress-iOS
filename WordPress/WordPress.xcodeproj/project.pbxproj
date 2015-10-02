@@ -88,7 +88,6 @@
 		598F86AB1B67BD7600550C9C /* ThemeServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */; };
 		599738401B87AD2600EC1C30 /* WordPressComServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5997383F1B87AD2600EC1C30 /* WordPressComServiceRemote.m */; };
 		59A9AB351B4C33A500A433DC /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A9AB341B4C33A500A433DC /* ThemeService.m */; };
-		59B48B5F1B99D209008EBB84 /* get-multiple-themes-v1.1.json in Resources */ = {isa = PBXBuildFile; fileRef = 59B48B5E1B99D209008EBB84 /* get-multiple-themes-v1.1.json */; };
 		59B48B621B99E132008EBB84 /* JSONLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59B48B611B99E132008EBB84 /* JSONLoader.swift */; };
 		59D328FD1ACC2D0700356827 /* WPLookbackPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */; };
 		59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DD94331AC479ED0032DD6B /* WPLogger.m */; };
@@ -581,6 +580,7 @@
 		F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */; };
 		F1A0C49C1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F1A0C49B1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m */; };
 		F1FA2C4E1AED07FC00255FCD /* MFMailComposeViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FA2C491AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.m */; };
+		FAFB84061BBF3638000BBA8E /* get-multiple-themes-v1.2.json in Resources */ = {isa = PBXBuildFile; fileRef = FAFB84051BBF3638000BBA8E /* get-multiple-themes-v1.2.json */; settings = {ASSET_TAGS = (); }; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9A948B12FAEA2300438F94 /* DateUtils.m */; };
@@ -783,7 +783,6 @@
 		59A9AB331B4C33A500A433DC /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
 		59A9AB341B4C33A500A433DC /* ThemeService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeService.m; sourceTree = "<group>"; };
 		59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalCoreDataServiceTests.m; sourceTree = "<group>"; };
-		59B48B5E1B99D209008EBB84 /* get-multiple-themes-v1.1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-multiple-themes-v1.1.json"; sourceTree = "<group>"; };
 		59B48B611B99E132008EBB84 /* JSONLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = JSONLoader.swift; path = TestUtilities/JSONLoader.swift; sourceTree = "<group>"; };
 		59D328FB1ACC2D0700356827 /* WPLookbackPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLookbackPresenter.h; sourceTree = "<group>"; };
 		59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLookbackPresenter.m; sourceTree = "<group>"; };
@@ -1632,6 +1631,7 @@
 		F1A0C49B1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MFMessageComposeViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
 		F1FA2C481AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MFMailComposeViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
 		F1FA2C491AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MFMailComposeViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
+		FAFB84051BBF3638000BBA8E /* get-multiple-themes-v1.2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-multiple-themes-v1.2.json"; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		FD374343156CF4B800BAB5B5 /* WordPress 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 6.xcdatamodel"; sourceTree = "<group>"; };
@@ -3480,7 +3480,7 @@
 				B5AEEC781ACACFDA008BF2A4 /* notifications-replied-comment.json */,
 				B5EFB1D01B33630C007608A3 /* notifications-settings.json */,
 				93CD939219099BE70049096E /* authtoken.json */,
-				59B48B5E1B99D209008EBB84 /* get-multiple-themes-v1.1.json */,
+				FAFB84051BBF3638000BBA8E /* get-multiple-themes-v1.2.json */,
 				59F9C1581B9DD3D600885CC1 /* get-purchased-themes-v1.1.json */,
 				59F9C1561B9DCE4E00885CC1 /* get-single-theme-v1.1.json */,
 				E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */,
@@ -3902,11 +3902,11 @@
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
 				E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */,
 				855408881A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json in Resources */,
-				59B48B5F1B99D209008EBB84 /* get-multiple-themes-v1.1.json in Resources */,
 				59F9C1591B9DD3D600885CC1 /* get-purchased-themes-v1.1.json in Resources */,
 				8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */,
 				B5AEEC7A1ACACFDA008BF2A4 /* notifications-like.json in Resources */,
 				E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */,
+				FAFB84061BBF3638000BBA8E /* get-multiple-themes-v1.2.json in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,

@@ -227,13 +227,13 @@
     WPAccount *account = OCMStrictClassMock([WPAccount class]);
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeService *service = nil;
-    NSString *url = @"v1.1/themes";
+    NSString *url = @"v1.2/themes";
     
     OCMStub([account isWPComAccount]).andReturn(YES);
     OCMStub([account restApi]).andReturn(api);
     
     OCMStub([api GET:[OCMArg isEqual:url]
-          parameters:[OCMArg isNil]
+          parameters:[OCMArg isNotNil]
              success:[OCMArg any]
              failure:[OCMArg any]]);
     
@@ -261,13 +261,13 @@
     NSNumber *blogId = @1;
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeService *service = nil;
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes", blogId];
+    NSString *url = [NSString stringWithFormat:@"v1.2/sites/%@/themes", blogId];
     
     OCMStub([blog restApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(blogId);
     
     OCMStub([api GET:[OCMArg isEqual:url]
-          parameters:[OCMArg isNil]
+          parameters:[OCMArg isNotNil]
              success:[OCMArg any]
              failure:[OCMArg any]]);
     
