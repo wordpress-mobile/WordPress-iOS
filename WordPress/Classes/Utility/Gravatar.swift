@@ -1,17 +1,14 @@
 import Foundation
 
 struct Gravatar {
-    struct Defaults {
+    private struct Defaults {
         static let scheme = "https"
         static let host = "secure.gravatar.com"
-        static let path = "/avatar/"
         // unknownHash = md5("unknown@gravatar.com")
         static let unknownHash = "ad516503a11cd5ca435acc9bb6523536"
-        static var baseURL: NSURL {
-            return NSURL(scheme: scheme, host: host, path: path)!
-        }
     }
-    let canonicalURL: NSURL
+
+    private let canonicalURL: NSURL
 
     func urlWithSize(size: Int) -> NSURL {
         let components = NSURLComponents(URL: canonicalURL, resolvingAgainstBaseURL: false)!
@@ -41,7 +38,7 @@ extension Gravatar {
             where path.hasPrefix("/avatar/") else {
             return nil
         }
-        
+
         components.scheme = Defaults.scheme
         components.host = Defaults.host
         components.query = nil
@@ -57,18 +54,6 @@ extension Gravatar {
         }
 
         self.canonicalURL = sanitizedURL
-    }
-
-    init(hash: String) {
-        self.canonicalURL = Defaults.baseURL.URLByAppendingPathComponent(hash)
-    }
-
-    static var unknown: Gravatar {
-        return Gravatar(hash: Defaults.unknownHash)
-    }
-
-    func isUnknown() -> Bool {
-        return self == Gravatar.unknown
     }
 }
 
