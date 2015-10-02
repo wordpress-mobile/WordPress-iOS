@@ -187,17 +187,16 @@
     item.typeFamily = remoteMenuItem.typeFamily;
     item.typeLabel = remoteMenuItem.typeLabel;
     item.urlStr = remoteMenuItem.urlStr;
+    item.menu = menu;
     
     if(remoteMenuItem.children) {
         
         for(RemoteMenuItem *childRemoteItem in remoteMenuItem.children) {
-            
             MenuItem *childItem = [self addMenuItemFromRemoteMenuItem:childRemoteItem forMenu:menu];
-            [item addChildrenObject:childItem];
+            childItem.parent = item;
         }
     }
     
-    [menu addItemsObject:item];
     return item;
 }
 
