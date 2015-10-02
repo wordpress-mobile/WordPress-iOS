@@ -10,7 +10,6 @@ struct Person {
     let lastName: String?
     let displayName: String
     let role: Role
-    let pending: Bool
     let siteID: Int
     let avatarURL: NSURL?
     let isSuperAdmin: Bool
@@ -129,7 +128,6 @@ extension Person {
         lastName = managedPerson.lastName
         displayName = managedPerson.displayName
         role = Role(string: managedPerson.role)
-        pending = false
         siteID = Int(managedPerson.siteID)
         avatarURL = managedPerson.avatarURL.flatMap { NSURL(string: $0) }
         isSuperAdmin = managedPerson.isSuperAdmin
@@ -145,7 +143,6 @@ func ==(lhs: Person, rhs: Person) -> Bool {
         && lhs.lastName == rhs.lastName
         && lhs.displayName == rhs.displayName
         && lhs.role == rhs.role
-        && lhs.pending == rhs.pending
         && lhs.siteID == rhs.siteID
         && lhs.avatarURL == rhs.avatarURL
         && lhs.isSuperAdmin == rhs.isSuperAdmin

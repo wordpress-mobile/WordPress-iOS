@@ -58,7 +58,7 @@ class PeopleRemote: ServiceRemoteREST {
                 return Person.Role(string: role)
             }).sort().first ?? .Unsupported
 
-            return Person(ID: ID, username: nice_name, firstName: first_name, lastName: last_name, displayName: name, role: role, pending: false, siteID: siteID, avatarURL: avatar_URL, isSuperAdmin: is_super_admin)
+            return Person(ID: ID, username: nice_name, firstName: first_name, lastName: last_name, displayName: name, role: role, siteID: siteID, avatarURL: avatar_URL, isSuperAdmin: is_super_admin)
         }
 
         let errorCount = people.reduce(0) { (sum, person) -> Int in
