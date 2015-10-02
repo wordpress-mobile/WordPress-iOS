@@ -784,7 +784,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     __typeof(self) __weak weakSelf = self;
     void (^successBlock)() = ^void() {
-        [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
+        [WPAnalytics track:WPAnalyticsStatReaderArticleCommentedOn];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
     };
