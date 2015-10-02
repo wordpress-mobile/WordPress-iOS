@@ -8,6 +8,7 @@
 #import "SettingTableViewCell.h"
 #import "RelatedPostsPreviewTableViewCell.h"
 #import <SVProgressHUD/SVProgressHUD.h>
+#import "WPStyleGuide+ReadableMargins.h"
 
 static const CGFloat RelatePostsSettingsCellHeight = 44;
 
@@ -54,6 +55,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.navigationItem.title = NSLocalizedString(@"Related Posts", @"Title for screen that allows configuration of your blog/site related posts settings.");
     self.tableView.allowsSelection = NO;
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
