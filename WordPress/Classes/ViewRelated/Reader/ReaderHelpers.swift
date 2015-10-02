@@ -117,7 +117,7 @@ public class ReaderHelpers {
     public class func trackLoadedTopic(topic: ReaderAbstractTopic, withProperties properties:[NSObject : AnyObject]) {
         var stat:WPAnalyticsStat?
 
-        if topicIsFollowing(topic) {
+        if topicIsFreshlyPressed(topic) {
             stat = .ReaderFreshlyPressedLoaded
 
         } else if isTopicList(topic) {
