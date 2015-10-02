@@ -28,6 +28,7 @@ class PeopleService {
         })
     }
 
+    // TODO: extract as generic and test
     private func mergeTeam(people: People) {
         let remotePeople = people
         let localPeople = allPeople()
