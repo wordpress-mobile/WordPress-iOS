@@ -259,7 +259,6 @@
     theme.popularityRank = remoteTheme.popularityRank;
     theme.previewUrl = remoteTheme.previewUrl;
     theme.screenshotUrl = remoteTheme.screenshotUrl;
-    theme.tags = remoteTheme.tags;
     theme.themeId = remoteTheme.themeId;
     theme.trendingRank = remoteTheme.trendingRank;
     theme.version = remoteTheme.version;
