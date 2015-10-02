@@ -15,6 +15,24 @@ struct Gravatar {
         components.query = "s=\(size)&d=404"
         return components.URL!
     }
+
+    static func isGravatarURL(url: NSURL) -> Bool {
+        guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else {
+            return false
+        }
+
+        guard let host = components.host
+            where host.hasSuffix(".gravatar.com") else {
+                return false
+        }
+
+        guard let path = url.path
+            where path.hasPrefix("/avatar/") else {
+                return false
+        }
+
+        return true
+    }
 }
 
 extension Gravatar: Equatable {}
@@ -25,17 +43,11 @@ func ==(lhs: Gravatar, rhs: Gravatar) -> Bool {
 
 extension Gravatar {
     init?(_ url: NSURL) {
+        guard Gravatar.isGravatarURL(url) else {
+            return nil
+        }
+
         guard let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) else {
-            return nil
-        }
-
-        guard let host = components.host
-            where host.hasSuffix(".gravatar.com") else {
-            return nil
-        }
-
-        guard let path = url.path
-            where path.hasPrefix("/avatar/") else {
             return nil
         }
 
