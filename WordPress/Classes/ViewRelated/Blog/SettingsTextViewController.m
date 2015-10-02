@@ -48,6 +48,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 

@@ -353,6 +353,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return [self blogCountWithPredicate:predicate];
 }
 
+- (NSInteger)blogCountForWPComAccounts
+{
+    return [self blogCountWithPredicate:[NSPredicate predicateWithFormat:@"account != NULL"]];
+}
+
 - (NSInteger)blogCountVisibleForWPComAccounts
 {
     NSArray *subpredicates = @[
