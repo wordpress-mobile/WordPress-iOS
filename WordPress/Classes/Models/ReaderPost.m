@@ -19,12 +19,12 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic authorDisplayName;
 @dynamic authorEmail;
 @dynamic authorURL;
+@dynamic siteIconURL;
 @dynamic blogName;
 @dynamic blogDescription;
 @dynamic blogURL;
 @dynamic commentCount;
 @dynamic commentsOpen;
-@dynamic dateCommentsSynced;
 @dynamic featuredImage;
 @dynamic isBlogPrivate;
 @dynamic isFollowing;
@@ -34,7 +34,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic likeCount;
 @dynamic siteID;
 @dynamic sortDate;
-@dynamic storedComment;
 @dynamic summary;
 @dynamic comments;
 @dynamic tags;
@@ -45,34 +44,22 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isSiteBlocked;
 @dynamic sourceAttribution;
 
+@dynamic primaryTag;
+@dynamic primaryTagSlug;
+@dynamic isExternal;
+@dynamic isJetpack;
+@dynamic wordCount;
+@dynamic readingTime;
+
 
 - (BOOL)isPrivate
 {
     return self.isBlogPrivate;
 }
 
-- (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment
-{
-    self.storedComment = [NSString stringWithFormat:@"%i|storedcomment|%@", [commentID integerValue], comment];
-}
-
-- (NSDictionary *)getStoredComment
-{
-    if (!self.storedComment) {
-        return nil;
-    }
-
-    NSArray *arr = [self.storedComment componentsSeparatedByString:@"|storedcomment|"];
-    NSNumber *commentID = [[arr objectAtIndex:0] numericValue];
-    NSString *commentText = [arr objectAtIndex:1];
-    return @{ReaderPostStoredCommentIDKey:commentID, ReaderPostStoredCommentTextKey:commentText};
-}
-
 - (NSString *)authorString
 {
-    if ([self.blogName length] > 0) {
-        return self.blogName;
-    } else if ([self.authorDisplayName length] > 0) {
+    if ([self.authorDisplayName length] > 0) {
         return self.authorDisplayName;
     }
 
@@ -150,6 +137,30 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 #pragma mark - WPContentViewProvider protocol
 
+- (NSString *)blogNameForDisplay
+{
+    if (self.blogName.length > 0) {
+        return self.blogName;
+    }
+    return [[NSURL URLWithString:self.blogURL] host];
+}
+
+- (NSURL *)siteIconForDisplayOfSize:(NSInteger)size
+{
+    NSString *str;
+    if ([self.siteIconURL length] > 0) {
+        if ([self.siteIconURL rangeOfString:@"/blavatar/"].location == NSNotFound) {
+            str = self.siteIconURL;
+        } else {
+            str = [NSString stringWithFormat:@"%@?s=%d&d=404", self.siteIconURL, size];
+        }
+    } else {
+        NSString *hash = [[[NSURL URLWithString:self.blogURL] host] md5];
+        str = [NSString stringWithFormat:@"https://secure.gravatar.com/blavatar/%@/?s=%d&d=404", hash, size];
+    }
+    return [NSURL URLWithString:str];
+}
+
 - (NSString *)titleForDisplay
 {
     NSString *title = [[self.postTitle trim] stringByDecodingXMLCharacters];
@@ -177,6 +188,24 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 - (NSURL *)featuredImageURLForDisplay
 {
     return [self featuredImageURL];
+}
+
+- (NSString *)likeCountForDisplay
+{
+    NSString *likeStr = NSLocalizedString(@"Like", @"Text for the 'like' button. Tapping marks a post in the reader as 'liked'.");
+    NSString *likesStr = NSLocalizedString(@"Likes", @"Text for the 'like' button. Tapping removes the 'liked' status from a post.");
+
+    NSInteger count = [self.likeCount integerValue];
+    NSString *title;
+    if (count == 0) {
+        title = likeStr;
+    } else if (count == 1) {
+        title = [NSString stringWithFormat:@"%d %@", count, likeStr];
+    } else {
+        title = [NSString stringWithFormat:@"%d %@", count, likesStr];
+    }
+
+    return title;
 }
 
 - (SourceAttributionStyle)sourceAttributionStyle

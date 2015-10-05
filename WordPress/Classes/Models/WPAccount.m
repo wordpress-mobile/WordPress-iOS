@@ -4,7 +4,6 @@
 
 @interface WPAccount ()
 @property (nonatomic, strong, readwrite) WordPressComApi *restApi;
-@property (nonatomic, strong, readwrite) WordPressXMLRPCApi *xmlrpcApi;
 @end
 
 @implementation WPAccount
@@ -19,7 +18,6 @@
 @dynamic userID;
 @dynamic avatarURL;
 @synthesize restApi = _restApi;
-@synthesize xmlrpcApi = _xmlrpcApi;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -33,8 +31,6 @@
     // Beware: Lazy getters below. Let's hit directly the ivar
     [_restApi.operationQueue cancelAllOperations];
     [_restApi reset];
-
-    [_xmlrpcApi.operationQueue cancelAllOperations];
     
     self.authToken = nil;
 }
@@ -44,7 +40,6 @@
     [super didTurnIntoFault];
     
     self.restApi = nil;
-    self.xmlrpcApi = nil;
 }
 
 #pragma mark - Custom accessors
@@ -120,10 +115,17 @@
 
 - (WordPressComApi *)restApi
 {
-    if (!_restApi) {
+    if (!_restApi && self.authToken.length > 0) {
         _restApi = [[WordPressComApi alloc] initWithOAuthToken:self.authToken];
     }
     return _restApi;
+}
+
+#pragma mark - WordPress.com support methods
+
+- (BOOL)isWPComAccount
+{
+    return self.restApi != nil;
 }
 
 @end

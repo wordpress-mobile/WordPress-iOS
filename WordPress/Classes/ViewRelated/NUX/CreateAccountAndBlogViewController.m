@@ -14,15 +14,19 @@
 #import "WPNUXUtility.h"
 #import "WPWebViewController.h"
 #import "WPStyleGuide.h"
+#import "WPFontManager.h"
 #import "UILabel+SuggestSize.h"
 #import "WPAccount.h"
 #import "Blog.h"
 #import "WordPressComOAuthClient.h"
+#import "WordPressComServiceRemote.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "NSString+XMLExtensions.h"
 #import "Constants.h"
+
+#import "WordPress-Swift.h"
 
 #import <1PasswordExtension/OnePasswordExtension.h>
 
@@ -59,17 +63,23 @@
 
 @implementation CreateAccountAndBlogViewController
 
-static CGFloat const CreateAccountAndBlogStandardOffset = 15.0;
-static CGFloat const CreateAccountAndBlogMaxTextWidth = 260.0;
-static CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
-static CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
-static CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
-static CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
-static CGFloat const CreateAccountAndBlogButtonWidth = 290.0;
-static CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
-static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
+static CGFloat const CreateAccountAndBlogStandardOffset             = 15.0;
+static CGFloat const CreateAccountAndBlogMaxTextWidth               = 260.0;
+static CGFloat const CreateAccountAndBlogTextFieldWidth             = 320.0;
+static CGFloat const CreateAccountAndBlogTextFieldHeight            = 44.0;
+static CGFloat const CreateAccountAndBlogTextFieldPhoneHeight       = 38.0;
+static CGFloat const CreateAccountAndBlogiOS7StatusBarOffset        = 20.0;
+static CGFloat const CreateAccountAndBlogButtonWidth                = 290.0;
+static CGFloat const CreateAccountAndBlogButtonHeight               = 41.0;
+static UIOffset const CreateAccountAndBlogOnePasswordPadding        = {9.0, 0.0};
 
-- (id)init
+static UIEdgeInsets const CreateAccountAndBlogBackButtonPadding     = {1.0, 0.0, 0.0, 0.0};
+static UIEdgeInsets const CreateAccountAndBlogBackButtonPaddingPad  = {1.0, 13.0, 0.0, 0.0};
+
+static UIEdgeInsets const CreateAccountAndBlogHelpButtonPadding     = {1.0, 0.0, 0.0, 13.0};
+static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0, 0.0, 20.0};
+
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -105,7 +115,7 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
     [self layoutControls];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     if (IS_IPHONE) {
         return UIInterfaceOrientationMaskPortrait;
@@ -406,16 +416,19 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat viewHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
-
+    
+    UIEdgeInsets helpButtonPadding = [UIDevice isPad] ? CreateAccountAndBlogHelpButtonPaddingPad : CreateAccountAndBlogHelpButtonPadding;
+    UIEdgeInsets backButtonPadding = [UIDevice isPad] ? CreateAccountAndBlogBackButtonPaddingPad : CreateAccountAndBlogBackButtonPadding;
+    
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
-    x = viewWidth - helpButtonImage.size.width - CreateAccountAndBlogStandardOffset;
-    y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
+    x = viewWidth - helpButtonImage.size.width - helpButtonPadding.right;
+    y = CreateAccountAndBlogiOS7StatusBarOffset + helpButtonPadding.top;
     _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, CreateAccountAndBlogButtonHeight);
 
     // Layout Cancel Button
-    x = 0;
-    y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
+    x = backButtonPadding.left;
+    y = CreateAccountAndBlogiOS7StatusBarOffset + backButtonPadding.top;
     _backButton.frame = CGRectMake(x, y, CGRectGetWidth(_backButton.frame), CreateAccountAndBlogButtonHeight);
 
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
@@ -747,39 +760,47 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
     // the situation could exist where a user account is created, but the site creation
     // fails.
     WPAsyncBlockOperation *siteValidation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation) {
-        void (^blogValidationSuccess)(id) = ^(id responseObject) {
+        WordPressComServiceSuccessBlock blogValidationSuccess = ^(NSDictionary *responseDictionary) {
             [operation didSucceed];
         };
-        void (^blogValidationFailure)(NSError *) = ^(NSError *error) {
+        WordPressComServiceFailureBlock blogValidationFailure = ^(NSError *error) {
             [operation didFail];
             [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
 
-        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
-        [[WordPressComApi anonymousApi] validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
-                                                 andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
-                                                andLanguageId:languageId
-                                                      success:blogValidationSuccess
-                                                      failure:blogValidationFailure];
+        NSString *languageId = [_currentLanguage stringForKey:@"lang_id"];
+        
+        WordPressComApi *api = [WordPressComApi anonymousApi];
+        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
+        
+        [service validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+                             andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
+                            andLanguageId:languageId
+                                  success:blogValidationSuccess
+                                  failure:blogValidationFailure];
     }];
 
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
-        void (^createUserSuccess)(id) = ^(id responseObject){
+        WordPressComServiceSuccessBlock createUserSuccess = ^(NSDictionary *responseDictionary){
             [operation didSucceed];
         };
-        void (^createUserFailure)(NSError *) = ^(NSError *error) {
+        
+        WordPressComServiceFailureBlock createUserFailure = ^(NSError *error) {
             DDLogError(@"Failed creating user: %@", error);
             [operation didFail];
             [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
-
-        [[WordPressComApi anonymousApi] createWPComAccountWithEmail:_emailField.text
-                                                        andUsername:_usernameField.text
-                                                        andPassword:_passwordField.text
-                                                            success:createUserSuccess
-                                                            failure:createUserFailure];
+        
+        WordPressComApi *api = [WordPressComApi anonymousApi];
+        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
+        
+        [service createWPComAccountWithEmail:_emailField.text
+                                 andUsername:_usernameField.text
+                                 andPassword:_passwordField.text
+                                     success:createUserSuccess
+                                     failure:createUserFailure];
 
     }];
     WPAsyncBlockOperation *userSignIn = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
@@ -812,11 +833,11 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
     }];
 
     WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
-        void (^createBlogSuccess)(id) = ^(id responseObject){
+        WordPressComServiceSuccessBlock createBlogSuccess = ^(NSDictionary *responseDictionary){
             [WPAnalytics track:WPAnalyticsStatCreatedAccount];
             [operation didSucceed];
 
-            NSMutableDictionary *blogOptions = [[responseObject dictionaryForKey:@"blog_details"] mutableCopy];
+            NSMutableDictionary *blogOptions = [[responseDictionary dictionaryForKey:@"blog_details"] mutableCopy];
             if ([blogOptions objectForKey:@"blogname"]) {
                 [blogOptions setObject:[blogOptions objectForKey:@"blogname"] forKey:@"blogName"];
                 [blogOptions removeObjectForKey:@"blogname"];
@@ -845,20 +866,24 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
             [self setAuthenticating:NO];
             [self dismissViewControllerAnimated:YES completion:nil];
         };
-        void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
+        WordPressComServiceFailureBlock createBlogFailure = ^(NSError *error) {
             DDLogError(@"Failed creating blog: %@", error);
             [self setAuthenticating:NO];
             [operation didFail];
             [self displayRemoteError:error];
         };
 
-        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
-        [[_account restApi] createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
-                                      andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
-                                     andLanguageId:languageId
-                                 andBlogVisibility:WordPressComApiBlogVisibilityPublic
-                                           success:createBlogSuccess
-                                           failure:createBlogFailure];
+        NSString *languageId = [_currentLanguage stringForKey:@"lang_id"];
+        
+        WordPressComApi *api = [_account restApi];
+        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
+        
+        [service createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+                           andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
+                          andLanguageId:languageId
+                      andBlogVisibility:WordPressComServiceBlogVisibilityPublic
+                                success:createBlogSuccess
+                                failure:createBlogFailure];
     }];
 
     [blogCreation addDependency:userSignIn];

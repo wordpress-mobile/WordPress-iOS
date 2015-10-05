@@ -1,5 +1,7 @@
 #import "PostCategory.h"
 
+const NSInteger PostCategoryUncategorized = 1;
+
 @implementation PostCategory
 
 @dynamic categoryID;

@@ -2,7 +2,7 @@
 
 #import "AbstractPostListViewControllerSubclass.h"
 #import "AbstractPost.h"
-#import "EditSiteViewController.h"
+#import "SiteSettingsViewController.h"
 #import "PostPreviewViewController.h"
 #import "PostSettingsSelectionViewController.h"
 #import "UIView+Subviews.h"
@@ -16,6 +16,10 @@ const NSInteger PostsLoadMoreThreshold = 4;
 const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 
 const CGFloat DefaultHeightForFooterView = 44.0;
+
+@interface AbstractPostListViewController()
+@property (nonatomic) BOOL needsRefreshCachedCellHeightsBeforeLayout;
+@end
 
 @implementation AbstractPostListViewController
 
@@ -56,12 +60,14 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [super viewDidAppear:animated];
 
     [self automaticallySyncIfAppropriate];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     self.searchController.active = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -70,21 +76,43 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     if ([UIDevice isPad]) {
         return;
     }
-
-    CGRect bounds = self.view.window.frame;
-    CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = CGRectGetHeight(bounds);
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        width = MIN(width, height);
-    } else {
-        width = MAX(width, height);
-    }
-
-    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
-
     if (self.searchWrapperViewHeightConstraint.constant > 0) {
         self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
     }
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    CGFloat width = CGRectGetWidth(self.view.frame);
+    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    self.needsRefreshCachedCellHeightsBeforeLayout = YES;
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+
+    if (self.needsRefreshCachedCellHeightsBeforeLayout) {
+        self.needsRefreshCachedCellHeightsBeforeLayout = NO;
+
+        CGFloat width = CGRectGetWidth(self.view.frame);
+        [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+
+#pragma mark - Multitasking support
+
+- (void)handleApplicationDidBecomeActive:(NSNotification *)notification
+{
+    self.needsRefreshCachedCellHeightsBeforeLayout = YES;
 }
 
 
@@ -204,7 +232,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 - (UIView *)noResultsAccessoryView {
     if (self.syncHelper.isSyncing) {
         if (!self.animatedBox) {
-            self.animatedBox = [WPAnimatedBox new];
+            self.animatedBox = [WPAnimatedBox newAnimatedBox];
         }
         return self.animatedBox;
     }
@@ -425,7 +453,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [WPError showAlertWithTitle:NSLocalizedString(@"Unable to Connect", @"") message:message];
 
     // bad login/pass combination
-    EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
+    SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
     editSiteViewController.isCancellable = YES;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
@@ -762,10 +790,9 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)displayFilters
 {
-    NSMutableArray *titles = [NSMutableArray array];
-    for (PostListFilter *filter in self.postListFilters) {
-        [titles addObject:filter.title];
-    }
+    NSArray *titles = [self.postListFilters wp_map:^id(PostListFilter *filter) {
+        return filter.title;
+    }];
     NSDictionary *dict = @{
                            SettingsSelectionDefaultValueKey   : [self.postListFilters firstObject],
                            SettingsSelectionTitleKey          : NSLocalizedString(@"Filters", @"Title of the list of post status filters."),

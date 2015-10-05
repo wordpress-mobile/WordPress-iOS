@@ -37,7 +37,7 @@
 }
 
 - (void)testVerifyTracksNamesMappings {
-    for (NSUInteger x = 0; x <= WPAnalyticsStatTwoFactorSentSMS; ++x) {
+    for (NSUInteger x = 0; x <= WPAnalyticsStatMaxValue; ++x) {
         OCMExpect(([self.serviceMock trackEventName:[OCMArg checkWithBlock:^BOOL(id obj) {
             TracksEvent *tracksEvent = [TracksEvent new];
             tracksEvent.uuid = [NSUUID UUID];

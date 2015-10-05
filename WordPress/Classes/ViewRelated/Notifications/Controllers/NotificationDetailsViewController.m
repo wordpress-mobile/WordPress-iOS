@@ -95,8 +95,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         return;
     }
     
-    self.tableView.delegate = nil;
-    self.tableView.dataSource = nil;
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
 }
 
 - (void)viewDidLoad
@@ -183,6 +183,12 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     [super viewDidLayoutSubviews];
     [self adjustTableInsetsIfNeeded];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self.tableView reloadData];
 }
 
 - (void)reloadData
@@ -493,9 +499,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     if (group.type == NoteBlockGroupTypeUser) {
         
         NotificationBlock *block    = [group blockOfType:NoteBlockTypeUser];
-        NSURL *homeURL              = [NSURL URLWithString:block.metaLinksHome];
-        
-        [self openURL:homeURL];
+        NSURL *siteURL              = [NSURL URLWithString:block.metaLinksHome];
+        [self openURL:siteURL];
         
     // Header-Level: Push the resource associated with the note
     } else if (group.type == NoteBlockGroupTypeHeader) {
@@ -669,12 +674,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Merge the Attachments with their ranges: [NSRange: UIImage]
     NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:commentBlock.imageUrls];
     NSDictionary *mediaRanges       = [commentBlock buildRangesToImagesMap:mediaMap];
+    NSAttributedString *text        = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
     
     // Setup the cell
     cell.name                       = userBlock.text;
     cell.timestamp                  = [self.note.timestampAsDate shortString];
     cell.site                       = userBlock.metaTitlesHome ?: userBlock.metaLinksHome.hostname;
-    cell.attributedCommentText      = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
+    cell.attributedCommentText      = [text trimTrailingNewlines];
     cell.isApproved                 = [commentBlock isCommentApproved];
     cell.hasReply                   = self.note.hasReply;
     
@@ -702,7 +708,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     }
     
     NotificationMedia *media        = userBlock.media.firstObject;
-    [cell downloadGravatarWithURL:media.mediaURL];
+    [cell downloadGravatarWithURL:media.mediaURL.removeGravatarFallback];
 }
 
 - (void)setupActionsCell:(NoteBlockActionsTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
@@ -822,7 +828,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     }
     
     if (!success && range.isFollow) {
-        success = [self displayFollowersWithSiteID:self.note.metaSiteID];    
+        success = [self displayFollowersWithSiteID:self.note.metaSiteID];
+    }
+
+    if (!success && range.isUser) {
+        success = [self displayBrowseSite:range.siteID siteURL:range.url];
     }
     
     if (!success && url) {
@@ -842,7 +852,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     BOOL success = false;
     
     if (!success && self.note.isFollow) {
-        success = [self displayFollowersWithSiteID:self.note.metaSiteID];
+        NSURL *resourceURL = [NSURL URLWithString:self.note.url];
+        success = [self displayBrowseSite:self.note.metaSiteID siteURL:resourceURL];
     }
     
     if (!success && self.note.metaCommentID) {
@@ -903,8 +914,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:siteID];
-    BOOL success                    = blog.isHostedAtWPcom;
-    
+    BOOL success                    = [blog supports:BlogFeatureStats];
+
     if (success) {
         // TODO: Update StatsViewController to work with initWithCoder!
         StatsViewController *vc     = [[StatsViewController alloc] init];
@@ -958,21 +969,24 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         return NO;
     }
     
-    WPWebViewController *webViewController  = [WPWebViewController webViewControllerWithURL:url];
-    if (url.isWordPressDotComUrl) {
-        NSManagedObjectContext *context     = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService      = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *account                  = accountService.defaultWordPressComAccount;
-        
-        webViewController.username          = account.username;
-        webViewController.authToken         = account.authToken;
-    }
-    
+    WPWebViewController *webViewController  = [WPWebViewController authenticatedWebViewController:url];
     UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:webViewController];
     
     [self presentViewController:navController animated:YES completion:nil];
     
     return success;
+}
+
+- (BOOL)displayBrowseSite:(NSNumber *)siteID siteURL:(NSURL *)siteURL
+{
+    if (![siteID isKindOfClass:[NSNumber class]]) {
+        return NO;
+    }
+
+    ReaderStreamViewController *browseViewController = [ReaderStreamViewController controllerWithSiteID:siteID isFeed:NO];
+    [self.navigationController pushViewController:browseViewController animated:YES];
+    
+    return YES;
 }
 
 - (BOOL)displayFullscreenImage:(UIImage *)image
@@ -994,7 +1008,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)followSiteWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationFollowAction];
+    [WPAnalytics track:WPAnalyticsStatNotificationsSiteFollowAction];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -1010,7 +1024,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unfollowSiteWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationUnfollowAction];
+    [WPAnalytics track:WPAnalyticsStatNotificationsSiteUnfollowAction];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -1026,7 +1040,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)likeCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationLiked];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentLiked];
 
     // If the associated comment is *not* approved, let's attempt to auto-approve it, automatically
     if (!block.isCommentApproved) {
@@ -1048,7 +1062,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unlikeCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationUnliked];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnliked];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -1064,7 +1078,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)approveCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationApproved];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentApproved];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -1084,7 +1098,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unapproveCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationUnapproved];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnapproved];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -1104,22 +1118,32 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)spamCommentWithBlock:(NotificationBlock *)block
 {
+    NSParameterAssert(block);
+    NSParameterAssert(self.onDeletionRequestCallback);
+    
+    // Spam Action
+    NotificationDetailsDeletionActionBlock spamAction = ^(NotificationDetailsDeletionCompletionBlock onCompletion) {
+        NSParameterAssert(onCompletion);
+        
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+        
+        [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:^{
+            onCompletion(YES);
+        } failure:^(NSError * error){
+            onCompletion(NO);
+        }];
+        
+        [WPAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam];
+    };
+    
+    // Confirmation AlertView
     UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == alertView.cancelButtonIndex) {
             return;
         }
         
-        [WPAnalytics track:WPAnalyticsStatNotificationFlaggedAsSpam];
-        
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
-        
-        [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
-        
-        // Hi the destruction callback, if any, and pop to the root!
-        if (self.onDestructionCallback) {
-            self.onDestructionCallback();
-        }
+        self.onDeletionRequestCallback(spamAction);
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
@@ -1136,28 +1160,36 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)trashCommentWithBlock:(NotificationBlock *)block
 {
-    // Callback Block
+    NSParameterAssert(block);
+    NSParameterAssert(self.onDeletionRequestCallback);
+    
+    // Trash Action
+    NotificationDetailsDeletionActionBlock deletionAction =  ^(NotificationDetailsDeletionCompletionBlock onCompletion) {
+        NSParameterAssert(onCompletion);
+        
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+        
+        [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:^{
+            onCompletion(YES);
+        } failure:^(NSError *error) {
+            onCompletion(NO);
+        }];
+        
+        [WPAnalytics track:WPAnalyticsStatNotificationsCommentTrashed];
+    };
+    
+    // Confirmation AlertView
     UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == alertView.cancelButtonIndex) {
             return;
         }
         
-        [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
-        
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
-        
-        [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
-        
-        // Hi the destruction callback, if any, and pop to the root!
-        if (self.onDestructionCallback) {
-            self.onDestructionCallback();
-        }
+        self.onDeletionRequestCallback(deletionAction);
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
  
-    // Show the alertView
     NSString *message = NSLocalizedString(@"Are you sure you want to delete this comment?",
                                           @"Message asking for confirmation on comment deletion");
     

@@ -15,9 +15,8 @@
 #import "PublishDatePickerView.h"
 #import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
-#import "WPAlertView.h"
 #import "WPTableViewActivityCell.h"
-#import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPTableImageSource.h"
 #import "ContextManager.h"
 #import "MediaService.h"
@@ -50,7 +49,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 
 @interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
+UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -95,6 +94,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     self.visibilityList = @[NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
@@ -354,9 +354,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 0.0f)];
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
     header.title = [self titleForHeaderInSection:section];
-    header.backgroundColor = self.tableView.backgroundColor;
     return header;
 }
 
@@ -367,7 +366,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
     }
 
     NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -754,10 +753,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
     }
 
     NSArray *statuses = [self.apost availableStatusesForEditing];
-    NSMutableArray *titles = [NSMutableArray array];
-    for (NSString *status in statuses) {
-        [titles addObject:[BasePost titleForStatus:status]];
-    }
+    NSArray *titles = [statuses wp_map:^id(NSString *status) {
+        return [BasePost titleForStatus:status];
+    }];
 
     NSDictionary *statusDict = @{
                                  @"DefaultValue": PostStatusPublish,
@@ -909,7 +907,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
 - (void)showCategoriesSelection
 {
-    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithPost:[self post] selectionMode:CategoriesSelectionModePost];
+    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.post.blog
+                                                                                 currentSelection:[self.post.categories allObjects]
+                                                                                    selectionMode:CategoriesSelectionModePost];
+    controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -989,7 +990,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
             strongSelf.isUploadingMedia = NO;
             return;
         }
-        media.mediaType = MediaTypeFeatured;
         [self uploadFeaturedMedia:media];
     }];
 }
@@ -1158,6 +1158,15 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 {
     // Do not hide the status bar on iPad
     return self.shouldHideStatusBar && !IS_IPAD;
+}
+
+#pragma mark - PostCategoriesViewControllerDelegate
+
+- (void)postCategoriesViewController:(PostCategoriesViewController *)controller didUpdateSelectedCategories:(NSSet *)categories
+{
+    // Save changes.
+    self.post.categories = [categories mutableCopy];
+    [self.post save];
 }
 
 @end

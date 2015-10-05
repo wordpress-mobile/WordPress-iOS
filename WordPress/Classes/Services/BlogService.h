@@ -6,6 +6,8 @@
 
 @interface BlogService : LocalCoreDataService
 
+-(instancetype) init __attribute__((unavailable("must use initWithManagedObjectContext")));
+
 /**
  Returns the blog that matches with a given blogID
  */
@@ -74,10 +76,20 @@
  *  @param success a block that is invoked when the update is sucessfull
  *  @param failure a block that in invoked when the update fails.
  */
-- (void)updateSettingForBlog:(Blog *)blog
+- (void)updateSettingsForBlog:(Blog *)blog
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure;
 
+
+/**
+ *  Update the password for the blog.
+ *
+ *  @discussion This is only valid for self-hosted sites that don't use jetpack.
+ *
+ *  @param password the new password to use for the blog
+ *  @param blog to change the password.
+ */
+- (void)updatePassword:(NSString *)password forBlog:(Blog *)blog;
 
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success;
 
@@ -94,11 +106,18 @@
 
 - (NSInteger)blogCountSelfHosted;
 
+- (NSInteger)blogCountForWPComAccounts;
+
 - (NSInteger)blogCountVisibleForWPComAccounts;
 
 - (NSInteger)blogCountVisibleForAllAccounts;
 
 - (NSArray *)blogsForAllAccounts;
+
+/**
+ Returns every stored blog, arranged in a Dictionary by blogId.
+ */
+- (NSDictionary *)blogsForAllAccountsById;
 
 /*! Determine timezone for blog from blog options.  If no timezone information is stored on
  *  the device, then assume GMT+0 is the default.

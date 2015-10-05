@@ -4,13 +4,14 @@
 #import "WPAccount.h"
 #import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"
-#import "EditSiteViewController.h"
+#import "SiteSettingsViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPURLRequest.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "WPCookie.h"
 #import "UIDevice+Helpers.h"
+#import "WordPress-Swift.h"
 
 NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
@@ -153,7 +154,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     UINavigationController *navController = nil;
 
     if (blog.account) {
-        EditSiteViewController *controller = [[EditSiteViewController alloc] initWithBlog:self.blog];
+        SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
         controller.delegate = self;
         controller.isCancellable = YES;
         navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -408,7 +409,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound ||
             [query rangeOfString:@"no-chrome"].location == NSNotFound) {
-            WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:request.URL];
+            WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:request.URL];
             [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }

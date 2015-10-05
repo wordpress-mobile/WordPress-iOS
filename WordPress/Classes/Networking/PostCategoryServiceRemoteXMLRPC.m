@@ -1,29 +1,15 @@
 #import "PostCategoryServiceRemoteXMLRPC.h"
-#import "Blog.h"
 #import "RemotePostCategory.h"
 #import <NSString+Util.h>
-
-@interface PostCategoryServiceRemoteXMLRPC ()
-@property (nonatomic, strong) WPXMLRPCClient *api;
-@end
+#import <WordPressApi.h>
 
 @implementation PostCategoryServiceRemoteXMLRPC
 
-- (instancetype)initWithApi:(WPXMLRPCClient *)api
+- (void)getCategoriesForBlogID:(NSNumber *)blogID
+                       success:(void (^)(NSArray *categories))success
+                       failure:(void (^)(NSError *error))failure
 {
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
-
-- (void)getCategoriesForBlog:(Blog *)blog
-                     success:(void (^)(NSArray *categories))success
-                     failure:(void (^)(NSError *error))failure
-{
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:@"category"];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:@"category"];
     [self.api callMethod:@"wp.getTerms"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -39,7 +25,7 @@
 }
 
 - (void)createCategory:(RemotePostCategory *)category
-               forBlog:(Blog *)blog
+             forBlogID:(NSNumber *)blogID
                success:(void (^)(RemotePostCategory *))success
                failure:(void (^)(NSError *))failure
 {
@@ -48,7 +34,7 @@
                                       @"parent_id" : category.parentID ?: @0,
                                       @"taxonomy" : @"category",
                                       };
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:extraParameters];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:extraParameters];
 
 
     [self.api callMethod:@"wp.newTerm"
@@ -80,11 +66,9 @@
 
 - (NSArray *)remoteCategoriesFromXMLRPCArray:(NSArray *)xmlrpcArray
 {
-    NSMutableArray *categories = [NSMutableArray arrayWithCapacity:xmlrpcArray.count];
-    for (NSDictionary *xmlrpcCategory in xmlrpcArray) {
-        [categories addObject:[self remoteCategoryFromXMLRPCDictionary:xmlrpcCategory]];
-    }
-    return [NSArray arrayWithArray:categories];
+    return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcCategory) {
+        return [self remoteCategoryFromXMLRPCDictionary:xmlrpcCategory];
+    }];
 }
 
 - (RemotePostCategory *)remoteCategoryFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary

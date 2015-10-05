@@ -137,7 +137,7 @@
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager merriweatherLightFontOfSize:fontSize]};
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager merriweatherRegularFontOfSize:fontSize]};
 }
 
 + (NSDictionary *)postCardDateAttributes
