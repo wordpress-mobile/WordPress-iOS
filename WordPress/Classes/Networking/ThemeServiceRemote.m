@@ -6,6 +6,7 @@
 
 // Service dictionary keys
 static NSString* const ThemeServiceRemoteThemesKey = @"themes";
+static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 
 @implementation ThemeServiceRemote
 
@@ -92,24 +93,15 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 - (NSOperation *)getThemes:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                    failure:(ThemeServiceRemoteFailureBlock)failure
 {
+    NSMutableArray *themes = [NSMutableArray array];
     static NSString* const path = @"themes";
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_2];
-    NSDictionary* parameters = @{@"tier": @"all"};
-
-    NSOperation *operation = [self.api GET:requestUrl
-                                parameters:parameters
-                                   success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
-                                       if (success) {
-                                           NSArray *themes = [self themesFromMultipleThemesRequestResponse:response];
-                                           success(themes);
-                                       }
-                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                                       if (failure) {
-                                           failure(error);
-                                       }
-                                   }];
-
+    
+    NSOperation *operation = [self getThemesPage:1
+                                          themes:themes
+                                            path:path
+                                         success:success
+                                         failure:failure];
+    
     return operation;
 }
 
@@ -119,17 +111,53 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 {
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
 
+    NSMutableArray *themes = [NSMutableArray array];
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
+    
+    NSOperation *operation = [self getThemesPage:1
+                                          themes:themes
+                                            path:path
+                                         success:success
+                                         failure:failure];
+    
+    return operation;
+}
+
+- (NSOperation *)getThemesPage:(NSInteger)page
+                        themes:(NSMutableArray *)themes
+                          path:(NSString *)path
+                       success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                       failure:(ThemeServiceRemoteFailureBlock)failure
+{
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_2];
-    NSDictionary* parameters = @{@"tier": @"all"};
+    
+    static NSString* const ThemeRequestTierKey = @"tier";
+    static NSString* const ThemeRequestTierAllValue = @"all";
+    static NSString* const ThemeRequestNumberKey = @"number";
+    static NSInteger const ThemeRequestNumberValue = 100;
+    static NSString* const ThemeRequestPageKey = @"page";
 
+    NSDictionary *parameters = @{ThemeRequestTierKey: ThemeRequestTierAllValue,
+                                 ThemeRequestNumberKey: @(ThemeRequestNumberValue),
+                                 ThemeRequestPageKey: @(page),
+                                 };
+    
     NSOperation *operation = [self.api GET:requestUrl
                                 parameters:parameters
                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
-                                       if (success) {
-                                           NSArray *themes = [self themesFromMultipleThemesRequestResponse:response];
-                                           success(themes);
+                                       NSArray *pageThemes = [self themesFromMultipleThemesRequestResponse:response];
+                                       [themes addObjectsFromArray:pageThemes];
+                                       NSInteger themesCount = [[response numberForKey:ThemeServiceRemoteThemeCountKey] integerValue];
+                                       if (pageThemes.count && themes.count < themesCount) {
+                                           NSInteger nextPage = page + 1;
+                                           [self getThemesPage:nextPage
+                                                        themes:themes
+                                                          path:path
+                                                       success:success 
+                                                       failure:failure];
+                                       }  else if (success) {
+                                           success([NSArray arrayWithArray:themes]);
                                        }
                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                        if (failure) {
@@ -142,7 +170,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 
 #pragma mark - Activating themes
 
-- (NSOperation *)activateThemeId:(NSString*)themeId
+- (NSOperation *)activateThemeId:(NSString *)themeId
                        forBlogId:(NSNumber *)blogId
                          success:(ThemeServiceRemoteSuccessBlock)success
                          failure:(ThemeServiceRemoteFailureBlock)failure
