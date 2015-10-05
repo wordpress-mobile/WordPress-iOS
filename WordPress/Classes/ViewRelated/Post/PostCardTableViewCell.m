@@ -32,6 +32,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonRight;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonLeft;
 @property (nonatomic, strong) IBOutlet PostCardActionBar *actionBar;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewLeftConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewLowerConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLowerConstraint;
@@ -141,7 +142,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 - (CGFloat)innerWidthForSize:(CGSize)size
 {
     CGFloat width = 0.0;
-    CGFloat horizontalMargin = CGRectGetMinX(self.headerView.frame);
+    CGFloat horizontalMargin = self.headerViewLeftConstraint.constant;
     // FIXME: Ideally we'd check `self.maxIPadWidthConstraint.isActive` but that
     // property is iOS 8 only. When iOS 7 support is ended update this and check
     // the constraint. 
