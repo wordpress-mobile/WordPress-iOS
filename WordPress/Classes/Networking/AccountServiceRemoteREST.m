@@ -96,7 +96,8 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
     NSDictionary *parameters = @{
                                  @"sites": sites,
                                  };
-    NSString *path = @"me/sites";
+    NSString *path = [self pathForEndpoint:@"me/sites"
+                               withVersion:ServiceRemoteRESTApiVersion_1_1];
     [self.api POST:path
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
