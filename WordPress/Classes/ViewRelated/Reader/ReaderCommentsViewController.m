@@ -133,6 +133,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleKeyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleApplicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -152,41 +156,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-    if ([UIDevice isPad]) {
-        return;
-    }
-
-    // Refresh cached row heights based on the width for the new orientation.
-    // Must happen before the table view calculates its content size / offset
-    // for the new orientation.
-    CGRect bounds = self.tableView.window.frame;
-    CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = CGRectGetHeight(bounds);
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        width = MIN(width, height);
-    } else {
-        width = MAX(width, height);
-    }
-    [self updateCellForLayoutWidthConstraint:width];
-    [self updateCachedMediaCellLayoutForWidth:width];
-
-    // Resize cells in the media cell cache
-    // No need to refresh on iPad when using a fixed width.
-    for (NSString *key in [self.mediaCellCache allKeys]) {
-        ReaderCommentCell *cell = [self.mediaCellCache objectForKey:key];
-        NSIndexPath *indexPath = [self indexPathForCommentWithID:[key numericValue]];
-
-        [cell refreshMediaLayout];
-        [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
-    }
-
-    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -196,6 +166,16 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self refreshNoResultsView];
 
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+    // Avoid refreshing cells when there is no need.
+    if ([UIDevice isPad] && WPTableViewFixedWidth <= CGRectGetWidth(self.tableView.frame)) {
+        return;
+    }
+    // Refresh cached row heights based on the width for the orientation.
+    // If changing orientation, this must happen before the table view calculates
+    // its content size / offset for the new orientation.
+    CGFloat width = CGRectGetWidth(self.tableView.frame);
+    [self updateCellsAndRefreshMediaForWidth:width];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -203,7 +183,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
     NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-    if (IS_IPHONE) {
+
+    // Avoid refreshing cells when there is no need.
+    if (![UIDevice isPad] || WPTableViewFixedWidth > CGRectGetWidth(self.tableView.frame)) {
         // DTCoreText can be cranky about refreshing its rendered text when its
         // frame changes, even when setting its relayoutMask. Setting setNeedsLayout
         // on the cell prior to reloading seems to force the cell's
@@ -211,7 +193,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         [[self.tableView visibleCells] makeObjectsPerformSelector:@selector(setNeedsLayout)];
         [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
     }
-
+    
     // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
     if (selectedIndexPath) {
         [self.replyTextView becomeFirstResponder];
@@ -219,6 +201,34 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 
     [self refreshNoResultsView];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self.view layoutIfNeeded];
+
+    CGFloat width = CGRectGetWidth(self.view.frame);
+    [self updateCellsAndRefreshMediaForWidth:width];
+    [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+
+#pragma mark - Split View Support
+
+/**
+ We need to refresh media layout when the app's size changes due the the user adjusting
+ the split view grip. Respond to the UIApplicationDidBecomeActiveNotification notification
+ dispatched when the grip is changed and refresh media layout.
+ */
+- (void)handleApplicationDidBecomeActive:(NSNotification *)notification
+{
+    [self.view layoutIfNeeded];
+
+    CGFloat width = CGRectGetWidth(self.view.frame);
+    [self updateCellsAndRefreshMediaForWidth:width];
+    [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 
@@ -382,7 +392,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                            constant:0.0]];
 
     if ([UIDevice isPad]) {
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[postHeader(WPTableViewWidth)]"
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(>=0)-[postHeader(WPTableViewWidth@900)]-(>=0)-|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
@@ -425,7 +435,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.view addConstraint:self.replyTextViewBottomConstraint];
     
     if ([UIDevice isPad]) {
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[replyTextView(WPTableViewWidth)]"
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(>=0)-[replyTextView(WPTableViewWidth@900)]-(>=0)-|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
@@ -482,6 +492,25 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
     
     return NSLocalizedString(@"Be the first to leave a commment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
+}
+
+// Call when changing orientation, or when split view size changes.
+- (void)updateCellsAndRefreshMediaForWidth:(CGFloat)width
+{
+    [self updateCellForLayoutWidthConstraint:width];
+    [self updateCachedMediaCellLayoutForWidth:width];
+
+    // Resize cells in the media cell cache
+    // No need to refresh on iPad when using a fixed width.
+    for (NSString *key in [self.mediaCellCache allKeys]) {
+        ReaderCommentCell *cell = [self.mediaCellCache objectForKey:key];
+        NSIndexPath *indexPath = [self indexPathForCommentWithID:[key numericValue]];
+
+        [cell refreshMediaLayout];
+        [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
+    }
+
+    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
 }
 
 - (void)updateCellForLayoutWidthConstraint:(CGFloat)width
@@ -978,7 +1007,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat width = [UIDevice isPad] ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGFloat width = [UIDevice isPad] ? MIN(WPTableViewFixedWidth, CGRectGetWidth(self.view.bounds)) : CGRectGetWidth(self.tableView.bounds);
     return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
 }
 
