@@ -17,15 +17,16 @@
 @property (nonatomic, retain) NSString *previewUrl;
 @property (nonatomic, retain) Blog *blog;
 
+/**
+ *  @brief      Call this method to know the entity name for objects of this class.
+ *  @details    Returns the same name as the class for this implementation.  If child classes
+ *              have a difference in the CoreData and class name, they should override this method.
+ *
+ *  @returns    The entity name.
+ */
++ (NSString *)entityName;
+
 - (BOOL)isCurrentTheme;
 - (BOOL)isPremium;
-
-@end
-
-@interface Theme (WordPressComApi)
-
-+ (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
-+ (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)activateThemeWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end

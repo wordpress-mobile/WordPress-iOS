@@ -1,34 +1,46 @@
 #import "ReaderTopicServiceRemote.h"
-#import "WordPressComApi.h"
 #import "RemoteReaderTopic.h"
-#import "ReaderTopic.h"
 #import "RemoteReaderSiteInfo.h"
+#import "WordPressComApi.h"
+#import "WordPress-Swift.h"
 
-NSString * const WordPressComReaderEndpointURL = @"https://public-api.wordpress.com/rest/v1.2/";
 static NSString * const TopicMenuSectionDefaultKey = @"default";
 static NSString * const TopicMenuSectionSubscribedKey = @"subscribed";
 static NSString * const TopicMenuSectionRecommendedKey = @"recommended";
 static NSString * const TopicRemovedTagKey = @"removed_tag";
 static NSString * const TopicAddedTagKey = @"added_tag";
 static NSString * const TopicDictionaryIDKey = @"ID";
+static NSString * const TopicDictionaryOwnerKey = @"owner";
 static NSString * const TopicDictionarySlugKey = @"slug";
+static NSString * const TopicDictionaryTagKey = @"tag";
 static NSString * const TopicDictionaryTitleKey = @"title";
 static NSString * const TopicDictionaryURLKey = @"URL";
 static NSString * const TopicNotFoundMarker = @"-notfound-";
 
+// Site Topic Keys
+static NSString * const SiteDictionaryFeedIDKey = @"feed_ID";
+static NSString * const SiteDictionaryFollowingKey = @"is_following";
+static NSString * const SiteDictionaryJetpackKey = @"is_jetpack";
+static NSString * const SiteDictionaryPrivateKey = @"is_private";
+static NSString * const SiteDictionaryVisibleKey = @"visible";
+static NSString * const SiteDictionaryPostCountKey = @"post_count";
+static NSString * const SiteDictionaryIconPathKey = @"icon.img";
+static NSString * const SiteDictionaryDescriptionKey = @"description";
 static NSString * const SiteDictionaryIDKey = @"ID";
 static NSString * const SiteDictionaryNameKey = @"name";
-static NSString * const SiteDictionaryDescriptionKey = @"description";
 static NSString * const SiteDictionaryURLKey = @"URL";
-static NSString * const SiteDictionaryFollowingKey = @"is_following";
+static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
+
 
 @implementation ReaderTopicServiceRemote
 
 - (void)fetchReaderMenuWithSuccess:(void (^)(NSArray *topics))success failure:(void (^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"%@read/menu", WordPressComReaderEndpointURL];
+    NSString *path = @"read/menu";
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_2];
 
-    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
         if (!success) {
             return;
         }
@@ -72,9 +84,11 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
                   withSuccess:(void (^)(NSNumber *topicID))success
                       failure:(void (^)(NSError *error))failure
 {
-    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/delete", slug];
+    NSString *path = [NSString stringWithFormat:@"read/tags/%@/mine/delete", slug];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
 
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         if (!success) {
             return;
         }
@@ -93,9 +107,18 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
                  failure:(void (^)(NSError *error))failure
 {
     topicName = [self sanitizeTopicNameForAPI:topicName];
-    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/new", topicName];
+    [self followTopicWithSlug:topicName withSuccess:success failure:failure];
+}
 
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+- (void)followTopicWithSlug:(NSString *)slug
+             withSuccess:(void (^)(NSNumber *topicID))success
+                 failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"read/tags/%@/mine/new", slug];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+
+    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
             return;
         }
@@ -109,23 +132,60 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
     }];
 }
 
-- (void)fetchSiteInfoForSiteWithID:(NSNumber *)siteID
-                           success:(void (^)(RemoteReaderSiteInfo *siteInfo))success
+- (void)fetchTagInfoForTagWithSlug:(NSString *)slug
+                           success:(void (^)(RemoteReaderTopic *remoteTopic))success
                            failure:(void (^)(NSError *error))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@", siteID];
+    NSString *path = [NSString stringWithFormat:@"read/tags/%@", slug];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
 
-    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
             return;
         }
+
         NSDictionary *response = (NSDictionary *)responseObject;
-        RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
-        siteInfo.siteID = [response numberForKey:SiteDictionaryIDKey];
-        siteInfo.siteName = [response stringForKey:SiteDictionaryNameKey];
-        siteInfo.siteDescription = [response stringForKey:SiteDictionaryDescriptionKey];
-        siteInfo.siteURL = [response stringForKey:SiteDictionaryURLKey];
-        siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
+        NSDictionary *topicDict = [response dictionaryForKey:TopicDictionaryTagKey];
+        RemoteReaderTopic *remoteTopic = [self normalizeMenuTopicDictionary:topicDict subscribed:NO recommended:NO];
+        remoteTopic.isMenuItem = NO;
+        success(remoteTopic);
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)fetchSiteInfoForSiteWithID:(NSNumber *)siteID
+                            isFeed:(BOOL)isFeed
+                           success:(void (^)(RemoteReaderSiteInfo *siteInfo))success
+                           failure:(void (^)(NSError *error))failure
+{
+    NSString *requestUrl;
+    if (isFeed) {
+        NSString *path = [NSString stringWithFormat:@"read/feed/%@", siteID];
+        requestUrl = [self pathForEndpoint:path
+                               withVersion:ServiceRemoteRESTApiVersion_1_1];
+    } else {
+        NSString *path = [NSString stringWithFormat:@"read/sites/%@", siteID];
+        requestUrl = [self pathForEndpoint:path
+                               withVersion:ServiceRemoteRESTApiVersion_1_2];
+    }
+    
+    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (!success) {
+            return;
+        }
+
+        RemoteReaderSiteInfo *siteInfo;
+        NSDictionary *response = (NSDictionary *)responseObject;
+        if (isFeed) {
+            siteInfo = [self siteInfoForFeedResponse:response];
+        } else {
+            siteInfo = [self siteInfoForSiteResponse:response];
+        }
         success(siteInfo);
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -133,6 +193,48 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
             failure(error);
         }
     }];
+}
+
+- (RemoteReaderSiteInfo *)siteInfoForSiteResponse:(NSDictionary *)response
+{
+    RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
+    siteInfo.feedID = [response numberForKey:SiteDictionaryFeedIDKey];
+    siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
+    siteInfo.isJetpack = [[response numberForKey:SiteDictionaryJetpackKey] boolValue];
+    siteInfo.isPrivate = [[response numberForKey:SiteDictionaryPrivateKey] boolValue];
+    siteInfo.isVisible = [[response numberForKey:SiteDictionaryVisibleKey] boolValue];
+    siteInfo.postCount = [response numberForKey:SiteDictionaryPostCountKey];
+    siteInfo.siteBlavatar = [response stringForKeyPath:SiteDictionaryIconPathKey];
+    siteInfo.siteDescription = [response stringForKey:SiteDictionaryDescriptionKey];
+    siteInfo.siteID = [response numberForKey:SiteDictionaryIDKey];
+    siteInfo.siteName = [response stringForKey:SiteDictionaryNameKey];
+    siteInfo.siteURL = [response stringForKey:SiteDictionaryURLKey];
+    siteInfo.subscriberCount = [response numberForKey:SiteDictionarySubscriptionsKey] ?: @0;
+    if (![siteInfo.siteName length] && [siteInfo.siteURL length] > 0) {
+        siteInfo.siteName = [[NSURL URLWithString:siteInfo.siteURL] host];
+    }
+    return siteInfo;
+}
+
+- (RemoteReaderSiteInfo *)siteInfoForFeedResponse:(NSDictionary *)response
+{
+    RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
+    siteInfo.feedID = [response numberForKey:SiteDictionaryFeedIDKey];
+    siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
+    siteInfo.isJetpack = NO;
+    siteInfo.isPrivate = NO;
+    siteInfo.isVisible = YES;
+    siteInfo.postCount = @0;
+    siteInfo.siteBlavatar = @"";
+    siteInfo.siteDescription = @"";
+    siteInfo.siteID = @0;
+    siteInfo.siteName = [response stringForKey:SiteDictionaryNameKey];
+    siteInfo.siteURL = [response stringForKey:SiteDictionaryURLKey];
+    siteInfo.subscriberCount = [response numberForKey:SiteDictionarySubscriptionsKey] ?: @0;
+    if (![siteInfo.siteName length] && [siteInfo.siteURL length] > 0) {
+        siteInfo.siteName = [[NSURL URLWithString:siteInfo.siteURL] host];
+    }
+    return siteInfo;
 }
 
 
@@ -196,22 +298,17 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
 
 - (NSArray *)normalizeMenuTopicsList:(NSArray *)rawTopics subscribed:(BOOL)subscribed recommended:(BOOL)recommended
 {
-    NSMutableArray *topics = [NSMutableArray array];
-    for (NSDictionary *topicDict in rawTopics) {
-        // Failsafe
-        if (![topicDict isKindOfClass:[NSDictionary class]]) {
-            continue;
-        }
-        [topics addObject:[self normalizeMenuTopicDictionary:topicDict subscribed:subscribed recommended:recommended]];
-    }
-    return [topics copy]; // Return immutable array.
+    return [[rawTopics wp_filter:^BOOL(id obj) {
+        return [obj isKindOfClass:[NSDictionary class]];
+    }] wp_map:^id(NSDictionary *topic) {
+        return [self normalizeMenuTopicDictionary:topic subscribed:subscribed recommended:recommended];
+    }];
 }
 
 - (RemoteReaderTopic *)normalizeMenuTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended
 {
     RemoteReaderTopic *topic = [self normalizeTopicDictionary:topicDict subscribed:subscribed recommended:recommended];
     topic.isMenuItem = YES;
-    topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
     return topic;
 }
 
@@ -236,7 +333,8 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
     topic.topicID = topicID;
     topic.isSubscribed = subscribed;
     topic.isRecommended = recommended;
-    topic.path = [topicDict stringForKey:TopicDictionaryURLKey];
+    topic.owner = [topicDict stringForKey:TopicDictionaryOwnerKey];
+    topic.path = [[topicDict stringForKey:TopicDictionaryURLKey] lowercaseString];
     topic.slug = [topicDict stringForKey:TopicDictionarySlugKey];
     topic.title = [topicDict stringForKey:TopicDictionaryTitleKey];
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B17" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -86,13 +86,6 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FKH-hU-5a8">
-                        <rect key="frame" x="12" y="69" width="308" height="1"/>
-                        <color key="backgroundColor" red="0.6910223365" green="0.1778415109" blue="0.27158834729999998" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="1" id="Zt1-sT-XhR"/>
-                        </constraints>
-                    </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="wcv-fL-daS" secondAttribute="leading" id="3gF-DJ-y1E"/>
@@ -105,10 +98,7 @@
                     <constraint firstItem="GgS-tD-1kB" firstAttribute="top" secondItem="9Ex-yA-LkS" secondAttribute="top" constant="12" id="UVx-Pm-foz"/>
                     <constraint firstItem="GgS-tD-1kB" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="12" id="a80-yz-Nlv"/>
                     <constraint firstItem="SfC-6n-kyD" firstAttribute="leading" secondItem="GgS-tD-1kB" secondAttribute="trailing" constant="13" id="dT8-x1-JZI"/>
-                    <constraint firstAttribute="bottom" secondItem="FKH-hU-5a8" secondAttribute="bottom" id="dcc-of-iaU"/>
-                    <constraint firstAttribute="trailing" secondItem="FKH-hU-5a8" secondAttribute="trailing" id="n5k-uU-zzh"/>
                     <constraint firstItem="wcv-fL-daS" firstAttribute="top" secondItem="SfC-6n-kyD" secondAttribute="bottom" id="vFp-hy-O2S"/>
-                    <constraint firstItem="FKH-hU-5a8" firstAttribute="leading" secondItem="GgS-tD-1kB" secondAttribute="leading" id="wou-BJ-29g"/>
                     <constraint firstItem="wfO-j3-kM6" firstAttribute="leading" secondItem="9Ex-yA-LkS" secondAttribute="leading" constant="42" id="wvg-PE-czH"/>
                 </constraints>
             </tableViewCellContentView>
@@ -118,7 +108,6 @@
                 <outlet property="noticonContainerView" destination="wfO-j3-kM6" id="g1d-st-HbJ"/>
                 <outlet property="noticonLabel" destination="a81-9a-t1j" id="8QY-8p-5cq"/>
                 <outlet property="noticonView" destination="iFs-j8-6X0" id="LIs-g5-KSf"/>
-                <outlet property="separatorView" destination="FKH-hU-5a8" id="0Bq-tO-8DS"/>
                 <outlet property="snippetLabel" destination="wcv-fL-daS" id="vXn-Z0-vQW"/>
                 <outlet property="subjectLabel" destination="SfC-6n-kyD" id="r2y-qC-96l"/>
             </connections>

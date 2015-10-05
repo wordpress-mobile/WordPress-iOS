@@ -93,7 +93,7 @@
     
     NSString *alertTitle = NSLocalizedString(@"Careful!",
                                              @"Title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
-    NSString *alertMessage = NSLocalizedString(@"Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not loose anything already saved to your WordPress.com blog(s).",
+    NSString *alertMessage = NSLocalizedString(@"Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s).",
                                                @"Message for the warning shown to the user when he refuses to re-login when the authToken is missing.");
     NSString *cancelButtonTitle = NSLocalizedString(@"Cancel",
                                                     @"Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.");

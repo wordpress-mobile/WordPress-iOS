@@ -156,7 +156,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     };
     
     [remote createMedia:remoteMedia
-                forBlog:media.blog
+              forBlogID:media.blog.blogID
                progress:progress
                 success:successBlock
                 failure:failureBlock];
@@ -169,7 +169,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
     
-    [remote getMediaWithID:mediaID forBlog:blog success:^(RemoteMedia *remoteMedia) {
+    [remote getMediaWithID:mediaID forBlogID:blog.blogID success:^(RemoteMedia *remoteMedia) {
        [self.managedObjectContext performBlock:^{
            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
            if (!blog) {
@@ -232,7 +232,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogObjectID = [blog objectID];
-    [remote getMediaLibraryForBlog:blog
+    [remote getMediaLibraryForBlogID:blog.blogID
                            success:^(NSArray *media) {
                                [self.managedObjectContext performBlock:^{
                                    Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
@@ -335,7 +335,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                             failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getMediaLibraryCountForBlog:blog
+    [remote getMediaLibraryCountForBlogID:blog.blogID
                            success:^(NSInteger count) {
                                if (success) {
                                    success(count);
@@ -374,7 +374,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 - (Media *)newMediaForPost:(AbstractPost *)post
 {
     Media *media = [self newMediaForBlog:post.blog];
-    [media.posts addObject:post];
+    [media addPostsObject:post];
     return media;
 }
 
@@ -455,7 +455,7 @@ static NSString * const MediaDirectory = @"Media";
         remote = [[MediaServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
-        remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:client];
+        remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:client username:blog.username password:blog.password];
     }
     return remote;
 }
@@ -486,8 +486,10 @@ static NSString * const MediaDirectory = @"Media";
             [self.managedObjectContext deleteObject:deleteMedia];
         }
     }
-
-    [self.managedObjectContext save:nil];
+    NSError *error;
+    if (![self.managedObjectContext save:&error]){
+        DDLogError(@"Error saving context afer adding media %@", [error localizedDescription]);
+    }
     if (completion) {
         completion();
     }
@@ -511,14 +513,14 @@ static NSString * const MediaDirectory = @"Media";
     media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL;
 }
 
-- (RemoteMedia *) remoteMediaFromMedia:(Media *)media
+- (RemoteMedia *)remoteMediaFromMedia:(Media *)media
 {
     RemoteMedia *remoteMedia = [[RemoteMedia alloc] init];
     remoteMedia.mediaID = media.mediaID;
     remoteMedia.url = [NSURL URLWithString:media.remoteURL];
     remoteMedia.date = media.creationDate;
     remoteMedia.file = media.filename;
-    remoteMedia.extension = media.mediaTypeString;
+    remoteMedia.extension = [media.filename pathExtension] ? :@"unknown";
     remoteMedia.title = media.title;
     remoteMedia.caption = media.caption;
     remoteMedia.descriptionText = media.desc;

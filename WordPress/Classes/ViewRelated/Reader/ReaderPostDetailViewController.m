@@ -1,24 +1,32 @@
 #import "ReaderPostDetailViewController.h"
 
+#import "BlogService.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
-#import "ReaderBrowseSiteViewController.h"
+#import "ReachabilityUtils.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostRichContentView.h"
 #import "ReaderPostRichUnattributedContentView.h"
 #import "ReaderPostService.h"
+#import "SourcePostAttribution.h"
 #import "WPActivityDefaults.h"
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPTableImageSource.h"
 #import "WPWebViewController.h"
+#import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
-#import "BlogService.h"
-#import "SourcePostAttribution.h"
+#import "WPUserAgent.h"
 
 static CGFloat const VerticalMargin = 40;
 static NSInteger const ReaderPostDetailImageQuality = 65;
+NSString * const ReaderPostLikeCountKeyPath = @"likeCount";
+NSString * const ReaderDetailTypeKey = @"post_detail_type";
+NSString * const ReaderDetailTypeNormal = @"normal";
+NSString * const ReaderDetailTypePreviewSite = @"preview_site";
+NSString * const ReaderDetailOfflineKey = @"offline_view";
+NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 @interface ReaderPostDetailViewController ()<ReaderPostContentViewDelegate,
                                             WPRichTextViewDelegate,
@@ -31,6 +39,8 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic) BOOL didBumpStats;
+@property (nonatomic) BOOL didBumpPageViews;
 
 @end
 
@@ -56,6 +66,12 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 
 #pragma mark - LifeCycle Methods
 
+- (void)dealloc
+{
+    [self.post removeObserver:self forKeyPath:ReaderPostLikeCountKeyPath];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -72,6 +88,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 {
     [super viewWillAppear:animated];
 
+    [self bumpStats];
     [self refresh];
 }
 
@@ -86,29 +103,58 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     // The performance hit only happens once so its fine to discard the controller
     // after it loads its view.
     [[self activityViewControllerForSharing] view];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleApplicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [self.postView refreshMediaLayout];
+}
 
-    if (IS_IPHONE) {
-        // Resize media in the post detail to match the width of the new orientation.
-        // No need to refresh on iPad when using a fixed width.
-        [self.postView refreshMediaLayout];
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self.view layoutIfNeeded];
+    [self.postView refreshMediaLayout];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    if (object == self.post && [keyPath isEqualToString:ReaderPostLikeCountKeyPath]) {
+        // Note: The intent here is to update the action buttons, specifically the
+        // like button, *after* both likeCount and isLiked has changed. The order
+        // of the properties is important.
+        [self.postView updateActionButtons];
     }
+}
+
+
+#pragma mark - Split View Support
+
+/**
+ We need to refresh media layout when the app's size changes due the the user adjusting
+ the split view grip. Respond to the UIApplicationDidBecomeActiveNotification notification
+ dispatched when the grip is changed and refresh media layout.
+ */
+- (void)handleApplicationDidBecomeActive:(NSNotification *)notification
+{
+    [self.view layoutIfNeeded];
+    [self.postView refreshMediaLayout];
 }
 
 
 #pragma mark - Configuration
-
-- (Class)classForPostView
-{
-    if (self.readerViewStyle == ReaderViewStyleSitePreview) {
-        return [ReaderPostRichUnattributedContentView class];
-    }
-    return [ReaderPostRichContentView class];
-}
 
 - (void)configureNavbar
 {
@@ -128,8 +174,8 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 
 - (void)configurePostView
 {
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
-    self.postView = [[[self classForPostView] alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
+    CGFloat width = [UIDevice isPad] ? MIN(WPTableViewFixedWidth, CGRectGetWidth(self.view.bounds)) : CGRectGetWidth(self.view.bounds);
+    self.postView = [[ReaderPostRichContentView alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
@@ -148,7 +194,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     NSParameterAssert(self.postView);
 
     UIView *mainView = self.view;
-    CGFloat verticalMargin = IS_IPAD ? VerticalMargin : 0;
+    CGFloat verticalMargin = [UIDevice isPad] ? VerticalMargin : 0;
     NSDictionary *views = NSDictionaryOfVariableBindings(_scrollView, _postView, mainView);
     NSDictionary *metrics = @{@"WPTableViewWidth": @(WPTableViewFixedWidth), @"verticalMargin": @(verticalMargin)};
 
@@ -169,8 +215,8 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
                                                          multiplier:1.0
                                                            constant:0.0]];
 
-    if (IS_IPAD) {
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_postView(WPTableViewWidth)]"
+    if ([UIDevice isPad]) {
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(>=0)-[_postView(WPTableViewWidth@900)]-(>=0)-|"
                                                                                 options:0
                                                                                 metrics:metrics
                                                                                   views:views]];
@@ -254,6 +300,22 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 
 #pragma mark - Accessor methods
 
+- (void)setPost:(ReaderPost *)post
+{
+    if (post == _post) {
+        return;
+    }
+
+    if (!post) {
+        [_post removeObserver:self forKeyPath:ReaderPostLikeCountKeyPath];
+        _post = nil;
+        return;
+    }
+
+    _post = post;
+    [_post addObserver:self forKeyPath:ReaderPostLikeCountKeyPath options:0 context:nil];
+}
+
 - (UIBarButtonItem *)shareButton
 {
     if (_shareButton) {
@@ -307,11 +369,14 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     NSParameterAssert(self.postView);
 
     self.postView.hidden = !self.isLoaded;
-    
+
     if (!self.isLoaded) {
         return;
     }
-    
+
+    // We have a post. Bump its page views.
+    [self bumpPageViewsForPost:self.post.postID site:self.post.siteID siteURL:self.post.blogURL];
+
     [self.postView configurePost:self.post];
     
     CGSize imageSize = CGSizeMake(WPContentViewAuthorAvatarSize, WPContentViewAuthorAvatarSize);
@@ -339,14 +404,14 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 - (void)fetchFeaturedImage
 {
     if (!self.featuredImageSource) {
-        CGFloat maxWidth = IS_IPAD ? WPTableViewFixedWidth : MAX(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));;
+        CGFloat maxWidth = MAX(CGRectGetWidth(self.postView.bounds), CGRectGetHeight(self.postView.bounds));
         CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
         self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
         self.featuredImageSource.delegate = self;
         self.featuredImageSource.photonQuality = ReaderPostDetailImageQuality;
     }
     
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
+    CGFloat width = CGRectGetWidth(self.postView.bounds);
     CGFloat height = round(width * WPContentViewMaxImageHeightPercentage);
     CGSize size = CGSizeMake(width, height);
     
@@ -363,12 +428,77 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 }
 
 
+#pragma mark - Analytics
+
+- (void)bumpStats
+{
+    if (self.didBumpStats) {
+        return;
+    }
+    self.didBumpStats = YES;
+    NSString *isOfflineView = [ReachabilityUtils isInternetReachable] ? @"no" : @"yes";
+    NSString *detailType = (self.post.topic.type == ReaderSiteTopic.TopicType) ? ReaderDetailTypePreviewSite : ReaderDetailTypeNormal;
+    NSDictionary *properties = @{
+                                 ReaderDetailTypeKey:detailType,
+                                 ReaderDetailOfflineKey:isOfflineView
+                                 };
+    [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle withProperties:properties];
+}
+
+- (void)bumpPageViewsForPost:(NSNumber *)postID site:(NSNumber *)siteID siteURL:(NSString *)siteURL
+{
+    if (self.didBumpPageViews) {
+        return;
+    }
+    self.didBumpPageViews = YES;
+
+    // If the user is an admin on the post's site do not bump the page view unless
+    // the the post is private.
+    if (!self.post.isPrivate && [self isUserAdminOnSiteWithID:self.post.siteID]) {
+        return;
+    }
+
+    NSURL *site = [NSURL URLWithString:siteURL];
+    if (![site host]) {
+        return;
+    }
+    NSString *pixel = @"https://pixel.wp.com/g.gif";
+    NSArray *params = @[
+                        @"v=wpcom",
+                        @"reader=1",
+                        [NSString stringWithFormat:@"ref=%@", ReaderPixelStatReferrer],
+                        [NSString stringWithFormat:@"host=%@",[site host]],
+                        [NSString stringWithFormat:@"blog=%@",siteID],
+                        [NSString stringWithFormat:@"post=%@",postID],
+                        [NSString stringWithFormat:@"t=%d", arc4random()]
+                        ];
+
+    NSString *path = [NSString stringWithFormat:@"%@?%@", pixel, [params componentsJoinedByString:@"&"]];
+    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
+
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:path]];
+    [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+    [request setValue:ReaderPixelStatReferrer forHTTPHeaderField:@"Referer"];
+
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+    [task resume];
+}
+
+- (BOOL)isUserAdminOnSiteWithID:(NSNumber *)siteID
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    Blog *blog = [blogService blogByBlogId:siteID];
+    return blog.isAdmin;
+}
+
+
 #pragma mark - Actions
 
 - (void)handleShareButtonTapped:(id)sender
 {
     UIActivityViewController *activityViewController = [self activityViewControllerForSharing];
-    if (IS_IPAD) {
+    if ([UIDevice isPad]) {
         if (self.popover) {
             [self dismissPopover];
             return;
@@ -400,10 +530,6 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     UIButton *followButton = (UIButton *)sender;
     ReaderPost *post = self.post;
 
-    if (!post.isFollowing) {
-        [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
-    }
-
     [followButton setSelected:!post.isFollowing]; // Set it optimistically
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
@@ -418,7 +544,8 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 
 - (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
 {
-    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:self.post];
+    NSNumber *siteID = self.post.siteID;
+    ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:siteID isFeed:self.post.isExternal];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -427,15 +554,9 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     ReaderPost *post = self.post;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    [service toggleLikedForPost:post success:^{
-        if (post.isLiked) {
-            [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
-        }
-    } failure:^(NSError *error) {
-        DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-        [postView updateActionButtons];
+    [service toggleLikedForPost:post success:nil failure:^(NSError *error) {
+        DDLogError(@"Error (un)liking post : %@", [error localizedDescription]);
     }];
-    [postView updateActionButtons];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
@@ -450,19 +571,24 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
         return;
     }
     if (self.post.sourceAttribution.blogID) {
-        ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithSiteID:self.post.sourceAttribution.blogID
-                                                                                                    siteURL:self.post.sourceAttribution.blogURL
-                                                                                                    isWPcom:YES];
+        ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:self.post.sourceAttribution.blogID isFeed:NO];
         [self.navigationController pushViewController:controller animated:YES];
         return;
     }
-    NSURL *linkURL = [NSURL URLWithString:self.post.sourceAttribution.blogURL];
+
+    NSString *path;
+    if ([self.post.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {
+        path = self.post.sourceAttribution.permalink;
+    } else {
+        path = self.post.sourceAttribution.blogURL;
+    }
+    NSURL *linkURL = [NSURL URLWithString:path];
     [self presentWebViewControllerWithLink:linkURL];
 }
 
 - (void)presentWebViewControllerWithLink:(NSURL *)linkURL
 {
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:linkURL];
+    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:linkURL];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }

@@ -8,7 +8,7 @@ extension WPStyleGuide
         // Styles used by ReplyTextView
         //
         public static let buttonFont       = WPFontManager.openSansBoldFontOfSize(13)
-        public static let textFont         = WPFontManager.merriweatherLightFontOfSize(14)
+        public static let textFont         = WPFontManager.merriweatherRegularFontOfSize(14)
 
         public static let enabledColor     = WPStyleGuide.newKidOnTheBlockBlue()
         public static let disabledColor    = UIColor(red: 0xA1/255.0, green: 0xB9/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)

@@ -46,7 +46,7 @@
         XCTAssertEqual(image.size.width, 48.f, @"avatar should be resized");
         [fetchExpectation fulfill];
     }];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
 
     image = [_source cachedImageForGravatarEmail:email withSize:size];
     XCTAssertNotNil(image, @"avatar should be in cache");

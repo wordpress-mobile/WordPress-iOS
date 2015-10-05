@@ -36,8 +36,6 @@
 // Data services
 #import "BlogService.h"
 #import "MediaService.h"
-#import "ReaderPostService.h"
-#import "ReaderTopicService.h"
 
 // Logging
 #import "WPLogger.h"
@@ -63,6 +61,7 @@
 #import "WordPress-Swift.h"
 
 // View controllers
+#import "RotationAwareNavigationViewController.h"
 #import "LoginViewController.h"
 #import "ReaderViewController.h"
 #import "StatsViewController.h"
@@ -194,6 +193,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+    DDLogInfo(@"Application launched with URL: %@", url);
     BOOL returnValue = NO;
 
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
@@ -216,7 +216,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
     if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPCOM_SCHEME]) {
         NSString *URLString = [url absoluteString];
-        DDLogInfo(@"Application launched with URL: %@", URLString);
 
         if ([URLString rangeOfString:@"newpost"].length) {
             returnValue = [self handleNewPostRequestWithURL:url];
@@ -397,7 +396,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     self.userAgent = [[WPUserAgent alloc] init];
     [self setupSingleSignOn];
-    
+
+    // WORKAROUND: Preload the Merriweather regular font to ensure it is not overridden
+    // by any of the Merriweather varients.  Size is arbitrary.
+    // See: https://github.com/wordpress-mobile/WordPress-Shared-iOS/issues/79
+    // Remove this when #79 is resolved.
+    [WPFontManager merriweatherRegularFontOfSize:16.0];
+
     [self customizeAppearance];
     
     // Push notifications
@@ -553,7 +558,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         [strongSelf showWhatsNewIfNeeded];
     };
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    UINavigationController *navigationController = [[RotationAwareNavigationViewController alloc] initWithRootViewController:loginViewController];
     navigationController.navigationBar.translucent = NO;
 
     [self.window.rootViewController presentViewController:navigationController animated:animated completion:nil];
@@ -603,15 +608,15 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
 
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager openSansBoldFontOfSize:16.0]} ];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager openSansBoldFontOfSize:17.0]} ];
 
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:[WPStyleGuide wordPressBlue]] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor UIColorFromHex:0x007eb1]]];
     [[UINavigationBar appearance] setBarStyle:UIBarStyleBlack];
 
     [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:17.0], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:17.0], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
     
     [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont]} forState:UIControlStateNormal];
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
@@ -968,15 +973,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     if (notification.object) {
         [self loginSimperium];
 
-        NSManagedObjectContext *context     = [[ContextManager sharedInstance] newDerivedContext];
-        ReaderTopicService *topicService    = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-        [context performBlock:^{
-            ReaderTopic *topic              = topicService.currentTopic;
-            if (topic) {
-                ReaderPostService *service  = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-                [service fetchPostsForTopic:topic success:nil failure:nil];
-            }
-        }];
     } else {
         if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
             [WPAnalytics track:WPAnalyticsStatLogout];

@@ -4,7 +4,7 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
 #import <DDFileLogger.h>
-#import "WPTableViewSectionFooterView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import <Helpshift/Helpshift.h>
 #import "WPAnalytics.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
@@ -32,8 +32,6 @@ int const kHelpshiftWindowTypeFAQs = 1;
 int const kHelpshiftWindowTypeConversation = 2;
 
 static NSString *const FeedbackCheckUrl = @"https://api.wordpress.org/iphoneapp/feedback-check/1.0/";
-
-static CGFloat const SupportRowHeight = 44.0f;
 
 @interface SupportViewController () <UIViewControllerRestoration>
 
@@ -147,12 +145,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 {
     [super viewDidLoad];
     
-    if ([UIDevice isOS8]) { // iOS8 or higher
-        [self.tableView setEstimatedRowHeight:SupportRowHeight];
-        [self.tableView setRowHeight:UITableViewAutomaticDimension];
-    } else {
-        [self.tableView setRowHeight:SupportRowHeight];
-    }
+    [self.tableView setRowHeight:WPTableViewDefaultRowHeight];
     
     if (UIDevice.isPad) {
         self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
@@ -163,6 +156,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 
@@ -233,7 +227,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 
         [metaData addEntriesFromDictionary:@{@"WPCom Username": defaultAccount.username}];
 
-        [defaultAccount.restApi GET:@"me"
+        [defaultAccount.restApi GET:@"v1.1/me"
                          parameters:nil
                             success:^(AFHTTPRequestOperation *operation, id responseObject) {
                                 [self hideLoadingSpinner];
@@ -419,9 +413,9 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         return nil;
     }
     
-    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = title;
-    return header;
+    WPTableViewSectionHeaderFooterView *footer = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
+    footer.title = title;
+    return footer;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -432,7 +426,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         return CGFLOAT_MIN;
     }
     
-    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForFooter:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)titleForFooterInSection:(NSInteger)section

@@ -6,5 +6,6 @@
 @property (copy) NSString *xmlrpc;
 @property (assign) BOOL jetpack;
 @property (copy) NSString *icon;
+@property (assign) BOOL isAdmin;
 @property (assign) BOOL visible;
 @end

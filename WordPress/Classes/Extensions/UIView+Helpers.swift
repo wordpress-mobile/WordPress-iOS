@@ -19,6 +19,15 @@ extension UIView
         addConstraints(newConstraints)
     }
 
+    public func pinSubviewAtCenter(subview: UIView) {
+        let newConstraints = [
+            NSLayoutConstraint(item: self, attribute: .CenterX,  relatedBy: .Equal, toItem: subview, attribute: .CenterX,  multiplier: 1, constant: 0),
+            NSLayoutConstraint(item: self, attribute: .CenterY,  relatedBy: .Equal, toItem: subview, attribute: .CenterY,  multiplier: 1, constant: 0)
+        ]
+        
+        addConstraints(newConstraints)
+    }
+    
     public func pinSubviewToAllEdges(subview: UIView) {
         let newConstraints = [
             NSLayoutConstraint(item: self, attribute: .Leading,  relatedBy: .Equal, toItem: subview, attribute: .Leading,  multiplier: 1, constant: 0),
@@ -31,7 +40,7 @@ extension UIView
     }
     
     public func constraintForAttribute(attribute: NSLayoutAttribute) -> CGFloat? {
-        for constraint in constraints() as! [NSLayoutConstraint] {
+        for constraint in constraints {
             if constraint.firstItem as! NSObject == self {
                 if constraint.firstAttribute == attribute || constraint.secondAttribute == attribute {
                     return constraint.constant
@@ -46,7 +55,7 @@ extension UIView
     }
 
     public func updateConstraintWithFirstItem(firstItem: NSObject!, attribute: NSLayoutAttribute, constant: CGFloat) {
-        for constraint in constraints() as! [NSLayoutConstraint] {
+        for constraint in constraints {
             if constraint.firstItem as! NSObject == firstItem {
                 if constraint.firstAttribute == attribute || constraint.secondAttribute == attribute {
                     constraint.constant = constant
@@ -56,7 +65,7 @@ extension UIView
     }
     
     public func updateConstraintWithFirstItem(firstItem: NSObject!, secondItem: NSObject!, firstItemAttribute: NSLayoutAttribute, secondItemAttribute: NSLayoutAttribute, constant: CGFloat) {
-        for constraint in constraints() as! [NSLayoutConstraint] {
+        for constraint in constraints {
             if (constraint.firstItem as! NSObject == firstItem) && (constraint.secondItem as? NSObject == secondItem) {
                 if constraint.firstAttribute == firstItemAttribute && constraint.secondAttribute == secondItemAttribute {
                     constraint.constant = constant

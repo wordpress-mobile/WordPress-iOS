@@ -6,9 +6,11 @@
 // There's some extra space in the btn-back and btn-back-tap images to improve the
 // tap area of this image and in order for sizeToFit to work correctly we have to take
 // this extra space into account.
-CGFloat const WPNUXBackButtonExtraHorizontalWidthForSpace = 30;
+static CGFloat const WPNUXBackButtonExtraHorizontalWidthForSpace    = 30;
+static UIEdgeInsets const WPNUXBackButtonTitleEdgeInsets            = {0.0, 0.0, 0, 10.0};
+static UIEdgeInsets const WPNUXBackButtonImageEdgeInsets            = {0, -22, 0, 0};
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -17,7 +19,7 @@ CGFloat const WPNUXBackButtonExtraHorizontalWidthForSpace = 30;
     return self;
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
@@ -45,11 +47,11 @@ CGFloat const WPNUXBackButtonExtraHorizontalWidthForSpace = 30;
 
 - (void)configureButton
 {
-    self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:16.0];
-    [self setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 6.0, 0, 10.0)];
-    [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.8] forState:UIControlStateNormal];
-    [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.5] forState:UIControlStateHighlighted];
-    [self setImageEdgeInsets:UIEdgeInsetsMake(0, -18, 0, 0)];
+    self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:15.0];
+    [self setTitleEdgeInsets:WPNUXBackButtonTitleEdgeInsets];
+    [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
+    [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateHighlighted];
+    [self setImageEdgeInsets:WPNUXBackButtonImageEdgeInsets];
     [self setImage:[UIImage imageNamed:@"btn-back-chevron"] forState:UIControlStateNormal];
     [self setImage:[UIImage imageNamed:@"btn-back-chevron-tapped"] forState:UIControlStateHighlighted];
     [self setTitle:NSLocalizedString(@"Back", nil) forState:UIControlStateNormal];

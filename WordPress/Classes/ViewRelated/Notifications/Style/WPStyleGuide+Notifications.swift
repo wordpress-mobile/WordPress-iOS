@@ -20,14 +20,21 @@ extension WPStyleGuide
         public static let noticonTextColor          = UIColor.whiteColor()
         public static let noticonReadColor          = UIColor(red: 0xA4/255.0, green: 0xB9/255.0, blue: 0xC9/255.0, alpha: 0xFF/255.0)
         public static let noticonUnreadColor        = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
-        public static let noticonUnmoderatedColor   = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
+        public static let noticonUnmoderatedColor   = WPStyleGuide.alertYellowDark()
 
         public static let noteBackgroundReadColor   = UIColor.whiteColor()
         public static let noteBackgroundUnreadColor = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
-
+        
         public static let noteSeparatorColor        = blockSeparatorColor
 
         public static let gravatarPlaceholderImage  = UIImage(named: "gravatar")
+        public static let gravatarUnapprovedImage   = UIImage(named: "gravatar-unapproved")
+        public static let blavatarPlaceholderImage  = UIImage(named: "blavatar-default")
+        
+        //  NoteUndoOverlayView
+        public static let noteUndoBackgroundColor   = WPStyleGuide.errorRed()
+        public static let noteUndoTextColor         = UIColor.whiteColor()
+        public static let noteUndoTextFont          = subjectRegularFont
         
         //  Subject Text
         public static let subjectRegularStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
@@ -91,9 +98,9 @@ extension WPStyleGuide
         public static let badgeQuotedStyle          = blockQuotedStyle
         
         //  Blocks
-        public static let contentBlockRegularFont   = WPFontManager.merriweatherLightFontOfSize(blockFontSize)
-        public static let contentBlockBoldFont      = WPFontManager.merriweatherRegularFontOfSize(blockFontSize)
-        public static let contentBlockItalicFont    = WPFontManager.merriweatherLightItalicFontOfSize(blockFontSize)
+        public static let contentBlockRegularFont   = WPFontManager.merriweatherRegularFontOfSize(blockFontSize)
+        public static let contentBlockBoldFont      = WPFontManager.merriweatherBoldFontOfSize(blockFontSize)
+        public static let contentBlockItalicFont    = WPFontManager.merriweatherItalicFontOfSize(blockFontSize)
         public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
         public static let blockBoldFont             = WPFontManager.openSansSemiBoldFontOfSize(blockFontSize)
 
@@ -106,9 +113,9 @@ extension WPStyleGuide
 
         public static let blockApprovedBgColor      = UIColor.clearColor()
         
-        public static let blockUnapprovedSideColor  = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
-        public static let blockUnapprovedBgColor    = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0x19/255.0)
-        public static let blockUnapprovedTextColor  = UIColor(red: 0xF0/255.0, green: 0x82/255.0, blue: 0x1E/255.0, alpha: 0xFF/255.0)
+        public static let blockUnapprovedSideColor  = WPStyleGuide.alertYellowDark()
+        public static let blockUnapprovedBgColor    = WPStyleGuide.alertYellowLighter()
+        public static let blockUnapprovedTextColor  = WPStyleGuide.alertRedDarker()
         public static let blockUnapprovedLinkColor  = WPStyleGuide.mediumBlue()
         
         public static let contentBlockRegularStyle  = [ NSParagraphStyleAttributeName:  contentBlockParagraph,
@@ -165,6 +172,10 @@ extension WPStyleGuide
         }
         
         //  Comment Helpers
+        public static func blockGravatarPlaceholderImage(isApproved approved: Bool) -> UIImage {
+            return approved ? gravatarPlaceholderImage! : gravatarUnapprovedImage!
+        }
+        
         public static func blockSeparatorColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockSeparatorColor : blockUnapprovedSideColor
         }
@@ -178,7 +189,7 @@ extension WPStyleGuide
         }
 
         public static func blockDetailsColorForComment(isApproved approved: Bool) -> UIColor {
-            return approved ? blockQuotedColor : blockUnapprovedTextColor
+            return approved ? blockQuotedColor : blockUnapprovedSideColor
         }
         
         public static func blockLinkColorForComment(isApproved approved: Bool) -> UIColor {

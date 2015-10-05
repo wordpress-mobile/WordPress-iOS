@@ -7,7 +7,7 @@
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
-
+#import "BlogSiteVisibilityHelper.h"
 #import <SFHFKeychainUtils.h>
 
 static NSInteger const ImageSizeSmallWidth = 240;
@@ -17,9 +17,14 @@ static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 
+NSString * const PostFormatStandard = @"standard";
+
 @interface Blog ()
+
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
+@property (nonatomic, strong, readwrite) NSNumber *privacy;
+
 @end
 
 @implementation Blog
@@ -50,10 +55,20 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic visible;
 @dynamic account;
 @dynamic jetpackAccount;
+@dynamic isAdmin;
 @dynamic isMultiAuthor;
 @dynamic isHostedAtWPcom;
 @dynamic icon;
 @dynamic username;
+@dynamic defaultCategoryID;
+@dynamic defaultPostFormat;
+@dynamic privacy;
+@dynamic relatedPostsAllowed;
+@dynamic relatedPostsEnabled;
+@dynamic relatedPostsShowHeadline;
+@dynamic relatedPostsShowThumbnails;
+
+
 @synthesize api = _api;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
@@ -234,30 +249,101 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 
+- (NSArray *)sortedPostFormats
+{
+    if ([self.postFormats count] == 0) {
+        return @[];
+    }
+    NSMutableArray *sortedFormats = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
+ 
+    if (self.postFormats[PostFormatStandard]) {
+        [sortedFormats addObject:PostFormatStandard];
+    }
+    [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (![key isEqual:PostFormatStandard]) {
+            [sortedFormats addObject:key];
+        }
+    }];
+
+    return [NSArray arrayWithArray:sortedFormats];
+}
+
 - (NSArray *)sortedPostFormatNames
 {
-    NSMutableArray *sortedNames = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
+    return [[self sortedPostFormats] wp_map:^id(NSString *key) {
+        return self.postFormats[key];
+    }];
+}
 
-    if ([self.postFormats count] != 0) {
-        id standardPostFormat = [self.postFormats objectForKey:@"standard"];
-        if (standardPostFormat) {
-            [sortedNames addObject:standardPostFormat];
-        }
-        [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            if (![key isEqual:@"standard"]) {
-                [sortedNames addObject:obj];
-            }
-        }];
+- (NSString *)defaultPostFormatText
+{
+    return [self postFormatTextFromSlug:self.defaultPostFormat];
+}
+
+- (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug
+{
+    NSDictionary *allFormats = self.postFormats;
+    NSString *formatText = postFormatSlug;
+    if (postFormatSlug && allFormats[postFormatSlug]) {
+        formatText = allFormats[postFormatSlug];
     }
-
-    return [NSArray arrayWithArray:sortedNames];
+    // Default to standard if no name is found
+    if ((formatText == nil || [formatText isEqualToString:@""]) && allFormats[PostFormatStandard]) {
+        formatText = allFormats[PostFormatStandard];
+    }
+    return formatText;
 }
 
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isHostedAtWPcom && [[self getOptionValue:@"blog_public"] isEqualToString:@"-1"]);
+    return (self.isHostedAtWPcom && [self.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
 }
+
+- (SiteVisibility)siteVisibility
+{
+    switch ([self.privacy integerValue]) {
+        case (SiteVisibilityHidden):
+            return SiteVisibilityHidden;
+            break;
+        case (SiteVisibilityPublic):
+            return SiteVisibilityPublic;
+            break;
+        case (SiteVisibilityPrivate):
+            return SiteVisibilityPrivate;
+            break;
+        default:
+            break;
+    }
+    return SiteVisibilityUnknown;
+}
+
+- (void)setSiteVisibility:(SiteVisibility)siteVisibility
+{
+    switch (siteVisibility) {
+        case (SiteVisibilityHidden):
+            self.privacy = @(SiteVisibilityHidden);
+            break;
+        case (SiteVisibilityPublic):
+            self.privacy = @(SiteVisibilityPublic);
+            break;
+        case (SiteVisibilityPrivate):
+            self.privacy = @(SiteVisibilityPrivate);
+            break;
+        default:
+            NSParameterAssert(siteVisibility >= SiteVisibilityPrivate && siteVisibility <= SiteVisibilityPublic);
+            break;
+    }
+}
+
+- (NSString *)textForCurrentSiteVisibility
+{
+    if (!self.privacy) {
+        [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
+    }
+    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.privacy integerValue]];
+}
+
 
 - (NSDictionary *)getImageResizeDimensions
 {
@@ -286,24 +372,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
     // Reset the api client so next time we use the new XML-RPC URL
     self.api = nil;
-}
-
-- (NSArray *)getXMLRPCArgsWithExtra:(id)extra
-{
-    NSMutableArray *result = [NSMutableArray array];
-    NSString *password = self.password ?: [NSString string];
-    
-    [result addObject:self.blogID];
-    [result addObject:self.usernameForSite];
-    [result addObject:password];
-
-    if ([extra isKindOfClass:[NSArray class]]) {
-        [result addObjectsFromArray:extra];
-    } else if (extra != nil) {
-        [result addObject:extra];
-    }
-
-    return [NSArray arrayWithArray:result];
 }
 
 - (NSString *)version

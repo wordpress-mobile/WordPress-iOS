@@ -124,17 +124,6 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 
 - (void)syncThemesAndCurrentTheme
 {
-    void (^failureBlock)(NSError *) = ^(NSError *error) {
-        [WPError showNetworkingAlertWithError:error];
-        [_refreshHeaderView endRefreshing];
-    };
-    [Theme fetchAndInsertThemesForBlog:self.blog success:^{
-        [Theme fetchCurrentThemeForBlog:self.blog success:^{
-            [self currentThemeForBlog];
-            [self.collectionView reloadData];
-            [_refreshHeaderView endRefreshing];
-        } failure:failureBlock];
-    } failure:failureBlock];
 }
 
 - (void)toggleNoThemesView:(BOOL)show

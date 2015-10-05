@@ -7,4 +7,8 @@
 
 - (void)configureCell:(id<WPPostContentViewProvider>)contentProvider;
 
+@optional
+
+- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider loadingImages:(BOOL)loadMedia;
+
 @end

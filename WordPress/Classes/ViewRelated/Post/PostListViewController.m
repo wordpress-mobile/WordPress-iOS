@@ -10,7 +10,6 @@
 #import "WPLegacyEditPostViewController.h"
 #import "WPPostViewController.h"
 #import "WPTableImageSource.h"
-#import "WPToast.h"
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
@@ -385,7 +384,8 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     postCell.delegate = self;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
-    [postCell configureCell:post];
+    BOOL loadImages = !([cell isEqual:self.imageCellForLayout] || [cell isEqual:self.textCellForLayout]);
+    [postCell configureCell:post loadingImages:loadImages];
 }
 
 - (NSString *)cellIdentifierForPost:(Post *)post

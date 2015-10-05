@@ -334,7 +334,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     self.passwordTextField.hidden           = !hasJetpack;
     self.multifactorTextField.hidden        = !hasJetpack;
     self.signInButton.hidden                = !hasJetpack;
-    self.sendVerificationCodeButton.hidden  = !self.shouldDisplayMultifactor || self.authenticating;;
+    self.sendVerificationCodeButton.hidden  = !self.shouldDisplayMultifactor || self.authenticating;
     self.installJetpackButton.hidden        = hasJetpack;
     self.moreInformationButton.hidden       = hasJetpack;
     
@@ -605,16 +605,10 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (NSArray *)controlsToHideWithKeyboardOffset:(CGFloat)offset
 {
-    NSMutableArray *controlsToHide = [NSMutableArray array];
-    
-    // Find  controls that fall off the screen
-    for (UIView *control in self.controlsToMoveForTextEntry) {
-        if (control.frame.origin.y - offset <= 0) {
-            [controlsToHide addObject:control];
-        }
-    }
-    
-    return controlsToHide;
+    return [self.controlsToMoveForTextEntry wp_filter:^BOOL(UIView *control) {
+        // Find  controls that fall off the screen
+        return (control.frame.origin.y - offset <= 0);
+    }];
 }
 
 
