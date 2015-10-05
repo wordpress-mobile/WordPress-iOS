@@ -14,7 +14,7 @@ import Foundation
             refreshSeparators()
         }
     }
-    public var separatorsView           = NoteSeparatorsView()
+    public var separatorsView           = SeparatorsView()
     
     // MARK: - Public Methods
     public func refreshSeparators() {

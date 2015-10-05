@@ -1,5 +1,4 @@
 #import "CommentsViewController.h"
-#import "CommentsTableViewCell.h"
 #import "CommentViewController.h"
 #import "CommentService.h"
 #import "Comment.h"
@@ -13,21 +12,21 @@
 #import "ContextManager.h"
 
 
-CGFloat const CommentsStandardOffset                    = 16.0;
-CGFloat const CommentsSectionHeaderHeight               = 24.0;
-CGFloat const CommentsDefaultCellHeight                 = 44.0;
-CGRect const CommentsActivityFooterFrame                = {0.0, 0.0, 30.0, 30.0};
-CGFloat const CommentsActivityFooterHeight              = 50.0;
-NSInteger const CommentsRefreshRowPadding               = 4;
-NSInteger const CommentsFetchBatchSize                  = 10;
-NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
+static CGRect const CommentsActivityFooterFrame                 = {0.0, 0.0, 30.0, 30.0};
+static CGFloat const CommentsActivityFooterHeight               = 50.0;
+static NSInteger const CommentsRefreshRowPadding                = 4;
+static NSInteger const CommentsFetchBatchSize                   = 10;
+static NSTimeInterval const CommentsRefreshTimeoutInSeconds     = 60 * 5; // 5 minutes
 
+static NSString *CommentsReuseIdentifier                        = @"CommentsReuseIdentifier";
+static NSString *CommentsLayoutIdentifier                       = @"CommentsLayoutIdentifier";
 
 
 @interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
 @property (nonatomic, strong) WPNoResultsView           *noResultsView;
+@property (nonatomic, strong) CommentsTableViewCell     *layoutCell;
 @property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
 @property (nonatomic, strong) UIView                    *footerView;
 @end
@@ -42,6 +41,16 @@ NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
     _tableViewHandler.delegate = nil;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.restorationClass = [self class];
+        self.restorationIdentifier = NSStringFromClass([self class]);
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -54,6 +63,7 @@ NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
     [self configureTableView];
     [self configureTableViewFooter];
     [self configureTableViewHandler];
+    [self configureTableViewLayoutCell];
     
     [self refreshAndSyncIfNeeded];
 }
@@ -67,6 +77,12 @@ NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
     
     // Refresh the UI
     [self refreshNoResultsView];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self.tableViewHandler clearCachedRowHeights];
 }
 
 
@@ -124,25 +140,30 @@ NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
 
 - (void)configureTableView
 {
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.accessibilityIdentifier  = @"Comments Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    // Register the cells!
-    Class cellClass = [CommentsTableViewCell class];
-    [self.tableView registerClass:cellClass forCellReuseIdentifier:NSStringFromClass(cellClass)];
+    // Register the cells
+    NSString *nibName   = [CommentsTableViewCell classNameWithoutNamespaces];
+    UINib *nibInstance  = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsLayoutIdentifier];
+    [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsReuseIdentifier];
 }
 
 - (void)configureTableViewFooter
 {
-    // iPad Fix: contentInset breaks tableSectionViews
-    if (UIDevice.isPad) {
-        self.tableView.tableHeaderView      = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
-        self.tableView.tableFooterView      = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
-        
-    // iPhone Fix: Hide the cellSeparators, when the table is empty
-    } else {
-        self.tableView.tableFooterView      = [UIView new];
-    }
+    // Notes:
+    //  -   iPhone: Hide the cellSeparators, when the table is empty
+    //  -   iPad: contentInset breaks tableSectionViews
+    CGRect footerFrame = UIDevice.isPad ? WPTableFooterPadFrame : CGRectZero;
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:footerFrame];
+}
+
+- (void)configureTableViewLayoutCell
+{
+    self.layoutCell = [self.tableView dequeueReusableCellWithIdentifier:CommentsLayoutIdentifier];
 }
 
 - (void)configureTableViewHandler
@@ -156,28 +177,49 @@ NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
 
 #pragma mark - UITableViewDelegate Methods
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return [UIView new];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return [UIDevice isPad] ? UITableViewAutomaticDimension : CGFLOAT_MIN;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     return nil;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return [UIView new];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Note:
     // Without an estimated height, UITableView will have an erratic behavior
-    return CommentsDefaultCellHeight;
+    return WPTableViewDefaultRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    return [CommentsTableViewCell rowHeightForContentProvider:comment andWidth:WPTableViewFixedWidth];
+    NSParameterAssert(self.layoutCell);
+    [self configureCell:self.layoutCell atIndexPath:indexPath];
+    
+    return [self.layoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *reuseIdentifier = NSStringFromClass([CommentsTableViewCell class]);
-    CommentsTableViewCell *cell = (CommentsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    CommentsTableViewCell *cell = (CommentsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CommentsReuseIdentifier];
     NSAssert([cell isKindOfClass:[CommentsTableViewCell class]], nil);
     
     [self configureCell:cell atIndexPath:indexPath];
@@ -244,13 +286,27 @@ NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
 
 - (void)configureCell:(CommentsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    cell.contentProvider = comment;
-}
-
-- (NSString *)sectionNameKeyPath
-{
-    return @"status";
+    NSParameterAssert(cell);
+    NSParameterAssert(indexPath);
+    
+    Comment *comment    = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    
+    cell.author         = comment.authorForDisplay;
+    cell.approved       = [comment.status isEqualToString:CommentStatusApproved];
+    cell.postTitle      = comment.titleForDisplay;
+    cell.content        = comment.contentPreviewForDisplay;
+    cell.timestamp      = [comment.dateCreated shortString];
+    
+    // Don't download the gravatar, if it's the layout cell!
+    if ([cell.reuseIdentifier isEqualToString:CommentsLayoutIdentifier]) {
+        return;
+    }
+    
+    if (comment.avatarURLForDisplay) {
+        [cell downloadGravatarWithURL:comment.avatarURLForDisplay];
+    } else {
+        [cell downloadGravatarWithGravatarEmail:comment.gravatarEmailForDisplay];
+    }
 }
 
 - (NSString *)entityName
@@ -261,6 +317,11 @@ NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
     [self refreshNoResultsView];
+}
+
+- (void)deletingSelectedRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.navigationController popToViewController:self animated:YES];
 }
 
 

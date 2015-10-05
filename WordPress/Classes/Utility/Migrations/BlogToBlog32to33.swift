@@ -1,16 +1,17 @@
 import UIKit
 
 class BlogToBlog32to33: NSEntityMigrationPolicy {
-    override func createDestinationInstancesForSourceInstance(sourceBlog: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager, error: NSErrorPointer) -> Bool {
+    
+    override func createDestinationInstancesForSourceInstance(sInstance: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager) throws {
         DDLogSwift.logInfo("\(self.dynamicType) \(__FUNCTION__) (\(mapping.sourceEntityName) -> \(mapping.destinationEntityName))")
 
-        let isWPcom = sourceBlog.valueForKeyPath("account.isWpcom") as? Bool ?? false
-        let isJetpack = sourceBlog.valueForKey("isJetpack") as? Bool ?? false
+        let isWPcom = sInstance.valueForKeyPath("account.isWpcom") as? Bool ?? false
+        let isJetpack = sInstance.valueForKey("isJetpack") as? Bool ?? false
         let isJetpackManage = isWPcom && isJetpack
         let isHostedAtWPcom = isWPcom && !isJetpack
 
         // 1. Create the destination Blog
-        let destBlog = NSEntityDescription.insertNewObjectForEntityForName("Blog", inManagedObjectContext: manager.destinationContext) as! NSManagedObject
+        let destBlog = NSEntityDescription.insertNewObjectForEntityForName("Blog", inManagedObjectContext: manager.destinationContext)
 
         // 2. Copy the attributes that don't need migration
         let keysToMigrate = [
@@ -19,13 +20,13 @@ class BlogToBlog32to33: NSEntityMigrationPolicy {
             "lastPagesSync", "lastPostsSync", "lastStatsSync", "lastUpdateWarning",
             "options", "postFormats", "url", "visible", "xmlrpc",
         ];
-        destBlog.setValuesForKeysWithDictionary(sourceBlog.dictionaryWithValuesForKeys(keysToMigrate))
+        destBlog.setValuesForKeysWithDictionary(sInstance.dictionaryWithValuesForKeys(keysToMigrate))
 
         // 3. Set the username to the account username, except for Jetpack managed blogs
         if !isJetpackManage {
-            destBlog.setValue(sourceBlog.valueForKeyPath("account.username"), forKey: "username")
+            destBlog.setValue(sInstance.valueForKeyPath("account.username"), forKey: "username")
         } else {
-            let xmlrpc = sourceBlog.valueForKey("xmlrpc") as? String ?? "<missing xmlrpc>"
+            let xmlrpc = sInstance.valueForKey("xmlrpc") as? String ?? "<missing xmlrpc>"
             DDLogSwift.logWarn("Migrating Jetpack blog with unknown username: \(xmlrpc)")
         }
 
@@ -34,28 +35,23 @@ class BlogToBlog32to33: NSEntityMigrationPolicy {
 
         // 5. Verify that account.xmlrpc matches blog.xmlrpc so that it can find its password
         if !isWPcom {
-            let blogXmlrpc = sourceBlog.valueForKey("xmlrpc") as! String
-            let accountXmlrpc = sourceBlog.valueForKeyPath("account.xmlrpc") as! String
+            let blogXmlrpc = sInstance.valueForKey("xmlrpc") as! String
+            let accountXmlrpc = sInstance.valueForKeyPath("account.xmlrpc") as! String
             if blogXmlrpc != accountXmlrpc {
                 DDLogSwift.logError("Blog's XML-RPC doesn't match Account's XML-RPC: \(blogXmlrpc) !== \(accountXmlrpc)")
 
-                var error:NSError?
-                let username = sourceBlog.valueForKeyPath("account.username") as! String
-                let password = SFHFKeychainUtils.getPasswordForUsername(username, andServiceName: accountXmlrpc, error: &error)
-                if let getError = error {
-                    DDLogSwift.logError("Error getting password for \(accountXmlrpc): \(getError)")
-                } else {
-                    SFHFKeychainUtils.storeUsername(username, andPassword: password, forServiceName: blogXmlrpc, updateExisting: true, error: &error)
-                    if let storeError = error {
-                        DDLogSwift.logError("Error storing password for \(blogXmlrpc): \(storeError)")
-                    }
+                let username = sInstance.valueForKeyPath("account.username") as! String
+                
+                do {
+                    let password = try SFHFKeychainUtils.getPasswordForUsername(username, andServiceName: accountXmlrpc)
+                    try SFHFKeychainUtils.storeUsername(username, andPassword: password, forServiceName: blogXmlrpc, updateExisting: true)
+                } catch {
+                    DDLogSwift.logError("Error getting/saving password for \(accountXmlrpc): \(error)")
                 }
             }
         }
 
         // 6. Associate the source and destination instances
-        manager.associateSourceInstance(sourceBlog, withDestinationInstance: destBlog, forEntityMapping: mapping)
-
-        return true
+        manager.associateSourceInstance(sInstance, withDestinationInstance: destBlog, forEntityMapping: mapping)
     }
 }

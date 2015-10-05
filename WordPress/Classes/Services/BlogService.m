@@ -20,6 +20,7 @@
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
 #import "RemoteBlogSettings.h"
+#import "ContextManager.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -210,7 +211,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                    failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlog:blog
+    [remote syncOptionsForBlogID:blog.blogID
                        success:[self optionsHandlerWithBlogObjectID:blog.objectID
                                                   completionHandler:success]
                        failure:failure];
@@ -220,20 +221,30 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncSettingsForBlog:blog
-                        success:^(RemoteBlogSettings *settings) {
-                            blog.blogName = settings.name;
-                            blog.blogTagline = settings.desc;
-                            [self.managedObjectContext save:nil];
-                            if (success) {
-                                success();
-                            }
-                        }
-                        failure:failure];
+    NSManagedObjectID *blogID = [blog objectID];
+    [self.managedObjectContext performBlock:^{
+        Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
+        if (!blogInContext) {
+            if (success) {
+                success();
+            }
+            return;
+        }
+        id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
+        [remote syncSettingsForBlogID:blog.blogID success:^(RemoteBlogSettings *settings) {
+            [self.managedObjectContext performBlock:^{
+                [self updateBlog:blogInContext settingsWithRemoteSettings:settings];
+                [self.managedObjectContext save:nil];
+                if (success) {
+                    success();
+                }
+            }];
+        }
+        failure:failure];
+    }];
 }
 
-- (void)updateSettingForBlog:(Blog *)blog
+- (void)updateSettingsForBlog:(Blog *)blog
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure
 {
@@ -241,17 +252,24 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [self.managedObjectContext performBlock:^{
         Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
-        [remote updateSettingsForBlog:blogInContext
-                              success:^() {
-                                [self.managedObjectContext performBlock:^{
-                                    [self.managedObjectContext save:nil];
-                                    if (success) {
-                                        success();
-                                    }
-                                }];
-                              }
-                              failure:failure];
+        [remote updateBlogSettings:[self remoteBlogSettingFromBlog:blogInContext]
+                         forBlogID:blogInContext.blogID
+                           success:^() {
+                               [self.managedObjectContext performBlock:^{
+                                   [self.managedObjectContext save:nil];
+                                   if (success) {
+                                       success();
+                                   }
+                               }];
+                           }
+                           failure:failure];
     }];
+}
+
+- (void)updatePassword:(NSString *)password forBlog:(Blog *)blog
+{
+    blog.password = password;
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success
@@ -287,21 +305,21 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                        failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncPostFormatsForBlog:blog
-                           success:[self postFormatsHandlerWithBlogObjectID:blog.objectID
+    [remote syncPostFormatsForBlogID:blog.blogID
+                             success:[self postFormatsHandlerWithBlogObjectID:blog.objectID
                                                           completionHandler:success]
-                           failure:failure];
+                             failure:failure];
 }
 
 - (void)syncBlog:(Blog *)blog
 {
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blogObjectID
+    [remote syncOptionsForBlogID:blog.blogID success:[self optionsHandlerWithBlogObjectID:blogObjectID
                                                                completionHandler:nil]
                        failure:^(NSError *error) { DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error); }];
 
-    [remote syncPostFormatsForBlog:blog
+    [remote syncPostFormatsForBlogID:blog.blogID
                            success:[self postFormatsHandlerWithBlogObjectID:blogObjectID
                                                           completionHandler:nil]
                            failure:^(NSError *error) { DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error); }];
@@ -311,12 +329,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                    success:nil
                                    failure:^(NSError *error) { DDLogError(@"Failed syncing categories for blog %@: %@", blog.url, error); }];
 
-    [remote checkMultiAuthorForBlog:blog
-                            success:^(BOOL isMultiAuthor) {
+    [remote checkMultiAuthorForBlogID:blog.blogID
+                              success:^(BOOL isMultiAuthor) {
                                 [self updateMutliAuthor:isMultiAuthor forBlog:blogObjectID];
-                            } failure:^(NSError *error) {
+                              } failure:^(NSError *error) {
                                 DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
-                            }];
+                              }];
 }
 
 - (BOOL)hasVisibleWPComAccounts
@@ -333,6 +351,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = NULL"];
     return [self blogCountWithPredicate:predicate];
+}
+
+- (NSInteger)blogCountForWPComAccounts
+{
+    return [self blogCountWithPredicate:[NSPredicate predicateWithFormat:@"account != NULL"]];
 }
 
 - (NSInteger)blogCountVisibleForWPComAccounts
@@ -355,6 +378,21 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     return [self blogsWithPredicate:nil];
 }
+
+- (NSDictionary *)blogsForAllAccountsById
+{
+    NSMutableDictionary *blogMap = [NSMutableDictionary dictionary];
+    NSArray *allBlogs = [self blogsWithPredicate:nil];
+    
+    for (Blog *blog in allBlogs) {
+        if (blog.blogID != nil) {
+            blogMap[blog.blogID] = blog;
+        }
+    }
+    
+    return blogMap;
+}
+
 
 ///--------------------
 /// @name Blog creation
@@ -462,6 +500,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         blog.blogID = remoteBlog.ID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
+        blog.isAdmin = remoteBlog.isAdmin;
         blog.visible = remoteBlog.visible;
     }
 
@@ -509,7 +548,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     if (blog.restApi) {
         remote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
-        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+        remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
 
     return remote;
@@ -617,25 +656,33 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         [self.managedObjectContext performBlock:^{
             Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
                                                                            error:nil];
-            if (blog) {
-                blog.options = [NSDictionary dictionaryWithDictionary:options];
-                float version = [[blog version] floatValue];
-                if (version < [MinimumVersion floatValue]) {
-                    if (blog.lastUpdateWarning == nil
-                        || [blog.lastUpdateWarning floatValue] < [MinimumVersion floatValue])
-                    {
-                        // TODO :: Remove UI call from service layer
-                        [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                            message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], MinimumVersion]];
-                        blog.lastUpdateWarning = MinimumVersion;
-                    }
+            if (!blog) {
+                if (completion) {
+                    completion();
                 }
+                return;
+            }
+            blog.options = [NSDictionary dictionaryWithDictionary:options];
+            blog.siteVisibility = (SiteVisibility)([[blog getOptionValue:@"blog_public"] integerValue]);
+            //HACK:Sergio Estevao (2015-08-31): Because there is no direct way to
+            // know if a user has permissions to change the options we check if the blog title property is read only or not.
+            if ([blog.options numberForKeyPath:@"blog_title.readonly"]) {
+                blog.isAdmin = ![[blog.options numberForKeyPath:@"blog_title.readonly"] boolValue];
+            }
 
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            float version = [[blog version] floatValue];
+            if (version < [MinimumVersion floatValue]) {
+                if (blog.lastUpdateWarning == nil
+                    || [blog.lastUpdateWarning floatValue] < [MinimumVersion floatValue])
+                {
+                    // TODO :: Remove UI call from service layer
+                    [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
+                                        message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], MinimumVersion]];
+                    blog.lastUpdateWarning = MinimumVersion;
+                }
             }
-            if (completion) {
-                completion();
-            }
+
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:completion];
         }];
     };
 }
@@ -649,9 +696,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                                                            error:nil];
             if (blog) {
                 NSDictionary *formats = postFormats;
-                if (![formats objectForKey:@"standard"]) {
+                if (![formats objectForKey:PostFormatStandard]) {
                     NSMutableDictionary *mutablePostFormats = [formats mutableCopy];
-                    mutablePostFormats[@"standard"] = NSLocalizedString(@"Standard", @"Standard post format label");
+                    mutablePostFormats[PostFormatStandard] = NSLocalizedString(@"Standard", @"Standard post format label");
                     formats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
                 }
                 blog.postFormats = formats;
@@ -693,4 +740,41 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return timeZone;
 }
 
+- (void)updateBlog:(Blog *)blog settingsWithRemoteSettings:(RemoteBlogSettings *)remoteSettings
+{
+    blog.blogName = remoteSettings.name;
+    blog.blogTagline = remoteSettings.desc;
+    if (remoteSettings.defaultCategory) {
+        blog.defaultCategoryID = remoteSettings.defaultCategory;
+    }
+    if (remoteSettings.defaultPostFormat) {
+        blog.defaultPostFormat = remoteSettings.defaultPostFormat;
+    }
+    if (remoteSettings.privacy) {
+        blog.siteVisibility = (SiteVisibility)[remoteSettings.privacy integerValue];
+    }
+
+    blog.relatedPostsAllowed = remoteSettings.relatedPostsAllowed;
+    blog.relatedPostsEnabled = remoteSettings.relatedPostsEnabled;
+    blog.relatedPostsShowHeadline = remoteSettings.relatedPostsShowHeadline;
+    blog.relatedPostsShowThumbnails = remoteSettings.relatedPostsShowThumbnails;
+}
+
+
+-(RemoteBlogSettings *)remoteBlogSettingFromBlog:(Blog *)blog
+{
+    RemoteBlogSettings *remoteBlogSettings = [[RemoteBlogSettings alloc] init];
+    
+    remoteBlogSettings.name = blog.blogName;
+    remoteBlogSettings.desc = blog.blogTagline;
+    remoteBlogSettings.defaultCategory = blog.defaultCategoryID;
+    remoteBlogSettings.defaultPostFormat = blog.defaultPostFormat;
+    remoteBlogSettings.privacy = @(blog.siteVisibility);
+    remoteBlogSettings.relatedPostsAllowed = blog.relatedPostsAllowed;
+    remoteBlogSettings.relatedPostsEnabled = blog.relatedPostsEnabled;
+    remoteBlogSettings.relatedPostsShowHeadline = blog.relatedPostsShowHeadline;
+    remoteBlogSettings.relatedPostsShowThumbnails = blog.relatedPostsShowThumbnails;
+    
+    return remoteBlogSettings;
+}
 @end

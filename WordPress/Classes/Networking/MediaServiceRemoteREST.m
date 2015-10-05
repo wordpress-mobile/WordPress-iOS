@@ -1,22 +1,25 @@
 #import "MediaServiceRemoteREST.h"
 #import "WordPressComApi.h"
-#import "Blog.h"
 #import "RemoteMedia.h"
 #import "NSDate+WordPressJSON.h"
+#import <WordPressApi.h>
 
 const NSInteger WPRestErrorCodeMediaNew = 10;
 
 @implementation MediaServiceRemoteREST
 
 - (void)getMediaWithID:(NSNumber *)mediaID
-               forBlog:(Blog *)blog
+             forBlogID:(NSNumber *)blogID
                success:(void (^)(RemoteMedia *remoteMedia))success
                failure:(void (^)(NSError *error))failure
 {
-    NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/%@", blog.dotComID, mediaID];
+    NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/%@", blogID, mediaID];
+    NSString *requestUrl = [self pathForEndpoint:apiPath
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary * parameters = @{};
     
-    [self.api GET:apiPath parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api GET:requestUrl parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             NSDictionary *response = (NSDictionary *)responseObject;
             success([self remoteMediaFromJSONDictionary:response]);
@@ -28,12 +31,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     }];
 }
 
-- (void)getMediaLibraryForBlog:(Blog *)blog
-                       success:(void (^)(NSArray *))success
-                       failure:(void (^)(NSError *))failure
+- (void)getMediaLibraryForBlogID:(NSNumber *)blogID
+                         success:(void (^)(NSArray *))success
+                         failure:(void (^)(NSError *))failure
 {
     NSMutableArray *media = [NSMutableArray array];
-    NSString *path = [NSString stringWithFormat:@"sites/%@/media", blog.dotComID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/media", blogID];
     [self getMediaLibraryPage:nil
                         media:media
                          path:path
@@ -52,7 +55,11 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     if ([pageHandle length]) {
         parameters[@"page_handle"] = pageHandle;
     }
-    [self.api GET:path
+    
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSArray *mediaItems = responseObject[@"media"];
@@ -79,13 +86,17 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
           }];
 }
 
-- (void)getMediaLibraryCountForBlog:(Blog *)blog
-                            success:(void (^)(NSInteger))success
-                            failure:(void (^)(NSError *))failure
+- (void)getMediaLibraryCountForBlogID:(NSNumber *)blogID
+                              success:(void (^)(NSInteger))success
+                              failure:(void (^)(NSError *))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/media", blog.dotComID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/media", blogID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSDictionary *parameters = @{ @"number" : @1 };
-    [self.api GET:path
+    
+    [self.api GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSDictionary *jsonDictionary = (NSDictionary *)responseObject;
@@ -102,7 +113,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 }
 
 - (void)createMedia:(RemoteMedia *)media
-            forBlog:(Blog *)blog
+          forBlogID:(NSNumber *)blogID
            progress:(NSProgress **)progress
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
@@ -112,9 +123,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *type = media.mimeType;
     NSString *filename = media.file;
 
-    NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
+    NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blogID];
+    NSString *requestUrl = [self pathForEndpoint:apiPath
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
     NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST"
-                                                                                    URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString]
+                                                                                    URLString:[[NSURL URLWithString:requestUrl relativeToURL:self.api.baseURL] absoluteString]
                                                                                    parameters:nil
                                                                     constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSURL *url = [[NSURL alloc] initFileURLWithPath:path];
@@ -175,11 +189,9 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
 - (NSArray *)remoteMediaFromJSONArray:(NSArray *)jsonMedia
 {
-    NSMutableArray *remoteMedia = [NSMutableArray arrayWithCapacity:jsonMedia.count];
-    for (NSDictionary *json in jsonMedia) {
-        [remoteMedia addObject:[self remoteMediaFromJSONDictionary:json]];
-    }
-    return [NSArray arrayWithArray:remoteMedia];
+    return [jsonMedia wp_map:^id(NSDictionary *json) {
+        return [self remoteMediaFromJSONDictionary:json];
+    }];
 }
 
 - (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia

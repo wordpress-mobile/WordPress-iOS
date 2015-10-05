@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" id="lV4-dt-Zjn" customClass="ReaderListStreamHeader" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="72"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YPv-Yl-pZz">
+                    <rect key="frame" x="-1" y="-1" width="322" height="66"/>
+                    <color key="backgroundColor" red="0.84313725490196079" green="0.8901960784313725" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iWB-Uw-beb">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-reader-header-list" translatesAutoresizingMaskIntoConstraints="NO" id="Q3K-e0-BuO">
+                            <rect key="frame" x="16" y="16" width="32" height="32"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="KxR-cT-K27"/>
+                                <constraint firstAttribute="width" constant="32" id="bVN-si-EGf"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="List Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uk5-Xp-lih">
+                            <rect key="frame" x="58" y="14" width="246" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 site, 1 follower" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mLv-K5-Ki4">
+                            <rect key="frame" x="58" y="35.5" width="246" height="14.5"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="uk5-Xp-lih" secondAttribute="trailing" constant="16" id="MSf-B3-dwh"/>
+                        <constraint firstAttribute="bottom" secondItem="Q3K-e0-BuO" secondAttribute="bottom" constant="16" id="QVw-Fa-cIt"/>
+                        <constraint firstItem="uk5-Xp-lih" firstAttribute="top" secondItem="iWB-Uw-beb" secondAttribute="top" constant="14" id="QwU-PY-n75"/>
+                        <constraint firstAttribute="bottom" secondItem="mLv-K5-Ki4" secondAttribute="bottom" constant="14" id="T6q-6g-ZEu"/>
+                        <constraint firstItem="mLv-K5-Ki4" firstAttribute="leading" secondItem="Q3K-e0-BuO" secondAttribute="trailing" constant="10" id="WPb-8N-H0e"/>
+                        <constraint firstAttribute="trailing" secondItem="mLv-K5-Ki4" secondAttribute="trailing" constant="16" id="bR2-Ac-c70"/>
+                        <constraint firstItem="Q3K-e0-BuO" firstAttribute="top" secondItem="iWB-Uw-beb" secondAttribute="top" constant="16" id="bis-26-ZXw"/>
+                        <constraint firstItem="Q3K-e0-BuO" firstAttribute="leading" secondItem="iWB-Uw-beb" secondAttribute="leading" constant="16" id="eb7-Vx-b0S"/>
+                        <constraint firstItem="uk5-Xp-lih" firstAttribute="leading" secondItem="Q3K-e0-BuO" secondAttribute="trailing" constant="10" id="rzx-Qx-G0r"/>
+                        <constraint firstAttribute="width" constant="600" id="sv8-De-gMf"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="sv8-De-gMf"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="sv8-De-gMf"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="iWB-Uw-beb" firstAttribute="top" secondItem="YPv-Yl-pZz" secondAttribute="top" constant="1" id="CZB-46-q68"/>
+                <constraint firstItem="iWB-Uw-beb" firstAttribute="leading" secondItem="YPv-Yl-pZz" secondAttribute="leading" constant="1" id="Fs5-Ew-Ygm"/>
+                <constraint firstItem="iWB-Uw-beb" firstAttribute="bottom" secondItem="YPv-Yl-pZz" secondAttribute="bottom" constant="-1" id="Ifc-0l-Wjp"/>
+                <constraint firstAttribute="bottom" secondItem="iWB-Uw-beb" secondAttribute="bottom" priority="900" constant="8" id="TIK-0Z-wok"/>
+                <constraint firstItem="iWB-Uw-beb" firstAttribute="top" secondItem="lV4-dt-Zjn" secondAttribute="top" constant="30" id="WQp-v7-oAq"/>
+                <constraint firstAttribute="centerX" secondItem="iWB-Uw-beb" secondAttribute="centerX" id="WwD-L8-cc0"/>
+                <constraint firstAttribute="trailing" secondItem="iWB-Uw-beb" secondAttribute="trailing" id="bH6-nD-rMm"/>
+                <constraint firstItem="iWB-Uw-beb" firstAttribute="leading" secondItem="lV4-dt-Zjn" secondAttribute="leading" id="hbs-gX-qwe"/>
+                <constraint firstItem="iWB-Uw-beb" firstAttribute="trailing" secondItem="YPv-Yl-pZz" secondAttribute="trailing" constant="-1" id="sWd-8x-TV3"/>
+                <constraint firstItem="iWB-Uw-beb" firstAttribute="top" secondItem="lV4-dt-Zjn" secondAttribute="top" id="wni-EB-nsg"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="WQp-v7-oAq"/>
+                    <exclude reference="WwD-L8-cc0"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <include reference="WQp-v7-oAq"/>
+                    <include reference="WwD-L8-cc0"/>
+                    <exclude reference="bH6-nD-rMm"/>
+                    <exclude reference="hbs-gX-qwe"/>
+                    <exclude reference="wni-EB-nsg"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="contentBottomConstraint" destination="TIK-0Z-wok" id="vsW-IM-DIX"/>
+                <outlet property="contentIPadTopConstraint" destination="WQp-v7-oAq" id="MOK-fj-Nfz"/>
+                <outlet property="detailLabel" destination="mLv-K5-Ki4" id="cJz-Lv-f6a"/>
+                <outlet property="innerContentView" destination="iWB-Uw-beb" id="yeC-aP-xET"/>
+                <outlet property="titleLabel" destination="uk5-Xp-lih" id="Fjq-r5-W5M"/>
+            </connections>
+            <point key="canvasLocation" x="195" y="291.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon-reader-header-list" width="24" height="24"/>
+    </resources>
+</document>

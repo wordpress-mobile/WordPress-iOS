@@ -16,7 +16,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     AccountServiceRemoteREST *service = nil;
     
-    NSString* url = @"me/sites";
+    NSString* url = @"v1.1/me/sites";
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
@@ -38,7 +38,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     AccountServiceRemoteREST *service = nil;
     
-    NSString* url = @"me";
+    NSString* url = @"v1.1/me";
     
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]

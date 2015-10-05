@@ -1,9 +1,20 @@
 #import <UIKit/UIKit.h>
 
-@class Post;
+@class Blog;
+@class PostCategory;
+@protocol WPAddPostCategoryViewControllerDelegate;
 
 @interface WPAddPostCategoryViewController : UITableViewController
 
-- (instancetype)initWithPost:(Post *)post;
+- (instancetype)initWithBlog:(Blog *)blog;
+
+@property (nonatomic, weak) id<WPAddPostCategoryViewControllerDelegate>delegate;
+
+@end
+
+@protocol WPAddPostCategoryViewControllerDelegate <NSObject>
+
+@optional
+- (void)addPostCategoryViewController:(WPAddPostCategoryViewController *)controller didAddCategory:(PostCategory *)category;
 
 @end

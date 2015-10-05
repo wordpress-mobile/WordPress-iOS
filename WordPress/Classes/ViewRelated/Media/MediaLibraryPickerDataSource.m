@@ -212,10 +212,19 @@
 
 -(id<WPMediaAsset>)mediaWithIdentifier:(NSString *)identifier
 {
+    if (!identifier) {
+        return nil;
+    }
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     __block Media *media = nil;
+    NSURL *assetURL = [NSURL URLWithString:identifier];
+    if (!assetURL) {
+        return nil;
+    }
+    if (![[assetURL scheme] isEqualToString:@"x-coredata"]){
+        return nil;
+    }
     [mainContext performBlockAndWait:^{
-        NSURL *assetURL = [NSURL URLWithString:identifier];
         NSManagedObjectID *assetID = [[[ContextManager sharedInstance] persistentStoreCoordinator] managedObjectIDForURIRepresentation:assetURL];
         media = (Media *)[mainContext objectWithID:assetID];
     }];
@@ -227,10 +236,10 @@
     NSPredicate *predicate;
     switch (filter) {
         case WPMediaTypeImage: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"image && blog = %@", blog];
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ && blog = %@",  @"image", blog];
         } break;
         case WPMediaTypeVideo: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"video && blog = %@", blog];
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ && blog = %@", @"video", blog];
         } break;
         case WPMediaTypeAll: {
             predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@)  && blog = %@", @"image", @"video", blog];

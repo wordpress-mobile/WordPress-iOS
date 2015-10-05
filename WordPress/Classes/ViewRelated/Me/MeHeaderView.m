@@ -52,7 +52,7 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
 {
     // If the username is an email, we don't want the preceding @ sign before it
     NSString *prefix = ([username rangeOfString:@"@"].location != NSNotFound) ? @"" : @"@";
-    self.usernameLabel.text = [NSString stringWithFormat:@"%@%@", prefix, username];;
+    self.usernameLabel.text = [NSString stringWithFormat:@"%@%@", prefix, username];
 }
 
 - (void)setGravatarEmail:(NSString *)gravatarEmail

@@ -12,6 +12,7 @@ extension UIImageView
 
         // Failsafe: Halt if the URL is empty
         if url == nil {
+            image = placeholderImage
             return
         }
 
@@ -32,8 +33,6 @@ extension UIImageView
             },
             failure: {
                 (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
-                // Xcode 6 Beta 5 Bug: If there's no single if let here, it won't build
-                if let handler = failure { }
                 failure?(error)
             }
         )

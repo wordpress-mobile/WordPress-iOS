@@ -22,6 +22,7 @@
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "WordPress-Swift.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
+#import "NSString+Helpers.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
@@ -681,21 +682,9 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 - (void)logSavePostStats
 {
     NSString *buttonTitle = self.navigationItem.rightBarButtonItem.title;
-
-    // This word counting algorithm is from : http://stackoverflow.com/a/13367063
-    __block NSInteger originalWordCount = 0;
-    [self.post.original.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.original.content length])
-                                                   options:NSStringEnumerationByWords | NSStringEnumerationLocalized
-                                                usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
-                                                    originalWordCount++;
-                                                }];
-
-    __block NSInteger wordCount = 0;
-    [self.post.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.content length])
-                                          options:NSStringEnumerationByWords | NSStringEnumerationLocalized
-                                       usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
-                                           wordCount++;
-                                       }];
+    
+    NSInteger originalWordCount = [self.post.original.content wordCount];
+    NSInteger wordCount = [self.post.content wordCount];
 
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] initWithCapacity:2];
     properties[@"word_count"] = @(wordCount);
@@ -704,23 +693,12 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     }
 
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
+        properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
+        properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
+        properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
+        properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = @([self.post hasVideo]);
+        
         [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
-
-        if ([self.post hasPhoto]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithPhoto];
-        }
-
-        if ([self.post hasVideo]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithVideo];
-        }
-
-        if ([self.post hasCategories]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithCategories];
-        }
-
-        if ([self.post hasTags]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithTags];
-        }
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
         [WPAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
@@ -1200,7 +1178,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 - (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(id<WPMediaAsset>)mediaAsset
 {
     if ([mediaAsset isKindOfClass:[ALAsset class]]) {
-        ALAsset *asset = (ALAsset *)asset;
+        ALAsset *asset = (ALAsset *)mediaAsset;
         if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
             // If the image is from a shared photo stream it may not be available locally to be used
             if (!asset.defaultRepresentation) {

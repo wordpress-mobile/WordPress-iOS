@@ -192,9 +192,9 @@ extension NotificationBlock
     *   @param      linksColor      The color that should be used on any links contained.
     *	@returns	A NSAttributedString instance, formatted with all of the specified parameters
     */
-    private func textWithStyles(attributes  : [NSString: AnyObject],
-                                quoteStyles : [NSString: AnyObject]?,
-                             rangeStylesMap : [NSString: AnyObject]?,
+    private func textWithStyles(attributes  : [String: AnyObject],
+                                quoteStyles : [String: AnyObject]?,
+                             rangeStylesMap : [String: AnyObject]?,
                                  linksColor : UIColor?) -> NSAttributedString
     {
         // Is it empty?
@@ -220,11 +220,11 @@ extension NotificationBlock
             if range.isNoticon {
                 let noticon         = "\(range.value) "
                 theString.replaceCharactersInRange(shiftedRange, withString: noticon)
-                lengthShift         += count(noticon)
-                shiftedRange.length += count(noticon)
+                lengthShift         += noticon.characters.count
+                shiftedRange.length += noticon.characters.count
             }
             
-            if let unwrappedRangeStyle = rangeStylesMap?[range.type] as? [NSString: AnyObject] {
+            if let unwrappedRangeStyle = rangeStylesMap?[range.type] as? [String: AnyObject] {
                 theString.addAttributes(unwrappedRangeStyle, range: shiftedRange)
             }
             

@@ -2,11 +2,12 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <CoreData/CoreData.h>
 #import <WordPressApi/WordPressApi.h>
-
 #import "JetpackState.h"
 
 @class WPAccount;
 @class WordPressComApi;
+
+extern NSString * const PostFormatStandard;
 
 typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Can the blog be removed?
@@ -27,6 +28,13 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureMentions,
     /// Does the blog support push notifications?
     BlogFeaturePushNotifications,
+};
+
+typedef NS_ENUM(NSInteger, SiteVisibility) {
+    SiteVisibilityPrivate = -1,
+    SiteVisibilityHidden = 0,
+    SiteVisibilityPublic = 1,
+    SiteVisibilityUnknown = NSIntegerMax
 };
 
 @interface Blog : NSManagedObject
@@ -63,6 +71,19 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, assign, readwrite) BOOL isMultiAuthor;
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
 @property (nonatomic, strong, readwrite) NSString *icon;
+@property (nonatomic, strong, readwrite) NSNumber *defaultCategoryID;
+@property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
+@property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
+@property (nonatomic, strong, readwrite) NSNumber *relatedPostsAllowed;
+@property (nonatomic, strong, readwrite) NSNumber *relatedPostsEnabled;
+@property (nonatomic, strong, readwrite) NSNumber *relatedPostsShowHeadline;
+@property (nonatomic, strong, readwrite) NSNumber *relatedPostsShowThumbnails;
+
+/**
+ Flags whether the current user is an admin on the blog.
+ */
+@property (nonatomic, assign, readwrite) BOOL isAdmin;
+
 /**
  Stores the username for self hosted sites
  
@@ -72,7 +93,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, strong, readwrite) NSString       *password;
 
 // Readonly Properties
-@property (nonatomic,   weak,  readonly) NSArray        *sortedPostFormatNames;
+@property (nonatomic,   weak,  readonly) NSArray *sortedPostFormatNames;
+@property (nonatomic,   weak,  readonly) NSArray *sortedPostFormats;
 @property (nonatomic, strong,  readonly) WPXMLRPCClient *api;
 @property (nonatomic,   weak,  readonly) NSString       *version;
 @property (nonatomic, strong,  readonly) NSString       *authToken;
@@ -102,19 +124,34 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 // wp.koke.me
 @property (weak, readonly) NSString *hostname;
 
+@property (weak, readonly) NSString *defaultPostFormatText;
 
 #pragma mark - Blog information
 - (BOOL)isPrivate;
+/**
+ *  The text description for the current privacy settting set in the blog
+ *
+ *  @return the text description.
+ */
+- (NSString *)textForCurrentSiteVisibility;
+
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;
 - (NSString *)loginUrl;
 - (NSString *)urlWithPath:(NSString *)path;
 - (NSString *)adminUrlWithPath:(NSString *)path;
-- (NSArray *)getXMLRPCArgsWithExtra:(id)extra;
 - (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
 - (BOOL)supports:(BlogFeature)feature;
+/**
+ *  Returnst the text description for a post format code
+ *
+ *  @param postFormatCode of the post format you want to display
+ *
+ *  @return a string with the post format description and if no description was found the postFormatCode sent.
+ */
+- (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug;
 /**
  Returns a human readable description for logging
  

@@ -183,8 +183,9 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
         return;
     }
 
-    if (!self.needsLogin && self.hasCredentials && ![WPCookie hasCookieForURL:self.url andUsername:self.username]) {
-        DDLogWarn(@"We have login credentials but no cookie, let's try login first");
+    BOOL hasCookies = [WPCookie hasCookieForURL:self.url andUsername:self.username];
+    if (self.url.isWordPressDotComUrl && !self.needsLogin && self.hasCredentials && !hasCookies) {
+        DDLogWarn(@"WordPress.com URL: We have login credentials but no cookie, let's try login first");
         [self retryWithLogin];
         return;
     }
@@ -260,7 +261,14 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     if (_url == theURL) {
         return;
     }
-    
+
+    // If the URL has no scheme defined, default to http.
+    if (![theURL.scheme hasPrefix:@"http"]) {
+        NSURLComponents *components = [NSURLComponents componentsWithURL:theURL resolvingAgainstBaseURL:NO];
+        components.scheme = @"http";
+        theURL = [components URL];
+    }
+
     _url = theURL;
     
     // Prevent double load in viewDidLoad Method
