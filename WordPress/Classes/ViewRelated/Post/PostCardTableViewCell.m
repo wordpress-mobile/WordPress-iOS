@@ -42,6 +42,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postContentBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *maxIPadWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewBottomConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewHeightConstraint;
 
 @property (nonatomic, weak) id<WPPostContentViewProvider>contentProvider;
 @property (nonatomic, assign) CGFloat headerViewHeight;
@@ -114,7 +115,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 
     if (self.postCardImageView) {
         // the image cell xib
-        height += CGRectGetHeight(self.postCardImageView.frame);
+        height += self.postCardImageViewHeightConstraint.constant;
         height += self.postCardImageViewBottomConstraint.constant;
     }
 
