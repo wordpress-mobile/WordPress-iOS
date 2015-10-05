@@ -4,7 +4,8 @@
 #import "Menu.h"
 #import "MenuLocation.h"
 #import "MenuItem.h"
-#import "WPTableViewSectionHeaderFooterView.h"
+#import "MenusLocationCell.h"
+#import "MenusCell.h"
 
 typedef NS_ENUM(NSInteger) {
     
@@ -53,12 +54,17 @@ typedef NS_ENUM(NSInteger) {
 {
     [super loadView];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:tableView];
     self.tableView = tableView;
+    
+    tableView.separatorInset = UIEdgeInsetsZero;
+    tableView.layoutMargins = UIEdgeInsetsZero;
+    
+    tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -179,22 +185,44 @@ typedef NS_ENUM(NSInteger) {
     return count;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *title = [self titleForHeaderInSection:[self menusSectionForTableViewSection:section]];
-    if (title.length == 0) {
-        return [[UIView alloc] initWithFrame:CGRectZero];
+    CGFloat height;
+    MenusSection menusSection = [self menusSectionForTableViewSection:indexPath.section];
+    switch (menusSection) {
+        case MenusSectionLocations:
+        case MenusSectionMenus:
+            height = MenusSelectionCellDefaultHeight;
+            break;
+        default:
+            height = tableView.rowHeight;
+            break;
     }
     
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = title;
-    return header;
+    return height;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *title = [self titleForHeaderInSection:[self menusSectionForTableViewSection:section]];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.tableView.bounds)];
+    CGFloat height;
+    MenusSection menusSection = [self menusSectionForTableViewSection:indexPath.section];
+    switch (menusSection) {
+        case MenusSectionLocations: {
+            MenuLocation *location = [self.blog.menuLocations objectAtIndex:indexPath.row];
+            height = [MenusLocationCell heightForTableView:tableView location:location];
+            break;
+        }
+        case MenusSectionMenus: {
+            Menu *menu = [self.blog.menus objectAtIndex:indexPath.row];
+            height = [MenusCell heightForTableView:tableView menu:menu];
+            break;
+        }
+        default:
+            height = tableView.rowHeight;
+            break;
+    }
+    
+    return height;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -204,7 +232,8 @@ typedef NS_ENUM(NSInteger) {
         case MenusSectionLocations:
         {
             MenuLocation *location = [self.blog.menuLocations objectAtIndex:indexPath.row];
-            cell.textLabel.text = location.details;
+            MenusLocationCell *locationCell = (MenusLocationCell *)cell;
+            locationCell.location = location;
             cell.accessoryType = UITableViewCellAccessoryNone;
             if(location == self.selectedMenuLocation) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -214,7 +243,8 @@ typedef NS_ENUM(NSInteger) {
         case MenusSectionMenus:
         {
             Menu *menu = [self.blog.menus objectAtIndex:indexPath.row];
-            cell.textLabel.text = menu.name;
+            MenusCell *menuCell = (MenusCell *)cell;
+            menuCell.menu = [self.blog.menus objectAtIndex:indexPath.row];
             cell.accessoryType = UITableViewCellAccessoryNone;
             if(menu == self.selectedMenuLocation.menu) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -250,7 +280,18 @@ typedef NS_ENUM(NSInteger) {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if(!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+        
+        switch (section) {
+            case MenusSectionLocations:
+                cell = [[MenusLocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+                break;
+            case MenusSectionMenus:
+                cell = [[MenusCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+                break;
+            default:
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+                break;
+        }
     }
     
     return cell;
