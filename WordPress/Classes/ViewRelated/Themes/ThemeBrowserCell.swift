@@ -17,7 +17,7 @@ public class ThemeBrowserCell : UICollectionViewCell {
     
     // MARK: - Additional initialization
     
-    public func configureWithTheme(theme: Theme) {
+    public func configureWithTheme(theme: Theme?) {
         self.theme = theme;
     }
     
