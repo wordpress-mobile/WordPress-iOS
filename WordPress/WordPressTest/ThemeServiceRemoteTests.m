@@ -185,9 +185,10 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     ThemeServiceRemote *service = nil;
 
     static NSString* const url = @"v1.2/themes";
+    static NSInteger const expectedThemes = 20;
 
     ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray *themes) {
-        NSCAssert([themes count] > 0, @"Expected themes to be returned");
+        NSCAssert([themes count] == expectedThemes, @"Expected %ld themes to be returned", expectedThemes);
     };
     
     [OCMStub([api GET:[OCMArg isEqual:url]
