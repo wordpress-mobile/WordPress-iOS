@@ -1,6 +1,6 @@
 import Foundation
 
-public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
+public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchBarDelegate {
     
     // MARK: - Properties: must be set by parent
     
@@ -16,39 +16,53 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
      *  @brief      The managed object context this VC will use for it's operations.
      */
     private let managedObjectContext : NSManagedObjectContext = {
-       let context = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
-        context.parentContext = ContextManager.sharedInstance()!.mainContext
+        ContextManager.sharedInstance()!.newDerivedContext()
+    }()
+    
+    /**
+     *  @brief      The FRC this VC will use to display filtered content.
+     */
+    private lazy var themesController: NSFetchedResultsController = {
+        let fetchRequest = NSFetchRequest(entityName: Theme.entityName())
+        fetchRequest.fetchBatchSize = 20
+        let predicate = NSPredicate(format: "blog == %@", self.blog)
+        fetchRequest.predicate = predicate
+        let sort = NSSortDescriptor(key: "name", ascending: true)
+        fetchRequest.sortDescriptors = [sort]
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil)
+        frc.delegate = self
         
-        return context
+        do {
+            try frc.performFetch()
+        } catch let error as NSError {
+            DDLogSwift.logError("Error fetching themes: \(error.localizedDescription)")
+        }
+        
+        return frc
     }()
     
     /**
      *  @brief      The themes service we'll use in this VC.
      */
     private lazy var themeService : ThemeService = {
-        return ThemeService(managedObjectContext: self.managedObjectContext)
+        ThemeService(managedObjectContext: self.managedObjectContext)
     }()
     
     // MARK: - Properties: Layout configuration
     private let marginWidth = CGFloat(10)
     private let minimumColumnWidth = CGFloat(250)
- 
-    // MARK: - Themes
-    
-    /**
-     *  @brief      The array of themes to display on screen.
-     *  @details    After set, will try to reload the collectionView
-     */
-    private var themes : [Theme] = [] {
-        didSet {
-            self.collectionView?.reloadData()
-        }
-    }
     
     // MARK: - Additional initialization
     
     public func configureWithBlog(blog: Blog) {
-        self.blog = blog
+        do {
+            let blogInContext = try managedObjectContext.existingObjectWithID(blog.objectID) as? Blog
+            self.blog = blogInContext
+        } catch let error as NSError {
+            DDLogSwift.logError("Error finding blog: \(error.localizedDescription)")
+        }
     }
     
     // MARK: - UIViewController
@@ -79,32 +93,26 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - Updating the list of themes
     
     private func updateThemes() {
-        self.themeService.getThemesForBlog(
-            self.blog,
+        themeService.getThemesForBlog(
+            blog,
             success: { (themes : [AnyObject]?) -> Void in
-                
-                if let unwrappedThemes = themes as? [Theme] {
-                    self.themes = unwrappedThemes
-                } else {
-                    self.themes = []
-                }
-                
-            }) { (error : NSError!) -> Void in
-                // Handle the error
-        }
+            },
+            failure: {(error : NSError!) -> Void in
+                DDLogSwift.logError("Error updating themes: \(error.localizedDescription)")
+            })
     }
     
     // MARK: - UICollectionViewController protocol UICollectionViewDataSource
     
     public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-            
-        return self.themes.count;
+        let count = themesController.fetchedObjects?.count
+        return count ?? 0
     }
     
     public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> ThemeBrowserCell
     {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ThemeBrowserCell", forIndexPath: indexPath) as! ThemeBrowserCell
-        let theme = themes[indexPath.row]
+        let theme = themesController.objectAtIndexPath(indexPath) as? Theme
         
         cell.configureWithTheme(theme)
         
@@ -117,7 +125,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     }
     
     public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1;
+        return 1
     }
     
     // MARK: - UICollectionViewDelegateFlowLayout
@@ -152,5 +160,13 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     
     public func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         // SEARCH AWAY!!!
+    }
+    
+    // MARK: - NSFetchedResultsControllerDelegate
+
+    public func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        dispatch_async(dispatch_get_main_queue(), {
+            collectionView?.reloadData()
+        });
     }
 }
