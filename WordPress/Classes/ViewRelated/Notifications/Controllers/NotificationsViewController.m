@@ -910,9 +910,19 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (NSString *)noResultsTitleText
 {
-    NSString *jetapackMessage   = NSLocalizedString(@"Connect to Jetpack", @"Notifications title displayed when a self-hosted user is not connected to Jetpack");
-    NSString *emptyMessage      = NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
-    return self.showsJetpackMessage ? jetapackMessage : emptyMessage;
+    if (self.showsJetpackMessage) {
+        return NSLocalizedString(@"Connect to Jetpack", @"Notifications title displayed when a self-hosted user is not connected to Jetpack");
+    }
+    
+    NSDictionary *messageMap = @{
+        @(NotificationFilterNone)       : NSLocalizedString(@"No notifications yet", @"Displayed in the Notifications Tab, when there are no notifications"),
+        @(NotificationFilterUnread)     : NSLocalizedString(@"No unread notifications", @"Displayed in the Notifications Tab, when the Unread Filter shows no notifications"),
+        @(NotificationFilterComment)    : NSLocalizedString(@"No comments notifications", @"Displayed in the Notifications Tab, when the Comments Filter shows no notifications"),
+        @(NotificationFilterFollow)     : NSLocalizedString(@"No new followers notifications", @"Displayed in the Notifications Tab, when the Follow Filter shows no notifications"),
+        @(NotificationFilterLike)       : NSLocalizedString(@"No like notifications", @"Displayed in the Notifications Tab, when the Likes Filter shows no notifications"),
+    };
+
+    return messageMap[@(self.filtersSegmentedControl.selectedSegmentIndex)];
 }
 
 - (NSString *)noResultsMessageText
