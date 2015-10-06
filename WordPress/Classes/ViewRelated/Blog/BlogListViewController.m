@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, BlogListSections) {
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
-static CGFloat const BLVCSiteRowHeight = 54.0;
+static CGFloat const BLVCSiteRowHeight = 74.0;
 
 
 @interface BlogListViewController () <UIViewControllerRestoration>
