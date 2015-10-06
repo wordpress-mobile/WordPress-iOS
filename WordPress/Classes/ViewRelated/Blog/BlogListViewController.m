@@ -421,7 +421,9 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
             cell.textLabel.text = [blog displayURL];
             cell.detailTextLabel.text = @"";
         }
-
+        
+        cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
+        cell.imageView.layer.borderWidth = 1.5;
         [cell.imageView setImageWithSiteIcon:blog.icon];
         if ([self.tableView isEditing] && [blog supports:BlogFeatureVisibility]) {
             UISwitch *visibilitySwitch = [UISwitch new];
