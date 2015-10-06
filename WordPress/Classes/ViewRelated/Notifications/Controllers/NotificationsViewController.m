@@ -532,6 +532,9 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [self.tableViewHandler.resultsController performFetch:nil];
     [self.tableView reloadData];
     
+    // Empty State?
+    [self showNoResultsViewIfNeeded];
+    
     // Don't overwork!
     self.lastReloadDate = [NSDate date];
 }
