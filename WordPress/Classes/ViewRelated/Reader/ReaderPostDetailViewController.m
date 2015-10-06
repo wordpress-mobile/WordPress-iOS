@@ -69,6 +69,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)dealloc
 {
     [self.post removeObserver:self forKeyPath:ReaderPostLikeCountKeyPath];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -102,17 +103,30 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     // The performance hit only happens once so its fine to discard the controller
     // after it loads its view.
     [[self activityViewControllerForSharing] view];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleApplicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [self.postView refreshMediaLayout];
+}
 
-    if (IS_IPHONE) {
-        // Resize media in the post detail to match the width of the new orientation.
-        // No need to refresh on iPad when using a fixed width.
-        [self.postView refreshMediaLayout];
-    }
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self.view layoutIfNeeded];
+    [self.postView refreshMediaLayout];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
@@ -123,6 +137,20 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
         // of the properties is important.
         [self.postView updateActionButtons];
     }
+}
+
+
+#pragma mark - Split View Support
+
+/**
+ We need to refresh media layout when the app's size changes due the the user adjusting
+ the split view grip. Respond to the UIApplicationDidBecomeActiveNotification notification
+ dispatched when the grip is changed and refresh media layout.
+ */
+- (void)handleApplicationDidBecomeActive:(NSNotification *)notification
+{
+    [self.view layoutIfNeeded];
+    [self.postView refreshMediaLayout];
 }
 
 
@@ -146,7 +174,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 - (void)configurePostView
 {
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
+    CGFloat width = [UIDevice isPad] ? MIN(WPTableViewFixedWidth, CGRectGetWidth(self.view.bounds)) : CGRectGetWidth(self.view.bounds);
     self.postView = [[ReaderPostRichContentView alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
@@ -166,7 +194,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     NSParameterAssert(self.postView);
 
     UIView *mainView = self.view;
-    CGFloat verticalMargin = IS_IPAD ? VerticalMargin : 0;
+    CGFloat verticalMargin = [UIDevice isPad] ? VerticalMargin : 0;
     NSDictionary *views = NSDictionaryOfVariableBindings(_scrollView, _postView, mainView);
     NSDictionary *metrics = @{@"WPTableViewWidth": @(WPTableViewFixedWidth), @"verticalMargin": @(verticalMargin)};
 
@@ -187,8 +215,8 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
                                                          multiplier:1.0
                                                            constant:0.0]];
 
-    if (IS_IPAD) {
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_postView(WPTableViewWidth)]"
+    if ([UIDevice isPad]) {
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(>=0)-[_postView(WPTableViewWidth@900)]-(>=0)-|"
                                                                                 options:0
                                                                                 metrics:metrics
                                                                                   views:views]];
@@ -376,14 +404,14 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)fetchFeaturedImage
 {
     if (!self.featuredImageSource) {
-        CGFloat maxWidth = IS_IPAD ? WPTableViewFixedWidth : MAX(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));
+        CGFloat maxWidth = MAX(CGRectGetWidth(self.postView.bounds), CGRectGetHeight(self.postView.bounds));
         CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
         self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
         self.featuredImageSource.delegate = self;
         self.featuredImageSource.photonQuality = ReaderPostDetailImageQuality;
     }
     
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
+    CGFloat width = CGRectGetWidth(self.postView.bounds);
     CGFloat height = round(width * WPContentViewMaxImageHeightPercentage);
     CGSize size = CGSizeMake(width, height);
     
@@ -470,7 +498,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)handleShareButtonTapped:(id)sender
 {
     UIActivityViewController *activityViewController = [self activityViewControllerForSharing];
-    if (IS_IPAD) {
+    if ([UIDevice isPad]) {
         if (self.popover) {
             [self dismissPopover];
             return;
