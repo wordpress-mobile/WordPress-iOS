@@ -442,7 +442,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
                                  ReaderDetailTypeKey:detailType,
                                  ReaderDetailOfflineKey:isOfflineView
                                  };
-    [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle withProperties:properties];
+    [WPAnalytics track:WPAnalyticsStatReaderArticleOpened withProperties:properties];
 }
 
 - (void)bumpPageViewsForPost:(NSNumber *)postID site:(NSNumber *)siteID siteURL:(NSString *)siteURL
