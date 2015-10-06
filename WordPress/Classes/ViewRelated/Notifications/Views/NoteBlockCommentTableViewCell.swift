@@ -56,25 +56,10 @@ import Foundation
 
     // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
-        if url == gravatarURL {
-            return
-        }
-        
         let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
         let gravatar = url.flatMap { Gravatar($0) }
 
-        gravatarImageView.downloadGravatar(gravatar,
-            placeholder: placeholderImage,
-            animate: true, failure: {
-                (error: NSError!) in
-
-                // Note: Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
-                if self.gravatarURL?.isEqual(url) == true {
-                    self.gravatarURL = nil
-                }
-        })
-
-        gravatarURL = url
+        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
     }
 
     public func downloadGravatarWithGravatarEmail(email: String?) {
@@ -181,9 +166,6 @@ import Foundation
     private let separatorRepliedInsets              = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
     private let gravatarPadSize                     = CGSize(width: 37.0, height: 37.0)
     
-    // MARK: - Private Properties
-    private var gravatarURL                         : NSURL?
-
     // MARK: - IBOutlets
     @IBOutlet private weak var actionsView          : UIView!
     @IBOutlet private weak var gravatarImageView    : CircularImageView!
