@@ -2,7 +2,7 @@
 
 @class Menu;
 
-@interface MenusCell : MenusSelectionCell
+@interface MenusSelectedMenuCell : MenusSelectionCell
 
 @property (nonatomic, strong) Menu *menu;
 

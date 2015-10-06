@@ -1,8 +1,8 @@
-#import "MenusLocationCell.h"
+#import "MenusSelectedLocationCell.h"
 #import "MenuLocation.h"
 #import "Blog.h"
 
-@implementation MenusLocationCell
+@implementation MenusSelectedLocationCell
 
 #pragma mark - CLASS
 
