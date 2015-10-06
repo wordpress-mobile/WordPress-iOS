@@ -134,7 +134,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         let parentViewWidth = collectionView.frame.size.width
         let width = cellWidthForFrameWidth(parentViewWidth)
         
-        return CGSize(width: width, height: width)
+        return CGSize(width: width, height: ThemeBrowserCell.heightForWidth(width))
     }
     
     // MARK: - Layout calculation helper methods
