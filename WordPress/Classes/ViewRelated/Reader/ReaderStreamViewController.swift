@@ -1120,7 +1120,7 @@ import Foundation
         navigationController?.pushViewController(controller, animated: true)
 
         let properties = NSDictionary(object: post.blogURL, forKey: "URL") as! [NSObject : AnyObject]
-        WPAnalytics.track(.ReaderPreviewedSite, withProperties: properties)
+        WPAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
@@ -1142,7 +1142,7 @@ import Foundation
         navigationController?.pushViewController(controller, animated: true)
 
         let properties = NSDictionary(object: post.primaryTagSlug, forKey: "tag") as! [NSObject : AnyObject]
-        WPAnalytics.track(.ReaderPreviewedTag, withProperties: properties)
+        WPAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
