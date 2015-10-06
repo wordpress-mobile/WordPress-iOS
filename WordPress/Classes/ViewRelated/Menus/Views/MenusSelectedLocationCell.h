@@ -2,7 +2,7 @@
 
 @class MenuLocation;
 
-@interface MenusLocationCell : MenusSelectionCell
+@interface MenusSelectedLocationCell : MenusSelectionCell
 
 @property (nonatomic, strong) MenuLocation *location;
 
