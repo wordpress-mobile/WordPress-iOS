@@ -796,9 +796,10 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     NSDictionary *filtersMap = @{
         @(NotificationFilterUnread)     : @" AND (read = NO)",
-        @(NotificationFilterComment)    : @" AND (type = 'comment')",
-        @(NotificationFilterFollow)     : @" AND (type = 'follow')",
-        @(NotificationFilterLike)       : @" AND (type = 'like')"
+        @(NotificationFilterComment)    : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeComment],
+        @(NotificationFilterFollow)     : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeFollow],
+        @(NotificationFilterLike)       : [NSString stringWithFormat:@" AND (type = '%@' OR type = '%@')",
+                                            NoteTypeLike, NoteTypeCommentLike]
     };
  
     NSString *condition = filtersMap[@(self.filtersSegmentedControl.selectedSegmentIndex)] ?: [NSString string];
