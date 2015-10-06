@@ -9,16 +9,39 @@
 
 typedef NS_ENUM(NSInteger) {
     
-    MenusSectionLocations = 0,
-    MenusSectionMenus,
+    MenusSectionSelectedLocation = 0,
+    MenusSectionAvailableLocations,
+    MenusSectionSelectedMenu,
+    MenusSectionAvailableMenus,
     MenusSectionMenuItems
     
 }MenusSection;
 
+static NSString * const MenusSectionLocationsKey = @"locations";
+static NSString * const MenusSectionMenusKey = @"menus";
+static NSString * const MenusSectionMenuItemsKey = @"menu_items";
+
+@implementation NSDictionary (Menus)
+
+- (NSMutableArray *)menuLocations
+{
+    return self[MenusSectionLocationsKey];
+}
+- (NSMutableArray *)menus
+{
+    return self[MenusSectionMenusKey];
+}
+- (NSMutableArray *)menuItems
+{
+    return self[MenusSectionMenuItemsKey];
+}
+
+@end
+
 @interface MenusViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) NSArray *sections;
+@property (nonatomic, strong) NSDictionary <NSString *, NSMutableArray *> *sections;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenusService *menusService;
 @property (nonatomic, strong) MenuLocation *selectedMenuLocation;
@@ -74,6 +97,7 @@ typedef NS_ENUM(NSInteger) {
     self.activity = activity;
     
     [self setupAutolayoutConstraints];
+    [self setupTableSections];
 }
 
 - (void)viewDidLoad
@@ -110,13 +134,9 @@ typedef NS_ENUM(NSInteger) {
 
 #pragma mark - setup
 
-- (void)setupSectionsIfNeeded
+- (void)setupTableSections
 {
-    if(self.sections.count) {
-        return;
-    }
-    
-    self.sections = @[@(MenusSectionLocations), @(MenusSectionMenus), @(MenusSectionMenuItems)];
+    self.sections = @{MenusSectionLocationsKey: [NSMutableArray arrayWithCapacity:2], MenusSectionMenusKey: [NSMutableArray arrayWithCapacity:5], MenusSectionMenuItemsKey: [NSMutableArray arrayWithCapacity:5]};
 }
 
 #pragma mark - local updates
@@ -137,48 +157,129 @@ typedef NS_ENUM(NSInteger) {
 
 - (void)didSyncBlog
 {
-    [self setupSectionsIfNeeded];
-
     // the selected location defaults to the first locaiton in the ordered set
     self.selectedMenuLocation = [self.blog.menuLocations firstObject];
+    [self toggleAvailableMenus];
+}
+
+- (void)toggleAvailableLocations
+{
+    NSMutableArray *locations = [self.sections menuLocations];
+    if(locations.count) {
+        [self hideAvailableLocations];
+    }else {
+        [self showAvailableLocations];
+    }
+}
+
+- (void)showAvailableLocations
+{
+    NSMutableArray *locations = [self.sections menuLocations];
+    [locations removeAllObjects];
+    
+    // show the available locations, without the currently selected location
+    [locations addObjectsFromArray:self.blog.menuLocations.array];
+    [locations removeObject:self.selectedMenuLocation];
+    
+    [self.tableView reloadData];
+}
+
+- (void)hideAvailableLocations
+{
+    [[self.sections menuLocations] removeAllObjects];
+    [self.tableView reloadData];
+}
+
+- (void)toggleAvailableMenus
+{
+    NSMutableArray *menus = [self.sections menus];
+    if(menus.count) {
+        [self hideAvailableMenus];
+    }else {
+        [self hideAvailableLocations];
+        [self showAvailableMenus];
+    }
+}
+
+- (void)showAvailableMenus
+{
+    NSMutableArray *menus = [self.sections menus];
+    [menus removeAllObjects];
+    // show the available menus, without the currently selected menu
+    [menus addObjectsFromArray:self.blog.menus.array];
+    if(self.selectedMenuLocation.menu) {
+        [menus removeObject:self.selectedMenuLocation.menu];
+    }
+    [self.tableView reloadData];
+}
+
+- (void)hideAvailableMenus
+{
+    [[self.sections menus] removeAllObjects];
     [self.tableView reloadData];
 }
 
 - (void)selectedLocationWithIndexPath:(NSIndexPath *)indexPath
 {
-    MenuLocation *location = [self.blog.menuLocations objectAtIndex:indexPath.row];
-    if(location == self.selectedMenuLocation)
-        return;
-    
+    MenuLocation *location = [[self.sections menuLocations] objectAtIndex:indexPath.row];
     self.selectedMenuLocation = location;
-    [self.tableView reloadData];
+    [self hideAvailableLocations];
+    
+    if(location.menu) {
+        [self hideAvailableMenus];
+    }else {
+        [self showAvailableMenus];
+    }
 }
 
 - (void)selectedMenuWithIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedMenuLocation.menu = [self.blog.menus objectAtIndex:indexPath.row];
-    [self.tableView reloadData];
+    self.selectedMenuLocation.menu = [[self.sections menus] objectAtIndex:indexPath.row];
+    [self toggleAvailableMenus];
 }
 
 #pragma - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.sections.count;
+    NSInteger count = 0;
+    BOOL done;
+    while (!done) {
+        switch (count) {
+            case MenusSectionSelectedLocation:
+            case MenusSectionAvailableLocations:
+            case MenusSectionSelectedMenu:
+            case MenusSectionAvailableMenus:
+            case MenusSectionMenuItems:
+                count++;
+                break;
+            default:
+                done = YES;
+                break;
+        }
+    }
+    
+    return count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger count = 0;
-    switch ([self menusSectionForTableViewSection:section]) {
-        case MenusSectionLocations:
-            count = self.blog.menuLocations.count;
+    switch (section) {
+        case MenusSectionSelectedLocation:
+            count = 1;
             break;
-        case MenusSectionMenus:
-            count = self.blog.menus.count;
+        case MenusSectionAvailableLocations:
+            count = [self.sections menuLocations].count;
+            break;
+        case MenusSectionSelectedMenu:
+            count = self.selectedMenuLocation.menu ? 1 : 0;
+            break;
+        case MenusSectionAvailableMenus:
+            count = [self.sections menus].count;
             break;
         case MenusSectionMenuItems:
-            count = self.selectedMenuLocation.menu.items.count;
+            count = [self.sections menuItems].count;
             break;
     }
     
@@ -188,10 +289,9 @@ typedef NS_ENUM(NSInteger) {
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat height;
-    MenusSection menusSection = [self menusSectionForTableViewSection:indexPath.section];
-    switch (menusSection) {
-        case MenusSectionLocations:
-        case MenusSectionMenus:
+    switch (indexPath.section) {
+        case MenusSectionSelectedLocation:
+        case MenusSectionSelectedMenu:
             height = MenusSelectionCellDefaultHeight;
             break;
         default:
@@ -205,15 +305,14 @@ typedef NS_ENUM(NSInteger) {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat height;
-    MenusSection menusSection = [self menusSectionForTableViewSection:indexPath.section];
-    switch (menusSection) {
-        case MenusSectionLocations: {
-            MenuLocation *location = [self.blog.menuLocations objectAtIndex:indexPath.row];
+    switch (indexPath.section) {
+        case MenusSectionSelectedLocation: {
+            MenuLocation *location = self.selectedMenuLocation;
             height = [MenusLocationCell heightForTableView:tableView location:location];
             break;
         }
-        case MenusSectionMenus: {
-            Menu *menu = [self.blog.menus objectAtIndex:indexPath.row];
+        case MenusSectionSelectedMenu: {
+            Menu *menu = self.selectedMenuLocation.menu;
             height = [MenusCell heightForTableView:tableView menu:menu];
             break;
         }
@@ -227,11 +326,10 @@ typedef NS_ENUM(NSInteger) {
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MenusSection section = [self menusSectionForTableViewSection:indexPath.section];
-    switch (section) {
-        case MenusSectionLocations:
+    switch (indexPath.section) {
+        case MenusSectionSelectedLocation:
         {
-            MenuLocation *location = [self.blog.menuLocations objectAtIndex:indexPath.row];
+            MenuLocation *location = self.selectedMenuLocation;
             MenusLocationCell *locationCell = (MenusLocationCell *)cell;
             locationCell.location = location;
             cell.accessoryType = UITableViewCellAccessoryNone;
@@ -240,20 +338,32 @@ typedef NS_ENUM(NSInteger) {
             }
             break;
         }
-        case MenusSectionMenus:
+        case MenusSectionAvailableLocations:
         {
-            Menu *menu = [self.blog.menus objectAtIndex:indexPath.row];
+            MenuLocation *location = [[self.sections menuLocations] objectAtIndex:indexPath.row];
+            cell.textLabel.text = location.details;
+            break;
+        }
+        case MenusSectionSelectedMenu:
+        {
+            Menu *menu = self.selectedMenuLocation.menu;
             MenusCell *menuCell = (MenusCell *)cell;
-            menuCell.menu = [self.blog.menus objectAtIndex:indexPath.row];
+            menuCell.menu = menu;
             cell.accessoryType = UITableViewCellAccessoryNone;
             if(menu == self.selectedMenuLocation.menu) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             }
             break;
         }
+        case MenusSectionAvailableMenus:
+        {
+            Menu *menu = [[self.sections menus] objectAtIndex:indexPath.row];
+            cell.textLabel.text = menu.name;
+            break;
+        }
         case MenusSectionMenuItems:
         {
-            MenuItem *item = [self.selectedMenuLocation.menu.items objectAtIndex:indexPath.row];
+            MenuItem *item = [[self.sections menuItems] objectAtIndex:indexPath.row];
             cell.textLabel.text = item.name;
             break;
         }
@@ -265,12 +375,17 @@ typedef NS_ENUM(NSInteger) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *reuseIdentifier = nil;
-    MenusSection section = [self menusSectionForTableViewSection:indexPath.section];
-    switch (section) {
-        case MenusSectionLocations:
+    switch (indexPath.section) {
+        case MenusSectionSelectedLocation:
+            reuseIdentifier = @"selected_location_cell";
+            break;
+        case MenusSectionAvailableLocations:
             reuseIdentifier = @"locations_cell";
             break;
-        case MenusSectionMenus:
+        case MenusSectionSelectedMenu:
+            reuseIdentifier = @"selected_menu_cell";
+            break;
+        case MenusSectionAvailableMenus:
             reuseIdentifier = @"menus_cell";
             break;
         case MenusSectionMenuItems:
@@ -280,12 +395,11 @@ typedef NS_ENUM(NSInteger) {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     if(!cell) {
-        
-        switch (section) {
-            case MenusSectionLocations:
+        switch (indexPath.section) {
+            case MenusSectionSelectedLocation:
                 cell = [[MenusLocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
                 break;
-            case MenusSectionMenus:
+            case MenusSectionSelectedMenu:
                 cell = [[MenusCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
                 break;
             default:
@@ -299,18 +413,19 @@ typedef NS_ENUM(NSInteger) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MenusSection menusSection = [self menusSectionForTableViewSection:indexPath.section];
-    switch (menusSection) {
-        case MenusSectionLocations:
-        {
+    switch (indexPath.section) {
+        case MenusSectionSelectedLocation:
+            [self toggleAvailableLocations];
+            break;
+        case MenusSectionAvailableLocations:
             [self selectedLocationWithIndexPath:indexPath];
             break;
-        }
-        case MenusSectionMenus:
-        {
+        case MenusSectionSelectedMenu:
+            [self toggleAvailableMenus];
+            break;
+        case MenusSectionAvailableMenus:
             [self selectedMenuWithIndexPath:indexPath];
             break;
-        }
         default:
             break;
     }
@@ -319,31 +434,5 @@ typedef NS_ENUM(NSInteger) {
 }
 
 #pragma mark - Table helpers
-
-- (NSInteger)tableSectionForMenusSection:(MenusSection)menusSection
-{
-    return [self.sections indexOfObject:@(menusSection)];
-}
-
-- (MenusSection)menusSectionForTableViewSection:(NSInteger)section
-{
-    return [[self.sections objectAtIndex:section] integerValue];
-}
-
-- (NSString *)titleForHeaderInSection:(MenusSection)section
-{
-    NSString *headingTitle = nil;
-    switch (section) {
-        case MenusSectionLocations:
-            headingTitle = [NSString stringWithFormat:NSLocalizedString(@"%i menu areas in this theme", @"Title for the number of available locations"), self.blog.menuLocations.count];
-            break;
-        case MenusSectionMenus:
-            headingTitle = [NSString stringWithFormat: NSLocalizedString(@"%i menus available", @"Title for the number of available menus"), self.blog.menus.count];
-            break;
-        default:
-            break;
-    }
-    return headingTitle;
-}
 
 @end
