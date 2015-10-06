@@ -233,17 +233,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
         [remote syncSettingsForBlogID:blog.blogID success:^(RemoteBlogSettings *settings) {
             [self.managedObjectContext performBlock:^{
-                blog.blogName = settings.name;
-                blog.blogTagline = settings.desc;
-                if (settings.defaultCategory) {
-                    blog.defaultCategoryID = settings.defaultCategory;
-                }
-                if (settings.defaultPostFormat) {
-                    blog.defaultPostFormat = settings.defaultPostFormat;
-                }
-                if (settings.privacy) {
-                    blog.siteVisibility = (SiteVisibility)[settings.privacy integerValue];
-                }
+                [self updateBlog:blogInContext settingsWithRemoteSettings:settings];
                 [self.managedObjectContext save:nil];
                 if (success) {
                     success();
@@ -254,7 +244,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     }];
 }
 
-- (void)updateSettingForBlog:(Blog *)blog
+- (void)updateSettingsForBlog:(Blog *)blog
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure
 {
@@ -749,6 +739,27 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return timeZone;
 }
 
+- (void)updateBlog:(Blog *)blog settingsWithRemoteSettings:(RemoteBlogSettings *)remoteSettings
+{
+    blog.blogName = remoteSettings.name;
+    blog.blogTagline = remoteSettings.desc;
+    if (remoteSettings.defaultCategory) {
+        blog.defaultCategoryID = remoteSettings.defaultCategory;
+    }
+    if (remoteSettings.defaultPostFormat) {
+        blog.defaultPostFormat = remoteSettings.defaultPostFormat;
+    }
+    if (remoteSettings.privacy) {
+        blog.siteVisibility = (SiteVisibility)[remoteSettings.privacy integerValue];
+    }
+
+    blog.relatedPostsAllowed = remoteSettings.relatedPostsAllowed;
+    blog.relatedPostsEnabled = remoteSettings.relatedPostsEnabled;
+    blog.relatedPostsShowHeadline = remoteSettings.relatedPostsShowHeadline;
+    blog.relatedPostsShowThumbnails = remoteSettings.relatedPostsShowThumbnails;
+}
+
+
 -(RemoteBlogSettings *)remoteBlogSettingFromBlog:(Blog *)blog
 {
     RemoteBlogSettings *remoteBlogSettings = [[RemoteBlogSettings alloc] init];
@@ -758,6 +769,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     remoteBlogSettings.defaultCategory = blog.defaultCategoryID;
     remoteBlogSettings.defaultPostFormat = blog.defaultPostFormat;
     remoteBlogSettings.privacy = @(blog.siteVisibility);
+    remoteBlogSettings.relatedPostsAllowed = blog.relatedPostsAllowed;
+    remoteBlogSettings.relatedPostsEnabled = blog.relatedPostsEnabled;
+    remoteBlogSettings.relatedPostsShowHeadline = blog.relatedPostsShowHeadline;
+    remoteBlogSettings.relatedPostsShowThumbnails = blog.relatedPostsShowThumbnails;
     
     return remoteBlogSettings;
 }

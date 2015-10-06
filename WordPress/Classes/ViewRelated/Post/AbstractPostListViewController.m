@@ -17,6 +17,10 @@ const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 
 const CGFloat DefaultHeightForFooterView = 44.0;
 
+@interface AbstractPostListViewController()
+@property (nonatomic) BOOL needsRefreshCachedCellHeightsBeforeLayout;
+@end
+
 @implementation AbstractPostListViewController
 
 #pragma mark - Lifecycle Methods
@@ -56,12 +60,14 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [super viewDidAppear:animated];
 
     [self automaticallySyncIfAppropriate];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     self.searchController.active = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -70,21 +76,43 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     if ([UIDevice isPad]) {
         return;
     }
-
-    CGRect bounds = self.view.window.frame;
-    CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = CGRectGetHeight(bounds);
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        width = MIN(width, height);
-    } else {
-        width = MAX(width, height);
-    }
-
-    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
-
     if (self.searchWrapperViewHeightConstraint.constant > 0) {
         self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
     }
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    CGFloat width = CGRectGetWidth(self.view.frame);
+    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    self.needsRefreshCachedCellHeightsBeforeLayout = YES;
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+
+    if (self.needsRefreshCachedCellHeightsBeforeLayout) {
+        self.needsRefreshCachedCellHeightsBeforeLayout = NO;
+
+        CGFloat width = CGRectGetWidth(self.view.frame);
+        [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+
+#pragma mark - Multitasking support
+
+- (void)handleApplicationDidBecomeActive:(NSNotification *)notification
+{
+    self.needsRefreshCachedCellHeightsBeforeLayout = YES;
 }
 
 
