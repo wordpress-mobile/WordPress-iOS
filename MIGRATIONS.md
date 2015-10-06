@@ -9,6 +9,8 @@ data model as well as any custom migrations.
 - `Blog` added a new boolean attribute called `relatedPostsEnabled` to store the related setting on the site;
 - `Blog` added a new boolean attribute called `relatedPostsShowHeadline` to store the related setting on the site;
 - `Blog` added a new boolean attribute called `relatedPostsShowThumbnails` to store the related setting on the site;
+- `Theme` added a new string attribute called `demoUrl` to store a theme's demo site address (@alexcurylo)
+- `Theme` added a new string attribute called `price` to store a premium theme's price display string
 
 ## WordPress 38 (@sergioestevao 2015-08-21)
 

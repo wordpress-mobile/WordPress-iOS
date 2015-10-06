@@ -52,7 +52,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     
     // MARK: - Properties: Layout configuration
     private let marginWidth = CGFloat(16)
-    private let minimumColumnWidth = CGFloat(340)
+    private let minimumColumnWidth = CGFloat(330)
     
     // MARK: - Additional initialization
     
