@@ -37,8 +37,8 @@
 		00F2E3FB166EEFE100D0527C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3651158F2D3F00419A93 /* QuartzCore.framework */; };
 		067D911C15654CE79F0A4A29 /* libPods-WordPressTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4972215061A4C21AD2CD5B8 /* libPods-WordPressTest.a */; };
 		081026701BC322BD001E000D /* MenusSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0810266F1BC322BD001E000D /* MenusSelectionCell.m */; settings = {ASSET_TAGS = (); }; };
-		081026731BC331A5001E000D /* MenusLocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 081026721BC331A5001E000D /* MenusLocationCell.m */; settings = {ASSET_TAGS = (); }; };
-		081026761BC333A1001E000D /* MenusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 081026751BC333A1001E000D /* MenusCell.m */; settings = {ASSET_TAGS = (); }; };
+		081026731BC331A5001E000D /* MenusSelectedLocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 081026721BC331A5001E000D /* MenusSelectedLocationCell.m */; settings = {ASSET_TAGS = (); }; };
+		081026761BC333A1001E000D /* MenusSelectedMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 081026751BC333A1001E000D /* MenusSelectedMenuCell.m */; settings = {ASSET_TAGS = (); }; };
 		082E73B41BB341B900DA77AE /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73AA1BB341B900DA77AE /* Menu.m */; settings = {ASSET_TAGS = (); }; };
 		082E73B61BB341B900DA77AE /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73AE1BB341B900DA77AE /* MenuItem.m */; settings = {ASSET_TAGS = (); }; };
 		082E73B81BB341B900DA77AE /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73B21BB341B900DA77AE /* MenuLocation.m */; settings = {ASSET_TAGS = (); }; };
@@ -697,10 +697,10 @@
 		080F399E1BB1F9CD00BA05BC /* WordPress 39.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 39.xcdatamodel"; sourceTree = "<group>"; };
 		0810266E1BC322BD001E000D /* MenusSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionCell.h; sourceTree = "<group>"; };
 		0810266F1BC322BD001E000D /* MenusSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionCell.m; sourceTree = "<group>"; };
-		081026711BC331A5001E000D /* MenusLocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusLocationCell.h; sourceTree = "<group>"; };
-		081026721BC331A5001E000D /* MenusLocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusLocationCell.m; sourceTree = "<group>"; };
-		081026741BC333A1001E000D /* MenusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusCell.h; sourceTree = "<group>"; };
-		081026751BC333A1001E000D /* MenusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusCell.m; sourceTree = "<group>"; };
+		081026711BC331A5001E000D /* MenusSelectedLocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectedLocationCell.h; sourceTree = "<group>"; };
+		081026721BC331A5001E000D /* MenusSelectedLocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectedLocationCell.m; sourceTree = "<group>"; };
+		081026741BC333A1001E000D /* MenusSelectedMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectedMenuCell.h; sourceTree = "<group>"; };
+		081026751BC333A1001E000D /* MenusSelectedMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectedMenuCell.m; sourceTree = "<group>"; };
 		082E73A91BB341B900DA77AE /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
 		082E73AA1BB341B900DA77AE /* Menu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Menu.m; sourceTree = "<group>"; };
 		082E73AD1BB341B900DA77AE /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItem.h; sourceTree = "<group>"; };
@@ -1885,10 +1885,10 @@
 			children = (
 				0810266E1BC322BD001E000D /* MenusSelectionCell.h */,
 				0810266F1BC322BD001E000D /* MenusSelectionCell.m */,
-				081026711BC331A5001E000D /* MenusLocationCell.h */,
-				081026721BC331A5001E000D /* MenusLocationCell.m */,
-				081026741BC333A1001E000D /* MenusCell.h */,
-				081026751BC333A1001E000D /* MenusCell.m */,
+				081026711BC331A5001E000D /* MenusSelectedLocationCell.h */,
+				081026721BC331A5001E000D /* MenusSelectedLocationCell.m */,
+				081026741BC333A1001E000D /* MenusSelectedMenuCell.h */,
+				081026751BC333A1001E000D /* MenusSelectedMenuCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -4283,7 +4283,7 @@
 				296526FE105810E100597FA3 /* NSString+Helpers.m in Sources */,
 				5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */,
 				ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */,
-				081026761BC333A1001E000D /* MenusCell.m in Sources */,
+				081026761BC333A1001E000D /* MenusSelectedMenuCell.m in Sources */,
 				0884D9911BB4760C001CDC7B /* RemoteMenu.m in Sources */,
 				B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
@@ -4496,7 +4496,7 @@
 				B587797F19B799D800E57C5A /* UIImageView+Networking.swift in Sources */,
 				5DA5BF4718E32DCF005F11F9 /* ThemeDetailsViewController.m in Sources */,
 				E1D062D4177C685C00644185 /* ContentActionButton.m in Sources */,
-				081026731BC331A5001E000D /* MenusLocationCell.m in Sources */,
+				081026731BC331A5001E000D /* MenusSelectedLocationCell.m in Sources */,
 				E1B289DB19F7AF7000DB0707 /* RemoteBlog.m in Sources */,
 				5D0431AE1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.m in Sources */,
 				E1A6DBDA19DC7D080071AC1E /* RemotePostCategory.m in Sources */,

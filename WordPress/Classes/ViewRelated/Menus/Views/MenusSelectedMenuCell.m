@@ -1,8 +1,8 @@
-#import "MenusCell.h"
+#import "MenusSelectedMenuCell.h"
 #import "Menu.h"
 #import "Blog.h"
 
-@implementation MenusCell
+@implementation MenusSelectedMenuCell
 
 + (CGFloat)heightForTableView:(UITableView *)tableView menu:(Menu *)menu
 {

@@ -4,8 +4,8 @@
 #import "Menu.h"
 #import "MenuLocation.h"
 #import "MenuItem.h"
-#import "MenusLocationCell.h"
-#import "MenusCell.h"
+#import "MenusSelectedLocationCell.h"
+#import "MenusSelectedMenuCell.h"
 
 typedef NS_ENUM(NSInteger) {
     
@@ -308,12 +308,12 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     switch (indexPath.section) {
         case MenusSectionSelectedLocation: {
             MenuLocation *location = self.selectedMenuLocation;
-            height = [MenusLocationCell heightForTableView:tableView location:location];
+            height = [MenusSelectedLocationCell heightForTableView:tableView location:location];
             break;
         }
         case MenusSectionSelectedMenu: {
             Menu *menu = self.selectedMenuLocation.menu;
-            height = [MenusCell heightForTableView:tableView menu:menu];
+            height = [MenusSelectedMenuCell heightForTableView:tableView menu:menu];
             break;
         }
         default:
@@ -330,7 +330,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         case MenusSectionSelectedLocation:
         {
             MenuLocation *location = self.selectedMenuLocation;
-            MenusLocationCell *locationCell = (MenusLocationCell *)cell;
+            MenusSelectedLocationCell *locationCell = (MenusSelectedLocationCell *)cell;
             locationCell.location = location;
             cell.accessoryType = UITableViewCellAccessoryNone;
             if(location == self.selectedMenuLocation) {
@@ -347,7 +347,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         case MenusSectionSelectedMenu:
         {
             Menu *menu = self.selectedMenuLocation.menu;
-            MenusCell *menuCell = (MenusCell *)cell;
+            MenusSelectedMenuCell *menuCell = (MenusSelectedMenuCell *)cell;
             menuCell.menu = menu;
             cell.accessoryType = UITableViewCellAccessoryNone;
             if(menu == self.selectedMenuLocation.menu) {
@@ -397,10 +397,10 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     if(!cell) {
         switch (indexPath.section) {
             case MenusSectionSelectedLocation:
-                cell = [[MenusLocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+                cell = [[MenusSelectedLocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
                 break;
             case MenusSectionSelectedMenu:
-                cell = [[MenusCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+                cell = [[MenusSelectedMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
                 break;
             default:
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
