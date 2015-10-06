@@ -73,11 +73,16 @@
 	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>
+	<key>UILaunchStoryboardName</key>
+	<string>Launch Screen</string>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleBlackOpaque</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>org-appextension-feature-password-management</string>
+		<string>twitter</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
