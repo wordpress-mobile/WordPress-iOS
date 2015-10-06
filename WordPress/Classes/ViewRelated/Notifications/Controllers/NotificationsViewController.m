@@ -145,11 +145,15 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     // While we're onscreen, please, update rows with animations
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
     
-    // Refresh the UI
-    [self hookApplicationStateNotes];
+    // Tracking
     [self trackAppeared];
     [self updateLastSeenTime];
+    
+    // Notifications
+    [self hookApplicationStateNotes];
     [self resetApplicationBadge];
+
+    // Refresh the UI
     [self reloadResultsControllerIfNeeded];
     [self showNoResultsViewIfNeeded];
 }
