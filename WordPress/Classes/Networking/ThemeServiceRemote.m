@@ -245,6 +245,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     
+    static NSString* const ThemeActiveKey = @"active";
     static NSString* const ThemeAuthorKey = @"author";
     static NSString* const ThemeAuthorURLKey = @"author_uri";
     static NSString* const ThemeDemoURLKey = @"demo_uri";
@@ -264,6 +265,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     
     [self loadLaunchDateForTheme:theme fromDictionary:dictionary];
 
+    theme.active = [[dictionary numberForKey:ThemeActiveKey] boolValue];
     theme.author = [dictionary stringForKey:ThemeAuthorKey];
     theme.authorUrl = [dictionary stringForKey:ThemeAuthorURLKey];
     theme.demoUrl = [dictionary stringForKey:ThemeDemoURLKey];

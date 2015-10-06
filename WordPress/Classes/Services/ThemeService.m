@@ -318,6 +318,10 @@
     theme.trendingRank = remoteTheme.trendingRank;
     theme.version = remoteTheme.version;
     
+    if (blog && remoteTheme.active) {
+        blog.currentThemeId = theme.themeId;
+    }
+    
     return theme;
 }
 
