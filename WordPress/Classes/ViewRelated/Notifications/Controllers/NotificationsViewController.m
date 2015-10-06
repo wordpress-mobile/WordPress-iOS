@@ -47,15 +47,15 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 static NSTimeInterval NotificationsUndoTimeout          = 4;
 static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
-static CGFloat const RatingsViewHeight                  = 100.0f;
+static CGFloat const RatingsViewHeight                  = 100.0;
 
 typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
-    NotificationFilterNone      = 0,
-    NotificationFilterUnread    = 1,
-    NotificationFilterComment   = 2,
-    NotificationFilterFollow    = 3,
-    NotificationFilterLike      = 4
+    NotificationFilterNone,
+    NotificationFilterUnread,
+    NotificationFilterComment,
+    NotificationFilterFollow,
+    NotificationFilterLike
 };
 
 
