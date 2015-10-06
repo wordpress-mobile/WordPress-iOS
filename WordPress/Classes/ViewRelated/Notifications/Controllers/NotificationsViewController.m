@@ -130,6 +130,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [self setupRefreshControl];
     [self setupNavigationBar];
     [self setupFiltersSegmentedControl];
+    [self setupNotificationsBucketDelegate];
     
     [self.tableView reloadData];
 }
@@ -149,7 +150,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [self trackAppeared];
     [self updateLastSeenTime];
     [self resetApplicationBadge];
-    [self setupNotificationsBucketDelegate];
     [self reloadResultsControllerIfNeeded];
     [self showNoResultsViewIfNeeded];
 }
@@ -297,6 +297,14 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     }
     
     [WPStyleGuide configureSegmentedControl:self.filtersSegmentedControl];
+}
+
+- (void)setupNotificationsBucketDelegate
+{
+    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
+    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
+    notesBucket.delegate            = self;
+    notesBucket.notifyWhileIndexing = YES;
 }
 
 
@@ -470,14 +478,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 
 #pragma mark - Helper methods
-
-- (void)setupNotificationsBucketDelegate
-{
-    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
-    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
-    notesBucket.delegate            = self;
-    notesBucket.notifyWhileIndexing = YES;
-}
 
 - (void)resetApplicationBadge
 {
