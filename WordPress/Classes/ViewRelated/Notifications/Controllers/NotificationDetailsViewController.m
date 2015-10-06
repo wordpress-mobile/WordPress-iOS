@@ -185,6 +185,12 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     [self adjustTableInsetsIfNeeded];
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self.tableView reloadData];
+}
+
 - (void)reloadData
 {
     // Hide the header, if needed
@@ -908,8 +914,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:siteID];
-    BOOL success                    = blog.isHostedAtWPcom;
-    
+    BOOL success                    = [blog supports:BlogFeatureStats];
+
     if (success) {
         // TODO: Update StatsViewController to work with initWithCoder!
         StatsViewController *vc     = [[StatsViewController alloc] init];
