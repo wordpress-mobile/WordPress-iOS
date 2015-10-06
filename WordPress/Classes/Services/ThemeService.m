@@ -309,10 +309,14 @@
     Theme* theme = [self findOrCreateThemeWithId:remoteTheme.themeId
                                          forBlog:blog];
     
+    theme.demoUrl = remoteTheme.demoUrl;
+    theme.details = remoteTheme.desc;
     theme.launchDate = remoteTheme.launchDate;
     theme.name = remoteTheme.name;
     theme.popularityRank = remoteTheme.popularityRank;
     theme.previewUrl = remoteTheme.previewUrl;
+    theme.premium = remoteTheme.price.length == 0 ? @NO: @YES;
+    theme.price = remoteTheme.price;
     theme.screenshotUrl = remoteTheme.screenshotUrl;
     theme.themeId = remoteTheme.themeId;
     theme.trendingRank = remoteTheme.trendingRank;

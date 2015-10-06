@@ -15,6 +15,8 @@
 @property (nonatomic, retain) NSArray *tags;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *previewUrl;
+@property (nonatomic, retain) NSString *price;
+@property (nonatomic, retain) NSString *demoUrl;
 @property (nonatomic, retain) Blog *blog;
 
 /**
