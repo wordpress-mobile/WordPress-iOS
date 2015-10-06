@@ -76,9 +76,9 @@ public class ThemeBrowserCell : UICollectionViewCell {
             } else {
                 backgroundColor = UIColor.whiteColor()
                 nameLabel.textColor = WPStyleGuide.darkGrey()
-                if !theme.isPremium() {
+                if theme.isPremium() {
                     infoLabel.textColor = WPStyleGuide.validGreen()
-                    infoLabel.text = "placeholder"
+                    infoLabel.text = theme.price
                 } else {
                     infoLabel.text = nil
                 }
