@@ -76,7 +76,7 @@ extension UIImageView {
             return
         }
 
-        let size = Int(ceil(self.frame.width * self.contentScaleFactor))
+        let size = Int(ceil(frame.width * contentScaleFactor))
         let url = gravatar.urlWithSize(size)
 
         self.downloadImage(url,
