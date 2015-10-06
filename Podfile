@@ -33,7 +33,7 @@ pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-i
 pod 'WordPress-iOS-Shared', '0.4.4'
 pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '1b614724fbc005be4346c7870498658c8b537267'
 pod 'WordPressCom-Stats-iOS', '0.4.7'
-pod 'WordPressCom-Analytics-iOS', '0.0.37'
+pod 'WordPressCom-Analytics-iOS', '0.0.38'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
 pod 'WPMediaPicker', '~>0.6.0'
 pod 'ReactiveCocoa', '~> 2.4.7'
