@@ -128,6 +128,15 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         return 1
     }
     
+    // MARK: - UICollectionViewController protocol UICollectionViewDelegate
+
+    public override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        if let theme = themesController.objectAtIndexPath(indexPath) as? Theme {
+            showDemoForTheme(theme)
+        }
+    }
+    
     // MARK: - UICollectionViewDelegateFlowLayout
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
@@ -167,6 +176,23 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
         dispatch_async(dispatch_get_main_queue(), {
             collectionView?.reloadData()
-        });
+        })
     }
+    
+    // MARK: - Theme actions
+    
+    private func showDemoForTheme(theme: Theme) {
+        
+        let url = NSURL(string: theme.demoUrl)
+        let webViewController = WPWebViewController(URL: url)
+        
+        webViewController.authToken = blog.authToken
+        webViewController.username = blog.usernameForSite
+        webViewController.password = blog.password
+        webViewController.wpLoginURL = NSURL(string: blog.loginUrl())
+        
+        let navController = UINavigationController(rootViewController: webViewController)
+        presentViewController(navController, animated: true, completion: nil)
+    }
+    
 }

@@ -80,6 +80,11 @@
                                                 <constraint firstAttribute="trailing" secondItem="ic7-cz-FKp" secondAttribute="trailing" id="sDV-C8-pkk"/>
                                             </constraints>
                                         </view>
+                                        <view opaque="NO" alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z1S-KH-p4U" userLabel="Highlight">
+                                            <rect key="frame" x="0.0" y="0.0" width="250" height="241"/>
+                                            <animations/>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
                                     </subviews>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -88,14 +93,19 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="dbg-yN-kDg" firstAttribute="leading" secondItem="YzH-tn-GEt" secondAttribute="leading" constant="1" id="1tm-iv-xdE"/>
+                                    <constraint firstAttribute="bottomMargin" secondItem="Z1S-KH-p4U" secondAttribute="bottom" constant="-8" id="BTl-ZN-wAI"/>
+                                    <constraint firstItem="Z1S-KH-p4U" firstAttribute="top" secondItem="YzH-tn-GEt" secondAttribute="top" id="JGh-db-oWr"/>
                                     <constraint firstAttribute="bottom" secondItem="8s9-M0-MA9" secondAttribute="bottom" id="Jo4-Oq-WNu"/>
                                     <constraint firstItem="8s9-M0-MA9" firstAttribute="leading" secondItem="YzH-tn-GEt" secondAttribute="leading" id="MLN-nz-h2Y"/>
                                     <constraint firstItem="dbg-yN-kDg" firstAttribute="top" secondItem="YzH-tn-GEt" secondAttribute="top" constant="1" id="dd5-jo-6Y4"/>
                                     <constraint firstAttribute="trailing" secondItem="8s9-M0-MA9" secondAttribute="trailing" id="eJ6-l9-fZB"/>
+                                    <constraint firstItem="Z1S-KH-p4U" firstAttribute="leading" secondItem="YzH-tn-GEt" secondAttribute="leading" id="eoF-Ug-fCf"/>
+                                    <constraint firstAttribute="trailing" secondItem="Z1S-KH-p4U" secondAttribute="trailing" id="ob3-VB-xOZ"/>
                                     <constraint firstAttribute="trailing" secondItem="dbg-yN-kDg" secondAttribute="trailing" constant="1" id="y5E-eK-3gF"/>
                                 </constraints>
                                 <size key="customSize" width="250" height="241"/>
                                 <connections>
+                                    <outlet property="highlightView" destination="Z1S-KH-p4U" id="I9S-c3-U7P"/>
                                     <outlet property="imageView" destination="dbg-yN-kDg" id="3fc-Ai-faz"/>
                                     <outlet property="infoLabel" destination="UTC-JU-oQg" id="Gkk-FP-MXL"/>
                                     <outlet property="nameLabel" destination="gXD-gy-VJS" id="DoR-Fb-682"/>
