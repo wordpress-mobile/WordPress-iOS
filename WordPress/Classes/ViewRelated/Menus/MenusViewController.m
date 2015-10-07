@@ -6,6 +6,7 @@
 #import "MenuItem.h"
 #import "MenusSelectedLocationCell.h"
 #import "MenusSelectedMenuCell.h"
+#import "WPStyleGuide.h"
 
 typedef NS_ENUM(NSInteger) {
     
@@ -159,7 +160,10 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     // the selected location defaults to the first locaiton in the ordered set
     self.selectedMenuLocation = [self.blog.menuLocations firstObject];
-    [self toggleAvailableMenus];
+    if(!self.selectedMenuLocation.menu) {
+        self.selectedMenuLocation.menu = [self.blog.menus firstObject];
+    }
+    [self.tableView reloadData];
 }
 
 - (void)toggleAvailableLocations
@@ -224,7 +228,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     MenuLocation *location = [[self.sections menuLocations] objectAtIndex:indexPath.row];
     self.selectedMenuLocation = location;
     [self hideAvailableLocations];
-    
+        
     if(location.menu) {
         [self hideAvailableMenus];
     }else {
@@ -341,7 +345,10 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         case MenusSectionAvailableLocations:
         {
             MenuLocation *location = [[self.sections menuLocations] objectAtIndex:indexPath.row];
-            cell.textLabel.text = location.details;
+            
+            NSDictionary *attributes =  @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [WPStyleGuide darkGrey]};
+            NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:location.details attributes:attributes];
+            cell.textLabel.attributedText = attributedText;
             break;
         }
         case MenusSectionSelectedMenu:
@@ -358,7 +365,10 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         case MenusSectionAvailableMenus:
         {
             Menu *menu = [[self.sections menus] objectAtIndex:indexPath.row];
-            cell.textLabel.text = menu.name;
+        
+            NSDictionary *attributes =  @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [WPStyleGuide darkGrey]};
+            NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:menu.name attributes:attributes];
+            cell.textLabel.attributedText = attributedText;
             break;
         }
         case MenusSectionMenuItems:
@@ -399,8 +409,14 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
             case MenusSectionSelectedLocation:
                 cell = [[MenusSelectedLocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
                 break;
+            case MenusSectionAvailableLocations:
+                cell = [[MenusCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+                break;
             case MenusSectionSelectedMenu:
                 cell = [[MenusSelectedMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+                break;
+            case MenusSectionAvailableMenus:
+                cell = [[MenusCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
                 break;
             default:
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
