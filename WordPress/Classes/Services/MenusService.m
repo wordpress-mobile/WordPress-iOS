@@ -37,13 +37,15 @@
             NSArray *menus = [remoteMenus wp_map:^Menu *(RemoteMenu *remoteMenu) {
                 
                 Menu *menu = [self menuFromRemoteMenu:remoteMenu];
-                [self refreshLocationsForMenu:menu matchingRemoteLocationNames:remoteMenu.locationNames blog:blog];
+                [self refreshLocationsForMenu:menu
+                  matchingRemoteLocationNames:remoteMenu.locationNames
+                           availableLocations:locations];
                 
                 return menu;
             }];
             
-            blog.menus = [NSOrderedSet orderedSetWithArray:menus];
             blog.menuLocations = [NSOrderedSet orderedSetWithArray:locations];
+            blog.menus = [NSOrderedSet orderedSetWithArray:menus];
             
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
@@ -73,7 +75,9 @@
                            [self.managedObjectContext performBlockAndWait:^{
                                
                                Menu *menu = [self menuFromRemoteMenu:remoteMenu];
-                               [self refreshLocationsForMenu:menu matchingRemoteLocationNames:remoteMenu.locationNames blog:blog];
+                               [self refreshLocationsForMenu:menu
+                                 matchingRemoteLocationNames:remoteMenu.locationNames
+                                          availableLocations:[blog.menuLocations array]];
                                
                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                                
@@ -246,14 +250,14 @@
 
 - (void)refreshLocationsForMenu:(Menu *)menu
     matchingRemoteLocationNames:(NSArray *)remoteLocationNames
-                           blog:(Blog *)blog
+             availableLocations:(NSArray *)locations
 {
-    NSOrderedSet *menuLocations = nil;
+    NSArray *menuLocations = nil;
     if(remoteLocationNames.count) {
-        menuLocations = [blog.menuLocations filteredOrderedSetUsingPredicate:[NSPredicate predicateWithFormat:@"name IN %@", remoteLocationNames]];
+        menuLocations = [locations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name IN %@", remoteLocationNames]];
     }
     
-    [menu setLocations:[menuLocations set]];
+    [menu setLocations:[NSSet setWithArray:menuLocations]];
 }
 
 - (Menu *)findMenuWithId:(NSString *)menuId
