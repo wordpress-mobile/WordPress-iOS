@@ -258,4 +258,14 @@ extension WPStyleGuide
         private static let blockItalicsFont         = WPFontManager.openSansItalicFontOfSize(blockFontSize)
         private static let blockNoticonFont         = subjectNoticonFont
     }
+    
+    
+    // TODO: Move this over to the Notifications struct, once NotificationsViewController has been
+    // fully migrated to Swift!. JLP 10.2.2015.
+    //
+    public static func configureSegmentedControl(segmentedControl: UISegmentedControl) {
+        let style = [ NSFontAttributeName: WPFontManager.openSansRegularFontOfSize(12) ]
+        
+        segmentedControl.setTitleTextAttributes(style, forState: .Normal)
+    }
 }
