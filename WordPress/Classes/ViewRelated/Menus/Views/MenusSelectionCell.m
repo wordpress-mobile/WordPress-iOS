@@ -10,8 +10,6 @@ CGFloat const MenusSelectionCellDefaultHeight = 70;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self) {
         self.textLabel.numberOfLines = 2;
-        self.indentationLevel = 5;
-        self.layoutMargins = UIEdgeInsetsZero;
     }
     
     return self;
