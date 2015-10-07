@@ -47,6 +47,17 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 static NSTimeInterval NotificationsUndoTimeout          = 4;
 static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
+static CGFloat const RatingsViewHeight                  = 100.0;
+
+typedef NS_ENUM(NSUInteger, NotificationFilter)
+{
+    NotificationFilterNone,
+    NotificationFilterUnread,
+    NotificationFilterComment,
+    NotificationFilterFollow,
+    NotificationFilterLike
+};
+
 
 #pragma mark ====================================================================================
 #pragma mark Private Properties
@@ -54,13 +65,18 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 @interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate,
                                             ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
-@property (nonatomic, strong) WPTableViewHandler    *tableViewHandler;
-@property (nonatomic, strong) WPNoResultsView       *noResultsView;
-@property (nonatomic, strong) NSString              *pushNotificationID;
-@property (nonatomic, strong) NSDate                *pushNotificationDate;
-@property (nonatomic, strong) NSDate                *lastReloadDate;
-@property (nonatomic, strong) NSMutableSet          *notificationIdsMarkedForDeletion;
-@property (nonatomic, strong) NSMutableSet          *notificationIdsBeingDeleted;
+@property (nonatomic, strong) IBOutlet UIView               *tableHeaderView;
+@property (nonatomic, strong) IBOutlet UISegmentedControl   *filtersSegmentedControl;
+@property (nonatomic, strong) IBOutlet ABXPromptView        *ratingsView;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *ratingsTopConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *ratingsHeightConstraint;
+@property (nonatomic, strong) WPTableViewHandler            *tableViewHandler;
+@property (nonatomic, strong) WPNoResultsView               *noResultsView;
+@property (nonatomic, strong) NSString                      *pushNotificationID;
+@property (nonatomic, strong) NSDate                        *pushNotificationDate;
+@property (nonatomic, strong) NSDate                        *lastReloadDate;
+@property (nonatomic, strong) NSMutableSet                  *notificationIdsMarkedForDeletion;
+@property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
 @end
 
 
@@ -104,49 +120,19 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Register the cells
-    NSArray *cellNibs = @[ [NoteTableViewCell classNameWithoutNamespaces] ];
-    
-    for (NSString *nibName in cellNibs) {
-        UINib *tableViewCellNib = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
-        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:nibName];
-    }
-    
-    // iPad Fix: contentInset breaks tableSectionViews
-    if (UIDevice.isPad) {
-        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
-        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
-    
-    // iPhone Fix: Hide the cellSeparators, when the table is empty
-    } else {
-        self.tableView.tableFooterView = [UIView new];
-    }
-    
-    // UITableView
-    self.tableView.accessibilityIdentifier  = @"Notifications Table";
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
-    // WPTableViewHandler
-    WPTableViewHandler *tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    tableViewHandler.cacheRowHeights = YES;
-    tableViewHandler.delegate = self;
-    self.tableViewHandler = tableViewHandler;
-    
-    // Reload the tableView right away: setting the new dataSource doesn't nuke the row + section count cache
-    [self.tableView reloadData];
-    
-    // UIRefreshControl
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
 
-    // Don't show 'Notifications' in the next-view back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
+    [self setupConstraints];
+    [self setupTableView];
+    [self setupTableHeaderView];
+    [self setupTableFooterView];
+    [self setupTableHandler];
+    [self setupRatingsView];
+    [self setupRefreshControl];
+    [self setupNavigationBar];
+    [self setupFiltersSegmentedControl];
+    [self setupNotificationsBucketDelegate];
     
-    [self showNoResultsViewIfNeeded];
-    [self showBucketNameIfNeeded];
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -159,12 +145,15 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     // While we're onscreen, please, update rows with animations
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
     
-    // Refresh the UI
-    [self hookApplicationStateNotes];
+    // Tracking
     [self trackAppeared];
     [self updateLastSeenTime];
+    
+    // Notifications
+    [self hookApplicationStateNotes];
     [self resetApplicationBadge];
-    [self setupNotificationsBucketDelegate];
+
+    // Refresh the UI
     [self reloadResultsControllerIfNeeded];
     [self showNoResultsViewIfNeeded];
 }
@@ -180,13 +169,146 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     [super viewWillDisappear:animated];
     [self unhookApplicationStateNotes];
     
-    // Bufix: If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
+    // If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.tableViewHandler clearCachedRowHeights];
+}
+
+
+#pragma mark - Setup Helpers
+
+- (void)setupConstraints
+{
+    NSParameterAssert(self.ratingsTopConstraint);
+    NSParameterAssert(self.ratingsHeightConstraint);
+    
+    // Fix: contentInset breaks tableSectionViews. Let's just increase the headerView's height
+    self.ratingsTopConstraint.constant = UIDevice.isPad ? CGRectGetHeight(WPTableHeaderPadFrame) : 0.0f;
+    
+    // Ratings is initially hidden!
+    self.ratingsHeightConstraint.constant = 0;
+}
+
+- (void)setupTableView
+{
+    NSParameterAssert(self.tableView);
+    
+    // Register the cells
+    NSArray *cellNibs = @[ [NoteTableViewCell classNameWithoutNamespaces] ];
+    
+    for (NSString *nibName in cellNibs) {
+        UINib *tableViewCellNib = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:nibName];
+    }
+    
+    // UITableView
+    self.tableView.accessibilityIdentifier  = @"Notifications Table";
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+}
+
+- (void)setupTableHeaderView
+{
+    NSParameterAssert(self.tableHeaderView);
+    
+    // Fix: Update the Frame manually: Autolayout doesn't really help us, when it comes to Table Headers
+    CGRect headerFrame          = self.tableHeaderView.frame;
+    CGSize requiredSize         = [self.tableHeaderView systemLayoutSizeFittingSize:self.view.bounds.size];
+    headerFrame.size.height     = requiredSize.height;
+    
+    self.tableHeaderView.frame  = headerFrame;
+    [self.tableHeaderView layoutIfNeeded];
+    
+    // Due to iOS awesomeness, unless we re-assign the tableHeaderView, iOS might never refresh the UI
+    self.tableView.tableHeaderView = self.tableHeaderView;
+    [self.tableView setNeedsLayout];
+}
+
+- (void)setupTableFooterView
+{
+    NSParameterAssert(self.tableView);
+    
+    //  Fix: Hide the cellSeparators, when the table is empty
+    CGRect footerFrame = UIDevice.isPad ? CGRectZero : WPTableFooterPadFrame;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:footerFrame];
+}
+
+- (void)setupTableHandler
+{
+    NSParameterAssert(self.tableView);
+    
+    WPTableViewHandler *tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
+    tableViewHandler.cacheRowHeights = YES;
+    tableViewHandler.delegate = self;
+    self.tableViewHandler = tableViewHandler;
+}
+
+- (void)setupRatingsView
+{
+    NSParameterAssert(self.ratingsView);
+    
+    UIFont *ratingsFont                             = [WPFontManager openSansRegularFontOfSize:15.0];
+    self.ratingsView.label.font                     = ratingsFont;
+    self.ratingsView.leftButton.titleLabel.font     = ratingsFont;
+    self.ratingsView.rightButton.titleLabel.font    = ratingsFont;
+    self.ratingsView.delegate                       = self;
+    self.ratingsView.alpha                          = WPAlphaZero;
+}
+
+- (void)setupRefreshControl
+{
+    UIRefreshControl *refreshControl = [UIRefreshControl new];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+}
+
+- (void)setupNavigationBar
+{
+    // Don't show 'Notifications' in the next-view back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+    
+    // This is only required for debugging:
+    // If we're sync'ing against a custom bucket, we should let the user know about it!
+    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
+    NSString *name          = simperium.bucketOverrides[NSStringFromClass([Notification class])];
+    if ([name isEqualToString:WPNotificationsBucketName]) {
+        return;
+    }
+    
+    self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
+}
+
+- (void)setupFiltersSegmentedControl
+{
+    NSParameterAssert(self.filtersSegmentedControl);
+    
+    NSArray *titles = @[
+        NSLocalizedString(@"All",       @"Displays all of the Notifications, unfiltered"),
+        NSLocalizedString(@"Unread",    @"Filters Unread Notifications"),
+        NSLocalizedString(@"Comments",  @"Filters Comments Notifications"),
+        NSLocalizedString(@"Follows",   @"Filters Follows Notifications"),
+        NSLocalizedString(@"Likes",     @"Filters Likes Notifications")
+    ];
+    
+    NSInteger index = 0;
+    for (NSString *title in titles) {
+        [self.filtersSegmentedControl setTitle:title forSegmentAtIndex:index++];
+    }
+    
+    [WPStyleGuide configureSegmentedControl:self.filtersSegmentedControl];
+}
+
+- (void)setupNotificationsBucketDelegate
+{
+    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
+    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
+    notesBucket.delegate            = self;
+    notesBucket.notifyWhileIndexing = YES;
 }
 
 
@@ -198,28 +320,22 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         return;
     }
     
-    if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
-        // Rating View is already visible, don't bother to do anything
+    // Rating View is already visible, don't bother to do anything
+    if (self.ratingsHeightConstraint.constant == RatingsViewHeight && self.ratingsView.alpha == WPAlphaFull) {
         return;
     }
     
-    ABXPromptView *appRatingView = [[ABXPromptView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100.0)];
-    UIFont *appRatingFont = [WPFontManager openSansRegularFontOfSize:15.0];
-    appRatingView.label.font = appRatingFont;
-    appRatingView.leftButton.titleLabel.font = appRatingFont;
-    appRatingView.rightButton.titleLabel.font = appRatingFont;
-    appRatingView.delegate = self;
-    appRatingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-    appRatingView.alpha = 0.0;
-    [appRatingView layoutIfNeeded];
+    // Animate FadeIn + Enhance
+    self.ratingsView.alpha = WPAlphaZero;
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
-            self.tableView.tableHeaderView = appRatingView;
-            self.tableView.tableHeaderView.alpha = 1.0;
-            [self.view layoutIfNeeded];
-        } completion:nil];
-    });
+    CGFloat const delay = 0.5f;
+    
+    [UIView animateWithDuration:WPAnimationDurationDefault delay:delay options:UIViewAnimationCurveEaseIn animations:^{
+        self.ratingsView.alpha                  = WPAlphaFull;
+        self.ratingsHeightConstraint.constant   = RatingsViewHeight;
+                    
+        [self setupTableHeaderView];
+    } completion:nil];
     
     [WPAnalytics track:WPAnalyticsStatAppReviewsSawPrompt];
 }
@@ -227,7 +343,10 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 - (void)hideRatingView
 {
     [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
-        self.tableView.tableHeaderView = nil;
+        self.ratingsView.alpha                  = WPAlphaZero;
+        self.ratingsHeightConstraint.constant   = 0;
+                
+        [self setupTableHeaderView];
     } completion:nil];
 }
 
@@ -364,14 +483,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 #pragma mark - Helper methods
 
-- (void)setupNotificationsBucketDelegate
-{
-    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
-    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
-    notesBucket.delegate            = self;
-    notesBucket.notifyWhileIndexing = YES;
-}
-
 - (void)resetApplicationBadge
 {
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
@@ -395,19 +506,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     [simperium save];
 }
 
-- (void)showBucketNameIfNeeded
-{
-    // This is only required for debugging:
-    // If we're sync'ing against a custom bucket, we should let the user know about it!
-    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
-    NSString *name          = simperium.bucketOverrides[NSStringFromClass([Notification class])];
-    if ([name isEqualToString:WPNotificationsBucketName]) {
-        return;
-    }
-
-    self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
-}
-
 - (void)reloadResultsControllerIfNeeded
 {
     // Note:
@@ -425,8 +523,19 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)reloadResultsController
 {
+    // Update the Predicate: We can't replace the previous fetchRequest, since it's readonly!
+    NSFetchRequest *fetchRequest = self.tableViewHandler.resultsController.fetchRequest;
+    fetchRequest.predicate = [self predicateForSelectedFilters];
+    
+    /// Refetch + Reload
+    [self.tableViewHandler clearCachedRowHeights];
     [self.tableViewHandler.resultsController performFetch:nil];
     [self.tableView reloadData];
+    
+    // Empty State?
+    [self showNoResultsViewIfNeeded];
+    
+    // Don't overwork!
     self.lastReloadDate = [NSDate date];
 }
 
@@ -657,7 +766,23 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 }
 
 
-#pragma mark - WPTableViewHandlerDelegate methods
+#pragma mark - UISegmentedControl Methods
+
+- (IBAction)segmentedControlDidChange:(UISegmentedControl *)sender
+{
+    [self reloadResultsController];
+    
+    // It's a long way, to the top (if you wanna rock'n roll!)
+    if (self.tableViewHandler.resultsController.fetchedObjects.count == 0) {
+        return;
+    }
+    
+    NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+}
+
+
+#pragma mark - WPTableViewHandlerDelegate Methods
 
 - (NSManagedObjectContext *)managedObjectContext
 {
@@ -667,13 +792,27 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 - (NSFetchRequest *)fetchRequest
 {
     NSString *sortKey               = NSStringFromSelector(@selector(timestamp));
-    NSArray *filteredNoteObjectIDs  = self.notificationIdsBeingDeleted.allObjects;
-    NSPredicate *predicate          = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)", filteredNoteObjectIDs];
     NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
     fetchRequest.sortDescriptors    = @[[NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
-    fetchRequest.predicate          = predicate;
+    fetchRequest.predicate          = [self predicateForSelectedFilters];
     
     return fetchRequest;
+}
+
+- (NSPredicate *)predicateForSelectedFilters
+{
+    NSDictionary *filtersMap = @{
+        @(NotificationFilterUnread)     : @" AND (read = NO)",
+        @(NotificationFilterComment)    : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeComment],
+        @(NotificationFilterFollow)     : [NSString stringWithFormat:@" AND (type = '%@')", NoteTypeFollow],
+        @(NotificationFilterLike)       : [NSString stringWithFormat:@" AND (type = '%@' OR type = '%@')",
+                                            NoteTypeLike, NoteTypeCommentLike]
+    };
+ 
+    NSString *condition = filtersMap[@(self.filtersSegmentedControl.selectedSegmentIndex)] ?: [NSString string];
+    NSString *format    = [@"NOT (SELF IN %@)" stringByAppendingString:condition];
+    
+    return [NSPredicate predicateWithFormat:format, self.notificationIdsBeingDeleted.allObjects];
 }
 
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
@@ -771,9 +910,19 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (NSString *)noResultsTitleText
 {
-    NSString *jetapackMessage   = NSLocalizedString(@"Connect to Jetpack", @"Notifications title displayed when a self-hosted user is not connected to Jetpack");
-    NSString *emptyMessage      = NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
-    return self.showsJetpackMessage ? jetapackMessage : emptyMessage;
+    if (self.showsJetpackMessage) {
+        return NSLocalizedString(@"Connect to Jetpack", @"Notifications title displayed when a self-hosted user is not connected to Jetpack");
+    }
+    
+    NSDictionary *messageMap = @{
+        @(NotificationFilterNone)       : NSLocalizedString(@"No notifications yet", @"Displayed in the Notifications Tab, when there are no notifications"),
+        @(NotificationFilterUnread)     : NSLocalizedString(@"No unread notifications", @"Displayed in the Notifications Tab, when the Unread Filter shows no notifications"),
+        @(NotificationFilterComment)    : NSLocalizedString(@"No comments notifications", @"Displayed in the Notifications Tab, when the Comments Filter shows no notifications"),
+        @(NotificationFilterFollow)     : NSLocalizedString(@"No new followers notifications", @"Displayed in the Notifications Tab, when the Follow Filter shows no notifications"),
+        @(NotificationFilterLike)       : NSLocalizedString(@"No like notifications", @"Displayed in the Notifications Tab, when the Likes Filter shows no notifications"),
+    };
+
+    return messageMap[@(self.filtersSegmentedControl.selectedSegmentIndex)];
 }
 
 - (NSString *)noResultsMessageText
