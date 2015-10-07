@@ -7,6 +7,7 @@ public class ThemeBrowserCell : UICollectionViewCell {
     @IBOutlet weak var imageView : UIImageView!
     @IBOutlet weak var nameLabel : UILabel!
     @IBOutlet weak var infoLabel: UILabel!
+    @IBOutlet weak var highlightView: UIView!
     
     // MARK: - Properties
     
@@ -39,6 +40,15 @@ public class ThemeBrowserCell : UICollectionViewCell {
         let height = imageHeight + infoBarHeight
         
         return height
+    }
+    
+    override public var highlighted: Bool {
+        didSet {
+            let alphaFinal: CGFloat = highlighted ? 0.3 : 0
+            UIView.animateWithDuration(0.2) { [weak self] in
+                self?.highlightView.alpha = alphaFinal
+            }
+        }
     }
     
     override public func awakeFromNib() {
