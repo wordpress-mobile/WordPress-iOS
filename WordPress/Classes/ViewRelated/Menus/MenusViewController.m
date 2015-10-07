@@ -7,6 +7,7 @@
 #import "MenusSelectedLocationCell.h"
 #import "MenusSelectedMenuCell.h"
 #import "WPStyleGuide.h"
+#import "MenusItemsHeaderView.h"
 
 typedef NS_ENUM(NSInteger) {
     
@@ -46,6 +47,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenusService *menusService;
 @property (nonatomic, strong) MenuLocation *selectedMenuLocation;
+@property (nonatomic, strong) MenusItemsHeaderView *itemsHeaderView;
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
 
 @end
@@ -163,6 +165,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     if(!self.selectedMenuLocation.menu) {
         self.selectedMenuLocation.menu = [self.blog.menus firstObject];
     }
+    
+    [self updateMenuItems];
     [self.tableView reloadData];
 }
 
@@ -234,12 +238,27 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }else {
         [self showAvailableMenus];
     }
+    
+    [self updateMenuItems];
 }
 
 - (void)selectedMenuWithIndexPath:(NSIndexPath *)indexPath
 {
     self.selectedMenuLocation.menu = [[self.sections menus] objectAtIndex:indexPath.row];
+    [self updateMenuItems];
     [self toggleAvailableMenus];
+}
+
+- (void)updateMenuItems
+{
+    NSMutableArray *items = [self.sections menuItems];
+    [items removeAllObjects];
+    
+    if(self.selectedMenuLocation.menu.items.count) {
+        [items addObjectsFromArray:[self.selectedMenuLocation.menu.items array]];
+    }
+    
+    [self.tableView reloadData];
 }
 
 #pragma - UITableView
@@ -288,6 +307,45 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
     
     return count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section
+{
+    CGFloat height;
+    
+    switch (section) {
+        case MenusSectionMenuItems:
+            height = 100;
+            break;
+        default:
+            height = 0;
+            break;
+    }
+    
+    return height;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view;
+    
+    switch (section) {
+        case MenusSectionMenuItems:
+        {
+            if(!self.itemsHeaderView) {
+                MenusItemsHeaderView *header = [MenusItemsHeaderView headerViewFromNib];
+                self.itemsHeaderView = header;
+            }
+            self.itemsHeaderView.menu = self.selectedMenuLocation.menu;
+            view = self.itemsHeaderView;
+            break;
+        }
+        default:
+            view = nil;
+            break;
+    }
+    
+    return view;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -374,7 +432,11 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         case MenusSectionMenuItems:
         {
             MenuItem *item = [[self.sections menuItems] objectAtIndex:indexPath.row];
-            cell.textLabel.text = item.name;
+            
+            NSDictionary *attributes =  @{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [WPStyleGuide darkGrey]};
+            NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:item.name attributes:attributes];
+            cell.textLabel.attributedText = attributedText;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
         default:
@@ -416,6 +478,9 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
                 cell = [[MenusSelectedMenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
                 break;
             case MenusSectionAvailableMenus:
+                cell = [[MenusCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+                break;
+            case MenusSectionMenuItems:
                 cell = [[MenusCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
                 break;
             default:
