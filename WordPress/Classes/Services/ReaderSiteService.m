@@ -83,7 +83,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             return;
         }
         [service followSiteWithID:siteID success:^(){
-            [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
+            [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed];
         } failure:failure];
 
     } failure:^(NSError *error) {
@@ -105,7 +105,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
     [service unfollowSiteWithID:siteID success:^(){
-        [WPAnalytics track:WPAnalyticsStatReaderUnfollowedSite];
+        [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed];
     } failure:failure];
 }
 
@@ -135,7 +135,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             return;
         }
         [service followSiteAtURL:sanitizedURL success:^(){
-            [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
+            [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed];
         } failure:failure];
     } failure:^(NSError *error) {
         if (failure) {
@@ -156,7 +156,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
     [service unfollowSiteAtURL:siteURL success:^(){
-        [WPAnalytics track:WPAnalyticsStatReaderUnfollowedSite];
+        [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed];
     } failure:failure];
 }
 
@@ -225,7 +225,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
     [service flagSiteWithID:[siteID integerValue] asBlocked:blocked success:^{
         NSDictionary *properties = @{@"siteID":siteID};
-        [WPAnalytics track:WPAnalyticsStatReaderBlockedSite withProperties:properties];
+        [WPAnalytics track:WPAnalyticsStatReaderSiteBlocked withProperties:properties];
 
         if (success) {
             success();
