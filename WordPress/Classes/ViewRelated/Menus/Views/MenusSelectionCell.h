@@ -1,8 +1,8 @@
-#import <UIKit/UIKit.h>
+#import "MenusCell.h"
 
 extern CGFloat const MenusSelectionCellDefaultHeight;
 
-@interface MenusSelectionCell : UITableViewCell
+@interface MenusSelectionCell : MenusCell
 
 - (NSString *)selectionSubtitleText;
 - (NSString *)selectionTitleText;
