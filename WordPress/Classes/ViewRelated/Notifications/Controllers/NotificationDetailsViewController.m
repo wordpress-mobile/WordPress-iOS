@@ -1242,7 +1242,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     
     [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", nil) handler:nil];
     [alertController addDefaultActionWithTitle:NSLocalizedString(@"Try Again", nil) handler:^(UIAlertAction *action) {
-          [self sendReplyWithBlock:block content:content];
+        [self sendReplyWithBlock:block content:content];
     }];
     
     [self presentViewController:alertController animated:YES completion:nil];
