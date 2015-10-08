@@ -23,7 +23,10 @@ extension UIAlertController
     }
     
     public func presentFromRootViewController() {
-        // Warning: Attempt to present <UIAlertController: 0x7f987c637bd0> on <WordPress.NotificationSettingDetailsViewController: 0x7f987a44e640> whose view is not in the window hierarchy!
+        // Note:
+        // This method is required because the presenter ViewController must be visible, and we've got several
+        // flows in which the VC that triggers the alert, might not be visible anymore.
+        //
         let rootViewController = UIApplication.sharedApplication().delegate?.window??.rootViewController
         rootViewController?.presentViewController(self, animated: true, completion: nil)
     }
