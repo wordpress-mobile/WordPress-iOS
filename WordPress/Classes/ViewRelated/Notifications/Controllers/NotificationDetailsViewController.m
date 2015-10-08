@@ -1245,7 +1245,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [self sendReplyWithBlock:block content:content];
     }];
     
-    [self presentViewController:alertController animated:YES completion:nil];
+    // Note: This viewController might not be visible anymore
+    [alertController presentFromRootViewController];
 }
 
 
@@ -1305,7 +1306,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [self updateCommentWithBlock:block content:content];
     }];
     
-    [self presentViewController:alertController animated:YES completion:nil];
+    // Note: This viewController might not be visible anymore
+    [alertController presentFromRootViewController];
 }
 
 
