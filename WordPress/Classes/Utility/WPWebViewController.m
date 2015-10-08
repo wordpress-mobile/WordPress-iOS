@@ -311,7 +311,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     if (title) {
         [activityViewController setValue:title forKey:@"subject"];
     }
-    activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
+    activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
         if (!completed) {
             return;
         }
