@@ -80,7 +80,21 @@ import Foundation
         return classNameWithoutNamespaces()
     }
 
-    public func downloadGravatarWithURL(url: NSURL?) {
+    public func downloadIconWithURL(url: NSURL?) {
+        let isGravatarURL = url.map { Gravatar.isGravatarURL($0) } ?? false
+        if isGravatarURL {
+            downloadGravatarWithURL(url)
+            return
+        }
+        
+        // Handle non-gravatar images
+        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
+        iconImageView.downloadImage(url, placeholderImage: placeholderImage)
+    }
+    
+    
+    // MARK: - Gravatar Helpers
+    private func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
         }
