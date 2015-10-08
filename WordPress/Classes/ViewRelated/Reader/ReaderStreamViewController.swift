@@ -1059,11 +1059,11 @@ import Foundation
         let postCell = cell as! ReaderPostCardCell
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
-        let shouldLoadMedia = postCell != cellForLayout
+        let layoutOnly = postCell == cellForLayout
 
         postCell.enableLoggedInFeatures = isLoggedIn
         postCell.blogNameButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
-        postCell.configureCell(post, loadingMedia: shouldLoadMedia)
+        postCell.configureCell(post, layoutOnly: layoutOnly)
         postCell.delegate = self
     }
 
