@@ -19,6 +19,7 @@
 static NSString *const SubscribedTopicsPageIdentifier = @"SubscribedTopicsPageIdentifier";
 static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPageIdentifier";
 static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifier";
+static const CGFloat TitleViewHeight = 32.0;
 
 @interface ReaderSubscriptionPagePlaceholder : NSObject
 @property (nonatomic, strong) NSString *identifier;
@@ -507,8 +508,9 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
         return _titleView;
     }
 
-    CGFloat y = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? 6.0 : 0.0;
-    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, y, 200.0f, 32.0)];
+    UINavigationBar *navBar = self.navigationController.navigationBar;
+    CGFloat heightDelta = (CGRectGetHeight(navBar.frame) - TitleViewHeight) / 2.0;
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, heightDelta, 200.0, TitleViewHeight)];
     titleView.backgroundColor = [UIColor clearColor];
     titleView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     _titleView = titleView;
