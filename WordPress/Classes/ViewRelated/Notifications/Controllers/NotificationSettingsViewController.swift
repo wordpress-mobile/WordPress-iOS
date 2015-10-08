@@ -110,21 +110,23 @@ public class NotificationSettingsViewController : UIViewController
     
     // MARK: - Error Handling
     private func handleLoadError() {
-        UIAlertView.showWithTitle(NSLocalizedString("Oops!", comment: ""),
-            message             : NSLocalizedString("There has been a problem while loading your Notification Settings",
-                                                    comment: "Displayed after Notification Settings failed to load"),
-            style               : .Default,
-            cancelButtonTitle   : NSLocalizedString("Cancel", comment: "Cancel. Action."),
-            otherButtonTitles   : [ NSLocalizedString("Try Again", comment: "Try Again. Action") ],
-            tapBlock            : { (alertView: UIAlertView!, buttonIndex: Int) -> Void in
-                // On Cancel: Let's dismiss this screen
-                if alertView.cancelButtonIndex == buttonIndex {
-                    self.navigationController?.popViewControllerAnimated(true)
-                    return
-                }
-                
-                self.reloadSettings()
-            })
+        let title       = NSLocalizedString("Oops!", comment: "")
+        let message     = NSLocalizedString("There has been a problem while loading your Notification Settings",
+                                            comment: "Displayed after Notification Settings failed to load")
+        let cancelText  = NSLocalizedString("Cancel", comment: "Cancel. Action.")
+        let retryText   = NSLocalizedString("Try Again", comment: "Try Again. Action")
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        
+        alertController.addCancelActionWithTitle(cancelText) { (action: UIAlertAction) in
+            self.navigationController?.popViewControllerAnimated(true)
+        }
+        
+        alertController.addDefaultActionWithTitle(retryText) { (action: UIAlertAction) in
+            self.reloadSettings()
+        }
+        
+        presentViewController(alertController, animated: true, completion: nil)
     }
     
     
