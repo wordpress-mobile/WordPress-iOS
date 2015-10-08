@@ -50,10 +50,6 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         ThemeService(managedObjectContext: self.managedObjectContext)
     }()
     
-    // MARK: - Properties: Layout configuration
-    private let marginWidth = CGFloat(16)
-    private let minimumColumnWidth = CGFloat(330)
-    
     // MARK: - Additional initialization
     
     public func configureWithBlog(blog: Blog) {
@@ -163,9 +159,9 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
      *  @returns    The requested cell width.
      */
     private func cellWidthForFrameWidth(parentViewWidth : CGFloat) -> CGFloat {
-        let numberOfColumns = max(1, trunc(parentViewWidth / minimumColumnWidth))
+        let numberOfColumns = max(1, trunc(parentViewWidth / WPStyleGuide.Themes.minimumColumnWidth))
         let numberOfMargins = numberOfColumns + 1
-        let marginsWidth = numberOfMargins * marginWidth
+        let marginsWidth = numberOfMargins * WPStyleGuide.Themes.columnMargin
         let columnsWidth = parentViewWidth - marginsWidth
         let columnWidth = trunc(columnsWidth / numberOfColumns)
         
