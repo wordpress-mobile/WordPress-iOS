@@ -8,6 +8,14 @@
 
 #import "WPStyleGuide+Blog.h"
 
-@implementation WPStyleGuide_Blog
+@implementation WPStyleGuide (Blog)
+
++ (void)configureTableViewBlogCell:(UITableViewCell *)cell
+{
+    [self configureTableViewCell:cell];
+    cell.detailTextLabel.font = [self subtitleFont];
+    cell.detailTextLabel.textColor = [self greyDarken10];
+    cell.backgroundColor = [self lightGrey];
+}
 
 @end
