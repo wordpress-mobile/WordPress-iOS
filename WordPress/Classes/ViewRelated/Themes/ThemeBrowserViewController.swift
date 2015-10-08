@@ -156,7 +156,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
      *  @returns    The requested cell width.
      */
     private func cellWidthForFrameWidth(parentViewWidth : CGFloat) -> CGFloat {
-        let numberOfColumns = trunc(parentViewWidth / minimumColumnWidth)
+        let numberOfColumns = max(1, trunc(parentViewWidth / minimumColumnWidth))
         let numberOfMargins = numberOfColumns + 1
         let marginsWidth = numberOfMargins * marginWidth
         let columnsWidth = parentViewWidth - marginsWidth
