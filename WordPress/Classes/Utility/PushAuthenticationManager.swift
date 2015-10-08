@@ -16,7 +16,7 @@ import UIKit
     //
     // MARK: - Public Methods
     //
-    public var alertViewProxy = UIAlertViewProxy()
+    public var alertControllerProxy = UIAlertControllerProxy()
     public let pushAuthenticationService:PushAuthenticationService
     
     override convenience init() {
@@ -130,7 +130,7 @@ import UIKit
                                                     comment: "WordPress.com Push Authentication Expired message")
         let acceptButtonTitle   = NSLocalizedString("OK", comment: "OK")
         
-        self.alertViewProxy.showWithTitle(title,
+        alertControllerProxy.showWithTitle(title,
             message:            message,
             cancelButtonTitle:  acceptButtonTitle,
             otherButtonTitles:  nil,
@@ -149,13 +149,13 @@ import UIKit
         let cancelButtonTitle   = NSLocalizedString("Ignore", comment: "Ignore action. Verb")
         let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
         
-        self.alertViewProxy.showWithTitle(title,
+        alertControllerProxy.showWithTitle(title,
             message:            message,
             cancelButtonTitle: cancelButtonTitle,
             otherButtonTitles: [acceptButtonTitle as AnyObject])
             {
-                (theAlertView: UIAlertView!, buttonIndex: Int) -> Void in
-                let approved = theAlertView.cancelButtonIndex != buttonIndex
+                (theAlertController: UIAlertController!, buttonIndex: Int) -> Void in
+                let approved = theAlertController.actions[buttonIndex].style != .Cancel
                 completion(approved: approved)
             }
     }
