@@ -64,7 +64,7 @@ import Foundation
     private var actionButtonViewHeightConstraintConstant = CGFloat(0.0)
 
     private var didPreserveStartingConstraintConstants = false
-    private var loadMediaWhenConfigured = true
+    private var configureForLayoutOnly = false
 
     private let summaryMaxNumberOfLines = 3
     private let maxAttributionViewHeight: CGFloat = 200.0 // 200 is an arbitrary height, but should be a sufficiently high number.
@@ -250,11 +250,11 @@ import Foundation
     }
 
     public func configureCell(contentProvider:ReaderPostContentProvider) {
-        configureCell(contentProvider, loadingMedia: true)
+        configureCell(contentProvider, layoutOnly: false)
     }
 
-    public func configureCell(contentProvider:ReaderPostContentProvider, loadingMedia:Bool) {
-        loadMediaWhenConfigured = loadingMedia
+    public func configureCell(contentProvider:ReaderPostContentProvider, layoutOnly:Bool) {
+        configureForLayoutOnly = layoutOnly
         self.contentProvider = contentProvider
 
         if !didPreserveStartingConstraintConstants {
@@ -282,7 +282,7 @@ import Foundation
 
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
         let url = contentProvider?.siteIconForDisplayOfSize(Int(size))
-        if loadMediaWhenConfigured && url != nil {
+        if !configureForLayoutOnly && url != nil {
             avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
@@ -306,7 +306,7 @@ import Foundation
             featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
             featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
 
-            if loadMediaWhenConfigured {
+            if !configureForLayoutOnly {
                 if featuredImageURL.absoluteString == currentLoadedCardImageURL && featuredImageView.image != nil {
                     return; // Don't reload an image already being displayed.
                 }
@@ -463,8 +463,7 @@ import Foundation
     }
 
     private func configureActionButtons() {
-        resetActionButtons()
-        if contentProvider == nil {
+        if configureForLayoutOnly {
             return
         }
 
@@ -472,6 +471,11 @@ import Foundation
             actionButtonLeft,
             actionButtonRight
         ]
+
+        if contentProvider == nil {
+            resetActionButtons(buttons)
+            return
+        }
 
         // Show likes if logged in, or if likes exist, but not if external
         if (enableLoggedInFeatures || contentProvider!.likeCount().integerValue > 0) && !contentProvider!.isExternal() {
@@ -488,11 +492,14 @@ import Foundation
                 configureCommentActionButton(button)
             }
         }
+
+        resetActionButtons(buttons)
     }
 
-    private func resetActionButtons() {
-        resetActionButton(actionButtonLeft)
-        resetActionButton(actionButtonRight)
+    private func resetActionButtons(buttons:[UIButton!]) {
+        for button in buttons {
+            resetActionButton(button)
+        }
     }
 
     private func resetActionButton(button:UIButton) {
