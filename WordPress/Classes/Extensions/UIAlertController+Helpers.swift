@@ -27,7 +27,16 @@ extension UIAlertController
         // This method is required because the presenter ViewController must be visible, and we've got several
         // flows in which the VC that triggers the alert, might not be visible anymore.
         //
-        let rootViewController = UIApplication.sharedApplication().delegate?.window??.rootViewController
-        rootViewController?.presentViewController(self, animated: true, completion: nil)
+        guard let rootViewController = UIApplication.sharedApplication().delegate?.window??.rootViewController else {
+            print("Error loading the rootViewController")
+            return
+        }
+        
+        var leafViewController = rootViewController
+        while leafViewController.presentedViewController != nil {
+            leafViewController = leafViewController.presentedViewController!
+        }
+        
+        leafViewController.presentViewController(self, animated: true, completion: nil)
     }
 }
