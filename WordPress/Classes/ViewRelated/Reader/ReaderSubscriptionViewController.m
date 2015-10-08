@@ -444,7 +444,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     // as specific a view hierarchy as possible to avoid collisions.
     NSString *placeholderText = NSLocalizedString(@"Enter a URL or a tag to follow", @"Placeholder text prompting the user to type the name of the URL or tag they would like to follow.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide allTAllShadeGrey]]];
-    [[UITextField appearanceWhenContainedIn:[self.view class], [UISearchBar class], nil] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [self.view class], [UISearchBar class] ]] setAttributedPlaceholder:attrPlacholderText];
 
     UISearchBar *searchBar = [[UISearchBar alloc] init];
     searchBar.delegate = self;
