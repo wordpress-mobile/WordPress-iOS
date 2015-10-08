@@ -684,10 +684,9 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (CGFloat)heightForSearchWrapperView
 {
-    if ([UIDevice isPad]) {
-        return SearchWrapperViewPortraitHeight;
-    }
-    return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight : SearchWrapperViewLandscapeHeight;
+    UINavigationBar *navBar = self.navigationController.navigationBar;
+    CGFloat height = CGRectGetHeight(navBar.frame) + self.topLayoutGuide.length;
+    return MAX(height, SearchWrapperViewMinHeight);
 }
 
 - (BOOL)isSearching
