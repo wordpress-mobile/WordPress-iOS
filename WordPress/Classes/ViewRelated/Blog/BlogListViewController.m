@@ -380,7 +380,7 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [WPStyleGuide configureTableViewActionCell:cell];
     } else {
-        [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
+        [WPStyleGuide configureTableViewBlogCell:cell];
     }
 
     return cell;
@@ -409,7 +409,8 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     cell.imageView.image = nil;
 
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
+        cell.textLabel.textColor = [WPStyleGuide greyDarken20];
+        cell.textLabel.text = NSLocalizedString(@"ADD NEW WORDPRESS", @"");
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
     } else {
