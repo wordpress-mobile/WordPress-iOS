@@ -454,7 +454,16 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
         return [WPURLRequest requestWithURL:self.url userAgent:userAgent];
     }
     
-    NSURL *loginURL = self.wpLoginURL ?: [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
+    NSURL *loginURL = self.wpLoginURL;
+    
+    if (!loginURL) {
+        // Thank you, iOS 9, everything is more compact and pretty, now.
+        NSURLComponents *components = [NSURLComponents new];
+        components.scheme           = self.url.scheme;
+        components.host             = self.url.host;
+        components.path             = @"/wp-login.php";
+        loginURL                    = components.URL;
+    }
     return [WPURLRequest requestForAuthenticationWithURL:loginURL
                                              redirectURL:self.url
                                                 username:self.username
