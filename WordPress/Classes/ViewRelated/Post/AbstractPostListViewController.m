@@ -315,9 +315,6 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (IBAction)didTapFilterButton:(id)sender
 {
-    if (self.postFilterPopoverController) {
-        return;
-    }
     [self displayFilters];
 }
 
@@ -803,16 +800,11 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
     PostSettingsSelectionViewController *controller = [[PostSettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
     controller.onItemSelected = ^(NSDictionary *selectedValue) {
-        if (self.postFilterPopoverController) {
-            [self.postFilterPopoverController dismissPopoverAnimated:YES];
-            self.postFilterPopoverController = nil;
-        } else {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
+        [self dismissViewControllerAnimated:YES completion:nil];
         [self setCurrentFilterIndex:[self.postListFilters indexOfObject:selectedValue]];
     };
     controller.onCancel = ^() {
-        [self handleFilterSelectionCanceled];
+        // noop
     };
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -830,12 +822,13 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     CGRect titleRect = self.navigationItem.titleView.frame;
     titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
 
-    self.postFilterPopoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
-    self.postFilterPopoverController.delegate = self;
-    [self.postFilterPopoverController presentPopoverFromRect:titleRect
-                                                      inView:self.navigationController.view
-                                    permittedArrowDirections:UIPopoverArrowDirectionAny
-                                                    animated:YES];
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:YES completion:nil];
+
+    UIPopoverPresentationController *presentationController = controller.popoverPresentationController;
+    presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    presentationController.sourceView = self.navigationController.view;
+    presentationController.sourceRect = titleRect;
 }
 
 - (void)displayFilterModal:(UIViewController *)controller
@@ -843,22 +836,6 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     controller.modalPresentationStyle = UIModalPresentationPageSheet;
     controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:controller animated:YES completion:nil];
-}
-
-- (void)handleFilterSelectionCanceled
-{
-    if (self.postFilterPopoverController) {
-        [self popoverControllerDidDismissPopover:self.postFilterPopoverController];
-    }
-}
-
-
-#pragma mark - UIPopover Delegate Methods
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    self.postFilterPopoverController.delegate = nil;
-    self.postFilterPopoverController = nil;
 }
 
 
