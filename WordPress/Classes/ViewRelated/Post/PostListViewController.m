@@ -384,8 +384,8 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     postCell.delegate = self;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
-    BOOL loadImages = !([cell isEqual:self.imageCellForLayout] || [cell isEqual:self.textCellForLayout]);
-    [postCell configureCell:post loadingImages:loadImages];
+    BOOL layoutOnly = ([cell isEqual:self.imageCellForLayout] || [cell isEqual:self.textCellForLayout]);
+    [postCell configureCell:post layoutOnly:layoutOnly];
 }
 
 - (NSString *)cellIdentifierForPost:(Post *)post
