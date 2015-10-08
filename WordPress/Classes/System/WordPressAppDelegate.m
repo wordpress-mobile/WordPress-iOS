@@ -661,12 +661,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 #pragma mark - App Rating
 
 - (void)initializeAppRatingUtility
-{
-    // Dont start App Tracking if we are running the test suite
-    if ([NSProcessInfo isRunningTests]) {
-        return;
-    }
-    
+{    
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:5];
     [AppRatingUtility setSystemWideSignificantEventsCount:10];
