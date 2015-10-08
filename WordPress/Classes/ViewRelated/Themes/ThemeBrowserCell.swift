@@ -32,12 +32,9 @@ public class ThemeBrowserCell : UICollectionViewCell {
     @return         Matching height
     */
     public class func heightForWidth(width: CGFloat) -> CGFloat {
-        let imageInset = CGFloat(2)
-        let imageRatio = CGFloat(0.75)
-        let infoBarHeight = CGFloat(55)
         
-        let imageHeight = (width - imageInset) * imageRatio
-        let height = imageHeight + infoBarHeight
+        let imageHeight = (width - WPStyleGuide.Themes.cellImageInset) * WPStyleGuide.Themes.cellImageRatio
+        let height = imageHeight + WPStyleGuide.Themes.cellInfoBarHeight
         
         return height
     }
@@ -54,8 +51,8 @@ public class ThemeBrowserCell : UICollectionViewCell {
     override public func awakeFromNib() {
         super.awakeFromNib()
         
-        nameLabel.font = WPStyleGuide.regularTextFontSemiBold()
-        infoLabel.font = WPFontManager.openSansSemiBoldFontOfSize(14)
+        nameLabel.font = WPStyleGuide.Themes.cellNameFont
+        infoLabel.font = WPStyleGuide.Themes.cellInfoFont
         
         layer.shadowColor = WPStyleGuide.grey().CGColor
         layer.shadowOpacity = 0.7
@@ -79,15 +76,15 @@ public class ThemeBrowserCell : UICollectionViewCell {
             
             nameLabel.text = theme.name
             if theme.isCurrentTheme() {
-                backgroundColor = WPStyleGuide.mediumBlue()
-                nameLabel.textColor = UIColor.whiteColor()
-                infoLabel.textColor = WPStyleGuide.lightBlue()
+                backgroundColor = WPStyleGuide.Themes.activeCellBackgroundColor
+                nameLabel.textColor = WPStyleGuide.Themes.activeCellNameColor
+                infoLabel.textColor = WPStyleGuide.Themes.activeCellInfoColor
                 infoLabel.text = NSLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
             } else {
-                backgroundColor = UIColor.whiteColor()
-                nameLabel.textColor = WPStyleGuide.darkGrey()
+                backgroundColor = WPStyleGuide.Themes.inactiveCellBackgroundColor
+                nameLabel.textColor = WPStyleGuide.Themes.inactiveCellNameColor
                 if theme.isPremium() {
-                    infoLabel.textColor = WPStyleGuide.validGreen()
+                    infoLabel.textColor = WPStyleGuide.Themes.inactiveCellPriceColor
                     infoLabel.text = theme.price
                 } else {
                     infoLabel.text = nil
