@@ -80,9 +80,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
-        if #available(iOS 9.0, *) {
-            tableView.cellLayoutMarginsFollowReadableWidth = false
-        }
+        tableView.cellLayoutMarginsFollowReadableWidth = false
     }
 
     @IBAction private func reloadTable() {
@@ -218,10 +216,8 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     private func openApplicationSettings() {
-        if #available(iOS 8.0, *) {
-            let targetURL = NSURL(string: UIApplicationOpenSettingsURLString)
-            UIApplication.sharedApplication().openURL(targetURL!)
-        }
+        let targetURL = NSURL(string: UIApplicationOpenSettingsURLString)
+        UIApplication.sharedApplication().openURL(targetURL!)
     }
     
     
