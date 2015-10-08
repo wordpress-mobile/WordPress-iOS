@@ -35,7 +35,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 #pragma mark - Private Properties
 
-@interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
+@interface WPWebViewController () <UIWebViewDelegate>
 
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
 @property (nonatomic,   weak) IBOutlet UIProgressView           *progressView;
@@ -48,7 +48,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 @property (nonatomic,   weak) IBOutlet NSLayoutConstraint       *toolbarBottomConstraint;
 
 @property (nonatomic, strong) NavigationTitleView               *titleView;
-@property (nonatomic, strong) UIPopoverController               *popover;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
 
@@ -318,21 +317,12 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
         [WPActivityDefaults trackActivityType:activityType];
     };
 
-    if ([UIDevice isPad]) {
-        self.popover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
-        self.popover.delegate = self;
-        [self.popover presentPopoverFromBarButtonItem:self.optionsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    } else {
-        [self presentViewController:activityViewController animated:YES completion:nil];
+    if ([UIDevice isPad]) {        
+        activityViewController.modalPresentationStyle = UIModalPresentationPopover;
+        activityViewController.popoverPresentationController.barButtonItem = self.optionsButton;
     }
-}
-
-
-#pragma mark - UIPopover Delegate
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    self.popover = nil;
+    
+    [self presentViewController:activityViewController animated:YES completion:nil];
 }
 
 
