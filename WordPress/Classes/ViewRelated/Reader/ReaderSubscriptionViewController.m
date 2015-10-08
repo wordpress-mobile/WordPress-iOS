@@ -248,13 +248,16 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
         DDLogError(@"Could not follow site: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Follow Site", @"");
-        NSString *description = [error localizedDescription];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                            message:description
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
-                                                  otherButtonTitles:nil, nil];
-        [alertView show];
+        NSString *acceptText = NSLocalizedString(@"OK", @"Label text for the close button on an alert view.");
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:error.localizedDescription
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addCancelActionWithTitle:acceptText handler:nil];
+        
+        // Note: This viewController might not be visible anymore
+        [alertController presentFromRootViewController];
     }];
 }
 
@@ -265,13 +268,16 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
         DDLogError(@"Could not follow topic: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Follow Topic", @"");
-        NSString *description = [error localizedDescription];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                            message:description
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
-                                                  otherButtonTitles:nil, nil];
-        [alertView show];
+        NSString *acceptText = NSLocalizedString(@"OK", @"Label text for the close button on an alert view.");
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:error.localizedDescription
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addCancelActionWithTitle:acceptText handler:nil];
+        
+        // Note: This viewController might not be visible anymore
+        [alertController presentFromRootViewController];
     }];
 }
 
