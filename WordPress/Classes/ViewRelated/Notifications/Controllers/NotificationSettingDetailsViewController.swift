@@ -244,20 +244,21 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     private func handleUpdateError() {
-        UIAlertView.showWithTitle(NSLocalizedString("Oops!", comment: ""),
-            message             : NSLocalizedString("There has been an unexpected error while updating " +
-                                                    "your Notification Settings",
-                                                    comment: "Displayed after a failed Notification Settings call"),
-            style               : .Default,
-            cancelButtonTitle   : NSLocalizedString("Cancel", comment: "Cancel. Action."),
-            otherButtonTitles   : [ NSLocalizedString("Retry", comment: "Retry. Action") ],
-            tapBlock            : { (alertView: UIAlertView!, buttonIndex: Int) -> Void in
-                if alertView.cancelButtonIndex == buttonIndex {
-                    return
-                }
-                
-                self.saveSettingsIfNeeded()
-            })
+        let title       = NSLocalizedString("Oops!", comment: "")
+        let message     = NSLocalizedString("There has been an unexpected error while updating your Notification Settings",
+                                            comment: "Displayed after a failed Notification Settings call")
+        let cancelText  = NSLocalizedString("Cancel", comment: "Cancel. Action.")
+        let retryText   = NSLocalizedString("Retry", comment: "Retry. Action")
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        
+        alertController.addCancelActionWithTitle(cancelText, handler: nil)
+        
+        alertController.addDefaultActionWithTitle(retryText) { (action: UIAlertAction) in
+            self.saveSettingsIfNeeded()
+        }
+        
+        alertController.presentFromRootViewController()
     }
     
     
