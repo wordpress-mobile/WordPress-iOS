@@ -93,9 +93,16 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - Updating the list of themes
     
     private func updateThemes() {
+        
+        if collectionView(collectionView!, numberOfItemsInSection: 0) == 0 {
+            let title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
+            WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self.view)
+        }
+
         themeService.getThemesForBlog(
             blog,
-            success: { (themes : [AnyObject]?) -> Void in
+            success: { [weak self] (themes : [AnyObject]?) -> Void in
+                WPNoResultsView.removeFromView(self?.view)
             },
             failure: {(error : NSError!) -> Void in
                 DDLogSwift.logError("Error updating themes: \(error.localizedDescription)")
