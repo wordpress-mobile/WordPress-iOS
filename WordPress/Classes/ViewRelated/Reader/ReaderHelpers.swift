@@ -26,7 +26,9 @@ public class ReaderHelpers {
         if let str = title {
             controller.setValue(str, forKey:"subject")
         }
-        controller.completionHandler = { (activityType:String?, completed:Bool) in
+        controller.completionWithItemsHandler = {
+            (activityType:String?, completed:Bool, items: [AnyObject]?, error: NSError?) in
+            
             if completed {
                 WPActivityDefaults.trackActivityType(activityType)
             }
