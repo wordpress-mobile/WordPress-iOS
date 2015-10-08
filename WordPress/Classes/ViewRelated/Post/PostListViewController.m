@@ -473,12 +473,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         default:
             break;
     }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
-                                              otherButtonTitles:nil, nil];
-    [alertView show];
+    NSString *alertCancel = NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.");
+
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addCancelActionWithTitle:alertCancel handler:nil];
+    [alertController presentFromRootViewController];
 }
 
 - (void)viewStatsForPost:(AbstractPost *)apost
