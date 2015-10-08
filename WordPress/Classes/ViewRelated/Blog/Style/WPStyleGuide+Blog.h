@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <WordPress-iOS-Shared/WPStyleGuide.h>
 
-@interface WPStyleGuide_Blog : NSObject
+@interface WPStyleGuide (Blog)
+
++ (void)configureTableViewBlogCell:(UITableViewCell *)cell
 
 @end
