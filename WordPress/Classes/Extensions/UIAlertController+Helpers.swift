@@ -21,4 +21,10 @@ extension UIAlertController
         
         return action
     }
+    
+    public func presentFromRootViewController() {
+        // Warning: Attempt to present <UIAlertController: 0x7f987c637bd0> on <WordPress.NotificationSettingDetailsViewController: 0x7f987a44e640> whose view is not in the window hierarchy!
+        let rootViewController = UIApplication.sharedApplication().delegate?.window??.rootViewController
+        rootViewController?.presentViewController(self, animated: true, completion: nil)
+    }
 }
