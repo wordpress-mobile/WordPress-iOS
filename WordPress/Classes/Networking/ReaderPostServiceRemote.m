@@ -410,8 +410,8 @@ static const NSInteger MinutesToReadThreshold = 2;
         img = [img substringWithRange:NSMakeRange(location, length)];
 
         // Actually decode twice to remove the encodings
-        img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        img = [img stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        img = [img stringByRemovingPercentEncoding];
+        img = [img stringByRemovingPercentEncoding];
     }
     return img;
 }
