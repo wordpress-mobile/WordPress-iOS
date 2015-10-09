@@ -799,11 +799,8 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
     PostSettingsSelectionViewController *controller = [[PostSettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
     controller.onItemSelected = ^(NSDictionary *selectedValue) {
-        [self dismissViewControllerAnimated:YES completion:nil];
         [self setCurrentFilterIndex:[self.postListFilters indexOfObject:selectedValue]];
-    };
-    controller.onCancel = ^() {
-        // noop
+        [self dismissViewControllerAnimated:YES completion:nil];
     };
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
