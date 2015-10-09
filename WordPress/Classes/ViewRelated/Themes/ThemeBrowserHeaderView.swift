@@ -11,6 +11,9 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
     @IBOutlet weak var currentThemeBorder: UIView!
     @IBOutlet weak var currentThemeLabel: UILabel!
     @IBOutlet weak var currentThemeName: UILabel!
+    @IBOutlet weak var customizeButton: UIButton!
+    @IBOutlet weak var detailsButton: UIButton!
+    @IBOutlet weak var supportButton: UIButton!
     
     // MARK: - Properties
 
@@ -31,15 +34,24 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
     override public func awakeFromNib() {
         super.awakeFromNib()
         
+        applyStyles()
+    }
+    
+    private func applyStyles() {
         currentThemeBorder.layer.borderWidth = 1;
         currentThemeBorder.layer.borderColor = WPStyleGuide.Themes.borderColor.CGColor;
-        currentThemeBorder.backgroundColor = WPStyleGuide.Themes.borderColor;
+        currentThemeBorder.backgroundColor = WPStyleGuide.Themes.dividerColor;
         
         currentThemeLabel.font = WPStyleGuide.Themes.currentThemeLabelFont
         currentThemeLabel.textColor = WPStyleGuide.Themes.currentThemeLabelColor
         
         currentThemeName.font = WPStyleGuide.Themes.currentThemeNameFont
         currentThemeName.textColor = WPStyleGuide.Themes.currentThemeNameColor
+        
+        for button in [customizeButton, detailsButton, supportButton] {
+            button.titleLabel?.font = WPStyleGuide.Themes.currentThemeButtonFont
+            button.setTitleColor(WPStyleGuide.Themes.currentThemeButtonColor, forState: .Normal)
+        }
     }
     
     override public func prepareForReuse() {
