@@ -1,35 +1,30 @@
-//
-//  WPStyleGuide+BlogTests.swift
-//  WordPress
-//
-//  Created by Will Kwon on 10/8/15.
-//  Copyright © 2015 WordPress. All rights reserved.
-//
-
 import XCTest
 
 class WPStyleGuide_BlogTests: XCTestCase {
+    var testCell: UITableViewCell!
     
     override func setUp() {
+        testCell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: nil)
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+        testCell = nil
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testConfigureTableViewBlogCellSetsFont() {
+        WPStyleGuide.configureTableViewBlogCell(testCell)
+        XCTAssertEqual(WPStyleGuide.subtitleFont(), testCell.detailTextLabel!.font)
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
-        }
+    func testConfigureTableViewBlogCellSetsDetailTextLabelColor() {
+        WPStyleGuide.configureTableViewBlogCell(testCell)
+        XCTAssertEqual(WPStyleGuide.greyDarken10(), testCell.detailTextLabel!.textColor)
     }
     
+    func testConfigureTableViewBlogCellSetsBackgroundColor() {
+        WPStyleGuide.configureTableViewBlogCell(testCell)
+        XCTAssertEqual(WPStyleGuide.lightGrey(), testCell.backgroundColor)
+    }
 }
