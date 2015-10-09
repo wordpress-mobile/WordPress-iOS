@@ -8,7 +8,18 @@ extension WPStyleGuide
 {
     public struct Themes
     {
-        // MARK: - Cell Styles
+        // MARK: - General Styles
+
+        public static let borderColor = UIColor(red: 208.0/255.0, green: 220.0/255.0, blue: 229.0/255.0, alpha: 1)
+
+        // MARK: - Current Theme Styles
+
+        public static let currentThemeLabelFont = WPFontManager.openSansRegularFontOfSize(11)
+        public static let currentThemeLabelColor = WPStyleGuide.greyDarken20()
+        public static let currentThemeNameFont = WPFontManager.openSansSemiBoldFontOfSize(14)
+        public static let currentThemeNameColor = WPStyleGuide.darkGrey()
+       
+       // MARK: - Cell Styles
 
         public static let cellNameFont = WPFontManager.openSansSemiBoldFontOfSize(14)
         public static let cellInfoFont = WPFontManager.openSansSemiBoldFontOfSize(12)
@@ -22,6 +33,10 @@ extension WPStyleGuide
         public static let inactiveCellPriceColor = WPStyleGuide.validGreen()
 
         // MARK: - Metrics
+
+        public static let currentBarItemHeight: CGFloat = 53
+        public static let currentBarHeightCompact: CGFloat = currentBarHeightRegular + currentBarItemHeight + 1
+        public static let currentBarHeightRegular: CGFloat = currentBarItemHeight + (columnMargin * 2)
 
         public static let columnMargin: CGFloat = 16
         public static let minimumColumnWidth: CGFloat = 330

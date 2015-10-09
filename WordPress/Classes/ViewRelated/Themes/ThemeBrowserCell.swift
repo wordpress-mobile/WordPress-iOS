@@ -54,11 +54,8 @@ public class ThemeBrowserCell : UICollectionViewCell {
         nameLabel.font = WPStyleGuide.Themes.cellNameFont
         infoLabel.font = WPStyleGuide.Themes.cellInfoFont
         
-        layer.shadowColor = WPStyleGuide.grey().CGColor
-        layer.shadowOpacity = 0.7
-        layer.shadowRadius = 2
-        layer.shadowOffset = CGSize(width: 0.5,height: 0.5)
-        layer.masksToBounds = false
+        layer.borderColor = WPStyleGuide.Themes.borderColor.CGColor
+        layer.borderWidth = 1
     }
     
     override public func prepareForReuse() {
