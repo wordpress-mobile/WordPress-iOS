@@ -102,6 +102,17 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     self.title = NSLocalizedString(@"Posts", @"Tile of the screen showing the list of posts for a blog.");
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+
+    [self forceUpdateCellLayout:self.textCellForLayout];
+    [self forceUpdateCellLayout:self.imageCellForLayout];
+
+    [self.tableViewHandler clearCachedRowHeights];
+    [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 
 #pragma mark - Configuration
 
@@ -124,8 +135,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     // Force a layout pass to ensure that constrants are configured for the
     // proper size class.
     [self.view addSubview:cell];
-    [cell updateConstraintsIfNeeded];
-    [cell layoutIfNeeded];
     [cell removeFromSuperview];
 }
 
