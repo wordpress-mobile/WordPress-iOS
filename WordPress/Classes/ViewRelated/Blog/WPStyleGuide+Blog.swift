@@ -1,9 +1,11 @@
-//
-//  WPStyleGuide+Blog.swift
-//  WordPress
-//
-//  Created by Will Kwon on 10/8/15.
-//  Copyright © 2015 WordPress. All rights reserved.
-//
-
 import Foundation
+
+extension WPStyleGuide
+{
+    public class func configureTableViewBlogCell(cell: UITableViewCell) {
+        configureTableViewCell(cell)
+        cell.detailTextLabel?.font = self.subtitleFont()
+        cell.detailTextLabel?.textColor = self.greyDarken10()
+        cell.backgroundColor = self.lightGrey()
+    }
+}
