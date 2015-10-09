@@ -19,7 +19,6 @@
 #import "WordPress-Swift.h"
 #import "WPSearchControllerConfigurator.h"
 #import "WPGUIConstants.h"
-#import "WPStyleGuide+Blog.h"
 
 typedef NS_ENUM(NSInteger, BlogListSections) {
     BlogListSectionsAllSites = 0,
