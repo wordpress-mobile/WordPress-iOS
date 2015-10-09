@@ -17,6 +17,8 @@ extension WPStyleGuide
         public static let cellNameFont = WPFontManager.openSansSemiBoldFontOfSize(14)
         public static let cellInfoFont = WPFontManager.openSansSemiBoldFontOfSize(12)
 
+        public static let cellLoadingColor = WPStyleGuide.greyLighten20()
+
         public static let activeCellBackgroundColor = WPStyleGuide.mediumBlue()
         public static let activeCellNameColor = UIColor.whiteColor()
         public static let activeCellInfoColor = WPStyleGuide.lightBlue()
