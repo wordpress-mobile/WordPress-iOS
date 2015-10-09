@@ -139,6 +139,8 @@
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Media" inverseName="blog" inverseEntity="Media" indexed="YES">
             <userInfo/>
         </relationship>
+        <relationship name="menuLocations" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="MenuLocation" inverseName="blog" inverseEntity="MenuLocation" syncable="YES"/>
+        <relationship name="menus" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Menu" inverseName="blog" inverseEntity="Menu" syncable="YES"/>
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AbstractPost" inverseName="blog" inverseEntity="AbstractPost" indexed="YES">
             <userInfo/>
         </relationship>
@@ -270,6 +272,36 @@
             <userInfo/>
         </relationship>
         <userInfo/>
+    </entity>
+    <entity name="Menu" representedClassName="Menu" syncable="YES">
+        <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="menuId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="menus" inverseEntity="Blog" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="MenuItem" inverseName="menu" inverseEntity="MenuItem" syncable="YES"/>
+        <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MenuLocation" inverseName="menu" inverseEntity="MenuLocation" syncable="YES"/>
+    </entity>
+    <entity name="MenuItem" representedClassName="MenuItem" syncable="YES">
+        <attribute name="contentId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="linkTarget" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="linkTitle" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="typeFamily" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="typeLabel" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="urlStr" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="MenuItem" inverseName="parent" inverseEntity="MenuItem" syncable="YES"/>
+        <relationship name="menu" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Menu" inverseName="items" inverseEntity="Menu" syncable="YES"/>
+        <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MenuItem" inverseName="children" inverseEntity="MenuItem" syncable="YES"/>
+    </entity>
+    <entity name="MenuLocation" representedClassName="MenuLocation" syncable="YES">
+        <attribute name="defaultState" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="menuLocations" inverseEntity="Blog" syncable="YES"/>
+        <relationship name="menu" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Menu" inverseName="locations" inverseEntity="Menu" syncable="YES"/>
     </entity>
     <entity name="Meta" representedClassName="Meta" syncable="YES">
         <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
@@ -440,10 +472,13 @@
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="570"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="660"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="375"/>
+        <element name="Menu" positionX="36" positionY="171" width="128" height="135"/>
+        <element name="MenuItem" positionX="18" positionY="153" width="128" height="240"/>
+        <element name="MenuLocation" positionX="27" positionY="162" width="128" height="120"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
