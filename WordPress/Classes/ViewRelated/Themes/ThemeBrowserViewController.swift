@@ -90,7 +90,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     
     private func updateThemes() {
         
-        if collectionView(collectionView!, numberOfItemsInSection: 0) == 0 {
+        if isEmpty() {
             let title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
             WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self.view)
         }
@@ -105,6 +105,25 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
             })
     }
     
+    private func currentTheme() -> Theme? {
+        guard let themeId = blog.currentThemeId where !themeId.isEmpty else {
+            return nil
+        }
+        
+        for theme in blog.themes as! Set<Theme> {
+            if theme.themeId == themeId {
+                return theme
+            }
+        }
+        
+        return nil
+    }
+    
+    private func isEmpty() -> Bool {
+        let themeCount = collectionView(collectionView!, numberOfItemsInSection: 0)
+        return themeCount == 0
+    }
+
     // MARK: - UICollectionViewController protocol UICollectionViewDataSource
     
     public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -123,7 +142,10 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     }
     
     public override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ThemeBrowserHeaderView", forIndexPath: indexPath)
+        
+        let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: ThemeBrowserHeaderView.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserHeaderView
+        header.configureWithTheme(currentTheme())
+        
         return header
     }
     
@@ -142,6 +164,17 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     
     // MARK: - UICollectionViewDelegateFlowLayout
     
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  referenceSizeForHeaderInSection section:NSInteger) -> CGSize {
+        
+        guard !isEmpty() else {
+            return CGSize.zero
+        }
+        
+        let height = isViewHorizontallyCompact() ? WPStyleGuide.Themes.currentBarHeightCompact : WPStyleGuide.Themes.currentBarHeightRegular
+        
+        return CGSize(width: 0, height: height)
+    }
+
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let parentViewWidth = collectionView.frame.size.width
         let width = cellWidthForFrameWidth(parentViewWidth)

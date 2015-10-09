@@ -582,6 +582,7 @@
 		F1A0C49C1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F1A0C49B1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m */; };
 		F1FA2C4E1AED07FC00255FCD /* MFMailComposeViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FA2C491AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.m */; };
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; settings = {ASSET_TAGS = (); }; };
+		FA3822F01BC7002300B331FC /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3822EF1BC7002300B331FC /* ThemeBrowserHeaderView.swift */; settings = {ASSET_TAGS = (); }; };
 		FAFB84061BBF3638000BBA8E /* get-multiple-themes-v1.2.json in Resources */ = {isa = PBXBuildFile; fileRef = FAFB84051BBF3638000BBA8E /* get-multiple-themes-v1.2.json */; settings = {ASSET_TAGS = (); }; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
@@ -1638,6 +1639,7 @@
 		F1FA2C481AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MFMailComposeViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
 		F1FA2C491AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MFMailComposeViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
+		FA3822EF1BC7002300B331FC /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
 		FAFB84051BBF3638000BBA8E /* get-multiple-themes-v1.2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-multiple-themes-v1.2.json"; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
@@ -2339,6 +2341,7 @@
 				596C03631B8503CF00899EEB /* ThemeBrowserFactory.swift */,
 				596C035D1B84F21D00899EEB /* ThemeBrowserViewController.swift */,
 				598DD1701B97985700146967 /* ThemeBrowserCell.swift */,
+				FA3822EF1BC7002300B331FC /* ThemeBrowserHeaderView.swift */,
 				5D6C4AF81B603CC0005E3C43 /* ThemeDetailsViewController.xib */,
 				5D6C4AF91B603CC0005E3C43 /* ThemeDetailsViewController~ipad.xib */,
 				5DA5BF3918E32DCF005F11F9 /* ThemeDetailsViewController.h */,
@@ -4206,6 +4209,7 @@
 				FF28B3F11AEB251200E11AAE /* InfoPListTranslator.m in Sources */,
 				5D6C4B201B604425005E3C43 /* WPContentView.m in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
+				FA3822F01BC7002300B331FC /* ThemeBrowserHeaderView.swift in Sources */,
 				B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */,
 				B5EFB1C51B31BAA2007608A3 /* NotificationsServiceRemote.swift in Sources */,
 				B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */,
