@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, BlogListSections) {
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
-static CGFloat const BLVCSiteRowHeight = 54.0;
+static CGFloat const BLVCSiteRowHeight = 74.0;
 
 
 @interface BlogListViewController () <UIViewControllerRestoration>
@@ -380,7 +380,7 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [WPStyleGuide configureTableViewActionCell:cell];
     } else {
-        [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
+        [WPStyleGuide configureTableViewBlogCell:cell];
     }
 
     return cell;
@@ -409,7 +409,8 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     cell.imageView.image = nil;
 
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
+        cell.textLabel.textColor = [WPStyleGuide greyDarken20];
+        cell.textLabel.text = NSLocalizedString(@"ADD NEW WORDPRESS", @"");
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
     } else {
@@ -421,7 +422,9 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
             cell.textLabel.text = [blog displayURL];
             cell.detailTextLabel.text = @"";
         }
-
+        
+        cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
+        cell.imageView.layer.borderWidth = 1.5;
         [cell.imageView setImageWithSiteIcon:blog.icon];
         if ([self.tableView isEditing] && [blog supports:BlogFeatureVisibility]) {
             UISwitch *visibilitySwitch = [UISwitch new];
