@@ -30,11 +30,9 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 @interface ReaderPostDetailViewController ()<ReaderPostContentViewDelegate,
                                             WPRichTextViewDelegate,
-                                            WPTableImageSourceDelegate,
-                                            UIPopoverControllerDelegate>
+                                            WPTableImageSourceDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
-@property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, strong) ReaderPostRichContentView *postView;
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
@@ -260,12 +258,13 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     if (title) {
         [activityViewController setValue:title forKey:@"subject"];
     }
-    activityViewController.completionHandler = ^(NSString *activityType, BOOL completed) {
+    activityViewController.completionWithItemsHandler = ^(NSString *activityType, BOOL completed, NSArray *returnedItems, NSError *activityError) {
         if (!completed) {
             return;
         }
         [WPActivityDefaults trackActivityType:activityType];
     };
+
     return activityViewController;
 }
 
@@ -341,14 +340,6 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (BOOL)canComment
 {
     return self.post.commentsOpen;
-}
-
-- (void)dismissPopover
-{
-    if (self.popover) {
-        [self.popover dismissPopoverAnimated:YES];
-        self.popover = nil;
-    }
 }
 
 
@@ -498,17 +489,18 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)handleShareButtonTapped:(id)sender
 {
     UIActivityViewController *activityViewController = [self activityViewControllerForSharing];
-    if ([UIDevice isPad]) {
-        if (self.popover) {
-            [self dismissPopover];
-            return;
-        }
-        self.popover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
-        self.popover.delegate = self;
-        [self.popover presentPopoverFromBarButtonItem:self.shareButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    } else {
+    if (![UIDevice isPad]) {
         [self presentViewController:activityViewController animated:YES completion:nil];
+        return;
     }
+
+    activityViewController.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:activityViewController animated:YES completion:nil];
+    UIPopoverPresentationController *presentationController = activityViewController.popoverPresentationController;
+    presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    presentationController.sourceView = self.shareButton.customView;
+    presentationController.sourceRect = self.shareButton.customView.bounds;
+    
 }
 
 
@@ -631,14 +623,6 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
 {
     [self.postView setFeaturedImage:image];
-}
-
-
-#pragma mark - UIPopover Delegate Methods
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    self.popover = nil;
 }
 
 @end

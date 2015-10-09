@@ -3,8 +3,7 @@
 
 extern const CGFloat SearchBarWidth;
 extern const CGFloat SearchBariPadWidth;
-extern const CGFloat SearchWrapperViewPortraitHeight;
-extern const CGFloat SearchWrapperViewLandscapeHeight;
+extern const CGFloat SearchWrapperViewMinHeight;
 extern const NSTimeInterval SearchBarAnimationDuration;
 
 /**

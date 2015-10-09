@@ -269,7 +269,7 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
 
 - (CGSize)maxImageDisplaySize
 {
-    CGRect screenRect = [[UIScreen mainScreen] applicationFrame];
+    CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat insets = self.edgeInsets.left + self.edgeInsets.right;
     CGFloat side = MAX(CGRectGetWidth(screenRect) - insets, CGRectGetHeight(screenRect) - insets);
     return CGSizeMake(side, side);
