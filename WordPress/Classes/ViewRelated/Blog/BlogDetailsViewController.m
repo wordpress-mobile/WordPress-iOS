@@ -31,6 +31,7 @@
 #import "PageListViewController.h"
 #import "WPThemeSettings.h"
 #import "WPGUIConstants.h"
+#import "MenusTableViewController.h"
 #import "MenusViewController.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
@@ -487,7 +488,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showMenusForBlog:(Blog *)blog
 {
-    MenusViewController *controller = [[MenusViewController alloc] initWithBlog:blog];
+    MenusViewController *controller = [MenusViewController newMenusViewController];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
