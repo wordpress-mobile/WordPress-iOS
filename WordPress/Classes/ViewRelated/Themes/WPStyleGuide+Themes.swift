@@ -8,6 +8,10 @@ extension WPStyleGuide
 {
     public struct Themes
     {
+        // MARK: - General Styles
+        
+        public static let borderColor = UIColor(red: 208.0/255.0, green: 220.0/255.0, blue: 229.0/255.0, alpha: 1)
+
         // MARK: - Cell Styles
 
         public static let cellNameFont = WPFontManager.openSansSemiBoldFontOfSize(14)
