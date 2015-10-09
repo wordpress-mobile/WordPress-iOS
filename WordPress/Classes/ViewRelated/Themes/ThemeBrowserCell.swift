@@ -97,7 +97,14 @@ public class ThemeBrowserCell : UICollectionViewCell {
     private func refreshScreenshotImage(imageUrl: String) {
         let imageUrl = NSURL(string: imageUrl)
         
-        imageView.downloadImage(imageUrl, placeholderImage: nil)
+        imageView.contentMode = .Center
+        imageView.backgroundColor = WPStyleGuide.Themes.cellLoadingColor
+        imageView.downloadImage(imageUrl,
+            placeholderImage: UIImage(named: "theme-loading"),
+            success: { [weak self] (image: UIImage) in
+                self?.imageView.contentMode = .ScaleAspectFit
+                self?.imageView.backgroundColor = UIColor.clearColor()
+            }, failure: nil)
     }
 
     // MARK: - Actions
