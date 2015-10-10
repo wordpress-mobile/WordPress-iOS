@@ -117,7 +117,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ThemeBrowserCell", forIndexPath: indexPath) as! ThemeBrowserCell
         let theme = themesController.objectAtIndexPath(indexPath) as? Theme
         
-        cell.configureWithTheme(theme)
+        cell.theme = theme
         
         return cell
     }

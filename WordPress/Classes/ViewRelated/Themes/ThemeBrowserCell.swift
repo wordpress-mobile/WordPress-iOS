@@ -11,16 +11,10 @@ public class ThemeBrowserCell : UICollectionViewCell {
     
     // MARK: - Properties
     
-    private var theme : Theme? {
+    public var theme : Theme? {
         didSet {
             refreshGUI()
         }
-    }
-    
-    // MARK: - Additional initialization
-    
-    public func configureWithTheme(theme: Theme?) {
-        self.theme = theme
     }
     
     // MARK: - GUI
