@@ -73,10 +73,10 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
 
         themeService.getThemesForBlog(
             blog,
-            success: { [weak self] (themes : [AnyObject]?) -> Void in
+            success: { [weak self] (themes : [AnyObject]?) in
                 WPNoResultsView.removeFromView(self?.view)
             },
-            failure: {(error : NSError!) -> Void in
+            failure: { (error : NSError!) in
                 DDLogSwift.logError("Error updating themes: \(error.localizedDescription)")
             })
     }
