@@ -267,8 +267,8 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
     NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
 }
 
 - (void)configureSearchWrapper
@@ -315,9 +315,6 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (IBAction)didTapFilterButton:(id)sender
 {
-    if (self.postFilterPopoverController) {
-        return;
-    }
     [self displayFilters];
 }
 
@@ -687,10 +684,9 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (CGFloat)heightForSearchWrapperView
 {
-    if ([UIDevice isPad]) {
-        return SearchWrapperViewPortraitHeight;
-    }
-    return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight : SearchWrapperViewLandscapeHeight;
+    UINavigationBar *navBar = self.navigationController.navigationBar;
+    CGFloat height = CGRectGetHeight(navBar.frame) + self.topLayoutGuide.length;
+    return MAX(height, SearchWrapperViewMinHeight);
 }
 
 - (BOOL)isSearching
@@ -803,16 +799,8 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
     PostSettingsSelectionViewController *controller = [[PostSettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
     controller.onItemSelected = ^(NSDictionary *selectedValue) {
-        if (self.postFilterPopoverController) {
-            [self.postFilterPopoverController dismissPopoverAnimated:YES];
-            self.postFilterPopoverController = nil;
-        } else {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
         [self setCurrentFilterIndex:[self.postListFilters indexOfObject:selectedValue]];
-    };
-    controller.onCancel = ^() {
-        [self handleFilterSelectionCanceled];
+        [self dismissViewControllerAnimated:YES completion:nil];
     };
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -830,12 +818,13 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     CGRect titleRect = self.navigationItem.titleView.frame;
     titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
 
-    self.postFilterPopoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
-    self.postFilterPopoverController.delegate = self;
-    [self.postFilterPopoverController presentPopoverFromRect:titleRect
-                                                      inView:self.navigationController.view
-                                    permittedArrowDirections:UIPopoverArrowDirectionAny
-                                                    animated:YES];
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:YES completion:nil];
+
+    UIPopoverPresentationController *presentationController = controller.popoverPresentationController;
+    presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    presentationController.sourceView = self.navigationController.view;
+    presentationController.sourceRect = titleRect;
 }
 
 - (void)displayFilterModal:(UIViewController *)controller
@@ -843,22 +832,6 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     controller.modalPresentationStyle = UIModalPresentationPageSheet;
     controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:controller animated:YES completion:nil];
-}
-
-- (void)handleFilterSelectionCanceled
-{
-    if (self.postFilterPopoverController) {
-        [self popoverControllerDidDismissPopover:self.postFilterPopoverController];
-    }
-}
-
-
-#pragma mark - UIPopover Delegate Methods
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    self.postFilterPopoverController.delegate = nil;
-    self.postFilterPopoverController = nil;
 }
 
 
