@@ -4,6 +4,13 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 
+static NSString* const ThemeDomainPublic = @"pub";
+static NSString* const ThemeDomainPremium = @"premium";
+static NSString* const ThemeUrlPreview = @"%@/wp-admin/customize.php?theme=%@/%@";
+static NSString* const ThemeAdminUrlCustomize = @"customize.php";
+static NSString* const ThemeUrlSupport = @"https://theme.wordpress.com/themes/%@/support";
+static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@";
+
 @implementation Theme
 
 @dynamic popularityRank;
@@ -26,6 +33,25 @@
 + (NSString *)entityName
 {
     return NSStringFromClass([self class]);
+}
+
+#pragma mark - Links
+
+- (NSString *)customizeUrl
+{
+    return [self.blog adminUrlWithPath:ThemeAdminUrlCustomize];
+}
+
+- (NSString *)detailsUrl
+{
+    NSString *domain = self.isPremium ? ThemeDomainPremium : ThemeDomainPublic;
+    NSString *url = [NSString stringWithFormat:ThemeUrlDetails, domain, self.themeId];
+    return url;
+}
+
+- (NSString *)supportUrl
+{
+    return [NSString stringWithFormat:ThemeUrlSupport, self.themeId];
 }
 
 #pragma mark - Misc
