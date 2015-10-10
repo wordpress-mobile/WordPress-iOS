@@ -13,7 +13,7 @@ class ThemeBrowserFactory : NSObject {
     func instantiateThemeBrowserViewControllerWithBlog(blog: Blog) -> ThemeBrowserViewController {
         let viewController = storyboard.instantiateInitialViewController() as! ThemeBrowserViewController
         
-        viewController.configureWithBlog(blog)
+        viewController.blog = blog
         
         return viewController
     }
