@@ -234,7 +234,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     NSDictionary *properties = @{@"tag":topic.slug};
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
-        [WPAnalytics track:WPAnalyticsStatReaderUnfollowedTag withProperties:properties];
+        [WPAnalytics track:WPAnalyticsStatReaderTagUnfollowed withProperties:properties];
         if (success) {
             success();
         }
@@ -253,7 +253,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
-            [WPAnalytics track:WPAnalyticsStatReaderFollowedTag];
+            [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
             [self selectTopicWithID:topicID];
             if (success) {
                 success();
@@ -271,7 +271,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
-        [WPAnalytics track:WPAnalyticsStatReaderFollowedTag];
+        [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
         if (success) {
             success();
         }

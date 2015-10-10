@@ -118,12 +118,10 @@
 
         NSString *title = NSLocalizedString(@"Could not Unfollow Topic", @"");
         NSString *description = error.localizedDescription;
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                            message:description
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
-                                                  otherButtonTitles:nil, nil];
-        [alertView show];
+        NSString *alertCancel = NSLocalizedString(@"OK", @"Label text for the close button on an alert view.");
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:description preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addCancelActionWithTitle:alertCancel handler:nil];
+        [alertController presentFromRootViewController];
     }];
 }
 

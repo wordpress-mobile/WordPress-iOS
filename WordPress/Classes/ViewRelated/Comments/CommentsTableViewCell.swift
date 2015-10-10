@@ -44,21 +44,9 @@ public class CommentsTableViewCell : WPTableViewCell
         
         let placeholderImage = Style.gravatarPlaceholderImage(isApproved: approved)
 
-        if url == nil {
-            gravatarImageView.image = placeholderImage
-            return
-        }
-        
-        let size        = gravatarImageView.frame.width * UIScreen.mainScreen().scale
-        let scaledURL   = url!.patchGravatarUrlWithSize(size)
-        
-        gravatarImageView.downloadImage(scaledURL,
-            placeholderImage    : placeholderImage,
-            success             :   { (image: UIImage) in
-                                        self.gravatarImageView.displayImageWithFadeInAnimation(image)
-                                    },
-            failure             : nil)
-        
+        let gravatar = url.flatMap { Gravatar($0) }
+        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
+
         gravatarURL = url
     }
     
