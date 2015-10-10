@@ -1,6 +1,13 @@
 import Foundation
 
-public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchBarDelegate {
+public protocol ThemePresenter {
+    func presentCustomizeForTheme(theme: Theme?)
+    func presentDemoForTheme(theme: Theme?)
+    func presentDetailsForTheme(theme: Theme?)
+    func presentSupportForTheme(theme: Theme?)
+}
+
+public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchBarDelegate, ThemePresenter {
     
     // MARK: - Properties: must be set by parent
     
@@ -144,7 +151,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     public override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         
         let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: ThemeBrowserHeaderView.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserHeaderView
-        header.configureWithTheme(currentTheme())
+        header.configureWithTheme(currentTheme(), presenter: self)
         
         return header
     }
@@ -158,7 +165,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     public override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         if let theme = themesController.objectAtIndexPath(indexPath) as? Theme {
-            showDemoForTheme(theme)
+            presentDemoForTheme(theme)
         }
     }
     
@@ -215,11 +222,41 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         })
     }
     
-    // MARK: - Theme actions
+    // MARK: - ThemePresenter
     
-    private func showDemoForTheme(theme: Theme) {
+    public func presentCustomizeForTheme(theme: Theme?) {
+        guard let theme = theme, url = NSURL(string: theme.customizeUrl()) else {
+            return
+        }
         
-        let url = NSURL(string: theme.demoUrl)
+        presentUrlForTheme(url)
+    }
+
+    public func presentDemoForTheme(theme: Theme?) {
+        guard let theme = theme, url = NSURL(string: theme.demoUrl) else {
+            return
+        }
+        
+        presentUrlForTheme(url)
+    }
+
+    public func presentDetailsForTheme(theme: Theme?) {
+        guard let theme = theme, url = NSURL(string: theme.detailsUrl()) else {
+            return
+        }
+        
+        presentUrlForTheme(url)
+    }
+    
+    public func presentSupportForTheme(theme: Theme?) {
+        guard let theme = theme, url = NSURL(string: theme.supportUrl()) else {
+            return
+        }
+        
+        presentUrlForTheme(url)
+    }
+    
+    public func presentUrlForTheme(url: NSURL) {
         let webViewController = WPWebViewController(URL: url)
         
         webViewController.authToken = blog.authToken
@@ -230,5 +267,4 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         let navController = UINavigationController(rootViewController: webViewController)
         presentViewController(navController, animated: true, completion: nil)
     }
-    
 }

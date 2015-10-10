@@ -167,6 +167,9 @@
                                                                     <state key="normal" title="Customize">
                                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="didTapCustomizeButton:" destination="47y-8d-jwn" eventType="touchUpInside" id="S4h-dy-zTy"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                             <animations/>
@@ -195,6 +198,9 @@
                                                                     <state key="normal" title="Details">
                                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="didTapDetailsButton:" destination="47y-8d-jwn" eventType="touchUpInside" id="xQO-1t-CBD"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                             <animations/>
@@ -223,6 +229,9 @@
                                                                     <state key="normal" title="Support">
                                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                     </state>
+                                                                    <connections>
+                                                                        <action selector="didTapSupportButton:" destination="47y-8d-jwn" eventType="touchUpInside" id="ELI-lH-PCS"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                             <animations/>

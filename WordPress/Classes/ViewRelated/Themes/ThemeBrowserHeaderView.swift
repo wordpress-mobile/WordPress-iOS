@@ -22,11 +22,13 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
             currentThemeName.text = theme?.name
         }
     }
-        
+    private var presenter: ThemePresenter?
+    
     // MARK: - Additional initialization
     
-    public func configureWithTheme(theme: Theme?) {
+    public func configureWithTheme(theme: Theme?, presenter: ThemePresenter?) {
         self.theme = theme
+        self.presenter = presenter
     }
     
     // MARK: - GUI
@@ -57,6 +59,21 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
     override public func prepareForReuse() {
         super.prepareForReuse()
         theme = nil
+        presenter = nil
     }
 
+    // MARK: - Actions
+    
+    @IBAction private func didTapCustomizeButton(sender: UIButton) {
+        presenter?.presentCustomizeForTheme(theme)
+    }
+    
+    @IBAction private func didTapDetailsButton(sender: UIButton) {
+        presenter?.presentDetailsForTheme(theme)
+    }
+    
+    @IBAction private func didTapSupportButton(sender: UIButton) {
+        presenter?.presentSupportForTheme(theme)
+    }
+    
 }
