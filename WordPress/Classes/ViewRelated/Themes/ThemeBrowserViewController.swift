@@ -84,12 +84,10 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - UICollectionViewController protocol UICollectionViewDataSource
     
     public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = themesController.fetchedObjects?.count
-        return count ?? 0
+        return themesController.fetchedObjects?.count ?? 0
     }
     
-    public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> ThemeBrowserCell
-    {
+    public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> ThemeBrowserCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ThemeBrowserCell", forIndexPath: indexPath) as! ThemeBrowserCell
         let theme = themesController.objectAtIndexPath(indexPath) as? Theme
         
@@ -110,7 +108,6 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - UICollectionViewController protocol UICollectionViewDelegate
 
     public override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
         if let theme = themesController.objectAtIndexPath(indexPath) as? Theme {
             showDemoForTheme(theme)
         }
