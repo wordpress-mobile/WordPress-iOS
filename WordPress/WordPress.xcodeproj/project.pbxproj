@@ -5960,7 +5960,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = FF947A8C1BBE89A100B27B6A /* WordPress 39.xcdatamodel */;
+			currentVersion = FF695E151B87662500CD6EAA /* WordPress 38.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
