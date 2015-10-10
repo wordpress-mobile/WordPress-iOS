@@ -56,13 +56,6 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         updateThemes()
     }
 
-    public override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        super.didRotateFromInterfaceOrientation(fromInterfaceOrientation)
-        
-        collectionView?.collectionViewLayout.invalidateLayout()
-    }
-    
-    @available(iOS 8.0, *)
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
