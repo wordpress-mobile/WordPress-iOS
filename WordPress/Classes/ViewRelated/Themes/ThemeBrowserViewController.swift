@@ -8,16 +8,9 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
      *  @brief      The blog this VC will work with.
      *  @details    Must be set by the creator of this VC.
      */
-    private var blog : Blog!
+    public var blog : Blog!
     
-    // MARK: - Properties: managed object context & services
-    
-    /**
-     *  @brief      The managed object context this VC will use for it's operations.
-     */
-    private let managedObjectContext : NSManagedObjectContext = {
-        ContextManager.sharedInstance()!.newDerivedContext()
-    }()
+    // MARK: - Properties
     
     /**
      *  @brief      The FRC this VC will use to display filtered content.
@@ -29,7 +22,8 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         fetchRequest.predicate = predicate
         let sort = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sort]
-        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext,
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
+            managedObjectContext: ContextManager.sharedInstance().mainContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
         frc.delegate = self
@@ -47,19 +41,8 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
      *  @brief      The themes service we'll use in this VC.
      */
     private lazy var themeService : ThemeService = {
-        ThemeService(managedObjectContext: self.managedObjectContext)
+        ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     }()
-    
-    // MARK: - Additional initialization
-    
-    public func configureWithBlog(blog: Blog) {
-        do {
-            let blogInContext = try managedObjectContext.existingObjectWithID(blog.objectID) as? Blog
-            self.blog = blogInContext
-        } catch let error as NSError {
-            DDLogSwift.logError("Error finding blog: \(error.localizedDescription)")
-        }
-    }
     
     // MARK: - UIViewController
 
