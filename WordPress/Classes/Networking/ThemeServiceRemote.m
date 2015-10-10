@@ -129,6 +129,9 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
                        success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                        failure:(ThemeServiceRemoteFailureBlock)failure
 {
+    NSParameterAssert([themes isKindOfClass:[NSMutableArray class]]);
+    NSParameterAssert([path isKindOfClass:[NSString class]]);
+    
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_2];
     
