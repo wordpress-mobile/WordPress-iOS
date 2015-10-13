@@ -71,3 +71,4 @@
 #import "WPTableViewHandler.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
+#import "WPTabBarController.h"
