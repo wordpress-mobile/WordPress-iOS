@@ -47,7 +47,7 @@
 #import "SuggestionsTableView.h"
 
 #import "UIAlertView+Blocks.h"
-#import "UIAlertViewProxy.h"
+#import "UIAlertControllerProxy.h"
 #import "UIDevice+Helpers.h"
 #import "UIImage+Tint.h"
 #import "UIImage+Resize.h"
