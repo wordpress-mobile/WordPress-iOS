@@ -364,6 +364,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     return self.shouldRestoreApplicationState;
 }
 
+- (void)application: (UIApplication *)application performActionForShortcutItem:(nonnull UIApplicationShortcutItem *)shortcutItem completionHandler:(nonnull void (^)(BOOL))completionHandler
+{
+    ShortcutHandler3DTouch *shortcutHandler3DTouch = [[ShortcutHandler3DTouch alloc] init];
+    completionHandler([shortcutHandler3DTouch handleShortcutItem:shortcutItem]);
+}
+
 #pragma mark - Application startup
 
 - (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
