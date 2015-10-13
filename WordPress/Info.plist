@@ -106,7 +106,7 @@
 	<array>
 		<dict>
 			<key>UIApplicationShortcutItemType</key>
-			<string>org.wordpress.notifications</string>
+			<string>org.wordpress.Notifications</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Notifications</string>
 			<key>UIApplicationShortcutItemIconFile</key>
@@ -114,7 +114,7 @@
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemType</key>
-			<string>org.wordpress.openstats</string>
+			<string>org.wordpress.Stats</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Stats</string>
 			<key>UIApplicationShortcutItemIconFile</key>
@@ -122,7 +122,7 @@
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemType</key>
-			<string>org.wordpress.newphotopost</string>
+			<string>org.wordpress.NewPhotoPost</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>New Photo Post</string>
 			<key>UIApplicationShortcutItemIconFile</key>
@@ -130,7 +130,7 @@
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemType</key>
-			<string>org.wordpress.newpost</string>
+			<string>org.wordpress.NewPost</string>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>New Post</string>
 			<key>UIApplicationShortcutItemIconFile</key>
