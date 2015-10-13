@@ -102,6 +102,18 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>org.wordpress.openstats</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Stats</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>stats</string>
+		</dict>
+		<string></string>
+	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>
