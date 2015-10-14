@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSString *previewUrl;
 @property (nonatomic, retain) NSString *price;
 @property (nonatomic, retain) NSString *demoUrl;
+@property (nonatomic, retain) NSString *stylesheet;
 @property (nonatomic, retain) Blog *blog;
 
 /**

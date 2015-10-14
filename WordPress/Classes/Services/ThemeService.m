@@ -318,6 +318,7 @@
     theme.premium = remoteTheme.price.length == 0 ? @NO: @YES;
     theme.price = remoteTheme.price;
     theme.screenshotUrl = remoteTheme.screenshotUrl;
+    theme.stylesheet = remoteTheme.stylesheet;
     theme.themeId = remoteTheme.themeId;
     theme.trendingRank = remoteTheme.trendingRank;
     theme.version = remoteTheme.version;
