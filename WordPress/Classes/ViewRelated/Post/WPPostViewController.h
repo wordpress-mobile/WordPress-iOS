@@ -54,6 +54,8 @@ typedef void (^EditPostCompletionHandler)(void);
 
 #pragma mark - Initializers
 
+- (instancetype)initWithDraftForLastUsedBlogAndPhotoPost;
+
 /*
  Compose a new post with the last used blog.
  */
