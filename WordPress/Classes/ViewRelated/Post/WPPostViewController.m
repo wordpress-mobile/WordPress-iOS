@@ -119,6 +119,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
 @property (nonatomic, strong) NSString *selectedMediaID;
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaLibraryDataSource;
+@property (nonatomic) BOOL isOpenedDirectlyForPhotoPost;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -174,6 +175,12 @@ EditImageDetailsViewControllerDelegate
     }
     
     return self;
+}
+
+- (instancetype)initWithDraftForLastUsedBlogAndPhotoPost
+{
+    _isOpenedDirectlyForPhotoPost = YES;
+    return [self initWithDraftForLastUsedBlog];
 }
 
 - (instancetype)initWithDraftForLastUsedBlog
@@ -297,7 +304,9 @@ EditImageDetailsViewControllerDelegate
     self.delegate = self;
     self.failedMediaAlertView = nil;
     [self configureMediaUpload];
-    if (!self.isOpenedDirectlyForEditing) {
+    if (self.isOpenedDirectlyForPhotoPost) {
+        [self showMediaPicker];
+    } else if (!self.isOpenedDirectlyForEditing) {
         [self refreshNavigationBarButtons:NO];
     }
 }
