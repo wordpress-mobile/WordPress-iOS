@@ -8,6 +8,7 @@ public class ThemeBrowserCell : UICollectionViewCell {
     @IBOutlet weak var nameLabel : UILabel!
     @IBOutlet weak var infoLabel: UILabel!
     @IBOutlet weak var highlightView: UIView!
+    @IBOutlet weak var activityView: UIActivityIndicatorView!
     
     // MARK: - Properties
     
@@ -16,6 +17,8 @@ public class ThemeBrowserCell : UICollectionViewCell {
             refreshGUI()
         }
     }
+    
+    private var placeholderImage = UIImage(named: "theme-loading")
     
     // MARK: - GUI
     
@@ -55,14 +58,15 @@ public class ThemeBrowserCell : UICollectionViewCell {
     override public func prepareForReuse() {
         super.prepareForReuse()
         theme = nil
+        activityView.stopAnimating()
     }
     
     private func refreshGUI() {
         if let theme = theme {
            if let imageUrl = theme.screenshotUrl where !imageUrl.isEmpty {
-                self.refreshScreenshotImage(imageUrl)
+                refreshScreenshotImage(imageUrl)
             } else {
-                imageView.image = nil
+                showScreenshotPlaceholder()
             }
             
             nameLabel.text = theme.name
@@ -85,20 +89,32 @@ public class ThemeBrowserCell : UICollectionViewCell {
             imageView.image = nil
             nameLabel.text = nil
             infoLabel.text = nil
+            activityView.stopAnimating()
         }
+    }
+    
+    private func showScreenshotPlaceholder() {
+        imageView.contentMode = .Center
+        imageView.backgroundColor = WPStyleGuide.Themes.placeholderColor
+        imageView.image = placeholderImage
+        activityView.stopAnimating()
     }
     
     private func refreshScreenshotImage(imageUrl: String) {
         let imageUrl = NSURL(string: imageUrl)
         
-        imageView.contentMode = .Center
-        imageView.backgroundColor = WPStyleGuide.Themes.cellLoadingColor
+        showScreenshotPlaceholder()
+        activityView.startAnimating()
         imageView.downloadImage(imageUrl,
-            placeholderImage: UIImage(named: "theme-loading"),
+            placeholderImage: placeholderImage,
             success: { [weak self] (image: UIImage) in
                 self?.imageView.contentMode = .ScaleAspectFit
                 self?.imageView.backgroundColor = UIColor.clearColor()
-            }, failure: nil)
+                self?.activityView.stopAnimating()
+        }, failure: { [weak self] (error: NSError!) in
+                DDLogSwift.logError("Error loading theme screenshot: \(error.localizedDescription)")
+                self?.activityView.stopAnimating()
+        })
     }
 
     // MARK: - Actions
