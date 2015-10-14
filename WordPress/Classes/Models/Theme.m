@@ -19,6 +19,7 @@
 @dynamic previewUrl;
 @dynamic price;
 @dynamic demoUrl;
+@dynamic stylesheet;
 @dynamic blog;
 
 #pragma mark - CoreData helpers
