@@ -85,6 +85,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, strong, readwrite) WPUserAgent                    *userAgent;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
+@property (nonatomic, assign) UIApplicationShortcutItem                 *launchedShortcutItem;
 
 /**
  *  @brief      Flag that signals wether Whats New is on screen or not.
@@ -349,9 +350,16 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    DDLogError(@"Kwonye3");
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
-    [self showWhatsNewIfNeeded];
+    if (self.launchedShortcutItem) {
+        ShortcutHandler3DTouch *shortcutHandler3DTouch = [[ShortcutHandler3DTouch alloc] init];
+        [shortcutHandler3DTouch handleShortcutItem:self.launchedShortcutItem];
+        self.launchedShortcutItem = nil;
+    } else {
+        [self showWhatsNewIfNeeded];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
