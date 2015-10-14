@@ -39,7 +39,7 @@
  *  @returns    The newly created and initialized object.
  */
 - (Theme *)newThemeWithId:(NSString *)themeId
-                  forBlog:(Blog *)blog
+                  forBlog:(nullable Blog *)blog
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
     
@@ -69,7 +69,7 @@
  *  @returns    The stored theme matching the specified ID if found, or nil if it's not found.
  */
 - (Theme *)findOrCreateThemeWithId:(NSString *)themeId
-                           forBlog:(Blog *)blog
+                           forBlog:(nullable Blog *)blog
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
     
@@ -87,7 +87,7 @@
 #pragma mark - Local queries: finding themes
 
 - (Theme *)findThemeWithId:(NSString *)themeId
-                   forBlog:(Blog *)blog
+                   forBlog:(nullable Blog *)blog
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
     
@@ -169,7 +169,8 @@
     NSOperation *operation = [remote getPurchasedThemesForBlogId:[blog dotComID]
                                                          success:^(NSArray *remoteThemes) {
                                                              NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                                                    forBlog:blog];
+                                                                                                    forBlog:blog
+                                                                                                    ordered:NO];
                                                              
                                                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                                  if (success) {
@@ -220,7 +221,8 @@
     NSOperation *operation = [remote getThemes:^(NSArray *remoteThemes) {
         NSMutableSet *themesToDelete = [NSMutableSet setWithArray:self.findAccountThemes];
         NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                               forBlog:nil];
+                                               forBlog:nil
+                                               ordered:YES];
         [themesToDelete minusSet:[NSSet setWithArray:themes]];
         for (Theme *deleteTheme in themesToDelete) {
             [self.managedObjectContext deleteObject:deleteTheme];
@@ -250,7 +252,8 @@
                                                 success:^(NSArray *remoteThemes) {
                                                     NSMutableSet *themesToDelete = [NSMutableSet setWithSet:blog.themes];
                                                     NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                                           forBlog:blog];
+                                                                                           forBlog:blog
+                                                                                           ordered:YES];
                                                     [themesToDelete minusSet:[NSSet setWithArray:themes]];
                                                     for (Theme *deleteTheme in themesToDelete) {
                                                         [self.managedObjectContext deleteObject:deleteTheme];
@@ -302,7 +305,7 @@
  *  @returns    The updated and matching local theme.
  */
 - (Theme *)themeFromRemoteTheme:(RemoteTheme *)remoteTheme
-                        forBlog:(Blog *)blog
+                        forBlog:(nullable Blog *)blog
 {
     NSParameterAssert([remoteTheme isKindOfClass:[RemoteTheme class]]);
     
@@ -338,25 +341,30 @@
  *  @param      remoteThemes    An array with the remote themes containing the data to update
  *                              locally.  Cannot be nil.
  *  @param      blog            Blog being updated. May be nil for account.
+ *  @param      ordered         Whether to update displayed order
  *
  *  @returns    An array with the updated and matching local themes.
  */
-- (NSArray *)themesFromRemoteThemes:(NSArray *)remoteThemes
-                            forBlog:(Blog *)blog
+- (NSArray<Theme *> *)themesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
+                                     forBlog:(nullable Blog *)blog
+                                     ordered:(BOOL)ordered
 {
     NSParameterAssert([remoteThemes isKindOfClass:[NSArray class]]);
     
     NSMutableArray *themes = [[NSMutableArray alloc] initWithCapacity:remoteThemes.count];
     
-    for (RemoteTheme *remoteTheme in remoteThemes) {
+    [remoteThemes enumerateObjectsUsingBlock:^(RemoteTheme *remoteTheme, NSUInteger idx, BOOL *stop) {
         NSAssert([remoteTheme isKindOfClass:[RemoteTheme class]],
                  @"Expected a remote theme.");
         
         Theme *theme = [self themeFromRemoteTheme:remoteTheme
                                           forBlog:blog];
+        if (ordered) {
+            theme.order = @(idx);
+        }
         
         [themes addObject:theme];
-    }
+    }];
     
     return [NSArray arrayWithArray:themes];
 }
