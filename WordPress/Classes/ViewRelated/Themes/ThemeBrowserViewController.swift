@@ -20,7 +20,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         fetchRequest.fetchBatchSize = 20
         let predicate = NSPredicate(format: "blog == %@", self.blog)
         fetchRequest.predicate = predicate
-        let sort = NSSortDescriptor(key: "name", ascending: true)
+        let sort = NSSortDescriptor(key: "order", ascending: true)
         fetchRequest.sortDescriptors = [sort]
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
             managedObjectContext: ContextManager.sharedInstance().mainContext,
