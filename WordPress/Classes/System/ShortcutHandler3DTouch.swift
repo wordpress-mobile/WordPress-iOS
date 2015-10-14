@@ -26,15 +26,22 @@ public class ShortcutHandler3DTouch: NSObject
         var handled = false
         
         guard let shortCutType = shortcutItem.type as String? else { return false }
+        let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
         
         switch shortCutType {
-            case ShortcutIdentifier.NewPost.type,
-            ShortcutIdentifier.NewPhotoPost.type,
-            ShortcutIdentifier.Stats.type:
+            case ShortcutIdentifier.NewPost.type:
+                tabBarController.showPostTab()
+                handled = true
+                break
+            case ShortcutIdentifier.NewPhotoPost.type:
+                handled = true
+                break
+            case ShortcutIdentifier.Stats.type:
+                let blogService: BlogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+                tabBarController.switchMySitesTabToStatsViewForBlog(blogService.primaryBlog())
                 handled = true
                 break
             case ShortcutIdentifier.Notifications.type:
-                let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
                 tabBarController.showNotificationsTab()
                 handled = true
                 break
