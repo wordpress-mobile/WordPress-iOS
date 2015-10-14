@@ -34,6 +34,7 @@ public class ShortcutHandler3DTouch: NSObject
                 handled = true
                 break
             case ShortcutIdentifier.NewPhotoPost.type:
+                tabBarController.showPostTabWithOptions(["media_picker": "yes"])
                 handled = true
                 break
             case ShortcutIdentifier.Stats.type:
