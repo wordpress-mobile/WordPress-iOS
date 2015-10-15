@@ -33,6 +33,9 @@
                                             <variation key="heightClass=compact" misplaced="YES">
                                                 <rect key="frame" x="0.0" y="0.0" width="255" height="65"/>
                                             </variation>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="0.0" y="0.0" width="155" height="65"/>
+                                            </variation>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="uses" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XQp-Uf-WDT">
                                             <rect key="frame" x="265" y="0.0" width="40" height="65"/>
@@ -46,6 +49,9 @@
                                             <variation key="heightClass=compact" misplaced="YES">
                                                 <rect key="frame" x="265" y="0.0" width="40" height="65"/>
                                             </variation>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="165" y="0.0" width="40" height="65"/>
+                                            </variation>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E9D-7n-X5J">
                                             <rect key="frame" x="315" y="0.0" width="255" height="65"/>
@@ -57,24 +63,23 @@
                                             <variation key="heightClass=compact" misplaced="YES">
                                                 <rect key="frame" x="315" y="0.0" width="255" height="65"/>
                                             </variation>
+                                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                                <rect key="frame" x="215" y="0.0" width="155" height="65"/>
+                                            </variation>
                                         </view>
                                     </subviews>
                                     <animations/>
                                     <constraints>
                                         <constraint firstItem="XQp-Uf-WDT" firstAttribute="centerX" secondItem="x3x-gn-Ic5" secondAttribute="centerX" id="1en-dP-Bfe"/>
-                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="chA-LL-d2j"/>
                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="oTA-OZ-9JI"/>
                                     </constraints>
-                                    <variation key="default">
-                                        <mask key="constraints">
-                                            <exclude reference="chA-LL-d2j"/>
-                                        </mask>
-                                    </variation>
                                     <variation key="heightClass=compact" misplaced="YES">
                                         <rect key="frame" x="15" y="15" width="570" height="65"/>
                                     </variation>
                                     <variation key="widthClass=compact" axis="vertical"/>
-                                    <variation key="heightClass=compact-widthClass=compact" axis="horizontal"/>
+                                    <variation key="heightClass=compact-widthClass=compact" axis="horizontal" misplaced="YES">
+                                        <rect key="frame" x="15" y="15" width="370" height="65"/>
+                                    </variation>
                                 </stackView>
                             </subviews>
                             <animations/>
@@ -82,35 +87,88 @@
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="x3x-gn-Ic5" secondAttribute="bottom" constant="15" id="9F1-Av-Okd"/>
                                 <constraint firstItem="x3x-gn-Ic5" firstAttribute="leading" secondItem="iEr-4u-nZf" secondAttribute="leading" constant="15" id="Cg6-f7-awf"/>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="75" id="Pal-2x-ojL"/>
-                                <constraint firstAttribute="height" constant="100" id="Rrs-Ks-HPp"/>
                                 <constraint firstItem="x3x-gn-Ic5" firstAttribute="top" secondItem="iEr-4u-nZf" secondAttribute="top" constant="15" id="hcI-7s-2nH"/>
                                 <constraint firstAttribute="trailing" secondItem="x3x-gn-Ic5" secondAttribute="trailing" constant="15" id="qky-07-Ngs"/>
                             </constraints>
-                            <variation key="default">
-                                <mask key="constraints">
-                                    <exclude reference="Pal-2x-ojL"/>
-                                    <exclude reference="Rrs-Ks-HPp"/>
-                                </mask>
-                            </variation>
                             <variation key="heightClass=compact" misplaced="YES">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="95"/>
                             </variation>
                             <variation key="heightClass=regular" misplaced="YES">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="95"/>
                             </variation>
+                            <variation key="heightClass=compact-widthClass=compact" misplaced="YES">
+                                <rect key="frame" x="0.0" y="0.0" width="400" height="95"/>
+                            </variation>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7vK-Kh-PCh">
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="vNY-Ir-CFq">
                             <rect key="frame" x="0.0" y="95" width="600" height="441"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uwc-0B-wOs">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="jEd-89-0BG">
+                                            <rect key="frame" x="10" y="10" width="580" height="40"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Menu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UV1-AW-O4E">
+                                                    <rect key="frame" x="0.0" y="0.0" width="460" height="40"/>
+                                                    <animations/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="cK9-Vq-V0u"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0D0-iu-RK8">
+                                                    <rect key="frame" x="470" y="2.5" width="45" height="35"/>
+                                                    <animations/>
+                                                    <color key="backgroundColor" red="1" green="0.051290923320000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="45" id="2bH-Ul-QbH"/>
+                                                        <constraint firstAttribute="height" constant="35" id="ku9-z1-u54"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Trash">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cpw-cI-bc3">
+                                                    <rect key="frame" x="525" y="2.5" width="55" height="35"/>
+                                                    <animations/>
+                                                    <color key="backgroundColor" red="0.1076004438" green="0.55510221439999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="55" id="P5Q-XU-k5G"/>
+                                                        <constraint firstAttribute="height" constant="35" id="oNB-Fz-ghY"/>
+                                                    </constraints>
+                                                    <state key="normal" title="Save">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
+                                            </subviews>
+                                            <animations/>
+                                        </stackView>
+                                    </subviews>
+                                    <animations/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="jEd-89-0BG" secondAttribute="trailing" constant="10" id="596-u1-Ex1"/>
+                                        <constraint firstAttribute="bottom" secondItem="jEd-89-0BG" secondAttribute="bottom" constant="10" id="7Sx-5N-wab"/>
+                                        <constraint firstAttribute="height" constant="60" id="9RD-QY-bQR"/>
+                                        <constraint firstItem="jEd-89-0BG" firstAttribute="top" secondItem="Uwc-0B-wOs" secondAttribute="top" constant="10" id="G7f-kv-nqC"/>
+                                        <constraint firstItem="jEd-89-0BG" firstAttribute="leading" secondItem="Uwc-0B-wOs" secondAttribute="leading" constant="10" id="Ne5-jo-cEx"/>
+                                    </constraints>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uS4-7z-FhD">
+                                    <rect key="frame" x="0.0" y="60" width="600" height="381"/>
+                                    <animations/>
+                                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                                </view>
+                            </subviews>
                             <animations/>
-                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                            <variation key="heightClass=compact" misplaced="YES">
-                                <rect key="frame" x="0.0" y="95" width="600" height="241"/>
-                            </variation>
-                            <variation key="heightClass=regular" misplaced="YES">
-                                <rect key="frame" x="0.0" y="95" width="600" height="641"/>
-                            </variation>
-                        </view>
+                            <constraints>
+                                <constraint firstItem="Uwc-0B-wOs" firstAttribute="centerX" secondItem="vNY-Ir-CFq" secondAttribute="centerX" id="B1g-Tb-XbS"/>
+                                <constraint firstItem="uS4-7z-FhD" firstAttribute="centerX" secondItem="vNY-Ir-CFq" secondAttribute="centerX" id="T2J-Vy-LDb"/>
+                            </constraints>
+                        </stackView>
                     </subviews>
                     <animations/>
                 </stackView>
@@ -128,5 +186,14 @@
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
             <point key="canvasLocation" x="499" y="305"/>
         </view>
+        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="3w6-9l-b90">
+            <rect key="frame" x="0.0" y="0.0" width="121" height="29"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <animations/>
+            <segments>
+                <segment title="First"/>
+                <segment title="Second"/>
+            </segments>
+        </segmentedControl>
     </objects>
 </document>
