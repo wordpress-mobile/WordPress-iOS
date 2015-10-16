@@ -40,7 +40,7 @@ Run `pod install` from the command line to install dependencies for the project.
 
 Launch the workspace by either double clicking on WordPress.xcworkspace file, or launch Xcode and choose File > Open and browse to WordPress.xcworkspace.
 
-*WordPress for iOS requires Swift 1.1 and is incompatible with Swift 1.2 and Xcode 6.3 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
+*WordPress for iOS requires Swift 2.0 and Xcode 7.0 or newer. Previous versions of Xcode can be [downloaded from Apple](https://developer.apple.com/downloads/index.action).*
 
 More information on building the project and the tools required can be found in [the handbook](https://make.wordpress.org/mobile/handbook/pathways/ios/tools-requirements/).
 
