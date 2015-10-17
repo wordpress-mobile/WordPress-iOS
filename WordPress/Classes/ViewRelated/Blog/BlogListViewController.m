@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, BlogListSections) {
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
-static CGFloat const BLVCSiteRowHeight = 54.0;
+static CGFloat const BLVCSiteRowHeight = 74.0;
 
 
 @interface BlogListViewController () <UIViewControllerRestoration>
@@ -316,16 +316,15 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
     NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
 }
 
 - (CGFloat)heightForSearchWrapperView
 {
-    if ([UIDevice isPad]) {
-        return SearchWrapperViewPortraitHeight;
-    }
-    return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight : SearchWrapperViewLandscapeHeight;
+    UINavigationBar *navBar = self.navigationController.navigationBar;
+    CGFloat height = CGRectGetHeight(navBar.frame) + self.topLayoutGuide.length;
+    return MAX(height, SearchWrapperViewMinHeight);
 }
 
 #pragma mark - Notifications
@@ -380,7 +379,7 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [WPStyleGuide configureTableViewActionCell:cell];
     } else {
-        [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
+        [WPStyleGuide configureTableViewBlogCell:cell];
     }
 
     return cell;
@@ -414,7 +413,8 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
+        cell.textLabel.textColor = [WPStyleGuide greyDarken20];
+        cell.textLabel.text = NSLocalizedString(@"ADD NEW WORDPRESS", @"");
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -435,7 +435,9 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = self.tableView.isEditing ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleBlue;
-
+        
+        cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
+        cell.imageView.layer.borderWidth = 1.5;
     [cell.imageView setImageWithSiteIcon:blog.icon];
     cell.visibilitySwitch.on = blog.visible;
     cell.visibilitySwitch.tag = indexPath.row;

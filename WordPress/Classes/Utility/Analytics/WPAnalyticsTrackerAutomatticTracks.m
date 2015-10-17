@@ -477,65 +477,65 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatReaderAccessed:
             eventName = @"reader_accessed";
             break;
-        case WPAnalyticsStatReaderBlockedSite:
-            eventName = @"reader_site_blocked";
-            break;
-        case WPAnalyticsStatReaderCommentedOnArticle:
+        case WPAnalyticsStatReaderArticleCommentedOn:
             eventName = @"reader_article_commented_on";
+            break;
+        case WPAnalyticsStatReaderArticleLiked:
+            eventName = @"reader_article_liked";
+            break;
+        case WPAnalyticsStatReaderArticleReblogged:
+            eventName = @"reader_article_reblogged";
+            break;
+        case WPAnalyticsStatReaderArticleOpened:
+            eventName = @"reader_article_opened";
+            break;
+        case WPAnalyticsStatReaderArticleUnliked:
+            eventName = @"reader_article_unliked";
             break;
         case WPAnalyticsStatReaderDiscoverViewed:
             eventName = @"reader_discover_viewed";
             break;
-        case WPAnalyticsStatReaderFollowedList:
-            eventName = @"reader_list_followed";
-            break;
-        case WPAnalyticsStatReaderFollowedSite:
-            eventName = @"reader_site_followed";
-            break;
-        case WPAnalyticsStatReaderFollowedTag:
-            eventName = @"reader_reader_tag_followed";
+        case WPAnalyticsStatReaderFreshlyPressedLoaded:
+            eventName = @"reader_freshly_pressed_loaded";
             break;
         case WPAnalyticsStatReaderInfiniteScroll:
             eventName = @"reader_infinite_scroll_performed";
             break;
-        case WPAnalyticsStatReaderLikedArticle:
-            eventName = @"reader_article_liked";
+        case WPAnalyticsStatReaderListFollowed:
+            eventName = @"reader_list_followed";
             break;
-        case WPAnalyticsStatReaderLoadedFreshlyPressed:
-            eventName = @"reader_freshly_pressed_loaded";
-            break;
-        case WPAnalyticsStatReaderLoadedList:
+        case WPAnalyticsStatReaderListLoaded:
             eventName = @"reader_list_loaded";
             break;
-        case WPAnalyticsStatReaderLoadedTag:
-            eventName = @"reader_tag_loaded";
-            break;
-        case WPAnalyticsStatReaderOpenedArticle:
-            eventName = @"reader_article_opened";
-            break;
-        case WPAnalyticsStatReaderPreviewedList:
+        case WPAnalyticsStatReaderListPreviewed:
             eventName = @"reader_list_preview";
             break;
-        case WPAnalyticsStatReaderPreviewedSite:
-            eventName = @"reader_blog_preview";
-            break;
-        case WPAnalyticsStatReaderPreviewedTag:
-            eventName = @"reader_tag_preview";
-            break;
-        case WPAnalyticsStatReaderRebloggedArticle:
-            eventName = @"reader_article_reblogged";
-            break;
-        case WPAnalyticsStatReaderUnfollowedList:
+        case WPAnalyticsStatReaderListUnfollowed:
             eventName = @"reader_list_unfollowed";
             break;
-        case WPAnalyticsStatReaderUnfollowedSite:
+        case WPAnalyticsStatReaderSiteBlocked:
+            eventName = @"reader_blog_blocked";
+            break;
+        case WPAnalyticsStatReaderSiteFollowed:
+            eventName = @"reader_site_followed";
+            break;
+        case WPAnalyticsStatReaderSitePreviewed:
+            eventName = @"reader_blog_preview";
+            break;
+        case WPAnalyticsStatReaderSiteUnfollowed:
             eventName = @"reader_site_unfollowed";
             break;
-        case WPAnalyticsStatReaderUnfollowedTag:
-            eventName = @"reader_reader_tag_unfollowed";
+        case WPAnalyticsStatReaderTagFollowed:
+            eventName = @"reader_reader_tag_followed";
             break;
-        case WPAnalyticsStatReaderUnlikedArticle:
-            eventName = @"reader_article_unliked";
+        case WPAnalyticsStatReaderTagLoaded:
+            eventName = @"reader_tag_loaded";
+            break;
+        case WPAnalyticsStatReaderTagPreviewed:
+            eventName = @"reader_tag_preview";
+            break;
+        case WPAnalyticsStatReaderTagUnfollowed:
+            eventName = @"reader_reader_tag_unfollowed";
             break;
         case WPAnalyticsStatSelectedInstallJetpack:
             eventName = @"stats_install_jetpack_selected";
