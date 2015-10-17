@@ -708,7 +708,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     }
     
     NotificationMedia *media        = userBlock.media.firstObject;
-    [cell downloadGravatarWithURL:media.mediaURL.removeGravatarFallback];
+    [cell downloadGravatarWithURL:media.mediaURL];
 }
 
 - (void)setupActionsCell:(NoteBlockActionsTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
@@ -1130,7 +1130,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         
         [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:^{
             onCompletion(YES);
-        } failure:^(NSError * error){
+        } failure:^(NSError *error){
             onCompletion(NO);
         }];
         
@@ -1138,24 +1138,20 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     };
     
     // Confirmation AlertView
-    UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if (buttonIndex == alertView.cancelButtonIndex) {
-            return;
-        }
-        
-        self.onDeletionRequestCallback(spamAction);
-        
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    };
-    
     NSString *message = NSLocalizedString(@"Are you sure you want to mark this comment as Spam?",
                                           @"Message asking for confirmation before marking a comment as spam");
     
-    [UIAlertView showWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
-                       message:message
-             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-             otherButtonTitles:@[NSLocalizedString(@"Spam", @"Spam")]
-                      tapBlock:completion];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") handler:nil];
+    [alertController addDestructiveActionWithTitle:NSLocalizedString(@"Spam", @"Spam") handler:^(UIAlertAction *action) {
+        self.onDeletionRequestCallback(spamAction);    
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)trashCommentWithBlock:(NotificationBlock *)block
@@ -1180,24 +1176,20 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     };
     
     // Confirmation AlertView
-    UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
-        if (buttonIndex == alertView.cancelButtonIndex) {
-            return;
-        }
-        
-        self.onDeletionRequestCallback(deletionAction);
-        
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    };
- 
     NSString *message = NSLocalizedString(@"Are you sure you want to delete this comment?",
                                           @"Message asking for confirmation on comment deletion");
     
-    [UIAlertView showWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
-                       message:message
-             cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-             otherButtonTitles:@[NSLocalizedString(@"Delete", @"Delete")]
-                      tapBlock:completion];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") handler:nil];
+    [alertController addDestructiveActionWithTitle:NSLocalizedString(@"Delete", @"Delete") handler:^(UIAlertAction *action) {
+        self.onDeletionRequestCallback(deletionAction);
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 
@@ -1242,15 +1234,19 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)handleReplyErrorWithBlock:(NotificationBlock *)block content:(NSString *)content
 {
-    [UIAlertView showWithTitle:nil
-                       message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
-             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-             otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                          if (buttonIndex != alertView.cancelButtonIndex) {
-                              [self sendReplyWithBlock:block content:content];
-                          }
-                      }];
+    NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", nil);
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", nil) handler:nil];
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Try Again", nil) handler:^(UIAlertAction *action) {
+        [self sendReplyWithBlock:block content:content];
+    }];
+    
+    // Note: This viewController might not be visible anymore
+    [alertController presentFromRootViewController];
 }
 
 
@@ -1295,18 +1291,23 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)handleCommentUpdateErrorWithBlock:(NotificationBlock *)block content:(NSString *)content
 {
-    [UIAlertView showWithTitle:nil
-                       message:NSLocalizedString(@"There has been an unexpected error while updating your comment", nil)
-             cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
-             otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                          if (buttonIndex == alertView.cancelButtonIndex) {
-                              block.textOverride = nil;
-                              [self reloadData];
-                          } else {
-                              [self updateCommentWithBlock:block content:content];
-                          }
-                      }];
+    NSString *message = NSLocalizedString(@"There has been an unexpected error while updating your comment", nil);
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Give Up", nil) handler:^(UIAlertAction *action) {
+        block.textOverride = nil;
+        [self reloadData];
+    }];
+    
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Try Again", nil) handler:^(UIAlertAction *action) {
+        [self updateCommentWithBlock:block content:content];
+    }];
+    
+    // Note: This viewController might not be visible anymore
+    [alertController presentFromRootViewController];
 }
 
 

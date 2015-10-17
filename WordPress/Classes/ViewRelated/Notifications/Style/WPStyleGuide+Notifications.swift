@@ -27,9 +27,9 @@ extension WPStyleGuide
         
         public static let noteSeparatorColor        = blockSeparatorColor
 
-        public static let gravatarPlaceholderImage  = UIImage(named: "gravatar")
-        public static let gravatarUnapprovedImage   = UIImage(named: "gravatar-unapproved")
-        public static let blavatarPlaceholderImage  = UIImage(named: "blavatar-default")
+        public static let gravatarPlaceholderImage  = UIImage(named: "gravatar")!
+        public static let gravatarUnapprovedImage   = UIImage(named: "gravatar-unapproved")!
+        public static let blavatarPlaceholderImage  = UIImage(named: "blavatar-default")!
         
         //  NoteUndoOverlayView
         public static let noteUndoBackgroundColor   = WPStyleGuide.errorRed()
@@ -173,7 +173,7 @@ extension WPStyleGuide
         
         //  Comment Helpers
         public static func blockGravatarPlaceholderImage(isApproved approved: Bool) -> UIImage {
-            return approved ? gravatarPlaceholderImage! : gravatarUnapprovedImage!
+            return approved ? gravatarPlaceholderImage : gravatarUnapprovedImage
         }
         
         public static func blockSeparatorColorForComment(isApproved approved: Bool) -> UIColor {
@@ -257,5 +257,15 @@ extension WPStyleGuide
         private static let headerTitleItalicsFont   = blockItalicsFont
         private static let blockItalicsFont         = WPFontManager.openSansItalicFontOfSize(blockFontSize)
         private static let blockNoticonFont         = subjectNoticonFont
+    }
+    
+    
+    // TODO: Move this over to the Notifications struct, once NotificationsViewController has been
+    // fully migrated to Swift!. JLP 10.2.2015.
+    //
+    public static func configureSegmentedControl(segmentedControl: UISegmentedControl) {
+        let style = [ NSFontAttributeName: WPFontManager.openSansRegularFontOfSize(12) ]
+        
+        segmentedControl.setTitleTextAttributes(style, forState: .Normal)
     }
 }
