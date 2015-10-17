@@ -19,6 +19,7 @@
 static NSString *const SubscribedTopicsPageIdentifier = @"SubscribedTopicsPageIdentifier";
 static NSString *const RecommendedTopicsPageIdentifier = @"RecommendedTopicsPageIdentifier";
 static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifier";
+static const CGFloat TitleViewHeight = 32.0;
 
 @interface ReaderSubscriptionPagePlaceholder : NSObject
 @property (nonatomic, strong) NSString *identifier;
@@ -248,13 +249,16 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
         DDLogError(@"Could not follow site: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Follow Site", @"");
-        NSString *description = [error localizedDescription];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                            message:description
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
-                                                  otherButtonTitles:nil, nil];
-        [alertView show];
+        NSString *acceptText = NSLocalizedString(@"OK", @"Label text for the close button on an alert view.");
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:error.localizedDescription
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addCancelActionWithTitle:acceptText handler:nil];
+        
+        // Note: This viewController might not be visible anymore
+        [alertController presentFromRootViewController];
     }];
 }
 
@@ -265,13 +269,16 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
         DDLogError(@"Could not follow topic: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Follow Topic", @"");
-        NSString *description = [error localizedDescription];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                            message:description
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
-                                                  otherButtonTitles:nil, nil];
-        [alertView show];
+        NSString *acceptText = NSLocalizedString(@"OK", @"Label text for the close button on an alert view.");
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:error.localizedDescription
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        [alertController addCancelActionWithTitle:acceptText handler:nil];
+        
+        // Note: This viewController might not be visible anymore
+        [alertController presentFromRootViewController];
     }];
 }
 
@@ -444,7 +451,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     // as specific a view hierarchy as possible to avoid collisions.
     NSString *placeholderText = NSLocalizedString(@"Enter a URL or a tag to follow", @"Placeholder text prompting the user to type the name of the URL or tag they would like to follow.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide allTAllShadeGrey]]];
-    [[UITextField appearanceWhenContainedIn:[self.view class], [UISearchBar class], nil] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [self.view class], [UISearchBar class] ]] setAttributedPlaceholder:attrPlacholderText];
 
     UISearchBar *searchBar = [[UISearchBar alloc] init];
     searchBar.delegate = self;
@@ -501,8 +508,9 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
         return _titleView;
     }
 
-    CGFloat y = UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ? 6.0 : 0.0;
-    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, y, 200.0f, 32.0)];
+    UINavigationBar *navBar = self.navigationController.navigationBar;
+    CGFloat heightDelta = (CGRectGetHeight(navBar.frame) - TitleViewHeight) / 2.0;
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, heightDelta, 200.0, TitleViewHeight)];
     titleView.backgroundColor = [UIColor clearColor];
     titleView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     _titleView = titleView;

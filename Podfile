@@ -4,7 +4,7 @@ xcodeproj 'WordPress/WordPress.xcodeproj'
 
 inhibit_all_warnings!
 
-platform :ios, '7.0'
+platform :ios, '9.0'
 pod '1PasswordExtension', '1.1.2'
 pod 'AFNetworking',	'~> 2.6.0'
 pod 'Reachability',	'3.1.1'
@@ -32,15 +32,15 @@ pod 'Simperium', '0.8.3'
 pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
 pod 'WordPress-iOS-Shared', '0.4.4'
 pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '1b614724fbc005be4346c7870498658c8b537267'
-pod 'WordPressCom-Stats-iOS', '0.4.7'
-pod 'WordPressCom-Analytics-iOS', '0.0.37'
+pod 'WordPressCom-Stats-iOS', '0.4.8'
+pod 'WordPressCom-Analytics-iOS', '0.0.38'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
 pod 'WPMediaPicker', '~>0.6.0'
 pod 'ReactiveCocoa', '~> 2.4.7'
 pod 'FormatterKit', '~> 1.8.0'
 
 target 'WordPressTodayWidget', :exclusive => true do
-  pod 'WordPressCom-Stats-iOS', '0.4.7'
+  pod 'WordPressCom-Stats-iOS', '0.4.8'
 end
 
 target :WordPressTest, :exclusive => true do

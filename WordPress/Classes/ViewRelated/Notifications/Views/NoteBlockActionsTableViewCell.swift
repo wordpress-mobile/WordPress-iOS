@@ -196,12 +196,8 @@ import Foundation
     }
     
     private func buttonSpacingForCurrentTraits() -> CGFloat {
-        if #available(iOS 9.0, *) {
-            let isHorizontallyCompact = traitCollection.horizontalSizeClass == .Compact && UIDevice.isPad()
-            return isHorizontallyCompact ? buttonSpacingCompact : buttonSpacing
-        }
-        
-        return buttonSpacing
+        let isHorizontallyCompact = traitCollection.horizontalSizeClass == .Compact && UIDevice.isPad()
+        return isHorizontallyCompact ? buttonSpacingCompact : buttonSpacing
     }
     
     
