@@ -270,7 +270,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         return;
     }
 
-    NSString *username = blog.jetpackAccount ? blog.jetpackAccount.username : blog.username
+    NSString *username = blog.jetpackAccount ? blog.jetpackAccount.username : blog.account.username
     ;
     
     // Skip the auth call to reduce loadtime if its the same username as before.
