@@ -102,25 +102,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIApplicationShortcutItems</key>
-	<array>
-		<dict>
-			<key>UIApplicationShortcutItemType</key>
-			<string>org.wordpress.Reader</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>Reader</string>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>icon-tab-reader</string>
-		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemType</key>
-			<string>org.wordpress.LogIn</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>Log In</string>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>icon-tab-mysites</string>
-		</dict>
-	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>
