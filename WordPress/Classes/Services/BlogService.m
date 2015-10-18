@@ -21,6 +21,7 @@
 #import "TodayExtensionService.h"
 #import "RemoteBlogSettings.h"
 #import "ContextManager.h"
+#import "WordPress-Swift.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -44,6 +45,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [defaults setObject:blog.url
                  forKey:LastUsedBlogURLDefaultsKey];
     [defaults synchronize];
+    
+    [self create3DTouchShortcutOfCurrentBlog:YES];
 }
 
 - (Blog *)lastUsedOrFirstBlog
@@ -459,6 +462,13 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     [WPAnalytics refreshMetadata];
+}
+
+- (void)create3DTouchShortcutOfCurrentBlog:(BOOL)loggedIn
+{
+    Blog *blog = [self lastUsedOrFirstBlog];
+    WP3DTouchShortcutCreator *shortcutCreator = [[WP3DTouchShortcutCreator alloc] init];
+    [shortcutCreator createShortcutsWithLoggedIn:loggedIn defaultBlogName:blog.blogName];
 }
 
 #pragma mark - Private methods
