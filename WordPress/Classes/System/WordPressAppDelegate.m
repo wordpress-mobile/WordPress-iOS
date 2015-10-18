@@ -354,8 +354,8 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     if (self.launchedShortcutItem) {
-        ShortcutHandler3DTouch *shortcutHandler3DTouch = [[ShortcutHandler3DTouch alloc] init];
-        [shortcutHandler3DTouch handleShortcutItem:self.launchedShortcutItem];
+        WP3DTouchShortcutHandler *shortcutHandler = [[WP3DTouchShortcutHandler alloc] init];
+        [shortcutHandler handleShortcutItem:self.launchedShortcutItem];
         self.launchedShortcutItem = nil;
     } else {
         [self showWhatsNewIfNeeded];
@@ -374,8 +374,8 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)application: (UIApplication *)application performActionForShortcutItem:(nonnull UIApplicationShortcutItem *)shortcutItem completionHandler:(nonnull void (^)(BOOL))completionHandler
 {
-    ShortcutHandler3DTouch *shortcutHandler3DTouch = [[ShortcutHandler3DTouch alloc] init];
-    completionHandler([shortcutHandler3DTouch handleShortcutItem:shortcutItem]);
+    WP3DTouchShortcutHandler *shortcutHandler = [[WP3DTouchShortcutHandler alloc] init];
+    completionHandler([shortcutHandler handleShortcutItem:shortcutItem]);
 }
 
 #pragma mark - Application startup
