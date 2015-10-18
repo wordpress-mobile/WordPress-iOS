@@ -3,6 +3,7 @@ import UIKit
 public class WP3DTouchShortcutHandler: NSObject
 {
     enum ShortcutIdentifier: String {
+        case LogIn
         case NewPost
         case NewPhotoPost
         case Stats
