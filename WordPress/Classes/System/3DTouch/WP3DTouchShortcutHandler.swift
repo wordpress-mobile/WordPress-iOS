@@ -1,6 +1,6 @@
 import UIKit
 
-public class ShortcutHandler3DTouch: NSObject
+public class WP3DTouchShortcutHandler: NSObject
 {
     enum ShortcutIdentifier: String {
         case NewPost
