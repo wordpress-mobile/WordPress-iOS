@@ -218,6 +218,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     account.displayName = userDetails.displayName;
     if (userDetails.primaryBlogID) {
         account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", userDetails.primaryBlogID]] anyObject];
+
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        [blogService flagBlogAsLastUsed:account.defaultBlog];
     }
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
