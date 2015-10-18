@@ -127,6 +127,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     [self addMainView];
     [self addControls];
     [self bindToViewModel];
+    [self update3DTouchForLogIn];
 }
 
 - (void)bindToViewModel
@@ -154,6 +155,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
         self.viewModel.username = defaultAccount.username;
         self.viewModel.userIsDotCom = YES;
     }
+}
+
+- (void)update3DTouchForLogIn
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService create3DTouchShortcutOfCurrentBlog:self.cancellable];
 }
 
 - (void)viewWillAppear:(BOOL)animated
