@@ -106,35 +106,19 @@
 	<array>
 		<dict>
 			<key>UIApplicationShortcutItemType</key>
-			<string>org.wordpress.Notifications</string>
+			<string>org.wordpress.Reader</string>
 			<key>UIApplicationShortcutItemTitle</key>
-			<string>Notifications</string>
+			<string>Reader</string>
 			<key>UIApplicationShortcutItemIconFile</key>
-			<string>icon-tab-notifications</string>
+			<string>icon-tab-reader</string>
 		</dict>
 		<dict>
 			<key>UIApplicationShortcutItemType</key>
-			<string>org.wordpress.Stats</string>
+			<string>org.wordpress.LogIn</string>
 			<key>UIApplicationShortcutItemTitle</key>
-			<string>Stats</string>
+			<string>Log In</string>
 			<key>UIApplicationShortcutItemIconFile</key>
-			<string>stats</string>
-		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemType</key>
-			<string>org.wordpress.NewPhotoPost</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>New Photo Post</string>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>photos</string>
-		</dict>
-		<dict>
-			<key>UIApplicationShortcutItemType</key>
-			<string>org.wordpress.NewPost</string>
-			<key>UIApplicationShortcutItemTitle</key>
-			<string>New Post</string>
-			<key>UIApplicationShortcutItemIconFile</key>
-			<string>icon-posts-add</string>
+			<string>icon-tab-mysites</string>
 		</dict>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
