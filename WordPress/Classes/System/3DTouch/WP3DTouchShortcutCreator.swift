@@ -3,20 +3,28 @@ import UIKit
 public class WP3DTouchShortcutCreator: NSObject
 {
     var application: UIApplication!
+    var blogService: BlogService!
     
     override init() {
         application = UIApplication.sharedApplication()
+        let context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext
+        blogService = BlogService(managedObjectContext: context)
     }
     
-    public func createShortcuts(loggedIn loggedIn: Bool, defaultBlogName: String) {
+    public func createShortcuts(loggedIn: Bool) {
         if loggedIn {
-            createLoggedInShortcutsWithDefaultBlogName(defaultBlogName)
+            createLoggedInShortcutsWithDefaultBlogName()
         } else {
             createLoggedOutShortcuts()
         }
     }
     
-    private func createLoggedInShortcutsWithDefaultBlogName(defaultBlogName: String) {
+    private func createLoggedInShortcutsWithDefaultBlogName() {
+        var defaultBlogName: String?
+        if blogService.blogCountForAllAccounts() > 1 {
+            defaultBlogName = blogService.lastUsedOrFirstBlog().blogName
+        }
+        
         let newPostShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPost.type,
                                                      localizedTitle: NSLocalizedString("New Post", comment: "New Post"),
                                                   localizedSubtitle: defaultBlogName,

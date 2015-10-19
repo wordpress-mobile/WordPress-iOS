@@ -46,7 +46,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                  forKey:LastUsedBlogURLDefaultsKey];
     [defaults synchronize];
     
-    [self create3DTouchShortcutOfCurrentBlog:YES];
+    WP3DTouchShortcutCreator *shortcutCreator = [[WP3DTouchShortcutCreator alloc] init];
+    [shortcutCreator createShortcuts:YES];
 }
 
 - (Blog *)lastUsedOrFirstBlog
@@ -462,13 +463,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     [WPAnalytics refreshMetadata];
-}
-
-- (void)create3DTouchShortcutOfCurrentBlog:(BOOL)loggedIn
-{
-    Blog *blog = [self lastUsedOrFirstBlog];
-    WP3DTouchShortcutCreator *shortcutCreator = [[WP3DTouchShortcutCreator alloc] init];
-    [shortcutCreator createShortcutsWithLoggedIn:loggedIn defaultBlogName:blog.blogName];
 }
 
 #pragma mark - Private methods
