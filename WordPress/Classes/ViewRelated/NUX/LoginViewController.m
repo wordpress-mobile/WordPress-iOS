@@ -159,9 +159,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (void)update3DTouchForLogIn
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService create3DTouchShortcutOfCurrentBlog:self.cancellable];
+    WP3DTouchShortcutCreator *shortcutCreator = [[WP3DTouchShortcutCreator alloc] init];
+    [shortcutCreator createShortcuts:self.cancellable];
 }
 
 - (void)viewWillAppear:(BOOL)animated

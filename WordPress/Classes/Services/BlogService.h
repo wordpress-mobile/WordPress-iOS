@@ -163,6 +163,4 @@
  */
 - (Blog *)createBlogWithAccount:(WPAccount *)account;
 
-- (void)create3DTouchShortcutOfCurrentBlog:(BOOL)loggedIn;
-
 @end
