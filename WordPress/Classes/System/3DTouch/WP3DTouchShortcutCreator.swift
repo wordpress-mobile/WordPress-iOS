@@ -28,18 +28,21 @@ public class WP3DTouchShortcutCreator: NSObject
     }
     
     private func createLoggedInShortcuts() {
-        var shortcutArray = loggedInShortcutArray()
+        var entireShortcutArray = loggedInShortcutArray()
+        var visibleShortcutArray = [UIApplicationShortcutItem]()
         
         if hasWordPressComAccount() {
-            application.shortcutItems?.append(shortcutArray[LoggedIn3DTouchShortcutIndex.Notifications.rawValue])
+            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.Notifications.rawValue])
         }
         
         if isCurrentBlogDotComOrJetpackConnected() {
-            application.shortcutItems?.append(shortcutArray[LoggedIn3DTouchShortcutIndex.Stats.rawValue])
+            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.Stats.rawValue])
         }
         
-        application.shortcutItems?.append(shortcutArray[LoggedIn3DTouchShortcutIndex.NewPhotoPost.rawValue])
-        application.shortcutItems?.append(shortcutArray[LoggedIn3DTouchShortcutIndex.NewPost.rawValue])
+        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.NewPhotoPost.rawValue])
+        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.NewPost.rawValue])
+        
+        application.shortcutItems = visibleShortcutArray
     }
     
     private func createLoggedOutShortcuts() {
