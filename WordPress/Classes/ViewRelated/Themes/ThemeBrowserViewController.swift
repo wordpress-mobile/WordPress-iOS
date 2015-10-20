@@ -23,7 +23,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         let sort = NSSortDescriptor(key: "order", ascending: true)
         fetchRequest.sortDescriptors = [sort]
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
-            managedObjectContext: ContextManager.sharedInstance().mainContext,
+            managedObjectContext: self.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
         frc.delegate = self
@@ -38,12 +38,17 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     }()
     
     /**
-     *  @brief      The themes service we'll use in this VC.
+     *  @brief      The themes service we'll use in this VC and its helpers
      */
     private lazy var themeService : ThemeService = {
-        ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        ThemeService(managedObjectContext: self.managedObjectContext)
     }()
-    
+    private lazy var managedObjectContext = {
+        ContextManager.sharedInstance().mainContext
+    }()
+    private var retiredThemes = Set<Theme>()
+    private var fetchAnimation = false
+   
     // MARK: - UIViewController
 
     public override func viewDidLoad() {
@@ -65,16 +70,48 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - Updating the list of themes
     
     private func updateThemes() {
-        
-        if collectionView(collectionView!, numberOfItemsInSection: 0) == 0 {
+        if let fetchedThemes = themesController.fetchedObjects as? [Theme] where !fetchedThemes.isEmpty {
+            retiredThemes = retiredThemes.union(Set(fetchedThemes))
+        } else {
+            fetchAnimation = true
             let title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
             WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self.view)
         }
+        
+        updateThemePage(1)
+    }
 
-        themeService.getThemesForBlog(
-            blog,
-            success: { [weak self] (themes : [AnyObject]?) in
-                WPNoResultsView.removeFromView(self?.view)
+    private func updateThemePage(page: NSInteger) {
+        assert(page > 0)
+        
+        themeService.getThemesForBlog(blog,
+            page: page,
+            success: { [weak self] (themes: [Theme]?, hasMore: Bool) in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                if let updatedThemes = themes where !updatedThemes.isEmpty {
+                    strongSelf.retiredThemes = strongSelf.retiredThemes.subtract(updatedThemes)
+                }
+                
+                if (hasMore) {
+                    strongSelf.updateThemePage(page + 1)
+                } else if !strongSelf.retiredThemes.isEmpty {
+                    let retireContext = strongSelf.managedObjectContext
+                    
+                    retireContext.performBlock {
+                        for theme in strongSelf.retiredThemes {
+                            retireContext.deleteObject(theme)
+                        }
+                        
+                        do {
+                            try retireContext.save();
+                        } catch let error as NSError {
+                            DDLogSwift.logError("Error retiring themes: \(error.localizedDescription)")
+                        }
+                    }
+                }
             },
             failure: { (error : NSError!) in
                 DDLogSwift.logError("Error updating themes: \(error.localizedDescription)")
@@ -150,8 +187,17 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - NSFetchedResultsControllerDelegate
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        dispatch_async(dispatch_get_main_queue(), {
-            collectionView?.reloadData()
+        dispatch_async(dispatch_get_main_queue(), { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            if strongSelf.fetchAnimation {
+                WPNoResultsView.removeFromView(strongSelf.view)
+                strongSelf.fetchAnimation = false
+            }
+
+            strongSelf.collectionView?.reloadData()
         })
     }
     

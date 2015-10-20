@@ -39,7 +39,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 }
 
 - (NSOperation *)getPurchasedThemesForBlogId:(NSNumber *)blogId
-                                     success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                                     success:(ThemeServiceRemoteThemeIdentifiersRequestSuccessBlock)success
                                      failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
@@ -90,14 +90,15 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     return operation;
 }
 
-- (NSOperation *)getThemes:(ThemeServiceRemoteThemesRequestSuccessBlock)success
-                   failure:(ThemeServiceRemoteFailureBlock)failure
+- (NSOperation *)getThemesPage:(NSInteger)page
+                       success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                       failure:(ThemeServiceRemoteFailureBlock)failure
 {
-    NSMutableArray *themes = [NSMutableArray array];
+    NSParameterAssert(page > 0);
+
     static NSString* const path = @"themes";
     
-    NSOperation *operation = [self getThemesPage:1
-                                          themes:themes
+    NSOperation *operation = [self getThemesPage:page
                                             path:path
                                          success:success
                                          failure:failure];
@@ -106,16 +107,16 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 }
 
 - (NSOperation *)getThemesForBlogId:(NSNumber *)blogId
+                               page:(NSInteger)page
                             success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                             failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
+    NSParameterAssert(page > 0);
 
-    NSMutableArray *themes = [NSMutableArray array];
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
     
-    NSOperation *operation = [self getThemesPage:1
-                                          themes:themes
+    NSOperation *operation = [self getThemesPage:page
                                             path:path
                                          success:success
                                          failure:failure];
@@ -124,12 +125,11 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 }
 
 - (NSOperation *)getThemesPage:(NSInteger)page
-                        themes:(NSMutableArray *)themes
                           path:(NSString *)path
                        success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                        failure:(ThemeServiceRemoteFailureBlock)failure
 {
-    NSParameterAssert([themes isKindOfClass:[NSMutableArray class]]);
+    NSParameterAssert(page > 0);
     NSParameterAssert([path isKindOfClass:[NSString class]]);
     
     NSString *requestUrl = [self pathForEndpoint:path
@@ -138,7 +138,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     static NSString* const ThemeRequestTierKey = @"tier";
     static NSString* const ThemeRequestTierAllValue = @"all";
     static NSString* const ThemeRequestNumberKey = @"number";
-    static NSInteger const ThemeRequestNumberValue = 100;
+    static NSInteger const ThemeRequestNumberValue = 50;
     static NSString* const ThemeRequestPageKey = @"page";
 
     NSDictionary *parameters = @{ThemeRequestTierKey: ThemeRequestTierAllValue,
@@ -149,18 +149,15 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     NSOperation *operation = [self.api GET:requestUrl
                                 parameters:parameters
                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
-                                       NSArray *pageThemes = [self themesFromMultipleThemesRequestResponse:response];
-                                       [themes addObjectsFromArray:pageThemes];
-                                       NSInteger themesCount = [[response numberForKey:ThemeServiceRemoteThemeCountKey] integerValue];
-                                       if (pageThemes.count && themes.count < themesCount) {
-                                           NSInteger nextPage = page + 1;
-                                           [self getThemesPage:nextPage
-                                                        themes:themes
-                                                          path:path
-                                                       success:success 
-                                                       failure:failure];
-                                       }  else if (success) {
-                                           success([NSArray arrayWithArray:themes]);
+                                       if (success) {
+                                           NSArray<RemoteTheme *> *themes = [self themesFromMultipleThemesRequestResponse:response];
+                                           NSInteger themesLoaded = (page - 1) * ThemeRequestNumberValue;
+                                           for (RemoteTheme *theme in themes){
+                                               theme.order = ++themesLoaded;
+                                           }
+                                           NSInteger themesCount = [[response numberForKey:ThemeServiceRemoteThemeCountKey] integerValue];
+                                           BOOL hasMore = themesLoaded < themesCount;
+                                           success(themes, hasMore);
                                        }
                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                        if (failure) {
@@ -192,7 +189,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
                                     success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
                                         if (success) {
                                             NSArray *themeDictionaries = [response arrayForKey:ThemeServiceRemoteThemesKey];
-                                            NSArray *themes = [self themesFromDictionaries:themeDictionaries];
+                                            NSArray<RemoteTheme *> *themes = [self themesFromDictionaries:themeDictionaries];
                                             success(themes);
                                         }
                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -225,12 +222,12 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
  *
  *  @param      response        The response object.  Cannot be nil.
  */
-- (NSArray *)themesFromMultipleThemesRequestResponse:(id)response
+- (NSArray<RemoteTheme *> *)themesFromMultipleThemesRequestResponse:(id)response
 {
     NSParameterAssert(response != nil);
     
     NSArray *themeDictionaries = [response arrayForKey:ThemeServiceRemoteThemesKey];
-    NSArray *themes = [self themesFromDictionaries:themeDictionaries];
+    NSArray<RemoteTheme *> *themes = [self themesFromDictionaries:themeDictionaries];
     
     return themes;
 }
@@ -295,7 +292,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
  *
  *  @returns    An array of remote theme objects.
  */
-- (NSArray *)themesFromDictionaries:(NSArray *)dictionaries
+- (NSArray<RemoteTheme *> *)themesFromDictionaries:(NSArray *)dictionaries
 {
     NSParameterAssert([dictionaries isKindOfClass:[NSArray class]]);
     
