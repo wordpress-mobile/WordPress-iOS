@@ -169,12 +169,11 @@
     NSOperation *operation = [remote getPurchasedThemesForBlogId:[blog dotComID]
                                                          success:^(NSArray *remoteThemes) {
                                                              NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                                                    forBlog:blog
-                                                                                                    ordered:NO];
+                                                                                                    forBlog:blog];
                                                              
                                                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                                  if (success) {
-                                                                     success(themes);
+                                                                     success(themes, NO);
                                                                  }
                                                              }];
                                                          } failure:failure];
@@ -209,6 +208,7 @@
 }
 
 - (NSOperation *)getThemesForAccount:(WPAccount *)account
+                                page:(NSInteger)page
                              success:(ThemeServiceThemesRequestSuccessBlock)success
                              failure:(ThemeServiceFailureBlock)failure
 {
@@ -218,27 +218,23 @@
     
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:account.restApi];
     
-    NSOperation *operation = [remote getThemes:^(NSArray *remoteThemes) {
-        NSMutableSet *themesToDelete = [NSMutableSet setWithArray:self.findAccountThemes];
-        NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                               forBlog:nil
-                                               ordered:YES];
-        [themesToDelete minusSet:[NSSet setWithArray:themes]];
-        for (Theme *deleteTheme in themesToDelete) {
-            [self.managedObjectContext deleteObject:deleteTheme];
-        }
-        
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-            if (success) {
-                success(themes);
-            }
-        }];
-    } failure:failure];
+    NSOperation *operation = [remote getThemesPage:page
+                                           success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
+                                                NSArray *themes = [self themesFromRemoteThemes:remoteThemes
+                                                                                       forBlog:nil];
+
+                                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                                    if (success) {
+                                                        success(themes, hasMore);
+                                                    }
+                                                }];
+                                            } failure:failure];
     
     return operation;
 }
 
 - (NSOperation *)getThemesForBlog:(Blog *)blog
+                             page:(NSInteger)page
                           success:(ThemeServiceThemesRequestSuccessBlock)success
                           failure:(ThemeServiceFailureBlock)failure
 {
@@ -249,19 +245,14 @@
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:blog.restApi];
     
     NSOperation *operation = [remote getThemesForBlogId:[blog dotComID]
-                                                success:^(NSArray *remoteThemes) {
-                                                    NSMutableSet *themesToDelete = [NSMutableSet setWithSet:blog.themes];
+                                                   page:page
+                                                success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
                                                     NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                                                                           forBlog:blog
-                                                                                           ordered:YES];
-                                                    [themesToDelete minusSet:[NSSet setWithArray:themes]];
-                                                    for (Theme *deleteTheme in themesToDelete) {
-                                                        [self.managedObjectContext deleteObject:deleteTheme];
-                                                    }
-
+                                                                                           forBlog:blog];
+                                                    
                                                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                         if (success) {
-                                                            success(themes);
+                                                            success(themes, hasMore);
                                                         }
                                                     }];
                                                 } failure:failure];
@@ -316,6 +307,9 @@
     theme.details = remoteTheme.desc;
     theme.launchDate = remoteTheme.launchDate;
     theme.name = remoteTheme.name;
+    if (remoteTheme.order > 0) {
+        theme.order = @(remoteTheme.order);
+    }
     theme.popularityRank = remoteTheme.popularityRank;
     theme.previewUrl = remoteTheme.previewUrl;
     theme.premium = remoteTheme.price.length == 0 ? @NO: @YES;
@@ -347,7 +341,6 @@
  */
 - (NSArray<Theme *> *)themesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
                                      forBlog:(nullable Blog *)blog
-                                     ordered:(BOOL)ordered
 {
     NSParameterAssert([remoteThemes isKindOfClass:[NSArray class]]);
     
@@ -359,10 +352,6 @@
         
         Theme *theme = [self themeFromRemoteTheme:remoteTheme
                                           forBlog:blog];
-        if (ordered) {
-            theme.order = @(idx);
-        }
-        
         [themes addObject:theme];
     }];
     

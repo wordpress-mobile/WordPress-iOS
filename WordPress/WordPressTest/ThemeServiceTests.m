@@ -239,6 +239,7 @@
     
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
     XCTAssertNoThrow([service getThemesForAccount:account
+                                             page:1
                                           success:nil
                                           failure:nil]);
 }
@@ -250,6 +251,7 @@
     
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
     XCTAssertThrows([service getThemesForAccount:nil
+                                            page:1
                                          success:nil
                                          failure:nil]);
 }
@@ -273,6 +275,7 @@
     
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
     XCTAssertNoThrow([service getThemesForBlog:blog
+                                          page:1
                                        success:nil
                                        failure:nil]);
 }
@@ -284,6 +287,7 @@
     
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
     XCTAssertThrows([service getThemesForBlog:nil
+                                         page:1
                                       success:nil
                                       failure:nil]);
 }

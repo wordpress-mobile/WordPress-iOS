@@ -10,6 +10,7 @@
 @property (nonatomic, strong) NSString *downloadUrl;
 @property (nonatomic, strong) NSDate *launchDate;
 @property (nonatomic, strong) NSString *name;
+@property (nonatomic, assign) NSInteger order;
 @property (nonatomic, strong) NSNumber *popularityRank;
 @property (nonatomic, strong) NSString *previewUrl;
 @property (nonatomic, strong) NSString *price;
