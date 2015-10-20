@@ -4,11 +4,13 @@ public class WP3DTouchShortcutCreator: NSObject
 {
     var application: UIApplication!
     var blogService: BlogService!
+    var accountService: AccountService!
     
     override init() {
         application = UIApplication.sharedApplication()
         let context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext
         blogService = BlogService(managedObjectContext: context)
+        accountService = AccountService(managedObjectContext: context)
     }
     
     public func createShortcuts(loggedIn: Bool) {
@@ -20,33 +22,18 @@ public class WP3DTouchShortcutCreator: NSObject
     }
     
     private func createLoggedInShortcutsWithDefaultBlogName() {
-        var defaultBlogName: String?
-        if blogService.blogCountForAllAccounts() > 1 {
-            defaultBlogName = blogService.lastUsedOrFirstBlog().blogName
+        var shortcutArray = loggedInShortcutArray()
+        
+        if hasWordPressComAccount() {
+            application.shortcutItems?.append(shortcutArray[0])
         }
         
-        let newPostShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPost.type,
-                                                     localizedTitle: NSLocalizedString("New Post", comment: "New Post"),
-                                                  localizedSubtitle: defaultBlogName,
-                                                               icon: UIApplicationShortcutIcon(templateImageName: "icon-posts-add"),
-                                                                                                        userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPost.rawValue])
-        let newPhotoPostShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPhotoPost.type,
-                                                          localizedTitle: NSLocalizedString("New Photo Post", comment: "New Photo Post"),
-                                                       localizedSubtitle: defaultBlogName,
-                                                                    icon: UIApplicationShortcutIcon(templateImageName: "photos"),
-                                                                                                             userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPhotoPost.rawValue])
-        let statsShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.Stats.type,
-                                                   localizedTitle: NSLocalizedString("Stats", comment: "Stats"),
-                                                localizedSubtitle: defaultBlogName,
-                                                             icon: UIApplicationShortcutIcon(templateImageName: "icon-menu-stats"),
-                                                                                                      userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.Stats.rawValue])
-        let notificationsShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.Notifications.type,
-                                                           localizedTitle: NSLocalizedString("Notifications", comment: "Notifications"),
-                                                        localizedSubtitle: nil,
-                                                                     icon: UIApplicationShortcutIcon(templateImageName: "icon-tab-notifications"),
-                                                                                                              userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.Notifications.rawValue])
+        if isCurrentBlogDotComOrJetpackConnected() {
+            application.shortcutItems?.append(shortcutArray[1])
+        }
         
-        application.shortcutItems = [notificationsShortcut, statsShortcut, newPhotoPostShortcut, newPostShortcut]
+        application.shortcutItems?.append(shortcutArray[2])
+        application.shortcutItems?.append(shortcutArray[3])
     }
     
     private func createLoggedOutShortcuts() {
@@ -57,5 +44,48 @@ public class WP3DTouchShortcutCreator: NSObject
                                                                                                       userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.rawValue])
         
         application.shortcutItems = [logInShortcut]
+    }
+    
+    private func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
+        var defaultBlogName: String?
+        if blogService.blogCountForAllAccounts() > 1 {
+            defaultBlogName = blogService.lastUsedOrFirstBlog().blogName
+        }
+        
+        let notificationsShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.Notifications.type,
+                                                           localizedTitle: NSLocalizedString("Notifications", comment: "Notifications"),
+                                                        localizedSubtitle: nil,
+                                                                     icon: UIApplicationShortcutIcon(templateImageName: "icon-tab-notifications"),
+                                                                                                              userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.Notifications.rawValue])
+        
+        let statsShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.Stats.type,
+                                                   localizedTitle: NSLocalizedString("Stats", comment: "Stats"),
+                                                localizedSubtitle: defaultBlogName,
+                                                             icon: UIApplicationShortcutIcon(templateImageName: "icon-menu-stats"),
+                                                                                                      userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.Stats.rawValue])
+        
+        let newPhotoPostShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPhotoPost.type,
+                                                          localizedTitle: NSLocalizedString("New Photo Post", comment: "New Photo Post"),
+                                                       localizedSubtitle: defaultBlogName,
+                                                                    icon: UIApplicationShortcutIcon(templateImageName: "photos"),
+                                                                                                             userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPhotoPost.rawValue])
+        
+        let newPostShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPost.type,
+                                                     localizedTitle: NSLocalizedString("New Post", comment: "New Post"),
+                                                  localizedSubtitle: defaultBlogName,
+                                                               icon: UIApplicationShortcutIcon(templateImageName: "icon-posts-add"),
+                                                                                                        userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPost.rawValue])
+        
+        return [notificationsShortcut, statsShortcut, newPhotoPostShortcut, newPostShortcut]
+    }
+    
+    private func hasWordPressComAccount() -> Bool {
+        return accountService.defaultWordPressComAccount() != nil
+    }
+    
+    private func isCurrentBlogDotComOrJetpackConnected() -> Bool {
+        let currentBlog = blogService.lastUsedOrFirstBlog()
+        
+        return hasWordPressComAccount() && (currentBlog.jetpack.isConnected() || currentBlog.isHostedAtWPcom)
     }
 }
