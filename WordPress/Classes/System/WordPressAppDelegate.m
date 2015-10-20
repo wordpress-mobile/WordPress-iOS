@@ -666,6 +666,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaCollectionViewController class] ]] setBackgroundColor:[WPStyleGuide lightGrey]];
 }
 
+- (void)create3DTouchShortcutItems
+{
+    WP3DTouchShortcutCreator *shortcutCreator = [[WP3DTouchShortcutCreator alloc] init];
+    [shortcutCreator createShortcuts:[self isLoggedIn]];
+}
+
 #pragma mark - Analytics
 
 - (void)configureAnalytics
@@ -986,7 +992,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [self loginSimperium];
-
     } else {
         if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
             [WPAnalytics track:WPAnalyticsStatLogout];
@@ -1002,6 +1007,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
     
+    [self create3DTouchShortcutItems];
     [self toggleExtraDebuggingIfNeeded];
     [self setupSingleSignOn];
     
