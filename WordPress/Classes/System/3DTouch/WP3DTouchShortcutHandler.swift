@@ -30,6 +30,9 @@ public class WP3DTouchShortcutHandler: NSObject
         let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
         
         switch shortCutType {
+            case ShortcutIdentifier.LogIn.type:
+                handled = true
+                break
             case ShortcutIdentifier.NewPost.type:
                 tabBarController.showPostTab()
                 handled = true
