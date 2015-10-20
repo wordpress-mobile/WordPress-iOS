@@ -3,14 +3,13 @@ import UIKit
 public class WP3DTouchShortcutCreator: NSObject
 {
     var application: UIApplication!
+    var mainContext: NSManagedObjectContext!
     var blogService: BlogService!
-    var accountService: AccountService!
     
     override init() {
         application = UIApplication.sharedApplication()
-        let context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext
-        blogService = BlogService(managedObjectContext: context)
-        accountService = AccountService(managedObjectContext: context)
+        mainContext = ContextManager.sharedInstance().mainContext
+        blogService = BlogService(managedObjectContext: mainContext)
     }
     
     public func createShortcuts(loggedIn: Bool) {
@@ -80,6 +79,7 @@ public class WP3DTouchShortcutCreator: NSObject
     }
     
     private func hasWordPressComAccount() -> Bool {
+        let accountService = AccountService(managedObjectContext: mainContext)
         return accountService.defaultWordPressComAccount() != nil
     }
     
