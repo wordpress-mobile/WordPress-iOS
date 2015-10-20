@@ -187,7 +187,7 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     static NSString* const url = @"v1.2/themes";
     static NSInteger const expectedThemes = 20;
 
-    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray *themes) {
+    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL hasMore) {
         NSCAssert([themes count] == expectedThemes, @"Expected %ld themes to be returned", expectedThemes);
     };
     
@@ -212,15 +212,16 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     }];
 
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
-    XCTAssertNoThrow([service getThemes:successBlock
-                                failure:nil]);
+    XCTAssertNoThrow([service getThemesPage:1
+                                    success:successBlock
+                                    failure:nil]);
 }
 
 - (void)testThatGetThemesForBlogIdWorks
 {
     NSNumber *blogId = @124;
     
-    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray *themes) {
+    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL hasMore) {
         NSCAssert([themes count] > 0, @"Expected themes to be returned");
     };
     
@@ -251,6 +252,7 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
 
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
     XCTAssertNoThrow([service getThemesForBlogId:blogId
+                                            page:1
                                          success:successBlock
                                          failure:nil]);
 }
@@ -262,6 +264,7 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
 
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
     XCTAssertThrows([service getThemesForBlogId:nil
+                                           page:1
                                         success:nil
                                         failure:nil]);
 }

@@ -39,7 +39,7 @@
  *  @returns    The newly created and initialized object.
  */
 - (Theme *)newThemeWithId:(NSString *)themeId
-                  forBlog:(Blog *)blog
+                  forBlog:(nullable Blog *)blog
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
     
@@ -69,7 +69,7 @@
  *  @returns    The stored theme matching the specified ID if found, or nil if it's not found.
  */
 - (Theme *)findOrCreateThemeWithId:(NSString *)themeId
-                           forBlog:(Blog *)blog
+                           forBlog:(nullable Blog *)blog
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
     
@@ -87,7 +87,7 @@
 #pragma mark - Local queries: finding themes
 
 - (Theme *)findThemeWithId:(NSString *)themeId
-                   forBlog:(Blog *)blog
+                   forBlog:(nullable Blog *)blog
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
     
@@ -173,7 +173,7 @@
                                                              
                                                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                                  if (success) {
-                                                                     success(themes);
+                                                                     success(themes, NO);
                                                                  }
                                                              }];
                                                          } failure:failure];
@@ -208,6 +208,7 @@
 }
 
 - (NSOperation *)getThemesForAccount:(WPAccount *)account
+                                page:(NSInteger)page
                              success:(ThemeServiceThemesRequestSuccessBlock)success
                              failure:(ThemeServiceFailureBlock)failure
 {
@@ -217,26 +218,23 @@
     
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:account.restApi];
     
-    NSOperation *operation = [remote getThemes:^(NSArray *remoteThemes) {
-        NSMutableSet *themesToDelete = [NSMutableSet setWithArray:self.findAccountThemes];
-        NSArray *themes = [self themesFromRemoteThemes:remoteThemes
-                                               forBlog:nil];
-        [themesToDelete minusSet:[NSSet setWithArray:themes]];
-        for (Theme *deleteTheme in themesToDelete) {
-            [self.managedObjectContext deleteObject:deleteTheme];
-        }
-        
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-            if (success) {
-                success(themes);
-            }
-        }];
-    } failure:failure];
+    NSOperation *operation = [remote getThemesPage:page
+                                           success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
+                                                NSArray *themes = [self themesFromRemoteThemes:remoteThemes
+                                                                                       forBlog:nil];
+
+                                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                                    if (success) {
+                                                        success(themes, hasMore);
+                                                    }
+                                                }];
+                                            } failure:failure];
     
     return operation;
 }
 
 - (NSOperation *)getThemesForBlog:(Blog *)blog
+                             page:(NSInteger)page
                           success:(ThemeServiceThemesRequestSuccessBlock)success
                           failure:(ThemeServiceFailureBlock)failure
 {
@@ -247,18 +245,14 @@
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:blog.restApi];
     
     NSOperation *operation = [remote getThemesForBlogId:[blog dotComID]
-                                                success:^(NSArray *remoteThemes) {
-                                                    NSMutableSet *themesToDelete = [NSMutableSet setWithSet:blog.themes];
+                                                   page:page
+                                                success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
                                                     NSArray *themes = [self themesFromRemoteThemes:remoteThemes
                                                                                            forBlog:blog];
-                                                    [themesToDelete minusSet:[NSSet setWithArray:themes]];
-                                                    for (Theme *deleteTheme in themesToDelete) {
-                                                        [self.managedObjectContext deleteObject:deleteTheme];
-                                                    }
-
+                                                    
                                                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                         if (success) {
-                                                            success(themes);
+                                                            success(themes, hasMore);
                                                         }
                                                     }];
                                                 } failure:failure];
@@ -302,7 +296,7 @@
  *  @returns    The updated and matching local theme.
  */
 - (Theme *)themeFromRemoteTheme:(RemoteTheme *)remoteTheme
-                        forBlog:(Blog *)blog
+                        forBlog:(nullable Blog *)blog
 {
     NSParameterAssert([remoteTheme isKindOfClass:[RemoteTheme class]]);
     
@@ -313,11 +307,15 @@
     theme.details = remoteTheme.desc;
     theme.launchDate = remoteTheme.launchDate;
     theme.name = remoteTheme.name;
+    if (remoteTheme.order > 0) {
+        theme.order = @(remoteTheme.order);
+    }
     theme.popularityRank = remoteTheme.popularityRank;
     theme.previewUrl = remoteTheme.previewUrl;
     theme.premium = remoteTheme.price.length == 0 ? @NO: @YES;
     theme.price = remoteTheme.price;
     theme.screenshotUrl = remoteTheme.screenshotUrl;
+    theme.stylesheet = remoteTheme.stylesheet;
     theme.themeId = remoteTheme.themeId;
     theme.trendingRank = remoteTheme.trendingRank;
     theme.version = remoteTheme.version;
@@ -337,25 +335,25 @@
  *  @param      remoteThemes    An array with the remote themes containing the data to update
  *                              locally.  Cannot be nil.
  *  @param      blog            Blog being updated. May be nil for account.
+ *  @param      ordered         Whether to update displayed order
  *
  *  @returns    An array with the updated and matching local themes.
  */
-- (NSArray *)themesFromRemoteThemes:(NSArray *)remoteThemes
-                            forBlog:(Blog *)blog
+- (NSArray<Theme *> *)themesFromRemoteThemes:(NSArray<RemoteTheme *> *)remoteThemes
+                                     forBlog:(nullable Blog *)blog
 {
     NSParameterAssert([remoteThemes isKindOfClass:[NSArray class]]);
     
     NSMutableArray *themes = [[NSMutableArray alloc] initWithCapacity:remoteThemes.count];
     
-    for (RemoteTheme *remoteTheme in remoteThemes) {
+    [remoteThemes enumerateObjectsUsingBlock:^(RemoteTheme *remoteTheme, NSUInteger idx, BOOL *stop) {
         NSAssert([remoteTheme isKindOfClass:[RemoteTheme class]],
                  @"Expected a remote theme.");
         
         Theme *theme = [self themeFromRemoteTheme:remoteTheme
                                           forBlog:blog];
-        
         [themes addObject:theme];
-    }
+    }];
     
     return [NSArray arrayWithArray:themes];
 }
