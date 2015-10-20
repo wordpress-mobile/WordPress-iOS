@@ -2,6 +2,13 @@ import UIKit
 
 public class WP3DTouchShortcutCreator: NSObject
 {
+    enum LoggedIn3DTouchShortcutIndex: Int {
+        case Notifications = 0,
+        Stats,
+        NewPhotoPost,
+        NewPost
+    }
+    
     var application: UIApplication!
     var mainContext: NSManagedObjectContext!
     var blogService: BlogService!
@@ -14,25 +21,25 @@ public class WP3DTouchShortcutCreator: NSObject
     
     public func createShortcuts(loggedIn: Bool) {
         if loggedIn {
-            createLoggedInShortcutsWithDefaultBlogName()
+            createLoggedInShortcuts()
         } else {
             createLoggedOutShortcuts()
         }
     }
     
-    private func createLoggedInShortcutsWithDefaultBlogName() {
+    private func createLoggedInShortcuts() {
         var shortcutArray = loggedInShortcutArray()
         
         if hasWordPressComAccount() {
-            application.shortcutItems?.append(shortcutArray[0])
+            application.shortcutItems?.append(shortcutArray[LoggedIn3DTouchShortcutIndex.Notifications.rawValue])
         }
         
         if isCurrentBlogDotComOrJetpackConnected() {
-            application.shortcutItems?.append(shortcutArray[1])
+            application.shortcutItems?.append(shortcutArray[LoggedIn3DTouchShortcutIndex.Stats.rawValue])
         }
         
-        application.shortcutItems?.append(shortcutArray[2])
-        application.shortcutItems?.append(shortcutArray[3])
+        application.shortcutItems?.append(shortcutArray[LoggedIn3DTouchShortcutIndex.NewPhotoPost.rawValue])
+        application.shortcutItems?.append(shortcutArray[LoggedIn3DTouchShortcutIndex.NewPost.rawValue])
     }
     
     private func createLoggedOutShortcuts() {
@@ -80,6 +87,7 @@ public class WP3DTouchShortcutCreator: NSObject
     
     private func hasWordPressComAccount() -> Bool {
         let accountService = AccountService(managedObjectContext: mainContext)
+        
         return accountService.defaultWordPressComAccount() != nil
     }
     
