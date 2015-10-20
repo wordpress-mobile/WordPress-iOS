@@ -15,16 +15,9 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
      *  @brief      The blog this VC will work with.
      *  @details    Must be set by the creator of this VC.
      */
-    private var blog : Blog!
+    public var blog : Blog!
     
-    // MARK: - Properties: managed object context & services
-    
-    /**
-     *  @brief      The managed object context this VC will use for it's operations.
-     */
-    private let managedObjectContext : NSManagedObjectContext = {
-        ContextManager.sharedInstance()!.newDerivedContext()
-    }()
+    // MARK: - Properties
     
     /**
      *  @brief      The FRC this VC will use to display filtered content.
@@ -34,9 +27,10 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         fetchRequest.fetchBatchSize = 20
         let predicate = NSPredicate(format: "blog == %@", self.blog)
         fetchRequest.predicate = predicate
-        let sort = NSSortDescriptor(key: "name", ascending: true)
+        let sort = NSSortDescriptor(key: "order", ascending: true)
         fetchRequest.sortDescriptors = [sort]
-        let frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext,
+        let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
+            managedObjectContext: self.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
         frc.delegate = self
@@ -51,23 +45,17 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     }()
     
     /**
-     *  @brief      The themes service we'll use in this VC.
+     *  @brief      The themes service we'll use in this VC and its helpers
      */
     private lazy var themeService : ThemeService = {
         ThemeService(managedObjectContext: self.managedObjectContext)
     }()
-    
-    // MARK: - Additional initialization
-    
-    public func configureWithBlog(blog: Blog) {
-        do {
-            let blogInContext = try managedObjectContext.existingObjectWithID(blog.objectID) as? Blog
-            self.blog = blogInContext
-        } catch let error as NSError {
-            DDLogSwift.logError("Error finding blog: \(error.localizedDescription)")
-        }
-    }
-    
+    private lazy var managedObjectContext = {
+        ContextManager.sharedInstance().mainContext
+    }()
+    private var retiredThemes = Set<Theme>()
+    private var fetchAnimation = false
+   
     // MARK: - UIViewController
 
     public override func viewDidLoad() {
@@ -80,13 +68,6 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         updateThemes()
     }
 
-    public override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-        super.didRotateFromInterfaceOrientation(fromInterfaceOrientation)
-        
-        collectionView?.collectionViewLayout.invalidateLayout()
-    }
-    
-    @available(iOS 8.0, *)
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
@@ -96,18 +77,50 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - Updating the list of themes
     
     private func updateThemes() {
-        
-        if isEmpty() {
+        if let fetchedThemes = themesController.fetchedObjects as? [Theme] where !fetchedThemes.isEmpty {
+            retiredThemes = retiredThemes.union(Set(fetchedThemes))
+        } else {
+            fetchAnimation = true
             let title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
             WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self.view)
         }
+        
+        updateThemePage(1)
+    }
 
-        themeService.getThemesForBlog(
-            blog,
-            success: { [weak self] (themes : [AnyObject]?) -> Void in
-                WPNoResultsView.removeFromView(self?.view)
+    private func updateThemePage(page: NSInteger) {
+        assert(page > 0)
+        
+        themeService.getThemesForBlog(blog,
+            page: page,
+            success: { [weak self] (themes: [Theme]?, hasMore: Bool) in
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                if let updatedThemes = themes where !updatedThemes.isEmpty {
+                    strongSelf.retiredThemes = strongSelf.retiredThemes.subtract(updatedThemes)
+                }
+                
+                if (hasMore) {
+                    strongSelf.updateThemePage(page + 1)
+                } else if !strongSelf.retiredThemes.isEmpty {
+                    let retireContext = strongSelf.managedObjectContext
+                    
+                    retireContext.performBlock {
+                        for theme in strongSelf.retiredThemes {
+                            retireContext.deleteObject(theme)
+                        }
+                        
+                        do {
+                            try retireContext.save();
+                        } catch let error as NSError {
+                            DDLogSwift.logError("Error retiring themes: \(error.localizedDescription)")
+                        }
+                    }
+                }
             },
-            failure: {(error : NSError!) -> Void in
+            failure: { (error : NSError!) in
                 DDLogSwift.logError("Error updating themes: \(error.localizedDescription)")
             })
     }
@@ -134,16 +147,14 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - UICollectionViewController protocol UICollectionViewDataSource
     
     public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = themesController.fetchedObjects?.count
-        return count ?? 0
+        return themesController.fetchedObjects?.count ?? 0
     }
     
-    public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> ThemeBrowserCell
-    {
+    public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> ThemeBrowserCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("ThemeBrowserCell", forIndexPath: indexPath) as! ThemeBrowserCell
         let theme = themesController.objectAtIndexPath(indexPath) as? Theme
         
-        cell.configureWithTheme(theme)
+        cell.theme = theme
         
         return cell
     }
@@ -163,7 +174,6 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - UICollectionViewController protocol UICollectionViewDelegate
 
     public override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
         if let theme = themesController.objectAtIndexPath(indexPath) as? Theme {
             presentDemoForTheme(theme)
         }
@@ -217,8 +227,17 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - NSFetchedResultsControllerDelegate
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        dispatch_async(dispatch_get_main_queue(), {
-            collectionView?.reloadData()
+        dispatch_async(dispatch_get_main_queue(), { [weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            
+            if strongSelf.fetchAnimation {
+                WPNoResultsView.removeFromView(strongSelf.view)
+                strongSelf.fetchAnimation = false
+            }
+
+            strongSelf.collectionView?.reloadData()
         })
     }
     

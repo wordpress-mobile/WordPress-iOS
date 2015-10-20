@@ -26,6 +26,8 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@";
 @dynamic previewUrl;
 @dynamic price;
 @dynamic demoUrl;
+@dynamic stylesheet;
+@dynamic order;
 @dynamic blog;
 
 #pragma mark - CoreData helpers

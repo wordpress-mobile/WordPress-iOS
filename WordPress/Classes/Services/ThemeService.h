@@ -6,7 +6,7 @@
 
 typedef void(^ThemeServiceSuccessBlock)();
 typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme *theme);
-typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray *themes);
+typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> *themes, BOOL hasMore);
 typedef void(^ThemeServiceFailureBlock)(NSError *error);
 
 @interface ThemeService : LocalCoreDataService
@@ -96,12 +96,14 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *              you want to retrieve is for a specific blog.  Use getThemesForBlogId instead.
  *
  *  @param      account     The account to get the theme from.  Cannot be nil.
+ *  @param      page        Results page to return.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  *  @returns    The asynch operation triggered by this call.
  */
 - (NSOperation *)getThemesForAccount:(WPAccount *)account
+                                page:(NSInteger)page
                              success:(ThemeServiceThemesRequestSuccessBlock)success
                              failure:(ThemeServiceFailureBlock)failure;
 
@@ -114,12 +116,14 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *              this method and not getThemes.
  *
  *  @param      blogId      The blog to get the themes for.  Cannot be nil.
+ *  @param      page        Results page to return.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  *  @returns    The asynch operation triggered by this call.
  */
 - (NSOperation *)getThemesForBlog:(Blog *)blog
+                             page:(NSInteger)page
                           success:(ThemeServiceThemesRequestSuccessBlock)success
                           failure:(ThemeServiceFailureBlock)failure;
 

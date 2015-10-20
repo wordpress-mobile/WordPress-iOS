@@ -26,7 +26,9 @@ public class ReaderHelpers {
         if let str = title {
             controller.setValue(str, forKey:"subject")
         }
-        controller.completionHandler = { (activityType:String?, completed:Bool) in
+        controller.completionWithItemsHandler = {
+            (activityType:String?, completed:Bool, items: [AnyObject]?, error: NSError?) in
+            
             if completed {
                 WPActivityDefaults.trackActivityType(activityType)
             }
@@ -117,14 +119,14 @@ public class ReaderHelpers {
     public class func trackLoadedTopic(topic: ReaderAbstractTopic, withProperties properties:[NSObject : AnyObject]) {
         var stat:WPAnalyticsStat?
 
-        if topicIsFollowing(topic) {
-            stat = .ReaderLoadedFreshlyPressed
+        if topicIsFreshlyPressed(topic) {
+            stat = .ReaderFreshlyPressedLoaded
 
         } else if isTopicList(topic) {
-            stat = .ReaderLoadedList
+            stat = .ReaderListLoaded
 
         } else if isTopicTag(topic) {
-            stat = .ReaderLoadedTag
+            stat = .ReaderTagLoaded
 
         }
         if (stat != nil) {
