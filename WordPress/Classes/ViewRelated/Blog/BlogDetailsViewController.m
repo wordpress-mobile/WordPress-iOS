@@ -124,7 +124,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                           ];
     
     self.themesEnabled = [WPThemeSettings isEnabled];
-    if (self.themesEnabled) {
+    if (self.themesEnabled && [self.blog supports:BlogFeatureThemeBrowsing]) {
         self.tableSections = [self.tableSections arrayByAddingObject:@(TableViewSectionAppearance)];
     }
 
