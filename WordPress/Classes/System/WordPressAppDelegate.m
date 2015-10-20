@@ -537,6 +537,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 #pragma mark - Custom methods
 
+- (BOOL)isLoggedIn
+{
+    return !([self noSelfHostedBlogs] && [self noWordPressDotComAccount]);
+}
+
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
 {
     if (self.isWelcomeScreenVisible || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
@@ -1049,9 +1054,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 - (void)showWhatsNewIfNeeded
 {
     if (!self.wasWhatsNewShown) {
-        BOOL userIsLoggedIn = !([self noSelfHostedBlogs] && [self noWordPressDotComAccount]);
-        
-        if (userIsLoggedIn) {
+        if ([self isLoggedIn]) {
             if ([self mustShowWhatsNewPopup]) {
                 
                 static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
