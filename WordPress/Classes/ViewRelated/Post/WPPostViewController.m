@@ -1803,6 +1803,9 @@ EditImageDetailsViewControllerDelegate
     if (assets.count == 0) {
         return;
     }
+    
+    [self.editorView.contentField focus];
+    
     [self prepareMediaProgressForNumberOfAssets:assets.count];
     for (id<WPMediaAsset> asset in assets) {
         if ([asset isKindOfClass:[ALAsset class]]){
