@@ -19,7 +19,7 @@
 {
     for (NSDictionary *connection in self.blog.connections) {
         if ([[connection stringForKey:@"service"] isEqualToString:self.service]) {
-            NSInteger connectionID = [[connection numberForKey:@"conn_ID"] integerValue];
+            NSInteger connectionID = [[connection numberForKey:@"ID"] integerValue];
             return connectionID;
         }
     }
