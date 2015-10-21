@@ -29,6 +29,8 @@ public class WP3DTouchShortcutHandler: NSObject
         guard let shortCutType = shortcutItem.type as String? else { return false }
         let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
         
+        clearCurrentViewController()
+        
         switch shortCutType {
             case ShortcutIdentifier.LogIn.type:
                 handled = true
@@ -55,5 +57,9 @@ public class WP3DTouchShortcutHandler: NSObject
         }
         
         return handled
+    }
+    
+    private func clearCurrentViewController() {
+        WordPressAppDelegate.sharedInstance().window!.rootViewController?.dismissViewControllerAnimated(false, completion: nil)
     }
 }
