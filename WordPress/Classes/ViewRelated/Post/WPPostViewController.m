@@ -305,7 +305,7 @@ EditImageDetailsViewControllerDelegate
     self.failedMediaAlertView = nil;
     [self configureMediaUpload];
     if (self.isOpenedDirectlyForPhotoPost) {
-        [self showMediaPicker];
+        [self showMediaPickerAnimated:NO];
     } else if (!self.isOpenedDirectlyForEditing) {
         [self refreshNavigationBarButtons:NO];
     }
@@ -832,7 +832,7 @@ EditImageDetailsViewControllerDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaPicker
+- (void)showMediaPickerAnimated:(BOOL)animated
 {
     [self.editorView saveSelection];
     self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
@@ -840,7 +840,7 @@ EditImageDetailsViewControllerDelegate
     picker.dataSource = self.mediaLibraryDataSource;
     picker.showMostRecentFirst = YES;
     picker.delegate = self;
-    [self presentViewController:picker animated:YES completion:nil];
+    [self presentViewController:picker animated:animated completion:nil];
 }
 
 #pragma mark - Data Model: Post
@@ -2060,7 +2060,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaPicker];
+    [self showMediaPickerAnimated:YES];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
