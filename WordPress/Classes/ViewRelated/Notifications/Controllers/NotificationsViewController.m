@@ -64,8 +64,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 #pragma mark ====================================================================================
 
 @interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate,
-                                            ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate,
-                                            UIViewControllerPreviewingDelegate>
+                                            ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
 @property (nonatomic, strong) IBOutlet UIView               *tableHeaderView;
 @property (nonatomic, strong) IBOutlet UISegmentedControl   *filtersSegmentedControl;
 @property (nonatomic, strong) IBOutlet ABXPromptView        *ratingsView;
@@ -132,7 +131,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [self setupNavigationBar];
     [self setupFiltersSegmentedControl];
     [self setupNotificationsBucketDelegate];
-    [self setup3DTouch];
     
     [self.tableView reloadData];
 }
@@ -313,12 +311,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     notesBucket.notifyWhileIndexing = YES;
 }
 
-- (void)setup3DTouch
-{
-    if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
-        [self registerForPreviewingWithDelegate:self sourceView:self.view];
-    }
-}
 
 #pragma mark - AppBotX Helpers
 
@@ -1016,27 +1008,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)abxFeedbackDidntSendFeedback
 {
     [WPAnalytics track:WPAnalyticsStatAppReviewsCanceledFeedbackScreen];
-}
-
-#pragma mark - UIViewControllerPreviewingDelegate
-
-- (UIViewController *)previewingContext:(id<UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location
-{
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:location];
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    NSString *detailsSegueID = NSStringFromClass([NotificationDetailsViewController class]);
-    Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    
-    NotificationDetailsViewController *detailsViewController = (NotificationDetailsViewController *)[self.storyboard instantiateViewControllerWithIdentifier:detailsSegueID];
-    [detailsViewController setupWithNotification:note];
-    [previewingContext setSourceRect:cell.frame];
-    
-    return detailsViewController;
-}
-
-- (void)previewingContext:(id<UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit
-{
-    [self showViewController:viewControllerToCommit sender:self];
 }
 
 @end
