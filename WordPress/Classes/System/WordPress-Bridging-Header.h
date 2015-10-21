@@ -31,6 +31,7 @@
 #import "PhotonImageURLHelper.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
+#import "WPPostViewController.h"
 
 #import "ReaderCommentsViewController.h"
 #import "ReaderGapMarker.h"

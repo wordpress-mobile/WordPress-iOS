@@ -17,6 +17,9 @@ extern const CGRect NavigationBarButtonRect;
 extern NSString* const WPEditorNavigationRestorationID;
 extern NSString* const kUserDefaultsNewEditorEnabled;
 
+extern NSString* const WPPostViewControllerOptionOpenMediaPicker;
+extern NSString* const WPPostViewControllerOptionNotAnimated;
+
 // Secret URL config parameters
 extern NSString* const kWPEditorConfigURLParamAvailable;
 extern NSString* const kWPEditorConfigURLParamEnabled;
