@@ -348,8 +348,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                 DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
                             }];
     
-    if (![blog supports:BlogFeatureSharing]) {
-        [remote syncConnectionsForBlogID:blog.blogID
+    if ([blog supports:BlogFeatureSharing]) {
+        [remote syncConnectionsForBlogID:blog.dotComID
                                success:[self connectionsHandlerWithBlogObjectID:blogObjectID
                                                               completionHandler:nil]
                                failure:^(NSError *error) {
