@@ -19,7 +19,7 @@ public class WP3DTouchShortcutCreator: NSObject
     private let newPhotoPostShortcutIconImageName = "photos"
     private let newPostShortcutIconImageName = "icon-posts-add"
     
-    override init() {
+    override public init() {
         application = UIApplication.sharedApplication()
         mainContext = ContextManager.sharedInstance().mainContext
         blogService = BlogService(managedObjectContext: mainContext)
@@ -33,35 +33,17 @@ public class WP3DTouchShortcutCreator: NSObject
         }
     }
     
-    private func createLoggedInShortcuts() {
-        var entireShortcutArray = loggedInShortcutArray()
-        var visibleShortcutArray = [UIApplicationShortcutItem]()
-        
-        if hasWordPressComAccount() {
-            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.Notifications.rawValue])
-        }
-        
-        if isCurrentBlogDotComOrJetpackConnected() {
-            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.Stats.rawValue])
-        }
-        
-        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.NewPhotoPost.rawValue])
-        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.NewPost.rawValue])
-        
-        application.shortcutItems = visibleShortcutArray
-    }
-    
-    private func createLoggedOutShortcuts() {
+    public func loggedOutShortcutArray() -> [UIApplicationShortcutItem] {
         let logInShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.type,
                                                    localizedTitle: NSLocalizedString("Log In", comment: "Log In 3D Touch Shortcut"),
                                                 localizedSubtitle: nil,
                                                              icon: UIApplicationShortcutIcon(templateImageName: logInShortcutIconImageName),
                                                                                                       userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.rawValue])
         
-        application.shortcutItems = [logInShortcut]
+        return [logInShortcut]
     }
     
-    private func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
+    public func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
         var defaultBlogName: String?
         if blogService.blogCountForAllAccounts() > 1 {
             defaultBlogName = blogService.lastUsedOrFirstBlog().blogName
@@ -92,6 +74,28 @@ public class WP3DTouchShortcutCreator: NSObject
                                                                                                         userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.NewPost.rawValue])
         
         return [notificationsShortcut, statsShortcut, newPhotoPostShortcut, newPostShortcut]
+    }
+    
+    private func createLoggedInShortcuts() {
+        var entireShortcutArray = loggedInShortcutArray()
+        var visibleShortcutArray = [UIApplicationShortcutItem]()
+        
+        if hasWordPressComAccount() {
+            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.Notifications.rawValue])
+        }
+        
+        if isCurrentBlogDotComOrJetpackConnected() {
+            visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.Stats.rawValue])
+        }
+        
+        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.NewPhotoPost.rawValue])
+        visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.NewPost.rawValue])
+        
+        application.shortcutItems = visibleShortcutArray
+    }
+    
+    private func createLoggedOutShortcuts() {
+        application.shortcutItems = loggedOutShortcutArray()
     }
     
     private func hasWordPressComAccount() -> Bool {
