@@ -36,11 +36,11 @@ public class WP3DTouchShortcutHandler: NSObject
                 handled = true
                 break
             case ShortcutIdentifier.NewPost.type:
-                tabBarController.showPostTab()
+                tabBarController.showPostTabWithOptions(["not_animated": "yes"])
                 handled = true
                 break
             case ShortcutIdentifier.NewPhotoPost.type:
-                tabBarController.showPostTabWithOptions(["media_picker": "yes"])
+                tabBarController.showPostTabWithOptions(["media_picker": "yes", "not_animated": "yes"])
                 handled = true
                 break
             case ShortcutIdentifier.Stats.type:
