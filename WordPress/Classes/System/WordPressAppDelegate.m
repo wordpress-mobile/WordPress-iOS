@@ -350,7 +350,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    DDLogError(@"Kwonye3");
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
     if (self.launchedShortcutItem) {
