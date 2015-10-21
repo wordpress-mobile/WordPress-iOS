@@ -19,6 +19,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic authorDisplayName;
 @dynamic authorEmail;
 @dynamic authorURL;
+@dynamic siteIconURL;
 @dynamic blogName;
 @dynamic blogDescription;
 @dynamic blogURL;
@@ -45,8 +46,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 @dynamic primaryTag;
 @dynamic primaryTagSlug;
-@dynamic secondaryTag;
-@dynamic secondaryTagSlug;
 @dynamic isExternal;
 @dynamic isJetpack;
 @dynamic wordCount;
@@ -140,13 +139,25 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (NSString *)blogNameForDisplay
 {
-    return self.blogName;
+    if (self.blogName.length > 0) {
+        return self.blogName;
+    }
+    return [[NSURL URLWithString:self.blogURL] host];
 }
 
-- (NSURL *)blavatarForDisplayOfSize:(NSInteger)size
+- (NSURL *)siteIconForDisplayOfSize:(NSInteger)size
 {
-    NSString *hash = [[[NSURL URLWithString:self.blogURL] host] md5];
-    NSString *str = [NSString stringWithFormat:@"http://gravatar.com/blavatar/%@/?s=%d&d=404", hash, size];
+    NSString *str;
+    if ([self.siteIconURL length] > 0) {
+        if ([self.siteIconURL rangeOfString:@"/blavatar/"].location == NSNotFound) {
+            str = self.siteIconURL;
+        } else {
+            str = [NSString stringWithFormat:@"%@?s=%d&d=404", self.siteIconURL, size];
+        }
+    } else {
+        NSString *hash = [[[NSURL URLWithString:self.blogURL] host] md5];
+        str = [NSString stringWithFormat:@"https://secure.gravatar.com/blavatar/%@/?s=%d&d=404", hash, size];
+    }
     return [NSURL URLWithString:str];
 }
 
@@ -187,7 +198,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     NSInteger count = [self.likeCount integerValue];
     NSString *title;
     if (count == 0) {
-        title = likesStr;
+        title = likeStr;
     } else if (count == 1) {
         title = [NSString stringWithFormat:@"%d %@", count, likeStr];
     } else {

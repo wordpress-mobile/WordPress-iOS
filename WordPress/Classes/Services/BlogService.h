@@ -6,6 +6,8 @@
 
 @interface BlogService : LocalCoreDataService
 
+-(instancetype) init __attribute__((unavailable("must use initWithManagedObjectContext")));
+
 /**
  Returns the blog that matches with a given blogID
  */
@@ -85,7 +87,7 @@
  *  @param success a block that is invoked when the update is sucessfull
  *  @param failure a block that in invoked when the update fails.
  */
-- (void)updateSettingForBlog:(Blog *)blog
+- (void)updateSettingsForBlog:(Blog *)blog
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure;
 
@@ -114,6 +116,8 @@
 - (NSInteger)blogCountForAllAccounts;
 
 - (NSInteger)blogCountSelfHosted;
+
+- (NSInteger)blogCountForWPComAccounts;
 
 - (NSInteger)blogCountVisibleForWPComAccounts;
 

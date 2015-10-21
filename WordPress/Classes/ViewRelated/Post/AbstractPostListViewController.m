@@ -17,6 +17,10 @@ const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 
 const CGFloat DefaultHeightForFooterView = 44.0;
 
+@interface AbstractPostListViewController()
+@property (nonatomic) BOOL needsRefreshCachedCellHeightsBeforeLayout;
+@end
+
 @implementation AbstractPostListViewController
 
 #pragma mark - Lifecycle Methods
@@ -56,12 +60,14 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [super viewDidAppear:animated];
 
     [self automaticallySyncIfAppropriate];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     self.searchController.active = NO;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -70,21 +76,43 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     if ([UIDevice isPad]) {
         return;
     }
-
-    CGRect bounds = self.view.window.frame;
-    CGFloat width = CGRectGetWidth(bounds);
-    CGFloat height = CGRectGetHeight(bounds);
-    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-        width = MIN(width, height);
-    } else {
-        width = MAX(width, height);
-    }
-
-    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
-
     if (self.searchWrapperViewHeightConstraint.constant > 0) {
         self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
     }
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    CGFloat width = CGRectGetWidth(self.view.frame);
+    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    self.needsRefreshCachedCellHeightsBeforeLayout = YES;
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+
+    if (self.needsRefreshCachedCellHeightsBeforeLayout) {
+        self.needsRefreshCachedCellHeightsBeforeLayout = NO;
+
+        CGFloat width = CGRectGetWidth(self.view.frame);
+        [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+    }
+}
+
+
+#pragma mark - Multitasking support
+
+- (void)handleApplicationDidBecomeActive:(NSNotification *)notification
+{
+    self.needsRefreshCachedCellHeightsBeforeLayout = YES;
 }
 
 
@@ -239,8 +267,8 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
     NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
 }
 
 - (void)configureSearchWrapper
@@ -287,9 +315,6 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (IBAction)didTapFilterButton:(id)sender
 {
-    if (self.postFilterPopoverController) {
-        return;
-    }
     [self displayFilters];
 }
 
@@ -659,10 +684,9 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (CGFloat)heightForSearchWrapperView
 {
-    if ([UIDevice isPad]) {
-        return SearchWrapperViewPortraitHeight;
-    }
-    return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight : SearchWrapperViewLandscapeHeight;
+    UINavigationBar *navBar = self.navigationController.navigationBar;
+    CGFloat height = CGRectGetHeight(navBar.frame) + self.topLayoutGuide.length;
+    return MAX(height, SearchWrapperViewMinHeight);
 }
 
 - (BOOL)isSearching
@@ -775,16 +799,8 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
     PostSettingsSelectionViewController *controller = [[PostSettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
     controller.onItemSelected = ^(NSDictionary *selectedValue) {
-        if (self.postFilterPopoverController) {
-            [self.postFilterPopoverController dismissPopoverAnimated:YES];
-            self.postFilterPopoverController = nil;
-        } else {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
         [self setCurrentFilterIndex:[self.postListFilters indexOfObject:selectedValue]];
-    };
-    controller.onCancel = ^() {
-        [self handleFilterSelectionCanceled];
+        [self dismissViewControllerAnimated:YES completion:nil];
     };
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -802,12 +818,13 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     CGRect titleRect = self.navigationItem.titleView.frame;
     titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
 
-    self.postFilterPopoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
-    self.postFilterPopoverController.delegate = self;
-    [self.postFilterPopoverController presentPopoverFromRect:titleRect
-                                                      inView:self.navigationController.view
-                                    permittedArrowDirections:UIPopoverArrowDirectionAny
-                                                    animated:YES];
+    controller.modalPresentationStyle = UIModalPresentationPopover;
+    [self presentViewController:controller animated:YES completion:nil];
+
+    UIPopoverPresentationController *presentationController = controller.popoverPresentationController;
+    presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    presentationController.sourceView = self.navigationController.view;
+    presentationController.sourceRect = titleRect;
 }
 
 - (void)displayFilterModal:(UIViewController *)controller
@@ -815,22 +832,6 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     controller.modalPresentationStyle = UIModalPresentationPageSheet;
     controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:controller animated:YES completion:nil];
-}
-
-- (void)handleFilterSelectionCanceled
-{
-    if (self.postFilterPopoverController) {
-        [self popoverControllerDidDismissPopover:self.postFilterPopoverController];
-    }
-}
-
-
-#pragma mark - UIPopover Delegate Methods
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    self.postFilterPopoverController.delegate = nil;
-    self.postFilterPopoverController = nil;
 }
 
 

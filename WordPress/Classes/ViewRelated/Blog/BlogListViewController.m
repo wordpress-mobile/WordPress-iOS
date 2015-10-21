@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, BlogListSections) {
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
-static CGFloat const BLVCSiteRowHeight = 54.0;
+static CGFloat const BLVCSiteRowHeight = 74.0;
 
 
 @interface BlogListViewController () <UIViewControllerRestoration>
@@ -199,16 +199,11 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     return [[self.resultsController fetchedObjects] count];
 }
 
-- (NSUInteger)numberOfHideableBlogs
-{
-    NSPredicate *predicate = [self fetchRequestPredicateForHideableBlogs];
-    NSArray *dotComSites = [[self.resultsController fetchedObjects] filteredArrayUsingPredicate:predicate];
-    return [dotComSites count];
-}
-
 - (void)updateEditButton
 {
-    if ([self numberOfHideableBlogs] > 0) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    if ([blogService blogCountForWPComAccounts] > 0) {
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.leftBarButtonItem = nil;
@@ -321,16 +316,15 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
     NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
 }
 
 - (CGFloat)heightForSearchWrapperView
 {
-    if ([UIDevice isPad]) {
-        return SearchWrapperViewPortraitHeight;
-    }
-    return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight : SearchWrapperViewLandscapeHeight;
+    UINavigationBar *navBar = self.navigationController.navigationBar;
+    CGFloat height = CGRectGetHeight(navBar.frame) + self.topLayoutGuide.length;
+    return MAX(height, SearchWrapperViewMinHeight);
 }
 
 #pragma mark - Notifications
@@ -385,7 +379,7 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [WPStyleGuide configureTableViewActionCell:cell];
     } else {
-        [WPStyleGuide configureTableViewSmallSubtitleCell:cell];
+        [WPStyleGuide configureTableViewBlogCell:cell];
     }
 
     return cell;
@@ -414,7 +408,8 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     cell.imageView.image = nil;
 
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
+        cell.textLabel.textColor = [WPStyleGuide greyDarken20];
+        cell.textLabel.text = NSLocalizedString(@"ADD NEW WORDPRESS", @"");
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
     } else {
@@ -426,7 +421,9 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
             cell.textLabel.text = [blog displayURL];
             cell.detailTextLabel.text = @"";
         }
-
+        
+        cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
+        cell.imageView.layer.borderWidth = 1.5;
         [cell.imageView setImageWithSiteIcon:blog.icon];
         if ([self.tableView isEditing] && [blog supports:BlogFeatureVisibility]) {
             UISwitch *visibilitySwitch = [UISwitch new];

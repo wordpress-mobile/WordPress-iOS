@@ -141,6 +141,26 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return count;
 }
 
+- (void)deleteNonMenuTopics
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderAbstractTopic classNameWithoutNamespaces]];
+    request.predicate = [NSPredicate predicateWithFormat:@"showInMenu = false"];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+
+    for (ReaderAbstractTopic *topic in results) {
+        [self.managedObjectContext deleteObject:topic];
+    }
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
 - (void)deleteAllTopics
 {
     [self setCurrentTopic:nil];
@@ -180,35 +200,44 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     } failure:^(NSError *error) {
         DDLogError(@"%@ error following topic: %@", NSStringFromSelector(_cmd), error);
     }];
+}
+
+- (void)unfollowAndRefreshCurrentTopicForTag:(ReaderTagTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    BOOL deletingCurrentTopic = [topic isEqual:self.currentTopic];
+    [self unfollowTag:topic withSuccess:^{
+        if (deletingCurrentTopic) {
+            [self setCurrentTopic:nil];
+            [self currentTopic];
+        }
+        if (success) {
+            success();
+        }
+    } failure:failure];
 
 }
 
-- (void)unfollowTopic:(ReaderTagTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     NSString *slug = topic.slug;
 
-    BOOL deletingCurrentTopic = [topic isEqual:self.currentTopic];
-
     // Optimistically unfollow the topic
-    if (topic.isRecommended) {
-        topic.following = NO;
-    } else {
-        [self.managedObjectContext deleteObject:topic];
+    topic.following = NO;
+    if (!topic.isRecommended) {
+        topic.showInMenu = NO;
     }
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 
-    if (deletingCurrentTopic) {
-        // set the current topic to nil and call the current topic to choose a default.
-        [self setCurrentTopic:nil];
-        [self currentTopic];
-    }
     // Now do it for realz.
+    NSDictionary *properties = @{@"tag":topic.slug};
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
-    [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID){
-        // Sync the menu for good measure.
-        [self fetchReaderMenuWithSuccess:success failure:failure];
+    [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+        [WPAnalytics track:WPAnalyticsStatReaderTagUnfollowed withProperties:properties];
+        if (success) {
+            success();
+        }
     } failure:^(NSError *error) {
         if (failure) {
             DDLogError(@"%@ error unfollowing topic: %@", NSStringFromSelector(_cmd), error);
@@ -217,25 +246,18 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
-- (void)followTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)followTagNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     topicName = [[topicName lowercaseString] trim];
 
-    // If the topic already is in core data, just make it the current topic.
-    ReaderAbstractTopic *topic = [self findTopicNamed:topicName];
-    if (topic) {
-        [self setCurrentTopic:topic];
-        if (success) {
-            success();
-        }
-        return;
-    }
-
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
-    [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID){
-        __weak __typeof(self) weakSelf = self;
+    [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID) {
         [self fetchReaderMenuWithSuccess:^{
-            [weakSelf selectTopicWithID:topicID];
+            [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
+            [self selectTopicWithID:topicID];
+            if (success) {
+                success();
+            }
         } failure:failure];
     } failure:^(NSError *error) {
         if (failure) {
@@ -243,6 +265,147 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
             failure(error);
         }
     }];
+}
+
+- (void)followTagWithSlug:(NSString *)slug withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
+    [remoteService followTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
+        [WPAnalytics track:WPAnalyticsStatReaderTagFollowed];
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        if (failure) {
+            DDLogError(@"%@ error following topic by name: %@", NSStringFromSelector(_cmd), error);
+            failure(error);
+        }
+    }];
+
+}
+
+- (void)toggleFollowingForTag:(ReaderTagTopic *)tagTopic success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    NSError *error;
+    ReaderTagTopic *topic = (ReaderTagTopic *)[self.managedObjectContext existingObjectWithID:tagTopic.objectID error:&error];
+    if (error) {
+        DDLogError(error.localizedDescription);
+        if (failure) {
+            failure(error);
+        }
+        return;
+    }
+
+    // Keep previous values in case of failure
+    BOOL oldFollowingValue = topic.following;
+    BOOL oldShowInMenuValue = topic.showInMenu;
+
+    // Optimistically update and save
+    topic.following = !topic.following;
+    if (topic.following) {
+        topic.showInMenu = YES;
+    }
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    // Define failure block
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        // Revert changes on failure
+        topic.following = oldFollowingValue;
+        topic.showInMenu = oldShowInMenuValue;
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        if (failure) {
+            failure(error);
+        }
+    };
+
+    if (topic.following) {
+        [self followTagWithSlug:topic.slug withSuccess:success failure:failureBlock];
+    } else {
+        [self unfollowTag:topic withSuccess:success failure:failureBlock];
+    }
+}
+
+- (void)tagTopicForTagWithSlug:(NSString *)slug success:(void(^)(NSManagedObjectID *objectID))success failure:(void (^)(NSError *error))failure
+{
+    if (!success) {
+        return;
+    }
+
+    // Find existing tag by slug
+    ReaderTagTopic *existingTopic = [self findTagWithSlug:slug];
+    if (existingTopic) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            success(existingTopic.objectID);
+        });
+        return;
+    }
+
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
+    [remoteService fetchTagInfoForTagWithSlug:slug success:^(RemoteReaderTopic *remoteTopic) {
+        ReaderTagTopic *topic = [self tagTopicForRemoteTopic:remoteTopic];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+            success(topic.objectID);
+        }];
+    } failure:^(NSError *error) {
+        DDLogError(@"%@ error fetching site info for site with ID %@: %@", NSStringFromSelector(_cmd), slug, error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
+- (void)toggleFollowingForSite:(ReaderSiteTopic *)siteTopic success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    NSError *error;
+    ReaderSiteTopic *topic = (ReaderSiteTopic *)[self.managedObjectContext existingObjectWithID:siteTopic.objectID error:&error];
+    if (error) {
+        DDLogError(error.localizedDescription);
+        if (failure) {
+            failure(error);
+        }
+        return;
+    }
+
+    // Keep previous values in case of failure
+    BOOL oldFollowValue = topic.following;
+    BOOL newFollowValue = !oldFollowValue;
+
+    NSNumber *siteIDForPostService = topic.isExternal ? topic.feedID : topic.siteID;
+    NSString *siteURLForPostService = topic.siteURL;
+
+    // Optimistically update
+    topic.following = newFollowValue;
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [postService setFollowing:newFollowValue forPostsFromSiteWithID:siteIDForPostService andURL:siteURLForPostService];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+    // Define failure block
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        // Revert changes on failure
+        topic.following = oldFollowValue;
+        [postService setFollowing:oldFollowValue forPostsFromSiteWithID:siteIDForPostService andURL:siteURLForPostService];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+        if (failure) {
+            failure(error);
+        }
+    };
+
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    if (topic.isExternal) {
+        if (newFollowValue) {
+            [siteService followSiteAtURL:topic.siteURL success:success failure:failureBlock];
+        } else {
+            [siteService unfollowSiteAtURL:topic.siteURL success:success failure:failureBlock];
+        }
+    } else {
+        if (newFollowValue) {
+            [siteService followSiteWithID:[topic.siteID integerValue] success:success failure:failureBlock];
+        } else {
+            [siteService unfollowSiteWithID:[topic.siteID integerValue] success:success failure:failureBlock];
+        }
+    }
 }
 
 - (ReaderAbstractTopic *)topicForFollowedSites
@@ -259,11 +422,20 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 - (void)siteTopicForSiteWithID:(NSNumber *)siteID
+                        isFeed:(BOOL)isFeed
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure
 {
+    ReaderSiteTopic *siteTopic = [self findSiteTopicWithSiteID:siteID];
+    if (siteTopic) {
+        if (success) {
+            success(siteTopic.objectID, siteTopic.following);
+        }
+        return;
+    }
+
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
-    [remoteService fetchSiteInfoForSiteWithID:siteID success:^(RemoteReaderSiteInfo *siteInfo) {
+    [remoteService fetchSiteInfoForSiteWithID:siteID isFeed:isFeed success:^(RemoteReaderSiteInfo *siteInfo) {
         if (!success) {
             return;
         }
@@ -280,13 +452,19 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topic.isPrivate = siteInfo.isPrivate;
         topic.isVisible = siteInfo.isVisible;
         topic.postCount = siteInfo.postCount;
+        topic.showInMenu = NO;
         topic.siteBlavatar = siteInfo.siteBlavatar;
         topic.siteDescription = siteInfo.siteDescription;
         topic.siteID = siteInfo.siteID;
         topic.siteURL = siteInfo.siteURL;
         topic.subscriberCount = siteInfo.subscriberCount;
         topic.title = siteInfo.siteName;
-        topic.path = [NSString stringWithFormat:@"%@read/sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
+        topic.type = ReaderSiteTopic.TopicType;
+        if (isFeed) {
+            topic.path = [NSString stringWithFormat:@"%@read/feed/%@/posts/", WordPressRestApiEndpointURL, siteInfo.feedID];
+        } else {
+            topic.path = [NSString stringWithFormat:@"%@read/sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
+        }
 
         NSError *error;
         [self.managedObjectContext obtainPermanentIDsForObjects:@[topic] error:&error];
@@ -350,7 +528,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
  Find an existing topic with the specified title.
 
  @param topicName The title of the topic to find in core data.
- @return A matching `ReaderAbstractTopic` instance or nil.
+ @return A matching `ReaderTagTopic` instance or nil.
  */
 - (ReaderTagTopic *)findTopicNamed:(NSString *)topicName
 {
@@ -370,10 +548,33 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 /**
+ Find an existing topic with the specified slug.
+
+ @param slug The slug of the topic to find in core data.
+ @return A matching `ReaderTagTopic` instance or nil.
+ */
+- (ReaderTagTopic *)findTagWithSlug:(NSString *)slug
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderTagTopic classNameWithoutNamespaces]];
+    request.predicate = [NSPredicate predicateWithFormat:@"slug = %@", slug];
+
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+    request.sortDescriptors = @[sortDescriptor];
+    NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+
+    return [topics firstObject];
+}
+
+/**
  Find an existing topic with the specified topicID.
 
  @param topicID The topicID of the topic to find in core data.
- @return A matching `ReaderAbstractTopic` instance or nil.
+ @return A matching `ReaderTagTopic` instance or nil.
  */
 - (ReaderTagTopic *)findTopicWithID:(NSNumber *)topicID
 {
@@ -458,6 +659,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.title = [self formatTitle:remoteTopic.title];
     topic.slug = remoteTopic.slug;
     topic.path = remoteTopic.path;
+    topic.owner = remoteTopic.owner;
     topic.showInMenu = YES;
     topic.following = YES;
 
@@ -595,5 +797,20 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path = %@", [path lowercaseString]]];
     return [results firstObject];
 }
+
+- (ReaderSiteTopic *)findSiteTopicWithSiteID:(NSNumber *)siteID
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[ReaderSiteTopic classNameWithoutNamespaces]];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@", siteID];
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+
+    return (ReaderSiteTopic *)[results firstObject];
+}
+
 
 @end

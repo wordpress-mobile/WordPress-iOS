@@ -16,4 +16,10 @@ import Foundation
     override public class var TopicType: String {
         return "site"
     }
+
+    public var isExternal: Bool {
+        get {
+            return (feedID.integerValue > 0)
+        }
+    }
 }
