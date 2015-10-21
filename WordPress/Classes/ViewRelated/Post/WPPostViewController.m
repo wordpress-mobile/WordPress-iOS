@@ -59,8 +59,8 @@ static NSString* const WPPostViewControllerPostRestorationKey = @"WPPostViewCont
 static NSString* const WPProgressMediaID = @"WPProgressMediaID";
 static NSString* const WPProgressMedia = @"WPProgressMedia";
 
-static NSString* const WPPostViewControllerOptionOpenMediaPicker = @"WPPostViewControllerMediaPicker";
-static NSString* const WPPostViewControllerOptionNotAnimated = @"WPPostViewControllerNotAnimated";
+NSString* const WPPostViewControllerOptionOpenMediaPicker = @"WPPostViewControllerMediaPicker";
+NSString* const WPPostViewControllerOptionNotAnimated = @"WPPostViewControllerNotAnimated";
 
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
