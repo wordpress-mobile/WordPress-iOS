@@ -16,8 +16,8 @@ public class WP3DTouchShortcutHandler: NSObject
         }
         
         var type: String {
-            let yo: String = NSBundle.mainBundle().bundleIdentifier! + ".\(self.rawValue)"
-            return yo
+            let type: String = NSBundle.mainBundle().bundleIdentifier! + ".\(self.rawValue)"
+            return type
         }
     }
     
@@ -28,8 +28,6 @@ public class WP3DTouchShortcutHandler: NSObject
         
         guard let shortCutType = shortcutItem.type as String? else { return false }
         let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
-        
-        clearCurrentViewController()
         
         switch shortCutType {
             case ShortcutIdentifier.LogIn.type:
@@ -44,11 +42,13 @@ public class WP3DTouchShortcutHandler: NSObject
                 handled = true
                 break
             case ShortcutIdentifier.Stats.type:
+                clearCurrentViewController()
                 let blogService: BlogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
                 tabBarController.switchMySitesTabToStatsViewForBlog(blogService.lastUsedOrFirstBlog())
                 handled = true
                 break
             case ShortcutIdentifier.Notifications.type:
+                clearCurrentViewController()
                 tabBarController.showNotificationsTab()
                 handled = true
                 break
