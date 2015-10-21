@@ -305,7 +305,7 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
 - (NSString *)pathForConnectionsWithBlogID:(NSNumber *)blogID
 {
     // Also note /publicize-connections specific call
-    return [NSString stringWithFormat:@"sites/%@/connections", blogID];
+    return [NSString stringWithFormat:@"sites/%@/publicize-connections", blogID];
 }
 
 - (NSString *)pathForConnectionWithPublicizer:(Publicizer *)service
@@ -315,7 +315,7 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
 
 - (NSString *)pathForDisconnectionWithPublicizer:(Publicizer *)service
 {
-    return [NSString stringWithFormat:@"sites/%@/connections/%d/delete", service.blog.dotComID, service.connectionID];
+    return [NSString stringWithFormat:@"sites/%@/publicize-connections/%d/delete", service.blog.dotComID, service.connectionID];
 }
 
 - (NSString *)pathForSettingsWithBlogID:(NSNumber *)blogID
