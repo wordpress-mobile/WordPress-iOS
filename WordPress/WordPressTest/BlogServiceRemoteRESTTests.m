@@ -140,7 +140,7 @@
     
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     
-    [service syncConnectionsForBlog:blog
+    [service syncConnectionsForBlogID:blog.dotComID
                             success:^(NSArray *connections) {}
                             failure:^(NSError *error) {}];
 }
@@ -151,7 +151,7 @@
     BlogServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
-    XCTAssertThrows([service syncConnectionsForBlog:nil
+    XCTAssertThrows([service syncConnectionsForBlogID:nil
                                             success:^(NSArray *connections) {}
                                             failure:^(NSError *error) {}]);
 }
