@@ -301,7 +301,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
             [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
         } else {
-            if (options[@"media_picker"]) {
+            if (options[WPPostViewControllerOptionOpenMediaPicker]) {
                 editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlogAndPhotoPost];
             } else {
                 editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
@@ -310,7 +310,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
                                                                         andImage:[options stringForKey:WPNewPostURLParamImageKey]];
             }
             
-            if (options[@"not_animated"]) {
+            if (options[WPPostViewControllerOptionNotAnimated]) {
                 animated = NO;
             }
         }
