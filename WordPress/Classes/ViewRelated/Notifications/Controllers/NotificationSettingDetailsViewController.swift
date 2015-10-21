@@ -49,8 +49,14 @@ public class NotificationSettingDetailsViewController : UITableViewController
         switch settings!.channel {
         case .WordPressCom:
             title = NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
+        case .Other:
+            let title = NSLocalizedString("Other Sites", comment: "Other Sites Notification Settings Title")
+            let subtitle = stream?.kind.description()
+            navigationItem.titleView = NavigationTitleView(title: title, subtitle: subtitle)
         default:
-            title = stream!.kind.description()
+            let title = settings?.blog?.blogName
+            let subtitle = stream?.kind.description()
+            navigationItem.titleView = NavigationTitleView(title: title, subtitle: subtitle)
         }
     }
     
@@ -73,8 +79,10 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+
+        tableView.cellLayoutMarginsFollowReadableWidth = false
     }
-    
+
     @IBAction private func reloadTable() {
         sections = isDeviceStreamDisabled() ? sectionsForDisabledDeviceStream() : sectionsForSettings(settings!, stream: stream!)
         tableView.reloadData()
@@ -208,10 +216,8 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     private func openApplicationSettings() {
-        if #available(iOS 8.0, *) {
-            let targetURL = NSURL(string: UIApplicationOpenSettingsURLString)
-            UIApplication.sharedApplication().openURL(targetURL!)
-        }
+        let targetURL = NSURL(string: UIApplicationOpenSettingsURLString)
+        UIApplication.sharedApplication().openURL(targetURL!)
     }
     
     
@@ -238,20 +244,21 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     private func handleUpdateError() {
-        UIAlertView.showWithTitle(NSLocalizedString("Oops!", comment: ""),
-            message             : NSLocalizedString("There has been an unexpected error while updating " +
-                                                    "your Notification Settings",
-                                                    comment: "Displayed after a failed Notification Settings call"),
-            style               : .Default,
-            cancelButtonTitle   : NSLocalizedString("Cancel", comment: "Cancel. Action."),
-            otherButtonTitles   : [ NSLocalizedString("Retry", comment: "Retry. Action") ],
-            tapBlock            : { (alertView: UIAlertView!, buttonIndex: Int) -> Void in
-                if alertView.cancelButtonIndex == buttonIndex {
-                    return
-                }
-                
-                self.saveSettingsIfNeeded()
-            })
+        let title       = NSLocalizedString("Oops!", comment: "")
+        let message     = NSLocalizedString("There has been an unexpected error while updating your Notification Settings",
+                                            comment: "Displayed after a failed Notification Settings call")
+        let cancelText  = NSLocalizedString("Cancel", comment: "Cancel. Action.")
+        let retryText   = NSLocalizedString("Retry", comment: "Retry. Action")
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        
+        alertController.addCancelActionWithTitle(cancelText, handler: nil)
+        
+        alertController.addDefaultActionWithTitle(retryText) { (action: UIAlertAction) in
+            self.saveSettingsIfNeeded()
+        }
+        
+        alertController.presentFromRootViewController()
     }
     
     

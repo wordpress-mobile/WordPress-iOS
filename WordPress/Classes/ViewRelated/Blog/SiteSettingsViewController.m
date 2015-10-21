@@ -24,6 +24,7 @@
 #import "PostCategoriesViewController.h"
 #import "PostSettingsSelectionViewController.h"
 #import "BlogSiteVisibilityHelper.h"
+#import "RelatedPostsSettingsViewController.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -43,6 +44,7 @@ NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingGeotagging = 0,
     SiteSettingsWritingDefaultCategory,
     SiteSettingsWritingDefaultPostFormat,
+    SiteSettingsWritingRelatedPosts,
     SiteSettingsWritingCount,
 };
 
@@ -73,6 +75,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 @property (nonatomic, strong) SettingTableViewCell *geotaggingCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
+@property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
 
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 
@@ -122,7 +125,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     if ([self.blog supports:BlogFeatureRemovable]) {
         self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
     }
-    
+
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -173,8 +177,15 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         case SiteSettingsSectionAccount:
             return SiteSettingsAccountCount;
         break;
-        case SiteSettingsSectionWriting:
-            return SiteSettingsWritingCount;
+        case SiteSettingsSectionWriting: {
+            NSInteger rowsToHide = 0;
+            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
+                //  NOTE: Sergio Estevao (2015-09-23): Hides the related post for self-hosted sites not in jetpack
+                // because this options is not available for them.
+                rowsToHide += 1;
+            }
+            return SiteSettingsWritingCount - rowsToHide;
+        }
         break;
         case SiteSettingsSectionRemoveSite:
             return 1;
@@ -251,8 +262,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         return _defaultCategoryCell;
     }
     _defaultCategoryCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Default Category", @"Label for selecting the default category of a post")
-                                                           editable:YES
-                                                    reuseIdentifier:nil];
+                                                              editable:YES
+                                                       reuseIdentifier:nil];
     return _defaultCategoryCell;
 }
 
@@ -262,9 +273,20 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         return _defaultPostFormatCell;
     }
     _defaultPostFormatCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Default Post Format", @"Label for selecting the default post format")
-                                                              editable:YES
-                                                       reuseIdentifier:nil];
+                                                                editable:YES
+                                                         reuseIdentifier:nil];
     return _defaultPostFormatCell;
+}
+
+- (SettingTableViewCell *)relatedPostsCell
+{
+    if (_relatedPostsCell){
+        return _relatedPostsCell;
+    }
+    _relatedPostsCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Related Posts", @"Label for selecting the related posts options")
+                                                           editable:YES
+                                                    reuseIdentifier:nil];
+    return _relatedPostsCell;
 }
 
 
@@ -287,6 +309,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         case (SiteSettingsWritingDefaultPostFormat):{
             [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
             return self.defaultPostFormatCell;
+        }
+        case (SiteSettingsWritingRelatedPosts):{
+            return self.relatedPostsCell;
         }
         break;
 
@@ -596,6 +621,13 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)showRelatedPostsSettings
+{
+    RelatedPostsSettingsViewController *relatedPostsViewController = [[RelatedPostsSettingsViewController alloc] initWithBlog:self.blog];
+    
+    [self.navigationController pushViewController:relatedPostsViewController animated:YES];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectInWritingSectionRow:(NSInteger)row
 {
     switch (row) {
@@ -619,6 +651,10 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         break;
         case SiteSettingsWritingDefaultPostFormat:{
             [self showPostFormatSelector];
+        }
+        break;
+        case SiteSettingsWritingRelatedPosts:{
+            [self showRelatedPostsSettings];
         }
         break;
 
@@ -790,7 +826,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 {
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     if ([self.blog hasChanges]) {
-        [blogService updateSettingForBlog:self.blog success:^{
+        [blogService updateSettingsForBlog:self.blog success:^{
         } failure:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
         }];

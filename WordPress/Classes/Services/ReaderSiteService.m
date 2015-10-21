@@ -82,7 +82,9 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             }
             return;
         }
-        [service followSiteWithID:siteID success:success failure:failure];
+        [service followSiteWithID:siteID success:^(){
+            [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed];
+        } failure:failure];
 
     } failure:^(NSError *error) {
         if (failure) {
@@ -102,7 +104,9 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
-    [service unfollowSiteWithID:siteID success:success failure:failure];
+    [service unfollowSiteWithID:siteID success:^(){
+        [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed];
+    } failure:failure];
 }
 
 - (void)followSiteAtURL:(NSString *)siteURL success:(void(^)())success failure:(void(^)(NSError *error))failure
@@ -130,7 +134,9 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             }
             return;
         }
-        [service followSiteAtURL:sanitizedURL success:success failure:failure];
+        [service followSiteAtURL:sanitizedURL success:^(){
+            [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed];
+        } failure:failure];
     } failure:^(NSError *error) {
         if (failure) {
             failure(error);
@@ -149,7 +155,9 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     }
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
-    [service unfollowSiteAtURL:siteURL success:success failure:failure];
+    [service unfollowSiteAtURL:siteURL success:^(){
+        [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed];
+    } failure:failure];
 }
 
 - (void)unfollowSite:(ReaderSite *)site success:(void(^)())success failure:(void(^)(NSError *error))failure
@@ -216,6 +224,9 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
     [service flagSiteWithID:[siteID integerValue] asBlocked:blocked success:^{
+        NSDictionary *properties = @{@"siteID":siteID};
+        [WPAnalytics track:WPAnalyticsStatReaderSiteBlocked withProperties:properties];
+
         if (success) {
             success();
         }

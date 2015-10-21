@@ -25,7 +25,7 @@
 {
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Followed Tags", @"Page title for the list of subscribed tags.");
+    self.title = NSLocalizedString(@"Followed Topics", @"Page title for the list of subscribed topics.");
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -42,6 +42,7 @@
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.delegate = self;
 
+    [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -112,19 +113,15 @@
 {
     ReaderTagTopic *topic = (ReaderTagTopic *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [service unfollowTopic:topic withSuccess:^{
-        //noop
-    } failure:^(NSError *error) {
+    [service unfollowAndRefreshCurrentTopicForTag:topic withSuccess:nil failure:^(NSError *error) {
         DDLogError(@"Could not unfollow topic: %@", error);
 
         NSString *title = NSLocalizedString(@"Could not Unfollow Topic", @"");
         NSString *description = error.localizedDescription;
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                            message:description
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
-                                                  otherButtonTitles:nil, nil];
-        [alertView show];
+        NSString *alertCancel = NSLocalizedString(@"OK", @"Label text for the close button on an alert view.");
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:description preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addCancelActionWithTitle:alertCancel handler:nil];
+        [alertController presentFromRootViewController];
     }];
 }
 
@@ -187,14 +184,17 @@
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return nil;
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
 
-    } else if (section == 1) {
+    if ([sectionInfo.name isEqualToString:ReaderListTopic.TopicType]) {
         return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
     }
 
-    return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
+    if ([sectionInfo.name isEqualToString:ReaderTagTopic.TopicType]) {
+        return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
+    }
+
+    return nil;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

@@ -1,33 +1,16 @@
 #import "BlogServiceRemoteXMLRPC.h"
 #import <WordPressApi.h>
-#import "Blog.h"
 #import "RemoteBlogSettings.h"
-
-@interface BlogServiceRemoteXMLRPC ()
-
-@property (nonatomic, strong) WPXMLRPCClient *api;
-
-@end
 
 @implementation BlogServiceRemoteXMLRPC
 
-- (id)initWithApi:(WPXMLRPCClient *)api
+- (void)checkMultiAuthorForBlogID:(NSNumber *)blogID
+                          success:(void(^)(BOOL isMultiAuthor))success
+                          failure:(void (^)(NSError *error))failure
 {
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
-
-- (void)checkMultiAuthorForBlog:(Blog *)blog
-                        success:(void(^)(BOOL isMultiAuthor))success
-                        failure:(void (^)(NSError *error))failure
-{
-    NSParameterAssert(blog != nil);
+    NSParameterAssert(blogID != nil);
     NSDictionary *filter = @{@"who":@"authors"};
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:filter];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:filter];
     [self.api callMethod:@"wp.getUsers"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -43,25 +26,19 @@
                  }];
 }
 
-- (void)syncOptionsForBlog:(Blog *)blog
-                   success:(OptionsHandler)success
-                   failure:(void (^)(NSError *))failure
+- (void)syncOptionsForBlogID:(NSNumber *)blogID success:(OptionsHandler)success failure:(void (^)(NSError *))failure
 {
-    WPXMLRPCRequestOperation *operation = [self operationForOptionsWithBlog:blog success:success failure:failure];
-    [blog.api enqueueXMLRPCRequestOperation:operation];
+    WPXMLRPCRequestOperation *operation = [self operationForOptionsWithBlogID:blogID success:success failure:failure];
+    [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (void)syncPostFormatsForBlog:(Blog *)blog
-                       success:(PostFormatsHandler)success
-                       failure:(void (^)(NSError *))failure
+- (void)syncPostFormatsForBlogID:(NSNumber *)blogID success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
 {
-    WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithBlog:blog success:success failure:failure];
-    [blog.api enqueueXMLRPCRequestOperation:operation];
+    WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithBlogID:blogID success:success failure:failure];
+    [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (void)syncConnectionsForBlog:(Blog *)blog
-                       success:(ConnectionsHandler)success
-                       failure:(void (^)(NSError *))failure
+- (void)syncConnectionsForBlogID:(NSNumber *)blogID success:(ConnectionsHandler)success failure:(void (^)(NSError *))failure
 {
     // not currently available
     if (failure) {
@@ -105,11 +82,11 @@
     }
 }
 
-- (void)syncSettingsForBlog:(Blog *)blog
+- (void)syncSettingsForBlogID:(NSNumber *)blogID
                     success:(SettingsHandler)success
                     failure:(void (^)(NSError *error))failure
 {
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:nil];
     [self.api callMethod:@"wp.getOptions" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (![responseObject isKindOfClass:[NSDictionary class]]) {
             if (failure) {
@@ -130,13 +107,15 @@
     }];
 }
 
-- (void)updateSettingsForBlog:(Blog *)blog
-                      success:(SuccessHandler)success
-                      failure:(void (^)(NSError *error))failure
+- (void)updateBlogSettings:(RemoteBlogSettings *)remoteBlogSettings
+                 forBlogID:(NSNumber *)blogID
+                   success:(SuccessHandler)success
+                   failure:(void (^)(NSError *error))failure
 {
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:@{@"blog_title" : blog.blogName,
-                                                         @"blog_tagline": blog.blogTagline
-                                                         }
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID
+                                                     extra:@{@"blog_title" : remoteBlogSettings.name,
+                                                             @"blog_tagline": remoteBlogSettings.desc
+                                                             }
                            ];
     [self.api callMethod:@"wp.setOptions" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (![responseObject isKindOfClass:[NSDictionary class]]) {
@@ -160,11 +139,11 @@
 
 
 
-- (WPXMLRPCRequestOperation *)operationForOptionsWithBlog:(Blog *)blog
-                                                  success:(OptionsHandler)success
-                                                  failure:(void (^)(NSError *error))failure
+- (WPXMLRPCRequestOperation *)operationForOptionsWithBlogID:(NSNumber *)blogID
+                                                    success:(OptionsHandler)success
+                                                    failure:(void (^)(NSError *error))failure
 {
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:nil];
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
@@ -183,12 +162,12 @@
     return operation;
 }
 
-- (WPXMLRPCRequestOperation *)operationForPostFormatsWithBlog:(Blog *)blog 
-                                                      success:(PostFormatsHandler)success
-                                                      failure:(void (^)(NSError *error))failure
+- (WPXMLRPCRequestOperation *)operationForPostFormatsWithBlogID:(NSNumber *)blogID
+                                                        success:(PostFormatsHandler)success
+                                                        failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"show-supported": @"1"};
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:dict];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:dict];
 
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -205,8 +184,8 @@
             }
             
             // Standard isn't included in the list of supported formats? Maybe it will be one day?
-            if (![supportedKeys containsObject:PostFormatStandard]) {
-                [supportedKeys addObject:PostFormatStandard];
+            if (![supportedKeys containsObject:@"standard"]) {
+                [supportedKeys addObject:@"standard"];
             }
 
             NSDictionary *allFormats = [postFormats objectForKey:@"all"];

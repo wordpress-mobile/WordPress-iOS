@@ -39,12 +39,9 @@ import Foundation
         }
         
         let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
-        let success = { (image: UIImage) in
-            self.gravatarImageView.displayImageWithFadeInAnimation(image)
-        }
+        let gravatar = url.flatMap { Gravatar($0) }
+        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
 
-        gravatarImageView.downloadImage(url, placeholderImage: placeholderImage, success: success, failure: nil)
-        
         gravatarURL = url
     }
     
@@ -53,14 +50,13 @@ import Foundation
         super.awakeFromNib()
         
         accessoryType                   = .DisclosureIndicator
-        contentView.autoresizingMask    = [.FlexibleHeight, .FlexibleWidth]
         
         backgroundColor                 = WPStyleGuide.Notifications.blockBackgroundColor
         headerTitleLabel.font           = WPStyleGuide.Notifications.headerTitleBoldFont
         headerTitleLabel.textColor      = WPStyleGuide.Notifications.headerTitleColor
         headerDetailsLabel.font         = WPStyleGuide.Notifications.headerDetailsRegularFont
         headerDetailsLabel.textColor    = WPStyleGuide.Notifications.headerDetailsColor
-        gravatarImageView.image         = WPStyleGuide.Notifications.gravatarPlaceholderImage!
+        gravatarImageView.image         = WPStyleGuide.Notifications.gravatarPlaceholderImage
         
         // iPad: Use a bigger image size!
         if UIDevice.isPad() {

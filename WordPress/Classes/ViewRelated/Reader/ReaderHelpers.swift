@@ -26,7 +26,9 @@ public class ReaderHelpers {
         if let str = title {
             controller.setValue(str, forKey:"subject")
         }
-        controller.completionHandler = { (activityType:String?, completed:Bool) in
+        controller.completionWithItemsHandler = {
+            (activityType:String?, completed:Bool, items: [AnyObject]?, error: NSError?) in
+            
             if completed {
                 WPActivityDefaults.trackActivityType(activityType)
             }
@@ -109,6 +111,27 @@ public class ReaderHelpers {
     public class func topicIsLiked(topic: ReaderAbstractTopic) -> Bool {
         let path = topic.path as NSString!
         return path.hasSuffix("/read/liked")
+    }
+
+
+    // MARK: Analytics Helpers
+
+    public class func trackLoadedTopic(topic: ReaderAbstractTopic, withProperties properties:[NSObject : AnyObject]) {
+        var stat:WPAnalyticsStat?
+
+        if topicIsFreshlyPressed(topic) {
+            stat = .ReaderFreshlyPressedLoaded
+
+        } else if isTopicList(topic) {
+            stat = .ReaderListLoaded
+
+        } else if isTopicTag(topic) {
+            stat = .ReaderTagLoaded
+
+        }
+        if (stat != nil) {
+            WPAnalytics.track(stat!, withProperties: properties)
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 import Foundation
 
-@objc public class ReaderStreamViewController : UIViewController, UIActionSheetDelegate,
+@objc public class ReaderStreamViewController : UIViewController,
     WPContentSyncHelperDelegate,
     WPTableViewHandlerDelegate,
     ReaderPostCellDelegate,
@@ -24,17 +24,24 @@ import Foundation
     private let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
     private let readerBlockedCellNibName = "ReaderBlockedSiteCell"
     private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
+    private let readerGapMarkerCellNibName = "ReaderGapMarkerCell"
+    private let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
     private let estimatedRowHeight = CGFloat(100.0)
     private let blockedRowHeight = CGFloat(66.0)
+    private let gapMarkerRowHeight = CGFloat(60.0)
     private let loadMoreThreashold = 4
 
     private let refreshInterval = 300
     private var displayContext: NSManagedObjectContext?
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
-    private var showShareActivityAfterActionSheetIsDismissed = false
     private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
+    private var isLoggedIn = false
+    private var isFeed = false
+    private var syncIsFillingGap = false
+    private var indexPathForGapMarker: NSIndexPath?
+    private var needsRefreshCachedCellHeightsBeforeLayout = false
 
     private var siteID:NSNumber? {
         didSet {
@@ -44,14 +51,23 @@ import Foundation
         }
     }
 
+    private var tagSlug:String? {
+        didSet {
+            if tagSlug != nil {
+                fetchTagTopic()
+            }
+        }
+    }
+
     public var readerTopic: ReaderAbstractTopic? {
         didSet {
-            if readerTopic != nil {
+            if readerTopic != nil && readerTopic != oldValue {
                 if isViewLoaded() {
                     configureControllerForTopic()
                 }
                 // Discard the siteID (if there was one) now that we have a good topic
                 siteID = nil
+                tagSlug = nil
             }
         }
     }
@@ -72,10 +88,19 @@ import Foundation
         return controller
     }
 
-    public class func controllerWithSiteID(siteID:NSNumber) -> ReaderStreamViewController {
+    public class func controllerWithSiteID(siteID:NSNumber, isFeed:Bool) -> ReaderStreamViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
+        controller.isFeed = isFeed
         controller.siteID = siteID
+
+        return controller
+    }
+
+    public class func controllerWithTagSlug(tagSlug:String) -> ReaderStreamViewController {
+        let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
+        let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
+        controller.tagSlug = tagSlug
 
         return controller
     }
@@ -101,7 +126,7 @@ import Foundation
 
         if readerTopic != nil {
             configureControllerForTopic()
-        } else if siteID != nil {
+        } else if siteID != nil || tagSlug != nil {
             displayLoadingStream()
         }
     }
@@ -111,12 +136,47 @@ import Foundation
         refreshTableViewHeaderLayout()
     }
 
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleApplicationDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
 
-    // MARK: -
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
 
     public override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
     }
+
+    public override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+
+        if needsRefreshCachedCellHeightsBeforeLayout {
+            needsRefreshCachedCellHeightsBeforeLayout = false
+
+            let width = view.frame.width
+            tableViewHandler.refreshCachedRowHeightsForWidth(width)
+            tableView.reloadRowsAtIndexPaths(tableView.indexPathsForVisibleRows!, withRowAnimation: .None)
+        }
+    }
+
+    @available(iOS 8.0, *)
+    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        needsRefreshCachedCellHeightsBeforeLayout = true
+    }
+
+
+    // MARK: - Split view support
+
+    public func handleApplicationDidBecomeActive(notification:NSNotification) {
+        needsRefreshCachedCellHeightsBeforeLayout = true
+    }
+
+
+    // MARK: - Topic acquisition
 
     private func fetchSiteTopic() {
         if isViewLoaded() {
@@ -125,15 +185,37 @@ import Foundation
         assert(siteID != nil, "A siteID is required before fetching a site topic")
         let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.siteTopicForSiteWithID(siteID!,
+            isFeed:isFeed,
             success: { [weak self] (objectID:NSManagedObjectID!, isFollowing:Bool) -> Void in
                 do {
-                    let topic = try self?.managedObjectContext().existingObjectWithID(objectID) as? ReaderAbstractTopic
+                    let context = ContextManager.sharedInstance().mainContext
+                    let topic = try context.existingObjectWithID(objectID) as? ReaderAbstractTopic
                     self?.readerTopic = topic
                 } catch let error as NSError {
                     DDLogSwift.logError(error.localizedDescription)
                 }
             },
             failure: {[weak self] (error:NSError!) -> Void in
+                self?.displayLoadingStreamFailed()
+            })
+    }
+
+    private func fetchTagTopic() {
+        if isViewLoaded() {
+            displayLoadingStream()
+        }
+        assert(tagSlug != nil, "A tag slug is requred before fetching a tag topic");
+        let service = ReaderTopicService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.tagTopicForTagWithSlug(tagSlug,
+            success: { [weak self] (objectID:NSManagedObjectID!) -> Void in
+                do {
+                    let context = ContextManager.sharedInstance().mainContext
+                    let topic = try context.existingObjectWithID(objectID) as? ReaderAbstractTopic
+                    self?.readerTopic = topic
+                } catch let error as NSError {
+                    DDLogSwift.logError(error.localizedDescription)
+                }
+            }, failure: { [weak self] (error:NSError!) -> Void in
                 self?.displayLoadingStreamFailed()
             })
     }
@@ -154,6 +236,9 @@ import Foundation
 
         nib = UINib(nibName: readerBlockedCellNibName, bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: readerBlockedCellReuseIdentifier)
+
+        nib = UINib(nibName: readerGapMarkerCellNibName, bundle: nil)
+        tableView.registerNib(nib, forCellReuseIdentifier: readerGapMarkerCellReuseIdentifier)
     }
 
     private func setupTableViewHandler() {
@@ -211,6 +296,8 @@ import Foundation
         if count > 0 {
             return
         }
+
+        tableView.tableHeaderView?.hidden = true
         resultsStatusView.titleText = NSLocalizedString("Fetching posts...", comment:"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
         resultsStatusView.messageText = ""
 
@@ -245,10 +332,11 @@ import Foundation
     func hideResultsStatus() {
         resultsStatusView.removeFromSuperview()
         footerView.hidden = false
+        tableView.tableHeaderView?.hidden = false
     }
 
 
-    // MARK: - Topic Presentation
+    // MARK: - Configuration / Topic Presentation
 
     func configureStreamHeader() {
         assert(readerTopic != nil, "A reader topic is required")
@@ -265,6 +353,7 @@ import Foundation
             return
         }
 
+        header!.enableLoggedInFeatures(isLoggedIn)
         header!.configureHeader(readerTopic!)
         header!.delegate = self
 
@@ -276,6 +365,15 @@ import Foundation
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
 
+        // Rather than repeatedly creating a service to check if the user is logged in, cache it here.
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let account = service.defaultWordPressComAccount()
+        isLoggedIn = account != nil
+
+        // Reset our display context to ensure its current. 
+        managedObjectContext().reset()
+
+        configureTitleForTopic()
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
@@ -291,14 +389,33 @@ import Foundation
             displayNoResultsView()
         }
 
-        WPAnalytics.track(.ReaderLoadedTag, withProperties: propertyForStats())
-        if ReaderHelpers.topicIsFreshlyPressed(readerTopic!) {
-            WPAnalytics.track(.ReaderLoadedFreshlyPressed)
+        ReaderHelpers.trackLoadedTopic(readerTopic!, withProperties: propertyForStats())
+    }
+
+    func configureTitleForTopic() {
+        if readerTopic == nil {
+            title = NSLocalizedString("Reader", comment: "The default title of the Reader")
+            return
         }
+        if readerTopic?.type == ReaderSiteTopic.TopicType {
+            title = NSLocalizedString("Site Details", comment: "The title of the reader when previewing posts from a site.")
+            return
+        }
+
+        title = readerTopic?.title
     }
 
 
     // MARK: - Instance Methods
+
+    func postInMainContext(post:ReaderPost) -> ReaderPost? {
+        do {
+            return try ContextManager.sharedInstance().mainContext.existingObjectWithID(post.objectID) as? ReaderPost
+        } catch let error as NSError {
+            DDLogSwift.logError("\(error.localizedDescription)")
+        }
+        return nil
+    }
 
     func refreshTableViewHeaderLayout() {
         if tableView.tableHeaderView == nil {
@@ -309,7 +426,7 @@ import Foundation
         headerView.setNeedsLayout()
         headerView.layoutIfNeeded()
 
-        let height = headerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+        let height = headerView.sizeThatFits(CGSize(width: tableView.frame.size.width, height: CGFloat.max)).height
         var frame = headerView.frame
         frame.size.height = height
         headerView.frame = frame
@@ -334,28 +451,93 @@ import Foundation
     }
 
     private func shouldShowBlockSiteMenuItem() -> Bool {
-        return ReaderHelpers.isTopicTag(readerTopic!) || ReaderHelpers.topicIsFreshlyPressed(readerTopic!)
+        if (isLoggedIn) {
+            return ReaderHelpers.isTopicTag(readerTopic!) || ReaderHelpers.topicIsFreshlyPressed(readerTopic!)
+        }
+        return false
     }
 
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
         objectIDOfPostForMenu = post.objectID
         anchorViewForMenu = anchorView
 
-        let cancel = NSLocalizedString("Cancel", comment:"The title of a cancel button.")
-        let blockSite = NSLocalizedString("Block This Site", comment:"The title of a button that triggers blocking a site from the user's reader.")
-        let share = NSLocalizedString("Share", comment:"Verb. Title of a button. Pressing the lets the user share a post to others.")
-        let actionSheet = UIActionSheet(title: nil,
-            delegate: self,
-            cancelButtonTitle: cancel,
-            destructiveButtonTitle: shouldShowBlockSiteMenuItem() ? blockSite : nil
-        )
-        actionSheet.addButtonWithTitle(share)
+        // Create the action sheet
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertController.addCancelActionWithTitle(ActionSheetButtonTitles.cancel,
+            handler: { (action:UIAlertAction) in
+                self.cleanUpAfterPostMenu()
+            })
+
+        // Block button
+        if shouldShowBlockSiteMenuItem() {
+            alertController.addActionWithTitle(ActionSheetButtonTitles.blockSite,
+                style: .Destructive,
+                handler: { (action:UIAlertAction) in
+                    if let post = self.postForObjectIDOfPostForMenu() {
+                        self.blockSiteForPost(post)
+                    }
+                    self.cleanUpAfterPostMenu()
+                })
+        }
+
+        // Following
+        if ReaderHelpers.topicIsFollowing(readerTopic!) {
+            let buttonTitle = post.isFollowing ? ActionSheetButtonTitles.unfollow : ActionSheetButtonTitles.follow
+            alertController.addActionWithTitle(buttonTitle,
+                style: .Default,
+                handler: { (action:UIAlertAction) in
+                    if let post = self.postForObjectIDOfPostForMenu() {
+                        self.toggleFollowingForPost(post)
+                    }
+                    self.cleanUpAfterPostMenu()
+                })
+        }
+
+        // Visit site
+        alertController.addActionWithTitle(ActionSheetButtonTitles.visit,
+            style: .Default,
+            handler: { (action:UIAlertAction) in
+                if let post = self.postForObjectIDOfPostForMenu() {
+                    self.visitSiteForPost(post)
+                }
+                self.cleanUpAfterPostMenu()
+        })
+
+        // Share
+        alertController.addActionWithTitle(ActionSheetButtonTitles.share,
+            style: .Default,
+            handler: { (action:UIAlertAction) in
+                if let post = self.postForObjectIDOfPostForMenu() {
+                    self.sharePost(post)
+                }
+                self.cleanUpAfterPostMenu()
+        })
 
         if UIDevice.isPad() {
-            actionSheet.showFromRect(anchorViewForMenu!.bounds, inView:anchorViewForMenu!, animated:true)
+            alertController.modalPresentationStyle = .Popover
+            presentViewController(alertController, animated: true, completion: nil)
+            let presentationController = alertController.popoverPresentationController
+            presentationController?.permittedArrowDirections = .Any
+            presentationController?.sourceView = anchorViewForMenu!
+            presentationController?.sourceRect = anchorViewForMenu!.bounds
+
         } else {
-            actionSheet.showFromTabBar(tabBarController!.tabBar)
+            presentViewController(alertController, animated: true, completion: nil)
         }
+    }
+
+    private func postForObjectIDOfPostForMenu() -> ReaderPost? {
+        do {
+            return try managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!) as? ReaderPost
+        } catch let error as NSError {
+            DDLogSwift.logError(error.localizedDescription)
+            return nil
+        }
+    }
+
+    private func cleanUpAfterPostMenu() {
+        objectIDOfPostForMenu = nil
+        anchorViewForMenu = nil
     }
 
     private func sharePost(post: ReaderPost) {
@@ -371,13 +553,50 @@ import Foundation
             return
         }
 
-        // Gah! Stupid iPad and UIPopovoers!!!!
-        let popover = UIPopoverController(contentViewController: controller)
-        popover.presentPopoverFromRect(anchorViewForMenu!.bounds,
-            inView: anchorViewForMenu!,
-            permittedArrowDirections: UIPopoverArrowDirection.Unknown,
-            animated: false)
+        // Silly iPad popover rules.
+        controller.modalPresentationStyle = .Popover
+        presentViewController(controller, animated: true, completion: nil)
+        let presentationController = controller.popoverPresentationController
+        presentationController?.permittedArrowDirections = .Unknown
+        presentationController?.sourceView = anchorViewForMenu!
+        presentationController?.sourceRect = anchorViewForMenu!.bounds
+    }
 
+    private func toggleFollowingForPost(post:ReaderPost) {
+        var successMessage:String!
+        var errorMessage:String!
+        var errorTitle:String!
+        if post.isFollowing {
+            successMessage = NSLocalizedString("Unfollowed site", comment: "Short confirmation that unfollowing a site was successful")
+            errorTitle = NSLocalizedString("Problem Unfollowing Site", comment: "Title of a prompt")
+            errorMessage = NSLocalizedString("There was a problem unfollowing the site. If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem unfollowing a site and instructions on how to notify us of the problem.")
+        } else {
+            successMessage = NSLocalizedString("Followed site", comment: "Short confirmation that unfollowing a site was successful")
+            errorTitle = NSLocalizedString("Problem Following Site", comment: "Title of a prompt")
+            errorMessage = NSLocalizedString("There was a problem following the site.  If the problem persists you can contact us via the Me > Help & Support screen.", comment: "Short notice that there was a problem following a site and instructions on how to notify us of the problem.")
+        }
+
+        SVProgressHUD.show()
+        let postService = ReaderPostService(managedObjectContext: managedObjectContext())
+        postService.toggleFollowingForPost(post, success: { () -> Void in
+                SVProgressHUD.showSuccessWithStatus(successMessage)
+            }, failure: { (error:NSError!) -> Void in
+                SVProgressHUD.dismiss()
+
+                let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
+                let alertController = UIAlertController(title: errorTitle,
+                    message: errorMessage,
+                    preferredStyle: .Alert)
+                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+                alertController.presentFromRootViewController()
+        })
+    }
+
+    private func visitSiteForPost(post:ReaderPost) {
+        let siteURL = NSURL(string: post.blogURL)!
+        let controller = WPWebViewController(URL: siteURL)
+        let navController = UINavigationController(rootViewController: controller)
+        presentViewController(navController, animated: true, completion: nil)
     }
 
     private func showAttributionForPost(post: ReaderPost) {
@@ -388,7 +607,7 @@ import Foundation
 
         // If there is a blogID preview the site
         if post.sourceAttribution!.blogID != nil {
-            let controller = ReaderStreamViewController.controllerWithSiteID(post.sourceAttribution!.blogID)
+            let controller = ReaderStreamViewController.controllerWithSiteID(post.sourceAttribution!.blogID, isFeed: false)
             navigationController?.pushViewController(controller, animated: true)
             return
         }
@@ -423,6 +642,16 @@ import Foundation
         }
     }
 
+    func updateStreamHeaderIfNeeded() {
+        assert(readerTopic != nil, "A reader topic is required")
+
+        guard let header = tableView.tableHeaderView as? ReaderStreamHeader else {
+            return
+        }
+
+        header.configureHeader(readerTopic!)
+    }
+
 
     // MARK: - Blocking
 
@@ -444,13 +673,13 @@ import Foundation
                 self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
                 self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
-                let alertView = UIAlertView(
-                    title: NSLocalizedString("Error Blocking Site", comment:"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader."),
+                let errorTitle = NSLocalizedString("Error Blocking Site", comment:"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
+                let cancelTitle = NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
+                let alertController = UIAlertController(title: errorTitle,
                     message: error.localizedDescription,
-                    delegate: nil,
-                    cancelButtonTitle: NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
-                )
-                alertView.show()
+                    preferredStyle: .Alert)
+                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+                alertController.presentFromRootViewController()
             })
     }
 
@@ -471,13 +700,13 @@ import Foundation
                 self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
                 self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
-                let alertView = UIAlertView(
-                    title: NSLocalizedString("Error Unblocking Site", comment:"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader."),
+                let errorTitle = NSLocalizedString("Error Unblocking Site", comment:"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
+                let cancelTitle = NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
+                let alertController = UIAlertController(title: errorTitle,
                     message: error.localizedDescription,
-                    delegate: nil,
-                    cancelButtonTitle: NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
-                )
-                alertView.show()
+                    preferredStyle: .Alert)
+                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+                alertController.presentFromRootViewController()
             })
     }
 
@@ -497,6 +726,16 @@ import Foundation
 
 
     // MARK: - Sync Methods
+
+    func updateLastSyncedForTopic(objectID:NSManagedObjectID) {
+        do {
+            let topic = try managedObjectContext().existingObjectWithID(objectID) as! ReaderAbstractTopic
+            topic.lastSynced = NSDate()
+            ContextManager.sharedInstance().saveContext(managedObjectContext())
+        } catch let error as NSError {
+            DDLogSwift.logError("Failed to update topic last synced date: \(error.localizedDescription)")
+        }
+    }
 
     func canSync() -> Bool {
         let appDelegate = WordPressAppDelegate.sharedInstance()
@@ -524,6 +763,36 @@ import Foundation
         }
     }
 
+    func syncFillingGap(indexPath:NSIndexPath) {
+        if !canSync() {
+            let alertTitle = NSLocalizedString("Unable to Load Posts", comment: "Title of a prompt saying the app needs an internet connection before it can load posts")
+            let alertMessage = NSLocalizedString("Please check your internet connection and try again.", comment: "Politely asks the user to check their internet connection before trying again. ")
+            let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
+            let alertController = UIAlertController(title: alertTitle,
+                message: alertMessage,
+                preferredStyle: .Alert)
+            alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+            alertController.presentFromRootViewController()
+
+            return
+        }
+        if syncHelper.isSyncing {
+            let alertTitle = NSLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes.")
+            let alertMessage = NSLocalizedString("Please wait til the current fetch completes.", comment: "Asks the usre to wait until the currently running fetch request completes.")
+            let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
+            let alertController = UIAlertController(title: alertTitle,
+                message: alertMessage,
+                preferredStyle: .Alert)
+            alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+            alertController.presentFromRootViewController()
+
+            return
+        }
+        indexPathForGapMarker = indexPath
+        syncIsFillingGap = true
+        syncHelper.syncContentWithUserInteraction(true)
+    }
+
     func syncItems(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
         let service =  ReaderPostService(managedObjectContext: syncContext)
@@ -531,12 +800,57 @@ import Foundation
         syncContext.performBlock {[weak self] () -> Void in
             do {
                 let topic = try syncContext.existingObjectWithID(self!.readerTopic!.objectID) as! ReaderAbstractTopic
-
+                let objectID = topic.objectID
                 service.fetchPostsForTopic(topic,
                     earlierThan: NSDate(),
                     success: {[weak self] (count:Int, hasMore:Bool) in
                         dispatch_async(dispatch_get_main_queue(), {
+                            if let strongSelf = self {
+                                if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
+                                    strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
+                                    strongSelf.updateAndPerformFetchRequest()
+                                }
+                                strongSelf.updateLastSyncedForTopic(objectID)
+                            }
+                            success?(hasMore: hasMore)
+                        })
+                    }, failure: { (error:NSError!) in
+                        dispatch_async(dispatch_get_main_queue(), {
+                            failure?(error: error)
+                        })
+                })
 
+            } catch let error as NSError {
+                DDLogSwift.logError(error.localizedDescription)
+            }
+        }
+    }
+
+    func syncItemsForGap(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
+        assert(syncIsFillingGap)
+        assert(indexPathForGapMarker != nil)
+
+        let post = tableViewHandler.resultsController.objectAtIndexPath(indexPathForGapMarker!) as? ReaderGapMarker
+        if post == nil {
+            // failsafe
+            return
+        }
+
+        // Reload the gap cell so it will start animating.
+        tableView.reloadRowsAtIndexPaths([indexPathForGapMarker!], withRowAnimation: .None)
+
+        let syncContext = ContextManager.sharedInstance().newDerivedContext()
+        let service =  ReaderPostService(managedObjectContext: syncContext)
+        let sortDate = post!.sortDate
+
+        syncContext.performBlock {[weak self] () -> Void in
+            do {
+                let topic = try syncContext.existingObjectWithID(self!.readerTopic!.objectID) as! ReaderAbstractTopic
+                service.fetchPostsForTopic(topic,
+                    earlierThan:sortDate,
+                    deletingEarlier:true,
+                    success: {[weak self] (count:Int, hasMore:Bool) in
+                        dispatch_async(dispatch_get_main_queue(), {
                             if let strongSelf = self {
                                 if strongSelf.recentlyBlockedSitePostObjectIDs.count > 0 {
                                     strongSelf.recentlyBlockedSitePostObjectIDs.removeAllObjects()
@@ -552,31 +866,6 @@ import Foundation
                         })
                 })
 
-            } catch let error as NSError {
-                DDLogSwift.logError(error.localizedDescription)
-            }
-        }
-    }
-
-    func backfillItems(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
-        let syncContext = ContextManager.sharedInstance().newDerivedContext()
-        let service =  ReaderPostService(managedObjectContext: syncContext)
-
-        syncContext.performBlock {[weak self] () -> Void in
-
-            do  {
-                let topic = try syncContext.existingObjectWithID(self!.readerTopic!.objectID) as! ReaderAbstractTopic
-
-                service.backfillPostsForTopic(topic,
-                    success: { (count:Int, hasMore:Bool) -> Void in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            success?(hasMore: hasMore)
-                        })
-                    }, failure: { (error:NSError!) -> Void in
-                        dispatch_async(dispatch_get_main_queue(), {
-                            failure?(error: error)
-                        })
-                })
             } catch let error as NSError {
                 DDLogSwift.logError(error.localizedDescription)
             }
@@ -622,11 +911,10 @@ import Foundation
 
     func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
         displayLoadingViewIfNeeded()
-        if userInteraction {
-            syncItems(success, failure: failure)
-
+        if syncIsFillingGap {
+            syncItemsForGap(success, failure: failure)
         } else {
-            backfillItems(success, failure: failure)
+            syncItems(success, failure: failure)
         }
     }
 
@@ -643,6 +931,8 @@ import Foundation
     }
 
     public func cleanupAfterSync() {
+        syncIsFillingGap = false
+        indexPathForGapMarker = nil
         cleanupAndRefreshAfterScrolling = false
         tableViewHandler.refreshTableViewPreservingOffset()
         refreshControl.endRefreshing()
@@ -676,6 +966,7 @@ import Foundation
             topic = try managedObjectContext().existingObjectWithID(readerTopic!.objectID) as! ReaderAbstractTopic
         } catch let error as NSError {
             DDLogSwift.logError(error.description)
+            return NSPredicate(format: "topic = NULL")
         }
 
         if recentlyBlockedSitePostObjectIDs.count > 0 {
@@ -723,7 +1014,11 @@ import Foundation
         return displayContext!
     }
 
-    public func fetchRequest() -> NSFetchRequest {
+    public func fetchRequest() -> NSFetchRequest? {
+        if readerTopic == nil {
+            return nil
+        }
+
         let fetchRequest = NSFetchRequest(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
@@ -746,6 +1041,11 @@ import Foundation
 
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
+
+        if post.isKindOfClass(ReaderGapMarker) {
+            return gapMarkerRowHeight
+        }
+
         if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
             return blockedRowHeight
         }
@@ -758,6 +1058,12 @@ import Foundation
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell? {
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
+
+        if post.isKindOfClass(ReaderGapMarker) {
+            let cell = tableView.dequeueReusableCellWithIdentifier(readerGapMarkerCellReuseIdentifier) as! ReaderGapMarkerCell
+            configureGapMarker(cell)
+            return cell
+        }
 
         if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
             let cell = tableView.dequeueReusableCellWithIdentifier(readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
@@ -783,7 +1089,12 @@ import Foundation
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
-        let post = posts[indexPath.row]
+        var post = posts[indexPath.row]
+
+        if post.isKindOfClass(ReaderGapMarker) {
+            syncFillingGap(indexPath)
+            return
+        }
 
         if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
             unblockSiteForPost(post)
@@ -797,6 +1108,7 @@ import Foundation
 
             controller = ReaderPostDetailViewController.detailControllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
         } else {
+            post = postInMainContext(post)!
             controller = ReaderPostDetailViewController.detailControllerWithPost(post)
         }
 
@@ -813,10 +1125,11 @@ import Foundation
         let postCell = cell as! ReaderPostCardCell
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
-        let shouldLoadMedia = postCell != cellForLayout
+        let layoutOnly = postCell == cellForLayout
 
+        postCell.enableLoggedInFeatures = isLoggedIn
         postCell.blogNameButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
-        postCell.configureCell(post, loadingMedia: shouldLoadMedia)
+        postCell.configureCell(post, layoutOnly: layoutOnly)
         postCell.delegate = self
     }
 
@@ -832,26 +1145,53 @@ import Foundation
         cell.setSiteName(post.blogName)
     }
 
+    public func configureGapMarker(cell: ReaderGapMarkerCell) {
+        cell.animateActivityView(syncIsFillingGap)
+    }
+
 
     // MARK: - ReaderStreamHeader Delegate Methods
 
     public func handleFollowActionForHeader(header:ReaderStreamHeader) {
-        // TODO: Pending data model improvements
+        // Toggle following for the topic
+        if readerTopic!.isKindOfClass(ReaderTagTopic) {
+            toggleFollowingForTag(readerTopic as! ReaderTagTopic)
+        } else if readerTopic!.isKindOfClass(ReaderSiteTopic) {
+            toggleFollowingForSite(readerTopic as! ReaderSiteTopic)
+        }
     }
 
+    func toggleFollowingForTag(topic:ReaderTagTopic) {
+        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
+        service.toggleFollowingForTag(topic, success: nil, failure: { (error:NSError!) -> Void in
+            self.updateStreamHeaderIfNeeded()
+        })
+        self.updateStreamHeaderIfNeeded()
+    }
+
+    func toggleFollowingForSite(topic:ReaderSiteTopic) {
+        let service = ReaderTopicService(managedObjectContext: topic.managedObjectContext)
+        service.toggleFollowingForSite(topic, success:nil, failure: { (error:NSError!) -> Void in
+            self.updateStreamHeaderIfNeeded()
+        })
+        self.updateStreamHeaderIfNeeded()
+    }
 
     // MARK: - ReaderCard Delegate Methods
 
     public func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
 
-        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID)
+        let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
         navigationController?.pushViewController(controller, animated: true)
-        WPAnalytics.track(.ReaderPreviewedSite)
+
+        let properties = NSDictionary(object: post.blogURL, forKey: "URL") as! [NSObject : AnyObject]
+        WPAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
-        let post = provider as! ReaderPost
+        var post = provider as! ReaderPost
+        post = postInMainContext(post)!
         let controller = ReaderCommentsViewController(post: post)
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -861,12 +1201,14 @@ import Foundation
         toggleLikeForPost(post)
     }
 
-    public func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider) {
-        // TODO:  No longer needed. Remove when cards are updated
-    }
-
     public func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider) {
-        // TODO: Waiting on Core Data support
+        let post = provider as! ReaderPost
+
+        let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
+        navigationController?.pushViewController(controller, animated: true)
+
+        let properties = NSDictionary(object: post.primaryTagSlug, forKey: "tag") as! [NSObject : AnyObject]
+        WPAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
@@ -877,52 +1219,6 @@ import Foundation
     public func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
         showAttributionForPost(post)
-    }
-
-
-    // MARK: - UIActionSheet Delegate Methods
-
-    public func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if buttonIndex == actionSheet.cancelButtonIndex {
-            return
-        }
-        if objectIDOfPostForMenu == nil {
-            return
-        }
-
-        var post: ReaderPost?
-        do {
-            post = try managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!) as? ReaderPost
-        } catch let error as NSError {
-            DDLogSwift.logError(error.localizedDescription)
-        }
-        if post == nil {
-            return
-        }
-
-        if buttonIndex == actionSheet.destructiveButtonIndex {
-            blockSiteForPost(post!)
-            return
-        }
-
-        showShareActivityAfterActionSheetIsDismissed = true
-    }
-
-    public func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        if showShareActivityAfterActionSheetIsDismissed {
-            do {
-                let post = try managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!) as? ReaderPost
-                if let readerPost = post {
-                    sharePost(readerPost)
-                }
-            } catch let error as NSError {
-                DDLogSwift.logError(error.localizedDescription)
-            }
-        }
-
-        showShareActivityAfterActionSheetIsDismissed = false
-        objectIDOfPostForMenu = nil
-        anchorViewForMenu = nil
     }
 
 }
