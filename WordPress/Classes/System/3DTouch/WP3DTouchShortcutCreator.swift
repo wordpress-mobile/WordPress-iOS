@@ -105,7 +105,9 @@ public class WP3DTouchShortcutCreator: NSObject
     }
     
     private func isCurrentBlogDotComOrJetpackConnected() -> Bool {
-        let currentBlog = blogService.lastUsedOrFirstBlog()
+        guard let currentBlog = blogService.lastUsedOrFirstBlog() else {
+            return true
+        }
         
         return hasWordPressComAccount() && ((currentBlog.jetpack != nil && currentBlog.jetpack.isConnected()) || currentBlog.isHostedAtWPcom)
     }
