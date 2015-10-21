@@ -43,7 +43,7 @@ public class WP3DTouchShortcutHandler: NSObject
                 break
             case ShortcutIdentifier.Stats.type:
                 let blogService: BlogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-                tabBarController.switchMySitesTabToStatsViewForBlog(blogService.primaryBlog())
+                tabBarController.switchMySitesTabToStatsViewForBlog(blogService.lastUsedOrFirstBlog())
                 handled = true
                 break
             case ShortcutIdentifier.Notifications.type:
