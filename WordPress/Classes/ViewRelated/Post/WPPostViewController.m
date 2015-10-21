@@ -1438,18 +1438,23 @@ EditImageDetailsViewControllerDelegate
     }
 }
 
-- (void)dismissEditView
+- (void)dismissEditViewAnimated:(BOOL)animated
 {
     if (self.onClose) {
         self.onClose();
         self.onClose = nil;
-	} else if (self.presentingViewController) {
-		[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-	} else {
-		[self.navigationController popViewControllerAnimated:YES];
-	}
+    } else if (self.presentingViewController) {
+        [self.presentingViewController dismissViewControllerAnimated:animated completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:animated];
+    }
     
     [WPAnalytics track:WPAnalyticsStatEditorClosed];
+}
+
+- (void)dismissEditView
+{
+    [self dismissEditViewAnimated:YES];
 }
 
 - (void)saveAction
@@ -2227,7 +2232,11 @@ EditImageDetailsViewControllerDelegate
 
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.isOpenedDirectlyForPhotoPost) {
+        [self dismissEditViewAnimated:NO];
+    } else {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(id<WPMediaAsset>)mediaAsset

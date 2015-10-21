@@ -289,6 +289,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 
 - (void)showPostTabWithOptions:(NSDictionary *)options
 {
+    BOOL animated = YES;
     if (self.presentedViewController) {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
@@ -307,6 +308,10 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
                                                                       andContent:[options stringForKey:WPNewPostURLParamContentKey]
                                                                          andTags:[options stringForKey:WPNewPostURLParamTagsKey]
                                                                         andImage:[options stringForKey:WPNewPostURLParamImageKey]];
+            }
+            
+            if (options[@"not_animated"]) {
+                animated = NO;
             }
         }
         navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
@@ -331,7 +336,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
     navController.navigationBar.translucent = NO;
     [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
-    [self presentViewController:navController animated:YES completion:nil];
+    [self presentViewController:navController animated:animated completion:nil];
 }
 
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
