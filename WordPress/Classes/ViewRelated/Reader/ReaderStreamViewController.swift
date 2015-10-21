@@ -4,8 +4,7 @@ import Foundation
     WPContentSyncHelperDelegate,
     WPTableViewHandlerDelegate,
     ReaderPostCellDelegate,
-    ReaderStreamHeaderDelegate,
-    UIViewControllerPreviewingDelegate
+    ReaderStreamHeaderDelegate
 {
     // MARK: - Properties
 
@@ -122,7 +121,6 @@ import Foundation
         setupTableViewHandler()
         setupSyncHelper()
         setupResultsStatusView()
-        setup3DTouch()
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
@@ -276,12 +274,6 @@ import Foundation
         frame.size.height = heightForFooterView
         footerView.frame = frame
         tableView.tableFooterView = footerView
-    }
-    
-    private func setup3DTouch() {
-        if (traitCollection.forceTouchCapability == .Available) {
-            registerForPreviewingWithDelegate(self, sourceView: self.view)
-        }
     }
 
 
@@ -988,34 +980,7 @@ import Foundation
         let sortDescriptor = NSSortDescriptor(key: "sortDate", ascending: false)
         return [sortDescriptor]
     }
-    
-    func detailControllerForIndexPath(indexPath: NSIndexPath) -> ReaderPostDetailViewController? {
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
-        var post = posts[indexPath.row]
-        
-        if post.isKindOfClass(ReaderGapMarker) {
-            syncFillingGap(indexPath)
-            return nil
-        }
-        
-        if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
-            unblockSiteForPost(post)
-            return nil
-        }
-        
-        var controller: ReaderPostDetailViewController?
-        if post.sourceAttributionStyle() == .Post &&
-            post.sourceAttribution.postID != nil &&
-            post.sourceAttribution.blogID != nil {
-                
-                controller = ReaderPostDetailViewController.detailControllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
-        } else {
-            post = postInMainContext(post)!
-            controller = ReaderPostDetailViewController.detailControllerWithPost(post)
-        }
-        
-        return controller
-    }
+
 
     // MARK: - TableViewHandler Delegate Methods
 
@@ -1123,8 +1088,29 @@ import Foundation
 
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        
-        let controller: ReaderPostDetailViewController? = detailControllerForIndexPath(indexPath)
+        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        var post = posts[indexPath.row]
+
+        if post.isKindOfClass(ReaderGapMarker) {
+            syncFillingGap(indexPath)
+            return
+        }
+
+        if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
+            unblockSiteForPost(post)
+            return
+        }
+
+        var controller: ReaderPostDetailViewController?
+        if post.sourceAttributionStyle() == .Post &&
+            post.sourceAttribution.postID != nil &&
+            post.sourceAttribution.blogID != nil {
+
+            controller = ReaderPostDetailViewController.detailControllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
+        } else {
+            post = postInMainContext(post)!
+            controller = ReaderPostDetailViewController.detailControllerWithPost(post)
+        }
 
         navigationController?.pushViewController(controller!, animated: true)
     }
@@ -1235,18 +1221,4 @@ import Foundation
         showAttributionForPost(post)
     }
 
-    // MARK: - UIViewControllerPreviewing Delegate Methods
-    
-    public func previewingContext(previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        let indexPath = tableView.indexPathForRowAtPoint(location)!
-        let cell = tableView.cellForRowAtIndexPath(indexPath)!
-        let controller: ReaderPostDetailViewController? = detailControllerForIndexPath(indexPath)
-        previewingContext.sourceRect = cell.frame
-        
-        return controller
-    }
-
-    public func previewingContext(previewingContext: UIViewControllerPreviewing, commitViewController viewControllerToCommit: UIViewController) {
-        showViewController(viewControllerToCommit, sender: self)
-    }
 }
