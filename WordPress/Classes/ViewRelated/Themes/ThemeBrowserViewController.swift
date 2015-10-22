@@ -23,7 +23,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         let sort = NSSortDescriptor(key: "order", ascending: true)
         fetchRequest.sortDescriptors = [sort]
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
-            managedObjectContext: self.managedObjectContext,
+            managedObjectContext: ContextManager.sharedInstance().mainContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
         frc.delegate = self
@@ -40,12 +40,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     /**
      *  @brief      The themes service we'll use in this VC and its helpers
      */
-    private lazy var themeService : ThemeService = {
-        ThemeService(managedObjectContext: self.managedObjectContext)
-    }()
-    private lazy var managedObjectContext = {
-        ContextManager.sharedInstance().mainContext
-    }()
+    private let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private var retiredThemes = Set<Theme>()
     private var fetchAnimation = false
    
@@ -113,7 +108,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
                 if (hasMore) {
                     strongSelf.updateThemePage(page + 1)
                 } else if !strongSelf.retiredThemes.isEmpty {
-                    let retireContext = strongSelf.managedObjectContext
+                    let retireContext = ContextManager.sharedInstance().mainContext
                     
                     retireContext.performBlock {
                         for theme in strongSelf.retiredThemes {
