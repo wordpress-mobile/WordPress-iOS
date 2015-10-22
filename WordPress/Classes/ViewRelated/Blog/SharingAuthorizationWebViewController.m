@@ -85,7 +85,7 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
     }
 }
 
-- (void)suceed
+- (void)succeed
 {
     [super dismiss];
     if ([self.delegate respondsToSelector:@selector(authorizeDidSucceed:)]) {
@@ -125,7 +125,7 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     if (self.loadingVerify) {
-        [self suceed];
+        [self succeed];
     } else {
         [super webView:webView didFailLoadWithError:error];
     }
@@ -134,7 +134,7 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     if (self.loadingVerify) {
-        [self suceed];
+        [self succeed];
     } else {
         [super webViewDidFinishLoad:webView];
     }
