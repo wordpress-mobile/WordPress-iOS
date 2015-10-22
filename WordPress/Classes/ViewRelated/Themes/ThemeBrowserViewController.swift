@@ -23,7 +23,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         let sort = NSSortDescriptor(key: "order", ascending: true)
         fetchRequest.sortDescriptors = [sort]
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
-            managedObjectContext: ContextManager.sharedInstance().mainContext,
+            managedObjectContext: self.themeService.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
         frc.delegate = self
@@ -42,6 +42,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
      */
     private let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private var retiredThemes = Set<Theme>()
+    private var updatingPage = 0
     private var fetchAnimation = false
    
      /**
@@ -94,38 +95,37 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     private func updateThemePage(page: NSInteger) {
         assert(page > 0)
         
+        updatingPage = page
         themeService.getThemesForBlog(blog,
-            page: page,
+            page: updatingPage,
             success: { [weak self] (themes: [Theme]?, hasMore: Bool) in
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                if let updatedThemes = themes where !updatedThemes.isEmpty {
-                    strongSelf.retiredThemes = strongSelf.retiredThemes.subtract(updatedThemes)
-                }
-                
-                if (hasMore) {
-                    strongSelf.updateThemePage(page + 1)
-                } else if !strongSelf.retiredThemes.isEmpty {
-                    let retireContext = ContextManager.sharedInstance().mainContext
-                    
-                    retireContext.performBlock {
-                        for theme in strongSelf.retiredThemes {
-                            retireContext.deleteObject(theme)
-                        }
-                        
-                        do {
-                            try retireContext.save();
-                        } catch let error as NSError {
-                            DDLogSwift.logError("Error retiring themes: \(error.localizedDescription)")
-                        }
-                    }
-                }
+                self?.updatedThemes(themes, hasMore: hasMore)
             },
             failure: { (error : NSError!) in
                 DDLogSwift.logError("Error updating themes: \(error.localizedDescription)")
             })
+    }
+ 
+    private func updatedThemes(themes: [Theme]?, hasMore: Bool) {
+        if let updatedThemes = themes where !updatedThemes.isEmpty {
+            retiredThemes = retiredThemes.subtract(updatedThemes)
+        }
+        
+        if (hasMore) {
+            updateThemePage(updatingPage + 1)
+        } else if !retiredThemes.isEmpty {
+            themeService.managedObjectContext.performBlock {
+                for theme in self.retiredThemes {
+                    self.themeService.managedObjectContext.deleteObject(theme)
+                }
+                
+                do {
+                    try self.themeService.managedObjectContext.save();
+                } catch let error as NSError {
+                    DDLogSwift.logError("Error retiring themes: \(error.localizedDescription)")
+                }
+            }
+        }
     }
     
     // MARK: - UICollectionViewController protocol UICollectionViewDataSource
