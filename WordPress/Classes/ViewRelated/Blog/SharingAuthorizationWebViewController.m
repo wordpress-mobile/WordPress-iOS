@@ -194,7 +194,13 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    [self displayLoadError:error];
+    if (self.loadingVerify && error.code == NSURLErrorCancelled) {
+        // Authenticating to Facebook and Twitter can return an false
+        // NSURLErrorCancelled (-999) error. However the connection still succeeds.
+        [self handleAuthorizationAllowed];
+        return;
+    }
+    [super webView:webView didFailLoadWithError:error];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
