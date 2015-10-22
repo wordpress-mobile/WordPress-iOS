@@ -34,9 +34,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 @interface SharingViewController () <SharingAuthorizationDelegate>
 
 @property (nonatomic, strong, readonly) Blog *blog;
-
 @property (nonatomic, strong) NSArray *publicizeServices;
-
 @property (nonatomic, strong) Publicizer *connectingService;
 @property (nonatomic, strong) Publicizer *disconnectingService;
 
@@ -75,6 +73,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     self.publicizeServices = [self.blog.publicizers sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:TRUE]]];
     [self.tableView reloadData];
 }
+
 
 #pragma mark - Table view data source
 
@@ -156,19 +155,20 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     if (publicizer.isConnected) {
         self.disconnectingService = publicizer;
         [self disconnectPublicizer:publicizer];
+
     } else {
         self.connectingService = publicizer;
         [self updateAuthorizationForPublicizer:publicizer];
     }
+
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark - Publicizer management
 
-- (void)syncConnectionsWithService:(BlogService *)blogService
+- (void)syncConnections
 {
-    NSParameterAssert(blogService);
-    
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     __weak __typeof__(self) weakSelf = self;
     [blogService syncConnectionsForBlog:self.blog success:^{
         [weakSelf refreshPublicizers];
@@ -181,31 +181,28 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 - (void)connectPublicizer:(Publicizer *)publicizer
         withAuthorization:(NSNumber *)keyring
                andAccount:(NSString *)account
-               andService:(BlogService *)blogService
 {
     NSParameterAssert(publicizer);
     NSParameterAssert(keyring);
-    NSParameterAssert(blogService);
-    
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+
     __weak __typeof__(self) weakSelf = self;
     [blogService connectPublicizer:publicizer
                  withAuthorization:keyring
                         andAccount:account
                            success:^{
-        [weakSelf syncConnectionsWithService:blogService];
+        [weakSelf syncConnections];
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connect failed", @"Message to show when Publicize connect failed")];
-        [weakSelf syncConnectionsWithService:blogService];
+        [weakSelf syncConnections];
     }];
 }
 
 - (void)selectAccountFrom:(NSArray *)accounts
             forPublicizer:(Publicizer *)publicizer
-            withService:(BlogService *)blogService
 {
     NSParameterAssert([[accounts firstObject] isKindOfClass:[RemotePublicizeExternal class]]);
     NSParameterAssert(publicizer);
-    NSParameterAssert(blogService);
 
     __weak __typeof__(self) weakSelf = self;
     NSArray *accountNames = [accounts valueForKeyPath:@"name"];
@@ -218,32 +215,41 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
                                                                if (!strongSelf) {
                                                                    return;
                                                                }
-                                                               for (int accountIndex = 0; accountIndex < accounts.count; accountIndex++) {
-                                                                   if ([accountNames[accountIndex] isEqualToString:buttonTitle]) {
-                                                                       RemotePublicizeExternal *account = (RemotePublicizeExternal *)accounts[accountIndex];
-                                                                       NSString *secondaryAccount = accountIndex > 0 ? account.account : nil;
-                                                                       [strongSelf connectPublicizer:publicizer
-                                                                                   withAuthorization:account.keyring
-                                                                                          andAccount:secondaryAccount
-                                                                                          andService:blogService];
-                                                                       return;
-                                                                   }
-                                                               }
-                                                               [strongSelf refreshPublicizers];
+                                                               [strongSelf handleSelectedAccountWithName:buttonTitle
+                                                                                                    from:accounts
+                                                                                           forPublicizer:publicizer];
                                                            }];
     [actionSheet showInView:self.view];
+}
+
+
+- (void)handleSelectedAccountWithName:(NSString *)accountName
+                                 from:(NSArray *)accounts
+                        forPublicizer:(Publicizer *)publicizer
+{
+    NSArray *accountNames = [accounts valueForKeyPath:@"name"];
+    for (NSUInteger accountIndex = 0; accountIndex < accounts.count; accountIndex++) {
+        if ([accountNames[accountIndex] isEqualToString:accountName]) {
+            RemotePublicizeExternal *account = (RemotePublicizeExternal *)accounts[accountIndex];
+            NSString *secondaryAccount = accountIndex > 0 ? account.account : nil;
+            [self connectPublicizer:publicizer
+                  withAuthorization:account.keyring
+                         andAccount:secondaryAccount];
+            return;
+        }
+    }
+    [self refreshPublicizers];
 }
 
 - (void)checkAuthorizationForPublicizer:(Publicizer *)publicizer
 {
     NSParameterAssert(publicizer);
-    
+
     __weak __typeof__(self) weakSelf = self;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService checkAuthorizationForPublicizer:publicizer success:^(NSArray *accounts) {
         [weakSelf selectAccountFrom:accounts
-                      forPublicizer:publicizer
-                        withService:blogService];
+                      forPublicizer:publicizer];
     } failure:^(NSError *error) {
         if (error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
@@ -275,8 +281,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 - (void)authorize:(Publicizer *)publicizer didFailWithError:(NSError *)error
 {
     [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [self syncConnectionsWithService:blogService];
+    [self syncConnections];
 }
 
 - (void)authorizeDidCancel:(Publicizer *)publicizer
@@ -308,10 +313,10 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     __weak __typeof__(self) weakSelf = self;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService disconnectPublicizer:publicizer success:^{
-        [weakSelf syncConnectionsWithService:blogService];
+        [weakSelf syncConnections];
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
-        [weakSelf syncConnectionsWithService:blogService];
+        [weakSelf syncConnections];
     }];
 }
 
