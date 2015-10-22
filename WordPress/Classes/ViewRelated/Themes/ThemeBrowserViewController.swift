@@ -49,6 +49,21 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     private var retiredThemes = Set<Theme>()
     private var fetchAnimation = false
    
+     /**
+     *  @brief      Convenience method for browser instantiation
+     *
+     *  @param      blog     The blog to browse themes for
+     *
+     *  @returns    ThemeBrowserViewController instance
+     */
+    public class func browserWithBlog(blog: Blog) -> ThemeBrowserViewController {
+        let storyboard = UIStoryboard(name: "ThemeBrowser", bundle: nil)
+        let viewController = storyboard.instantiateInitialViewController() as! ThemeBrowserViewController
+        viewController.blog = blog
+        
+        return viewController
+    }
+    
     // MARK: - UIViewController
 
     public override func viewDidLoad() {
