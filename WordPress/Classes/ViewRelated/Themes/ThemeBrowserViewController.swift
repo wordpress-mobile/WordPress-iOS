@@ -84,9 +84,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         if let fetchedThemes = themesController.fetchedObjects as? [Theme] where !fetchedThemes.isEmpty {
             retiredThemes = retiredThemes.union(Set(fetchedThemes))
         } else {
-            fetchAnimation = true
-            let title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
-            WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self.view)
+            showFetchAnimation()
         }
         
         updateThemePage(1)
@@ -128,6 +126,21 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         }
     }
     
+    private func showFetchAnimation() {
+        if !fetchAnimation {
+            fetchAnimation = true
+            let title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
+            WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self.view)
+        }
+    }
+    
+    private func hideFetchAnimation() {
+        if fetchAnimation {
+            WPNoResultsView.removeFromView(view)
+            fetchAnimation = false
+        }
+    }
+
     // MARK: - UICollectionViewController protocol UICollectionViewDataSource
     
     public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -197,11 +210,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - NSFetchedResultsControllerDelegate
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        if fetchAnimation {
-            WPNoResultsView.removeFromView(view)
-            fetchAnimation = false
-        }
-
+        hideFetchAnimation()
         collectionView?.reloadData()
     }
     
