@@ -197,18 +197,12 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - NSFetchedResultsControllerDelegate
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        dispatch_async(dispatch_get_main_queue(), { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            if strongSelf.fetchAnimation {
-                WPNoResultsView.removeFromView(strongSelf.view)
-                strongSelf.fetchAnimation = false
-            }
+        if fetchAnimation {
+            WPNoResultsView.removeFromView(view)
+            fetchAnimation = false
+        }
 
-            strongSelf.collectionView?.reloadData()
-        })
+        collectionView?.reloadData()
     }
     
     // MARK: - Theme actions
