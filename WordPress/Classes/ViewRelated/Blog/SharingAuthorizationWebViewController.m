@@ -22,16 +22,24 @@ static NSString * const SharingAuthorizationRequest = @"action=request";
 static NSString * const SharingAuthorizationVerify = @"action=verify";
 static NSString * const SharingAuthorizationDeny = @"action=deny";
 
+// Special handling for the inconsistent way that services respond to a user's choice to decline oauth authorization.
+// Tumblr is uncooporative and doesn't respond in a way that clearly indicates failure.
+// Path does not set the action param or call the callback. It forwards to its own URL ending in /decline.
+static NSString * const SharingAuthorizationPathDecline = @"/decline";
+// LinkedIn
+static NSString * const SharingAuthorizationUserRefused = @"oauth_problem=user_refused";
+// Twitter
+static NSString * const SharingAuthorizationDenied = @"denied=";
+// Facebook and Google+
+static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied";
+
+
 @interface SharingAuthorizationWebViewController ()
 
 /**
  *	@brief	verification loading -- dismiss on completion
  */
 @property (nonatomic, assign) BOOL loadingVerify;
-/**
- *	@brief	blog a publicizer is being authorized for
- */
-@property (nonatomic, strong) Blog *blog;
 /**
  *	@brief	publicize service being authorized
  */
@@ -49,11 +57,9 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
     NSParameterAssert(blog);
     
     SharingAuthorizationWebViewController *webViewController = [[self alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-    
-    webViewController.blog = blog;
+
     webViewController.authToken = blog.authToken;
     webViewController.username = blog.usernameForSite;
-    webViewController.password = blog.password;
     webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
     webViewController.publicizer = publicizer;
     webViewController.secureInteraction = YES;
@@ -64,6 +70,14 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
     return webViewController;
 }
 
+
+#pragma mark = Lifecycle Methods
+
+- (void)dealloc
+{
+    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
+}
+
 - (void)viewDidLoad
 {
     // some services require Safari user agent to log in
@@ -72,10 +86,8 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
     [super viewDidLoad];
 }
 
-- (void)dealloc
-{
-    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
-}
+
+#pragma mark - Instance Methods
 
 - (IBAction)dismiss
 {
@@ -85,9 +97,13 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
     }
 }
 
-- (void)succeed
+- (void)handleAuthorizationAllowed
 {
+    // Note: There are situations where this can be called in error due to how
+    // individual services choose to reply to an authorization request.
+    // Delegates should expect to handle a false positive.
     [super dismiss];
+
     if ([self.delegate respondsToSelector:@selector(authorizeDidSucceed:)]) {
         [self.delegate authorizeDidSucceed:self.publicizer];
     }
@@ -100,6 +116,60 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
         [self.delegate authorize:self.publicizer didFailWithError:error];
     }
 }
+
+- (AuthorizeAction)requestedAuthorizeAction:(NSURLRequest *)request
+{
+    NSString *requested = [request.URL absoluteString];
+
+    // Path oauth declines are handled by a redirect to a path.com URL, so check this first.
+    NSRange denyRange = [requested rangeOfString:SharingAuthorizationPathDecline];
+    if (denyRange.location != NSNotFound) {
+        return AuthorizeActionDeny;
+    }
+
+    if (![requested hasPrefix:SharingAuthorizationPrefix]) {
+        return AuthorizeActionNone;
+    }
+
+    NSRange requestRange = [requested rangeOfString:SharingAuthorizationRequest];
+    if (requestRange.location != NSNotFound) {
+        return AuthorizeActionRequest;
+    }
+
+    // Check the rest of the various decline ranges
+    denyRange = [requested rangeOfString:SharingAuthorizationDeny];
+    if (denyRange.location != NSNotFound) {
+        return AuthorizeActionDeny;
+    }
+    // LinkedIn
+    denyRange = [requested rangeOfString:SharingAuthorizationUserRefused];
+    if (denyRange.location != NSNotFound) {
+        return AuthorizeActionDeny;
+    }
+    // Twitter
+    denyRange = [requested rangeOfString:SharingAuthorizationDenied];
+    if (denyRange.location != NSNotFound) {
+        return AuthorizeActionDeny;
+    }
+    // Facebook and Google+
+    denyRange = [requested rangeOfString:SharingAuthorizationAccessDenied];
+    if (denyRange.location != NSNotFound) {
+        return AuthorizeActionDeny;
+    }
+
+    // If we've made it this far and verifyRange is found then we're *probably*
+    // verifying the oauth request.  There are edge cases ( :cough: tumblr :cough: )
+    // where verification is declined and we get a false positive.
+    NSRange verifyRange = [requested rangeOfString:SharingAuthorizationVerify];
+    if (verifyRange.location != NSNotFound) {
+        return AuthorizeActionVerify;
+    }
+
+    return AuthorizeActionUnknown;
+}
+
+
+#pragma mark - WebView Delegate Methods
 
 - (BOOL)webView:(UIWebView *)webView
     shouldStartLoadWithRequest:(NSURLRequest *)request
@@ -124,47 +194,16 @@ static NSString * const SharingAuthorizationDeny = @"action=deny";
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    if (self.loadingVerify) {
-        [self succeed];
-    } else {
-        [super webView:webView didFailLoadWithError:error];
-    }
+    [self displayLoadError:error];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
     if (self.loadingVerify) {
-        [self succeed];
+        [self handleAuthorizationAllowed];
     } else {
         [super webViewDidFinishLoad:webView];
     }
 }
-
-- (AuthorizeAction)requestedAuthorizeAction:(NSURLRequest *)request
-{
-    NSString *requested = [request.URL absoluteString];
-    
-    if (![requested hasPrefix:SharingAuthorizationPrefix]) {
-        return AuthorizeActionNone;
-    }
-    
-    NSRange requestRange = [requested rangeOfString:SharingAuthorizationRequest];
-    if (requestRange.location != NSNotFound) {
-        return AuthorizeActionRequest;
-    }
-
-    NSRange verifyRange = [requested rangeOfString:SharingAuthorizationVerify];
-    if (verifyRange.location != NSNotFound) {
-        return AuthorizeActionVerify;
-    }
-
-    NSRange denyRange = [requested rangeOfString:SharingAuthorizationDeny];
-    if (denyRange.location != NSNotFound) {
-        return AuthorizeActionDeny;
-    }
-
-    return AuthorizeActionUnknown;
-}
-
 
 @end
