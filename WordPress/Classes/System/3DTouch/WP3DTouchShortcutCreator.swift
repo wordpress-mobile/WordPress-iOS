@@ -84,7 +84,7 @@ public class WP3DTouchShortcutCreator: NSObject
             visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.Notifications.rawValue])
         }
         
-        if isCurrentBlogDotComOrJetpackConnected() {
+        if doesCurrentBlogSupportStats() {
             visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.Stats.rawValue])
         }
         
@@ -104,11 +104,11 @@ public class WP3DTouchShortcutCreator: NSObject
         return accountService.defaultWordPressComAccount() != nil
     }
     
-    private func isCurrentBlogDotComOrJetpackConnected() -> Bool {
+    private func doesCurrentBlogSupportStats() -> Bool {
         guard let currentBlog = blogService.lastUsedOrFirstBlog() else {
-            return true
+            return false
         }
         
-        return hasWordPressComAccount() && ((currentBlog.jetpack != nil && currentBlog.jetpack.isConnected()) || currentBlog.isHostedAtWPcom)
+        return hasWordPressComAccount() && currentBlog.supports(BlogFeature.Stats)
     }
 }
