@@ -46,7 +46,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                  forKey:LastUsedBlogURLDefaultsKey];
     [defaults synchronize];
     
-    WP3DTouchShortcutCreator *shortcutCreator = [[WP3DTouchShortcutCreator alloc] init];
+    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
     [shortcutCreator createShortcuts:YES];
 }
 

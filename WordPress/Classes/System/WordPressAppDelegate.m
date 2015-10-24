@@ -667,7 +667,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)create3DTouchShortcutItems
 {
-    WP3DTouchShortcutCreator *shortcutCreator = [[WP3DTouchShortcutCreator alloc] init];
+    WP3DTouchShortcutCreator *shortcutCreator = [[WP3DTouchShortcutCreator new];
     [shortcutCreator createShortcuts:[self isLoggedIn]];
 }
 
