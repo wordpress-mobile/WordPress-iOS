@@ -827,20 +827,20 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatTwoFactorCodeRequested:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Two Factor - Requested Verification Code"];
             break;
-        case WPAnalyticsStat3DTouchShortcutLogInPressed:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Pressed Log In"];
+        case WPAnalyticsStat3DTouchShortcutLogIn:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Log In"];
             break;
-        case WPAnalyticsStat3DTouchShortcutNewPostPressed:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Pressed New Post"];
+        case WPAnalyticsStat3DTouchShortcutNewPost:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - New Post"];
             break;
-        case WPAnalyticsStat3DTouchShortcutNewPhotoPostPressed:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Pressed New Photo Post"];
+        case WPAnalyticsStat3DTouchShortcutNewPhotoPost:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - New Photo Post"];
             break;
-        case WPAnalyticsStat3DTouchShortcutStatsPressed:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Pressed Stats"];
+        case WPAnalyticsStat3DTouchShortcutStats:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Stats"];
             break;
-        case WPAnalyticsStat3DTouchShortcutNotificationsPressed:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Pressed Notifications"];
+        case WPAnalyticsStat3DTouchShortcutNotifications:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Notifications"];
             break;
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:

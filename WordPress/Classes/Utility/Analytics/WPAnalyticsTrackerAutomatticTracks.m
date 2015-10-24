@@ -646,20 +646,20 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatTwoFactorSentSMS:
             eventName = @"two_factor_sent_sms";
             break;
-        case WPAnalyticsStat3DTouchShortcutLogInPressed:
-            eventName = @"3d_touch_shortcut_log_in_pressed";
+        case WPAnalyticsStat3DTouchShortcutLogIn:
+            eventName = @"3d_touch_shortcut_log_in";
             break;
-        case WPAnalyticsStat3DTouchShortcutNewPostPressed:
-            eventName = @"3d_touch_shortcut_new_post_pressed";
+        case WPAnalyticsStat3DTouchShortcutNewPost:
+            eventName = @"3d_touch_shortcut_new_post";
             break;
-        case WPAnalyticsStat3DTouchShortcutNewPhotoPostPressed:
-            eventName = @"3d_touch_shortcut_new_photo_post_pressed";
+        case WPAnalyticsStat3DTouchShortcutNewPhotoPost:
+            eventName = @"3d_touch_shortcut_new_photo_post";
             break;
-        case WPAnalyticsStat3DTouchShortcutStatsPressed:
-            eventName = @"3d_touch_shortcut_stats_pressed";
+        case WPAnalyticsStat3DTouchShortcutStats:
+            eventName = @"3d_touch_shortcut_stats";
             break;
-        case WPAnalyticsStat3DTouchShortcutNotificationsPressed
-            eventName = @"3d_touch_shortcut_notifications_pressed";
+        case WPAnalyticsStat3DTouchShortcutNotifications
+            eventName = @"3d_touch_shortcut_notifications";
             break;
             
         case WPAnalyticsStatDefaultAccountChanged:
