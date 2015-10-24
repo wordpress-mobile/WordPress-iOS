@@ -31,28 +31,28 @@ public class WP3DTouchShortcutHandler: NSObject
         
         switch shortCutType {
             case ShortcutIdentifier.LogIn.type:
-                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutLogInPressed)
+                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutLogIn)
                 handled = true
                 break
             case ShortcutIdentifier.NewPost.type:
-                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutNewPostPressed)
+                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutNewPost)
                 tabBarController.showPostTabWithOptions([WPPostViewControllerOptionNotAnimated: true])
                 handled = true
                 break
             case ShortcutIdentifier.NewPhotoPost.type:
-                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutNewPhotoPostPressed)
+                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutNewPhotoPost)
                 tabBarController.showPostTabWithOptions([WPPostViewControllerOptionOpenMediaPicker: true, WPPostViewControllerOptionNotAnimated: true])
                 handled = true
                 break
             case ShortcutIdentifier.Stats.type:
-                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutStatsPressed)
+                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutStats)
                 clearCurrentViewController()
                 let blogService: BlogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
                 tabBarController.switchMySitesTabToStatsViewForBlog(blogService.lastUsedOrFirstBlog())
                 handled = true
                 break
             case ShortcutIdentifier.Notifications.type:
-                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutNotificationsPressed)
+                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutNotifications)
                 clearCurrentViewController()
                 tabBarController.showNotificationsTab()
                 handled = true
