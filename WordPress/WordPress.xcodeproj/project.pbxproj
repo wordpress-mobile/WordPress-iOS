@@ -1105,6 +1105,9 @@
 		8527B15717CE98C5001CBA2E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		852CD8AB190E0BC4006C9AED /* WPMediaSizing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMediaSizing.h; sourceTree = "<group>"; };
 		852CD8AC190E0BC4006C9AED /* WPMediaSizing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMediaSizing.m; sourceTree = "<group>"; };
+		853F91331BDEC3C40057B475 /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		853F91341BDEC3C40057B475 /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
+		853F91351BDEC3C40057B475 /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		855408851A6F105700DDBD79 /* app-review-prompt-all-enabled.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "app-review-prompt-all-enabled.json"; sourceTree = "<group>"; };
 		855408871A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "app-review-prompt-notifications-disabled.json"; sourceTree = "<group>"; };
 		855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "app-review-prompt-global-disable.json"; sourceTree = "<group>"; };
@@ -3851,6 +3854,7 @@
 				ar,
 				hr,
 				he,
+				cy,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -4780,6 +4784,7 @@
 				FFE69A291B1BFE050073C2EB /* ru */,
 				FFE69A2A1B1BFE200073C2EB /* da */,
 				FFE69A2B1B1BFE620073C2EB /* ko */,
+				853F91331BDEC3C40057B475 /* cy */,
 			);
 			name = InfoPlist.strings;
 			path = Resources;
@@ -4791,6 +4796,7 @@
 				E16AB93314D978240047A2E5 /* en */,
 				A20971B619B0BC390058F395 /* en-GB */,
 				A20971B919B0BC580058F395 /* pt-BR */,
+				853F91351BDEC3C40057B475 /* cy */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -4823,6 +4829,7 @@
 				A20971B419B0BC390058F395 /* en-GB */,
 				A20971B719B0BC570058F395 /* pt-BR */,
 				E16228C91B0C7A090048DA91 /* ar */,
+				853F91341BDEC3C40057B475 /* cy */,
 			);
 			name = Localizable.strings;
 			path = Resources;
