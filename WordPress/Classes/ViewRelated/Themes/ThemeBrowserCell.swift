@@ -62,7 +62,6 @@ public class ThemeBrowserCell : UICollectionViewCell {
     override public func prepareForReuse() {
         super.prepareForReuse()
         theme = nil
-        activityView.stopAnimating()
     }
     
     private func refreshGUI() {
@@ -70,7 +69,7 @@ public class ThemeBrowserCell : UICollectionViewCell {
            if let imageUrl = theme.screenshotUrl where !imageUrl.isEmpty {
                 refreshScreenshotImage(imageUrl)
             } else {
-                showScreenshotPlaceholder()
+                showPlaceholder()
             }
             
             nameLabel.text = theme.name
@@ -97,27 +96,34 @@ public class ThemeBrowserCell : UICollectionViewCell {
         }
     }
     
-    private func showScreenshotPlaceholder() {
+    private func showPlaceholder() {
         imageView.contentMode = .Center
         imageView.backgroundColor = Styles.placeholderColor
         imageView.image = placeholderImage
         activityView.stopAnimating()
     }
     
+    private func showScreenshot() {
+        imageView.contentMode = .ScaleAspectFit
+        imageView.backgroundColor = UIColor.clearColor()
+        activityView.stopAnimating()
+    }
+    
     private func refreshScreenshotImage(imageUrl: String) {
         let imageUrl = NSURL(string: imageUrl)
         
-        showScreenshotPlaceholder()
+        imageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()
         imageView.downloadImage(imageUrl,
-            placeholderImage: placeholderImage,
+            placeholderImage: nil,
             success: { [weak self] (image: UIImage) in
-                self?.imageView.contentMode = .ScaleAspectFit
-                self?.imageView.backgroundColor = UIColor.clearColor()
-                self?.activityView.stopAnimating()
+                self?.showScreenshot()
         }, failure: { [weak self] (error: NSError!) in
+                if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+                    return
+                }
                 DDLogSwift.logError("Error loading theme screenshot: \(error.localizedDescription)")
-                self?.activityView.stopAnimating()
+                self?.showPlaceholder()
         })
     }
 
