@@ -1,8 +1,9 @@
 #import <UIKit/UIKit.h>
 
+@class Blog;
+
 @interface MenusViewController : UIViewController
 
-// load from nib
-+ (MenusViewController *)newMenusViewController;
+- (id)initWithBlog:(Blog *)blog;
 
 @end
