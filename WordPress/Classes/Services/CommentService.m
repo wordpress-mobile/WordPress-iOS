@@ -801,10 +801,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     if (error) {
         DDLogError(@"%@ error obtaining permanent ID for a hierarchical comment %@: %@", NSStringFromSelector(_cmd), comment, error);
     }
-
-    [self.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     return comment;
 }
