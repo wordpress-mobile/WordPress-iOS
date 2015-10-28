@@ -2,7 +2,6 @@
 #import "WPWebViewController.h"
 #import "CommentService.h"
 #import "ContextManager.h"
-#import "UIAlertView+Blocks.h"
 #import "WordPress-Swift.h"
 #import "UIActionSheet+Helpers.h"
 #import "Comment.h"
