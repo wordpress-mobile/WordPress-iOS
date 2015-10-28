@@ -64,16 +64,6 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         }
     }
 
-    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "ShowPerson" {
-            let indexPath = tableView.indexPathForSelectedRow!
-            let person = personAtIndexPath(indexPath)
-            let controller = segue.destinationViewController as! PersonViewController
-            controller.blog = blog
-            controller.personID = person.ID
-        }
-    }
-
     private func personAtIndexPath(indexPath: NSIndexPath) -> Person {
         let managedPerson = resultsController.objectAtIndexPath(indexPath) as! ManagedPerson
         let person = Person(managedPerson: managedPerson)
