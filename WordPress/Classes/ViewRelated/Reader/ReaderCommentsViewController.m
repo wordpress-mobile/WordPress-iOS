@@ -12,7 +12,6 @@
 #import "ReaderPostService.h"
 #import "ReaderPostHeaderView.h"
 #import "ReaderPostDetailViewController.h"
-#import "UIAlertView+Blocks.h"
 #import "UIView+Subviews.h"
 #import "WPAvatarSource.h"
 #import "WPNoResultsView.h"

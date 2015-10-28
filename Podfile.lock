@@ -138,15 +138,13 @@ PODS:
   - Simperium/SSKeychain (0.8.3)
   - Specta (1.0.3)
   - SVProgressHUD (1.1.3)
-  - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.5)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-iOS-Editor (0.8.1):
+  - WordPress-iOS-Editor (1.0):
     - CocoaLumberjack (= 2.0.0)
     - NSObject-SafeExpectations (~> 0.0.2)
-    - UIAlertView+Blocks (~> 0.8.1)
-    - WordPress-iOS-Shared (~> 0.3)
-    - WordPressCom-Analytics-iOS (~> 0.0.30)
+    - WordPress-iOS-Shared (~> 0.4.4)
+    - WordPressCom-Analytics-iOS (~> 0.0.38)
   - WordPress-iOS-Shared (0.4.4):
     - AFNetworking (~> 2.5)
     - CocoaLumberjack (= 2.0.0)
@@ -199,7 +197,7 @@ DEPENDENCIES:
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
   - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`,
-    commit `1b614724fbc005be4346c7870498658c8b537267`)
+    commit `34d484172a4e4f5013289023468098fb8764d2c7`)
   - WordPress-iOS-Shared (= 0.4.4)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
   - WordPressCom-Analytics-iOS (= 0.0.38)
@@ -223,7 +221,7 @@ EXTERNAL SOURCES:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 1b614724fbc005be4346c7870498658c8b537267
+    :commit: 34d484172a4e4f5013289023468098fb8764d2c7
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
@@ -242,7 +240,7 @@ CHECKOUT OPTIONS:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 1b614724fbc005be4346c7870498658c8b537267
+    :commit: 34d484172a4e4f5013289023468098fb8764d2c7
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressApi:
     :commit: 4bc8da6f5ec461cb980170a14d8b149c59d847b5
@@ -279,10 +277,9 @@ SPEC CHECKSUMS:
   Simperium: 7a2d7e5ac67526477084a35a5ef9a77b6423b1ac
   Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
-  UIAlertView+Blocks: 45c3d3b7194906702d3e9a14c7ece5581505646d
   UIDeviceIdentifier: f7b32c087f4d4957badbb6181a4c78520c5806ae
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
-  WordPress-iOS-Editor: 81d1f10e548c9fabd2ea99dbf0bcfa0669078667
+  WordPress-iOS-Editor: 5077745deb77e472cae796a6b38d1abcd627709c
   WordPress-iOS-Shared: 345f7c1c49d298114353c3856c53317f0d826078
   WordPressApi: cb145d3c92ed54d4dbe70108d15f17ce3da3ad5d
   WordPressCom-Analytics-iOS: 79bb95bf36a152caea98c0ad9cef6fa679174524

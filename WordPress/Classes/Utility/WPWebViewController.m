@@ -9,7 +9,6 @@
 #import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
-#import "UIAlertView+Blocks.h"
 #import "UIImage+Util.h"
 #import "WPStyleGuide+WebView.h"
 #import "WordPress-Swift.h"
