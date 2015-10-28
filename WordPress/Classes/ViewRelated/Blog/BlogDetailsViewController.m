@@ -39,8 +39,13 @@ const NSInteger BlogDetailsRowStats = 2;
 const NSInteger BlogDetailsRowBlogPosts = 0;
 const NSInteger BlogDetailsRowPages = 1;
 const NSInteger BlogDetailsRowComments = 2;
+#ifdef WP_PEOPLE_ENABLED
 const NSInteger BlogDetailsRowPeople = 0;
 const NSInteger BlogDetailsRowEditSite = 1;
+#else
+const NSInteger BlogDetailsRowPeople = -1;
+const NSInteger BlogDetailsRowEditSite = 0;
+#endif
 
 typedef NS_ENUM(NSInteger, TableSectionContentType) {
     TableViewSectionGeneralType = 0,
@@ -59,7 +64,11 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 NSInteger const BlogDetailsRowCountForSectionGeneralType = 3;
 NSInteger const BlogDetailsRowCountForSectionPublishType = 3;
 NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
+#ifdef WP_PEOPLE_ENABLED
 NSInteger const BlogDetailsRowCountForSectionConfigurationType = 2;
+#else
+NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
+#endif
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate>
 
