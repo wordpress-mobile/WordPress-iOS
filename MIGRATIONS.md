@@ -9,6 +9,7 @@ data model as well as any custom migrations.
 - `Blog` added a new boolean attribute called `relatedPostsEnabled` to store the related setting on the site;
 - `Blog` added a new boolean attribute called `relatedPostsShowHeadline` to store the related setting on the site;
 - `Blog` added a new boolean attribute called `relatedPostsShowThumbnails` to store the related setting on the site;
+- Added new entity `Person`
 
 ## WordPress 38 (@sergioestevao 2015-08-21)
 

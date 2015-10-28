@@ -31,6 +31,7 @@
 #import "PageListViewController.h"
 #import "WPThemeSettings.h"
 #import "WPGUIConstants.h"
+#import "WordPress-Swift.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
 const NSInteger BlogDetailsRowViewAdmin = 1;
@@ -38,7 +39,8 @@ const NSInteger BlogDetailsRowStats = 2;
 const NSInteger BlogDetailsRowBlogPosts = 0;
 const NSInteger BlogDetailsRowPages = 1;
 const NSInteger BlogDetailsRowComments = 2;
-const NSInteger BlogDetailsRowEditSite = 0;
+const NSInteger BlogDetailsRowPeople = 0;
+const NSInteger BlogDetailsRowEditSite = 1;
 
 typedef NS_ENUM(NSInteger, TableSectionContentType) {
     TableViewSectionGeneralType = 0,
@@ -57,7 +59,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 NSInteger const BlogDetailsRowCountForSectionGeneralType = 3;
 NSInteger const BlogDetailsRowCountForSectionPublishType = 3;
 NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
-NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
+NSInteger const BlogDetailsRowCountForSectionConfigurationType = 2;
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate>
 
@@ -306,9 +308,19 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
             cell.imageView.image = [UIImage imageNamed:@"icon-menu-theme"];
             break;
         case TableViewSectionConfigurationType:
-            cell.textLabel.text = NSLocalizedString(@"Settings", nil);
-            cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
-            break;
+            switch (indexPath.row) {
+                case BlogDetailsRowPeople:
+                    cell.textLabel.text = NSLocalizedString(@"People", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"icon-menu-people"];
+                    break;
+                case BlogDetailsRowEditSite:
+                    cell.textLabel.text = NSLocalizedString(@"Settings", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
+                    break;
+
+                default:
+                    break;
+            }
     }
 }
 
@@ -366,6 +378,9 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
             break;
         case TableViewSectionConfigurationType:
             switch (indexPath.row) {
+                case BlogDetailsRowPeople:
+                    [self showPeopleForBlog:self.blog];
+                    break;
                 case BlogDetailsRowEditSite:
                     [self showSettingsForBlog:self.blog];
                     break;
@@ -444,6 +459,14 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 {
     [WPAnalytics track:WPAnalyticsStatOpenedPages];
     PageListViewController *controller = [PageListViewController controllerWithBlog:blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showPeopleForBlog:(Blog *)blog
+{
+    // TODO: add analytics
+    PeopleViewController *controller = [[UIStoryboard storyboardWithName:@"People" bundle:nil] instantiateInitialViewController];
+    controller.blog = blog;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
