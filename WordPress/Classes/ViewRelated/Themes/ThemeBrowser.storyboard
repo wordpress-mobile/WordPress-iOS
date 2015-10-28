@@ -17,7 +17,7 @@
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="16" minimumInteritemSpacing="16" id="zdl-yg-1wZ">
                             <size key="itemSize" width="250" height="241"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="50" height="50"/>
                             <inset key="sectionInset" minX="16" minY="16" maxX="16" maxY="16"/>
                         </collectionViewFlowLayout>
                         <cells>
@@ -122,6 +122,21 @@
                             <autoresizingMask key="autoresizingMask"/>
                             <animations/>
                         </collectionReusableView>
+                        <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="ThemeBrowserFooterView" id="Mhx-tS-Lea" userLabel="ThemeBrowserFooterView">
+                            <rect key="frame" x="0.0" y="273" width="600" height="50"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Va9-Te-cqS">
+                                    <rect key="frame" x="290" y="15" width="20" height="20"/>
+                                    <animations/>
+                                </activityIndicatorView>
+                            </subviews>
+                            <animations/>
+                            <constraints>
+                                <constraint firstItem="Va9-Te-cqS" firstAttribute="centerY" secondItem="Mhx-tS-Lea" secondAttribute="centerY" id="Pwn-De-Ysj"/>
+                                <constraint firstItem="Va9-Te-cqS" firstAttribute="centerX" secondItem="Mhx-tS-Lea" secondAttribute="centerX" id="sJU-xu-vLj"/>
+                            </constraints>
+                        </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="1cE-e6-chL" id="ZEQ-Dn-9xn"/>
                             <outlet property="delegate" destination="1cE-e6-chL" id="IfJ-dN-Ikk"/>
@@ -133,7 +148,7 @@
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cg4-3N-zhy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="253" y="249"/>
+            <point key="canvasLocation" x="154" y="253"/>
         </scene>
     </scenes>
 </document>
