@@ -64,15 +64,9 @@ public class PersonViewController: UITableViewController, NSFetchedResultsContro
     }
 
     func setAvatarURL(avatarURL: NSURL?) {
+        let gravatar = avatarURL.flatMap { Gravatar($0) }
         let placeholder = UIImage(named: "gravatar")!
-        if let avatarURL = avatarURL {
-            let size = headerAvatarImageView.frame.width * headerAvatarImageView.contentScaleFactor
-            let scaledURL = avatarURL.patchGravatarUrlWithSize(size)
-
-            headerAvatarImageView.setImageWithURL(scaledURL, placeholderImage: placeholder)
-        } else {
-            headerAvatarImageView.image = placeholder
-        }
+        headerAvatarImageView.downloadGravatar(gravatar, placeholder: placeholder, animate: false)
     }
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {

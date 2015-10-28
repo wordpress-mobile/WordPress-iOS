@@ -23,15 +23,9 @@ class PeopleCell: UITableViewCell {
     }
 
     func setAvatarURL(avatarURL: NSURL?) {
+        let gravatar = avatarURL.flatMap { Gravatar($0) }
         let placeholder = UIImage(named: "gravatar")!
-        if let avatarURL = avatarURL {
-            let size = avatarImageView.frame.width * avatarImageView.contentScaleFactor
-            let scaledURL = avatarURL.patchGravatarUrlWithSize(size)
-
-            avatarImageView.setImageWithURL(scaledURL, placeholderImage: placeholder)
-        } else {
-            avatarImageView.image = placeholder
-        }
+        avatarImageView.downloadGravatar(gravatar, placeholder: placeholder, animate: false)
     }
 
     /*
