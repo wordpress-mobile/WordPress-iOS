@@ -62,7 +62,54 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
           }];
 }
 
+- (void)updateBlogsVisibility:(NSDictionary *)blogs
+                      success:(void (^)())success
+                      failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([blogs isKindOfClass:[NSDictionary class]]);
 
+    /*
+     The `POST me/sites` endpoint expects it's input in a format like:
+     @{
+       @"sites": @[
+         @"1234": {
+           @"visible": @YES
+         },
+         @"2345": {
+           @"visible": @NO
+         },
+       ]
+     }
+     */
+    NSMutableDictionary *sites = [NSMutableDictionary dictionaryWithCapacity:blogs.count];
+    [blogs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        NSParameterAssert([key isKindOfClass:[NSNumber class]]);
+        NSParameterAssert([obj isKindOfClass:[NSNumber class]]);
+        /*
+         Blog IDs are pased as strings because JSON dictionaries can't take
+         non-string keys. If you try, you get a NSInvalidArgumentException
+         */
+        NSString *blogID = [key stringValue];
+        sites[blogID] = @{ @"visible": obj };
+    }];
+
+    NSDictionary *parameters = @{
+                                 @"sites": sites,
+                                 };
+    NSString *path = [self pathForEndpoint:@"me/sites"
+                               withVersion:ServiceRemoteRESTApiVersion_1_1];
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
 
 #pragma mark - Private Methods
 
@@ -103,6 +150,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
     blog.jetpack = [[jsonBlog numberForKey:@"jetpack"] boolValue];
     blog.icon = [jsonBlog stringForKeyPath:@"icon.img"];
     blog.isAdmin = [[jsonBlog numberForKeyPath:@"capabilities.manage_options"] boolValue];
+    blog.visible = [[jsonBlog numberForKey:@"visible"] boolValue];
     return blog;
 }
 

@@ -20,7 +20,11 @@ public class ThemeBrowserCell : UICollectionViewCell {
     
     private var placeholderImage = UIImage(named: "theme-loading")
     
-    // MARK: - GUI
+    // MARK: - Private Aliases
+    
+    private typealias Styles = WPStyleGuide.Themes
+    
+   // MARK: - GUI
     
     /**
     @brief Calculates cell height fitting a given width
@@ -30,8 +34,8 @@ public class ThemeBrowserCell : UICollectionViewCell {
     */
     public class func heightForWidth(width: CGFloat) -> CGFloat {
         
-        let imageHeight = (width - WPStyleGuide.Themes.cellImageInset) * WPStyleGuide.Themes.cellImageRatio
-        let height = imageHeight + WPStyleGuide.Themes.cellInfoBarHeight
+        let imageHeight = (width - Styles.cellImageInset) * Styles.cellImageRatio
+        let height = imageHeight + Styles.cellInfoBarHeight
         
         return height
     }
@@ -48,17 +52,16 @@ public class ThemeBrowserCell : UICollectionViewCell {
     override public func awakeFromNib() {
         super.awakeFromNib()
         
-        nameLabel.font = WPStyleGuide.Themes.cellNameFont
-        infoLabel.font = WPStyleGuide.Themes.cellInfoFont
+        nameLabel.font = Styles.cellNameFont
+        infoLabel.font = Styles.cellInfoFont
         
-        layer.borderColor = WPStyleGuide.Themes.borderColor.CGColor
+        layer.borderColor = Styles.borderColor.CGColor
         layer.borderWidth = 1
     }
     
     override public func prepareForReuse() {
         super.prepareForReuse()
         theme = nil
-        activityView.stopAnimating()
     }
     
     private func refreshGUI() {
@@ -66,20 +69,20 @@ public class ThemeBrowserCell : UICollectionViewCell {
            if let imageUrl = theme.screenshotUrl where !imageUrl.isEmpty {
                 refreshScreenshotImage(imageUrl)
             } else {
-                showScreenshotPlaceholder()
+                showPlaceholder()
             }
             
             nameLabel.text = theme.name
             if theme.isCurrentTheme() {
-                backgroundColor = WPStyleGuide.Themes.activeCellBackgroundColor
-                nameLabel.textColor = WPStyleGuide.Themes.activeCellNameColor
-                infoLabel.textColor = WPStyleGuide.Themes.activeCellInfoColor
+                backgroundColor = Styles.activeCellBackgroundColor
+                nameLabel.textColor = Styles.activeCellNameColor
+                infoLabel.textColor = Styles.activeCellInfoColor
                 infoLabel.text = NSLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
             } else {
-                backgroundColor = WPStyleGuide.Themes.inactiveCellBackgroundColor
-                nameLabel.textColor = WPStyleGuide.Themes.inactiveCellNameColor
+                backgroundColor = Styles.inactiveCellBackgroundColor
+                nameLabel.textColor = Styles.inactiveCellNameColor
                 if theme.isPremium() {
-                    infoLabel.textColor = WPStyleGuide.Themes.inactiveCellPriceColor
+                    infoLabel.textColor = Styles.inactiveCellPriceColor
                     infoLabel.text = theme.price
                 } else {
                     infoLabel.text = nil
@@ -93,33 +96,41 @@ public class ThemeBrowserCell : UICollectionViewCell {
         }
     }
     
-    private func showScreenshotPlaceholder() {
+    private func showPlaceholder() {
         imageView.contentMode = .Center
-        imageView.backgroundColor = WPStyleGuide.Themes.placeholderColor
+        imageView.backgroundColor = Styles.placeholderColor
         imageView.image = placeholderImage
+        activityView.stopAnimating()
+    }
+    
+    private func showScreenshot() {
+        imageView.contentMode = .ScaleAspectFit
+        imageView.backgroundColor = UIColor.clearColor()
         activityView.stopAnimating()
     }
     
     private func refreshScreenshotImage(imageUrl: String) {
         let imageUrl = NSURL(string: imageUrl)
         
-        showScreenshotPlaceholder()
+        imageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()
         imageView.downloadImage(imageUrl,
-            placeholderImage: placeholderImage,
+            placeholderImage: nil,
             success: { [weak self] (image: UIImage) in
-                self?.imageView.contentMode = .ScaleAspectFit
-                self?.imageView.backgroundColor = UIColor.clearColor()
-                self?.activityView.stopAnimating()
+                self?.showScreenshot()
         }, failure: { [weak self] (error: NSError!) in
+                if error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+                    return
+                }
                 DDLogSwift.logError("Error loading theme screenshot: \(error.localizedDescription)")
-                self?.activityView.stopAnimating()
+                self?.showPlaceholder()
         })
     }
 
     // MARK: - Actions
     
     @IBAction private func didTapActionButton(sender: UIButton) {
+        // TODO: Implement as per issue #3906
     }
-    
+
 }
