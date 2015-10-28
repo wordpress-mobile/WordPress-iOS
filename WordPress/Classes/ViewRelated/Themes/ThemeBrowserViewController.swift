@@ -7,7 +7,7 @@ public protocol ThemePresenter {
     func presentSupportForTheme(theme: Theme?)
 }
 
-public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchBarDelegate, ThemePresenter {
+@objc public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchBarDelegate, ThemePresenter, WPContentSyncHelperDelegate {
     
     // MARK: - Properties: must be set by parent
     
@@ -30,7 +30,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         let sort = NSSortDescriptor(key: "order", ascending: true)
         fetchRequest.sortDescriptors = [sort]
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
-            managedObjectContext: self.managedObjectContext,
+            managedObjectContext: self.themeService.managedObjectContext,
             sectionNameKeyPath: nil,
             cacheName: nil)
         frc.delegate = self
@@ -43,19 +43,42 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         
         return frc
     }()
-    
+    private var themesCount: NSInteger {
+        return themesController.fetchedObjects?.count ?? 0
+    }
+	private var isEmpty: Bool {
+        return themesCount == 0
+    }
+
+   
     /**
      *  @brief      The themes service we'll use in this VC and its helpers
      */
-    private lazy var themeService : ThemeService = {
-        ThemeService(managedObjectContext: self.managedObjectContext)
-    }()
-    private lazy var managedObjectContext = {
-        ContextManager.sharedInstance().mainContext
-    }()
-    private var retiredThemes = Set<Theme>()
+    private let themeService = ThemeService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+    private var syncHelper: WPContentSyncHelper!
+    private var syncingPage = 0
+    private let syncPadding = 5
     private var fetchAnimation = false
-   
+    
+    // MARK: - Private Aliases
+    
+    private typealias Styles = WPStyleGuide.Themes
+    
+     /**
+     *  @brief      Convenience method for browser instantiation
+     *
+     *  @param      blog     The blog to browse themes for
+     *
+     *  @returns    ThemeBrowserViewController instance
+     */
+    public class func browserWithBlog(blog: Blog) -> ThemeBrowserViewController {
+        let storyboard = UIStoryboard(name: "ThemeBrowser", bundle: nil)
+        let viewController = storyboard.instantiateInitialViewController() as! ThemeBrowserViewController
+        viewController.blog = blog
+        
+        return viewController
+    }
+    
     // MARK: - UIViewController
 
     public override func viewDidLoad() {
@@ -65,7 +88,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         
         WPStyleGuide.configureColorsForView(view, collectionView:collectionView)
         
-        updateThemes()
+        setupSyncHelper()
     }
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -74,54 +97,41 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         collectionView?.collectionViewLayout.invalidateLayout()
     }
 
-    // MARK: - Updating the list of themes
+    // MARK: - Syncing the list of themes
     
-    private func updateThemes() {
-        if let fetchedThemes = themesController.fetchedObjects as? [Theme] where !fetchedThemes.isEmpty {
-            retiredThemes = retiredThemes.union(Set(fetchedThemes))
-        } else {
-            fetchAnimation = true
-            let title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
-            WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self.view)
-        }
+    private func setupSyncHelper() {
+        syncHelper = WPContentSyncHelper()
+        syncHelper.delegate = self
         
-        updateThemePage(1)
+        showFetchAnimationIfEmpty()
+        syncHelper.syncContent()
     }
-
-    private func updateThemePage(page: NSInteger) {
+    
+    private func syncMoreIfNeeded(themeIndex: NSInteger) {
+        let paddedCount = themeIndex + syncPadding
+        if paddedCount >= themesCount && syncHelper.hasMoreContent {
+            showFetchAnimationIfEmpty()
+            syncHelper.syncMoreContent()
+        }
+    }
+    
+    private func syncThemePage(page: NSInteger, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
         assert(page > 0)
         
+        syncingPage = page
         themeService.getThemesForBlog(blog,
-            page: page,
-            success: { [weak self] (themes: [Theme]?, hasMore: Bool) in
-                guard let strongSelf = self else {
-                    return
-                }
-                
-                if let updatedThemes = themes where !updatedThemes.isEmpty {
-                    strongSelf.retiredThemes = strongSelf.retiredThemes.subtract(updatedThemes)
-                }
-                
-                if (hasMore) {
-                    strongSelf.updateThemePage(page + 1)
-                } else if !strongSelf.retiredThemes.isEmpty {
-                    let retireContext = strongSelf.managedObjectContext
-                    
-                    retireContext.performBlock {
-                        for theme in strongSelf.retiredThemes {
-                            retireContext.deleteObject(theme)
-                        }
-                        
-                        do {
-                            try retireContext.save();
-                        } catch let error as NSError {
-                            DDLogSwift.logError("Error retiring themes: \(error.localizedDescription)")
-                        }
-                    }
+            page: syncingPage,
+            sync: page == 1,
+            success: {(themes: [Theme]?, hasMore: Bool) in
+                if let success = success {
+                    success(hasMore: hasMore)
                 }
             },
             failure: { (error : NSError!) in
-                DDLogSwift.logError("Error updating themes: \(error.localizedDescription)")
+                DDLogSwift.logError("Error syncing themes: \(error.localizedDescription)")
+                if let failure = failure {
+                    failure(error: error)
+                }
             })
     }
     
@@ -139,15 +149,44 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         return nil
     }
     
-    private func isEmpty() -> Bool {
-        let themeCount = collectionView(collectionView!, numberOfItemsInSection: 0)
-        return themeCount == 0
+    private func showFetchAnimationIfEmpty() {
+        if isEmpty {
+            fetchAnimation = true
+            let title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
+            WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self.view)
+        }
+    }
+    
+    private func hideFetchAnimation() {
+        if fetchAnimation {
+            WPNoResultsView.removeFromView(view)
+            fetchAnimation = false
+        }
     }
 
+    // MARK: - WPContentSyncHelperDelegate
+    
+    func syncHelper(syncHelper:WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {        
+        syncThemePage(1, success: success, failure: failure)
+    }
+    
+    func syncHelper(syncHelper:WPContentSyncHelper, syncMoreWithSuccess success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
+        let nextPage = syncingPage + 1
+        syncThemePage(nextPage, success: success, failure: failure)
+    }
+    
+    func syncContentEnded() {
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    func hasNoMoreContent() {
+        syncingPage = 0
+    }
+    
     // MARK: - UICollectionViewController protocol UICollectionViewDataSource
     
     public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return themesController.fetchedObjects?.count ?? 0
+        return themesCount
     }
     
     public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> ThemeBrowserCell {
@@ -156,15 +195,23 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         
         cell.theme = theme
         
+        syncMoreIfNeeded(indexPath.row)
+        
         return cell
     }
     
     public override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-        
-        let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: ThemeBrowserHeaderView.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserHeaderView
-        header.configureWithTheme(currentTheme(), presenter: self)
-        
-        return header
+        switch kind {
+        case UICollectionElementKindSectionHeader:
+            let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ThemeBrowserHeaderView", forIndexPath: indexPath) as! ThemeBrowserHeaderView
+            header.configureWithTheme(currentTheme(), presenter: self)
+            return header
+        case UICollectionElementKindSectionFooter:
+            let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ThemeBrowserFooterView", forIndexPath: indexPath)
+            return footer
+        default:
+            assert(false, "Unexpected theme browser element \(kind)")
+        }
     }
     
     public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
@@ -183,7 +230,7 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  referenceSizeForHeaderInSection section:NSInteger) -> CGSize {
         
-        guard !isEmpty() else {
+        guard !isEmpty else {
             return CGSize.zero
         }
         
@@ -199,6 +246,15 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
         return CGSize(width: width, height: ThemeBrowserCell.heightForWidth(width))
     }
     
+    public func collectionView(collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForFooterInSection section: Int) -> CGSize {
+            guard syncHelper.isLoadingMore else {
+                return CGSize.zero
+            }
+            return CGSize(width: 0, height: Styles.footerHeight)
+    }
+    
     // MARK: - Layout calculation helper methods
     
     /**
@@ -209,9 +265,9 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
      *  @returns    The requested cell width.
      */
     private func cellWidthForFrameWidth(parentViewWidth : CGFloat) -> CGFloat {
-        let numberOfColumns = max(1, trunc(parentViewWidth / WPStyleGuide.Themes.minimumColumnWidth))
+        let numberOfColumns = max(1, trunc(parentViewWidth / Styles.minimumColumnWidth))
         let numberOfMargins = numberOfColumns + 1
-        let marginsWidth = numberOfMargins * WPStyleGuide.Themes.columnMargin
+        let marginsWidth = numberOfMargins * Styles.columnMargin
         let columnsWidth = parentViewWidth - marginsWidth
         let columnWidth = trunc(columnsWidth / numberOfColumns)
         
@@ -227,18 +283,8 @@ public class ThemeBrowserViewController : UICollectionViewController, UICollecti
     // MARK: - NSFetchedResultsControllerDelegate
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        dispatch_async(dispatch_get_main_queue(), { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            if strongSelf.fetchAnimation {
-                WPNoResultsView.removeFromView(strongSelf.view)
-                strongSelf.fetchAnimation = false
-            }
-
-            strongSelf.collectionView?.reloadData()
-        })
+        hideFetchAnimation()
+        collectionView?.reloadData()
     }
     
     // MARK: - ThemePresenter
