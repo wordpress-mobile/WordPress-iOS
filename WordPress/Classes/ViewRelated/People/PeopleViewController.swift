@@ -27,8 +27,13 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         let viewModel = PeopleCellViewModel(person: person)
 
         cell.bindViewModel(viewModel)
-        
+
         return cell
+    }
+
+    // Temporarily disable row selection until detail view is ready
+    override public func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        return nil
     }
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
