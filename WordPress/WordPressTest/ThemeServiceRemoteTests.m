@@ -16,7 +16,7 @@ typedef void (^RequestFailureBlock)(AFHTTPRequestOperation *, NSError *);
 static const NSInteger InvocationFirstParameterIndex = 2;
 
 // JSON files
-static NSString* const ThemeServiceRemoteTestGetMultipleThemesJson = @"get-multiple-themes-v1.1";
+static NSString* const ThemeServiceRemoteTestGetMultipleThemesJson = @"get-multiple-themes-v1.2";
 static NSString* const ThemeServiceRemoteTestGetPurchasedThemesJson = @"get-purchased-themes-v1.1";
 static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-theme-v1.1";
 
@@ -184,14 +184,15 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
 
-    static NSString* const url = @"v1.1/themes";
+    static NSString* const url = @"v1.2/themes";
+    static NSInteger const expectedThemes = 20;
 
-    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray *themes) {
-        NSCAssert([themes count] > 0, @"Expected themes to be returned");
+    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL hasMore) {
+        NSCAssert([themes count] == expectedThemes, @"Expected %ld themes to be returned", expectedThemes);
     };
     
     [OCMStub([api GET:[OCMArg isEqual:url]
-           parameters:[OCMArg isNil]
+           parameters:[OCMArg isNotNil]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]) andDo:^(NSInvocation *invocation) {
 
@@ -211,25 +212,26 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
     }];
 
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
-    XCTAssertNoThrow([service getThemes:successBlock
-                                failure:nil]);
+    XCTAssertNoThrow([service getThemesPage:1
+                                    success:successBlock
+                                    failure:nil]);
 }
 
 - (void)testThatGetThemesForBlogIdWorks
 {
     NSNumber *blogId = @124;
     
-    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray *themes) {
+    ThemeServiceRemoteThemesRequestSuccessBlock successBlock = ^void (NSArray<RemoteTheme *> *themes, BOOL hasMore) {
         NSCAssert([themes count] > 0, @"Expected themes to be returned");
     };
     
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeServiceRemote *service = nil;
 
-    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/themes", blogId];
+    NSString *url = [NSString stringWithFormat:@"v1.2/sites/%@/themes", blogId];
 
     [OCMStub([api GET:[OCMArg isEqual:url]
-           parameters:[OCMArg isNil]
+           parameters:[OCMArg isNotNil]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]) andDo:^(NSInvocation *invocation) {
         
@@ -250,6 +252,7 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
 
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
     XCTAssertNoThrow([service getThemesForBlogId:blogId
+                                            page:1
                                          success:successBlock
                                          failure:nil]);
 }
@@ -261,6 +264,7 @@ static NSString* const ThemeServiceRemoteTestGetSingleThemeJson = @"get-single-t
 
     XCTAssertNoThrow(service = [[ThemeServiceRemote alloc] initWithApi:api]);
     XCTAssertThrows([service getThemesForBlogId:nil
+                                           page:1
                                         success:nil
                                         failure:nil]);
 }

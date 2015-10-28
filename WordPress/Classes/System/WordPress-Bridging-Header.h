@@ -46,6 +46,9 @@
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"
 
+#import "Theme.h"
+#import "ThemeService.h"
+
 #import "UIAlertView+Blocks.h"
 #import "UIAlertControllerProxy.h"
 #import "UIDevice+Helpers.h"
