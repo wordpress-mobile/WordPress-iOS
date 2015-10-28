@@ -374,6 +374,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return [self blogCountWithPredicate:predicate];
 }
 
+- (NSArray *)blogsWithNoAccount
+{
+    NSPredicate *predicate = [self predicateForNoAccount];
+    return [self blogsWithPredicate:predicate];
+}
+
 - (NSArray *)blogsForAllAccounts
 {
     return [self blogsWithPredicate:nil];
@@ -485,7 +491,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     for (RemoteBlog *remoteBlog in blogs) {
         Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc
                                     inAccount:account];
-        if (!blog && account.jetpackBlogs.count > 0) {
+        if (!blog && remoteBlog.jetpack) {
             blog = [self migrateRemoteJetpackBlog:remoteBlog
                                        forAccount:account];
         }
@@ -501,6 +507,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
         blog.isAdmin = remoteBlog.isAdmin;
+        blog.visible = remoteBlog.visible;
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -511,7 +518,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 /**
- Searches for Jetpack blog on the specified account and transfers it as a WPCC blog
+ Searches for Jetpack blog that has already been added as a self hosted to the app
+ and migrates it to use Jetpack REST.
 
  When a Jetpack blog appears on the results to sync blogs, we want to see if it's
  already added in the app as a self hosted site. If that's the case, this method
@@ -521,16 +529,16 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
  but this will preserve the synced blog objects and local drafts.
 
  @param remoteBlog the RemoteBlog object with the blog details
- @param account the account in which to search for the blog
+ @param account the account that the blog should be migrated to
  @returns the migrated blog if found, or nil otherwise
  */
 - (Blog *)migrateRemoteJetpackBlog:(RemoteBlog *)remoteBlog
                         forAccount:(WPAccount *)account
 {
-    Blog *jetpackBlog = [[account.jetpackBlogs filteredSetUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        Blog *blogToTest = (Blog *)evaluatedObject;
+    NSArray *blogsWithNoAccount = [self blogsWithNoAccount];
+    Blog *jetpackBlog = [[blogsWithNoAccount wp_filter:^BOOL(Blog *blogToTest) {
         return [blogToTest.xmlrpc isEqualToString:remoteBlog.xmlrpc] && [blogToTest.dotComID isEqual:remoteBlog.ID];
-    }]] anyObject];
+    }] firstObject];
 
     if (jetpackBlog) {
         DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog hostURL], account.username);
@@ -605,6 +613,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (NSPredicate *)predicateForVisibleBlogs
 {
     return [NSPredicate predicateWithFormat:@"visible = YES"];
+}
+
+- (NSPredicate *)predicateForNoAccount
+{
+    return [NSPredicate predicateWithFormat:@"account = NULL"];
 }
 
 - (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName

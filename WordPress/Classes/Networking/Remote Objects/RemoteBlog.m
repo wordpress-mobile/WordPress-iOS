@@ -9,7 +9,8 @@
                                  @"url": self.url,
                                  @"xmlrpc": self.xmlrpc,
                                  @"jetpack": self.jetpack ? @"YES" : @"NO",
-                                 @"icon": self.icon ? self.icon : @""
+                                 @"icon": self.icon ? self.icon : @"",
+                                 @"visible": self.visible ? @"YES" : @"NO",
                                  };
     return [NSString stringWithFormat:@"<%@: %p> (%@)", NSStringFromClass([self class]), self, properties];
 }

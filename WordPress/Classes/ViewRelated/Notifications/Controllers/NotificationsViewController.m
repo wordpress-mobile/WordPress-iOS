@@ -838,7 +838,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
         [weakSelf cancelDeletionForNotificationWithID:note.objectID];
     };
 
-    [cell downloadGravatarWithURL:note.iconURL.removeGravatarFallback];
+    [cell downloadIconWithURL:note.iconURL];
 }
 
 - (NSString *)sectionNameKeyPath

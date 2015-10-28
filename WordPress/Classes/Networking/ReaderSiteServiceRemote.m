@@ -224,7 +224,7 @@ NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteE
         }
 
         BOOL follows = NO;
-        NSString *responseString = [[operation responseString] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *responseString = [[operation responseString] stringByRemovingPercentEncoding];
         if ([responseString rangeOfString:[siteURL absoluteString]].location != NSNotFound) {
             follows = YES;
         }

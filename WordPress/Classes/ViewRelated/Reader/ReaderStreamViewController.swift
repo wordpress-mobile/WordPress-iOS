@@ -1,6 +1,6 @@
 import Foundation
 
-@objc public class ReaderStreamViewController : UIViewController, UIActionSheetDelegate,
+@objc public class ReaderStreamViewController : UIViewController,
     WPContentSyncHelperDelegate,
     WPTableViewHandlerDelegate,
     ReaderPostCellDelegate,
@@ -35,7 +35,6 @@ import Foundation
     private var displayContext: NSManagedObjectContext?
     private var cleanupAndRefreshAfterScrolling = false
     private let recentlyBlockedSitePostObjectIDs = NSMutableArray()
-    private var showShareActivityAfterActionSheetIsDismissed = false
     private let frameForEmptyHeaderView = CGRect(x: 0.0, y: 0.0, width: 320.0, height: 30.0)
     private let heightForFooterView = CGFloat(34.0)
     private var isLoggedIn = false
@@ -462,26 +461,83 @@ import Foundation
         objectIDOfPostForMenu = post.objectID
         anchorViewForMenu = anchorView
 
-        // Create the action sheet.
-        let actionSheet = UIActionSheet(title: nil,
-            delegate: self,
-            cancelButtonTitle: ActionSheetButtonTitles.cancel,
-            destructiveButtonTitle: shouldShowBlockSiteMenuItem() ? ActionSheetButtonTitles.blockSite : nil
-        )
+        // Create the action sheet
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alertController.addCancelActionWithTitle(ActionSheetButtonTitles.cancel,
+            handler: { (action:UIAlertAction) in
+                self.cleanUpAfterPostMenu()
+            })
 
+        // Block button
+        if shouldShowBlockSiteMenuItem() {
+            alertController.addActionWithTitle(ActionSheetButtonTitles.blockSite,
+                style: .Destructive,
+                handler: { (action:UIAlertAction) in
+                    if let post = self.postForObjectIDOfPostForMenu() {
+                        self.blockSiteForPost(post)
+                    }
+                    self.cleanUpAfterPostMenu()
+                })
+        }
+
+        // Following
         if ReaderHelpers.topicIsFollowing(readerTopic!) {
             let buttonTitle = post.isFollowing ? ActionSheetButtonTitles.unfollow : ActionSheetButtonTitles.follow
-            actionSheet.addButtonWithTitle(buttonTitle)
+            alertController.addActionWithTitle(buttonTitle,
+                style: .Default,
+                handler: { (action:UIAlertAction) in
+                    if let post = self.postForObjectIDOfPostForMenu() {
+                        self.toggleFollowingForPost(post)
+                    }
+                    self.cleanUpAfterPostMenu()
+                })
         }
 
-        actionSheet.addButtonWithTitle(ActionSheetButtonTitles.visit)
-        actionSheet.addButtonWithTitle(ActionSheetButtonTitles.share)
+        // Visit site
+        alertController.addActionWithTitle(ActionSheetButtonTitles.visit,
+            style: .Default,
+            handler: { (action:UIAlertAction) in
+                if let post = self.postForObjectIDOfPostForMenu() {
+                    self.visitSiteForPost(post)
+                }
+                self.cleanUpAfterPostMenu()
+        })
+
+        // Share
+        alertController.addActionWithTitle(ActionSheetButtonTitles.share,
+            style: .Default,
+            handler: { (action:UIAlertAction) in
+                if let post = self.postForObjectIDOfPostForMenu() {
+                    self.sharePost(post)
+                }
+                self.cleanUpAfterPostMenu()
+        })
 
         if UIDevice.isPad() {
-            actionSheet.showFromRect(anchorViewForMenu!.bounds, inView:anchorViewForMenu!, animated:true)
+            alertController.modalPresentationStyle = .Popover
+            presentViewController(alertController, animated: true, completion: nil)
+            let presentationController = alertController.popoverPresentationController
+            presentationController?.permittedArrowDirections = .Any
+            presentationController?.sourceView = anchorViewForMenu!
+            presentationController?.sourceRect = anchorViewForMenu!.bounds
+
         } else {
-            actionSheet.showFromTabBar(tabBarController!.tabBar)
+            presentViewController(alertController, animated: true, completion: nil)
         }
+    }
+
+    private func postForObjectIDOfPostForMenu() -> ReaderPost? {
+        do {
+            return try managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!) as? ReaderPost
+        } catch let error as NSError {
+            DDLogSwift.logError(error.localizedDescription)
+            return nil
+        }
+    }
+
+    private func cleanUpAfterPostMenu() {
+        objectIDOfPostForMenu = nil
+        anchorViewForMenu = nil
     }
 
     private func sharePost(post: ReaderPost) {
@@ -497,13 +553,13 @@ import Foundation
             return
         }
 
-        // Gah! Stupid iPad and UIPopovoers!!!!
-        let popover = UIPopoverController(contentViewController: controller)
-        popover.presentPopoverFromRect(anchorViewForMenu!.bounds,
-            inView: anchorViewForMenu!,
-            permittedArrowDirections: UIPopoverArrowDirection.Unknown,
-            animated: false)
-
+        // Silly iPad popover rules.
+        controller.modalPresentationStyle = .Popover
+        presentViewController(controller, animated: true, completion: nil)
+        let presentationController = controller.popoverPresentationController
+        presentationController?.permittedArrowDirections = .Unknown
+        presentationController?.sourceView = anchorViewForMenu!
+        presentationController?.sourceRect = anchorViewForMenu!.bounds
     }
 
     private func toggleFollowingForPost(post:ReaderPost) {
@@ -526,11 +582,13 @@ import Foundation
                 SVProgressHUD.showSuccessWithStatus(successMessage)
             }, failure: { (error:NSError!) -> Void in
                 SVProgressHUD.dismiss()
-                let alertView = UIAlertView(title: errorTitle,
+
+                let cancelTitle = NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt.")
+                let alertController = UIAlertController(title: errorTitle,
                     message: errorMessage,
-                    delegate: nil,
-                    cancelButtonTitle: NSLocalizedString("OK", comment: "Text of an OK button to dismiss a prompt."))
-                alertView.show()
+                    preferredStyle: .Alert)
+                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+                alertController.presentFromRootViewController()
         })
     }
 
@@ -615,13 +673,13 @@ import Foundation
                 self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
                 self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
-                let alertView = UIAlertView(
-                    title: NSLocalizedString("Error Blocking Site", comment:"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader."),
+                let errorTitle = NSLocalizedString("Error Blocking Site", comment:"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
+                let cancelTitle = NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
+                let alertController = UIAlertController(title: errorTitle,
                     message: error.localizedDescription,
-                    delegate: nil,
-                    cancelButtonTitle: NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
-                )
-                alertView.show()
+                    preferredStyle: .Alert)
+                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+                alertController.presentFromRootViewController()
             })
     }
 
@@ -642,13 +700,13 @@ import Foundation
                 self?.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
                 self?.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Fade)
 
-                let alertView = UIAlertView(
-                    title: NSLocalizedString("Error Unblocking Site", comment:"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader."),
+                let errorTitle = NSLocalizedString("Error Unblocking Site", comment:"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
+                let cancelTitle = NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
+                let alertController = UIAlertController(title: errorTitle,
                     message: error.localizedDescription,
-                    delegate: nil,
-                    cancelButtonTitle: NSLocalizedString("OK", comment:"Text for an alert's dismissal button.")
-                )
-                alertView.show()
+                    preferredStyle: .Alert)
+                alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+                alertController.presentFromRootViewController()
             })
     }
 
@@ -707,19 +765,27 @@ import Foundation
 
     func syncFillingGap(indexPath:NSIndexPath) {
         if !canSync() {
-            UIAlertView(title: NSLocalizedString("Unable to Load Posts", comment: "Title of a prompt saying the app needs an internet connection before it can load posts"),
-                message: NSLocalizedString("Please check your internet connection and try again.", comment: "Politely asks the user to check their internet connection before trying again. "),
-                delegate: nil,
-                cancelButtonTitle: NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
-                ).show()
+            let alertTitle = NSLocalizedString("Unable to Load Posts", comment: "Title of a prompt saying the app needs an internet connection before it can load posts")
+            let alertMessage = NSLocalizedString("Please check your internet connection and try again.", comment: "Politely asks the user to check their internet connection before trying again. ")
+            let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
+            let alertController = UIAlertController(title: alertTitle,
+                message: alertMessage,
+                preferredStyle: .Alert)
+            alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+            alertController.presentFromRootViewController()
+
             return
         }
         if syncHelper.isSyncing {
-            UIAlertView(title: NSLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes."),
-                message: NSLocalizedString("Please wait til the current fetch completes.", comment: "Asks the usre to wait until the currently running fetch request completes."),
-                delegate: nil,
-                cancelButtonTitle: NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
-                ).show()
+            let alertTitle = NSLocalizedString("Busy", comment: "Title of a prompt letting the user know that they must wait until the current aciton completes.")
+            let alertMessage = NSLocalizedString("Please wait til the current fetch completes.", comment: "Asks the usre to wait until the currently running fetch request completes.")
+            let cancelTitle = NSLocalizedString("OK", comment: "Title of a button that dismisses a prompt")
+            let alertController = UIAlertController(title: alertTitle,
+                message: alertMessage,
+                preferredStyle: .Alert)
+            alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+            alertController.presentFromRootViewController()
+
             return
         }
         indexPathForGapMarker = indexPath
@@ -1059,11 +1125,11 @@ import Foundation
         let postCell = cell as! ReaderPostCardCell
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
-        let shouldLoadMedia = postCell != cellForLayout
+        let layoutOnly = postCell == cellForLayout
 
         postCell.enableLoggedInFeatures = isLoggedIn
         postCell.blogNameButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
-        postCell.configureCell(post, loadingMedia: shouldLoadMedia)
+        postCell.configureCell(post, layoutOnly: layoutOnly)
         postCell.delegate = self
     }
 
@@ -1153,57 +1219,6 @@ import Foundation
     public func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider) {
         let post = provider as! ReaderPost
         showAttributionForPost(post)
-    }
-
-
-    // MARK: - UIActionSheet Delegate Methods
-
-    public func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-        if buttonIndex == actionSheet.cancelButtonIndex {
-            return
-        }
-        if objectIDOfPostForMenu == nil {
-            return
-        }
-
-        var post: ReaderPost!
-        do {
-            post = try managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!) as! ReaderPost
-        } catch let error as NSError {
-            DDLogSwift.logError(error.localizedDescription)
-            return
-        }
-
-        if buttonIndex == actionSheet.destructiveButtonIndex {
-            blockSiteForPost(post)
-            return
-        }
-
-        let buttonTitle = actionSheet.buttonTitleAtIndex(buttonIndex)
-        if buttonTitle == ActionSheetButtonTitles.share {
-            showShareActivityAfterActionSheetIsDismissed = true
-        } else if buttonTitle == ActionSheetButtonTitles.visit {
-            visitSiteForPost(post)
-        } else if buttonTitle == ActionSheetButtonTitles.follow || buttonTitle == ActionSheetButtonTitles.unfollow {
-            toggleFollowingForPost(post)
-        }
-    }
-
-    public func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        if showShareActivityAfterActionSheetIsDismissed {
-            do {
-                let post = try managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!) as? ReaderPost
-                if let readerPost = post {
-                    sharePost(readerPost)
-                }
-            } catch let error as NSError {
-                DDLogSwift.logError(error.localizedDescription)
-            }
-        }
-
-        showShareActivityAfterActionSheetIsDismissed = false
-        objectIDOfPostForMenu = nil
-        anchorViewForMenu = nil
     }
 
 }
