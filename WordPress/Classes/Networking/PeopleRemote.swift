@@ -48,8 +48,8 @@ class PeopleRemote: ServiceRemoteREST {
             let first_name = user["first_name"] as? String
             let last_name = user["last_name"] as? String
             let avatar_URL = (user["avatar_URL"] as? String)
-                .flatMap { return NSURL(string: $0)}
-                .map({ $0.removeGravatarFallback() })
+                .flatMap { NSURL(string: $0)}
+                .flatMap { Gravatar($0)?.canonicalURL }
             let is_super_admin = user["is_super_admin"] as? Bool ?? false
             let roles = user["roles"] as? [String]
 
