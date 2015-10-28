@@ -51,6 +51,8 @@ extension WPStyleGuide
         public static let cellImageInset: CGFloat = 2
         public static let cellImageRatio: CGFloat = 0.75
         public static let cellInfoBarHeight: CGFloat = 55
+
+        public static let footerHeight: CGFloat = 50
     }
 
 }

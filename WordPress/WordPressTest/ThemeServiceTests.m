@@ -276,6 +276,7 @@
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
     XCTAssertNoThrow([service getThemesForBlog:blog
                                           page:1
+                                          sync:NO
                                        success:nil
                                        failure:nil]);
 }
@@ -288,6 +289,7 @@
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
     XCTAssertThrows([service getThemesForBlog:nil
                                          page:1
+                                         sync:NO
                                       success:nil
                                       failure:nil]);
 }
