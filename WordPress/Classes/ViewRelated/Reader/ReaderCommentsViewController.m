@@ -791,15 +791,18 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         DDLogError(@"Error sending reply: %@", error);
-        [UIAlertView showWithTitle:nil
-                           message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
-                 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                 otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                          tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                              if (buttonIndex != alertView.cancelButtonIndex) {
-                                  [weakSelf sendReplyWithNewContent:content];
-                              }
-                          }];
+
+        NSString *alertMessage = NSLocalizedString(@"There has been an unexpected error while sending your reply", nil);
+        NSString *alertCancel = NSLocalizedString(@"Cancel", @"Verb. A button label. Tapping the button dismisses a prompt.");
+        NSString *alertTryAgain = NSLocalizedString(@"Try Again", @"A button label. Tapping the re-tries an action that previously failed.");
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                 message:alertMessage
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addCancelActionWithTitle:alertCancel handler:nil];
+        [alertController addActionWithTitle:alertTryAgain style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [weakSelf sendReplyWithNewContent:content];
+        }];
+        [alertController presentFromRootViewController];
     };
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];

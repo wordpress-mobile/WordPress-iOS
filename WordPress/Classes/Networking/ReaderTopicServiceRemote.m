@@ -291,7 +291,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
         topicName = [topicName stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
     }
 
-    topicName = [topicName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    topicName = [topicName stringByRemovingPercentEncoding];
 
     return topicName;
 }

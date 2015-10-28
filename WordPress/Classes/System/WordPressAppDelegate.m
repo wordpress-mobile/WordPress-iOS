@@ -602,8 +602,8 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[UINavigationBar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
 
-    [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setBarTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setTintColor:defaultTintColor];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [MFMailComposeViewController class] ]] setBarTintColor:[UIColor whiteColor]];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [MFMailComposeViewController class] ]] setTintColor:defaultTintColor];
 
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
@@ -624,13 +624,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0], NSForegroundColorAttributeName: [WPStyleGuide allTAllShadeGrey]} forState:UIControlStateNormal];
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide wordPressBlue]} forState:UIControlStateSelected];
 
-    [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide wordPressBlue]];
-    [[UIToolbar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[UIColor darkGrayColor]];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBarTintColor:[WPStyleGuide wordPressBlue]];
+    [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[ [UIReferenceLibraryViewController class] ]] setBarTintColor:[UIColor darkGrayColor]];
     
-    [[UIToolbar appearanceWhenContainedIn:[WPEditorViewController class], nil] setBarTintColor:[UIColor whiteColor]];
+    [[UIToolbar appearanceWhenContainedInInstancesOfClasses:@[ [WPEditorViewController class] ]] setBarTintColor:[UIColor whiteColor]];
 
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide littleEddieGrey]]];
+    [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide littleEddieGrey]]];
     
     // SVProgressHUD styles    
     [SVProgressHUD setBackgroundColor:[[WPStyleGuide littleEddieGrey] colorWithAlphaComponent:0.95]];
@@ -640,11 +640,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
     
     // Media Picker styles
-    UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedIn:[WPMediaPickerViewController class], nil];
+    UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]];
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0]} forState:UIControlStateNormal];
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
-    [[UICollectionView appearanceWhenContainedIn:[WPMediaPickerViewController class],nil] setBackgroundColor:[WPStyleGuide greyLighten30]];
-    [[WPMediaCollectionViewCell appearanceWhenContainedIn:[WPMediaCollectionViewController class],nil] setBackgroundColor:[WPStyleGuide lightGrey]];
+    [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setBackgroundColor:[WPStyleGuide greyLighten30]];
+    [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaCollectionViewController class] ]] setBackgroundColor:[WPStyleGuide lightGrey]];
 }
 
 #pragma mark - Analytics
@@ -661,12 +661,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 #pragma mark - App Rating
 
 - (void)initializeAppRatingUtility
-{
-    // Dont start App Tracking if we are running the test suite
-    if ([NSProcessInfo isRunningTests]) {
-        return;
-    }
-    
+{    
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:5];
     [AppRatingUtility setSystemWideSignificantEventsCount:10];

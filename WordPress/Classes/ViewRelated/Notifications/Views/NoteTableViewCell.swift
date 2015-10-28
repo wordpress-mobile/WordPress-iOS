@@ -79,41 +79,46 @@ import Foundation
     public class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
     }
+
+    public func downloadIconWithURL(url: NSURL?) {
+        let isGravatarURL = url.map { Gravatar.isGravatarURL($0) } ?? false
+        if isGravatarURL {
+            downloadGravatarWithURL(url)
+            return
+        }
+        
+        // Handle non-gravatar images
+        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
+        iconImageView.downloadImage(url, placeholderImage: placeholderImage)
+    }
     
-    public func downloadGravatarWithURL(url: NSURL?) {
+    
+    // MARK: - Gravatar Helpers
+    private func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
         }
 
-        // Note:
-        // The backend might return the URL for "unknown@gravatar.com", which may render the placeholder.
-        // Let's intercept that scenario, and prevent a redundant download.
-        //
         let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
-        if url?.isUnknownGravatarUrl() == true {
-            iconImageView.image     = placeholderImage
+        let gravatar = url.flatMap { Gravatar($0) }
+        
+        if gravatar == nil {
+            // Note: If we've got any issues with the Gravatar instance, fallback to the placeholder, and dont'
+            // cache the URL!
+            iconImageView.image = placeholderImage
             return
         }
         
-        // Scale down Gravatar images: faster downloads!
-        if let unrawppedURL = url {
-            let size                = iconImageView.frame.width * UIScreen.mainScreen().scale
-            let scaledURL           = unrawppedURL.patchGravatarUrlWithSize(size)
-            
-            iconImageView.downloadImage(scaledURL,
-                placeholderImage: placeholderImage,
-                success         : nil,
-                failure         : { (error: NSError!) in
-                                        // Note: 
-                                        // Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
-                                        if self.gravatarURL?.isEqual(url) == true {
-                                            self.gravatarURL = nil
-                                        }
-                                  })
-        } else {
-            iconImageView.image = placeholderImage
-        }
-        
+        iconImageView.downloadGravatar(gravatar,
+            placeholder: placeholderImage,
+            animate: false,
+            failure: { (error: NSError!) in
+                // Note: Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
+                if self.gravatarURL?.isEqual(url) == true {
+                    self.gravatarURL = nil
+                }
+        })
+
         gravatarURL = url
     }
  
