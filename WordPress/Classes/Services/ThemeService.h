@@ -117,6 +117,7 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *
  *  @param      blogId      The blog to get the themes for.  Cannot be nil.
  *  @param      page        Results page to return.
+ *  @param      sync        Whether to remove unsynced results.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
@@ -124,6 +125,7 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  */
 - (NSOperation *)getThemesForBlog:(Blog *)blog
                              page:(NSInteger)page
+                             sync:(BOOL)sync
                           success:(ThemeServiceThemesRequestSuccessBlock)success
                           failure:(ThemeServiceFailureBlock)failure;
 
