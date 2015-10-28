@@ -36,17 +36,18 @@
 		00F2E3FA166EEFBE00D0527C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3653158F2D4500419A93 /* UIKit.framework */; };
 		00F2E3FB166EEFE100D0527C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3651158F2D3F00419A93 /* QuartzCore.framework */; };
 		067D911C15654CE79F0A4A29 /* libPods-WordPressTest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4972215061A4C21AD2CD5B8 /* libPods-WordPressTest.a */; };
-		08006E271BDAF00C00541FE2 /* MenusSelectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08006E261BDAF00C00541FE2 /* MenusSelectionCell.xib */; };
 		082E73B41BB341B900DA77AE /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73AA1BB341B900DA77AE /* Menu.m */; };
 		082E73B61BB341B900DA77AE /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73AE1BB341B900DA77AE /* MenuItem.m */; };
 		082E73B81BB341B900DA77AE /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73B21BB341B900DA77AE /* MenuLocation.m */; };
+		085548751BE15B9B004A1CBD /* MenuDetailsStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 085548741BE15B9B004A1CBD /* MenuDetailsStackView.m */; };
+		085548781BE15E3F004A1CBD /* MenusHeaderStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 085548771BE15E3F004A1CBD /* MenusHeaderStackView.m */; };
+		0855487B1BE163B4004A1CBD /* MenusSelectionStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0855487A1BE163B4004A1CBD /* MenusSelectionStackView.m */; };
 		086E1FE01BBB35D2002D86CA /* MenusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086E1FDF1BBB35D2002D86CA /* MenusViewController.m */; };
-		087F01D31BD9914B005B3EED /* MenusSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 087F01D11BD9914B005B3EED /* MenusSelectionCell.m */; };
 		0884D9911BB4760C001CDC7B /* RemoteMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 0884D98C1BB4760C001CDC7B /* RemoteMenu.m */; };
 		0884D9921BB4760C001CDC7B /* RemoteMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0884D98E1BB4760C001CDC7B /* RemoteMenuItem.m */; };
 		0884D9931BB4760C001CDC7B /* RemoteMenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0884D9901BB4760C001CDC7B /* RemoteMenuLocation.m */; };
 		0884D9961BB47667001CDC7B /* MenusServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 0884D9951BB47667001CDC7B /* MenusServiceRemote.m */; };
-		08906CF41BDED5D8003A7AA4 /* MenuSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08906CF31BDED5D8003A7AA4 /* MenuSelectionView.m */; };
+		08906CF41BDED5D8003A7AA4 /* MenusSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08906CF31BDED5D8003A7AA4 /* MenusSelectionView.m */; };
 		08BB107F1BB5D82100DE699D /* MenusService.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BB107E1BB5D82100DE699D /* MenusService.m */; };
 		08D6B2841BC6F4EE00BD022D /* MenusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
@@ -706,7 +707,6 @@
 
 /* Begin PBXFileReference section */
 		052EFF90F810139789A446FB /* Pods-WordPressTodayWidget.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release-internal.xcconfig"; sourceTree = "<group>"; };
-		08006E261BDAF00C00541FE2 /* MenusSelectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenusSelectionCell.xib; sourceTree = "<group>"; };
 		082E73A91BB341B900DA77AE /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
 		082E73AA1BB341B900DA77AE /* Menu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Menu.m; sourceTree = "<group>"; };
 		082E73AD1BB341B900DA77AE /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItem.h; sourceTree = "<group>"; };
@@ -714,10 +714,14 @@
 		082E73B11BB341B900DA77AE /* MenuLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLocation.h; sourceTree = "<group>"; };
 		082E73B21BB341B900DA77AE /* MenuLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuLocation.m; sourceTree = "<group>"; };
 		0838973D1BC87110009B0BB7 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
+		085548731BE15B9B004A1CBD /* MenuDetailsStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDetailsStackView.h; sourceTree = "<group>"; };
+		085548741BE15B9B004A1CBD /* MenuDetailsStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDetailsStackView.m; sourceTree = "<group>"; };
+		085548761BE15E3F004A1CBD /* MenusHeaderStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusHeaderStackView.h; sourceTree = "<group>"; };
+		085548771BE15E3F004A1CBD /* MenusHeaderStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusHeaderStackView.m; sourceTree = "<group>"; };
+		085548791BE163B4004A1CBD /* MenusSelectionStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionStackView.h; sourceTree = "<group>"; };
+		0855487A1BE163B4004A1CBD /* MenusSelectionStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionStackView.m; sourceTree = "<group>"; };
 		086E1FDE1BBB35D2002D86CA /* MenusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusViewController.h; sourceTree = "<group>"; };
 		086E1FDF1BBB35D2002D86CA /* MenusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusViewController.m; sourceTree = "<group>"; };
-		087F01D01BD9914B005B3EED /* MenusSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionCell.h; sourceTree = "<group>"; };
-		087F01D11BD9914B005B3EED /* MenusSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionCell.m; sourceTree = "<group>"; };
 		0884D98B1BB4760C001CDC7B /* RemoteMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteMenu.h; path = "Remote Objects/RemoteMenu.h"; sourceTree = "<group>"; };
 		0884D98C1BB4760C001CDC7B /* RemoteMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteMenu.m; path = "Remote Objects/RemoteMenu.m"; sourceTree = "<group>"; };
 		0884D98D1BB4760C001CDC7B /* RemoteMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteMenuItem.h; path = "Remote Objects/RemoteMenuItem.h"; sourceTree = "<group>"; };
@@ -726,8 +730,8 @@
 		0884D9901BB4760C001CDC7B /* RemoteMenuLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteMenuLocation.m; path = "Remote Objects/RemoteMenuLocation.m"; sourceTree = "<group>"; };
 		0884D9941BB47667001CDC7B /* MenusServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusServiceRemote.h; sourceTree = "<group>"; };
 		0884D9951BB47667001CDC7B /* MenusServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemote.m; sourceTree = "<group>"; };
-		08906CF21BDED5D8003A7AA4 /* MenuSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuSelectionView.h; sourceTree = "<group>"; };
-		08906CF31BDED5D8003A7AA4 /* MenuSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuSelectionView.m; sourceTree = "<group>"; };
+		08906CF21BDED5D8003A7AA4 /* MenusSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionView.h; sourceTree = "<group>"; };
+		08906CF31BDED5D8003A7AA4 /* MenusSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionView.m; sourceTree = "<group>"; };
 		08BB107D1BB5D82100DE699D /* MenusService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusService.h; sourceTree = "<group>"; };
 		08BB107E1BB5D82100DE699D /* MenusService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusService.m; sourceTree = "<group>"; };
 		08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenusViewController.xib; sourceTree = "<group>"; };
@@ -1910,9 +1914,24 @@
 		0810266D1BC322A1001E000D /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				08BA51441BC5A30E0035B4E2 /* Cells */,
+				085548721BE15B7D004A1CBD /* StackViews */,
+				08906CF21BDED5D8003A7AA4 /* MenusSelectionView.h */,
+				08906CF31BDED5D8003A7AA4 /* MenusSelectionView.m */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		085548721BE15B7D004A1CBD /* StackViews */ = {
+			isa = PBXGroup;
+			children = (
+				085548761BE15E3F004A1CBD /* MenusHeaderStackView.h */,
+				085548771BE15E3F004A1CBD /* MenusHeaderStackView.m */,
+				085548791BE163B4004A1CBD /* MenusSelectionStackView.h */,
+				0855487A1BE163B4004A1CBD /* MenusSelectionStackView.m */,
+				085548731BE15B9B004A1CBD /* MenuDetailsStackView.h */,
+				085548741BE15B9B004A1CBD /* MenuDetailsStackView.m */,
+			);
+			name = StackViews;
 			sourceTree = "<group>";
 		};
 		086E1FDD1BBB358D002D86CA /* Menus */ = {
@@ -1924,18 +1943,6 @@
 				0810266D1BC322A1001E000D /* Views */,
 			);
 			path = Menus;
-			sourceTree = "<group>";
-		};
-		08BA51441BC5A30E0035B4E2 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				087F01D01BD9914B005B3EED /* MenusSelectionCell.h */,
-				087F01D11BD9914B005B3EED /* MenusSelectionCell.m */,
-				08906CF21BDED5D8003A7AA4 /* MenuSelectionView.h */,
-				08906CF31BDED5D8003A7AA4 /* MenuSelectionView.m */,
-				08006E261BDAF00C00541FE2 /* MenusSelectionCell.xib */,
-			);
-			name = Cells;
 			sourceTree = "<group>";
 		};
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
@@ -3781,6 +3788,7 @@
 				79289B3ECCA2441197B8D7F6 /* Copy Pods Resources */,
 				E1CCFB31175D62320016BD8A /* Run Fabric/Crashlytics */,
 				93E5284E19A7741A003A1A9C /* Embed App Extensions */,
+				8907A1BF1B88436C9780D25B /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3804,6 +3812,7 @@
 				93E5283719A7741A003A1A9C /* Frameworks */,
 				93E5283819A7741A003A1A9C /* Resources */,
 				2AFAFA8761E84119A747E117 /* Copy Pods Resources */,
+				71607FCB5544862D22F6A540 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3822,6 +3831,7 @@
 				E16AB92614D978240047A2E5 /* Frameworks */,
 				E16AB92714D978240047A2E5 /* Resources */,
 				08CDD6C52F6F4CE8B478F112 /* Copy Pods Resources */,
+				91824779570E3A2EB0BAFCBC /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3843,6 +3853,7 @@
 				FFF96F7F19EBE7FB00DFC821 /* Frameworks */,
 				FFF96F8019EBE7FB00DFC821 /* Resources */,
 				BD568EA7006B338911997D59 /* Copy Pods Resources */,
+				88C2EF0E3084E2EDCE5A481E /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3982,7 +3993,6 @@
 				5D1D04751B7A50B100CDE646 /* Reader.storyboard in Resources */,
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
-				08006E271BDAF00C00541FE2 /* MenusSelectionCell.xib in Resources */,
 				B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
 				E6A3384E1BB0A50900371587 /* ReaderGapMarkerCell.xib in Resources */,
@@ -4109,6 +4119,21 @@
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		71607FCB5544862D22F6A540 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		79289B3ECCA2441197B8D7F6 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -4136,6 +4161,51 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "#!/bin/sh\nexport PATH=/opt/local/bin/:/opt/local/sbin:$PATH:/usr/local/bin:\nif [ \"${CONFIGURATION}\" != \"Release-Internal\" ]; then\nexit 0;\nfi\n\nconvertPath=`which convert`\necho ${convertPath}\nif [[ ! -f ${convertPath} || -z ${convertPath} ]]; then\necho \"warning: Skipping Icon versioning, you need to install ImageMagick and ghostscript (fonts) first, you can use brew to simplify process:\nbrew install imagemagick\nbrew install ghostscript\"\nexit 0;\nfi\n\ncommit=`git rev-parse --short HEAD`\nbranch=`git rev-parse --abbrev-ref HEAD`\nversion=`/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" \"${INFOPLIST_FILE}\"`\nbuild_num=`/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${INFOPLIST_FILE}\"`\n\nshopt -s extglob\nshopt -u extglob\ncaption=\"${version}\\n${commit}\"\necho $caption\n\nfunction abspath() { pushd . > /dev/null; if [ -d \"$1\" ]; then cd \"$1\"; dirs -l +0; else cd \"`dirname \\\"$1\\\"`\"; cur_dir=`dirs -l +0`; if [ \"$cur_dir\" == \"/\" ]; then echo \"$cur_dir`basename \\\"$1\\\"`\"; else echo \"$cur_dir/`basename \\\"$1\\\"`\"; fi; fi; popd > /dev/null; }\n\nfunction processIcon() {\n    base_file=$1\n    \n    cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}\"\n    base_path=`find . -name ${base_file}`\n    \n    real_path=$( abspath \"${base_path}\" )\n    echo \"base path ${real_path}\"\n    \n    if [[ ! -f ${base_path} || -z ${base_path} ]]; then\n    return;\n    fi\n    \n    # TODO: if they are the same we need to fix it by introducing temp\n    target_file=`basename $base_path`\n    target_path=\"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/${target_file}\"\n    \n    base_tmp_normalizedFileName=\"${base_file%.*}-normalized.${base_file##*.}\"\n    base_tmp_path=`dirname $base_path`\n    base_tmp_normalizedFilePath=\"${base_tmp_path}/${base_tmp_normalizedFileName}\"\n    \n    stored_original_file=\"${base_tmp_normalizedFilePath}-tmp\"\n    if [[ -f ${stored_original_file} ]]; then\n    echo \"found previous file at path ${stored_original_file}, using it as base\"\n    mv \"${stored_original_file}\" \"${base_path}\"\n    fi\n    \n    if [ $CONFIGURATION = \"Release\" ]; then\n    cp \"${base_path}\" \"$target_path\"\n    return 0;\n    fi\n    \n    echo \"Reverting optimized PNG to normal\"\n    # Normalize\n    echo \"xcrun -sdk iphoneos pngcrush -revert-iphone-optimizations -q ${base_path} ${base_tmp_normalizedFilePath}\"\n    xcrun -sdk iphoneos pngcrush -revert-iphone-optimizations -q \"${base_path}\" \"${base_tmp_normalizedFilePath}\"\n    \n    # move original pngcrush png to tmp file\n    echo \"moving pngcrushed png file at ${base_path} to ${stored_original_file}\"\n    #rm \"$base_path\"\n    mv \"$base_path\" \"${stored_original_file}\"\n    \n    # Rename normalized png's filename to original one\n    echo \"Moving normalized png file to original one ${base_tmp_normalizedFilePath} to ${base_path}\"\n    mv \"${base_tmp_normalizedFilePath}\" \"${base_path}\"\n    \n    width=`identify -format %w ${base_path}`\n    height=`identify -format %h ${base_path}`\n    band_height=$((($height * 33) / 100))\n    band_position=$(($height - $band_height))\n    text_position=$(($band_position - 3))\n    point_size=$(((13 * $width) / 100))\n    \n    echo \"Image dimensions ($width x $height) - band height $band_height @ $band_position - point size $point_size\"\n    \n    #\n    # blur band and text\n    #\n    convert ${base_path} -blur 10x8 /tmp/blurred.png\n    convert /tmp/blurred.png -gamma 0 -fill white -draw \"rectangle 0,$band_position,$width,$height\" /tmp/mask.png\n    convert -size ${width}x${band_height} xc:none -fill 'rgba(0,0,0,0.2)' -draw \"rectangle 0,0,$width,$band_height\" /tmp/labels-base.png\n    convert -background none -size ${width}x${band_height} -pointsize $point_size -fill white -gravity center -gravity South caption:\"$caption\" /tmp/labels.png\n    \n    convert ${base_path} /tmp/blurred.png /tmp/mask.png -composite /tmp/temp.png\n    \n    rm /tmp/blurred.png\n    rm /tmp/mask.png\n    \n    #\n    # compose final image\n    #\n    filename=New${base_file}\n    convert /tmp/temp.png /tmp/labels-base.png -geometry +0+$band_position -composite /tmp/labels.png -geometry +0+$text_position -geometry +${w}-${h} -composite \"${target_path}\"\n    \n    # clean up\n    rm /tmp/temp.png\n    rm /tmp/labels-base.png\n    rm /tmp/labels.png\n    rm $stored_original_file\n    \n    echo \"Overlayed ${target_path}\"\n}\n\nicon_count=`/usr/libexec/PlistBuddy -c \"Print CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles\" \"${CONFIGURATION_BUILD_DIR}/${INFOPLIST_PATH}\" | wc -l`\nlast_icon_index=$((${icon_count} - 2))\n\ni=0\nwhile [  $i -lt $last_icon_index ]; do\nicon=`/usr/libexec/PlistBuddy -c \"Print CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconFiles:$i\" \"${CONFIGURATION_BUILD_DIR}/${INFOPLIST_PATH}\"`\n\nif [[ $icon == *.png ]] || [[ $icon == *.PNG ]]\nthen\nprocessIcon $icon\nelse\nprocessIcon \"${icon}.png\"\nprocessIcon \"${icon}~ipad.png\"\nprocessIcon \"${icon}@2x.png\"\nprocessIcon \"${icon}@2x~ipad.png\"\nprocessIcon \"${icon}@3x.png\"\nfi\nlet i=i+1\ndone\n\n# Workaround to fix issue#16 to use wildcard * to actually find the file\n# Only 72x72 and 76x76 that we need for ipad app icons\nprocessIcon \"AppIcon72x72~ipad*\"\nprocessIcon \"AppIcon72x72@2x~ipad*\"\nprocessIcon \"AppIcon76x76~ipad*\"\nprocessIcon \"AppIcon76x76@2x~ipad*\"\nprocessIcon \"AppIcon-Internal72x72~ipad*\"\nprocessIcon \"AppIcon-Internal72x72@2x~ipad*\"\nprocessIcon \"AppIcon-Internal76x76~ipad*\"\nprocessIcon \"AppIcon-Internal76x76@2x~ipad*\"";
+		};
+		88C2EF0E3084E2EDCE5A481E /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-UITests/Pods-UITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8907A1BF1B88436C9780D25B /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		91824779570E3A2EB0BAFCBC /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		A279580D198819F50031C6A3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4414,7 +4484,7 @@
 				5D157B8C1A8AB73C003ADF4C /* ReaderSiteHeaderView.m in Sources */,
 				B587797E19B799D800E57C5A /* UIImageView+Animations.swift in Sources */,
 				5D7B414719E482C9007D9EC7 /* WPRichTextImage.swift in Sources */,
-				08906CF41BDED5D8003A7AA4 /* MenuSelectionView.m in Sources */,
+				08906CF41BDED5D8003A7AA4 /* MenusSelectionView.m in Sources */,
 				5DA912F41B03A6B300CBC13E /* AbstractPostListViewController.m in Sources */,
 				5D6C4B221B604425005E3C43 /* WPSimpleContentAttributionView.m in Sources */,
 				E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */,
@@ -4497,6 +4567,7 @@
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				5D8CBC471A6F47880081F4AE /* EditImageDetailsViewController.m in Sources */,
 				E1A6DBE219DC7D140071AC1E /* PostServiceRemoteXMLRPC.m in Sources */,
+				085548781BE15E3F004A1CBD /* MenusHeaderStackView.m in Sources */,
 				46FE8276184FD8A200535844 /* WordPressComOAuthClient.m in Sources */,
 				E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */,
 				5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */,
@@ -4599,6 +4670,7 @@
 				E61084C01B9B47BA008050C5 /* ReaderListTopic.swift in Sources */,
 				931D26FE19EDA10D00114F17 /* ALIterativeMigrator.m in Sources */,
 				E1F8E1231B0B411E0073E628 /* JetpackService.m in Sources */,
+				0855487B1BE163B4004A1CBD /* MenusSelectionStackView.m in Sources */,
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
 				5D6C4B1F1B604425005E3C43 /* WPContentAttributionView.m in Sources */,
 				5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */,
@@ -4663,7 +4735,7 @@
 				319D6E7E19E447C80013871C /* SuggestionService.m in Sources */,
 				598F86A71B67B7A000550C9C /* RemoteTheme.m in Sources */,
 				B5CEEB8E1B7920BE00E7B7B0 /* CommentsTableViewCell.swift in Sources */,
-				087F01D31BD9914B005B3EED /* MenusSelectionCell.m in Sources */,
+				085548751BE15B9B004A1CBD /* MenuDetailsStackView.m in Sources */,
 				082E73B81BB341B900DA77AE /* MenuLocation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
