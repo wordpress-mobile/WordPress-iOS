@@ -235,6 +235,7 @@
 
 - (NSOperation *)getThemesForBlog:(Blog *)blog
                              page:(NSInteger)page
+                             sync:(BOOL)sync
                           success:(ThemeServiceThemesRequestSuccessBlock)success
                           failure:(ThemeServiceFailureBlock)failure
 {
@@ -243,12 +244,19 @@
              @"Do not call this method on unsupported blogs, check with blogSupportsThemeServices first.");
     
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:blog.restApi];
+    NSMutableSet *unsyncedThemes = sync ? [NSMutableSet setWithSet:blog.themes] : nil;
     
     NSOperation *operation = [remote getThemesForBlogId:[blog dotComID]
                                                    page:page
                                                 success:^(NSArray<RemoteTheme *> *remoteThemes, BOOL hasMore) {
                                                     NSArray *themes = [self themesFromRemoteThemes:remoteThemes
                                                                                            forBlog:blog];
+                                                    if (sync) {
+                                                        [unsyncedThemes minusSet:[NSSet setWithArray:themes]];
+                                                        for (Theme *deleteTheme in unsyncedThemes) {
+                                                            [self.managedObjectContext deleteObject:deleteTheme];
+                                                        }
+                                                    }
                                                     
                                                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                                                         if (success) {
