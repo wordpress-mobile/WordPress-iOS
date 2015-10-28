@@ -56,34 +56,10 @@ import Foundation
 
     // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
-        if url == gravatarURL {
-            return
-        }
-        
-        // Note:
-        // The backend might return the URL for "unknown@gravatar.com", which may render the placeholder.
-        // Let's intercept that scenario, and prevent a redundant download.
-        //
         let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
-        if url?.isUnknownGravatarUrl() == true {
-            gravatarImageView.image = placeholderImage
-            return
-        }
-        
-        // Proceed with the real download
-        gravatarImageView.downloadImage(url,
-            placeholderImage    : placeholderImage,
-            success             : { (image: UIImage) in
-                                        self.gravatarImageView.displayImageWithFadeInAnimation(image)
-                                  },
-            failure             : { (error: NSError!) in
-                                        // Note: Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
-                                        if self.gravatarURL?.isEqual(url) == true {
-                                            self.gravatarURL = nil
-                                        }
-                                  })
-        
-        gravatarURL = url
+        let gravatar = url.flatMap { Gravatar($0) }
+
+        gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
     }
 
     public func downloadGravatarWithGravatarEmail(email: String?) {
@@ -190,9 +166,6 @@ import Foundation
     private let separatorRepliedInsets              = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
     private let gravatarPadSize                     = CGSize(width: 37.0, height: 37.0)
     
-    // MARK: - Private Properties
-    private var gravatarURL                         : NSURL?
-
     // MARK: - IBOutlets
     @IBOutlet private weak var actionsView          : UIView!
     @IBOutlet private weak var gravatarImageView    : CircularImageView!

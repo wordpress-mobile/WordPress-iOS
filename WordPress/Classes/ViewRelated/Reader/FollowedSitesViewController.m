@@ -7,6 +7,7 @@
 #import "WPTableViewCell.h"
 #import "WPTableViewHandler.h"
 #import "WPNoResultsView.h"
+#import "WordPress-Swift.h"
 
 static NSString * const SiteCellIdentifier = @"SiteCellIdentifier";
 static CGFloat const FollowSitesRowHeight = 54.0;
@@ -84,12 +85,12 @@ static CGFloat const FollowSitesRowHeight = 54.0;
 
         NSString *title = NSLocalizedString(@"Could not Unfollow Site", @"");
         NSString *description = error.localizedDescription;
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                            message:description
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", @"Label text for the close button on an alert view.")
-                                                  otherButtonTitles:nil, nil];
-        [alertView show];
+        NSString *alertCancel = NSLocalizedString(@"OK", @"Label text for the close button on an alert view.");
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:description
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addCancelActionWithTitle:alertCancel handler:nil];
+        [alertController presentFromRootViewController];
     }];
 }
 
