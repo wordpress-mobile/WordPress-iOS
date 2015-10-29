@@ -27,16 +27,32 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="MxU-jC-Ocf" customClass="MenusHeaderStackView">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="466"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Lvz-SB-8Wr" customClass="MenusSelectionStackView">
-                                            <rect key="frame" x="0.0" y="183" width="262" height="100"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="740" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Lvz-SB-8Wr" customClass="MenusSelectionStackView">
+                                            <rect key="frame" x="0.0" y="183" width="261" height="100"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uKq-W2-HUV" customClass="MenusSelectionView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="262" height="100"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="261" height="100"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="P1v-Mj-Ao7">
+                                                            <rect key="frame" x="0.0" y="0.0" width="261" height="100"/>
+                                                            <animations/>
+                                                            <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
+                                                        </stackView>
+                                                    </subviews>
                                                     <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="trailing" secondItem="P1v-Mj-Ao7" secondAttribute="trailing" id="2H1-GD-4w0"/>
                                                         <constraint firstAttribute="height" constant="100" id="AKK-YU-zzg"/>
+                                                        <constraint firstItem="P1v-Mj-Ao7" firstAttribute="height" secondItem="uKq-W2-HUV" secondAttribute="height" id="K2U-SO-MhF"/>
+                                                        <constraint firstItem="P1v-Mj-Ao7" firstAttribute="width" secondItem="uKq-W2-HUV" secondAttribute="width" id="QBV-Vr-XSe"/>
+                                                        <constraint firstAttribute="bottom" secondItem="P1v-Mj-Ao7" secondAttribute="bottom" id="dRn-ON-nrq"/>
+                                                        <constraint firstItem="P1v-Mj-Ao7" firstAttribute="top" secondItem="uKq-W2-HUV" secondAttribute="top" id="hox-w8-ts5"/>
+                                                        <constraint firstItem="P1v-Mj-Ao7" firstAttribute="leading" secondItem="uKq-W2-HUV" secondAttribute="leading" id="j6T-LJ-Eym"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <outlet property="stackView" destination="P1v-Mj-Ao7" id="Kvf-8p-NzI"/>
+                                                    </connections>
                                                 </view>
                                             </subviews>
                                             <animations/>
@@ -44,23 +60,42 @@
                                                 <outlet property="selectionView" destination="uKq-W2-HUV" id="jKW-4Q-jE8"/>
                                             </connections>
                                         </stackView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="740" verticalCompressionResistancePriority="740" text="uses" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="50" translatesAutoresizingMaskIntoConstraints="NO" id="zti-gC-KhM">
-                                            <rect key="frame" x="282" y="223" width="36" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="760" text="uses" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="50" translatesAutoresizingMaskIntoConstraints="NO" id="zti-gC-KhM">
+                                            <rect key="frame" x="281" y="223" width="38" height="21"/>
                                             <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="38" id="D9J-3A-ryX"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5V4-1N-wjI" customClass="MenusSelectionStackView">
-                                            <rect key="frame" x="338" y="183" width="262" height="100"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="740" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5V4-1N-wjI" customClass="MenusSelectionStackView">
+                                            <rect key="frame" x="339" y="183" width="261" height="100"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayP-tI-Z6q" customClass="MenusSelectionView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="262" height="100"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="261" height="100"/>
+                                                    <subviews>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZuD-DO-djQ">
+                                                            <rect key="frame" x="0.0" y="0.0" width="261" height="100"/>
+                                                            <animations/>
+                                                            <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
+                                                        </stackView>
+                                                    </subviews>
                                                     <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
+                                                        <constraint firstItem="ZuD-DO-djQ" firstAttribute="width" secondItem="ayP-tI-Z6q" secondAttribute="width" id="5YW-ck-U8d"/>
+                                                        <constraint firstItem="ZuD-DO-djQ" firstAttribute="top" secondItem="ayP-tI-Z6q" secondAttribute="top" id="IRg-X6-oMD"/>
+                                                        <constraint firstItem="ZuD-DO-djQ" firstAttribute="height" secondItem="ayP-tI-Z6q" secondAttribute="height" id="Jvg-59-QEI"/>
+                                                        <constraint firstItem="ZuD-DO-djQ" firstAttribute="leading" secondItem="ayP-tI-Z6q" secondAttribute="leading" id="Q3b-Q9-6um"/>
+                                                        <constraint firstAttribute="trailing" secondItem="ZuD-DO-djQ" secondAttribute="trailing" id="WU2-hC-nbF"/>
                                                         <constraint firstAttribute="height" constant="100" id="c7P-gN-1mJ"/>
+                                                        <constraint firstAttribute="bottom" secondItem="ZuD-DO-djQ" secondAttribute="bottom" id="fGn-DC-M5B"/>
                                                     </constraints>
+                                                    <connections>
+                                                        <outlet property="stackView" destination="ZuD-DO-djQ" id="JAR-57-0gb"/>
+                                                    </connections>
                                                 </view>
                                             </subviews>
                                             <animations/>
@@ -90,7 +125,7 @@
                                                     <rect key="frame" x="8" y="25" width="434" height="21"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MPg-Gx-Zfi">

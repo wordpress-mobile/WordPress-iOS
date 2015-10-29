@@ -24,6 +24,7 @@
 
 @interface MenusSelectionStackView ()
 
+@property (nonatomic, weak) IBOutlet MenusSelectionView *selectionView;
 @property (nonatomic, strong) NSArray *items;
 @property (nonatomic, strong) MenusSelectionItem *selectedItem;
 
@@ -35,6 +36,15 @@
 {
     self.items = items;
     self.selectedItem = selectedItem;
+    
+    if(self.selectionType == MenuSelectionTypeLocations) {
+        
+        [self.selectionView updateWithAvailableLocations:items.count selectedLocationName:selectedItem.name];
+        
+    }else if(self.selectionType == MenuSelectionTypeMenus) {
+        
+        [self.selectionView updateWithAvailableMenus:items.count selectedLocationName:selectedItem.name];
+    }
 }
 
 @end
