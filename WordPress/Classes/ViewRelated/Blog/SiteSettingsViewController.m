@@ -25,6 +25,8 @@
 #import "PostSettingsSelectionViewController.h"
 #import "BlogSiteVisibilityHelper.h"
 #import "RelatedPostsSettingsViewController.h"
+#import "WordPress-Swift.h"
+
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -55,12 +57,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionRemoveSite,
 };
 
-NS_ENUM(NSInteger, SiteSettinsAlertTag) {
-    SiteSettinsAlertTagSiteRemoval = 201,
-};
 
-@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate,
-UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate>
+@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *tableSections;
 #pragma mark - General Section
@@ -854,58 +852,36 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 
 - (void)showRemoveSiteForBlog:(Blog *)blog
 {
+    NSParameterAssert(blog);
+    
     NSString *model = [[UIDevice currentDevice] localizedModel];
-    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data will be removed from your %@.", @"Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch"), model];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data will be removed from your %@.", @"Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch"), model];
     NSString *cancelTitle = NSLocalizedString(@"Cancel", nil);
     NSString *destructiveTitle = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
-    if (IS_IPAD) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Remove Site", @"Remove site confirmation alert title")
-                                                        message:title
-                                                       delegate:self
-                                              cancelButtonTitle:cancelTitle
-                                              otherButtonTitles:destructiveTitle, nil];
-        alert.tag = SiteSettinsAlertTagSiteRemoval;
-        [alert show];
-    } else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
-                                                                 delegate:self
-                                                        cancelButtonTitle:cancelTitle
-                                                   destructiveButtonTitle:destructiveTitle
-                                                        otherButtonTitles:nil];
-        actionSheet.tag = SiteSettinsAlertTagSiteRemoval;
-        [actionSheet showInView:self.view];
-    }
+    
+    UIAlertControllerStyle alertStyle = [UIDevice isPad] ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:message
+                                                                      preferredStyle:alertStyle];
+    
+    [alertController addCancelActionWithTitle:cancelTitle handler:nil];
+    [alertController addDestructiveActionWithTitle:destructiveTitle handler:^(UIAlertAction *action) {
+        [self confirmRemoveSite:blog];
+    }];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)confirmRemoveSite
+- (void)confirmRemoveSite:(Blog *)blog
 {
+    NSParameterAssert(blog);
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService removeBlog:self.blog];
+    [blogService removeBlog:blog];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-#pragma mark - Action sheet delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (actionSheet.tag == SiteSettinsAlertTagSiteRemoval) {
-        if (buttonIndex == actionSheet.destructiveButtonIndex) {
-            [self confirmRemoveSite];
-        }
-    }
-}
-
-#pragma mark - Alert view delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == SiteSettinsAlertTagSiteRemoval) {
-        if (buttonIndex == alertView.firstOtherButtonIndex) {
-            [self confirmRemoveSite];
-        }
-    }
-}
 
 #pragma mark - PostCategoriesViewControllerDelegate
 
