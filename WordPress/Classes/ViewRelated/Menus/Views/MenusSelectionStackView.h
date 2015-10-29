@@ -4,6 +4,13 @@
 @class Menu;
 @class MenuLocation;
 
+typedef NS_ENUM(NSUInteger)
+{
+    MenuSelectionTypeLocations,
+    MenuSelectionTypeMenus
+    
+}MenuSelectionType;
+
 @interface MenusSelectionItem : NSObject
 
 @property (nonatomic, copy) NSString *name;
@@ -18,7 +25,7 @@
 
 @interface MenusSelectionStackView : UIStackView
 
-@property (nonatomic, weak) IBOutlet MenusSelectionView *selectionView;
+@property (nonatomic, assign) MenuSelectionType selectionType;
 
 - (void)updateItems:(NSArray <MenusSelectionItem *> *)items selectedItem:(MenusSelectionItem *)selectedItem;
 
