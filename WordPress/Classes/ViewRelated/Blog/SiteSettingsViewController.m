@@ -671,6 +671,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             [self tableView:tableView didSelectInWritingSectionRow:indexPath.row];
             break;
         case SiteSettingsSectionRemoveSite:{
+            [tableView deselectSelectedRowWithAnimation:YES];
             [self showRemoveSiteForBlog:self.blog];
         }break;
     }
