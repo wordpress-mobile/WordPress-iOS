@@ -3,11 +3,22 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 40 (@alexcurylo / @aerych 2015-10-21
+## WordPress 41 (@alexcurylo / @aerych 2015-10-21
+
+Changes to the data model:
 
 - Added `Publicizer` to store the services capable of publicizing
 - `Blog` added a new relationship called `publicizers` to store available Publicizers
 - `Blog` added a new attribute called `connections` to store the blog's connections array
+
+## WordPress 40 (@alexcurylo 2015-10-14)
+
+Changes to the data model:
+
+- `Theme` added a new string attribute called `demoUrl` to store a theme's demo site address
+- `Theme` added a new string attribute called `price` to store a premium theme's price display string
+- `Theme` added a new string attribute called `stylesheet` to store identifier used to construct helper links
+- `Theme` added a new number attribute called `order` to store the display order retrieved by
 
 ## WordPress 39 (@sergioestevao 2015-09-09)
 

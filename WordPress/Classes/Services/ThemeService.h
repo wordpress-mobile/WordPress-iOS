@@ -6,7 +6,7 @@
 
 typedef void(^ThemeServiceSuccessBlock)();
 typedef void(^ThemeServiceThemeRequestSuccessBlock)(Theme *theme);
-typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray *themes);
+typedef void(^ThemeServiceThemesRequestSuccessBlock)(NSArray<Theme *> *themes, BOOL hasMore);
 typedef void(^ThemeServiceFailureBlock)(NSError *error);
 
 @interface ThemeService : LocalCoreDataService
@@ -39,10 +39,12 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *  @brief      Obtains the theme with the specified ID if it exists.
  *
  *  @param      themeId     The ID of the theme to retrieve.  Cannot be nil.
+ *  @param      blog        Blog to find theme for. May be nil for account.
  *
  *  @returns    The stored theme matching the specified ID if found, or nil if it's not found.
  */
-- (Theme *)findThemeWithId:(NSString *)themeId;
+- (Theme *)findThemeWithId:(NSString *)themeId
+                   forBlog:(Blog *)blog;
 
 #pragma mark - Remote queries: Getting theme info
 
@@ -94,12 +96,14 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *              you want to retrieve is for a specific blog.  Use getThemesForBlogId instead.
  *
  *  @param      account     The account to get the theme from.  Cannot be nil.
+ *  @param      page        Results page to return.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  *  @returns    The asynch operation triggered by this call.
  */
 - (NSOperation *)getThemesForAccount:(WPAccount *)account
+                                page:(NSInteger)page
                              success:(ThemeServiceThemesRequestSuccessBlock)success
                              failure:(ThemeServiceFailureBlock)failure;
 
@@ -112,12 +116,16 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  *              this method and not getThemes.
  *
  *  @param      blogId      The blog to get the themes for.  Cannot be nil.
+ *  @param      page        Results page to return.
+ *  @param      sync        Whether to remove unsynced results.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  *  @returns    The asynch operation triggered by this call.
  */
 - (NSOperation *)getThemesForBlog:(Blog *)blog
+                             page:(NSInteger)page
+                             sync:(BOOL)sync
                           success:(ThemeServiceThemesRequestSuccessBlock)success
                           failure:(ThemeServiceFailureBlock)failure;
 

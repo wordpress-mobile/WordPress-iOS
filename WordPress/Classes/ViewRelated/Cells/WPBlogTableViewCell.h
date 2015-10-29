@@ -2,4 +2,6 @@
 
 @interface WPBlogTableViewCell : WPTableViewCell
 
+@property (nonatomic, weak) UISwitch *visibilitySwitch;
+
 @end
