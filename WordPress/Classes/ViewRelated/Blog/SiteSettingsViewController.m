@@ -85,10 +85,6 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, assign) BOOL geolocationEnabled;
-@property (nonatomic, assign) BOOL isSiteDotCom;
-
-@property (nonatomic, assign) BOOL isKeyboardVisible;
-
 @end
 
 @implementation SiteSettingsViewController
