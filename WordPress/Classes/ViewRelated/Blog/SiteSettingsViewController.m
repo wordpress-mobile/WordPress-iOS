@@ -400,13 +400,13 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:{
             return [self tableView:tableView cellForGeneralSettingsInRow:indexPath.row];
-        }break;
+        } break;
         case SiteSettingsSectionAccount: {
             return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
-        }break;
+        } break;
         case SiteSettingsSectionWriting: {
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
-        }break;
+        } break;
         case SiteSettingsSectionRemoveSite: {
             if (self.removeSiteCell) {
                 return self.removeSiteCell;
@@ -415,7 +415,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             [WPStyleGuide configureTableViewDestructiveActionCell:self.removeSiteCell];
             self.removeSiteCell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
             return self.removeSiteCell;
-        }break;
+        } break;
     }
 
     // We shouldn't reach this point, but return an empty cell just in case
@@ -429,7 +429,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     NSInteger settingsSection = [self.tableSections[section] intValue];
     NSString *title = [self titleForHeaderInSection:settingsSection];
     if (title.length == 0) {
-        return [[UIView alloc] initWithFrame:CGRectZero];
+        return [UIView new];
     }
     
     WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
