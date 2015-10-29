@@ -74,7 +74,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
-
+#pragma mark - Removal Section
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 
 @property (nonatomic, strong) Blog *blog;
