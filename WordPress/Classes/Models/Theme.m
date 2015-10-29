@@ -4,8 +4,6 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 
-static NSDateFormatter *dateFormatter;
-
 @implementation Theme
 
 @dynamic popularityRank;
@@ -19,43 +17,11 @@ static NSDateFormatter *dateFormatter;
 @dynamic tags;
 @dynamic name;
 @dynamic previewUrl;
+@dynamic price;
+@dynamic demoUrl;
+@dynamic stylesheet;
+@dynamic order;
 @dynamic blog;
-
-+ (Theme *)createOrUpdateThemeFromDictionary:(NSDictionary *)themeInfo
-                                    withBlog:(Blog*)blog
-                                 withContext:(NSManagedObjectContext *)context
-{
-    Blog *contextBlog = (Blog*)[context objectWithID:blog.objectID];
-
-    Theme *theme;
-    NSSet *result = [contextBlog.themes filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId == %@", themeInfo[@"id"]]];
-    if (result.count > 1) {
-        theme = result.allObjects[0];
-    } else {
-        theme = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self)
-                                              inManagedObjectContext:context];
-        theme.themeId = themeInfo[@"id"];
-        theme.blog = contextBlog;
-    }
-
-    theme.name = themeInfo[@"name"];
-    theme.details = themeInfo[@"description"];
-    theme.trendingRank = themeInfo[@"trending_rank"];
-    theme.popularityRank = themeInfo[@"popularity_rank"];
-    theme.screenshotUrl = themeInfo[@"screenshot"];
-    theme.version = themeInfo[@"version"];
-    theme.premium = @([[themeInfo objectForKeyPath:@"cost.number"] integerValue] > 0);
-    theme.tags = themeInfo[@"tags"];
-    theme.previewUrl = themeInfo[@"preview_url"];
-
-    if (!dateFormatter) {
-        dateFormatter = [[NSDateFormatter alloc] init];
-        dateFormatter.dateFormat = @"YYYY-MM-dd";
-    }
-    theme.launchDate = [dateFormatter dateFromString:themeInfo[@"launch_date"]];
-
-    return theme;
-}
 
 #pragma mark - CoreData helpers
 
@@ -73,7 +39,7 @@ static NSDateFormatter *dateFormatter;
 
 - (BOOL)isPremium
 {
-    return [self.premium isEqualToNumber:@1];
+    return [self.premium boolValue];
 }
 
 @end
