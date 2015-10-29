@@ -585,6 +585,8 @@
 		E6FD1ECC1BD7DDBF002434CA /* PublicizerServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD1ECB1BD7DDBF002434CA /* PublicizerServiceRemote.m */; settings = {ASSET_TAGS = (); }; };
 		E6FD1ECF1BD7DE24002434CA /* SharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD1ECE1BD7DE24002434CA /* SharingViewController.m */; settings = {ASSET_TAGS = (); }; };
 		E6FD1ED21BD7DE65002434CA /* RemotePublicizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD1ED11BD7DE65002434CA /* RemotePublicizer.m */; settings = {ASSET_TAGS = (); }; };
+		E6FD1ED51BD7E3A8002434CA /* SharingAuthorizationWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD1ED41BD7E3A8002434CA /* SharingAuthorizationWebViewController.m */; settings = {ASSET_TAGS = (); }; };
+		E6FD1ED81BD7E3D6002434CA /* RemotePublicizeExternal.m in Sources */ = {isa = PBXBuildFile; fileRef = E6FD1ED71BD7E3D6002434CA /* RemotePublicizeExternal.m */; settings = {ASSET_TAGS = (); }; };
 		ECFA8F2B890D45298F324B8B /* libPods-WordPressTodayWidget.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 872A78E046E04A05B17EB1A1 /* libPods-WordPressTodayWidget.a */; };
 		F128C31C1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */; };
 		F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */; };
@@ -1652,6 +1654,10 @@
 		E6FD1ECE1BD7DE24002434CA /* SharingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingViewController.m; sourceTree = "<group>"; };
 		E6FD1ED01BD7DE65002434CA /* RemotePublicizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemotePublicizer.h; path = "Remote Objects/RemotePublicizer.h"; sourceTree = "<group>"; };
 		E6FD1ED11BD7DE65002434CA /* RemotePublicizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemotePublicizer.m; path = "Remote Objects/RemotePublicizer.m"; sourceTree = "<group>"; };
+		E6FD1ED31BD7E3A8002434CA /* SharingAuthorizationWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingAuthorizationWebViewController.h; sourceTree = "<group>"; };
+		E6FD1ED41BD7E3A8002434CA /* SharingAuthorizationWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingAuthorizationWebViewController.m; sourceTree = "<group>"; };
+		E6FD1ED61BD7E3D6002434CA /* RemotePublicizeExternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemotePublicizeExternal.h; path = "Remote Objects/RemotePublicizeExternal.h"; sourceTree = "<group>"; };
+		E6FD1ED71BD7E3D6002434CA /* RemotePublicizeExternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemotePublicizeExternal.m; path = "Remote Objects/RemotePublicizeExternal.m"; sourceTree = "<group>"; };
 		F128C31A1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
 		F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPMediaPickerViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
 		F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringHelpersTest.m; sourceTree = "<group>"; };
@@ -2938,6 +2944,8 @@
 				FF8DDCE31B5EA6590098826F /* SettingsTextViewController.m */,
 				FF8DDCDD1B5DB1C10098826F /* SettingTableViewCell.h */,
 				FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */,
+				E6FD1ED31BD7E3A8002434CA /* SharingAuthorizationWebViewController.h */,
+				E6FD1ED41BD7E3A8002434CA /* SharingAuthorizationWebViewController.m */,
 				E6FD1ECD1BD7DE24002434CA /* SharingViewController.h */,
 				E6FD1ECE1BD7DE24002434CA /* SharingViewController.m */,
 				83FEFC7311FF6C5A0078B462 /* SiteSettingsViewController.h */,
@@ -3423,6 +3431,8 @@
 		E1249B4019408C6F0035E895 /* Remote Objects */ = {
 			isa = PBXGroup;
 			children = (
+				E6FD1ED61BD7E3D6002434CA /* RemotePublicizeExternal.h */,
+				E6FD1ED71BD7E3D6002434CA /* RemotePublicizeExternal.m */,
 				E6FD1ED01BD7DE65002434CA /* RemotePublicizer.h */,
 				E6FD1ED11BD7DE65002434CA /* RemotePublicizer.m */,
 				FFC6ADD61B56F311002F3C84 /* RemoteBlogSettings.h */,
@@ -4248,6 +4258,7 @@
 				E6FD1EC61BD7DAFE002434CA /* Publicizer.m in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
 				5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */,
+				E6FD1ED81BD7E3D6002434CA /* RemotePublicizeExternal.m in Sources */,
 				5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */,
 				E66969DC1B9E55C300EC9C00 /* ReaderTopicToReaderListTopic37to38.swift in Sources */,
 				5D028F091B3468BF00474113 /* OriginalAttributionView.m in Sources */,
@@ -4334,6 +4345,7 @@
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
 				E125445612BF5B3900D87A0A /* PostCategory.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
+				E6FD1ED51BD7E3A8002434CA /* SharingAuthorizationWebViewController.m in Sources */,
 				598351AE1A704E7A00B6DD4F /* WPWhatsNew.m in Sources */,
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,

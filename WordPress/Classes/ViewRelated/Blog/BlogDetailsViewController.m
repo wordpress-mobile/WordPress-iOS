@@ -66,6 +66,7 @@ NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
 @property (nonatomic, weak) UIActionSheet *removeSiteActionSheet;
 @property (nonatomic, weak) UIAlertView *removeSiteAlertView;
 @property (nonatomic, strong) NSArray *tableSections;
+@property (nonatomic, strong) NSArray *configurationRows;
 
 /**
  *  @brief      Property to store the themes-enabled state when the VC opens.
@@ -76,8 +77,6 @@ NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
  *              the app if not handled properly.
  */
 @property (nonatomic, assign, readwrite, getter=areThemesEnabled) BOOL themesEnabled;
-
-@property (nonatomic, strong) NSArray *configurationRows;
 
 @end
 
@@ -383,8 +382,9 @@ NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
         case TableViewSectionAppearance:
             
             break;
-        case TableViewSectionConfigurationType:
-            switch (indexPath.row) {
+        case TableViewSectionConfigurationType: {
+            NSInteger configurationRow = [self.configurationRows[indexPath.row] integerValue];
+            switch (configurationRow) {
             	case BlogDetailsRowSharing:
                 	[self showSharingForBlog:self.blog];
                 	break;
@@ -395,7 +395,7 @@ NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
                     NSAssert(false, @"Row Handling not implemented");
                     break;
             }
-            break;
+            } break;
     }
 }
 

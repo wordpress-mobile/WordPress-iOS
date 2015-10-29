@@ -16,7 +16,7 @@
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
                   NSString *rawJSON = operation.responseString;
-                  NSArray *publicizers = [self remotePublicizersWithJSONDictionary:responseObject[@"services"] fromRawJSON:rawJSON];
+                  NSArray *publicizers = [self remotePublicizersWithJSONDictionary:[responseObject dictionaryForKey:@"services"] fromRawJSON:rawJSON];
                   success(publicizers);
               }
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -44,10 +44,10 @@
 {
     RemotePublicizer *publicizer = [RemotePublicizer new];
     publicizer.service = service;
-    publicizer.label = jsonPublicizer[@"label"];
-    publicizer.detail = jsonPublicizer[@"description"];
-    publicizer.icon = jsonPublicizer[@"icon"];
-    publicizer.connect = jsonPublicizer[@"connect"];
+    publicizer.label = [jsonPublicizer stringForKey:@"label"];
+    publicizer.detail = [jsonPublicizer stringForKey:@"description"];
+    publicizer.icon = [jsonPublicizer stringForKey:@"icon"];
+    publicizer.connect = [jsonPublicizer stringForKey:@"connect"];
     publicizer.location = @(location);
     return publicizer;
 }

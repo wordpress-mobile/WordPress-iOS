@@ -3,6 +3,7 @@
 #import "Blog.h"
 
 @class WPAccount;
+@class Publicizer;
 
 @interface BlogService : LocalCoreDataService
 
@@ -59,15 +60,53 @@
                        failure:(void (^)(NSError *error))failure;
 
 /**
- *  Sync 3rd party (Publicize) connections from the server
+ *  @brief Sync 3rd party (Publicize) connections from the server
  *
- *  @param blog    the blog from where to read the information from
- *  @param success a block that is invoked when the sync is sucessfull
- *  @param failure a block that in invoked when the sync fails.
+ *  @param blog    The blog from where to read the information from
+ *  @param success The block that will be executed on success.  Can be nil.
+ *  @param failure The block that will be executed on failure.  Can be nil.
  */
 - (void)syncConnectionsForBlog:(Blog *)blog
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure;
+
+
+/**
+ *  @brief Check authorization for a 3rd party (Publicize) connection
+ *
+ *  @param service The service to connect.  Cannot be nil.
+ *  @param success The block that will be executed on success.  Can be nil.
+ *  @param failure The block that will be executed on failure.  Can be nil.
+ */
+- (void)checkAuthorizationForPublicizer:(Publicizer *)service
+                                success:(void (^)(NSArray *accounts))success
+                                failure:(void (^)(NSError *))failure;
+
+/**
+ *  @brief Connect a Publicizer service
+ *
+ *  @param service The service to connect.
+ *  @param keyring The Keyring authorization ID.
+ *  @param account Additional specified account. Nil for default.
+ *  @param success Block executed on success.  Can be nil.
+ *  @param failure Block executed on failure.  Can be nil.
+ */
+- (void)connectPublicizer:(Publicizer *)service
+        withAuthorization:(NSNumber *)keyring
+               andAccount:(NSString *)account
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief Disconnect a Publicizer service
+ *
+ *  @param service  The publicizer to disconnect
+ *  @param success  The block that will be executed on success.  Can be nil.
+ *  @param failure  The block that will be executed on failure.  Can be nil.
+ */
+- (void)disconnectPublicizer:(Publicizer *)service
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure;
 
 /**
  *  Sync blog settings from the server
