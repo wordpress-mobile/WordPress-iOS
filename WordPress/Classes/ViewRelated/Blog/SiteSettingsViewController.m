@@ -90,6 +90,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 - (instancetype)initWithBlog:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _blog = blog;
@@ -843,10 +844,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
 }
 
-- (BOOL)canEditUsernameAndURL
-{
-    return NO;
-}
 
 #pragma mark - Remove Site
 
