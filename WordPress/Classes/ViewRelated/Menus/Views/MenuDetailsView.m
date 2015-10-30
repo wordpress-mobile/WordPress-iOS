@@ -1,15 +1,23 @@
-#import "MenuDetailsStackView.h"
+#import "MenuDetailsView.h"
 #import "Menu.h"
 
-@interface MenuDetailsStackView ()
+@interface MenuDetailsView ()
 
+@property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet UILabel *titleLabel;
 @property (nonatomic, weak) IBOutlet UIButton *trashButton;
 @property (nonatomic, weak) IBOutlet UIButton *saveButton;
 
 @end
 
-@implementation MenuDetailsStackView
+@implementation MenuDetailsView
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.backgroundColor = [UIColor clearColor];
+}
 
 - (void)setMenu:(Menu *)menu
 {

@@ -2,7 +2,7 @@
 
 @class Menu;
 
-@interface MenuDetailsStackView : UIStackView
+@interface MenuDetailsView : UIView
 
 @property (nonatomic, strong) Menu *menu;
 

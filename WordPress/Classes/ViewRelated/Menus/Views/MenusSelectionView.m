@@ -1,44 +1,24 @@
 #import "MenusSelectionView.h"
-#import "WPStyleGuide.h"
+#import "Menu.h"
+#import "MenuLocation.h"
+#import "MenusSelectionDetailView.h"
 
-@interface WPIconDrawView : UIView
+@implementation MenusSelectionViewItem
 
-@property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) UIColor *drawColor;
-
-@end
-
-@implementation WPIconDrawView
-
-- (void)drawRect:(CGRect)rect
++ (MenusSelectionViewItem *)itemWithMenu:(Menu *)menu
 {
-    [super drawRect:rect];
-    
-    CGRect imageRect = CGRectZero;
-    UIColor *drawColor = self.drawColor;
-    UIImage *image = self.image;
-    {
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSaveGState(context);
-        
-        CGContextSetFillColorWithColor(context, [drawColor CGColor]);
-        
-        imageRect.size.width = rect.size.width;
-        imageRect.size.height = ((image.size.height * imageRect.size.width) / image.size.width);
-        if(imageRect.size.height != rect.size.height) {
-            imageRect.origin.y = -((rect.size.height / 2) - (imageRect.size.height / 2));
-        }
-        
-        imageRect = CGRectIntegral(imageRect);
-        
-        CGContextTranslateCTM(context, 0, imageRect.size.height);
-        CGContextScaleCTM(context, 1.0, -1.0);
-        
-        CGContextClipToMask(context, imageRect, [image CGImage]);
-        CGContextFillRect(context, imageRect);
-        
-        CGContextRestoreGState(context);
-    }
+    MenusSelectionViewItem *item = [MenusSelectionViewItem new];
+    item.name = menu.name;
+    item.details = menu.details;
+    return item;
+}
+
++ (MenusSelectionViewItem *)itemWithLocation:(MenuLocation *)location
+{
+    MenusSelectionViewItem *item = [MenusSelectionViewItem new];
+    item.name = location.details;
+    item.details = location.name;
+    return item;
 }
 
 @end
@@ -46,104 +26,55 @@
 @interface MenusSelectionView ()
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
-@property (nonatomic, strong) UILabel *textLabel;
-@property (nonatomic, strong) WPIconDrawView *iconView;
-@property (nonatomic, strong) WPIconDrawView *accessoryView;
+@property (nonatomic, weak) IBOutlet MenusSelectionDetailView *detailView;
+@property (nonatomic, strong) NSArray *items;
+@property (nonatomic, strong) MenusSelectionViewItem *selectedItem;
 
 @end
 
+static inline UIEdgeInsets menusSelectionViewDrawingInsets() {
+    return UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0);
+}
+
 @implementation MenusSelectionView
-
-- (void)updateWithAvailableLocations:(NSUInteger)numLocationsAvailable selectedLocationName:(NSString *)name
-{
-    NSString *localizedFormat = nil;
-    
-    if(numLocationsAvailable > 1) {
-        localizedFormat = NSLocalizedString(@"%i menu areas in this theme", @"The number of menu areas available in the theme");
-    }else {
-        localizedFormat = NSLocalizedString(@"%i menu area in this theme", @"One menu area available in the theme");
-    }
-    
-    [self setTitleText:name subTitleText:[NSString stringWithFormat:localizedFormat, numLocationsAvailable]];
-    
-    self.iconView.image = [UIImage imageNamed:@"icon-menus-locations"];
-    [self.iconView setNeedsDisplay];
-}
-
-- (void)updateWithAvailableMenus:(NSUInteger)numMenusAvailable selectedLocationName:(NSString *)name
-{
-    NSString *localizedFormat = nil;
-    
-    if(numMenusAvailable > 1) {
-        localizedFormat = NSLocalizedString(@"%i menus available", @"The number of menus on the site and area.");
-    }else {
-        localizedFormat = NSLocalizedString(@"%i menu available", @"One menu is available in the site and area");
-    }
-    
-    [self setTitleText:name subTitleText:[NSString stringWithFormat:localizedFormat, numMenusAvailable]];
-    
-    self.iconView.image = [UIImage imageNamed:@"icon-menus-menus"];
-    [self.iconView setNeedsDisplay];
-}
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    self.translatesAutoresizingMaskIntoConstraints = NO;
+    [self setupStyling];
+}
+
+- (void)setupStyling
+{
+    self.backgroundColor = [UIColor clearColor];
+}
+
+- (void)updateItems:(NSArray <MenusSelectionViewItem *> *)items selectedItem:(MenusSelectionViewItem *)selectedItem
+{
+    self.items = items;
+    self.selectedItem = selectedItem;
     
-    {
-        WPIconDrawView *iconView = [[WPIconDrawView alloc] init];
-        iconView.backgroundColor = [UIColor clearColor];
-        iconView.image = [UIImage imageNamed:@"icon-menus-menus"];
-        iconView.drawColor = [WPStyleGuide darkBlue];
+    if(self.selectionType == MenuSelectionViewTypeLocations) {
         
-        [iconView.widthAnchor constraintEqualToConstant:30].active = YES;
-        [iconView.heightAnchor constraintEqualToConstant:30].active = YES;
-
-        [self.stackView addArrangedSubview:iconView];
-        self.iconView = iconView;
-    }
-    {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-        label.numberOfLines = 0;
-        self.textLabel = label;
-
-        [self setTitleText:@"Main Menu" subTitleText:@"2 menu areas available in this theme"];
-        [self.stackView addArrangedSubview:label];
+        [self.detailView updateWithAvailableLocations:items.count selectedLocationName:selectedItem.name];
         
-        [[label heightAnchor] constraintEqualToAnchor:self.stackView.heightAnchor].active = YES;
-    }
-    {
-        WPIconDrawView *accessoryView = [[WPIconDrawView alloc] init];
-        accessoryView.backgroundColor = [UIColor clearColor];
-        accessoryView.image = [UIImage imageNamed:@"icon-menus-expand"];
-        accessoryView.drawColor = [WPStyleGuide mediumBlue];
+    }else if(self.selectionType == MenuSelectionViewTypeMenus) {
         
-        [accessoryView.widthAnchor constraintEqualToConstant:15].active = YES;
-        [accessoryView.heightAnchor constraintEqualToConstant:15].active = YES;
-        
-        [self.stackView addArrangedSubview:accessoryView];
-        self.accessoryView = accessoryView;
+        [self.detailView updateWithAvailableMenus:items.count selectedLocationName:selectedItem.name];
     }
 }
 
-- (void)setTitleText:(NSString *)title subTitleText:(NSString *)subtitle
+- (void)drawRect:(CGRect)rect
 {
-    NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] init];
-    {
-        NSDictionary *attributes =  @{NSFontAttributeName: [WPStyleGuide subtitleFont], NSForegroundColorAttributeName: [WPStyleGuide grey]};
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:subtitle attributes:attributes];
-        [mutableAttributedString appendAttributedString:attributedString];
-    }
-    [mutableAttributedString.mutableString appendString:@"\n"];
-    {
-        NSDictionary *attributes =  @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [WPStyleGuide darkGrey]};
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:title attributes:attributes];
-        [mutableAttributedString appendAttributedString:attributedString];
-    }
+    [super drawRect:rect];
     
-    self.textLabel.attributedText = mutableAttributedString;
+    UIEdgeInsets inset = menusSelectionViewDrawingInsets();
+    CGRect fillRect = CGRectInset(rect, inset.left, inset.top);
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:fillRect cornerRadius:1.0];
+    [[UIColor whiteColor] set];
+    [path fill];
 }
 
 @end
