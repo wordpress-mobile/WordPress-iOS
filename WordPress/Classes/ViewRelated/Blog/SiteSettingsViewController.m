@@ -689,21 +689,15 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 
 - (void)refreshData
 {
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     __weak __typeof__(self) weakSelf = self;
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:mainContext];
+
     [service syncSettingsForBlog:self.blog success:^{
-        __typeof__(self) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        [strongSelf.refreshControl endRefreshing];
-        [strongSelf.tableView reloadData];
+        [weakSelf.refreshControl endRefreshing];
+        [weakSelf.tableView reloadData];
     } failure:^(NSError *error) {
-        __typeof__(self) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        [strongSelf.refreshControl endRefreshing];
+        [weakSelf.refreshControl endRefreshing];
     }];
     
 }
