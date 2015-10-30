@@ -29,21 +29,7 @@ public class ThemeBrowserCell : UICollectionViewCell {
     private var placeholderImage = UIImage(named: "theme-loading")
     
    // MARK: - GUI
-    
-    /**
-    @brief Calculates cell height fitting a given width
-    
-    @param width    Intended width
-    @return         Matching height
-    */
-    public class func heightForWidth(width: CGFloat) -> CGFloat {
         
-        let imageHeight = (width - Styles.cellImageInset) * Styles.cellImageRatio
-        let height = imageHeight + Styles.cellInfoBarHeight
-        
-        return height
-    }
-    
     override public var highlighted: Bool {
         didSet {
             let alphaFinal: CGFloat = highlighted ? 0.3 : 0

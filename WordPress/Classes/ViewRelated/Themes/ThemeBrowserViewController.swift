@@ -229,21 +229,18 @@ public protocol ThemePresenter {
     // MARK: - UICollectionViewDelegateFlowLayout
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  referenceSizeForHeaderInSection section:NSInteger) -> CGSize {
-        
         guard !isEmpty else {
             return CGSize.zero
         }
-        
-        let height = isViewHorizontallyCompact() ? WPStyleGuide.Themes.currentBarHeightCompact : WPStyleGuide.Themes.currentBarHeightRegular
+        let height = Styles.headerHeight(isViewHorizontallyCompact())
         
         return CGSize(width: 0, height: height)
     }
 
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let parentViewWidth = collectionView.frame.size.width
-        let width = cellWidthForFrameWidth(parentViewWidth)
         
-        return CGSize(width: width, height: ThemeBrowserCell.heightForWidth(width))
+        return Styles.cellSizeForFrameWidth(parentViewWidth)
     }
     
     public func collectionView(collectionView: UICollectionView,
@@ -252,26 +249,8 @@ public protocol ThemePresenter {
             guard syncHelper.isLoadingMore else {
                 return CGSize.zero
             }
+            
             return CGSize(width: 0, height: Styles.footerHeight)
-    }
-    
-    // MARK: - Layout calculation helper methods
-    
-    /**
-     *  @brief      Calculates the cell width for parent frame
-     *
-     *  @param      parentViewWidth     The width of the parent view.
-     *
-     *  @returns    The requested cell width.
-     */
-    private func cellWidthForFrameWidth(parentViewWidth : CGFloat) -> CGFloat {
-        let numberOfColumns = max(1, trunc(parentViewWidth / Styles.minimumColumnWidth))
-        let numberOfMargins = numberOfColumns + 1
-        let marginsWidth = numberOfMargins * Styles.columnMargin
-        let columnsWidth = parentViewWidth - marginsWidth
-        let columnWidth = trunc(columnsWidth / numberOfColumns)
-        
-        return columnWidth
     }
     
     // MARK: - UISearchBarDelegate

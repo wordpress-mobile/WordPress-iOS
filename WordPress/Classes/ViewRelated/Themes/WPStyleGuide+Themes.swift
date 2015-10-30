@@ -44,6 +44,10 @@ extension WPStyleGuide
         public static let currentBarItemHeight: CGFloat = 53
         public static let currentBarHeightCompact: CGFloat = currentBarHeightRegular + currentBarItemHeight + 1
         public static let currentBarHeightRegular: CGFloat = currentBarItemHeight + (columnMargin * 2)
+        
+        public static func headerHeight(horizontallyCompact: Bool) -> CGFloat {
+            return horizontallyCompact ? currentBarHeightCompact : currentBarHeightRegular
+        }
 
         public static let columnMargin: CGFloat = 16
         public static let minimumColumnWidth: CGFloat = 330
@@ -51,6 +55,22 @@ extension WPStyleGuide
         public static let cellImageInset: CGFloat = 2
         public static let cellImageRatio: CGFloat = 0.75
         public static let cellInfoBarHeight: CGFloat = 55
+        
+        public static func cellWidthForFrameWidth(width: CGFloat) -> CGFloat {
+            let numberOfColumns = max(1, trunc(width / minimumColumnWidth))
+            let numberOfMargins = numberOfColumns + 1
+            let marginsWidth = numberOfMargins * columnMargin
+            let columnsWidth = width - marginsWidth
+            let columnWidth = trunc(columnsWidth / numberOfColumns)
+            return columnWidth
+        }
+        public static func cellHeightForFrameWidth(width: CGFloat) -> CGFloat {
+            let imageHeight = (width - cellImageInset) * cellImageRatio
+            return imageHeight + cellInfoBarHeight
+        }
+        public static func cellSizeForFrameWidth(width: CGFloat) -> CGSize {
+            return CGSize(width: cellWidthForFrameWidth(width), height: cellHeightForFrameWidth(width))
+        }
 
         public static let footerHeight: CGFloat = 50
     }
