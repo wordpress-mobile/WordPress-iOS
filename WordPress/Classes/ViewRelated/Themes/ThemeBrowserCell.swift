@@ -2,7 +2,15 @@ import Foundation
 
 public class ThemeBrowserCell : UICollectionViewCell {
     
-    // MARK: - Outlets
+    // MARK: - Constants
+    
+    public static let reuseIdentifier = "ThemeBrowserCell"
+    
+    // MARK: - Private Aliases
+    
+    private typealias Styles = WPStyleGuide.Themes
+    
+   // MARK: - Outlets
     
     @IBOutlet weak var imageView : UIImageView!
     @IBOutlet weak var nameLabel : UILabel!
@@ -19,10 +27,6 @@ public class ThemeBrowserCell : UICollectionViewCell {
     }
     
     private var placeholderImage = UIImage(named: "theme-loading")
-    
-    // MARK: - Private Aliases
-    
-    private typealias Styles = WPStyleGuide.Themes
     
    // MARK: - GUI
     
