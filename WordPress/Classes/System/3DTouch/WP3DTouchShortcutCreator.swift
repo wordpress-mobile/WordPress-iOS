@@ -17,7 +17,7 @@ public class WP3DTouchShortcutCreator: NSObject
     private let notificationsShortcutIconImageName = "icon-tab-notifications"
     private let statsShortcutIconImageName = "icon-menu-stats"
     private let newPhotoPostShortcutIconImageName = "photos"
-    private let newPostShortcutIconImageName = "icon-posts-add"
+    private let newPostShortcutIconImageName = "icon-new-post"
     
     override public init() {
         application = UIApplication.sharedApplication()
