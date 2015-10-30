@@ -25,6 +25,8 @@
 #import "PostSettingsSelectionViewController.h"
 #import "BlogSiteVisibilityHelper.h"
 #import "RelatedPostsSettingsViewController.h"
+#import "WordPress-Swift.h"
+
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -52,6 +54,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionGeneral = 0,
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
+    SiteSettingsSectionDiscussion,
     SiteSettingsSectionRemoveSite,
 };
 
@@ -76,7 +79,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
-
+#pragma mark - Discussion
+@property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
+#pragma mark - Remove Site
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 
 @property (nonatomic, strong) Blog *blog;
@@ -114,18 +119,24 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     [super viewDidLoad];
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
     
-    if (self.blog.account) {
-        self.tableSections = @[@(SiteSettingsSectionGeneral)];
-    } else {
-        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount)];
-    }    
-    if (self.blog.isAdmin) {
-        self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionWriting)];
+    NSMutableArray *sections = [NSMutableArray arrayWithObjects:@(SiteSettingsSectionGeneral), nil];
+    
+    if (!self.blog.account) {
+        [sections addObject:@(SiteSettingsSectionAccount)];
     }
+    
+    if (self.blog.isAdmin) {
+        [sections addObject:@(SiteSettingsSectionWriting)];
+    }
+    
+    [sections addObject:@(SiteSettingsSectionDiscussion)];
+    
     if ([self.blog supports:BlogFeatureRemovable]) {
-        self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
+        [sections addObject:@(SiteSettingsSectionRemoveSite)];
     }
 
+    self.tableSections = sections;
+    
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -187,6 +198,10 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         }
         case SiteSettingsSectionDiscussion: {
             return 1;
+        }
+        case SiteSettingsSectionRemoveSite: {
+            return 1;
+        }
     }
     return 0;
 }
@@ -286,6 +301,29 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     return _relatedPostsCell;
 }
 
+- (SettingTableViewCell *)discussionSettingsCell
+{
+    if (_discussionSettingsCell) {
+        return _discussionSettingsCell;
+    }
+    
+    _discussionSettingsCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Discussion", @"Label for selecting the Blog Discussion Settings section")
+                                                                 editable:YES
+                                                          reuseIdentifier:nil];
+    return _discussionSettingsCell;
+}
+
+- (UITableViewCell *)removeSiteCell
+{
+    if (_removeSiteCell) {
+        return _removeSiteCell;
+    }
+    _removeSiteCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    [WPStyleGuide configureTableViewDestructiveActionCell:_removeSiteCell];
+    _removeSiteCell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
+    
+    return _removeSiteCell;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
@@ -409,13 +447,10 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         case SiteSettingsSectionWriting: {
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
         }
+        case SiteSettingsSectionDiscussion: {
+            return self.discussionSettingsCell;
+        }
         case SiteSettingsSectionRemoveSite: {
-            if (self.removeSiteCell) {
-                return self.removeSiteCell;
-            }
-            self.removeSiteCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-            [WPStyleGuide configureTableViewDestructiveActionCell:self.removeSiteCell];
-            self.removeSiteCell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
             return self.removeSiteCell;
         }
     }
@@ -662,18 +697,21 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 {
     NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
     switch (settingsSection) {
-        case SiteSettingsSectionGeneral:
+        case SiteSettingsSectionGeneral: {
             [self tableView:tableView didSelectInGeneralSectionRow:indexPath.row];
-            break;
-        case SiteSettingsSectionAccount:
+        } break;
+        case SiteSettingsSectionAccount: {
             [self tableView:tableView didSelectInAccountSectionRow:indexPath.row];
-            break;
-        case SiteSettingsSectionWriting:
+        } break;
+        case SiteSettingsSectionWriting: {
             [self tableView:tableView didSelectInWritingSectionRow:indexPath.row];
-            break;
+        } break;
+        case SiteSettingsSectionDiscussion: {
+            [self showDiscussionSettingsForBlog:self.blog];
+        } break;
         case SiteSettingsSectionRemoveSite:{
             [self showRemoveSiteForBlog:self.blog];
-        }break;
+        } break;
     }
 }
 
@@ -843,6 +881,18 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 {
     return NO;
 }
+
+
+#pragma mark - Discussion
+
+- (void)showDiscussionSettingsForBlog:(Blog *)blog
+{
+    NSParameterAssert(blog);
+    
+    DiscussionSettingsViewController *settings = [[DiscussionSettingsViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:settings animated:YES];
+}
+
 
 #pragma mark - Remove Site
 
