@@ -173,10 +173,9 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             }
             return SiteSettingsGeneralCount - rowsToHide;
         }
-        break;
-        case SiteSettingsSectionAccount:
+        case SiteSettingsSectionAccount: {
             return SiteSettingsAccountCount;
-        break;
+        }
         case SiteSettingsSectionWriting: {
             NSInteger rowsToHide = 0;
             if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
@@ -186,10 +185,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             }
             return SiteSettingsWritingCount - rowsToHide;
         }
-        break;
-        case SiteSettingsSectionRemoveSite:
+        case SiteSettingsSectionDiscussion: {
             return 1;
-        break;
     }
     return 0;
 }
@@ -405,13 +402,13 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:{
             return [self tableView:tableView cellForGeneralSettingsInRow:indexPath.row];
-        }break;
+        }
         case SiteSettingsSectionAccount: {
             return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
-        }break;
+        }
         case SiteSettingsSectionWriting: {
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
-        }break;
+        }
         case SiteSettingsSectionRemoveSite: {
             if (self.removeSiteCell) {
                 return self.removeSiteCell;
@@ -420,7 +417,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             [WPStyleGuide configureTableViewDestructiveActionCell:self.removeSiteCell];
             self.removeSiteCell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
             return self.removeSiteCell;
-        }break;
+        }
     }
 
     NSAssert(false, @"Missing section handler");
