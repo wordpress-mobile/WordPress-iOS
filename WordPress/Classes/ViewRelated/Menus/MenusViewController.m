@@ -5,8 +5,8 @@
 #import "MenuLocation.h"
 #import "MenuItem.h"
 #import "WPStyleGuide.h"
-#import "MenusHeaderStackView.h"
-#import "MenuDetailsStackView.h"
+#import "MenusHeaderView.h"
+#import "MenuDetailsView.h"
 
 typedef NS_ENUM(NSInteger) {
     MenusSectionSelection = 0,
@@ -29,8 +29,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIStackView *contentStackView;
-@property (weak, nonatomic) IBOutlet MenusHeaderStackView *headerStackView;
-@property (weak, nonatomic) IBOutlet MenuDetailsStackView *detailsStackView;
+@property (weak, nonatomic) IBOutlet MenusHeaderView *headerView;
+@property (weak, nonatomic) IBOutlet MenuDetailsView *detailsView;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenusService *menusService;
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
@@ -66,6 +66,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [super loadView];
     
     self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.scrollView.backgroundColor = [WPStyleGuide greyLighten30];
     
     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     activity.hidesWhenStopped = YES;
@@ -126,7 +127,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)didSyncBlog
 {
-    [self.headerStackView updateWithMenusForBlog:self.blog];
+    [self.headerView updateWithMenusForBlog:self.blog];
 }
 
 #pragma mark - UIScrollView

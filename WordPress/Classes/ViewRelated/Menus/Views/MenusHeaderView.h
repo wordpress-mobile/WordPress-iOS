@@ -2,7 +2,7 @@
 
 @class Blog;
 
-@interface MenusHeaderStackView : UIStackView
+@interface MenusHeaderView : UIView
 
 - (void)updateWithMenusForBlog:(Blog *)blog;
 
