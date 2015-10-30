@@ -78,7 +78,7 @@
         finishedSync();
     }
 
-    WP3DTouchShortcutCreator *shortcutCreator = [[WP3DTouchShortcutCreator new];
+    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
     [shortcutCreator createShortcuts:YES];
     
     [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
