@@ -423,8 +423,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         }break;
     }
 
-    // We shouldn't reach this point, but return an empty cell just in case
-    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
+    NSAssert(false, @"Missing section handler");
+    return nil;
 }
 
 #pragma mark - UITableViewDelegate
