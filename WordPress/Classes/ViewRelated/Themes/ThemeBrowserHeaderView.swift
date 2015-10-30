@@ -6,6 +6,10 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
 
     public static let reuseIdentifier = "ThemeBrowserHeaderView"
 
+    // MARK: - Private Aliases
+    
+    private typealias Styles = WPStyleGuide.Themes
+
     // MARK: - Outlets
 
     @IBOutlet weak var currentThemeBorder: UIView!
@@ -41,18 +45,18 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
     
     private func applyStyles() {
         currentThemeBorder.layer.borderWidth = 1;
-        currentThemeBorder.layer.borderColor = WPStyleGuide.Themes.borderColor.CGColor;
-        currentThemeBorder.backgroundColor = WPStyleGuide.Themes.dividerColor;
+        currentThemeBorder.layer.borderColor = Styles.borderColor.CGColor;
+        currentThemeBorder.backgroundColor = Styles.dividerColor;
         
-        currentThemeLabel.font = WPStyleGuide.Themes.currentThemeLabelFont
-        currentThemeLabel.textColor = WPStyleGuide.Themes.currentThemeLabelColor
+        currentThemeLabel.font = Styles.currentThemeLabelFont
+        currentThemeLabel.textColor = Styles.currentThemeLabelColor
         
-        currentThemeName.font = WPStyleGuide.Themes.currentThemeNameFont
-        currentThemeName.textColor = WPStyleGuide.Themes.currentThemeNameColor
+        currentThemeName.font = Styles.currentThemeNameFont
+        currentThemeName.textColor = Styles.currentThemeNameColor
         
         for button in [customizeButton, detailsButton, supportButton] {
-            button.titleLabel?.font = WPStyleGuide.Themes.currentThemeButtonFont
-            button.setTitleColor(WPStyleGuide.Themes.currentThemeButtonColor, forState: .Normal)
+            button.titleLabel?.font = Styles.currentThemeButtonFont
+            button.setTitleColor(Styles.currentThemeButtonColor, forState: .Normal)
         }
     }
     
