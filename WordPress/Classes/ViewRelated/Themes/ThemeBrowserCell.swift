@@ -45,7 +45,7 @@ public class ThemeBrowserCell : UICollectionViewCell {
         nameLabel.font = Styles.cellNameFont
         infoLabel.font = Styles.cellInfoFont
         
-        layer.borderColor = Styles.borderColor.CGColor
+        layer.borderColor = Styles.barBorderColor.CGColor
         layer.borderWidth = 1
     }
     
