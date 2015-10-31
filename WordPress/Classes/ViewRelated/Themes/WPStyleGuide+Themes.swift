@@ -8,11 +8,17 @@ extension WPStyleGuide
 {
     public struct Themes
     {
-        // MARK: - General Styles
+        // MARK: - Bar Styles
 
-        public static let borderColor = UIColor(red: 208.0/255.0, green: 220.0/255.0, blue: 229.0/255.0, alpha: 1)
-        public static let dividerColor = UIColor(red: 224.0/255.0, green: 239.0/255.0, blue: 233.0/255.0, alpha: 1)
+        public static let barBorderColor = UIColor(red: 208.0/255.0, green: 220.0/255.0, blue: 229.0/255.0, alpha: 1)
+        public static let barDividerColor = UIColor(red: 224.0/255.0, green: 239.0/255.0, blue: 233.0/255.0, alpha: 1)
 
+        public static func styleBar(view: UIView) {
+            view.layer.borderWidth = 1;
+            view.layer.borderColor = barBorderColor.CGColor;
+            view.backgroundColor = barDividerColor;
+        }
+        
         // MARK: - Current Theme Styles
 
         public static let currentThemeLabelFont = WPFontManager.openSansRegularFontOfSize(11)
@@ -23,6 +29,11 @@ extension WPStyleGuide
 
         public static let currentThemeButtonFont = WPFontManager.openSansRegularFontOfSize(13)
         public static let currentThemeButtonColor = WPStyleGuide.darkGrey()
+        
+        public static func styleCurrentThemeButton(button: UIButton) {
+            button.titleLabel?.font = currentThemeButtonFont
+            button.setTitleColor(currentThemeButtonColor, forState: .Normal)
+        }
         
        // MARK: - Cell Styles
 
@@ -41,12 +52,19 @@ extension WPStyleGuide
 
         // MARK: - Metrics
 
-        public static let currentBarItemHeight: CGFloat = 53
-        public static let currentBarHeightCompact: CGFloat = currentBarHeightRegular + currentBarItemHeight + 1
-        public static let currentBarHeightRegular: CGFloat = currentBarItemHeight + (columnMargin * 2)
-        
+        public static let rowMargin: CGFloat = 16
+        public static let currentBarLineHeight: CGFloat = 53
+        public static let currentBarSeparator: CGFloat = 1
+        public static let searchBarHeight: CGFloat = 53
+       
         public static func headerHeight(horizontallyCompact: Bool) -> CGFloat {
-            return horizontallyCompact ? currentBarHeightCompact : currentBarHeightRegular
+            var headerHeight = searchBarHeight + (rowMargin * 3)
+            if (horizontallyCompact) {
+                headerHeight += (currentBarLineHeight * 2) + currentBarSeparator
+            } else {
+                headerHeight += currentBarLineHeight
+            }
+            return headerHeight
         }
 
         public static let columnMargin: CGFloat = 16

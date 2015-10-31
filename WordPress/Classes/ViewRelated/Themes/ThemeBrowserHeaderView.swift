@@ -12,12 +12,13 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
 
     // MARK: - Outlets
 
-    @IBOutlet weak var currentThemeBorder: UIView!
+    @IBOutlet weak var currentThemeBar: UIView!
     @IBOutlet weak var currentThemeLabel: UILabel!
     @IBOutlet weak var currentThemeName: UILabel!
     @IBOutlet weak var customizeButton: UIButton!
     @IBOutlet weak var detailsButton: UIButton!
     @IBOutlet weak var supportButton: UIButton!
+    @IBOutlet weak var searchBar: UIView!
     
     // MARK: - Properties
 
@@ -44,20 +45,18 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
     }
     
     private func applyStyles() {
-        currentThemeBorder.layer.borderWidth = 1;
-        currentThemeBorder.layer.borderColor = Styles.borderColor.CGColor;
-        currentThemeBorder.backgroundColor = Styles.dividerColor;
-        
+        Styles.styleBar(currentThemeBar)
+
         currentThemeLabel.font = Styles.currentThemeLabelFont
         currentThemeLabel.textColor = Styles.currentThemeLabelColor
         
         currentThemeName.font = Styles.currentThemeNameFont
         currentThemeName.textColor = Styles.currentThemeNameColor
         
-        for button in [customizeButton, detailsButton, supportButton] {
-            button.titleLabel?.font = Styles.currentThemeButtonFont
-            button.setTitleColor(Styles.currentThemeButtonColor, forState: .Normal)
-        }
+        let currentThemeButtons = [customizeButton, detailsButton, supportButton]
+        currentThemeButtons.forEach { Styles.styleCurrentThemeButton($0) }
+
+        Styles.styleBar(searchBar)
     }
     
     override public func prepareForReuse() {
