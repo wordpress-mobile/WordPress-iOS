@@ -1,14 +1,14 @@
 #import "MenusSelectionDetailView.h"
 #import "WPStyleGuide.h"
 
-@interface WPIconDrawView : UIView
+@interface MenusSelectionIconView : UIView
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIColor *drawColor;
 
 @end
 
-@implementation WPIconDrawView
+@implementation MenusSelectionIconView
 
 - (void)drawRect:(CGRect)rect
 {
@@ -49,8 +49,8 @@ CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) UILabel *textLabel;
-@property (nonatomic, strong) WPIconDrawView *iconView;
-@property (nonatomic, strong) WPIconDrawView *accessoryView;
+@property (nonatomic, strong) MenusSelectionIconView *iconView;
+@property (nonatomic, strong) MenusSelectionIconView *accessoryView;
 
 @end
 
@@ -110,7 +110,7 @@ CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
     self.stackView.spacing = MenusSelectionDetailViewDefaultSpacing;
     
     {
-        WPIconDrawView *iconView = [[WPIconDrawView alloc] init];
+        MenusSelectionIconView *iconView = [[MenusSelectionIconView alloc] init];
         iconView.backgroundColor = [UIColor clearColor];
         iconView.image = [UIImage imageNamed:@"icon-menus-menus"];
         iconView.drawColor = [WPStyleGuide darkBlue];
@@ -130,7 +130,7 @@ CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
         [self.stackView addArrangedSubview:label];
     }
     {
-        WPIconDrawView *accessoryView = [[WPIconDrawView alloc] init];
+        MenusSelectionIconView *accessoryView = [[MenusSelectionIconView alloc] init];
         accessoryView.backgroundColor = [UIColor clearColor];
         accessoryView.image = [UIImage imageNamed:@"icon-menus-expand"];
         accessoryView.drawColor = [WPStyleGuide mediumBlue];
