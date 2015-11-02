@@ -31,18 +31,17 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="466"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="aMq-eT-Mvc" customClass="MenusSelectionView">
-                                                    <rect key="frame" x="0.0" y="191" width="281" height="85"/>
+                                                    <rect key="frame" x="0.0" y="191" width="285" height="85"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Lvz-SB-8Wr">
-                                                            <rect key="frame" x="0.0" y="0.0" width="281" height="85"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uKq-W2-HUV" customClass="MenusSelectionDetailView">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="281" height="85"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
                                                                     <subviews>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="P1v-Mj-Ao7">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="281" height="85"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
                                                                             <animations/>
-                                                                            <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                                                         </stackView>
                                                                     </subviews>
                                                                     <animations/>
@@ -78,28 +77,27 @@
                                                     </connections>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="760" text="uses" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="50" translatesAutoresizingMaskIntoConstraints="NO" id="zti-gC-KhM">
-                                                    <rect key="frame" x="281" y="226" width="38" height="15"/>
+                                                    <rect key="frame" x="285" y="226" width="30" height="15"/>
                                                     <animations/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="38" id="D9J-3A-ryX"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="D9J-3A-ryX"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="9nH-CD-5gY" customClass="MenusSelectionView">
-                                                    <rect key="frame" x="319" y="191" width="281" height="85"/>
+                                                    <rect key="frame" x="315" y="191" width="285" height="85"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5V4-1N-wjI">
-                                                            <rect key="frame" x="0.0" y="0.0" width="281" height="85"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayP-tI-Z6q" customClass="MenusSelectionDetailView">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="281" height="85"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
                                                                     <subviews>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZuD-DO-djQ">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="281" height="85"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
                                                                             <animations/>
-                                                                            <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                                                         </stackView>
                                                                     </subviews>
                                                                     <animations/>
@@ -165,7 +163,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="Menu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIe-7W-vFF">
-                                                    <rect key="frame" x="8" y="25" width="434" height="20.5"/>
+                                                    <rect key="frame" x="8" y="25" width="434" height="21"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
