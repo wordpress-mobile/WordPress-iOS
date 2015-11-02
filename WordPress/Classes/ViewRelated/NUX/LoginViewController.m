@@ -239,13 +239,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
                                           @"Error message displayed when the user is Signing into a self hosted site and "
                                           @"tapped the 1Password Button before typing his siteURL");
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"Accept", @"Accept Button Title")
-                                              otherButtonTitles:nil];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
     
-    [alertView show];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Accept", @"Accept Button Title") handler:nil];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Button Handlers
