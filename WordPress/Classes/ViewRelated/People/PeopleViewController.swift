@@ -59,8 +59,8 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
 
     @IBAction func refresh() {
         let service = PeopleService(blog: blog!)
-        service.refreshTeam { _ in
-            self.refreshControl?.endRefreshing()
+        service.refreshTeam { [weak self] _ in
+            self?.refreshControl?.endRefreshing()
         }
     }
 
