@@ -21,7 +21,7 @@ pod 'google-plus-ios-sdk', '~>1.5'
 pod 'CrashlyticsLumberjack', '2.0.0'
 pod 'HockeySDK', '~>3.6.0'
 pod 'Helpshift', '~>4.10.0'
-pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
+pod 'Lookback', '1.1.4', :configurations => ['Release-Internal']
 pod 'MRProgress', '~>0.7.0'
 
 pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.8'
