@@ -23,6 +23,7 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     // provide extra margin to easily draw the design stroke, see drawRect:
     self.stackView.layoutMargins = UIEdgeInsetsMake(0, 0, MenusHeaderViewDesignStrokeWidth / 2, 0);
     self.stackView.layoutMarginsRelativeArrangement = YES;
+    self.stackView.spacing = 0;
     
     self.backgroundColor = [WPStyleGuide lightGrey];
     self.textLabel.font = [WPStyleGuide subtitleFont];

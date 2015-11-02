@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+extern CGFloat const MenusSelectionDetailViewDefaultSpacing;
+
 @interface MenusSelectionDetailView : UIView
 
 - (void)updateWithAvailableLocations:(NSUInteger)numLocationsAvailable selectedLocationName:(NSString *)name;

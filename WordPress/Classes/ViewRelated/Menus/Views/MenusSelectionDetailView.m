@@ -43,6 +43,8 @@
 
 @end
 
+CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
+
 @interface MenusSelectionDetailView ()
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
@@ -105,8 +107,7 @@
 {
     self.stackView.distribution = UIStackViewDistributionFillProportionally;
     self.stackView.alignment = UIStackViewAlignmentCenter;
-    self.stackView.spacing = 18.0;
-    self.stackView.layoutMargins = UIEdgeInsetsMake(0.0, 30.0, 0.0, 30.0);
+    self.stackView.spacing = MenusSelectionDetailViewDefaultSpacing;
     
     {
         WPIconDrawView *iconView = [[WPIconDrawView alloc] init];
