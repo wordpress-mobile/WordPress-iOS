@@ -31,7 +31,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="466"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="aMq-eT-Mvc" customClass="MenusSelectionView">
-                                                    <rect key="frame" x="0.0" y="191" width="285" height="85"/>
+                                                    <rect key="frame" x="0.0" y="190.5" width="285" height="85"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Lvz-SB-8Wr">
                                                             <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
@@ -77,7 +77,7 @@
                                                     </connections>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="760" text="uses" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="50" translatesAutoresizingMaskIntoConstraints="NO" id="zti-gC-KhM">
-                                                    <rect key="frame" x="285" y="226" width="30" height="15"/>
+                                                    <rect key="frame" x="285" y="226" width="30" height="14.5"/>
                                                     <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="D9J-3A-ryX"/>
@@ -87,7 +87,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="9nH-CD-5gY" customClass="MenusSelectionView">
-                                                    <rect key="frame" x="315" y="191" width="285" height="85"/>
+                                                    <rect key="frame" x="315" y="190.5" width="285" height="85"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5V4-1N-wjI">
                                                             <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
@@ -163,29 +163,31 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="240" verticalHuggingPriority="251" horizontalCompressionResistancePriority="760" text="Menu" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIe-7W-vFF">
-                                                    <rect key="frame" x="8" y="25" width="434" height="21"/>
+                                                    <rect key="frame" x="8" y="25" width="453" height="21"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MPg-Gx-Zfi">
-                                                    <rect key="frame" x="452" y="20" width="50" height="30"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MPg-Gx-Zfi" customClass="MenusDetailsButton">
+                                                    <rect key="frame" x="471" y="15" width="48" height="40"/>
                                                     <animations/>
                                                     <color key="backgroundColor" red="1" green="0.092125669189999995" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="50" id="0dD-qx-LZ9"/>
+                                                        <constraint firstAttribute="width" constant="48" id="0dD-qx-LZ9"/>
+                                                        <constraint firstAttribute="height" constant="40" id="iVc-tX-ULH"/>
                                                     </constraints>
                                                     <state key="normal" title="Trash">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v7k-uu-vab">
-                                                    <rect key="frame" x="512" y="20" width="80" height="30"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v7k-uu-vab" customClass="MenusDetailsButton">
+                                                    <rect key="frame" x="529" y="15" width="63" height="40"/>
                                                     <animations/>
                                                     <color key="backgroundColor" red="0.1076004438" green="0.55510221439999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="80" id="RDX-1M-RI5"/>
+                                                        <constraint firstAttribute="width" constant="63" id="RDX-1M-RI5"/>
+                                                        <constraint firstAttribute="height" constant="40" id="qDR-mS-Azq"/>
                                                     </constraints>
                                                     <state key="normal" title="Save">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
