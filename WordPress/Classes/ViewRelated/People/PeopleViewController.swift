@@ -5,7 +5,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
     private lazy var resultsController: NSFetchedResultsController = {
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@", self.blog!.dotComID())
-        // FIXME: my user should be first
+        // FIXME(@koke, 2015-11-02): my user should be first
         request.sortDescriptors = [NSSortDescriptor(key: "displayName", ascending: true, selector: "localizedCaseInsensitiveCompare:")]
         let context = ContextManager.sharedInstance().mainContext
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
