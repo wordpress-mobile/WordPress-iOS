@@ -82,12 +82,18 @@ extension WPStyleGuide
             let columnWidth = trunc(columnsWidth / numberOfColumns)
             return columnWidth
         }
-        public static func cellHeightForFrameWidth(width: CGFloat) -> CGFloat {
+        public static func cellHeightForCellWidth(width: CGFloat) -> CGFloat {
             let imageHeight = (width - cellImageInset) * cellImageRatio
             return imageHeight + cellInfoBarHeight
         }
+        public static func cellHeightForFrameWidth(width: CGFloat) -> CGFloat {
+            let cellWidth = cellWidthForFrameWidth(width)
+            return cellHeightForCellWidth(cellWidth)
+        }
         public static func cellSizeForFrameWidth(width: CGFloat) -> CGSize {
-            return CGSize(width: cellWidthForFrameWidth(width), height: cellHeightForFrameWidth(width))
+            let cellWidth = cellWidthForFrameWidth(width)
+            let cellHeight = cellHeightForCellWidth(cellWidth)
+            return CGSize(width: cellWidth, height: cellHeight)
         }
 
         public static let footerHeight: CGFloat = 50
