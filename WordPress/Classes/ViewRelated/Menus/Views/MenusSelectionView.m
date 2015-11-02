@@ -42,6 +42,13 @@ static inline UIEdgeInsets menusSelectionViewDrawingInsets() {
 {
     [super awakeFromNib];
     
+    UIEdgeInsets drawingInset = menusSelectionViewDrawingInsets();
+    UIEdgeInsets margins = UIEdgeInsetsZero;
+    margins.left = drawingInset.left + MenusSelectionDetailViewDefaultSpacing;
+    margins.right = drawingInset.right + MenusSelectionDetailViewDefaultSpacing;
+    self.stackView.layoutMargins = margins;
+    self.stackView.layoutMarginsRelativeArrangement = YES;
+    
     [self setupStyling];
 }
 
