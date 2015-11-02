@@ -5,7 +5,7 @@
 
 typedef void(^ThemeServiceRemoteSuccessBlock)();
 typedef void(^ThemeServiceRemoteThemeRequestSuccessBlock)(RemoteTheme *theme);
-typedef void(^ThemeServiceRemoteThemesRequestSuccessBlock)(NSArray *themes);
+typedef void(^ThemeServiceRemoteThemesRequestSuccessBlock)(NSArray<RemoteTheme *> *themes, BOOL hasMore);
 typedef void(^ThemeServiceRemoteThemeIdentifiersRequestSuccessBlock)(NSArray *themeIdentifiers);
 typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
 
@@ -57,13 +57,15 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *  @details    Includes premium themes even if not purchased.  Don't call this method if the list
  *              you want to retrieve is for a specific blog.  Use getThemesForBlogId instead.
  *
+ *  @param      page        Results page to return.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  *  @returns    The asynch operation triggered by this call.
  */
-- (NSOperation *)getThemes:(ThemeServiceRemoteThemesRequestSuccessBlock)success
-                   failure:(ThemeServiceRemoteFailureBlock)failure;
+- (NSOperation *)getThemesPage:(NSInteger)page
+                       success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                       failure:(ThemeServiceRemoteFailureBlock)failure;
 
 /**
  *  @brief      Gets the list of available themes for a blog.
@@ -74,12 +76,14 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  *              this method and not getThemes.
  *
  *  @param      blogId      The ID of the blog to get the themes for.  Cannot be nil.
+ *  @param      page        Results page to return.
  *  @param      success     The success handler.  Can be nil.
  *  @param      failure     The failure handler.  Can be nil.
  *
  *  @returns    The asynch operation triggered by this call.
  */
 - (NSOperation *)getThemesForBlogId:(NSNumber *)blogId
+                               page:(NSInteger)page
                             success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
                             failure:(ThemeServiceRemoteFailureBlock)failure;
 
