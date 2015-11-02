@@ -473,7 +473,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showPeopleForBlog:(Blog *)blog
 {
-    // TODO: add analytics
+    // TODO(@koke, 2015-11-02): add analytics
     PeopleViewController *controller = [[UIStoryboard storyboardWithName:@"People" bundle:nil] instantiateInitialViewController];
     controller.blog = blog;
     [self.navigationController pushViewController:controller animated:YES];
