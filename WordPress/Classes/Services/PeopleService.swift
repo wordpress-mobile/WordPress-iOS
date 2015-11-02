@@ -1,6 +1,6 @@
 import Foundation
 
-class PeopleService {
+struct PeopleService {
     let remote: PeopleRemote
     let siteID: Int
 
