@@ -38,19 +38,19 @@ class PeopleRemote: ServiceRemoteREST {
             guard let ID = user["ID"] as? Int else {
                 return nil
             }
-            guard let nice_name = user["nice_name"] as? String else {
+            guard let username = user["nice_name"] as? String else {
                 return nil
             }
-            guard let name = user["name"] as? String else {
+            guard let displayName = user["name"] as? String else {
                 return nil
             }
 
-            let first_name = user["first_name"] as? String
-            let last_name = user["last_name"] as? String
-            let avatar_URL = (user["avatar_URL"] as? String)
+            let firstName = user["first_name"] as? String
+            let lastName = user["last_name"] as? String
+            let avatarURL = (user["avatar_URL"] as? String)
                 .flatMap { NSURL(string: $0)}
                 .flatMap { Gravatar($0)?.canonicalURL }
-            let is_super_admin = user["is_super_admin"] as? Bool ?? false
+            let isSuperAdmin = user["is_super_admin"] as? Bool ?? false
             let roles = user["roles"] as? [String]
 
             let role = roles?.map({
@@ -58,7 +58,7 @@ class PeopleRemote: ServiceRemoteREST {
                 return Person.Role(string: role)
             }).sort().first ?? .Unsupported
 
-            return Person(ID: ID, username: nice_name, firstName: first_name, lastName: last_name, displayName: name, role: role, siteID: siteID, avatarURL: avatar_URL, isSuperAdmin: is_super_admin)
+            return Person(ID: ID, username: username, firstName: firstName, lastName: lastName, displayName: displayName, role: role, siteID: siteID, avatarURL: avatarURL, isSuperAdmin: isSuperAdmin)
         }
 
         let errorCount = people.reduce(0) { (sum, person) -> Int in
