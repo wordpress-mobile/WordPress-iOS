@@ -11,6 +11,7 @@ Changes to the data model:
 - `Theme` added a new string attribute called `price` to store a premium theme's price display string
 - `Theme` added a new string attribute called `stylesheet` to store identifier used to construct helper links
 - `Theme` added a new number attribute called `order` to store the display order retrieved by
+- Added new entity `Person`
 
 ## WordPress 39 (@sergioestevao 2015-09-09)
 
@@ -18,7 +19,6 @@ Changes to the data model:
 - `Blog` added a new boolean attribute called `relatedPostsEnabled` to store the related setting on the site;
 - `Blog` added a new boolean attribute called `relatedPostsShowHeadline` to store the related setting on the site;
 - `Blog` added a new boolean attribute called `relatedPostsShowThumbnails` to store the related setting on the site;
-- Added new entity `Person`
 
 ## WordPress 38 (@sergioestevao 2015-08-21)
 
