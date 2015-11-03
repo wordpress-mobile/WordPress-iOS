@@ -19,12 +19,9 @@ import Foundation
     public func syncPublicizeServices(success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let remote = SharingServiceRemote(api: apiForRequest())
 
-        remote.getPublicizeServices( {[weak self] (remoteServices:[RemotePublicizeService]) -> Void in
-            guard let strongSelf = self else {
-                return
-            }
+        remote.getPublicizeServices( {(remoteServices:[RemotePublicizeService]) -> Void in
             // Process the results
-            strongSelf.mergePublicizeServices(remoteServices, success: success)
+            self.mergePublicizeServices(remoteServices, success: success)
         },
         failure: { (error: NSError!) -> Void in
             failure?(error)
@@ -42,12 +39,7 @@ import Foundation
     public func fetchKeyringConnections(success: ([KeyringConnection] -> Void)?, failure: (NSError! -> Void)?) {
         let remote = SharingServiceRemote(api: apiForRequest())
 
-        remote.getKeyringConnections( {[weak self] (keyringConnections:[KeyringConnection]) -> Void in
-            // Check for nil as a safety net. If we're nil it might mean the user 
-            // has moved on to some other task.
-            guard self != nil else {
-                return
-            }
+        remote.getKeyringConnections( {(keyringConnections:[KeyringConnection]) -> Void in
             // Just return the result
             success?(keyringConnections)
         },
@@ -67,12 +59,9 @@ import Foundation
     public func syncPublicizeConnectionsForBlog(blog:Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let blogObjectID = blog.objectID
         let remote = SharingServiceRemote(api: apiForRequest())
-        remote.getPublicizeConnections(blog.dotComID(), success: {[weak self] (remoteConnections:[RemotePublicizeConnection]) -> Void in
-            guard let strongSelf = self else {
-                return
-            }
+        remote.getPublicizeConnections(blog.dotComID(), success: {(remoteConnections:[RemotePublicizeConnection]) -> Void in
             // Process the results
-            strongSelf.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections:remoteConnections, success: success)
+            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections:remoteConnections, success: success)
         },
         failure: { (error: NSError!) -> Void in
             failure?(error)
@@ -102,13 +91,9 @@ import Foundation
             remote.createPublicizeConnection(blog.dotComID(),
                 keyringConnectionID: keyring.keyringID,
                 externalUserID: externalUserID,
-                success: { [weak self] (remoteConnection:RemotePublicizeConnection) -> Void in
-                    guard let strongSelf = self else {
-                        return
-                    }
-
+                success: {(remoteConnection:RemotePublicizeConnection) -> Void in
                     do {
-                        let pubConn = try strongSelf.createPublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
+                        let pubConn = try self.createPublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
                         success?(pubConn)
 
                     } catch let error as NSError {
@@ -325,11 +310,9 @@ import Foundation
             // Create or update based on the contents synced.
             let connectionsToKeep = remoteConnections.map { (let remoteConnection) -> PublicizeConnection in
                 let pubConnection = self.createOrReplaceFromRemotePublicizeConnection(remoteConnection)
+                pubConnection.blog = blog
                 return pubConnection
             }
-
-            // Update the blog's connections
-            blog.connections = connectionsToKeep
 
             // Delete any cached PublicizeServices that were not synced.
             if currentPublicizeConnections.count > 0 {
@@ -363,7 +346,7 @@ import Foundation
         pubConnection?.connectionID = remoteConnection.connectionID
         pubConnection?.dateExpires = remoteConnection.dateExpires
         pubConnection?.dateIssued = remoteConnection.dateIssued
-        pubConnection?.exteranlDisplay = remoteConnection.exteranlDisplay
+        pubConnection?.externalDisplay = remoteConnection.externalDisplay
         pubConnection?.externalFollowerCount = remoteConnection.externalFollowerCount
         pubConnection?.externalID = remoteConnection.externalID
         pubConnection?.externalName = remoteConnection.externalName

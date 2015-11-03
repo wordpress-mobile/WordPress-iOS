@@ -9,10 +9,10 @@ import CoreData
     // Properties
     @NSManaged public var connectionID: NSNumber
     @NSManaged public var dateIssued: NSDate
-    @NSManaged public var dateExpires: NSDate
+    @NSManaged public var dateExpires: NSDate?
     @NSManaged public var externalID: String
     @NSManaged public var externalName: String
-    @NSManaged public var exteranlDisplay: String
+    @NSManaged public var externalDisplay: String
     @NSManaged public var externalProfilePicture: String
     @NSManaged public var externalProfileURL: String
     @NSManaged public var externalFollowerCount: NSNumber

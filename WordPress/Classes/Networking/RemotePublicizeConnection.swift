@@ -4,10 +4,10 @@ import Foundation
 {
     public var connectionID: NSNumber = 0
     public var dateIssued = NSDate()
-    public var dateExpires = NSDate()
+    public var dateExpires:NSDate? = nil
     public var externalID = ""
     public var externalName = ""
-    public var exteranlDisplay = ""
+    public var externalDisplay = ""
     public var externalProfilePicture = ""
     public var externalProfileURL = ""
     public var externalFollowerCount: NSNumber = 0

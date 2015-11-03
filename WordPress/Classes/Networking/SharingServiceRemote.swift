@@ -76,19 +76,19 @@ import Foundation
                     let conn = KeyringConnection()
                     // TODO: Need to see how this guy is formatted.
                     // conn.additionalExternalUsers = dict.arrayForKey(ConnectionDictionaryKeys.additionalExternalUsers)
-                    conn.dateExpires = dict.objectForKey(ConnectionDictionaryKeys.expires) as! NSDate
-                    conn.dateIssued = dict.objectForKey(ConnectionDictionaryKeys.issued) as! NSDate
-                    conn.exteranlDisplay = dict.stringForKey(ConnectionDictionaryKeys.externalDisplay)
-                    conn.externalID = dict.stringForKey(ConnectionDictionaryKeys.externalID)
-                    conn.externalName = dict.stringForKey(ConnectionDictionaryKeys.externalName)
-                    conn.externalProfilePicture = dict.stringForKey(ConnectionDictionaryKeys.externalProfilePicture)
-                    conn.keyringID = dict.numberForKey(ConnectionDictionaryKeys.ID)
-                    conn.label = dict.stringForKey(ConnectionDictionaryKeys.label)
-                    conn.refreshURL = dict.stringForKey(ConnectionDictionaryKeys.refreshURL)
-                    conn.status = dict.stringForKey(ConnectionDictionaryKeys.status)
-                    conn.service = dict.stringForKey(ConnectionDictionaryKeys.service)
-                    conn.type = dict.stringForKey(ConnectionDictionaryKeys.type)
-                    conn.userID = dict.numberForKey(ConnectionDictionaryKeys.userID)
+                    conn.dateExpires = DateUtils.dateFromISOString(dict.stringForKey(ConnectionDictionaryKeys.expires))
+                    conn.dateIssued = DateUtils.dateFromISOString(dict.stringForKey(ConnectionDictionaryKeys.issued))
+                    conn.externalDisplay = dict.stringForKey(ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
+                    conn.externalID = dict.stringForKey(ConnectionDictionaryKeys.externalID) ?? conn.externalID
+                    conn.externalName = dict.stringForKey(ConnectionDictionaryKeys.externalName) ?? conn.externalName
+                    conn.externalProfilePicture = dict.stringForKey(ConnectionDictionaryKeys.externalProfilePicture) ?? conn.externalProfilePicture
+                    conn.keyringID = dict.numberForKey(ConnectionDictionaryKeys.ID) ?? conn.keyringID
+                    conn.label = dict.stringForKey(ConnectionDictionaryKeys.label) ?? conn.label
+                    conn.refreshURL = dict.stringForKey(ConnectionDictionaryKeys.refreshURL) ?? conn.refreshURL
+                    conn.status = dict.stringForKey(ConnectionDictionaryKeys.status) ?? conn.status
+                    conn.service = dict.stringForKey(ConnectionDictionaryKeys.service) ?? conn.service
+                    conn.type = dict.stringForKey(ConnectionDictionaryKeys.type) ?? conn.type
+                    conn.userID = dict.numberForKey(ConnectionDictionaryKeys.userID) ?? conn.userID
 
                     return conn
                 }
@@ -114,10 +114,7 @@ import Foundation
 
         api.GET(path,
             parameters: nil,
-            success: {[weak self] (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
-                guard let strongSelf = self else {
-                    return
-                }
+            success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
                 guard let onSuccess = success else {
                     return
                 }
@@ -125,7 +122,7 @@ import Foundation
                 let responseDict = response as! NSDictionary
                 let connections:Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
                 let publicizeConnections:[RemotePublicizeConnection] = connections.map { (let dict) -> RemotePublicizeConnection in
-                    let conn = strongSelf.remotePublicizeConnectionFromDictionary(dict as! NSDictionary)
+                    let conn = self.remotePublicizeConnectionFromDictionary(dict as! NSDictionary)
                     return conn
                 }
 
@@ -162,16 +159,13 @@ import Foundation
 
             api.POST(path,
                 parameters: NSDictionary(dictionary:parameters),
-                success: {[weak self] (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
-                    guard let strongSelf = self else {
-                        return
-                    }
+                success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
                     guard let onSuccess = success else {
                         return
                     }
 
                     let dict = response as! NSDictionary
-                    let conn = strongSelf.remotePublicizeConnectionFromDictionary(dict)
+                    let conn = self.remotePublicizeConnectionFromDictionary(dict)
 
                     onSuccess(conn)
                 },
@@ -213,23 +207,23 @@ import Foundation
     private func remotePublicizeConnectionFromDictionary(dict:NSDictionary) -> RemotePublicizeConnection {
         let conn = RemotePublicizeConnection()
 
-        conn.connectionID = dict.numberForKey(ConnectionDictionaryKeys.ID)
-        conn.dateExpires = dict.objectForKey(ConnectionDictionaryKeys.expires) as! NSDate
-        conn.dateIssued = dict.objectForKey(ConnectionDictionaryKeys.issued) as! NSDate
-        conn.exteranlDisplay = dict.stringForKey(ConnectionDictionaryKeys.externalDisplay)
-        conn.externalID = dict.stringForKey(ConnectionDictionaryKeys.externalID)
-        conn.externalName = dict.stringForKey(ConnectionDictionaryKeys.externalName)
-        conn.externalProfilePicture = dict.stringForKey(ConnectionDictionaryKeys.externalProfilePicture)
-        conn.externalProfileURL = dict.stringForKey(ConnectionDictionaryKeys.externalProfileURL)
-        conn.keyringConnectionID = dict.numberForKey(ConnectionDictionaryKeys.keyringConnectionID)
-        conn.keyringConnectionUserID = dict.numberForKey(ConnectionDictionaryKeys.keyringConnectionUserID)
-        conn.label = dict.stringForKey(ConnectionDictionaryKeys.label)
-        conn.refreshURL = dict.stringForKey(ConnectionDictionaryKeys.refreshURL)
-        conn.status = dict.stringForKey(ConnectionDictionaryKeys.status)
-        conn.service = dict.stringForKey(ConnectionDictionaryKeys.service)
-        conn.shared = dict.numberForKey(ConnectionDictionaryKeys.shared).boolValue
-        conn.siteID = dict.numberForKey(ConnectionDictionaryKeys.siteID)
-        conn.userID = dict.numberForKey(ConnectionDictionaryKeys.userID)
+        conn.connectionID = dict.numberForKey(ConnectionDictionaryKeys.ID) ?? conn.connectionID
+        conn.dateExpires = DateUtils.dateFromISOString(dict.stringForKey(ConnectionDictionaryKeys.expires))
+        conn.dateIssued = DateUtils.dateFromISOString(dict.stringForKey(ConnectionDictionaryKeys.issued))
+        conn.externalDisplay = dict.stringForKey(ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
+        conn.externalID = dict.stringForKey(ConnectionDictionaryKeys.externalID) ?? conn.externalID
+        conn.externalName = dict.stringForKey(ConnectionDictionaryKeys.externalName) ?? conn.externalName
+        conn.externalProfilePicture = dict.stringForKey(ConnectionDictionaryKeys.externalProfilePicture) ?? conn.externalProfilePicture
+        conn.externalProfileURL = dict.stringForKey(ConnectionDictionaryKeys.externalProfileURL) ?? conn.externalProfileURL
+        conn.keyringConnectionID = dict.numberForKey(ConnectionDictionaryKeys.keyringConnectionID) ?? conn.keyringConnectionID
+        conn.keyringConnectionUserID = dict.numberForKey(ConnectionDictionaryKeys.keyringConnectionUserID) ?? conn.keyringConnectionUserID
+        conn.label = dict.stringForKey(ConnectionDictionaryKeys.label) ?? conn.label
+        conn.refreshURL = dict.stringForKey(ConnectionDictionaryKeys.refreshURL) ?? conn.refreshURL
+        conn.status = dict.stringForKey(ConnectionDictionaryKeys.status) ?? conn.status
+        conn.service = dict.stringForKey(ConnectionDictionaryKeys.service) ?? conn.service
+        conn.shared = dict.numberForKey(ConnectionDictionaryKeys.shared).boolValue ?? conn.shared
+        conn.siteID = dict.numberForKey(ConnectionDictionaryKeys.siteID) ?? conn.siteID
+        conn.userID = dict.numberForKey(ConnectionDictionaryKeys.userID) ?? conn.userID
 
         return conn
     }

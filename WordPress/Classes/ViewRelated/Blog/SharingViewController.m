@@ -249,14 +249,14 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     __weak __typeof__(self) weakSelf = self;
     NSMutableArray *accountNames = [NSMutableArray array];
     for (KeyringConnection *keyConn in keyringConnections) {
-        [accountNames addObject:keyConn.externalName]; // TODO: Check if this is better as `externalDisplay`?
+        [accountNames addObject:keyConn.externalDisplay];
     }
 
     // TODO: Switch to UIAlertController
     // NOTE: Currently, implementation assumes account names will be different, but they could be the same.
     // We'll have better handling with UIAlertController. For now this works as a tester/demo
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Connect account:", @"Title of Publicize account selection")
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                destructiveButtonTitle:nil
                                                     otherButtonTitles:accountNames
                                                            completion:^(NSString *buttonTitle){
@@ -279,7 +279,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 {
     // Don't worry about secondary accounts for now.
     for (KeyringConnection *keyConn in keyringConnections) {
-        if ([keyConn.externalName isEqualToString:accountName]) {
+        if ([keyConn.externalDisplay isEqualToString:accountName]) {
             [self connectToPublicizeService:pubServ withKeyringConnection:keyConn];
             return;
         }
