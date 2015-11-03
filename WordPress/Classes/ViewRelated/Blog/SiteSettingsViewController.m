@@ -22,7 +22,7 @@
 #import "PostCategoryService.h"
 #import "PostCategory.h"
 #import "PostCategoriesViewController.h"
-#import "PostSettingsSelectionViewController.h"
+#import "SettingsSelectionViewController.h"
 #import "BlogSiteVisibilityHelper.h"
 #import "RelatedPostsSettingsViewController.h"
 #import "WordPress-Swift.h"
@@ -533,7 +533,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
                                       SettingsSelectionHintsKey          : hints
                                       };
     
-    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:settingsSelectionConfiguration];
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:settingsSelectionConfiguration];
     __weak __typeof__(self) weakSelf = self;
     vc.onItemSelected = ^(NSNumber *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
@@ -638,7 +638,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
                                       SettingsSelectionCurrentValueKey   : currentDefaultPostFormat
                                       };
     
-    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
     __weak __typeof__(self) weakSelf = self;
     vc.onItemSelected = ^(NSString *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
