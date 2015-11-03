@@ -11,8 +11,8 @@ public class DiscussionSettingsViewController : UITableViewController
 {
     // MARK: - Private Properties
     private var blog : Blog!
-    
-    
+
+
     
     // MARK: - Initializers
     public convenience init(blog: Blog) {
@@ -53,7 +53,7 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let row = sections[indexPath.section].rows[indexPath.row]
+        let row = rowAtIndexPath(indexPath)
         let cell = cellForRow(row, tableView: tableView)
         
         switch row.style {
@@ -107,11 +107,19 @@ public class DiscussionSettingsViewController : UITableViewController
     // MARK: - UITableViewDelegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
+        
+        if let handler = rowAtIndexPath(indexPath).handler {
+            handler()
+        }
     }
     
     
     
     // MARK: - Private Methods
+    private func rowAtIndexPath(indexPath: NSIndexPath) -> Row {
+        return sections[indexPath.section].rows[indexPath.row]
+    }
+    
     private func cellForRow(row: Row, tableView: UITableView) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCellWithIdentifier(row.style.rawValue) {
             return cell
@@ -143,73 +151,162 @@ public class DiscussionSettingsViewController : UITableViewController
     
     // MARK: - Computed Properties
     private var sections : [Section] {
-        let postsSection = Section()
-        postsSection.headerText = NSLocalizedString("Defaults for New Posts",
-                                                    comment: "Discussion Settings: Posts Section")
-        
-        postsSection.footerText = NSLocalizedString("You can override these settings for individual posts. Learn more...",
-                                                    comment: "Discussion Settings: Footer Text")
-        postsSection.rows = [
-            Row(style: .Switch, title: NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled")),
-            Row(style: .Switch, title: NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks")),
-            Row(style: .Switch, title: NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"))
-        ]
-        
-        
-        let commentsSection = Section()
-        commentsSection.headerText = NSLocalizedString("Comments", comment: "Settings: Comment Sections")
-        commentsSection.rows = [
-            Row(style: .Value1,
-                title: NSLocalizedString("Close After", comment: "Settings: Close comments after X period")),
-            
-            Row(style: .Value1,
-                title: NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order")),
-            
-            Row(style: .Value1,
-                title: NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences")),
-            
-            Row(style: .Value1,
-                title: NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences")),
-            
-            Row(style: .Switch,
-                title: NSLocalizedString("Must be Manually Approved", comment: "Settings: Comments Approval settings")),
-            
-            Row(style: .Switch,
-                title: NSLocalizedString("Must include name & email", comment: "Settings: Comments Approval settings")),
-            
-            Row(style: .Switch,
-                title: NSLocalizedString("Users must be signed in", comment: "Settings: Comments Approval settings"))
-        ]
-        
-        let approvalSection = Section()
-        approvalSection.headerText = NSLocalizedString("Automatically Approve Comments", comment: "Settings: Auto-Approvals Section Header")
-        approvalSection.rows = [
-            Row(style: .Switch,
-                title: NSLocalizedString("From known users", comment: "Settings: Comments Auto Approval")),
-            
-            Row(style: .Switch,
-                title: NSLocalizedString("With multiple links", comment: "Settings: Comments Auto Approval"))
-        ]
-        
-        let otherSection = Section()
-        otherSection.rows = [
-            Row(style: .Value1,
-                title: NSLocalizedString("Hold for Moderation", comment: "Settings: Comments Moderation")),
-            
-            Row(style: .Value1,
-                title: NSLocalizedString("Blacklist", comment: "Settings: Comments Blacklist"))
-        ]
-        
         return [postsSection, commentsSection, approvalSection, otherSection]
     }
     
+    private var postsSection : Section {
+        let headerText = NSLocalizedString("Defaults for New Posts", comment: "Discussion Settings: Posts Section")
+        let footerText = NSLocalizedString("You can override these settings for individual posts. Learn more...", comment: "Discussion Settings: Footer Text")
+        let rows = [
+            Row(style:      .Switch,
+                title:      NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
+                handler:    nil),
+            
+            Row(style:      .Switch,
+                title:      NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks"),
+                handler:    nil),
+            
+            Row(style:      .Switch,
+                title:      NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"),
+                handler:    nil)
+        ]
+        
+        return Section(headerText: headerText, footerText: footerText, rows: rows)
+    }
+    
+    private var commentsSection : Section {
+        let headerText = NSLocalizedString("Comments", comment: "Settings: Comment Sections")
+        let rows = [
+            Row(style:      .Value1,
+                title:      NSLocalizedString("Close After", comment: "Settings: Close comments after X period"),
+                handler:    { self.showCloseAfterSettings() }),
+            
+            Row(style:      .Value1,
+                title:      NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order"),
+                handler:    { self.showSortingSettings() }),
+            
+            Row(style:      .Value1,
+                title:      NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences"),
+                handler:    { self.showThreadingSettings() }),
+            
+            Row(style:      .Value1,
+                title:      NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences"),
+                handler:    { self.showPagingSettings() }),
+            
+            Row(style:      .Switch,
+                title:      NSLocalizedString("Must be Manually Approved", comment: "Settings: Comments Approval settings"),
+                handler:    nil),
+            
+            Row(style:      .Switch,
+                title:      NSLocalizedString("Must include name & email", comment: "Settings: Comments Approval settings"),
+                handler:    nil),
+            
+            Row(style:      .Switch,
+                title:      NSLocalizedString("Users must be signed in", comment: "Settings: Comments Approval settings"),
+                handler:    nil)
+        ]
+
+        return Section(headerText: headerText, rows: rows)
+    }
+    
+    private var approvalSection : Section {
+        let headerText = NSLocalizedString("Automatically Approve Comments", comment: "Settings: Auto-Approvals Section Header")
+        let rows = [
+            Row(style:      .Switch,
+                title:      NSLocalizedString("From known users", comment: "Settings: Comments Auto Approval"),
+                handler:    nil),
+    
+            Row(style:      .Switch,
+                title:      NSLocalizedString("With multiple links", comment: "Settings: Comments Auto Approval"),
+                handler:    nil)
+        ]
+        
+        return Section(headerText: headerText, rows: rows)
+    }
+    
+    private var otherSection : Section {
+        let rows = [
+            Row(style:      .Value1,
+                title:      NSLocalizedString("Hold for Moderation", comment: "Settings: Comments Moderation"),
+                handler:    { self.showModerationSettings() } ),
+            
+            Row(style:      .Value1,
+                title:      NSLocalizedString("Blacklist", comment: "Settings: Comments Blacklist"),
+                handler:    { self.showBlacklistSettings() } )
+        ]
+        
+        return Section(rows: rows)
+    }
+    
+    
+    private func showCloseAfterSettings() {
+        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
+        settingsViewController.title            = NSLocalizedString("Close After", comment: "")
+        settingsViewController.currentValue     = "2"
+        settingsViewController.defaultValue     = "123"
+        settingsViewController.titles           = ["Never", "One day", "One week", "One month"]
+        settingsViewController.values           = ["31337", "1", "7", "30"]
+        settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
+        
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+    
+    private func showSortingSettings() {
+        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
+        settingsViewController.title            = NSLocalizedString("Sort By", comment: "")
+        settingsViewController.currentValue     = "1"
+        settingsViewController.defaultValue     = "123"
+        settingsViewController.titles           = ["Oldest First", "Newest First"]
+        settingsViewController.values           = ["0", "1"]
+        settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
+        
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+    
+    private func showThreadingSettings() {
+        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
+        settingsViewController.title            = NSLocalizedString("Threading", comment: "")
+        settingsViewController.currentValue     = "2"
+        settingsViewController.defaultValue     = "123"
+        settingsViewController.titles           = ["Two levels", "Three levels", "Four levels", "Five levels"]
+        settingsViewController.values           = ["2", "3", "4", "5"]
+        settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
+        
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+    
+    private func showPagingSettings() {
+        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
+        settingsViewController.title            = NSLocalizedString("Paging", comment: "")
+        settingsViewController.currentValue     = "50"
+        settingsViewController.defaultValue     = "123"
+        settingsViewController.titles           = ["None", "50 comments per page", "100 comments per page", "200 comments per page"]
+        settingsViewController.values           = ["31337", "50", "100", "200"]
+        settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
+        
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+
+    private func showModerationSettings() {
+        
+    }
+    
+    private func showBlacklistSettings() {
+        
+    }
     
     
     // MARK: - Public Nested Classes
     private class Section {
-        var headerText      : String?
-        var footerText      : String?
-        var rows            : [Row]!
+        let headerText      : String?
+        let footerText      : String?
+        let rows            : [Row]
+        
+        init(headerText: String? = nil, footerText: String? = nil, rows : [Row]) {
+            self.headerText = headerText
+            self.footerText = footerText
+            self.rows       = rows
+        }
     }
     
     private class Row {
@@ -227,7 +324,7 @@ public class DiscussionSettingsViewController : UITableViewController
             self.handler    = handler
         }
         
-        typealias Handler = (Row -> Void)
+        typealias Handler = (() -> ())
         
         enum Style : String {
             case Value1     = "Value1"
