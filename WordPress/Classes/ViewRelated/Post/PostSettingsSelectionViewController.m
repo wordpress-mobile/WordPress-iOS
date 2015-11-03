@@ -12,14 +12,7 @@ NSString * const SettingsSelectionDefaultValueKey = @"DefaultValue";
 NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
 
 @interface PostSettingsSelectionViewController ()
-
-@property (nonatomic, strong) NSArray *titles;
-@property (nonatomic, strong) NSArray *values;
-@property (nonatomic, strong) NSArray *hints;
-@property (nonatomic, strong) NSString *defaultValue;
-@property (nonatomic, strong) NSObject *currentValue;
 @property (nonatomic, strong) WPTableViewSectionHeaderFooterView *hintView;
-
 @end
 
 @implementation PostSettingsSelectionViewController
