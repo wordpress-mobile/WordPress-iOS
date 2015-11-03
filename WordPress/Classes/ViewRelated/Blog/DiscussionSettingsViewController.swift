@@ -25,20 +25,20 @@ public class DiscussionSettingsViewController : UITableViewController
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
-        setupTableView()
         setupNavBar()
+        setupTableView()
     }
     
     
     
     // MARK: - Setup Helpers
+    private func setupNavBar() {
+        title = NSLocalizedString("Discussion", comment: "Title for the Discussion Settings Screen")
+    }
+    
     private func setupTableView() {
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
         tableView.cellLayoutMarginsFollowReadableWidth = false
-    }
-
-    private func setupNavBar() {
-        title = NSLocalizedString("Discussion", comment: "Title for the Discussion Settings Screen")
     }
 
     
