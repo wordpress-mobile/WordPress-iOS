@@ -1,4 +1,4 @@
-#import "PostSettingsSelectionViewController.h"
+#import "SettingsSelectionViewController.h"
 #import "WPStyleGuide.h"
 #import "NSDictionary+SafeExpectations.h"
 #import "NSString+XMLExtensions.h"
@@ -12,11 +12,11 @@ NSString * const SettingsSelectionHintsKey = @"Hints";
 NSString * const SettingsSelectionDefaultValueKey = @"DefaultValue";
 NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
 
-@interface PostSettingsSelectionViewController ()
+@interface SettingsSelectionViewController ()
 @property (nonatomic, strong) WPTableViewSectionHeaderFooterView *hintView;
 @end
 
-@implementation PostSettingsSelectionViewController
+@implementation SettingsSelectionViewController
 
 // Dictionary should be in the following format
 /*
