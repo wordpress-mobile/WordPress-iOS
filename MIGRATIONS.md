@@ -7,9 +7,9 @@ data model as well as any custom migrations.
 
 Changes to the data model:
 
-- Added `Publicizer` to store the services capable of publicizing
-- `Blog` added a new relationship called `publicizers` to store available Publicizers
-- `Blog` added a new attribute called `connections` to store the blog's connections array
+- Added `PublicizeService` entity. Represents third-party services available to Publicize
+- Added `PublicizeConnection` entity. Represents a connection between a blog and a third-party Publicize service.
+- `Blog` added a new relationship called `connections`. These are the PublicizeConnections for the blog.
 
 ## WordPress 40 (@alexcurylo 2015-10-14)
 
