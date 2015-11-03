@@ -18,28 +18,16 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
 
 @implementation SettingsSelectionViewController
 
-// Dictionary should be in the following format
-/*
-{
-    CurrentValue = 0;
-    DefaultValue = 0;
-    Title = "Image Resize";
-    Titles =             (
-                          "Always Ask",
-                          Small,
-                          Medium,
-                          Large,
-                          Disabled
-                          );
-    Values =             (
-                          0,
-                          1,
-                          2,
-                          3,
-                          4
-                          );
-}
-*/
+/**
+    Dictionary should be in the following format:
+     {
+        CurrentValue    : 0,
+        DefaultValue    : 0,
+        Title           : "Image Resize",
+        Titles          : [ "Always Ask", "Small", "Medium", "Large", "Disabled" ],
+        Values          : [ 0, 1, 2, 3, 4, 5 ]
+     }
+ */
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
