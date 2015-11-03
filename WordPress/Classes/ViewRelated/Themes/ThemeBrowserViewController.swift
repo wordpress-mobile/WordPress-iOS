@@ -25,8 +25,6 @@ public protocol ThemePresenter {
     private lazy var themesController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest(entityName: Theme.entityName())
         fetchRequest.fetchBatchSize = 20
-        let predicate = NSPredicate(format: "blog == %@", self.blog)
-        fetchRequest.predicate = predicate
         let sort = NSSortDescriptor(key: "order", ascending: true)
         fetchRequest.sortDescriptors = [sort]
         let frc = NSFetchedResultsController(fetchRequest: fetchRequest,
@@ -35,21 +33,19 @@ public protocol ThemePresenter {
             cacheName: nil)
         frc.delegate = self
         
-        do {
-            try frc.performFetch()
-        } catch let error as NSError {
-            DDLogSwift.logError("Error fetching themes: \(error.localizedDescription)")
-        }
-        
         return frc
     }()
     private var themesCount: NSInteger {
         return themesController.fetchedObjects?.count ?? 0
     }
 	private var isEmpty: Bool {
-        return themesCount == 0
+        return searchName.isEmpty && themesCount == 0
     }
-
+    private var searchName = "" {
+        didSet {
+            fetchThemes()
+       }
+    }
    
     /**
      *  @brief      The themes service we'll use in this VC and its helpers
@@ -88,6 +84,8 @@ public protocol ThemePresenter {
         
         WPStyleGuide.configureColorsForView(view, collectionView:collectionView)
         
+        fetchThemes()
+
         setupSyncHelper()
     }
 
@@ -255,10 +253,55 @@ public protocol ThemePresenter {
     
     // MARK: - UISearchBarDelegate
     
-    public func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        // SEARCH AWAY!!!
+    public func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool  {
+        searchBar.setShowsCancelButton(true, animated: true)
+        return true
     }
     
+    public func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        searchName = searchText
+    }
+    
+    public func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    public func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchName = ""
+        searchBar.resignFirstResponder()
+    }
+    
+    public func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool  {
+        searchBar.setShowsCancelButton(false, animated: true)
+        return true
+    }
+    
+    // MARK: - NSFetchedResultsController helpers
+
+    private func browsePredicate() -> NSPredicate {
+        let blogPredicate = NSPredicate(format: "blog == %@", self.blog)
+        guard !searchName.isEmpty else {
+            return blogPredicate
+        }
+        
+        let namePredicate = NSPredicate(format: "name contains[c] %@", searchName)
+        
+        let subpredicates = [blogPredicate, namePredicate]
+        let browsePredicate = NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
+        
+        return browsePredicate
+    }
+    
+    private func fetchThemes() {
+        do {
+            themesController.fetchRequest.predicate = browsePredicate()
+            try themesController.performFetch()
+            collectionView?.reloadData()
+        } catch let error as NSError {
+            DDLogSwift.logError("Error fetching themes: \(error.localizedDescription)")
+        }
+    }
+  
     // MARK: - NSFetchedResultsControllerDelegate
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {

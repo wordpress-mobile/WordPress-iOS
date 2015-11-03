@@ -174,7 +174,7 @@
                                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                             <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-20"/>
                                                                             <state key="normal" title="Customize">
-                                                                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                             </state>
                                                                             <connections>
                                                                                 <action selector="didTapCustomizeButton:" destination="47y-8d-jwn" eventType="touchUpInside" id="S4h-dy-zTy"/>
@@ -205,7 +205,7 @@
                                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                             <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-20"/>
                                                                             <state key="normal" title="Details">
-                                                                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                             </state>
                                                                             <connections>
                                                                                 <action selector="didTapDetailsButton:" destination="47y-8d-jwn" eventType="touchUpInside" id="xQO-1t-CBD"/>
@@ -236,7 +236,7 @@
                                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                             <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="-20"/>
                                                                             <state key="normal" title="Support">
-                                                                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                             </state>
                                                                             <connections>
                                                                                 <action selector="didTapSupportButton:" destination="47y-8d-jwn" eventType="touchUpInside" id="ELI-lH-PCS"/>
@@ -273,10 +273,31 @@
                                         </view>
                                         <view contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QcA-Am-6I5">
                                             <rect key="frame" x="16" y="139" width="568" height="53"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fzn-G2-C1L">
+                                                    <rect key="frame" x="0.0" y="0.0" width="568" height="53"/>
+                                                    <subviews>
+                                                        <searchBar contentMode="redraw" searchBarStyle="minimal" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HMQ-Gs-9FB">
+                                                            <rect key="frame" x="0.0" y="0.0" width="568" height="53"/>
+                                                            <animations/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                            <connections>
+                                                                <outlet property="delegate" destination="1cE-e6-chL" id="bAl-dw-bjE"/>
+                                                            </connections>
+                                                        </searchBar>
+                                                    </subviews>
+                                                    <animations/>
+                                                </stackView>
+                                            </subviews>
                                             <animations/>
                                             <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
+                                                <constraint firstItem="fzn-G2-C1L" firstAttribute="top" secondItem="QcA-Am-6I5" secondAttribute="top" id="1tx-Ok-8mh"/>
+                                                <constraint firstItem="fzn-G2-C1L" firstAttribute="leading" secondItem="QcA-Am-6I5" secondAttribute="leading" id="8hC-Pa-jR4"/>
                                                 <constraint firstAttribute="height" constant="53" id="STF-gH-eRR"/>
+                                                <constraint firstAttribute="trailing" secondItem="fzn-G2-C1L" secondAttribute="trailing" id="s07-VR-hlE"/>
+                                                <constraint firstAttribute="bottom" secondItem="fzn-G2-C1L" secondAttribute="bottom" id="w2Y-Kx-Urt"/>
                                             </constraints>
                                         </view>
                                     </subviews>
