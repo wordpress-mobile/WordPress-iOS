@@ -144,57 +144,60 @@ public class DiscussionSettingsViewController : UITableViewController
     // MARK: - Computed Properties
     private var sections : [Section] {
         let postsSection = Section()
-        postsSection.headerText = NSLocalizedString("Defaults for New Posts", comment: "")
-        postsSection.footerText = NSLocalizedString("You can override these settings for individual posts. Learn more...", comment: "")
+        postsSection.headerText = NSLocalizedString("Defaults for New Posts",
+                                                    comment: "Discussion Settings: Posts Section")
+        
+        postsSection.footerText = NSLocalizedString("You can override these settings for individual posts. Learn more...",
+                                                    comment: "Discussion Settings: Footer Text")
         postsSection.rows = [
-            Row(style: .Switch, title: NSLocalizedString("Allow Comments", comment: "")),
-            Row(style: .Switch, title: NSLocalizedString("Send Pingbacks", comment: "")),
-            Row(style: .Switch, title: NSLocalizedString("Receive Pingbacks", comment: ""))
+            Row(style: .Switch, title: NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled")),
+            Row(style: .Switch, title: NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks")),
+            Row(style: .Switch, title: NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"))
         ]
         
         
         let commentsSection = Section()
-        commentsSection.headerText = NSLocalizedString("Comments", comment: "")
+        commentsSection.headerText = NSLocalizedString("Comments", comment: "Settings: Comment Sections")
         commentsSection.rows = [
             Row(style: .Value1,
-                title: NSLocalizedString("Close After", comment: "")),
+                title: NSLocalizedString("Close After", comment: "Settings: Close comments after X period")),
             
             Row(style: .Value1,
-                title: NSLocalizedString("Sort By", comment: "")),
+                title: NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order")),
             
             Row(style: .Value1,
-                title: NSLocalizedString("Threading", comment: "")),
+                title: NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences")),
             
             Row(style: .Value1,
-                title: NSLocalizedString("Paging", comment: "")),
+                title: NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences")),
             
             Row(style: .Switch,
-                title: NSLocalizedString("Must be Manually Approved", comment: "")),
+                title: NSLocalizedString("Must be Manually Approved", comment: "Settings: Comments Approval settings")),
             
             Row(style: .Switch,
-                title: NSLocalizedString("Must include name & email", comment: "")),
+                title: NSLocalizedString("Must include name & email", comment: "Settings: Comments Approval settings")),
             
             Row(style: .Switch,
-                title: NSLocalizedString("Users must be signed in", comment: ""))
+                title: NSLocalizedString("Users must be signed in", comment: "Settings: Comments Approval settings"))
         ]
         
         let approvalSection = Section()
-        approvalSection.headerText = NSLocalizedString("Automatically Approve Comments", comment: "")
+        approvalSection.headerText = NSLocalizedString("Automatically Approve Comments", comment: "Settings: Auto-Approvals Section Header")
         approvalSection.rows = [
             Row(style: .Switch,
-                title: NSLocalizedString("From known users", comment: "")),
+                title: NSLocalizedString("From known users", comment: "Settings: Comments Auto Approval")),
             
             Row(style: .Switch,
-                title: NSLocalizedString("With multiple links", comment: ""))
+                title: NSLocalizedString("With multiple links", comment: "Settings: Comments Auto Approval"))
         ]
         
         let otherSection = Section()
         otherSection.rows = [
             Row(style: .Value1,
-                title: NSLocalizedString("Hold for Moderation", comment: "")),
+                title: NSLocalizedString("Hold for Moderation", comment: "Settings: Comments Moderation")),
             
             Row(style: .Value1,
-                title: NSLocalizedString("Blacklist", comment: ""))
+                title: NSLocalizedString("Blacklist", comment: "Settings: Comments Blacklist"))
         ]
         
         return [postsSection, commentsSection, approvalSection, otherSection]
