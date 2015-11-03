@@ -122,12 +122,11 @@ CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
         self.iconView = iconView;
     }
     {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+        UILabel *label = [[UILabel alloc] init];
         label.numberOfLines = 0;
         self.textLabel = label;
-        
-        [self setTitleText:@"Main Menu" subTitleText:@"2 menu areas in this theme"];
         [self.stackView addArrangedSubview:label];
+        [label.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
     }
     {
         MenusSelectionIconView *accessoryView = [[MenusSelectionIconView alloc] init];
