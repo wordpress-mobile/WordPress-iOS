@@ -11,12 +11,12 @@ extern NSString * const SettingsSelectionCurrentValueKey;
 
 
 /**
- *  @class      PostSettingsSelectionViewController
+ *  @class      SettingsSelectionViewController
  *  @brief      This class displays a collection of titles (with associated values), and allows the user to
  *              pick an item from the list.
  */
 
-@interface PostSettingsSelectionViewController : UITableViewController
+@interface SettingsSelectionViewController : UITableViewController
 
 #pragma mark - Properties
 @property (nonatomic, strong) NSArray<NSString *>   *titles;
