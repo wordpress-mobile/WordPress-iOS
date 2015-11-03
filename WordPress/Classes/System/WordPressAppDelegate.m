@@ -27,7 +27,6 @@
 #import "NSBundle+VersionNumberHelper.h"
 #import "NSProcessInfo+Util.h"
 #import "NSString+Helpers.h"
-#import "UIAlertView+Blocks.h"
 #import "UIDevice+Helpers.h"
 
 // Data model
