@@ -4,7 +4,7 @@
 #import <WordPressShared/UIImage+Util.h>
 #import <WordPressShared/WPTextFieldTableViewCell.h>
 #import "AbstractPost.h"
-#import "PostSettingsSelectionViewController.h"
+#import "SettingsSelectionViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "WPGUIConstants.h"
@@ -522,8 +522,8 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
                            @"CurrentValue"   : currentValue
                            };
 
-    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:dict];
-    __weak PostSettingsSelectionViewController *weakVc = vc;
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:dict];
+    __weak SettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
         // do interesting work here... like updating the value of image meta.
         self.imageDetails.align = status;
@@ -554,8 +554,8 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
                            };
 
     NSDictionary *sizes = [self.post.blog getImageResizeDimensions];
-    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:dict];
-    __weak PostSettingsSelectionViewController *weakVc = vc;
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:dict];
+    __weak SettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
         CGSize maxSize = CGSizeZero;
 
