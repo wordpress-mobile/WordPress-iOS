@@ -129,9 +129,9 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
             PublicizeService *publicizer = self.publicizeServices[indexPath.row];
             cell.textLabel.text = publicizer.label;
             NSString *title = nil;
-            if ([self.connectingService.service isEqualToString:publicizer.service]) {
+            if ([self.connectingService.serviceID isEqualToString:publicizer.serviceID]) {
                 title = NSLocalizedString(@"Connecting…", @"Button title while a Publicize service is connecting");
-            } else if ([self.disconnectingService.service isEqualToString:publicizer.service]) {
+            } else if ([self.disconnectingService.serviceID isEqualToString:publicizer.serviceID]) {
                 title = NSLocalizedString(@"Disconnecting…", @"Button title while a Publicize service is disconnecting");
             } else if ([self blogIsConnectedToPublicizeService:publicizer]) {
                 title = NSLocalizedString(@"Disconnect", @"Button title to disconnect a Publicize service");
@@ -161,7 +161,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     if ([self blogIsConnectedToPublicizeService:publicizer]) {
         PublicizeConnection *pubConn;
         for (PublicizeConnection *connection in self.blog.connections) {
-            if ([connection.service isEqualToString:publicizer.service]) {
+            if ([connection.service isEqualToString:publicizer.serviceID]) {
                 pubConn = connection;
                 break;
             }
@@ -192,7 +192,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 {
     // TODO: should we filter out broken connections?
     for (PublicizeConnection *pubConn in self.blog.connections) {
-        if ([pubConn.service isEqualToString:pubServ.service]) {
+        if ([pubConn.service isEqualToString:pubServ.serviceID]) {
             return YES;
         }
     }
@@ -230,7 +230,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     [sharingService fetchKeyringConnections:^(NSArray *keyringConnections) {
         NSMutableArray *marr = [NSMutableArray array];
         for (KeyringConnection *keyConn in keyringConnections) {
-            if ([keyConn.service isEqualToString:pubServ.service]) {
+            if ([keyConn.service isEqualToString:pubServ.serviceID]) {
                 [marr addObject:keyConn];
             }
         }

@@ -350,11 +350,13 @@
     <entity name="PublicizeService" representedClassName="WordPress.PublicizeService" syncable="YES">
         <attribute name="connectURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="detail" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="jetpackModuleRequired" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="jetpackSupport" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="label" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="noticon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="multipleExternalUserIDSupport" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="service" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="serviceID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="ReaderAbstractTopic" representedClassName="WordPress.ReaderAbstractTopic" isAbstract="YES" syncable="YES">
         <attribute name="following" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -484,7 +486,7 @@
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="180"/>
         <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>
-        <element name="PublicizeService" positionX="18" positionY="153" width="128" height="150"/>
+        <element name="PublicizeService" positionX="18" positionY="153" width="128" height="180"/>
         <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="150"/>
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>

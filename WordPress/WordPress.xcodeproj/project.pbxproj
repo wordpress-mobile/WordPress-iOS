@@ -2162,8 +2162,8 @@
 				591CFB081B28AC8C009E61B3 /* BlogServiceRemoteRESTTests.m */,
 				59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */,
 				59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */,
-				598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */,
 				E678C3831BE83040000328DC /* SharingServiceRemoteTests.m */,
+				598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */,
 			);
 			name = "Remote Services";
 			sourceTree = "<group>";

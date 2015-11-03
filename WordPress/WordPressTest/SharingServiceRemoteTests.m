@@ -20,7 +20,7 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     SharingServiceRemote *service = nil;
 
-    NSString *url = @"v1.1/meta/publicize";
+    NSString *url = @"v1.1/meta/external-services";
 
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]

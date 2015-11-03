@@ -133,13 +133,13 @@ import Foundation
     /**
     Finds a cached `PublicizeService` matching the specified service name.
 
-    @param name The name of the service. This is the `service` attribute for a `PublicizeService` object.
+    @param name The name of the service. This is the `serviceID` attribute for a `PublicizeService` object.
 
     @return The requested `PublicizeService` or nil.
     */
     public func findPublicizeServiceNamed(name:String) -> PublicizeService? {
         let request = NSFetchRequest(entityName: PublicizeService.classNameWithoutNamespaces())
-        request.predicate = NSPredicate(format: "service = %@", name)
+        request.predicate = NSPredicate(format: "serviceID = %@", name)
 
         var services: [PublicizeService]
         do {
@@ -218,18 +218,20 @@ import Foundation
     @return A `PublicizeService`.
     */
     private func createOrReplaceFromRemotePublicizeService(remoteService:RemotePublicizeService) -> PublicizeService {
-        var pubService = findPublicizeServiceNamed(remoteService.service)
+        var pubService = findPublicizeServiceNamed(remoteService.serviceID)
         if pubService == nil {
             pubService = NSEntityDescription.insertNewObjectForEntityForName(PublicizeService.classNameWithoutNamespaces(),
                 inManagedObjectContext: managedObjectContext) as? PublicizeService
         }
         pubService?.connectURL = remoteService.connectURL
         pubService?.detail = remoteService.detail
-        pubService?.icon = remoteService.icon
+        pubService?.jetpackModuleRequired = remoteService.jetpackModuleRequired
+        pubService?.jetpackSupport = remoteService.jetpackSupport
         pubService?.label = remoteService.label
-        pubService?.noticon = remoteService.noticon
+        pubService?.multipleExternalUserIDSupport = remoteService.multipleExternalUserIDSupport
         pubService?.order = remoteService.order
-        pubService?.service = remoteService.service
+        pubService?.serviceID = remoteService.serviceID
+        pubService?.type = remoteService.type
 
         return pubService!
     }

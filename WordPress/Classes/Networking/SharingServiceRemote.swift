@@ -15,7 +15,7 @@ import Foundation
     *  @param      failure     An optional failure block accepting an `NSError` argument.
     */
     public func getPublicizeServices(success: ([RemotePublicizeService] -> Void)?, failure: (NSError! -> Void)?) {
-        let endpoint = "meta/publicize"
+        let endpoint = "meta/external-services"
         let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
         api.GET(path,
@@ -25,22 +25,30 @@ import Foundation
                     return
                 }
 
+                let responseString = operation.responseString! as NSString
                 let responseDict = response as! NSDictionary
                 let services:NSDictionary = responseDict.dictionaryForKey(ServiceDictionaryKeys.services)
-                var order = 0
-                let publicizeServices:[RemotePublicizeService] = services.allKeys.map { (let key) -> RemotePublicizeService in
-                    let dict:NSDictionary = services.dictionaryForKey(key)
+
+                let filteredServices = services.allValues.filter { (obj:AnyObject) -> Bool in
+                    let dict = obj as! NSDictionary
+                    return dict.stringForKey(ServiceDictionaryKeys.type) == "publicize"
+                }
+
+                let publicizeServices:[RemotePublicizeService] = filteredServices.map { (service) -> RemotePublicizeService in
+                    let dict = service as! NSDictionary
                     let pub = RemotePublicizeService()
 
-                    pub.order = order
-                    pub.connectURL = dict.stringForKey(ServiceDictionaryKeys.connect)
+                    pub.connectURL = dict.stringForKey(ServiceDictionaryKeys.connectURL)
                     pub.detail = dict.stringForKey(ServiceDictionaryKeys.description)
-                    pub.icon = dict.stringForKey(ServiceDictionaryKeys.icon)
+                    pub.serviceID = dict.stringForKey(ServiceDictionaryKeys.ID)
+                    pub.jetpackModuleRequired = dict.stringForKey(ServiceDictionaryKeys.jetpackModuleRequired)
+                    pub.jetpackSupport = dict.numberForKey(ServiceDictionaryKeys.jetpackSupport).boolValue
                     pub.label = dict.stringForKey(ServiceDictionaryKeys.label)
-                    pub.noticon = dict.stringForKey(ServiceDictionaryKeys.noticon)
-                    pub.service = key as! String
+                    pub.multipleExternalUserIDSupport = dict.numberForKey(ServiceDictionaryKeys.multipleExternalUserIDSupport).boolValue
+                    pub.type = dict.stringForKey(ServiceDictionaryKeys.type)
 
-                    order++
+                    pub.order = responseString.rangeOfString(pub.serviceID).location
+
                     return pub
                 }
 
@@ -234,12 +242,16 @@ import Foundation
 // Keys for PublicizeService dictionaries
 struct ServiceDictionaryKeys
 {
-    static let connect = "connect"
+    static let connectURL = "connect_URL"
     static let description = "description"
+    static let ID = "ID"
     static let icon = "icon"
+    static let jetpackModuleRequired = "jetpack_module_required"
+    static let jetpackSupport = "jetpack_support"
     static let label = "label"
-    static let noticon = "noticon"
+    static let multipleExternalUserIDSupport = "multiple_external_user_ID_support"
     static let services = "services"
+    static let type = "type"
 }
 
 

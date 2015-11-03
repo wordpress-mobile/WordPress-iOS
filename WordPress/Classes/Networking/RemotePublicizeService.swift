@@ -4,9 +4,11 @@ import Foundation
 {
     public var connectURL = ""
     public var detail = ""
-    public var icon = ""
+    public var jetpackSupport = false
+    public var jetpackModuleRequired = "publicize"
     public var label = ""
-    public var noticon = ""
+    public var multipleExternalUserIDSupport = false
     public var order: NSNumber = 0
-    public var service = ""
+    public var serviceID = ""
+    public var type = ""
 }
