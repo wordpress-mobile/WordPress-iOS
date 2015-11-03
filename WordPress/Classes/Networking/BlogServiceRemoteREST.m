@@ -1,8 +1,6 @@
 #import "BlogServiceRemoteREST.h"
 #import <WordPressComApi.h>
 #import "RemoteBlogSettings.h"
-#import "Publicizer.h"
-#import "RemotePublicizeExternal.h"
 
 
 static NSString const *BlogRemoteNameKey                = @"name";
@@ -91,129 +89,6 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
           }];
 }
 
-- (void)syncConnectionsForBlogID:(NSNumber *)blogID
-                       success:(ConnectionsHandler)success
-                       failure:(void (^)(NSError *))failure
-{
-    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    
-    NSString *path = [self pathForConnectionsWithBlogID:blogID];
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
-    [self.api GET:requestUrl
-       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSArray *connections = [responseObject arrayForKey:@"connections"];
-              if (success) {
-                  success(connections ?: @[]);
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
-}
-
-- (void)checkAuthorizationForPublicizer:(Publicizer *)service
-                                success:(AuthorizationHandler)success
-                                failure:(void (^)(NSError *))failure
-{
-    NSParameterAssert([service isKindOfClass:[Publicizer class]]);
-    NSParameterAssert(service.blog.dotComID != nil);
-    
-    NSString *path = @"me/keyring-connections";
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
-    [self.api GET:requestUrl
-       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSArray *keyrings = [responseObject arrayForKey:@"connections"];
-              for (NSDictionary *keyring in keyrings) {
-                  if ([[keyring stringForKey:@"service"] isEqualToString:service.service]) {
-                      if (success) {
-                          NSMutableArray *accounts = [NSMutableArray new];
-                          RemotePublicizeExternal *primary = [[RemotePublicizeExternal alloc] initWithDictionary:keyring];
-                          [accounts addObject:primary];
-                          NSArray *additional = [keyring arrayForKey:@"additional_external_users"];
-                          for (NSDictionary *account in additional) {
-                              RemotePublicizeExternal *secondary = [[RemotePublicizeExternal alloc] initWithDictionary:account];
-                              secondary.keyring = primary.keyring;
-                              secondary.refresh = primary.refresh;
-                              [accounts addObject:secondary];
-                          }
-                          success(accounts);
-                      }
-                      return;
-                  }
-              }
-              if (failure) {
-                  failure(nil);
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
-}
-
-- (void)connectPublicizer:(Publicizer *)service
-        withAuthorization:(NSNumber *)keyring
-               andAccount:(NSString *)account
-                  success:(SuccessHandler)success
-                  failure:(void (^)(NSError *))failure
-{
-    NSParameterAssert([service isKindOfClass:[Publicizer class]]);
-    NSParameterAssert(service.blog.dotComID != nil);
-    NSParameterAssert([keyring isKindOfClass:[NSNumber class]]);
-    
-    NSString *path = [self pathForConnectionWithPublicizer:service];
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-    NSMutableDictionary *parameters =  [NSMutableDictionary dictionary];
-    parameters[@"keyring_connection_ID"] = keyring;
-    if (account.length) {
-        parameters[@"external_user_ID"] = account;
-    }
-    
-    [self.api POST:requestUrl
-       parameters:[NSDictionary dictionaryWithDictionary:parameters]
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              if (success) {
-                  success();
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
-}
-
-- (void)disconnectPublicizer:(Publicizer *)service
-                     success:(SuccessHandler)success
-                     failure:(void (^)(NSError *))failure
-{
-    NSParameterAssert([service isKindOfClass:[Publicizer class]]);
-    NSParameterAssert(service.blog.dotComID != nil);
-    
-    NSString *path = [self pathForDisconnectionWithPublicizer:service];
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
-
-    [self.api POST:requestUrl
-        parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               if (success) {
-                   success();
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
-}
-
 - (void)syncSettingsForBlogID:(NSNumber *)blogID
                     success:(SettingsHandler)success
                     failure:(void (^)(NSError *error))failure
@@ -300,22 +175,6 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
 - (NSString *)pathForPostFormatsWithBlogID:(NSNumber *)blogID
 {
     return [NSString stringWithFormat:@"sites/%@/post-formats", blogID];
-}
-
-- (NSString *)pathForConnectionsWithBlogID:(NSNumber *)blogID
-{
-    // Also note /publicize-connections specific call
-    return [NSString stringWithFormat:@"sites/%@/publicize-connections", blogID];
-}
-
-- (NSString *)pathForConnectionWithPublicizer:(Publicizer *)service
-{
-    return [NSString stringWithFormat:@"sites/%@/publicize-connections/new", service.blog.dotComID];
-}
-
-- (NSString *)pathForDisconnectionWithPublicizer:(Publicizer *)service
-{
-    return [NSString stringWithFormat:@"sites/%@/publicize-connections/%d/delete", service.blog.dotComID, service.connectionID];
 }
 
 - (NSString *)pathForSettingsWithBlogID:(NSNumber *)blogID

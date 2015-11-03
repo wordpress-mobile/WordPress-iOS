@@ -55,7 +55,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSSet *comments;
 @property (nonatomic, strong, readwrite) NSSet *themes;
 @property (nonatomic, strong, readwrite) NSSet *media;
-@property (nonatomic, strong, readwrite) NSSet *publicizers;
 @property (nonatomic, strong, readwrite) NSString *currentThemeId;
 @property (nonatomic, assign, readwrite) BOOL isSyncingPosts;
 @property (nonatomic, assign, readwrite) BOOL isSyncingPages;
@@ -70,10 +69,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, weak, readwrite) NSNumber *isActivated;
 @property (nonatomic, strong, readwrite) NSDictionary *options;
 @property (nonatomic, strong, readwrite) NSDictionary *postFormats;
-/**
- External services such as Publicize the blog is connected to
- */
-@property (nonatomic, strong, readwrite) NSArray *connections;
+@property (nonatomic, strong, readwrite) NSArray *connections; // PublicizeConnections
 @property (nonatomic, strong, readwrite) WPAccount *account;
 @property (nonatomic, strong, readwrite) WPAccount *jetpackAccount;
 @property (nonatomic, assign, readwrite) BOOL videoPressEnabled;

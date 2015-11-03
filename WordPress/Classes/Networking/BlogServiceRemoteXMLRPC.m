@@ -38,50 +38,6 @@
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (void)syncConnectionsForBlogID:(NSNumber *)blogID success:(ConnectionsHandler)success failure:(void (^)(NSError *))failure
-{
-    // not currently available
-    if (failure) {
-        NSError *error = [NSError errorWithDomain:WPXMLRPCClientErrorDomain code:NSURLErrorBadURL userInfo:nil];
-        failure(error);
-    }
-}
-
-- (void)checkAuthorizationForPublicizer:(Publicizer *)service
-                                success:(AuthorizationHandler)success
-                                failure:(void (^)(NSError *))failure
-{
-    // not currently available
-    if (failure) {
-        NSError *error = [NSError errorWithDomain:WPXMLRPCClientErrorDomain code:NSURLErrorBadURL userInfo:nil];
-        failure(error);
-    }
-}
-
-- (void)connectPublicizer:(Publicizer *)service
-        withAuthorization:(NSNumber *)keyring
-               andAccount:(NSString *)account
-                  success:(SuccessHandler)success
-                  failure:(void (^)(NSError *))failure
-{
-    // not currently available
-    if (failure) {
-        NSError *error = [NSError errorWithDomain:WPXMLRPCClientErrorDomain code:NSURLErrorBadURL userInfo:nil];
-        failure(error);
-    }
-}
-
-- (void)disconnectPublicizer:(Publicizer *)service
-                     success:(SuccessHandler)success
-                     failure:(void (^)(NSError *))failure
-{
-    // not currently available
-    if (failure) {
-        NSError *error = [NSError errorWithDomain:WPXMLRPCClientErrorDomain code:NSURLErrorBadURL userInfo:nil];
-        failure(error);
-    }
-}
-
 - (void)syncSettingsForBlogID:(NSNumber *)blogID
                     success:(SettingsHandler)success
                     failure:(void (^)(NSError *error))failure

@@ -3,11 +3,10 @@
 #import "BlogService.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
-#import "Publicizer.h"
 #import "SVProgressHUD.h"
 #import "SharingAuthorizationWebViewController.h"
-#import "RemotePublicizeExternal.h"
 #import "UIActionSheet+Helpers.h"
+#import "WordPress-Swift.h"
 
 typedef NS_ENUM(NSInteger, SharingSection){
     SharingPublicize = 0,
@@ -35,8 +34,8 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) NSArray *publicizeServices;
-@property (nonatomic, strong) Publicizer *connectingService;
-@property (nonatomic, strong) Publicizer *disconnectingService;
+@property (nonatomic, strong) PublicizeService *connectingService;
+@property (nonatomic, strong) PublicizeService *disconnectingService;
 
 @end
 
@@ -62,16 +61,22 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[PublicizeCell class] forCellReuseIdentifier:PublicizeCellIdentifier];
-    
+
+    // Refreshes the tableview.
     [self refreshPublicizers];
-    
+
+    // Syncs servcies and connections.
+    [self syncPublicizeServices];
 }
 
 - (void)refreshPublicizers
 {
     self.connectingService = nil;
     self.disconnectingService = nil;
-    self.publicizeServices = [self.blog.publicizers sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:TRUE]]];
+
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    self.publicizeServices = [sharingService allPublicizeServices];
+
     [self.tableView reloadData];
 }
 
@@ -121,14 +126,14 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     
     switch (indexPath.section) {
         case SharingPublicize: {
-            Publicizer *publicizer = self.publicizeServices[indexPath.row];
+            PublicizeService *publicizer = self.publicizeServices[indexPath.row];
             cell.textLabel.text = publicizer.label;
             NSString *title = nil;
             if ([self.connectingService.service isEqualToString:publicizer.service]) {
                 title = NSLocalizedString(@"Connecting…", @"Button title while a Publicize service is connecting");
             } else if ([self.disconnectingService.service isEqualToString:publicizer.service]) {
                 title = NSLocalizedString(@"Disconnecting…", @"Button title while a Publicize service is disconnecting");
-            } else if (publicizer.isConnected) {
+            } else if ([self blogIsConnectedToPublicizeService:publicizer]) {
                 title = NSLocalizedString(@"Disconnect", @"Button title to disconnect a Publicize service");
             } else {
                 title = NSLocalizedString(@"Connect", @"Button title to connect a Publicize service");
@@ -152,14 +157,25 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
         return;
     }
     
-    Publicizer *publicizer = self.publicizeServices[indexPath.row];
-    if (publicizer.isConnected) {
+    PublicizeService *publicizer = self.publicizeServices[indexPath.row];
+    if ([self blogIsConnectedToPublicizeService:publicizer]) {
+        PublicizeConnection *pubConn;
+        for (PublicizeConnection *connection in self.blog.connections) {
+            if ([connection.service isEqualToString:publicizer.service]) {
+                pubConn = connection;
+                break;
+            }
+        }
+        if (pubConn == nil) {
+            return;
+        }
+
         self.disconnectingService = publicizer;
-        [self disconnectPublicizer:publicizer];
+        [self disconnectPublicizer:pubConn];
 
     } else {
         self.connectingService = publicizer;
-        [self updateAuthorizationForPublicizer:publicizer];
+        [self authorizePublicizer:publicizer withRefresh:publicizer.connectURL];
     }
 
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -167,46 +183,78 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
 #pragma mark - Publicizer management
 
+- (NSManagedObjectContext *)managedObjectContext
+{
+    return self.blog.managedObjectContext;
+}
+
+- (BOOL)blogIsConnectedToPublicizeService:(PublicizeService *)pubServ
+{
+    // TODO: should we filter out broken connections?
+    for (PublicizeConnection *pubConn in self.blog.connections) {
+        if ([pubConn.service isEqualToString:pubServ.service]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)syncPublicizeServices
+{
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    __weak __typeof__(self) weakSelf = self;
+    [sharingService syncPublicizeServices:^{
+        [weakSelf syncConnections];
+    } failure:^(NSError *error) {
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Publicize service synchronization failed", @"Message to show when Publicize service synchronization failed")];
+        [weakSelf refreshPublicizers];
+    }];
+}
+
 - (void)syncConnections
 {
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     __weak __typeof__(self) weakSelf = self;
-    [blogService syncConnectionsForBlog:self.blog success:^{
+    [sharingService syncPublicizeConnectionsForBlog:self.blog success:^{
         [weakSelf refreshPublicizers];
     } failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Synchronization failed", @"Message to show when Publicize connection synchronization failed")];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Publicize connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
         [weakSelf refreshPublicizers];
     }];
 }
 
-- (void)connectPublicizer:(Publicizer *)publicizer
-        withAuthorization:(NSNumber *)keyring
-               andAccount:(NSString *)account
+- (void)fetchKeyringConnectionsForService:(PublicizeService *)pubServ
 {
-    NSParameterAssert(publicizer);
-    NSParameterAssert(keyring);
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     __weak __typeof__(self) weakSelf = self;
-    [blogService connectPublicizer:publicizer
-                 withAuthorization:keyring
-                        andAccount:account
-                           success:^{
-        [weakSelf syncConnections];
+    [sharingService fetchKeyringConnections:^(NSArray *keyringConnections) {
+        NSMutableArray *marr = [NSMutableArray array];
+        for (KeyringConnection *keyConn in keyringConnections) {
+            if ([keyConn.service isEqualToString:pubServ.service]) {
+                [marr addObject:keyConn];
+            }
+        }
+        [weakSelf selectKeyring:marr forService:pubServ];
+
     } failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connect failed", @"Message to show when Publicize connect failed")];
-        [weakSelf syncConnections];
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Keychain connection fetch failed", @"Message to show when Keyring connection synchronization failed")];
     }];
 }
 
-- (void)selectAccountFrom:(NSArray *)accounts
-            forPublicizer:(Publicizer *)publicizer
+- (void)selectKeyring:(NSArray *)keyringConnections forService:(PublicizeService *)pubServ
 {
-    NSParameterAssert([[accounts firstObject] isKindOfClass:[RemotePublicizeExternal class]]);
-    NSParameterAssert(publicizer);
+    NSParameterAssert([[keyringConnections firstObject] isKindOfClass:[KeyringConnection class]]);
+    NSParameterAssert(pubServ);
 
     __weak __typeof__(self) weakSelf = self;
-    NSArray *accountNames = [accounts valueForKeyPath:@"name"];
+    NSMutableArray *accountNames = [NSMutableArray array];
+    for (KeyringConnection *keyConn in keyringConnections) {
+        [accountNames addObject:keyConn.externalName]; // TODO: Check if this is better as `externalDisplay`?
+    }
+
+    // TODO: Switch to UIAlertController
+    // NOTE: Currently, implementation assumes account names will be different, but they could be the same.
+    // We'll have better handling with UIAlertController. For now this works as a tester/demo
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Connect account:", @"Title of Publicize account selection")
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
                                                destructiveButtonTitle:nil
@@ -217,49 +265,48 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
                                                                    return;
                                                                }
                                                                [strongSelf handleSelectedAccountWithName:buttonTitle
-                                                                                                    from:accounts
-                                                                                           forPublicizer:publicizer];
+                                                                                                    from:keyringConnections
+                                                                                           forPublicizer:pubServ];
                                                            }];
     [actionSheet showInView:self.view];
+
 }
 
 
 - (void)handleSelectedAccountWithName:(NSString *)accountName
-                                 from:(NSArray *)accounts
-                        forPublicizer:(Publicizer *)publicizer
+                                 from:(NSArray *)keyringConnections
+                        forPublicizer:(PublicizeService *)pubServ
 {
-    NSArray *accountNames = [accounts valueForKeyPath:@"name"];
-    for (NSUInteger accountIndex = 0; accountIndex < accounts.count; accountIndex++) {
-        if ([accountNames[accountIndex] isEqualToString:accountName]) {
-            RemotePublicizeExternal *account = (RemotePublicizeExternal *)accounts[accountIndex];
-            NSString *secondaryAccount = accountIndex > 0 ? account.account : nil;
-            [self connectPublicizer:publicizer
-                  withAuthorization:account.keyring
-                         andAccount:secondaryAccount];
+    // Don't worry about secondary accounts for now.
+    for (KeyringConnection *keyConn in keyringConnections) {
+        if ([keyConn.externalName isEqualToString:accountName]) {
+            [self connectToPublicizeService:pubServ withKeyringConnection:keyConn];
             return;
         }
     }
     [self refreshPublicizers];
 }
 
-- (void)checkAuthorizationForPublicizer:(Publicizer *)publicizer
-{
-    NSParameterAssert(publicizer);
 
+- (void)connectToPublicizeService:(PublicizeService *)pubServ withKeyringConnection:(KeyringConnection *)keyConn
+{
     __weak __typeof__(self) weakSelf = self;
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [blogService checkAuthorizationForPublicizer:publicizer success:^(NSArray *accounts) {
-        [weakSelf selectAccountFrom:accounts
-                      forPublicizer:publicizer];
-    } failure:^(NSError *error) {
-        if (error) {
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
-        }
-        [weakSelf refreshPublicizers];
-    }];
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    [sharingService createPublicizeConnectionForBlog:self.blog
+                                             keyring:keyConn
+                                      externalUserID:nil
+                                             success:^(PublicizeConnection *pubConn) {
+                                                 // NOTE: We're just resyncing now but we'll actually use pubConn eventually.
+                                                 [weakSelf syncConnections];
+                                             }
+                                             failure:^(NSError *error) {
+                                                 [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connect failed", @"Message to show when Publicize connect failed")];
+                                                 [weakSelf refreshPublicizers];
+                                             }];
 }
 
-- (void)authorizePublicizer:(Publicizer *)publicizer
+
+- (void)authorizePublicizer:(PublicizeService *)publicizer
                 withRefresh:(NSString *)refresh
 {
     NSParameterAssert(publicizer);
@@ -274,46 +321,31 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)authorizeDidSucceed:(Publicizer *)publicizer
+- (void)authorizeDidSucceed:(PublicizeService *)publicizer
 {
-    [self checkAuthorizationForPublicizer:publicizer];
+    [self fetchKeyringConnectionsForService:publicizer];
 }
 
-- (void)authorize:(Publicizer *)publicizer didFailWithError:(NSError *)error
+- (void)authorize:(PublicizeService *)publicizer didFailWithError:(NSError *)error
 {
     [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
-    [self syncConnections];
+    [self refreshPublicizers];
 }
 
-- (void)authorizeDidCancel:(Publicizer *)publicizer
+- (void)authorizeDidCancel:(PublicizeService *)publicizer
 {
     // called in response to user dismissal
     [self refreshPublicizers];
 }
 
-- (void)updateAuthorizationForPublicizer:(Publicizer *)publicizer
+- (void)disconnectPublicizer:(PublicizeConnection *)pubConn
 {
-    NSParameterAssert(publicizer);
+    NSParameterAssert(pubConn);
     
     __weak __typeof__(self) weakSelf = self;
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [blogService checkAuthorizationForPublicizer:publicizer success:^(NSArray *accounts) {
-        RemotePublicizeExternal *account = (RemotePublicizeExternal *)accounts.firstObject;
-        [weakSelf authorizePublicizer:publicizer
-                          withRefresh:account.refresh];
-    } failure:^(NSError *error) {
-        [weakSelf authorizePublicizer:publicizer
-                          withRefresh:nil];
-    }];
-}
 
-- (void)disconnectPublicizer:(Publicizer *)publicizer
-{
-    NSParameterAssert(publicizer);
-    
-    __weak __typeof__(self) weakSelf = self;
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [blogService disconnectPublicizer:publicizer success:^{
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    [sharingService deletePublicizeConnection:pubConn success:^{
         [weakSelf syncConnections];
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];

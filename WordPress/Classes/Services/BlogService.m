@@ -21,8 +21,6 @@
 #import "TodayExtensionService.h"
 #import "RemoteBlogSettings.h"
 #import "ContextManager.h"
-#import "PublicizerService.h"
-#import "Publicizer.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -313,51 +311,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                              failure:failure];
 }
 
-- (void)syncConnectionsForBlog:(Blog *)blog
-                        success:(void (^)())success
-                        failure:(void (^)(NSError *error))failure
-{
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncConnectionsForBlogID:blog.blogID
-                           success:[self connectionsHandlerWithBlogObjectID:blog.objectID
-                                                          completionHandler:success]
-                           failure:failure];
-}
-
-- (void)checkAuthorizationForPublicizer:(Publicizer *)service
-                                success:(AuthorizationHandler)success
-                                failure:(void (^)(NSError *))failure
-{
-    id<BlogServiceRemote> remote = [self remoteForBlog:service.blog];
-    [remote checkAuthorizationForPublicizer:service
-                      success:success
-                      failure:failure];
-}
-
-- (void)connectPublicizer:(Publicizer *)service
-        withAuthorization:(NSNumber *)keyring
-               andAccount:(NSString *)account
-                  success:(void (^)())success
-                  failure:(void (^)(NSError *error))failure
-{
-    id<BlogServiceRemote> remote = [self remoteForBlog:service.blog];
-    [remote connectPublicizer:service
-            withAuthorization:keyring
-                   andAccount:account
-                      success:success
-                      failure:failure];
-}
-
-- (void)disconnectPublicizer:(Publicizer *)service
-                     success:(void (^)())success
-                     failure:(void (^)(NSError *error))failure
-{
-    id<BlogServiceRemote> remote = [self remoteForBlog:service.blog];
-    [remote disconnectPublicizer:service
-                        success:success
-                        failure:failure];
-}
-
 - (void)syncBlog:(Blog *)blog
 {
     NSManagedObjectID *blogObjectID = blog.objectID;
@@ -382,23 +335,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                               } failure:^(NSError *error) {
                                 DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
                             }];
-    
-    if ([blog supports:BlogFeatureSharing]) {
-        [remote syncConnectionsForBlogID:blog.dotComID
-                               success:[self connectionsHandlerWithBlogObjectID:blogObjectID
-                                                              completionHandler:nil]
-                               failure:^(NSError *error) {
-                                   DDLogError(@"Failed syncing connections for blog %@: %@", blog.url, error);
-                               }];
-        
-        PublicizerService *publicizerService = [[PublicizerService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        [publicizerService syncPublicizersForBlog:blog
-                                          success:nil
-                                          failure:^(NSError *error) {
-                                              DDLogError(@"Failed syncing publicizers for blog %@: %@", blog.url, error);
-                                          }];
-    }
-
 }
 
 - (BOOL)hasVisibleWPComAccounts

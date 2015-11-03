@@ -1,8 +1,8 @@
 #import "SharingAuthorizationWebViewController.h"
 #import "Blog.h"
-#import "Publicizer.h"
 #import "WordPressAppDelegate.h"
 #import "WPUserAgent.h"
+#import "WordPress-Swift.h"
 
 #pragma mark - SharingAuthorizationWebViewController
 
@@ -43,13 +43,13 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 /**
  *	@brief	publicize service being authorized
  */
-@property (nonatomic, strong) Publicizer *publicizer;
+@property (nonatomic, strong) PublicizeService *publicizer;
 
 @end
 
 @implementation SharingAuthorizationWebViewController
 
-+ (instancetype)controllerWithPublicizer:(Publicizer *)publicizer
++ (instancetype)controllerWithPublicizer:(PublicizeService *)publicizer
                               andRefresh:(NSString *)refresh
                                  forBlog:(Blog *)blog
 {
@@ -64,7 +64,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     webViewController.publicizer = publicizer;
     webViewController.secureInteraction = YES;
 
-    NSURL *authorizeURL = [NSURL URLWithString:refresh.length ? refresh : publicizer.connect];
+    NSURL *authorizeURL = [NSURL URLWithString:refresh.length ? refresh : publicizer.connectURL];
     webViewController.url = authorizeURL;
     
     return webViewController;

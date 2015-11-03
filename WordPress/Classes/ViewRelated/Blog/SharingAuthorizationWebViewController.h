@@ -2,7 +2,7 @@
 
 #import "WPWebViewController.h"
 
-@class Publicizer;
+@class PublicizeService;
 @class Blog;
 
 /**
@@ -10,9 +10,9 @@
  */
 @protocol SharingAuthorizationDelegate <NSObject>
 @optional
-- (void)authorizeDidSucceed:(Publicizer *)publicizer;
-- (void)authorize:(Publicizer *)publicizer didFailWithError:(NSError *)error;
-- (void)authorizeDidCancel:(Publicizer *)publicizer;
+- (void)authorizeDidSucceed:(PublicizeService *)publicizer;
+- (void)authorize:(PublicizeService *)publicizer didFailWithError:(NSError *)error;
+- (void)authorizeDidCancel:(PublicizeService *)publicizer;
 @end
 
 /**
@@ -33,7 +33,7 @@
  *
  *  @returns New instance of SharingAuthorizationWebViewController
  */
-+ (instancetype)controllerWithPublicizer:(Publicizer *)publicizer
++ (instancetype)controllerWithPublicizer:(PublicizeService *)publicizer
                               andRefresh:(NSString *)refresh
                                  forBlog:(Blog *)blog;
 
