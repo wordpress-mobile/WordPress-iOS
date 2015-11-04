@@ -565,7 +565,6 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     [addSiteAlertController addAction:cancel];
     
     [self presentViewController:addSiteAlertController animated:YES completion:nil];
-    
 }
 
 - (void)showAddNewWordPressController
