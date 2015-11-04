@@ -74,7 +74,10 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:self
                                                                         action:@selector(toggleSearch)];
-        [self.navigationItem setRightBarButtonItem:searchButton];
+        UIBarButtonItem *addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                       target:self
+                                                                                       action:@selector(addSite)];
+        [self.navigationItem setRightBarButtonItems:@[addSiteButton, searchButton]];
     }
     return self;
 }
