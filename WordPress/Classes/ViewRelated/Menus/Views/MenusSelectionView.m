@@ -2,6 +2,7 @@
 #import "Menu.h"
 #import "MenuLocation.h"
 #import "MenusSelectionDetailView.h"
+#import "MenusDesign.h"
 
 @implementation MenusSelectionViewItem
 
@@ -32,17 +33,13 @@
 
 @end
 
-static inline UIEdgeInsets menusSelectionViewDrawingInsets() {
-    return UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0);
-}
-
 @implementation MenusSelectionView
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    UIEdgeInsets drawingInset = menusSelectionViewDrawingInsets();
+    UIEdgeInsets drawingInset = MenusDesignDefaultInsets();
     UIEdgeInsets margins = UIEdgeInsetsZero;
     margins.left = drawingInset.left + MenusSelectionDetailViewDefaultSpacing;
     margins.right = drawingInset.right + MenusSelectionDetailViewDefaultSpacing;
@@ -76,7 +73,7 @@ static inline UIEdgeInsets menusSelectionViewDrawingInsets() {
 {
     [super drawRect:rect];
     
-    UIEdgeInsets inset = menusSelectionViewDrawingInsets();
+    UIEdgeInsets inset = MenusDesignDefaultInsets();
     CGRect fillRect = CGRectInset(rect, inset.left, inset.top);
     
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:fillRect cornerRadius:1.0];
