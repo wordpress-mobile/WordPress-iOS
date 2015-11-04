@@ -581,6 +581,32 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     self.searchController.active = !self.searchController.active;
 }
 
+- (void)addSite
+{
+    UIAlertController *addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                    message:nil
+                                                                             preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add New WordPress", @"Add New WordPress button")
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction *action) {
+        
+    }];
+    UIAlertAction *addSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add New Site", @"Add New Site button")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [self showLoginControllerForAddingSelfHostedSite];
+                                                          }];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:^(UIAlertAction *action) {}];
+    
+    [addSiteAlertController addAction:addNewWordPressAction];
+    [addSiteAlertController addAction:addSiteAction];
+    [addSiteAlertController addAction:cancel];
+    
+    [self presentViewController:addSiteAlertController animated:YES completion:nil];
+    
+}
 
 - (void)showLoginControllerForAddingSelfHostedSite
 {
