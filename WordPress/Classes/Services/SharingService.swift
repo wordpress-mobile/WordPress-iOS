@@ -225,6 +225,7 @@ import Foundation
         }
         pubService?.connectURL = remoteService.connectURL
         pubService?.detail = remoteService.detail
+        pubService?.icon = remoteService.icon
         pubService?.jetpackModuleRequired = remoteService.jetpackModuleRequired
         pubService?.jetpackSupport = remoteService.jetpackSupport
         pubService?.label = remoteService.label

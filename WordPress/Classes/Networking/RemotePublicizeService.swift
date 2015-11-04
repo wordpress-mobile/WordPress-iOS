@@ -4,6 +4,7 @@ import Foundation
 {
     public var connectURL = ""
     public var detail = ""
+    public var icon = ""
     public var jetpackSupport = false
     public var jetpackModuleRequired = "publicize"
     public var label = ""

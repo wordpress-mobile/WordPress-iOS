@@ -17,9 +17,10 @@ import Foundation
     public func getPublicizeServices(success: ([RemotePublicizeService] -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "meta/external-services"
         let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let params = NSDictionary(object: "publicize", forKey: "type")
 
         api.GET(path,
-            parameters: nil,
+            parameters: params,
             success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
                 guard let onSuccess = success else {
                     return
@@ -29,17 +30,13 @@ import Foundation
                 let responseDict = response as! NSDictionary
                 let services:NSDictionary = responseDict.dictionaryForKey(ServiceDictionaryKeys.services)
 
-                let filteredServices = services.allValues.filter { (obj:AnyObject) -> Bool in
-                    let dict = obj as! NSDictionary
-                    return dict.stringForKey(ServiceDictionaryKeys.type) == "publicize"
-                }
-
-                let publicizeServices:[RemotePublicizeService] = filteredServices.map { (service) -> RemotePublicizeService in
-                    let dict = service as! NSDictionary
+                let publicizeServices:[RemotePublicizeService] = services.allKeys.map { (key) -> RemotePublicizeService in
+                    let dict:NSDictionary = services.dictionaryForKey(key)
                     let pub = RemotePublicizeService()
 
                     pub.connectURL = dict.stringForKey(ServiceDictionaryKeys.connectURL)
                     pub.detail = dict.stringForKey(ServiceDictionaryKeys.description)
+                    pub.icon = dict.stringForKey(ServiceDictionaryKeys.icon);
                     pub.serviceID = dict.stringForKey(ServiceDictionaryKeys.ID)
                     pub.jetpackModuleRequired = dict.stringForKey(ServiceDictionaryKeys.jetpackModuleRequired)
                     pub.jetpackSupport = dict.numberForKey(ServiceDictionaryKeys.jetpackSupport).boolValue
@@ -47,6 +44,9 @@ import Foundation
                     pub.multipleExternalUserIDSupport = dict.numberForKey(ServiceDictionaryKeys.multipleExternalUserIDSupport).boolValue
                     pub.type = dict.stringForKey(ServiceDictionaryKeys.type)
 
+                    // We're not guarenteed to get the right order by inspecting the
+                    // response dictionary's keys. Instead, we can check the index
+                    // of each service in the response string.
                     pub.order = responseString.rangeOfString(pub.serviceID).location
 
                     return pub
