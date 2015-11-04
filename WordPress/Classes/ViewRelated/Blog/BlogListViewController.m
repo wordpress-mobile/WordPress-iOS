@@ -56,24 +56,28 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
-
-        // show 'Switch Site' for the next page's back button
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Switch Site", @"")
-                                                                       style:UIBarButtonItemStylePlain
-                                                                      target:nil
-                                                                      action:nil];
-        [self.navigationItem setBackBarButtonItem:backButton];
-        
-        UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
-                                                                         style:UIBarButtonItemStylePlain
-                                                                        target:self
-                                                                        action:@selector(toggleSearch)];
-        UIBarButtonItem *addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                       target:self
-                                                                                       action:@selector(addSite)];
-        [self.navigationItem setRightBarButtonItems:@[addSiteButton, searchButton]];
+        [self configureNavigationBar];
     }
     return self;
+}
+
+- (void)configureNavigationBar
+{
+    // show 'Switch Site' for the next page's back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Switch Site", @"")
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:nil
+                                                                  action:nil];
+    [self.navigationItem setBackBarButtonItem:backButton];
+    
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(toggleSearch)];
+    UIBarButtonItem *addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                   target:self
+                                                                                   action:@selector(addSite)];
+    [self.navigationItem setRightBarButtonItems:@[searchButton, addSiteButton]];
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view
