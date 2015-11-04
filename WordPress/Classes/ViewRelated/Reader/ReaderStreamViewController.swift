@@ -108,6 +108,10 @@ import Foundation
 
     // MARK: - LifeCycle Methods
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         tableViewController = segue.destinationViewController as? UITableViewController
     }
