@@ -27,6 +27,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *themeDictionary) {
                                        if (success) {
                                            RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
+                                           theme.active = @YES;
                                            success(theme);
                                        }
                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
