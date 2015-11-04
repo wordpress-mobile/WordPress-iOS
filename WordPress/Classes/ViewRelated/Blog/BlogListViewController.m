@@ -20,13 +20,6 @@
 #import "WPSearchControllerConfigurator.h"
 #import "WPGUIConstants.h"
 
-typedef NS_ENUM(NSInteger, BlogListSections) {
-    BlogListSectionsAllSites = 0,
-    BlogListSectionsNewSite,
-    BlogListSectionsCount
-};
-
-static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 static CGFloat const BLVCSiteRowHeight = 74.0;
@@ -295,7 +288,6 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 {
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
@@ -346,11 +338,7 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.tableView.isEditing || [self.searchController isActive]) { // Don't show "Add Site"
-        return BlogListSectionsCount - 1;
-    } else {
-        return BlogListSectionsCount;
-    }
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -360,9 +348,6 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     if ([self.resultsController sections].count > section) {
         sectionInfo = [[self.resultsController sections] objectAtIndex:section];
         numberOfRows = sectionInfo.numberOfObjects;
-    } else {
-        // This is for the "Add a Site" row
-        numberOfRows = 1;
     }
 
     return numberOfRows;
@@ -370,20 +355,8 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
-    if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:AddSiteCellIdentifier];
-    } else {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
-    }
-
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
     [self configureCell:cell atIndexPath:indexPath];
-
-    if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        [WPStyleGuide configureTableViewActionCell:cell];
-    } else {
-        [WPStyleGuide configureTableViewBlogCell:cell];
-    }
 
     return cell;
 }
@@ -395,7 +368,7 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ![indexPath isEqual:[self indexPathForAddSite]];
+    return YES;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -408,22 +381,10 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     return NO;
 }
 
-- (NSIndexPath *)indexPathForAddSite
-{
-    return [NSIndexPath indexPathForRow:0 inSection:1];
-}
-
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        cell.textLabel.textColor = [WPStyleGuide greyDarken20];
-        cell.textLabel.text = NSLocalizedString(@"ADD NEW WORDPRESS", @"");
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    } else if ([cell isKindOfClass:[WPBlogTableViewCell class]]) {
-        [self configureBlogCell:(WPBlogTableViewCell *)cell atIndexPath:indexPath];
-    }
+    [self configureBlogCell:(WPBlogTableViewCell *)cell atIndexPath:indexPath];
+    [WPStyleGuide configureTableViewBlogCell:cell];
 }
 
 - (void)configureBlogCell:(WPBlogTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
@@ -438,9 +399,8 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = self.tableView.isEditing ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleBlue;
-        
-        cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-        cell.imageView.layer.borderWidth = 1.5;
+    cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    cell.imageView.layer.borderWidth = 1.5;
     [cell.imageView setImageWithSiteIcon:blog.icon];
     cell.visibilitySwitch.on = blog.visible;
     cell.visibilitySwitch.tag = indexPath.row;
@@ -502,7 +462,7 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return (indexPath.section == BlogListSectionsNewSite) ? WPTableViewDefaultRowHeight : BLVCSiteRowHeight;
+    return BLVCSiteRowHeight;
 }
 
 # pragma mark - WPSeachController delegate methods
@@ -589,8 +549,8 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add New WordPress", @"Add New WordPress button")
                                                                     style:UIAlertActionStyleDefault
                                                                   handler:^(UIAlertAction *action) {
-        
-    }];
+                                                                      
+                                                                  }];
     UIAlertAction *addSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add New Site", @"Add New Site button")
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction *action) {
@@ -598,7 +558,7 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
                                                           }];
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                      style:UIAlertActionStyleCancel
-                                                   handler:^(UIAlertAction *action) {}];
+                                                   handler:nil];
     
     [addSiteAlertController addAction:addNewWordPressAction];
     [addSiteAlertController addAction:addSiteAction];
@@ -606,6 +566,11 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     
     [self presentViewController:addSiteAlertController animated:YES completion:nil];
     
+}
+
+- (void)showAddNewWordPressController
+{
+    [self setEditing:NO animated:NO];
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite
