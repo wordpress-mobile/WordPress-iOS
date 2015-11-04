@@ -86,6 +86,7 @@ public protocol ThemePresenter {
         
         fetchThemes()
 
+        updateActiveTheme()
         setupSyncHelper()
     }
 
@@ -96,6 +97,20 @@ public protocol ThemePresenter {
     }
 
     // MARK: - Syncing the list of themes
+    
+    private func updateActiveTheme() {
+        let lastActiveThemeId = blog.currentThemeId
+        
+        themeService.getActiveThemeForBlog(blog,
+            success: { [weak self] (theme: Theme?) in
+                if lastActiveThemeId != theme?.themeId {
+                    self?.collectionView?.collectionViewLayout.invalidateLayout()
+                }
+            },
+            failure: { (error : NSError!) in
+                DDLogSwift.logError("Error updating active theme: \(error.localizedDescription)")
+        })
+    }
     
     private func setupSyncHelper() {
         syncHelper = WPContentSyncHelper()
