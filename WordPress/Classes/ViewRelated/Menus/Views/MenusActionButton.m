@@ -1,6 +1,7 @@
 #import "MenusActionButton.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
+#import "MenusDesign.h"
 
 static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
 
@@ -71,11 +72,10 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     [super drawRect:rect];
     
     const BOOL drawHighlighted = self.showsDesignHighlighted;
-    const CGFloat cornerRadius = 4.0;
     {
         // draw the base layer based on a darker color of the draw color
         [[self darkerBaseColorWithColor:self.backgroundDrawColor delta:drawHighlighted ? 0.25 : 0.16] set];
-        [[UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:cornerRadius] fill];
+        [[UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:MenusDesignDefaultCornerRadius] fill];
     }
     {
         // draw the actual fill color on top of the base layer
@@ -84,7 +84,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
         CGRect fillRect = rect;
         // add height padding for design parity with web
         fillRect.size.height -= MenusDetailsButtonDesignPadding / 2.0;
-        UIBezierPath *fillPath = [UIBezierPath bezierPathWithRoundedRect:fillRect cornerRadius:cornerRadius];
+        UIBezierPath *fillPath = [UIBezierPath bezierPathWithRoundedRect:fillRect cornerRadius:MenusDesignDefaultCornerRadius];
         // scale down the fill rect to maintain the corner radius and inset the fill
         CGFloat scalePointDelta = MenusDetailsButtonDesignPadding;
         CGAffineTransform transform = CGAffineTransformMakeScale((fillRect.size.width - scalePointDelta) / fillRect.size.width, (fillRect.size.height - scalePointDelta) / fillRect.size.height);

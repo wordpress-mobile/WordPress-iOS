@@ -128,6 +128,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)didSyncBlog
 {
     [self.headerView updateWithMenusForBlog:self.blog];
+    self.detailsView.menu = [self.blog.menus firstObject];
 }
 
 #pragma mark - UIScrollView
