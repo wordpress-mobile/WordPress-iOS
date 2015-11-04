@@ -19,6 +19,7 @@
 #import "WordPress-Swift.h"
 #import "WPSearchControllerConfigurator.h"
 #import "WPGUIConstants.h"
+#import "CreateAccountAndBlogViewController.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
@@ -549,7 +550,7 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add New WordPress", @"Add New WordPress button")
                                                                     style:UIAlertActionStyleDefault
                                                                   handler:^(UIAlertAction *action) {
-                                                                      
+                                                                      [self showAddNewWordPressController];
                                                                   }];
     UIAlertAction *addSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add New Site", @"Add New Site button")
                                                             style:UIAlertActionStyleDefault
@@ -570,6 +571,8 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 - (void)showAddNewWordPressController
 {
     [self setEditing:NO animated:NO];
+    CreateAccountAndBlogViewController *createAccountViewController = [[CreateAccountAndBlogViewController alloc] init];
+    [self.navigationController presentViewController:createAccountViewController animated:YES completion:nil];
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite
