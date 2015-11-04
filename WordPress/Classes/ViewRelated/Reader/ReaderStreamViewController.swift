@@ -153,7 +153,7 @@ import Foundation
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
-        if needsRefreshCachedCellHeightsBeforeLayout {
+        if isViewLoaded() && needsRefreshCachedCellHeightsBeforeLayout {
             needsRefreshCachedCellHeightsBeforeLayout = false
 
             let width = view.frame.width
