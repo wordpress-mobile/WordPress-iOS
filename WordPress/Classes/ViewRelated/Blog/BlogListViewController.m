@@ -479,24 +479,7 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        [self setEditing:NO animated:NO];
-        LoginViewController *loginViewController = [[LoginViewController alloc] init];
-        loginViewController.cancellable = YES;
-
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-        if (!defaultAccount) {
-            loginViewController.prefersSelfHosted = YES;
-        }
-        loginViewController.dismissBlock = ^(BOOL cancelled){
-            [self dismissViewControllerAnimated:YES completion:nil];
-        };
-        UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-        [self presentViewController:loginNavigationController animated:YES completion:nil];
-    } else if (self.tableView.isEditing) {
+    if (self.tableView.isEditing) {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         UISwitch *visibleSwitch = (UISwitch *)cell.accessoryView;
         if (visibleSwitch && [visibleSwitch isKindOfClass:[UISwitch class]]) {
@@ -596,6 +579,27 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 - (void)toggleSearch
 {
     self.searchController.active = !self.searchController.active;
+}
+
+
+- (void)showLoginControllerForAddingSelfHostedSite
+{
+    [self setEditing:NO animated:NO];
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    loginViewController.cancellable = YES;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+    if (!defaultAccount) {
+        loginViewController.prefersSelfHosted = YES;
+    }
+    loginViewController.dismissBlock = ^(BOOL cancelled){
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+    UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    [self presentViewController:loginNavigationController animated:YES completion:nil];
 }
 
 - (void)visibilitySwitchAction:(id)sender
