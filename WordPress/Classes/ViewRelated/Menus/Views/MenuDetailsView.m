@@ -106,7 +106,7 @@
 - (void)updateTextFieldDesignIconPositioning
 {
     CGSize textSize = [self.textField.text sizeWithAttributes:@{NSFontAttributeName: self.textField.font}];
-    CGRect editingRect = [self.textField editingRectForBounds:self.textField.bounds];
+    CGRect editingRect = [self.textField textRectForBounds:self.textField.bounds];
     CGFloat leadingConstant = editingRect.origin.x + textSize.width;
     if(leadingConstant > self.textField.frame.size.width) {
         leadingConstant = self.textField.frame.size.width;
