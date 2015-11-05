@@ -142,7 +142,7 @@ public class DiscussionSettingsViewController : UITableViewController
     
     private func configureSwitchCell(cell: SwitchTableViewCell, row: Row) {
         cell.name       = row.title ?? String()
-//        cell.on         = newValues[settingKey] ?? (row.value ?? true)
+        cell.on         = row.boolValue ?? true
 //        cell.onChange = { [weak self] (newValue: Bool) in
 //            
 //        }
@@ -242,10 +242,10 @@ public class DiscussionSettingsViewController : UITableViewController
     private func showCloseAfterSettings() {
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Close After", comment: "")
-        settingsViewController.currentValue     = "2"
-        settingsViewController.defaultValue     = "123"
+        settingsViewController.currentValue     = "30"
+        settingsViewController.defaultValue     = "30"
         settingsViewController.titles           = ["Never", "One day", "One week", "One month"]
-        settingsViewController.values           = ["31337", "1", "7", "30"]
+        settingsViewController.values           = ["0", "1", "7", "30"]
         settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -254,10 +254,10 @@ public class DiscussionSettingsViewController : UITableViewController
     private func showSortingSettings() {
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Sort By", comment: "")
-        settingsViewController.currentValue     = "1"
-        settingsViewController.defaultValue     = "123"
+        settingsViewController.currentValue     = "desc"
+        settingsViewController.defaultValue     = "desc"
         settingsViewController.titles           = ["Oldest First", "Newest First"]
-        settingsViewController.values           = ["0", "1"]
+        settingsViewController.values           = ["desc", "asc"]
         settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -267,7 +267,7 @@ public class DiscussionSettingsViewController : UITableViewController
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Threading", comment: "")
         settingsViewController.currentValue     = "2"
-        settingsViewController.defaultValue     = "123"
+        settingsViewController.defaultValue     = "2"
         settingsViewController.titles           = ["Two levels", "Three levels", "Four levels", "Five levels"]
         settingsViewController.values           = ["2", "3", "4", "5"]
         settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
@@ -279,9 +279,9 @@ public class DiscussionSettingsViewController : UITableViewController
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Paging", comment: "")
         settingsViewController.currentValue     = "50"
-        settingsViewController.defaultValue     = "123"
+        settingsViewController.defaultValue     = "50"
         settingsViewController.titles           = ["None", "50 comments per page", "100 comments per page", "200 comments per page"]
-        settingsViewController.values           = ["31337", "50", "100", "200"]
+        settingsViewController.values           = ["0", "50", "100", "200"]
         settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
