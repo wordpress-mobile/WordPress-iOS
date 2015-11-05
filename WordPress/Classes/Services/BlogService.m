@@ -19,8 +19,9 @@
 #import "RemoteBlog.h"
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
-#import "RemoteBlogSettings.h"
 #import "ContextManager.h"
+#import "WordPress-Swift.h"
+
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";

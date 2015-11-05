@@ -1,6 +1,6 @@
 #import "BlogServiceRemoteREST.h"
 #import <WordPressComApi.h>
-#import "RemoteBlogSettings.h"
+#import "WordPress-Swift.h"
 
 
 static NSString const *BlogRemoteNameKey                = @"name";

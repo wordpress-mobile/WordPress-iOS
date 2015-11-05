@@ -5,6 +5,7 @@ public class BlogSettings : NSManagedObject
 {
     @NSManaged var blog                                 : Blog
     
+    // MARK: - Discussion
     @NSManaged var commentsAllowed                      : Bool
     @NSManaged var commentsCloseAutomatically           : Bool
     @NSManaged var commentsCloseAutomaticallyAfterDays  : Int
@@ -23,7 +24,8 @@ public class BlogSettings : NSManagedObject
 
     @NSManaged var pingbacksOutboundEnabled             : Bool
     @NSManaged var pingbacksInboundEnabled              : Bool
-    
+
+    // MARK: - Related Posts
     @NSManaged var relatedPostsAllowed                  : Bool
     @NSManaged var relatedPostsEnabled                  : Bool
     @NSManaged var relatedPostsShowHeadline             : Bool
