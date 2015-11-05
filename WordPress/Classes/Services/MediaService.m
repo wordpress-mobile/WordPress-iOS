@@ -12,6 +12,7 @@
 #import "WPImageSource.h"
 #import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "WordPress-swift.h"
 
 NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
 CGSize const MediaMaxImageSize = {3000, 3000};
@@ -41,6 +42,74 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     NSString *strSize = NSStringFromCGSize(CGSizeMake(width, height));
     [[NSUserDefaults standardUserDefaults] setObject:strSize forKey:SavedMaxImageSizeSetting];
     [NSUserDefaults resetStandardUserDefaults];
+}
+
+- (void)createMediaWithPHAsset:(PHAsset *)asset
+             forPostObjectID:(NSManagedObjectID *)postObjectID
+                  completion:(void (^)(Media *media, NSError *error))completion
+{
+    BOOL geoLocationEnabled = NO;
+    NSError *error = nil;
+    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
+    if (!post) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+    MediaType mediaType = MediaTypeDocument;
+    NSSet *allowedFileTypes = nil;
+    if (asset.mediaType == PHAssetMediaTypeImage) {
+        mediaType = MediaTypeImage;
+        allowedFileTypes = post.blog.allowedFileTypes;
+    } else if (asset.mediaType == PHAssetMediaTypeVideo) {
+        // We ignore allowsFileTypes for videos because if videopress is not enabled we still can upload
+        // files even if the allowed file types says no.
+        allowedFileTypes = nil;
+        mediaType = MediaTypeVideo;
+    }
+    
+    geoLocationEnabled = post.blog.geolocationEnabled;
+    
+    CGSize maxImageSize = [MediaService maxImageSizeSetting];
+    if (maxImageSize.width == MediaMaxImageSize.width && maxImageSize.height == MediaMaxImageSize.height) {
+        maxImageSize = CGSizeZero;
+    }
+    NSString *mediaPath = [self pathForMedia];
+    [asset exportToPath:mediaPath
+                targetSize:maxImageSize
+                stripGeoLocation:!geoLocationEnabled
+                successHandler:^(CGSize resultingSize, NSString *exportedAssetPath, NSString *exportedAssetThumbnailPath) {
+                    [self.managedObjectContext performBlock:^{
+                        
+                        AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+                        Media *media = [self newMediaForPost:post];
+                        media.filename = [asset originalFilename];
+                        media.absoluteLocalURL = exportedAssetPath;
+                        media.absoluteThumbnailLocalURL = exportedAssetThumbnailPath;
+                        NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:exportedAssetPath error:nil];
+                        // This is kind of lame, but we've been storing file size as KB so far
+                        // We should store size in bytes or rename the property to avoid confusion
+                        if (fileAttributes ) {
+                            media.filesize = @([fileAttributes fileSize] / 1024);
+                        } else {
+                            media.filesize = 0;
+                        }
+                        media.width = @(resultingSize.width);
+                        media.height = @(resultingSize.height);
+                        media.mediaType = mediaType;
+                        //make sure that we only return when object is properly created and saved
+                        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                            if (completion) {
+                                completion(media, nil);
+                            }
+                        }];
+                    }];
+                } errorHandler:^(NSError *error) {
+                    if (completion){
+                        completion(nil, error);
+                    }
+                }];
 }
 
 - (void)createMediaWithAsset:(ALAsset *)asset
@@ -382,12 +451,32 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 static NSString * const MediaDirectory = @"Media";
 
+- (NSString *)pathForMedia
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *mediaDirectory = [documentsDirectory stringByAppendingPathComponent:MediaDirectory];
+    NSError *error;
+    BOOL isDirectory;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if (![fileManager fileExistsAtPath:mediaDirectory isDirectory:&isDirectory] || !isDirectory){
+        if ([fileManager createDirectoryAtPath:mediaDirectory withIntermediateDirectories:YES attributes:nil error:&error]){
+            [[NSURL fileURLWithPath:mediaDirectory] setResourceValue:@(NO) forKey:NSURLIsExcludedFromBackupKey error:nil];
+        } else {
+            DDLogError(@"%@", [error localizedDescription]);
+        }
+    }
+
+    return mediaDirectory;
+}
+
 - (NSString *)pathForAsset:(ALAsset *)asset supportedFileFormats:(NSSet *)supportedFileFormats
 {
     NSString *filename = asset.defaultRepresentation.filename;
     return [self pathForFilename:filename supportedFileFormats:supportedFileFormats];
 
 }
+
 - (NSString *)pathForFilename:(NSString *)filename supportedFileFormats:(NSSet *)supportedFileFormats
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
