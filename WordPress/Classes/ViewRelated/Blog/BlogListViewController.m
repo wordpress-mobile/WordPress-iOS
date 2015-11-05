@@ -70,14 +70,14 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
                                                                   action:nil];
     [self.navigationItem setBackBarButtonItem:backButton];
     
+    UIBarButtonItem *addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                   target:self
+                                                                                   action:@selector(addSite)];
     UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:self
                                                                     action:@selector(toggleSearch)];
-    UIBarButtonItem *addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                   target:self
-                                                                                   action:@selector(addSite)];
-    [self.navigationItem setRightBarButtonItems:@[searchButton, addSiteButton]];
+    [self.navigationItem setRightBarButtonItems:@[addSiteButton, searchButton]];
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view
