@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="5ll-RY-leg">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="Merriweather-Bold.ttf">
+            <string>Merriweather-Bold</string>
+        </mutableArray>
+        <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+        </mutableArray>
+    </customFonts>
+    <scenes>
+        <!--Team-->
+        <scene sceneID="0Jd-lB-cu0">
+            <objects>
+                <tableViewController storyboardIdentifier="PeopleViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5ll-RY-leg" customClass="PeopleViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="86" sectionHeaderHeight="22" sectionFooterHeight="22" id="HU2-1s-xgj">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="GlF-16-ak3">
+                            <rect key="frame" x="0.0" y="172" width="600" height="0.0"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="PeopleCell" rowHeight="86" id="kMD-3K-Yok" customClass="PeopleCell" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="86" width="600" height="86"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kMD-3K-Yok" id="HXS-gQ-WaR">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="85"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="fUp-Sh-uv5" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                            <rect key="frame" x="15" y="15" width="56" height="56"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="56" id="WNH-Z0-dbK"/>
+                                                <constraint firstAttribute="height" constant="56" id="ihL-Zj-j50"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jorge Bernal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SRh-jK-Qmd">
+                                            <rect key="frame" x="86" y="15" width="499" height="18"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="18" id="1up-XI-AiZ"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="Merriweather-Bold" family="Merriweather" pointSize="14"/>
+                                            <color key="textColor" red="0.18039215689999999" green="0.2666666667" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@koke" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ake-ZW-wkV">
+                                            <rect key="frame" x="86" y="30" width="499" height="15"/>
+                                            <animations/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="11"/>
+                                            <color key="textColor" red="0.0" green="0.66666666669999997" blue="0.86274509799999999" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="left" horizontalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FCF-E3-KhT" customClass="PeopleRoleBadgeView" customModule="WordPress" customModuleProvider="target">
+                                            <rect key="frame" x="86" y="48" width="39" height="17"/>
+                                            <animations/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="text" value="Editor"/>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                    <color key="value" red="0.97647064920000004" green="0.97647064920000004" blue="0.97647064920000004" alpha="1" colorSpace="deviceRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" red="0.0" green="0.31372549020000001" blue="0.50980392159999999" alpha="1" colorSpace="deviceRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                    <color key="value" red="0.0" green="0.31372549020000001" blue="0.50980392159999999" alpha="1" colorSpace="deviceRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
+                                        <view contentMode="left" horizontalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ti8-F2-rEr" customClass="PeopleRoleBadgeView" customModule="WordPress" customModuleProvider="target">
+                                            <rect key="frame" x="133" y="48" width="75" height="17"/>
+                                            <animations/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="text" value="Super Admin"/>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                    <color key="value" red="0.97647064920000004" green="0.97647064920000004" blue="0.97647064920000004" alpha="1" colorSpace="deviceRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" red="0.83529411764705885" green="0.30588235294117649" blue="0.12941176470588234" alpha="1" colorSpace="deviceRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="backgroundColor">
+                                                    <color key="value" red="0.83529411760000005" green="0.30588235289999999" blue="0.12941176469999999" alpha="1" colorSpace="deviceRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
+                                    </subviews>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="Ti8-F2-rEr" secondAttribute="trailing" priority="250" constant="424" id="7j5-b7-IFx"/>
+                                        <constraint firstItem="Ti8-F2-rEr" firstAttribute="top" secondItem="Ake-ZW-wkV" secondAttribute="bottom" constant="3" id="I1g-dd-5wF"/>
+                                        <constraint firstItem="FCF-E3-KhT" firstAttribute="leading" secondItem="Ake-ZW-wkV" secondAttribute="leading" id="O7s-V9-ShE"/>
+                                        <constraint firstItem="fUp-Sh-uv5" firstAttribute="top" secondItem="HXS-gQ-WaR" secondAttribute="top" constant="15" id="Pba-X9-kWd"/>
+                                        <constraint firstItem="Ti8-F2-rEr" firstAttribute="baseline" secondItem="FCF-E3-KhT" secondAttribute="baseline" id="QLB-3q-an6"/>
+                                        <constraint firstAttribute="trailing" secondItem="FCF-E3-KhT" secondAttribute="trailing" constant="422" id="SeY-zu-xvA"/>
+                                        <constraint firstItem="Ti8-F2-rEr" firstAttribute="leading" secondItem="FCF-E3-KhT" secondAttribute="trailing" constant="8" symbolic="YES" id="TEi-2Y-H9g"/>
+                                        <constraint firstItem="Ake-ZW-wkV" firstAttribute="top" secondItem="SRh-jK-Qmd" secondAttribute="bottom" constant="-3" id="TnJ-il-F2r"/>
+                                        <constraint firstItem="FCF-E3-KhT" firstAttribute="leading" secondItem="HXS-gQ-WaR" secondAttribute="leading" constant="136" id="V2u-HQ-CvJ"/>
+                                        <constraint firstItem="SRh-jK-Qmd" firstAttribute="leading" secondItem="Ake-ZW-wkV" secondAttribute="leading" id="Wm0-WC-uBC"/>
+                                        <constraint firstItem="SRh-jK-Qmd" firstAttribute="width" secondItem="Ake-ZW-wkV" secondAttribute="width" id="Wwx-oT-Bdx"/>
+                                        <constraint firstItem="fUp-Sh-uv5" firstAttribute="leading" secondItem="HXS-gQ-WaR" secondAttribute="leading" constant="15" id="aLY-Pv-M2Y"/>
+                                        <constraint firstItem="Ti8-F2-rEr" firstAttribute="firstBaseline" secondItem="FCF-E3-KhT" secondAttribute="firstBaseline" id="cHU-KT-SL3"/>
+                                        <constraint firstItem="SRh-jK-Qmd" firstAttribute="top" secondItem="HXS-gQ-WaR" secondAttribute="topMargin" constant="7" id="dCD-Nj-Mju"/>
+                                        <constraint firstItem="SRh-jK-Qmd" firstAttribute="leading" secondItem="fUp-Sh-uv5" secondAttribute="trailing" constant="15" id="jCI-Ib-bvd"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="SRh-jK-Qmd" secondAttribute="trailing" constant="7" id="p9j-4O-zkj"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="Ti8-F2-rEr" secondAttribute="bottom" constant="12" id="x8M-3c-Ze8"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="SeY-zu-xvA"/>
+                                            <exclude reference="V2u-HQ-CvJ"/>
+                                            <exclude reference="7j5-b7-IFx"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <connections>
+                                    <outlet property="avatarImageView" destination="fUp-Sh-uv5" id="KNy-Ip-YOk"/>
+                                    <outlet property="displayNameLabel" destination="SRh-jK-Qmd" id="DlS-J6-zBc"/>
+                                    <outlet property="roleBadge" destination="FCF-E3-KhT" id="HyX-QU-LDg"/>
+                                    <outlet property="superAdminRoleBadge" destination="Ti8-F2-rEr" id="5DS-5Q-iKJ"/>
+                                    <outlet property="usernameLabel" destination="Ake-ZW-wkV" id="RwJ-ag-HVR"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="5ll-RY-leg" id="HGT-ec-wtb"/>
+                            <outlet property="delegate" destination="5ll-RY-leg" id="6WP-qQ-O8G"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Team" id="oDa-Zu-7RH"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="q1N-ER-0Uo">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                        <connections>
+                            <action selector="refresh" destination="5ll-RY-leg" eventType="valueChanged" id="E1Z-J4-CRW"/>
+                        </connections>
+                    </refreshControl>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kLo-F0-Yvi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1480" y="742"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="bbb-lx-Z6a">
+            <objects>
+                <navigationController storyboardIdentifier="DummyNavigationController" id="efg-qu-Ubi" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="iSK-ae-VSD">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="5ll-RY-leg" kind="relationship" relationship="rootViewController" id="WSR-6n-0Cz"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="niL-Lt-Q1W" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="660" y="742"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="gravatar" width="85" height="85"/>
+    </resources>
+</document>
