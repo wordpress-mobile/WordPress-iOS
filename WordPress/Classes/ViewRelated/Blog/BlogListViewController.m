@@ -509,7 +509,7 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 {
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
-    self.navigationItem.rightBarButtonItem.enabled = !editing;
+    [self toggleRightBarButtonItems:!editing];
 
     if (editing) {
         [self updateHeaderSize];
@@ -538,6 +538,13 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
             [snapshot removeFromSuperview];
             snapshot = nil;
         }];
+    }
+}
+
+- (void)toggleRightBarButtonItems:(BOOL)enabled
+{
+    for (UIBarButtonItem *buttonItem in self.navigationItem.rightBarButtonItems) {
+        buttonItem.enabled = enabled;
     }
 }
 
