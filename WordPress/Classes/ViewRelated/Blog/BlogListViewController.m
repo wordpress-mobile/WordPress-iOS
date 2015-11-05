@@ -575,6 +575,7 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     [addSiteAlertController addAction:addNewWordPressAction];
     [addSiteAlertController addAction:addSiteAction];
     [addSiteAlertController addAction:cancel];
+    addSiteAlertController.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;
     
     [self presentViewController:addSiteAlertController animated:YES completion:nil];
 }
