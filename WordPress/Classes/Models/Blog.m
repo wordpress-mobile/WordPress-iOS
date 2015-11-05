@@ -32,6 +32,7 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic blogID;
 @dynamic blogName;
 @dynamic blogTagline;
+@dynamic canUploadFiles;
 @dynamic url;
 @dynamic xmlrpc;
 @dynamic apiKey;

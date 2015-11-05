@@ -44,6 +44,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSNumber *blogID;
 @property (nonatomic, strong, readwrite) NSString *blogName;
 @property (nonatomic, strong, readwrite) NSString *blogTagline;
+@property (nonatomic, assign, readwrite) BOOL canUploadFiles;
 @property (nonatomic, strong, readwrite) NSString *xmlrpc;
 @property (nonatomic, strong, readwrite) NSString *apiKey;
 @property (nonatomic, strong, readwrite) NSNumber *hasOlderPosts;

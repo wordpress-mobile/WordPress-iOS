@@ -2051,7 +2051,26 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaPicker];
+    if (self.post.blog.canUploadFiles) {
+        [self showMediaPicker];
+        return;
+    }
+
+    // first button of the toolbar
+    UIBarButtonItem *mediaButton = [editorController.toolbarView.items objectAtIndex:0];
+    UIView *buttonView = mediaButton.customView;
+    CGRect buttonFrame = [buttonView convertRect:buttonView.frame
+                                          toView:self.view];
+    CGRect targetFrame = CGRectMake(buttonFrame.origin.x,
+                                    buttonFrame.origin.y,
+                                    buttonFrame.size.width,
+                                    0.0);
+    NSString *tooltipText = NSLocalizedString(@"You are not allowed to add media on this blog",
+                                              @"Tooltip displayed when people have the contributor role and hence are not allowed to add media to the post");
+    [WPTooltip displayTooltipInView:self.view
+                          fromFrame:targetFrame
+                           withText:tooltipText
+                          direction:WPTooltipDirectionUp];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
