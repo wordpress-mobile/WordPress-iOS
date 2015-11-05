@@ -7,12 +7,13 @@ public class BlogSettings : NSManagedObject
     
     @NSManaged var commentsAllowed                      : Bool
     @NSManaged var commentsCloseAutomatically           : Bool
-    @NSManaged var commentsCloseAutomaticallyAfterDays  : Bool
+    @NSManaged var commentsCloseAutomaticallyAfterDays  : Int
 
-    @NSManaged var commentsPageSize                     : Int
     @NSManaged var commentsPagingEnabled                : Bool
+    @NSManaged var commentsPageSize                     : Int
     
     @NSManaged var commentsRequireManualModeration      : Bool
+    @NSManaged var commentsRequireNameAndEmail          : Bool
     @NSManaged var commentsRequireRegistration          : Bool
     
     @NSManaged var commentsSortOrder                    : Int
