@@ -601,6 +601,8 @@
 		FF3DD6BE19F2B6B3003A52CB /* RemoteMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3DD6BD19F2B6B3003A52CB /* RemoteMedia.m */; };
 		FF4258501BA092EE00580C68 /* RelatedPostsSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF42584F1BA092EE00580C68 /* RelatedPostsSettingsViewController.m */; };
 		FF4258531BA0985800580C68 /* SwitchSettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF4258521BA0985800580C68 /* SwitchSettingTableViewCell.m */; };
+		FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF75933A1BE2423800814D3B /* Photos.framework */; };
+		FF75933D1BE25DDD00814D3B /* PHAsset+ExporterExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF75933C1BE25DDD00814D3B /* PHAsset+ExporterExtensions.swift */; };
 		FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */; };
 		FF8DDCE41B5EA6590098826F /* SettingsTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8DDCE31B5EA6590098826F /* SettingsTextViewController.m */; };
 		FF8DDCE61B6148E80098826F /* SettingsMultiTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8DDCE51B6148E80098826F /* SettingsMultiTextViewController.m */; };
@@ -1674,6 +1676,8 @@
 		FF4258511BA0985800580C68 /* SwitchSettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchSettingTableViewCell.h; sourceTree = "<group>"; };
 		FF4258521BA0985800580C68 /* SwitchSettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchSettingTableViewCell.m; sourceTree = "<group>"; };
 		FF695E151B87662500CD6EAA /* WordPress 38.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 38.xcdatamodel"; sourceTree = "<group>"; };
+		FF75933A1BE2423800814D3B /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
+		FF75933C1BE25DDD00814D3B /* PHAsset+ExporterExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PHAsset+ExporterExtensions.swift"; sourceTree = "<group>"; };
 		FF7EACDD1B6CE6E100AB6AB9 /* WordPress 37.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 37.xcdatamodel"; sourceTree = "<group>"; };
 		FF8DDCDD1B5DB1C10098826F /* SettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingTableViewCell.h; sourceTree = "<group>"; };
 		FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingTableViewCell.m; sourceTree = "<group>"; };
@@ -1746,6 +1750,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */,
 				93E5285619A77BAC003A1A9C /* NotificationCenter.framework in Frameworks */,
 				93A3F7DE1843F6F00082FEEA /* CoreTelephony.framework in Frameworks */,
 				FF3BD2EB1B061B9C0042E989 /* Crashlytics.framework in Frameworks */,
@@ -1948,6 +1953,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FF75933A1BE2423800814D3B /* Photos.framework */,
 				FF3BD2E81B061B9A0042E989 /* Fabric.framework */,
 				FF3BD2E91B061B9A0042E989 /* Crashlytics.framework */,
 				B5AA54D41A8E7510003BDD12 /* WebKit.framework */,
@@ -2690,6 +2696,7 @@
 				FFDA7E4F1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m */,
 				E1E1AA8B1B7DEDFC001C8645 /* WPMapFilterReduce.h */,
 				E1E1AA8C1B7DEDFC001C8645 /* WPMapFilterReduce.m */,
+				FF75933C1BE25DDD00814D3B /* PHAsset+ExporterExtensions.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -4549,6 +4556,7 @@
 				599738401B87AD2600EC1C30 /* WordPressComServiceRemote.m in Sources */,
 				E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */,
 				5D0A20D41AF11A7300E5C6BC /* PhotonImageURLHelper.m in Sources */,
+				FF75933D1BE25DDD00814D3B /* PHAsset+ExporterExtensions.swift in Sources */,
 				FF19340C1BB2F892006825B8 /* ServiceRemoteXMLRPC.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
 				E1DF5DFE19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m in Sources */,
