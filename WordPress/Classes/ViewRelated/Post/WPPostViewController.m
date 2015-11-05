@@ -2059,8 +2059,8 @@ EditImageDetailsViewControllerDelegate
     // first button of the toolbar
     UIBarButtonItem *mediaButton = [editorController.toolbarView.items objectAtIndex:0];
     UIView *buttonView = mediaButton.customView;
-    CGRect buttonFrame = [buttonView convertRect:buttonView.frame
-                                          toView:self.view];
+    CGRect buttonFrame = [self.view convertRect:buttonView.frame
+                                       fromView:editorController.toolbarView];
     CGRect targetFrame = CGRectMake(buttonFrame.origin.x,
                                     buttonFrame.origin.y,
                                     buttonFrame.size.width,
