@@ -4,7 +4,7 @@ import Foundation
  SharingService is responsible for wrangling publicize services, publicize 
  connections, and keyring connections.
 */
-@objc public class SharingService : LocalCoreDataService
+public class SharingService : LocalCoreDataService
 {
 
     // MARK: - Methods calling remote services
@@ -83,7 +83,8 @@ import Foundation
         keyring:KeyringConnection,
         externalUserID:String?,
         success: (PublicizeConnection -> Void)?,
-        failure: (NSError! -> Void)?) {
+        failure: (NSError! -> Void)?)
+    {
 
             let blogObjectID = blog.objectID
             let remote = SharingServiceRemote(api: apiForRequest())
@@ -196,11 +197,9 @@ import Foundation
             }
 
             // Delete any cached PublicizeServices that were not synced.
-            if currentPublicizeServices.count > 0 {
-                for pubService in currentPublicizeServices {
-                    if !servicesToKeep.contains(pubService) {
-                        self.managedObjectContext.deleteObject(pubService)
-                    }
+            for pubService in currentPublicizeServices {
+                if !servicesToKeep.contains(pubService) {
+                    self.managedObjectContext.deleteObject(pubService)
                 }
             }
 
@@ -318,11 +317,9 @@ import Foundation
             }
 
             // Delete any cached PublicizeServices that were not synced.
-            if currentPublicizeConnections.count > 0 {
-                for pubConnection in currentPublicizeConnections {
-                    if !connectionsToKeep.contains(pubConnection) {
-                        self.managedObjectContext.deleteObject(pubConnection)
-                    }
+            for pubConnection in currentPublicizeConnections {
+                if !connectionsToKeep.contains(pubConnection) {
+                    self.managedObjectContext.deleteObject(pubConnection)
                 }
             }
 

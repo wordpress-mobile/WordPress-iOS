@@ -5,7 +5,7 @@ import Foundation
  publiczice services, publicize connections, and keyring connections.
 */
 
-@objc public class SharingServiceRemote : ServiceRemoteREST
+public class SharingServiceRemote : ServiceRemoteREST
 {
 
     /**
@@ -154,7 +154,8 @@ import Foundation
     public func createPublicizeConnection(siteID:NSNumber,
         keyringConnectionID:NSNumber,
         externalUserID:String?,
-        success: (RemotePublicizeConnection -> Void)?, failure: (NSError! -> Void)?) {
+        success: (RemotePublicizeConnection -> Void)?, failure: (NSError! -> Void)?)
+    {
 
             let endpoint = "sites/\(siteID)/publicize-connections/new"
             let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
@@ -240,7 +241,7 @@ import Foundation
 
 
 // Keys for PublicizeService dictionaries
-struct ServiceDictionaryKeys
+private struct ServiceDictionaryKeys
 {
     static let connectURL = "connect_URL"
     static let description = "description"
@@ -256,7 +257,7 @@ struct ServiceDictionaryKeys
 
 
 // Keys for both KeyringConnection and PublicizeConnection dictionaries
-struct ConnectionDictionaryKeys
+private struct ConnectionDictionaryKeys
 {
     // shared keys
     static let connections = "connections"
@@ -289,7 +290,7 @@ struct ConnectionDictionaryKeys
 
 
 // Names of parameters passed when creating a new publicize connection
-struct PublicizeConnectionParams
+private struct PublicizeConnectionParams
 {
     static let keyringConnectionID = "keyring_connection_ID"
     static let externalUserID = "external_user_ID"
