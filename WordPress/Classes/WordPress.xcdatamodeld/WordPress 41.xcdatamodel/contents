@@ -146,13 +146,14 @@
         <relationship name="themes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Theme" inverseName="blog" inverseEntity="Theme" syncable="YES"/>
         <userInfo/>
     </entity>
-    <entity name="BlogSettings" syncable="YES">
+    <entity name="BlogSettings" representedClassName=".BlogSettings" syncable="YES">
         <attribute name="commentsAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="commentsCloseAutomatically" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="commentsCloseAutomaticallyAfterDays" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="commentsPageSize" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="commentsPagingEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="commentsRequireManualModeration" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="commentsRequireNameAndEmail" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="commentsRequireRegistration" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="commentsSortOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="commentsThreadingDepth" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -475,7 +476,7 @@
         <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="645"/>
-        <element name="BlogSettings" positionX="27" positionY="162" width="128" height="300"/>
+        <element name="BlogSettings" positionX="27" positionY="162" width="128" height="315"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="375"/>
