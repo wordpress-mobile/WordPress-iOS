@@ -1,6 +1,6 @@
 #import "BlogServiceRemoteXMLRPC.h"
 #import <WordPressApi.h>
-#import "RemoteBlogSettings.h"
+#import "WordPress-Swift.h"
 
 @implementation BlogServiceRemoteXMLRPC
 

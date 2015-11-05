@@ -338,6 +338,7 @@
 		ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
 		B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B50421E61B680839008EEA82 /* NoteUndoOverlayView.xib */; };
 		B50421E91B68170F008EEA82 /* NoteUndoOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50421E81B68170F008EEA82 /* NoteUndoOverlayView.swift */; };
+		B5066D031BEBFAA900355819 /* RemoteBlogSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5066D021BEBFAA900355819 /* RemoteBlogSettings.swift */; };
 		B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */; };
 		B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */; };
 		B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */; };
@@ -622,7 +623,6 @@
 		FFB7B8201A0012E80032E723 /* WordPressComApiCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = FFB7B81D1A0012E80032E723 /* WordPressComApiCredentials.m */; };
 		FFC6ADD41B56F295002F3C84 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFC6ADD21B56F295002F3C84 /* AboutViewController.swift */; };
 		FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */; };
-		FFC6ADD81B56F311002F3C84 /* RemoteBlogSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6ADD71B56F311002F3C84 /* RemoteBlogSettings.m */; };
 		FFC6ADDA1B56F366002F3C84 /* LocalCoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */; };
 		FFC6ADDD1B56F3D2002F3C84 /* ThemeServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6ADDC1B56F3D2002F3C84 /* ThemeServiceRemote.m */; };
 		FFC6ADE01B56F421002F3C84 /* WPThemeSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = FFC6ADDF1B56F421002F3C84 /* WPThemeSettings.m */; };
@@ -1281,6 +1281,7 @@
 		B43F6A7D9B3DC5B8B4A7DDCA /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
 		B50421E61B680839008EEA82 /* NoteUndoOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteUndoOverlayView.xib; sourceTree = "<group>"; };
 		B50421E81B68170F008EEA82 /* NoteUndoOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteUndoOverlayView.swift; sourceTree = "<group>"; };
+		B5066D021BEBFAA900355819 /* RemoteBlogSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteBlogSettings.swift; path = "Remote Objects/RemoteBlogSettings.swift"; sourceTree = "<group>"; };
 		B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		B526DC271B1E47FC002A8C5F /* WPStyleGuide+WebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+WebView.h"; sourceTree = "<group>"; };
@@ -1715,8 +1716,6 @@
 		FFB7B81D1A0012E80032E723 /* WordPressComApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComApiCredentials.m; sourceTree = "<group>"; };
 		FFC6ADD21B56F295002F3C84 /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AboutViewController.swift; path = Settings/AboutViewController.swift; sourceTree = "<group>"; };
 		FFC6ADD31B56F295002F3C84 /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AboutViewController.xib; path = Settings/AboutViewController.xib; sourceTree = "<group>"; };
-		FFC6ADD61B56F311002F3C84 /* RemoteBlogSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteBlogSettings.h; path = "Remote Objects/RemoteBlogSettings.h"; sourceTree = "<group>"; };
-		FFC6ADD71B56F311002F3C84 /* RemoteBlogSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteBlogSettings.m; path = "Remote Objects/RemoteBlogSettings.m"; sourceTree = "<group>"; };
 		FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalCoreDataService.m; sourceTree = "<group>"; };
 		FFC6ADDB1B56F3D2002F3C84 /* ThemeServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ThemeServiceRemote.h; path = Classes/Networking/ThemeServiceRemote.h; sourceTree = SOURCE_ROOT; };
 		FFC6ADDC1B56F3D2002F3C84 /* ThemeServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ThemeServiceRemote.m; path = Classes/Networking/ThemeServiceRemote.m; sourceTree = SOURCE_ROOT; };
@@ -3429,8 +3428,7 @@
 		E1249B4019408C6F0035E895 /* Remote Objects */ = {
 			isa = PBXGroup;
 			children = (
-				FFC6ADD61B56F311002F3C84 /* RemoteBlogSettings.h */,
-				FFC6ADD71B56F311002F3C84 /* RemoteBlogSettings.m */,
+				B5066D021BEBFAA900355819 /* RemoteBlogSettings.swift */,
 				5D1D33CD1AE56250000DE623 /* RemoteUser.h */,
 				5D1D33CE1AE56250000DE623 /* RemoteUser.m */,
 				E1A6DBD619DC7D080071AC1E /* RemotePostCategory.h */,
@@ -4401,7 +4399,6 @@
 				5D9B17C519998A430047A4A2 /* ReaderBlockedTableViewCell.m in Sources */,
 				5D000DDE1AC076C000A7BAF9 /* PostCardActionBar.m in Sources */,
 				FFE3B2C71B2E651400E9F1E0 /* WPAndDeviceMediaLibraryDataSource.m in Sources */,
-				FFC6ADD81B56F311002F3C84 /* RemoteBlogSettings.m in Sources */,
 				F1FA2C4E1AED07FC00255FCD /* MFMailComposeViewController+StatusBarStyle.m in Sources */,
 				E1F8E1261B0B422C0073E628 /* JetpackServiceRemote.m in Sources */,
 				5D6C4B091B603E03005E3C43 /* WPTableViewHandler.m in Sources */,
@@ -4460,6 +4457,7 @@
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
 				E1D04D8419374F2C002FADD7 /* BlogServiceRemoteREST.m in Sources */,
+				B5066D031BEBFAA900355819 /* RemoteBlogSettings.swift in Sources */,
 				5D6C4B1E1B604425005E3C43 /* WPContentActionView.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
 				5926E1E31AC4468300964783 /* WPCrashlytics.m in Sources */,
