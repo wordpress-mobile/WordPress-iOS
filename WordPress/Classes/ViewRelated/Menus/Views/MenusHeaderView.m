@@ -2,8 +2,9 @@
 #import "MenusSelectionView.h"
 #import "Blog.h"
 #import "WPStyleGuide.h"
+#import "MenusDesign.h"
 
-@interface MenusHeaderView ()
+@interface MenusHeaderView () <MenusSelectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet MenusSelectionView *locationsView;
@@ -21,16 +22,20 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     [super awakeFromNib];
     
     // provide extra margin to easily draw the design stroke, see drawRect:
-    self.stackView.layoutMargins = UIEdgeInsetsMake(0, 0, MenusHeaderViewDesignStrokeWidth / 2, 0);
+    UIEdgeInsets margins = MenusDesignDefaultInsets();
+    margins.bottom += MenusHeaderViewDesignStrokeWidth;
+    self.stackView.layoutMargins = margins;
     self.stackView.layoutMarginsRelativeArrangement = YES;
-    self.stackView.spacing = 0;
+    self.stackView.spacing = margins.left; // use a relative spacing to our margin padding
     
     self.backgroundColor = [WPStyleGuide lightGrey];
     self.textLabel.font = [WPStyleGuide subtitleFont];
     self.textLabel.backgroundColor = [UIColor clearColor];
     
     self.locationsView.selectionType = MenuSelectionViewTypeLocations;
+    self.locationsView.delegate = self;
     self.menusView.selectionType = MenuSelectionViewTypeMenus;
+    self.menusView.delegate = self;
 }
 
 - (void)updateWithMenusForBlog:(Blog *)blog
@@ -82,5 +87,9 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
     CGContextStrokePath(context);
 }
+
+#pragma mark - MenusSelectionViewDelegate
+
+
 
 @end

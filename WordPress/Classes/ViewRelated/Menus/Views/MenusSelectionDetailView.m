@@ -1,5 +1,6 @@
 #import "MenusSelectionDetailView.h"
 #import "WPStyleGuide.h"
+#import "MenusDesign.h"
 
 @interface MenusSelectionIconView : UIView
 
@@ -92,7 +93,8 @@ CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
 {
     [super awakeFromNib];
     
-    self.translatesAutoresizingMaskIntoConstraints = NO;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateWasPressedForExpansion)];
+    [self addGestureRecognizer:tap];
     
     [self setupArrangedViews];
     [self setupStyling];
@@ -105,6 +107,13 @@ CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
 
 - (void)setupArrangedViews
 {
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    UIEdgeInsets margins = UIEdgeInsetsZero;
+    margins.left = MenusSelectionDetailViewDefaultSpacing;
+    margins.right = MenusSelectionDetailViewDefaultSpacing;
+    self.stackView.layoutMargins = margins;
+    self.stackView.layoutMarginsRelativeArrangement = YES;
     self.stackView.distribution = UIStackViewDistributionFillProportionally;
     self.stackView.alignment = UIStackViewAlignmentCenter;
     self.stackView.spacing = MenusSelectionDetailViewDefaultSpacing;
@@ -142,13 +151,6 @@ CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
     }
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
-{
-    [super traitCollectionDidChange:previousTraitCollection];
-    
-    
-}
-
 - (void)setTitleText:(NSString *)title subTitleText:(NSString *)subtitle
 {
     NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] init];
@@ -165,6 +167,32 @@ CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
     }
     
     self.textLabel.attributedText = mutableAttributedString;
+}
+
+#pragma mark - delegate helpers
+
+- (void)tellDelegateWasPressedForExpansion
+{
+    if([self.delegate respondsToSelector:@selector(selectionDetailViewPressedForTogglingExpansion:)]) {
+        [self.delegate selectionDetailViewPressedForTogglingExpansion:self];
+    }
+}
+
+#pragma mark - OVERRIDES
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.drawingDelegate selectionDetailView:self highlightedDrawingStateChanged:YES];
+}
+
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.drawingDelegate selectionDetailView:self highlightedDrawingStateChanged:NO];
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.drawingDelegate selectionDetailView:self highlightedDrawingStateChanged:NO];
 }
 
 @end
