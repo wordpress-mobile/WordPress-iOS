@@ -4,6 +4,7 @@ import Foundation
 public class BlogSettings : NSManagedObject
 {
     @NSManaged var blog                                 : Blog
+    @NSManaged var blogID                               : NSNumber!
     
     // MARK: - Discussion
     @NSManaged var commentsAllowed                      : Bool
