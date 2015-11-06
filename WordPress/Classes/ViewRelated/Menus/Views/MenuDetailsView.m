@@ -164,7 +164,7 @@
     }];
 }
 
-#pragma mark - Keyboard notifications
+#pragma mark - keyboard notifications
 
 - (void)keyboardWillShowNotification:(NSNotification *)notification
 {

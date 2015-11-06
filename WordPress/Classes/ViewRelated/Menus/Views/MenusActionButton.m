@@ -33,14 +33,14 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     return self;
 }
 
-#pragma mark - INSTANCE
+#pragma mark - instance
 
 - (UIImage *)templatedIconImageNamed:(NSString *)imageName
 {
     return [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
-#pragma mark - OVERRIDES
+#pragma mark - overrides
 
 - (void)awakeFromNib
 {
@@ -115,7 +115,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     self.showsDesignHighlighted = NO;
 }
 
-#pragma mark - PRIVATE
+#pragma mark - private
 
 - (void)setShowsDesignHighlighted:(BOOL)showsDesignHighlighted
 {
