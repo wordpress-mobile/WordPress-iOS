@@ -187,7 +187,7 @@ public class SharingService : LocalCoreDataService
     @param success An optional callback block to be performed when core data has saved the changes.
     */
     private func mergePublicizeServices(remoteServices:[RemotePublicizeService], success:(() -> Void)? ) {
-        managedObjectContext.performBlock { () -> Void in
+        managedObjectContext.performBlock {
             let currentPublicizeServices = self.allPublicizeServices()
 
             // Create or update based on the contents synced.
@@ -204,7 +204,7 @@ public class SharingService : LocalCoreDataService
             }
 
             // Save all the things.
-            ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: { () -> Void in
+            ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
                 success?()
             })
         }
