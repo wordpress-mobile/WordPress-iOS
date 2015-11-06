@@ -7,7 +7,6 @@ notifications:
   email: true
 install:
 - gem install xcpretty-travis-formatter
-- pod setup
 - pod install
 script:
 - Scripts/build.sh
