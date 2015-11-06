@@ -3,12 +3,10 @@
 extern CGFloat const MenusSelectionDetailViewDefaultSpacing;
 
 @protocol MenusSelectionDetailViewDelegate;
-@protocol MenusSelectionDetailViewDrawingDelegate;
 
 @interface MenusSelectionDetailView : UIView
 
 @property (nonatomic, weak) id <MenusSelectionDetailViewDelegate> delegate;
-@property (nonatomic, weak) id <MenusSelectionDetailViewDrawingDelegate> drawingDelegate;
 
 - (void)updateWithAvailableLocations:(NSUInteger)numLocationsAvailable selectedLocationName:(NSString *)name;
 - (void)updateWithAvailableMenus:(NSUInteger)numMenusAvailable selectedLocationName:(NSString *)name;
@@ -17,9 +15,7 @@ extern CGFloat const MenusSelectionDetailViewDefaultSpacing;
 
 @protocol MenusSelectionDetailViewDelegate <NSObject>
 @optional
-- (void)selectionDetailViewPressedForTogglingExpansion:(MenusSelectionDetailView *)detailView;
-@end
+- (void)selectionDetailView:(MenusSelectionDetailView *)detailView touchesHighlightedStateChanged:(BOOL)highlighted;
+- (void)selectionDetailView:(MenusSelectionDetailView *)detailView tapGestureRecognized:(UITapGestureRecognizer *)tap;
 
-@protocol MenusSelectionDetailViewDrawingDelegate <NSObject>
-- (void)selectionDetailView:(MenusSelectionDetailView *)detailView highlightedDrawingStateChanged:(BOOL)highlighted;
 @end

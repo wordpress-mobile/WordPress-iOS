@@ -4,7 +4,7 @@
 #import "MenusSelectionDetailView.h"
 #import "MenusDesign.h"
 
-@interface MenusSelectionView () <MenusSelectionDetailViewDelegate, MenusSelectionDetailViewDrawingDelegate>
+@interface MenusSelectionView () <MenusSelectionDetailViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet MenusSelectionDetailView *detailView;
@@ -22,12 +22,9 @@
     [super awakeFromNib];
     
     self.translatesAutoresizingMaskIntoConstraints = NO;
-
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.stackView.alignment = UIStackViewAlignmentTop;
     
-    self.detailView.delegate = self;
-    self.detailView.drawingDelegate = self;
     [self setupStyling];
     
     UIView *view = [[UIView alloc] init];
@@ -39,6 +36,8 @@
     view.hidden = YES;
     self.testView = view;
     [self.stackView addArrangedSubview:view];
+    
+    self.detailView.delegate = self;
 }
 
 - (void)setupStyling
@@ -47,7 +46,7 @@
     self.layer.cornerRadius = MenusDesignDefaultCornerRadius / 2.0;
 }
 
-#pragma mark - INSTANCE
+#pragma mark - instance
 
 - (void)updateItems:(NSArray <MenusSelectionViewItem *> *)items selectedItem:(MenusSelectionViewItem *)selectedItem
 {
@@ -64,33 +63,24 @@
     }
 }
 
-- (void)toggleSelectionExpansionIfNeeded:(BOOL)expanded animated:(BOOL)animated
+- (void)setSelectionExpanded:(BOOL)selectionExpanded
 {
-    if(self.selectionItemsExpanded != expanded) {
-        [self setSelectionItemsExpanded:expanded animated:animated];
-    }
-}
-
-#pragma mark - PRIVATE
-
-- (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded
-{
-    if(_selectionItemsExpanded != selectionItemsExpanded) {
-        _selectionItemsExpanded = selectionItemsExpanded;
-        self.testView.hidden = !selectionItemsExpanded;
+    if(_selectionExpanded != selectionExpanded) {
+        _selectionExpanded = selectionExpanded;
+        self.testView.hidden = !selectionExpanded;
     }
 }
 
 - (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded animated:(BOOL)animated
 {
     if(!animated) {
-        self.selectionItemsExpanded = selectionItemsExpanded;
+        self.selectionExpanded = selectionItemsExpanded;
         return;
     }
     
-    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         
-        self.selectionItemsExpanded = selectionItemsExpanded;
+        self.selectionExpanded = selectionItemsExpanded;
         
     } completion:^(BOOL finished) {
         
@@ -107,17 +97,23 @@
     }
 }
 
-#pragma mark - MenusSelectionDetailViewDelegate
+#pragma mark - delegate helpers
 
-- (void)selectionDetailViewPressedForTogglingExpansion:(MenusSelectionDetailView *)detailView
+- (void)tellDelegateUserInteractionDetectedForTogglingExpansion
 {
-    // default animation to YES if the user pressed the view to expand/close
-    [self setSelectionItemsExpanded:!self.selectionItemsExpanded animated:YES];
+    if([self.delegate respondsToSelector:@selector(userInteractionDetectedForTogglingSelectionView:expand:)]) {
+        [self.delegate userInteractionDetectedForTogglingSelectionView:self expand:!self.selectionExpanded];
+    }
 }
 
-#pragma MenusSelectionDetailViewDrawingDelegate
+#pragma mark - MenusSelectionDetailViewDelegate
 
-- (void)selectionDetailView:(MenusSelectionDetailView *)detailView highlightedDrawingStateChanged:(BOOL)highlighted
+- (void)selectionDetailView:(MenusSelectionDetailView *)detailView tapGestureRecognized:(UITapGestureRecognizer *)tap
+{
+    [self tellDelegateUserInteractionDetectedForTogglingExpansion];
+}
+
+- (void)selectionDetailView:(MenusSelectionDetailView *)detailView touchesHighlightedStateChanged:(BOOL)highlighted
 {
     self.drawsHighlighted = highlighted;
 }

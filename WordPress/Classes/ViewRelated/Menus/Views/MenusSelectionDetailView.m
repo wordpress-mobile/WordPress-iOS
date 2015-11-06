@@ -93,11 +93,11 @@ CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
 {
     [super awakeFromNib];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateWasPressedForExpansion)];
-    [self addGestureRecognizer:tap];
-    
     [self setupArrangedViews];
     [self setupStyling];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateTapGestureRecognized:)];
+    [self addGestureRecognizer:tap];
 }
 
 - (void)setupStyling
@@ -171,28 +171,35 @@ CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
 
 #pragma mark - delegate helpers
 
-- (void)tellDelegateWasPressedForExpansion
+- (void)tellDelegateTapGestureRecognized:(UITapGestureRecognizer *)tap
 {
-    if([self.delegate respondsToSelector:@selector(selectionDetailViewPressedForTogglingExpansion:)]) {
-        [self.delegate selectionDetailViewPressedForTogglingExpansion:self];
+    if([self.delegate respondsToSelector:@selector(selectionDetailView:tapGestureRecognized:)]) {
+        [self.delegate selectionDetailView:self tapGestureRecognized:tap];
     }
 }
 
-#pragma mark - OVERRIDES
+- (void)tellDelegateTouchesHighlightedStateChanged:(BOOL)highlighted
+{
+    if([self.delegate respondsToSelector:@selector(selectionDetailView:touchesHighlightedStateChanged:)]) {
+        [self.delegate selectionDetailView:self touchesHighlightedStateChanged:highlighted];
+    }
+}
+
+#pragma mark - overrides
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    [self.drawingDelegate selectionDetailView:self highlightedDrawingStateChanged:YES];
+    [self tellDelegateTouchesHighlightedStateChanged:YES];
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    [self.drawingDelegate selectionDetailView:self highlightedDrawingStateChanged:NO];
+    [self tellDelegateTouchesHighlightedStateChanged:NO];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    [self.drawingDelegate selectionDetailView:self highlightedDrawingStateChanged:NO];
+    [self tellDelegateTouchesHighlightedStateChanged:NO];
 }
 
 @end
