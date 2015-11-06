@@ -30,4 +30,7 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 - (NSNumber *)readingTime;
 - (NSNumber *)wordCount;
 
+- (NSString *)siteURLForDisplay;
+- (NSString *)originSiteURLForDisplay;
+
 @end
