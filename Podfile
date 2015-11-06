@@ -21,7 +21,7 @@ pod 'google-plus-ios-sdk', '~>1.5'
 pod 'CrashlyticsLumberjack', '2.0.0'
 pod 'HockeySDK', '~>3.6.0'
 pod 'Helpshift', '~>4.10.0'
-pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
+pod 'Lookback', '0.9.2', :configurations => ['Release-Internal', 'Release-Alpha']
 pod 'MRProgress', '~>0.7.0'
 
 pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.8'
@@ -33,7 +33,7 @@ pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-i
 pod 'WordPress-iOS-Shared', '0.4.4'
 pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '34d484172a4e4f5013289023468098fb8764d2c7'
 pod 'WordPressCom-Stats-iOS', '0.4.8'
-pod 'WordPressCom-Analytics-iOS', '0.0.38'
+pod 'WordPressCom-Analytics-iOS', '0.0.39'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
 pod 'WPMediaPicker', '~>0.6.0'
 pod 'ReactiveCocoa', '~> 2.4.7'
