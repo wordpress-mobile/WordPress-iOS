@@ -658,7 +658,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStat3DTouchShortcutStats:
             eventName = @"3d_touch_shortcut_stats";
             break;
-        case WPAnalyticsStat3DTouchShortcutNotifications
+        case WPAnalyticsStat3DTouchShortcutNotifications:
             eventName = @"3d_touch_shortcut_notifications";
             break;
             
