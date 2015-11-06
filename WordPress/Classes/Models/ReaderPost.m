@@ -32,6 +32,8 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isReblogged;
 @dynamic isWPCom;
 @dynamic likeCount;
+@dynamic originSiteID;
+@dynamic originPostID;
 @dynamic siteID;
 @dynamic sortDate;
 @dynamic summary;
@@ -50,7 +52,13 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isJetpack;
 @dynamic wordCount;
 @dynamic readingTime;
+// For cross-posts, not reblogs
 
+
+- (BOOL)isCrossPost
+{
+    return self.originPostID && self.originSiteID;
+}
 
 - (BOOL)isPrivate
 {
@@ -256,6 +264,21 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 - (BOOL)isSourceAttributionWPCom
 {
     return (self.sourceAttribution.blogID) ? YES : NO;
+}
+
+- (NSURL *)avatarURLForDisplay
+{
+    return [NSURL URLWithString:self.authorAvatarURL];
+}
+
+- (NSString *)siteURLForDisplay
+{
+    return self.blogURL;
+}
+
+- (NSString *)originSiteURLForDisplay
+{
+    return self.blogURL;
 }
 
 @end
