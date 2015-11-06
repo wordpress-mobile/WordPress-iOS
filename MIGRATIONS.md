@@ -13,6 +13,9 @@ Changes to the data model:
 - `Theme` added a new number attribute called `order` to store the display order retrieved by
 - Added new entity `Person`
 
+- `ReaderPost` added new number attributed called `originPostID` to store the source post ID of a cross-post.
+- `ReaderPost` added new number attributed called `originSiteID` to store the source site ID of a cross-post.
+
 ## WordPress 39 (@sergioestevao 2015-09-09)
 
 - `Blog` added a new boolean attribute called `relatedPostsAllowed` to store the related setting on the site;
