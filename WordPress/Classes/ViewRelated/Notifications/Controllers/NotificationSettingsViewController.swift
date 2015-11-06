@@ -26,7 +26,7 @@ public class NotificationSettingsViewController : UIViewController
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        WPAnalytics.track(.OpenedNotificationSettingsList)
+        WPAnalytics.track(.StatOpenedNotificationSettingsList)
         
         // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
         tableView.deselectSelectedRowWithAnimation(true)
