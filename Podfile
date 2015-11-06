@@ -18,7 +18,6 @@ pod 'Mixpanel', '2.8.2'
 pod 'CocoaLumberjack', '= 2.0.0'
 pod 'NSLogger-CocoaLumberjack-connector', :git => 'https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git', :tag => '1.5'
 pod 'google-plus-ios-sdk', '~>1.5'
-pod 'CrashlyticsLumberjack', '2.0.0'
 pod 'HockeySDK', '~>3.6.0'
 pod 'Helpshift', '~>4.10.0'
 pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
