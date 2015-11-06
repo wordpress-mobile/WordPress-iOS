@@ -49,6 +49,38 @@ extension WPStyleGuide
 
     // MARK: - Card Attributed Text Attributes
 
+    public class func readerXpostTitleAttributes() -> [NSObject: AnyObject] {
+        let fontSize = Cards.xPostTitleFontSize
+        let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
+
+        let lineHeight = Cards.xPostLineHeight
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = lineHeight
+        paragraphStyle.maximumLineHeight = lineHeight
+
+        return [
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: darkGrey()
+        ]
+    }
+
+    public class func readerXpostSubtitleAttributes() -> [NSObject: AnyObject] {
+        let fontSize = Cards.xPostSubtitleFontSize
+        let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
+
+        let lineHeight = Cards.xPostLineHeight
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = lineHeight
+        paragraphStyle.maximumLineHeight = lineHeight
+
+        return [
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: grey()
+        ]
+    }
+
     public class func readerCardTitleAttributes() -> [NSObject: AnyObject] {
         let fontSize = Cards.titleFontSize
         let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
@@ -253,6 +285,9 @@ extension WPStyleGuide
         public static let buttonFontSize:CGFloat = 14.0
         public static let subtextFontSize:CGFloat = 12.0
         public static let loadMoreButtonFontSize:CGFloat = 15.0
+        public static let xPostTitleFontSize:CGFloat = 16.0
+        public static let xPostSubtitleFontSize:CGFloat = 13.0
+        public static let xPostLineHeight:CGFloat = 20.0
     }
 
 }
