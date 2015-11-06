@@ -3,6 +3,16 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 41 (@jleandroperez 2015-11-06)
+
+Changes to the data model:
+- Added new entity: `BlogSettings`, to encapsulate all of the Blog Settings.
+- `Blog` has now a new relationship mapped to a single `BlogSettings` instance.
+- `Blog` loses the `relatedPostsAllowed` attribute.
+- `Blog` loses the `relatedPostsEnabled` attribute.
+- `Blog` loses the `relatedPostsShowHeadline` attribute.
+- `Blog` loses the `relatedPostsShowThumbnails` attribute.
+
 ## WordPress 40 (@alexcurylo 2015-10-14)
 
 Changes to the data model:
