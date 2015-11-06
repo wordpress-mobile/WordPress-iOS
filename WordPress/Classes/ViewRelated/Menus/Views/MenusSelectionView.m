@@ -9,8 +9,8 @@
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet MenusSelectionDetailView *detailView;
 @property (nonatomic, strong) NSArray *items;
+@property (nonatomic, strong) NSMutableArray *itemViews;
 @property (nonatomic, strong) MenusSelectionViewItem *selectedItem;
-@property (nonatomic, strong) UIView *testView;
 @property (nonatomic, assign) BOOL drawsHighlighted;
 
 @end
@@ -24,18 +24,9 @@
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.stackView.alignment = UIStackViewAlignmentTop;
+    self.stackView.spacing = 0.0;
     
     [self setupStyling];
-    
-    UIView *view = [[UIView alloc] init];
-    view.translatesAutoresizingMaskIntoConstraints = NO;
-    view.backgroundColor = [UIColor clearColor];
-    NSLayoutConstraint *heightConstraint = [view.heightAnchor constraintEqualToConstant:100];
-    heightConstraint.priority = UILayoutPriorityDefaultHigh;
-    heightConstraint.active = YES;
-    view.hidden = YES;
-    self.testView = view;
-    [self.stackView addArrangedSubview:view];
     
     self.detailView.delegate = self;
 }
@@ -44,6 +35,7 @@
 {
     self.backgroundColor = [UIColor whiteColor];
     self.layer.cornerRadius = MenusDesignDefaultCornerRadius / 2.0;
+    self.layer.masksToBounds = YES; // could be a performance hit with more implmentation
 }
 
 #pragma mark - instance
@@ -61,13 +53,18 @@
         
         [self.detailView updateWithAvailableMenus:items.count selectedLocationName:selectedItem.name];
     }
+    
+    [self reloadItemViews];
 }
 
 - (void)setSelectionExpanded:(BOOL)selectionExpanded
 {
     if(_selectionExpanded != selectionExpanded) {
         _selectionExpanded = selectionExpanded;
-        self.testView.hidden = !selectionExpanded;
+        for(MenusSelectionItemView *itemView in self.itemViews) {
+            itemView.hidden = !selectionExpanded;
+            itemView.alpha = itemView.hidden ? 0.0 : 1.0;
+        }
     }
 }
 
@@ -85,6 +82,43 @@
     } completion:^(BOOL finished) {
         
     }];
+}
+
+#pragma mark - private
+
+- (void)reloadItemViews
+{
+    // remove the current itemViews
+    for(UIView *view in self.itemViews) {
+        [self.stackView removeArrangedSubview:view];
+        [view removeFromSuperview];
+    }
+    
+    self.itemViews = [NSMutableArray array];
+    
+    // add new itemViews
+    int i = 0;
+    for(MenusSelectionViewItem *item in self.items) {
+                
+        MenusSelectionItemView *itemView = [[MenusSelectionItemView alloc] init];
+        itemView.item = item;
+        NSLayoutConstraint *heightContrainst = [itemView.heightAnchor constraintEqualToConstant:50];
+        heightContrainst.priority = UILayoutPriorityDefaultHigh;
+        heightContrainst.active = YES;
+        itemView.hidden = YES;
+
+        [self.itemViews addObject:itemView];
+        [self.stackView addArrangedSubview:itemView];
+        
+        // set the width/trailing anchor equal to the stackView
+        [itemView.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor].active = YES;
+        
+        if(i < self.items.count - 1) {
+            itemView.drawsDesignStrokeBottom = YES;
+        }
+        
+        i++;
+    }
 }
 
 #pragma mark - drawing

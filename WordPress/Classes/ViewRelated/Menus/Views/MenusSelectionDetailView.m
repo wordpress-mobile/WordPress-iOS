@@ -44,8 +44,6 @@
 
 @end
 
-CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
-
 @interface MenusSelectionDetailView ()
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
@@ -110,13 +108,13 @@ CGFloat const MenusSelectionDetailViewDefaultSpacing = 18;
     self.translatesAutoresizingMaskIntoConstraints = NO;
     
     UIEdgeInsets margins = UIEdgeInsetsZero;
-    margins.left = MenusSelectionDetailViewDefaultSpacing;
-    margins.right = MenusSelectionDetailViewDefaultSpacing;
+    margins.left = MenusDesignDefaultContentSpacing;
+    margins.right = MenusDesignDefaultContentSpacing;
     self.stackView.layoutMargins = margins;
     self.stackView.layoutMarginsRelativeArrangement = YES;
     self.stackView.distribution = UIStackViewDistributionFillProportionally;
     self.stackView.alignment = UIStackViewAlignmentCenter;
-    self.stackView.spacing = MenusSelectionDetailViewDefaultSpacing;
+    self.stackView.spacing = MenusDesignDefaultContentSpacing;
     
     {
         MenusSelectionIconView *iconView = [[MenusSelectionIconView alloc] init];

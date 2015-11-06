@@ -1,7 +1,5 @@
 #import <UIKit/UIKit.h>
 
-extern CGFloat const MenusSelectionDetailViewDefaultSpacing;
-
 @protocol MenusSelectionDetailViewDelegate;
 
 @interface MenusSelectionDetailView : UIView
