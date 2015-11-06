@@ -242,7 +242,26 @@ static const NSInteger MinutesToReadThreshold = 2;
     if ([dict arrayForKeyPath:@"discover_metadata.discover_fp_post_formats"]) {
         post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:PostRESTKeyDiscoverMetadata]];
     }
+
+    NSString *xpostValue = [self xpostValueFromPostDictionary:dict];
+    if (xpostValue) {
+        NSArray *values = [xpostValue componentsSeparatedByString:@":"];
+        post.originSiteID = [values.firstObject numericValue];
+        post.originPostID = [values.lastObject numericValue];
+    }
+
     return post;
+}
+
+- (NSString *)xpostValueFromPostDictionary:(NSDictionary *)dict
+{
+    NSArray *metadata = [dict arrayForKey:@"metadata"];
+    for (NSDictionary *obj in metadata) {
+        if ([[obj stringForKey:@"key"] isEqualToString:@"xpost_origin"]) {
+            return [obj stringForKey:@"value"];
+        }
+    }
+    return nil;
 }
 
 - (NSDictionary *)primaryAndSecondaryTagsFromPostDictionary:(NSDictionary *)dict
