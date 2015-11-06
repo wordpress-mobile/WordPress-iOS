@@ -77,7 +77,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationItem.title = NSLocalizedString(@"Menus", @"Title for screen that allows configuration of your site's menus");
     
     [self updateScrollViewContentSize];

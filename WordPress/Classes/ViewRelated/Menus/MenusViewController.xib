@@ -31,16 +31,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="466"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="aMq-eT-Mvc" customClass="MenusSelectionView">
-                                                    <rect key="frame" x="0.0" y="190" width="285" height="85"/>
+                                                    <rect key="frame" x="0.0" y="201" width="285" height="65"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Lvz-SB-8Wr">
-                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="65"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uKq-W2-HUV" customClass="MenusSelectionDetailView">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="65"/>
                                                                     <subviews>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="P1v-Mj-Ao7">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="65"/>
                                                                             <animations/>
                                                                         </stackView>
                                                                     </subviews>
@@ -48,7 +48,7 @@
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="trailing" secondItem="P1v-Mj-Ao7" secondAttribute="trailing" id="2H1-GD-4w0"/>
-                                                                        <constraint firstAttribute="height" constant="85" id="AKK-YU-zzg"/>
+                                                                        <constraint firstAttribute="height" constant="65" id="AKK-YU-zzg"/>
                                                                         <constraint firstItem="P1v-Mj-Ao7" firstAttribute="height" secondItem="uKq-W2-HUV" secondAttribute="height" id="K2U-SO-MhF"/>
                                                                         <constraint firstItem="P1v-Mj-Ao7" firstAttribute="width" secondItem="uKq-W2-HUV" secondAttribute="width" id="QBV-Vr-XSe"/>
                                                                         <constraint firstAttribute="bottom" secondItem="P1v-Mj-Ao7" secondAttribute="bottom" id="dRn-ON-nrq"/>
@@ -87,16 +87,16 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="9nH-CD-5gY" customClass="MenusSelectionView">
-                                                    <rect key="frame" x="315" y="190" width="285" height="85"/>
+                                                    <rect key="frame" x="315" y="201" width="285" height="65"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5V4-1N-wjI">
-                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="65"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayP-tI-Z6q" customClass="MenusSelectionDetailView">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="65"/>
                                                                     <subviews>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZuD-DO-djQ">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="85"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="65"/>
                                                                             <animations/>
                                                                         </stackView>
                                                                     </subviews>
@@ -108,7 +108,7 @@
                                                                         <constraint firstItem="ZuD-DO-djQ" firstAttribute="height" secondItem="ayP-tI-Z6q" secondAttribute="height" id="Jvg-59-QEI"/>
                                                                         <constraint firstItem="ZuD-DO-djQ" firstAttribute="leading" secondItem="ayP-tI-Z6q" secondAttribute="leading" id="Q3b-Q9-6um"/>
                                                                         <constraint firstAttribute="trailing" secondItem="ZuD-DO-djQ" secondAttribute="trailing" id="WU2-hC-nbF"/>
-                                                                        <constraint firstAttribute="height" constant="85" id="c7P-gN-1mJ"/>
+                                                                        <constraint firstAttribute="height" constant="65" id="c7P-gN-1mJ"/>
                                                                         <constraint firstAttribute="bottom" secondItem="ZuD-DO-djQ" secondAttribute="bottom" id="fGn-DC-M5B"/>
                                                                     </constraints>
                                                                     <connections>

@@ -1,8 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "MenusSelectionDetailView.h"
-
-@class Menu;
-@class MenuLocation;
+#import "MenusSelectionItemView.h"
 
 typedef NS_ENUM(NSUInteger)
 {
@@ -11,22 +9,22 @@ typedef NS_ENUM(NSUInteger)
     
 }MenuSelectionViewType;
 
-@interface MenusSelectionViewItem : NSObject
-
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *details;
-@property (nonatomic, copy) NSString *iconSourceFileName;
-@property (nonatomic, strong) id itemObject;
-
-+ (MenusSelectionViewItem *)itemWithMenu:(Menu *)menu;
-+ (MenusSelectionViewItem *)itemWithLocation:(MenuLocation *)location;
-
-@end
+@protocol MenusSelectionViewDelegate;
 
 @interface MenusSelectionView : UIView
 
 @property (nonatomic, assign) MenuSelectionViewType selectionType;
+@property (nonatomic, weak) id <MenusSelectionViewDelegate> delegate;
+@property (nonatomic, readonly) BOOL selectionItemsExpanded;
 
 - (void)updateItems:(NSArray <MenusSelectionViewItem *> *)items selectedItem:(MenusSelectionViewItem *)selectedItem;
+- (void)toggleSelectionExpansionIfNeeded:(BOOL)expanded animated:(BOOL)animated;
+
+@end
+
+@protocol MenusSelectionViewDelegate <NSObject>
+@optional
+
+
 
 @end

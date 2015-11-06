@@ -4,32 +4,14 @@
 #import "MenusSelectionDetailView.h"
 #import "MenusDesign.h"
 
-@implementation MenusSelectionViewItem
-
-+ (MenusSelectionViewItem *)itemWithMenu:(Menu *)menu
-{
-    MenusSelectionViewItem *item = [MenusSelectionViewItem new];
-    item.name = menu.name;
-    item.details = menu.details;
-    return item;
-}
-
-+ (MenusSelectionViewItem *)itemWithLocation:(MenuLocation *)location
-{
-    MenusSelectionViewItem *item = [MenusSelectionViewItem new];
-    item.name = location.details;
-    item.details = location.name;
-    return item;
-}
-
-@end
-
-@interface MenusSelectionView ()
+@interface MenusSelectionView () <MenusSelectionDetailViewDelegate, MenusSelectionDetailViewDrawingDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet MenusSelectionDetailView *detailView;
 @property (nonatomic, strong) NSArray *items;
 @property (nonatomic, strong) MenusSelectionViewItem *selectedItem;
+@property (nonatomic, strong) UIView *testView;
+@property (nonatomic, assign) BOOL drawsHighlighted;
 
 @end
 
@@ -39,20 +21,33 @@
 {
     [super awakeFromNib];
     
-    UIEdgeInsets drawingInset = MenusDesignDefaultInsets();
-    UIEdgeInsets margins = UIEdgeInsetsZero;
-    margins.left = drawingInset.left + MenusSelectionDetailViewDefaultSpacing;
-    margins.right = drawingInset.right + MenusSelectionDetailViewDefaultSpacing;
-    self.stackView.layoutMargins = margins;
-    self.stackView.layoutMarginsRelativeArrangement = YES;
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+
+    self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.stackView.alignment = UIStackViewAlignmentTop;
     
+    self.detailView.delegate = self;
+    self.detailView.drawingDelegate = self;
     [self setupStyling];
+    
+    UIView *view = [[UIView alloc] init];
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    view.backgroundColor = [UIColor clearColor];
+    NSLayoutConstraint *heightConstraint = [view.heightAnchor constraintEqualToConstant:100];
+    heightConstraint.priority = UILayoutPriorityDefaultHigh;
+    heightConstraint.active = YES;
+    view.hidden = YES;
+    self.testView = view;
+    [self.stackView addArrangedSubview:view];
 }
 
 - (void)setupStyling
 {
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [UIColor whiteColor];
+    self.layer.cornerRadius = MenusDesignDefaultCornerRadius / 2.0;
 }
+
+#pragma mark - INSTANCE
 
 - (void)updateItems:(NSArray <MenusSelectionViewItem *> *)items selectedItem:(MenusSelectionViewItem *)selectedItem
 {
@@ -69,16 +64,62 @@
     }
 }
 
-- (void)drawRect:(CGRect)rect
+- (void)toggleSelectionExpansionIfNeeded:(BOOL)expanded animated:(BOOL)animated
 {
-    [super drawRect:rect];
+    if(self.selectionItemsExpanded != expanded) {
+        [self setSelectionItemsExpanded:expanded animated:animated];
+    }
+}
+
+#pragma mark - PRIVATE
+
+- (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded
+{
+    if(_selectionItemsExpanded != selectionItemsExpanded) {
+        _selectionItemsExpanded = selectionItemsExpanded;
+        self.testView.hidden = !selectionItemsExpanded;
+    }
+}
+
+- (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded animated:(BOOL)animated
+{
+    if(!animated) {
+        self.selectionItemsExpanded = selectionItemsExpanded;
+        return;
+    }
     
-    UIEdgeInsets inset = MenusDesignDefaultInsets();
-    CGRect fillRect = CGRectInset(rect, inset.left, inset.top);
-    
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:fillRect cornerRadius:1.0];
-    [[UIColor whiteColor] set];
-    [path fill];
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        
+        self.selectionItemsExpanded = selectionItemsExpanded;
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+#pragma mark - drawing
+
+- (void)setDrawsHighlighted:(BOOL)drawsHighlighted
+{
+    if(_drawsHighlighted != drawsHighlighted) {
+        _drawsHighlighted = drawsHighlighted;
+        self.backgroundColor = drawsHighlighted ? [UIColor colorWithRed:0.99 green:0.99 blue:1.0 alpha:1.0] : [UIColor whiteColor];
+    }
+}
+
+#pragma mark - MenusSelectionDetailViewDelegate
+
+- (void)selectionDetailViewPressedForTogglingExpansion:(MenusSelectionDetailView *)detailView
+{
+    // default animation to YES if the user pressed the view to expand/close
+    [self setSelectionItemsExpanded:!self.selectionItemsExpanded animated:YES];
+}
+
+#pragma MenusSelectionDetailViewDrawingDelegate
+
+- (void)selectionDetailView:(MenusSelectionDetailView *)detailView highlightedDrawingStateChanged:(BOOL)highlighted
+{
+    self.drawsHighlighted = highlighted;
 }
 
 @end
