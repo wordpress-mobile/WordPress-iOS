@@ -1,44 +1,44 @@
 import Foundation
 
 // Makes a UIImageView circular. Handy for gravatars
-class CircularImageView : UIImageView
+public class CircularImageView : UIImageView
 {
-    var shouldRoundCorners : Bool = true {
+    public var shouldRoundCorners : Bool = true {
         didSet {
             let rect = frame;
             frame = rect;
         }
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required public init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
 
         layer.masksToBounds = true
     }
 
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
 
         layer.masksToBounds = true
     }
 
-    override init(image: UIImage!) {
+    override public init(image: UIImage!) {
         super.init(image: image)
         
         layer.masksToBounds = true
     }
     
-    convenience init() {
+    convenience public init() {
         self.init(frame: CGRectZero)
     }
 
-    override var frame: CGRect {
+    override public var frame: CGRect {
         didSet {
             refreshRadius()
         }
     }
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         refreshRadius()
     }

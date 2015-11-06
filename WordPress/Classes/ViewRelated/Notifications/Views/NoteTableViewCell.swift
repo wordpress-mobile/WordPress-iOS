@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressUI
 
 /**
 *  @class       NoteTableViewCell

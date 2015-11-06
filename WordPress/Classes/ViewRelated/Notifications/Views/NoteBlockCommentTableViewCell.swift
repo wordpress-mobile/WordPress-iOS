@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressUI
 
 @objc public class NoteBlockCommentTableViewCell : NoteBlockTextTableViewCell
 {

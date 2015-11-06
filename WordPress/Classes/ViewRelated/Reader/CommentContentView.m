@@ -1,6 +1,7 @@
 #import "CommentContentView.h"
 #import "NSDate+StringFormatting.h"
 #import "WordPress-Swift.h"
+@import WordPressUI;
 
 static const CGFloat CommentContentViewAvatarSize = 32.0;
 static const CGFloat CommentContentViewContentViewOffsetTop = 36.0;

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressUI
 
 @objc public class ReaderCardDiscoverAttributionView: UIView
 {

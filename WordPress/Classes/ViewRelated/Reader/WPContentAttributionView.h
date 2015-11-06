@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "WPContentViewProvider.h"
 #import "WordPress-Swift.h"
+@import WordPressUI;
 
 extern const CGFloat WPContentAttributionViewAvatarSize;
 

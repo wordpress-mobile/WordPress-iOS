@@ -2,6 +2,7 @@
 
 #import "UIImageView+Gravatar.h"
 #import "WordPress-Swift.h"
+@import WordPressUI;
 
 static NSString * const GravatarImageName = @"gravatar-reader";
 static NSString * const BlavatarImageName = @"post-blavatar-placeholder";
