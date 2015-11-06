@@ -5342,7 +5342,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.internal.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "747f8fbd-7126-479c-aa55-3d800e6284e4";
+				PROVISIONING_PROFILE = "b5b191b4-6041-4a8e-8207-fc3ba3be7910";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				WPCOM_SCHEME = wpinternal;
