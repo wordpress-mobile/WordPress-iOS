@@ -66,6 +66,23 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
 {
     [super traitCollectionDidChange:previousTraitCollection];
     
+    if(self.stackView.axis == UILayoutConstraintAxisHorizontal) {
+        // toggle the selection on a trait collection change to a horizonal axis for the stack view
+        // this ensures both selection views are expanded if one already is
+        // otherwise the design looks odd with too much negative space
+        // see userInteractionDetectedForTogglingSelectionView:expand:
+        if(self.locationsView.selectionExpanded || self.menusView.selectionExpanded) {
+            if(self.locationsView.selectionExpanded && !self.menusView.selectionExpanded) {
+                
+                [self.menusView setSelectionItemsExpanded:YES animated:NO];
+                
+            }else if(self.menusView.selectionExpanded && !self.locationsView.selectionExpanded) {
+             
+                [self.locationsView setSelectionItemsExpanded:YES animated:NO];
+            }
+        }
+    }
+    
     // required to redraw the stroke because our intrinsicContentSize changed based on the stack view axis change
     // perhaps this won't be needed in a future version of iOS
     // via Brent Coursey 10/30/15
@@ -90,6 +107,23 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
 
 #pragma mark - MenusSelectionViewDelegate
 
-
+- (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand
+{
+    if(self.stackView.axis == UILayoutConstraintAxisHorizontal) {
+        // in the horizontal axis we want to toggle expansion for both selection views
+        // otherwise the design looks odd with too much negative space
+        // see traitCollectionDidChange:
+        if(selectionView == self.locationsView) {
+            [self.menusView setSelectionItemsExpanded:expand animated:YES];
+        }else if(selectionView == self.menusView) {
+            [self.locationsView setSelectionItemsExpanded:expand animated:YES];
+        }
+        
+        [selectionView setSelectionItemsExpanded:expand animated:YES];
+        
+    }else {
+        [selectionView setSelectionItemsExpanded:expand animated:YES];
+    }
+}
 
 @end
