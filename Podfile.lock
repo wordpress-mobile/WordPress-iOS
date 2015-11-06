@@ -34,8 +34,6 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.0.0):
     - CocoaLumberjack/Default
-  - CrashlyticsLumberjack (2.0.0):
-    - CocoaLumberjack/Default (~> 2.0.0)
   - DTCoreText (1.6.13):
     - DTFoundation/Core (~> 1.7.1)
     - DTFoundation/DTAnimatedGIF (~> 1.7.1)
@@ -168,7 +166,6 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`,
     tag `0.0.8`)
   - CocoaLumberjack (= 2.0.0)
-  - CrashlyticsLumberjack (= 2.0.0)
   - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
@@ -252,7 +249,6 @@ SPEC CHECKSUMS:
   AMPopTip: 3c98a9b38148868366b57765064bd9565f653038
   Automattic-Tracks-iOS: d731323e0f33cab21971c9b506577a7b484a077b
   CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
-  CrashlyticsLumberjack: 5094b659ecf9a11550f7dd7a885c0cef077f1ffa
   DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
   DTFoundation: c9b3362b83f0017389082ec067ede719826a579d
   EmailChecker: 1b9c5a58c994bc638f842a4d69523b6ab57e706e
