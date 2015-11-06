@@ -17,10 +17,8 @@ public class ReaderHelpers {
         }
 
         activityItems.append(postDictionary)
-        if let urlPath = link {
-            if let url = NSURL(string: urlPath) {
-                activityItems.append(url)
-            }
+        if let urlPath = link, url = NSURL(string: urlPath) {
+            activityItems.append(url)
         }
 
         let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
