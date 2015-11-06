@@ -63,10 +63,7 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic defaultCategoryID;
 @dynamic defaultPostFormat;
 @dynamic privacy;
-@dynamic relatedPostsAllowed;
-@dynamic relatedPostsEnabled;
-@dynamic relatedPostsShowHeadline;
-@dynamic relatedPostsShowThumbnails;
+@dynamic settings;
 
 
 @synthesize api = _api;
