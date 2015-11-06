@@ -583,8 +583,10 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 - (void)showAddNewWordPressController
 {
     [self setEditing:NO animated:NO];
-    CreateAccountAndBlogViewController *createAccountViewController = [[CreateAccountAndBlogViewController alloc] init];
-    [self.navigationController presentViewController:createAccountViewController animated:YES completion:nil];
+    
+    CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
+    UINavigationController *createAccountNavigationController = [[UINavigationController alloc] initWithRootViewController:createNewBlogViewController];
+    [self.navigationController presentViewController:createAccountNavigationController animated:YES completion:nil];
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite
