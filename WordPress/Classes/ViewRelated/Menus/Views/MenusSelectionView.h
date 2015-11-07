@@ -17,7 +17,7 @@ typedef NS_ENUM(NSUInteger)
 @property (nonatomic, weak) id <MenusSelectionViewDelegate> delegate;
 @property (nonatomic, readonly) BOOL selectionExpanded;
 
-- (void)updateItems:(NSArray <MenusSelectionViewItem *> *)items selectedItem:(MenusSelectionViewItem *)selectedItem;
+- (void)updateItems:(NSArray <MenusSelectionViewItem *> *)items;
 - (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded animated:(BOOL)animated;
 
 @end
@@ -27,5 +27,6 @@ typedef NS_ENUM(NSUInteger)
 
 // user interaction dictates the selection view should be expanded or not (closed)
 - (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand;
+- (void)selectionView:(MenusSelectionView *)selectionView updatedSelectedItem:(MenusSelectionViewItem *)selectedItem;
 
 @end

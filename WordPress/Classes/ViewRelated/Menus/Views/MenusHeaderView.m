@@ -47,8 +47,9 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
             [items addObject:item];
         }
         
-        MenusSelectionViewItem *selected = [items firstObject];
-        [self.locationsView updateItems:items selectedItem:selected];
+        MenusSelectionViewItem *item = [items firstObject];
+        item.selected = YES;
+        [self.locationsView updateItems:items];
     }
     {
         NSMutableArray *items = [NSMutableArray arrayWithCapacity:blog.menus.count];
@@ -57,8 +58,9 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
             [items addObject:item];
         }
         
-        MenusSelectionViewItem *selected = [items firstObject];
-        [self.menusView updateItems:items selectedItem:selected];
+        MenusSelectionViewItem *item = [items firstObject];
+        item.selected = YES;
+        [self.menusView updateItems:items];
     }
 }
 
@@ -124,6 +126,15 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     }else {
         [selectionView setSelectionItemsExpanded:expand animated:YES];
     }
+}
+
+- (void)selectionView:(MenusSelectionView *)selectionView updatedSelectedItem:(MenusSelectionViewItem *)selectedItem
+{
+    // add a UX delay to selection close animation
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.locationsView setSelectionItemsExpanded:NO animated:YES];
+        [self.menusView setSelectionItemsExpanded:NO animated:YES];
+    });
 }
 
 @end
