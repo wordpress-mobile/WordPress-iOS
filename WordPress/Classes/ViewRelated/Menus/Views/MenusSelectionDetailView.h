@@ -5,6 +5,7 @@
 @interface MenusSelectionDetailView : UIView
 
 @property (nonatomic, weak) id <MenusSelectionDetailViewDelegate> delegate;
+@property (nonatomic, assign) BOOL showsDesignActive;
 
 - (void)updateWithAvailableLocations:(NSUInteger)numLocationsAvailable selectedLocationName:(NSString *)name;
 - (void)updateWithAvailableMenus:(NSUInteger)numMenusAvailable selectedLocationName:(NSString *)name;

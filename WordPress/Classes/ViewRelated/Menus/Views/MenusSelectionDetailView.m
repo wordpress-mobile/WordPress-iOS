@@ -149,6 +149,21 @@
     }
 }
 
+- (void)setShowsDesignActive:(BOOL)showsDesignActive
+{
+    if(_showsDesignActive != showsDesignActive) {
+        _showsDesignActive = showsDesignActive;
+        
+        if(showsDesignActive) {
+            self.accessoryView.transform = CGAffineTransformMakeScale(0.5, 0.5);
+            self.accessoryView.alpha = 0.0;
+        }else {
+            self.accessoryView.transform = CGAffineTransformIdentity;
+            self.accessoryView.alpha = 1.0;
+        }
+    }
+}
+
 - (void)setTitleText:(NSString *)title subTitleText:(NSString *)subtitle
 {
     NSMutableAttributedString *mutableAttributedString = [[NSMutableAttributedString alloc] init];
