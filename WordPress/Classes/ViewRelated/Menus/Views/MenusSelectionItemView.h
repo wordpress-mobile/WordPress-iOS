@@ -9,16 +9,26 @@
 @property (nonatomic, copy) NSString *details;
 @property (nonatomic, copy) NSString *iconSourceFileName;
 @property (nonatomic, strong) id itemObject;
-@property (nonatomic, assign) BOOL selectedItem;
+@property (nonatomic, assign) BOOL selected;
 
 + (MenusSelectionViewItem *)itemWithMenu:(Menu *)menu;
 + (MenusSelectionViewItem *)itemWithLocation:(MenuLocation *)location;
 
 @end
 
+@protocol MenusSelectionItemViewDelegate;
+
 @interface MenusSelectionItemView : UIView
 
+@property (nonatomic, weak) id <MenusSelectionItemViewDelegate> delegate;
 @property (nonatomic, strong) MenusSelectionViewItem *item;
-@property (nonatomic, assign) BOOL drawsDesignStrokeBottom;
+@property (nonatomic, weak) MenusSelectionItemView *previousItemView;
+@property (nonatomic, weak) MenusSelectionItemView *nextItemView;
+
+@end
+
+@protocol MenusSelectionItemViewDelegate <NSObject>
+
+- (void)selectionItemViewWasSelected:(MenusSelectionItemView *)itemView;
 
 @end

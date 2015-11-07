@@ -4,7 +4,7 @@
 #import "MenusSelectionDetailView.h"
 #import "MenusDesign.h"
 
-@interface MenusSelectionView () <MenusSelectionDetailViewDelegate>
+@interface MenusSelectionView () <MenusSelectionDetailViewDelegate, MenusSelectionItemViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet MenusSelectionDetailView *detailView;
@@ -40,9 +40,18 @@
 
 #pragma mark - instance
 
-- (void)updateItems:(NSArray <MenusSelectionViewItem *> *)items selectedItem:(MenusSelectionViewItem *)selectedItem
+- (void)updateItems:(NSArray <MenusSelectionViewItem *> *)items
 {
     self.items = items;
+    
+    MenusSelectionViewItem *selectedItem = nil;
+    for(MenusSelectionViewItem *item in items) {
+        if(item.selected) {
+            selectedItem = item;
+            break;
+        }
+    }
+    
     self.selectedItem = selectedItem;
     
     if(self.selectionType == MenuSelectionViewTypeLocations) {
@@ -65,6 +74,8 @@
             itemView.hidden = !selectionExpanded;
             itemView.alpha = itemView.hidden ? 0.0 : 1.0;
         }
+        
+        self.detailView.showsDesignActive = selectionExpanded;
     }
 }
 
@@ -98,10 +109,17 @@
     
     // add new itemViews
     int i = 0;
+    MenusSelectionItemView *lastItemView = nil;
     for(MenusSelectionViewItem *item in self.items) {
                 
         MenusSelectionItemView *itemView = [[MenusSelectionItemView alloc] init];
         itemView.item = item;
+        itemView.delegate = self;
+        
+        // setup ordering to help with any drawing
+        lastItemView.nextItemView = itemView;
+        itemView.previousItemView = lastItemView;
+        
         NSLayoutConstraint *heightContrainst = [itemView.heightAnchor constraintEqualToConstant:50];
         heightContrainst.priority = UILayoutPriorityDefaultHigh;
         heightContrainst.active = YES;
@@ -113,11 +131,8 @@
         // set the width/trailing anchor equal to the stackView
         [itemView.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor].active = YES;
         
-        if(i < self.items.count - 1) {
-            itemView.drawsDesignStrokeBottom = YES;
-        }
-        
         i++;
+        lastItemView = itemView;
     }
 }
 
@@ -140,6 +155,13 @@
     }
 }
 
+- (void)tellDelegateUpdatedSelectedItem
+{
+    if([self.delegate respondsToSelector:@selector(selectionView:updatedSelectedItem:)]) {
+        [self.delegate selectionView:self updatedSelectedItem:self.selectedItem];
+    }
+}
+
 #pragma mark - MenusSelectionDetailViewDelegate
 
 - (void)selectionDetailView:(MenusSelectionDetailView *)detailView tapGestureRecognized:(UITapGestureRecognizer *)tap
@@ -150,6 +172,26 @@
 - (void)selectionDetailView:(MenusSelectionDetailView *)detailView touchesHighlightedStateChanged:(BOOL)highlighted
 {
     self.drawsHighlighted = highlighted;
+}
+
+#pragma mark - MenusSelectionItemViewDelegate
+
+- (void)selectionItemViewWasSelected:(MenusSelectionItemView *)itemView
+{
+    self.selectedItem.selected = NO;
+    self.selectedItem = itemView.item;
+    itemView.item.selected = YES;
+    
+    if(self.selectionType == MenuSelectionViewTypeLocations) {
+        
+        [self.detailView updateWithAvailableLocations:self.items.count selectedLocationName:self.selectedItem.name];
+        
+    }else if(self.selectionType == MenuSelectionViewTypeMenus) {
+        
+        [self.detailView updateWithAvailableMenus:self.items.count selectedLocationName:self.selectedItem.name];
+    }
+    
+    [self tellDelegateUpdatedSelectedItem];
 }
 
 @end
