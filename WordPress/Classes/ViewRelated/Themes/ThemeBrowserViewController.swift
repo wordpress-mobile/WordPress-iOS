@@ -44,7 +44,12 @@ public protocol ThemePresenter {
     private var searchName = "" {
         didSet {
             fetchThemes()
+            Section.Themes.reload(collectionView)
        }
+    }
+    private func themeAtIndex(index: Int) -> Theme? {
+        let indexPath = NSIndexPath(forRow: index, inSection: 0)
+        return themesController.objectAtIndexPath(indexPath) as? Theme
     }
    
     /**
@@ -163,18 +168,24 @@ public protocol ThemePresenter {
     }
     
     private func showFetchAnimationIfEmpty() {
-        if isEmpty {
-            fetchAnimation = true
-            let title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
-            WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self.view)
+        guard isEmpty else {
+            return
         }
+        
+        fetchAnimation = true
+        let title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
+        WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self.view)
     }
     
     private func hideFetchAnimation() {
-        if fetchAnimation {
-            WPNoResultsView.removeFromView(view)
-            fetchAnimation = false
+        guard fetchAnimation else {
+            Section.Themes.reload(collectionView)
+            return
         }
+
+        fetchAnimation = false
+        collectionView?.collectionViewLayout.invalidateLayout()
+        WPNoResultsView.removeFromView(view)
     }
 
     // MARK: - WPContentSyncHelperDelegate
@@ -189,24 +200,44 @@ public protocol ThemePresenter {
     }
     
     func syncContentEnded() {
-        collectionView?.collectionViewLayout.invalidateLayout()
+        hideFetchAnimation()
     }
     
     func hasNoMoreContent() {
         syncingPage = 0
     }
     
+    // MARK: - UICollectionViewController helpers
+
+    enum Section: Int {
+        case Info
+        case Themes
+        
+        static let all = [Info, Themes]
+        
+        func indexSet() -> NSIndexSet {
+            return NSIndexSet(index: rawValue)
+        }
+        
+        func reload(view: UICollectionView?) {
+            view?.reloadSections(indexSet())
+        }
+    }
+    
     // MARK: - UICollectionViewController protocol UICollectionViewDataSource
     
     public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return themesCount
+        switch Section.all[section] {
+        case .Info: return 0
+        case .Themes: return themesCount
+        }
     }
     
     public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> ThemeBrowserCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ThemeBrowserCell.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserCell
-        let theme = themesController.objectAtIndexPath(indexPath) as? Theme
         
-        cell.theme = theme
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ThemeBrowserCell.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserCell
+        
+        cell.theme = themeAtIndex(indexPath.row)
         
         syncMoreIfNeeded(indexPath.row)
         
@@ -228,13 +259,13 @@ public protocol ThemePresenter {
     }
     
     public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return 1
+        return Section.all.count
     }
     
     // MARK: - UICollectionViewController protocol UICollectionViewDelegate
 
     public override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        if let theme = themesController.objectAtIndexPath(indexPath) as? Theme {
+        if let theme = themeAtIndex(indexPath.row) {
             presentDemoForTheme(theme)
         }
     }
@@ -242,7 +273,7 @@ public protocol ThemePresenter {
     // MARK: - UICollectionViewDelegateFlowLayout
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  referenceSizeForHeaderInSection section:NSInteger) -> CGSize {
-        guard !isEmpty else {
+        guard Section.all[section] == .Info && !isEmpty else {
             return CGSize.zero
         }
         let height = Styles.headerHeight(isViewHorizontallyCompact())
@@ -259,7 +290,7 @@ public protocol ThemePresenter {
     public func collectionView(collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int) -> CGSize {
-            guard syncHelper.isLoadingMore else {
+            guard Section.all[section] == .Themes && syncHelper.isLoadingMore else {
                 return CGSize.zero
             }
             
@@ -311,7 +342,6 @@ public protocol ThemePresenter {
         do {
             themesController.fetchRequest.predicate = browsePredicate()
             try themesController.performFetch()
-            collectionView?.reloadData()
         } catch let error as NSError {
             DDLogSwift.logError("Error fetching themes: \(error.localizedDescription)")
         }
@@ -321,7 +351,6 @@ public protocol ThemePresenter {
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
         hideFetchAnimation()
-        collectionView?.reloadData()
     }
     
     // MARK: - ThemePresenter
