@@ -31,6 +31,9 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 static CGFloat const BLVCSiteRowHeight = 74.0;
 
+static int DisableAllMinSites = 10;
+static int DisableAllSitesThreshold = 6;
+static float DisableAllSitesInterval = 2.0f;
 
 @interface BlogListViewController () <UIViewControllerRestoration>
 
@@ -41,6 +44,9 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 @property (nonatomic, strong) IBOutlet UIView *searchWrapperView;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
+
+@property (nonatomic) NSDate *firstDisable;
+@property (nonatomic) NSInteger disabledCount;
 
 @end
 
@@ -563,6 +569,9 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
     if (editing) {
         [self updateHeaderSize];
         self.tableView.tableHeaderView = self.headerView;
+
+        self.firstDisable = 0;
+        self.disabledCount = 0;
     }
     else {
         // setting the table header view to nil creates extra space, empty view is a way around that
@@ -599,6 +608,47 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 {
     UISwitch *switcher = (UISwitch *)sender;
     Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:switcher.tag inSection:0]];
+    if(!switcher.on && [self.tableView numberOfRowsInSection:0] > DisableAllMinSites) {
+        if (self.disabledCount == 0) {
+            self.firstDisable = [NSDate date];
+        }
+        self.disabledCount += 1;
+
+        if (self.disabledCount > DisableAllSitesThreshold && (self.firstDisable.timeIntervalSinceNow * -1) < DisableAllSitesInterval) {
+            
+            NSString *message = NSLocalizedString(@"Would you like to hide all WordPress.com Sites?",
+                                                  @"Message offering to hide all WPCom Sites");
+
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Hide All Sites", @"Hide All Sites")
+                                                                                     message:message
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                                   style:UIAlertActionStyleCancel
+                                                                 handler:^(UIAlertAction *action){}];
+            
+            UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Hide All", @"Hide All")
+                                                                   style:UIAlertActionStyleDestructive
+                                                                 handler:^(UIAlertAction *action){
+                                                                     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+                                                                     [context performBlock:^{
+                                                                         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+                                                                         NSArray *blogs = [blogService blogsWithPredicate:[self fetchRequestPredicateForHideableBlogs]];
+                                                                         
+                                                                         if(blogs == nil) {
+                                                                             return;
+                                                                         }
+                                                                         
+                                                                         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                                                                         [accountService setVisibility:switcher.on forBlogs:blogs];
+                                                                     }];
+                                                                     [[ContextManager sharedInstance] saveDerivedContext:context];
+                                                                 }];
+            [alertController addAction:cancelAction];
+            [alertController addAction:deleteAction];
+            [self presentViewController:alertController animated:YES completion:nil];
+        }
+    }
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [accountService setVisibility:switcher.on forBlogs:@[blog]];
 }
