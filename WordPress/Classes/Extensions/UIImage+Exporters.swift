@@ -14,6 +14,14 @@ extension UIImage {
         return error
     }
     
+    /**
+     Writes an image to a url location with the designated type format and EXIF metadata
+     
+     - Parameters:
+     - url: file url to where the asset should be exported, this must be writable location
+     - type: the UTI format to use when exporting the asset
+     - compressionQuality: defines the compression quality of the export. This is only relevant for type formats that support a quality parameter. Ex: jpeg
+     */
     func writeToURL(url: NSURL, type:String, compressionQuality :Float = 0.9,  metadata:[String:AnyObject]? = nil) throws -> ()
     {
         let properties: [String:AnyObject] = [kCGImageDestinationLossyCompressionQuality as String: compressionQuality]
