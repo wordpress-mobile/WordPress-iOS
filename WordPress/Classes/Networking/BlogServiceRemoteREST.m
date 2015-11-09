@@ -238,31 +238,53 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
 - (RemoteBlogSettings *)remoteBlogSettingFromJSONDictionary:(NSDictionary *)json
 {
     NSDictionary *rawSettings = [json dictionaryForKey:BlogRemoteSettingsKey];
+    RemoteBlogSettings *settings = [RemoteBlogSettings new];
     
-    RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
+    // General
+    settings.name = [json stringForKey:BlogRemoteNameKey];
+    settings.desc = [json stringForKey:BlogRemoteDescriptionKey];
+    settings.privacy = [rawSettings numberForKey:@"blog_public"];
     
-    remoteSettings.name = [json stringForKey:BlogRemoteNameKey];
-    remoteSettings.desc = [json stringForKey:BlogRemoteDescriptionKey];
-    remoteSettings.defaultCategory = [rawSettings numberForKey:BlogRemoteDefaultCategoryKey] ?: @(BlogRemoteUncategorizedCategory);
+    // Writing
+    settings.defaultCategory = [rawSettings numberForKey:BlogRemoteDefaultCategoryKey] ?: @(BlogRemoteUncategorizedCategory);
 
-    // Note:
-    // YES, the backend might send '0' as a number, OR a string value.
-    // Reference: https://github.com/wordpress-mobile/WordPress-iOS/issues/4187
-    //
+    // Note: the backend might send '0' as a number, OR a string value. Ref. Issue #4187
     if ([[rawSettings numberForKey:BlogRemoteDefaultPostFormatKey] isEqualToNumber:@(0)] ||
-        [[rawSettings stringForKey:BlogRemoteDefaultPostFormatKey] isEqualToString:@"0"]) {
-        remoteSettings.defaultPostFormat = BlogRemoteDefaultPostFormat;
+        [[rawSettings stringForKey:BlogRemoteDefaultPostFormatKey] isEqualToString:@"0"])
+    {
+        settings.defaultPostFormat = BlogRemoteDefaultPostFormat;
     } else {
-        remoteSettings.defaultPostFormat = [rawSettings stringForKey:BlogRemoteDefaultPostFormatKey];
+        settings.defaultPostFormat = [rawSettings stringForKey:BlogRemoteDefaultPostFormatKey];
     }
     
-    remoteSettings.privacy = [json numberForKeyPath:@"settings.blog_public"];
-    remoteSettings.relatedPostsAllowed = [json numberForKeyPath:@"settings.jetpack_relatedposts_allowed"];
-    remoteSettings.relatedPostsEnabled = [json numberForKeyPath:@"settings.jetpack_relatedposts_enabled"];
-    remoteSettings.relatedPostsShowHeadline = [json numberForKeyPath:@"settings.jetpack_relatedposts_show_headline"];
-    remoteSettings.relatedPostsShowThumbnails = [json numberForKeyPath:@"settings.jetpack_relatedposts_show_thumbnails"];
+    // Discussion
+    settings.commentsAllowed = [rawSettings numberForKey:@"default_comment_status"];
+    settings.commentsCloseAutomatically = [rawSettings numberForKey:@"close_comments_for_old_posts"];
+    settings.commentsCloseAutomaticallyAfterDays = [rawSettings numberForKey:@"close_comments_days_old"];
     
-    return remoteSettings;
+    settings.commentsPagingEnabled = [rawSettings numberForKey:@"page_comments"];
+    settings.commentsPageSize = [rawSettings numberForKey:@"comments_per_page"];
+    
+    settings.commentsRequireManualModeration = [rawSettings numberForKey:@"comment_moderation"];
+    settings.commentsRequireNameAndEmail = [rawSettings numberForKey:@"require_name_email"];
+    settings.commentsRequireRegistration = [rawSettings numberForKey:@"comment_registration"];
+    
+    settings.commentsSortOrder = [rawSettings stringForKey:@"comment_order"];
+    
+    settings.commentsThreadingEnabled = [rawSettings numberForKey:@"thread_comments"];
+    settings.commentsThreadingDepth = [rawSettings numberForKey:@"thread_comments_depth"];
+    
+    settings.pingbacksOutboundEnabled = [rawSettings numberForKey:@"default_pingback_flag"];
+    settings.pingbacksInboundEnabled = [rawSettings numberForKey:@"default_ping_status"];
+    
+    
+    // Related Posts
+    settings.relatedPostsAllowed = [rawSettings numberForKey:@"jetpack_relatedposts_allowed"];
+    settings.relatedPostsEnabled = [rawSettings numberForKey:@"jetpack_relatedposts_enabled"];
+    settings.relatedPostsShowHeadline = [rawSettings numberForKey:@"jetpack_relatedposts_show_headline"];
+    settings.relatedPostsShowThumbnails = [rawSettings numberForKey:@"jetpack_relatedposts_show_thumbnails"];
+    
+    return settings;
 }
 
 @end
