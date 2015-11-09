@@ -1820,12 +1820,11 @@ EditImageDetailsViewControllerDelegate
                                 message:error.localizedDescription];
             return;
         }
-        NSURL* url = [[NSURL alloc] initFileURLWithPath:media.absoluteLocalURL];
+        NSString* thumbnailURL = media.absoluteThumbnailLocalURL;
         if (media.mediaType == MediaTypeImage) {
-            [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:mediaUniqueID];
+            [strongSelf.editorView insertLocalImage:thumbnailURL uniqueId:mediaUniqueID];
         } else if (media.mediaType == MediaTypeVideo) {
-            NSString *posterURL = media.absoluteThumbnailLocalURL;
-            [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:posterURL];
+            [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:thumbnailURL];
         }
         
         [strongSelf uploadMedia:media trackingId:mediaUniqueID];
