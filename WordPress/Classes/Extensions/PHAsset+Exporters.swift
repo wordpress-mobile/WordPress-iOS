@@ -1,11 +1,9 @@
 import Foundation
 import Photos
 import MobileCoreServices
-import ImageIO
 import AVFoundation
 
 extension PHAsset {
-    
     
     typealias SuccessHandler = (resultingSize: CGSize) -> ()
     typealias ErrorHandler = (error: NSError) -> ()
@@ -16,9 +14,11 @@ extension PHAsset {
      
      - Parameters:
         - url: file url to where the asset should be exported, this must be writable location
+        - targetUTI: the UTI format to use when exporting the asset
         - targetSize:  the maximum pixel resolution that the file can have after exporting. If CGSizeZero is provided the original size of image is returned.
         - stripGeoLocation: if true any geographic location existent on the metadata of the asset will be stripped
-        - resultHandler:
+        - successHandler:  a handler that will be invoked on success with the resulting resolution of the asset exported
+        - errorHandler: a handler that will be invoked when some error occurs when generating the exported file for the asset
      */
     func exportToURL(url: NSURL,
         targetUTI: String,
@@ -130,6 +130,16 @@ extension PHAsset {
             }
     }
     
+    /**
+     Exports an image thumbnail of the asset to a file URL that respects the targetSize.
+     The targetSize is the maximum resulting resolution  the resultSize will normally be a lower value that mantains the aspect ratio of the asset
+     
+     - Parameters:
+        - url: file url to where the asset should be exported, this must be writable location
+        - targetSize:  the maximum pixel resolution that the file can have after exporting. If CGSizeZero is provided the original size of image is returned.
+        - successHandler: a handler that will be invoked on success with the resulting resolution of the image
+        - errorHandler: a handler that will be invoked when some error occurs when generating the thumbnail
+     */
     func exportThumbnailToURL(url: NSURL,
         targetSize:CGSize,
         successHandler: SuccessHandler,
@@ -238,40 +248,6 @@ extension PHAsset {
             }
         }
         return nil
-    }
-}
-
-extension UIImage {
-    // MARK: - Error Handling
-    enum ErrorCode : Int {
-        case FailedToWrite = 1
-    }
-    
-    private func errorForCode(errorCode: ErrorCode, failureReason: String) -> NSError {
-        let userInfo = [NSLocalizedFailureReasonErrorKey: failureReason]
-        let error = NSError(domain: "UIImage+ImageIOExtensions", code: errorCode.rawValue, userInfo: userInfo)
-        
-        return error
-    }
-    
-    func writeToURL(url: NSURL, type:String, compressionQuality :Float = 0.9,  metadata:[String:AnyObject]? = nil) throws -> ()
-    {
-        let properties: [String:AnyObject] = [kCGImageDestinationLossyCompressionQuality as String: compressionQuality]
-    
-        guard let destination = CGImageDestinationCreateWithURL(url, type, 1, nil),
-              let imageRef = self.CGImage
-        else {
-            throw errorForCode(.FailedToWrite,
-                failureReason: NSLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
-            )
-        }
-        CGImageDestinationSetProperties(destination, properties);
-        CGImageDestinationAddImage(destination, imageRef, metadata);
-        if (!CGImageDestinationFinalize(destination)) {
-            throw errorForCode(.FailedToWrite,
-                failureReason: NSLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
-            )
-        }
     }
 }
 
