@@ -169,14 +169,14 @@ public class ReaderXPostCell: UITableViewCell
         let attrText = NSMutableAttributedString(string: "\(title)\n", attributes: titleAttributes)
 
         // Compose the subtitle
-//        let commentTemplate = NSLocalizedString("%@ left a comment on %@, cross-posted to %@", comment: "")
+        let commentTemplate = NSLocalizedString("%@ left a comment on %@, cross-posted to %@", comment: "")
         let siteTemplate = NSLocalizedString("%@ cross-posted from %@ to %@", comment: "")
 
-        let template = siteTemplate;
+        let template = contentProvider!.isCommentXPost() ? commentTemplate : siteTemplate;
 
         let authorName = contentProvider!.authorForDisplay()
         let siteName = subDomainNameFromPath(contentProvider!.siteURLForDisplay())
-        let originName = subDomainNameFromPath(contentProvider!.originSiteURLForDisplay())
+        let originName = subDomainNameFromPath(contentProvider!.xpostOriginSiteURLForDisplay())
 
         let subtitle = NSString(format: template, authorName, originName, siteName) as String
 

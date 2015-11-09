@@ -894,8 +894,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.isReblogged = remotePost.isReblogged;
     post.isWPCom = remotePost.isWPCom;
     post.likeCount = remotePost.likeCount;
-    post.originPostID = remotePost.originPostID;
-    post.originSiteID = remotePost.originSiteID;
     post.permaLink = remotePost.permalink;
     post.postID = remotePost.postID;
     post.postTitle = [self makePlainText:remotePost.postTitle];
@@ -906,6 +904,21 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.isSharingEnabled = remotePost.isSharingEnabled;
     post.isLikesEnabled = remotePost.isLikesEnabled;
     post.isSiteBlocked = NO;
+
+    if (remotePost.xpostMeta) {
+        if (!post.xpostMeta) {
+            ReaderXPostMeta *meta = (ReaderXPostMeta *)[NSEntityDescription insertNewObjectForEntityForName:@"ReaderXPostMeta"
+                                                                                     inManagedObjectContext:self.managedObjectContext];
+            post.xpostMeta = meta;
+        }
+        post.xpostMeta.siteURL = remotePost.xpostMeta.siteURL;
+        post.xpostMeta.postURL = remotePost.xpostMeta.postURL;
+        post.xpostMeta.commentURL = remotePost.xpostMeta.commentURL;
+        post.xpostMeta.siteID = remotePost.xpostMeta.siteID;
+        post.xpostMeta.postID = remotePost.xpostMeta.postID;
+    } else {
+        post.xpostMeta = nil;
+    }
 
     NSString *tag = remotePost.primaryTag;
     NSString *slug = remotePost.primaryTagSlug;

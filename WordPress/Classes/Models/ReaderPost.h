@@ -4,6 +4,7 @@
 #import "ReaderPostContentProvider.h"
 
 @class ReaderAbstractTopic;
+@class ReaderXPostMeta;
 @class SourcePostAttribution;
 @class Comment;
 
@@ -29,8 +30,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) BOOL isReblogged;
 @property (nonatomic) BOOL isWPCom;
 @property (nonatomic, strong) NSNumber *likeCount;
-@property (nonatomic) NSNumber *originSiteID;
-@property (nonatomic) NSNumber *originPostID;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSDate *sortDate;
 @property (nonatomic, strong) NSString *summary;
@@ -49,6 +48,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) BOOL isJetpack;
 @property (nonatomic) NSNumber *wordCount;
 @property (nonatomic) NSNumber *readingTime;
+@property (nonatomic, strong) ReaderXPostMeta *xpostMeta;
 
 - (BOOL)isCrossPost;
 - (BOOL)isPrivate;

@@ -562,6 +562,7 @@
 		E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BC1B9B47BA008050C5 /* ReaderSiteTopic.swift */; };
 		E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BD1B9B47BA008050C5 /* ReaderTagTopic.swift */; };
 		E61084C41B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E61084C31B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m */; };
+		E6396E1F1BED91E00058B374 /* RemoteReaderXPostMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6396E1E1BED91E00058B374 /* RemoteReaderXPostMeta.swift */; };
 		E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */; };
 		E65219FB1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */; };
 		E66969C81B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */; };
@@ -580,6 +581,7 @@
 		E6B9B8AA1B94E1FE0001B92F /* ReaderPostTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E6B9B8A91B94E1FE0001B92F /* ReaderPostTest.m */; };
 		E6B9B8AD1B94EACA0001B92F /* ReaderHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B9B8AC1B94EACA0001B92F /* ReaderHelperTests.swift */; };
 		E6B9B8AF1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B9B8AE1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift */; };
+		E6C09B3E1BF0FDEB003074CB /* ReaderXPostMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C09B3D1BF0FDEB003074CB /* ReaderXPostMeta.swift */; };
 		E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */; };
 		E6D2E1611B8AA4410000ED14 /* ReaderTagStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */; };
 		E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */; };
@@ -1627,6 +1629,7 @@
 		E61084BC1B9B47BA008050C5 /* ReaderSiteTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteTopic.swift; sourceTree = "<group>"; };
 		E61084BD1B9B47BA008050C5 /* ReaderTagTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTagTopic.swift; sourceTree = "<group>"; };
 		E61084C31B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostServiceRemoteTests.m; sourceTree = "<group>"; };
+		E6396E1E1BED91E00058B374 /* RemoteReaderXPostMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteReaderXPostMeta.swift; path = "Remote Objects/RemoteReaderXPostMeta.swift"; sourceTree = "<group>"; };
 		E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderBlockedSiteCell.xib; sourceTree = "<group>"; };
 		E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderBlockedSiteCell.swift; sourceTree = "<group>"; };
 		E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTopicServiceTest.swift; sourceTree = "<group>"; };
@@ -1648,6 +1651,7 @@
 		E6B9B8A91B94E1FE0001B92F /* ReaderPostTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostTest.m; sourceTree = "<group>"; };
 		E6B9B8AC1B94EACA0001B92F /* ReaderHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderHelperTests.swift; sourceTree = "<group>"; };
 		E6B9B8AE1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderStreamViewControllerTests.swift; sourceTree = "<group>"; };
+		E6C09B3D1BF0FDEB003074CB /* ReaderXPostMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReaderXPostMeta.swift; path = Classes/Models/ReaderXPostMeta.swift; sourceTree = SOURCE_ROOT; };
 		E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderSiteStreamHeader.xib; sourceTree = "<group>"; };
 		E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderTagStreamHeader.xib; sourceTree = "<group>"; };
 		E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderListStreamHeader.xib; sourceTree = "<group>"; };
@@ -2048,6 +2052,7 @@
 				E61084BB1B9B47BA008050C5 /* ReaderListTopic.swift */,
 				E61084BC1B9B47BA008050C5 /* ReaderSiteTopic.swift */,
 				E61084BD1B9B47BA008050C5 /* ReaderTagTopic.swift */,
+				E6C09B3D1BF0FDEB003074CB /* ReaderXPostMeta.swift */,
 				319D6E7919E447500013871C /* Suggestion.h */,
 				319D6E7A19E447500013871C /* Suggestion.m */,
 				5DA5BF3318E32DCF005F11F9 /* Theme.h */,
@@ -3443,6 +3448,7 @@
 				E1249B4219408C910035E895 /* RemoteComment.m */,
 				5D12FE1A1988243700378BD6 /* RemoteReaderPost.h */,
 				5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */,
+				E6396E1E1BED91E00058B374 /* RemoteReaderXPostMeta.swift */,
 				5D12FE201988245B00378BD6 /* RemoteReaderSite.h */,
 				5D12FE211988245B00378BD6 /* RemoteReaderSite.m */,
 				5D12FE1C1988243700378BD6 /* RemoteReaderTopic.h */,
@@ -4345,6 +4351,7 @@
 				B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */,
 				B52F8CD81B43260C00D36025 /* NotificationSettingStreamsViewController.swift in Sources */,
 				B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */,
+				E6C09B3E1BF0FDEB003074CB /* ReaderXPostMeta.swift in Sources */,
 				E1CC9B511B3006690051398F /* JetpackREST.m in Sources */,
 				E149D65119349E69006A843D /* MediaServiceRemoteXMLRPC.m in Sources */,
 				E66969E41B9E68B200EC9C00 /* ReaderPostToReaderPost37to38.swift in Sources */,
@@ -4530,6 +4537,7 @@
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
 				E1DF5DFD19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m in Sources */,
+				E6396E1F1BED91E00058B374 /* RemoteReaderXPostMeta.swift in Sources */,
 				E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */,
 				E61084BE1B9B47BA008050C5 /* ReaderAbstractTopic.swift in Sources */,
 				FFC6ADE01B56F421002F3C84 /* WPThemeSettings.m in Sources */,
