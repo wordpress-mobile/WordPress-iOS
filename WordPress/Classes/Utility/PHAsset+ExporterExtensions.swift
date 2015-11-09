@@ -63,7 +63,7 @@ extension PHAsset {
         options.networkAccessAllowed = true
         var requestedSize = targetSize
         if (requestedSize == CGSize.zero) {
-            requestedSize = PHImageManagerMaximumSize
+            requestedSize = CGSize(width: self.pixelWidth, height: self.pixelHeight)
         }
         PHImageManager.defaultManager().requestImageForAsset(self, targetSize: requestedSize, contentMode: .AspectFit, options: options) { (image, info) -> Void in
             guard let image = image else {
