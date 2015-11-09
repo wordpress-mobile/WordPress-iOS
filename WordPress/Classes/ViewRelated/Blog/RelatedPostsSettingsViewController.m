@@ -277,9 +277,9 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 
 - (IBAction)updateRelatedPostsSettings:(id)sender
 {
-    self.settings.relatedPostsEnabled = self.relatedPostsEnabledCell.switchValue;
-    self.settings.relatedPostsShowHeadline = self.relatedPostsShowHeaderCell.switchValue;
-    self.settings.relatedPostsShowThumbnails = self.relatedPostsShowThumbnailsCell.switchValue;
+    self.settings.relatedPostsEnabled = @(self.relatedPostsEnabledCell.switchValue);
+    self.settings.relatedPostsShowHeadline = @(self.relatedPostsShowHeaderCell.switchValue);
+    self.settings.relatedPostsShowThumbnails = @(self.relatedPostsShowThumbnailsCell.switchValue);
     
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService updateSettingsForBlog:self.blog success:^{
