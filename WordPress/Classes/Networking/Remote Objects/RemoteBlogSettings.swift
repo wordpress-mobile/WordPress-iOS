@@ -5,7 +5,7 @@ public class RemoteBlogSettings : NSObject
 {
     // MARK: - General
     var name                                : String!
-    var desc                                : String!
+    var tagline                             : String!
     var privacy                             : NSNumber!
 
     // MARK: - Writing
@@ -24,7 +24,7 @@ public class RemoteBlogSettings : NSObject
     var commentsRequireNameAndEmail         : NSNumber!
     var commentsRequireRegistration         : NSNumber!
     
-    var commentsSortOrder                   : NSNumber!
+    var commentsSortOrder                   : String!
     
     var commentsThreadingEnabled            : NSNumber!
     var commentsThreadingDepth              : NSNumber!
