@@ -43,8 +43,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @interface Blog : NSManagedObject
 
 @property (nonatomic, strong, readwrite) NSNumber *blogID;
-@property (nonatomic, strong, readwrite) NSString *blogName;
-@property (nonatomic, strong, readwrite) NSString *blogTagline;
 @property (nonatomic, strong, readwrite) NSString *xmlrpc;
 @property (nonatomic, strong, readwrite) NSString *apiKey;
 @property (nonatomic, strong, readwrite) NSNumber *hasOlderPosts;
@@ -74,8 +72,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL isMultiAuthor;
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
 @property (nonatomic, strong, readwrite) NSString *icon;
-@property (nonatomic, strong, readwrite) NSNumber *defaultCategoryID;
-@property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 
 /**

@@ -8,6 +8,7 @@
 #import "ContextManager.h"
 #import "Constants.h"
 #import "BlogSiteVisibilityHelper.h"
+#import "WordPress-Swift.h"
 #import <SFHFKeychainUtils.h>
 
 static NSInteger const ImageSizeSmallWidth = 240;
@@ -23,15 +24,12 @@ NSString * const PostFormatStandard = @"standard";
 
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
-@property (nonatomic, strong, readwrite) NSNumber *privacy;
 
 @end
 
 @implementation Blog
 
 @dynamic blogID;
-@dynamic blogName;
-@dynamic blogTagline;
 @dynamic url;
 @dynamic xmlrpc;
 @dynamic apiKey;
@@ -60,9 +58,6 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic isHostedAtWPcom;
 @dynamic icon;
 @dynamic username;
-@dynamic defaultCategoryID;
-@dynamic defaultPostFormat;
-@dynamic privacy;
 @dynamic settings;
 
 
@@ -528,7 +523,7 @@ NSString * const PostFormatStandard = @"standard";
     } else {
         extra = [NSString stringWithFormat:@" jetpack: %@", [self.jetpack description]];
     }
-    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.blogName, self.url, self.xmlrpc, extra];
+    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.settings.name, self.url, self.xmlrpc, extra];
 }
 
 #pragma mark - api accessor
