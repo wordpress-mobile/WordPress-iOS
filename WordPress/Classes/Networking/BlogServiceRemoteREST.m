@@ -131,7 +131,7 @@ static NSInteger const BlogRemoteUncategorizedCategory  = 1;
     NSMutableDictionary *parameters = [@{
         @"blogname"             : remoteSettings.name,
         @"blogdescription"      : remoteSettings.tagline,
-        @"default_category"     : remoteSettings.defaultCategory,
+        @"default_category"     : remoteSettings.defaultCategoryID,
         @"default_post_format"  : remoteSettings.defaultPostFormat,
         @"blog_public"          : remoteSettings.privacy,
     } mutableCopy];
@@ -250,7 +250,7 @@ static NSInteger const BlogRemoteUncategorizedCategory  = 1;
     settings.privacy = [rawSettings numberForKey:@"blog_public"];
     
     // Writing
-    settings.defaultCategory = [rawSettings numberForKey:BlogRemoteDefaultCategoryKey] ?: @(BlogRemoteUncategorizedCategory);
+    settings.defaultCategoryID = [rawSettings numberForKey:BlogRemoteDefaultCategoryKey] ?: @(BlogRemoteUncategorizedCategory);
 
     // Note: the backend might send '0' as a number, OR a string value. Ref. Issue #4187
     if ([[rawSettings numberForKey:BlogRemoteDefaultPostFormatKey] isEqualToNumber:@(0)] ||
@@ -273,13 +273,13 @@ static NSInteger const BlogRemoteUncategorizedCategory  = 1;
     settings.commentsRequireNameAndEmail = [rawSettings numberForKey:@"require_name_email"];
     settings.commentsRequireRegistration = [rawSettings numberForKey:@"comment_registration"];
     
-    settings.commentsSortOrder = [rawSettings stringForKey:@"comment_order"];
+    settings.commentsSortOrder = [rawSettings numberForKey:@"comment_order"];
     
     settings.commentsThreadingEnabled = [rawSettings numberForKey:@"thread_comments"];
     settings.commentsThreadingDepth = [rawSettings numberForKey:@"thread_comments_depth"];
     
-    settings.pingbacksOutboundEnabled = [rawSettings numberForKey:@"default_pingback_flag"];
-    settings.pingbacksInboundEnabled = [rawSettings numberForKey:@"default_ping_status"];
+    settings.pingbackOutboundEnabled = [rawSettings numberForKey:@"default_pingback_flag"];
+    settings.pingbackInboundEnabled = [rawSettings numberForKey:@"default_ping_status"];
     
     
     // Related Posts
