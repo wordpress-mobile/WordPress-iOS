@@ -1,5 +1,7 @@
 #import <UIKit/UIKit.h>
 
+@class MenusSelectionViewItem;
+
 @protocol MenusSelectionDetailViewDelegate;
 
 @interface MenusSelectionDetailView : UIView
@@ -7,8 +9,7 @@
 @property (nonatomic, weak) id <MenusSelectionDetailViewDelegate> delegate;
 @property (nonatomic, assign) BOOL showsDesignActive;
 
-- (void)updateWithAvailableLocations:(NSUInteger)numLocationsAvailable selectedLocationName:(NSString *)name;
-- (void)updateWithAvailableMenus:(NSUInteger)numMenusAvailable selectedLocationName:(NSString *)name;
+- (void)updatewithAvailableItems:(NSUInteger)numItemsAvailable selectedItem:(MenusSelectionViewItem *)selectedItem;
 
 @end
 

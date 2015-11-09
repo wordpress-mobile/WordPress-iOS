@@ -1,6 +1,7 @@
 #import "MenusSelectionDetailView.h"
 #import "WPStyleGuide.h"
 #import "MenusDesign.h"
+#import "MenusSelectionView.h"
 
 @interface MenusSelectionIconView : UIView
 
@@ -55,35 +56,29 @@
 
 @implementation MenusSelectionDetailView
 
-- (void)updateWithAvailableLocations:(NSUInteger)numLocationsAvailable selectedLocationName:(NSString *)name
+- (void)updatewithAvailableItems:(NSUInteger)numItemsAvailable selectedItem:(MenusSelectionViewItem *)selectedItem
 {
     NSString *localizedFormat = nil;
-    
-    if(numLocationsAvailable > 1) {
-        localizedFormat = NSLocalizedString(@"%i menu areas in this theme", @"The number of menu areas available in the theme");
-    }else {
-        localizedFormat = NSLocalizedString(@"%i menu area in this theme", @"One menu area available in the theme");
+    if([selectedItem isMenuLocation]) {
+        
+        if(numItemsAvailable > 1) {
+            localizedFormat = NSLocalizedString(@"%i menu areas in this theme", @"The number of menu areas available in the theme");
+        }else {
+            localizedFormat = NSLocalizedString(@"%i menu area in this theme", @"One menu area available in the theme");
+        }
+        self.iconView.image = [UIImage imageNamed:@"icon-menus-locations"];
+        
+    }else if([selectedItem isMenu]) {
+        
+        if(numItemsAvailable > 1) {
+            localizedFormat = NSLocalizedString(@"%i menus available", @"The number of menus on the site and area.");
+        }else {
+            localizedFormat = NSLocalizedString(@"%i menu available", @"One menu is available in the site and area");
+        }
+        self.iconView.image = [UIImage imageNamed:@"icon-menus-menus"];
     }
     
-    [self setTitleText:name subTitleText:[NSString stringWithFormat:localizedFormat, numLocationsAvailable]];
-    
-    self.iconView.image = [UIImage imageNamed:@"icon-menus-locations"];
-    [self.iconView setNeedsDisplay];
-}
-
-- (void)updateWithAvailableMenus:(NSUInteger)numMenusAvailable selectedLocationName:(NSString *)name
-{
-    NSString *localizedFormat = nil;
-    
-    if(numMenusAvailable > 1) {
-        localizedFormat = NSLocalizedString(@"%i menus available", @"The number of menus on the site and area.");
-    }else {
-        localizedFormat = NSLocalizedString(@"%i menu available", @"One menu is available in the site and area");
-    }
-    
-    [self setTitleText:name subTitleText:[NSString stringWithFormat:localizedFormat, numMenusAvailable]];
-    
-    self.iconView.image = [UIImage imageNamed:@"icon-menus-menus"];
+    [self setTitleText:selectedItem.name subTitleText:[NSString stringWithFormat:localizedFormat, numItemsAvailable]];
     [self.iconView setNeedsDisplay];
 }
 
