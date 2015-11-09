@@ -58,6 +58,15 @@ NSString * const TagKeyPrimarySlug = @"primaryTagSlug";
 NSString * const TagKeySecondary = @"secondaryTag";
 NSString * const TagKeySecondarySlug = @"secondaryTagSlug";
 
+// XPost Meta Keys
+NSString * const PostRESTKeyMetadata = @"metadata";
+NSString * const XPostMetaKey = @"key";
+NSString * const XPostMetaValue = @"key";
+NSString * const XPostMetaXPostPermalink = @"_xpost_original_permalink";
+NSString * const XPostMetaXCommentPermalink = @"xcomment_original_permalink";
+NSString * const XPostMetaXPostOrigin = @"xpost_origin";
+NSString * const XPostMetaCommentPrefix = @"comment-";
+
 static const NSInteger AvgWordsPerMinuteRead = 250;
 static const NSInteger MinutesToReadThreshold = 2;
 
@@ -258,21 +267,21 @@ static const NSInteger MinutesToReadThreshold = 2;
 
     RemoteReaderXPostMeta *meta = [RemoteReaderXPostMeta new];
 
-    NSArray *metadata = [dict arrayForKey:@"metadata"];
+    NSArray *metadata = [dict arrayForKey:PostRESTKeyMetadata];
     for (NSDictionary *obj in metadata) {
-        if ([[obj stringForKey:@"key"] isEqualToString:@"_xpost_original_permalink"] ||
-            [[obj stringForKey:@"key"] isEqualToString:@"xcomment_original_permalink"]) {
+        if ([[obj stringForKey:XPostMetaKey] isEqualToString:XPostMetaXPostPermalink] ||
+            [[obj stringForKey:XPostMetaKey] isEqualToString:XPostMetaXCommentPermalink]) {
 
-            NSString *path = [obj stringForKey:@"value"];
+            NSString *path = [obj stringForKey:XPostMetaValue];
             NSURL *url = [NSURL URLWithString:path];
 
             meta.siteURL = [NSString stringWithFormat:@"%@://%@", url.scheme, url.host];
             meta.postURL = [NSString stringWithFormat:@"%@/%@", meta.siteURL, url.path];
-            if ([url.fragment hasPrefix:@"comment-"]) {
+            if ([url.fragment hasPrefix:XPostMetaCommentPrefix]) {
                 meta.commentURL = [url absoluteString];
             }
-        } else if ([[obj stringForKey:@"key"] isEqualToString:@"xpost_origin"]) {
-            NSString *value = [obj stringForKey:@"value"];
+        } else if ([[obj stringForKey:XPostMetaKey] isEqualToString:XPostMetaXPostOrigin]) {
+            NSString *value = [obj stringForKey:XPostMetaValue];
             NSArray *IDS = [value componentsSeparatedByString:@":"];
             meta.siteID = [[IDS firstObject] numericValue];
             meta.postID = [[IDS lastObject] numericValue];
