@@ -1,4 +1,5 @@
 #import "BlogServiceRemoteREST.h"
+#import "NSMutableDictionary+Helpers.h"
 #import <WordPressComApi.h>
 #import "WordPress-Swift.h"
 
@@ -96,8 +97,7 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
     
     NSString *path = [self pathForSettingsWithBlogID:blogID];
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api GET:requestUrl
        parameters:nil
@@ -120,26 +120,30 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
           }];
 }
 
-- (void)updateBlogSettings:(RemoteBlogSettings *)remoteBlogSettings
+- (void)updateBlogSettings:(RemoteBlogSettings *)remoteSettings
                  forBlogID:(NSNumber *)blogID
                    success:(SuccessHandler)success
                    failure:(void (^)(NSError *error))failure;
 {
+    NSParameterAssert(remoteSettings);
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    NSMutableDictionary *parameters = [@{ @"blogname" : remoteBlogSettings.name,
-                                  @"blogdescription" : remoteBlogSettings.desc,
-                                  @"default_category" : remoteBlogSettings.defaultCategory,
-                                  @"default_post_format" : remoteBlogSettings.defaultPostFormat,
-                                  @"blog_public" : remoteBlogSettings.privacy,
-                                  } mutableCopy];
-    if (remoteBlogSettings.relatedPostsEnabled) {
-        parameters[@"jetpack_relatedposts_enabled"] = remoteBlogSettings.relatedPostsEnabled;
-        parameters[@"jetpack_relatedposts_show_headline"] = remoteBlogSettings.relatedPostsShowHeadline;
-        parameters[@"jetpack_relatedposts_show_thumbnails"] = remoteBlogSettings.relatedPostsShowThumbnails;
+    
+    NSMutableDictionary *parameters = [@{
+        @"blogname"             : remoteSettings.name,
+        @"blogdescription"      : remoteSettings.desc,
+        @"default_category"     : remoteSettings.defaultCategory,
+        @"default_post_format"  : remoteSettings.defaultPostFormat,
+        @"blog_public"          : remoteSettings.privacy,
+    } mutableCopy];
+
+    if (remoteSettings.relatedPostsEnabled) {
+        [parameters setValueIfNotNil:remoteSettings.relatedPostsEnabled         forKey:@"jetpack_relatedposts_enabled"];
+        [parameters setValueIfNotNil:remoteSettings.relatedPostsShowHeadline    forKey:@"jetpack_relatedposts_show_headline"];
+        [parameters setValueIfNotNil:remoteSettings.relatedPostsShowThumbnails  forKey:@"jetpack_relatedposts_show_thumbnails"];
     }
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blogID];
-    NSString *requestUrl = [self pathForEndpoint:path
-                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api POST:requestUrl
         parameters:parameters
