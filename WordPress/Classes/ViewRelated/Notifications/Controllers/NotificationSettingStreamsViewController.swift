@@ -31,7 +31,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         
         // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
         tableView.deselectSelectedRowWithAnimation(true)
-        WPAnalytics.track(.OpenedNotificationSettingStreams)
+        WPAnalytics.track(.StatOpenedNotificationSettingStreams)
     }
 
 

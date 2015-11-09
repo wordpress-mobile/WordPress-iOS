@@ -57,7 +57,7 @@ import UIKit
         // Expired: Display a message!
         if isNotificationExpired(userInfo) {
             showLoginExpiredAlert()
-            WPAnalytics.track(.PushAuthenticationExpired)
+            WPAnalytics.track(.StatPushAuthenticationExpired)
             return
         }
         
@@ -72,9 +72,9 @@ import UIKit
         showLoginVerificationAlert(message!) { (approved) -> () in
             if approved {
                 self.authorizeLogin(token!, retryCount: self.initialRetryCount)
-                WPAnalytics.track(.PushAuthenticationApproved)
+                WPAnalytics.track(.StatPushAuthenticationApproved)
             } else {
-                WPAnalytics.track(.PushAuthenticationIgnored)
+                WPAnalytics.track(.StatPushAuthenticationIgnored)
             }
         }
     }
@@ -93,7 +93,7 @@ import UIKit
     */
     private func authorizeLogin(token: String, retryCount: Int) {
         if retryCount == maximumRetryCount {
-            WPAnalytics.track(.PushAuthenticationFailed)
+            WPAnalytics.track(.StatPushAuthenticationFailed)
             return
         }
 
