@@ -15,14 +15,14 @@ extension PHAsset {
      - Parameters:
         - url: file url to where the asset should be exported, this must be writable location
         - targetUTI: the UTI format to use when exporting the asset
-        - targetSize:  the maximum pixel resolution that the file can have after exporting. If CGSizeZero is provided the original size of image is returned.
+        - maximumResolution:  the maximum pixel resolution that the asset can have after exporting. If CGSizeZero is provided the original size of image is returned.
         - stripGeoLocation: if true any geographic location existent on the metadata of the asset will be stripped
         - successHandler:  a handler that will be invoked on success with the resulting resolution of the asset exported
         - errorHandler: a handler that will be invoked when some error occurs when generating the exported file for the asset
      */
     func exportToURL(url: NSURL,
         targetUTI: String,
-        targetSize: CGSize,
+        maximumResolution: CGSize,
         stripGeoLocation: Bool,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
@@ -31,14 +31,14 @@ extension PHAsset {
         case .Image:
             exportImageToURL(url,
                 targetUTI: targetUTI,
-                targetSize:targetSize,
+                maximumResolution:maximumResolution,
                 stripGeoLocation:stripGeoLocation,
                 successHandler:successHandler,
                 errorHandler: errorHandler)
         case .Video:
             exportVideoToURL(url,
                 targetUTI: targetUTI,
-                targetSize:targetSize,
+                maximumResolution:maximumResolution,
                 stripGeoLocation:stripGeoLocation,
                 successHandler: successHandler,
                 errorHandler: errorHandler)
@@ -50,7 +50,7 @@ extension PHAsset {
     
     func exportImageToURL(url: NSURL,
         targetUTI: String,
-        targetSize:CGSize,
+        maximumResolution:CGSize,
         stripGeoLocation:Bool,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
@@ -61,7 +61,7 @@ extension PHAsset {
         options.resizeMode = .Exact
         options.synchronous = false
         options.networkAccessAllowed = true
-        var requestedSize = targetSize
+        var requestedSize = maximumResolution
         if (requestedSize == CGSize.zero) {
             requestedSize = CGSize(width: self.pixelWidth, height: self.pixelHeight)
         }
