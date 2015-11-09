@@ -61,7 +61,7 @@ NSString * const TagKeySecondarySlug = @"secondaryTagSlug";
 // XPost Meta Keys
 NSString * const PostRESTKeyMetadata = @"metadata";
 NSString * const XPostMetaKey = @"key";
-NSString * const XPostMetaValue = @"key";
+NSString * const XPostMetaValue = @"value";
 NSString * const XPostMetaXPostPermalink = @"_xpost_original_permalink";
 NSString * const XPostMetaXCommentPermalink = @"xcomment_original_permalink";
 NSString * const XPostMetaXPostOrigin = @"xpost_origin";
@@ -274,6 +274,9 @@ static const NSInteger MinutesToReadThreshold = 2;
 
             NSString *path = [obj stringForKey:XPostMetaValue];
             NSURL *url = [NSURL URLWithString:path];
+            if (!url) {
+                NSLog(@"break");
+            }
 
             meta.siteURL = [NSString stringWithFormat:@"%@://%@", url.scheme, url.host];
             meta.postURL = [NSString stringWithFormat:@"%@/%@", meta.siteURL, url.path];

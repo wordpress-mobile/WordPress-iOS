@@ -282,7 +282,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (BOOL)isCommentXPost
 {
-    return self.xpostMeta.commentURL != nil;
+    return self.xpostMeta.commentURL.length > 0;
 }
 
 

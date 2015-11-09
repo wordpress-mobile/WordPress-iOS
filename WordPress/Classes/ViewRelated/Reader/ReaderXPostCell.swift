@@ -7,6 +7,7 @@ public class ReaderXPostCell: UITableViewCell
 
     // Header realated Views
     @IBOutlet private weak var cardContentView: UIView!
+    @IBOutlet private weak var cardBorderView: UIView!
     @IBOutlet private weak var blavatarImageView: UIImageView!
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var label: UILabel!
@@ -26,6 +27,7 @@ public class ReaderXPostCell: UITableViewCell
             contentView.backgroundColor = backgroundColor
             innerContentView?.backgroundColor = backgroundColor
             cardContentView?.backgroundColor = backgroundColor
+            cardBorderView?.backgroundColor = backgroundColor
         }
     }
 
@@ -94,16 +96,19 @@ public class ReaderXPostCell: UITableViewCell
 
     private func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
+
+        cardBorderView.layer.borderColor = WPStyleGuide.readerCardCellHighlightedBorderColor().CGColor
+        cardBorderView.layer.borderWidth = 1.0;
+        cardBorderView.alpha = 0.0;
     }
 
     private func applyHighlightedEffect(highlighted: Bool, animated: Bool) {
         let duration:NSTimeInterval = animated ? 0.25 : 0
-
         UIView.animateWithDuration(duration,
             delay: 0,
             options: .CurveEaseInOut,
             animations: {
-//                self.cardBorderView.backgroundColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor() : WPStyleGuide.readerCardCellBorderColor()
+                self.cardBorderView.alpha = highlighted ? 1.0 : 0.0;
             }, completion: nil)
     }
 
@@ -148,9 +153,6 @@ public class ReaderXPostCell: UITableViewCell
 
         let placeholder = UIImage(named: blavatarPlaceholder)
 
-//        let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
-//        // TODO: Size the image?
-
         let url = contentProvider?.avatarURLForDisplay()
         if url != nil {
             avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
@@ -170,18 +172,20 @@ public class ReaderXPostCell: UITableViewCell
         let attrText = NSMutableAttributedString(string: "\(title)\n", attributes: titleAttributes)
 
         // Compose the subtitle
-        let commentTemplate = NSLocalizedString("%@ left a comment on %@, cross-posted to %@", comment: "")
-        let siteTemplate = NSLocalizedString("%@ cross-posted from %@ to %@", comment: "")
+        // These templates are deliberately not localized (for now) given the intended audience.
+        let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
+        let siteTemplate = "%@ cross-posted from %@ to %@"
         let template = contentProvider!.isCommentXPost() ? commentTemplate : siteTemplate;
 
-        let authorName = contentProvider!.authorForDisplay()
+        let authorName:NSString = contentProvider!.authorForDisplay()
         let siteName = subDomainNameFromPath(contentProvider!.siteURLForDisplay())
         let originName = subDomainNameFromPath(contentProvider!.xpostOriginSiteURLForDisplay())
 
         let subtitle = NSString(format: template, authorName, originName, siteName) as String
-
         let subtitleAttributes = WPStyleGuide.readerXpostSubtitleAttributes() as! [String:AnyObject]
-        let attrSubtitle = NSAttributedString(string: subtitle, attributes: subtitleAttributes)
+        let boldSubtitleAttributes = WPStyleGuide.readerXpostBoldSubtitleAttributes() as! [String:AnyObject];
+        let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: subtitleAttributes)
+        attrSubtitle.setAttributes(boldSubtitleAttributes, range: NSRange(location: 0, length: authorName.length))
 
         // Add the subtitle to the attributed text
         attrText.appendAttributedString(attrSubtitle)
