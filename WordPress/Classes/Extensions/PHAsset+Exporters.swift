@@ -78,7 +78,12 @@ extension PHAsset {
             }
             self.requestMetadataWithCompletionBlock({ (metadata) -> () in
                 do {
-                    try image.writeToURL(url, type: targetUTI, compressionQuality: 0.9, metadata: metadata)
+                    var attributesToRemove = ["Orientation", "AdjustmentXMP"]
+                    if (stripGeoLocation) {
+                        attributesToRemove.append(kCGImagePropertyGPSDictionary as String)
+                    }
+                    let exportMetadata = self.removeAttributes(attributesToRemove, fromMetadata: metadata)
+                    try image.writeToURL(url, type: targetUTI, compressionQuality: 0.9, metadata: exportMetadata)
                     successHandler(resultingSize: image.size)
                 } catch let error as NSError {
                     errorHandler(error: error)
@@ -89,9 +94,23 @@ extension PHAsset {
         }
     }
     
+    func removeAttributes(attributes: [String], fromMetadata:[String:AnyObject]) -> [String:AnyObject]{
+        var resultingMetadata = fromMetadata
+        for attribute in attributes {
+            resultingMetadata.removeValueForKey(attribute)
+            if attribute == "Orientation" {
+                if var tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String:AnyObject]{
+                    tiffMetadata[kCGImagePropertyTIFFOrientation as String] = 1
+                    resultingMetadata[kCGImagePropertyTIFFDictionary as String] = tiffMetadata
+                }
+            }
+        }
+        return resultingMetadata
+    }
+    
     func exportVideoToURL(url: NSURL,
         targetUTI: String,
-        targetSize:CGSize,
+        maximumResolution:CGSize,
         stripGeoLocation:Bool,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
@@ -122,10 +141,7 @@ extension PHAsset {
                             }
                             return;
                         }
-                        //dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            successHandler(resultingSize: targetSize)
-                        //})
-                        
+                        successHandler(resultingSize: CGSize(width: self.pixelWidth, height: self.pixelHeight))
                     })
             }
     }
