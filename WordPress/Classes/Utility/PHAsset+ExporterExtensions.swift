@@ -7,19 +7,21 @@ import AVFoundation
 extension PHAsset {
     
     
-    typealias SuccessHandler = (resultingSize: CGSize, exportedAssetPath: String, exportedAssetThumbnailPath: String) -> ()
+    typealias SuccessHandler = (resultingSize: CGSize) -> ()
     typealias ErrorHandler = (error: NSError) -> ()
 
     /**
-     Exports an asset to a folder with the desired targetSize and removing geolocation if requested
+     Exports an asset to a file URL with the desired targetSize and removing geolocation if requested. 
+     The targetSize is the maximum resolution permited, the resultSize will normally be a lower value that maitains the aspect ratio of the asset
      
      - Parameters:
-        - path: folder to where the asset should be exported, this must be writable folder
-        - targetSize:  the maximum pixel resolution that the file can have after exporting. If CGSizeZero is provided the original size of image is returned
+        - url: file url to where the asset should be exported, this must be writable location
+        - targetSize:  the maximum pixel resolution that the file can have after exporting. If CGSizeZero is provided the original size of image is returned.
         - stripGeoLocation: if true any geographic location existent on the metadata of the asset will be stripped
         - resultHandler:
      */
-    func exportToPath(destinationPath: String,
+    func exportToURL(url: NSURL,
+        targetUTI: String,
         targetSize: CGSize,
         stripGeoLocation: Bool,
         successHandler: SuccessHandler,
@@ -27,15 +29,15 @@ extension PHAsset {
         
         switch self.mediaType {
         case .Image:
-            exportImageAsset(self,
-                destinationPath:destinationPath,
+            exportImageToURL(url,
+                targetUTI: targetUTI,
                 targetSize:targetSize,
                 stripGeoLocation:stripGeoLocation,
                 successHandler:successHandler,
                 errorHandler: errorHandler)
         case .Video:
-            exportVideoAsset(self,
-                destinationPath:destinationPath,
+            exportVideoToURL(url,
+                targetUTI: targetUTI,
                 targetSize:targetSize,
                 stripGeoLocation:stripGeoLocation,
                 successHandler: successHandler,
@@ -46,8 +48,8 @@ extension PHAsset {
         }
     }
     
-    private func exportImageAsset(asset: PHAsset,
-        destinationPath:String,
+    func exportImageToURL(url: NSURL,
+        targetUTI: String,
         targetSize:CGSize,
         stripGeoLocation:Bool,
         successHandler: SuccessHandler,
@@ -63,11 +65,8 @@ extension PHAsset {
         if (requestedSize == CGSize.zero) {
             requestedSize = PHImageManagerMaximumSize
         }
-        PHImageManager.defaultManager().requestImageForAsset(asset, targetSize: requestedSize, contentMode: .AspectFit, options: options) { (image, info) -> Void in
-            guard let image = image,
-                  let fileUTI = asset.originalUTI(),
-                  let fileExtension = String.StringFromCFType(UTTypeCopyPreferredTagWithClass(fileUTI, kUTTagClassFilenameExtension))
-            else {
+        PHImageManager.defaultManager().requestImageForAsset(self, targetSize: requestedSize, contentMode: .AspectFit, options: options) { (image, info) -> Void in
+            guard let image = image else {
                 if let error = info?[PHImageErrorKey] as? NSError {
                     errorHandler(error: error)
                 } else {
@@ -77,14 +76,10 @@ extension PHAsset {
                 }
                 return
             }
-            asset.requestMetadataWithCompletionBlock({ (metadata) -> () in
-                var destinationFileURL = NSURL(fileURLWithPath: destinationPath)
-                destinationFileURL = destinationFileURL.URLByAppendingPathComponent(NSUUID().UUIDString)
-                destinationFileURL = destinationFileURL.URLByAppendingPathExtension(fileExtension)
+            self.requestMetadataWithCompletionBlock({ (metadata) -> () in
                 do {
-                    try image.writeToURL(destinationFileURL, type: fileUTI, compressionQuality: 0.9, metadata: metadata)
-                    let fullPath = destinationFileURL.path!
-                    successHandler(resultingSize: image.size, exportedAssetPath: fullPath, exportedAssetThumbnailPath: fullPath)
+                    try image.writeToURL(url, type: targetUTI, compressionQuality: 0.9, metadata: metadata)
+                    successHandler(resultingSize: image.size)
                 } catch let error as NSError {
                     errorHandler(error: error)
                 }
@@ -94,8 +89,8 @@ extension PHAsset {
         }
     }
     
-    private func exportVideoAsset(asset: PHAsset,
-        destinationPath:String,
+    private func exportVideoToURL(url: NSURL,
+        targetUTI: String,
         targetSize:CGSize,
         stripGeoLocation:Bool,
         successHandler: SuccessHandler,
@@ -103,12 +98,10 @@ extension PHAsset {
             
             let options = PHVideoRequestOptions()
             options.networkAccessAllowed = true
-            PHImageManager.defaultManager().requestExportSessionForVideo(asset,
+            PHImageManager.defaultManager().requestExportSessionForVideo(self,
                 options: options,
                 exportPreset: AVAssetExportPresetPassthrough) { (exportSession, info) -> Void in
-                    guard let exportSession = exportSession,
-                        let fileUTI = asset.originalUTI(),
-                        let fileExtension = String.StringFromCFType(UTTypeCopyPreferredTagWithClass(fileUTI, kUTTagClassFilenameExtension))
+                    guard let exportSession = exportSession
                     else {
                         if let error = info?[PHImageErrorKey] as? NSError {
                             errorHandler(error: error)
@@ -119,13 +112,9 @@ extension PHAsset {
                         }
                         return
                     }
-                    var destinationFileURL = NSURL(fileURLWithPath: destinationPath)
-                    destinationFileURL = destinationFileURL.URLByAppendingPathComponent(NSUUID().UUIDString)
-                    destinationFileURL = destinationFileURL.URLByAppendingPathExtension(fileExtension)
-                    
-                    exportSession.outputFileType = fileUTI;
+                    exportSession.outputFileType = targetUTI;
                     exportSession.shouldOptimizeForNetworkUse = true
-                    exportSession.outputURL = destinationFileURL
+                    exportSession.outputURL = url
                     exportSession.exportAsynchronouslyWithCompletionHandler({ () -> Void in
                         guard exportSession.status == .Completed else {
                             if let error = exportSession.error {
@@ -133,8 +122,7 @@ extension PHAsset {
                             }
                             return;
                         }
-                        let fullPath = destinationFileURL.path!
-                        successHandler(resultingSize: targetSize, exportedAssetPath:fullPath, exportedAssetThumbnailPath: fullPath)
+                        successHandler(resultingSize: targetSize)
                     })
             }
     }
