@@ -32,9 +32,7 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     self.textLabel.font = [WPStyleGuide subtitleFont];
     self.textLabel.backgroundColor = [UIColor clearColor];
     
-    self.locationsView.selectionType = MenuSelectionViewTypeLocations;
     self.locationsView.delegate = self;
-    self.menusView.selectionType = MenuSelectionViewTypeMenus;
     self.menusView.delegate = self;
 }
 
@@ -47,9 +45,8 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
             [items addObject:item];
         }
         
-        MenusSelectionViewItem *item = [items firstObject];
-        item.selected = YES;
-        [self.locationsView updateItems:items];
+        [self.locationsView setAvailableSelectionItems:items];
+        [self.locationsView setSelectedItem:[items firstObject]];
     }
     {
         NSMutableArray *items = [NSMutableArray arrayWithCapacity:blog.menus.count];
@@ -58,9 +55,8 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
             [items addObject:item];
         }
         
-        MenusSelectionViewItem *item = [items firstObject];
-        item.selected = YES;
-        [self.menusView updateItems:items];
+        [self.menusView setAvailableSelectionItems:items];
+        [self.menusView setSelectedItem:[items firstObject]];
     }
 }
 
@@ -107,6 +103,29 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     CGContextStrokePath(context);
 }
 
+#pragma mark - private
+
+- (void)closeSelectionsIfNeeded
+{
+    // add a UX delay to selection close animation
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.locationsView setSelectionItemsExpanded:NO animated:YES];
+        [self.menusView setSelectionItemsExpanded:NO animated:YES];
+    });
+}
+
+#pragma mark - delegate helpers
+
+- (void)tellDelegateSelectedLocation:(MenuLocation *)location
+{
+    [self.delegate headerViewSelectionChangedWithSelectedLocation:location];
+}
+
+- (void)tellDelegateSelectedMenu:(Menu *)menu
+{
+    [self.delegate headerViewSelectionChangedWithSelectedMenu:menu];
+}
+
 #pragma mark - MenusSelectionViewDelegate
 
 - (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand
@@ -128,13 +147,14 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     }
 }
 
-- (void)selectionView:(MenusSelectionView *)selectionView updatedSelectedItem:(MenusSelectionViewItem *)selectedItem
+- (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionViewItem *)item
 {
-    // add a UX delay to selection close animation
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.locationsView setSelectionItemsExpanded:NO animated:YES];
-        [self.menusView setSelectionItemsExpanded:NO animated:YES];
-    });
+    if([item isMenuLocation]) {
+        [self tellDelegateSelectedLocation:item.itemObject];
+    }else if([item isMenu]) {
+        [self tellDelegateSelectedMenu:item.itemObject];
+    }
+    [self closeSelectionsIfNeeded];
 }
 
 @end

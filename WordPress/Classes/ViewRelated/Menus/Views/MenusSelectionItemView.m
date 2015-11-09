@@ -5,36 +5,6 @@
 #import "WPStyleGuide.h"
 #import "MenusDesign.h"
 
-static NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSelectionViewItemChangedSelectedNotification";
-
-@implementation MenusSelectionViewItem
-
-+ (MenusSelectionViewItem *)itemWithMenu:(Menu *)menu
-{
-    MenusSelectionViewItem *item = [MenusSelectionViewItem new];
-    item.name = menu.name;
-    item.details = menu.details;
-    return item;
-}
-
-+ (MenusSelectionViewItem *)itemWithLocation:(MenuLocation *)location
-{
-    MenusSelectionViewItem *item = [MenusSelectionViewItem new];
-    item.name = location.details;
-    item.details = location.name;
-    return item;
-}
-
-- (void)setSelected:(BOOL)selected
-{
-    if(_selected != selected) {
-        _selected = selected;
-        [[NSNotificationCenter defaultCenter] postNotificationName:MenusSelectionViewItemChangedSelectedNotification object:self];
-    }
-}
-
-@end
-
 @interface MenusSelectionItemView ()
 
 @property (nonatomic, strong) UILabel *label;

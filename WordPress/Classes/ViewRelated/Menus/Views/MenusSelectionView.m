@@ -3,6 +3,50 @@
 #import "MenuLocation.h"
 #import "MenusSelectionDetailView.h"
 #import "MenusDesign.h"
+#import "MenusSelectionItemView.h"
+
+NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSelectionViewItemChangedSelectedNotification";
+
+@implementation MenusSelectionViewItem
+
++ (MenusSelectionViewItem *)itemWithMenu:(Menu *)menu
+{
+    MenusSelectionViewItem *item = [MenusSelectionViewItem new];
+    item.name = menu.name;
+    item.details = menu.details;
+    item.itemObject = menu;
+    return item;
+}
+
++ (MenusSelectionViewItem *)itemWithLocation:(MenuLocation *)location
+{
+    MenusSelectionViewItem *item = [MenusSelectionViewItem new];
+    // using the opposite here for display as the API returns the data differently than a menu object
+    item.name = location.details;
+    item.details = location.name;
+    item.itemObject = location;
+    return item;
+}
+
+- (BOOL)isMenu
+{
+    return [self.itemObject isKindOfClass:[Menu class]];
+}
+
+- (BOOL)isMenuLocation
+{
+    return [self.itemObject isKindOfClass:[MenuLocation class]];
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    if(_selected != selected) {
+        _selected = selected;
+        [[NSNotificationCenter defaultCenter] postNotificationName:MenusSelectionViewItemChangedSelectedNotification object:self];
+    }
+}
+
+@end
 
 @interface MenusSelectionView () <MenusSelectionDetailViewDelegate, MenusSelectionItemViewDelegate>
 
@@ -10,7 +54,6 @@
 @property (nonatomic, weak) IBOutlet MenusSelectionDetailView *detailView;
 @property (nonatomic, strong) NSArray *items;
 @property (nonatomic, strong) NSMutableArray *itemViews;
-@property (nonatomic, strong) MenusSelectionViewItem *selectedItem;
 @property (nonatomic, assign) BOOL drawsHighlighted;
 
 @end
@@ -40,30 +83,20 @@
 
 #pragma mark - instance
 
-- (void)updateItems:(NSArray <MenusSelectionViewItem *> *)items
+- (void)setAvailableSelectionItems:(NSArray <MenusSelectionViewItem *> *)items
 {
     self.items = items;
-    
-    MenusSelectionViewItem *selectedItem = nil;
-    for(MenusSelectionViewItem *item in items) {
-        if(item.selected) {
-            selectedItem = item;
-            break;
-        }
-    }
-    
-    self.selectedItem = selectedItem;
-    
-    if(self.selectionType == MenuSelectionViewTypeLocations) {
-        
-        [self.detailView updateWithAvailableLocations:items.count selectedLocationName:selectedItem.name];
-        
-    }else if(self.selectionType == MenuSelectionViewTypeMenus) {
-        
-        [self.detailView updateWithAvailableMenus:items.count selectedLocationName:selectedItem.name];
-    }
-    
     [self reloadItemViews];
+}
+
+- (void)setSelectedItem:(MenusSelectionViewItem *)item
+{
+    MenusSelectionViewItem *selectedItem = [self selectedItem];
+    selectedItem.selected = NO;
+    item.selected = YES;
+    selectedItem = item;
+    
+    [self.detailView updatewithAvailableItems:self.items.count selectedItem:selectedItem];
 }
 
 - (void)setSelectionExpanded:(BOOL)selectionExpanded
@@ -96,6 +129,20 @@
 }
 
 #pragma mark - private
+
+- (MenusSelectionViewItem *)selectedItem
+{
+    MenusSelectionViewItem *selectedItem = nil;
+    
+    for(MenusSelectionViewItem *item in self.items) {
+        if(item.selected) {
+            selectedItem = item;
+            break;
+        }
+    }
+    
+    return selectedItem;
+}
 
 - (void)reloadItemViews
 {
@@ -150,16 +197,12 @@
 
 - (void)tellDelegateUserInteractionDetectedForTogglingExpansion
 {
-    if([self.delegate respondsToSelector:@selector(userInteractionDetectedForTogglingSelectionView:expand:)]) {
-        [self.delegate userInteractionDetectedForTogglingSelectionView:self expand:!self.selectionExpanded];
-    }
+    [self.delegate userInteractionDetectedForTogglingSelectionView:self expand:!self.selectionExpanded];
 }
 
-- (void)tellDelegateUpdatedSelectedItem
+- (void)tellDelegateSelectedItem:(MenusSelectionViewItem *)item
 {
-    if([self.delegate respondsToSelector:@selector(selectionView:updatedSelectedItem:)]) {
-        [self.delegate selectionView:self updatedSelectedItem:self.selectedItem];
-    }
+    [self.delegate selectionView:self selectedItem:item];
 }
 
 #pragma mark - MenusSelectionDetailViewDelegate
@@ -178,20 +221,9 @@
 
 - (void)selectionItemViewWasSelected:(MenusSelectionItemView *)itemView
 {
-    self.selectedItem.selected = NO;
-    self.selectedItem = itemView.item;
-    itemView.item.selected = YES;
-    
-    if(self.selectionType == MenuSelectionViewTypeLocations) {
-        
-        [self.detailView updateWithAvailableLocations:self.items.count selectedLocationName:self.selectedItem.name];
-        
-    }else if(self.selectionType == MenuSelectionViewTypeMenus) {
-        
-        [self.detailView updateWithAvailableMenus:self.items.count selectedLocationName:self.selectedItem.name];
-    }
-    
-    [self tellDelegateUpdatedSelectedItem];
+    MenusSelectionViewItem *selectedItem = itemView.item;
+    [self setSelectedItem:selectedItem];
+    [self tellDelegateSelectedItem:selectedItem];
 }
 
 @end

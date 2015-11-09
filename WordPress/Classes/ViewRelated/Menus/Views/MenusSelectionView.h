@@ -1,32 +1,43 @@
 #import <UIKit/UIKit.h>
-#import "MenusSelectionDetailView.h"
-#import "MenusSelectionItemView.h"
 
-typedef NS_ENUM(NSUInteger)
-{
-    MenuSelectionViewTypeLocations,
-    MenuSelectionViewTypeMenus
-    
-}MenuSelectionViewType;
+@class Menu;
+@class MenuLocation;
+
+extern NSString * const MenusSelectionViewItemChangedSelectedNotification;
+
+@interface MenusSelectionViewItem : NSObject
+
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *details;
+@property (nonatomic, strong) id itemObject;
+@property (nonatomic, assign) BOOL selected;
+
++ (MenusSelectionViewItem *)itemWithMenu:(Menu *)menu;
++ (MenusSelectionViewItem *)itemWithLocation:(MenuLocation *)location;
+
+- (BOOL)isMenu;
+- (BOOL)isMenuLocation;
+
+@end
 
 @protocol MenusSelectionViewDelegate;
 
 @interface MenusSelectionView : UIView
 
-@property (nonatomic, assign) MenuSelectionViewType selectionType;
 @property (nonatomic, weak) id <MenusSelectionViewDelegate> delegate;
 @property (nonatomic, readonly) BOOL selectionExpanded;
 
-- (void)updateItems:(NSArray <MenusSelectionViewItem *> *)items;
+- (void)setAvailableSelectionItems:(NSArray <MenusSelectionViewItem *> *)items;
+- (void)setSelectedItem:(MenusSelectionViewItem *)item;
+
 - (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded animated:(BOOL)animated;
 
 @end
 
 @protocol MenusSelectionViewDelegate <NSObject>
-@optional
 
 // user interaction dictates the selection view should be expanded or not (closed)
 - (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand;
-- (void)selectionView:(MenusSelectionView *)selectionView updatedSelectedItem:(MenusSelectionViewItem *)selectedItem;
+- (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionViewItem *)item;
 
 @end
