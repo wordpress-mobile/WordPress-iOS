@@ -106,6 +106,7 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
                   if (failure) {
                       failure(nil);
                   }
+                  return;
               }
               NSDictionary *jsonDictionary = (NSDictionary *)responseObject;
               RemoteBlogSettings *remoteSettings = [self remoteBlogSettingFromJSONDictionary:jsonDictionary];
@@ -147,14 +148,14 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
                    if (failure) {
                        failure(nil);
                    }
+                   return;
                }
                NSDictionary *jsonDictionary = (NSDictionary *)responseObject;
                if (!jsonDictionary[@"updated"]) {
                    if (failure) {
                        failure(nil);
                    }
-               }
-               if (success) {
+               } else  if (success) {
                    success();
                }
            }
