@@ -93,7 +93,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     
     [asset exportToURL:mediaURL
              targetUTI:assetUTI
-            targetSize:maxImageSize
+     maximumResolution:maxImageSize
       stripGeoLocation:!geoLocationEnabled
         successHandler:^(CGSize resultingSize) {
             [asset exportThumbnailToURL:mediaThumbnailURL
