@@ -159,6 +159,21 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
     NSDictionary *eventProperties;
     
     switch (stat) {
+        case WPAnalyticsStat3DTouchShortcutLogIn:
+            eventName = @"3d_touch_shortcut_log_in";
+            break;
+        case WPAnalyticsStat3DTouchShortcutNewPost:
+            eventName = @"3d_touch_shortcut_new_post";
+            break;
+        case WPAnalyticsStat3DTouchShortcutNotifications:
+            eventName = @"3d_touch_shortcut_notifications";
+            break;
+        case WPAnalyticsStat3DTouchShortcutNewPhotoPost:
+            eventName = @"3d_touch_shortcut_new_photo_post";
+            break;
+        case WPAnalyticsStat3DTouchShortcutStats:
+            eventName = @"3d_touch_shortcut_stats";
+            break;
         case WPAnalyticsStatAddedSelfHostedSite:
             eventName = @"self_hosted_blog_added";
             break;
