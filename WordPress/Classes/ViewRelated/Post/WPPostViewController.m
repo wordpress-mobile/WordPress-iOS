@@ -1824,7 +1824,7 @@ EditImageDetailsViewControllerDelegate
         if (media.mediaType == MediaTypeImage) {
             [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:mediaUniqueID];
         } else if (media.mediaType == MediaTypeVideo) {
-            NSString *posterURL = media.posterImageURL;
+            NSString *posterURL = media.absoluteThumbnailLocalURL;
             [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:posterURL];
         }
         

@@ -64,7 +64,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         mediaType = MediaTypeImage;
         allowedFileTypes = post.blog.allowedFileTypes;
         if (![allowedFileTypes containsObject:extension]) {
-            assetUTI = (__bridge NSString *)kUTTypePNG;
+            assetUTI = (__bridge NSString *)kUTTypeJPEG;
             extension = [self extensionForUTI:assetUTI];
         }
     } else if (asset.mediaType == PHAssetMediaTypeVideo) {
@@ -88,35 +88,46 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     }
     
     NSURL *mediaURL = [self urlForMediaWithFilename:[asset originalFilename] andExtension:extension];
+    NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
+                                                andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
     
     [asset exportToURL:mediaURL
              targetUTI:assetUTI
             targetSize:maxImageSize
       stripGeoLocation:!geoLocationEnabled
         successHandler:^(CGSize resultingSize) {
-            [self.managedObjectContext performBlock:^{
-                
-                AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
-                Media *media = [self newMediaForPost:post];
-                media.filename = [mediaURL lastPathComponent];
-                media.absoluteLocalURL = [mediaURL path];
-                media.absoluteThumbnailLocalURL = [mediaURL path];
-                NSNumber * fileSize;
-                if ([mediaURL getResourceValue:&fileSize forKey:NSURLFileSizeKey error:nil]) {
-                    media.filesize = @([fileSize longLongValue] / 1024);
-                } else {
-                    media.filesize = 0;
-                }
-                media.width = @(resultingSize.width);
-                media.height = @(resultingSize.height);
-                media.mediaType = mediaType;
-                //make sure that we only return when object is properly created and saved
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                    if (completion) {
-                        completion(media, nil);
-                    }
-                }];
-            }];
+            [asset exportThumbnailToURL:mediaThumbnailURL
+                         targetSize:[UIScreen mainScreen].bounds.size
+                     successHandler:^(CGSize thumbnailSize) {
+                         [self.managedObjectContext performBlock:^{
+                             
+                             AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+                             Media *media = [self newMediaForPost:post];
+                             media.filename = [mediaURL lastPathComponent];
+                             media.absoluteLocalURL = [mediaURL path];
+                             media.absoluteThumbnailLocalURL = [mediaThumbnailURL path];
+                             NSNumber * fileSize;
+                             if ([mediaURL getResourceValue:&fileSize forKey:NSURLFileSizeKey error:nil]) {
+                                 media.filesize = @([fileSize longLongValue] / 1024);
+                             } else {
+                                 media.filesize = 0;
+                             }
+                             media.width = @(resultingSize.width);
+                             media.height = @(resultingSize.height);
+                             media.mediaType = mediaType;
+                             //make sure that we only return when object is properly created and saved
+                             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                 if (completion) {
+                                     completion(media, nil);
+                                 }
+                             }];
+                         }];
+                     }
+                       errorHandler:^(NSError *error) {
+                           if (completion){
+                               completion(nil, error);
+                           }
+                       }];
         } errorHandler:^(NSError *error) {
             if (completion){
                 completion(nil, error);
