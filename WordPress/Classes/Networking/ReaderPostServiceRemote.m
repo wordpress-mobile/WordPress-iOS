@@ -7,6 +7,7 @@
 #import "ReaderTopicServiceRemote.h"
 #import "WordPressComApi.h"
 #import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
+#import "WordPress-Swift.h"
 
 // REST Post dictionary keys
 NSString * const PostRESTKeyAttachments = @"attachments";
@@ -243,25 +244,48 @@ static const NSInteger MinutesToReadThreshold = 2;
         post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:PostRESTKeyDiscoverMetadata]];
     }
 
-    NSString *xpostValue = [self xpostValueFromPostDictionary:dict];
-    if (xpostValue) {
-        NSArray *values = [xpostValue componentsSeparatedByString:@":"];
-        post.originSiteID = [values.firstObject numericValue];
-        post.originPostID = [values.lastObject numericValue];
+    RemoteReaderXPostMeta *xpostMeta = [self xpostMetaFromPostDictionary:dict];
+    if (xpostMeta) {
+        post.xpostMeta = xpostMeta;
     }
 
     return post;
 }
 
-- (NSString *)xpostValueFromPostDictionary:(NSDictionary *)dict
+- (RemoteReaderXPostMeta *)xpostMetaFromPostDictionary:(NSDictionary *)dict
 {
+    BOOL xPostMetaFound = NO;
+
+    RemoteReaderXPostMeta *meta = [RemoteReaderXPostMeta new];
+
     NSArray *metadata = [dict arrayForKey:@"metadata"];
     for (NSDictionary *obj in metadata) {
-        if ([[obj stringForKey:@"key"] isEqualToString:@"xpost_origin"]) {
-            return [obj stringForKey:@"value"];
+        if ([[obj stringForKey:@"key"] isEqualToString:@"_xpost_original_permalink"] ||
+            [[obj stringForKey:@"key"] isEqualToString:@"xcomment_original_permalink"]) {
+
+            NSString *path = [obj stringForKey:@"value"];
+            NSURL *url = [NSURL URLWithString:path];
+
+            meta.siteURL = [NSString stringWithFormat:@"%@://%@", url.scheme, url.host];
+            meta.postURL = [NSString stringWithFormat:@"%@/%@", meta.siteURL, url.path];
+            if ([url.fragment hasPrefix:@"comment-"]) {
+                meta.commentURL = [url absoluteString];
+            }
+        } else if ([[obj stringForKey:@"key"] isEqualToString:@"xpost_origin"]) {
+            NSString *value = [obj stringForKey:@"value"];
+            NSArray *IDS = [value componentsSeparatedByString:@":"];
+            meta.siteID = [[IDS firstObject] numericValue];
+            meta.postID = [[IDS lastObject] numericValue];
+
+            xPostMetaFound = YES;
         }
     }
-    return nil;
+
+    if (!xPostMetaFound) {
+        return nil;
+    }
+
+    return meta;
 }
 
 - (NSDictionary *)primaryAndSecondaryTagsFromPostDictionary:(NSDictionary *)dict

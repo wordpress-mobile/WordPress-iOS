@@ -9,6 +9,7 @@
 #import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "WPAvatarSource.h"
+#import "WordPress-Swift.h"
 
 // These keys are used in the getStoredComment method
 NSString * const ReaderPostStoredCommentIDKey = @"commentID";
@@ -32,8 +33,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isReblogged;
 @dynamic isWPCom;
 @dynamic likeCount;
-@dynamic originSiteID;
-@dynamic originPostID;
 @dynamic siteID;
 @dynamic sortDate;
 @dynamic summary;
@@ -52,12 +51,12 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isJetpack;
 @dynamic wordCount;
 @dynamic readingTime;
-// For cross-posts, not reblogs
+@dynamic xpostMeta;
 
 
 - (BOOL)isCrossPost
 {
-    return self.originPostID && self.originSiteID;
+    return self.xpostMeta != nil;
 }
 
 - (BOOL)isPrivate
@@ -276,9 +275,15 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return self.blogURL;
 }
 
-- (NSString *)originSiteURLForDisplay
+- (NSString *)xpostOriginSiteURLForDisplay
 {
-    return self.blogURL;
+    return self.xpostMeta.siteURL;
 }
+
+- (BOOL)isCommentXPost
+{
+    return self.xpostMeta.commentURL != nil;
+}
+
 
 @end
