@@ -9,8 +9,8 @@ static NSString const *BlogRemoteDescriptionKey         = @"description";
 static NSString const *BlogRemoteSettingsKey            = @"settings";
 static NSString const *BlogRemoteDefaultCategoryKey     = @"default_category";
 static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format";
-static NSString * const BlogRemoteDefaultPostFormat = @"standard";
-static NSInteger const BlogRemoteUncategorizedCategory = 1;
+static NSString * const BlogRemoteDefaultPostFormat     = @"standard";
+static NSInteger const BlogRemoteUncategorizedCategory  = 1;
 
 @implementation BlogServiceRemoteREST
 
@@ -130,7 +130,7 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
     
     NSMutableDictionary *parameters = [@{
         @"blogname"             : remoteSettings.name,
-        @"blogdescription"      : remoteSettings.desc,
+        @"blogdescription"      : remoteSettings.tagline,
         @"default_category"     : remoteSettings.defaultCategory,
         @"default_post_format"  : remoteSettings.defaultPostFormat,
         @"blog_public"          : remoteSettings.privacy,
@@ -159,7 +159,7 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
                    if (failure) {
                        failure(nil);
                    }
-               } else  if (success) {
+               } else if (success) {
                    success();
                }
            }
@@ -246,7 +246,7 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
     
     // General
     settings.name = [json stringForKey:BlogRemoteNameKey];
-    settings.desc = [json stringForKey:BlogRemoteDescriptionKey];
+    settings.tagline = [json stringForKey:BlogRemoteDescriptionKey];
     settings.privacy = [rawSettings numberForKey:@"blog_public"];
     
     // Writing

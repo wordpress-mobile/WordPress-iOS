@@ -756,7 +756,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (void)updateBlog:(Blog *)blog settingsWithRemoteSettings:(RemoteBlogSettings *)remoteSettings
 {
     blog.blogName = remoteSettings.name;
-    blog.blogTagline = remoteSettings.desc;
+    blog.blogTagline = remoteSettings.tagline;
     if (remoteSettings.defaultCategory) {
         blog.defaultCategoryID = remoteSettings.defaultCategory;
     }
@@ -767,26 +767,28 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         blog.siteVisibility = (SiteVisibility)[remoteSettings.privacy integerValue];
     }
 
-    blog.relatedPostsAllowed = remoteSettings.relatedPostsAllowed;
-    blog.relatedPostsEnabled = remoteSettings.relatedPostsEnabled;
-    blog.relatedPostsShowHeadline = remoteSettings.relatedPostsShowHeadline;
-    blog.relatedPostsShowThumbnails = remoteSettings.relatedPostsShowThumbnails;
+    BlogSettings *settings = blog.settings;
+    settings.relatedPostsAllowed = remoteSettings.relatedPostsAllowed;
+    settings.relatedPostsEnabled = remoteSettings.relatedPostsEnabled;
+    settings.relatedPostsShowHeadline = remoteSettings.relatedPostsShowHeadline;
+    settings.relatedPostsShowThumbnails = remoteSettings.relatedPostsShowThumbnails;
 }
 
 
 -(RemoteBlogSettings *)remoteBlogSettingFromBlog:(Blog *)blog
 {
-    RemoteBlogSettings *remoteBlogSettings = [[RemoteBlogSettings alloc] init];
+    BlogSettings *localBlogSettings = blog.settings;
+    RemoteBlogSettings *remoteBlogSettings = [RemoteBlogSettings new];
     
     remoteBlogSettings.name = blog.blogName;
-    remoteBlogSettings.desc = blog.blogTagline;
+    remoteBlogSettings.tagline = blog.blogTagline;
     remoteBlogSettings.defaultCategory = blog.defaultCategoryID;
     remoteBlogSettings.defaultPostFormat = blog.defaultPostFormat;
     remoteBlogSettings.privacy = @(blog.siteVisibility);
-    remoteBlogSettings.relatedPostsAllowed = blog.relatedPostsAllowed;
-    remoteBlogSettings.relatedPostsEnabled = blog.relatedPostsEnabled;
-    remoteBlogSettings.relatedPostsShowHeadline = blog.relatedPostsShowHeadline;
-    remoteBlogSettings.relatedPostsShowThumbnails = blog.relatedPostsShowThumbnails;
+    remoteBlogSettings.relatedPostsAllowed = @(localBlogSettings.relatedPostsAllowed);
+    remoteBlogSettings.relatedPostsEnabled = @(localBlogSettings.relatedPostsEnabled);
+    remoteBlogSettings.relatedPostsShowHeadline = @(localBlogSettings.relatedPostsShowHeadline);
+    remoteBlogSettings.relatedPostsShowThumbnails = @(localBlogSettings.relatedPostsShowThumbnails);
     
     return remoteBlogSettings;
 }
