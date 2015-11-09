@@ -113,6 +113,7 @@ static NSString * const MenusSelectionViewItemChangedSelectedNotification = @"Me
         _drawsHighlighted = drawsHighlighted;
         
         self.previousItemView.drawsDesignLineSeparator = !drawsHighlighted;
+        self.nextItemView.drawsDesignLineSeparator = !drawsHighlighted;
         [self setNeedsDisplay];
     }
 }
@@ -139,13 +140,23 @@ static NSString * const MenusSelectionViewItemChangedSelectedNotification = @"Me
         [[WPStyleGuide greyLighten30] set];
         CGContextFillRect(context, rect);
         
-    }else if(self.drawsDesignLineSeparator && self.nextItemView) {
+    }else if(self.drawsDesignLineSeparator && (self.nextItemView || self.previousItemView)) {
         
         // draw the line separator
-        CGContextSetLineWidth(context, 1.5);
-        // should probably draw this on the top and bottom instead
-        CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, rect.size.height);
-        CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+        CGContextSetLineWidth(context, 1.0);
+        
+        if(self.previousItemView) {
+            // draw a line on the top
+            CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, 0);
+            CGContextAddLineToPoint(context, rect.size.width, 0);
+        }
+        
+        if(self.nextItemView) {
+            // draw a line on the bottom
+            CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, rect.size.height);
+            CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+        }
+        
         CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
         CGContextStrokePath(context);
     }
