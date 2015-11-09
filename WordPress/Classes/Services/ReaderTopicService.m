@@ -219,8 +219,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)unfollowTag:(ReaderTagTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    NSString *slug = topic.slug;
-
     // Optimistically unfollow the topic
     topic.following = NO;
     if (!topic.isRecommended) {
@@ -230,9 +228,19 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
 
-    // Now do it for realz.
-    NSDictionary *properties = @{@"tag":topic.slug};
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
+    NSString *slug = topic.slug;
+    if (!slug) {
+        // Fallback. It *shouldn't* happen, but we've had a couple of crash reports
+        // indicating a topic slug was nil.
+        // Theory is the slug is missing from the REST API resutls for some reason.
+        // Create a slug from the topic title as a fallback.
+        slug = [remoteService slugForTopicName:topic.title];
+    }
+
+    // Now do it for realz.
+    NSDictionary *properties = @{@"tag":slug};
+
     [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID) {
         [WPAnalytics track:WPAnalyticsStatReaderTagUnfollowed withProperties:properties];
         if (success) {

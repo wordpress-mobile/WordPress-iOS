@@ -83,6 +83,9 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             return;
         }
         [service followSiteWithID:siteID success:^(){
+            if (success) {
+                success();
+            }
             [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed];
         } failure:failure];
 
@@ -105,6 +108,9 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
     [service unfollowSiteWithID:siteID success:^(){
+        if (success) {
+            success();
+        }
         [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed];
     } failure:failure];
 }
@@ -135,6 +141,9 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             return;
         }
         [service followSiteAtURL:sanitizedURL success:^(){
+            if (success) {
+                success();
+            }
             [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed];
         } failure:failure];
     } failure:^(NSError *error) {
@@ -156,6 +165,9 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:[self apiForRequest]];
     [service unfollowSiteAtURL:siteURL success:^(){
+        if (success) {
+            success();
+        }
         [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed];
     } failure:failure];
 }
