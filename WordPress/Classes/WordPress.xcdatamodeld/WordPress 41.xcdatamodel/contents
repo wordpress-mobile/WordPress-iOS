@@ -72,13 +72,7 @@
         <attribute name="blogID" attributeType="Integer 32" defaultValueString="0">
             <userInfo/>
         </attribute>
-        <attribute name="blogName" optional="YES" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="blogTagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="defaultCategoryID" optional="YES" attributeType="Integer 32" defaultValueString="1" syncable="YES"/>
-        <attribute name="defaultPostFormat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
@@ -112,7 +106,6 @@
         <attribute name="postFormats" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
-        <attribute name="privacy" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="relatedPostsAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="relatedPostsEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="relatedPostsShowHeadline" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -147,7 +140,6 @@
         <userInfo/>
     </entity>
     <entity name="BlogSettings" representedClassName=".BlogSettings" syncable="YES">
-        <attribute name="blogID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="commentsAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="commentsCloseAutomatically" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="commentsCloseAutomaticallyAfterDays" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -159,12 +151,17 @@
         <attribute name="commentsSortOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="commentsThreadingDepth" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="commentsThreadingEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="defaultCategoryID" optional="YES" attributeType="Integer 32" defaultValueString="1" syncable="YES"/>
+        <attribute name="defaultPostFormat" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pingbackInboundEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="pingbackOutboundEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="privacy" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="relatedPostsAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="relatedPostsEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="relatedPostsShowHeadline" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="relatedPostsShowThumbnails" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="settings" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <entity name="Category" representedClassName="PostCategory">
@@ -476,8 +473,8 @@
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="645"/>
-        <element name="BlogSettings" positionX="27" positionY="162" width="128" height="330"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="570"/>
+        <element name="BlogSettings" positionX="27" positionY="162" width="128" height="390"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="375"/>
