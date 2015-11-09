@@ -14,6 +14,8 @@ public class ReaderXPostCell: UITableViewCell
 
     public weak var contentProvider: ReaderPostContentProvider?
 
+    let blavatarPlaceholder = "post-blavatar-placeholder"
+    let xPostTitlePrefix = "X-post: "
 
     // MARK: - Accessors
 
@@ -129,7 +131,7 @@ public class ReaderXPostCell: UITableViewCell
         // Always reset
         blavatarImageView.image = nil
 
-        let placeholder = UIImage(named: "post-blavatar-placeholder")
+        let placeholder = UIImage(named: blavatarPlaceholder)
 
         let size = blavatarImageView.frame.size.width * UIScreen.mainScreen().scale
         let url = contentProvider?.siteIconForDisplayOfSize(Int(size))
@@ -144,7 +146,7 @@ public class ReaderXPostCell: UITableViewCell
         // Always reset
         avatarImageView.image = nil
 
-        let placeholder = UIImage(named: "post-blavatar-placeholder")
+        let placeholder = UIImage(named: blavatarPlaceholder)
 
 //        let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
 //        // TODO: Size the image?
@@ -160,10 +162,9 @@ public class ReaderXPostCell: UITableViewCell
     private func configureLabel() {
 
         // Compose the title.
-        let xpostStr = "X-post: "
         var title = contentProvider!.titleForDisplay()
-        if title.containsString(xpostStr) {
-            title = title?.componentsSeparatedByString(xpostStr).last
+        if title.containsString(xPostTitlePrefix) {
+            title = title?.componentsSeparatedByString(xPostTitlePrefix).last
         }
         let titleAttributes = WPStyleGuide.readerXpostTitleAttributes() as! [String:AnyObject]
         let attrText = NSMutableAttributedString(string: "\(title)\n", attributes: titleAttributes)
@@ -171,7 +172,6 @@ public class ReaderXPostCell: UITableViewCell
         // Compose the subtitle
         let commentTemplate = NSLocalizedString("%@ left a comment on %@, cross-posted to %@", comment: "")
         let siteTemplate = NSLocalizedString("%@ cross-posted from %@ to %@", comment: "")
-
         let template = contentProvider!.isCommentXPost() ? commentTemplate : siteTemplate;
 
         let authorName = contentProvider!.authorForDisplay()
@@ -183,6 +183,7 @@ public class ReaderXPostCell: UITableViewCell
         let subtitleAttributes = WPStyleGuide.readerXpostSubtitleAttributes() as! [String:AnyObject]
         let attrSubtitle = NSAttributedString(string: subtitle, attributes: subtitleAttributes)
 
+        // Add the subtitle to the attributed text
         attrText.appendAttributedString(attrSubtitle)
 
         label.attributedText = attrText
