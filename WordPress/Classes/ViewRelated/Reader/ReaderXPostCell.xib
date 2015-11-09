@@ -16,6 +16,11 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wqw-Gu-5jd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5pB-wb-r4Y">
+                                <rect key="frame" x="0.0" y="8" width="320" height="48"/>
+                                <animations/>
+                                <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aMb-Gb-gWp">
                                 <rect key="frame" x="16" y="16" width="288" height="32"/>
                                 <subviews>
@@ -63,8 +68,12 @@
                         <animations/>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="5pB-wb-r4Y" firstAttribute="leading" secondItem="Wqw-Gu-5jd" secondAttribute="leading" id="1mR-8q-8m8"/>
                             <constraint firstAttribute="trailing" secondItem="aMb-Gb-gWp" secondAttribute="trailing" constant="16" id="5Mg-HZ-5Ap"/>
                             <constraint firstAttribute="bottom" secondItem="aMb-Gb-gWp" secondAttribute="bottom" constant="16" id="6Tc-9F-I3U"/>
+                            <constraint firstItem="5pB-wb-r4Y" firstAttribute="top" secondItem="Wqw-Gu-5jd" secondAttribute="top" constant="8" id="H4E-fW-Oib"/>
+                            <constraint firstAttribute="bottom" secondItem="5pB-wb-r4Y" secondAttribute="bottom" constant="8" id="SFB-Cd-DLa"/>
+                            <constraint firstAttribute="trailing" secondItem="5pB-wb-r4Y" secondAttribute="trailing" id="aSj-nA-n8O"/>
                             <constraint firstAttribute="width" constant="600" id="dqo-df-thU"/>
                             <constraint firstItem="aMb-Gb-gWp" firstAttribute="top" secondItem="Wqw-Gu-5jd" secondAttribute="top" constant="16" id="epM-bd-P7k"/>
                             <constraint firstItem="aMb-Gb-gWp" firstAttribute="leading" secondItem="Wqw-Gu-5jd" secondAttribute="leading" constant="16" id="qQY-I7-eZS"/>
@@ -106,6 +115,7 @@
             <connections>
                 <outlet property="avatarImageView" destination="HKf-84-9ay" id="tZr-P9-JcR"/>
                 <outlet property="blavatarImageView" destination="odD-xS-y0M" id="pyw-35-X8J"/>
+                <outlet property="cardBorderView" destination="5pB-wb-r4Y" id="QsS-tT-fYu"/>
                 <outlet property="cardContentView" destination="aMb-Gb-gWp" id="LFh-y4-Yvu"/>
                 <outlet property="innerContentView" destination="Wqw-Gu-5jd" id="dWh-g2-pcc"/>
                 <outlet property="label" destination="u3R-Xf-UYr" id="Tup-Hs-InL"/>

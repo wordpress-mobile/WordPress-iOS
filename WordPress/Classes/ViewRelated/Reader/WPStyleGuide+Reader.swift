@@ -65,9 +65,25 @@ extension WPStyleGuide
         ]
     }
 
+    public class func readerXpostBoldSubtitleAttributes() -> [NSObject: AnyObject] {
+        let fontSize = Cards.xPostSubtitleFontSize
+        let font = WPFontManager.openSansBoldFontOfSize(fontSize)
+
+        let lineHeight = Cards.xPostLineHeight
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = lineHeight
+        paragraphStyle.maximumLineHeight = lineHeight
+
+        return [
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: grey()
+        ]
+    }
+
     public class func readerXpostSubtitleAttributes() -> [NSObject: AnyObject] {
         let fontSize = Cards.xPostSubtitleFontSize
-        let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
+        let font = WPFontManager.openSansRegularFontOfSize(fontSize)
 
         let lineHeight = Cards.xPostLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
