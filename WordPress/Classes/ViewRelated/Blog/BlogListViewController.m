@@ -584,9 +584,9 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 {
     [self setEditing:NO animated:NO];
     
-    CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
-    UINavigationController *createAccountNavigationController = [[UINavigationController alloc] initWithRootViewController:createNewBlogViewController];
-    [self.navigationController presentViewController:createAccountNavigationController animated:YES completion:nil];
+    UIStoryboard *createNewBlogStoryboard = [UIStoryboard storyboardWithName:@"CreateNewBlog" bundle:nil];
+    CreateNewBlogViewController *createNewBlogViewController = [createNewBlogStoryboard instantiateViewControllerWithIdentifier:@"CreateNewBlogViewController"];
+    [self.navigationController presentViewController:createNewBlogViewController animated:YES completion:nil];
 }
 
 - (void)showLoginControllerForAddingSelfHostedSite
