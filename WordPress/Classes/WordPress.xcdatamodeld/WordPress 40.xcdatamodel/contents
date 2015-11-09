@@ -378,8 +378,6 @@
         <attribute name="isSiteBlocked" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="isWPCom" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="likeCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="originPostID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="originSiteID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="postAvatar" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="primaryTag" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="primaryTagSlug" optional="YES" attributeType="String" syncable="YES"/>
@@ -392,6 +390,7 @@
         <attribute name="wordCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="sourceAttribution" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePostAttribution" inverseName="post" inverseEntity="SourcePostAttribution" syncable="YES"/>
         <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderAbstractTopic" inverseName="posts" inverseEntity="ReaderAbstractTopic" syncable="YES"/>
+        <relationship name="xpostMeta" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ReaderXPostMeta" inverseName="post" inverseEntity="ReaderXPostMeta" syncable="YES"/>
     </entity>
     <entity name="ReaderSite" representedClassName="ReaderSite" syncable="YES">
         <attribute name="feedID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -419,6 +418,14 @@
         <attribute name="isRecommended" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="ReaderXPostMeta" representedClassName="WordPress.ReaderXPostMeta" syncable="YES">
+        <attribute name="commentURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="postURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="siteID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="siteURL" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="post" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="xpostMeta" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="SourcePostAttribution" representedClassName="SourcePostAttribution" syncable="YES">
         <attribute name="attributionType" optional="YES" attributeType="String" syncable="YES"/>
@@ -470,11 +477,12 @@
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
         <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="585"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="570"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="285"/>
+        <element name="ReaderXPostMeta" positionX="18" positionY="153" width="128" height="30"/>
     </elements>
 </model>

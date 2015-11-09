@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 @class RemoteSourcePostAttribution;
+@class RemoteReaderXPostMeta;
 
 @interface RemoteReaderPost : NSObject
 
@@ -23,8 +24,6 @@
 @property (nonatomic) BOOL isReblogged;
 @property (nonatomic) BOOL isWPCom;
 @property (nonatomic, strong) NSNumber *likeCount;
-@property (nonatomic, strong) NSNumber *originPostID;
-@property (nonatomic, strong) NSNumber *originSiteID;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSString *sortDate;
 @property (nonatomic, strong) NSString *summary;
@@ -32,6 +31,7 @@
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
 @property (nonatomic, strong) RemoteSourcePostAttribution *sourceAttribution;
+@property (nonatomic, strong) RemoteReaderXPostMeta *xpostMeta;
 
 @property (nonatomic, strong) NSString *primaryTag;
 @property (nonatomic, strong) NSString *primaryTagSlug;
@@ -50,5 +50,6 @@
 @property (nonatomic, strong) NSNumber *postID;
 @property (nonatomic, strong) NSString *postTitle;
 @property (nonatomic, strong) NSString *status;
+
 
 @end

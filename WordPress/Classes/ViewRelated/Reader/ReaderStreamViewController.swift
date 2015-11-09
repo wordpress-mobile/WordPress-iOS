@@ -1132,7 +1132,7 @@ import Foundation
             controller = ReaderPostDetailViewController.detailControllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
 
         } else if post.isCrossPost() {
-            controller = ReaderPostDetailViewController.detailControllerWithPostID(post.originPostID!, siteID: post.originSiteID!)
+            controller = ReaderPostDetailViewController.detailControllerWithPostID(post.xpostMeta.postID, siteID: post.xpostMeta.siteID)
 
         } else {
             post = postInMainContext(post)!
