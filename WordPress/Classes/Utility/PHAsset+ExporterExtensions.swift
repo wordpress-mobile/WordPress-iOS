@@ -89,7 +89,7 @@ extension PHAsset {
         }
     }
     
-    private func exportVideoToURL(url: NSURL,
+    func exportVideoToURL(url: NSURL,
         targetUTI: String,
         targetSize:CGSize,
         stripGeoLocation:Bool,
@@ -122,9 +122,54 @@ extension PHAsset {
                             }
                             return;
                         }
-                        successHandler(resultingSize: targetSize)
+                        //dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            successHandler(resultingSize: targetSize)
+                        //})
+                        
                     })
             }
+    }
+    
+    func exportThumbnailToURL(url: NSURL,
+        targetSize:CGSize,
+        successHandler: SuccessHandler,
+        errorHandler: ErrorHandler) {
+            let options = PHImageRequestOptions()
+            options.version = .Current
+            options.deliveryMode = .HighQualityFormat
+            options.resizeMode = .Fast
+            options.synchronous = false
+            options.networkAccessAllowed = true
+            var requestedSize = targetSize
+            if (requestedSize == CGSize.zero) {
+                requestedSize = PHImageManagerMaximumSize
+            }
+            let targetUTI = defaultThumbnailUTI
+            PHImageManager.defaultManager().requestImageForAsset(self, targetSize: requestedSize, contentMode: .AspectFit, options: options) { (image, info) -> Void in
+                guard let image = image
+                else {
+                    if let error = info?[PHImageErrorKey] as? NSError {
+                        errorHandler(error: error)
+                    } else {
+                        errorHandler(error: self.errorForCode(.FailedToExport,
+                            failureReason: NSLocalizedString("Unknown asset export error", comment: "Error reason to display when the export of a image from device library fails")
+                            ))
+                    }
+                    return
+                }
+                do {
+                    try image.writeToURL(url, type: targetUTI, compressionQuality: 0.9, metadata: nil)
+                    successHandler(resultingSize: image.size)
+                } catch let error as NSError {
+                    errorHandler(error: error)
+                }
+            }
+    }
+    
+    var defaultThumbnailUTI: String {
+        get {
+            return kUTTypeJPEG as String
+        }
     }
     
     // MARK: - Error Handling
