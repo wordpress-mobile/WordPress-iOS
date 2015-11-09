@@ -6,12 +6,17 @@ data model as well as any custom migrations.
 ## WordPress 41 (@jleandroperez 2015-11-06)
 
 Changes to the data model:
-- Added new entity: `BlogSettings`, to encapsulate all of the Blog Settings.
-- `Blog` has now a new relationship mapped to a single `BlogSettings` instance.
-- `Blog` loses the `relatedPostsAllowed` attribute.
-- `Blog` loses the `relatedPostsEnabled` attribute.
-- `Blog` loses the `relatedPostsShowHeadline` attribute.
-- `Blog` loses the `relatedPostsShowThumbnails` attribute.
+- Added new entity: `BlogSettings`, to encapsulate all of the Blog Settings
+- `Blog` has now a new one-to-one relationship mapping to  `BlogSettings`
+- Migrated the attribute `Blog.blogName` over to `BlogSettings.name`
+- Migrated the attribute `Blog.blogTagline` over to `BlogSettings.tagline`
+- Migrated the attribute `Blog.defaultCategoryID` over to `BlogSettings.defaultCategoryID`
+- Migrated the attribute `Blog.defaultPostFormat` over to `BlogSettings.defaultPostFormat`
+- Migrated the attribute `Blog.privacy` over to `BlogSettings.privacy`
+- Migrated the attribute `Blog.relatedPostsAllowed` over to `BlogSettings.relatedPostsAllowed`
+- Migrated the attribute `Blog.relatedPostsEnabled` over to `BlogSettings.relatedPostsEnabled`
+- Migrated the attribute `Blog.relatedPostsShowHeadline` over to `BlogSettings.relatedPostsShowHeadline`
+- Migrated the attribute `Blog.relatedPostsShowThumbnails` over to `BlogSettings.relatedPostsShowThumbnails`
 
 ## WordPress 40 (@alexcurylo 2015-10-14)
 
