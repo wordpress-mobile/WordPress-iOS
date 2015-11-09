@@ -234,7 +234,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
         [remote syncSettingsForBlogID:blog.blogID success:^(RemoteBlogSettings *settings) {
             [self.managedObjectContext performBlock:^{
-                [self updateBlog:blogInContext settingsWithRemoteSettings:settings];
+                [self updateSettings:blogInContext.settings remoteSettings:settings];
                 [self.managedObjectContext save:nil];
                 if (success) {
                     success();
@@ -253,7 +253,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [self.managedObjectContext performBlock:^{
         Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
-        [remote updateBlogSettings:[self remoteBlogSettingFromBlog:blogInContext]
+        [remote updateBlogSettings:[self remoteSettingFromSettings:blogInContext.settings]
                          forBlogID:blogInContext.blogID
                            success:^() {
                                [self.managedObjectContext performBlock:^{
@@ -753,21 +753,42 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return timeZone;
 }
 
-- (void)updateBlog:(Blog *)blog settingsWithRemoteSettings:(RemoteBlogSettings *)remoteSettings
+- (void)updateSettings:(BlogSettings *)settings remoteSettings:(RemoteBlogSettings *)remoteSettings
 {
-    blog.blogName = remoteSettings.name;
-    blog.blogTagline = remoteSettings.tagline;
-    if (remoteSettings.defaultCategory) {
-        blog.defaultCategoryID = remoteSettings.defaultCategory;
-    }
-    if (remoteSettings.defaultPostFormat) {
-        blog.defaultPostFormat = remoteSettings.defaultPostFormat;
-    }
-    if (remoteSettings.privacy) {
-        blog.siteVisibility = (SiteVisibility)[remoteSettings.privacy integerValue];
-    }
+    NSParameterAssert(settings);
+    NSParameterAssert(remoteSettings);
+    
+    // General
+    settings.name = remoteSettings.name;
+    settings.tagline = remoteSettings.tagline;
+    settings.privacy = remoteSettings.privacy ?: settings.privacy;
+    
+    // Writing
+    settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;
+    settings.defaultPostFormat = remoteSettings.defaultPostFormat ?: settings.defaultPostFormat;
 
-    BlogSettings *settings = blog.settings;
+    // Discussion
+    settings.commentsAllowed = remoteSettings.commentsAllowed;
+    settings.commentsCloseAutomatically = remoteSettings.commentsCloseAutomatically;
+    settings.commentsCloseAutomaticallyAfterDays = remoteSettings.commentsCloseAutomaticallyAfterDays;
+    
+    settings.commentsPagingEnabled = remoteSettings.commentsPagingEnabled;
+    settings.commentsPageSize = remoteSettings.commentsPageSize;
+    
+    settings.commentsRequireManualModeration = remoteSettings.commentsRequireManualModeration;
+    settings.commentsRequireNameAndEmail = remoteSettings.commentsRequireNameAndEmail;
+    settings.commentsRequireRegistration = remoteSettings.commentsRequireRegistration;
+    
+    settings.commentsSortOrder = remoteSettings.commentsSortOrder;
+    
+    settings.commentsThreadingDepth = remoteSettings.commentsThreadingDepth;
+    settings.commentsThreadingEnabled = remoteSettings.commentsThreadingEnabled;
+    
+    settings.pingbackInboundEnabled = remoteSettings.pingbackInboundEnabled;
+    settings.pingbackOutboundEnabled = remoteSettings.pingbackOutboundEnabled;
+
+    
+    // Related Posts
     settings.relatedPostsAllowed = remoteSettings.relatedPostsAllowed;
     settings.relatedPostsEnabled = remoteSettings.relatedPostsEnabled;
     settings.relatedPostsShowHeadline = remoteSettings.relatedPostsShowHeadline;
@@ -775,21 +796,46 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 
--(RemoteBlogSettings *)remoteBlogSettingFromBlog:(Blog *)blog
+- (RemoteBlogSettings *)remoteSettingFromSettings:(BlogSettings *)settings
 {
-    BlogSettings *localBlogSettings = blog.settings;
-    RemoteBlogSettings *remoteBlogSettings = [RemoteBlogSettings new];
+    NSParameterAssert(settings);
+    RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
     
-    remoteBlogSettings.name = blog.blogName;
-    remoteBlogSettings.tagline = blog.blogTagline;
-    remoteBlogSettings.defaultCategory = blog.defaultCategoryID;
-    remoteBlogSettings.defaultPostFormat = blog.defaultPostFormat;
-    remoteBlogSettings.privacy = @(blog.siteVisibility);
-    remoteBlogSettings.relatedPostsAllowed = @(localBlogSettings.relatedPostsAllowed);
-    remoteBlogSettings.relatedPostsEnabled = @(localBlogSettings.relatedPostsEnabled);
-    remoteBlogSettings.relatedPostsShowHeadline = @(localBlogSettings.relatedPostsShowHeadline);
-    remoteBlogSettings.relatedPostsShowThumbnails = @(localBlogSettings.relatedPostsShowThumbnails);
+    // General
+    remoteSettings.name = settings.name;
+    remoteSettings.tagline = settings.tagline;
+    remoteSettings.privacy = settings.privacy;
     
-    return remoteBlogSettings;
+    // Writing
+    remoteSettings.defaultCategoryID = settings.defaultCategoryID;
+    remoteSettings.defaultPostFormat = settings.defaultPostFormat;
+
+    // Discussion
+    remoteSettings.commentsAllowed = settings.commentsAllowed;
+    remoteSettings.commentsCloseAutomatically = settings.commentsCloseAutomatically;
+    remoteSettings.commentsCloseAutomaticallyAfterDays = settings.commentsCloseAutomaticallyAfterDays;
+    
+    remoteSettings.commentsPagingEnabled = settings.commentsPagingEnabled;
+    remoteSettings.commentsPageSize = settings.commentsPageSize;
+    
+    remoteSettings.commentsRequireManualModeration = settings.commentsRequireManualModeration;
+    remoteSettings.commentsRequireNameAndEmail = settings.commentsRequireNameAndEmail;
+    remoteSettings.commentsRequireRegistration = settings.commentsRequireRegistration;
+    
+    remoteSettings.commentsSortOrder = settings.commentsSortOrder;
+    
+    remoteSettings.commentsThreadingDepth = settings.commentsThreadingDepth;
+    remoteSettings.commentsThreadingEnabled = settings.commentsThreadingEnabled;
+    
+    remoteSettings.pingbackInboundEnabled = settings.pingbackInboundEnabled;
+    remoteSettings.pingbackOutboundEnabled = settings.pingbackOutboundEnabled;
+    
+    // Related Posts
+    remoteSettings.relatedPostsAllowed = settings.relatedPostsAllowed;
+    remoteSettings.relatedPostsEnabled = settings.relatedPostsEnabled;
+    remoteSettings.relatedPostsShowHeadline = settings.relatedPostsShowHeadline;
+    remoteSettings.relatedPostsShowThumbnails = settings.relatedPostsShowThumbnails;
+    
+    return remoteSettings;
 }
 @end

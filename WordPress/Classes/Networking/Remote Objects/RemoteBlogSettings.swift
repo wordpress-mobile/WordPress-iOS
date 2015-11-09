@@ -1,40 +1,136 @@
 import Foundation
 
 
+/**
+ *  @class           RemoteBlogSettings
+ *  @brief           This class encapsulates all of the *remote* settings available for a Blog entity
+ */
 public class RemoteBlogSettings : NSObject
 {
     // MARK: - General
-    var name                                : String!
-    var tagline                             : String!
-    var privacy                             : NSNumber!
-
+    
+    /**
+    *  @details Represents the Blog Name.
+    */
+    var name : String?
+    
+    /**
+     *  @details Stores the Blog's Tagline setting.
+     */
+    var tagline : String?
+    
+    /**
+     *  @details Stores the Blog's Privacy Preferences Settings
+     */
+    var privacy : NSNumber?
+    
+    
+    
     // MARK: - Writing
-    var defaultCategory                     : NSNumber!
-    var defaultPostFormat                   : String!
-
+    /**
+    *  @details Contains the Default Category ID. Used when creating new posts.
+    */
+    
+    var defaultCategoryID : NSNumber?
+    
+    /**
+     *  @details Contains the Default Post Format. Used when creating new posts.
+     */
+    var defaultPostFormat : String?
+    
+    
+    
     // MARK: - Discussion
-    var commentsAllowed                     : NSNumber!
-    var commentsCloseAutomatically          : NSNumber!
-    var commentsCloseAutomaticallyAfterDays : NSNumber!
     
-    var commentsPagingEnabled               : NSNumber!
-    var commentsPageSize                    : NSNumber!
+    /**
+    *  @details Represents whether comments are allowed, or not.
+    */
+    var commentsAllowed : NSNumber?
     
-    var commentsRequireManualModeration     : NSNumber!
-    var commentsRequireNameAndEmail         : NSNumber!
-    var commentsRequireRegistration         : NSNumber!
+    /**
+     *  @details If true, comments will be automatically closed after the number of days, specified
+     *           by `commentsCloseAutomaticallyAfterDays`.
+     */
+    var commentsCloseAutomatically : NSNumber?
     
-    var commentsSortOrder                   : String!
+    /**
+     *  @details Represents the number of days comments will be enabled, granted that the
+     *           `commentsCloseAutomatically` property is set to true.
+     */
+    var commentsCloseAutomaticallyAfterDays : NSNumber?
     
-    var commentsThreadingEnabled            : NSNumber!
-    var commentsThreadingDepth              : NSNumber!
+    /**
+     *  @details If true, comment pagination will be enabled.
+     */
+    var commentsPagingEnabled : NSNumber?
     
-    var pingbacksOutboundEnabled            : NSNumber!
-    var pingbacksInboundEnabled             : NSNumber!
+    /**
+     *  @details Specifies the number of comments per page. This will be used only if the property
+     *           `commentsPagingEnabled` is set to true.
+     */
+    var commentsPageSize : NSNumber?
+    
+    /**
+     *  @details When enabled, new comments will require Manual Moderation, before showing up.
+     */
+    var commentsRequireManualModeration : NSNumber?
+    
+    /**
+     *  @details If set to true, commenters will be required to enter their name and email.
+     */
+    var commentsRequireNameAndEmail : NSNumber?
+    
+    /**
+     *  @details Specifies whether commenters should be registered or not.
+     */
+    var commentsRequireRegistration : NSNumber?
+    
+    /**
+     *  @details Indicates the sorting order of the comments. Ascending / Descending, based on the date.
+     */
+    var commentsSortOrder : NSNumber?
+    
+    /**
+     *  @details Indicates the number of levels allowed per comment.
+     */
+    var commentsThreadingDepth : NSNumber?
+    
+    /**
+     *  @details When enabled, comment threading will be supported.
+     */
+    var commentsThreadingEnabled : NSNumber?
+    
+    /**
+     *  @details If set to true, 3rd party sites will be allowed to post pingbacks.
+     */
+    var pingbackInboundEnabled : NSNumber?
+    
+    /**
+     *  @details When Outbound Pingbacks are enabled, 3rd party sites that get linked will be notified.
+     */
+    var pingbackOutboundEnabled : NSNumber?
+    
+    
     
     // MARK: - Related Posts
-    var relatedPostsAllowed                 : NSNumber!
-    var relatedPostsEnabled                 : NSNumber!
-    var relatedPostsShowHeadline            : NSNumber!
-    var relatedPostsShowThumbnails          : NSNumber!
+    
+    /**
+    *  @details When set to true, Related Posts will be allowed.
+    */
+    var relatedPostsAllowed : NSNumber?
+    
+    /**
+     *  @details When set to true, Related Posts will be enabled.
+     */
+    var relatedPostsEnabled : NSNumber?
+    
+    /**
+     *  @details Indicates whether related posts should show a headline.
+     */
+    var relatedPostsShowHeadline : NSNumber?
+    
+    /**
+     *  @details Indicates whether related posts should show thumbnails.
+     */
+    var relatedPostsShowThumbnails : NSNumber?
 }
