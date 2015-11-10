@@ -2,7 +2,7 @@
 
 // System & libraries
 #import <QuartzCore/QuartzCore.h>
-#import <WordPress_iOS_Shared/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 
 // Internal
 #import "WPGUIConstants.h"

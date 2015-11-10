@@ -1,6 +1,7 @@
 #import "ReaderCommentsViewController.h"
 
-#import <WordPress_iOS_Shared/UIImage+Util.h>
+#import <WordPressShared/UIImage+Util.h>
+#import <DTCoreText/DTCoreText.h>
 
 #import "Comment.h"
 #import "CommentContentView.h"

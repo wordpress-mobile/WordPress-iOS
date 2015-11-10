@@ -1,4 +1,5 @@
 import Foundation
+import WordPressComAnalytics
 
 public class ReaderHelpers {
 

@@ -15,8 +15,8 @@
     #import <AFNetworking/AFNetworking.h>
 	#import <CocoaLumberjack/CocoaLumberjack.h>
     #import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
-    #import <WordPressCom_Analytics_iOS/WPAnalytics.h>
-    #import <WordPress_iOS_Shared/WPStyleGuide.h>
+    #import <WordPressComAnalytics/WPAnalytics.h>
+    #import <WordPressShared/WPStyleGuide.h>
 
 	// Project-specific
     #import "WPStyleGuide+ReadableMargins.h"

@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-
+import WordPressComAnalytics
 
 /**
 *  @class           PushAuthenticationManager

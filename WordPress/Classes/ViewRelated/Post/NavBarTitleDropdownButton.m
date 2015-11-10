@@ -1,5 +1,5 @@
 #import "NavBarTitleDropdownButton.h"
-#import <WordPress_iOS_Shared/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 
 @implementation NavBarTitleDropdownButton
 
