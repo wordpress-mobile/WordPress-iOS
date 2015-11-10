@@ -74,7 +74,8 @@ PODS:
   - KIF/Core (3.3.0)
   - KIF/IdentifierTests (3.3.0):
     - KIF/Core
-  - Lookback (0.9.2)
+  - Lookback (1.1.4):
+    - PDKTZipArchive
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.8.2):
     - Mixpanel/Mixpanel (= 2.8.2)
@@ -117,6 +118,7 @@ PODS:
   - NSURL+IDN (0.3)
   - OCMock (3.1.2)
   - OHHTTPStubs (1.1.1)
+  - PDKTZipArchive (0.3.5)
   - Reachability (3.1.1)
   - ReactiveCocoa (2.4.7):
     - ReactiveCocoa/UI (= 2.4.7)
@@ -152,7 +154,7 @@ PODS:
     - AFNetworking (~> 2.6.0)
     - wpxmlrpc (~> 0.7)
   - WordPressCom-Analytics-iOS (0.0.39)
-  - WordPressCom-Stats-iOS (0.4.8):
+  - WordPressCom-Stats-iOS (0.4.10):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (= 2.0.0)
     - NSObject-SafeExpectations (= 0.0.2)
@@ -177,7 +179,7 @@ DEPENDENCIES:
   - Helpshift (~> 4.10.0)
   - HockeySDK (~> 3.6.0)
   - KIF/IdentifierTests (~> 3.1)
-  - Lookback (= 0.9.2)
+  - Lookback (= 1.1.4)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`,
     branch `gifsupport`)
   - Mixpanel (= 2.8.2)
@@ -201,7 +203,7 @@ DEPENDENCIES:
   - WordPress-iOS-Shared (= 0.4.4)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
   - WordPressCom-Analytics-iOS (= 0.0.39)
-  - WordPressCom-Stats-iOS (= 0.4.8)
+  - WordPressCom-Stats-iOS (= 0.4.10)
   - WPMediaPicker (~> 0.6.0)
   - wpxmlrpc (~> 0.8)
 
@@ -262,7 +264,7 @@ SPEC CHECKSUMS:
   Helpshift: 9c84a5e4ffd881c7e7eb395c2afc8d6a46eb2187
   HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
   KIF: 0a82046d06f3648799cac522d2d0f7934214caac
-  Lookback: 00e39f8f1e89ca1bc3fe66afbe033386558381a3
+  Lookback: 9ab9027ff246d2dc5ce34be483f70e4a6718280b
   MGImageUtilities: b54a815970e231903c495fff33699467158f61a0
   Mixpanel: f4d71ac2a306e7cda6ad03d4a2be249a0fd7a967
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
@@ -272,6 +274,7 @@ SPEC CHECKSUMS:
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: ad00ed452d4e3805ffb95977163879bd5bb121ea
+  PDKTZipArchive: 81c4824eb5587131e422fc58b92c043c4aa96466
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
   Simperium: 7a2d7e5ac67526477084a35a5ef9a77b6423b1ac
@@ -283,7 +286,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Shared: 345f7c1c49d298114353c3856c53317f0d826078
   WordPressApi: cb145d3c92ed54d4dbe70108d15f17ce3da3ad5d
   WordPressCom-Analytics-iOS: 5628c4ad2d4a9d49b290e076b7f593d632492dcc
-  WordPressCom-Stats-iOS: d2e035e0b06dd1cde2e09ed71d717b48a069b9df
+  WordPressCom-Stats-iOS: 194f01806e368ef05c63e1a00ac2eb0f7dc69375
   WPMediaPicker: 6e7904663b386ad4eea2f2e3dc30fd15babceb66
   wpxmlrpc: bd391dab54e9bdceb5d1de23d161ecf1ba80f0e0
 
