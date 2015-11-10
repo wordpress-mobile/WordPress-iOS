@@ -4,10 +4,13 @@ xcodeproj 'WordPress/WordPress.xcodeproj'
 
 inhibit_all_warnings!
 
+use_frameworks!
+
 platform :ios, '9.0'
-pod '1PasswordExtension', '1.1.2'
-pod 'AFNetworking',	'~> 2.6.0'
-pod 'Reachability',	'3.1.1'
+pod '1PasswordExtension', '1.6.4'
+# Pin to 2.6.0 to avoid an issue with optionals in failure blocks
+pod 'AFNetworking',	'2.6.0'
+pod 'Reachability',	'3.2'
 pod 'NSURL+IDN', '0.3'
 pod 'DTCoreText',   '1.6.16'
 pod 'UIDeviceIdentifier', '~> 0.1'
@@ -23,23 +26,29 @@ pod 'Helpshift', '~>4.10.0'
 pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
 pod 'MRProgress', '~>0.7.0'
 
-pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.8'
+pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.10'
 pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
 pod 'NSObject-SafeExpectations', '0.0.2'
-pod 'Simperium', '0.8.3'
+#pod 'Simperium', '0.8.10'
+pod 'Simperium', :branch => 'fix/frameworks', :git => 'https://github.com/Simperium/simperium-ios.git'
 pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
-pod 'WordPress-iOS-Shared', '0.4.4'
-pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '34d484172a4e4f5013289023468098fb8764d2c7'
-pod 'WordPressCom-Stats-iOS', '0.4.8'
-pod 'WordPressCom-Analytics-iOS', '0.0.38'
+#pod 'WordPress-iOS-Shared', '0.5.0'
+pod 'WordPress-iOS-Shared', :branch => 'fix/cocoapods-framework', :git => 'https://github.com/wordpress-mobile/WordPress-Shared-iOS.git'
+#pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '34d484172a4e4f5013289023468098fb8764d2c7'
+pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :branch => 'fix/framework-support'
+#pod 'WordPressCom-Stats-iOS', '0.4.10'
+pod 'WordPressCom-Stats-iOS', :branch => 'fix/framework-support', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
+#pod 'WordPressCom-Analytics-iOS', '0.0.38'
+pod 'WordPressCom-Analytics-iOS', :branch => 'fix/framework-support', :git => 'https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
 pod 'WPMediaPicker', '~>0.6.0'
 pod 'ReactiveCocoa', '~> 2.4.7'
 pod 'FormatterKit', '~> 1.8.0'
 
 target 'WordPressTodayWidget', :exclusive => true do
-  pod 'WordPressCom-Stats-iOS', '0.4.8'
+  #pod 'WordPressCom-Stats-iOS/Services', '0.4.10'
+  pod 'WordPressCom-Stats-iOS/Services', :branch => 'fix/framework-support', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
 end
 
 target :WordPressTest, :exclusive => true do
@@ -51,17 +60,6 @@ end
 
 target 'UITests', :exclusive => true do
     pod 'KIF/IdentifierTests', '~>3.1'
-end
-
-pre_install do |installer|
-    pod_targets = installer.pod_targets.flat_map do |pod_target|
-        pod_target.name == "AFNetworking" || pod_target.name == "WordPressCom-Stats-iOS" ? pod_target.scoped : pod_target
-    end
-    installer.aggregate_targets.each do |aggregate_target|
-        aggregate_target.pod_targets = pod_targets.select do |pod_target|
-            pod_target.target_definitions.include?(aggregate_target.target_definition)
-        end
-    end
 end
 
 post_install do |installer_representation|
