@@ -2,7 +2,6 @@
 #import "AccountService.h"
 #import "Media.h"
 #import "WPAccount.h"
-#import "WPImageOptimizer.h"
 #import "ContextManager.h"
 #import "MediaServiceRemoteXMLRPC.h"
 #import "MediaServiceRemoteREST.h"

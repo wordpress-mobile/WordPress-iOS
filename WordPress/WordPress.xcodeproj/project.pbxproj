@@ -185,8 +185,6 @@
 		5D9BFF071A85584A001D6D63 /* ReaderPostUnattributedContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9BFF061A85584A001D6D63 /* ReaderPostUnattributedContentView.m */; };
 		5D9BFF0A1A856801001D6D63 /* ReaderPostRichUnattributedContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9BFF091A856801001D6D63 /* ReaderPostRichUnattributedContentView.m */; };
 		5DA357A71B52D33B00FB724F /* OriginalSiteAttributionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA357A61B52D33B00FB724F /* OriginalSiteAttributionView.m */; };
-		5DA3EE12192508F700294E0B /* WPImageOptimizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA3EE0F192508F700294E0B /* WPImageOptimizer.m */; };
-		5DA3EE13192508F700294E0B /* WPImageOptimizer+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA3EE11192508F700294E0B /* WPImageOptimizer+Private.m */; };
 		5DA3EE161925090A00294E0B /* MediaService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA3EE151925090A00294E0B /* MediaService.m */; };
 		5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA5BF3418E32DCF005F11F9 /* Theme.m */; };
 		5DA5BF4718E32DCF005F11F9 /* ThemeDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA5BF3A18E32DCF005F11F9 /* ThemeDetailsViewController.m */; };
@@ -304,7 +302,6 @@
 		934884AB19B73BA6004028D8 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		934884AD19B78723004028D8 /* WordPressTodayWidget-Internal.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 934884AC19B78723004028D8 /* WordPressTodayWidget-Internal.entitlements */; };
 		934884AF19B7875C004028D8 /* WordPress-Internal.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 934884AE19B7875C004028D8 /* WordPress-Internal.entitlements */; };
-		9358D15919FFD4E10094BBF5 /* WPImageOptimizerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DA3EE191925111700294E0B /* WPImageOptimizerTest.m */; };
 		93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */ = {isa = PBXBuildFile; fileRef = 93594BD4191D2F5A0079E6B2 /* stats-batch.json */; };
 		9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9363113E19FA996700B0C739 /* AccountServiceTests.swift */; };
 		937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 937D9A0E19F83812007B9D5F /* WordPress-22-23.xcmappingmodel */; };
@@ -976,13 +973,8 @@
 		5DA357A41B52D27100FB724F /* DiscoverPostAttributionView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DiscoverPostAttributionView.h; sourceTree = "<group>"; };
 		5DA357A51B52D33B00FB724F /* OriginalSiteAttributionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OriginalSiteAttributionView.h; sourceTree = "<group>"; };
 		5DA357A61B52D33B00FB724F /* OriginalSiteAttributionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OriginalSiteAttributionView.m; sourceTree = "<group>"; };
-		5DA3EE0E192508F700294E0B /* WPImageOptimizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPImageOptimizer.h; sourceTree = "<group>"; };
-		5DA3EE0F192508F700294E0B /* WPImageOptimizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImageOptimizer.m; sourceTree = "<group>"; };
-		5DA3EE10192508F700294E0B /* WPImageOptimizer+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPImageOptimizer+Private.h"; sourceTree = "<group>"; };
-		5DA3EE11192508F700294E0B /* WPImageOptimizer+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPImageOptimizer+Private.m"; sourceTree = "<group>"; };
 		5DA3EE141925090A00294E0B /* MediaService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaService.h; sourceTree = "<group>"; };
 		5DA3EE151925090A00294E0B /* MediaService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaService.m; sourceTree = "<group>"; };
-		5DA3EE191925111700294E0B /* WPImageOptimizerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPImageOptimizerTest.m; sourceTree = "<group>"; };
 		5DA5BF3318E32DCF005F11F9 /* Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Theme.h; sourceTree = "<group>"; };
 		5DA5BF3418E32DCF005F11F9 /* Theme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Theme.m; sourceTree = "<group>"; };
 		5DA5BF3518E32DCF005F11F9 /* ThemeBrowserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeBrowserCell.h; sourceTree = "<group>"; };
@@ -2608,7 +2600,6 @@
 				93A379EB19FFBF7900415023 /* KeychainTest.m */,
 				5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */,
 				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
-				5DA3EE191925111700294E0B /* WPImageOptimizerTest.m */,
 				5D2BEB4819758102005425F7 /* PhotonImageURLHelperTest.m */,
 				5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */,
 				85D790AB1AE5D95E0033AE83 /* MixpanelProxyTests.m */,
@@ -2693,10 +2684,6 @@
 				E114D799153D85A800984182 /* WPError.m */,
 				59D328FB1ACC2D0700356827 /* WPLookbackPresenter.h */,
 				59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */,
-				5DA3EE0E192508F700294E0B /* WPImageOptimizer.h */,
-				5DA3EE0F192508F700294E0B /* WPImageOptimizer.m */,
-				5DA3EE10192508F700294E0B /* WPImageOptimizer+Private.h */,
-				5DA3EE11192508F700294E0B /* WPImageOptimizer+Private.m */,
 				B5AB733B19901F85005F5044 /* WPNoResultsView+AnimatedBox.h */,
 				B5AB733C19901F85005F5044 /* WPNoResultsView+AnimatedBox.m */,
 				B5E06E2F1A9CD31D00128985 /* WPURLRequest.h */,
@@ -4442,7 +4429,6 @@
 				5D9BFF071A85584A001D6D63 /* ReaderPostUnattributedContentView.m in Sources */,
 				B5B410B61B1772B000CFCF8D /* NavigationTitleView.swift in Sources */,
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
-				5DA3EE12192508F700294E0B /* WPImageOptimizer.m in Sources */,
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
 				FFB7B8201A0012E80032E723 /* WordPressComApiCredentials.m in Sources */,
@@ -4664,7 +4650,6 @@
 				5D44EB381986D8BA008B7175 /* ReaderSiteService.m in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				31F4F6671A1385BE00196A98 /* MeViewController.m in Sources */,
-				5DA3EE13192508F700294E0B /* WPImageOptimizer+Private.m in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
 				B587797C19B799D800E57C5A /* NSParagraphStyle+Helpers.swift in Sources */,
 				5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */,
@@ -4767,7 +4752,6 @@
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
 				B5EFB1C91B333C5A007608A3 /* NotificationsServiceTests.swift in Sources */,
 				B5AEEC721ACACF2F008BF2A4 /* NotificationTests.m in Sources */,
-				9358D15919FFD4E10094BBF5 /* WPImageOptimizerTest.m in Sources */,
 				BE1071FF1BC75FFA00906AFF /* WPStyleGuide+BlogTests.swift in Sources */,
 				85B125411B028E34008A3D95 /* PushAuthenticationManagerTests.swift in Sources */,
 				E19A10CA1B010AA0006192B0 /* WPURLRequestTest.m in Sources */,
