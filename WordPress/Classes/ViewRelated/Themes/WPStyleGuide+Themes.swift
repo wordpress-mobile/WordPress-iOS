@@ -12,11 +12,13 @@ extension WPStyleGuide
 
         public static let barBorderColor = UIColor(red: 208.0/255.0, green: 220.0/255.0, blue: 229.0/255.0, alpha: 1)
         public static let barDividerColor = UIColor(red: 224.0/255.0, green: 239.0/255.0, blue: 233.0/255.0, alpha: 1)
+        public static let barBackgroundColor = UIColor.whiteColor()
+        public static let barContentInset = 15
 
-        public static func styleBar(view: UIView) {
-            view.layer.borderWidth = 1;
-            view.layer.borderColor = barBorderColor.CGColor;
-            view.backgroundColor = barDividerColor;
+        public static func styleBar(view: UIView, background: UIColor) {
+            view.layer.borderWidth = 1
+            view.layer.borderColor = barBorderColor.CGColor
+            view.backgroundColor = background
         }
         
         // MARK: - Current Theme Styles
@@ -35,7 +37,22 @@ extension WPStyleGuide
             button.setTitleColor(currentThemeButtonColor, forState: .Normal)
         }
         
-       // MARK: - Cell Styles
+        // MARK: - Search Styles
+
+        public static let searchTypeTitleFont = WPFontManager.openSansSemiBoldFontOfSize(14)
+        public static let searchTypeTitleColor = WPStyleGuide.darkGrey()
+        
+        public static func styleSearchTypeButton(button: UIButton, title: String) {
+            button.setTitleColor(searchTypeTitleColor, forState: .Normal)
+            button.setTitle(title, forState:.Normal)
+            button.titleLabel?.font = searchTypeTitleFont
+            let imageWidth = button.imageView?.frame.size.width ?? 0
+            button.titleEdgeInsets = UIEdgeInsets(top: 0, left: -imageWidth, bottom: 0, right: imageWidth)
+            let titleWidth = button.titleLabel?.frame.size.width ?? 0
+            button.imageEdgeInsets = UIEdgeInsets(top: 0, left: titleWidth, bottom: 0, right: -titleWidth)
+        }
+
+        // MARK: - Cell Styles
 
         public static let cellNameFont = WPFontManager.openSansSemiBoldFontOfSize(14)
         public static let cellInfoFont = WPFontManager.openSansSemiBoldFontOfSize(12)

@@ -19,6 +19,7 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
     @IBOutlet weak var detailsButton: UIButton!
     @IBOutlet weak var supportButton: UIButton!
     @IBOutlet weak var searchBar: UIView!
+    @IBOutlet weak var searchTypeButton: UIButton!
     
     // MARK: - Properties
 
@@ -27,13 +28,18 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
             currentThemeName.text = theme?.name
         }
     }
-    private var presenter: ThemePresenter?
-    
-    // MARK: - Additional initialization
-    
-    public func configureWithTheme(theme: Theme?, presenter: ThemePresenter?) {
-        self.theme = theme
-        self.presenter = presenter
+    private var searchType: ThemeType = .All {
+        didSet {
+            Styles.styleSearchTypeButton(searchTypeButton, title: searchType.title)
+        }
+    }
+    public weak var presenter: ThemePresenter? {
+        didSet {
+            if let presenter = presenter {
+                theme = presenter.currentTheme()
+                searchType = presenter.searchType
+            }
+        }
     }
     
     // MARK: - GUI
@@ -45,7 +51,7 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
     }
     
     private func applyStyles() {
-        Styles.styleBar(currentThemeBar)
+        Styles.styleBar(currentThemeBar, background: Styles.barDividerColor)
 
         currentThemeLabel.font = Styles.currentThemeLabelFont
         currentThemeLabel.textColor = Styles.currentThemeLabelColor
@@ -56,7 +62,7 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
         let currentThemeButtons = [customizeButton, detailsButton, supportButton]
         currentThemeButtons.forEach { Styles.styleCurrentThemeButton($0) }
 
-        Styles.styleBar(searchBar)
+        Styles.styleBar(searchBar, background: Styles.barBackgroundColor)
     }
     
     override public func prepareForReuse() {
@@ -79,4 +85,34 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
         presenter?.presentSupportForTheme(theme)
     }
     
+    private func updateSearchType(type: ThemeType) {
+        guard type != self.searchType else {
+            return
+        }
+        
+        self.searchType = type
+        self.presenter?.searchType = type
+    }
+    
+    @IBAction func didTapSearchTypeButton(sender: UIButton) {
+        let title = NSLocalizedString("Show themes:", comment: "Alert title picking theme type to browse")
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .ActionSheet)
+        
+        ThemeType.types.forEach { type in
+            alertController.addActionWithTitle(type.title,
+                style: .Default,
+                handler: { [weak self] (action: UIAlertAction) in
+                    self?.updateSearchType(type)
+            })
+        }
+
+        alertController.modalPresentationStyle = .Popover
+        if let popover = alertController.popoverPresentationController {
+            popover.sourceView = searchTypeButton
+            popover.sourceRect = searchTypeButton.bounds
+            popover.permittedArrowDirections = .Any
+            popover.canOverlapSourceViewRect = true
+        }
+        alertController.presentFromRootViewController()
+    }
 }
