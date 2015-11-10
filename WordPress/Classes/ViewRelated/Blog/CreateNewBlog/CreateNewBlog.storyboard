@@ -16,41 +16,44 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Hch-fT-hm5">
-                                <rect key="frame" x="140" y="242" width="320" height="117"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Hch-fT-hm5">
+                                <rect key="frame" x="152" y="238" width="298" height="147"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Create WordPress.com blog" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N0w-N1-7Kp">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create WordPress.com blog" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N0w-N1-7Kp">
+                                        <rect key="frame" x="0.0" y="0.0" width="298" height="29"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Cvf-4R-9Cy">
-                                        <rect key="frame" x="0.0" y="21" width="320" height="66"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Cvf-4R-9Cy">
+                                        <rect key="frame" x="0.0" y="29" width="298" height="88"/>
                                         <subviews>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="R3d-WL-69R" customClass="WPWalkthroughTextField">
-                                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="R3d-WL-69R" customClass="WPWalkthroughTextField">
+                                                <rect key="frame" x="0.0" y="0.0" width="298" height="44"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="bjE-jx-HeM"/>
+                                                    <constraint firstAttribute="height" constant="44" id="LoR-oK-jmi"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JhL-ml-Kbb" customClass="WPWalkthroughTextField">
-                                                <rect key="frame" x="0.0" y="44" width="320" height="22"/>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="bezel" placeholder="Blog address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CHH-vY-ReM" customClass="WPWalkthroughTextField">
+                                                <rect key="frame" x="0.0" y="44" width="298" height="44"/>
                                                 <animations/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="44" id="eoH-l0-ARa"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                         </subviews>
                                         <animations/>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="scV-Xa-mho" customClass="WPNUXMainButton">
-                                        <rect key="frame" x="0.0" y="87" width="320" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="scV-Xa-mho" customClass="WPNUXMainButton">
+                                        <rect key="frame" x="0.0" y="117" width="298" height="30"/>
                                         <animations/>
                                         <state key="normal" title="Create WordPress.com blog">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -63,13 +66,22 @@
                         <animations/>
                         <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="Hch-fT-hm5" firstAttribute="centerY" secondItem="pNe-Tt-sIF" secondAttribute="centerY" id="E07-vg-uRm"/>
-                            <constraint firstItem="Hch-fT-hm5" firstAttribute="centerX" secondItem="pNe-Tt-sIF" secondAttribute="centerX" id="GKH-YB-Vi4"/>
-                            <constraint firstItem="Hch-fT-hm5" firstAttribute="top" secondItem="pNe-Tt-sIF" secondAttribute="top" constant="242" id="SA0-hV-jlj"/>
-                            <constraint firstItem="Hch-fT-hm5" firstAttribute="leading" secondItem="pNe-Tt-sIF" secondAttribute="leading" constant="140" id="lqO-zP-hnr"/>
+                            <constraint firstItem="Hch-fT-hm5" firstAttribute="centerX" secondItem="pNe-Tt-sIF" secondAttribute="centerX" id="Hgc-yL-a6S"/>
+                            <constraint firstItem="Hch-fT-hm5" firstAttribute="centerY" secondItem="pNe-Tt-sIF" secondAttribute="centerY" id="h3o-Ge-OSC"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="qm6-wU-9cl"/>
+                    <navigationItem key="navigationItem" id="qm6-wU-9cl">
+                        <barButtonItem key="backBarButtonItem" title="Back" systemItem="cancel" id="ioj-ct-Je0">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="blogAddressTextField" destination="CHH-vY-ReM" id="fbS-yN-du2"/>
+                        <outlet property="cancelButton" destination="ioj-ct-Je0" id="YQa-Gn-sXB"/>
+                        <outlet property="createBlogButton" destination="scV-Xa-mho" id="yzh-Gd-3Ns"/>
+                        <outlet property="titleLabel" destination="N0w-N1-7Kp" id="xH5-B9-wNT"/>
+                        <outlet property="titleTextField" destination="R3d-WL-69R" id="gIb-LU-7dD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LAf-vh-R5L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -92,7 +104,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="s8M-AC-wOA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-373" y="225"/>
+            <point key="canvasLocation" x="-278" y="225"/>
         </scene>
     </scenes>
 </document>
