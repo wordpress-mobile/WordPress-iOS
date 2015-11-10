@@ -39,6 +39,11 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 @implementation MenusViewController
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (id)initWithBlog:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
@@ -79,6 +84,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationItem.title = NSLocalizedString(@"Menus", @"Title for screen that allows configuration of your site's menus");
@@ -155,6 +162,28 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)headerViewSelectionChangedWithSelectedMenu:(Menu *)menu
 {
     self.detailsView.menu = menu;
+}
+
+#pragma mark - notifications
+
+- (void)keyboardWillChangeFrameNotification:(NSNotification *)notification
+{
+    CGRect frame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    frame = [self.view.window convertRect:frame toView:self.view];
+    
+    CGFloat insetPadding = 10.0;
+    UIEdgeInsets inset = self.scrollView.contentInset;
+    UIEdgeInsets scrollInset = self.scrollView.scrollIndicatorInsets;
+
+    if(frame.origin.y > self.view.frame.size.height) {
+        inset.bottom = 0.0;
+    }else {
+        inset.bottom = self.view.frame.size.height - frame.origin.y;
+        scrollInset.bottom = inset.bottom;
+        inset.bottom += insetPadding;
+    }
+    self.scrollView.contentInset = inset;
+    self.scrollView.scrollIndicatorInsets = scrollInset;
 }
 
 @end
