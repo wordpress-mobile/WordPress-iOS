@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared.WPStyleGuide
 
 @objc public class NoteBlockActionsTableViewCell : NoteBlockTableViewCell
 {

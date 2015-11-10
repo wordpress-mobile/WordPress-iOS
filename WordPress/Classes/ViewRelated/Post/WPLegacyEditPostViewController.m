@@ -17,8 +17,8 @@
 #import "WPPostViewController.h"
 #import "WPProgressTableViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
-#import <WordPress-iOS-Shared/UIImage+Util.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPressShared/UIImage+Util.h>
+#import <WordPressShared/WPFontManager.h>
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "WordPress-Swift.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"

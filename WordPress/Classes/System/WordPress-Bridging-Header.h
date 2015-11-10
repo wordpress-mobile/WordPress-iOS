@@ -56,11 +56,11 @@
 #import "WPBlogTableViewCell.h"
 #import "WPContentViewProvider.h"
 #import "WPGUIConstants.h"
-#import <WordPress_iOS_Shared/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPRichTextView.h"
-#import <WordPress_iOS_Shared/WPStyleGuide.h>
-#import <WordPress_iOS_Shared/WPTableViewCell.h>
+#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/WPTableViewCell.h>
 #import "WPTableViewHandler.h"
-#import <WordPress_iOS_Shared/WPTableViewSectionHeaderFooterView.h>
+#import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
 #import "WPWebViewController.h"

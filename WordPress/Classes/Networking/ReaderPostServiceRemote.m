@@ -6,7 +6,7 @@
 #import "RemoteSourcePostAttribution.h"
 #import "ReaderTopicServiceRemote.h"
 #import "WordPressComApi.h"
-#import <WordPress_iOS_Shared/NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
 
 // REST Post dictionary keys
 NSString * const PostRESTKeyAttachments = @"attachments";

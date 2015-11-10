@@ -1,16 +1,16 @@
 #import "WPPostViewController.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
-#import <WordPress-iOS-Editor/WPEditorField.h>
-#import <WordPress-iOS-Editor/WPEditorView.h>
-#import <WordPress-iOS-Editor/WPEditorToolbarView.h>
-#import <WordPress-iOS-Shared/NSString+Util.h>
-#import <WordPress-iOS-Shared/UIImage+Util.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
-#import <WordPress-iOS-Shared/WPDeviceIdentification.h>
-#import <WordPressCom-Analytics-iOS/WPAnalytics.h>
-#import <SVProgressHUD.h>
+#import <WordPressEditor/WPEditorField.h>
+#import <WordPressEditor/WPEditorView.h>
+#import <WordPressEditor/WPEditorToolbarView.h>
+#import <WordPressShared/NSString+Util.h>
+#import <WordPressShared/UIImage+Util.h>
+#import <WordPressShared/WPFontManager.h>
+#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/WPDeviceIdentification.h>
+#import <WordPressComAnalytics/WPAnalytics.h>
+#import <SVProgressHUD/SVProgressHUD.h>
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "BlogSelectorViewController.h"
 #import "BlogService.h"
