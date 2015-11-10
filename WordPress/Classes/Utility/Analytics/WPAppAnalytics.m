@@ -10,6 +10,7 @@
 NSString* const WPAppAnalyticsDefaultsKeyUsageTracking = @"usage_tracking_enabled";
 static NSString* const WPAppAnalyticsKeyLastVisibleScreen = @"last_visible_screen";
 static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
+NSString *const WPAppAnalyticsKeyBlogID = @"blog_id";
 
 @interface WPAppAnalytics ()
 
