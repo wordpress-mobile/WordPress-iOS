@@ -1,5 +1,5 @@
 #import "WPNUXBackButton.h"
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPress_iOS_Shared/WPFontManager.h>
 
 @implementation WPNUXBackButton
 

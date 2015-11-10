@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <WordPress-iOS-Editor/WPLegacyEditorViewController.h>
+#import <WordPress_iOS_Editor/WPLegacyEditorViewController.h>
 
 @class AbstractPost;
 

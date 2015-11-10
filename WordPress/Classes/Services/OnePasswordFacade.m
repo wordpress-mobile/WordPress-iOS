@@ -1,5 +1,5 @@
 #import "OnePasswordFacade.h"
-#import <1PasswordExtension/OnePasswordExtension.h>
+#import <_1PasswordExtension/OnePasswordExtension.h>
 
 @implementation OnePasswordFacade
 

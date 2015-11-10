@@ -16,8 +16,8 @@
 #import "AccountService.h"
 #import "WPAccount.h"
 #import "LoginViewController.h"
-#import <WordPress-iOS-Shared/WPTableViewCell.h>
-#import <WordPress-iOS-Shared/WPTableViewSectionHeaderFooterView.h>
+#import <WordPress_iOS_Shared/WPTableViewCell.h>
+#import <WordPress_iOS_Shared/WPTableViewSectionHeaderFooterView.h>
 #import "HelpshiftUtils.h"
 #import "WordPress-Swift.h"
 
