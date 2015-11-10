@@ -24,7 +24,6 @@
 #import "NotificationsManager.h"
 #import "ContextManager.h"
 #import "AccountService.h"
-#import "WPImageOptimizer.h"
 #import "Constants.h"
 #import "Mediaservice.h"
 #import "WPLookbackPresenter.h"
