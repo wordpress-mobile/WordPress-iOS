@@ -3,8 +3,6 @@
 @class WPAccount;
 @class Blog;
 
-extern NSString *const WPAppAnalyticsKeyBlogID;
-
 /**
  *  This protocol is for a class that will allow us to synchronize the details for a blog.
  */

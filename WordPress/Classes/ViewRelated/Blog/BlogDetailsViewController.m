@@ -16,6 +16,7 @@
 #import "WPThemeSettings.h"
 #import "WPGUIConstants.h"
 #import "Wordpress-Swift.h"
+#import "WPAppAnalytics.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
 const NSInteger BlogDetailsRowViewAdmin = 1;

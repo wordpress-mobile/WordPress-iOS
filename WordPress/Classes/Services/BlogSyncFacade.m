@@ -3,6 +3,7 @@
 #import "BlogService.h"
 #import "AccountService.h"
 #import "Blog.h"
+#import "WPAppAnalytics.h"
 
 #import <NSString+XMLExtensions.h>
 
