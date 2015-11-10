@@ -52,7 +52,7 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 
 + (void)registerForPushNotifications
 {
-#if TARGET_IPHONE_SIMULATOR
+#if TARGET_IPHONE_SIMULATOR || ALPHA_BUILD
     return;
 #endif
 
