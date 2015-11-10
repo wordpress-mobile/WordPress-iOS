@@ -26,9 +26,10 @@ extern NSString * const MenusSelectionViewItemChangedSelectedNotification;
 
 @property (nonatomic, weak) id <MenusSelectionViewDelegate> delegate;
 @property (nonatomic, readonly) BOOL selectionExpanded;
+@property (nonatomic, strong) NSArray <MenusSelectionViewItem *> *items;
+@property (nonatomic, strong) MenusSelectionViewItem *selectedItem;
 
-- (void)setAvailableSelectionItems:(NSArray <MenusSelectionViewItem *> *)items;
-- (void)setSelectedItem:(MenusSelectionViewItem *)item;
+- (MenusSelectionViewItem *)itemWithItemObjectEqualTo:(id)itemObject;
 
 - (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded animated:(BOOL)animated;
 

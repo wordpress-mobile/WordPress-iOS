@@ -52,7 +52,6 @@ NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSele
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet MenusSelectionDetailView *detailView;
-@property (nonatomic, strong) NSArray *items;
 @property (nonatomic, strong) NSMutableArray *itemViews;
 @property (nonatomic, assign) BOOL drawsHighlighted;
 
@@ -83,20 +82,37 @@ NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSele
 
 #pragma mark - instance
 
-- (void)setAvailableSelectionItems:(NSArray <MenusSelectionViewItem *> *)items
+- (void)setItems:(NSArray<MenusSelectionViewItem *> *)items
 {
-    self.items = items;
-    [self reloadItemViews];
+    if(_items != items) {
+        _items = items;
+        [self reloadItemViews];
+    }
 }
 
-- (void)setSelectedItem:(MenusSelectionViewItem *)item
+- (void)setSelectedItem:(MenusSelectionViewItem *)selectedItem
 {
-    MenusSelectionViewItem *selectedItem = [self selectedItem];
-    selectedItem.selected = NO;
-    item.selected = YES;
-    selectedItem = item;
+    if(_selectedItem != selectedItem) {
+        
+        _selectedItem.selected = NO;
+        selectedItem.selected = YES;
+        _selectedItem = selectedItem;
+        
+        [self.detailView updatewithAvailableItems:self.items.count selectedItem:selectedItem];
+    }
+}
+
+- (MenusSelectionViewItem *)itemWithItemObjectEqualTo:(id)itemObject
+{
+    MenusSelectionViewItem *matchingItem = nil;
+    for(MenusSelectionViewItem *item in self.items) {
+        if(item.itemObject == itemObject) {
+            matchingItem = item;
+            break;
+        }
+    }
     
-    [self.detailView updatewithAvailableItems:self.items.count selectedItem:selectedItem];
+    return matchingItem;
 }
 
 - (void)setSelectionExpanded:(BOOL)selectionExpanded
@@ -129,20 +145,6 @@ NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSele
 }
 
 #pragma mark - private
-
-- (MenusSelectionViewItem *)selectedItem
-{
-    MenusSelectionViewItem *selectedItem = nil;
-    
-    for(MenusSelectionViewItem *item in self.items) {
-        if(item.selected) {
-            selectedItem = item;
-            break;
-        }
-    }
-    
-    return selectedItem;
-}
 
 - (void)reloadItemViews
 {
