@@ -116,9 +116,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self setupReachability];
     
     // Set the main window up
-    CGRect bounds = [[UIScreen mainScreen] bounds];
-    [self.window setFrame:bounds];
-    [self.window setBounds:bounds];
     [self.window makeKeyAndVisible];
     
     // Simperium: Wire CoreData Stack

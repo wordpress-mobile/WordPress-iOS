@@ -35,7 +35,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        WPAnalytics.track(.OpenedNotificationSettingDetails)
+        WPAnalytics.track(.StatOpenedNotificationSettingDetails)
     }
     
     public override func viewWillDisappear(animated: Bool) {
@@ -236,10 +236,10 @@ public class NotificationSettingDetailsViewController : UITableViewController
             stream              : stream!,
             newValues           : newValues,
             success             : {
-                WPAnalytics.track(.NotificationsSettingsUpdated, withProperties: ["success" : true])
+                WPAnalytics.track(.StatNotificationsSettingsUpdated, withProperties: ["success" : true])
             },
             failure             : { (error: NSError!) in
-                WPAnalytics.track(.NotificationsSettingsUpdated, withProperties: ["success" : false])
+                WPAnalytics.track(.StatNotificationsSettingsUpdated, withProperties: ["success" : false])
                 self.handleUpdateError()
             })
     }
