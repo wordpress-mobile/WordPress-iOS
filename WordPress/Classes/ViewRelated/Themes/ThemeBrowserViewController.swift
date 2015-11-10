@@ -1,6 +1,39 @@
 import Foundation
 
-public protocol ThemePresenter {
+public enum ThemeType {
+    case All
+    case Free
+    case Premium
+    
+    static let types = [All, Free, Premium]
+
+    var title: String {
+        switch self {
+        case .All:
+            return NSLocalizedString("All", comment: "Browse all themes selection title")
+        case .Free:
+            return NSLocalizedString("Free", comment: "Browse free themes selection title")
+        case .Premium:
+            return NSLocalizedString("Premium", comment: "Browse premium themes selection title")
+        }
+    }
+    
+    var predicate: NSPredicate? {
+        switch self {
+        case .All:
+            return nil
+        case .Free:
+            return NSPredicate(format: "premium == 0")
+        case .Premium:
+            return NSPredicate(format: "premium == 1")
+        }
+    }
+}
+
+public protocol ThemePresenter: class {
+    func currentTheme() -> Theme?
+    var searchType: ThemeType { get set }
+    
     func presentCustomizeForTheme(theme: Theme?)
     func presentDemoForTheme(theme: Theme?)
     func presentDetailsForTheme(theme: Theme?)
@@ -46,6 +79,12 @@ public protocol ThemePresenter {
             fetchThemes()
             Section.Themes.reload(collectionView)
        }
+    }
+    public var searchType = ThemeType.All {
+        didSet {
+            fetchThemes()
+            Section.Themes.reload(collectionView)
+        }
     }
     private func themeAtIndex(index: Int) -> Theme? {
         let indexPath = NSIndexPath(forRow: index, inSection: 0)
@@ -153,7 +192,7 @@ public protocol ThemePresenter {
             })
     }
     
-    private func currentTheme() -> Theme? {
+    public func currentTheme() -> Theme? {
         guard let themeId = blog.currentThemeId where !themeId.isEmpty else {
             return nil
         }
@@ -248,7 +287,7 @@ public protocol ThemePresenter {
         switch kind {
         case UICollectionElementKindSectionHeader:
             let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: ThemeBrowserHeaderView.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserHeaderView
-            header.configureWithTheme(currentTheme(), presenter: self)
+            header.presenter = self
             return header
         case UICollectionElementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ThemeBrowserFooterView", forIndexPath: indexPath)
@@ -324,18 +363,24 @@ public protocol ThemePresenter {
     
     // MARK: - NSFetchedResultsController helpers
 
-    private func browsePredicate() -> NSPredicate {
-        let blogPredicate = NSPredicate(format: "blog == %@", self.blog)
+    private func searchNamePredicate() -> NSPredicate? {
         guard !searchName.isEmpty else {
-            return blogPredicate
+            return nil
         }
         
-        let namePredicate = NSPredicate(format: "name contains[c] %@", searchName)
-        
-        let subpredicates = [blogPredicate, namePredicate]
-        let browsePredicate = NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
-        
-        return browsePredicate
+        return NSPredicate(format: "name contains[c] %@", searchName)
+    }
+    
+    private func browsePredicate() -> NSPredicate? {
+        let blogPredicate = NSPredicate(format: "blog == %@", self.blog)
+
+        let subpredicates = [blogPredicate, searchNamePredicate(), searchType.predicate].flatMap { $0 }
+        switch subpredicates.count {
+        case 1:
+            return subpredicates[0]
+        default:
+            return NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
+        }
     }
     
     private func fetchThemes() {
