@@ -275,10 +275,19 @@
                                             <rect key="frame" x="16" y="139" width="568" height="53"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fzn-G2-C1L">
-                                                    <rect key="frame" x="0.0" y="0.0" width="468" height="53"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="568" height="53"/>
                                                     <subviews>
-                                                        <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search themes…" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HMQ-Gs-9FB">
-                                                            <rect key="frame" x="0.0" y="0.0" width="468" height="53"/>
+                                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="800" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gVo-ti-m3S">
+                                                            <rect key="frame" x="0.0" y="0.0" width="104" height="53"/>
+                                                            <animations/>
+                                                            <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                                                            <state key="normal" title="Button" image="theme-type-chevron"/>
+                                                            <connections>
+                                                                <action selector="didTapSearchTypeButton:" destination="47y-8d-jwn" eventType="touchUpInside" id="VDa-tX-HhH"/>
+                                                            </connections>
+                                                        </button>
+                                                        <searchBar contentMode="redraw" horizontalCompressionResistancePriority="250" searchBarStyle="minimal" placeholder="Search themes…" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HMQ-Gs-9FB">
+                                                            <rect key="frame" x="104" y="0.0" width="412" height="53"/>
                                                             <animations/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
@@ -286,24 +295,23 @@
                                                                 <outlet property="delegate" destination="1cE-e6-chL" id="bAl-dw-bjE"/>
                                                             </connections>
                                                         </searchBar>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="85U-8E-CJ7">
+                                                            <rect key="frame" x="516" y="0.0" width="52" height="53"/>
+                                                            <animations/>
+                                                            <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                                                            <state key="normal" image="icon-post-search-highlight"/>
+                                                        </button>
                                                     </subviews>
                                                     <animations/>
                                                 </stackView>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="85U-8E-CJ7">
-                                                    <rect key="frame" x="538" y="16" width="22" height="22"/>
-                                                    <animations/>
-                                                    <state key="normal" image="icon-post-search-highlight"/>
-                                                </button>
                                             </subviews>
                                             <animations/>
-                                            <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="fzn-G2-C1L" firstAttribute="top" secondItem="QcA-Am-6I5" secondAttribute="top" id="1tx-Ok-8mh"/>
-                                                <constraint firstItem="85U-8E-CJ7" firstAttribute="centerY" secondItem="QcA-Am-6I5" secondAttribute="centerY" id="30G-re-cyX"/>
                                                 <constraint firstItem="fzn-G2-C1L" firstAttribute="leading" secondItem="QcA-Am-6I5" secondAttribute="leading" id="8hC-Pa-jR4"/>
-                                                <constraint firstItem="85U-8E-CJ7" firstAttribute="trailing" secondItem="QcA-Am-6I5" secondAttribute="trailingMargin" id="GlF-hs-cBj"/>
                                                 <constraint firstAttribute="height" constant="53" id="STF-gH-eRR"/>
-                                                <constraint firstAttribute="trailing" secondItem="fzn-G2-C1L" secondAttribute="trailing" constant="100" id="s07-VR-hlE"/>
+                                                <constraint firstAttribute="trailing" secondItem="fzn-G2-C1L" secondAttribute="trailing" id="s07-VR-hlE"/>
                                                 <constraint firstAttribute="bottom" secondItem="fzn-G2-C1L" secondAttribute="bottom" id="w2Y-Kx-Urt"/>
                                             </constraints>
                                         </view>
@@ -326,6 +334,7 @@
                                 <outlet property="customizeButton" destination="u2z-nw-Vyc" id="1gk-tM-uLp"/>
                                 <outlet property="detailsButton" destination="6BA-aY-mOt" id="LAT-yo-MX8"/>
                                 <outlet property="searchBar" destination="QcA-Am-6I5" id="erh-Ff-XFp"/>
+                                <outlet property="searchTypeButton" destination="gVo-ti-m3S" id="ubO-fe-9XS"/>
                                 <outlet property="supportButton" destination="iix-Pu-kKG" id="0Sd-aS-Nyg"/>
                             </connections>
                         </collectionReusableView>
@@ -363,5 +372,6 @@
         <image name="theme-customize" width="18" height="18"/>
         <image name="theme-details" width="18" height="18"/>
         <image name="theme-support" width="18" height="18"/>
+        <image name="theme-type-chevron" width="20" height="8"/>
     </resources>
 </document>
