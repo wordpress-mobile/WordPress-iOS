@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <WordPress-iOS-Editor/WPEditorViewController.h>
+#import <WordPress_iOS_Editor/WPEditorViewController.h>
 
 @class AbstractPost;
 @class Blog;

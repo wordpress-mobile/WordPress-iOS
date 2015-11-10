@@ -1,6 +1,5 @@
 #import "ThemeServiceRemote.h"
 
-#import <NSObject-SafeExpectations/NSDictionary+SafeExpectations.h>
 #import "RemoteTheme.h"
 #import "WordPressComApi.h"
 

@@ -1,5 +1,5 @@
 #import "WPStyleGuide+Posts.h"
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPress_iOS_Shared/WPFontManager.h>
 #import "WordPress-Swift.h"
 #import <QuartzCore/QuartzCore.h>
 

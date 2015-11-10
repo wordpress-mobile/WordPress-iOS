@@ -1,5 +1,5 @@
 #import "BlogServiceRemoteXMLRPC.h"
-#import <WordPressApi.h>
+#import <WordPressApi/WordPressApi.h>
 #import "RemoteBlogSettings.h"
 
 @implementation BlogServiceRemoteXMLRPC

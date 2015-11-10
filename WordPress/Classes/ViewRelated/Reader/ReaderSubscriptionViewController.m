@@ -1,8 +1,8 @@
 #import "ReaderSubscriptionViewController.h"
 
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
-#import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPress_iOS_Shared/WPFontManager.h>
+#import <WordPress_iOS_Shared/UIImage+Util.h>
 
 #import "AccountService.h"
 #import "ContextManager.h"
