@@ -3,6 +3,8 @@
 #import "Blog.h"
 #import "WPStyleGuide.h"
 #import "MenusDesign.h"
+#import "Menu.h"
+#import "MenuLocation.h"
 
 @interface MenusHeaderView () <MenusSelectionViewDelegate>
 
@@ -45,8 +47,8 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
             [items addObject:item];
         }
         
-        [self.locationsView setAvailableSelectionItems:items];
-        [self.locationsView setSelectedItem:[items firstObject]];
+        self.locationsView.items = items;
+        self.locationsView.selectedItem = [items firstObject];
     }
     {
         NSMutableArray *items = [NSMutableArray arrayWithCapacity:blog.menus.count];
@@ -55,8 +57,8 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
             [items addObject:item];
         }
         
-        [self.menusView setAvailableSelectionItems:items];
-        [self.menusView setSelectedItem:[items firstObject]];
+        self.menusView.items = items;
+        self.menusView.selectedItem = [items firstObject];
     }
 }
 
@@ -114,6 +116,24 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     });
 }
 
+- (void)updateLocationSelectionWithMenu:(Menu *)menu
+{
+    MenuLocation *selectedLocation = self.locationsView.selectedItem.itemObject;
+    selectedLocation.menu = menu;
+}
+
+- (void)updateSelectionWithLocation:(MenuLocation *)location
+{
+    MenusSelectionViewItem *locationItem = [self.locationsView itemWithItemObjectEqualTo:location];
+    [self.locationsView setSelectedItem:locationItem];
+}
+
+- (void)updateSelectionWithMenu:(Menu *)menu
+{
+    MenusSelectionViewItem *menuItem = [self.menusView itemWithItemObjectEqualTo:menu];
+    [self.menusView setSelectedItem:menuItem];
+}
+
 #pragma mark - delegate helpers
 
 - (void)tellDelegateSelectedLocation:(MenuLocation *)location
@@ -150,9 +170,16 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
 - (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionViewItem *)item
 {
     if([item isMenuLocation]) {
+        
+        MenuLocation *location = item.itemObject;
+        [self updateSelectionWithMenu:location.menu];
         [self tellDelegateSelectedLocation:item.itemObject];
+        
     }else if([item isMenu]) {
-        [self tellDelegateSelectedMenu:item.itemObject];
+        
+        Menu *menu = item.itemObject;
+        [self updateLocationSelectionWithMenu:menu];
+        [self tellDelegateSelectedMenu:menu];
     }
     [self closeSelectionsIfNeeded];
 }
