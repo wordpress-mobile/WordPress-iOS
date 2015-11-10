@@ -28,7 +28,7 @@
 #import "Constants.h"
 #import "Mediaservice.h"
 #import "WPLookbackPresenter.h"
-#import <WordPress-iOS-Shared/WPTableViewCell.h>
+#import <WordPressShared/WPTableViewCell.h>
 
 #ifdef LOOKBACK_ENABLED
 #import <Lookback/Lookback.h>

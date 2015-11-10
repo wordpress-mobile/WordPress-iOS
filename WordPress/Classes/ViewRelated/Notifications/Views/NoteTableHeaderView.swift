@@ -1,6 +1,5 @@
 import Foundation
-
-
+import WordPressShared
 
 /**
 *  @class      NoteTableHeaderView

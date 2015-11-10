@@ -1,4 +1,7 @@
 import Foundation
+import SVProgressHUD
+import WordPressShared
+import WordPressComAnalytics
 
 @objc public class ReaderStreamViewController : UIViewController,
     WPContentSyncHelperDelegate,

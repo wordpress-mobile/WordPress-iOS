@@ -3,7 +3,7 @@
 #import "WPContentAttributionView.h"
 #import "WPContentActionView.h"
 #import "OriginalAttributionView.h"
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 
 const CGFloat WPContentViewHorizontalInnerPadding = 12.0;
 const CGFloat WPContentViewOuterMargin = 8.0;
