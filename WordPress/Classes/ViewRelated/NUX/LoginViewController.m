@@ -1,6 +1,6 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <Helpshift/Helpshift.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPress_iOS_Shared/WPFontManager.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "CreateAccountAndBlogViewController.h"

@@ -1,4 +1,4 @@
-#import "WPTableViewCell.h"
+#import <WordPress_iOS_Shared/WPTableViewCell.h>
 
 @interface WPBlogTableViewCell : WPTableViewCell
 

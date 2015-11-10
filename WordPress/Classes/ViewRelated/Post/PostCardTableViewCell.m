@@ -5,7 +5,7 @@
 #import "PostCardActionBarItem.h"
 #import "UIImageView+Gravatar.h"
 #import "WPStyleGuide+Posts.h"
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import <WordPress_iOS_Shared/WPStyleGuide.h>
 #import "Wordpress-Swift.h"
 
 static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};

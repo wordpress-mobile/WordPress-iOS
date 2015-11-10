@@ -1,7 +1,7 @@
 #import "PostCategoryServiceRemoteXMLRPC.h"
 #import "RemotePostCategory.h"
-#import <NSString+Util.h>
-#import <WordPressApi.h>
+#import <WordPress_iOS_Shared/NSString+Util.h>
+#import <WordPressApi/WordPressApi.h>
 
 @implementation PostCategoryServiceRemoteXMLRPC
 

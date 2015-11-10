@@ -4,7 +4,7 @@
 #import "AccountService.h"
 #import "Blog.h"
 
-#import <NSString+XMLExtensions.h>
+#import <WordPress_iOS_Shared/NSString+XMLExtensions.h>
 
 @implementation BlogSyncFacade
 
