@@ -56,6 +56,17 @@
 
 @implementation MenusSelectionDetailView
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    [self setupArrangedViews];
+    [self setupStyling];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateTapGestureRecognized:)];
+    [self addGestureRecognizer:tap];
+}
+
 - (void)updatewithAvailableItems:(NSUInteger)numItemsAvailable selectedItem:(MenusSelectionViewItem *)selectedItem
 {
     NSString *localizedFormat = nil;
@@ -80,17 +91,6 @@
     
     [self setTitleText:selectedItem.name subTitleText:[NSString stringWithFormat:localizedFormat, numItemsAvailable]];
     [self.iconView setNeedsDisplay];
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    [self setupArrangedViews];
-    [self setupStyling];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateTapGestureRecognized:)];
-    [self addGestureRecognizer:tap];
 }
 
 - (void)setupStyling
@@ -177,22 +177,6 @@
     self.textLabel.attributedText = mutableAttributedString;
 }
 
-#pragma mark - delegate helpers
-
-- (void)tellDelegateTapGestureRecognized:(UITapGestureRecognizer *)tap
-{
-    if([self.delegate respondsToSelector:@selector(selectionDetailView:tapGestureRecognized:)]) {
-        [self.delegate selectionDetailView:self tapGestureRecognized:tap];
-    }
-}
-
-- (void)tellDelegateTouchesHighlightedStateChanged:(BOOL)highlighted
-{
-    if([self.delegate respondsToSelector:@selector(selectionDetailView:touchesHighlightedStateChanged:)]) {
-        [self.delegate selectionDetailView:self touchesHighlightedStateChanged:highlighted];
-    }
-}
-
 #pragma mark - overrides
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -208,6 +192,22 @@
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self tellDelegateTouchesHighlightedStateChanged:NO];
+}
+
+#pragma mark - delegate helpers
+
+- (void)tellDelegateTapGestureRecognized:(UITapGestureRecognizer *)tap
+{
+    if([self.delegate respondsToSelector:@selector(selectionDetailView:tapGestureRecognized:)]) {
+        [self.delegate selectionDetailView:self tapGestureRecognized:tap];
+    }
+}
+
+- (void)tellDelegateTouchesHighlightedStateChanged:(BOOL)highlighted
+{
+    if([self.delegate respondsToSelector:@selector(selectionDetailView:touchesHighlightedStateChanged:)]) {
+        [self.delegate selectionDetailView:self touchesHighlightedStateChanged:highlighted];
+    }
 }
 
 @end
