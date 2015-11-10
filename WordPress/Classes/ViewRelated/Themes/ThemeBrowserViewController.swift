@@ -186,7 +186,7 @@ import WordPressShared.WPNoResultsView
             let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ThemeBrowserFooterView", forIndexPath: indexPath)
             return footer
         default:
-            assert(false, "Unexpected theme browser element \(kind)")
+            fatalError("Unexpected theme browser element");
         }
     }
     
