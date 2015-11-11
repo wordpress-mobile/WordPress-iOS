@@ -538,7 +538,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     NSArray *blogsWithNoAccount = [self blogsWithNoAccount];
     Blog *jetpackBlog = [[blogsWithNoAccount wp_filter:^BOOL(Blog *blogToTest) {
-        return [blogToTest.xmlrpc isEqualToString:remoteBlog.xmlrpc] && [blogToTest.dotComID isEqual:remoteBlog.ID];
+        return [blogToTest.xmlrpc isEqualToString:remoteBlog.xmlrpc] && [blogToTest.dotComID isEqual:remoteBlog.blogID];
     }] firstObject];
 
     if (jetpackBlog) {
@@ -795,7 +795,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.relatedPostsShowThumbnails = remoteSettings.relatedPostsShowThumbnails;
 }
 
-
 - (RemoteBlogSettings *)remoteSettingFromSettings:(BlogSettings *)settings
 {
     NSParameterAssert(settings);
@@ -838,4 +837,5 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     
     return remoteSettings;
 }
+
 @end

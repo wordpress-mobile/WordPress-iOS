@@ -1,11 +1,11 @@
 @interface RemoteBlog : NSObject
-@property NSNumber *ID;
-@property (copy) NSString *title;
-@property (copy) NSString *desc;
-@property (copy) NSString *url;
-@property (copy) NSString *xmlrpc;
-@property (assign) BOOL jetpack;
-@property (copy) NSString *icon;
-@property (assign) BOOL isAdmin;
-@property (assign) BOOL visible;
+@property (nonatomic,   copy) NSNumber  *blogID;
+@property (nonatomic,   copy) NSString  *name;
+@property (nonatomic,   copy) NSString  *tagline;
+@property (nonatomic,   copy) NSString  *url;
+@property (nonatomic,   copy) NSString  *xmlrpc;
+@property (nonatomic,   copy) NSString  *icon;
+@property (nonatomic, assign) BOOL      jetpack;
+@property (nonatomic, assign) BOOL      isAdmin;
+@property (nonatomic, assign) BOOL      visible;
 @end
