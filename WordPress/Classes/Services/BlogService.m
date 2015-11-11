@@ -479,9 +479,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 #pragma mark - Private methods
 
-- (void)mergeBlogs:(NSArray *)blogs
-       withAccount:(WPAccount *)account
-        completion:(void (^)())completion
+- (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs withAccount:(WPAccount *)account completion:(void (^)())completion
 {
     // Nuke dead blogs
     NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
@@ -500,18 +498,20 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // Go through each remote incoming blog and make sure we're up to date with titles, etc.
     // Also adds any blogs we don't have
     for (RemoteBlog *remoteBlog in blogs) {
-        Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc
-                                    inAccount:account];
+        Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc inAccount:account];
+        
         if (!blog && remoteBlog.jetpack) {
-            blog = [self migrateRemoteJetpackBlog:remoteBlog
-                                       forAccount:account];
+            blog = [self migrateRemoteJetpackBlog:remoteBlog forAccount:account];
         }
         
         if (!blog) {
             DDLogInfo(@"New blog from account %@: %@", account.username, remoteBlog);
             blog = [self createBlogWithAccount:account];
-            blog.settings = [self createSettingsWithBlog:blog];
             blog.xmlrpc = remoteBlog.xmlrpc;
+        }
+        
+        if (!blog.settings) {
+            blog.settings = [self createSettingsWithBlog:blog];
         }
         
         blog.url = remoteBlog.url;
