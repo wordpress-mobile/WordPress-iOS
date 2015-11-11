@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 import WordPress
-
+import OHHTTPStubs
 
 class NotificationsServiceTests : XCTestCase
 {
