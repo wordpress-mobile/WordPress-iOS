@@ -645,12 +645,11 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 - (NSPredicate *)fetchRequestPredicateForSearch
 {
     NSString *searchText = self.searchController.searchBar.text;
-    
     if ([searchText isEmpty]) {
         return [self fetchRequestPredicateForHideableBlogs];
-    } else {
-        return [NSPredicate predicateWithFormat:@"( blogName contains[cd] %@ ) OR ( url contains[cd] %@)", searchText, searchText];
     }
+    
+    return [NSPredicate predicateWithFormat:@"( settings.name contains[cd] %@ ) OR ( url contains[cd] %@)", searchText, searchText];
 }
 
 - (NSPredicate *)fetchRequestPredicateForHideableBlogs
