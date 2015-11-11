@@ -1,5 +1,5 @@
 #import <OCMock/OCMock.h>
-#import <WordPressCom-Analytics-iOS/WPAnalytics.h>
+#import <WordPressComAnalytics/WPAnalytics.h>
 #import <XCTest/XCTest.h>
 
 #import "WordPressAppDelegate.h"
