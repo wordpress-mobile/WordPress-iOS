@@ -25,7 +25,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 @end
 
-@interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate>
+@interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIStackView *contentStackView;
@@ -74,6 +74,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.scrollView.backgroundColor = [WPStyleGuide greyLighten30];
     
     self.headerView.delegate = self;
+    self.detailsView.delegate = self;
     
     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     activity.hidesWhenStopped = YES;
@@ -162,6 +163,13 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)headerViewSelectionChangedWithSelectedMenu:(Menu *)menu
 {
     self.detailsView.menu = menu;
+}
+
+#pragma mark - MenuDetailsViewDelegate
+
+- (void)detailsViewUpdatedMenuName:(MenuDetailsView *)menuDetailView
+{
+    [self.headerView refreshMenuViewsUsingMenu:menuDetailView.menu];
 }
 
 #pragma mark - notifications

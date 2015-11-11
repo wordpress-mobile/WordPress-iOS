@@ -88,14 +88,9 @@
 {
     if(_menu != menu) {
         _menu = menu;
-        [self updatedMenu];
+        self.textField.text = self.menu.name;
+        [self updateTextFieldDesignIconPositioning];
     }
-}
-
-- (void)updatedMenu
-{
-    self.textField.text = self.menu.name;
-    [self updateTextFieldDesignIconPositioning];
 }
 
 - (void)hideTextFieldKeyboard
@@ -149,7 +144,14 @@
     [self updateTextFieldDesignIconPositioning];
 }
 
-#pragma mark - UITextFieldDelegate
+#pragma mark - delegate helpers
+
+- (void)tellDelegateMenuNameChanged
+{
+    [self.delegate detailsViewUpdatedMenuName:self];
+}
+
+#pragma mark - UITextField
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
@@ -157,6 +159,10 @@
         // restore the original name if the user cleared the text
         textField.text = self.menu.name;
     }
+    
+    // update the menu CoreData object
+    self.menu.name = textField.text;
+    [self tellDelegateMenuNameChanged];
     
     [self updateTextFieldDesignIconPositioning];
     [UIView animateWithDuration:0.25 animations:^{

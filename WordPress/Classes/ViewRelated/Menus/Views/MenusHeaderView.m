@@ -62,6 +62,12 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     }
 }
 
+- (void)refreshMenuViewsUsingMenu:(Menu *)menu
+{
+    MenusSelectionViewItem *item = [self.menusView itemWithItemObjectEqualTo:menu];
+    [item notifyItemObjectWasUpdated];
+}
+
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
