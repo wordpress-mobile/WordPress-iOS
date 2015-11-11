@@ -1,6 +1,6 @@
 import UIKit
 
-class CreateNewBlogViewController: UIViewController
+class CreateNewBlogViewController2: UIViewController
 {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var titleTextField: WPWalkthroughTextField!
