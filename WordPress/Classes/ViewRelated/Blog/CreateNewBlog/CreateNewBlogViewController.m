@@ -43,7 +43,6 @@
     BOOL _keyboardVisible;
     BOOL _userDefinedSiteAddress;
     CGFloat _keyboardOffset;
-    NSString *_defaultSiteUrl;
     
     NSDictionary *_currentLanguage;
 }
@@ -155,7 +154,7 @@ replacementString:(NSString *)string
         if ([[_siteAddressField.text trim] length] == 0 || !_userDefinedSiteAddress) {
             NSCharacterSet *charactersToRemove = [[NSCharacterSet alphanumericCharacterSet] invertedSet];
             NSString *strippedReplacement = [[_siteTitleField.text.lowercaseString componentsSeparatedByCharactersInSet:charactersToRemove] componentsJoinedByString:@""];
-            _siteAddressField.text = _defaultSiteUrl = strippedReplacement;
+            _siteAddressField.text = strippedReplacement;
             _userDefinedSiteAddress = NO;
             [self updateCreateBlogButtonForTextfield:_siteAddressField andUpdatedString:_siteAddressField.text];
         }
