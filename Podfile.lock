@@ -125,17 +125,17 @@ PODS:
   - ReactiveCocoa/no-arc (2.4.7)
   - ReactiveCocoa/UI (2.4.7):
     - ReactiveCocoa/Core
-  - Simperium (0.8.10):
-    - Simperium/DiffMatchPach (= 0.8.10)
-    - Simperium/JRSwizzle (= 0.8.10)
-    - Simperium/SocketRocket (= 0.8.10)
-    - Simperium/SPReachability (= 0.8.10)
-    - Simperium/SSKeychain (= 0.8.10)
-  - Simperium/DiffMatchPach (0.8.10)
-  - Simperium/JRSwizzle (0.8.10)
-  - Simperium/SocketRocket (0.8.10)
-  - Simperium/SPReachability (0.8.10)
-  - Simperium/SSKeychain (0.8.10)
+  - Simperium (0.8.9):
+    - Simperium/DiffMatchPach (= 0.8.9)
+    - Simperium/JRSwizzle (= 0.8.9)
+    - Simperium/SocketRocket (= 0.8.9)
+    - Simperium/SPReachability (= 0.8.9)
+    - Simperium/SSKeychain (= 0.8.9)
+  - Simperium/DiffMatchPach (0.8.9)
+  - Simperium/JRSwizzle (0.8.9)
+  - Simperium/SocketRocket (0.8.9)
+  - Simperium/SPReachability (0.8.9)
+  - Simperium/SSKeychain (0.8.9)
   - Specta (1.0.3)
   - SVProgressHUD (1.1.3)
   - UIDeviceIdentifier (0.4.5)
@@ -204,7 +204,7 @@ DEPENDENCIES:
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.2)
   - ReactiveCocoa (~> 2.4.7)
-  - Simperium (from `https://github.com/Simperium/simperium-ios.git`, branch `fix/frameworks`)
+  - Simperium (= 0.8.9)
   - Specta (= 1.0.3)
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
@@ -212,8 +212,7 @@ DEPENDENCIES:
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
   - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`,
     branch `fix/framework-support`)
-  - WordPress-iOS-Shared (from `https://github.com/wordpress-mobile/WordPress-Shared-iOS.git`,
-    branch `fix/cocoapods-framework`)
+  - WordPress-iOS-Shared (= 0.5.0)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
   - WordPressCom-Analytics-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git`,
     branch `fix/framework-support`)
@@ -236,18 +235,12 @@ EXTERNAL SOURCES:
   NSLogger-CocoaLumberjack-connector:
     :git: https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git
     :tag: '1.5'
-  Simperium:
-    :branch: fix/frameworks
-    :git: https://github.com/Simperium/simperium-ios.git
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
     :branch: fix/framework-support
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
-  WordPress-iOS-Shared:
-    :branch: fix/cocoapods-framework
-    :git: https://github.com/wordpress-mobile/WordPress-Shared-iOS.git
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressCom-Analytics-iOS:
@@ -267,26 +260,20 @@ CHECKOUT OPTIONS:
   NSLogger-CocoaLumberjack-connector:
     :git: https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git
     :tag: '1.5'
-  Simperium:
-    :commit: 6b03d88234d1d72e5a57f48ad1c4a73ea5452b4e
-    :git: https://github.com/Simperium/simperium-ios.git
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
     :commit: 0beebaa171d0b360ddae0f3aa3f4cb63c3d14289
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
-  WordPress-iOS-Shared:
-    :commit: b3aaf8dc066bce8a74969d7cff37790be799537d
-    :git: https://github.com/wordpress-mobile/WordPress-Shared-iOS.git
   WordPressApi:
     :commit: a7dc27935fb30b1978942cb1c791d4040fe65395
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressCom-Analytics-iOS:
-    :commit: d38355e2731421f74ef0dc0db2ef48d0a20c435f
+    :commit: 6aa814533f55953c3be2e0180ee2fba4f0d87b4b
     :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
   WordPressCom-Stats-iOS:
-    :commit: ef1e373f7cf61f6fddfff6bb01f9c54b1ed1ec98
+    :commit: 49700d9fede247fb959eb0db38053795bcd9aba4
     :git: https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git
 
 SPEC CHECKSUMS:
@@ -317,7 +304,7 @@ SPEC CHECKSUMS:
   PDKTZipArchive: 81c4824eb5587131e422fc58b92c043c4aa96466
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
-  Simperium: f507d9b400c499048a98fe728a0b2b9956fd14c1
+  Simperium: 6c3b944c7d72477d83b3355331b8fa879b35afb2
   Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: f7b32c087f4d4957badbb6181a4c78520c5806ae

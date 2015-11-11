@@ -30,11 +30,9 @@ pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-T
 pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
 pod 'NSObject-SafeExpectations', '0.0.2'
-#pod 'Simperium', '0.8.10'
-pod 'Simperium', :branch => 'fix/frameworks', :git => 'https://github.com/Simperium/simperium-ios.git'
+pod 'Simperium', '0.8.9'
 pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
-#pod 'WordPress-iOS-Shared', '0.5.0'
-pod 'WordPress-iOS-Shared', :branch => 'fix/cocoapods-framework', :git => 'https://github.com/wordpress-mobile/WordPress-Shared-iOS.git'
+pod 'WordPress-iOS-Shared', '0.5.0'
 #pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '34d484172a4e4f5013289023468098fb8764d2c7'
 pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :branch => 'fix/framework-support'
 #pod 'WordPressCom-Stats-iOS', '0.4.10'
