@@ -482,31 +482,6 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
     
     [self setAuthenticating:YES];
     
-    // The site must be validated prior to making an account. Without validation,
-    // the situation could exist where a user account is created, but the site creation
-    // fails.
-    WPAsyncBlockOperation *siteValidation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation) {
-        WordPressComServiceSuccessBlock blogValidationSuccess = ^(NSDictionary *responseDictionary) {
-            [operation didSucceed];
-        };
-        WordPressComServiceFailureBlock blogValidationFailure = ^(NSError *error) {
-            [operation didFail];
-            [self setAuthenticating:NO];
-            [self displayRemoteError:error];
-        };
-        
-        NSString *languageId = [_currentLanguage stringForKey:@"lang_id"];
-        
-        WordPressComApi *api = [WordPressComApi anonymousApi];
-        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
-        
-        [service validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
-                             andBlogTitle:_siteTitleField.text
-                            andLanguageId:languageId
-                                  success:blogValidationSuccess
-                                  failure:blogValidationFailure];
-    }];
-    
     WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         WordPressComServiceSuccessBlock createBlogSuccess = ^(NSDictionary *responseDictionary){
             [WPAnalytics track:WPAnalyticsStatCreatedAccount];
@@ -564,9 +539,6 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
                                 failure:createBlogFailure];
     }];
     
-    [blogCreation addDependency:siteValidation];
-    
-    [_operationQueue addOperation:siteValidation];
     [_operationQueue addOperation:blogCreation];
 }
 
