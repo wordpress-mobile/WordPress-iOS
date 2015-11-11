@@ -223,7 +223,6 @@ replacementString:(NSString *)string
         _siteTitleField.delegate = self;
         _siteTitleField.autocorrectionType = UITextAutocorrectionTypeNo;
         _siteTitleField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _siteTitleField.showTopLineSeparator = YES;
         _siteTitleField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _siteTitleField.accessibilityIdentifier = @"Title";
         _siteTitleField.returnKeyType = UIReturnKeyNext;
