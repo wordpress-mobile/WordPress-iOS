@@ -42,17 +42,17 @@
 
 @implementation CreateNewBlogViewController
 
-static CGFloat const CreateAccountAndBlogStandardOffset             = 15.0;
-static CGFloat const CreateAccountAndBlogMaxTextWidth               = 260.0;
-static CGFloat const CreateAccountAndBlogTextFieldWidth             = 320.0;
-static CGFloat const CreateAccountAndBlogTextFieldHeight            = 44.0;
-static CGFloat const CreateAccountAndBlogTextFieldPhoneHeight       = 38.0;
-static CGFloat const CreateAccountAndBlogiOS7StatusBarOffset        = 20.0;
-static CGFloat const CreateAccountAndBlogButtonWidth                = 290.0;
-static CGFloat const CreateAccountAndBlogButtonHeight               = 41.0;
+static CGFloat const CreateBlogStandardOffset             = 15.0;
+static CGFloat const CreateBlogMaxTextWidth               = 260.0;
+static CGFloat const CreateBlogTextFieldWidth             = 320.0;
+static CGFloat const CreateBlogTextFieldHeight            = 44.0;
+static CGFloat const CreateBlogTextFieldPhoneHeight       = 38.0;
+static CGFloat const CreateBlogiOS7StatusBarOffset        = 20.0;
+static CGFloat const CreateBlogButtonWidth                = 290.0;
+static CGFloat const CreateBlogButtonHeight               = 41.0;
 
-static UIEdgeInsets const CreateAccountAndBlogCancelButtonPadding     = {1.0, 0.0, 0.0, 0.0};
-static UIEdgeInsets const CreateAccountAndBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0.0};
+static UIEdgeInsets const CreateBlogCancelButtonPadding     = {1.0, 0.0, 0.0, 0.0};
+static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0.0};
 
 - (instancetype)init
 {
@@ -118,8 +118,7 @@ static UIEdgeInsets const CreateAccountAndBlogCancelButtonPaddingPad  = {1.0, 13
     return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range
-replacementString:(NSString *)string
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSArray *fields = @[_siteTitleField, _siteAddressField];
     
@@ -278,35 +277,35 @@ replacementString:(NSString *)string
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat viewHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
     
-    UIEdgeInsets cancelButtonPadding = [UIDevice isPad] ? CreateAccountAndBlogCancelButtonPaddingPad : CreateAccountAndBlogCancelButtonPadding;
+    UIEdgeInsets cancelButtonPadding = [UIDevice isPad] ? CreateBlogCancelButtonPaddingPad : CreateBlogCancelButtonPadding;
     
     // Layout Cancel Button
     x = cancelButtonPadding.left;
-    y = CreateAccountAndBlogiOS7StatusBarOffset + cancelButtonPadding.top;
-    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CreateAccountAndBlogButtonHeight);
+    y = CreateBlogiOS7StatusBarOffset + cancelButtonPadding.top;
+    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CreateBlogButtonHeight);
     
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
     
     // Layout Title
-    CGSize titleSize = [_titleLabel suggestedSizeForWidth:CreateAccountAndBlogMaxTextWidth];
+    CGSize titleSize = [_titleLabel suggestedSizeForWidth:CreateBlogMaxTextWidth];
     x = (viewWidth - titleSize.width)/2.0;
     y = 0;
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
     
     // In order to fit controls ontol all phones, the textField height is smaller on iPhones
     // versus iPads.
-    CGFloat textFieldHeight = IS_IPAD ? CreateAccountAndBlogTextFieldHeight: CreateAccountAndBlogTextFieldPhoneHeight;
+    CGFloat textFieldHeight = IS_IPAD ? CreateBlogTextFieldHeight: CreateBlogTextFieldPhoneHeight;
     
     // Layout Site Title
-    x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_titleLabel.frame) + CreateAccountAndBlogStandardOffset;
-    _siteTitleField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
+    x = (viewWidth - CreateBlogTextFieldWidth)/2.0;
+    y = CGRectGetMaxY(_titleLabel.frame) + CreateBlogStandardOffset;
+    _siteTitleField.frame = CGRectIntegral(CGRectMake(x, y, CreateBlogTextFieldWidth, textFieldHeight));
     
     // Layout Site Address
-    x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
+    x = (viewWidth - CreateBlogTextFieldWidth)/2.0;
     y = CGRectGetMaxY(_siteTitleField.frame) - 1;
-    _siteAddressField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
+    _siteAddressField.frame = CGRectIntegral(CGRectMake(x, y, CreateBlogTextFieldWidth, textFieldHeight));
     
     // Layout WordPressCom Label
     [_siteAddressWPComLabel sizeToFit];
@@ -318,13 +317,13 @@ replacementString:(NSString *)string
                                               wordPressComLabelSize.width,
                                               wordPressComLabelSize.height);
     
-    // Layout Create Account Button
-    x = (viewWidth - CreateAccountAndBlogButtonWidth)/2.0;
-    y = CGRectGetMaxY(_siteAddressField.frame) + CreateAccountAndBlogStandardOffset;
+    // Layout Create Blog Button
+    x = (viewWidth - CreateBlogButtonWidth)/2.0;
+    y = CGRectGetMaxY(_siteAddressField.frame) + CreateBlogStandardOffset;
     _createBlogButton.frame = CGRectIntegral(CGRectMake(x,
                                                            y,
-                                                           CreateAccountAndBlogButtonWidth,
-                                                           CreateAccountAndBlogButtonHeight));
+                                                           CreateBlogButtonWidth,
+                                                           CreateBlogButtonHeight));
     
     NSArray *controls = @[_titleLabel, _siteTitleField,
                           _createBlogButton, _siteAddressField];
@@ -360,7 +359,7 @@ replacementString:(NSString *)string
     CGRect keyboardFrame = [[keyboardInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
     
-    CGFloat newKeyboardOffset = (CGRectGetMaxY(_createBlogButton.frame) - CGRectGetMinY(keyboardFrame)) + CreateAccountAndBlogStandardOffset;
+    CGFloat newKeyboardOffset = (CGRectGetMaxY(_createBlogButton.frame) - CGRectGetMinY(keyboardFrame)) + CreateBlogStandardOffset;
     
     // make sure keyboard offset is greater than 0, otherwise do not move controls
     if (newKeyboardOffset < 0) {
