@@ -301,7 +301,7 @@ replacementString:(NSString *)string
     
     // Layout Site Title
     x = (viewWidth - CreateAccountAndBlogTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_titleLabel.frame) - 1;
+    y = CGRectGetMaxY(_titleLabel.frame) + CreateAccountAndBlogStandardOffset;
     _siteTitleField.frame = CGRectIntegral(CGRectMake(x, y, CreateAccountAndBlogTextFieldWidth, textFieldHeight));
     
     // Layout Site Address
