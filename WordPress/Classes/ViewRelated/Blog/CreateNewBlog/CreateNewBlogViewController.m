@@ -54,9 +54,6 @@ static CGFloat const CreateAccountAndBlogButtonHeight               = 41.0;
 static UIEdgeInsets const CreateAccountAndBlogCancelButtonPadding     = {1.0, 0.0, 0.0, 0.0};
 static UIEdgeInsets const CreateAccountAndBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0.0};
 
-static UIEdgeInsets const CreateAccountAndBlogHelpButtonPadding     = {1.0, 0.0, 0.0, 13.0};
-static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0, 0.0, 20.0};
-
 - (instancetype)init
 {
     self = [super init];
