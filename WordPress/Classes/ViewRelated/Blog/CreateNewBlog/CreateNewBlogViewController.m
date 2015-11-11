@@ -3,8 +3,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "SupportViewController.h"
 #import "WordPressComApi.h"
-#import "WPNUXBackButton.h"
 #import "WPNUXMainButton.h"
+#import "WPNUXSecondaryButton.h"
 #import "WPPostViewController.h"
 #import "WPWalkthroughTextField.h"
 #import "WPAsyncBlockOperation.h"
@@ -30,7 +30,7 @@
 
 @interface CreateNewBlogViewController ()<UITextFieldDelegate,UIGestureRecognizerDelegate> {
     // Page 1
-    WPNUXBackButton *_backButton;
+    WPNUXSecondaryButton *_cancelButton;
     UILabel *_titleLabel;
     UILabel *_siteAddressWPComLabel;
     WPWalkthroughTextField *_siteTitleField;
@@ -61,8 +61,8 @@ static CGFloat const CreateAccountAndBlogiOS7StatusBarOffset        = 20.0;
 static CGFloat const CreateAccountAndBlogButtonWidth                = 290.0;
 static CGFloat const CreateAccountAndBlogButtonHeight               = 41.0;
 
-static UIEdgeInsets const CreateAccountAndBlogBackButtonPadding     = {1.0, 0.0, 0.0, 0.0};
-static UIEdgeInsets const CreateAccountAndBlogBackButtonPaddingPad  = {1.0, 13.0, 0.0, 0.0};
+static UIEdgeInsets const CreateAccountAndBlogCancelButtonPadding     = {1.0, 0.0, 0.0, 0.0};
+static UIEdgeInsets const CreateAccountAndBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0.0};
 
 static UIEdgeInsets const CreateAccountAndBlogHelpButtonPadding     = {1.0, 0.0, 0.0, 13.0};
 static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0, 0.0, 20.0};
@@ -206,12 +206,12 @@ replacementString:(NSString *)string
 - (void)addControls
 {
     // Add Cancel Button
-    if (_backButton == nil) {
-        _backButton = [[WPNUXBackButton alloc] init];
-        [_backButton addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
-        [_backButton sizeToFit];
-        _backButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
-        [self.view addSubview:_backButton];
+    if (_cancelButton == nil) {
+        _cancelButton = [[WPNUXSecondaryButton alloc] init];
+        [_cancelButton addTarget:self action:@selector(cancelButtonAction) forControlEvents:UIControlEventTouchUpInside];
+        [_cancelButton sizeToFit];
+        _cancelButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
+        [self.view addSubview:_cancelButton];
     }
     
     // Add Title
@@ -291,12 +291,12 @@ replacementString:(NSString *)string
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat viewHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
     
-    UIEdgeInsets backButtonPadding = [UIDevice isPad] ? CreateAccountAndBlogBackButtonPaddingPad : CreateAccountAndBlogBackButtonPadding;
+    UIEdgeInsets cancelButtonPadding = [UIDevice isPad] ? CreateAccountAndBlogCancelButtonPaddingPad : CreateAccountAndBlogCancelButtonPadding;
     
     // Layout Cancel Button
-    x = backButtonPadding.left;
-    y = CreateAccountAndBlogiOS7StatusBarOffset + backButtonPadding.top;
-    _backButton.frame = CGRectMake(x, y, CGRectGetWidth(_backButton.frame), CreateAccountAndBlogButtonHeight);
+    x = cancelButtonPadding.left;
+    y = CreateAccountAndBlogiOS7StatusBarOffset + cancelButtonPadding.top;
+    _cancelButton.frame = CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), CreateAccountAndBlogButtonHeight);
     
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
@@ -344,7 +344,7 @@ replacementString:(NSString *)string
     [WPNUXUtility centerViews:controls withStartingView:_titleLabel andEndingView:_createBlogButton forHeight:viewHeight];
 }
 
-- (IBAction)backButtonAction
+- (IBAction)cancelButtonAction
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -442,7 +442,7 @@ replacementString:(NSString *)string
 
 - (NSArray *)controlsToShowOrHideDuringKeyboardTransition
 {
-    return @[_titleLabel, _backButton];
+    return @[_titleLabel, _cancelButton];
 }
 
 - (void)displayRemoteError:(NSError *)error
