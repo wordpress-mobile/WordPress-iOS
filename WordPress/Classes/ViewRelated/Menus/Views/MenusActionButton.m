@@ -67,31 +67,48 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     [self updateDesignInsets];
 }
 
+- (void)setEnabled:(BOOL)enabled
+{
+    [super setEnabled:enabled];
+    [self setNeedsDisplay];
+}
+
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
     
+    UIColor *fillColor = self.backgroundDrawColor;
+    
     const BOOL drawHighlighted = self.showsDesignHighlighted;
-    {
-        // draw the base layer based on a darker color of the draw color
-        [[self darkerBaseColorWithColor:self.backgroundDrawColor delta:drawHighlighted ? 0.25 : 0.16] set];
-        [[UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:MenusDesignDefaultCornerRadius] fill];
+    const BOOL drawsDisabledHighlight = !self.enabled; // will overlay a transparent white layer to appear disabled
+    
+    UIBezierPath *basePath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:MenusDesignDefaultCornerRadius];
+    // draw the base layer based on a darker color of the draw color
+    [[self adjustedBaseColorWithColor:fillColor delta:drawHighlighted ? -0.25 : -0.16] set];
+    [basePath fill];
+    
+    if(drawsDisabledHighlight) {
+        [[UIColor colorWithWhite:1.0 alpha:0.55] set];
+        [basePath fill];
     }
-    {
-        // draw the actual fill color on top of the base layer
-        [self.backgroundDrawColor set];
-        
-        CGRect fillRect = rect;
-        // add height padding for design parity with web
-        fillRect.size.height -= MenusDetailsButtonDesignPadding / 2.0;
-        UIBezierPath *fillPath = [UIBezierPath bezierPathWithRoundedRect:fillRect cornerRadius:MenusDesignDefaultCornerRadius];
-        // scale down the fill rect to maintain the corner radius and inset the fill
-        CGFloat scalePointDelta = MenusDetailsButtonDesignPadding;
-        CGAffineTransform transform = CGAffineTransformMakeScale((fillRect.size.width - scalePointDelta) / fillRect.size.width, (fillRect.size.height - scalePointDelta) / fillRect.size.height);
-        // reposition the scaled path
-        CGFloat translateY = drawHighlighted ? scalePointDelta : scalePointDelta / 2;
-        transform = CGAffineTransformTranslate(transform, scalePointDelta / 2, translateY);
-        [fillPath applyTransform:transform];
+
+    // draw the actual fill color on top of the base layer
+    [fillColor set];
+    CGRect fillRect = rect;
+    // add height padding for design parity with web
+    fillRect.size.height -= MenusDetailsButtonDesignPadding / 2.0;
+    UIBezierPath *fillPath = [UIBezierPath bezierPathWithRoundedRect:fillRect cornerRadius:MenusDesignDefaultCornerRadius];
+    // scale down the fill rect to maintain the corner radius and inset the fill
+    CGFloat scalePointDelta = MenusDetailsButtonDesignPadding;
+    CGAffineTransform transform = CGAffineTransformMakeScale((fillRect.size.width - scalePointDelta) / fillRect.size.width, (fillRect.size.height - scalePointDelta) / fillRect.size.height);
+    // reposition the scaled path
+    CGFloat translateY = drawHighlighted ? scalePointDelta : scalePointDelta / 2;
+    transform = CGAffineTransformTranslate(transform, scalePointDelta / 2, translateY);
+    [fillPath applyTransform:transform];
+    [fillPath fill];
+    
+    if(drawsDisabledHighlight) {
+        [[UIColor colorWithWhite:1.0 alpha:0.75] set];
         [fillPath fill];
     }
 }
@@ -158,11 +175,11 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     return [UIColor colorWithRed:0.133 green:0.204 blue:0.259 alpha:1.000];
 }
 
-- (UIColor *)darkerBaseColorWithColor:(UIColor *)color delta:(CGFloat)delta
+- (UIColor *)adjustedBaseColorWithColor:(UIColor *)color delta:(CGFloat)delta
 {
     CGFloat r, g, b, a;
     [color getRed:&r green:&g blue:&b alpha:&a];
-    return [UIColor colorWithRed:r - delta green:g - delta blue:b - delta alpha:a];
+    return [UIColor colorWithRed:r + delta green:g + delta blue:b + delta alpha:a];
 }
 
 @end
