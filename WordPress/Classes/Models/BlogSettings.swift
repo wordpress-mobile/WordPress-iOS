@@ -57,6 +57,12 @@ public class BlogSettings : NSManagedObject
     @NSManaged var commentsAllowed : NSNumber?
     
     /**
+     *  @details Contains a list of words, space separated, that would cause a comment to be automatically
+     *           blacklisted.
+     */
+    @NSManaged var commentsBlacklistKeys : String?
+    
+    /**
      *  @details If true, comments will be automatically closed after the number of days, specified
      *           by `commentsCloseAutomaticallyAfterDays`.
      */
@@ -67,7 +73,12 @@ public class BlogSettings : NSManagedObject
      *           `commentsCloseAutomatically` property is set to true.
      */
     @NSManaged var commentsCloseAutomaticallyAfterDays : NSNumber?
-
+    
+    /**
+     *  @details Contains a list of words, space separated, that cause a comment to require moderation.
+     */
+    @NSManaged var commentsModerationKeys : String?
+    
     /**
      *  @details If true, comment pagination will be enabled.
      */
@@ -142,4 +153,9 @@ public class BlogSettings : NSManagedObject
      *  @details Indicates whether related posts should show thumbnails.
      */
     @NSManaged var relatedPostsShowThumbnails : NSNumber?
+    
+    public enum CommentsSortOrder : Int {
+        case Ascending  = 0
+        case Descending = 1
+    }
 }

@@ -46,6 +46,11 @@ public class RemoteBlogSettings : NSObject
     *  @details Represents whether comments are allowed, or not.
     */
     var commentsAllowed : NSNumber?
+
+    /**
+     *  @details Contains a list of words that would automatically blacklist a comment.
+     */
+    var commentsBlacklistKeys : String?
     
     /**
      *  @details If true, comments will be automatically closed after the number of days, specified
@@ -58,6 +63,11 @@ public class RemoteBlogSettings : NSObject
      *           `commentsCloseAutomatically` property is set to true.
      */
     var commentsCloseAutomaticallyAfterDays : NSNumber?
+    
+    /**
+     *  @details Contains a list of words that cause a comment to require moderation.
+     */
+    var commentsModerationKeys : String?
     
     /**
      *  @details If true, comment pagination will be enabled.
@@ -88,7 +98,14 @@ public class RemoteBlogSettings : NSObject
     /**
      *  @details Indicates the sorting order of the comments. Ascending / Descending, based on the date.
      */
-    var commentsSortOrder : NSNumber?
+    var commentsSortOrder : String?
+
+    /**
+     *  @details Readonly property that returns true if the sort order is ascending. Otherwise, it's descending!
+     */
+    var commentsSortOrderAscending : Bool {
+        return commentsSortOrder == CommentsSortOrder.Ascending.rawValue
+    }
     
     /**
      *  @details Indicates the number of levels allowed per comment.
@@ -133,4 +150,12 @@ public class RemoteBlogSettings : NSObject
      *  @details Indicates whether related posts should show thumbnails.
      */
     var relatedPostsShowThumbnails : NSNumber?
+    
+    
+    
+    // MARK: - Private Constants
+    private enum CommentsSortOrder : String {
+        case Ascending  = "asc"
+        case Descending = "desc"
+    }
 }
