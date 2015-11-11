@@ -19,7 +19,7 @@
 #import "WordPress-Swift.h"
 #import "WPSearchControllerConfigurator.h"
 #import "WPGUIConstants.h"
-#import "CreateAccountAndBlogViewController.h"
+#import "CreateNewBlogViewController.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
@@ -584,8 +584,7 @@ static CGFloat const BLVCSiteRowHeight = 74.0;
 {
     [self setEditing:NO animated:NO];
     
-    UIStoryboard *createNewBlogStoryboard = [UIStoryboard storyboardWithName:@"CreateNewBlog" bundle:nil];
-    CreateNewBlogViewController *createNewBlogViewController = [createNewBlogStoryboard instantiateViewControllerWithIdentifier:@"CreateNewBlogViewController"];
+    CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
     [self.navigationController presentViewController:createNewBlogViewController animated:YES completion:nil];
 }
 
