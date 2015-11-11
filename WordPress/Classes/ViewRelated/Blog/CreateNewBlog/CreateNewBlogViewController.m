@@ -43,7 +43,6 @@
 @implementation CreateNewBlogViewController
 
 static CGFloat const CreateBlogStandardOffset             = 15.0;
-static CGFloat const CreateBlogMaxTextWidth               = 260.0;
 static CGFloat const CreateBlogTextFieldWidth             = 320.0;
 static CGFloat const CreateBlogTextFieldHeight            = 44.0;
 static CGFloat const CreateBlogTextFieldPhoneHeight       = 38.0;
@@ -206,7 +205,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Create WordPress.com blog", @"Create WordPress.com blog Title")
                                                                      attributes:[WPNUXUtility titleAttributesWithColor:[UIColor whiteColor]]];
-        _titleLabel.numberOfLines = 0;
+        _titleLabel.adjustsFontSizeToFitWidth = YES;
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         [self.view addSubview:_titleLabel];
@@ -288,7 +287,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
     // is accurately calculated we can determine the vertical center and adjust everything accordingly.
     
     // Layout Title
-    CGSize titleSize = [_titleLabel suggestedSizeForWidth:CreateBlogMaxTextWidth];
+    CGSize titleSize = [_titleLabel suggestedSizeForWidth:CreateBlogTextFieldWidth];
     x = (viewWidth - titleSize.width)/2.0;
     y = 0;
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, titleSize.width, titleSize.height));
