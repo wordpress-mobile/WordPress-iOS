@@ -234,7 +234,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
         [remote syncSettingsForBlogID:blog.blogID success:^(RemoteBlogSettings *settings) {
             [self.managedObjectContext performBlock:^{
-                [self updateSettings:blogInContext.settings remoteSettings:settings];
+                [self updateSettings:blogInContext.settings withRemoteSettings:settings];
                 [self.managedObjectContext save:nil];
                 if (success) {
                     success();
@@ -766,7 +766,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return timeZone;
 }
 
-- (void)updateSettings:(BlogSettings *)settings remoteSettings:(RemoteBlogSettings *)remoteSettings
+- (void)updateSettings:(BlogSettings *)settings withRemoteSettings:(RemoteBlogSettings *)remoteSettings
 {
     NSParameterAssert(settings);
     NSParameterAssert(remoteSettings);
@@ -782,8 +782,13 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     // Discussion
     settings.commentsAllowed = remoteSettings.commentsAllowed;
+    settings.commentsBlacklistKeys = remoteSettings.commentsBlacklistKeys;
     settings.commentsCloseAutomatically = remoteSettings.commentsCloseAutomatically;
     settings.commentsCloseAutomaticallyAfterDays = remoteSettings.commentsCloseAutomaticallyAfterDays;
+    settings.commentsFromKnownUsersWhitelisted = remoteSettings.commentsFromKnownUsersWhitelisted;
+    
+    settings.commentsMaximumLinks = remoteSettings.commentsMaximumLinks;
+    settings.commentsModerationKeys = remoteSettings.commentsModerationKeys;
     
     settings.commentsPagingEnabled = remoteSettings.commentsPagingEnabled;
     settings.commentsPageSize = remoteSettings.commentsPageSize;
@@ -792,7 +797,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.commentsRequireNameAndEmail = remoteSettings.commentsRequireNameAndEmail;
     settings.commentsRequireRegistration = remoteSettings.commentsRequireRegistration;
     
-    settings.commentsSortOrder = remoteSettings.commentsSortOrder;
+    settings.commentsSortOrderAsString = remoteSettings.commentsSortOrder;
     
     settings.commentsThreadingDepth = remoteSettings.commentsThreadingDepth;
     settings.commentsThreadingEnabled = remoteSettings.commentsThreadingEnabled;
@@ -800,7 +805,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.pingbackInboundEnabled = remoteSettings.pingbackInboundEnabled;
     settings.pingbackOutboundEnabled = remoteSettings.pingbackOutboundEnabled;
 
-    
     // Related Posts
     settings.relatedPostsAllowed = remoteSettings.relatedPostsAllowed;
     settings.relatedPostsEnabled = remoteSettings.relatedPostsEnabled;
@@ -824,8 +828,13 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     // Discussion
     remoteSettings.commentsAllowed = settings.commentsAllowed;
+    remoteSettings.commentsBlacklistKeys = settings.commentsBlacklistKeys;
     remoteSettings.commentsCloseAutomatically = settings.commentsCloseAutomatically;
     remoteSettings.commentsCloseAutomaticallyAfterDays = settings.commentsCloseAutomaticallyAfterDays;
+    remoteSettings.commentsFromKnownUsersWhitelisted = settings.commentsFromKnownUsersWhitelisted;
+    
+    remoteSettings.commentsMaximumLinks = settings.commentsMaximumLinks;
+    remoteSettings.commentsModerationKeys = settings.commentsModerationKeys;
     
     remoteSettings.commentsPagingEnabled = settings.commentsPagingEnabled;
     remoteSettings.commentsPageSize = settings.commentsPageSize;
@@ -833,8 +842,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     remoteSettings.commentsRequireManualModeration = settings.commentsRequireManualModeration;
     remoteSettings.commentsRequireNameAndEmail = settings.commentsRequireNameAndEmail;
     remoteSettings.commentsRequireRegistration = settings.commentsRequireRegistration;
-    
-    remoteSettings.commentsSortOrder = settings.commentsSortOrder;
+
+    remoteSettings.commentsSortOrder = settings.commentsSortOrderAsString;
     
     remoteSettings.commentsThreadingDepth = settings.commentsThreadingDepth;
     remoteSettings.commentsThreadingEnabled = settings.commentsThreadingEnabled;
