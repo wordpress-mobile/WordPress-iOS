@@ -450,6 +450,15 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return blog;
 }
 
+- (BlogSettings *)createSettingsWithBlog:(Blog *)blog
+{
+    NSString *entityName = [BlogSettings classNameWithoutNamespaces];
+    BlogSettings *settings = [NSEntityDescription insertNewObjectForEntityForName:entityName
+                                                           inManagedObjectContext:self.managedObjectContext];
+    settings.blog = blog;
+    return settings;
+}
+
 - (void)removeBlog:(Blog *)blog
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
@@ -474,6 +483,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
        withAccount:(WPAccount *)account
         completion:(void (^)())completion
 {
+    // Nuke dead blogs
     NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
     NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
     NSMutableSet *toDelete = [localSet mutableCopy];
@@ -496,15 +506,19 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             blog = [self migrateRemoteJetpackBlog:remoteBlog
                                        forAccount:account];
         }
+        
         if (!blog) {
             DDLogInfo(@"New blog from account %@: %@", account.username, remoteBlog);
             blog = [self createBlogWithAccount:account];
+            blog.settings = [self createSettingsWithBlog:blog];
             blog.xmlrpc = remoteBlog.xmlrpc;
         }
+        
         blog.url = remoteBlog.url;
         blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
         blog.blogTagline = [remoteBlog.desc stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.ID;
+        blog.blogID = remoteBlog.blogID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
         blog.isAdmin = remoteBlog.isAdmin;
