@@ -31,7 +31,6 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 @interface RelatedPostsSettingsViewController()
 
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) BlogSettings *settings;
 
 @property (nonatomic, strong) SwitchSettingTableViewCell *relatedPostsEnabledCell;
 @property (nonatomic, strong) SwitchSettingTableViewCell *relatedPostsShowHeaderCell;
@@ -62,9 +61,20 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 }
 
+
+#pragma mark - Properties
+
+- (BlogSettings *)settings
+{
+    return self.blog.settings;
+}
+
+
+#pragma mark - UITableViewDataSource Methods
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.settings.relatedPostsEnabled) {
+    if ([self.settings.relatedPostsEnabled boolValue]) {
         return RelatedPostsSettingsSectionCount;
     } else {
         return RelatedPostsSettingsSectionCount-1;
@@ -75,7 +85,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 {
     switch (section) {
         case RelatedPostsSettingsSectionOptions:{
-            if (self.settings.relatedPostsEnabled) {
+            if ([self.settings.relatedPostsEnabled boolValue]) {
                 return RelatedPostsSettingsOptionsCount;
             } else {
                 return 1;
@@ -206,17 +216,17 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 {
     switch (row) {
         case RelatedPostsSettingsOptionsEnabled:{
-            self.relatedPostsEnabledCell.switchValue = self.settings.relatedPostsEnabled;
+            self.relatedPostsEnabledCell.switchValue = [self.settings.relatedPostsEnabled boolValue];
             return self.relatedPostsEnabledCell;
         }
             break;
         case RelatedPostsSettingsOptionsShowHeader:{
-            self.relatedPostsShowHeaderCell.switchValue = self.settings.relatedPostsShowHeadline;
+            self.relatedPostsShowHeaderCell.switchValue = [self.settings.relatedPostsShowHeadline boolValue];
             return self.relatedPostsShowHeaderCell;
         }
             break;
         case RelatedPostsSettingsOptionsShowThumbnails:{
-            self.relatedPostsShowThumbnailsCell.switchValue = self.settings.relatedPostsShowThumbnails;
+            self.relatedPostsShowThumbnailsCell.switchValue = [self.settings.relatedPostsShowThumbnails boolValue];
             return self.relatedPostsShowThumbnailsCell;
         }
             break;
@@ -225,6 +235,9 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     }
     return nil;
 }
+
+
+#pragma mark - Cell Helpers
 
 - (SwitchSettingTableViewCell *)relatedPostsEnabledCell
 {
@@ -268,12 +281,14 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
         _relatedPostsPreviewTableViewCell = [[RelatedPostsPreviewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                                     reuseIdentifier:nil];
     }
-    _relatedPostsPreviewTableViewCell.enabledImages = self.settings.relatedPostsShowThumbnails;
-    _relatedPostsPreviewTableViewCell.enabledHeader = self.settings.relatedPostsShowHeadline;
+    _relatedPostsPreviewTableViewCell.enabledImages = [self.settings.relatedPostsShowThumbnails boolValue];
+    _relatedPostsPreviewTableViewCell.enabledHeader = [self.settings.relatedPostsShowHeadline boolValue];
     
     return _relatedPostsPreviewTableViewCell;
 
 }
+
+#pragma mark - Helpers
 
 - (IBAction)updateRelatedPostsSettings:(id)sender
 {
