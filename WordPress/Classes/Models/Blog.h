@@ -75,6 +75,18 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 
 /**
+ *  TODO: JLP 11.11.2015
+ *
+ *  The following are *stub* properties, implemented just as a way of minimizing the size of
+ *  the BlogSettings PR. They will be removed in another (upcoming) branch.
+ */
+@property (nonatomic, strong, readwrite) NSString *blogName;
+@property (nonatomic, strong, readwrite) NSString *blogTagline;
+@property (nonatomic, strong, readwrite) NSNumber *defaultCategoryID;
+@property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
+@property (nonatomic, strong, readwrite) NSNumber *privacy;
+
+/**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
  *              and their values.
  */

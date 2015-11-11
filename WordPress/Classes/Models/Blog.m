@@ -607,4 +607,57 @@ NSString * const PostFormatStandard = @"standard";
     return optionValue;
 }
 
+
+#pragma mark - BlogSetting Helpers
+
+- (NSString *)blogName
+{
+    return self.settings.name;
+}
+
+- (void)setBlogName:(NSString *)blogName
+{
+    self.settings.name = blogName;
+}
+
+- (NSString *)blogTagline
+{
+    return self.settings.tagline;
+}
+
+- (void)setBlogTagline:(NSString *)blogTagline
+{
+    self.settings.tagline = blogTagline;
+}
+
+- (NSNumber *)defaultCategoryID
+{
+    return self.settings.defaultCategoryID;
+}
+
+- (void)setDefaultCategoryID:(NSNumber *)defaultCategoryID
+{
+    self.settings.defaultCategoryID = defaultCategoryID;
+}
+
+- (NSString *)defaultPostFormat
+{
+    return self.settings.defaultPostFormat;
+}
+
+- (void)setDefaultPostFormat:(NSString *)defaultPostFormat
+{
+    self.settings.defaultPostFormat = defaultPostFormat;
+}
+
+- (NSNumber *)privacy
+{
+    return self.settings.privacy;
+}
+
+- (void)setPrivacy:(NSNumber *)privacy
+{
+    self.settings.privacy = privacy;
+}
+
 @end
