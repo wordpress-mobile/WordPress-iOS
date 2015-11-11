@@ -357,15 +357,6 @@ replacementString:(NSString *)string
     [self createUserAndSite];
 }
 
-- (IBAction)TOSLabelWasTapped
-{
-    NSURL *targetURL = [NSURL URLWithString:WPAutomatticTermsOfServiceURL];
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
-}
-
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     NSDictionary *keyboardInfo = notification.userInfo;
