@@ -40,6 +40,7 @@
 #import "MediaLibraryPickerDataSource.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPDeviceIdentification.h"
+#import "WPAppAnalytics.h"
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -1410,7 +1411,7 @@ EditImageDetailsViewControllerDelegate
     
     [[ContextManager sharedInstance] saveContext:context];
     
-    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
 }
 
 /**
@@ -1440,7 +1441,7 @@ EditImageDetailsViewControllerDelegate
 		[self.navigationController popViewControllerAnimated:YES];
 	}
     
-    [WPAnalytics track:WPAnalyticsStatEditorClosed];
+    [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
 }
 
 - (void)saveAction
@@ -1550,6 +1551,7 @@ EditImageDetailsViewControllerDelegate
         properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = @([self.post hasVideo]);
+        properties[WPAppAnalyticsKeyBlogID] = [self.post blog].dotComID;
         
         [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
@@ -1726,10 +1728,10 @@ EditImageDetailsViewControllerDelegate
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         if (media.mediaType == MediaTypeImage) {
-            [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
+            [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId];
         } else if (media.mediaType == MediaTypeVideo) {
-            [WPAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary];
+            [WPAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
                                         remotePoster:media.posterImageURL
@@ -1745,7 +1747,7 @@ EditImageDetailsViewControllerDelegate
             }
             [media remove];
         } else {
-            [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed];
+            [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
             [self dismissAssociatedActionSheetIfVisible:mediaUniqueId];
             self.mediaGlobalProgress.completedUnitCount++;
             if (media.mediaType == MediaTypeImage) {
@@ -1765,7 +1767,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
 {
-    [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried];
+    [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
 
     NSProgress *progress = self.mediaInProgress[imageUniqueId];
     if (!progress) {
@@ -2122,7 +2124,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
 {
-    [WPAnalytics track:WPAnalyticsStatEditorEditedImage];
+    [WPAnalytics track:WPAnalyticsStatEditorEditedImage withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
     
     EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta forPost:self.post];
     controller.delegate = self;
