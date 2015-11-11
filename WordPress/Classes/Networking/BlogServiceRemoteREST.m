@@ -4,13 +4,39 @@
 #import "WordPress-Swift.h"
 
 
-static NSString const *BlogRemoteNameKey                = @"name";
-static NSString const *BlogRemoteDescriptionKey         = @"description";
-static NSString const *BlogRemoteSettingsKey            = @"settings";
-static NSString const *BlogRemoteDefaultCategoryKey     = @"default_category";
-static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format";
-static NSString * const BlogRemoteDefaultPostFormat     = @"standard";
-static NSInteger const BlogRemoteUncategorizedCategory  = 1;
+#pragma mark - Parsing Keys
+static NSString const *BlogRemoteNameKey                                = @"name";
+static NSString const *BlogRemoteTaglineKey                             = @"description";
+static NSString const *BlogRemotePrivacyKey                             = @"blog_public";
+
+static NSString const *BlogRemoteSettingsKey                            = @"settings";
+static NSString const *BlogRemoteDefaultCategoryKey                     = @"default_category";
+static NSString const *BlogRemoteDefaultPostFormatKey                   = @"default_post_format";
+static NSString const *BlogRemoteCommentsAllowedKey                     = @"default_comment_status";
+static NSString const *BlogRemoteCommentsBlacklistKeys                  = @"blacklist_keys";
+static NSString const *BlogRemoteCommentsCloseAutomaticallyKey          = @"close_comments_for_old_posts";
+static NSString const *BlogRemoteCommentsCloseAutomaticallyAfterDaysKey = @"close_comments_days_old";
+static NSString const *BlogRemoteCommentsModerationKeys                 = @"moderation_keys";
+static NSString const *BlogRemoteCommentsPagingEnabledKey               = @"page_comments";
+static NSString const *BlogRemoteCommentsPageSizeKey                    = @"comments_per_page";
+static NSString const *BlogRemoteCommentsRequireModerationKey           = @"comment_moderation";
+static NSString const *BlogRemoteCommentsRequireNameAndEmailKey         = @"require_name_email";
+static NSString const *BlogRemoteCommentsRequireRegistrationKey         = @"comment_registration";
+static NSString const *BlogRemoteCommentsSortOrderKey                   = @"comment_order";
+static NSString const *BlogRemoteCommentsThreadingEnabledKey            = @"thread_comments";
+static NSString const *BlogRemoteCommentsThreadingDepthKey              = @"thread_comments_depth";
+static NSString const *BlogRemoteCommentsPingbackOutboundKey            = @"default_pingback_flag";
+static NSString const *BlogRemoteCommentsPingbackInboundKey             = @"default_ping_status";
+static NSString const *BlogRemoteRelatedPostsAllowedKey                 = @"jetpack_relatedposts_allowed";
+static NSString const *BlogRemoteRelatedPostsEnabledKey                 = @"jetpack_relatedposts_enabled";
+static NSString const *BlogRemoteRelatedPostsShowHeadlineKey            = @"jetpack_relatedposts_show_headline";
+static NSString const *BlogRemoteRelatedPostsShowThumbnailsKey          = @"jetpack_relatedposts_show_thumbnails";
+
+#pragma mark - Defaults
+static NSString * const BlogRemoteDefaultPostFormat                     = @"standard";
+static NSInteger const BlogRemoteUncategorizedCategory                  = 1;
+
+
 
 @implementation BlogServiceRemoteREST
 
@@ -108,8 +134,7 @@ static NSInteger const BlogRemoteUncategorizedCategory  = 1;
                   }
                   return;
               }
-              NSDictionary *jsonDictionary = (NSDictionary *)responseObject;
-              RemoteBlogSettings *remoteSettings = [self remoteBlogSettingFromJSONDictionary:jsonDictionary];
+              RemoteBlogSettings *remoteSettings = [self remoteBlogSettingFromJSONDictionary:responseObject];
               if (success) {
                   success(remoteSettings);
               }
@@ -241,13 +266,15 @@ static NSInteger const BlogRemoteUncategorizedCategory  = 1;
 
 - (RemoteBlogSettings *)remoteBlogSettingFromJSONDictionary:(NSDictionary *)json
 {
-    NSDictionary *rawSettings = [json dictionaryForKey:BlogRemoteSettingsKey];
+    NSAssert([json isKindOfClass:[NSDictionary class]], @"Invalid Settings Kind");
+    
     RemoteBlogSettings *settings = [RemoteBlogSettings new];
+    NSDictionary *rawSettings = [json dictionaryForKey:BlogRemoteSettingsKey];
     
     // General
     settings.name = [json stringForKey:BlogRemoteNameKey];
-    settings.tagline = [json stringForKey:BlogRemoteDescriptionKey];
-    settings.privacy = [rawSettings numberForKey:@"blog_public"];
+    settings.tagline = [json stringForKey:BlogRemoteTaglineKey];
+    settings.privacy = [rawSettings numberForKey:BlogRemotePrivacyKey];
     
     // Writing
     settings.defaultCategoryID = [rawSettings numberForKey:BlogRemoteDefaultCategoryKey] ?: @(BlogRemoteUncategorizedCategory);
@@ -262,31 +289,34 @@ static NSInteger const BlogRemoteUncategorizedCategory  = 1;
     }
     
     // Discussion
-    settings.commentsAllowed = [rawSettings numberForKey:@"default_comment_status"];
-    settings.commentsCloseAutomatically = [rawSettings numberForKey:@"close_comments_for_old_posts"];
-    settings.commentsCloseAutomaticallyAfterDays = [rawSettings numberForKey:@"close_comments_days_old"];
+    settings.commentsAllowed = [rawSettings numberForKey:BlogRemoteCommentsAllowedKey];
+    settings.commentsBlacklistKeys = [rawSettings stringForKey:BlogRemoteCommentsBlacklistKeys];
     
-    settings.commentsPagingEnabled = [rawSettings numberForKey:@"page_comments"];
-    settings.commentsPageSize = [rawSettings numberForKey:@"comments_per_page"];
+    settings.commentsCloseAutomatically = [rawSettings numberForKey:BlogRemoteCommentsCloseAutomaticallyKey];
+    settings.commentsCloseAutomaticallyAfterDays = [rawSettings numberForKey:BlogRemoteCommentsCloseAutomaticallyAfterDaysKey];
     
-    settings.commentsRequireManualModeration = [rawSettings numberForKey:@"comment_moderation"];
-    settings.commentsRequireNameAndEmail = [rawSettings numberForKey:@"require_name_email"];
-    settings.commentsRequireRegistration = [rawSettings numberForKey:@"comment_registration"];
+    settings.commentsModerationKeys = [rawSettings stringForKey:BlogRemoteCommentsBlacklistKeys];
+    settings.commentsPagingEnabled = [rawSettings numberForKey:BlogRemoteCommentsPagingEnabledKey];
+    settings.commentsPageSize = [rawSettings numberForKey:BlogRemoteCommentsPageSizeKey];
     
-    settings.commentsSortOrder = [rawSettings numberForKey:@"comment_order"];
+    settings.commentsRequireManualModeration = [rawSettings numberForKey:BlogRemoteCommentsRequireModerationKey];
+    settings.commentsRequireNameAndEmail = [rawSettings numberForKey:BlogRemoteCommentsRequireNameAndEmailKey];
+    settings.commentsRequireRegistration = [rawSettings numberForKey:BlogRemoteCommentsRequireRegistrationKey];
+
+    settings.commentsSortOrder = [rawSettings stringForKey:BlogRemoteCommentsSortOrderKey];
     
-    settings.commentsThreadingEnabled = [rawSettings numberForKey:@"thread_comments"];
-    settings.commentsThreadingDepth = [rawSettings numberForKey:@"thread_comments_depth"];
+    settings.commentsThreadingEnabled = [rawSettings numberForKey:BlogRemoteCommentsThreadingEnabledKey];
+    settings.commentsThreadingDepth = [rawSettings numberForKey:BlogRemoteCommentsThreadingDepthKey];
     
-    settings.pingbackOutboundEnabled = [rawSettings numberForKey:@"default_pingback_flag"];
-    settings.pingbackInboundEnabled = [rawSettings numberForKey:@"default_ping_status"];
+    settings.pingbackOutboundEnabled = [rawSettings numberForKey:BlogRemoteCommentsPingbackOutboundKey];
+    settings.pingbackInboundEnabled = [rawSettings numberForKey:BlogRemoteCommentsPingbackInboundKey];
     
     
     // Related Posts
-    settings.relatedPostsAllowed = [rawSettings numberForKey:@"jetpack_relatedposts_allowed"];
-    settings.relatedPostsEnabled = [rawSettings numberForKey:@"jetpack_relatedposts_enabled"];
-    settings.relatedPostsShowHeadline = [rawSettings numberForKey:@"jetpack_relatedposts_show_headline"];
-    settings.relatedPostsShowThumbnails = [rawSettings numberForKey:@"jetpack_relatedposts_show_thumbnails"];
+    settings.relatedPostsAllowed = [rawSettings numberForKey:BlogRemoteRelatedPostsAllowedKey];
+    settings.relatedPostsEnabled = [rawSettings numberForKey:BlogRemoteRelatedPostsEnabledKey];
+    settings.relatedPostsShowHeadline = [rawSettings numberForKey:BlogRemoteRelatedPostsShowHeadlineKey];
+    settings.relatedPostsShowThumbnails = [rawSettings numberForKey:BlogRemoteRelatedPostsShowThumbnailsKey];
     
     return settings;
 }
