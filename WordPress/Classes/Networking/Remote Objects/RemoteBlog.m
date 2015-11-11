@@ -4,8 +4,8 @@
 - (NSString *)description
 {
     NSDictionary *properties = @{
-                                 @"ID": self.ID,
-                                 @"title": self.title,
+                                 @"ID": self.blogID,
+                                 @"title": self.name,
                                  @"url": self.url,
                                  @"xmlrpc": self.xmlrpc,
                                  @"jetpack": self.jetpack ? @"YES" : @"NO",
