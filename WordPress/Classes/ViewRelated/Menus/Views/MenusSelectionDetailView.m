@@ -89,7 +89,7 @@
         self.iconView.image = [UIImage imageNamed:@"icon-menus-menus"];
     }
     
-    [self setTitleText:selectedItem.name subTitleText:[NSString stringWithFormat:localizedFormat, numItemsAvailable]];
+    [self setTitleText:selectedItem.displayName subTitleText:[NSString stringWithFormat:localizedFormat, numItemsAvailable]];
     [self.iconView setNeedsDisplay];
 }
 

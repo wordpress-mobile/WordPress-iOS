@@ -4,11 +4,10 @@
 @class MenuLocation;
 
 extern NSString * const MenusSelectionViewItemChangedSelectedNotification;
+extern NSString * const MenusSelectionViewItemUpdatedItemObjectNotification;
 
 @interface MenusSelectionViewItem : NSObject
 
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *details;
 @property (nonatomic, strong) id itemObject;
 @property (nonatomic, assign) BOOL selected;
 
@@ -17,6 +16,8 @@ extern NSString * const MenusSelectionViewItemChangedSelectedNotification;
 
 - (BOOL)isMenu;
 - (BOOL)isMenuLocation;
+- (NSString *)displayName;
+- (void)notifyItemObjectWasUpdated;
 
 @end
 
@@ -30,7 +31,6 @@ extern NSString * const MenusSelectionViewItemChangedSelectedNotification;
 @property (nonatomic, strong) MenusSelectionViewItem *selectedItem;
 
 - (MenusSelectionViewItem *)itemWithItemObjectEqualTo:(id)itemObject;
-
 - (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded animated:(BOOL)animated;
 
 @end

@@ -65,7 +65,11 @@
 {
     if(_item != item) {
         _item = item;
-        self.label.text = item.name;
+    }
+    
+    NSString *displayName = item.displayName;
+    if(![self.label.text isEqualToString:displayName]) {
+        self.label.text = displayName;
     }
 }
 

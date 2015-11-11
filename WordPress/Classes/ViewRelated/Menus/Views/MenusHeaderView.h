@@ -11,6 +11,7 @@
 @property (nonatomic, weak) id <MenusHeaderViewDelegate> delegate;
 
 - (void)updateWithMenusForBlog:(Blog *)blog;
+- (void)refreshMenuViewsUsingMenu:(Menu *)menu;
 
 @end
 

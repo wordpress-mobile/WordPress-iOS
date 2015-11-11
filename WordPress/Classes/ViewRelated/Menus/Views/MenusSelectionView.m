@@ -6,14 +6,13 @@
 #import "MenusSelectionItemView.h"
 
 NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSelectionViewItemChangedSelectedNotification";
+NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSelectionViewItemUpdatedItemObjectNotification";
 
 @implementation MenusSelectionViewItem
 
 + (MenusSelectionViewItem *)itemWithMenu:(Menu *)menu
 {
     MenusSelectionViewItem *item = [MenusSelectionViewItem new];
-    item.name = menu.name;
-    item.details = menu.details;
     item.itemObject = menu;
     return item;
 }
@@ -21,11 +20,16 @@ NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSele
 + (MenusSelectionViewItem *)itemWithLocation:(MenuLocation *)location
 {
     MenusSelectionViewItem *item = [MenusSelectionViewItem new];
-    // using the opposite here for display as the API returns the data differently than a menu object
-    item.name = location.details;
-    item.details = location.name;
     item.itemObject = location;
     return item;
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    if(_selected != selected) {
+        _selected = selected;
+        [[NSNotificationCenter defaultCenter] postNotificationName:MenusSelectionViewItemChangedSelectedNotification object:self];
+    }
 }
 
 - (BOOL)isMenu
@@ -38,12 +42,24 @@ NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSele
     return [self.itemObject isKindOfClass:[MenuLocation class]];
 }
 
-- (void)setSelected:(BOOL)selected
+- (NSString *)displayName
 {
-    if(_selected != selected) {
-        _selected = selected;
-        [[NSNotificationCenter defaultCenter] postNotificationName:MenusSelectionViewItemChangedSelectedNotification object:self];
+    NSString *name = nil;
+    
+    if([self isMenu]) {
+        Menu *menu = self.itemObject;
+        name = menu.name;
+    }else if([self isMenuLocation]) {
+        MenuLocation *location = self.itemObject;
+        name = location.details;
     }
+    
+    return name;
+}
+
+- (void)notifyItemObjectWasUpdated
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:MenusSelectionViewItemUpdatedItemObjectNotification object:self];
 }
 
 @end
@@ -59,6 +75,11 @@ NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSele
 
 @implementation MenusSelectionView
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -71,6 +92,8 @@ NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSele
     [self setupStyling];
     
     self.detailView.delegate = self;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectionItemObjectWasUpdatedNotification:) name:MenusSelectionViewItemUpdatedItemObjectNotification object:nil];
 }
 
 - (void)setupStyling
@@ -226,6 +249,39 @@ NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSele
     MenusSelectionViewItem *selectedItem = itemView.item;
     [self setSelectedItem:selectedItem];
     [self tellDelegateSelectedItem:selectedItem];
+}
+
+#pragma mark - notifications
+
+- (void)selectionItemObjectWasUpdatedNotification:(NSNotification *)notification
+{
+    MenusSelectionViewItem *updatedItem = notification.object;
+    BOOL haveItem = NO;
+    for(MenusSelectionViewItem *item in self.items) {
+        if(item == updatedItem) {
+            haveItem = YES;
+            break;
+        }
+    }
+    
+    if(!haveItem) {
+        // no updates needed
+        return;
+    }
+    
+    if(updatedItem.selected) {
+        // update the detailView
+        [self.detailView updatewithAvailableItems:self.items.count selectedItem:updatedItem];
+    }
+    
+    // update any itemViews using this item
+    for(MenusSelectionItemView *itemView in self.itemViews) {
+        
+        if(itemView.item == updatedItem) {
+            itemView.item = updatedItem;
+            break;
+        }
+    }
 }
 
 @end
