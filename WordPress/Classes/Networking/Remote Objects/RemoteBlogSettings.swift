@@ -63,6 +63,17 @@ public class RemoteBlogSettings : NSObject
      *           `commentsCloseAutomatically` property is set to true.
      */
     var commentsCloseAutomaticallyAfterDays : NSNumber?
+
+    /**
+     *  @details When enabled, comments from known users will be whitelisted.
+     */
+    var commentsFromKnownUsersWhitelisted : NSNumber?
+    
+    /**
+     *  @details Indicates the maximum number of links allowed per comment. When a new comment exceeds this
+     *           number, it'll be held in queue for moderation.
+     */
+    var commentsMaximumLinks : NSNumber?
     
     /**
      *  @details Contains a list of words that cause a comment to require moderation.
