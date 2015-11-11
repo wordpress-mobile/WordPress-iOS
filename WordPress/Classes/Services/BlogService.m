@@ -515,9 +515,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         }
         
         blog.url = remoteBlog.url;
-        blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
-        blog.blogTagline = [remoteBlog.desc stringByDecodingXMLCharacters];
-        blog.blogID = remoteBlog.ID;
+        blog.blogName = [remoteBlog.name stringByDecodingXMLCharacters];
+        blog.blogTagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.blogID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
@@ -589,7 +588,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (NSArray *)blogsWithPredicate:(NSPredicate *)predicate
 {
     NSFetchRequest *request = [self fetchRequestWithPredicate:predicate];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"blogName"
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"settings.name"
                                                                      ascending:YES];
     request.sortDescriptors = @[ sortDescriptor ];
 
