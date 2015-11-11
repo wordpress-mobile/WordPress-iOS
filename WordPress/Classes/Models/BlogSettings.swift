@@ -75,6 +75,17 @@ public class BlogSettings : NSManagedObject
     @NSManaged var commentsCloseAutomaticallyAfterDays : NSNumber?
     
     /**
+     *  @details When enabled, comments from known users will be whitelisted.
+     */
+    @NSManaged var commentsFromKnownUsersWhitelisted : NSNumber?
+    
+    /**
+     *  @details Indicates the maximum number of links allowed per comment. When a new comment exceeds this
+     *           number, it'll be held in queue for moderation.
+     */
+    @NSManaged var commentsMaximumLinks : NSNumber?
+    
+    /**
      *  @details Contains a list of words, space separated, that cause a comment to require moderation.
      */
     @NSManaged var commentsModerationKeys : String?
