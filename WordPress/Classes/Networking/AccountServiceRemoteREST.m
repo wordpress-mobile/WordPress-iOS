@@ -142,9 +142,9 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 - (RemoteBlog *)remoteBlogFromJSONDictionary:(NSDictionary *)jsonBlog
 {
     RemoteBlog *blog = [RemoteBlog new];
-    blog.ID =  [jsonBlog numberForKey:@"ID"];
-    blog.title = [jsonBlog stringForKey:@"name"];
-    blog.desc = [jsonBlog stringForKey:@"description"];
+    blog.blogID =  [jsonBlog numberForKey:@"ID"];
+    blog.name = [jsonBlog stringForKey:@"name"];
+    blog.tagline = [jsonBlog stringForKey:@"description"];
     blog.url = [jsonBlog stringForKey:@"URL"];
     blog.xmlrpc = [jsonBlog stringForKeyPath:@"meta.links.xmlrpc"];
     blog.jetpack = [[jsonBlog numberForKey:@"jetpack"] boolValue];
