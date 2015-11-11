@@ -216,7 +216,7 @@ replacementString:(NSString *)string
     // Add Title
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Create an account on WordPress.com", @"NUX Create Account Page 1 Title")
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Create WordPress.com blog", @"Create WordPress.com blog Title")
                                                                      attributes:[WPNUXUtility titleAttributesWithColor:[UIColor whiteColor]]];
         _titleLabel.numberOfLines = 0;
         _titleLabel.backgroundColor = [UIColor clearColor];
@@ -245,7 +245,7 @@ replacementString:(NSString *)string
     if (_siteAddressField == nil) {
         _siteAddressField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
         _siteAddressField.backgroundColor = [UIColor whiteColor];
-        _siteAddressField.placeholder = NSLocalizedString(@"Site Address (URL)", nil);
+        _siteAddressField.placeholder = NSLocalizedString(@"Blog Address", nil);
         _siteAddressField.font = [WPNUXUtility textFieldFont];
         _siteAddressField.adjustsFontSizeToFitWidth = YES;
         _siteAddressField.delegate = self;
@@ -254,7 +254,7 @@ replacementString:(NSString *)string
         _siteAddressField.returnKeyType = UIReturnKeyDone;
         _siteAddressField.showTopLineSeparator = YES;
         _siteAddressField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _siteAddressField.accessibilityIdentifier = @"Site Address (URL)";
+        _siteAddressField.accessibilityIdentifier = @"Blog Address";
         [self.view addSubview:_siteAddressField];
         
         // add .wordpress.com label to textfield
@@ -274,7 +274,7 @@ replacementString:(NSString *)string
     // Add Next Button
     if (_createBlogButton == nil) {
         _createBlogButton = [[WPNUXMainButton alloc] init];
-        [_createBlogButton setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
+        [_createBlogButton setTitle:NSLocalizedString(@"Create WordPress.com blog", nil) forState:UIControlStateNormal];
         _createBlogButton.enabled = NO;
         [_createBlogButton addTarget:self action:@selector(createBlogButtonAction) forControlEvents:UIControlEventTouchUpInside];
         [_createBlogButton sizeToFit];
