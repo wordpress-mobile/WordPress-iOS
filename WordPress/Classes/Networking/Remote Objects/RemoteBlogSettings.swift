@@ -110,13 +110,6 @@ public class RemoteBlogSettings : NSObject
      *  @details Indicates the sorting order of the comments. Ascending / Descending, based on the date.
      */
     var commentsSortOrder : String?
-
-    /**
-     *  @details Readonly property that returns true if the sort order is ascending. Otherwise, it's descending!
-     */
-    var commentsSortOrderAscending : Bool {
-        return commentsSortOrder == CommentsSortOrder.Ascending.rawValue
-    }
     
     /**
      *  @details Indicates the number of levels allowed per comment.
@@ -161,12 +154,4 @@ public class RemoteBlogSettings : NSObject
      *  @details Indicates whether related posts should show thumbnails.
      */
     var relatedPostsShowThumbnails : NSNumber?
-    
-    
-    
-    // MARK: - Private Constants
-    private enum CommentsSortOrder : String {
-        case Ascending  = "asc"
-        case Descending = "desc"
-    }
 }

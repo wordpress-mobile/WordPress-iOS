@@ -156,17 +156,17 @@ static NSInteger const RemoteBlogUncategorizedCategory                  = 1;
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
     
     NSMutableDictionary *parameters = [@{
-        @"blogname"             : remoteSettings.name,
-        @"blogdescription"      : remoteSettings.tagline,
-        @"default_category"     : remoteSettings.defaultCategoryID,
-        @"default_post_format"  : remoteSettings.defaultPostFormat,
-        @"blog_public"          : remoteSettings.privacy,
+        @"blogname"                     : remoteSettings.name,
+        @"blogdescription"              : remoteSettings.tagline,
+        RemoteBlogDefaultCategoryKey    : remoteSettings.defaultCategoryID,
+        RemoteBlogDefaultPostFormatKey  : remoteSettings.defaultPostFormat,
+        RemoteBlogPrivacyKey            : remoteSettings.privacy,
     } mutableCopy];
 
     if (remoteSettings.relatedPostsEnabled) {
-        [parameters setValueIfNotNil:remoteSettings.relatedPostsEnabled         forKey:@"jetpack_relatedposts_enabled"];
-        [parameters setValueIfNotNil:remoteSettings.relatedPostsShowHeadline    forKey:@"jetpack_relatedposts_show_headline"];
-        [parameters setValueIfNotNil:remoteSettings.relatedPostsShowThumbnails  forKey:@"jetpack_relatedposts_show_thumbnails"];
+        parameters[RemoteBlogRelatedPostsEnabledKey] = remoteSettings.relatedPostsEnabled;
+        parameters[RemoteBlogRelatedPostsShowHeadlineKey] = remoteSettings.relatedPostsShowHeadline;
+        parameters[RemoteBlogRelatedPostsShowThumbnailsKey] = remoteSettings.relatedPostsShowThumbnails;
     }
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blogID];
