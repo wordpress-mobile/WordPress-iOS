@@ -37,6 +37,8 @@
 #import "NSDate+StringFormatting.h"
 #import "NSString+Helpers.h"
 
+#import "WPAppAnalytics.h"
+
 
 
 #pragma mark ==========================================================================================
@@ -1007,7 +1009,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)followSiteWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationsSiteFollowAction];
+    [WPAnalytics track:WPAnalyticsStatNotificationsSiteFollowAction withProperties:@{ WPAppAnalyticsKeyBlogID:block.metaSiteID }];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -1023,7 +1025,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unfollowSiteWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationsSiteUnfollowAction];
+    [WPAnalytics track:WPAnalyticsStatNotificationsSiteUnfollowAction withProperties:@{ WPAppAnalyticsKeyBlogID:block.metaSiteID }];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -1039,7 +1041,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)likeCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationsCommentLiked];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentLiked withProperties:@{ WPAppAnalyticsKeyBlogID:block.metaSiteID }];
 
     // If the associated comment is *not* approved, let's attempt to auto-approve it, automatically
     if (!block.isCommentApproved) {
@@ -1061,7 +1063,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unlikeCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnliked];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnliked withProperties:@{ WPAppAnalyticsKeyBlogID:block.metaSiteID }];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -1077,7 +1079,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)approveCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationsCommentApproved];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentApproved withProperties:@{ WPAppAnalyticsKeyBlogID:block.metaSiteID }];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -1097,7 +1099,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unapproveCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnapproved];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnapproved withProperties:@{ WPAppAnalyticsKeyBlogID:block.metaSiteID }];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -1133,7 +1135,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
             onCompletion(NO);
         }];
         
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam];
+        [WPAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam withProperties:@{ WPAppAnalyticsKeyBlogID:block.metaSiteID }];
     };
     
     // Confirmation AlertView
@@ -1171,7 +1173,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
             onCompletion(NO);
         }];
         
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentTrashed];
+        [WPAnalytics track:WPAnalyticsStatNotificationsCommentTrashed withProperties:@{ WPAppAnalyticsKeyBlogID:block.metaSiteID }];
     };
     
     // Confirmation AlertView

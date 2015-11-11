@@ -23,6 +23,7 @@
 #import "WordPress-Swift.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "NSString+Helpers.h"
+#import "WPAppAnalytics.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
@@ -393,7 +394,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     }
 
     if (![self.post hasUnsavedChanges]) {
-        [WPAnalytics track:WPAnalyticsStatEditorClosed];
+        [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
         [self discardChanges];
         [self dismissEditView];
         return;
@@ -697,6 +698,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
         properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = @([self.post hasVideo]);
+        properties[WPAppAnalyticsKeyBlogID] = [self.post blog].dotComID;
         
         [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
@@ -998,7 +1000,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 
 - (void)insertMedia:(Media *)media
 {
-    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
+    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
     
     NSString *prefix = @"<br /><br />";
 
@@ -1105,7 +1107,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
             if (buttonIndex == 0) {
                 [self discardChanges];
                 [self dismissEditView];
-                [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+                [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
             }
             
             if (buttonIndex == 1) {
