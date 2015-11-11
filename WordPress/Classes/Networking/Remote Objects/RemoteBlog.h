@@ -1,11 +1,56 @@
+#import <Foundation/Foundation.h>
+
+
+/**
+ *  @class           RemoteBlog
+ *  @brief           This class encapsulates all of the *remote* Blog properties
+ */
+
 @interface RemoteBlog : NSObject
-@property (nonatomic,   copy) NSNumber  *blogID;
-@property (nonatomic,   copy) NSString  *name;
-@property (nonatomic,   copy) NSString  *tagline;
-@property (nonatomic,   copy) NSString  *url;
-@property (nonatomic,   copy) NSString  *xmlrpc;
-@property (nonatomic,   copy) NSString  *icon;
-@property (nonatomic, assign) BOOL      jetpack;
-@property (nonatomic, assign) BOOL      isAdmin;
-@property (nonatomic, assign) BOOL      visible;
+
+/**
+ *  @details The ID of the Blog entity.
+ */
+@property (nonatomic, copy) NSNumber *blogID;
+
+/**
+ *  @details Represents the Blog Name.
+ */
+@property (nonatomic, copy) NSString *name;
+
+/**
+ *  @details Description of the WordPress Blog.
+ */
+@property (nonatomic, copy) NSString *tagline;
+
+/**
+ *  @details Site Icon's URL.
+ */
+@property (nonatomic, copy) NSString *url;
+
+/**
+ *  @details Maps to the XMLRPC endpoint.
+ */
+@property (nonatomic, copy) NSString *xmlrpc;
+
+/**
+ *  @details Represents the Blog Name.
+ */
+@property (nonatomic, copy) NSString *icon;
+
+/**
+ *  @details Indicates whether it's a jetpack site, or not.
+ */
+@property (nonatomic, assign) BOOL jetpack;
+
+/**
+ *  @details Boolean indicating whether the current user has Admin privileges, or not.
+ */
+@property (nonatomic, assign) BOOL isAdmin;
+
+/**
+ *  @details Blog's visibility preferences.
+ */
+@property (nonatomic, assign) BOOL visible;
+
 @end
