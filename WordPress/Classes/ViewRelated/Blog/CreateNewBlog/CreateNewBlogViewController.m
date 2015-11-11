@@ -29,7 +29,6 @@
 #import "WordPress-Swift.h"
 
 @interface CreateNewBlogViewController ()<UITextFieldDelegate,UIGestureRecognizerDelegate> {
-    // Page 1
     WPNUXSecondaryButton *_cancelButton;
     UILabel *_titleLabel;
     UILabel *_siteAddressWPComLabel;
@@ -207,6 +206,7 @@ replacementString:(NSString *)string
     // Add Cancel Button
     if (_cancelButton == nil) {
         _cancelButton = [[WPNUXSecondaryButton alloc] init];
+        [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(cancelButtonAction) forControlEvents:UIControlEventTouchUpInside];
         [_cancelButton sizeToFit];
         _cancelButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin;
@@ -345,7 +345,7 @@ replacementString:(NSString *)string
 
 - (IBAction)cancelButtonAction
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)viewWasTapped:(UITapGestureRecognizer *)gestureRecognizer
