@@ -566,6 +566,9 @@
 		E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BC1B9B47BA008050C5 /* ReaderSiteTopic.swift */; };
 		E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BD1B9B47BA008050C5 /* ReaderTagTopic.swift */; };
 		E61084C41B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E61084C31B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m */; };
+		E62F785C1BF35CBE000B1B6E /* ReaderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E62F785B1BF35CBE000B1B6E /* ReaderDetailView.swift */; };
+		E62F785E1BF35CE9000B1B6E /* ReaderDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E62F785D1BF35CE9000B1B6E /* ReaderDetailView.xib */; };
+		E63C9AA31BF29D3300B80149 /* ReaderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63C9AA21BF29D3300B80149 /* ReaderDetailViewController.swift */; };
 		E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */; };
 		E65219FB1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */; };
 		E66969C81B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */; };
@@ -1640,6 +1643,9 @@
 		E61084BC1B9B47BA008050C5 /* ReaderSiteTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderSiteTopic.swift; sourceTree = "<group>"; };
 		E61084BD1B9B47BA008050C5 /* ReaderTagTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTagTopic.swift; sourceTree = "<group>"; };
 		E61084C31B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostServiceRemoteTests.m; sourceTree = "<group>"; };
+		E62F785B1BF35CBE000B1B6E /* ReaderDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderDetailView.swift; sourceTree = "<group>"; };
+		E62F785D1BF35CE9000B1B6E /* ReaderDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderDetailView.xib; sourceTree = "<group>"; };
+		E63C9AA21BF29D3300B80149 /* ReaderDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderDetailViewController.swift; sourceTree = "<group>"; };
 		E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderBlockedSiteCell.xib; sourceTree = "<group>"; };
 		E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderBlockedSiteCell.swift; sourceTree = "<group>"; };
 		E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTopicServiceTest.swift; sourceTree = "<group>"; };
@@ -2176,6 +2182,8 @@
 		5D08B8FC19647C0300D5B381 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E62F785B1BF35CBE000B1B6E /* ReaderDetailView.swift */,
+				E62F785D1BF35CE9000B1B6E /* ReaderDetailView.xib */,
 				5DB93EE819B6190700EC88EB /* CommentContentView.h */,
 				5DB93EE919B6190700EC88EB /* CommentContentView.m */,
 				5DB93EEA19B6190700EC88EB /* ReaderCommentCell.h */,
@@ -2227,9 +2235,10 @@
 		5D08B8FD19647C0800D5B381 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */,
 				5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */,
 				E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */,
-				E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */,
+				E63C9AA21BF29D3300B80149 /* ReaderDetailViewController.swift */,
 				5DDC44651A72BB07007F538E /* ReaderViewController.h */,
 				5DDC44661A72BB07007F538E /* ReaderViewController.m */,
 				5D1D9C5319885B01009D13B7 /* ReaderEditableSubscriptionPage.h */,
@@ -3961,6 +3970,7 @@
 				B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */,
 				FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
+				E62F785E1BF35CE9000B1B6E /* ReaderDetailView.xib in Resources */,
 				5D1D04751B7A50B100CDE646 /* Reader.storyboard in Resources */,
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
@@ -4386,6 +4396,7 @@
 				5D3D559A18F88C5E00782892 /* ReaderPostServiceRemote.m in Sources */,
 				5DED0E181B432E0400431FCD /* SourcePostAttribution.m in Sources */,
 				B52C4C7F199D74AE009FD823 /* NoteTableViewCell.swift in Sources */,
+				E63C9AA31BF29D3300B80149 /* ReaderDetailViewController.swift in Sources */,
 				315FC2C51A2CB29300E7CDA2 /* MeHeaderView.m in Sources */,
 				C57A31A4183D2111007745B9 /* NotificationsManager.m in Sources */,
 				5DED0E141B42E3E400431FCD /* RemoteSourcePostAttribution.m in Sources */,
@@ -4561,6 +4572,7 @@
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
 				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
+				E62F785C1BF35CBE000B1B6E /* ReaderDetailView.swift in Sources */,
 				E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
