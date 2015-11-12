@@ -300,7 +300,7 @@ static NSInteger const RemoteBlogUncategorizedCategory                  = 1;
     settings.commentsFromKnownUsersWhitelisted = [rawSettings numberForKey:RemoteBlogCommentsKnownUsersWhitelistKey];
     settings.commentsMaximumLinks = [rawSettings numberForKey:RemoteBlogCommentsMaxLinksKey];
     
-    settings.commentsModerationKeys = [rawSettings stringForKey:RemoteBlogCommentsBlacklistKeys];
+    settings.commentsModerationKeys = [rawSettings stringForKey:RemoteBlogCommentsModerationKeys];
     settings.commentsPagingEnabled = [rawSettings numberForKey:RemoteBlogCommentsPagingEnabledKey];
     settings.commentsPageSize = [rawSettings numberForKey:RemoteBlogCommentsPageSizeKey];
     
