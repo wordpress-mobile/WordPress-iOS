@@ -822,13 +822,16 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)saveSettings
 {
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    if ([self.blog hasChanges]) {
-        [blogService updateSettingsForBlog:self.blog success:^{
-        } failure:^(NSError *error) {
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
-        }];
+    if (!self.blog.settings.hasChanges) {
+        return;
     }
+    
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [blogService updateSettingsForBlog:self.blog success:^{
+        
+    } failure:^(NSError *error) {
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
+    }];
 }
 
 - (IBAction)cancel:(id)sender
