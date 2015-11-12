@@ -614,7 +614,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         }
         self.hideCount += 1;
 
-        if (self.hideCount > HideAllSitesThreshold && (self.firstHide.timeIntervalSinceNow * -1) < HideAllSitesInterval) {
+        if (self.hideCount >= HideAllSitesThreshold && (self.firstHide.timeIntervalSinceNow * -1) < HideAllSitesInterval) {
             
             NSString *message = NSLocalizedString(@"Would you like to hide all WordPress.com Sites?",
                                                   @"Message offering to hide all WPCom Sites");
