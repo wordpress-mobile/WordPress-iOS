@@ -168,21 +168,21 @@ PODS:
     - AFNetworking (~> 2.6.0)
     - wpxmlrpc (~> 0.7)
   - WordPressCom-Analytics-iOS (0.0.40)
-  - WordPressCom-Stats-iOS (0.4.11):
+  - WordPressCom-Stats-iOS (0.5.0):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (= 2.0.0)
     - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (~> 0.5.0)
     - WordPressCom-Analytics-iOS (~> 0.0.40)
-    - WordPressCom-Stats-iOS/Services (= 0.4.11)
-    - WordPressCom-Stats-iOS/UI (= 0.4.11)
-  - WordPressCom-Stats-iOS/Services (0.4.11):
+    - WordPressCom-Stats-iOS/Services (= 0.5.0)
+    - WordPressCom-Stats-iOS/UI (= 0.5.0)
+  - WordPressCom-Stats-iOS/Services (0.5.0):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (= 2.0.0)
     - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (~> 0.5.0)
     - WordPressCom-Analytics-iOS (~> 0.0.40)
-  - WordPressCom-Stats-iOS/UI (0.4.11):
+  - WordPressCom-Stats-iOS/UI (0.5.0):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (= 2.0.0)
     - NSObject-SafeExpectations (= 0.0.2)
@@ -234,9 +234,9 @@ DEPENDENCIES:
   - WordPressCom-Analytics-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git`,
     branch `fix/framework-support`)
   - WordPressCom-Stats-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git`,
-    branch `fix/framework-support`)
+    branch `fix/framework-support-take-2`)
   - WordPressCom-Stats-iOS/Services (from `https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git`,
-    branch `fix/framework-support`)
+    branch `fix/framework-support-take-2`)
   - WPMediaPicker (~> 0.6.0)
   - wpxmlrpc (~> 0.8)
 
@@ -264,7 +264,7 @@ EXTERNAL SOURCES:
     :branch: fix/framework-support
     :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
   WordPressCom-Stats-iOS:
-    :branch: fix/framework-support
+    :branch: fix/framework-support-take-2
     :git: https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git
 
 CHECKOUT OPTIONS:
@@ -290,7 +290,7 @@ CHECKOUT OPTIONS:
     :commit: 6aa814533f55953c3be2e0180ee2fba4f0d87b4b
     :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
   WordPressCom-Stats-iOS:
-    :commit: 49700d9fede247fb959eb0db38053795bcd9aba4
+    :commit: aaad2ca9200ca5d8d394d53fa7a65c3615ad8d25
     :git: https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git
 
 SPEC CHECKSUMS:
@@ -330,7 +330,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Shared: 5480e7b5c9c55158ea22c89ff44fca5597852224
   WordPressApi: 39ca2b950a95fd0bf7ae5c86c92a272fb350187b
   WordPressCom-Analytics-iOS: 460c40e66cf4e75d19ca691f6a50c30cd16e8a79
-  WordPressCom-Stats-iOS: d2bbf5db0a726eb3a6cc042ce8b54fa0b20d0bb0
+  WordPressCom-Stats-iOS: abbc6dac86b43107ec874c2a13598ba429c585a7
   WPMediaPicker: 6e7904663b386ad4eea2f2e3dc30fd15babceb66
   wpxmlrpc: bd391dab54e9bdceb5d1de23d161ecf1ba80f0e0
 

@@ -36,7 +36,7 @@ pod 'WordPress-iOS-Shared', '0.5.0'
 #pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '34d484172a4e4f5013289023468098fb8764d2c7'
 pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :branch => 'fix/framework-support'
 #pod 'WordPressCom-Stats-iOS', '0.4.10'
-pod 'WordPressCom-Stats-iOS', :branch => 'fix/framework-support', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
+pod 'WordPressCom-Stats-iOS', :branch => 'fix/framework-support-take-2', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
 #pod 'WordPressCom-Analytics-iOS', '0.0.40'
 pod 'WordPressCom-Analytics-iOS', :branch => 'fix/framework-support', :git => 'https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
@@ -46,7 +46,7 @@ pod 'FormatterKit', '~> 1.8.0'
 
 target 'WordPressTodayWidget', :exclusive => true do
   #pod 'WordPressCom-Stats-iOS/Services', '0.4.10'
-  pod 'WordPressCom-Stats-iOS/Services', :branch => 'fix/framework-support', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
+  pod 'WordPressCom-Stats-iOS/Services', :branch => 'fix/framework-support-take-2', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
 end
 
 target :WordPressTest, :exclusive => true do
