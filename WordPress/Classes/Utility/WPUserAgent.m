@@ -40,6 +40,9 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
 - (NSString *)defaultUserAgent
 {
     NSString *userAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    NSAssert(userAgent != nil, @"User agent shouldn't be nil");
+    NSAssert(! [userAgent isEmpty], @"User agent shouldn't be empty");
+    
     return userAgent;
 }
 
