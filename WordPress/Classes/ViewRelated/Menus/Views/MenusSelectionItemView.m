@@ -86,8 +86,9 @@
     if(_drawsHighlighted != drawsHighlighted) {
         _drawsHighlighted = drawsHighlighted;
         
-        self.previousItemView.drawsDesignLineSeparator = !drawsHighlighted;
-        self.nextItemView.drawsDesignLineSeparator = !drawsHighlighted;
+        [self.previousItemView setNeedsDisplay];
+        [self.nextItemView setNeedsDisplay];
+        self.drawsDesignLineSeparator = !drawsHighlighted;
         [self setNeedsDisplay];
     }
 }
@@ -114,18 +115,18 @@
         [[WPStyleGuide greyLighten30] set];
         CGContextFillRect(context, rect);
         
-    }else if(self.drawsDesignLineSeparator && (self.nextItemView || self.previousItemView)) {
+    }else if(self.drawsDesignLineSeparator) {
         
         // draw the line separator
         CGContextSetLineWidth(context, 1.0);
         
-        if(self.previousItemView) {
+        if(self.previousItemView && !self.previousItemView.drawsHighlighted) {
             // draw a line on the top
             CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, 0);
             CGContextAddLineToPoint(context, rect.size.width, 0);
         }
         
-        if(self.nextItemView) {
+        if(self.nextItemView && !self.nextItemView.drawsHighlighted) {
             // draw a line on the bottom
             CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, rect.size.height);
             CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
