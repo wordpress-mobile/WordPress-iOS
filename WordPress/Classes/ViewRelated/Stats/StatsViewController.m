@@ -41,8 +41,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [super viewDidLoad];
  
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
+
+    NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
+    NSString *path = [statsBundle pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
     NSBundle *bundle = [NSBundle bundleWithPath:path];
     self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:bundle] instantiateInitialViewController];
     self.statsVC = self.statsNavVC.viewControllers.firstObject;
