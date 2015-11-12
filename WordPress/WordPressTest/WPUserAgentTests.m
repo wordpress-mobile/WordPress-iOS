@@ -12,6 +12,18 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
 @implementation WPUserAgentTests
 
 /**
+ *  @brief      Returns default UA for this device.
+ *  @details    This method is duplicated on purpose since we want to make sure that any change to
+ *              the WP UA in the app makes this test show an error unless updated.  This way we
+ *              ensure the change is intentional.
+ */
+- (NSString *)defaultUserAgent
+{
+    NSString *userAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    return userAgent;
+}
+
+/**
  *  @brief      Calculates the wordpress UA for this device.
  *  @details    This method is duplicated on purpose since we want to make sure that any change to
  *              the WP UA in the app makes this test show an error unless updated.  This way we
@@ -32,7 +44,7 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
 
 - (void)testUseDefaultUserAgent
 {
-    NSString *defaultUA = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    NSString *defaultUA = [self defaultUserAgent];
     WPUserAgent *userAgent = nil;
     
     XCTAssertNoThrow(userAgent = [[WPUserAgent alloc] init]);
