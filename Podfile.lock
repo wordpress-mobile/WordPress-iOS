@@ -237,8 +237,7 @@ DEPENDENCIES:
     branch `fix/framework-support-take-2`)
   - WordPressCom-Stats-iOS/Services (from `https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git`,
     branch `fix/framework-support-take-2`)
-  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`,
-    branch `fix/framework-support`)
+  - WPMediaPicker (~> 0.6.1)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -267,9 +266,6 @@ EXTERNAL SOURCES:
   WordPressCom-Stats-iOS:
     :branch: fix/framework-support-take-2
     :git: https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git
-  WPMediaPicker:
-    :branch: fix/framework-support
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -296,9 +292,6 @@ CHECKOUT OPTIONS:
   WordPressCom-Stats-iOS:
     :commit: aaad2ca9200ca5d8d394d53fa7a65c3615ad8d25
     :git: https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git
-  WPMediaPicker:
-    :commit: a7bd447b6cbbc695ade0e1e364491ff69c053f6a
-    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
