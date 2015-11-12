@@ -13,7 +13,7 @@
 
 	// 3rd Party
     #import <AFNetworking/AFNetworking.h>
-	#import <CocoaLumberjack/CocoaLumberjack.h>
+	#import <CocoaLumberjack/DDLogMacros.h>
     #import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
     #import <WordPressComAnalytics/WPAnalytics.h>
     #import <WordPressShared/WPStyleGuide.h>
