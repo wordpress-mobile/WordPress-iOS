@@ -45,13 +45,9 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
  */
 - (NSString *)wordPressUserAgent
 {
-    UIDevice *device = [UIDevice currentDevice];
+    NSString *defaultUA = [self defaultUserAgent];
     NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    NSString *userAgent = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
-                           appVersion,
-                           device.systemName,
-                           device.systemVersion,
-                           device.model];
+    NSString *userAgent = [NSString stringWithFormat:@"%@ wp-iphone/%@", defaultUA, appVersion];
     
     return userAgent;
 }
