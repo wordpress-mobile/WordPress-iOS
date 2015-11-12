@@ -14,8 +14,8 @@ Changes to the data model:
 - Added new entity `Person`
 
 ## (@aerych 2015-11-09)
-- Added new entity `ReaderXPostMeta`
-- `ReaderPost` added new relationship called `xpostMeta` to store the source post ID of a cross-post.
+- Added new entity `ReaderCrossPostMeta`
+- `ReaderPost` added new relationship called `crossPostMeta` to store the source post ID of a cross-post.
 
 
 ## WordPress 39 (@sergioestevao 2015-09-09)
