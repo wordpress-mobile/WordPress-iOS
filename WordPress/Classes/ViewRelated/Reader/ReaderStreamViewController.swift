@@ -14,7 +14,7 @@ import Foundation
     private var syncHelper: WPContentSyncHelper!
     private var tableViewController: UITableViewController!
     private var cellForLayout: ReaderPostCardCell!
-    private var xpostCellForLayout:ReaderXPostCell!
+    private var crossPostCellForLayout:ReaderCrossPostCell!
     private var resultsStatusView: WPNoResultsView!
     private var footerView: PostListFooterView!
     private var objectIDOfPostForMenu: NSManagedObjectID?
@@ -27,8 +27,8 @@ import Foundation
     private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
     private let readerGapMarkerCellNibName = "ReaderGapMarkerCell"
     private let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
-    private let readerXPostCellNibName = "ReaderXPostCell"
-    private let readerXPostCellReuseIdentifier = "readerXPostCellReuseIdentifier"
+    private let readerCrossPostCellNibName = "ReaderCrossPostCell"
+    private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
     private let estimatedRowHeight = CGFloat(100.0)
     private let blockedRowHeight = CGFloat(66.0)
     private let gapMarkerRowHeight = CGFloat(60.0)
@@ -247,8 +247,8 @@ import Foundation
         nib = UINib(nibName: readerGapMarkerCellNibName, bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: readerGapMarkerCellReuseIdentifier)
 
-        nib = UINib(nibName: readerXPostCellNibName, bundle: nil)
-        tableView.registerNib(nib, forCellReuseIdentifier: readerXPostCellReuseIdentifier)
+        nib = UINib(nibName: readerCrossPostCellNibName, bundle: nil)
+        tableView.registerNib(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
     }
 
     private func setupTableViewHandler() {
@@ -268,14 +268,14 @@ import Foundation
     private func setupCellForLayout() {
         // Construct the layout cells
         cellForLayout = NSBundle.mainBundle().loadNibNamed(readerCardCellNibName, owner: nil, options: nil).first as! ReaderPostCardCell
-        xpostCellForLayout = NSBundle.mainBundle().loadNibNamed(readerXPostCellNibName, owner: nil, options: nil).first as! ReaderXPostCell
+        crossPostCellForLayout = NSBundle.mainBundle().loadNibNamed(readerCrossPostCellNibName, owner: nil, options: nil).first as! ReaderCrossPostCell
 
         // Add layout cells to superview (briefly) so constraint constants reflect the correct size class.
         view.addSubview(cellForLayout)
         cellForLayout.removeFromSuperview()
 
-        view.addSubview(xpostCellForLayout)
-        xpostCellForLayout.removeFromSuperview()
+        view.addSubview(crossPostCellForLayout)
+        crossPostCellForLayout.removeFromSuperview()
     }
 
     private func setupResultsStatusView() {
@@ -1080,8 +1080,8 @@ import Foundation
         }
 
         if post.isCrossPost() {
-            configureCrosspostCell(xpostCellForLayout, atIndexPath: indexPath)
-            let size = xpostCellForLayout.sizeThatFits(CGSize(width:width, height:CGFloat.max))
+            configureCrossPostCell(crossPostCellForLayout, atIndexPath: indexPath)
+            let size = crossPostCellForLayout.sizeThatFits(CGSize(width:width, height:CGFloat.max))
             return size.height
         }
 
@@ -1107,8 +1107,8 @@ import Foundation
         }
 
         if post.isCrossPost() {
-            let cell = tableView.dequeueReusableCellWithIdentifier(readerXPostCellReuseIdentifier) as! ReaderXPostCell
-            configureCrosspostCell(cell, atIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCellWithIdentifier(readerCrossPostCellReuseIdentifier) as! ReaderCrossPostCell
+            configureCrossPostCell(cell, atIndexPath: indexPath)
             return cell;
         }
 
@@ -1150,7 +1150,7 @@ import Foundation
             controller = ReaderPostDetailViewController.detailControllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
 
         } else if post.isCrossPost() {
-            controller = ReaderPostDetailViewController.detailControllerWithPostID(post.xpostMeta.postID, siteID: post.xpostMeta.siteID)
+            controller = ReaderPostDetailViewController.detailControllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
 
         } else {
             post = postInMainContext(post)!
@@ -1178,7 +1178,7 @@ import Foundation
         postCell.delegate = self
     }
 
-    public func configureCrosspostCell(cell: ReaderXPostCell, atIndexPath indexPath:NSIndexPath) {
+    public func configureCrossPostCell(cell: ReaderCrossPostCell, atIndexPath indexPath:NSIndexPath) {
         if tableViewHandler.resultsController.fetchedObjects == nil {
             return
         }

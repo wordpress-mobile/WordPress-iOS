@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
 @class RemoteSourcePostAttribution;
-@class RemoteReaderXPostMeta;
+@class RemoteReaderCrossPostMeta;
 
 @interface RemoteReaderPost : NSObject
 
@@ -31,7 +31,7 @@
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
 @property (nonatomic, strong) RemoteSourcePostAttribution *sourceAttribution;
-@property (nonatomic, strong) RemoteReaderXPostMeta *xpostMeta;
+@property (nonatomic, strong) RemoteReaderCrossPostMeta *crossPostMeta;
 
 @property (nonatomic, strong) NSString *primaryTag;
 @property (nonatomic, strong) NSString *primaryTagSlug;

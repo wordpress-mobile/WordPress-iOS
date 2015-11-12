@@ -51,12 +51,12 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isJetpack;
 @dynamic wordCount;
 @dynamic readingTime;
-@dynamic xpostMeta;
+@dynamic crossPostMeta;
 
 
 - (BOOL)isCrossPost
 {
-    return self.xpostMeta != nil;
+    return self.crossPostMeta != nil;
 }
 
 - (BOOL)isPrivate
@@ -275,14 +275,14 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return self.blogURL;
 }
 
-- (NSString *)xpostOriginSiteURLForDisplay
+- (NSString *)crossPostOriginSiteURLForDisplay
 {
-    return self.xpostMeta.siteURL;
+    return self.crossPostMeta.siteURL;
 }
 
-- (BOOL)isCommentXPost
+- (BOOL)isCommentCrossPost
 {
-    return self.xpostMeta.commentURL.length > 0;
+    return self.crossPostMeta.commentURL.length > 0;
 }
 
 
