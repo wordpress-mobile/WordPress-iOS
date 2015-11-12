@@ -24,7 +24,7 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
 - (void)setupUserAgent
 {
     // Keep a copy of the original userAgent for use with certain webviews in the app.
-    NSString *defaultUA = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    NSString *defaultUA = [self defaultUserAgent];
     NSString *wordPressUserAgent = [self wordPressUserAgent];
 
     NSDictionary *dictionary = @{
@@ -35,7 +35,13 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 }
 
-#pragma mark - WordPress User-Agent
+#pragma mark - Default and WordPress User-Agents
+
+- (NSString *)defaultUserAgent
+{
+    NSString *userAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    return userAgent;
+}
 
 - (NSString *)wordPressUserAgent
 {
