@@ -22,7 +22,7 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AMPopTip (0.9.12)
-  - Automattic-Tracks-iOS (0.0.10):
+  - Automattic-Tracks-iOS (0.0.12):
     - CocoaLumberjack (= 2.0.0)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
@@ -197,7 +197,7 @@ DEPENDENCIES:
   - AFNetworking (= 2.6.0)
   - AMPopTip (~> 0.7)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`,
-    tag `0.0.10`)
+    branch `fix/framework-support`)
   - CocoaLumberjack (= 2.0.0)
   - DTCoreText (= 1.6.16)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
@@ -243,8 +243,8 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
+    :branch: fix/framework-support
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.10
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
   MGImageUtilities:
@@ -273,8 +273,8 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
+    :commit: 74d72fc3266da75082c2ce61b79fbaade520f075
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.10
   MGImageUtilities:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
@@ -285,7 +285,7 @@ CHECKOUT OPTIONS:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 0beebaa171d0b360ddae0f3aa3f4cb63c3d14289
+    :commit: 5f01022901fae253a518896657ff599570470c9e
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressApi:
     :commit: a7dc27935fb30b1978942cb1c791d4040fe65395
@@ -304,7 +304,7 @@ SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   AMPopTip: 3c98a9b38148868366b57765064bd9565f653038
-  Automattic-Tracks-iOS: c73345331ea8ac9949ce5404bacb0e73fd70680c
+  Automattic-Tracks-iOS: 0fe58abad2aee92dd9d57132589e03556cd9a96a
   CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
   DTFoundation: 46e2b2fafe78d67febfd8d1f85fe9845a093f00e
