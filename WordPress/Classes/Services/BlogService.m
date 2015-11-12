@@ -21,6 +21,7 @@
 #import "TodayExtensionService.h"
 #import "RemoteBlogSettings.h"
 #import "ContextManager.h"
+#import <WordPressApi/WordPressApi.h>
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
