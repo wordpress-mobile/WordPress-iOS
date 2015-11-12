@@ -12,6 +12,7 @@
 #import "WPImageSource.h"
 #import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <WordPressApi/WordPressApi.h>
 
 NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
 CGSize const MediaMaxImageSize = {3000, 3000};
