@@ -40,7 +40,7 @@ public protocol ThemePresenter: class {
     func presentSupportForTheme(theme: Theme?)
 }
 
-@objc public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchBarDelegate, ThemePresenter, WPContentSyncHelperDelegate {
+@objc public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate {
     
     // MARK: - Properties: must be set by parent
     
@@ -74,17 +74,51 @@ public protocol ThemePresenter: class {
 	private var isEmpty: Bool {
         return searchName.isEmpty && themesCount == 0
     }
+
+    /**
+     *  @brief      Searching support
+     */
+    private lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.searchResultsUpdater = self
+        searchController.delegate = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.autocapitalizationType = .None
+        searchController.searchBar.autocorrectionType = .No
+        searchController.searchBar.barTintColor = WPStyleGuide.wordPressBlue()
+
+        return searchController
+    }()
     private var searchName = "" {
         didSet {
-            fetchThemes()
-            Section.Themes.reload(collectionView)
+            if searchName != oldValue {
+                fetchThemes()
+                reloadThemes()
+            }
        }
     }
     public var searchType = ThemeType.All {
         didSet {
-            fetchThemes()
-            Section.Themes.reload(collectionView)
+            if searchType != oldValue {
+                fetchThemes()
+                reloadThemes()
+            }
         }
+    }
+    
+    /**
+     *  @brief      Collection view support
+     */
+    
+    private enum Section {
+        case Info
+        case Themes
+    }
+    private var sections: [Section]!
+    
+    private func reloadThemes() {
+        collectionView?.reloadSections(NSIndexSet(index: sections.count - 1))
     }
     private func themeAtIndex(index: Int) -> Theme? {
         let indexPath = NSIndexPath(forRow: index, inSection: 0)
@@ -129,6 +163,7 @@ public protocol ThemePresenter: class {
         WPStyleGuide.configureColorsForView(view, collectionView:collectionView)
         
         fetchThemes()
+        sections = isEmpty ? [.Themes] : [.Info, .Themes]
 
         updateActiveTheme()
         setupSyncHelper()
@@ -218,11 +253,12 @@ public protocol ThemePresenter: class {
     
     private func hideFetchAnimation() {
         guard fetchAnimation else {
-            Section.Themes.reload(collectionView)
+            reloadThemes()
             return
         }
 
         fetchAnimation = false
+        sections = [.Info, .Themes]
         collectionView?.collectionViewLayout.invalidateLayout()
         WPNoResultsView.removeFromView(view)
     }
@@ -246,27 +282,10 @@ public protocol ThemePresenter: class {
         syncingPage = 0
     }
     
-    // MARK: - UICollectionViewController helpers
-
-    enum Section: Int {
-        case Info
-        case Themes
-        
-        static let all = [Info, Themes]
-        
-        func indexSet() -> NSIndexSet {
-            return NSIndexSet(index: rawValue)
-        }
-        
-        func reload(view: UICollectionView?) {
-            view?.reloadSections(indexSet())
-        }
-    }
-    
     // MARK: - UICollectionViewController protocol UICollectionViewDataSource
     
     public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch Section.all[section] {
+        switch sections[section] {
         case .Info: return 0
         case .Themes: return themesCount
         }
@@ -298,7 +317,7 @@ public protocol ThemePresenter: class {
     }
     
     public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return Section.all.count
+        return sections.count
     }
     
     // MARK: - UICollectionViewController protocol UICollectionViewDelegate
@@ -312,7 +331,7 @@ public protocol ThemePresenter: class {
     // MARK: - UICollectionViewDelegateFlowLayout
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,  referenceSizeForHeaderInSection section:NSInteger) -> CGSize {
-        guard Section.all[section] == .Info && !isEmpty else {
+        guard sections[section] == .Info else {
             return CGSize.zero
         }
         let height = Styles.headerHeight(isViewHorizontallyCompact())
@@ -329,38 +348,46 @@ public protocol ThemePresenter: class {
     public func collectionView(collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int) -> CGSize {
-            guard Section.all[section] == .Themes && syncHelper.isLoadingMore else {
+            guard sections[section] == .Themes && syncHelper.isLoadingMore else {
                 return CGSize.zero
             }
             
             return CGSize(width: 0, height: Styles.footerHeight)
     }
     
-    // MARK: - UISearchBarDelegate
+    // MARK: - Search support
     
-    public func searchBarShouldBeginEditing(searchBar: UISearchBar) -> Bool  {
-        searchBar.setShowsCancelButton(true, animated: true)
-        return true
+    @IBAction func didTapSearchButton(sender: UIButton) {
+        searchController.active = true
+        if sections.count > 1 {
+            collectionView?.performBatchUpdates({
+                self.collectionView?.deleteSections(NSIndexSet(index: 0))
+                self.sections = [.Themes]
+            }, completion: nil)
+        }
     }
-    
-    public func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        searchName = searchText
+
+    // MARK: - UISearchControllerDelegate
+
+    public func willDismissSearchController(searchController: UISearchController) {
+        if sections.count == 1 {
+            collectionView?.performBatchUpdates({
+                self.collectionView?.insertSections(NSIndexSet(index: 0))
+                self.sections = [.Info, .Themes]
+            }, completion: nil)
+        }
     }
-    
-    public func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
+
+    public func presentSearchController(searchController: UISearchController) {
+        presentViewController(searchController, animated: true, completion: nil)
     }
+
+    // MARK: - UISearchResultsUpdating
     
-    public func searchBarCancelButtonClicked(searchBar: UISearchBar) {
-        searchName = ""
-        searchBar.resignFirstResponder()
+    public func updateSearchResultsForSearchController(searchController: UISearchController) {
+        searchName = searchController.searchBar.text ?? ""
     }
-    
-    public func searchBarShouldEndEditing(searchBar: UISearchBar) -> Bool  {
-        searchBar.setShowsCancelButton(false, animated: true)
-        return true
-    }
-    
+
     // MARK: - NSFetchedResultsController helpers
 
     private func searchNamePredicate() -> NSPredicate? {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1cE-e6-chL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1cE-e6-chL">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -274,7 +274,7 @@
                                         <view contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="QcA-Am-6I5">
                                             <rect key="frame" x="16" y="139" width="568" height="53"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fzn-G2-C1L">
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="fzn-G2-C1L">
                                                     <rect key="frame" x="0.0" y="0.0" width="568" height="53"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="800" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gVo-ti-m3S">
@@ -286,20 +286,14 @@
                                                                 <action selector="didTapSearchTypeButton:" destination="47y-8d-jwn" eventType="touchUpInside" id="VDa-tX-HhH"/>
                                                             </connections>
                                                         </button>
-                                                        <searchBar contentMode="redraw" horizontalCompressionResistancePriority="250" searchBarStyle="minimal" placeholder="Search themes…" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HMQ-Gs-9FB">
-                                                            <rect key="frame" x="104" y="0.0" width="412" height="53"/>
-                                                            <animations/>
-                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="alphabet" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                                                            <connections>
-                                                                <outlet property="delegate" destination="1cE-e6-chL" id="bAl-dw-bjE"/>
-                                                            </connections>
-                                                        </searchBar>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="85U-8E-CJ7">
                                                             <rect key="frame" x="516" y="0.0" width="52" height="53"/>
                                                             <animations/>
                                                             <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                                                             <state key="normal" image="icon-post-search-highlight"/>
+                                                            <connections>
+                                                                <action selector="didTapSearchButton:" destination="1cE-e6-chL" eventType="touchUpInside" id="00o-zH-3Tx"/>
+                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <animations/>
