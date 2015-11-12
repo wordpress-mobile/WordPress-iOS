@@ -400,6 +400,7 @@
 		B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587798519B799EB00E57C5A /* NotificationBlock+Interface.swift */; };
 		B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */; };
 		B5899AE41B422D990075A3D6 /* NotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5899AE31B422D990075A3D6 /* NotificationSettings.swift */; };
+		B5A6BB8C1BF4DF38002F6A96 /* rest-site-settings.json in Resources */ = {isa = PBXBuildFile; fileRef = B5A6BB8B1BF4DF38002F6A96 /* rest-site-settings.json */; };
 		B5A6BB8E1BF4E4D4002F6A96 /* OHHTTPStubs+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A6BB8D1BF4E4D4002F6A96 /* OHHTTPStubs+Helpers.swift */; };
 		B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */; };
 		B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5AA54D41A8E7510003BDD12 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -3600,6 +3601,7 @@
 				E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */,
 				E1E4CE0E1774531500430844 /* misteryman.jpg */,
 				E1E4CE0517739FAB00430844 /* test-image.jpg */,
+				B5A6BB8B1BF4DF38002F6A96 /* rest-site-settings.json */,
 				E156190016DBABDE006532C4 /* xmlrpc-response-getpost.xml */,
 				E15618FE16DBA983006532C4 /* xmlrpc-response-newpost.xml */,
 				93594BD4191D2F5A0079E6B2 /* stats-batch.json */,
@@ -4035,6 +4037,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5A6BB8C1BF4DF38002F6A96 /* rest-site-settings.json in Resources */,
 				E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */,
 				93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */,
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
@@ -5296,6 +5299,7 @@
 					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Stats-iOS\"",
 					"\"${PODS_ROOT}/Headers/Public/google-plus-ios-sdk\"",
 					"\"${PODS_ROOT}/Headers/Public/wpxmlrpc\"",
+					"\"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources\"",
 				);
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5558,6 +5562,7 @@
 					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Stats-iOS\"",
 					"\"${PODS_ROOT}/Headers/Public/google-plus-ios-sdk\"",
 					"\"${PODS_ROOT}/Headers/Public/wpxmlrpc\"",
+					"\"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources\"",
 				);
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5920,6 +5925,7 @@
 					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Stats-iOS\"",
 					"\"${PODS_ROOT}/Headers/Public/google-plus-ios-sdk\"",
 					"\"${PODS_ROOT}/Headers/Public/wpxmlrpc\"",
+					"\"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources\"",
 				);
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -5991,6 +5997,7 @@
 					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Stats-iOS\"",
 					"\"${PODS_ROOT}/Headers/Public/google-plus-ios-sdk\"",
 					"\"${PODS_ROOT}/Headers/Public/wpxmlrpc\"",
+					"\"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources\"",
 				);
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -6061,6 +6068,7 @@
 					"\"${PODS_ROOT}/Headers/Public/WordPressCom-Stats-iOS\"",
 					"\"${PODS_ROOT}/Headers/Public/google-plus-ios-sdk\"",
 					"\"${PODS_ROOT}/Headers/Public/wpxmlrpc\"",
+					"\"$(TARGET_TEMP_DIR)/../$(PROJECT_NAME).build/DerivedSources\"",
 				);
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
