@@ -160,38 +160,7 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     NSParameterAssert(settings);
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
     
-    NSMutableDictionary *parameters = [@{
-        RemoteBlogNameForUpdateKey      : settings.name,
-        RemoteBlogTaglineForUpdateKey   : settings.tagline,
-        RemoteBlogPrivacyKey            : settings.privacy,
-        RemoteBlogDefaultCategoryKey    : settings.defaultCategoryID,
-        RemoteBlogDefaultPostFormatKey  : settings.defaultPostFormat
-    } mutableCopy];
-
-    if (settings.relatedPostsEnabled) {
-        [parameters setValueIfNotNil:settings.relatedPostsEnabled forKey:RemoteBlogRelatedPostsEnabledKey];
-        [parameters setValueIfNotNil:settings.relatedPostsShowHeadline forKey:RemoteBlogRelatedPostsShowHeadlineKey];
-        [parameters setValueIfNotNil:settings.relatedPostsShowThumbnails forKey:RemoteBlogRelatedPostsShowThumbnailsKey];
-    }
-    
-    [parameters setValueIfNotNil:settings.commentsAllowed                     forKey:RemoteBlogCommentsAllowedKey];
-    [parameters setValueIfNotNil:settings.commentsBlacklistKeys               forKey:RemoteBlogCommentsBlacklistKeys];
-    [parameters setValueIfNotNil:settings.commentsCloseAutomatically          forKey:RemoteBlogCommentsCloseAutomaticallyKey];
-    [parameters setValueIfNotNil:settings.commentsCloseAutomaticallyAfterDays forKey:RemoteBlogCommentsCloseAutomaticallyAfterDaysKey];
-    [parameters setValueIfNotNil:settings.commentsFromKnownUsersWhitelisted   forKey:RemoteBlogCommentsKnownUsersWhitelistKey];
-    [parameters setValueIfNotNil:settings.commentsMaximumLinks                forKey:RemoteBlogCommentsMaxLinksKey];
-    [parameters setValueIfNotNil:settings.commentsModerationKeys              forKey:RemoteBlogCommentsModerationKeys];
-    [parameters setValueIfNotNil:settings.commentsPagingEnabled               forKey:RemoteBlogCommentsPagingEnabledKey];
-    [parameters setValueIfNotNil:settings.commentsPageSize                    forKey:RemoteBlogCommentsPageSizeKey];
-    [parameters setValueIfNotNil:settings.commentsRequireManualModeration     forKey:RemoteBlogCommentsRequireModerationKey];
-    [parameters setValueIfNotNil:settings.commentsRequireNameAndEmail         forKey:RemoteBlogCommentsRequireNameAndEmailKey];
-    [parameters setValueIfNotNil:settings.commentsRequireRegistration         forKey:RemoteBlogCommentsRequireRegistrationKey];
-    [parameters setValueIfNotNil:settings.commentsSortOrder                   forKey:RemoteBlogCommentsSortOrderKey];
-    [parameters setValueIfNotNil:settings.commentsThreadingEnabled            forKey:RemoteBlogCommentsThreadingEnabledKey];
-    [parameters setValueIfNotNil:settings.commentsThreadingDepth              forKey:RemoteBlogCommentsThreadingDepthKey];
-    [parameters setValueIfNotNil:settings.pingbackOutboundEnabled             forKey:RemoteBlogCommentsPingbackOutboundKey];
-    [parameters setValueIfNotNil:settings.pingbackInboundEnabled              forKey:RemoteBlogCommentsPingbackInboundKey];
-        
+    NSDictionary *parameters = [self remoteSettingsToDictionary:settings];
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blogID];
     NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -315,26 +284,19 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     // Discussion
     settings.commentsAllowed = [rawSettings numberForKey:RemoteBlogCommentsAllowedKey];
     settings.commentsBlacklistKeys = [rawSettings stringForKey:RemoteBlogCommentsBlacklistKeys];
-    
     settings.commentsCloseAutomatically = [rawSettings numberForKey:RemoteBlogCommentsCloseAutomaticallyKey];
     settings.commentsCloseAutomaticallyAfterDays = [rawSettings numberForKey:RemoteBlogCommentsCloseAutomaticallyAfterDaysKey];
-
     settings.commentsFromKnownUsersWhitelisted = [rawSettings numberForKey:RemoteBlogCommentsKnownUsersWhitelistKey];
     settings.commentsMaximumLinks = [rawSettings numberForKey:RemoteBlogCommentsMaxLinksKey];
-    
     settings.commentsModerationKeys = [rawSettings stringForKey:RemoteBlogCommentsModerationKeys];
     settings.commentsPagingEnabled = [rawSettings numberForKey:RemoteBlogCommentsPagingEnabledKey];
     settings.commentsPageSize = [rawSettings numberForKey:RemoteBlogCommentsPageSizeKey];
-    
     settings.commentsRequireManualModeration = [rawSettings numberForKey:RemoteBlogCommentsRequireModerationKey];
     settings.commentsRequireNameAndEmail = [rawSettings numberForKey:RemoteBlogCommentsRequireNameAndEmailKey];
     settings.commentsRequireRegistration = [rawSettings numberForKey:RemoteBlogCommentsRequireRegistrationKey];
-
     settings.commentsSortOrder = [rawSettings stringForKey:RemoteBlogCommentsSortOrderKey];
-    
     settings.commentsThreadingEnabled = [rawSettings numberForKey:RemoteBlogCommentsThreadingEnabledKey];
     settings.commentsThreadingDepth = [rawSettings numberForKey:RemoteBlogCommentsThreadingDepthKey];
-    
     settings.pingbackOutboundEnabled = [rawSettings numberForKey:RemoteBlogCommentsPingbackOutboundKey];
     settings.pingbackInboundEnabled = [rawSettings numberForKey:RemoteBlogCommentsPingbackInboundKey];
     
@@ -346,6 +308,44 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     settings.relatedPostsShowThumbnails = [rawSettings numberForKey:RemoteBlogRelatedPostsShowThumbnailsKey];
     
     return settings;
+}
+
+- (NSDictionary *)remoteSettingsToDictionary:(RemoteBlogSettings *)settings
+{
+    NSParameterAssert(settings);
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    [parameters setValueIfNotNil:settings.name forKey:RemoteBlogNameForUpdateKey];
+    [parameters setValueIfNotNil:settings.tagline forKey:RemoteBlogTaglineForUpdateKey];
+    [parameters setValueIfNotNil:settings.privacy forKey:RemoteBlogPrivacyKey];
+
+    [parameters setValueIfNotNil:settings.defaultCategoryID forKey:RemoteBlogDefaultCategoryKey];
+    [parameters setValueIfNotNil:settings.defaultPostFormat forKey:RemoteBlogDefaultPostFormatKey];
+    
+    [parameters setValueIfNotNil:settings.commentsAllowed forKey:RemoteBlogCommentsAllowedKey];
+    [parameters setValueIfNotNil:settings.commentsBlacklistKeys forKey:RemoteBlogCommentsBlacklistKeys];
+    [parameters setValueIfNotNil:settings.commentsCloseAutomatically forKey:RemoteBlogCommentsCloseAutomaticallyKey];
+    [parameters setValueIfNotNil:settings.commentsCloseAutomaticallyAfterDays forKey:RemoteBlogCommentsCloseAutomaticallyAfterDaysKey];
+    [parameters setValueIfNotNil:settings.commentsFromKnownUsersWhitelisted forKey:RemoteBlogCommentsKnownUsersWhitelistKey];
+    [parameters setValueIfNotNil:settings.commentsMaximumLinks forKey:RemoteBlogCommentsMaxLinksKey];
+    [parameters setValueIfNotNil:settings.commentsModerationKeys forKey:RemoteBlogCommentsModerationKeys];
+    [parameters setValueIfNotNil:settings.commentsPagingEnabled forKey:RemoteBlogCommentsPagingEnabledKey];
+    [parameters setValueIfNotNil:settings.commentsPageSize forKey:RemoteBlogCommentsPageSizeKey];
+    [parameters setValueIfNotNil:settings.commentsRequireManualModeration forKey:RemoteBlogCommentsRequireModerationKey];
+    [parameters setValueIfNotNil:settings.commentsRequireNameAndEmail forKey:RemoteBlogCommentsRequireNameAndEmailKey];
+    [parameters setValueIfNotNil:settings.commentsRequireRegistration forKey:RemoteBlogCommentsRequireRegistrationKey];
+    [parameters setValueIfNotNil:settings.commentsSortOrder forKey:RemoteBlogCommentsSortOrderKey];
+    [parameters setValueIfNotNil:settings.commentsThreadingEnabled forKey:RemoteBlogCommentsThreadingEnabledKey];
+    [parameters setValueIfNotNil:settings.commentsThreadingDepth forKey:RemoteBlogCommentsThreadingDepthKey];
+    
+    [parameters setValueIfNotNil:settings.pingbackOutboundEnabled forKey:RemoteBlogCommentsPingbackOutboundKey];
+    [parameters setValueIfNotNil:settings.pingbackInboundEnabled forKey:RemoteBlogCommentsPingbackInboundKey];
+    
+    [parameters setValueIfNotNil:settings.relatedPostsEnabled forKey:RemoteBlogRelatedPostsEnabledKey];
+    [parameters setValueIfNotNil:settings.relatedPostsShowHeadline forKey:RemoteBlogRelatedPostsShowHeadlineKey];
+    [parameters setValueIfNotNil:settings.relatedPostsShowThumbnails forKey:RemoteBlogRelatedPostsShowThumbnailsKey];
+    
+    return parameters;
 }
 
 @end
