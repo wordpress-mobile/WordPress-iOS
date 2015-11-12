@@ -53,7 +53,7 @@ target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '~> 4.6.0'
   pod 'OHHTTPStubs/Swift', '~> 4.6.0'
   pod 'OCMock', '3.1.2'
-  pod 'Specta', '1.0.3'
+  pod 'Specta', '1.0.5'
   pod 'Expecta', '0.3.2'
 end
 
