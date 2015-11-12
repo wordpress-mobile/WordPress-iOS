@@ -198,8 +198,7 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
-  - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`,
-    commit `34d484172a4e4f5013289023468098fb8764d2c7`)
+  - WordPress-iOS-Editor (= 1.0)
   - WordPress-iOS-Shared (= 0.4.4)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
   - WordPressCom-Analytics-iOS (= 0.0.39)
@@ -222,9 +221,6 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPress-iOS-Editor:
-    :commit: 34d484172a4e4f5013289023468098fb8764d2c7
-    :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
 
@@ -241,9 +237,6 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPress-iOS-Editor:
-    :commit: 34d484172a4e4f5013289023468098fb8764d2c7
-    :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressApi:
     :commit: 4bc8da6f5ec461cb980170a14d8b149c59d847b5
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
@@ -257,7 +250,7 @@ SPEC CHECKSUMS:
   CrashlyticsLumberjack: 5094b659ecf9a11550f7dd7a885c0cef077f1ffa
   DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
   DTFoundation: c9b3362b83f0017389082ec067ede719826a579d
-  EmailChecker: 1b9c5a58c994bc638f842a4d69523b6ab57e706e
+  EmailChecker: 78dd8dfa9d004826c8b5889be6c380b72b837d44
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
@@ -282,7 +275,7 @@ SPEC CHECKSUMS:
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: f7b32c087f4d4957badbb6181a4c78520c5806ae
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
-  WordPress-iOS-Editor: 5077745deb77e472cae796a6b38d1abcd627709c
+  WordPress-iOS-Editor: 5d9939949c36613c7ab97451c921cf62af212baa
   WordPress-iOS-Shared: 345f7c1c49d298114353c3856c53317f0d826078
   WordPressApi: cb145d3c92ed54d4dbe70108d15f17ce3da3ad5d
   WordPressCom-Analytics-iOS: 5628c4ad2d4a9d49b290e076b7f593d632492dcc
