@@ -41,8 +41,7 @@ pod 'WordPressCom-Stats-iOS', :branch => 'fix/framework-support-take-2', :git =>
 #pod 'WordPressCom-Analytics-iOS', '0.0.40'
 pod 'WordPressCom-Analytics-iOS', :branch => 'fix/framework-support', :git => 'https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
-#pod 'WPMediaPicker', '~>0.6.1'
-pod 'WPMediaPicker', :branch => 'fix/framework-support', :git => 'https://github.com/wordpress-mobile/MediaPicker-iOS.git'
+pod 'WPMediaPicker', '~>0.6.1'
 pod 'ReactiveCocoa', '~> 2.4.7'
 pod 'FormatterKit', '~> 1.8.0'
 
