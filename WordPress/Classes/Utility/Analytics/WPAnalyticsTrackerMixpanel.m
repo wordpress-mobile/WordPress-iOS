@@ -849,6 +849,12 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatPostListViewAction:
         case WPAnalyticsStatSupportSentMessage:
         case WPAnalyticsStatSupportUserRepliedToHelpshift:
+        case WPAnalyticsStatShortcutLogIn:
+        case WPAnalyticsStatShortcutNewPost:
+        case WPAnalyticsStatShortcutNewPhotoPost:
+        case WPAnalyticsStatShortcutStats:
+        case WPAnalyticsStatShortcutNotifications:
+
             // Unimplemented events
             break;
     }
