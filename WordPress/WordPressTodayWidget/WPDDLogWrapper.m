@@ -2,7 +2,7 @@
 #import "WPDDLogWrapper.h"
 
 // Logging Framework Lumberjack
-#import <CocoaLumberjack/DDLogMacros.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
 
 #if DEBUG
 #import "DDTTYLogger.h"
