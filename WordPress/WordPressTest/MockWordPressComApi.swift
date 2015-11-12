@@ -1,4 +1,5 @@
 import Foundation
+import AFNetworking
 
 class MockWordPressComApi : WordPressComApi {
     var postMethodCalled = false
