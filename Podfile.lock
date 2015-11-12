@@ -68,7 +68,9 @@ PODS:
   - FormatterKit/URLRequestFormatter (1.8.0)
   - google-plus-ios-sdk (1.7.1)
   - Helpshift (4.10.2)
-  - HockeySDK (3.6.4)
+  - HockeySDK (3.8.5):
+    - HockeySDK/AllFeaturesLib (= 3.8.5)
+  - HockeySDK/AllFeaturesLib (3.8.5)
   - KIF/Core (3.3.0)
   - KIF/IdentifierTests (3.3.0):
     - KIF/Core
@@ -115,7 +117,21 @@ PODS:
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.1.2)
-  - OHHTTPStubs (1.1.1)
+  - OHHTTPStubs (4.6.0):
+    - OHHTTPStubs/Default (= 4.6.0)
+  - OHHTTPStubs/Core (4.6.0)
+  - OHHTTPStubs/Default (4.6.0):
+    - OHHTTPStubs/Core
+    - OHHTTPStubs/JSON
+    - OHHTTPStubs/NSURLSession
+    - OHHTTPStubs/OHPathHelpers
+  - OHHTTPStubs/JSON (4.6.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/NSURLSession (4.6.0):
+    - OHHTTPStubs/Core
+  - OHHTTPStubs/OHPathHelpers (4.6.0)
+  - OHHTTPStubs/Swift (4.6.0):
+    - OHHTTPStubs/Core
   - PDKTZipArchive (0.3.5)
   - Reachability (3.2)
   - ReactiveCocoa (2.4.7):
@@ -189,7 +205,7 @@ DEPENDENCIES:
   - FormatterKit (~> 1.8.0)
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (~> 4.10.0)
-  - HockeySDK (~> 3.6.0)
+  - HockeySDK (~> 3.8.0)
   - KIF/IdentifierTests (~> 3.1)
   - Lookback (= 1.1.4)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`,
@@ -201,7 +217,8 @@ DEPENDENCIES:
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock (= 3.1.2)
-  - OHHTTPStubs (= 1.1.1)
+  - OHHTTPStubs (~> 4.6.0)
+  - OHHTTPStubs/Swift (~> 4.6.0)
   - Reachability (= 3.2)
   - ReactiveCocoa (~> 2.4.7)
   - Simperium (= 0.8.9)
@@ -289,7 +306,7 @@ SPEC CHECKSUMS:
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
   Helpshift: 9c84a5e4ffd881c7e7eb395c2afc8d6a46eb2187
-  HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
+  HockeySDK: dd11a2b9da3372fd025643bee5bc10c8c613d169
   KIF: 0a82046d06f3648799cac522d2d0f7934214caac
   Lookback: 9ab9027ff246d2dc5ce34be483f70e4a6718280b
   MGImageUtilities: b54a815970e231903c495fff33699467158f61a0
@@ -300,7 +317,7 @@ SPEC CHECKSUMS:
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
-  OHHTTPStubs: ad00ed452d4e3805ffb95977163879bd5bb121ea
+  OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
   PDKTZipArchive: 81c4824eb5587131e422fc58b92c043c4aa96466
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240

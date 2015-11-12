@@ -21,7 +21,7 @@ pod 'Mixpanel', '2.8.2'
 pod 'CocoaLumberjack', '= 2.0.0'
 pod 'NSLogger-CocoaLumberjack-connector', :git => 'https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git', :tag => '1.5'
 pod 'google-plus-ios-sdk', '~>1.5'
-pod 'HockeySDK', '~>3.6.0'
+pod 'HockeySDK', '~>3.8.0'
 pod 'Helpshift', '~>4.10.0'
 pod 'Lookback', '1.1.4', :configurations => ['Release-Internal']
 pod 'MRProgress', '~>0.7.0'
@@ -50,7 +50,8 @@ target 'WordPressTodayWidget', :exclusive => true do
 end
 
 target :WordPressTest, :exclusive => true do
-  pod 'OHHTTPStubs', '1.1.1'
+  pod 'OHHTTPStubs', '~> 4.6.0'
+  pod 'OHHTTPStubs/Swift', '~> 4.6.0'
   pod 'OCMock', '3.1.2'
   pod 'Specta', '1.0.3'
   pod 'Expecta', '0.3.2'
