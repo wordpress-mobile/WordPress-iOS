@@ -31,9 +31,9 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 static CGFloat const BLVCSiteRowHeight = 74.0;
 
-static int DisableAllMinSites = 10;
-static int DisableAllSitesThreshold = 6;
-static float DisableAllSitesInterval = 2.0f;
+static NSInteger HideAllMinSites = 10;
+static NSInteger HideAllSitesThreshold = 6;
+static NSTimeInterval HideAllSitesInterval = 2.0;
 
 @interface BlogListViewController () <UIViewControllerRestoration>
 
@@ -45,8 +45,8 @@ static float DisableAllSitesInterval = 2.0f;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
 
-@property (nonatomic) NSDate *firstDisable;
-@property (nonatomic) NSInteger disabledCount;
+@property (nonatomic) NSDate *firstHide;
+@property (nonatomic) NSInteger hideCount;
 
 @end
 
@@ -570,8 +570,8 @@ static float DisableAllSitesInterval = 2.0f;
         [self updateHeaderSize];
         self.tableView.tableHeaderView = self.headerView;
 
-        self.firstDisable = 0;
-        self.disabledCount = 0;
+        self.firstHide = nil;
+        self.hideCount = 0;
     }
     else {
         // setting the table header view to nil creates extra space, empty view is a way around that
@@ -608,13 +608,13 @@ static float DisableAllSitesInterval = 2.0f;
 {
     UISwitch *switcher = (UISwitch *)sender;
     Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:switcher.tag inSection:0]];
-    if(!switcher.on && [self.tableView numberOfRowsInSection:0] > DisableAllMinSites) {
-        if (self.disabledCount == 0) {
-            self.firstDisable = [NSDate date];
+    if(!switcher.on && [self.tableView numberOfRowsInSection:0] > HideAllMinSites) {
+        if (self.hideCount == 0) {
+            self.firstHide = [NSDate date];
         }
-        self.disabledCount += 1;
+        self.hideCount += 1;
 
-        if (self.disabledCount > DisableAllSitesThreshold && (self.firstDisable.timeIntervalSinceNow * -1) < DisableAllSitesInterval) {
+        if (self.hideCount > HideAllSitesThreshold && (self.firstHide.timeIntervalSinceNow * -1) < HideAllSitesInterval) {
             
             NSString *message = NSLocalizedString(@"Would you like to hide all WordPress.com Sites?",
                                                   @"Message offering to hide all WPCom Sites");
@@ -627,7 +627,7 @@ static float DisableAllSitesInterval = 2.0f;
                                                                    style:UIAlertActionStyleCancel
                                                                  handler:^(UIAlertAction *action){}];
             
-            UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Hide All", @"Hide All")
+            UIAlertAction *hideAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Hide All", @"Hide All")
                                                                    style:UIAlertActionStyleDestructive
                                                                  handler:^(UIAlertAction *action){
                                                                      NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
@@ -641,11 +641,11 @@ static float DisableAllSitesInterval = 2.0f;
                                                                          
                                                                          AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
                                                                          [accountService setVisibility:switcher.on forBlogs:blogs];
+                                                                         [[ContextManager sharedInstance] saveDerivedContext:context];
                                                                      }];
-                                                                     [[ContextManager sharedInstance] saveDerivedContext:context];
                                                                  }];
             [alertController addAction:cancelAction];
-            [alertController addAction:deleteAction];
+            [alertController addAction:hideAction];
             [self presentViewController:alertController animated:YES completion:nil];
         }
     }
