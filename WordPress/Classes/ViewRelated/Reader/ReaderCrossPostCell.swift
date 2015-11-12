@@ -1,6 +1,6 @@
 import Foundation
 
-public class ReaderXPostCell: UITableViewCell
+public class ReaderCrossPostCell: UITableViewCell
 {
 
     @IBOutlet private weak var innerContentView: UIView!
@@ -175,11 +175,11 @@ public class ReaderXPostCell: UITableViewCell
         // These templates are deliberately not localized (for now) given the intended audience.
         let commentTemplate = "%@ left a comment on %@, cross-posted to %@"
         let siteTemplate = "%@ cross-posted from %@ to %@"
-        let template = contentProvider!.isCommentXPost() ? commentTemplate : siteTemplate;
+        let template = contentProvider!.isCommentCrossPost() ? commentTemplate : siteTemplate;
 
         let authorName:NSString = contentProvider!.authorForDisplay()
         let siteName = subDomainNameFromPath(contentProvider!.siteURLForDisplay())
-        let originName = subDomainNameFromPath(contentProvider!.xpostOriginSiteURLForDisplay())
+        let originName = subDomainNameFromPath(contentProvider!.crossPostOriginSiteURLForDisplay())
 
         let subtitle = NSString(format: template, authorName, originName, siteName) as String
         let subtitleAttributes = WPStyleGuide.readerXpostSubtitleAttributes() as! [String:AnyObject]

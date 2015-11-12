@@ -905,19 +905,19 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.isLikesEnabled = remotePost.isLikesEnabled;
     post.isSiteBlocked = NO;
 
-    if (remotePost.xpostMeta) {
-        if (!post.xpostMeta) {
-            ReaderXPostMeta *meta = (ReaderXPostMeta *)[NSEntityDescription insertNewObjectForEntityForName:@"ReaderXPostMeta"
+    if (remotePost.crossPostMeta) {
+        if (!post.crossPostMeta) {
+            ReaderCrossPostMeta *meta = (ReaderCrossPostMeta *)[NSEntityDescription insertNewObjectForEntityForName:[ReaderCrossPostMeta classNameWithoutNamespaces]
                                                                                      inManagedObjectContext:self.managedObjectContext];
-            post.xpostMeta = meta;
+            post.crossPostMeta = meta;
         }
-        post.xpostMeta.siteURL = remotePost.xpostMeta.siteURL;
-        post.xpostMeta.postURL = remotePost.xpostMeta.postURL;
-        post.xpostMeta.commentURL = remotePost.xpostMeta.commentURL;
-        post.xpostMeta.siteID = remotePost.xpostMeta.siteID;
-        post.xpostMeta.postID = remotePost.xpostMeta.postID;
+        post.crossPostMeta.siteURL = remotePost.crossPostMeta.siteURL;
+        post.crossPostMeta.postURL = remotePost.crossPostMeta.postURL;
+        post.crossPostMeta.commentURL = remotePost.crossPostMeta.commentURL;
+        post.crossPostMeta.siteID = remotePost.crossPostMeta.siteID;
+        post.crossPostMeta.postID = remotePost.crossPostMeta.postID;
     } else {
-        post.xpostMeta = nil;
+        post.crossPostMeta = nil;
     }
 
     NSString *tag = remotePost.primaryTag;

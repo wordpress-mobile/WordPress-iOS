@@ -60,12 +60,12 @@ NSString * const TagKeySecondarySlug = @"secondaryTagSlug";
 
 // XPost Meta Keys
 NSString * const PostRESTKeyMetadata = @"metadata";
-NSString * const XPostMetaKey = @"key";
-NSString * const XPostMetaValue = @"value";
-NSString * const XPostMetaXPostPermalink = @"_xpost_original_permalink";
-NSString * const XPostMetaXCommentPermalink = @"xcomment_original_permalink";
-NSString * const XPostMetaXPostOrigin = @"xpost_origin";
-NSString * const XPostMetaCommentPrefix = @"comment-";
+NSString * const CrossPostMetaKey = @"key";
+NSString * const CrossPostMetaValue = @"value";
+NSString * const CrossPostMetaXPostPermalink = @"_xpost_original_permalink";
+NSString * const CrossPostMetaXCommentPermalink = @"xcomment_original_permalink";
+NSString * const CrossPostMetaXPostOrigin = @"xpost_origin";
+NSString * const CrossPostMetaCommentPrefix = @"comment-";
 
 static const NSInteger AvgWordsPerMinuteRead = 250;
 static const NSInteger MinutesToReadThreshold = 2;
@@ -253,26 +253,26 @@ static const NSInteger MinutesToReadThreshold = 2;
         post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:PostRESTKeyDiscoverMetadata]];
     }
 
-    RemoteReaderXPostMeta *xpostMeta = [self xpostMetaFromPostDictionary:dict];
-    if (xpostMeta) {
-        post.xpostMeta = xpostMeta;
+    RemoteReaderCrossPostMeta *crossPostMeta = [self crossPostMetaFromPostDictionary:dict];
+    if (crossPostMeta) {
+        post.crossPostMeta = crossPostMeta;
     }
 
     return post;
 }
 
-- (RemoteReaderXPostMeta *)xpostMetaFromPostDictionary:(NSDictionary *)dict
+- (RemoteReaderCrossPostMeta *)crossPostMetaFromPostDictionary:(NSDictionary *)dict
 {
-    BOOL xPostMetaFound = NO;
+    BOOL crossPostMetaFound = NO;
 
-    RemoteReaderXPostMeta *meta = [RemoteReaderXPostMeta new];
+    RemoteReaderCrossPostMeta *meta = [RemoteReaderCrossPostMeta new];
 
     NSArray *metadata = [dict arrayForKey:PostRESTKeyMetadata];
     for (NSDictionary *obj in metadata) {
-        if ([[obj stringForKey:XPostMetaKey] isEqualToString:XPostMetaXPostPermalink] ||
-            [[obj stringForKey:XPostMetaKey] isEqualToString:XPostMetaXCommentPermalink]) {
+        if ([[obj stringForKey:CrossPostMetaKey] isEqualToString:CrossPostMetaXPostPermalink] ||
+            [[obj stringForKey:CrossPostMetaKey] isEqualToString:CrossPostMetaXCommentPermalink]) {
 
-            NSString *path = [obj stringForKey:XPostMetaValue];
+            NSString *path = [obj stringForKey:CrossPostMetaValue];
             NSURL *url = [NSURL URLWithString:path];
             if (!url) {
                 NSLog(@"break");
@@ -280,20 +280,20 @@ static const NSInteger MinutesToReadThreshold = 2;
 
             meta.siteURL = [NSString stringWithFormat:@"%@://%@", url.scheme, url.host];
             meta.postURL = [NSString stringWithFormat:@"%@/%@", meta.siteURL, url.path];
-            if ([url.fragment hasPrefix:XPostMetaCommentPrefix]) {
+            if ([url.fragment hasPrefix:CrossPostMetaCommentPrefix]) {
                 meta.commentURL = [url absoluteString];
             }
-        } else if ([[obj stringForKey:XPostMetaKey] isEqualToString:XPostMetaXPostOrigin]) {
-            NSString *value = [obj stringForKey:XPostMetaValue];
+        } else if ([[obj stringForKey:CrossPostMetaKey] isEqualToString:CrossPostMetaXPostOrigin]) {
+            NSString *value = [obj stringForKey:CrossPostMetaValue];
             NSArray *IDS = [value componentsSeparatedByString:@":"];
             meta.siteID = [[IDS firstObject] numericValue];
             meta.postID = [[IDS lastObject] numericValue];
 
-            xPostMetaFound = YES;
+            crossPostMetaFound = YES;
         }
     }
 
-    if (!xPostMetaFound) {
+    if (!crossPostMetaFound) {
         return nil;
     }
 
