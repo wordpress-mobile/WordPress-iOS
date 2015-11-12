@@ -435,14 +435,20 @@
     NSURL *model36Url = [self urlForModelName:@"WordPress 36" inDirectory:nil];
     NSURL *storeUrl = [self urlForStoreWithName:@"WordPress35.sqlite"];
     
-    // Load a Model 34 Stack
+    // Load Model 35 and 36
+    NSManagedObjectModel *model36 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model36Url];
     NSManagedObjectModel *model35 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model35Url];
+    
+    [self cleanModelObjectClassnames:model36];
+    [self cleanModelObjectClassnames:model35];
+    
+    // New Model 35 Stack
     NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model35];
     
     NSDictionary *options = @{
-                              NSInferMappingModelAutomaticallyOption          : @(YES),
-                              NSMigratePersistentStoresAutomaticallyOption    : @(YES)
-                              };
+        NSInferMappingModelAutomaticallyOption          : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+    };
     
     NSError *error = nil;
     NSPersistentStore *ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
@@ -458,11 +464,11 @@
     XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
     
 
-    Blog *blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    NSManagedObject *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
     [blog setValue:@(1001) forKey:@"blogID"];
     [blog setValue:@"https://test1.wordpress.com" forKey:@"url"];
     [blog setValue:@"https://test1.wordpress.com/xmlrpc.php" forKey:@"xmlrpc"];
-    XCTAssertThrows(blog.blogTagline = @"TagLine", @"Model 35 doesn't support tagline");
+    XCTAssertThrows([blog setValue:@"Tagline" forKey:@"blogTagline"], @"Model 35 doesn't support tagline");
     [context save:&error];
     XCTAssertNil(error, @"Error while saving context");
     
@@ -471,7 +477,6 @@
     psc = nil;
     
     // Migrate to Model 36
-    NSManagedObjectModel *model36 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model36Url];
     BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
                                                            ofType:NSSQLiteStoreType
                                                           toModel:model36
@@ -496,11 +501,13 @@
     XCTAssertNil(error, @"Error while loading the PSC for Model 36");
     XCTAssertNotNil(ps);
     
-    Blog *blog2 = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    NSManagedObject *blog2 = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    
     [blog2 setValue:@(1002) forKey:@"blogID"];
     [blog2 setValue:@"https://test1.wordpress.com" forKey:@"url"];
     [blog2 setValue:@"https://test1.wordpress.com/xmlrpc.php" forKey:@"xmlrpc"];
-    XCTAssertNoThrow(blog2.blogTagline = @"TagLine", @"Model 36 supports tagline");
+    XCTAssertNoThrow([blog2 setValue:@"Tagline" forKey:@"blogTagline"], @"Model 36 supports tagline");
+    
     [context save:&error];
     XCTAssertNil(error, @"Error while saving context");
 }
@@ -600,6 +607,22 @@
 
 
     return post;
+}
+
+- (void)cleanModelObjectClassnames:(NSManagedObjectModel *)model
+{
+    // NOTE: Suppose the following scenario...
+    //  -   `Model N`'s Entity X contains `Attribute A`
+    //  -   `Model N+1`'s Entity X *class* implementation differs from the one bundled in N.
+    //      Added / Removed Attributes. It could differ vastly!
+    //
+    // Problem is... whenever we test `Model N` or `Model N+1`, Core Data will always load the latest
+    // NSManagedObject subclass. This could prove troublesome in a variety of scenarios.
+    // For that reason, we're implementing this helper, which will nuke NSMO's classnames.
+    //
+    for (NSEntityDescription *entity in model.entities) {
+        entity.managedObjectClassName = nil;
+    }
 }
 
 @end
