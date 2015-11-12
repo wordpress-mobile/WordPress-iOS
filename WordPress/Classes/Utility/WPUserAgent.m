@@ -39,9 +39,20 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
 
 - (NSString *)defaultUserAgent
 {
+    // Temporarily unset "UserAgent" from registered user defaults so that we
+    // always get the default value, independently from what's currently set as
+    // User-Agent
+    NSDictionary *originalRegisteredDefaults = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
+
+    NSMutableDictionary *tempRegisteredDefaults = [NSMutableDictionary dictionaryWithDictionary:originalRegisteredDefaults];
+    [tempRegisteredDefaults removeObjectForKey:WPUserAgentKeyUserAgent];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:tempRegisteredDefaults];
+    
     NSString *userAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
     NSAssert(userAgent != nil, @"User agent shouldn't be nil");
     NSAssert(! [userAgent isEmpty], @"User agent shouldn't be empty");
+    
+    [[NSUserDefaults standardUserDefaults] registerDefaults:originalRegisteredDefaults];
     
     return userAgent;
 }
