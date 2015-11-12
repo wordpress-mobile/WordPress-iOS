@@ -444,9 +444,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (Blog *)createBlogWithAccount:(WPAccount *)account
 {
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class])
+    NSString *entityName = NSStringFromClass([Blog class]);
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:entityName
                                                inManagedObjectContext:self.managedObjectContext];
     blog.account = account;
+    blog.settings = [self createSettingsWithBlog:blog];
     return blog;
 }
 
