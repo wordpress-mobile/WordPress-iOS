@@ -231,8 +231,7 @@ DEPENDENCIES:
     branch `fix/framework-support`)
   - WordPress-iOS-Shared (= 0.5.0)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
-  - WordPressCom-Analytics-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git`,
-    branch `fix/framework-support`)
+  - WordPressCom-Analytics-iOS (= 0.0.40)
   - WordPressCom-Stats-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git`,
     branch `fix/framework-support-take-2`)
   - WordPressCom-Stats-iOS/Services (from `https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git`,
@@ -260,9 +259,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
-  WordPressCom-Analytics-iOS:
-    :branch: fix/framework-support
-    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
   WordPressCom-Stats-iOS:
     :branch: fix/framework-support-take-2
     :git: https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git
@@ -286,9 +282,6 @@ CHECKOUT OPTIONS:
   WordPressApi:
     :commit: a7dc27935fb30b1978942cb1c791d4040fe65395
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
-  WordPressCom-Analytics-iOS:
-    :commit: 6aa814533f55953c3be2e0180ee2fba4f0d87b4b
-    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
   WordPressCom-Stats-iOS:
     :commit: aaad2ca9200ca5d8d394d53fa7a65c3615ad8d25
     :git: https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git
