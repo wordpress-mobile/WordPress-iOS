@@ -245,13 +245,11 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
             case MeSectionAccountSettings:
                 cell.textLabel.text = NSLocalizedString(@"Account Settings", @"");
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessibilityLabel = @"Account Settings";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case MeSectionAccountNotifications:
                 cell.textLabel.text = NSLocalizedString(@"Notification Settings", @"");
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessibilityLabel = @"Notification Settings";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
         }
@@ -260,7 +258,6 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
             case MeSectionExtraHelp:
                 cell.textLabel.text = NSLocalizedString(@"Help & Support", @"");
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessibilityLabel = @"Help & Support";
 
                 NSInteger unreadNotificationCount = [HelpshiftUtils unreadNotificationCount];
                 if ([HelpshiftUtils isHelpshiftEnabled] && unreadNotificationCount > 0) {
@@ -276,7 +273,6 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
             case MeSectionExtraAbout:
                 cell.textLabel.text = NSLocalizedString(@"About", @"");
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessibilityLabel = @"About";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
         }
@@ -289,17 +285,13 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
             cell.accessoryType = UITableViewCellAccessoryNone;
 
             if (defaultAccount) {
-                NSString *signOutString = NSLocalizedString(@"Disconnect from WordPress.com",
-                                                            @"Label for disconnecting from WordPress.com account");
-                cell.textLabel.text = signOutString;
-                cell.accessibilityIdentifier = signOutString;
+                cell.textLabel.text = NSLocalizedString(@"Disconnect from WordPress.com",
+                                                        @"Label for disconnecting from WordPress.com account");
                 [WPStyleGuide configureTableViewDestructiveActionCell:cell];
             }
             else {
-                NSString *signInString = NSLocalizedString(@"Connect to WordPress.com",
-                                                           @"Label for connecting to WordPress.com account");
-                cell.textLabel.text = signInString;
-                cell.accessibilityIdentifier = signInString;
+                cell.textLabel.text = NSLocalizedString(@"Connect to WordPress.com",
+                                                        @"Label for connecting to WordPress.com account");
                 [WPStyleGuide configureTableViewActionCell:cell];
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
             }
