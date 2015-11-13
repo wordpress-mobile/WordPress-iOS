@@ -6,10 +6,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenusViewController">
             <connections>
-                <outlet property="contentStackView" destination="6gb-mh-Ce6" id="VSU-pn-nmL"/>
                 <outlet property="detailsView" destination="EN3-TW-klK" id="xLI-Vb-ebe"/>
                 <outlet property="headerView" destination="P7u-xT-eP5" id="5Jv-Ua-oQh"/>
+                <outlet property="itemsView" destination="obX-Ts-DGu" id="sF2-bh-zhC"/>
                 <outlet property="scrollView" destination="7To-gP-Od0" id="Pch-VV-9Ur"/>
+                <outlet property="stackView" destination="6gb-mh-Ce6" id="D6x-RK-yj4"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -25,13 +26,13 @@
                             <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P7u-xT-eP5" customClass="MenusHeaderView">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="466"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="65"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="MxU-jC-Ocf">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="466"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="65"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="aMq-eT-Mvc" customClass="MenusSelectionView">
-                                                    <rect key="frame" x="0.0" y="201" width="285" height="65"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="65"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Lvz-SB-8Wr">
                                                             <rect key="frame" x="0.0" y="0.0" width="285" height="65"/>
@@ -77,7 +78,7 @@
                                                     </connections>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="760" text="uses" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="50" translatesAutoresizingMaskIntoConstraints="NO" id="zti-gC-KhM">
-                                                    <rect key="frame" x="285" y="226" width="30" height="15"/>
+                                                    <rect key="frame" x="285" y="26" width="30" height="14"/>
                                                     <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="D9J-3A-ryX"/>
@@ -87,7 +88,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" horizontalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="9nH-CD-5gY" customClass="MenusSelectionView">
-                                                    <rect key="frame" x="315" y="201" width="285" height="65"/>
+                                                    <rect key="frame" x="315" y="0.0" width="285" height="65"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5V4-1N-wjI">
                                                             <rect key="frame" x="0.0" y="0.0" width="285" height="65"/>
@@ -157,7 +158,7 @@
                                     </connections>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EN3-TW-klK" customClass="MenuDetailsView">
-                                    <rect key="frame" x="0.0" y="466" width="600" height="70"/>
+                                    <rect key="frame" x="0.0" y="65" width="600" height="70"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="yZs-u8-1Mv">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
@@ -232,11 +233,32 @@
                                         <outlet property="trashButton" destination="2Ga-QQ-XHS" id="Epr-hk-wwc"/>
                                     </connections>
                                 </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="obX-Ts-DGu" customClass="MenuItemsView">
+                                    <rect key="frame" x="0.0" y="135" width="600" height="401"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="w8Q-MA-p0C">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="401"/>
+                                            <animations/>
+                                        </stackView>
+                                    </subviews>
+                                    <animations/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="w8Q-MA-p0C" secondAttribute="bottom" id="8Y7-jQ-WUW"/>
+                                        <constraint firstItem="w8Q-MA-p0C" firstAttribute="leading" secondItem="obX-Ts-DGu" secondAttribute="leading" id="9OR-Mq-YJ3"/>
+                                        <constraint firstAttribute="trailing" secondItem="w8Q-MA-p0C" secondAttribute="trailing" id="CwF-bK-VC3"/>
+                                        <constraint firstItem="w8Q-MA-p0C" firstAttribute="top" secondItem="obX-Ts-DGu" secondAttribute="top" id="KwT-jg-b95"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="stackView" destination="w8Q-MA-p0C" id="kQT-MV-A2q"/>
+                                    </connections>
+                                </view>
                             </subviews>
                             <animations/>
                             <constraints>
                                 <constraint firstItem="P7u-xT-eP5" firstAttribute="width" secondItem="6gb-mh-Ce6" secondAttribute="width" id="95d-fB-mct"/>
                                 <constraint firstItem="EN3-TW-klK" firstAttribute="width" secondItem="6gb-mh-Ce6" secondAttribute="width" id="OcM-SO-N7v"/>
+                                <constraint firstItem="obX-Ts-DGu" firstAttribute="width" secondItem="6gb-mh-Ce6" secondAttribute="width" id="eQ3-4L-yN3"/>
                             </constraints>
                         </stackView>
                     </subviews>
