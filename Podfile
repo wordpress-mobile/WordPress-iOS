@@ -32,15 +32,15 @@ pod 'Simperium', '0.8.3'
 pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
 pod 'WordPress-iOS-Shared', '0.4.4'
 pod 'WordPress-iOS-Editor', '1.0'
-pod 'WordPressCom-Stats-iOS', '0.4.10'
-pod 'WordPressCom-Analytics-iOS', '0.0.39'
+pod 'WordPressCom-Stats-iOS', '0.4.12'
+pod 'WordPressCom-Analytics-iOS', '0.0.41'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
 pod 'WPMediaPicker', '~>0.6.0'
 pod 'ReactiveCocoa', '~> 2.4.7'
 pod 'FormatterKit', '~> 1.8.0'
 
 target 'WordPressTodayWidget', :exclusive => true do
-  pod 'WordPressCom-Stats-iOS', '0.4.10'
+  pod 'WordPressCom-Stats-iOS/Services', '0.4.12'
 end
 
 target :WordPressTest, :exclusive => true do
