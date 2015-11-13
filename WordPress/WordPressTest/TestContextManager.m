@@ -7,6 +7,11 @@
 @synthesize mainContext = _mainContext;
 @synthesize managedObjectModel = _managedObjectModel;
 
+- (void)dealloc
+{
+    [ContextManager overrideSharedInstance:nil];
+}
+
 - (instancetype)init
 {
     self = [super init];
