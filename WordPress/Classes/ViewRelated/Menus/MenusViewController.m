@@ -7,6 +7,7 @@
 #import "WPStyleGuide.h"
 #import "MenusHeaderView.h"
 #import "MenuDetailsView.h"
+#import "MenuItemsView.h"
 
 typedef NS_ENUM(NSInteger) {
     MenusSectionSelection = 0,
@@ -28,9 +29,11 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 @interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIStackView *contentStackView;
+@property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (weak, nonatomic) IBOutlet MenusHeaderView *headerView;
 @property (weak, nonatomic) IBOutlet MenuDetailsView *detailsView;
+@property (weak, nonatomic) IBOutlet MenuItemsView *itemsView;
+
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenusService *menusService;
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
@@ -72,6 +75,11 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     
     self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
     self.scrollView.backgroundColor = [WPStyleGuide greyLighten30];
+    self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    
+    // add a bit of padding to the scrollable content
+    self.stackView.layoutMargins = UIEdgeInsetsMake(0, 0, 10, 0);
+    self.stackView.layoutMarginsRelativeArrangement = YES;
     
     self.headerView.delegate = self;
     self.detailsView.delegate = self;
@@ -117,7 +125,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)updateScrollViewContentSize
 {
-    self.scrollView.contentSize = CGSizeMake(self.contentStackView.frame.size.width, self.contentStackView.frame.size.height);
+    self.scrollView.contentSize = CGSizeMake(self.stackView.frame.size.width, self.stackView.frame.size.height);
 }
 
 #pragma mark - local updates
@@ -139,7 +147,13 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)didSyncBlog
 {
     [self.headerView updateWithMenusForBlog:self.blog];
-    self.detailsView.menu = [self.blog.menus firstObject];
+    [self setViewsWithMenu:[self.blog.menus firstObject]];
+}
+
+- (void)setViewsWithMenu:(Menu *)menu
+{
+    self.detailsView.menu = menu;
+    self.itemsView.menu = menu;
 }
 
 #pragma mark - UIScrollView
@@ -154,15 +168,15 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)headerViewSelectionChangedWithSelectedLocation:(MenuLocation *)location
 {
     if(location.menu) {
-        self.detailsView.menu = location.menu;
+        [self setViewsWithMenu:location.menu];
     }else {
-        self.detailsView.menu = [self.blog.menus firstObject];
+        [self setViewsWithMenu:[self.blog.menus firstObject]];
     }
 }
 
 - (void)headerViewSelectionChangedWithSelectedMenu:(Menu *)menu
 {
-    self.detailsView.menu = menu;
+    [self setViewsWithMenu:menu];
 }
 
 #pragma mark - MenuDetailsViewDelegate
@@ -185,6 +199,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
     if(frame.origin.y > self.view.frame.size.height) {
         inset.bottom = 0.0;
+        scrollInset.bottom = 0.0;
     }else {
         inset.bottom = self.view.frame.size.height - frame.origin.y;
         scrollInset.bottom = inset.bottom;
