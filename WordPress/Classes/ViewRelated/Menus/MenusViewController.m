@@ -74,8 +74,10 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [super loadView];
     
     self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.scrollView.backgroundColor = [WPStyleGuide greyLighten30];
+    self.view.backgroundColor = [WPStyleGuide greyLighten30];
+    self.scrollView.backgroundColor = self.view.backgroundColor;
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
+    self.scrollView.alpha = 0.0;
     
     // add a bit of padding to the scrollable content
     self.stackView.layoutMargins = UIEdgeInsetsMake(0, 0, 10, 0);
@@ -148,6 +150,11 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     [self.headerView updateWithMenusForBlog:self.blog];
     [self setViewsWithMenu:[self.blog.menus firstObject]];
+    
+    [UIView animateWithDuration:0.20 animations:^{
+        
+        self.scrollView.alpha = 1.0;
+    }];
 }
 
 - (void)setViewsWithMenu:(Menu *)menu
