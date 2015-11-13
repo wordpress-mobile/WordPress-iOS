@@ -1,11 +1,9 @@
-#import <UIKit/UIKit.h>
+#import "MenuItemsActionableView.h"
 
-@interface MenuItemView : UIView
+@class MenuItem;
 
-@property (nonatomic, weak) MenuItemView *previousItemView;
-@property (nonatomic, weak) MenuItemView *nextItemView;
-@property (nonatomic, assign) NSUInteger indentationLevel;
+@interface MenuItemView : MenuItemsActionableView
 
-- (UIColor *)highlightedColor;
+@property (nonatomic, strong) MenuItem *item;
 
 @end
