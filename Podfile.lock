@@ -197,7 +197,7 @@ DEPENDENCIES:
   - AFNetworking (= 2.6.0)
   - AMPopTip (~> 0.7)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`,
-    branch `fix/framework-support`)
+    tag `0.0.12`)
   - CocoaLumberjack (= 2.0.0)
   - DTCoreText (= 1.6.16)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
@@ -241,8 +241,8 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
-    :branch: fix/framework-support
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.0.12
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
   MGImageUtilities:
@@ -265,8 +265,8 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
-    :commit: 74d72fc3266da75082c2ce61b79fbaade520f075
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.0.12
   MGImageUtilities:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
