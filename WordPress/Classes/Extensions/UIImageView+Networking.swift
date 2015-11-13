@@ -4,14 +4,12 @@ import Foundation
 extension UIImageView
 {
     public func downloadImage(url: NSURL?, placeholderImage: UIImage?) {
-
         downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: nil)
     }
         
     public func downloadImage(url: NSURL?, placeholderImage: UIImage?, success: ((UIImage) -> ())?, failure: ((NSError!) -> ())?) {
-
         // Failsafe: Halt if the URL is empty
-        if url == nil {
+        guard let unwrappedUrl = url else {
             image = placeholderImage
             return
         }
