@@ -512,6 +512,137 @@
     XCTAssertNil(error, @"Error while saving context");
 }
 
+- (void)testMigrate40to41
+{
+    // Migrated Properties
+    NSNumber *blogID                        = @(31337);
+    NSString *blogName                      = @"Stark Industries";
+    NSString *blogTagline                   = @"Jarvis is my Copilot";
+    NSNumber *defaultCategoryID             = @(42);
+    NSString *defaultPostFormat             = @"some-format";
+    NSNumber *privacy                       = @(1);
+    NSNumber *relatedPostsAllowed           = @(true);
+    NSNumber *relatedPostsEnabled           = @(false);
+    NSNumber *relatedPostsShowHeadline      = @(true);
+    NSNumber *relatedPostsShowThumbnails    = @(false);
+    NSString *url                           = @"http://tonystark-verified.wordpress.com";
+    NSString *xmlrpc                        = @"http://tonystark-verified.wordpress.com/xmlrpc.php";
+    
+    NSDictionary *legacySettingsMap = @{
+        @"blogID"                       : blogID,
+        @"blogName"                     : blogName,
+        @"blogTagline"                  : blogTagline,
+        @"defaultCategoryID"            : defaultCategoryID,
+        @"defaultPostFormat"            : defaultPostFormat,
+        @"privacy"                      : privacy,
+        @"relatedPostsAllowed"          : relatedPostsAllowed,
+        @"relatedPostsEnabled"          : relatedPostsEnabled,
+        @"relatedPostsShowHeadline"     : relatedPostsShowHeadline,
+        @"relatedPostsShowThumbnails"   : relatedPostsShowThumbnails,
+        @"url"                          : url,
+        @"xmlrpc"                       : xmlrpc
+    };
+    
+    NSDictionary *migratedSettingsMap = @{
+        @"name"                         : blogName,
+        @"tagline"                      : blogTagline,
+        @"defaultCategoryID"            : defaultCategoryID,
+        @"defaultPostFormat"            : defaultPostFormat,
+        @"privacy"                      : privacy,
+        @"relatedPostsAllowed"          : relatedPostsAllowed,
+        @"relatedPostsEnabled"          : relatedPostsEnabled,
+        @"relatedPostsShowHeadline"     : relatedPostsShowHeadline,
+        @"relatedPostsShowThumbnails"   : relatedPostsShowThumbnails,
+    };
+
+    // Paths
+    NSURL *model40Url = [self urlForModelName:@"WordPress 40" inDirectory:nil];
+    NSURL *model41Url = [self urlForModelName:@"WordPress 41" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress40to41.sqlite"];
+    
+    // Load Model 40 and 41
+    NSManagedObjectModel *model40 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model40Url];
+    NSManagedObjectModel *model41 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model41Url];
+    
+    [self cleanModelObjectClassnames:model40];
+    [self cleanModelObjectClassnames:model41];
+    
+    // New Model 40 Stack
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model40];
+    
+    NSDictionary *options = @{
+        NSInferMappingModelAutomaticallyOption          : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+    };
+    
+    NSError *error = nil;
+    NSPersistentStore *ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:storeUrl
+                                                    options:options
+                                                      error:&error];
+    
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+    
+    XCTAssertNil(error, @"Error while loading the PSC for Model 40");
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+    
+    
+    NSManagedObject *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    XCTAssertNoThrow([blog setValuesForKeysWithDictionary:legacySettingsMap], @"Something is very very wrong");
+    XCTAssertThrows([blog valueForKey:@"settings"], @"Model 40 doesn't support Settings");
+    
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
+    
+    // Cleanup
+    XCTAssertNotNil(ps);
+    psc = nil;
+    
+    // Migrate to Model 41
+    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
+                                                           ofType:NSSQLiteStoreType
+                                                          toModel:model41
+                                                orderedModelNames:@[@"WordPress 40", @"WordPress 41"]
+                                                            error:&error];
+    if (!migrateResult) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertTrue(migrateResult);
+    
+    // Load a Model 41 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model41];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+    
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+    
+    XCTAssertNil(error, @"Error while loading the PSC for Model 41");
+    XCTAssertNotNil(ps);
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    request.predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogID];
+    
+    // Verify the Heavyweight Migration: Blog Entity
+    NSManagedObject *migratedBlog = [[context executeFetchRequest:request error:nil] firstObject];
+    XCTAssertNotNil(migratedBlog, @"Oops");
+    
+    
+    // Verify the Heavyweight Migration: BlogSettings Entity
+    XCTAssertNoThrow([migratedBlog valueForKey:@"settings"], @"Model 41 supports BlogSettings");
+    NSManagedObject *blogSettings = [migratedBlog valueForKey:@"settings"];
+ 
+    for (NSString *key in migratedSettingsMap) {
+        XCTAssertEqualObjects([blogSettings valueForKey:key], [migratedSettingsMap valueForKey:key], @"Oops");
+    }
+}
+
+
 #pragma mark - Private Helpers
 
 // Returns the URL for a model file with the given name in the given directory.
