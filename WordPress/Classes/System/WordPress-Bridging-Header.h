@@ -32,6 +32,7 @@
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
 
+#import "ReachabilityUtils.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderGapMarker.h"
 #import "ReaderPost.h"
@@ -72,4 +73,5 @@
 #import "WPTableViewCell.h"
 #import "WPTableViewHandler.h"
 #import "WPTableViewSectionHeaderFooterView.h"
+#import "WPUserAgent.h"
 #import "WPWebViewController.h"
