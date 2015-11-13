@@ -26,10 +26,10 @@ import Foundation
         
         api.POST(requestUrl,
             parameters: parameters,
-            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            success: { (operation: AFHTTPRequestOperation, response: AnyObject) -> Void in
                 success?()
             },
-            failure:{ (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+            failure:{ (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
                 failure?()
             })
     }
