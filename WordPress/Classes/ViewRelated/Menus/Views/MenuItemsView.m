@@ -1,6 +1,7 @@
 #import "MenuItemsView.h"
 #import "Menu.h"
 #import "WPStyleGuide.h"
+#import "MenuItemsActionableView.h"
 #import "MenuItemView.h"
 #import "MenusDesign.h"
 
@@ -40,7 +41,7 @@
 
 - (void)reloadItemViews
 {
-    for(MenuItemView *itemView in self.itemViews) {
+    for(MenuItemsActionableView *itemView in self.itemViews) {
         [self.stackView removeArrangedSubview:itemView];
         [itemView removeFromSuperview];
     }
@@ -51,9 +52,10 @@
     for(MenuItem *item in self.menu.items) {
                 
         MenuItemView *itemView = [[MenuItemView alloc] init];
-        // setup ordering to help with any drawing
-        lastItemView.nextItemView = itemView;
-        itemView.previousItemView = lastItemView;
+        // set up ordering to help with any drawing
+        itemView.item = item;
+        lastItemView.nextView = itemView;
+        itemView.previousView = lastItemView;
         itemView.indentationLevel = 1;
         
         NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:50];
