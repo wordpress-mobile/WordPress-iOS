@@ -11,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Fl-VR-s0a" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Fl-VR-s0a" customClass="CircularImageView" customModule="WordPressUI">
                     <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="P4e-GJ-OXI"/>

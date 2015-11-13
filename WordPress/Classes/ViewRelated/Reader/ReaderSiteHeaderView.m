@@ -2,6 +2,7 @@
 #import "ReaderPostAttributionView.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
+@import WordPressUI;
 
 static const CGFloat StandardMargin = 8.0;
 static const CGFloat BorderHeight = 1.0;

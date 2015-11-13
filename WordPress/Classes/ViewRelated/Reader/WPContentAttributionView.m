@@ -1,4 +1,5 @@
 #import "WPContentAttributionView.h"
+@import WordPressUI;
 
 const CGFloat WPContentAttributionViewAvatarSize = 32.0;
 const CGFloat WPContentAttributionLabelHeight = 18.0;

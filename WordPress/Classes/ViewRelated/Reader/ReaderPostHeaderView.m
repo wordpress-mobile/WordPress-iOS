@@ -1,5 +1,6 @@
 #import "ReaderPostHeaderView.h"
 #import "WordPress-Swift.h"
+@import WordPressUI;
 
 const CGFloat PostHeaderViewAvatarSize = 32.0;
 const CGFloat PostHeaderViewLabelHeight = 18.0;
