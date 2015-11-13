@@ -61,7 +61,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSDate *lastCommentsSync;
 @property (nonatomic, strong, readwrite) NSDate *lastStatsSync;
 @property (nonatomic, strong, readwrite) NSString *lastUpdateWarning;
-@property (nonatomic, assign, readwrite) BOOL geolocationEnabled;
 @property (nonatomic, assign, readwrite) BOOL visible;
 @property (nonatomic, weak, readwrite) NSNumber *isActivated;
 @property (nonatomic, strong, readwrite) NSDictionary *options;
@@ -85,6 +84,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSNumber *defaultCategoryID;
 @property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
 @property (nonatomic, strong, readwrite) NSNumber *privacy;
+@property (nonatomic, assign, readwrite) NSNumber *geolocationEnabled;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 

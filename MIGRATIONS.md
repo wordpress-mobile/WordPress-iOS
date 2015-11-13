@@ -12,6 +12,7 @@ Changes to the data model:
 - Migrated the attribute `Blog.blogTagline` over to `BlogSettings.tagline`
 - Migrated the attribute `Blog.defaultCategoryID` over to `BlogSettings.defaultCategoryID`
 - Migrated the attribute `Blog.defaultPostFormat` over to `BlogSettings.defaultPostFormat`
+- Migrated the attribute `Blog.geolocationEnabled` over to `BlogSettings.geolocationEnabled`
 - Migrated the attribute `Blog.privacy` over to `BlogSettings.privacy`
 - Migrated the attribute `Blog.relatedPostsAllowed` over to `BlogSettings.relatedPostsAllowed`
 - Migrated the attribute `Blog.relatedPostsEnabled` over to `BlogSettings.relatedPostsEnabled`
