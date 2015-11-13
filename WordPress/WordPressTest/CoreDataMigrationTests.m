@@ -124,6 +124,8 @@
 
     // Load Model 19
     NSManagedObjectModel *model = [[NSManagedObjectModel alloc] initWithContentsOfURL:model19Url];
+    [self cleanModelObjectClassnames:model];
+    
     NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
     
     NSDictionary *options = @{
@@ -171,6 +173,8 @@
 
     // Migrate to Model 31.
     model = [[NSManagedObjectModel alloc] initWithContentsOfURL:model31Url];
+    [self cleanModelObjectClassnames:model];
+    
     BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
                                                            ofType:NSSQLiteStoreType
                                                           toModel:model
@@ -223,6 +227,8 @@
     
     // Load a Model 27 Stack
     NSManagedObjectModel *model27 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model27Url];
+    [self cleanModelObjectClassnames:model27];
+
     NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model27];
     
     NSDictionary *options = @{
@@ -267,6 +273,8 @@
     
     // Migrate to Model 28
     NSManagedObjectModel *model28 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model28Url];
+    [self cleanModelObjectClassnames:model28];
+    
     BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
                                                            ofType:NSSQLiteStoreType
                                                           toModel:model28
@@ -520,6 +528,7 @@
     NSString *blogTagline                   = @"Jarvis is my Copilot";
     NSNumber *defaultCategoryID             = @(42);
     NSString *defaultPostFormat             = @"some-format";
+    NSNumber *geolocationEnabled            = @(true);
     NSNumber *privacy                       = @(1);
     NSNumber *relatedPostsAllowed           = @(true);
     NSNumber *relatedPostsEnabled           = @(false);
@@ -539,6 +548,7 @@
         @"relatedPostsEnabled"          : relatedPostsEnabled,
         @"relatedPostsShowHeadline"     : relatedPostsShowHeadline,
         @"relatedPostsShowThumbnails"   : relatedPostsShowThumbnails,
+        @"geolocationEnabled"           : geolocationEnabled,
         @"url"                          : url,
         @"xmlrpc"                       : xmlrpc
     };
@@ -548,6 +558,7 @@
         @"tagline"                      : blogTagline,
         @"defaultCategoryID"            : defaultCategoryID,
         @"defaultPostFormat"            : defaultPostFormat,
+        @"geolocationEnabled"           : geolocationEnabled,
         @"privacy"                      : privacy,
         @"relatedPostsAllowed"          : relatedPostsAllowed,
         @"relatedPostsEnabled"          : relatedPostsEnabled,

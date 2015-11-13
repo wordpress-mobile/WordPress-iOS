@@ -46,7 +46,6 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic lastPagesSync;
 @dynamic lastCommentsSync;
 @dynamic lastUpdateWarning;
-@dynamic geolocationEnabled;
 @dynamic options;
 @dynamic postFormats;
 @dynamic isActivated;
@@ -88,25 +87,6 @@ NSString * const PostFormatStandard = @"standard";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark -
-
-- (BOOL)geolocationEnabled
-{
-    BOOL tmpValue;
-
-    [self willAccessValueForKey:@"geolocationEnabled"];
-    tmpValue = [[self primitiveValueForKey:@"geolocationEnabled"] boolValue];
-    [self didAccessValueForKey:@"geolocationEnabled"];
-
-    return tmpValue;
-}
-
-- (void)setGeolocationEnabled:(BOOL)value
-{
-    [self willChangeValueForKey:@"geolocationEnabled"];
-    [self setPrimitiveValue:[NSNumber numberWithBool:value] forKey:@"geolocationEnabled"];
-    [self didChangeValueForKey:@"geolocationEnabled"];
-}
 
 #pragma mark -
 #pragma mark Custom methods
@@ -612,52 +592,74 @@ NSString * const PostFormatStandard = @"standard";
 
 - (NSString *)blogName
 {
+    NSParameterAssert(self.settings);
     return self.settings.name;
 }
 
 - (void)setBlogName:(NSString *)blogName
 {
+    NSParameterAssert(self.settings);
     self.settings.name = blogName;
 }
 
 - (NSString *)blogTagline
 {
+    NSParameterAssert(self.settings);
     return self.settings.tagline;
 }
 
 - (void)setBlogTagline:(NSString *)blogTagline
 {
+    NSParameterAssert(self.settings);
     self.settings.tagline = blogTagline;
 }
 
 - (NSNumber *)defaultCategoryID
 {
+    NSParameterAssert(self.settings);
     return self.settings.defaultCategoryID;
 }
 
 - (void)setDefaultCategoryID:(NSNumber *)defaultCategoryID
 {
+    NSParameterAssert(self.settings);
     self.settings.defaultCategoryID = defaultCategoryID;
 }
 
 - (NSString *)defaultPostFormat
 {
+    NSParameterAssert(self.settings);
     return self.settings.defaultPostFormat;
 }
 
 - (void)setDefaultPostFormat:(NSString *)defaultPostFormat
 {
+    NSParameterAssert(self.settings);
     self.settings.defaultPostFormat = defaultPostFormat;
 }
 
 - (NSNumber *)privacy
 {
+    NSParameterAssert(self.settings);
     return self.settings.privacy;
 }
 
 - (void)setPrivacy:(NSNumber *)privacy
 {
+    NSParameterAssert(self.settings);
     self.settings.privacy = privacy;
+}
+
+- (NSNumber *)geolocationEnabled
+{
+    NSParameterAssert(self.settings);
+    return self.settings.geolocationEnabled;
+}
+
+- (void)setGeolocationEnabled:(NSNumber *)geolocationEnabled
+{
+    NSParameterAssert(self.settings);
+    self.settings.geolocationEnabled = geolocationEnabled;
 }
 
 @end
