@@ -14,23 +14,20 @@ extension UIImageView
             return
         }
 
-        let request                     = NSMutableURLRequest(URL: url!)
+        let request = NSMutableURLRequest(URL: unwrappedUrl)
         request.HTTPShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
-
+        
         setImageWithURLRequest(request,
             placeholderImage: placeholderImage,
-            success: {
-                [weak self]
-                (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
+            success: { [weak self]
+                (request: NSURLRequest, response: NSHTTPURLResponse?, image: UIImage) -> Void in
                 
-                if let unwrappedImage = image {
-                    self?.image = unwrappedImage
-                    success?(unwrappedImage)
-                }
+                self?.image = image
+                success?(image)
             },
             failure: {
-                (request: NSURLRequest!, response: NSHTTPURLResponse!, error: NSError!) -> Void in
+                (request: NSURLRequest, response: NSHTTPURLResponse?, error: NSError) -> Void in
                 failure?(error)
             }
         )
