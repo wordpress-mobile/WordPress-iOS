@@ -33,19 +33,15 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     return self;
 }
 
-#pragma mark - instance
-
-- (UIImage *)templatedIconImageNamed:(NSString *)imageName
-{
-    return [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-}
-
-#pragma mark - overrides
-
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     [self setupStyling];
+}
+
+- (UIImage *)templatedIconImageNamed:(NSString *)imageName
+{
+    return [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 }
 
 - (void)setupStyling

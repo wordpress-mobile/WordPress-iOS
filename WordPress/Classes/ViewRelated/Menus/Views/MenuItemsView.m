@@ -1,5 +1,6 @@
 #import "MenuItemsView.h"
 #import "Menu.h"
+#import "MenuItem.h"
 #import "WPStyleGuide.h"
 #import "MenuItemsActionableView.h"
 #import "MenuItemView.h"
@@ -48,7 +49,6 @@
     
     self.itemViews = [NSMutableArray array];
     MenuItemView *lastItemView = nil;
-    int i = 0;
     for(MenuItem *item in self.menu.items) {
                 
         MenuItemView *itemView = [[MenuItemView alloc] init];
@@ -57,8 +57,15 @@
         lastItemView.nextView = itemView;
         itemView.previousView = lastItemView;
         itemView.indentationLevel = 1;
+
+        MenuItem *parentItem = item.parent;
+        while (parentItem) {
+            itemView.indentationLevel++;
+            parentItem = parentItem.parent;
+        }
         
-        NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:50];
+        NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:55];
+        heightConstraint.priority = UILayoutPriorityDefaultHigh;
         heightConstraint.active = YES;
         
         [self.itemViews addObject:itemView];
@@ -66,7 +73,6 @@
         
         [itemView.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor].active = YES;
         lastItemView = itemView;
-        i++;
     }
 }
 
