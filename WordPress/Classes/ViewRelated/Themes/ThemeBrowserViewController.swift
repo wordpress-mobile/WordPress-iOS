@@ -118,7 +118,7 @@ public protocol ThemePresenter: class {
     private var sections: [Section]!
     
     private func reloadThemes() {
-        collectionView?.reloadSections(NSIndexSet(index: sections.count - 1))
+        collectionView?.reloadData()
     }
     private func themeAtIndex(index: Int) -> Theme? {
         let indexPath = NSIndexPath(forRow: index, inSection: 0)
@@ -345,9 +345,7 @@ public protocol ThemePresenter: class {
         return Styles.cellSizeForFrameWidth(parentViewWidth)
     }
     
-    public func collectionView(collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForFooterInSection section: Int) -> CGSize {
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
             guard sections[section] == .Themes && syncHelper.isLoadingMore else {
                 return CGSize.zero
             }
@@ -355,6 +353,15 @@ public protocol ThemePresenter: class {
             return CGSize(width: 0, height: Styles.footerHeight)
     }
     
+    public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+        switch sections.count {
+        case 1:
+            return Styles.externalMargins
+        default:
+            return Styles.internalMargins
+        }
+    }
+
     // MARK: - Search support
     
     @IBAction func didTapSearchButton(sender: UIButton) {
