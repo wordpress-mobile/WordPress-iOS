@@ -797,9 +797,11 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     // Update depth and hierarchy
     [self setHierarchAndDepthOnComment:comment withParentComment:parentComment];
 
-    [self.managedObjectContext performBlock:^{
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    }];
+    [self.managedObjectContext obtainPermanentIDsForObjects:@[comment] error:&error];
+    if (error) {
+        DDLogError(@"%@ error obtaining permanent ID for a hierarchical comment %@: %@", NSStringFromSelector(_cmd), comment, error);
+    }
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     return comment;
 }
