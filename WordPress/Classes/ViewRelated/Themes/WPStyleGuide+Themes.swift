@@ -114,6 +114,9 @@ extension WPStyleGuide
         }
 
         public static let footerHeight: CGFloat = 50
+
+        public static let externalMargins = UIEdgeInsets(top: rowMargin, left: columnMargin, bottom: rowMargin, right: columnMargin)
+        public static let internalMargins = UIEdgeInsets(top: 0, left:columnMargin, bottom: 0, right: columnMargin)
     }
 
 }
