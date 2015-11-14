@@ -28,12 +28,14 @@
         }
         {
             UIButton *button = [self newButtonIconViewWithType:MenuItemsActionableIconAdd];
+            [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             [self.stackView addArrangedSubview:button];
             self.addButton = button;
         }
         {
             MenusActionButton *button = [[MenusActionButton alloc] init];
             button.backgroundDrawColor = [UIColor whiteColor];
+            [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             [button setTitleColor:[WPStyleGuide darkGrey] forState:UIControlStateNormal];
             [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
             [button.widthAnchor constraintLessThanOrEqualToConstant:63].active = YES;
@@ -56,9 +58,40 @@
     }
 }
 
+- (void)setShowsEditingButtonOptions:(BOOL)showsEditingButtonOptions
+{
+    if(_showsEditingButtonOptions != showsEditingButtonOptions) {
+        _showsEditingButtonOptions = showsEditingButtonOptions;
+    }
+    
+    self.editButton.hidden = !showsEditingButtonOptions;
+    self.addButton.hidden = !showsEditingButtonOptions;
+}
+
+- (void)setShowsCancelButtonOption:(BOOL)showsCancelButtonOption
+{
+    if(_showsCancelButtonOption != showsCancelButtonOption) {
+        _showsCancelButtonOption = showsCancelButtonOption;
+    }
+    
+    self.cancelButton.hidden = !showsCancelButtonOption;
+}
+
 - (UIColor *)highlightedColor
 {
     return [UIColor colorWithWhite:0.985 alpha:1.0];
+}
+
+#pragma mark - buttons
+
+- (void)addButtonPressed
+{
+    [self.delegate itemViewAddButtonPressed:self];
+}
+
+- (void)cancelButtonPressed
+{
+    [self.delegate itemViewCancelButtonPressed:self];
 }
 
 @end

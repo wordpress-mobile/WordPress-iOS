@@ -46,6 +46,7 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.backgroundColor = [WPStyleGuide lightGrey];
+    self.contentBackgroundColor = [UIColor whiteColor];
 
     MenuItemDrawingView *contentView = [[MenuItemDrawingView alloc] init];
     contentView.drawDelegate = self;
@@ -141,6 +142,14 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
 
 #pragma mark - instance
 
+- (void)setContentBackgroundColor:(UIColor *)contentBackgroundColor
+{
+    if(_contentBackgroundColor != contentBackgroundColor) {
+        _contentBackgroundColor = [contentBackgroundColor copy];
+        [self setNeedsDisplay];
+    }
+}
+
 - (void)setIndentationLevel:(NSUInteger)indentationLevel
 {
     if(_indentationLevel != indentationLevel) {
@@ -222,7 +231,7 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
     if(self.drawsHighlighted) {
         [[self highlightedColor] set];
     }else {
-        [[UIColor whiteColor] set];
+        [self.contentBackgroundColor set];
     }
     
     CGContextFillRect(context, rect);
