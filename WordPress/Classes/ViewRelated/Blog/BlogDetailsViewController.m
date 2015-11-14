@@ -23,7 +23,13 @@ const NSInteger BlogDetailsRowStats = 2;
 const NSInteger BlogDetailsRowBlogPosts = 0;
 const NSInteger BlogDetailsRowPages = 1;
 const NSInteger BlogDetailsRowComments = 2;
+#ifdef WP_PEOPLE_ENABLED
+const NSInteger BlogDetailsRowPeople = 0;
+const NSInteger BlogDetailsRowEditSite = 1;
+#else
+const NSInteger BlogDetailsRowPeople = -1;
 const NSInteger BlogDetailsRowEditSite = 0;
+#endif
 const NSInteger BlogDetailsRowThemes = 0;
 
 typedef NS_ENUM(NSInteger, TableSectionContentType) {
@@ -43,7 +49,11 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 NSInteger const BlogDetailsRowCountForSectionGeneralType = 3;
 NSInteger const BlogDetailsRowCountForSectionPublishType = 3;
 NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
+#ifdef WP_PEOPLE_ENABLED
+NSInteger const BlogDetailsRowCountForSectionConfigurationType = 2;
+#else
 NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
+#endif
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate>
 
@@ -289,9 +299,19 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
             cell.imageView.image = [UIImage imageNamed:@"icon-menu-theme"];
             break;
         case TableViewSectionConfigurationType:
-            cell.textLabel.text = NSLocalizedString(@"Settings", nil);
-            cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
-            break;
+            switch (indexPath.row) {
+                case BlogDetailsRowPeople:
+                    cell.textLabel.text = NSLocalizedString(@"People", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"icon-menu-people"];
+                    break;
+                case BlogDetailsRowEditSite:
+                    cell.textLabel.text = NSLocalizedString(@"Settings", nil);
+                    cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
+                    break;
+
+                default:
+                    break;
+            }
     }
 }
 
@@ -356,6 +376,9 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
             break;
         case TableViewSectionConfigurationType:
             switch (indexPath.row) {
+                case BlogDetailsRowPeople:
+                    [self showPeopleForBlog:self.blog];
+                    break;
                 case BlogDetailsRowEditSite:
                     [self showSettingsForBlog:self.blog];
                     break;
@@ -434,6 +457,14 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 {
     [WPAnalytics track:WPAnalyticsStatOpenedPages];
     PageListViewController *controller = [PageListViewController controllerWithBlog:blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showPeopleForBlog:(Blog *)blog
+{
+    // TODO(@koke, 2015-11-02): add analytics
+    PeopleViewController *controller = [[UIStoryboard storyboardWithName:@"People" bundle:nil] instantiateInitialViewController];
+    controller.blog = blog;
     [self.navigationController pushViewController:controller animated:YES];
 }
 

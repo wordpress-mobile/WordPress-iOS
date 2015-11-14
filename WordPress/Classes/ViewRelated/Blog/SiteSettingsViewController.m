@@ -25,6 +25,8 @@
 #import "PostSettingsSelectionViewController.h"
 #import "BlogSiteVisibilityHelper.h"
 #import "RelatedPostsSettingsViewController.h"
+#import "WordPress-Swift.h"
+
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -55,12 +57,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionRemoveSite,
 };
 
-NS_ENUM(NSInteger, SiteSettinsAlertTag) {
-    SiteSettinsAlertTagSiteRemoval = 201,
-};
 
-@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate,
-UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate>
+@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *tableSections;
 #pragma mark - General Section
@@ -76,7 +74,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
-
+#pragma mark - Removal Section
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 
 @property (nonatomic, strong) Blog *blog;
@@ -85,10 +83,6 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, assign) BOOL geolocationEnabled;
-@property (nonatomic, assign) BOOL isSiteDotCom;
-
-@property (nonatomic, assign) BOOL isKeyboardVisible;
-
 @end
 
 @implementation SiteSettingsViewController
@@ -96,6 +90,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 - (instancetype)initWithBlog:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _blog = blog;
@@ -118,10 +113,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         self.tableSections = @[@(SiteSettingsSectionGeneral)];
     } else {
         self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount)];
-    }    
-    if (self.blog.isAdmin) {
-        self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionWriting)];
     }
+    self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionWriting)];
     if ([self.blog supports:BlogFeatureRemovable]) {
         self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
     }
@@ -178,6 +171,10 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             return SiteSettingsAccountCount;
         break;
         case SiteSettingsSectionWriting: {
+            if (!self.blog.isAdmin) {
+                // If we're not admin, we just want to show the geotagging cell
+                return 1;
+            }
             NSInteger rowsToHide = 0;
             if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
                 //  NOTE: Sergio Estevao (2015-09-23): Hides the related post for self-hosted sites not in jetpack
@@ -405,13 +402,13 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:{
             return [self tableView:tableView cellForGeneralSettingsInRow:indexPath.row];
-        }break;
+        } break;
         case SiteSettingsSectionAccount: {
             return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
-        }break;
+        } break;
         case SiteSettingsSectionWriting: {
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
-        }break;
+        } break;
         case SiteSettingsSectionRemoveSite: {
             if (self.removeSiteCell) {
                 return self.removeSiteCell;
@@ -420,7 +417,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             [WPStyleGuide configureTableViewDestructiveActionCell:self.removeSiteCell];
             self.removeSiteCell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
             return self.removeSiteCell;
-        }break;
+        } break;
     }
 
     // We shouldn't reach this point, but return an empty cell just in case
@@ -434,7 +431,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     NSInteger settingsSection = [self.tableSections[section] intValue];
     NSString *title = [self titleForHeaderInSection:settingsSection];
     if (title.length == 0) {
-        return [[UIView alloc] initWithFrame:CGRectZero];
+        return [UIView new];
     }
     
     WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
@@ -481,7 +478,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     NSArray *hints = @[
                        NSLocalizedString(@"Your site is visible to everyone, and it may be indexed by search engines.",
                                          @"Hint for users when public privacy setting is set"),
-                       NSLocalizedString(@"Your site is visible to everyone, but asks to search engines to not index your site.",
+                       NSLocalizedString(@"Your site is visible to everyone, but asks search engines not to index your site.",
                                          @"Hint for users when hidden privacy setting is set"),
                        NSLocalizedString(@"Your site is only visible to you and users you approve.",
                                          @"Hint for users when private privacy setting is set"),
@@ -675,6 +672,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             [self tableView:tableView didSelectInWritingSectionRow:indexPath.row];
             break;
         case SiteSettingsSectionRemoveSite:{
+            [tableView deselectSelectedRowWithAnimation:YES];
             [self showRemoveSiteForBlog:self.blog];
         }break;
     }
@@ -848,67 +846,41 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     }
 }
 
-- (BOOL)canEditUsernameAndURL
-{
-    return NO;
-}
 
 #pragma mark - Remove Site
 
 - (void)showRemoveSiteForBlog:(Blog *)blog
 {
+    NSParameterAssert(blog);
+    
     NSString *model = [[UIDevice currentDevice] localizedModel];
-    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data will be removed from your %@.", @"Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch"), model];
+    NSString *message = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data will be removed from your %@.", @"Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch"), model];
     NSString *cancelTitle = NSLocalizedString(@"Cancel", nil);
     NSString *destructiveTitle = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
-    if (IS_IPAD) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Remove Site", @"Remove site confirmation alert title")
-                                                        message:title
-                                                       delegate:self
-                                              cancelButtonTitle:cancelTitle
-                                              otherButtonTitles:destructiveTitle, nil];
-        alert.tag = SiteSettinsAlertTagSiteRemoval;
-        [alert show];
-    } else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
-                                                                 delegate:self
-                                                        cancelButtonTitle:cancelTitle
-                                                   destructiveButtonTitle:destructiveTitle
-                                                        otherButtonTitles:nil];
-        actionSheet.tag = SiteSettinsAlertTagSiteRemoval;
-        [actionSheet showInView:self.view];
-    }
+    
+    UIAlertControllerStyle alertStyle = [UIDevice isPad] ? UIAlertControllerStyleAlert : UIAlertControllerStyleActionSheet;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:message
+                                                                      preferredStyle:alertStyle];
+    
+    [alertController addCancelActionWithTitle:cancelTitle handler:nil];
+    [alertController addDestructiveActionWithTitle:destructiveTitle handler:^(UIAlertAction *action) {
+        [self confirmRemoveSite:blog];
+    }];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)confirmRemoveSite
+- (void)confirmRemoveSite:(Blog *)blog
 {
+    NSParameterAssert(blog);
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService removeBlog:self.blog];
+    [blogService removeBlog:blog];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
-#pragma mark - Action sheet delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (actionSheet.tag == SiteSettinsAlertTagSiteRemoval) {
-        if (buttonIndex == actionSheet.destructiveButtonIndex) {
-            [self confirmRemoveSite];
-        }
-    }
-}
-
-#pragma mark - Alert view delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (alertView.tag == SiteSettinsAlertTagSiteRemoval) {
-        if (buttonIndex == alertView.firstOtherButtonIndex) {
-            [self confirmRemoveSite];
-        }
-    }
-}
 
 #pragma mark - PostCategoriesViewControllerDelegate
 
