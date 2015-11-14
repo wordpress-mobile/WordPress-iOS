@@ -69,6 +69,12 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     [self setNeedsDisplay];
 }
 
+- (void)setHidden:(BOOL)hidden
+{
+    [super setHidden:hidden];
+    [self setNeedsDisplay];
+}
+
 - (void)drawRect:(CGRect)rect
 {
     [super drawRect:rect];
