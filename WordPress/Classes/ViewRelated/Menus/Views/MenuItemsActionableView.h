@@ -11,6 +11,7 @@ typedef NS_ENUM(NSUInteger) {
 
 @property (nonatomic, weak) MenuItemsActionableView *previousView;
 @property (nonatomic, weak) MenuItemsActionableView *nextView;
+@property (nonatomic, copy) UIColor *contentBackgroundColor;
 @property (nonatomic, assign) NSUInteger indentationLevel;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UILabel *textLabel;
