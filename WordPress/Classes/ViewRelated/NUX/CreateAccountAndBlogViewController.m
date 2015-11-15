@@ -151,6 +151,10 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range
                                                        replacementString:(NSString *)string
 {
+    if ([string isEqualToString:@" "] && ![textField isEqual:_passwordField]) { // Disallow spaces in every field except password
+        return NO;
+    }
+    
     NSArray *fields = @[_emailField, _usernameField, _passwordField, _siteAddressField];
 
     NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
