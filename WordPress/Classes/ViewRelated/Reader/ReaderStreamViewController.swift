@@ -108,6 +108,10 @@ import Foundation
 
     // MARK: - LifeCycle Methods
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         tableViewController = segue.destinationViewController as? UITableViewController
     }
@@ -153,7 +157,8 @@ import Foundation
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
-        if needsRefreshCachedCellHeightsBeforeLayout {
+        // NOTE: For why isViewLoaded is checked here see: https://github.com/wordpress-mobile/WordPress-iOS/pull/4421
+        if isViewLoaded() && needsRefreshCachedCellHeightsBeforeLayout {
             needsRefreshCachedCellHeightsBeforeLayout = false
 
             let width = view.frame.width
@@ -1009,9 +1014,23 @@ import Foundation
         if let context = displayContext {
             return context
         }
+
+        let mainContext = ContextManager.sharedInstance().mainContext
         displayContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        displayContext!.parentContext = ContextManager.sharedInstance().mainContext
+        displayContext!.parentContext = mainContext
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleContextDidSaveNotification:", name: NSManagedObjectContextDidSaveNotification, object: mainContext)
+
         return displayContext!
+    }
+
+    func handleContextDidSaveNotification(notification:NSNotification) {
+        // We want to ignore these notifications when our view has focus so as not
+        // to conflict with the list refresh mechanism. 
+        if view.window != nil {
+            return
+        }
+        displayContext?.mergeChangesFromContextDidSaveNotification(notification)
     }
 
     public func fetchRequest() -> NSFetchRequest? {

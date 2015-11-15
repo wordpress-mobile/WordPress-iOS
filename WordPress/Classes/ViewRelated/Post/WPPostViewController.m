@@ -3,7 +3,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Editor/WPEditorField.h>
 #import <WordPress-iOS-Editor/WPEditorView.h>
-#import <WordPress-iOS-Editor/WPEditorToolbarView.h>
+#import <WordPress-iOS-Editor/WPEditorFormatbarView.h>
 #import <WordPress-iOS-Shared/NSString+Util.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
@@ -91,7 +91,7 @@ static NSDictionary *EnabledButtonBarStyle;
 static void *ProgressObserverContext = &ProgressObserverContext;
 
 @interface WPEditorViewController ()
-@property (nonatomic, strong, readwrite) WPEditorToolbarView *toolbarView;
+@property (nonatomic, strong, readwrite) WPEditorFormatbarView *toolbarView;
 @end
 
 @interface WPPostViewController () <
