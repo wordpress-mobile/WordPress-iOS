@@ -309,6 +309,12 @@ EditImageDetailsViewControllerDelegate
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification
                                                object:nil];
+
+    // Hide the Media button if the user doesn't have the upload_files capability
+    // Show it otherwise (important for the case when the user switches from a site
+    // without the capability to a site with the capability).
+    UIBarButtonItem *mediaButton = [self.toolbarView.items objectAtIndex:0];
+    mediaButton.customView.hidden = !self.post.blog.canUploadFiles;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -2051,26 +2057,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    if (self.post.blog.canUploadFiles) {
-        [self showMediaPicker];
-        return;
-    }
-
-    // first button of the toolbar
-    UIBarButtonItem *mediaButton = [editorController.toolbarView.items objectAtIndex:0];
-    UIView *buttonView = mediaButton.customView;
-    CGRect buttonFrame = [self.view convertRect:buttonView.frame
-                                       fromView:editorController.toolbarView];
-    CGRect targetFrame = CGRectMake(buttonFrame.origin.x,
-                                    buttonFrame.origin.y,
-                                    buttonFrame.size.width,
-                                    0.0);
-    NSString *tooltipText = NSLocalizedString(@"You are not allowed to add media on this blog",
-                                              @"Tooltip displayed when people have the contributor role and hence are not allowed to add media to the post");
-    [WPTooltip displayTooltipInView:self.view
-                          fromFrame:targetFrame
-                           withText:tooltipText
-                          direction:WPTooltipDirectionUp];
+    [self showMediaPicker];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
