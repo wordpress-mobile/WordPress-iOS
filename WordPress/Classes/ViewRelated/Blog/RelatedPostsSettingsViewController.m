@@ -74,7 +74,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if ([self.settings.relatedPostsEnabled boolValue]) {
+    if (self.settings.relatedPostsEnabled) {
         return RelatedPostsSettingsSectionCount;
     } else {
         return RelatedPostsSettingsSectionCount-1;
@@ -85,7 +85,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 {
     switch (section) {
         case RelatedPostsSettingsSectionOptions:{
-            if ([self.settings.relatedPostsEnabled boolValue]) {
+            if (self.settings.relatedPostsEnabled) {
                 return RelatedPostsSettingsOptionsCount;
             } else {
                 return 1;
@@ -216,17 +216,17 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 {
     switch (row) {
         case RelatedPostsSettingsOptionsEnabled:{
-            self.relatedPostsEnabledCell.switchValue = [self.settings.relatedPostsEnabled boolValue];
+            self.relatedPostsEnabledCell.switchValue = self.settings.relatedPostsEnabled;
             return self.relatedPostsEnabledCell;
         }
             break;
         case RelatedPostsSettingsOptionsShowHeader:{
-            self.relatedPostsShowHeaderCell.switchValue = [self.settings.relatedPostsShowHeadline boolValue];
+            self.relatedPostsShowHeaderCell.switchValue = self.settings.relatedPostsShowHeadline;
             return self.relatedPostsShowHeaderCell;
         }
             break;
         case RelatedPostsSettingsOptionsShowThumbnails:{
-            self.relatedPostsShowThumbnailsCell.switchValue = [self.settings.relatedPostsShowThumbnails boolValue];
+            self.relatedPostsShowThumbnailsCell.switchValue = self.settings.relatedPostsShowThumbnails;
             return self.relatedPostsShowThumbnailsCell;
         }
             break;
@@ -281,8 +281,8 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
         _relatedPostsPreviewTableViewCell = [[RelatedPostsPreviewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                                     reuseIdentifier:nil];
     }
-    _relatedPostsPreviewTableViewCell.enabledImages = [self.settings.relatedPostsShowThumbnails boolValue];
-    _relatedPostsPreviewTableViewCell.enabledHeader = [self.settings.relatedPostsShowHeadline boolValue];
+    _relatedPostsPreviewTableViewCell.enabledImages = self.settings.relatedPostsShowThumbnails;
+    _relatedPostsPreviewTableViewCell.enabledHeader = self.settings.relatedPostsShowHeadline;
     
     return _relatedPostsPreviewTableViewCell;
 
@@ -292,9 +292,9 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 
 - (IBAction)updateRelatedPostsSettings:(id)sender
 {
-    self.settings.relatedPostsEnabled = @(self.relatedPostsEnabledCell.switchValue);
-    self.settings.relatedPostsShowHeadline = @(self.relatedPostsShowHeaderCell.switchValue);
-    self.settings.relatedPostsShowThumbnails = @(self.relatedPostsShowThumbnailsCell.switchValue);
+    self.settings.relatedPostsEnabled = self.relatedPostsEnabledCell.switchValue;
+    self.settings.relatedPostsShowHeadline = self.relatedPostsShowHeaderCell.switchValue;
+    self.settings.relatedPostsShowThumbnails = self.relatedPostsShowThumbnailsCell.switchValue;
     
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService updateSettingsForBlog:self.blog success:^{

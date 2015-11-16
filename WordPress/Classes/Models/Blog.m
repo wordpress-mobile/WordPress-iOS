@@ -269,12 +269,12 @@ NSString * const PostFormatStandard = @"standard";
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isHostedAtWPcom && [self.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
+    return (self.isHostedAtWPcom && self.privacy == SiteVisibilityPrivate);
 }
 
 - (SiteVisibility)siteVisibility
 {
-    switch ([self.privacy integerValue]) {
+    switch (self.privacy) {
         case (SiteVisibilityHidden):
             return SiteVisibilityHidden;
             break;
@@ -294,13 +294,13 @@ NSString * const PostFormatStandard = @"standard";
 {
     switch (siteVisibility) {
         case (SiteVisibilityHidden):
-            self.privacy = @(SiteVisibilityHidden);
+            self.privacy = SiteVisibilityHidden;
             break;
         case (SiteVisibilityPublic):
-            self.privacy = @(SiteVisibilityPublic);
+            self.privacy = SiteVisibilityPublic;
             break;
         case (SiteVisibilityPrivate):
-            self.privacy = @(SiteVisibilityPrivate);
+            self.privacy = SiteVisibilityPrivate;
             break;
         default:
             NSParameterAssert(siteVisibility >= SiteVisibilityPrivate && siteVisibility <= SiteVisibilityPublic);
@@ -313,7 +313,7 @@ NSString * const PostFormatStandard = @"standard";
     if (!self.privacy) {
         [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
     }
-    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.privacy integerValue]];
+    return [BlogSiteVisibilityHelper textForSiteVisibility:self.privacy];
 }
 
 
@@ -638,25 +638,25 @@ NSString * const PostFormatStandard = @"standard";
     self.settings.defaultPostFormat = defaultPostFormat;
 }
 
-- (NSNumber *)privacy
+- (NSInteger)privacy
 {
     NSParameterAssert(self.settings);
     return self.settings.privacy;
 }
 
-- (void)setPrivacy:(NSNumber *)privacy
+- (void)setPrivacy:(NSInteger)privacy
 {
     NSParameterAssert(self.settings);
     self.settings.privacy = privacy;
 }
 
-- (NSNumber *)geolocationEnabled
+- (BOOL)geolocationEnabled
 {
     NSParameterAssert(self.settings);
     return self.settings.geolocationEnabled;
 }
 
-- (void)setGeolocationEnabled:(NSNumber *)geolocationEnabled
+- (void)setGeolocationEnabled:(BOOL)geolocationEnabled
 {
     NSParameterAssert(self.settings);
     self.settings.geolocationEnabled = geolocationEnabled;
