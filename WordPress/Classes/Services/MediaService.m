@@ -68,7 +68,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         mediaType = MediaTypeVideo;
     }
 
-    geoLocationEnabled = [post.blog.geolocationEnabled boolValue];
+    geoLocationEnabled = post.blog.geolocationEnabled;
 
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
     

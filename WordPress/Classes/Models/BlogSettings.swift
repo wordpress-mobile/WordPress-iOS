@@ -31,7 +31,7 @@ public class BlogSettings : NSManagedObject
     /**
      *  @details Stores the Blog's Privacy Preferences Settings
      */
-    @NSManaged var privacy : NSNumber?
+    @NSManaged var privacy : Int
 
     
     
@@ -54,7 +54,7 @@ public class BlogSettings : NSManagedObject
     /**
     *  @details Represents whether comments are allowed, or not.
     */
-    @NSManaged var commentsAllowed : NSNumber?
+    @NSManaged var commentsAllowed : Bool
     
     /**
      *  @details Contains a list of words, space separated, that would cause a comment to be automatically
@@ -66,24 +66,24 @@ public class BlogSettings : NSManagedObject
      *  @details If true, comments will be automatically closed after the number of days, specified
      *           by `commentsCloseAutomaticallyAfterDays`.
      */
-    @NSManaged var commentsCloseAutomatically : NSNumber?
+    @NSManaged var commentsCloseAutomatically : Bool
     
     /**
      *  @details Represents the number of days comments will be enabled, granted that the
      *           `commentsCloseAutomatically` property is set to true.
      */
-    @NSManaged var commentsCloseAutomaticallyAfterDays : NSNumber?
+    @NSManaged var commentsCloseAutomaticallyAfterDays : Int
     
     /**
      *  @details When enabled, comments from known users will be whitelisted.
      */
-    @NSManaged var commentsFromKnownUsersWhitelisted : NSNumber?
+    @NSManaged var commentsFromKnownUsersWhitelisted : Bool
     
     /**
      *  @details Indicates the maximum number of links allowed per comment. When a new comment exceeds this
      *           number, it'll be held in queue for moderation.
      */
-    @NSManaged var commentsMaximumLinks : NSNumber?
+    @NSManaged var commentsMaximumLinks : Int
     
     /**
      *  @details Contains a list of words, space separated, that cause a comment to require moderation.
@@ -93,28 +93,28 @@ public class BlogSettings : NSManagedObject
     /**
      *  @details If true, comment pagination will be enabled.
      */
-    @NSManaged var commentsPagingEnabled : NSNumber?
+    @NSManaged var commentsPagingEnabled : Bool
     
     /**
      *  @details Specifies the number of comments per page. This will be used only if the property
      *           `commentsPagingEnabled` is set to true.
      */
-    @NSManaged var commentsPageSize : NSNumber?
+    @NSManaged var commentsPageSize : Int
     
     /**
      *  @details When enabled, new comments will require Manual Moderation, before showing up.
      */
-    @NSManaged var commentsRequireManualModeration : NSNumber?
+    @NSManaged var commentsRequireManualModeration : Bool
     
     /**
      *  @details If set to true, commenters will be required to enter their name and email.
      */
-    @NSManaged var commentsRequireNameAndEmail : NSNumber?
+    @NSManaged var commentsRequireNameAndEmail : Bool
     
     /**
      *  @details Specifies whether commenters should be registered or not.
      */
-    @NSManaged var commentsRequireRegistration : NSNumber?
+    @NSManaged var commentsRequireRegistration : Bool
     
     /**
      *  @details Indicates the sorting order of the comments. Ascending / Descending, based on the date.
@@ -124,28 +124,28 @@ public class BlogSettings : NSManagedObject
     /**
      *  @details Indicates the number of levels allowed per comment.
      */
-    @NSManaged var commentsThreadingDepth : NSNumber?
+    @NSManaged var commentsThreadingDepth : Int
     
     /**
      *  @details When enabled, comment threading will be supported.
      */
-    @NSManaged var commentsThreadingEnabled : NSNumber?
+    @NSManaged var commentsThreadingEnabled : Bool
 
     /**
      *  @details *LOCAL* flag (non stored remotely) indicating whether post geolocation is enabled or not.
      *           This can be overriden on a per-post basis.
      */
-    @NSManaged var geolocationEnabled : NSNumber?
+    @NSManaged var geolocationEnabled : Bool
     
     /**
      *  @details If set to true, 3rd party sites will be allowed to post pingbacks.
      */
-    @NSManaged var pingbackInboundEnabled : NSNumber?
+    @NSManaged var pingbackInboundEnabled : Bool
     
     /**
      *  @details When Outbound Pingbacks are enabled, 3rd party sites that get linked will be notified.
      */
-    @NSManaged var pingbackOutboundEnabled : NSNumber?
+    @NSManaged var pingbackOutboundEnabled : Bool
 
     
     
@@ -154,22 +154,22 @@ public class BlogSettings : NSManagedObject
     /**
     *  @details When set to true, Related Posts will be allowed.
     */
-    @NSManaged var relatedPostsAllowed : NSNumber?
+    @NSManaged var relatedPostsAllowed : Bool
     
     /**
     *  @details When set to true, Related Posts will be enabled.
      */
-    @NSManaged var relatedPostsEnabled : NSNumber?
+    @NSManaged var relatedPostsEnabled : Bool
     
     /**
      *  @details Indicates whether related posts should show a headline.
      */
-    @NSManaged var relatedPostsShowHeadline : NSNumber?
+    @NSManaged var relatedPostsShowHeadline : Bool
     
     /**
      *  @details Indicates whether related posts should show thumbnails.
      */
-    @NSManaged var relatedPostsShowThumbnails : NSNumber?
+    @NSManaged var relatedPostsShowThumbnails : Bool
     
     
     
