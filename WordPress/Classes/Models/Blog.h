@@ -83,8 +83,8 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSString *blogTagline;
 @property (nonatomic, assign, readwrite) NSInteger defaultCategoryID;
 @property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
-@property (nonatomic, strong, readwrite) NSNumber *privacy;
-@property (nonatomic, assign, readwrite) NSNumber *geolocationEnabled;
+@property (nonatomic, strong, readwrite) NSInteger privacy;
+@property (nonatomic, assign, readwrite) BOOL geolocationEnabled;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 

@@ -1000,7 +1000,7 @@ EditImageDetailsViewControllerDelegate
         return;
     }
     
-    if ([self.post.blog.geolocationEnabled boolValue] && ![LocationService sharedService].locationServicesDisabled) {
+    if (self.post.blog.geolocationEnabled && ![LocationService sharedService].locationServicesDisabled) {
         [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
             if (location) {
                 if(self.post.isDeleted) {

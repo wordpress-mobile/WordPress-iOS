@@ -776,45 +776,42 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // General
     settings.name = remoteSettings.name;
     settings.tagline = remoteSettings.tagline;
-    settings.privacy = remoteSettings.privacy ?: settings.privacy;
+    settings.privacy = [remoteSettings.privacy intValue];
     
     // Writing
-    if (remoteSettings.defaultCategoryID) {
-        settings.defaultCategoryID = [remoteSettings.defaultCategoryID integerValue];
-    }
-    
+    settings.defaultCategoryID = [remoteSettings.defaultCategoryID integerValue];
     settings.defaultPostFormat = remoteSettings.defaultPostFormat ?: settings.defaultPostFormat;
 
     // Discussion
-    settings.commentsAllowed = remoteSettings.commentsAllowed;
+    settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
     settings.commentsBlacklistKeys = remoteSettings.commentsBlacklistKeys;
-    settings.commentsCloseAutomatically = remoteSettings.commentsCloseAutomatically;
-    settings.commentsCloseAutomaticallyAfterDays = remoteSettings.commentsCloseAutomaticallyAfterDays;
-    settings.commentsFromKnownUsersWhitelisted = remoteSettings.commentsFromKnownUsersWhitelisted;
+    settings.commentsCloseAutomatically = [remoteSettings.commentsCloseAutomatically boolValue];
+    settings.commentsCloseAutomaticallyAfterDays = [remoteSettings.commentsCloseAutomaticallyAfterDays intValue];
+    settings.commentsFromKnownUsersWhitelisted = [remoteSettings.commentsFromKnownUsersWhitelisted boolValue];
     
-    settings.commentsMaximumLinks = remoteSettings.commentsMaximumLinks;
+    settings.commentsMaximumLinks = [remoteSettings.commentsMaximumLinks intValue];
     settings.commentsModerationKeys = remoteSettings.commentsModerationKeys;
     
-    settings.commentsPagingEnabled = remoteSettings.commentsPagingEnabled;
-    settings.commentsPageSize = remoteSettings.commentsPageSize;
+    settings.commentsPagingEnabled = [remoteSettings.commentsPagingEnabled boolValue];
+    settings.commentsPageSize = [remoteSettings.commentsPageSize intValue];
     
-    settings.commentsRequireManualModeration = remoteSettings.commentsRequireManualModeration;
-    settings.commentsRequireNameAndEmail = remoteSettings.commentsRequireNameAndEmail;
-    settings.commentsRequireRegistration = remoteSettings.commentsRequireRegistration;
+    settings.commentsRequireManualModeration = [remoteSettings.commentsRequireManualModeration boolValue];
+    settings.commentsRequireNameAndEmail = [remoteSettings.commentsRequireNameAndEmail boolValue];
+    settings.commentsRequireRegistration = [remoteSettings.commentsRequireRegistration boolValue];
     
     settings.commentsSortOrderAsString = remoteSettings.commentsSortOrder;
     
-    settings.commentsThreadingDepth = remoteSettings.commentsThreadingDepth;
-    settings.commentsThreadingEnabled = remoteSettings.commentsThreadingEnabled;
+    settings.commentsThreadingDepth = [remoteSettings.commentsThreadingDepth intValue];
+    settings.commentsThreadingEnabled = [remoteSettings.commentsThreadingEnabled boolValue];
     
-    settings.pingbackInboundEnabled = remoteSettings.pingbackInboundEnabled;
-    settings.pingbackOutboundEnabled = remoteSettings.pingbackOutboundEnabled;
+    settings.pingbackInboundEnabled = [remoteSettings.pingbackInboundEnabled boolValue];
+    settings.pingbackOutboundEnabled = [remoteSettings.pingbackOutboundEnabled boolValue];
 
     // Related Posts
-    settings.relatedPostsAllowed = remoteSettings.relatedPostsAllowed;
-    settings.relatedPostsEnabled = remoteSettings.relatedPostsEnabled;
-    settings.relatedPostsShowHeadline = remoteSettings.relatedPostsShowHeadline;
-    settings.relatedPostsShowThumbnails = remoteSettings.relatedPostsShowThumbnails;
+    settings.relatedPostsAllowed = [remoteSettings.relatedPostsAllowed boolValue];
+    settings.relatedPostsEnabled = [remoteSettings.relatedPostsEnabled boolValue];
+    settings.relatedPostsShowHeadline = [remoteSettings.relatedPostsShowHeadline boolValue];
+    settings.relatedPostsShowThumbnails = [remoteSettings.relatedPostsShowThumbnails boolValue];
 }
 
 - (RemoteBlogSettings *)remoteSettingFromSettings:(BlogSettings *)settings
@@ -825,42 +822,42 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // General
     remoteSettings.name = settings.name;
     remoteSettings.tagline = settings.tagline;
-    remoteSettings.privacy = settings.privacy;
+    remoteSettings.privacy = @(settings.privacy);
     
     // Writing
     remoteSettings.defaultCategoryID = @(settings.defaultCategoryID);
     remoteSettings.defaultPostFormat = settings.defaultPostFormat;
 
     // Discussion
-    remoteSettings.commentsAllowed = settings.commentsAllowed;
+    remoteSettings.commentsAllowed = @(settings.commentsAllowed);
     remoteSettings.commentsBlacklistKeys = settings.commentsBlacklistKeys;
-    remoteSettings.commentsCloseAutomatically = settings.commentsCloseAutomatically;
-    remoteSettings.commentsCloseAutomaticallyAfterDays = settings.commentsCloseAutomaticallyAfterDays;
-    remoteSettings.commentsFromKnownUsersWhitelisted = settings.commentsFromKnownUsersWhitelisted;
+    remoteSettings.commentsCloseAutomatically = @(settings.commentsCloseAutomatically);
+    remoteSettings.commentsCloseAutomaticallyAfterDays = @(settings.commentsCloseAutomaticallyAfterDays);
+    remoteSettings.commentsFromKnownUsersWhitelisted = @(settings.commentsFromKnownUsersWhitelisted);
     
-    remoteSettings.commentsMaximumLinks = settings.commentsMaximumLinks;
+    remoteSettings.commentsMaximumLinks = @(settings.commentsMaximumLinks);
     remoteSettings.commentsModerationKeys = settings.commentsModerationKeys;
     
-    remoteSettings.commentsPagingEnabled = settings.commentsPagingEnabled;
-    remoteSettings.commentsPageSize = settings.commentsPageSize;
+    remoteSettings.commentsPagingEnabled = @(settings.commentsPagingEnabled);
+    remoteSettings.commentsPageSize = @(settings.commentsPageSize);
     
-    remoteSettings.commentsRequireManualModeration = settings.commentsRequireManualModeration;
-    remoteSettings.commentsRequireNameAndEmail = settings.commentsRequireNameAndEmail;
-    remoteSettings.commentsRequireRegistration = settings.commentsRequireRegistration;
+    remoteSettings.commentsRequireManualModeration = @(settings.commentsRequireManualModeration);
+    remoteSettings.commentsRequireNameAndEmail = @(settings.commentsRequireNameAndEmail);
+    remoteSettings.commentsRequireRegistration = @(settings.commentsRequireRegistration);
 
     remoteSettings.commentsSortOrder = settings.commentsSortOrderAsString;
     
-    remoteSettings.commentsThreadingDepth = settings.commentsThreadingDepth;
-    remoteSettings.commentsThreadingEnabled = settings.commentsThreadingEnabled;
+    remoteSettings.commentsThreadingDepth = @(settings.commentsThreadingDepth);
+    remoteSettings.commentsThreadingEnabled = @(settings.commentsThreadingEnabled);
     
-    remoteSettings.pingbackInboundEnabled = settings.pingbackInboundEnabled;
-    remoteSettings.pingbackOutboundEnabled = settings.pingbackOutboundEnabled;
+    remoteSettings.pingbackInboundEnabled = @(settings.pingbackInboundEnabled);
+    remoteSettings.pingbackOutboundEnabled = @(settings.pingbackOutboundEnabled);
     
     // Related Posts
-    remoteSettings.relatedPostsAllowed = settings.relatedPostsAllowed;
-    remoteSettings.relatedPostsEnabled = settings.relatedPostsEnabled;
-    remoteSettings.relatedPostsShowHeadline = settings.relatedPostsShowHeadline;
-    remoteSettings.relatedPostsShowThumbnails = settings.relatedPostsShowThumbnails;
+    remoteSettings.relatedPostsAllowed = @(settings.relatedPostsAllowed);
+    remoteSettings.relatedPostsEnabled = @(settings.relatedPostsEnabled);
+    remoteSettings.relatedPostsShowHeadline = @(settings.relatedPostsShowHeadline);
+    remoteSettings.relatedPostsShowThumbnails = @(settings.relatedPostsShowThumbnails);
     
     return remoteSettings;
 }

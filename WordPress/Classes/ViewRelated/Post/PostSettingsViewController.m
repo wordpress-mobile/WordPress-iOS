@@ -292,7 +292,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFormat]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
 
-    if ([self.post.blog.geolocationEnabled boolValue] || self.post.geolocation) {
+    if (self.post.blog.geolocationEnabled || self.post.geolocation) {
         [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionGeolocation]];
     }
 }
