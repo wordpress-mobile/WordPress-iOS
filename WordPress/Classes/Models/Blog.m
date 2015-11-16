@@ -614,13 +614,13 @@ NSString * const PostFormatStandard = @"standard";
     self.settings.tagline = blogTagline;
 }
 
-- (NSNumber *)defaultCategoryID
+- (NSInteger)defaultCategoryID
 {
     NSParameterAssert(self.settings);
     return self.settings.defaultCategoryID;
 }
 
-- (void)setDefaultCategoryID:(NSNumber *)defaultCategoryID
+- (void)setDefaultCategoryID:(NSInteger)defaultCategoryID
 {
     NSParameterAssert(self.settings);
     self.settings.defaultCategoryID = defaultCategoryID;
