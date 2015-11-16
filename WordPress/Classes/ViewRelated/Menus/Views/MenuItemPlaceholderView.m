@@ -8,10 +8,24 @@
     if(self) {
         
         self.iconType = MenuItemsActionableIconAdd;
-        self.contentBackgroundColor = [UIColor colorWithWhite:0.98 alpha:1.0];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
+        [self.contentView addGestureRecognizer:tap];
     }
     
     return self;
+}
+
+- (UIColor *)contentViewBackgroundColor
+{
+    UIColor *color = nil;
+    if(self.highlighted) {
+        color = [super contentViewBackgroundColor];
+    }else {
+        color = [UIColor colorWithWhite:0.98 alpha:1.0];
+    }
+    
+    return color;
 }
 
 - (void)setType:(MenuItemPlaceholderViewType)type
@@ -26,13 +40,13 @@
 {
     NSString *text;
     switch (type) {
-        case MenuItemPlaceholderViewAbove:
+        case MenuItemPlaceholderViewTypeAbove:
             text = NSLocalizedString(@"Add menu item above", @"");
             break;
-        case MenuItemPlaceholderViewBelow:
+        case MenuItemPlaceholderViewTypeBelow:
             text = NSLocalizedString(@"Add menu item below", @"");
             break;
-        case MenuItemPlaceholderViewChild:
+        case MenuItemPlaceholderViewTypeChild:
             text = NSLocalizedString(@"Add menu item to children", @"");
             break;
         default:
@@ -41,6 +55,20 @@
     }
     
     return text;
+}
+
+#pragma mark - gestures
+
+- (void)tapGestureRecognized:(UITapGestureRecognizer *)tap
+{
+    [self tellDelegateWasSelected];
+}
+
+#pragma mark - delegate helpers
+
+- (void)tellDelegateWasSelected
+{
+    [self.delegate itemPlaceholderViewSelected:self];
 }
 
 @end
