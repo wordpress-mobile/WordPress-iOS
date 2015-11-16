@@ -136,19 +136,19 @@
         <attribute name="commentsAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="commentsBlacklistKeys" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="commentsCloseAutomatically" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="commentsCloseAutomaticallyAfterDays" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="commentsCloseAutomaticallyAfterDays" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="commentsFromKnownUsersWhitelisted" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="commentsMaximumLinks" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="commentsMaximumLinks" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="commentsModerationKeys" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="commentsPageSize" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="commentsPageSize" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="commentsPagingEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="commentsRequireManualModeration" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="commentsRequireNameAndEmail" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="commentsRequireRegistration" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="commentsSortOrder" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="commentsThreadingDepth" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="commentsSortOrder" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="commentsThreadingDepth" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="commentsThreadingEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="defaultCategoryID" optional="YES" attributeType="Integer 32" defaultValueString="1" syncable="YES"/>
+        <attribute name="defaultCategoryID" optional="YES" attributeType="Integer 64" defaultValueString="1" syncable="YES"/>
         <attribute name="defaultPostFormat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
@@ -156,7 +156,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pingbackInboundEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="pingbackOutboundEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="privacy" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="privacy" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="relatedPostsAllowed" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="relatedPostsEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="relatedPostsShowHeadline" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -483,6 +483,7 @@
         <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="495"/>
+        <element name="BlogSettings" positionX="18" positionY="153" width="128" height="465"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="375"/>
@@ -502,6 +503,5 @@
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="285"/>
-        <element name="BlogSettings" positionX="18" positionY="153" width="128" height="465"/>
     </elements>
 </model>
