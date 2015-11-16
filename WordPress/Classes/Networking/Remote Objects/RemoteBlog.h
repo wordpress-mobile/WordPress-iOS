@@ -24,7 +24,7 @@
 @property (nonatomic, copy) NSString *tagline;
 
 /**
- *  @details Site Icon's URL.
+ *  @details Represents the Blog Name.
  */
 @property (nonatomic, copy) NSString *url;
 
@@ -34,7 +34,7 @@
 @property (nonatomic, copy) NSString *xmlrpc;
 
 /**
- *  @details Represents the Blog Name.
+ *  @details Site Icon's URL.
  */
 @property (nonatomic, copy) NSString *icon;
 
