@@ -700,7 +700,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 
 - (BOOL)fieldsValid
 {
-    return [self fieldsFilled] && [self isUsernameUnderFiftyCharacters];
+    return [self fieldsFilled] && [self isUsernameUnderFiftyCharacters] && ![self emailOrUsernameOrSiteAddressContainsSpaces];
 }
 
 - (NSString *)generateSiteTitleFromUsername:(NSString *)username
@@ -715,9 +715,20 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 {
     if (![self isUsernameUnderFiftyCharacters]) {
         [self showError:NSLocalizedString(@"Username must be less than fifty characters.", nil)];
+    } else if ([self emailOrUsernameOrSiteAddressContainsSpaces]) {
+        [self showError:NSLocalizedString(@"Email, Username, and Site Address cannot contain spaces", @"No spaces error message")];
     } else {
         [self showFieldsNotFilledError];
     }
+}
+
+- (BOOL)emailOrUsernameOrSiteAddressContainsSpaces {
+    NSString *space = @" ";
+    NSString *emailTrimmed = [_emailField.text trim];
+    NSString *userNameTrimmed = [_usernameField.text trim];
+    NSString *siteAddressTrimmed = [_siteAddressField.text trim];
+    
+    return ([emailTrimmed containsString:space] || [userNameTrimmed containsString:space] || [siteAddressTrimmed containsString:space]);
 }
 
 - (void)showFieldsNotFilledError
