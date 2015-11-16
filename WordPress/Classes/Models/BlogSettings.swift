@@ -40,7 +40,7 @@ public class BlogSettings : NSManagedObject
     *  @details Contains the Default Category ID. Used when creating new posts.
     */
     
-    @NSManaged var defaultCategoryID : NSNumber?
+    @NSManaged var defaultCategoryID : Int
     
     /**
     *  @details Contains the Default Post Format. Used when creating new posts.

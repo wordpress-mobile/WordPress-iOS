@@ -81,7 +81,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  */
 @property (nonatomic, strong, readwrite) NSString *blogName;
 @property (nonatomic, strong, readwrite) NSString *blogTagline;
-@property (nonatomic, strong, readwrite) NSNumber *defaultCategoryID;
+@property (nonatomic, assign, readwrite) NSInteger defaultCategoryID;
 @property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
 @property (nonatomic, strong, readwrite) NSNumber *privacy;
 @property (nonatomic, assign, readwrite) NSNumber *geolocationEnabled;
