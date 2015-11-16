@@ -60,7 +60,7 @@ public class BlogSettings : NSManagedObject
      *  @details Contains a list of words, space separated, that would cause a comment to be automatically
      *           blacklisted.
      */
-    @NSManaged var commentsBlacklistKeys : String?
+    @NSManaged var commentsBlacklistKeys : Set<String>?
     
     /**
      *  @details If true, comments will be automatically closed after the number of days, specified
@@ -88,7 +88,7 @@ public class BlogSettings : NSManagedObject
     /**
      *  @details Contains a list of words, space separated, that cause a comment to require moderation.
      */
-    @NSManaged var commentsModerationKeys : String?
+    @NSManaged var commentsModerationKeys : Set<String>?
     
     /**
      *  @details If true, comment pagination will be enabled.

@@ -773,6 +773,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     NSParameterAssert(settings);
     NSParameterAssert(remoteSettings);
     
+    // Transformables
+    NSSet *separatedBlacklistKeys = [remoteSettings.commentsBlacklistKeys uniqueStringComponentsSeparatedByWhitespace];
+    NSSet *separatedModerationKeys = [remoteSettings.commentsModerationKeys uniqueStringComponentsSeparatedByWhitespace];
+    
     // General
     settings.name = remoteSettings.name;
     settings.tagline = remoteSettings.tagline;
@@ -784,13 +788,13 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     // Discussion
     settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
-    settings.commentsBlacklistKeys = remoteSettings.commentsBlacklistKeys;
+    settings.commentsBlacklistKeys = separatedBlacklistKeys;
     settings.commentsCloseAutomatically = [remoteSettings.commentsCloseAutomatically boolValue];
     settings.commentsCloseAutomaticallyAfterDays = remoteSettings.commentsCloseAutomaticallyAfterDays;
     settings.commentsFromKnownUsersWhitelisted = [remoteSettings.commentsFromKnownUsersWhitelisted boolValue];
     
     settings.commentsMaximumLinks = remoteSettings.commentsMaximumLinks;
-    settings.commentsModerationKeys = remoteSettings.commentsModerationKeys;
+    settings.commentsModerationKeys = separatedModerationKeys;
     
     settings.commentsPagingEnabled = [remoteSettings.commentsPagingEnabled boolValue];
     settings.commentsPageSize = remoteSettings.commentsPageSize;
@@ -818,6 +822,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     NSParameterAssert(settings);
     RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
+
+    // Transformables
+    NSString *joinedBlacklistKeys = [[settings.commentsBlacklistKeys allObjects] componentsJoinedByString:@" "];
+    NSString *joinedModerationKeys = [[settings.commentsModerationKeys allObjects] componentsJoinedByString:@" "];
     
     // General
     remoteSettings.name = settings.name;
@@ -830,13 +838,13 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     // Discussion
     remoteSettings.commentsAllowed = @(settings.commentsAllowed);
-    remoteSettings.commentsBlacklistKeys = settings.commentsBlacklistKeys;
+    remoteSettings.commentsBlacklistKeys = joinedBlacklistKeys;
     remoteSettings.commentsCloseAutomatically = @(settings.commentsCloseAutomatically);
     remoteSettings.commentsCloseAutomaticallyAfterDays = settings.commentsCloseAutomaticallyAfterDays;
     remoteSettings.commentsFromKnownUsersWhitelisted = @(settings.commentsFromKnownUsersWhitelisted);
     
     remoteSettings.commentsMaximumLinks = settings.commentsMaximumLinks;
-    remoteSettings.commentsModerationKeys = settings.commentsModerationKeys;
+    remoteSettings.commentsModerationKeys = joinedModerationKeys;
     
     remoteSettings.commentsPagingEnabled = @(settings.commentsPagingEnabled);
     remoteSettings.commentsPageSize = settings.commentsPageSize;
