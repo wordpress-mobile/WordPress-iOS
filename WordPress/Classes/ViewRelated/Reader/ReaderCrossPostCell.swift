@@ -168,7 +168,7 @@ public class ReaderCrossPostCell: UITableViewCell
         if title.containsString(xPostTitlePrefix) {
             title = title?.componentsSeparatedByString(xPostTitlePrefix).last
         }
-        let titleAttributes = WPStyleGuide.readerXpostTitleAttributes() as! [String:AnyObject]
+        let titleAttributes = WPStyleGuide.readerCrossPostTitleAttributes() as! [String:AnyObject]
         let attrText = NSMutableAttributedString(string: "\(title)\n", attributes: titleAttributes)
 
         // Compose the subtitle
@@ -182,8 +182,8 @@ public class ReaderCrossPostCell: UITableViewCell
         let originName = subDomainNameFromPath(contentProvider!.crossPostOriginSiteURLForDisplay())
 
         let subtitle = NSString(format: template, authorName, originName, siteName) as String
-        let subtitleAttributes = WPStyleGuide.readerXpostSubtitleAttributes() as! [String:AnyObject]
-        let boldSubtitleAttributes = WPStyleGuide.readerXpostBoldSubtitleAttributes() as! [String:AnyObject];
+        let subtitleAttributes = WPStyleGuide.readerCrossPostSubtitleAttributes() as! [String:AnyObject]
+        let boldSubtitleAttributes = WPStyleGuide.readerCrossPostBoldSubtitleAttributes() as! [String:AnyObject];
         let attrSubtitle = NSMutableAttributedString(string: subtitle, attributes: subtitleAttributes)
         attrSubtitle.setAttributes(boldSubtitleAttributes, range: NSRange(location: 0, length: authorName.length))
 
