@@ -4,14 +4,14 @@
 #import "WPStyleGuide.h"
 #import "MenuItemsActionableView.h"
 #import "MenuItemView.h"
-#import "MenuItemBlankView.h"
+#import "MenuItemPlaceholderView.h"
 #import "MenusDesign.h"
 
 @interface MenuItemsView () <MenuItemViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) NSMutableArray *itemViews;
-@property (nonatomic, strong) NSMutableArray *blankItemViews;
+@property (nonatomic, strong) NSMutableArray *placeholderViews;
 
 @end
 
@@ -79,9 +79,9 @@
     }
 }
 
-- (MenuItemBlankView *)blankItemViewWithType:(MenuItemBlankViewType)type level:(NSUInteger)indentationLevel
+- (MenuItemPlaceholderView *)newBlankItemViewWithType:(MenuItemPlaceholderViewType)type level:(NSUInteger)indentationLevel
 {
-    MenuItemBlankView *itemView = [[MenuItemBlankView alloc] init];
+    MenuItemPlaceholderView *itemView = [[MenuItemPlaceholderView alloc] init];
     itemView.type = type;
     itemView.indentationLevel = indentationLevel;
     
@@ -92,9 +92,9 @@
     return itemView;
 }
 
-- (void)insertBlankItemViewsAroundItemView:(MenuItemView *)toggledItemView
+- (void)insertPlaceholderItemViewsAroundItemView:(MenuItemView *)toggledItemView
 {
-    self.blankItemViews = [NSMutableArray arrayWithCapacity:3];
+    self.placeholderViews = [NSMutableArray arrayWithCapacity:3];
     
     int index = 0;
     for(UIView *view in self.stackView.arrangedSubviews) {
@@ -102,38 +102,82 @@
         if(view == toggledItemView) {
             break;
         }
-        
         index++;
     }
     
     {
-        MenuItemBlankView *blank = [self blankItemViewWithType:MenuItemBlankViewAbove level:toggledItemView.indentationLevel];
-        [self.blankItemViews addObject:blank];
-        [self.stackView insertArrangedSubview:blank atIndex:index];
+        MenuItemPlaceholderView *placeholderView = [self newBlankItemViewWithType:MenuItemPlaceholderViewAbove level:toggledItemView.indentationLevel];
+        [self.placeholderViews addObject:placeholderView];
+        [self.stackView insertArrangedSubview:placeholderView atIndex:index];
     }
     {
-        MenuItemBlankView *blank = [self blankItemViewWithType:MenuItemBlankViewBelow level:toggledItemView.indentationLevel];
-        [self.blankItemViews addObject:blank];
-        [self.stackView insertArrangedSubview:blank atIndex:index + 2];
+        MenuItemPlaceholderView *placeholderView = [self newBlankItemViewWithType:MenuItemPlaceholderViewBelow level:toggledItemView.indentationLevel];
+        [self.placeholderViews addObject:placeholderView];
+        [self.stackView insertArrangedSubview:placeholderView atIndex:index + 2];
     }
     {
-        MenuItemBlankView *blank = [self blankItemViewWithType:MenuItemBlankViewChild level:toggledItemView.indentationLevel + 1];
-        [self.blankItemViews addObject:blank];
-        [self.stackView insertArrangedSubview:blank atIndex:index + 3];
+        MenuItemPlaceholderView *placeholderView = [self newBlankItemViewWithType:MenuItemPlaceholderViewChild level:toggledItemView.indentationLevel + 1];
+        [self.placeholderViews addObject:placeholderView];
+        [self.stackView insertArrangedSubview:placeholderView atIndex:index + 3];
     }
     
     [self.stackView setNeedsLayout];
 }
 
-- (void)removeBlankItemViews
+- (void)insertItemPlaceholderViewsAroundItemView:(MenuItemView *)toggledItemView animated:(BOOL)animated
 {
-    for(MenuItemsActionableView *itemView in self.blankItemViews) {
+    [self insertPlaceholderItemViewsAroundItemView:toggledItemView];
+    
+    if(!animated) {
+        return;
+    }
+    
+    for(MenuItemPlaceholderView *placeholderView in self.placeholderViews) {
+        placeholderView.hidden = YES;
+        placeholderView.alpha = 0.0;
+    }
+    
+    [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
+        
+        for(MenuItemPlaceholderView *placeholderView in self.placeholderViews) {
+            placeholderView.hidden = NO;
+            placeholderView.alpha = 1.0;
+        }
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+- (void)removeItemPlaceholderViews
+{
+    for(MenuItemsActionableView *itemView in self.placeholderViews) {
         [self.stackView removeArrangedSubview:itemView];
         [itemView removeFromSuperview];
     }
     
-    self.blankItemViews = nil;
+    self.placeholderViews = nil;
     [self.stackView setNeedsLayout];
+}
+
+- (void)removeItemPlaceholderViews:(BOOL)animated
+{
+    if(!animated) {
+        [self removeItemPlaceholderViews];
+        return;
+    }
+    
+    [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
+       
+        for(MenuItemPlaceholderView *placeholderView in self.placeholderViews) {
+            placeholderView.hidden = YES;
+            placeholderView.alpha = 0.0;
+        }
+        
+    } completion:^(BOOL finished) {
+
+        [self removeItemPlaceholderViews];
+    }];
 }
 
 #pragma mark - MenuItemViewDelegate
@@ -144,7 +188,7 @@
     for(MenuItemView *childItemView in self.itemViews) {
         childItemView.showsEditingButtonOptions = NO;
     }
-    [self insertBlankItemViewsAroundItemView:itemView];
+    [self insertItemPlaceholderViewsAroundItemView:itemView animated:YES];
 }
 
 - (void)itemViewCancelButtonPressed:(MenuItemView *)itemView
@@ -153,7 +197,7 @@
     for(MenuItemView *childItemView in self.itemViews) {
         childItemView.showsEditingButtonOptions = YES;
     }
-    [self removeBlankItemViews];
+    [self removeItemPlaceholderViews:YES];
 }
 
 @end

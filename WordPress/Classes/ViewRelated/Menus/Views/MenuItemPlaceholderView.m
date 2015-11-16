@@ -1,6 +1,6 @@
-#import "MenuItemBlankView.h"
+#import "MenuItemPlaceholderView.h"
 
-@implementation MenuItemBlankView
+@implementation MenuItemPlaceholderView
 
 - (id)init
 {
@@ -14,7 +14,7 @@
     return self;
 }
 
-- (void)setType:(MenuItemBlankViewType)type
+- (void)setType:(MenuItemPlaceholderViewType)type
 {
     if(_type != type) {
         _type = type;
@@ -22,17 +22,17 @@
     }
 }
 
-- (NSString *)textForType:(MenuItemBlankViewType)type
+- (NSString *)textForType:(MenuItemPlaceholderViewType)type
 {
     NSString *text;
     switch (type) {
-        case MenuItemBlankViewAbove:
+        case MenuItemPlaceholderViewAbove:
             text = NSLocalizedString(@"Add menu item above", @"");
             break;
-        case MenuItemBlankViewBelow:
+        case MenuItemPlaceholderViewBelow:
             text = NSLocalizedString(@"Add menu item below", @"");
             break;
-        case MenuItemBlankViewChild:
+        case MenuItemPlaceholderViewChild:
             text = NSLocalizedString(@"Add menu item to children", @"");
             break;
         default:
