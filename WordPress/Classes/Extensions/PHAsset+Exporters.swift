@@ -50,8 +50,8 @@ extension PHAsset {
     
     func exportImageToURL(url: NSURL,
         targetUTI: String,
-        maximumResolution:CGSize,
-        stripGeoLocation:Bool,
+        maximumResolution: CGSize,
+        stripGeoLocation: Bool,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
         
@@ -94,7 +94,7 @@ extension PHAsset {
         }
     }
     
-    func removeAttributes(attributes: [String], fromMetadata:[String:AnyObject]) -> [String:AnyObject]{
+    func removeAttributes(attributes: [String], fromMetadata: [String:AnyObject]) -> [String:AnyObject]{
         var resultingMetadata = fromMetadata
         for attribute in attributes {
             resultingMetadata.removeValueForKey(attribute)
@@ -110,8 +110,8 @@ extension PHAsset {
     
     func exportVideoToURL(url: NSURL,
         targetUTI: String,
-        maximumResolution:CGSize,
-        stripGeoLocation:Bool,
+        maximumResolution: CGSize,
+        stripGeoLocation: Bool,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
             
@@ -157,7 +157,7 @@ extension PHAsset {
         - errorHandler: a handler that will be invoked when some error occurs when generating the thumbnail
      */
     func exportThumbnailToURL(url: NSURL,
-        targetSize:CGSize,
+        targetSize: CGSize,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
             let options = PHImageRequestOptions()
@@ -213,7 +213,7 @@ extension PHAsset {
         return error
     }
     
-    func requestMetadataWithCompletionBlock(completionBlock:(metadata:[String:AnyObject]) ->(), failureBlock:(error:NSError) -> ()) {
+    func requestMetadataWithCompletionBlock(completionBlock: (metadata:[String:AnyObject]) ->(), failureBlock: (error:NSError) -> ()) {
         let editOptions = PHContentEditingInputRequestOptions();
         editOptions.networkAccessAllowed = true;
         self.requestContentEditingInputWithOptions(editOptions) { (contentEditingInput, info) -> Void in
