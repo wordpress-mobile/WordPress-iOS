@@ -1,24 +1,24 @@
 PODS:
   - 1PasswordExtension (1.6.4)
-  - AFNetworking (2.6.0):
-    - AFNetworking/NSURLConnection (= 2.6.0)
-    - AFNetworking/NSURLSession (= 2.6.0)
-    - AFNetworking/Reachability (= 2.6.0)
-    - AFNetworking/Security (= 2.6.0)
-    - AFNetworking/Serialization (= 2.6.0)
-    - AFNetworking/UIKit (= 2.6.0)
-  - AFNetworking/NSURLConnection (2.6.0):
+  - AFNetworking (2.6.3):
+    - AFNetworking/NSURLConnection (= 2.6.3)
+    - AFNetworking/NSURLSession (= 2.6.3)
+    - AFNetworking/Reachability (= 2.6.3)
+    - AFNetworking/Security (= 2.6.3)
+    - AFNetworking/Serialization (= 2.6.3)
+    - AFNetworking/UIKit (= 2.6.3)
+  - AFNetworking/NSURLConnection (2.6.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.6.0):
+  - AFNetworking/NSURLSession (2.6.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.6.0)
-  - AFNetworking/Security (2.6.0)
-  - AFNetworking/Serialization (2.6.0)
-  - AFNetworking/UIKit (2.6.0):
+  - AFNetworking/Reachability (2.6.3)
+  - AFNetworking/Security (2.6.3)
+  - AFNetworking/Serialization (2.6.3)
+  - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AMPopTip (0.9.12)
@@ -157,7 +157,7 @@ PODS:
   - UIDeviceIdentifier (0.4.5)
   - WordPress-AppbotX (1.0.6)
   - WordPress-iOS-Editor (1.1):
-    - CocoaLumberjack (= 2.0.0)
+    - CocoaLumberjack (~> 2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPress-iOS-Shared (~> 0.5.0)
     - WordPressCom-Analytics-iOS (~> 0.0.40)
@@ -194,7 +194,7 @@ PODS:
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.6.4)
-  - AFNetworking (= 2.6.0)
+  - AFNetworking (= 2.6.3)
   - AMPopTip (~> 0.7)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`,
     tag `0.0.12`)
@@ -277,18 +277,18 @@ CHECKOUT OPTIONS:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 5f01022901fae253a518896657ff599570470c9e
+    :commit: e7cdc739efbd78a441ea7b6f63fb03eec077ddb8
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressApi:
     :commit: a7dc27935fb30b1978942cb1c791d4040fe65395
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressCom-Stats-iOS:
-    :commit: aaad2ca9200ca5d8d394d53fa7a65c3615ad8d25
+    :commit: 1a58038f6da1bb7e56e9688149d1053c8da047e5
     :git: https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
-  AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
+  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   AMPopTip: 3c98a9b38148868366b57765064bd9565f653038
   Automattic-Tracks-iOS: 0fe58abad2aee92dd9d57132589e03556cd9a96a
   CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
@@ -319,7 +319,7 @@ SPEC CHECKSUMS:
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: f7b32c087f4d4957badbb6181a4c78520c5806ae
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
-  WordPress-iOS-Editor: 75c46c0af76b8434d8852cc5042211d0cf4dc328
+  WordPress-iOS-Editor: 6ccd8004a0ae2649175974161515061967a026bf
   WordPress-iOS-Shared: 5480e7b5c9c55158ea22c89ff44fca5597852224
   WordPressApi: 39ca2b950a95fd0bf7ae5c86c92a272fb350187b
   WordPressCom-Analytics-iOS: 460c40e66cf4e75d19ca691f6a50c30cd16e8a79

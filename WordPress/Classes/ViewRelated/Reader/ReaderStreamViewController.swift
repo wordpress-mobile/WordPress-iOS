@@ -160,7 +160,8 @@ import WordPressComAnalytics
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
-        if needsRefreshCachedCellHeightsBeforeLayout {
+        // NOTE: For why isViewLoaded is checked here see: https://github.com/wordpress-mobile/WordPress-iOS/pull/4421
+        if isViewLoaded() && needsRefreshCachedCellHeightsBeforeLayout {
             needsRefreshCachedCellHeightsBeforeLayout = false
 
             let width = view.frame.width
