@@ -826,6 +826,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService updateSettingsForBlog:self.blog success:nil failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
+        DDLogError(@"Error while trying to update BlogSettings: %@", error);
     }];
 }
 
