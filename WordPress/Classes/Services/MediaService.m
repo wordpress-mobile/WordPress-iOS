@@ -432,7 +432,7 @@ static NSString * const MediaDirectory = @"Media";
     NSString *basename= [[filename stringByDeletingPathExtension] lowercaseString];
     NSURL *resultURL = [mediaDirectoryURL URLByAppendingPathComponent:basename];
     resultURL = [resultURL URLByAppendingPathExtension:extension];
-    NSUInteger *index = 1;
+    NSUInteger index = 1;
     while ([resultURL checkResourceIsReachableAndReturnError:nil]) {
         NSString *alternativeFilename = [NSString stringWithFormat:@"%@-%d.%@", basename, index, extension];
         resultURL = [mediaDirectoryURL URLByAppendingPathComponent:alternativeFilename];
