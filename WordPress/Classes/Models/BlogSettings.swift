@@ -31,7 +31,7 @@ public class BlogSettings : NSManagedObject
     /**
      *  @details Stores the Blog's Privacy Preferences Settings
      */
-    @NSManaged var privacy : Int
+    @NSManaged var privacy : NSNumber?
 
     
     
@@ -40,7 +40,7 @@ public class BlogSettings : NSManagedObject
     *  @details Contains the Default Category ID. Used when creating new posts.
     */
     
-    @NSManaged var defaultCategoryID : Int
+    @NSManaged var defaultCategoryID : NSNumber?
     
     /**
     *  @details Contains the Default Post Format. Used when creating new posts.
@@ -72,7 +72,7 @@ public class BlogSettings : NSManagedObject
      *  @details Represents the number of days comments will be enabled, granted that the
      *           `commentsCloseAutomatically` property is set to true.
      */
-    @NSManaged var commentsCloseAutomaticallyAfterDays : Int
+    @NSManaged var commentsCloseAutomaticallyAfterDays : NSNumber?
     
     /**
      *  @details When enabled, comments from known users will be whitelisted.
@@ -83,7 +83,7 @@ public class BlogSettings : NSManagedObject
      *  @details Indicates the maximum number of links allowed per comment. When a new comment exceeds this
      *           number, it'll be held in queue for moderation.
      */
-    @NSManaged var commentsMaximumLinks : Int
+    @NSManaged var commentsMaximumLinks : NSNumber?
     
     /**
      *  @details Contains a list of words, space separated, that cause a comment to require moderation.
@@ -99,7 +99,7 @@ public class BlogSettings : NSManagedObject
      *  @details Specifies the number of comments per page. This will be used only if the property
      *           `commentsPagingEnabled` is set to true.
      */
-    @NSManaged var commentsPageSize : Int
+    @NSManaged var commentsPageSize : NSNumber?
     
     /**
      *  @details When enabled, new comments will require Manual Moderation, before showing up.
@@ -119,12 +119,12 @@ public class BlogSettings : NSManagedObject
     /**
      *  @details Indicates the sorting order of the comments. Ascending / Descending, based on the date.
      */
-    @NSManaged var commentsSortOrder : Int
+    @NSManaged var commentsSortOrder : NSNumber?
     
     /**
      *  @details Indicates the number of levels allowed per comment.
      */
-    @NSManaged var commentsThreadingDepth : Int
+    @NSManaged var commentsThreadingDepth : NSNumber?
     
     /**
      *  @details When enabled, comment threading will be supported.
