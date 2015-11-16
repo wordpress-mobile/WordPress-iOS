@@ -34,11 +34,11 @@ public class NotificationsServiceRemote : ServiceRemoteREST
 
         api.GET(requestUrl,
             parameters: nil,
-            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            success: { (operation: AFHTTPRequestOperation, response: AnyObject) -> Void in
                 let settings = RemoteNotificationSettings.fromDictionary(response as? NSDictionary)
                 success?(settings)
             },
-            failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
                 failure?(error)
             })
     }
@@ -58,10 +58,10 @@ public class NotificationsServiceRemote : ServiceRemoteREST
         
         api.POST(requestUrl,
             parameters: parameters,
-            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+            success: { (operation: AFHTTPRequestOperation, response: AnyObject) -> Void in
                 success?()
             },
-            failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
                 failure?(error)
             })
     }
