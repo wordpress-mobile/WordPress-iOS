@@ -7,7 +7,7 @@
 #import "MenuItemPlaceholderView.h"
 #import "MenusDesign.h"
 
-@interface MenuItemsView () <MenuItemViewDelegate>
+@interface MenuItemsView () <MenuItemViewDelegate, MenuItemPlaceholderViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) NSMutableArray *itemViews;
@@ -67,7 +67,7 @@
             parentItem = parentItem.parent;
         }
         
-        NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:55];
+        NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:MenuItemsActionableViewDefaultHeight];
         heightConstraint.priority = UILayoutPriorityDefaultHigh;
         heightConstraint.active = YES;
         
@@ -79,53 +79,52 @@
     }
 }
 
-- (MenuItemPlaceholderView *)newBlankItemViewWithType:(MenuItemPlaceholderViewType)type level:(NSUInteger)indentationLevel
+- (MenuItemPlaceholderView *)addNewBlankItemViewWithType:(MenuItemPlaceholderViewType)type forItemView:(MenuItemView *)itemView
 {
-    MenuItemPlaceholderView *itemView = [[MenuItemPlaceholderView alloc] init];
-    itemView.type = type;
-    itemView.indentationLevel = indentationLevel;
+    NSInteger index = [self.stackView.arrangedSubviews indexOfObject:itemView];
+    MenuItemPlaceholderView *placeholderView = [[MenuItemPlaceholderView alloc] init];
+    placeholderView.delegate = self;
+    placeholderView.type = type;
     
-    NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:55];
+    switch (type) {
+        case MenuItemPlaceholderViewTypeAbove:
+            placeholderView.indentationLevel = itemView.indentationLevel;
+            break;
+        case MenuItemPlaceholderViewTypeBelow:
+            placeholderView.indentationLevel = itemView.indentationLevel;
+            index++;
+            break;
+        case MenuItemPlaceholderViewTypeChild:
+            placeholderView.indentationLevel = itemView.indentationLevel + 1;
+            index += 2;
+            break;
+    }
+
+    NSLayoutConstraint *heightConstraint = [placeholderView.heightAnchor constraintEqualToConstant:MenuItemsActionableViewDefaultHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
     
-    return itemView;
+    [self.placeholderViews addObject:placeholderView];
+    [self.stackView insertArrangedSubview:placeholderView atIndex:index];
+    
+    [placeholderView.widthAnchor constraintEqualToAnchor:self.stackView.widthAnchor].active = YES;
+    
+    return placeholderView;
 }
 
 - (void)insertPlaceholderItemViewsAroundItemView:(MenuItemView *)toggledItemView
 {
     self.placeholderViews = [NSMutableArray arrayWithCapacity:3];
-    
-    int index = 0;
-    for(UIView *view in self.stackView.arrangedSubviews) {
-        
-        if(view == toggledItemView) {
-            break;
-        }
-        index++;
-    }
-    
-    {
-        MenuItemPlaceholderView *placeholderView = [self newBlankItemViewWithType:MenuItemPlaceholderViewAbove level:toggledItemView.indentationLevel];
-        [self.placeholderViews addObject:placeholderView];
-        [self.stackView insertArrangedSubview:placeholderView atIndex:index];
-    }
-    {
-        MenuItemPlaceholderView *placeholderView = [self newBlankItemViewWithType:MenuItemPlaceholderViewBelow level:toggledItemView.indentationLevel];
-        [self.placeholderViews addObject:placeholderView];
-        [self.stackView insertArrangedSubview:placeholderView atIndex:index + 2];
-    }
-    {
-        MenuItemPlaceholderView *placeholderView = [self newBlankItemViewWithType:MenuItemPlaceholderViewChild level:toggledItemView.indentationLevel + 1];
-        [self.placeholderViews addObject:placeholderView];
-        [self.stackView insertArrangedSubview:placeholderView atIndex:index + 3];
-    }
-    
-    [self.stackView setNeedsLayout];
+    [self addNewBlankItemViewWithType:MenuItemPlaceholderViewTypeAbove forItemView:toggledItemView];
+    [self addNewBlankItemViewWithType:MenuItemPlaceholderViewTypeBelow forItemView:toggledItemView];
+    [self addNewBlankItemViewWithType:MenuItemPlaceholderViewTypeChild forItemView:toggledItemView];
 }
 
 - (void)insertItemPlaceholderViewsAroundItemView:(MenuItemView *)toggledItemView animated:(BOOL)animated
 {
+    CGSize previousSize = CGSizeMake(self.stackView.frame.size.width, self.stackView.frame.size.height);
+    CGSize newSize = CGSizeMake(self.stackView.frame.size.width, self.stackView.frame.size.height);
+
     [self insertPlaceholderItemViewsAroundItemView:toggledItemView];
     
     if(!animated) {
@@ -133,6 +132,7 @@
     }
     
     for(MenuItemPlaceholderView *placeholderView in self.placeholderViews) {
+        newSize.height += MenuItemsActionableViewDefaultHeight;
         placeholderView.hidden = YES;
         placeholderView.alpha = 0.0;
     }
@@ -143,6 +143,8 @@
             placeholderView.hidden = NO;
             placeholderView.alpha = 1.0;
         }
+        
+        [self.delegate itemsViewAnimatingItemContentSizeChanges:self previousSize:previousSize newSize:newSize];
         
     } completion:^(BOOL finished) {
         
@@ -198,6 +200,13 @@
         childItemView.showsEditingButtonOptions = YES;
     }
     [self removeItemPlaceholderViews:YES];
+}
+
+#pragma mark - MenuItemPlaceholderViewDelegate
+
+- (void)itemPlaceholderViewSelected:(MenuItemPlaceholderView *)placeholderView
+{
+    // load the detail view for creating a new item
 }
 
 @end

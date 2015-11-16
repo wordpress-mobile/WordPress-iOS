@@ -6,8 +6,10 @@
 - (void)drawingViewDrawRect:(CGRect)rect;
 @end
 
-@interface MenuItemDrawingView : UIView
+@interface MenuItemDrawingView ()
+
 @property (nonatomic, weak) id <MenuItemDrawingViewDelegate> drawDelegate;
+
 @end
 
 @implementation MenuItemDrawingView
@@ -20,13 +22,15 @@
 
 @end
 
+CGFloat const MenuItemsActionableViewDefaultHeight = 55.0;
+CGFloat const MenuItemsActionableViewAccessoryButtonHeight = 40.0;
+
 static CGFloat const MenuItemsActionableViewIconSize = 10.0;
 
 @interface MenuItemsActionableView () <MenuItemDrawingViewDelegate>
 
-@property (nonatomic, strong) MenuItemDrawingView *contentView;
-@property (nonatomic, assign) BOOL drawsHighlighted;
 @property (nonatomic, weak) NSLayoutConstraint *constraintForLeadingIndentation;
+@property (nonatomic, strong) UIStackView *accessoryStackView;
 
 @end
 
@@ -46,12 +50,12 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.backgroundColor = [WPStyleGuide lightGrey];
-    self.contentBackgroundColor = [UIColor whiteColor];
 
     MenuItemDrawingView *contentView = [[MenuItemDrawingView alloc] init];
     contentView.drawDelegate = self;
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
-    contentView.tintColor = [WPStyleGuide mediumBlue];
+    contentView.tintColor = [self iconTintColor];
+    contentView.backgroundColor = [self contentViewBackgroundColor];
 
     [self addSubview:contentView];
     self.contentView = contentView;
@@ -104,7 +108,7 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
         UILabel *label = [[UILabel alloc] init];
         label.translatesAutoresizingMaskIntoConstraints = NO;
         label.numberOfLines = 0;
-        label.textColor = [WPStyleGuide darkGrey];
+        label.textColor = [self textLabelColor];
         label.font = [WPStyleGuide regularTextFont];
         label.backgroundColor = [UIColor clearColor];
         self.textLabel = label;
@@ -114,10 +118,14 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
     }
 }
 
-- (void)setDrawsHighlighted:(BOOL)drawsHighlighted
+- (void)setHighlighted:(BOOL)highlighted
 {
-    if(_drawsHighlighted != drawsHighlighted) {
-        _drawsHighlighted = drawsHighlighted;
+    if(_highlighted != highlighted) {
+        _highlighted = highlighted;
+        
+        self.textLabel.textColor = [self textLabelColor];
+        self.contentView.tintColor = [self iconTintColor];
+        self.contentView.backgroundColor = [self contentViewBackgroundColor];
         [self.contentView setNeedsDisplay];
     }
 }
@@ -142,14 +150,6 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
 
 #pragma mark - instance
 
-- (void)setContentBackgroundColor:(UIColor *)contentBackgroundColor
-{
-    if(_contentBackgroundColor != contentBackgroundColor) {
-        _contentBackgroundColor = [contentBackgroundColor copy];
-        [self setNeedsDisplay];
-    }
-}
-
 - (void)setIndentationLevel:(NSUInteger)indentationLevel
 {
     if(_indentationLevel != indentationLevel) {
@@ -158,12 +158,22 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
     }
 }
 
-- (UIColor *)highlightedColor
+- (void)addAccessoryButton:(UIButton *)button
 {
-    return [WPStyleGuide mediumBlue];
+    if(!self.accessoryStackView) {
+        UIStackView *stackView = [[UIStackView alloc] init];
+        stackView.translatesAutoresizingMaskIntoConstraints = NO;
+        stackView.distribution = UIStackViewDistributionFill;
+        stackView.spacing = 0.0;
+        [self.stackView addArrangedSubview:stackView];
+        self.accessoryStackView = stackView;
+    }
+    
+    [self.accessoryStackView addArrangedSubview:button];
+    [self.accessoryStackView setNeedsLayout];
 }
 
-- (UIButton *)newButtonIconViewWithType:(MenuItemsActionableIconType)type
+- (UIButton *)addAccessoryButtonIconViewWithType:(MenuItemsActionableIconType)type
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
@@ -174,21 +184,59 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
         [button setImage:[[UIImage imageNamed:[self iconNameForType:type]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     }
     
-    CGFloat buttonWidth = 25.0;
-    CGFloat buttonHeight = 30.0;
+    CGFloat buttonWidth = 30.0;
+    CGFloat buttonHeight = MenuItemsActionableViewAccessoryButtonHeight;
     CGFloat iconSize = MenuItemsActionableViewIconSize;
     UIEdgeInsets imageInset = UIEdgeInsetsZero;
     imageInset.top = (buttonHeight - iconSize) / 2.0;
     imageInset.bottom = imageInset.top;
     imageInset.left = (buttonWidth - iconSize) / 2.0;
-    imageInset.right = imageInset.right;
+    imageInset.right = imageInset.left;
     button.imageEdgeInsets = imageInset;
     
     // width and height constraints are (less than or equal to) in case the view is hidden
     [button.widthAnchor constraintLessThanOrEqualToConstant:buttonWidth].active = YES;
     [button.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
     
+    [self addAccessoryButton:button];
+    
     return button;
+}
+
+- (UIColor *)contentViewBackgroundColor
+{
+    UIColor *color = nil;
+    if(self.highlighted) {
+        color = [WPStyleGuide mediumBlue];
+    }else {
+        color = [UIColor whiteColor];
+    }
+    
+    return color;
+}
+
+- (UIColor *)textLabelColor
+{
+    UIColor *color = nil;
+    if(self.highlighted) {
+        color = [UIColor whiteColor];
+    }else {
+        color = [WPStyleGuide darkGrey];
+    }
+    
+    return color;
+}
+
+- (UIColor *)iconTintColor
+{
+    UIColor *color = nil;
+    if(self.highlighted) {
+        color = [UIColor whiteColor];
+    }else {
+        color = [WPStyleGuide mediumBlue];
+    }
+    
+    return color;
 }
 
 #pragma mark - private
@@ -227,15 +275,7 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
 - (void)drawingViewDrawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    if(self.drawsHighlighted) {
-        [[self highlightedColor] set];
-    }else {
-        [self.contentBackgroundColor set];
-    }
-    
-    CGContextFillRect(context, rect);
-    
+        
     // draw a line on the bottom
     CGContextSetLineWidth(context, 1.0);
     CGContextMoveToPoint(context, 0, rect.size.height);
@@ -252,17 +292,17 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    self.drawsHighlighted = YES;
+    self.highlighted = YES;
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    self.drawsHighlighted = NO;
+    self.highlighted = NO;
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    self.drawsHighlighted = NO;
+    self.highlighted = NO;
 }
 
 @end
