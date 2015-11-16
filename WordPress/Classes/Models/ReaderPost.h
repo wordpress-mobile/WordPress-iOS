@@ -4,6 +4,7 @@
 #import "ReaderPostContentProvider.h"
 
 @class ReaderAbstractTopic;
+@class ReaderCrossPostMeta;
 @class SourcePostAttribution;
 @class Comment;
 
@@ -47,7 +48,9 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) BOOL isJetpack;
 @property (nonatomic) NSNumber *wordCount;
 @property (nonatomic) NSNumber *readingTime;
+@property (nonatomic, strong) ReaderCrossPostMeta *crossPostMeta;
 
+- (BOOL)isCrossPost;
 - (BOOL)isPrivate;
 - (NSString *)authorString;
 - (NSString *)avatar;

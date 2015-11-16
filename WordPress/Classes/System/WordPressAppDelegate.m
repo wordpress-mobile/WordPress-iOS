@@ -1069,4 +1069,10 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[NSUserDefaults standardUserDefaults] setBool:mustShow forKey:MustShowWhatsNewPopup];
 }
 
+- (BOOL)testSuiteIsRunning
+{
+    Class testSuite = NSClassFromString(@"XCTestCase");
+    return testSuite != nil;
+}
+
 @end
