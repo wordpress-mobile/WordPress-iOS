@@ -762,6 +762,9 @@ import Foundation
         - The current time must be greater than the last sync interval.
     */
     func syncIfAppropriate() {
+        if WordPressAppDelegate.sharedInstance().testSuiteIsRunning {
+            return
+        }
         let lastSynced = readerTopic?.lastSynced == nil ? NSDate(timeIntervalSince1970: 0) : readerTopic!.lastSynced
         if canSync() && Int(lastSynced.timeIntervalSinceNow) < refreshInterval {
             syncHelper.syncContentWithUserInteraction(false)
