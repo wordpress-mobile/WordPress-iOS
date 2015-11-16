@@ -269,20 +269,20 @@ NSString * const PostFormatStandard = @"standard";
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isHostedAtWPcom && self.privacy == SiteVisibilityPrivate);
+    return (self.isHostedAtWPcom && [self.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
 }
 
 - (SiteVisibility)siteVisibility
 {
-    switch (self.privacy) {
+    switch ([self.privacy integerValue]) {
         case (SiteVisibilityHidden):
-            return SiteVisibilityHidden;
+            return @(SiteVisibilityHidden);
             break;
         case (SiteVisibilityPublic):
-            return SiteVisibilityPublic;
+            return @(SiteVisibilityPublic);
             break;
         case (SiteVisibilityPrivate):
-            return SiteVisibilityPrivate;
+            return @(SiteVisibilityPrivate);
             break;
         default:
             break;
@@ -294,13 +294,13 @@ NSString * const PostFormatStandard = @"standard";
 {
     switch (siteVisibility) {
         case (SiteVisibilityHidden):
-            self.privacy = SiteVisibilityHidden;
+            self.privacy = @(SiteVisibilityHidden);
             break;
         case (SiteVisibilityPublic):
-            self.privacy = SiteVisibilityPublic;
+            self.privacy = @(SiteVisibilityPublic);
             break;
         case (SiteVisibilityPrivate):
-            self.privacy = SiteVisibilityPrivate;
+            self.privacy = @(SiteVisibilityPrivate);
             break;
         default:
             NSParameterAssert(siteVisibility >= SiteVisibilityPrivate && siteVisibility <= SiteVisibilityPublic);
@@ -614,13 +614,13 @@ NSString * const PostFormatStandard = @"standard";
     self.settings.tagline = blogTagline;
 }
 
-- (NSInteger)defaultCategoryID
+- (NSNumber *)defaultCategoryID
 {
     NSParameterAssert(self.settings);
     return self.settings.defaultCategoryID;
 }
 
-- (void)setDefaultCategoryID:(NSInteger)defaultCategoryID
+- (void)setDefaultCategoryID:(NSNumber *)defaultCategoryID
 {
     NSParameterAssert(self.settings);
     self.settings.defaultCategoryID = defaultCategoryID;
@@ -638,13 +638,13 @@ NSString * const PostFormatStandard = @"standard";
     self.settings.defaultPostFormat = defaultPostFormat;
 }
 
-- (NSInteger)privacy
+- (NSNumber *)privacy
 {
     NSParameterAssert(self.settings);
     return self.settings.privacy;
 }
 
-- (void)setPrivacy:(NSInteger)privacy
+- (void)setPrivacy:(NSNumber *)privacy
 {
     NSParameterAssert(self.settings);
     self.settings.privacy = privacy;

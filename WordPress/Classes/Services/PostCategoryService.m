@@ -39,9 +39,9 @@
     return NO;
 }
 
-- (PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSInteger)categoryID
+- (PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", @(categoryID)];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", categoryID];
     return [self findWithBlogObjectID:blogObjectID predicate:predicate];
 }
 

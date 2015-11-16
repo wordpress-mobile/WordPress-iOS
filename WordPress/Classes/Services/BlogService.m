@@ -776,24 +776,24 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // General
     settings.name = remoteSettings.name;
     settings.tagline = remoteSettings.tagline;
-    settings.privacy = [remoteSettings.privacy intValue];
+    settings.privacy = remoteSettings.privacy ?: settings.privacy;
     
     // Writing
-    settings.defaultCategoryID = [remoteSettings.defaultCategoryID integerValue];
+    settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;
     settings.defaultPostFormat = remoteSettings.defaultPostFormat ?: settings.defaultPostFormat;
 
     // Discussion
     settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
     settings.commentsBlacklistKeys = remoteSettings.commentsBlacklistKeys;
     settings.commentsCloseAutomatically = [remoteSettings.commentsCloseAutomatically boolValue];
-    settings.commentsCloseAutomaticallyAfterDays = [remoteSettings.commentsCloseAutomaticallyAfterDays intValue];
+    settings.commentsCloseAutomaticallyAfterDays = remoteSettings.commentsCloseAutomaticallyAfterDays;
     settings.commentsFromKnownUsersWhitelisted = [remoteSettings.commentsFromKnownUsersWhitelisted boolValue];
     
-    settings.commentsMaximumLinks = [remoteSettings.commentsMaximumLinks intValue];
+    settings.commentsMaximumLinks = remoteSettings.commentsMaximumLinks;
     settings.commentsModerationKeys = remoteSettings.commentsModerationKeys;
     
     settings.commentsPagingEnabled = [remoteSettings.commentsPagingEnabled boolValue];
-    settings.commentsPageSize = [remoteSettings.commentsPageSize intValue];
+    settings.commentsPageSize = remoteSettings.commentsPageSize;
     
     settings.commentsRequireManualModeration = [remoteSettings.commentsRequireManualModeration boolValue];
     settings.commentsRequireNameAndEmail = [remoteSettings.commentsRequireNameAndEmail boolValue];
@@ -801,7 +801,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     
     settings.commentsSortOrderAsString = remoteSettings.commentsSortOrder;
     
-    settings.commentsThreadingDepth = [remoteSettings.commentsThreadingDepth intValue];
+    settings.commentsThreadingDepth = remoteSettings.commentsThreadingDepth;
     settings.commentsThreadingEnabled = [remoteSettings.commentsThreadingEnabled boolValue];
     
     settings.pingbackInboundEnabled = [remoteSettings.pingbackInboundEnabled boolValue];
@@ -822,24 +822,24 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // General
     remoteSettings.name = settings.name;
     remoteSettings.tagline = settings.tagline;
-    remoteSettings.privacy = @(settings.privacy);
+    remoteSettings.privacy = settings.privacy;
     
     // Writing
-    remoteSettings.defaultCategoryID = @(settings.defaultCategoryID);
+    remoteSettings.defaultCategoryID = settings.defaultCategoryID;
     remoteSettings.defaultPostFormat = settings.defaultPostFormat;
 
     // Discussion
     remoteSettings.commentsAllowed = @(settings.commentsAllowed);
     remoteSettings.commentsBlacklistKeys = settings.commentsBlacklistKeys;
     remoteSettings.commentsCloseAutomatically = @(settings.commentsCloseAutomatically);
-    remoteSettings.commentsCloseAutomaticallyAfterDays = @(settings.commentsCloseAutomaticallyAfterDays);
+    remoteSettings.commentsCloseAutomaticallyAfterDays = settings.commentsCloseAutomaticallyAfterDays;
     remoteSettings.commentsFromKnownUsersWhitelisted = @(settings.commentsFromKnownUsersWhitelisted);
     
-    remoteSettings.commentsMaximumLinks = @(settings.commentsMaximumLinks);
+    remoteSettings.commentsMaximumLinks = settings.commentsMaximumLinks;
     remoteSettings.commentsModerationKeys = settings.commentsModerationKeys;
     
     remoteSettings.commentsPagingEnabled = @(settings.commentsPagingEnabled);
-    remoteSettings.commentsPageSize = @(settings.commentsPageSize);
+    remoteSettings.commentsPageSize = settings.commentsPageSize;
     
     remoteSettings.commentsRequireManualModeration = @(settings.commentsRequireManualModeration);
     remoteSettings.commentsRequireNameAndEmail = @(settings.commentsRequireNameAndEmail);
@@ -847,7 +847,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     remoteSettings.commentsSortOrder = settings.commentsSortOrderAsString;
     
-    remoteSettings.commentsThreadingDepth = @(settings.commentsThreadingDepth);
+    remoteSettings.commentsThreadingDepth = settings.commentsThreadingDepth;
     remoteSettings.commentsThreadingEnabled = @(settings.commentsThreadingEnabled);
     
     remoteSettings.pingbackInboundEnabled = @(settings.pingbackInboundEnabled);
