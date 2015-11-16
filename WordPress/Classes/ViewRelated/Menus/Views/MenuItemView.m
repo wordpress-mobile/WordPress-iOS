@@ -22,14 +22,12 @@
         self.iconType = MenuItemsActionableIconDefault;
         
         {
-            UIButton *button = [self newButtonIconViewWithType:MenuItemsActionableIconEdit];
-            [self.stackView addArrangedSubview:button];
+            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuItemsActionableIconEdit];
             self.editButton = button;
         }
         {
-            UIButton *button = [self newButtonIconViewWithType:MenuItemsActionableIconAdd];
+            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuItemsActionableIconAdd];
             [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-            [self.stackView addArrangedSubview:button];
             self.addButton = button;
         }
         {
@@ -39,10 +37,10 @@
             [button setTitleColor:[WPStyleGuide darkGrey] forState:UIControlStateNormal];
             [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
             [button.widthAnchor constraintLessThanOrEqualToConstant:63].active = YES;
-            [button.heightAnchor constraintEqualToConstant:36].active = YES;
+            [button.heightAnchor constraintEqualToConstant:MenuItemsActionableViewAccessoryButtonHeight].active = YES;
             button.hidden = YES;
             
-            [self.stackView addArrangedSubview:button];
+            [self addAccessoryButton:button];
             self.cancelButton = button;
         }
     }
@@ -77,9 +75,28 @@
     self.cancelButton.hidden = !showsCancelButtonOption;
 }
 
-- (UIColor *)highlightedColor
+- (UIColor *)contentViewBackgroundColor
 {
-    return [UIColor colorWithWhite:0.985 alpha:1.0];
+    UIColor *color = nil;
+    if(self.highlighted) {
+        color = [UIColor colorWithWhite:0.99 alpha:1.0];;
+    }else {
+        color = [UIColor whiteColor];
+    }
+    
+    return color;
+}
+
+- (UIColor *)textLabelColor
+{
+    UIColor *color = [WPStyleGuide darkGrey];
+    return color;
+}
+
+- (UIColor *)iconTintColor
+{
+    UIColor *color = [WPStyleGuide mediumBlue];
+    return color;
 }
 
 #pragma mark - buttons

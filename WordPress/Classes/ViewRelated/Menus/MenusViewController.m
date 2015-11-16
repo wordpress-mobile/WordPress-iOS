@@ -26,7 +26,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 @end
 
-@interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewDelegate>
+@interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewDelegate, MenuItemsViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
@@ -85,6 +85,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     
     self.headerView.delegate = self;
     self.detailsView.delegate = self;
+    self.itemsView.delegate = self;
     
     UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     activity.hidesWhenStopped = YES;
@@ -101,8 +102,14 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationItem.title = NSLocalizedString(@"Menus", @"Title for screen that allows configuration of your site's menus");
     
-    [self updateScrollViewContentSize];
     [self syncWithBlogMenus];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    [self updateScrollViewContentSize];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -167,7 +174,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    
+
 }
 
 #pragma mark - MenusHeaderViewDelegate
@@ -191,6 +198,15 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)detailsViewUpdatedMenuName:(MenuDetailsView *)menuDetailView
 {
     [self.headerView refreshMenuViewsUsingMenu:menuDetailView.menu];
+}
+
+#pragma mark - MenuItemsViewDelegate
+
+- (void)itemsViewAnimatingItemContentSizeChanges:(MenuItemsView *)itemsView previousSize:(CGSize)previousSize newSize:(CGSize)newSize
+{
+    CGPoint offset = self.scrollView.contentOffset;
+    offset.y += newSize.height - previousSize.height;
+    self.scrollView.contentOffset = offset;
 }
 
 #pragma mark - notifications
