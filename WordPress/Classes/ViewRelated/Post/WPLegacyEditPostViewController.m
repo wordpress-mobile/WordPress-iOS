@@ -16,7 +16,7 @@
 #import "WPMediaProgressTableViewController.h"
 #import "WPPostViewController.h"
 #import "WPProgressTableViewCell.h"
-#import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WPMediaPicker/WPMediaPicker.h>
@@ -373,7 +373,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
         self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
     }
     picker.dataSource = self.mediaLibraryDataSource;
-    picker.allowCaptureOfMedia = NO;
+    picker.allowCaptureOfMedia = YES;
     picker.showMostRecentFirst = YES;
     picker.filter = WPMediaTypeImage;
     
@@ -916,8 +916,8 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     }
     [self prepareMediaProgressForNumberOfAssets:assets.count];
     for (id<WPMediaAsset> asset in assets) {
-        if ([asset isKindOfClass:[ALAsset class]]){
-            [self addDeviceMediaAsset:(ALAsset *)asset];
+        if ([asset isKindOfClass:[PHAsset class]]){
+            [self addDeviceMediaAsset:(PHAsset *)asset];
         } else if ([asset isKindOfClass:[Media class]]) {
             [self addSiteMediaAsset:(Media *)asset];
         }
@@ -927,16 +927,16 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
 }
 
-- (void)addDeviceMediaAsset:(ALAsset *)asset
+- (void)addDeviceMediaAsset:(PHAsset *)asset
 {
-    if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+    if (asset.mediaType == PHAssetMediaTypeImage) {
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         __weak __typeof__(self) weakSelf = self;
         NSString* imageUniqueId = [self uniqueIdForMedia];
         NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
         createMediaProgress.totalUnitCount = 2;
         [self trackMediaWithId:imageUniqueId usingProgress:createMediaProgress];
-        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+        [mediaService createMediaWithPHAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
             if (error){
                 [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
                 [self stopTrackingProgressOfMediaWithId:imageUniqueId];
