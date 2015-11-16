@@ -31,15 +31,15 @@ extension PHAsset {
         case .Image:
             exportImageToURL(url,
                 targetUTI: targetUTI,
-                maximumResolution:maximumResolution,
-                stripGeoLocation:stripGeoLocation,
-                successHandler:successHandler,
+                maximumResolution: maximumResolution,
+                stripGeoLocation: stripGeoLocation,
+                successHandler: successHandler,
                 errorHandler: errorHandler)
         case .Video:
             exportVideoToURL(url,
                 targetUTI: targetUTI,
-                maximumResolution:maximumResolution,
-                stripGeoLocation:stripGeoLocation,
+                maximumResolution: maximumResolution,
+                stripGeoLocation: stripGeoLocation,
                 successHandler: successHandler,
                 errorHandler: errorHandler)
         default:
@@ -220,7 +220,7 @@ extension PHAsset {
         self.requestContentEditingInputWithOptions(editOptions) { (contentEditingInput, info) -> Void in
             guard let contentEditingInput = contentEditingInput,
                 let fullSizeImageURL = contentEditingInput.fullSizeImageURL,
-                let image = CIImage(contentsOfURL:fullSizeImageURL) else {
+                let image = CIImage(contentsOfURL: fullSizeImageURL) else {
                     completionBlock(metadata:[String:AnyObject]())
                     if let error = info[PHImageErrorKey] as? NSError {
                         failureBlock(error: error)
