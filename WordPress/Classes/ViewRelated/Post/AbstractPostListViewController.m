@@ -282,7 +282,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     return @{
              @"type":[self postTypeToSync],
              @"filter":self.currentPostListFilter.title,
-             WPAppAnalyticsKeyBlogID:[self.blog dotComID],
+             WPAppAnalyticsKeyBlogID:self.blog.dotComID,
              };
 }
 

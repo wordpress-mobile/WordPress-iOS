@@ -438,7 +438,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [self presentViewController:navController animated:YES completion:nil];
 
     [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
-             withProperties:@{ @"tap_source": @"posts_view",  WPAppAnalyticsKeyBlogID:[self.blog dotComID] }];
+             withProperties:@{ @"tap_source": @"posts_view",  WPAppAnalyticsKeyBlogID:self.blog.dotComID }];
 }
 
 - (void)previewEditPost:(AbstractPost *)apost
