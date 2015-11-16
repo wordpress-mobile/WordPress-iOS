@@ -925,7 +925,7 @@ import Foundation
             }
         }
 
-        WPAnalytics.track(.StatReaderInfiniteScroll, withProperties: propertyForStats())
+        WPAnalytics.track(.ReaderInfiniteScroll, withProperties: propertyForStats())
     }
 
     func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
@@ -1247,7 +1247,7 @@ import Foundation
         navigationController?.pushViewController(controller, animated: true)
 
         let properties = NSDictionary(object: post.blogURL, forKey: "URL") as! [NSObject : AnyObject]
-        WPAnalytics.track(.StatReaderSitePreviewed, withProperties: properties)
+        WPAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
@@ -1269,7 +1269,7 @@ import Foundation
         navigationController?.pushViewController(controller, animated: true)
 
         let properties = NSDictionary(object: post.primaryTagSlug, forKey: "tag") as! [NSObject : AnyObject]
-        WPAnalytics.track(.StatReaderTagPreviewed, withProperties: properties)
+        WPAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
