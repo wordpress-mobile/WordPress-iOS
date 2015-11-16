@@ -64,7 +64,7 @@ extension PHAsset {
         options.networkAccessAllowed = true
         var requestedSize = maximumResolution
         if (requestedSize == CGSize.zero) {
-            requestedSize = CGSize(width: self.pixelWidth, height: self.pixelHeight)
+            requestedSize = CGSize(width: pixelWidth, height: pixelHeight)
         }
         PHImageManager.defaultManager().requestImageForAsset(self, targetSize: requestedSize, contentMode: .AspectFit, options: options) { (image, info) -> Void in
             guard let image = image else {
@@ -235,7 +235,7 @@ extension PHAsset {
         }
     }
     
-    func originalUTI() -> (String?) {
+    func originalUTI() -> String? {
         let resources = PHAssetResource.assetResourcesForAsset(self)
         var types = [];
         if (mediaType == PHAssetMediaType.Image) {
@@ -251,7 +251,7 @@ extension PHAsset {
         return nil
     }
     
-    func originalFilename() -> (String?) {
+    func originalFilename() -> String? {
         let resources = PHAssetResource.assetResourcesForAsset(self)
         var types = [];
         if (mediaType == PHAssetMediaType.Image) {
