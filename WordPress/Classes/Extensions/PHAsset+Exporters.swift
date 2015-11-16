@@ -44,7 +44,8 @@ extension PHAsset {
                 errorHandler: errorHandler)
         default:
             errorHandler(error: errorForCode(.UnsupportedAssetType,
-                failureReason: NSLocalizedString("UnsupportedAssetType", comment: "Error reason to display when exporting an unknow asset type from the device library")))
+                failureReason: NSLocalizedString("This media type is not supported on WordPress.",
+                                                 comment: "Error reason to display when exporting an unknow asset type from the device library")))
         }
     }
     
