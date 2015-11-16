@@ -44,12 +44,14 @@
 
 - (void)reloadItemViews
 {
-    for(MenuItemsActionableView *itemView in self.itemViews) {
+    for(MenuItemsActionableView *itemView in self.stackView.arrangedSubviews) {
         [self.stackView removeArrangedSubview:itemView];
         [itemView removeFromSuperview];
     }
     
     self.itemViews = [NSMutableArray array];
+    self.placeholderViews = nil;
+    
     MenuItemView *lastItemView = nil;
     for(MenuItem *item in self.menu.items) {
                 
