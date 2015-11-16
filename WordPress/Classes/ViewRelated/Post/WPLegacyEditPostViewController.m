@@ -394,7 +394,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     }
 
     if (![self.post hasUnsavedChanges]) {
-        [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
+        [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:self.post.blog.dotComID} ];
         [self discardChanges];
         [self dismissEditView];
         return;
