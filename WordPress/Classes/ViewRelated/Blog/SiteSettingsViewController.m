@@ -478,7 +478,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     NSArray *hints = @[
                        NSLocalizedString(@"Your site is visible to everyone, and it may be indexed by search engines.",
                                          @"Hint for users when public privacy setting is set"),
-                       NSLocalizedString(@"Your site is visible to everyone, but asks to search engines to not index your site.",
+                       NSLocalizedString(@"Your site is visible to everyone, but asks search engines not to index your site.",
                                          @"Hint for users when hidden privacy setting is set"),
                        NSLocalizedString(@"Your site is only visible to you and users you approve.",
                                          @"Hint for users when private privacy setting is set"),
