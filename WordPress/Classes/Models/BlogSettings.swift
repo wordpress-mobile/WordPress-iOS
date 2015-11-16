@@ -119,7 +119,7 @@ public class BlogSettings : NSManagedObject
     /**
      *  @details Indicates the sorting order of the comments. Ascending / Descending, based on the date.
      */
-    @NSManaged var commentsSortOrder : NSNumber?
+    @NSManaged var commentsSortOrder : Int
     
     /**
      *  @details Indicates the number of levels allowed per comment.
