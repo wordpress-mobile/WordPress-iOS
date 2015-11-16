@@ -442,7 +442,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 - (NSDictionary *)propertiesForAnalytics
 {
     return @{
-             WPAppAnalyticsKeyBlogID:[self.blog dotComID],
+             WPAppAnalyticsKeyBlogID:self.blog.dotComID,
              };
 }
 
