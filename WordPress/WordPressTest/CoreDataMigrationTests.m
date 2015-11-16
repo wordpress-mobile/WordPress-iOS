@@ -753,14 +753,29 @@
 
 - (void)cleanModelObjectClassnames:(NSManagedObjectModel *)model
 {
-    // NOTE: Suppose the following scenario...
+    // NOTE:
+    // =====
+    // Suppose the following scenario...
     //  -   `Model N`'s Entity X contains `Attribute A`
     //  -   `Model N+1`'s Entity X *class* implementation differs from the one bundled in N.
     //      Added / Removed Attributes. It could differ vastly!
     //
-    // Problem is... whenever we test `Model N` or `Model N+1`, Core Data will always load the latest
-    // NSManagedObject subclass. This could prove troublesome in a variety of scenarios.
+    // Problem is... whenever we test `Model N` or `Model N+1`, Core Data will always instantiate the latest
+    // NSManagedObject subclass implementation. This could prove troublesome in a variety of scenarios.
     // For that reason, we're implementing this helper, which will nuke NSMO's classnames.
+    //
+    // For instance:
+    // =============
+    // In our Data Model 40, Blog had its `blogTagline` property embedded right there.
+    // Afterwards, this was moved over to `BlogSettings`, and renamed.
+    // If we load a Core Data Stack with an old Model definition, the latest `Blog` class implementation
+    // will be instantiated.
+    //
+    // Since the `Blog` NSManagedObject subclass implementation may map any of its latest properties
+    // (such as `settings.tagline`), we may get Unit Test exceptions (due to the missing / invalid properties).
+    //
+    // The goal of this method is to prevent such scenarios. Please, note that Heavyweight Migrations, also,
+    // only deal with NSManagedObject instances (the actuall MO's subclasses never get instantiated there).
     //
     for (NSEntityDescription *entity in model.entities) {
         entity.managedObjectClassName = nil;
