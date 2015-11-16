@@ -162,7 +162,7 @@
         <attribute name="relatedPostsShowHeadline" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="relatedPostsShowThumbnails" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="blog" optional="YES" maxCount="1" deletionRule="No Action" destinationEntity="Blog" inverseName="settings" inverseEntity="Blog" syncable="YES"/>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="settings" inverseEntity="Blog" syncable="YES"/>
     </entity>
     <entity name="Category" representedClassName="PostCategory">
         <attribute name="categoryID" optional="YES" attributeType="Integer 32" defaultValueString="-1">
