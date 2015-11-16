@@ -7,7 +7,7 @@
 #import "WordPress-Swift.h"
 #import "WordPressTests-Swift.h"
 
-static NSTimeInterval const TestExpectationTimeout = 2;
+static NSTimeInterval const TestExpectationTimeout = 5;
 
 @interface BlogServiceRemoteRESTTests : XCTestCase
 @end
@@ -25,7 +25,7 @@ static NSTimeInterval const TestExpectationTimeout = 2;
     BlogServiceRemoteREST *service = nil;
     
     NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/users", blog.dotComID];
-    
+
     OCMStub([api GET:[OCMArg isEqual:url]
           parameters:[OCMArg isKindOfClass:[NSDictionary class]]
              success:[OCMArg isNotNil]
