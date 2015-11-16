@@ -49,11 +49,11 @@ extension WPStyleGuide
 
     // MARK: - Card Attributed Text Attributes
 
-    public class func readerXpostTitleAttributes() -> [NSObject: AnyObject] {
-        let fontSize = Cards.xPostTitleFontSize
+    public class func readerCrossPostTitleAttributes() -> [NSObject: AnyObject] {
+        let fontSize = Cards.crossPostTitleFontSize
         let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
 
-        let lineHeight = Cards.xPostLineHeight
+        let lineHeight = Cards.crossPostLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
@@ -65,11 +65,11 @@ extension WPStyleGuide
         ]
     }
 
-    public class func readerXpostBoldSubtitleAttributes() -> [NSObject: AnyObject] {
-        let fontSize = Cards.xPostSubtitleFontSize
+    public class func readerCrossPostBoldSubtitleAttributes() -> [NSObject: AnyObject] {
+        let fontSize = Cards.crossPostSubtitleFontSize
         let font = WPFontManager.openSansBoldFontOfSize(fontSize)
 
-        let lineHeight = Cards.xPostLineHeight
+        let lineHeight = Cards.crossPostLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
@@ -81,11 +81,11 @@ extension WPStyleGuide
         ]
     }
 
-    public class func readerXpostSubtitleAttributes() -> [NSObject: AnyObject] {
-        let fontSize = Cards.xPostSubtitleFontSize
+    public class func readerCrossPostSubtitleAttributes() -> [NSObject: AnyObject] {
+        let fontSize = Cards.crossPostSubtitleFontSize
         let font = WPFontManager.openSansRegularFontOfSize(fontSize)
 
-        let lineHeight = Cards.xPostLineHeight
+        let lineHeight = Cards.crossPostLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
@@ -301,9 +301,9 @@ extension WPStyleGuide
         public static let buttonFontSize:CGFloat = 14.0
         public static let subtextFontSize:CGFloat = 12.0
         public static let loadMoreButtonFontSize:CGFloat = 15.0
-        public static let xPostTitleFontSize:CGFloat = 16.0
-        public static let xPostSubtitleFontSize:CGFloat = 13.0
-        public static let xPostLineHeight:CGFloat = 20.0
+        public static let crossPostTitleFontSize:CGFloat = 16.0
+        public static let crossPostSubtitleFontSize:CGFloat = 13.0
+        public static let crossPostLineHeight:CGFloat = 20.0
     }
 
 }
