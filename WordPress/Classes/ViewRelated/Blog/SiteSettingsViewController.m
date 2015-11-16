@@ -630,10 +630,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     switch (row) {
         case SiteSettingsWritingDefaultCategory:{
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            NSNumber *defaultCategoryID = self.blog.defaultCategoryID;
-            if (!defaultCategoryID) {
-                defaultCategoryID = @(PostCategoryUncategorized);
-            }
+            NSInteger defaultCategoryID = self.blog.defaultCategoryID;
             PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
             NSArray *currentSelection = @[];
             if (postCategory){
@@ -890,7 +887,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 - (void)postCategoriesViewController:(PostCategoriesViewController *)controller
                    didSelectCategory:(PostCategory *)category
 {
-    self.blog.defaultCategoryID = category.categoryID;
+    self.blog.defaultCategoryID = [category.categoryID intValue];
     self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
     [self saveSettings];
 }

@@ -779,7 +779,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.privacy = remoteSettings.privacy ?: settings.privacy;
     
     // Writing
-    settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;
+    if (remoteSettings.defaultCategoryID) {
+        settings.defaultCategoryID = [remoteSettings.defaultCategoryID integerValue];
+    }
+    
     settings.defaultPostFormat = remoteSettings.defaultPostFormat ?: settings.defaultPostFormat;
 
     // Discussion
@@ -825,7 +828,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     remoteSettings.privacy = settings.privacy;
     
     // Writing
-    remoteSettings.defaultCategoryID = settings.defaultCategoryID;
+    remoteSettings.defaultCategoryID = @(settings.defaultCategoryID);
     remoteSettings.defaultPostFormat = settings.defaultPostFormat;
 
     // Discussion
