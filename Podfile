@@ -8,8 +8,7 @@ use_frameworks!
 
 platform :ios, '9.0'
 pod '1PasswordExtension', '1.6.4'
-# Pin to 2.6.0 to avoid an issue with optionals in failure blocks
-pod 'AFNetworking',	'2.6.0'
+pod 'AFNetworking',	'2.6.3'
 pod 'Reachability',	'3.2'
 pod 'NSURL+IDN', '0.3'
 pod 'DTCoreText',   '1.6.16'
@@ -33,7 +32,7 @@ pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'Simperium', '0.8.9'
 pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
 pod 'WordPress-iOS-Shared', '0.5.0'
-#pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '34d484172a4e4f5013289023468098fb8764d2c7'
+#pod 'WordPress-iOS-Editor', '1.0'
 pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :branch => 'fix/framework-support'
 #pod 'WordPressCom-Stats-iOS', '0.4.10'
 pod 'WordPressCom-Stats-iOS', :branch => 'fix/framework-support-take-2', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
