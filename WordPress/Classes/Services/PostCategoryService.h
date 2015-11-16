@@ -7,7 +7,7 @@
 
 - (PostCategory *)newCategoryForBlogObjectID:(NSManagedObjectID *)blogObjectID;
 
-- (PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSInteger)categoryID;
+- (PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID;
 - (PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID parentID:(NSNumber *)parentID andName:(NSString *)name;
 
 - (void)syncCategoriesForBlog:(Blog *)blog
