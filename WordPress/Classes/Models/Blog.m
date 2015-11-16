@@ -276,13 +276,13 @@ NSString * const PostFormatStandard = @"standard";
 {
     switch ([self.privacy integerValue]) {
         case (SiteVisibilityHidden):
-            return @(SiteVisibilityHidden);
+            return SiteVisibilityHidden;
             break;
         case (SiteVisibilityPublic):
-            return @(SiteVisibilityPublic);
+            return SiteVisibilityPublic;
             break;
         case (SiteVisibilityPrivate):
-            return @(SiteVisibilityPrivate);
+            return SiteVisibilityPrivate;
             break;
         default:
             break;
@@ -313,7 +313,7 @@ NSString * const PostFormatStandard = @"standard";
     if (!self.privacy) {
         [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
     }
-    return [BlogSiteVisibilityHelper textForSiteVisibility:self.privacy];
+    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.privacy intValue]];
 }
 
 
