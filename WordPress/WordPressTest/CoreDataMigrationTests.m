@@ -651,6 +651,8 @@
     for (NSString *key in migratedSettingsMap) {
         XCTAssertEqualObjects([blogSettings valueForKey:key], [migratedSettingsMap valueForKey:key], @"Oops");
     }
+    
+    XCTAssertNotNil([blogSettings valueForKey:@"blog"], @"Missing Blog");
 }
 
 
