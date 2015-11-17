@@ -329,7 +329,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (CGFloat)heightForSearchWrapperView
 {
     UINavigationBar *navBar = self.navigationController.navigationBar;
-    CGFloat height = CGRectGetHeight(navBar.frame) + self.topLayoutGuide.length;
+    CGFloat height = CGRectGetHeight(navBar.frame) + [UIApplication sharedApplication].statusBarFrame.size.height;
     return MAX(height, SearchWrapperViewMinHeight);
 }
 
