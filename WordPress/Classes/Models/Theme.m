@@ -9,7 +9,7 @@ static NSString* const ThemeDomainPremium = @"premium";
 static NSString* const ThemeUrlPreview = @"%@/wp-admin/customize.php?theme=%@/%@";
 static NSString* const ThemeAdminUrlCustomize = @"customize.php?hide_close=true";
 static NSString* const ThemeUrlDemoParameters = @"?demo=true&iframe=true&theme_preview=true";
-static NSString* const ThemeUrlSupport = @"https://theme.wordpress.com/themes/%@/support";
+static NSString* const ThemeUrlSupport = @"https://theme.wordpress.com/themes/%@/support/?preview=true&iframe=true";
 static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@";
 
 @implementation Theme
