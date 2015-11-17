@@ -570,6 +570,21 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatSharedItemViaWeibo:
             eventName = @"shared_item_via_weibo";
             break;
+        case WPAnalyticsStatShortcutLogIn:
+            eventName = @"3d_touch_shortcut_log_in";
+            break;
+        case WPAnalyticsStatShortcutNewPost:
+            eventName = @"3d_touch_shortcut_new_post";
+            break;
+        case WPAnalyticsStatShortcutNotifications:
+            eventName = @"3d_touch_shortcut_notifications";
+            break;
+        case WPAnalyticsStatShortcutNewPhotoPost:
+            eventName = @"3d_touch_shortcut_new_photo_post";
+            break;
+        case WPAnalyticsStatShortcutStats:
+            eventName = @"3d_touch_shortcut_stats";
+            break;
         case WPAnalyticsStatSignedIn:
             eventName = @"signed_in";
             break;

@@ -24,7 +24,6 @@
 #import "NotificationsManager.h"
 #import "ContextManager.h"
 #import "AccountService.h"
-#import "WPImageOptimizer.h"
 #import "Constants.h"
 #import "Mediaservice.h"
 #import "WPLookbackPresenter.h"
@@ -117,6 +116,16 @@ static CGFloat const SettingsRowHeight = 44.0;
     return [NSString stringWithFormat:@"%.0fpx X %.0fpx", savedSize.width, savedSize.height];
 }
 
+- (NSString *)accessibilityTextForMediaSize
+{
+    CGSize savedSize = [MediaService maxImageSizeSetting];
+    if (CGSizeEqualToSize(savedSize, MediaMaxImageSize)) {
+        return NSLocalizedString(@"Original", @"Label title. Indicates an image will use its original size when uploaded.");
+    }
+
+    return [NSString stringWithFormat:NSLocalizedString(@"%.0f pixels", @"Spoken Text when changing the media size slider"), savedSize.width];
+}
+
 - (UILabel *)mediaCellTitleLabel
 {
     if (_mediaCellTitleLabel) {
@@ -152,6 +161,7 @@ static CGFloat const SettingsRowHeight = 44.0;
     slider.minimumValue = MediaMinImageSizeDimension;
     slider.maximumValue = MediaMaxImageSizeDimension;
     slider.value = [MediaService maxImageSizeSetting].width;
+    slider.accessibilityValue = [self accessibilityTextForMediaSize];
     [slider addTarget:self action:@selector(handleImageSizeChanged:) forControlEvents:UIControlEventValueChanged];
     self.mediaSizeSlider = slider;
 
@@ -168,6 +178,9 @@ static CGFloat const SettingsRowHeight = 44.0;
     CGFloat y = CGRectGetMaxY(self.mediaSizeSlider.frame) - MediaSizeControlOffset;
     CGRect frame = CGRectMake(HorizontalMargin, y, width, MediaSizeControlHeight);
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    // The value of this label is already read by the slider value
+    // Let's mark it hidden so it's not spoken twice
+    label.accessibilityElementsHidden = YES;
     label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     label.font = [WPStyleGuide tableviewSubtitleFont];
     label.textColor = [WPStyleGuide whisperGrey];
@@ -186,6 +199,7 @@ static CGFloat const SettingsRowHeight = 44.0;
     [MediaService setMaxImageSizeSetting:CGSizeMake(value, value)];
 
     [self.mediaSizeSlider setValue:value animated:NO];
+    self.mediaSizeSlider.accessibilityValue = [self accessibilityTextForMediaSize];
     self.mediaCellSizeLabel.text = [self textForMediaCellSize];
 }
 

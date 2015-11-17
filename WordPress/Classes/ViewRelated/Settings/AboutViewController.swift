@@ -142,7 +142,7 @@ public class AboutViewController : UITableViewController
         // Let's follow the same procedure executed as in NotificationsViewController, so that if the user
         // manually decides to rate the app, we don't render the prompt!
         //
-        WPAnalytics.track(WPAnalyticsStat.AppReviewsRatedApp)
+        WPAnalytics.track(.AppReviewsRatedApp)
         AppRatingUtility.ratedCurrentVersion()
         ABXAppStore.openAppStoreForApp(WPiTunesAppId)
     }
