@@ -31,7 +31,8 @@ typedef NS_ENUM(NSInteger, MeSectionSections)
 };
 
 typedef NS_ENUM(NSInteger, MeSectionAccount) {
-    MeSectionAccountSettings = 0,
+    MeSectionAccountMyProfile = 0,
+    MeSectionAccountSettings,
     MeSectionAccountNotifications,
     MeSectionAccountCount
 };
@@ -242,6 +243,11 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
     if (indexPath.section == MeSectionsAccount) {
         switch (indexPath.row) {
+            case MeSectionAccountMyProfile:
+                cell.textLabel.text = NSLocalizedString(@"My Profile", @"");
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
             case MeSectionAccountSettings:
                 cell.textLabel.text = NSLocalizedString(@"Account Settings", @"");
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -333,6 +339,9 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
     if (indexPath.section == MeSectionsAccount) {
         switch (indexPath.row) {
+            case MeSectionAccountMyProfile:
+                [self navigateToMyProfile];
+                break;
             case MeSectionAccountSettings:
                 [self navigateToAccountSettings];
                 break;
@@ -391,6 +400,12 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 }
 
 #pragma mark - Actions
+
+- (void)navigateToMyProfile
+{
+    // TODO: add analytics (@koke 2015-11-17)
+    // TODO: add profile page (@koke 2015-11-17)
+}
 
 - (void)navigateToAccountSettings
 {
