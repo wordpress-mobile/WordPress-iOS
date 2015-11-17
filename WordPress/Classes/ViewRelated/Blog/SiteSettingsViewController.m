@@ -446,7 +446,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         }
         case SiteSettingsSectionRemoveSite: {
             return self.removeSiteCell;
-        } break;
+        }
     }
 
     NSAssert(false, @"Missing section handler");
