@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
 #import "LocalCoreDataService.h"
 
 extern CGSize const MediaMaxImageSize;
@@ -22,10 +23,9 @@ extern NSInteger const MediaMaxImageSizeDimension;
  @param postObjectID
  @completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
  */
-- (void)createMediaWithAsset:(ALAsset *)asset
+- (void)createMediaWithPHAsset:(PHAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
                   completion:(void (^)(Media *media, NSError *error))completion;
-
 
 /**
  Get the Media object from the server using the blog and the mediaID as the identifier of the resource
