@@ -12,6 +12,7 @@
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) NSMutableArray *itemViews;
 @property (nonatomic, strong) NSMutableArray *placeholderViews;
+@property (nonatomic, strong) MenuItemView *toggledItemView;
 
 @end
 
@@ -116,6 +117,8 @@
 
 - (void)insertPlaceholderItemViewsAroundItemView:(MenuItemView *)toggledItemView
 {
+    self.toggledItemView = toggledItemView;
+    
     self.placeholderViews = [NSMutableArray arrayWithCapacity:3];
     [self addNewBlankItemViewWithType:MenuItemPlaceholderViewTypeAbove forItemView:toggledItemView];
     [self addNewBlankItemViewWithType:MenuItemPlaceholderViewTypeBelow forItemView:toggledItemView];
@@ -124,17 +127,19 @@
 
 - (void)insertItemPlaceholderViewsAroundItemView:(MenuItemView *)toggledItemView animated:(BOOL)animated
 {
-    CGSize previousSize = CGSizeMake(self.stackView.frame.size.width, self.stackView.frame.size.height);
-    CGSize newSize = CGSizeMake(self.stackView.frame.size.width, self.stackView.frame.size.height);
-
+    CGRect previousRect = toggledItemView.frame;
+    CGRect updatedRect = toggledItemView.frame;
+    
     [self insertPlaceholderItemViewsAroundItemView:toggledItemView];
     
     if(!animated) {
         return;
     }
     
+    // since we are adding content above the toggledItemView, the toggledItemView (focus) will move downwards with the updated content size
+    updatedRect.origin.y += MenuItemsActionableViewDefaultHeight;
+    
     for(MenuItemPlaceholderView *placeholderView in self.placeholderViews) {
-        newSize.height += MenuItemsActionableViewDefaultHeight;
         placeholderView.hidden = YES;
         placeholderView.alpha = 0.0;
     }
@@ -146,7 +151,9 @@
             placeholderView.alpha = 1.0;
         }
         
-        [self.delegate itemsViewAnimatingItemContentSizeChanges:self previousSize:previousSize newSize:newSize];
+        // inform the delegate to handle this content change based on the rect we are focused on
+        // a delegate will likely scroll the content with the size change
+        [self.delegate itemsViewAnimatingContentSizeChanges:self focusedRect:previousRect updatedFocusRect:updatedRect];
         
     } completion:^(BOOL finished) {
         
@@ -162,6 +169,8 @@
     
     self.placeholderViews = nil;
     [self.stackView setNeedsLayout];
+    
+    self.toggledItemView = nil;
 }
 
 - (void)removeItemPlaceholderViews:(BOOL)animated
@@ -171,12 +180,21 @@
         return;
     }
     
+    CGRect previousRect = self.toggledItemView.frame;
+    CGRect updatedRect = self.toggledItemView.frame;
+    // since we are removing content above the toggledItemView, the toggledItemView (focus) will move upwards with the updated content size
+    updatedRect.origin.y -= MenuItemsActionableViewDefaultHeight;
+    
     [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
        
         for(MenuItemPlaceholderView *placeholderView in self.placeholderViews) {
             placeholderView.hidden = YES;
             placeholderView.alpha = 0.0;
         }
+        
+        // inform the delegate to handle this content change based on the rect we are focused on
+        // a delegate will likely scroll the content with the size change
+        [self.delegate itemsViewAnimatingContentSizeChanges:self focusedRect:previousRect updatedFocusRect:updatedRect];
         
     } completion:^(BOOL finished) {
 

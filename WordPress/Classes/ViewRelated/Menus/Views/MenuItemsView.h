@@ -13,6 +13,6 @@
 
 @protocol MenuItemsViewDelegate <NSObject>
 
-- (void)itemsViewAnimatingItemContentSizeChanges:(MenuItemsView *)itemsView previousSize:(CGSize)previousSize newSize:(CGSize)newSize;
+- (void)itemsViewAnimatingContentSizeChanges:(MenuItemsView *)itemsView focusedRect:(CGRect)focusedRect updatedFocusRect:(CGRect)updatedFocusRect;
 
 @end
