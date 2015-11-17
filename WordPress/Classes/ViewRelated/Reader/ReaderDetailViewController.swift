@@ -29,10 +29,20 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
     @IBOutlet private weak var actionButtonLeft: UIButton!
 
     private weak var detailView: ReaderDetailView!
-    public var post: ReaderPost?
 
     private var didBumpStats: Bool = false
     private var didBumpPageViews: Bool = false
+    public var isLoggedIn: Bool = true
+
+
+    public var post: ReaderPost? {
+        didSet{
+            if isViewLoaded() {
+                configureView()
+            }
+        }
+    }
+
 
     // MARK: - Convenience Factories
 
@@ -63,7 +73,8 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
 
     // MARK: - LifeCycle Methods
     deinit {
-        post?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
+        //TODO:
+//        post?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
@@ -71,6 +82,21 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
     public override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Styles
+        WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonLeft)
+        WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonRight)
+
+        // Is Logged In
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let account = service.defaultWordPressComAccount()
+        isLoggedIn = account != nil
+
+        setupNavBar()
+
+        if post != nil {
+            configureView()
+        }
     }
 
 
@@ -141,14 +167,23 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
     }
 
 
-    // MARK: - Configuration
-
-    func configureNavBar() {
+    func setupNavBar() {
         // Don't show 'Reader' in the next-view back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
+        configureTitle()
 
         // TODO: ?? do we need this?
         //        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
+    }
+
+
+    // MARK: - Configuration
+
+    func configureView() {
+        configureTitle();
+        configureTag()
+        configureActionButtons()
+        configureDetailView()
     }
 
 
@@ -156,6 +191,97 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
 
     }
 
+    private func configureTitle() {
+        self.title = (post != nil) ? post?.postTitle : NSLocalizedString("Post", comment:"Placeholder title for ReaderPostDetails.")
+    }
+
+    private func configureTag() {
+        var tag = ""
+        if let rawTag = post?.primaryTag {
+            if (rawTag.characters.count > 0) {
+                tag = "#\(rawTag)"
+            }
+        }
+        tagButton.hidden = tag.characters.count == 0
+        tagButton.setTitle(tag, forState: .Normal)
+        tagButton.setTitle(tag, forState: .Highlighted)
+    }
+
+
+    private func configureActionButtons() {
+
+        var buttons = [
+            actionButtonLeft,
+            actionButtonRight
+        ]
+
+        // Show likes if logged in, or if likes exist, but not if external
+        if (isLoggedIn || post!.likeCount.integerValue > 0) && !post!.isExternal {
+            let button = buttons.removeLast() as UIButton
+            configureLikeActionButton(button)
+        }
+
+        // Show comments if logged in and comments are enabled, or if comments exist.
+        // But only if it is from wpcom (jetpack and external is not yet supported).
+        // Nesting this conditional cos it seems clearer that way
+        if post!.isWPCom {
+            if (isLoggedIn && post!.commentsOpen) || post!.commentCount.integerValue > 0 {
+                let button = buttons.removeLast() as UIButton
+                configureCommentActionButton(button)
+            }
+        }
+
+        resetActionButtons(buttons)
+    }
+
+    private func resetActionButtons(buttons:[UIButton!]) {
+        for button in buttons {
+            resetActionButton(button)
+        }
+    }
+
+    private func resetActionButton(button:UIButton) {
+        button.setTitle(nil, forState: .Normal)
+        button.setTitle(nil, forState: .Highlighted)
+        button.setTitle(nil, forState: .Disabled)
+        button.setImage(nil, forState: .Normal)
+        button.setImage(nil, forState: .Highlighted)
+        button.setImage(nil, forState: .Disabled)
+        button.selected = false
+        button.hidden = true
+        button.enabled = true
+    }
+
+    private func configureActionButton(button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected:Bool) {
+        button.setTitle(title, forState: .Normal)
+        button.setTitle(title, forState: .Highlighted)
+        button.setTitle(title, forState: .Disabled)
+        button.setImage(image, forState: .Normal)
+        button.setImage(highlightedImage, forState: .Highlighted)
+        button.setImage(image, forState: .Disabled)
+        button.selected = selected
+        button.hidden = false
+    }
+
+    private func configureLikeActionButton(button: UIButton) {
+        button.tag = CardAction.Like.rawValue
+        button.enabled = isLoggedIn
+
+        let title = post!.likeCountForDisplay()
+        let imageName = post!.isLiked ? "icon-reader-liked" : "icon-reader-like"
+        let image = UIImage(named: imageName)
+        let highlightImage = UIImage(named: "icon-reader-like-highlight")
+        let selected = post!.isLiked
+        configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:selected)
+    }
+
+    private func configureCommentActionButton(button: UIButton) {
+        button.tag = CardAction.Comment.rawValue
+        let title = post?.commentCount.stringValue
+        let image = UIImage(named: "icon-reader-comment")
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")
+        configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:false)
+    }
 
     // MARK: - Analytics
 
@@ -226,5 +352,55 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
     }
 
 
+
+    // MARK: - Actions
+
+    @IBAction func didTapTagButton(sender: UIButton) {
+        if post == nil {
+            return
+        }
+
+        let controller = ReaderStreamViewController.controllerWithTagSlug(post!.primaryTagSlug)
+        navigationController?.pushViewController(controller, animated: true)
+
+        let properties = NSDictionary(object: post!.primaryTagSlug, forKey: "tag") as [NSObject : AnyObject]
+        WPAnalytics.track(.StatReaderTagPreviewed, withProperties: properties)
+    }
+
+    @IBAction func didTapActionButton(sender: UIButton) {
+        if post == nil {
+            return
+        }
+
+        let tag = CardAction(rawValue: sender.tag)!
+        switch tag {
+
+        case .Comment :
+            // Comment action
+            let controller = ReaderCommentsViewController(post: post)
+            navigationController?.pushViewController(controller, animated: true)
+
+        case .Like :
+            // Like Action
+            let service = ReaderPostService(managedObjectContext: post!.managedObjectContext)
+            service.toggleLikedForPost(post, success: nil, failure: { (error:NSError?) in
+                if let anError = error {
+                    DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
+                }
+            })
+        }
+    }
+    
+
+
+
+
+    // MARK: - Private Types
+
+    private enum CardAction: Int
+    {
+        case Comment = 1
+        case Like
+    }
 
 }
