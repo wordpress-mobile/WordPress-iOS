@@ -203,7 +203,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
     // Add Title
     if (_titleLabel == nil) {
         _titleLabel = [[UILabel alloc] init];
-        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Create WordPress.com blog", @"Create WordPress.com blog Title")
+        _titleLabel.attributedText = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Create a new WordPress.com site", @"Create a new WordPress.com site Title")
                                                                      attributes:[WPNUXUtility titleAttributesWithColor:[UIColor whiteColor]]];
         _titleLabel.adjustsFontSizeToFitWidth = YES;
         _titleLabel.backgroundColor = [UIColor clearColor];
@@ -260,7 +260,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
     // Add Next Button
     if (_createBlogButton == nil) {
         _createBlogButton = [[WPNUXMainButton alloc] init];
-        [_createBlogButton setTitle:NSLocalizedString(@"Create WordPress.com blog", nil) forState:UIControlStateNormal];
+        [_createBlogButton setTitle:NSLocalizedString(@"Create Site", @"Create Site button") forState:UIControlStateNormal];
         _createBlogButton.enabled = NO;
         [_createBlogButton addTarget:self action:@selector(createBlogButtonAction) forControlEvents:UIControlEventTouchUpInside];
         [_createBlogButton sizeToFit];
