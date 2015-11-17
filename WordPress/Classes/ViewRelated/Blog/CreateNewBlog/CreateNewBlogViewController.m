@@ -213,7 +213,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
     
     // Add Site Title
     if (_siteTitleField == nil) {
-        _siteTitleField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
+        _siteTitleField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-pencil"]];
         _siteTitleField.backgroundColor = [UIColor whiteColor];
         _siteTitleField.placeholder = NSLocalizedString(@"Title", nil);
         _siteTitleField.font = [WPNUXUtility textFieldFont];
