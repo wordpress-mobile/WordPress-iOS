@@ -106,8 +106,8 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
              withSuccess:(void (^)(NSNumber *topicID))success
                  failure:(void (^)(NSError *error))failure
 {
-    topicName = [self sanitizeTopicNameForAPI:topicName];
-    [self followTopicWithSlug:topicName withSuccess:success failure:failure];
+    NSString *slug = [self slugForTopicName:topicName];
+    [self followTopicWithSlug:slug withSuccess:success failure:failure];
 }
 
 - (void)followTopicWithSlug:(NSString *)slug
@@ -249,7 +249,7 @@ static NSString * const SiteDictionarySubscriptionsKey = @"subscribers_count";
  @param topicName The string to be formatted.
  @return The formatted string.
  */
-- (NSString *)sanitizeTopicNameForAPI:(NSString *)topicName
+- (NSString *)slugForTopicName:(NSString *)topicName
 {
     if (!topicName || [topicName length] == 0) {
         return @"";

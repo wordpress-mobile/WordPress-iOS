@@ -81,4 +81,13 @@ extern NSString * const WordPressComReaderEndpointURL;
                            success:(void (^)(RemoteReaderSiteInfo *siteInfo))success
                            failure:(void (^)(NSError *error))failure;
 
+/**
+ Takes a topic name and santitizes it, returning what *should* be its slug.
+ 
+ @param topicName The natural language name of a topic. 
+ 
+ @return The sanitized name, as a topic slug.
+ */
+- (NSString *)slugForTopicName:(NSString *)topicName;
+
 @end

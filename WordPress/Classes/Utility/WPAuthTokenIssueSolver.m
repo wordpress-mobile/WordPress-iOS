@@ -3,7 +3,6 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "LoginViewController.h"
-#import "UIAlertView+Blocks.h"
 #import "WPAccount.h"
 
 @implementation WPAuthTokenIssueSolver
@@ -100,15 +99,22 @@
     NSString *deleteButtonTitle = NSLocalizedString(@"Delete",
                                                     @"Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
     
-    [UIAlertView showWithTitle:alertTitle
-                       message:alertMessage
-             cancelButtonTitle:cancelButtonTitle
-             otherButtonTitles:@[deleteButtonTitle]
-                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                          if (buttonIndex == alertView.firstOtherButtonIndex) {
-                              okBlock();
-                          }
-                      }];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle
+                                                                             message:alertMessage
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButtonTitle
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction *action){}];
+
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:deleteButtonTitle
+                                                           style:UIAlertActionStyleDestructive
+                                                         handler:okBlock];
+    [alertController addAction:cancelAction];
+    [alertController addAction:deleteAction];
+    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController
+                                                                                   animated:YES
+                                                                                 completion:nil];
 }
 
 /**
@@ -123,11 +129,17 @@
     NSString *okButtonTitle = NSLocalizedString(@"OK",
                                                 @"OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
     
-    [UIAlertView showWithTitle:alertTitle
-                       message:alertMessage
-             cancelButtonTitle:nil
-             otherButtonTitles:@[okButtonTitle]
-                      tapBlock:nil];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle
+                                                                             message:alertMessage
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:okButtonTitle
+                                                       style:UIAlertActionStyleDefault
+                                                     handler:^(UIAlertAction *action){}];
+    [alertController addAction:okAction];
+    [[[UIApplication sharedApplication] keyWindow].rootViewController presentViewController:alertController
+                                                                                   animated:YES
+                                                                                 completion:nil];
 }
 
 @end

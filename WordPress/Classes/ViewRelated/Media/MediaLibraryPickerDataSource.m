@@ -4,6 +4,7 @@
 #import "Blog.h"
 #import "ContextManager.h"
 #import "Post.h"
+#import "WordPress-swift.h"
 
 @interface  MediaLibraryPickerDataSource()
 
@@ -12,7 +13,6 @@
 @property (nonatomic, strong) AbstractPost *post;
 @property (nonatomic, assign) WPMediaType filter;
 @property (nonatomic, strong) NSArray *media;
-@property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, strong) NSMutableDictionary *observers;
 @property (nonatomic, strong) MediaService *mediaService;
 @property (nonatomic, strong) id groupObserverHandler;
@@ -34,7 +34,6 @@
             [self notifyObservers];
         }];
         _blog = blog;
-        _assetsLibrary = [[ALAssetsLibrary alloc] init];
         NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
         _mediaService = [[MediaService alloc] initWithManagedObjectContext:backgroundContext];
         _observers = [NSMutableDictionary dictionary];
@@ -144,53 +143,67 @@
     [self.observers removeObjectForKey:blockKey];
 }
 
--(void)addImage:(UIImage *)image metadata:(NSDictionary *)metadata completionBlock:(WPMediaAddedBlock)completionBlock
+- (void)addImage:(UIImage *)image
+        metadata:(NSDictionary *)metadata
+ completionBlock:(WPMediaAddedBlock)completionBlock
 {
-    [self.assetsLibrary writeImageToSavedPhotosAlbum:[image CGImage]
-                                            metadata:metadata
-                                     completionBlock:^(NSURL *assetURL, NSError *error)
-     {
-         [self addMediaFromAssetURL:assetURL error:error completionBlock:completionBlock];
-     }];
+    [self addAssetWithChangeRequest:^PHAssetChangeRequest *{
+        NSString *fileName = [NSString stringWithFormat:@"%@_%@", [[NSProcessInfo processInfo] globallyUniqueString], @".jpeg"];
+        NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
+        NSError *error;
+        if ([image writeToURL:fileURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:0.9 metadata:metadata error:&error]){
+            return [PHAssetChangeRequest creationRequestForAssetFromImageAtFileURL:fileURL];
+        }
+        return nil;
+    } completionBlock:completionBlock];
 }
 
--(void)addVideoFromURL:(NSURL *)url completionBlock:(WPMediaAddedBlock)completionBlock
+- (void)addVideoFromURL:(NSURL *)url
+        completionBlock:(WPMediaAddedBlock)completionBlock
 {
-    [self.assetsLibrary writeVideoAtPathToSavedPhotosAlbum:url
-                                           completionBlock:^(NSURL *assetURL, NSError *error)
-     {
-         [self addMediaFromAssetURL:assetURL error:error completionBlock:completionBlock];
-     }];
+    [self addAssetWithChangeRequest:^PHAssetChangeRequest *{
+        return [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
+    } completionBlock:completionBlock];
 }
 
--(void)addMediaFromAssetURL:(NSURL *)assetURL
-                      error:(NSError *)error
+- (void)addAssetWithChangeRequest:(PHAssetChangeRequest *(^)())changeRequestBlock
+                  completionBlock:(WPMediaAddedBlock)completionBlock
+{
+    NSParameterAssert(changeRequestBlock);
+    __block NSString * assetIdentifier = nil;
+    [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+        // Request creating an asset from the image.
+        PHAssetChangeRequest *createAssetRequest = changeRequestBlock();
+        PHObjectPlaceholder *assetPlaceholder = [createAssetRequest placeholderForCreatedAsset];
+        assetIdentifier = [assetPlaceholder localIdentifier];
+    } completionHandler:^(BOOL success, NSError *error) {
+        if (!success) {
+            if (completionBlock){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completionBlock(nil, error);
+                });
+            }
+            return;
+        }
+        [self addMediaFromAssetIdentifier:assetIdentifier completionBlock:completionBlock];
+    }];
+}
+
+-(void)addMediaFromAssetIdentifier:(NSString *)assetIdentifier
             completionBlock:(WPMediaAddedBlock)completionBlock
 {
-    if (error) {
-        if (completionBlock) {
-            completionBlock(nil, error);
-        }
-        return;
-    }
     NSManagedObjectID *objectID = [self.post objectID];
-    [self.assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset) {
-        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-        [mediaService createMediaWithAsset:asset forPostObjectID:objectID completion:^(Media *media, NSError *error) {
-            [self loadDataWithSuccess:^{
-                completionBlock(media, error);
-            } failure:^(NSError *error) {
-                if (completionBlock) {
-                    completionBlock(nil, error);
-                }
-            }];
-        }];
-    } failureBlock:^(NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+    PHFetchResult *result = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
+    PHAsset *asset = [result firstObject];
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [mediaService createMediaWithPHAsset:asset forPostObjectID:objectID completion:^(Media *media, NSError *error) {
+        [self loadDataWithSuccess:^{
+            completionBlock(media, error);
+        } failure:^(NSError *error) {
             if (completionBlock) {
                 completionBlock(nil, error);
             }
-        });
+        }];
     }];
 }
 
