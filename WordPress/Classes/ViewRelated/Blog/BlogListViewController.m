@@ -164,6 +164,13 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        if (self.tableView.tableHeaderView == self.headerView) {
+            [self updateHeaderSize];
+            
+            // this forces the tableHeaderView to resize
+            self.tableView.tableHeaderView = self.headerView;
+        }
+        
         if (![UIDevice isPad]) {
             self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
         }
