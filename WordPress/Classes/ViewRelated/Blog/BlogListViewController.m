@@ -38,6 +38,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 @property (nonatomic, strong) IBOutlet UIView *searchWrapperView;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
+@property (nonatomic, strong) UIAlertController *addSiteAlertController;
 
 @property (nonatomic) NSDate *firstHide;
 @property (nonatomic) NSInteger hideCount;
@@ -518,6 +519,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [self toggleRightBarButtonItems:!editing];
 
     if (editing) {
+        [self.addSiteAlertController dismissViewControllerAnimated:YES completion:nil];
         [self updateHeaderSize];
         self.tableView.tableHeaderView = self.headerView;
 
@@ -559,6 +561,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (void)toggleSearch
 {
+    [self.addSiteAlertController dismissViewControllerAnimated:YES completion:nil];
     self.searchController.active = !self.searchController.active;
 }
 
@@ -585,6 +588,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [addSiteAlertController addAction:addSiteAction];
     [addSiteAlertController addAction:cancel];
     addSiteAlertController.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;
+    self.addSiteAlertController = addSiteAlertController;
     
     [self presentViewController:addSiteAlertController animated:YES completion:nil];
 }
