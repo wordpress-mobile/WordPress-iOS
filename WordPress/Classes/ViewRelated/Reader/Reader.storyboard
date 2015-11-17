@@ -77,6 +77,9 @@
                                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="didTapTagButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="fLH-5J-6K2"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XmB-eN-d59" customClass="PostMetaButton">
                                                 <rect key="frame" x="473" y="-1" width="32" height="24"/>
@@ -90,6 +93,9 @@
                                                 <state key="normal" title="0" image="icon-reader-comment">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="didTapActionButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="yZV-zA-uQu"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2yJ-O3-UEu" customClass="PostMetaButton">
                                                 <rect key="frame" x="521" y="-1" width="47" height="24"/>
@@ -103,6 +109,9 @@
                                                 <state key="normal" title="Like" image="icon-reader-like">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="didTapActionButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="ahX-fX-LkF"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <animations/>
