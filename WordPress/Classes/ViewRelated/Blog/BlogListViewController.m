@@ -171,7 +171,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
             self.tableView.tableHeaderView = self.headerView;
         }
         
-        if (![UIDevice isPad]) {
+        if (![UIDevice isPad] && (self.searchWrapperViewHeightConstraint.constant > 0)) {
             self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
         }
     } completion:nil];

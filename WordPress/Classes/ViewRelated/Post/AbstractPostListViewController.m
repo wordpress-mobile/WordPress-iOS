@@ -74,7 +74,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        if (![UIDevice isPad]) {
+        if (![UIDevice isPad] && (self.searchWrapperViewHeightConstraint.constant > 0)) {
             self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
         }
     } completion:nil];
