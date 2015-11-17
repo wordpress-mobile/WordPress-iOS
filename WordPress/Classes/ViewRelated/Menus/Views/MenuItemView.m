@@ -19,14 +19,14 @@
     self = [super init];
     if(self) {
         
-        self.iconType = MenuItemsActionableIconDefault;
+        self.iconType = MenuItemActionableIconDefault;
         
         {
-            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuItemsActionableIconEdit];
+            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuItemActionableIconEdit];
             self.editButton = button;
         }
         {
-            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuItemsActionableIconAdd];
+            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuItemActionableIconAdd];
             [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             self.addButton = button;
         }
@@ -37,7 +37,7 @@
             [button setTitleColor:[WPStyleGuide darkGrey] forState:UIControlStateNormal];
             [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
             [button.widthAnchor constraintLessThanOrEqualToConstant:63].active = YES;
-            [button.heightAnchor constraintEqualToConstant:MenuItemsActionableViewAccessoryButtonHeight].active = YES;
+            [button.heightAnchor constraintEqualToConstant:MenuItemActionableViewAccessoryButtonHeight].active = YES;
             button.hidden = YES;
             
             [self addAccessoryButton:button];

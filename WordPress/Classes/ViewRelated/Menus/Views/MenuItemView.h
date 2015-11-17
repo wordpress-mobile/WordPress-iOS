@@ -1,10 +1,10 @@
-#import "MenuItemsActionableView.h"
+#import "MenuItemActionableView.h"
 
 @class MenuItem;
 
 @protocol MenuItemViewDelegate;
 
-@interface MenuItemView : MenuItemsActionableView
+@interface MenuItemView : MenuItemActionableView
 
 @property (nonatomic, weak) id <MenuItemViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;

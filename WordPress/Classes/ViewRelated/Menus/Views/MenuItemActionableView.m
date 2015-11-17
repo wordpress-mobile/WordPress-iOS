@@ -1,4 +1,4 @@
-#import "MenuItemsActionableView.h"
+#import "MenuItemActionableView.h"
 #import "WPStyleGuide.h"
 #import "MenusDesign.h"
 
@@ -22,19 +22,19 @@
 
 @end
 
-CGFloat const MenuItemsActionableViewDefaultHeight = 55.0;
-CGFloat const MenuItemsActionableViewAccessoryButtonHeight = 40.0;
+CGFloat const MenuItemActionableViewDefaultHeight = 55.0;
+CGFloat const MenuItemActionableViewAccessoryButtonHeight = 40.0;
 
-static CGFloat const MenuItemsActionableViewIconSize = 10.0;
+static CGFloat const MenuItemActionableViewIconSize = 10.0;
 
-@interface MenuItemsActionableView () <MenuItemDrawingViewDelegate>
+@interface MenuItemActionableView () <MenuItemDrawingViewDelegate>
 
 @property (nonatomic, weak) NSLayoutConstraint *constraintForLeadingIndentation;
 @property (nonatomic, strong) UIStackView *accessoryStackView;
 
 @end
 
-@implementation MenuItemsActionableView
+@implementation MenuItemActionableView
 
 - (id)init
 {
@@ -98,8 +98,8 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
         iconView.contentMode = UIViewContentModeScaleAspectFit;
         iconView.backgroundColor = [UIColor clearColor];
         // width and height constraints are (less than or equal to) in case the view is hidden
-        [iconView.widthAnchor constraintLessThanOrEqualToConstant:MenuItemsActionableViewIconSize].active = YES;
-        [iconView.heightAnchor constraintLessThanOrEqualToConstant:MenuItemsActionableViewIconSize].active = YES;
+        [iconView.widthAnchor constraintLessThanOrEqualToConstant:MenuItemActionableViewIconSize].active = YES;
+        [iconView.heightAnchor constraintLessThanOrEqualToConstant:MenuItemActionableViewIconSize].active = YES;
         
         [stackView addArrangedSubview:iconView];
         self.iconView = iconView;
@@ -130,12 +130,12 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
     }
 }
 
-- (void)setIconType:(MenuItemsActionableIconType)iconType
+- (void)setIconType:(MenuItemActionableIconType)iconType
 {
     if(_iconType != iconType) {
         _iconType = iconType;
         
-        if(iconType == MenuItemsActionableIconNone) {
+        if(iconType == MenuItemActionableIconNone) {
             
             self.iconView.image = nil;
             self.iconView.hidden = YES;
@@ -173,20 +173,20 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
     [self.accessoryStackView setNeedsLayout];
 }
 
-- (UIButton *)addAccessoryButtonIconViewWithType:(MenuItemsActionableIconType)type
+- (UIButton *)addAccessoryButtonIconViewWithType:(MenuItemActionableIconType)type
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.imageView.contentMode = UIViewContentModeScaleAspectFit;
     button.backgroundColor = [UIColor clearColor];
     
-    if(type != MenuItemsActionableIconNone) {
+    if(type != MenuItemActionableIconNone) {
         [button setImage:[[UIImage imageNamed:[self iconNameForType:type]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     }
     
     CGFloat buttonWidth = 30.0;
-    CGFloat buttonHeight = MenuItemsActionableViewAccessoryButtonHeight;
-    CGFloat iconSize = MenuItemsActionableViewIconSize;
+    CGFloat buttonHeight = MenuItemActionableViewAccessoryButtonHeight;
+    CGFloat iconSize = MenuItemActionableViewIconSize;
     UIEdgeInsets imageInset = UIEdgeInsetsZero;
     imageInset.top = (buttonHeight - iconSize) / 2.0;
     imageInset.bottom = imageInset.top;
@@ -241,20 +241,20 @@ static CGFloat const MenuItemsActionableViewIconSize = 10.0;
 
 #pragma mark - private
 
-- (NSString *)iconNameForType:(MenuItemsActionableIconType)type
+- (NSString *)iconNameForType:(MenuItemActionableIconType)type
 {
     NSString *name;
     switch (type) {
-        case MenuItemsActionableIconNone:
+        case MenuItemActionableIconNone:
             name = nil;
             break;
-        case MenuItemsActionableIconDefault:
+        case MenuItemActionableIconDefault:
             name = @"icon-menus-document";
             break;
-        case MenuItemsActionableIconEdit:
+        case MenuItemActionableIconEdit:
             name = @"icon-menus-edit";
             break;
-        case MenuItemsActionableIconAdd:
+        case MenuItemActionableIconAdd:
             name = @"icon-menus-plus";
             break;
     }
