@@ -324,7 +324,11 @@ public protocol ThemePresenter: class {
 
     public override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let theme = themeAtIndex(indexPath.row) {
-            presentDemoForTheme(theme)
+            if theme.isCurrentTheme() {
+                presentCustomizeForTheme(theme)
+            } else {
+                presentDemoForTheme(theme)
+            }
         }
     }
     
@@ -474,7 +478,6 @@ public protocol ThemePresenter: class {
         webViewController.password = blog.password
         webViewController.wpLoginURL = NSURL(string: blog.loginUrl())
         
-        let navController = UINavigationController(rootViewController: webViewController)
-        presentViewController(navController, animated: true, completion: nil)
+        navigationController?.pushViewController(webViewController, animated:true)
     }
 }
