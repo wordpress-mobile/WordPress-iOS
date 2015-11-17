@@ -231,7 +231,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
     if (_siteAddressField == nil) {
         _siteAddressField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
         _siteAddressField.backgroundColor = [UIColor whiteColor];
-        _siteAddressField.placeholder = NSLocalizedString(@"Blog Address", nil);
+        _siteAddressField.placeholder = NSLocalizedString(@"Site Address", nil);
         _siteAddressField.font = [WPNUXUtility textFieldFont];
         _siteAddressField.adjustsFontSizeToFitWidth = YES;
         _siteAddressField.delegate = self;
@@ -240,7 +240,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
         _siteAddressField.returnKeyType = UIReturnKeyDone;
         _siteAddressField.showTopLineSeparator = YES;
         _siteAddressField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _siteAddressField.accessibilityIdentifier = @"Blog Address";
+        _siteAddressField.accessibilityIdentifier = @"Site Address";
         [self.view addSubview:_siteAddressField];
         
         // add .wordpress.com label to textfield
