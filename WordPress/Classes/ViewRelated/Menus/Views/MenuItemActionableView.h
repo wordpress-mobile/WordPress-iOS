@@ -10,11 +10,15 @@ typedef NS_ENUM(NSUInteger) {
 extern CGFloat const MenuItemActionableViewDefaultHeight;
 extern CGFloat const MenuItemActionableViewAccessoryButtonHeight;
 
+@protocol MenuItemDrawingViewDelegate <NSObject>
+- (void)drawingViewDrawRect:(CGRect)rect;
+@end
+
 @interface MenuItemDrawingView : UIView
 
 @end
 
-@interface MenuItemActionableView : UIView
+@interface MenuItemActionableView : UIView <MenuItemDrawingViewDelegate>
 
 @property (nonatomic, strong) MenuItemDrawingView *contentView;
 @property (nonatomic, weak) MenuItemActionableView *previousView;
