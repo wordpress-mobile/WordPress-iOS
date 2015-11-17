@@ -114,6 +114,8 @@
 
 - (NSArray *)blogsForAllAccounts;
 
+- (NSArray *)blogsWithPredicate:(NSPredicate *)predicate;
+
 /**
  Returns every stored blog, arranged in a Dictionary by blogId.
  */
