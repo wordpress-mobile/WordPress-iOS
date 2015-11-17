@@ -2,10 +2,6 @@
 #import "WPStyleGuide.h"
 #import "MenusDesign.h"
 
-@protocol MenuItemDrawingViewDelegate <NSObject>
-- (void)drawingViewDrawRect:(CGRect)rect;
-@end
-
 @interface MenuItemDrawingView ()
 
 @property (nonatomic, weak) id <MenuItemDrawingViewDelegate> drawDelegate;
@@ -27,7 +23,7 @@ CGFloat const MenuItemActionableViewAccessoryButtonHeight = 40.0;
 
 static CGFloat const MenuItemActionableViewIconSize = 10.0;
 
-@interface MenuItemActionableView () <MenuItemDrawingViewDelegate>
+@interface MenuItemActionableView ()
 
 @property (nonatomic, weak) NSLayoutConstraint *constraintForLeadingIndentation;
 @property (nonatomic, strong) UIStackView *accessoryStackView;
