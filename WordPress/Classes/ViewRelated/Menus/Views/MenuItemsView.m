@@ -5,6 +5,7 @@
 #import "MenuItemActionableView.h"
 #import "MenuItemView.h"
 #import "MenuItemPlaceholderView.h"
+#import "MenuItemEmptyView.h"
 #import "MenusDesign.h"
 
 @interface MenuItemsView () <MenuItemViewDelegate, MenuItemPlaceholderViewDelegate>
@@ -53,6 +54,17 @@
     self.itemViews = [NSMutableArray array];
     self.placeholderViews = nil;
     
+    {
+        MenuItemEmptyView *emptyView = [[MenuItemEmptyView alloc] init];
+        emptyView.indentationLevel = 1;
+        
+        NSLayoutConstraint *heightConstraint = [emptyView.heightAnchor constraintEqualToConstant:MenuItemActionableViewDefaultHeight];
+        heightConstraint.priority = UILayoutPriorityDefaultHigh;
+        heightConstraint.active = YES;
+        
+        [self.stackView addArrangedSubview:emptyView];
+        [emptyView.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor].active = YES;
+    }
     MenuItemView *lastItemView = nil;
     for(MenuItem *item in self.menu.items) {
                 
