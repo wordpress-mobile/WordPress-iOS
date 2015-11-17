@@ -2,7 +2,7 @@
 #import "Menu.h"
 #import "MenuItem.h"
 #import "WPStyleGuide.h"
-#import "MenuItemsActionableView.h"
+#import "MenuItemActionableView.h"
 #import "MenuItemView.h"
 #import "MenuItemPlaceholderView.h"
 #import "MenusDesign.h"
@@ -45,7 +45,7 @@
 
 - (void)reloadItemViews
 {
-    for(MenuItemsActionableView *itemView in self.stackView.arrangedSubviews) {
+    for(MenuItemActionableView *itemView in self.stackView.arrangedSubviews) {
         [self.stackView removeArrangedSubview:itemView];
         [itemView removeFromSuperview];
     }
@@ -70,7 +70,7 @@
             parentItem = parentItem.parent;
         }
         
-        NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:MenuItemsActionableViewDefaultHeight];
+        NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:MenuItemActionableViewDefaultHeight];
         heightConstraint.priority = UILayoutPriorityDefaultHigh;
         heightConstraint.active = YES;
         
@@ -103,7 +103,7 @@
             break;
     }
 
-    NSLayoutConstraint *heightConstraint = [placeholderView.heightAnchor constraintEqualToConstant:MenuItemsActionableViewDefaultHeight];
+    NSLayoutConstraint *heightConstraint = [placeholderView.heightAnchor constraintEqualToConstant:MenuItemActionableViewDefaultHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
     
@@ -137,7 +137,7 @@
     }
     
     // since we are adding content above the toggledItemView, the toggledItemView (focus) will move downwards with the updated content size
-    updatedRect.origin.y += MenuItemsActionableViewDefaultHeight;
+    updatedRect.origin.y += MenuItemActionableViewDefaultHeight;
     
     for(MenuItemPlaceholderView *placeholderView in self.placeholderViews) {
         placeholderView.hidden = YES;
@@ -162,7 +162,7 @@
 
 - (void)removeItemPlaceholderViews
 {
-    for(MenuItemsActionableView *itemView in self.placeholderViews) {
+    for(MenuItemActionableView *itemView in self.placeholderViews) {
         [self.stackView removeArrangedSubview:itemView];
         [itemView removeFromSuperview];
     }
@@ -183,7 +183,7 @@
     CGRect previousRect = self.toggledItemView.frame;
     CGRect updatedRect = self.toggledItemView.frame;
     // since we are removing content above the toggledItemView, the toggledItemView (focus) will move upwards with the updated content size
-    updatedRect.origin.y -= MenuItemsActionableViewDefaultHeight;
+    updatedRect.origin.y -= MenuItemActionableViewDefaultHeight;
     
     [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
        

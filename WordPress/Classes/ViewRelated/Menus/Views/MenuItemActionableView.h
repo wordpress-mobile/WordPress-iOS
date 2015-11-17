@@ -1,33 +1,33 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger) {
-    MenuItemsActionableIconNone,
-    MenuItemsActionableIconDefault,
-    MenuItemsActionableIconEdit,
-    MenuItemsActionableIconAdd,
-}MenuItemsActionableIconType;
+    MenuItemActionableIconNone,
+    MenuItemActionableIconDefault,
+    MenuItemActionableIconEdit,
+    MenuItemActionableIconAdd,
+}MenuItemActionableIconType;
 
-extern CGFloat const MenuItemsActionableViewDefaultHeight;
-extern CGFloat const MenuItemsActionableViewAccessoryButtonHeight;
+extern CGFloat const MenuItemActionableViewDefaultHeight;
+extern CGFloat const MenuItemActionableViewAccessoryButtonHeight;
 
 @interface MenuItemDrawingView : UIView
 
 @end
 
-@interface MenuItemsActionableView : UIView
+@interface MenuItemActionableView : UIView
 
 @property (nonatomic, strong) MenuItemDrawingView *contentView;
-@property (nonatomic, weak) MenuItemsActionableView *previousView;
-@property (nonatomic, weak) MenuItemsActionableView *nextView;
+@property (nonatomic, weak) MenuItemActionableView *previousView;
+@property (nonatomic, weak) MenuItemActionableView *nextView;
 @property (nonatomic, assign) BOOL highlighted;
 @property (nonatomic, assign) NSUInteger indentationLevel;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UILabel *textLabel;
 @property (nonatomic, strong) UIImageView *iconView;
-@property (nonatomic, assign) MenuItemsActionableIconType iconType;
+@property (nonatomic, assign) MenuItemActionableIconType iconType;
 
 - (void)addAccessoryButton:(UIButton *)button;
-- (UIButton *)addAccessoryButtonIconViewWithType:(MenuItemsActionableIconType)type;
+- (UIButton *)addAccessoryButtonIconViewWithType:(MenuItemActionableIconType)type;
 
 // called on init and when highlighted value changes
 - (UIColor *)contentViewBackgroundColor;
