@@ -39,6 +39,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
 @property (nonatomic, strong) UIAlertController *addSiteAlertController;
+@property (nonatomic, strong) UIBarButtonItem *addSiteButton;
 
 @property (nonatomic) NSDate *firstHide;
 @property (nonatomic) NSInteger hideCount;
@@ -77,14 +78,14 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
                                                                   action:nil];
     [self.navigationItem setBackBarButtonItem:backButton];
     
-    UIBarButtonItem *addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+    self.addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                    target:self
                                                                                    action:@selector(addSite)];
     UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:self
                                                                     action:@selector(toggleSearch)];
-    [self.navigationItem setRightBarButtonItems:@[addSiteButton, searchButton]];
+    [self.navigationItem setRightBarButtonItems:@[self.addSiteButton, searchButton]];
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view
@@ -587,7 +588,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [addSiteAlertController addAction:addNewWordPressAction];
     [addSiteAlertController addAction:addSiteAction];
     [addSiteAlertController addAction:cancel];
-    addSiteAlertController.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItem;
+    addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
     self.addSiteAlertController = addSiteAlertController;
     
     [self presentViewController:addSiteAlertController animated:YES completion:nil];
