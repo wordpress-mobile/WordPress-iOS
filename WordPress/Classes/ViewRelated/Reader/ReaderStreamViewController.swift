@@ -137,7 +137,14 @@ import Foundation
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        refreshTableViewHeaderLayout()
+
+        // There appears to be a scenario where this method can be called prior to
+        // the view being fully setup in viewDidLoad. As a safety net, make sure
+        // that the tableView is not nil.
+        // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
+        if tableView != nil {
+            refreshTableViewHeaderLayout()
+        }
     }
 
     public override func viewDidAppear(animated: Bool) {
@@ -157,8 +164,11 @@ import Foundation
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
-        // NOTE: For why isViewLoaded is checked here see: https://github.com/wordpress-mobile/WordPress-iOS/pull/4421
-        if isViewLoaded() && needsRefreshCachedCellHeightsBeforeLayout {
+        // There appears to be a scenario where this method can be called prior to
+        // the view being fully setup in viewDidLoad. As a safety net, make sure
+        // that the tableViewHandler is not nil.
+        // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
+        if tableViewHandler != nil && needsRefreshCachedCellHeightsBeforeLayout {
             needsRefreshCachedCellHeightsBeforeLayout = false
 
             let width = view.frame.width
