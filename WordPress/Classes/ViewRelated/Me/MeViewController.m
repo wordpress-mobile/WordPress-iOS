@@ -404,7 +404,9 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 - (void)navigateToMyProfile
 {
     // TODO: add analytics (@koke 2015-11-17)
-    // TODO: add profile page (@koke 2015-11-17)
+    MyProfileViewController *controller = [MyProfileViewController new];
+    controller.account = [self defaultAccount];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)navigateToAccountSettings
