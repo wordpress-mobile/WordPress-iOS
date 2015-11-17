@@ -202,10 +202,10 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 #pragma mark - MenuItemsViewDelegate
 
-- (void)itemsViewAnimatingItemContentSizeChanges:(MenuItemsView *)itemsView previousSize:(CGSize)previousSize newSize:(CGSize)newSize
+- (void)itemsViewAnimatingContentSizeChanges:(MenuItemsView *)itemsView focusedRect:(CGRect)focusedRect updatedFocusRect:(CGRect)updatedFocusRect
 {
     CGPoint offset = self.scrollView.contentOffset;
-    offset.y += newSize.height - previousSize.height;
+    offset.y += updatedFocusRect.origin.y - focusedRect.origin.y;
     self.scrollView.contentOffset = offset;
 }
 
