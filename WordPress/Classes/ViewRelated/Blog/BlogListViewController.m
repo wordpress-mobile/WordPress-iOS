@@ -160,15 +160,14 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     self.resultsController.delegate = nil;
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    if (self.tableView.tableHeaderView == self.headerView) {
-        [self updateHeaderSize];
-
-        // this forces the tableHeaderView to resize
-        self.tableView.tableHeaderView = self.headerView;
-    }
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        if (![UIDevice isPad]) {
+            self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
+        }
+    } completion:nil];
 }
 
 - (void)registerForKeyboardNotifications
