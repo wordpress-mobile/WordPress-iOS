@@ -17,7 +17,7 @@ public class ReaderHelpers {
         }
 
         activityItems.append(postDictionary)
-        if let url = link {
+        if let urlPath = link, url = NSURL(string: urlPath) {
             activityItems.append(url)
         }
 

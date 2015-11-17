@@ -27,7 +27,6 @@
 #import "NSBundle+VersionNumberHelper.h"
 #import "NSProcessInfo+Util.h"
 #import "NSString+Helpers.h"
-#import "UIAlertView+Blocks.h"
 #import "UIDevice+Helpers.h"
 
 // Data model
@@ -117,9 +116,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self setupReachability];
     
     // Set the main window up
-    CGRect bounds = [[UIScreen mainScreen] bounds];
-    [self.window setFrame:bounds];
-    [self.window setBounds:bounds];
     [self.window makeKeyAndVisible];
     
     // Simperium: Wire CoreData Stack
@@ -1071,6 +1067,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 - (void)setMustShowWhatsNewPopup:(BOOL)mustShow
 {
     [[NSUserDefaults standardUserDefaults] setBool:mustShow forKey:MustShowWhatsNewPopup];
+}
+
+- (BOOL)testSuiteIsRunning
+{
+    Class testSuite = NSClassFromString(@"XCTestCase");
+    return testSuite != nil;
 }
 
 @end

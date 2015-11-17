@@ -50,7 +50,6 @@
 #import "Theme.h"
 #import "ThemeService.h"
 
-#import "UIAlertView+Blocks.h"
 #import "UIAlertControllerProxy.h"
 #import "UIDevice+Helpers.h"
 #import "UIImage+Tint.h"
