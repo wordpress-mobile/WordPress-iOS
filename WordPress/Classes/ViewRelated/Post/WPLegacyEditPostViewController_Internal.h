@@ -3,13 +3,6 @@
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
 
-typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
-    EditPostViewControllerAlertTagNone,
-    EditPostViewControllerAlertTagLinkHelper,
-    EditPostViewControllerAlertTagFailedMedia,
-    EditPostViewControllerAlertCancelMediaUpload,
-};
-
 typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
     EditPostViewControllerModeNewPost,
     EditPostViewControllerModeEditPost
@@ -23,7 +16,6 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
 @property (readonly) BOOL hasChanges;
 
 @property (nonatomic, strong) UIActionSheet *currentActionSheet;
-@property (nonatomic, strong) UIAlertView *failedMediaAlertView;
 
 - (void)didSaveNewPost;
 
