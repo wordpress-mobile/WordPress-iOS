@@ -37,7 +37,6 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIButton *uploadStatusButton;
-@property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic, strong) UIPopoverController *mediaProgressPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
@@ -259,19 +258,10 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 
 - (void)showBlogSelector
 {
-    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
-        [self.blogSelectorPopover dismissPopoverAnimated:YES];
-        self.blogSelectorPopover = nil;
-    }
-
     void (^dismissHandler)() = ^(void) {
-        if (IS_IPAD) {
-            [self.blogSelectorPopover dismissPopoverAnimated:YES];
-        } else {
-            self.dismissingBlogPicker = YES;
-            [self dismissViewControllerAnimated:YES completion:nil];
-            self.dismissingBlogPicker = NO;
-        }
+        self.dismissingBlogPicker = YES;
+        [self dismissViewControllerAnimated:YES completion:nil];
+        self.dismissingBlogPicker = NO;
     };
     void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -325,24 +315,13 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
-
-    if (IS_IPAD) {
-        vc.preferredContentSize = CGSizeMake(320.0, 500);
-
-        CGRect titleRect = self.navigationItem.titleView.frame;
-        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-
-        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
-        self.blogSelectorPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-        self.blogSelectorPopover.delegate = self;
-        [self.blogSelectorPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-
-    } else {
-        navController.modalPresentationStyle = UIModalPresentationPageSheet;
-        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-        [self presentViewController:navController animated:YES completion:nil];
-    }
+    navController.modalPresentationStyle = UIModalPresentationPopover;
+    CGRect titleRect = self.navigationItem.titleView.frame;
+    titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
+    navController.popoverPresentationController.sourceRect = titleRect;
+    navController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    navController.popoverPresentationController.backgroundColor = [WPStyleGuide wordPressBlue];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (Class)classForSettingsViewController
@@ -749,11 +728,6 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 
 - (void)showMediaProgress
 {
-    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
-        [self.blogSelectorPopover dismissPopoverAnimated:YES];
-        self.blogSelectorPopover = nil;
-    }
-    
     WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaGlobalProgress childrenProgress:self.mediaInProgress.allValues];
     
     vc.title = NSLocalizedString(@"Media Uploading", @"Title for view that shows progress of multiple uploads");
@@ -1054,21 +1028,6 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     string = [string stringByReplacingOccurrencesOfString:media.html withString:@""];
 
     return string;
-}
-
-#pragma mark - UIPopoverControllerDelegate methods
-
-- (void)popoverController:(UIPopoverController *)popoverController
-    willRepositionPopoverToRect:(inout CGRect *)rect
-                   inView:(inout UIView **)view
-{
-    if (popoverController == self.blogSelectorPopover) {
-        CGRect titleRect = self.navigationItem.titleView.frame;
-        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-
-        *view = self.navigationController.view;
-        *rect = titleRect;
-    }
 }
 
 #pragma mark - AlertView Delegate Methods
