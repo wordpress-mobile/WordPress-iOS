@@ -1177,20 +1177,6 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 
 - (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(id<WPMediaAsset>)mediaAsset
 {
-    if ([mediaAsset isKindOfClass:[ALAsset class]]) {
-        ALAsset *asset = (ALAsset *)mediaAsset;
-        if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
-            // If the image is from a shared photo stream it may not be available locally to be used
-            if (!asset.defaultRepresentation) {
-                [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
-                                    message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
-                return NO;
-            }
-            return YES;
-        }
-    } else if ([mediaAsset isKindOfClass:[Media class]]) {
-        return YES;
-    }
     return YES;
 }
 
