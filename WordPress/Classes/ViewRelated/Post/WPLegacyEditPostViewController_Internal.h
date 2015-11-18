@@ -8,14 +8,12 @@ typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
     EditPostViewControllerModeEditPost
 };
 
-@interface WPLegacyEditPostViewController () <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration>
+@interface WPLegacyEditPostViewController () <UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
 @property (nonatomic, assign) EditPostViewControllerMode editMode;
 @property (nonatomic, strong) AbstractPost *post;
 @property (readonly) BOOL hasChanges;
-
-@property (nonatomic, strong) UIActionSheet *currentActionSheet;
 
 - (void)didSaveNewPost;
 
