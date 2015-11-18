@@ -570,13 +570,11 @@ EditImageDetailsViewControllerDelegate
     NSString *message = NSLocalizedString(@"This post has local changes that were not saved. You can now save them or discard them.",
                                           @"Message of the alert that lets the users know there are unsaved changes in a post they're opening.");
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
-    
-    [alertView show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addActionWithTitle:NSLocalizedString(@"OK",@"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *alertAction) {
+        
+    }];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Onboarding
