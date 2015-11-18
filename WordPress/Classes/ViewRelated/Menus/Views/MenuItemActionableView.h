@@ -18,17 +18,19 @@ extern CGFloat const MenuItemActionableViewAccessoryButtonHeight;
 
 @end
 
+@protocol MenuItemActionableViewDelegate;
+
 @interface MenuItemActionableView : UIView <MenuItemDrawingViewDelegate>
 
+@property (nonatomic, weak) id <MenuItemActionableViewDelegate> delegate;
 @property (nonatomic, strong) MenuItemDrawingView *contentView;
-@property (nonatomic, weak) MenuItemActionableView *previousView;
-@property (nonatomic, weak) MenuItemActionableView *nextView;
 @property (nonatomic, assign) BOOL highlighted;
+@property (nonatomic, assign) BOOL reorderingEnabled;
+@property (nonatomic, assign) MenuItemActionableIconType iconType;
 @property (nonatomic, assign) NSUInteger indentationLevel;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UILabel *textLabel;
 @property (nonatomic, strong) UIImageView *iconView;
-@property (nonatomic, assign) MenuItemActionableIconType iconType;
 
 - (void)addAccessoryButton:(UIButton *)button;
 - (UIButton *)addAccessoryButtonIconViewWithType:(MenuItemActionableIconType)type;
@@ -38,4 +40,9 @@ extern CGFloat const MenuItemActionableViewAccessoryButtonHeight;
 - (UIColor *)textLabelColor;
 - (UIColor *)iconTintColor;
 
+@end
+
+@protocol MenuItemActionableViewDelegate <NSObject>
+@optional
+- (void)itemActionableView:(MenuItemActionableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event;
 @end

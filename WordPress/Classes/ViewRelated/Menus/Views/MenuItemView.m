@@ -14,12 +14,15 @@
 
 @implementation MenuItemView
 
+@dynamic delegate;
+
 - (id)init
 {
     self = [super init];
     if(self) {
         
         self.iconType = MenuItemActionableIconDefault;
+        self.reorderingEnabled = YES;
         
         {
             UIButton *button = [self addAccessoryButtonIconViewWithType:MenuItemActionableIconEdit];
@@ -64,6 +67,7 @@
     
     self.editButton.hidden = !showsEditingButtonOptions;
     self.addButton.hidden = !showsEditingButtonOptions;
+    self.reorderingEnabled = showsEditingButtonOptions;
 }
 
 - (void)setShowsCancelButtonOption:(BOOL)showsCancelButtonOption

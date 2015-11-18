@@ -5,15 +5,14 @@
 #import "MenuItemActionableView.h"
 #import "MenuItemView.h"
 #import "MenuItemPlaceholderView.h"
-#import "MenuItemEmptyView.h"
 #import "MenusDesign.h"
 
-@interface MenuItemsView () <MenuItemViewDelegate, MenuItemPlaceholderViewDelegate>
+@interface MenuItemsView () <MenuItemActionableViewDelegate, MenuItemViewDelegate, MenuItemPlaceholderViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
-@property (nonatomic, strong) NSMutableArray *itemViews;
-@property (nonatomic, strong) NSMutableArray *placeholderViews;
-@property (nonatomic, strong) MenuItemView *toggledItemView;
+@property (nonatomic, strong) NSMutableSet *itemViews;
+@property (nonatomic, strong) NSMutableSet *placeholderViews;
+@property (nonatomic, strong) MenuItemView *activeItemView;
 
 @end
 
@@ -51,20 +50,9 @@
         [itemView removeFromSuperview];
     }
     
-    self.itemViews = [NSMutableArray array];
+    self.itemViews = [NSMutableSet set];
     self.placeholderViews = nil;
     
-    {
-        MenuItemEmptyView *emptyView = [[MenuItemEmptyView alloc] init];
-        emptyView.indentationLevel = 1;
-        
-        NSLayoutConstraint *heightConstraint = [emptyView.heightAnchor constraintEqualToConstant:MenuItemActionableViewDefaultHeight];
-        heightConstraint.priority = UILayoutPriorityDefaultHigh;
-        heightConstraint.active = YES;
-        
-        [self.stackView addArrangedSubview:emptyView];
-        [emptyView.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor].active = YES;
-    }
     MenuItemView *lastItemView = nil;
     for(MenuItem *item in self.menu.items) {
                 
@@ -72,8 +60,6 @@
         itemView.delegate = self;
         // set up ordering to help with any drawing
         itemView.item = item;
-        lastItemView.nextView = itemView;
-        itemView.previousView = lastItemView;
         itemView.indentationLevel = 1;
 
         MenuItem *parentItem = item.parent;
@@ -89,12 +75,12 @@
         [self.itemViews addObject:itemView];
         [self.stackView addArrangedSubview:itemView];
         
-        [itemView.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor].active = YES;
+        [itemView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
         lastItemView = itemView;
     }
 }
 
-- (MenuItemPlaceholderView *)addNewBlankItemViewWithType:(MenuItemPlaceholderViewType)type forItemView:(MenuItemView *)itemView
+- (MenuItemPlaceholderView *)addNewPlaceholderViewWithType:(MenuItemPlaceholderViewType)type forItemView:(MenuItemView *)itemView
 {
     NSInteger index = [self.stackView.arrangedSubviews indexOfObject:itemView];
     MenuItemPlaceholderView *placeholderView = [[MenuItemPlaceholderView alloc] init];
@@ -129,12 +115,12 @@
 
 - (void)insertPlaceholderItemViewsAroundItemView:(MenuItemView *)toggledItemView
 {
-    self.toggledItemView = toggledItemView;
+    self.activeItemView = toggledItemView;
     
-    self.placeholderViews = [NSMutableArray arrayWithCapacity:3];
-    [self addNewBlankItemViewWithType:MenuItemPlaceholderViewTypeAbove forItemView:toggledItemView];
-    [self addNewBlankItemViewWithType:MenuItemPlaceholderViewTypeBelow forItemView:toggledItemView];
-    [self addNewBlankItemViewWithType:MenuItemPlaceholderViewTypeChild forItemView:toggledItemView];
+    self.placeholderViews = [NSMutableSet setWithCapacity:3];
+    [self addNewPlaceholderViewWithType:MenuItemPlaceholderViewTypeAbove forItemView:toggledItemView];
+    [self addNewPlaceholderViewWithType:MenuItemPlaceholderViewTypeBelow forItemView:toggledItemView];
+    [self addNewPlaceholderViewWithType:MenuItemPlaceholderViewTypeChild forItemView:toggledItemView];
 }
 
 - (void)insertItemPlaceholderViewsAroundItemView:(MenuItemView *)toggledItemView animated:(BOOL)animated
@@ -182,7 +168,7 @@
     self.placeholderViews = nil;
     [self.stackView setNeedsLayout];
     
-    self.toggledItemView = nil;
+    self.activeItemView = nil;
 }
 
 - (void)removeItemPlaceholderViews:(BOOL)animated
@@ -192,8 +178,8 @@
         return;
     }
     
-    CGRect previousRect = self.toggledItemView.frame;
-    CGRect updatedRect = self.toggledItemView.frame;
+    CGRect previousRect = self.activeItemView.frame;
+    CGRect updatedRect = previousRect;
     // since we are removing content above the toggledItemView, the toggledItemView (focus) will move upwards with the updated content size
     updatedRect.origin.y -= MenuItemActionableViewDefaultHeight;
     
@@ -212,6 +198,13 @@
 
         [self removeItemPlaceholderViews];
     }];
+}
+
+#pragma mark - MenuItemActionableViewDelegate
+
+- (void)itemActionableView:(MenuItemActionableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+
 }
 
 #pragma mark - MenuItemViewDelegate
