@@ -49,9 +49,6 @@ typedef void (^EditPostCompletionHandler)(void);
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
 @property (readonly) BOOL hasChanges;
 
-@property (nonatomic, strong) UIActionSheet *currentActionSheet;
-@property (nonatomic, strong) UIAlertView *failedMediaAlertView;
-
 #pragma mark - Initializers
 
 /*
