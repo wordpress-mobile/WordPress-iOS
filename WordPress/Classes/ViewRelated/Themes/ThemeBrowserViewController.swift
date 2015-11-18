@@ -71,9 +71,6 @@ public protocol ThemePresenter: class {
     private var themesCount: NSInteger {
         return themesController.fetchedObjects?.count ?? 0
     }
-	private var isEmpty: Bool {
-        return searchName.isEmpty && themesCount == 0
-    }
 
     /**
      *  @brief      Searching support
@@ -119,10 +116,21 @@ public protocol ThemePresenter: class {
     
     private func reloadThemes() {
         collectionView?.reloadData()
+        updateResults()
     }
     private func themeAtIndex(index: Int) -> Theme? {
         let indexPath = NSIndexPath(forRow: index, inSection: 0)
         return themesController.objectAtIndexPath(indexPath) as? Theme
+    }
+    private lazy var noResultsView: WPNoResultsView = {
+        let noResultsView = WPNoResultsView()
+        let drakeImage = UIImage(named: "theme-empty-results")
+        noResultsView.accessoryView = UIImageView(image: drakeImage)
+        
+        return noResultsView
+    }()
+    private var noResultsShown: Bool {
+        return noResultsView.superview != nil
     }
    
     /**
@@ -132,8 +140,7 @@ public protocol ThemePresenter: class {
     private var syncHelper: WPContentSyncHelper!
     private var syncingPage = 0
     private let syncPadding = 5
-    private var fetchAnimation = false
-    
+
     // MARK: - Private Aliases
     
     private typealias Styles = WPStyleGuide.Themes
@@ -163,7 +170,7 @@ public protocol ThemePresenter: class {
         WPStyleGuide.configureColorsForView(view, collectionView:collectionView)
         
         fetchThemes()
-        sections = isEmpty ? [.Themes] : [.Info, .Themes]
+        sections = themesCount == 0 ? [.Themes] : [.Info, .Themes]
 
         updateActiveTheme()
         setupSyncHelper()
@@ -195,15 +202,15 @@ public protocol ThemePresenter: class {
         syncHelper = WPContentSyncHelper()
         syncHelper.delegate = self
         
-        showFetchAnimationIfEmpty()
-        syncHelper.syncContent()
+        if syncHelper.syncContent() {
+            updateResults()
+        }
     }
     
     private func syncMoreIfNeeded(themeIndex: NSInteger) {
         let paddedCount = themeIndex + syncPadding
-        if paddedCount >= themesCount && syncHelper.hasMoreContent {
-            showFetchAnimationIfEmpty()
-            syncHelper.syncMoreContent()
+        if paddedCount >= themesCount && syncHelper.hasMoreContent && syncHelper.syncMoreContent() {
+            updateResults()
         }
     }
     
@@ -241,26 +248,42 @@ public protocol ThemePresenter: class {
         return nil
     }
     
-    private func showFetchAnimationIfEmpty() {
-        guard isEmpty else {
+    private func updateResults() {
+        if themesCount == 0 {
+            showNoResults()
+        } else {
+            hideNoResults()
+        }
+    }
+    
+    private func showNoResults() {
+        guard !noResultsShown else {
             return
         }
         
-        fetchAnimation = true
-        let title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
-        WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: self.view)
+        let title: String
+        if searchController.active {
+            title = NSLocalizedString("No Themes Found", comment:"Text displayed when theme name search has no matches")
+        } else {
+            title = NSLocalizedString("Fetching Themes...", comment:"Text displayed while fetching themes")
+        }
+        noResultsView.titleText = title
+        view.addSubview(noResultsView)
     }
     
-    private func hideFetchAnimation() {
-        guard fetchAnimation else {
-            reloadThemes()
+    private func hideNoResults() {
+        guard noResultsShown else {
             return
         }
+        
+        noResultsView.removeFromSuperview()
 
-        fetchAnimation = false
-        sections = [.Info, .Themes]
-        collectionView?.collectionViewLayout.invalidateLayout()
-        WPNoResultsView.removeFromView(view)
+        if searchController.active {
+            collectionView?.reloadData()
+        } else {
+            sections = [.Info, .Themes]
+            collectionView?.collectionViewLayout.invalidateLayout()
+        }
     }
 
     // MARK: - WPContentSyncHelperDelegate
@@ -275,7 +298,7 @@ public protocol ThemePresenter: class {
     }
     
     func syncContentEnded() {
-        hideFetchAnimation()
+        updateResults()
     }
     
     func hasNoMoreContent() {
@@ -433,7 +456,7 @@ public protocol ThemePresenter: class {
     // MARK: - NSFetchedResultsControllerDelegate
 
     public func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        hideFetchAnimation()
+        reloadThemes()
     }
     
     // MARK: - ThemePresenter
