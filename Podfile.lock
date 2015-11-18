@@ -127,17 +127,17 @@ PODS:
   - ReactiveCocoa/no-arc (2.4.7)
   - ReactiveCocoa/UI (2.4.7):
     - ReactiveCocoa/Core
-  - Simperium (0.8.3):
-    - Simperium/DiffMatchPach (= 0.8.3)
-    - Simperium/JRSwizzle (= 0.8.3)
-    - Simperium/SocketRocket (= 0.8.3)
-    - Simperium/SPReachability (= 0.8.3)
-    - Simperium/SSKeychain (= 0.8.3)
-  - Simperium/DiffMatchPach (0.8.3)
-  - Simperium/JRSwizzle (0.8.3)
-  - Simperium/SocketRocket (0.8.3)
-  - Simperium/SPReachability (0.8.3)
-  - Simperium/SSKeychain (0.8.3)
+  - Simperium (0.8.9):
+    - Simperium/DiffMatchPach (= 0.8.9)
+    - Simperium/JRSwizzle (= 0.8.9)
+    - Simperium/SocketRocket (= 0.8.9)
+    - Simperium/SPReachability (= 0.8.9)
+    - Simperium/SSKeychain (= 0.8.9)
+  - Simperium/DiffMatchPach (0.8.9)
+  - Simperium/JRSwizzle (0.8.9)
+  - Simperium/SocketRocket (0.8.9)
+  - Simperium/SPReachability (0.8.9)
+  - Simperium/SSKeychain (0.8.9)
   - Specta (1.0.3)
   - SVProgressHUD (1.1.3)
   - UIDeviceIdentifier (0.4.5)
@@ -207,7 +207,7 @@ DEPENDENCIES:
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
   - ReactiveCocoa (~> 2.4.7)
-  - Simperium (= 0.8.3)
+  - Simperium (= 0.8.9)
   - Specta (= 1.0.3)
   - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
@@ -266,7 +266,7 @@ SPEC CHECKSUMS:
   CrashlyticsLumberjack: 5094b659ecf9a11550f7dd7a885c0cef077f1ffa
   DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
   DTFoundation: 46e2b2fafe78d67febfd8d1f85fe9845a093f00e
-  EmailChecker: 1b9c5a58c994bc638f842a4d69523b6ab57e706e
+  EmailChecker: 78dd8dfa9d004826c8b5889be6c380b72b837d44
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
@@ -286,7 +286,7 @@ SPEC CHECKSUMS:
   PDKTZipArchive: 81c4824eb5587131e422fc58b92c043c4aa96466
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
-  Simperium: 7a2d7e5ac67526477084a35a5ef9a77b6423b1ac
+  Simperium: 6c3b944c7d72477d83b3355331b8fa879b35afb2
   Specta: cf3e4188cf35375c3ee2cd03f8db8f1f4ef98234
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: f7b32c087f4d4957badbb6181a4c78520c5806ae
