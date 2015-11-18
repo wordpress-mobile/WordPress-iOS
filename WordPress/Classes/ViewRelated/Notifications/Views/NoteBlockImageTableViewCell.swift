@@ -28,7 +28,7 @@ import Foundation
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
-        selectionStyle  = .None
+        selectionStyle = .None
     }
     
     // MARK: - Private
