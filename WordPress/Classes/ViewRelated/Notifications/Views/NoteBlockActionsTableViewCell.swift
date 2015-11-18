@@ -126,39 +126,30 @@ import Foundation
     
     // MARK: - IBActions
     @IBAction public func replyWasPressed(sender: AnyObject) {
-        hitEventHandler(onReplyClick, sender: sender)
+        onReplyClick?(sender: sender)
     }
     
     @IBAction public func likeWasPressed(sender: AnyObject) {
-        let handler = isLikeOn ? onUnlikeClick : onLikeClick
-        hitEventHandler(handler, sender: sender)
+        let onClick = isLikeOn ? onUnlikeClick : onLikeClick
+        onClick?(sender: sender)
         isLikeOn = !isLikeOn
     }
     
     @IBAction public func approveWasPressed(sender: AnyObject) {
-        let handler = isApproveOn ? onUnapproveClick : onApproveClick
-        hitEventHandler(handler, sender: sender)
+        let onClick = isApproveOn ? onUnapproveClick : onApproveClick
+        onClick?(sender: sender)
         isApproveOn = !isApproveOn
     }
     
     @IBAction public func trashWasPressed(sender: AnyObject) {
-        hitEventHandler(onTrashClick, sender: sender)
+        onTrashClick?(sender: sender)
     }
     
     @IBAction public func spamWasPressed(sender: AnyObject) {
-        hitEventHandler(onSpamClick, sender: sender)
+        onSpamClick?(sender: sender)
     }
 
     
-    
-    // MARK: - Event Handlers
-    private func hitEventHandler(handler: EventHandler?, sender: AnyObject) {
-        if let listener = handler {
-            listener(sender: sender)
-        }
-    }
-    
-
     
     // MARK: - Layout Helpers
     private func updateButton(button: UIButton, enabled: Bool) {
