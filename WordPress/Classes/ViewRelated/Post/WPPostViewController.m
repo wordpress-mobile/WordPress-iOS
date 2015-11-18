@@ -47,7 +47,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagFailedMedia,
     EditPostViewControllerAlertTagFailedMediaBeforeEdit,
     EditPostViewControllerAlertTagFailedMediaBeforeSave,
-    EditPostViewControllerAlertTagSwitchBlogs,
     EditPostViewControllerAlertCancelMediaUpload,
 };
 
@@ -654,13 +653,16 @@ EditImageDetailsViewControllerDelegate
         [self showBlogSelector];
         return;
     }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Change Site", @"Title of an alert prompting the user that they are about to change the blog they are posting to.")
-                                                        message:NSLocalizedString(@"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", @"And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel",@"")
-                                              otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
-    alertView.tag = EditPostViewControllerAlertTagSwitchBlogs;
-    [alertView show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Change Site", @"Title of an alert prompting the user that they are about to change the blog they are posting to.")
+                                                                             message:NSLocalizedString(@"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", @"And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"OK",@"") handler:^(UIAlertAction *action) {
+       [self showBlogSelector]; 
+    }];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel",@"") handler:^(UIAlertAction *action) {
+        
+    }];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showBlogSelector
@@ -1888,11 +1890,6 @@ EditImageDetailsViewControllerDelegate
                 [self savePostAndDismissVC];
             }
             self.failedMediaAlertView = nil;
-        } break;
-        case (EditPostViewControllerAlertTagSwitchBlogs): {
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                [self showBlogSelector];
-            }
         } break;
         case (EditPostViewControllerAlertCancelMediaUpload): {
             if (buttonIndex == alertView.firstOtherButtonIndex) {
