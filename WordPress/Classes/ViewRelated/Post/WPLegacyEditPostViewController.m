@@ -32,7 +32,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIButton *uploadStatusButton;
-@property (nonatomic, strong) UIPopoverController *mediaProgressPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic, strong) NSProgress * mediaGlobalProgress;
@@ -88,7 +87,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)dealloc
 {
     [_mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
-    _mediaProgressPopover.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -726,23 +724,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
-    
-    if (IS_IPAD) {
-        vc.preferredContentSize = CGSizeMake(320.0, 500);
-        
-        CGRect titleRect = self.navigationItem.titleView.frame;
-        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-        
-        self.mediaProgressPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
-        self.mediaProgressPopover.delegate = self;
-        [self.mediaProgressPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        
-    } else {
-        navController.modalPresentationStyle = UIModalPresentationPageSheet;
-        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        
-        [self presentViewController:navController animated:YES completion:nil];
-    }
+    CGRect titleRect = self.navigationItem.titleView.frame;
+    titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
+    navController.modalPresentationStyle = UIModalPresentationPopover;
+    navController.popoverPresentationController.sourceRect = titleRect;
+    navController.popoverPresentationController.sourceView = self.navigationController.view;
+    navController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showCancelMediaUploadPrompt
