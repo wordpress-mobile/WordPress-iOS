@@ -209,10 +209,10 @@ import Foundation
     private let actionsTop                          = CGFloat(11)
     
     // MARK: - IBOutlets
-    @IBOutlet private weak var actionsView          : UIView!
-    @IBOutlet private weak var btnReply             : UIButton!
-    @IBOutlet private weak var btnLike              : UIButton!
-    @IBOutlet private weak var btnApprove           : UIButton!
-    @IBOutlet private weak var btnTrash             : UIButton!
-    @IBOutlet private weak var btnSpam              : UIButton!
+    @IBOutlet private var actionsView   : UIStackView!
+    @IBOutlet private var btnReply      : UIButton!
+    @IBOutlet private var btnLike       : UIButton!
+    @IBOutlet private var btnApprove    : UIButton!
+    @IBOutlet private var btnTrash      : UIButton!
+    @IBOutlet private var btnSpam       : UIButton!
 }
