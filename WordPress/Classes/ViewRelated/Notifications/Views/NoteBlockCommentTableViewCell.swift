@@ -150,9 +150,7 @@ import Foundation
     
     // MARK: - Event Handlers
     @IBAction public func detailsWasPressed(sender: AnyObject) {
-        if let handler = onDetailsClick {
-            handler(sender: sender)
-        }
+        onDetailsClick?(sender: sender)
     }
 
 
