@@ -38,7 +38,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 @property (nonatomic, strong) IBOutlet UIView *searchWrapperView;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
-@property (nonatomic, strong) UIAlertController *addSiteAlertController;
+@property (nonatomic, weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
 
 @property (nonatomic) NSDate *firstHide;
@@ -568,7 +568,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (void)addSite
 {
-    UIAlertController *addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
+    self.addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
                                                                                     message:nil
                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Create WordPress.com site", @"Create WordPress.com site button")
@@ -585,13 +585,12 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
                                                      style:UIAlertActionStyleCancel
                                                    handler:nil];
     
-    [addSiteAlertController addAction:addNewWordPressAction];
-    [addSiteAlertController addAction:addSiteAction];
-    [addSiteAlertController addAction:cancel];
-    addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
-    self.addSiteAlertController = addSiteAlertController;
+    [self.addSiteAlertController addAction:addNewWordPressAction];
+    [self.addSiteAlertController addAction:addSiteAction];
+    [self.addSiteAlertController addAction:cancel];
+    self.addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
     
-    [self presentViewController:addSiteAlertController animated:YES completion:nil];
+    [self presentViewController:self.addSiteAlertController animated:YES completion:nil];
 }
 
 - (void)showAddNewWordPressController
