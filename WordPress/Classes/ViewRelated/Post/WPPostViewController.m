@@ -106,7 +106,6 @@ EditImageDetailsViewControllerDelegate
 #pragma mark - Misc properties
 @property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIBarButtonItem *uploadStatusButton;
-@property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic) BOOL isOpenedDirectlyForEditing;
@@ -667,19 +666,10 @@ EditImageDetailsViewControllerDelegate
 
 - (void)showBlogSelector
 {
-    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
-        [self.blogSelectorPopover dismissPopoverAnimated:YES];
-        self.blogSelectorPopover = nil;
-    }
-    
     void (^dismissHandler)() = ^(void) {
-        if (IS_IPAD) {
-            [self.blogSelectorPopover dismissPopoverAnimated:YES];
-        } else {
-            self.dismissingBlogPicker = YES;
-            [self dismissViewControllerAnimated:YES completion:nil];
-            self.dismissingBlogPicker = NO;
-        }
+        self.dismissingBlogPicker = YES;
+        [self dismissViewControllerAnimated:YES completion:nil];
+        self.dismissingBlogPicker = NO;
     };
     void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -730,19 +720,11 @@ EditImageDetailsViewControllerDelegate
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
-    
-    if (IS_IPAD) {
-        vc.preferredContentSize = CGSizeMake(320.0, 500);
-        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
-        self.blogSelectorPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-        self.blogSelectorPopover.delegate = self;
-        [self.blogSelectorPopover presentPopoverFromBarButtonItem:self.secondaryLeftUIBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-
-    } else {
-        navController.modalPresentationStyle = UIModalPresentationPageSheet;
-        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self presentViewController:navController animated:YES completion:nil];
-    }
+    navController.modalPresentationStyle = UIModalPresentationPopover;
+    navController.popoverPresentationController.barButtonItem = self.secondaryLeftUIBarButtonItem;
+    navController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    navController.popoverPresentationController.backgroundColor = [WPStyleGuide wordPressBlue];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (Class)classForSettingsViewController
@@ -1866,18 +1848,6 @@ EditImageDetailsViewControllerDelegate
 	string = [string stringByReplacingOccurrencesOfString:media.html withString:@""];
     
     return string;
-}
-
-#pragma mark - UIPopoverControllerDelegate methods
-
-- (void)popoverController:(UIPopoverController *)popoverController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView **)view {
-    if (popoverController == self.blogSelectorPopover) {
-        CGRect titleRect = self.navigationItem.titleView.frame;
-        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-        
-        *view = self.navigationController.view;
-        *rect = titleRect;
-    }
 }
 
 #pragma mark - AlertView Delegate Methods
