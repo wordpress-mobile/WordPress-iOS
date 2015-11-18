@@ -163,15 +163,21 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     self.resultsController.delegate = nil;
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    if (self.tableView.tableHeaderView == self.headerView) {
-        [self updateHeaderSize];
-
-        // this forces the tableHeaderView to resize
-        self.tableView.tableHeaderView = self.headerView;
-    }
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        if (self.tableView.tableHeaderView == self.headerView) {
+            [self updateHeaderSize];
+            
+            // this forces the tableHeaderView to resize
+            self.tableView.tableHeaderView = self.headerView;
+        }
+        
+        if (![UIDevice isPad] && (self.searchWrapperViewHeightConstraint.constant > 0)) {
+            self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
+        }
+    } completion:nil];
 }
 
 - (void)registerForKeyboardNotifications
@@ -331,7 +337,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (CGFloat)heightForSearchWrapperView
 {
     UINavigationBar *navBar = self.navigationController.navigationBar;
-    CGFloat height = CGRectGetHeight(navBar.frame) + self.topLayoutGuide.length;
+    CGFloat height = CGRectGetHeight(navBar.frame) + [UIApplication sharedApplication].statusBarFrame.size.height;
     return MAX(height, SearchWrapperViewMinHeight);
 }
 
