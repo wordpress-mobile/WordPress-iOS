@@ -6,7 +6,7 @@
 
 @interface MenuItemView : MenuItemActionableView
 
-@property (nonatomic, weak) id <MenuItemViewDelegate> delegate;
+@property (nonatomic, weak) id <MenuItemActionableViewDelegate, MenuItemViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
 @property (nonatomic, assign) BOOL showsEditingButtonOptions;
 @property (nonatomic, assign) BOOL showsCancelButtonOption;

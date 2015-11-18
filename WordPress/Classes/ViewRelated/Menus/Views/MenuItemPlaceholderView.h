@@ -10,12 +10,12 @@ typedef NS_ENUM(NSUInteger) {
 
 @interface MenuItemPlaceholderView : MenuItemActionableView
 
-@property (nonatomic, weak) id <MenuItemPlaceholderViewDelegate> delegate;
+@property (nonatomic, weak) id <MenuItemActionableViewDelegate, MenuItemPlaceholderViewDelegate> delegate;
 @property (nonatomic, assign) MenuItemPlaceholderViewType type;
 
 @end
 
-@protocol MenuItemPlaceholderViewDelegate <NSObject>
+@protocol MenuItemPlaceholderViewDelegate <MenuItemActionableViewDelegate>
 
 - (void)itemPlaceholderViewSelected:(MenuItemPlaceholderView *)placeholderView;
 
