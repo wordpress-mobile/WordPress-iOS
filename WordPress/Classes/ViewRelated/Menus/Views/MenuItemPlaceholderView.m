@@ -2,6 +2,8 @@
 
 @implementation MenuItemPlaceholderView
 
+@dynamic delegate;
+
 - (id)init
 {
     self = [super init];

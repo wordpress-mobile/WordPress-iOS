@@ -25,6 +25,7 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
 
 @interface MenuItemActionableView ()
 
+@property (nonatomic, assign) BOOL showsReorderingOptions;
 @property (nonatomic, weak) NSLayoutConstraint *constraintForLeadingIndentation;
 @property (nonatomic, strong) UIStackView *accessoryStackView;
 
@@ -114,6 +115,8 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
     }
 }
 
+#pragma mark - instance
+
 - (void)setHighlighted:(BOOL)highlighted
 {
     if(_highlighted != highlighted) {
@@ -144,7 +147,17 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
     }
 }
 
-#pragma mark - instance
+- (void)setShowsReorderingOptions:(BOOL)showsReorderingOptions
+{
+    if(_showsReorderingOptions != showsReorderingOptions) {
+        _showsReorderingOptions = showsReorderingOptions;
+        
+        self.contentView.alpha = showsReorderingOptions ? 0.5 : 1.0;
+        
+        [self setNeedsDisplay];
+        [self.contentView setNeedsDisplay];
+    }
+}
 
 - (void)setIndentationLevel:(NSUInteger)indentationLevel
 {
@@ -264,6 +277,57 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
 {
     [super traitCollectionDidChange:previousTraitCollection];
     [self setNeedsDisplay];
+    [self.contentView setNeedsDisplay];
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGRect dashRect = CGRectInset(self.contentView.frame, 8.0, 8.0);
+    
+    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten10] CGColor]);
+    CGContextSetLineWidth(context, 1.0);
+    
+    const CGFloat dashLength = 6.0;
+    const CGFloat dashFillPercentage = 60; // fill % of the line with dashes, rest with white space
+    
+    CGFloat(^spacingForLineLength)(CGFloat) = ^ CGFloat (CGFloat lineLength) {
+        // calculate the white spacing needed to fill the full line with dashes
+        const CGFloat dashFill = (lineLength * dashFillPercentage) / 100;
+        //// the white spacing is proportionate to amount of space the dashes will take
+        //// uses (dashFill - dashLength) to ensure there is one extra dash to touch the end of the line
+        return ((lineLength - dashFill) * dashLength) / (dashFill - dashLength);
+    };
+    
+    const CGFloat pointOffset = 0.5;
+    {
+        CGFloat dash[2] = {dashLength, spacingForLineLength(dashRect.size.width)};
+        CGContextSetLineDash(context, 0, dash, 2);
+        
+        const CGFloat leftX = dashRect.origin.x - pointOffset;
+        const CGFloat rightX = dashRect.origin.x + dashRect.size.width + pointOffset;
+        CGContextMoveToPoint(context, leftX, dashRect.origin.y);
+        CGContextAddLineToPoint(context, rightX, dashRect.origin.y);
+        CGContextMoveToPoint(context, leftX, dashRect.origin.y + dashRect.size.height);
+        CGContextAddLineToPoint(context, rightX, dashRect.origin.y + dashRect.size.height);
+        CGContextStrokePath(context);
+        
+    }
+    {
+        CGFloat dash[2] = {dashLength, spacingForLineLength(dashRect.size.height)};
+        CGContextSetLineDash(context, 0, dash, 2);
+        
+        const CGFloat topY = dashRect.origin.y - pointOffset;
+        const CGFloat bottomY = dashRect.origin.y + dashRect.size.height + pointOffset;
+        CGContextMoveToPoint(context, dashRect.origin.x, topY);
+        CGContextAddLineToPoint(context, dashRect.origin.x, bottomY);
+        CGContextMoveToPoint(context, dashRect.origin.x + dashRect.size.width, topY);
+        CGContextAddLineToPoint(context, dashRect.origin.x + dashRect.size.width, bottomY);
+        CGContextStrokePath(context);
+    }
 }
 
 #pragma mark - MenuItemDrawingViewDelegate
@@ -271,34 +335,77 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
 - (void)drawingViewDrawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
+    const BOOL showsReordering = self.showsReorderingOptions;
         
-    // draw a line on the bottom
     CGContextSetLineWidth(context, 1.0);
+    
+    if(showsReordering) {
+        // draw a line on the top
+        // but only while reordering
+        // otherwise the line stacks against the other line on the top
+        CGContextMoveToPoint(context, 0, 0);
+        CGContextAddLineToPoint(context, rect.size.width, 0);
+    }
+    
+    // draw a line on the bottom
     CGContextMoveToPoint(context, 0, rect.size.height);
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     
+    // draw a line on the left
     CGContextMoveToPoint(context, 0, 0);
     CGContextAddLineToPoint(context, 0, rect.size.height);
     
-    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
+    UIColor *borderColor = showsReordering ? [WPStyleGuide lightBlue] : [WPStyleGuide greyLighten30];
+    CGContextSetStrokeColorWithColor(context, [borderColor CGColor]);
     CGContextStrokePath(context);
 }
 
 #pragma mark - touches
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+- (void)updateWithTouchesStarted
 {
     self.highlighted = YES;
 }
 
+- (void)updateWithTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    if(self.reorderingEnabled) {
+        self.showsReorderingOptions = YES;
+        self.highlighted = NO;
+        
+        if(self.delegate && [self.delegate respondsToSelector:@selector(itemActionableView:orderingTouchesMoved:withEvent:)]) {
+            [self.delegate itemActionableView:self orderingTouchesMoved:touches withEvent:event];
+        }
+    }
+}
+
+- (void)updateWithTouchesStopped
+{
+    if(self.reorderingEnabled) {
+        self.showsReorderingOptions = NO;
+    }
+    
+    self.highlighted = NO;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self updateWithTouchesStarted];
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self updateWithTouchesMoved:touches withEvent:event];
+}
+
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    self.highlighted = NO;
+    [self updateWithTouchesStopped];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    self.highlighted = NO;
+    [self updateWithTouchesStopped];
 }
 
 @end
