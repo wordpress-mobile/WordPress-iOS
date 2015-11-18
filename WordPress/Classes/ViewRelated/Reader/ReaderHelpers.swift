@@ -120,13 +120,13 @@ public class ReaderHelpers {
         var stat:WPAnalyticsStat?
 
         if topicIsFreshlyPressed(topic) {
-            stat = .StatReaderFreshlyPressedLoaded
+            stat = .ReaderFreshlyPressedLoaded
 
         } else if isTopicList(topic) {
-            stat = .StatReaderListLoaded
+            stat = .ReaderListLoaded
 
         } else if isTopicTag(topic) {
-            stat = .StatReaderTagLoaded
+            stat = .ReaderTagLoaded
 
         }
         if (stat != nil) {
