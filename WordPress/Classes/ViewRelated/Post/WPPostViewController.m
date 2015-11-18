@@ -41,15 +41,6 @@
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPDeviceIdentification.h"
 
-typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
-    EditPostViewControllerAlertTagNone,
-    EditPostViewControllerAlertTagLinkHelper,
-    EditPostViewControllerAlertTagFailedMedia,
-    EditPostViewControllerAlertTagFailedMediaBeforeEdit,
-    EditPostViewControllerAlertTagFailedMediaBeforeSave,
-    EditPostViewControllerAlertCancelMediaUpload,
-};
-
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
@@ -96,7 +87,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 @interface WPPostViewController () <
 WPMediaPickerViewControllerDelegate,
 UIActionSheetDelegate,
-UIPopoverControllerDelegate,
 UITextFieldDelegate,
 UITextViewDelegate,
 UIViewControllerRestoration,
@@ -569,9 +559,7 @@ EditImageDetailsViewControllerDelegate
                                           @"Message of the alert that lets the users know there are unsaved changes in a post they're opening.");
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    [alertController addActionWithTitle:NSLocalizedString(@"OK",@"") style:UIAlertActionStyleDefault handler:^(UIAlertAction *alertAction) {
-        
-    }];
+    [alertController addActionWithTitle:NSLocalizedString(@"OK",@"") style:UIAlertActionStyleDefault handler:nil];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -658,9 +646,7 @@ EditImageDetailsViewControllerDelegate
     [alertController addDefaultActionWithTitle:NSLocalizedString(@"OK",@"") handler:^(UIAlertAction *action) {
        [self showBlogSelector]; 
     }];
-    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel",@"") handler:^(UIAlertAction *action) {
-        
-    }];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel",@"") handler:nil];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -734,48 +720,49 @@ EditImageDetailsViewControllerDelegate
 
 - (void)showCancelMediaUploadPrompt
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel media uploads", "Dialog box title for when the user is cancelling an upload.")
-                                                        message:NSLocalizedString(@"You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", @"This prompt is displayed when the user attempts to stop media uploads in the post editor.")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".")
-                                              otherButtonTitles:NSLocalizedString(@"Yes", "Yes"), nil];
-    alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
-    [alertView show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Cancel media uploads", "Dialog box title for when the user is cancelling an upload.")
+                                                                             message:NSLocalizedString(@"You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", @"This prompt is displayed when the user attempts to stop media uploads in the post editor.")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Yes", "Yes") handler:^(UIAlertAction *action) {
+        [self cancelMediaUploads];
+    }];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".") handler:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showMediaUploadingAlert
 {
-    //the post is using the network connection and cannot be stoped, show a message to the user
-    UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
-                                                                  message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
-                                                                 delegate:nil
-                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                        otherButtonTitles:nil];
-    [blogIsCurrentlyBusy show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
+                                                                             message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"OK", "") handler:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showFailedMediaRemovalAlert
 {
-    UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to save post with failed media items")
-                                                                              message:NSLocalizedString(@"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
-                                                                             delegate:self
-                                                                    cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
-                                                                    otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
-    failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeSave;
-    [failedMediaAlertView show];
-
-    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to save post with failed media items")
+                                                                             message:NSLocalizedString(@"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Yes", "Yes") handler:^(UIAlertAction *action) {
+        [self removeAllFailedMedia];
+        [self savePostAndDismissVC];
+    }];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".") handler:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showFailedMediaBeforeEditAlert
 {
-    UIAlertView * failedMediaBeforeEditAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to edit html post with failed media items")
-                                                           message:NSLocalizedString(@"Some media uploads failed. Switching to the HTML view of this post will remove failed media.\nSwitch anyway?", @"Confirms with the user if they manually edit the post HTML all media that failed to upload will be removed from it.")
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
-                                                 otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
-    failedMediaBeforeEditAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeEdit;
-    [failedMediaBeforeEditAlertView show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to edit html post with failed media items")
+                                                                             message:NSLocalizedString(@"Some media uploads failed. Switching to the HTML view of this post will remove failed media.\nSwitch anyway?", @"Confirms with the user if they manually edit the post HTML all media that failed to upload will be removed from it.")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Yes", "Yes") handler:^(UIAlertAction *action) {
+        [self removeAllFailedMedia];
+        [self.editorView showHTMLSource];
+    }];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".") handler:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showSettings
@@ -1848,39 +1835,6 @@ EditImageDetailsViewControllerDelegate
 	string = [string stringByReplacingOccurrencesOfString:media.html withString:@""];
     
     return string;
-}
-
-#pragma mark - AlertView Delegate Methods
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch(alertView.tag){
-        case (EditPostViewControllerAlertTagFailedMedia): {
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                DDLogInfo(@"Saving post even after some media failed to upload");
-                [self savePostAndDismissVC];
-            }
-            self.failedMediaAlertView = nil;
-        } break;
-        case (EditPostViewControllerAlertCancelMediaUpload): {
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                [self cancelMediaUploads];
-            }
-        } break;
-        case (EditPostViewControllerAlertTagFailedMediaBeforeEdit): {
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                [self removeAllFailedMedia];
-                [self.editorView showHTMLSource];
-            }
-        } break;
-        case (EditPostViewControllerAlertTagFailedMediaBeforeSave): {
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                [self removeAllFailedMedia];
-                [self savePostAndDismissVC];
-            }
-        } break;
-    }
-    
-    return;
 }
 
 #pragma mark - ActionSheet Delegate Methods
