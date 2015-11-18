@@ -311,6 +311,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     CGRect titleRect = self.navigationItem.titleView.frame;
     titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
     navController.popoverPresentationController.sourceRect = titleRect;
+    navController.popoverPresentationController.sourceView = self.navigationItem.titleView.superview;
     navController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
     navController.popoverPresentationController.backgroundColor = [WPStyleGuide wordPressBlue];
     [self presentViewController:navController animated:YES completion:nil];
