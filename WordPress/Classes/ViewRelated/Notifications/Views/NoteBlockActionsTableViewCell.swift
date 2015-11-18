@@ -16,27 +16,27 @@ import Foundation
 
     public var isReplyEnabled: Bool = false {
         didSet {
-            updateButton(btnReply, enabled: isReplyEnabled)
+            btnReply.hidden = !isReplyEnabled
         }
     }
     public var isLikeEnabled: Bool = false {
         didSet {
-            updateButton(btnLike, enabled: isLikeEnabled)
+            btnLike.hidden = !isLikeEnabled
         }
     }
     public var isApproveEnabled: Bool = false {
         didSet {
-            updateButton(btnApprove, enabled: isApproveEnabled)
+            btnApprove.hidden = !isApproveEnabled
         }
     }
     public var isTrashEnabled: Bool = false {
         didSet {
-            updateButton(btnTrash, enabled: isTrashEnabled)
+            btnTrash.hidden = !isTrashEnabled
         }
     }
     public var isSpamEnabled: Bool = false {
         didSet {
-            updateButton(btnSpam, enabled: isSpamEnabled)
+            btnSpam.hidden = !isSpamEnabled
         }
     }
     public var isLikeOn: Bool {
@@ -106,20 +106,9 @@ import Foundation
         btnTrash.accessibilityLabel = trashTitle
     }
     
-    public override func updateConstraints() {
-        super.updateConstraints()
-        
-        // Update Button Constraints:  [ Leading - Button ]
-        let buttons = [btnReply, btnLike, btnApprove, btnTrash, btnSpam]
-        for button in buttons {
-            refreshButtonConstraints(button)
-        }
-        
-        // Update the last buttons Trailing constraint
-        refreshActionsTrailingConstraint()
-        
-        // Spacing!
-        refreshBottomSpacing()
+    public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        actionsView.spacing = buttonSpacingForCurrentTraits
     }
     
     
@@ -148,62 +137,24 @@ import Foundation
     @IBAction public func spamWasPressed(sender: AnyObject) {
         onSpamClick?(sender: sender)
     }
+    
 
-    
-    
-    // MARK: - Layout Helpers
-    private func updateButton(button: UIButton, enabled: Bool) {
-        button.hidden = !enabled
-        button.enabled = enabled
-        setNeedsUpdateConstraints()
-    }
-    
-    private func refreshButtonConstraints(button: UIButton) {
-        let newWidth   = button.hidden ? CGFloat.min : buttonWidth
-        let newSpacing = button.hidden ? CGFloat.min : buttonSpacingForCurrentTraits()
-        
-        // When disabled, let's hide the button by shrinking it's width
-        button.updateConstraint(.Width, constant: newWidth)
-        
-        // Update Leading Constraint
-        actionsView.updateConstraintWithFirstItem(button, attribute: .Leading, constant: newSpacing)
-    }
-    
-    private func refreshActionsTrailingConstraint() {
-        let newSpacing   = buttonSpacingForCurrentTraits()
-        actionsView.updateConstraintWithFirstItem(actionsView, attribute: .Trailing, constant: newSpacing)
-    }
-    
-    private func refreshBottomSpacing() {
-        //  Let's remove the bottom space when every action button is disabled
-        let hasActions   = isReplyEnabled || isLikeEnabled || isTrashEnabled || isApproveEnabled || isSpamEnabled
-        let newTop       = hasActions ? actionsTop    : CGFloat.min
-        let newHeight    = hasActions ? actionsHeight : CGFloat.min
-        
-        contentView.updateConstraintWithFirstItem(actionsView, attribute: .Top, constant: newTop)
-        actionsView.updateConstraint(.Height, constant: newHeight)
-        actionsView.hidden = !hasActions
-        setNeedsLayout()
-    }
-    
-    private func buttonSpacingForCurrentTraits() -> CGFloat {
+
+    // MARK: - Computed Properties
+    private var buttonSpacingForCurrentTraits : CGFloat {
         let isHorizontallyCompact = traitCollection.horizontalSizeClass == .Compact && UIDevice.isPad()
         return isHorizontallyCompact ? buttonSpacingCompact : buttonSpacing
     }
     
-    
     // MARK: - Private Constants
-    private let buttonWidth                         = CGFloat(55)
-    private let buttonSpacing                       = CGFloat(20)
-    private let buttonSpacingCompact                = CGFloat(10)
-    private let actionsHeight                       = CGFloat(34)
-    private let actionsTop                          = CGFloat(11)
+    private let buttonSpacing           = CGFloat(20)
+    private let buttonSpacingCompact    = CGFloat(10)
     
     // MARK: - IBOutlets
-    @IBOutlet private weak var actionsView          : UIView!
-    @IBOutlet private weak var btnReply             : UIButton!
-    @IBOutlet private weak var btnLike              : UIButton!
-    @IBOutlet private weak var btnApprove           : UIButton!
-    @IBOutlet private weak var btnTrash             : UIButton!
-    @IBOutlet private weak var btnSpam              : UIButton!
+    @IBOutlet private var actionsView   : UIStackView!
+    @IBOutlet private var btnReply      : UIButton!
+    @IBOutlet private var btnLike       : UIButton!
+    @IBOutlet private var btnApprove    : UIButton!
+    @IBOutlet private var btnTrash      : UIButton!
+    @IBOutlet private var btnSpam       : UIButton!
 }
