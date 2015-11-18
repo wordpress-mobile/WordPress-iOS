@@ -28,11 +28,6 @@ NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigati
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
 static void *ProgressObserverContext = &ProgressObserverContext;
 
-NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
-{
-    WPLegacyEditPostViewControllerActionSheetCancelOptions = 201,
-};
-
 @interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
 @property (nonatomic, strong) UIButton *titleBarButton;
@@ -364,8 +359,6 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 
 - (void)cancelEditing
 {
-    if (_currentActionSheet) return;
-
     [self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
 
@@ -380,38 +373,40 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
         [self dismissEditView];
         return;
     }
-
-    UIActionSheet *actionSheet;
-    if (![self.post.original.status isEqualToString:PostStatusDraft] && self.editMode != EditPostViewControllerModeNewPost) {
-        // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
-        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-                                                  delegate:self
-                                         cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                         otherButtonTitles:nil];
-    } else if (self.editMode == EditPostViewControllerModeNewPost) {
-        // The post is a local draft or an autosaved draft: Discard or Save
-        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-                                                  delegate:self
-                                         cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                         otherButtonTitles:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post."), nil];
-    } else {
-        // The post was already a draft
-        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-                                                  delegate:self
-                                         cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                         otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
+    UIAlertController *alertController;
+    alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+                                                          message:nil
+                                                   preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addActionWithTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                  style:UIAlertActionStyleCancel
+                                handler:nil];
+    [alertController addActionWithTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                  style:UIAlertActionStyleDestructive
+                                handler:^(UIAlertAction * action) {
+                                    [self discardChanges];
+                                    [self dismissEditView];
+                                    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+                                }];
+    
+    if ([self.post.original.status isEqualToString:PostStatusDraft]) {
+        NSString *actionTitle = NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post.");
+        if (self.editMode != EditPostViewControllerModeNewPost) {
+            actionTitle = NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.");
+        }
+        [alertController addActionWithTitle:actionTitle
+                                      style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+                                        if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+                                            self.post.status = PostStatusDraft;
+                                        }
+                                        DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
+                                        [self savePost:YES];
+                                        [self dismissEditView];
+                                    }];
     }
-
-    actionSheet.tag = WPLegacyEditPostViewControllerActionSheetCancelOptions;
-    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    if (IS_IPAD) {
-        [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
-    } else {
-        [actionSheet showFromToolbar:self.navigationController.toolbar];
-    }
+    
+    alertController.popoverPresentationController.barButtonItem = self.navigationItem.leftBarButtonItem;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Instance Methods
@@ -610,10 +605,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 
 - (void)saveAction
 {
-    if (_currentActionSheet.isVisible) {
-        [_currentActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
-        _currentActionSheet = nil;
-    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 
     if ([self isMediaUploading] ) {
         [self showMediaInUploadingAlert];
@@ -1031,45 +1023,6 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     string = [string stringByReplacingOccurrencesOfString:media.html withString:@""];
 
     return string;
-}
-
-
-#pragma mark - ActionSheet Delegate Methods
-
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
-{
-    _currentActionSheet = actionSheet;
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    switch ([actionSheet tag]) {
-        case (WPLegacyEditPostViewControllerActionSheetCancelOptions): {
-            // Discard
-            if (buttonIndex == 0) {
-                [self discardChanges];
-                [self dismissEditView];
-                [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
-            }
-            
-            if (buttonIndex == 1) {
-                // Cancel / Keep editing
-                if ([actionSheet numberOfButtons] == 2) {
-                    [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-                } else {
-                    // Save draft
-                    // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                    if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
-                        self.post.status = PostStatusDraft;
-                    }
-                    DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
-                    [self savePost:YES];
-                    [self dismissEditView];
-                }
-            }
-        }
-    }
-    _currentActionSheet = nil;
 }
 
 #pragma mark - WPLegacyEditorViewControllerDelegate delegate
