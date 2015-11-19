@@ -1,4 +1,5 @@
 import Foundation
+import SafariServices
 
 @objc public class ReaderStreamViewController : UIViewController,
     WPContentSyncHelperDelegate,
@@ -610,9 +611,8 @@ import Foundation
 
     private func visitSiteForPost(post:ReaderPost) {
         let siteURL = NSURL(string: post.blogURL)!
-        let controller = WPWebViewController(URL: siteURL)
-        let navController = UINavigationController(rootViewController: controller)
-        presentViewController(navController, animated: true, completion: nil)
+        let safariViewController = SFSafariViewController(URL: siteURL)
+        presentViewController(safariViewController, animated: true, completion: nil)
     }
 
     private func showAttributionForPost(post: ReaderPost) {
@@ -632,10 +632,12 @@ import Foundation
             return
         }
 
-        let linkURL = NSURL(string: post.sourceAttribution.blogURL)
-        let controller = WPWebViewController(URL: linkURL)
-        let navController = UINavigationController(rootViewController: controller)
-        presentViewController(navController, animated: true, completion: nil)
+        guard let linkURL = NSURL(string: post.sourceAttribution.blogURL) else {
+            return
+        }
+        
+        let safariViewController = SFSafariViewController(URL: linkURL)
+        presentViewController(safariViewController, animated: true, completion: nil)
     }
 
     private func toggleLikeForPost(post: ReaderPost) {
