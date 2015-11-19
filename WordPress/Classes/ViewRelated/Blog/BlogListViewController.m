@@ -574,7 +574,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (void)addSite
 {
-    self.addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
+    UIAlertController *addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
                                                                                     message:nil
                                                                              preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Create WordPress.com site", @"Create WordPress.com site button")
@@ -590,13 +590,13 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
                                                      style:UIAlertActionStyleCancel
                                                    handler:nil];
+    [addSiteAlertController addAction:addNewWordPressAction];
+    [addSiteAlertController addAction:addSiteAction];
+    [addSiteAlertController addAction:cancel];
+    addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
     
-    [self.addSiteAlertController addAction:addNewWordPressAction];
-    [self.addSiteAlertController addAction:addSiteAction];
-    [self.addSiteAlertController addAction:cancel];
-    self.addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
-    
-    [self presentViewController:self.addSiteAlertController animated:YES completion:nil];
+    [self presentViewController:addSiteAlertController animated:YES completion:nil];
+    self.addSiteAlertController = addSiteAlertController;
 }
 
 - (void)showAddNewWordPressController
