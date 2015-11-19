@@ -2,7 +2,6 @@
 #import "Blog.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
-#import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "SiteSettingsViewController.h"
 #import "ReachabilityUtils.h"
@@ -12,6 +11,7 @@
 #import "WPCookie.h"
 #import "UIDevice+Helpers.h"
 #import "WordPress-Swift.h"
+#import <SafariServices/SafariServices.h>
 
 NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
@@ -409,8 +409,8 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound ||
             [query rangeOfString:@"no-chrome"].location == NSNotFound) {
-            WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:request.URL];
-            [self.navigationController pushViewController:webViewController animated:YES];
+            SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:request.URL];
+            [self.navigationController presentViewController:safariViewController animated:YES completion:nil];
             return NO;
         }
 

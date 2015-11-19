@@ -4,6 +4,6 @@
 
 @interface ThemeDetailsViewController : UIViewController
 
-- (id)initWithTheme:(Theme*)theme;
+- (instancetype)initWithTheme:(Theme*)theme;
 
 @end

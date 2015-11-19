@@ -2,6 +2,7 @@
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <SafariServices/SafariServices.h>
 
 #import "CreateAccountAndBlogViewController.h"
 #import "SupportViewController.h"
@@ -16,7 +17,6 @@
 #import "WPTabBarController.h"
 #import "WPWalkthroughTextField.h"
 #import "WPWalkthroughOverlayView.h"
-#import "WPWebViewController.h"
 
 #import "WordPressComOAuthClient.h"
 #import "ContextManager.h"
@@ -1039,14 +1039,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (void)displayWebViewForURL:(NSURL *)url username:(NSString *)username password:(NSString *)password;
 {
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
-    if (username.length > 0 && password.length > 0) {
-        webViewController.username = username;
-        webViewController.password = password;
-    }
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 - (void)endViewEditing

@@ -1,7 +1,6 @@
 #import "JetpackSettingsViewController.h"
 #import "Blog.h"
 #import "WordPressComApi.h"
-#import "WPWebViewController.h"
 #import "WPAccount.h"
 #import "WPNUXUtility.h"
 #import "WPNUXMainButton.h"
@@ -15,6 +14,7 @@
 #import "JetpackService.h"
 #import "ContextManager.h"
 
+#import <SafariServices/SafariServices.h>
 
 
 #pragma mark ====================================================================================
@@ -630,26 +630,17 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 {
     [WPAnalytics track:WPAnalyticsStatSelectedInstallJetpack];
 
-    NSString *targetURL = [_blog adminUrlWithPath:JetpackInstallRelativePath];
-    [self openURL:[NSURL URLWithString:targetURL] username:_blog.usernameForSite password:_blog.password wpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
+    NSString *targetPath = [_blog adminUrlWithPath:JetpackInstallRelativePath];
+    NSURL *targetURL = [NSURL URLWithString:targetPath];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:targetURL];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 - (void)openMoreInformationURL
 {
     NSURL *targetURL = [NSURL URLWithString:JetpackMoreInformationURL];
-    [self openURL:targetURL username:nil password:nil wpLoginURL:nil];
-}
-
-- (void)openURL:(NSURL *)url username:(NSString *)username password:(NSString *)password wpLoginURL:(NSURL *)wpLoginURL
-{
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
-    webViewController.username = username;
-    webViewController.password = password;
-    webViewController.wpLoginURL = wpLoginURL;
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    navController.modalPresentationStyle = UIModalPresentationPageSheet;
-    [self presentViewController:navController animated:YES completion:nil];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:targetURL];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 - (void)updateMessage

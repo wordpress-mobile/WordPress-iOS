@@ -1,13 +1,11 @@
 #import "NotificationsViewController.h"
 
-#import <Simperium/Simperium.h>
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "Constants.h"
 #import "WPGUIConstants.h"
 
 #import "WPTableViewHandler.h"
-#import "WPWebViewController.h"
 #import "WPNoResultsView.h"
 #import "WPTabBarController.h"
 
@@ -29,6 +27,8 @@
 
 #import "AppRatingUtility.h"
 
+#import <SafariServices/SafariServices.h>
+#import <Simperium/Simperium.h>
 #import <WordPress-AppbotX/ABXPromptView.h>
 #import <WordPress-AppbotX/ABXAppStore.h>
 #import <WordPress-AppbotX/ABXFeedbackViewController.h>
@@ -952,13 +952,11 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-    NSURL *targetURL                        = [NSURL URLWithString:WPJetpackInformationURL];
-    WPWebViewController *webViewController  = [WPWebViewController webViewControllerWithURL:targetURL];
- 
-    UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
- 
     [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
+    
+    NSURL *targetURL = [NSURL URLWithString:WPJetpackInformationURL];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:targetURL];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 

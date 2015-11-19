@@ -1,5 +1,6 @@
 #import "ReaderCommentsViewController.h"
 
+#import <SafariServices/SafariServices.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
 #import "Comment.h"
@@ -18,7 +19,6 @@
 #import "WPImageViewController.h"
 #import "WPRichTextView.h"
 #import "WPTableViewHandler.h"
-#import "WPWebViewController.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 #import "WordPress-Swift.h"
@@ -1132,9 +1132,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
 {
-    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:url];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 - (void)handleReplyTapped:(id<WPContentViewProvider>)contentProvider
@@ -1173,9 +1172,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         linkURL = [NSURL URLWithString:linkURL.path relativeToURL:url];
     }
 
-    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:linkURL];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:linkURL];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
@@ -1186,8 +1184,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     if (isSupportedNatively) {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
     } else if (imageControl.linkURL) {
-        WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:imageControl.linkURL];
-        controller = [[UINavigationController alloc] initWithRootViewController:webViewController];
+        controller = [[SFSafariViewController alloc] initWithURL:imageControl.linkURL];
     } else {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
     }

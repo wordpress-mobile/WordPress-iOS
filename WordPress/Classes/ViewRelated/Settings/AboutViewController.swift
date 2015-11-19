@@ -1,4 +1,5 @@
 import Foundation
+import SafariServices
 
 
 public class AboutViewController : UITableViewController
@@ -128,13 +129,8 @@ public class AboutViewController : UITableViewController
     
     // MARK: - Private Helpers
     private func displayWebView(url: String) {
-        let webViewController = WPWebViewController(URL: NSURL(string: url)!)
-        if presentingViewController != nil {
-            navigationController?.pushViewController(webViewController, animated: true)
-        } else {
-            let navController = UINavigationController(rootViewController: webViewController)
-            presentViewController(navController, animated: true, completion: nil)
-        }
+        let safariViewController = SFSafariViewController(URL: NSURL(string: url)!)
+        presentViewController(safariViewController, animated: true, completion: nil)
     }
 
     private func displayRatingPrompt() {

@@ -12,7 +12,6 @@
 #import "WPWalkthroughOverlayView.h"
 #import "SelectWPComLanguageViewController.h"
 #import "WPNUXUtility.h"
-#import "WPWebViewController.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 #import "UILabel+SuggestSize.h"
@@ -29,6 +28,7 @@
 #import "WordPress-Swift.h"
 
 #import <1PasswordExtension/OnePasswordExtension.h>
+#import <SafariServices/SafariServices.h>
 
 
 @interface CreateAccountAndBlogViewController ()<UITextFieldDelegate,UIGestureRecognizerDelegate> {
@@ -582,10 +582,8 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 - (IBAction)TOSLabelWasTapped
 {
     NSURL *targetURL = [NSURL URLWithString:WPAutomatticTermsOfServiceURL];
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:targetURL];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification

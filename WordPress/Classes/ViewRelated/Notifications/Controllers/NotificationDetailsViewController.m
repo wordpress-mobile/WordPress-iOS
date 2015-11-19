@@ -5,6 +5,7 @@
 
 #import "Blog.h"
 #import "Notification.h"
+#import <SafariServices/SafariServices.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 
 #import "ContextManager.h"
@@ -13,7 +14,6 @@
 #import "CommentService.h"
 #import "ReaderSiteService.h"
 
-#import "WPWebViewController.h"
 #import "WPImageViewController.h"
 
 #import "ReaderPostDetailViewController.h"
@@ -968,10 +968,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         return NO;
     }
     
-    WPWebViewController *webViewController  = [WPWebViewController authenticatedWebViewController:url];
-    UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    
-    [self presentViewController:navController animated:YES completion:nil];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+    [self presentViewController:safariViewController animated:YES completion:nil];
     
     return success;
 }

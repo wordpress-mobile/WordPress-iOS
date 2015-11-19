@@ -2,7 +2,6 @@
 #import "SiteSettingsViewController.h"
 #import "CommentsViewController.h"
 #import "StatsViewController.h"
-#import "WPWebViewController.h"
 #import "WPTableViewCell.h"
 #import "ContextManager.h"
 #import "AccountService.h"
@@ -16,6 +15,7 @@
 #import "WPThemeSettings.h"
 #import "WPGUIConstants.h"
 #import "Wordpress-Swift.h"
+#import <SafariServices/SafariServices.h>
 
 const NSInteger BlogDetailsRowViewSite = 0;
 const NSInteger BlogDetailsRowViewAdmin = 1;
@@ -496,14 +496,8 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
 
     NSURL *targetURL = [NSURL URLWithString:blog.homeURL];
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    webViewController.authToken = blog.authToken;
-    webViewController.username = blog.usernameForSite;
-    webViewController.password = blog.password;
-    webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:targetURL];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 - (void)showViewAdminForBlog:(Blog *)blog
@@ -516,7 +510,9 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
 
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
+    NSURL *targetURL = [NSURL URLWithString:dashboardUrl];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:targetURL];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 

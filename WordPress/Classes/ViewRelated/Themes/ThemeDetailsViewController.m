@@ -1,7 +1,6 @@
 #import "ThemeDetailsViewController.h"
 #import "Theme.h"
 #import "WPImageSource.h"
-#import "WPWebViewController.h"
 #import "WPAccount.h"
 #import "WPStyleGuide.h"
 #import "Blog.h"
@@ -9,6 +8,7 @@
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import <SafariServices/SafariServices.h>
 
 @interface ThemeDetailsViewController ()
 
@@ -28,7 +28,7 @@
 
 @implementation ThemeDetailsViewController
 
-- (id)initWithTheme:(Theme *)theme
+- (instancetype)initWithTheme:(Theme *)theme
 {
     self = [super init];
     if (self) {
@@ -223,18 +223,9 @@
 - (IBAction)livePreviewPressed:(id)sender
 {
     // Live preview URL yields the same result as 'view current site'.
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
     NSURL *targetURL = [NSURL URLWithString:self.theme.previewUrl];
-    WPWebViewController *livePreviewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    livePreviewController.authToken = defaultAccount.authToken;
-    livePreviewController.username = defaultAccount.username;
-    livePreviewController.wpLoginURL = [NSURL URLWithString:self.theme.blog.loginUrl];
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:livePreviewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:targetURL];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 - (IBAction)activatePressed:(id)sender
