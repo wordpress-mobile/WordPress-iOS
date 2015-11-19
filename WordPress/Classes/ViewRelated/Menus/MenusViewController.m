@@ -202,6 +202,11 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 #pragma mark - MenuItemsViewDelegate
 
+- (void)itemsView:(MenuItemsView *)itemsView prefersScrollingEnabled:(BOOL)enabled
+{
+    self.scrollView.scrollEnabled = enabled;
+}
+
 - (void)itemsViewAnimatingContentSizeChanges:(MenuItemsView *)itemsView focusedRect:(CGRect)focusedRect updatedFocusRect:(CGRect)updatedFocusRect
 {
     CGPoint offset = self.scrollView.contentOffset;

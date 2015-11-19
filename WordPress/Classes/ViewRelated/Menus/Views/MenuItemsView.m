@@ -202,6 +202,11 @@
 
 #pragma mark - MenuItemActionableViewDelegate
 
+- (void)itemActionableViewDidBeginReordering:(MenuItemActionableView *)actionableView
+{
+    [self.delegate itemsView:self prefersScrollingEnabled:NO];
+}
+
 - (void)itemActionableView:(MenuItemActionableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     if(![actionableView isKindOfClass:[MenuItemActionableView class]]) {
@@ -223,6 +228,11 @@
             break;
         }
     }
+}
+
+- (void)itemActionableViewDidEndReordering:(MenuItemActionableView *)actionableView
+{
+    [self.delegate itemsView:self prefersScrollingEnabled:YES];
 }
 
 #pragma mark - MenuItemViewDelegate
