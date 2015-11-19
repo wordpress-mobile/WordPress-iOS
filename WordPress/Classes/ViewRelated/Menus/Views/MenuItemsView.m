@@ -207,7 +207,7 @@
     [self.delegate itemsView:self prefersScrollingEnabled:NO];
 }
 
-- (void)itemActionableView:(MenuItemActionableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+- (void)itemActionableView:(MenuItemActionableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
 {
     if(![actionableView isKindOfClass:[MenuItemActionableView class]]) {
         return;

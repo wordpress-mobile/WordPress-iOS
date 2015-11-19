@@ -28,6 +28,8 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
 @property (nonatomic, assign) BOOL showsReorderingOptions;
 @property (nonatomic, weak) NSLayoutConstraint *constraintForLeadingIndentation;
 @property (nonatomic, strong) UIStackView *accessoryStackView;
+@property (nonatomic, assign) CGPoint touchesBeganLocation;
+@property (nonatomic, assign) BOOL observingReorderingTouches;
 
 @end
 
@@ -362,29 +364,42 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
 
 #pragma mark - touches
 
-- (void)updateWithTouchesStarted
+- (void)updateWithTouchesStarted:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     self.highlighted = YES;
+    self.touchesBeganLocation = [[touches anyObject] locationInView:self];
 }
 
 - (void)updateWithTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     if(self.reorderingEnabled) {
         
-        self.showsReorderingOptions = YES;
-        self.highlighted = NO;
-        
-        if([self.delegate respondsToSelector:@selector(itemActionableViewDidBeginReordering:)]) {
-            [self.delegate itemActionableViewDidBeginReordering:self];
-        }
-        
-        if([self.delegate respondsToSelector:@selector(itemActionableView:orderingTouchesMoved:withEvent:)]) {
-            [self.delegate itemActionableView:self orderingTouchesMoved:touches withEvent:event];
+        if(!self.observingReorderingTouches) {
+         
+            self.showsReorderingOptions = YES;
+            self.observingReorderingTouches = YES;
+            self.highlighted = NO;
+            
+            if([self.delegate respondsToSelector:@selector(itemActionableViewDidBeginReordering:)]) {
+                [self.delegate itemActionableViewDidBeginReordering:self];
+            }
+            
+        }else {
+                
+            CGPoint startLocation = self.touchesBeganLocation;
+            CGPoint location = [[touches anyObject] locationInView:self];
+            CGPoint vector = CGPointZero;
+            vector.x = location.x - startLocation.x;
+            vector.y = location.y - startLocation.y;
+            
+            if([self.delegate respondsToSelector:@selector(itemActionableView:orderingTouchesMoved:withEvent:vector:)]) {
+                [self.delegate itemActionableView:self orderingTouchesMoved:touches withEvent:event vector:vector];
+            }
         }
     }
 }
 
-- (void)updateWithTouchesStopped
+- (void)updateWithTouchesStopped:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     if(self.reorderingEnabled) {
         self.showsReorderingOptions = NO;
@@ -395,11 +410,13 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
     }
     
     self.highlighted = NO;
+    self.touchesBeganLocation = CGPointZero;
+    self.observingReorderingTouches = NO;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    [self updateWithTouchesStarted];
+    [self updateWithTouchesStarted:touches withEvent:event];
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -409,12 +426,12 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    [self updateWithTouchesStopped];
+    [self updateWithTouchesStopped:touches withEvent:event];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    [self updateWithTouchesStopped];
+    [self updateWithTouchesStopped:touches withEvent:event];
 }
 
 @end
