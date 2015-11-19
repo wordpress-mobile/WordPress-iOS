@@ -461,6 +461,7 @@
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
 		E1266D2D1BBE8B9A00FCB6B6 /* Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1266D2C1BBE8B9A00FCB6B6 /* Gravatar.swift */; };
 		E1266D2F1BBEC37B00FCB6B6 /* GravatarTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1266D2E1BBEC37B00FCB6B6 /* GravatarTest.swift */; };
+		E12E54A91BFDE71100A8F37D /* WPImmuTableCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12E54A81BFDE71100A8F37D /* WPImmuTableCells.swift */; };
 		E131CB5216CACA6B004B0314 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5116CACA6B004B0314 /* CoreText.framework */; };
 		E131CB5416CACB05004B0314 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E131CB5316CACB05004B0314 /* libxml2.dylib */; };
 		E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */ = {isa = PBXBuildFile; fileRef = E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */; };
@@ -540,7 +541,6 @@
 		E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D82516D3D19200E33F4C /* PocketAPIOperation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D0D84616D3D2EA00E33F4C /* PocketActivity.m */; };
 		E1D458691309589C00BF0235 /* Coordinate.m in Sources */ = {isa = PBXBuildFile; fileRef = E14932B5130427B300154804 /* Coordinate.m */; };
-		E1D6DF691BFBA47D0075D861 /* WPTableViewCellStyles.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D6DF681BFBA47D0075D861 /* WPTableViewCellStyles.m */; };
 		E1D86E691B2B414300DD2192 /* WordPress-32-33.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E1D86E681B2B414300DD2192 /* WordPress-32-33.xcmappingmodel */; };
 		E1D91456134A853D0089019C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1D91454134A853D0089019C /* Localizable.strings */; };
 		E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */; };
@@ -1470,6 +1470,7 @@
 		E1266D2C1BBE8B9A00FCB6B6 /* Gravatar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gravatar.swift; sourceTree = "<group>"; };
 		E1266D2E1BBEC37B00FCB6B6 /* GravatarTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarTest.swift; sourceTree = "<group>"; };
 		E12963A8174654B2002E7744 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E12E54A81BFDE71100A8F37D /* WPImmuTableCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPImmuTableCells.swift; sourceTree = "<group>"; };
 		E12F95A51557C9C20067A653 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E12F95A61557CA210067A653 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E12F95A71557CA400067A653 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -1602,8 +1603,6 @@
 		E1D0D82616D3D19200E33F4C /* PocketAPITypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketAPITypes.h; sourceTree = "<group>"; };
 		E1D0D84516D3D2EA00E33F4C /* PocketActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PocketActivity.h; sourceTree = "<group>"; };
 		E1D0D84616D3D2EA00E33F4C /* PocketActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PocketActivity.m; sourceTree = "<group>"; };
-		E1D6DF671BFBA47D0075D861 /* WPTableViewCellStyles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewCellStyles.h; sourceTree = "<group>"; };
-		E1D6DF681BFBA47D0075D861 /* WPTableViewCellStyles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewCellStyles.m; sourceTree = "<group>"; };
 		E1D86E671B2B406600DD2192 /* WordPress 33.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 33.xcdatamodel"; sourceTree = "<group>"; };
 		E1D86E681B2B414300DD2192 /* WordPress-32-33.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-32-33.xcmappingmodel"; sourceTree = "<group>"; };
 		E1D91455134A853D0089019C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2515,8 +2514,7 @@
 				5D839AAA187F0D8000811F4A /* PostGeolocationCell.m */,
 				FF0AAE081A1509C50089841D /* WPProgressTableViewCell.h */,
 				FF0AAE091A150A560089841D /* WPProgressTableViewCell.m */,
-				E1D6DF671BFBA47D0075D861 /* WPTableViewCellStyles.h */,
-				E1D6DF681BFBA47D0075D861 /* WPTableViewCellStyles.m */,
+				E12E54A81BFDE71100A8F37D /* WPImmuTableCells.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -4574,7 +4572,6 @@
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
 				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
 				E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */,
-				E1D6DF691BFBA47D0075D861 /* WPTableViewCellStyles.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
 				E1DF5DFD19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m in Sources */,
@@ -4700,6 +4697,7 @@
 				31F4F6671A1385BE00196A98 /* MeViewController.m in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
 				B587797C19B799D800E57C5A /* NSParagraphStyle+Helpers.swift in Sources */,
+				E12E54A91BFDE71100A8F37D /* WPImmuTableCells.swift in Sources */,
 				5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */,
 				5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */,
 				5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */,
