@@ -60,7 +60,7 @@
         itemView.delegate = self;
         // set up ordering to help with any drawing
         itemView.item = item;
-        itemView.indentationLevel = 1;
+        itemView.indentationLevel = 0;
 
         MenuItem *parentItem = item.parent;
         while (parentItem) {
@@ -213,18 +213,70 @@
         return;
     }
     
-    CGPoint touchPoint = [[touches anyObject] locationInView:self];
-    
+    const CGPoint touchPoint = [[touches anyObject] locationInView:self];
     MenuItemView *selectedItemView = (MenuItemView *)actionableView;
+    
+    // index of the itemView in the arrangedSubViews list
+    const NSUInteger selectedItemViewIndex = [self.stackView.arrangedSubviews indexOfObject:selectedItemView];
+    
+    //// indentation detection (child relationships)
+    
+    // first check to see if we should pay attention to touches that might signal a change in indentation
+    const CGFloat indentationDetectionXDelta = (selectedItemView.frame.size.width * 5.0) / 100; // a travel of x% should be considered
+    if(fabs(vector.x) > indentationDetectionXDelta) {
+     
+        // look for any itemViews that might be above the selectedItemView
+        MenuItemView *itemViewAboveSelected = nil;
+        for(UIView *arrangedView in self.stackView.arrangedSubviews) {
+            // ignore any other views that aren't itemViews
+            if(![arrangedView isKindOfClass:[MenuItemView class]]) {
+                continue;
+            }
+            if(arrangedView == selectedItemView) {
+                break;
+            }
+            itemViewAboveSelected = (MenuItemView *)arrangedView;
+        }
+        
+        // if there is an itemView above the selectedItemView, check for touches signaling a change in indentation
+        if(itemViewAboveSelected) {
+            if(vector.x > 0) {
+                // more indentation
+                NSInteger indentation = selectedItemView.indentationLevel + 1;
+                const NSInteger maxIndentation = itemViewAboveSelected.indentationLevel + 1;
+                if(indentation > maxIndentation) {
+                    indentation = maxIndentation;
+                }
+                selectedItemView.indentationLevel = indentation;
+            }else {
+                // less indentation
+                NSInteger indentation = selectedItemView.indentationLevel - 1;
+                if(indentation < 0) {
+                    indentation = 0;
+                }
+                selectedItemView.indentationLevel = indentation;
+            }
+            // reset the vector to observe the next delta of interest
+            [selectedItemView resetOrderingTouchesMovedVector];
+        }
+    }
+    
+    //// ordering detection
+    
+    // enumerate the itemViews lists since we don't care about other views in the stackView.arrangedSubviews list
     for(MenuItemView *itemView in self.itemViews) {
         if(itemView == selectedItemView) {
             continue;
         }
-        
-        CGRect orderingDetectionRect = CGRectInset(itemView.frame, 10.0, 10.0);
+        // detect if the touch is looking to order the selectedItemView in place of another itemView by looking at the frame
+        const CGRect orderingDetectionRect = CGRectInset(itemView.frame, 10.0, 10.0);
         if(CGRectContainsPoint(orderingDetectionRect, touchPoint)) {
-            NSUInteger index = [self.stackView.arrangedSubviews indexOfObject:selectedItemView];
-            [self.stackView insertArrangedSubview:itemView atIndex:index];
+            
+            // update the indentationLevel to match the itemView we're replacing
+            selectedItemView.indentationLevel = itemView.indentationLevel;
+
+            // update the index of the itemView to the index of the selectedItemView
+            [self.stackView insertArrangedSubview:itemView atIndex:selectedItemViewIndex];
             break;
         }
     }
