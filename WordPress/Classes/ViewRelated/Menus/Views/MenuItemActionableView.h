@@ -45,6 +45,6 @@ extern CGFloat const MenuItemActionableViewAccessoryButtonHeight;
 @protocol MenuItemActionableViewDelegate <NSObject>
 @optional
 - (void)itemActionableViewDidBeginReordering:(MenuItemActionableView *)actionableView;
-- (void)itemActionableView:(MenuItemActionableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event;
+- (void)itemActionableView:(MenuItemActionableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector;
 - (void)itemActionableViewDidEndReordering:(MenuItemActionableView *)actionableView;
 @end
