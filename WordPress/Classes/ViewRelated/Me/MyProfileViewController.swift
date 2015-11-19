@@ -28,8 +28,8 @@ class MyProfileViewController: UITableViewController {
 
         self.title = NSLocalizedString("My Profile", comment: "My Profile view title")
 
-        // TODO: identifier should be based on cell class, not controller (@koke 2015-11-17)
-        tableView.registerClass(WPTableViewCellValue1.self, forCellReuseIdentifier: MyProfileViewController.cellIdentifier)
+        EditableTextRow.registerInTableView(tableView)
+
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
@@ -37,28 +37,28 @@ class MyProfileViewController: UITableViewController {
     // MARK: - View Model
 
     func buildViewModel() {
-        let firstNameRow = ImmuTable.TextField(
+        let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
             value: "",
             action: editFirstName)
 
-        let lastNameRow = ImmuTable.TextField(
+        let lastNameRow = EditableTextRow(
             title: NSLocalizedString("Last Name", comment: "My Profile last name label"),
             value: "",
             action: editLastName)
 
-        let displayNameRow = ImmuTable.TextField(
+        let displayNameRow = EditableTextRow(
             title: NSLocalizedString("Display Name", comment: "My Profile display name label"),
             value: account.displayName,
             action: editDisplayName)
 
-        let aboutMeRow = ImmuTable.TextField(
+        let aboutMeRow = EditableTextRow(
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: "",
             action: editAboutMe)
 
         viewModel =  ImmuTable(sections: [
-            ImmuTable.Section(rows: [
+            ImmuTableSection(rows: [
                 firstNameRow,
                 lastNameRow,
                 displayNameRow,
@@ -99,12 +99,7 @@ class MyProfileViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(MyProfileViewController.cellIdentifier, forIndexPath: indexPath)
         let row = viewModel.rowAtIndexPath(indexPath)
 
-        cell.textLabel?.text = row.title
-        cell.detailTextLabel?.text = row.detail
-        cell.imageView?.image = row.icon
-
-        // TODO: this should be based on the row type (@koke 2015-11-17)
-        cell.accessoryType = .DisclosureIndicator
+        row.configureCell(cell)
 
         WPStyleGuide.configureTableViewCell(cell)
 

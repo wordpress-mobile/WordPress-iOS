@@ -1,78 +1,94 @@
-public struct ImmuTable {
-    public typealias ActionType = () -> Void
-    public let sections: [Section]
+public typealias ImmuTableActionType = () -> Void
 
-    public func rowAtIndexPath(indexPath: NSIndexPath) -> Row {
+public protocol ReusableCell {
+    static var reusableIdentifier: String { get }
+}
+
+public protocol ImmuTableRow {
+    static var reusableIdentifier: String { get }
+    var action: ImmuTableActionType? { get }
+    func configureCell(cell: UITableViewCell)
+    static func registerInTableView(tableView: UITableView)
+}
+
+public struct ImmuTableSection {
+    let headerText: String?
+    let rows: [ImmuTableRow]
+    let footerText: String?
+
+    init(rows: [ImmuTableRow]) {
+        self.headerText = nil
+        self.rows = rows
+        self.footerText = nil
+    }
+
+    init(headerText: String?, rows: [ImmuTableRow], footerText: String?) {
+        self.headerText = headerText
+        self.rows = rows
+        self.footerText = footerText
+    }
+}
+
+public struct ImmuTable {
+    public let sections: [ImmuTableSection]
+
+    public func rowAtIndexPath(indexPath: NSIndexPath) -> ImmuTableRow {
         return sections[indexPath.section].rows[indexPath.row]
     }
+}
 
-    public struct Row {
-        let title: String
-        let detail: String?
-        let icon: UIImage?
-        let visible: Bool
-        let selected: ActionType?
+extension WPTableViewCell: ReusableCell {
+    public static var reusableIdentifier: String {
+        get {
+            return NSStringFromClass(self)
+        }
     }
+}
 
-    public struct Section {
-        let headerText: String?
-        let rows: [Row]
-        let footerText: String?
+struct NavigationItemRow : ImmuTableRow {
+    typealias CellType = WPTableViewCellDefault
 
-        init(rows: [Row]) {
-            self.headerText = nil
-            self.rows = rows
-            self.footerText = nil
-        }
-
-        init(headerText: String?, rows: [Row], footerText: String?) {
-            self.headerText = headerText
-            self.rows = rows
-            self.footerText = footerText
-        }
-
-        var visibleRows: [Row] {
-            return rows.filter { $0.visible }
+    static var reusableIdentifier: String {
+        get {
+            return CellType.reusableIdentifier
         }
     }
 
-    public static func ButtonRow(title title: String, visible: Bool = true, action: ActionType) -> ImmuTable.Row {
-        return ImmuTable.Row(
-            title: title,
-            detail: nil,
-            icon: nil,
-            visible: visible,
-            selected: action
-        )
+    static func registerInTableView(tableView: UITableView) {
+        tableView.registerClass(CellType.self, forCellReuseIdentifier: reusableIdentifier)
     }
 
-    public static func MenuItem(icon icon: UIImage, title: String, visible: Bool = true, action: ActionType) -> ImmuTable.Row {
-        return ImmuTable.Row(
-            title: title,
-            detail: nil,
-            icon: icon,
-            visible: visible,
-            selected: action
-        )
+    let title: String
+    let action: ImmuTableActionType?
+
+    func configureCell(cell: UITableViewCell) {
+        let cell = cell as! CellType
+
+        cell.textLabel?.text = title
+        cell.accessoryType = .DisclosureIndicator
+    }
+}
+
+struct EditableTextRow : ImmuTableRow {
+    typealias CellType = WPTableViewCellValue1
+
+    static var reusableIdentifier: String {
+        get {
+            return CellType.reusableIdentifier
+        }
     }
 
-    public static func Item(title title: String, visible: Bool = true, action: ActionType) -> ImmuTable.Row {
-        return ImmuTable.Row(
-            title: title,
-            detail: nil,
-            icon: nil,
-            visible: visible,
-            selected: action
-        )
+    static func registerInTableView(tableView: UITableView) {
+        tableView.registerClass(CellType.self, forCellReuseIdentifier: reusableIdentifier)
     }
 
-    public static func TextField(title title: String, value: String, visible: Bool = true, action: ActionType) -> ImmuTable.Row {
-        return ImmuTable.Row(
-            title: title,
-            detail: value,
-            icon: nil,
-            visible: visible,
-            selected: action
-        )
+    let title: String
+    let value: String
+    let action: ImmuTableActionType?
+
+    func configureCell(cell: UITableViewCell) {
+        cell.textLabel?.text = title
+        cell.detailTextLabel?.text = value
+        cell.accessoryType = .DisclosureIndicator
     }
 }
