@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 41 (@koke 2015-11-19)
+
+- `Account` added a new string attribute called `firstName` to store the users's first name
+- `Account` added a new string attribute called `lastName` to store the users's first name
+- `Account` added a new string attribute called `aboutMe` to store the profile's "About Me" snippet
+
 ## WordPress 40 (@alexcurylo 2015-10-14)
 
 Changes to the data model:

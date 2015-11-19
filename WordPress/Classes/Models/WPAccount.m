@@ -14,7 +14,10 @@
 @dynamic defaultBlog;
 @dynamic uuid;
 @dynamic email;
+@dynamic firstName;
+@dynamic lastName;
 @dynamic displayName;
+@dynamic aboutMe;
 @dynamic userID;
 @dynamic avatarURL;
 @synthesize restApi = _restApi;
