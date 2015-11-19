@@ -43,6 +43,8 @@
 #import "RemoteReaderTopic.h"
 
 #import "ServiceRemoteREST.h"
+#import "SettingsMultiTextViewController.h"
+#import "SettingsTextViewController.h"
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"
 
