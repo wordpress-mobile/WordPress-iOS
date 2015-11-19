@@ -1,4 +1,5 @@
 import Foundation
+import SafariServices
 
 @objc public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchBarDelegate, WPContentSyncHelperDelegate {
     
@@ -253,17 +254,12 @@ import Foundation
     // MARK: - Theme actions
     
     private func showDemoForTheme(theme: Theme) {
+        guard let url = NSURL(string: theme.demoUrl) else {
+            return
+        }
         
-        let url = NSURL(string: theme.demoUrl)
-        let webViewController = WPWebViewController(URL: url)
-        
-        webViewController.authToken = blog.authToken
-        webViewController.username = blog.usernameForSite
-        webViewController.password = blog.password
-        webViewController.wpLoginURL = NSURL(string: blog.loginUrl())
-        
-        let navController = UINavigationController(rootViewController: webViewController)
-        presentViewController(navController, animated: true, completion: nil)
+        let safariViewController = SFSafariViewController(URL: url)
+        presentViewController(safariViewController, animated: true, completion: nil)
     }
     
 }
