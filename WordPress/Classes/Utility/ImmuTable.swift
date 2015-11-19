@@ -45,9 +45,13 @@ extension WPTableViewCell: ReusableCell {
     }
 }
 
-struct NavigationItemRow : ImmuTableRow {
-    typealias CellType = WPTableViewCellDefault
+protocol TypedImmuTableRow: ImmuTableRow {
+    typealias CellType: AnyObject, ReusableCell
+    static var reusableIdentifier: String { get }
+    static func registerInTableView(tableView: UITableView)
+}
 
+extension TypedImmuTableRow {
     static var reusableIdentifier: String {
         get {
             return CellType.reusableIdentifier
@@ -57,6 +61,10 @@ struct NavigationItemRow : ImmuTableRow {
     static func registerInTableView(tableView: UITableView) {
         tableView.registerClass(CellType.self, forCellReuseIdentifier: reusableIdentifier)
     }
+}
+
+struct NavigationItemRow : TypedImmuTableRow {
+    typealias CellType = WPTableViewCellDefault
 
     let title: String
     let action: ImmuTableActionType?
@@ -69,18 +77,8 @@ struct NavigationItemRow : ImmuTableRow {
     }
 }
 
-struct EditableTextRow : ImmuTableRow {
+struct EditableTextRow : TypedImmuTableRow {
     typealias CellType = WPTableViewCellValue1
-
-    static var reusableIdentifier: String {
-        get {
-            return CellType.reusableIdentifier
-        }
-    }
-
-    static func registerInTableView(tableView: UITableView) {
-        tableView.registerClass(CellType.self, forCellReuseIdentifier: reusableIdentifier)
-    }
 
     let title: String
     let value: String
