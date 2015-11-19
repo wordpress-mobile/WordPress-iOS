@@ -71,20 +71,53 @@ class MyProfileViewController: UITableViewController {
 
     // MARK: - Cell Actions
 
-    func editFirstName() {
-        // TODO: to be implemented (@koke 2015-11-17)
+    func editFirstName(row: ImmuTableRow) {
+        let row = row as! EditableTextRow
+        let controller = controllerForEditableText(row)
+
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    func editLastName() {
-        // TODO: to be implemented (@koke 2015-11-17)
+    func editLastName(row: ImmuTableRow) {
+        let row = row as! EditableTextRow
+        let controller = controllerForEditableText(row)
+
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    func editDisplayName() {
-        // TODO: to be implemented (@koke 2015-11-17)
+    func editDisplayName(row: ImmuTableRow) {
+        let row = row as! EditableTextRow
+        let controller = controllerForEditableText(row)
+
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    func editAboutMe() {
-        // TODO: to be implemented (@koke 2015-11-17)
+    func editAboutMe(row: ImmuTableRow) {
+        let row = row as! EditableTextRow
+        let controller = controllerForEditableText(row)
+
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+
+    func controllerForEditableText(row: EditableTextRow) -> SettingsTextViewController {
+        let title = row.title
+        let value = row.value
+
+        let controller = SettingsTextViewController(
+            text: value,
+            placeholder: "\(title)...",
+            hint: nil,
+            isPassword: false)
+
+        controller.title = title
+        controller.onValueChanged = {
+            value in
+
+            // TODO: to be implemented (@koke 2015-11-17)
+            DDLogSwift.logDebug("\(title) changed: \(value)")
+        }
+
+        return controller
     }
 
     // MARK: - Table view data source
@@ -106,6 +139,13 @@ class MyProfileViewController: UITableViewController {
         WPStyleGuide.configureTableViewCell(cell)
 
         return cell
+    }
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let row = viewModel.rowAtIndexPath(indexPath)
+        if let action = row.action {
+            action(row)
+        }
     }
 
 }

@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-public typealias ImmuTableActionType = () -> Void
+public typealias ImmuTableActionType = (ImmuTableRow) -> Void
 
 public protocol Reusable {
     static var reusableIdentifier: String { get }
