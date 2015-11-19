@@ -14,10 +14,11 @@
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPTableImageSource.h"
-#import "WPWebViewController.h"
 #import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
 #import "WPUserAgent.h"
+
+#import <SafariServices/SafariServices.h>
 
 static CGFloat const VerticalMargin = 40;
 static NSInteger const ReaderPostDetailImageQuality = 65;
@@ -580,9 +581,8 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 - (void)presentWebViewControllerWithLink:(NSURL *)linkURL
 {
-    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:linkURL];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:linkURL];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 # pragma mark - Rich Text Delegate Methods
