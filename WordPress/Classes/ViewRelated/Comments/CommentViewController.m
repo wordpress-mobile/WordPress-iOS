@@ -1,5 +1,4 @@
 #import "CommentViewController.h"
-#import "WPWebViewController.h"
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
@@ -15,6 +14,7 @@
 #import "BlogService.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
+#import <SafariServices/SafariServices.h>
 
 
 
@@ -442,9 +442,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)openWebViewWithURL:(NSURL *)url
 {
-    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:url];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 - (void)toggleLikeForComment
