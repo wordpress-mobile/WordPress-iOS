@@ -459,7 +459,6 @@
         <attribute name="version" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="themes" inverseEntity="Blog" syncable="YES"/>
     </entity>
-    <fetchRequest name="UnreadNotes" entity="Notification" predicateString="unread == 1"/>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
@@ -474,6 +473,7 @@
         <element name="Person" positionX="18" positionY="153" width="128" height="180"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="180"/>
         <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="150"/>
+        <element name="ReaderCrossPostMeta" positionX="18" positionY="153" width="128" height="135"/>
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
         <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
@@ -481,7 +481,6 @@
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
-        <element name="ReaderCrossPostMeta" positionX="18" positionY="153" width="128" height="135"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="285"/>
     </elements>
