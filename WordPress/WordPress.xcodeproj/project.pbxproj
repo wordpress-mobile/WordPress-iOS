@@ -1448,6 +1448,7 @@
 		E114D798153D85A800984182 /* WPError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPError.h; sourceTree = "<group>"; };
 		E114D799153D85A800984182 /* WPError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPError.m; sourceTree = "<group>"; };
 		E115F2D116776A2900CCF00D /* WordPress 8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 8.xcdatamodel"; sourceTree = "<group>"; };
+		E11BBEF11BFE47680048FDB1 /* WordPress 41.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 41.xcdatamodel"; sourceTree = "<group>"; };
 		E1209FA31BB4978B00D69778 /* PeopleService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PeopleService.swift; sourceTree = "<group>"; };
 		E120D90C1B09D8C300FB9A6E /* JetpackState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackState.h; sourceTree = "<group>"; };
 		E120D90D1B09D8C300FB9A6E /* JetpackState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackState.m; sourceTree = "<group>"; };
@@ -6366,6 +6367,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				E11BBEF11BFE47680048FDB1 /* WordPress 41.xcdatamodel */,
 				FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */,
 				FF947A8C1BBE89A100B27B6A /* WordPress 39.xcdatamodel */,
 				FF695E151B87662500CD6EAA /* WordPress 38.xcdatamodel */,
@@ -6407,7 +6409,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */;
+			currentVersion = E11BBEF11BFE47680048FDB1 /* WordPress 41.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
