@@ -1,7 +1,6 @@
 #import "SiteSettingsViewController.h"
 #import "NSURL+IDN.h"
 #import "SupportViewController.h"
-#import "WPWebViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "Blog.h"
@@ -26,6 +25,7 @@
 #import "BlogSiteVisibilityHelper.h"
 #import "RelatedPostsSettingsViewController.h"
 #import "WordPress-Swift.h"
+#import <SafariServices/SafariServices.h>
 
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
@@ -807,15 +807,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
 
     NSURL *targetURL = [NSURL URLWithString:path];
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    webViewController.authToken = self.authToken;
-    webViewController.username = self.username;
-    webViewController.password = self.password;
-    webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
-    webViewController.shouldScrollToBottom = YES;
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:targetURL];
+    [self presentViewController:safariViewController animated:YES completion:nil];
 }
 
 #pragma mark - Saving methods
