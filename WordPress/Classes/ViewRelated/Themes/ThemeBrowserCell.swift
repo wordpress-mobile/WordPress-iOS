@@ -1,5 +1,54 @@
 import Foundation
 
+/**
+ *  @brief      Actions provided in cell button triggered action sheet
+ */
+public enum ThemeAction {
+    case Activate
+    case Customize
+    case Details
+    case Support
+    case TryCustomize
+    case View
+    
+    static let actives = [Customize, Details, Support]
+    static let inactives = [TryCustomize, Activate, View, Details, Support]
+    
+    var title: String {
+        switch self {
+        case .Activate:
+            return NSLocalizedString("Activate", comment: "Theme Activate action title")
+        case .Customize:
+            return NSLocalizedString("Customize", comment: "Theme Customize action title")
+        case .Details:
+            return NSLocalizedString("Details", comment: "Theme Details action title")
+        case .Support:
+            return NSLocalizedString("Support", comment: "Theme Support action title")
+        case .TryCustomize:
+            return NSLocalizedString("Try & Customize", comment: "Theme Try & Customize action title")
+        case .View:
+            return NSLocalizedString("View", comment: "Theme View action title")
+        }
+    }
+    
+    func present(theme: Theme, _ presenter: ThemePresenter) {
+        switch self {
+        case .Activate:
+            print("TODO: .Activate")
+        case .Customize:
+            presenter.presentCustomizeForTheme(theme)
+        case .Details:
+            presenter.presentDetailsForTheme(theme)
+        case .Support:
+            presenter.presentSupportForTheme(theme)
+        case .TryCustomize:
+            print("TODO: .TryCustomize")
+        case .View:
+            print("TODO: .Support")
+        }
+    }
+}
+
 public class ThemeBrowserCell : UICollectionViewCell {
     
     // MARK: - Constants
@@ -27,6 +76,7 @@ public class ThemeBrowserCell : UICollectionViewCell {
             refreshGUI()
         }
     }
+    public weak var presenter: ThemePresenter?
     
     private var placeholderImage = UIImage(named: "theme-loading")
     
@@ -60,6 +110,7 @@ public class ThemeBrowserCell : UICollectionViewCell {
     override public func prepareForReuse() {
         super.prepareForReuse()
         theme = nil
+        presenter = nil
     }
     
     private func refreshGUI() {
@@ -130,7 +181,29 @@ public class ThemeBrowserCell : UICollectionViewCell {
     // MARK: - Actions
     
     @IBAction private func didTapActionButton(sender: UIButton) {
-        // TODO: Implement as per issue #3906
+        guard let theme = theme, presenter = presenter else {
+            return
+        }
+
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        
+        let themeActions = theme.isCurrentTheme() ? ThemeAction.actives : ThemeAction.inactives
+        themeActions.forEach { themeAction in
+            alertController.addActionWithTitle(themeAction.title,
+                style: .Default,
+                handler: { (action: UIAlertAction) in
+                    themeAction.present(theme, presenter)
+                })
+        }
+        
+        alertController.modalPresentationStyle = .Popover
+        if let popover = alertController.popoverPresentationController {
+            popover.sourceView = actionButton
+            popover.sourceRect = actionButton.bounds
+            popover.permittedArrowDirections = .Any
+            popover.canOverlapSourceViewRect = true
+        }
+        alertController.presentFromRootViewController()
     }
 
 }
