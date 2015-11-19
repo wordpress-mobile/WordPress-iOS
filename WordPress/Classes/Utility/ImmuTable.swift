@@ -1,3 +1,6 @@
+import Foundation
+import UIKit
+
 public typealias ImmuTableActionType = () -> Void
 
 public protocol Reusable {
@@ -62,22 +65,14 @@ extension UITableView {
     }
 }
 
-extension WPTableViewCell: Reusable {
-    public static var reusableIdentifier: String {
-        get {
-            return NSStringFromClass(self)
-        }
-    }
+protocol CustomImmuTableRow: ImmuTableRow {
+    typealias CellType: AnyObject
 }
 
-protocol TypedImmuTableRow: ImmuTableRow {
-    typealias CellType: AnyObject, Reusable
-}
-
-extension TypedImmuTableRow {
+extension CustomImmuTableRow {
     static var reusableIdentifier: String {
         get {
-            return CellType.reusableIdentifier
+            return NSStringFromClass(cellClass)
         }
     }
 
@@ -85,33 +80,5 @@ extension TypedImmuTableRow {
         get {
             return CellType.self
         }
-    }
-}
-
-struct NavigationItemRow : TypedImmuTableRow {
-    typealias CellType = WPTableViewCellDefault
-
-    let title: String
-    let action: ImmuTableActionType?
-
-    func configureCell(cell: UITableViewCell) {
-        let cell = cell as! CellType
-
-        cell.textLabel?.text = title
-        cell.accessoryType = .DisclosureIndicator
-    }
-}
-
-struct EditableTextRow : TypedImmuTableRow {
-    typealias CellType = WPTableViewCellValue1
-
-    let title: String
-    let value: String
-    let action: ImmuTableActionType?
-
-    func configureCell(cell: UITableViewCell) {
-        cell.textLabel?.text = title
-        cell.detailTextLabel?.text = value
-        cell.accessoryType = .DisclosureIndicator
     }
 }
