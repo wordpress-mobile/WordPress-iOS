@@ -370,10 +370,15 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
 - (void)updateWithTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     if(self.reorderingEnabled) {
+        
         self.showsReorderingOptions = YES;
         self.highlighted = NO;
         
-        if(self.delegate && [self.delegate respondsToSelector:@selector(itemActionableView:orderingTouchesMoved:withEvent:)]) {
+        if([self.delegate respondsToSelector:@selector(itemActionableViewDidBeginReordering:)]) {
+            [self.delegate itemActionableViewDidBeginReordering:self];
+        }
+        
+        if([self.delegate respondsToSelector:@selector(itemActionableView:orderingTouchesMoved:withEvent:)]) {
             [self.delegate itemActionableView:self orderingTouchesMoved:touches withEvent:event];
         }
     }
@@ -383,6 +388,10 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
 {
     if(self.reorderingEnabled) {
         self.showsReorderingOptions = NO;
+        
+        if([self.delegate respondsToSelector:@selector(itemActionableViewDidEndReordering:)]) {
+            [self.delegate itemActionableViewDidEndReordering:self];
+        }
     }
     
     self.highlighted = NO;
