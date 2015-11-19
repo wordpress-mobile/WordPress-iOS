@@ -319,6 +319,7 @@ public protocol ThemePresenter: class {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ThemeBrowserCell.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserCell
         
         cell.theme = themeAtIndex(indexPath.row)
+        cell.presenter = self
         
         syncMoreIfNeeded(indexPath.row)
         
