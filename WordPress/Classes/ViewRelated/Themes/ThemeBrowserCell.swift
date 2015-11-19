@@ -13,8 +13,10 @@ public class ThemeBrowserCell : UICollectionViewCell {
    // MARK: - Outlets
     
     @IBOutlet weak var imageView : UIImageView!
+    @IBOutlet weak var infoBar: UIView!
     @IBOutlet weak var nameLabel : UILabel!
     @IBOutlet weak var infoLabel: UILabel!
+    @IBOutlet weak var actionButton: UIButton!
     @IBOutlet weak var highlightView: UIView!
     @IBOutlet weak var activityView: UIActivityIndicatorView!
     
@@ -42,10 +44,17 @@ public class ThemeBrowserCell : UICollectionViewCell {
     override public func awakeFromNib() {
         super.awakeFromNib()
         
+        layer.borderWidth = 1
+        
+        infoBar.layer.borderWidth = 1
+        infoBar.layer.borderColor = Styles.barDividerColor.CGColor
+
         nameLabel.font = Styles.cellNameFont
+        
         infoLabel.font = Styles.cellInfoFont
         
-        layer.borderWidth = 1
+        actionButton.layer.borderWidth = 1
+        actionButton.layer.borderColor = Styles.barDividerColor.CGColor
     }
     
     override public func prepareForReuse() {
