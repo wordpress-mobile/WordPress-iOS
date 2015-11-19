@@ -71,7 +71,6 @@
 #import "WPStyleGuide.h"
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPTableViewCell.h"
-#import "WPTableViewCellStyles.h"
 #import "WPTableViewHandler.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
