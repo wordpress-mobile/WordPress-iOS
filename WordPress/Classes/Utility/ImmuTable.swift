@@ -1,11 +1,10 @@
 public typealias ImmuTableActionType = () -> Void
 
-public protocol ReusableCell {
+public protocol Reusable {
     static var reusableIdentifier: String { get }
 }
 
-public protocol ImmuTableRow {
-    static var reusableIdentifier: String { get }
+public protocol ImmuTableRow: Reusable {
     var action: ImmuTableActionType? { get }
     func configureCell(cell: UITableViewCell)
     static func registerInTableView(tableView: UITableView)
@@ -37,7 +36,7 @@ public struct ImmuTable {
     }
 }
 
-extension WPTableViewCell: ReusableCell {
+extension WPTableViewCell: Reusable {
     public static var reusableIdentifier: String {
         get {
             return NSStringFromClass(self)
@@ -45,8 +44,8 @@ extension WPTableViewCell: ReusableCell {
     }
 }
 
-protocol TypedImmuTableRow: ImmuTableRow {
-    typealias CellType: AnyObject, ReusableCell
+public protocol TypedImmuTableRow: ImmuTableRow {
+    typealias CellType: AnyObject, Reusable
     static var reusableIdentifier: String { get }
     static func registerInTableView(tableView: UITableView)
 }
