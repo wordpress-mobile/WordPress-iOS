@@ -1370,7 +1370,7 @@ EditImageDetailsViewControllerDelegate
     // by deferring the cloning and UI update.
     // Slower devices have the effect of the content appearing after
     // a short delay
-    [self.post.managedObjectContext performBlock:^{
+    [self.post.managedObjectContext performBlockAndWait:^{
         self.post = [self.post createRevision];
         [self.post save];
         [self refreshUIForCurrentPost];
