@@ -28,7 +28,7 @@
 
 @implementation ThemeDetailsViewController
 
-- (id)initWithTheme:(Theme *)theme
+- (instancetype)initWithTheme:(Theme *)theme
 {
     self = [super init];
     if (self) {
