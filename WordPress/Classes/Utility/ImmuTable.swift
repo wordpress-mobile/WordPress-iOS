@@ -4,10 +4,18 @@ public protocol Reusable {
     static var reusableIdentifier: String { get }
 }
 
+extension Reusable {
+    var reusableIdentifier: String {
+        get {
+            return self.dynamicType.reusableIdentifier
+        }
+    }
+}
+
 public protocol ImmuTableRow: Reusable {
     var action: ImmuTableActionType? { get }
+    static var cellClass: AnyClass { get }
     func configureCell(cell: UITableViewCell)
-    static func registerInTableView(tableView: UITableView)
 }
 
 public struct ImmuTableSection {
@@ -34,6 +42,24 @@ public struct ImmuTable {
     public func rowAtIndexPath(indexPath: NSIndexPath) -> ImmuTableRow {
         return sections[indexPath.section].rows[indexPath.row]
     }
+
+    public static func registerRows(rows: [ImmuTableRow.Type], tableView: UITableView) {
+        let classes = rows.reduce([:]) {
+            (var classes, row) -> [String: AnyClass] in
+
+            classes[row.reusableIdentifier] = row.cellClass
+            return classes
+        }
+        for (identifier, cellClass) in classes {
+            tableView.registerClass(cellClass, forCellReuseIdentifier: identifier)
+        }
+    }
+}
+
+extension UITableView {
+    func registerImmuTableRows(rows: [ImmuTableRow.Type]) {
+        ImmuTable.registerRows(rows, tableView: self)
+    }
 }
 
 extension WPTableViewCell: Reusable {
@@ -44,10 +70,8 @@ extension WPTableViewCell: Reusable {
     }
 }
 
-public protocol TypedImmuTableRow: ImmuTableRow {
+protocol TypedImmuTableRow: ImmuTableRow {
     typealias CellType: AnyObject, Reusable
-    static var reusableIdentifier: String { get }
-    static func registerInTableView(tableView: UITableView)
 }
 
 extension TypedImmuTableRow {
@@ -57,8 +81,10 @@ extension TypedImmuTableRow {
         }
     }
 
-    static func registerInTableView(tableView: UITableView) {
-        tableView.registerClass(CellType.self, forCellReuseIdentifier: reusableIdentifier)
+    static var cellClass: AnyClass {
+        get {
+            return CellType.self
+        }
     }
 }
 

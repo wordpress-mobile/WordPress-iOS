@@ -28,7 +28,9 @@ class MyProfileViewController: UITableViewController {
 
         self.title = NSLocalizedString("My Profile", comment: "My Profile view title")
 
-        EditableTextRow.registerInTableView(tableView)
+        tableView.registerImmuTableRows([
+            EditableTextRow.self
+            ])
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
@@ -96,8 +98,8 @@ class MyProfileViewController: UITableViewController {
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(MyProfileViewController.cellIdentifier, forIndexPath: indexPath)
         let row = viewModel.rowAtIndexPath(indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
 
         row.configureCell(cell)
 
