@@ -1,6 +1,7 @@
 #import "WPChromelessWebViewController.h"
 #import "WordPressAppDelegate.h"
-#import "WPWebViewController.h"
+
+#import <SafariServices/SafariServices.h>
 
 @interface WPChromelessWebViewController ()
 @property (nonatomic, strong) WPWebView *webView;
@@ -119,8 +120,8 @@
         // If the url points off-site we want to handle it differently.
         NSString *host = request.URL.host;
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound) {
-            WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:request.URL];
-            [self.navigationController pushViewController:webViewController animated:YES];
+            SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:request.URL];
+            [self.navigationController presentViewController:safariViewController animated:YES completion:nil];
             return NO;
         }
 
