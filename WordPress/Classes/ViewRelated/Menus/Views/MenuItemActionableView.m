@@ -29,6 +29,7 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
 @property (nonatomic, weak) NSLayoutConstraint *constraintForLeadingIndentation;
 @property (nonatomic, strong) UIStackView *accessoryStackView;
 @property (nonatomic, assign) CGPoint touchesBeganLocation;
+@property (nonatomic, assign) CGPoint touchesMovedLocation;
 @property (nonatomic, assign) BOOL observingReorderingTouches;
 
 @end
@@ -59,7 +60,7 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
     [self addSubview:contentView];
     self.contentView = contentView;
     
-    NSLayoutConstraint *leadingConstraint = [contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor];
+    NSLayoutConstraint *leadingConstraint = [contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:MenusDesignDefaultContentSpacing];
     self.constraintForLeadingIndentation = leadingConstraint;
     leadingConstraint.active = YES;
     
@@ -161,11 +162,13 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
     }
 }
 
-- (void)setIndentationLevel:(NSUInteger)indentationLevel
+- (void)setIndentationLevel:(NSInteger)indentationLevel
 {
     if(_indentationLevel != indentationLevel) {
         _indentationLevel = indentationLevel;
-        self.constraintForLeadingIndentation.constant = MenusDesignDefaultContentSpacing * indentationLevel;
+        self.constraintForLeadingIndentation.constant = (MenusDesignDefaultContentSpacing * indentationLevel) + MenusDesignDefaultContentSpacing;
+        [self setNeedsDisplay];
+        [self.contentView setNeedsDisplay];
     }
 }
 
@@ -212,6 +215,11 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
     [self addAccessoryButton:button];
     
     return button;
+}
+
+- (void)resetOrderingTouchesMovedVector
+{
+    self.touchesBeganLocation = self.touchesMovedLocation;
 }
 
 - (UIColor *)contentViewBackgroundColor
@@ -388,6 +396,7 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
                 
             CGPoint startLocation = self.touchesBeganLocation;
             CGPoint location = [[touches anyObject] locationInView:self];
+            self.touchesMovedLocation = location;
             CGPoint vector = CGPointZero;
             vector.x = location.x - startLocation.x;
             vector.y = location.y - startLocation.y;
@@ -411,6 +420,7 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
     
     self.highlighted = NO;
     self.touchesBeganLocation = CGPointZero;
+    self.touchesMovedLocation = CGPointZero;
     self.observingReorderingTouches = NO;
 }
 
