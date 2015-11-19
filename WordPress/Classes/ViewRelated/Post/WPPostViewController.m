@@ -309,6 +309,12 @@ EditImageDetailsViewControllerDelegate
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification
                                                object:nil];
+
+    // Hide the Media button if the user doesn't have the upload_files capability
+    // Show it otherwise (important for the case when the user switches from a site
+    // without the capability to a site with the capability).
+    UIBarButtonItem *mediaButton = [self.toolbarView.items objectAtIndex:0];
+    mediaButton.customView.hidden = !self.post.blog.canUploadFiles;
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -150,6 +150,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
     blog.jetpack = [[jsonBlog numberForKey:@"jetpack"] boolValue];
     blog.icon = [jsonBlog stringForKeyPath:@"icon.img"];
     blog.isAdmin = [[jsonBlog numberForKeyPath:@"capabilities.manage_options"] boolValue];
+    blog.canUploadFiles = [[jsonBlog numberForKeyPath:@"capabilities.upload_files"] boolValue];
     blog.visible = [[jsonBlog numberForKey:@"visible"] boolValue];
     return blog;
 }

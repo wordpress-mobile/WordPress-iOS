@@ -12,6 +12,7 @@ Changes to the data model:
 - `Theme` added a new string attribute called `stylesheet` to store identifier used to construct helper links
 - `Theme` added a new number attribute called `order` to store the display order retrieved by
 - Added new entity `Person`
+- `Blog` added a new boolean attribute called `canUploadFiles` to store upload_files capability on a blog 
 
 ## (@aerych 2015-11-09)
 - Added new entity `ReaderCrossPostMeta`
