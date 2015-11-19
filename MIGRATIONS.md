@@ -3,7 +3,7 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 40 (@alexcurylo 2015-10-14)
+## WordPress 41 (@alexcurylo 2015-10-14)
 
 Changes to the data model:
 
@@ -17,6 +17,10 @@ Changes to the data model:
 - Added new entity `ReaderCrossPostMeta`
 - `ReaderPost` added new relationship called `crossPostMeta` to store the source post ID of a cross-post.
 
+## WordPress 40 (@jleandroperez 2015-11-18)
+
+- `Notification.id` field was updated to `Integer 64`
+- `UnreadNotes` fetch request was nuked
 
 ## WordPress 39 (@sergioestevao 2015-09-09)
 
