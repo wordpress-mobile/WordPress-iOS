@@ -204,7 +204,25 @@
 
 - (void)itemActionableView:(MenuItemActionableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-
+    if(![actionableView isKindOfClass:[MenuItemActionableView class]]) {
+        return;
+    }
+    
+    CGPoint touchPoint = [[touches anyObject] locationInView:self];
+    
+    MenuItemView *selectedItemView = (MenuItemView *)actionableView;
+    for(MenuItemView *itemView in self.itemViews) {
+        if(itemView == selectedItemView) {
+            continue;
+        }
+        
+        CGRect orderingDetectionRect = CGRectInset(itemView.frame, 10.0, 10.0);
+        if(CGRectContainsPoint(orderingDetectionRect, touchPoint)) {
+            NSUInteger index = [self.stackView.arrangedSubviews indexOfObject:selectedItemView];
+            [self.stackView insertArrangedSubview:itemView atIndex:index];
+            break;
+        }
+    }
 }
 
 #pragma mark - MenuItemViewDelegate
