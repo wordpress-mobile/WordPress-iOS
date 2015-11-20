@@ -591,7 +591,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     if (titles.count == 0 || self.blog.defaultPostFormatText == nil) {
         return;
     }
-    NSString *currentDefaultPostFormat = self.blog.defaultPostFormat;
+    NSString *currentDefaultPostFormat = self.blog.settings.defaultPostFormat;
     if (!currentDefaultPostFormat) {
         currentDefaultPostFormat = formats[0];
     }
@@ -608,8 +608,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     vc.onItemSelected = ^(NSString *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
         if ([status isKindOfClass:[NSString class]]) {
-            if (weakSelf.blog.defaultPostFormat != status) {
-                weakSelf.blog.defaultPostFormat = status;
+            if (weakSelf.blog.settings.defaultPostFormat != status) {
+                weakSelf.blog.settings.defaultPostFormat = status;
                 [weakSelf saveSettings];
             }
         }
