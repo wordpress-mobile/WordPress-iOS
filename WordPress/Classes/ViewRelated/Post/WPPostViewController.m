@@ -1755,6 +1755,7 @@ EditImageDetailsViewControllerDelegate
                 [self.editorView markVideo:mediaUniqueId
                    failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
             }
+            DDLogError(@"Failed Media Upload: %@", error.localizedDescription);
         }
     }];
     [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
