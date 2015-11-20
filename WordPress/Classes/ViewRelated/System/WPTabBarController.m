@@ -526,9 +526,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     self.notificationBadgeIconView.layer.borderWidth = 1.0;
     self.notificationBadgeIconView.hidden = YES;
     [self.tabBar addSubview:self.notificationBadgeIconView];
-
-    [self updateNotificationBadgeIconPosition];
-    [self updateNotificationBadgeVisibility];
 }
 
 - (void)updateNotificationBadgeIconPosition
@@ -574,7 +571,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     }];
 }
 
-#pragma mark - Handling Rotations
 - (CGRect)lastTabBarButtonFrame
 {
     // Hack:
@@ -597,6 +593,19 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
 }
 
 
+#pragma mark - Handling Layout
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self updateNotificationBadgeVisibility];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self updateNotificationBadgeIconPosition];
+}
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
