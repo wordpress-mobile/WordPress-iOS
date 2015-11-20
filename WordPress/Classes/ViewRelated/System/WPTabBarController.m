@@ -603,16 +603,21 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
     __weak __typeof(self) weakSelf = self;
-    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        [weakSelf updateNotificationBadgeIconPosition];
-    }];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+                                                [weakSelf updateNotificationBadgeIconPosition];
+                                            }
+                                 completion:nil];
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-
-    [self updateNotificationBadgeIconPosition];
+    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
+    
+    __weak __typeof(self) weakSelf = self;
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+                                                [weakSelf updateNotificationBadgeIconPosition];
+                                            }
+                                 completion:nil];
 }
 
 @end
