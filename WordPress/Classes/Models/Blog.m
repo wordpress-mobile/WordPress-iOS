@@ -650,16 +650,4 @@ NSString * const PostFormatStandard = @"standard";
     self.settings.privacy = privacy;
 }
 
-- (BOOL)geolocationEnabled
-{
-    NSParameterAssert(self.settings);
-    return self.settings.geolocationEnabled;
-}
-
-- (void)setGeolocationEnabled:(BOOL)geolocationEnabled
-{
-    NSParameterAssert(self.settings);
-    self.settings.geolocationEnabled = geolocationEnabled;
-}
-
 @end
