@@ -269,12 +269,12 @@ NSString * const PostFormatStandard = @"standard";
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isHostedAtWPcom && [self.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
+    return (self.isHostedAtWPcom && [self.settings.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
 }
 
 - (SiteVisibility)siteVisibility
 {
-    switch ([self.privacy integerValue]) {
+    switch ([self.settings.privacy integerValue]) {
         case (SiteVisibilityHidden):
             return SiteVisibilityHidden;
             break;
@@ -294,13 +294,13 @@ NSString * const PostFormatStandard = @"standard";
 {
     switch (siteVisibility) {
         case (SiteVisibilityHidden):
-            self.privacy = @(SiteVisibilityHidden);
+            self.settings.privacy = @(SiteVisibilityHidden);
             break;
         case (SiteVisibilityPublic):
-            self.privacy = @(SiteVisibilityPublic);
+            self.settings.privacy = @(SiteVisibilityPublic);
             break;
         case (SiteVisibilityPrivate):
-            self.privacy = @(SiteVisibilityPrivate);
+            self.settings.privacy = @(SiteVisibilityPrivate);
             break;
         default:
             NSParameterAssert(siteVisibility >= SiteVisibilityPrivate && siteVisibility <= SiteVisibilityPublic);
@@ -310,10 +310,10 @@ NSString * const PostFormatStandard = @"standard";
 
 - (NSString *)textForCurrentSiteVisibility
 {
-    if (!self.privacy) {
+    if (!self.settings.privacy) {
         [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
     }
-    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.privacy intValue]];
+    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.settings.privacy intValue]];
 }
 
 
@@ -636,18 +636,6 @@ NSString * const PostFormatStandard = @"standard";
 {
     NSParameterAssert(self.settings);
     self.settings.defaultPostFormat = defaultPostFormat;
-}
-
-- (NSNumber *)privacy
-{
-    NSParameterAssert(self.settings);
-    return self.settings.privacy;
-}
-
-- (void)setPrivacy:(NSNumber *)privacy
-{
-    NSParameterAssert(self.settings);
-    self.settings.privacy = privacy;
 }
 
 @end
