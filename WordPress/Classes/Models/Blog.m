@@ -587,19 +587,4 @@ NSString * const PostFormatStandard = @"standard";
     return optionValue;
 }
 
-
-#pragma mark - BlogSetting Helpers
-
-- (NSString *)blogName
-{
-    NSParameterAssert(self.settings);
-    return self.settings.name;
-}
-
-- (void)setBlogName:(NSString *)blogName
-{
-    NSParameterAssert(self.settings);
-    self.settings.name = blogName;
-}
-
 @end

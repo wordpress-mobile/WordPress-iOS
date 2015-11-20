@@ -185,7 +185,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 && defaultBlog != nil
                 && !defaultBlog.isDeleted) {
                 NSNumber *siteId = defaultBlog.blogID;
-                NSString *blogName = defaultBlog.blogName;
+                NSString *blogName = defaultBlog.settings.name;
                 NSTimeZone *timeZone = [self timeZoneForBlog:defaultBlog];
                 NSString *oauth2Token = accountInContext.authToken;
                 

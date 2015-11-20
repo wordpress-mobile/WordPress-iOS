@@ -364,11 +364,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     switch (row) {
         case SiteSettingsGeneralTitle: {
-            if (self.blog.blogName) {
-                [self.siteTitleCell setTextValue:self.blog.blogName];
-            } else {
-                [self.siteTitleCell setTextValue:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")];
-            }
+            NSString *name = self.blog.settings.name ?: NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
+            [self.siteTitleCell setTextValue:name];
             return self.siteTitleCell;
         } break;
         case SiteSettingsGeneralTagline: {
@@ -518,15 +515,15 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             if (!self.blog.isAdmin) {
                 return;
             }
-            SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.blogName
-                                                                                                 placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
+            SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.settings.name
+                                                                                                       placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
                                                                                                               hint:@""
                                                                                                         isPassword:NO];
             siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
             siteTitleViewController.onValueChanged = ^(NSString *value) {
                 self.siteTitleCell.detailTextLabel.text = value;
-                if (![value isEqualToString:self.blog.blogName]){
-                    self.blog.blogName = value;
+                if (![value isEqualToString:self.blog.settings.name]){
+                    self.blog.settings.name = value;
                     [self saveSettings];
                 }
             };

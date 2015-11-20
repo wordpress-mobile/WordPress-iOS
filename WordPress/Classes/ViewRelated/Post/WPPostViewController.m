@@ -1305,7 +1305,11 @@ EditImageDetailsViewControllerDelegate
         aUIButtonBarItem = self.uploadStatusButton;
     } else {
         WPBlogSelectorButton *blogButton = (WPBlogSelectorButton*)self.blogPickerButton;
-        NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
+        NSString *blogName = self.post.blog.settings.name;
+        if (blogName.length == 0) {
+            blogName = self.post.blog.url;   
+        }
+        
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0] }];
         
