@@ -404,7 +404,7 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 {
     [WPAnalytics track:WPAnalyticsStatOpenedSettings];
 
-    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    SettingsViewController *settingsViewController = [[SettingsViewController alloc] init];
     [self.navigationController pushViewController:settingsViewController animated:YES];
 }
 
