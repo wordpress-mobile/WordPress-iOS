@@ -3,6 +3,7 @@
 #import "BlogService.h"
 #import "AccountService.h"
 #import "Blog.h"
+#import "WordPress-Swift.h"
 
 #import <NSString+XMLExtensions.h>
 
@@ -38,7 +39,7 @@
             blog.url = url;
         }
         if (blogName) {
-            blog.blogName = [blogName stringByDecodingXMLCharacters];
+            blog.settings.name = [blogName stringByDecodingXMLCharacters];
         }
     }
     blog.username = username;
