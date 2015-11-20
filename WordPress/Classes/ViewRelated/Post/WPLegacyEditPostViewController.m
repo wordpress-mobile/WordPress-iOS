@@ -225,7 +225,8 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
 
-        NSString *subtext = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
+        NSString *name = self.post.blog.settings.name;
+        NSString *subtext = name.length == 0 ? self.post.blog.url : name;
         NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
         NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
                                                                                          attributes:subtextAttributes];
