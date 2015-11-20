@@ -87,7 +87,6 @@ EditImageDetailsViewControllerDelegate
 #pragma mark - Misc properties
 @property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIBarButtonItem *uploadStatusButton;
-@property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic) BOOL isOpenedDirectlyForEditing;
 @property (nonatomic) CGRect keyboardRect;
@@ -643,9 +642,7 @@ EditImageDetailsViewControllerDelegate
 - (void)showBlogSelector
 {
     void (^dismissHandler)() = ^(void) {
-        self.dismissingBlogPicker = YES;
         [self dismissViewControllerAnimated:YES completion:nil];
-        self.dismissingBlogPicker = NO;
     };
     void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
