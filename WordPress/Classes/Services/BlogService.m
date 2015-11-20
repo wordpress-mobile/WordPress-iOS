@@ -517,13 +517,16 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         }
         
         blog.url = remoteBlog.url;
-        blog.blogName = [remoteBlog.name stringByDecodingXMLCharacters];
-        blog.blogTagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.blogID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
         blog.isAdmin = remoteBlog.isAdmin;
         blog.visible = remoteBlog.visible;
+        
+        // 
+        BlogSettings *settings = blog.settings;
+        settings.name = [remoteBlog.name stringByDecodingXMLCharacters];
+        settings.tagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
