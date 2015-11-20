@@ -25,6 +25,7 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
 @property (nonatomic) BOOL needsCheckPendingDownloadsAfterDelay;
 @property (nonatomic, strong, readwrite) NSAttributedString *attributedString;
 @property (nonatomic) BOOL shouldPreventPendingMediaLayout;
+@property (nonatomic, strong) NSString *urlPathToCopy;
 
 @end
 
@@ -477,6 +478,45 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
 }
 
 
+#pragma mark - Longpress Gesture and Copy Menu
+
+- (void)handleLinkLongPress:(UIGestureRecognizer *)recognizer
+{
+    if ([recognizer state] != UIGestureRecognizerStateBegan) {
+        return;
+    }
+
+    DTLinkButton *button = (DTLinkButton *)recognizer.view;
+    NSLog(@"%@", button.URL);
+    self.urlPathToCopy = button.URL.absoluteString;
+
+    [self becomeFirstResponder];
+    CGPoint location = [recognizer locationInView:self];
+    CGRect frame = CGRectMake(location.x, location.y, 0.0, 0.0);
+    UIMenuController *menuController = [UIMenuController sharedMenuController];
+    [menuController setTargetRect:frame inView:self];
+    [menuController setMenuVisible:YES animated:YES];
+}
+
+- (void)copy:(id)sender {
+    // called when copy clicked in menu
+    [UIPasteboard generalPasteboard].string = self.urlPathToCopy;
+}
+
+// Menu controller checks this to see what options to display
+- (BOOL)canPerformAction:(SEL)selector withSender:(id)sender {
+    if (selector == @selector(copy:)) {
+        return YES;
+    }
+    return NO;
+}
+
+// Must return YES in order to show the menu controller.
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+
 #pragma mark - DTCoreAttributedTextContentView Delegate Methods
 
 - (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame
@@ -501,6 +541,10 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
 
     // use normal push action for opening URL
     [button addTarget:self action:@selector(linkAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLinkLongPress:)];
+    lpgr.cancelsTouchesInView = YES;
+    [button addGestureRecognizer:lpgr];
 
     return button;
 }
