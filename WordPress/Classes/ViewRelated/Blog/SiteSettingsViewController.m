@@ -372,11 +372,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return self.siteTitleCell;
         } break;
         case SiteSettingsGeneralTagline: {
-            if (self.blog.blogTagline) {
-                [self.siteTaglineCell setTextValue:self.blog.blogTagline];
-            } else {
-                [self.siteTaglineCell setTextValue:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")];
-            }
+            NSString *tagline = self.blog.settings.tagline ?: NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site");
+            [self.siteTaglineCell setTextValue:tagline];
             return self.siteTaglineCell;
         } break;
         case SiteSettingsGeneralURL: {
@@ -539,16 +536,16 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             if (!self.blog.isAdmin) {
                 return;
             }
-            SettingsMultiTextViewController *siteTaglineViewController = [[SettingsMultiTextViewController alloc] initWithText:self.blog.blogTagline
-                                                                                                 placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
-                                                                                                              hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
-                                                                                                        isPassword:NO];
+            SettingsMultiTextViewController *siteTaglineViewController = [[SettingsMultiTextViewController alloc] initWithText:self.blog.settings.tagline
+                                                                                                                   placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
+                                                                                                                          hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
+                                                                                                                    isPassword:NO];
             siteTaglineViewController.title = NSLocalizedString(@"Tagline", @"Title for screen that show tagline editor");
             siteTaglineViewController.onValueChanged = ^(NSString *value) {
                 NSString *normalizedTagline = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 self.siteTaglineCell.detailTextLabel.text = normalizedTagline;
-                if (![normalizedTagline isEqualToString:self.blog.blogTagline]){
-                    self.blog.blogTagline = normalizedTagline;
+                if (![normalizedTagline isEqualToString:self.blog.settings.tagline]){
+                    self.blog.settings.tagline = normalizedTagline;
                     [self saveSettings];
                 }
             };
