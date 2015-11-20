@@ -129,7 +129,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     self.authToken = self.blog.authToken;
     self.username = self.blog.usernameForSite;
     self.password = self.blog.password;
-    self.geolocationEnabled = self.blog.geolocationEnabled;
+    self.geolocationEnabled = self.blog.settings.geolocationEnabled;
     
     [self refreshData];
 }
@@ -709,7 +709,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     self.geolocationEnabled = geolocationSwitch.on;
 
     // Save the change
-    self.blog.geolocationEnabled = self.geolocationEnabled;
+    self.blog.settings.geolocationEnabled = self.geolocationEnabled;
     [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
 }
 
