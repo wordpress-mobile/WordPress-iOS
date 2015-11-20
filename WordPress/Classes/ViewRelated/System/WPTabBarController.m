@@ -542,6 +542,14 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
 
 - (void)animateNotificationBadgeIcon
 {
+    // Note:
+    // We need to force a layout pass (*if needed*) right now. Otherwise, the view may get layed out
+    // at the middle of the animation, which may lead to inconsistencies.
+    //
+    [self.view layoutIfNeeded];
+    
+    // Scotty, beam me up!
+    //
     __weak __typeof(self) weakSelf = self;
     [UIView animateWithDuration:0.3 animations:^{
         weakSelf.notificationBadgeIconView.transform = CGAffineTransformMakeScale(1.5, 1.5);
