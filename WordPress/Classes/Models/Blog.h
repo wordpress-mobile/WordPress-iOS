@@ -82,7 +82,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSString *blogName;
 @property (nonatomic, strong, readwrite) NSString *blogTagline;
 @property (nonatomic, assign, readwrite) NSNumber *defaultCategoryID;
-@property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
