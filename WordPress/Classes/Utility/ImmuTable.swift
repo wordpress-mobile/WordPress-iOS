@@ -39,6 +39,12 @@ public struct ImmuTableSection {
     }
 }
 
+public protocol CellRegistrable {
+    func registerClass(cellClass: AnyClass?, forCellReuseIdentifier identifier: String)
+}
+
+extension UITableView: CellRegistrable { }
+
 public struct ImmuTable {
     public let sections: [ImmuTableSection]
 
@@ -46,7 +52,7 @@ public struct ImmuTable {
         return sections[indexPath.section].rows[indexPath.row]
     }
 
-    public static func registerRows(rows: [ImmuTableRow.Type], tableView: UITableView) {
+    public static func registerRows(rows: [ImmuTableRow.Type], tableView: CellRegistrable) {
         let classes = rows.reduce([:]) {
             (var classes, row) -> [String: AnyClass] in
 
