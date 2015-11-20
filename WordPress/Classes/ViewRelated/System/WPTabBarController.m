@@ -41,9 +41,6 @@ NSString * const WPNewPostURLParamImageKey = @"image";
 static NSInteger const WPNotificationBadgeIconSize = 10;
 static NSInteger const WPNotificationBadgeIconVerticalOffsetFromTop = 5;
 static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
-static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPadInPortrait = 108;
-static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPadInLandscape = 236;
-static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape = 93;
 
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
@@ -536,29 +533,10 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 
 - (void)updateNotificationBadgeIconPosition
 {
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    BOOL isLandscape = (orientation == UIInterfaceOrientationLandscapeLeft) || (orientation == UIInterfaceOrientationLandscapeRight);
-
-    // We need to take the extra space before & after the tabbar into account for iPad and iPhone 6 Plus
-    CGFloat horizontalOffset = 0.0;
-    if (IS_IPAD) {
-        horizontalOffset = isLandscape ? WPNotificationBadgeIconHorizontalOffsetForIPadInLandscape : WPNotificationBadgeIconHorizontalOffsetForIPadInPortrait;
-    }
-    else if (isLandscape && WPDeviceIdentification.isiPhoneSixPlus) {
-        horizontalOffset = WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape;
-    }
-    CGFloat verticalPosition = WPNotificationBadgeIconVerticalOffsetFromTop;
-    // Subtract the space before & after the tabbar
-    CGFloat tabBarContentWidth = self.tabBar.frame.size.width - (horizontalOffset * 2);
-    CGFloat tabItemWidth = tabBarContentWidth / self.tabBar.items.count;
-
-    // 0.5 is added to WPTabNotifications to get the center position of the tab
-    CGFloat notificationTabCenter = horizontalOffset + ((WPTabNotifications + 0.5) * tabItemWidth);
-    CGFloat horizontalPosition = notificationTabCenter - WPNotificationBadgeIconHorizontalOffsetFromCenter;
-
+    CGRect notificationsButtonFrame = [self lastTabBarButtonFrame];
     CGRect rect = self.notificationBadgeIconView.frame;
-    rect.origin.x = floorf(horizontalPosition);
-    rect.origin.y = floorf(verticalPosition);
+    rect.origin.y = WPNotificationBadgeIconVerticalOffsetFromTop;
+    rect.origin.x = CGRectGetMidX(notificationsButtonFrame) - WPNotificationBadgeIconHorizontalOffsetFromCenter;
     self.notificationBadgeIconView.frame = rect;
 }
 
@@ -589,6 +567,28 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 }
 
 #pragma mark - Handling Rotations
+- (CGRect)lastTabBarButtonFrame
+{
+    // Hack:
+    // In this method, we determine the UITabBarController's last button frame.
+    // It's proven to be effective in *all* of the available devices to date, even in multitasking mode.
+    // Even better, we don't even need one constant per device.
+    // *If* this ever breaks, worst case scenario, we'll notice the assertion below (and of course, we'll fix it!).
+    //
+    CGRect lastButtonRect = CGRectZero;
+    for (UIView *subview in self.tabBar.subviews) {
+        if ([@"UITabBarButton" isEqualToString:NSStringFromClass([subview class])]) {
+            if (CGRectGetMinX(subview.frame) > CGRectGetMinX(lastButtonRect)) {
+                lastButtonRect = subview.frame;
+            }
+        }
+    }
+    
+    NSAssert(!CGRectEqualToRect(lastButtonRect, CGRectZero), @"Couldn't determine the last TabBarButton Frame");
+    return lastButtonRect;
+}
+
+
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
