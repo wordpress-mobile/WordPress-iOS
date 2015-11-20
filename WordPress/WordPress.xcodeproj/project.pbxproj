@@ -338,6 +338,7 @@
 		ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
 		B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B50421E61B680839008EEA82 /* NoteUndoOverlayView.xib */; };
 		B50421E91B68170F008EEA82 /* NoteUndoOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50421E81B68170F008EEA82 /* NoteUndoOverlayView.swift */; };
+		B50B03601BFF8B3400474AAF /* SettingsMultiTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B50B035F1BFF8B3400474AAF /* SettingsMultiTextViewController.m */; };
 		B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */; };
 		B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */; };
 		B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */; };
@@ -354,7 +355,6 @@
 		B535209B1AF7BBB800B33BA8 /* PushAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209A1AF7BBB800B33BA8 /* PushAuthenticationManager.swift */; };
 		B535209D1AF7EB9F00B33BA8 /* PushAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */; };
 		B535209F1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209E1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift */; };
-		B53AD9BB1BE95687009AB87E /* SettingsMultiTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9B71BE95687009AB87E /* SettingsMultiTextViewController.m */; };
 		B53AD9BC1BE95687009AB87E /* SettingsTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */; };
 		B53AD9BF1BE9584B009AB87E /* SettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */; };
 		B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */; };
@@ -1291,6 +1291,8 @@
 		B43F6A7D9B3DC5B8B4A7DDCA /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
 		B50421E61B680839008EEA82 /* NoteUndoOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteUndoOverlayView.xib; sourceTree = "<group>"; };
 		B50421E81B68170F008EEA82 /* NoteUndoOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteUndoOverlayView.swift; sourceTree = "<group>"; };
+		B50B035E1BFF8B3400474AAF /* SettingsMultiTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMultiTextViewController.h; sourceTree = "<group>"; };
+		B50B035F1BFF8B3400474AAF /* SettingsMultiTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsMultiTextViewController.m; sourceTree = "<group>"; };
 		B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		B526DC271B1E47FC002A8C5F /* WPStyleGuide+WebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+WebView.h"; sourceTree = "<group>"; };
@@ -1307,8 +1309,6 @@
 		B535209A1AF7BBB800B33BA8 /* PushAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationManager.swift; sourceTree = "<group>"; };
 		B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationService.swift; sourceTree = "<group>"; };
 		B535209E1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationServiceRemote.swift; sourceTree = "<group>"; };
-		B53AD9B61BE95687009AB87E /* SettingsMultiTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMultiTextViewController.h; sourceTree = "<group>"; };
-		B53AD9B71BE95687009AB87E /* SettingsMultiTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsMultiTextViewController.m; sourceTree = "<group>"; };
 		B53AD9B81BE95687009AB87E /* SettingsTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTextViewController.h; sourceTree = "<group>"; };
 		B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTextViewController.m; sourceTree = "<group>"; };
 		B53AD9BD1BE9584A009AB87E /* SettingsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsSelectionViewController.h; sourceTree = "<group>"; };
@@ -2999,8 +2999,8 @@
 			children = (
 				B53AD9BD1BE9584A009AB87E /* SettingsSelectionViewController.h */,
 				B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */,
-				B53AD9B61BE95687009AB87E /* SettingsMultiTextViewController.h */,
-				B53AD9B71BE95687009AB87E /* SettingsMultiTextViewController.m */,
+				B50B035E1BFF8B3400474AAF /* SettingsMultiTextViewController.h */,
+				B50B035F1BFF8B3400474AAF /* SettingsMultiTextViewController.m */,
 				B53AD9B81BE95687009AB87E /* SettingsTextViewController.h */,
 				B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */,
 			);
@@ -4468,6 +4468,7 @@
 				FFC6ADD81B56F311002F3C84 /* RemoteBlogSettings.m in Sources */,
 				F1FA2C4E1AED07FC00255FCD /* MFMailComposeViewController+StatusBarStyle.m in Sources */,
 				E1F8E1261B0B422C0073E628 /* JetpackServiceRemote.m in Sources */,
+				B50B03601BFF8B3400474AAF /* SettingsMultiTextViewController.m in Sources */,
 				5D6C4B091B603E03005E3C43 /* WPTableViewHandler.m in Sources */,
 				834CAE9F122D56B1003DDF49 /* UIImage+Alpha.m in Sources */,
 				B5C7D7B81BC6B5A3008E668A /* UIAlertController+Helpers.swift in Sources */,
@@ -4587,7 +4588,6 @@
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
 				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
 				E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */,
-				B53AD9BB1BE95687009AB87E /* SettingsMultiTextViewController.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
 				E1DF5DFD19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m in Sources */,
@@ -4669,7 +4669,6 @@
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
 				5DF94E461962BAA700359241 /* WPRichTextView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
-				FF8DDCE61B6148E80098826F /* SettingsMultiTextViewController.m in Sources */,
 				E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */,
 				85D239B01AE5A5FC0074768D /* LoginFacade.m in Sources */,
 				E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */,
