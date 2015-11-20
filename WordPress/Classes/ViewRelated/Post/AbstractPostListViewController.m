@@ -70,15 +70,14 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    if ([UIDevice isPad]) {
-        return;
-    }
-    if (self.searchWrapperViewHeightConstraint.constant > 0) {
-        self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
-    }
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        if (![UIDevice isPad] && (self.searchWrapperViewHeightConstraint.constant > 0)) {
+            self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
+        }
+    } completion:nil];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -685,7 +684,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 - (CGFloat)heightForSearchWrapperView
 {
     UINavigationBar *navBar = self.navigationController.navigationBar;
-    CGFloat height = CGRectGetHeight(navBar.frame) + self.topLayoutGuide.length;
+    CGFloat height = CGRectGetHeight(navBar.frame) + [UIApplication sharedApplication].statusBarFrame.size.height;
     return MAX(height, SearchWrapperViewMinHeight);
 }
 
