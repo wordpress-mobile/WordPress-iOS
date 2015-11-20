@@ -303,7 +303,7 @@
                 if(!itemViewBelowSelected) {
                     selectedItemView.indentationLevel = 0;
                 }else {
-                    if(selectedItemView.indentationLevel < itemViewBelowSelected.indentationLevel) {
+                    if(selectedItemView.indentationLevel > itemViewBelowSelected.indentationLevel) {
                         selectedItemView.indentationLevel = itemViewBelowSelected.indentationLevel;
                     }
                 }
