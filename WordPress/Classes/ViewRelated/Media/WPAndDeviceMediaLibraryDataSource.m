@@ -5,7 +5,7 @@
 
 @interface WPAndDeviceMediaLibraryDataSource()
     @property (nonatomic, strong) MediaLibraryPickerDataSource *mediaLibraryDataSource;
-    @property (nonatomic, strong) WPALAssetDataSource *deviceLibraryDataSource;
+    @property (nonatomic, strong) WPPHAssetDataSource *deviceLibraryDataSource;
     @property (nonatomic, strong) id<WPMediaCollectionDataSource> currentDataSource;
     @property (nonatomic, strong) NSMutableDictionary *observers;
 @end
@@ -17,7 +17,7 @@
     self = [super init];
     if (self) {
         _mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithBlog:blog];
-        _deviceLibraryDataSource = [[WPALAssetDataSource alloc] init];
+        _deviceLibraryDataSource = [[WPPHAssetDataSource alloc] init];
         _currentDataSource = _deviceLibraryDataSource;
         _observers = [[NSMutableDictionary alloc] init];
     }
@@ -29,7 +29,7 @@
     self = [super init];
     if (self) {
         _mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithPost:post];
-        _deviceLibraryDataSource = [[WPALAssetDataSource alloc] init];
+        _deviceLibraryDataSource = [[WPPHAssetDataSource alloc] init];
         _currentDataSource = _deviceLibraryDataSource;
         _observers = [[NSMutableDictionary alloc] init];
     }

@@ -31,28 +31,28 @@ public class WP3DTouchShortcutHandler: NSObject
         
         switch shortCutType {
             case ShortcutIdentifier.LogIn.type:
-                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutLogIn)
+                WPAnalytics.track(.ShortcutLogIn)
                 handled = true
                 break
             case ShortcutIdentifier.NewPost.type:
-                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutNewPost)
+                WPAnalytics.track(.ShortcutNewPost)
                 tabBarController.showPostTabWithOptions([WPPostViewControllerOptionNotAnimated: true])
                 handled = true
                 break
             case ShortcutIdentifier.NewPhotoPost.type:
-                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutNewPhotoPost)
+                WPAnalytics.track(.ShortcutNewPhotoPost)
                 tabBarController.showPostTabWithOptions([WPPostViewControllerOptionOpenMediaPicker: true, WPPostViewControllerOptionNotAnimated: true])
                 handled = true
                 break
             case ShortcutIdentifier.Stats.type:
-                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutStats)
+                WPAnalytics.track(.ShortcutStats)
                 clearCurrentViewController()
                 let blogService: BlogService = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
                 tabBarController.switchMySitesTabToStatsViewForBlog(blogService.lastUsedOrFirstBlog())
                 handled = true
                 break
             case ShortcutIdentifier.Notifications.type:
-                WPAnalytics.track(WPAnalyticsStat.Stat3DTouchShortcutNotifications)
+                WPAnalytics.track(.ShortcutNotifications)
                 clearCurrentViewController()
                 tabBarController.showNotificationsTab()
                 handled = true
