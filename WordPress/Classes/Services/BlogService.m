@@ -523,7 +523,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         blog.isAdmin = remoteBlog.isAdmin;
         blog.visible = remoteBlog.visible;
         
-        // 
+        // Update 'Top Level' Settings
         BlogSettings *settings = blog.settings;
         settings.name = [remoteBlog.name stringByDecodingXMLCharacters];
         settings.tagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
