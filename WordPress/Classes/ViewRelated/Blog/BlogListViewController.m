@@ -19,14 +19,8 @@
 #import "WordPress-Swift.h"
 #import "WPSearchControllerConfigurator.h"
 #import "WPGUIConstants.h"
+#import "CreateNewBlogViewController.h"
 
-typedef NS_ENUM(NSInteger, BlogListSections) {
-    BlogListSectionsAllSites = 0,
-    BlogListSectionsNewSite,
-    BlogListSectionsCount
-};
-
-static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 static CGFloat const BLVCSiteRowHeight = 74.0;
@@ -44,6 +38,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 @property (nonatomic, strong) IBOutlet UIView *searchWrapperView;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
+@property (nonatomic, weak) UIAlertController *addSiteAlertController;
+@property (nonatomic, strong) UIBarButtonItem *addSiteButton;
 
 @property (nonatomic) NSDate *firstHide;
 @property (nonatomic) NSInteger hideCount;
@@ -68,21 +64,28 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
-
-        // show 'Switch Site' for the next page's back button
-        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Switch Site", @"")
-                                                                       style:UIBarButtonItemStylePlain
-                                                                      target:nil
-                                                                      action:nil];
-        [self.navigationItem setBackBarButtonItem:backButton];
-        
-        UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
-                                                                         style:UIBarButtonItemStylePlain
-                                                                        target:self
-                                                                        action:@selector(toggleSearch)];
-        [self.navigationItem setRightBarButtonItem:searchButton];
+        [self configureNavigationBar];
     }
     return self;
+}
+
+- (void)configureNavigationBar
+{
+    // show 'Switch Site' for the next page's back button
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Switch Site", @"")
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:nil
+                                                                  action:nil];
+    [self.navigationItem setBackBarButtonItem:backButton];
+    
+    self.addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                   target:self
+                                                                                   action:@selector(addSite)];
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(toggleSearch)];
+    [self.navigationItem setRightBarButtonItems:@[self.addSiteButton, searchButton]];
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view
@@ -304,7 +307,6 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 {
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
@@ -355,11 +357,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.tableView.isEditing || [self.searchController isActive]) { // Don't show "Add Site"
-        return BlogListSectionsCount - 1;
-    } else {
-        return BlogListSectionsCount;
-    }
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -369,9 +367,6 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     if ([self.resultsController sections].count > section) {
         sectionInfo = [[self.resultsController sections] objectAtIndex:section];
         numberOfRows = sectionInfo.numberOfObjects;
-    } else {
-        // This is for the "Add a Site" row
-        numberOfRows = 1;
     }
 
     return numberOfRows;
@@ -379,20 +374,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
-    if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:AddSiteCellIdentifier];
-    } else {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
-    }
-
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:BlogCellIdentifier];
     [self configureCell:cell atIndexPath:indexPath];
-
-    if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        [WPStyleGuide configureTableViewActionCell:cell];
-    } else {
-        [WPStyleGuide configureTableViewBlogCell:cell];
-    }
 
     return cell;
 }
@@ -404,7 +387,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return ![indexPath isEqual:[self indexPathForAddSite]];
+    return YES;
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -417,22 +400,10 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     return NO;
 }
 
-- (NSIndexPath *)indexPathForAddSite
-{
-    return [NSIndexPath indexPathForRow:0 inSection:1];
-}
-
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        cell.textLabel.textColor = [WPStyleGuide greyDarken20];
-        cell.textLabel.text = NSLocalizedString(@"ADD NEW WORDPRESS", @"");
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    } else if ([cell isKindOfClass:[WPBlogTableViewCell class]]) {
-        [self configureBlogCell:(WPBlogTableViewCell *)cell atIndexPath:indexPath];
-    }
+    [self configureBlogCell:(WPBlogTableViewCell *)cell atIndexPath:indexPath];
+    [WPStyleGuide configureTableViewBlogCell:cell];
 }
 
 - (void)configureBlogCell:(WPBlogTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
@@ -447,9 +418,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = self.tableView.isEditing ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleBlue;
-        
-        cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
-        cell.imageView.layer.borderWidth = 1.5;
+    cell.imageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    cell.imageView.layer.borderWidth = 1.5;
     [cell.imageView setImageWithSiteIcon:blog.icon];
     cell.visibilitySwitch.on = blog.visible;
     cell.visibilitySwitch.tag = indexPath.row;
@@ -488,24 +458,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if ([indexPath isEqual:[self indexPathForAddSite]]) {
-        [self setEditing:NO animated:NO];
-        LoginViewController *loginViewController = [[LoginViewController alloc] init];
-        loginViewController.cancellable = YES;
-
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-        if (!defaultAccount) {
-            loginViewController.prefersSelfHosted = YES;
-        }
-        loginViewController.dismissBlock = ^(BOOL cancelled){
-            [self dismissViewControllerAnimated:YES completion:nil];
-        };
-        UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-        [self presentViewController:loginNavigationController animated:YES completion:nil];
-    } else if (self.tableView.isEditing) {
+    if (self.tableView.isEditing) {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         UISwitch *visibleSwitch = (UISwitch *)cell.accessoryView;
         if (visibleSwitch && [visibleSwitch isKindOfClass:[UISwitch class]]) {
@@ -528,7 +481,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return (indexPath.section == BlogListSectionsNewSite) ? WPTableViewDefaultRowHeight : BLVCSiteRowHeight;
+    return BLVCSiteRowHeight;
 }
 
 # pragma mark - WPSeachController delegate methods
@@ -570,9 +523,10 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 {
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
-    self.navigationItem.rightBarButtonItem.enabled = !editing;
+    [self toggleRightBarButtonItems:!editing];
 
     if (editing) {
+        [self.addSiteAlertController dismissViewControllerAnimated:YES completion:nil];
         [self updateHeaderSize];
         self.tableView.tableHeaderView = self.headerView;
 
@@ -605,9 +559,72 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     }
 }
 
+- (void)toggleRightBarButtonItems:(BOOL)enabled
+{
+    for (UIBarButtonItem *buttonItem in self.navigationItem.rightBarButtonItems) {
+        buttonItem.enabled = enabled;
+    }
+}
+
 - (void)toggleSearch
 {
+    [self.addSiteAlertController dismissViewControllerAnimated:YES completion:nil];
     self.searchController.active = !self.searchController.active;
+}
+
+- (void)addSite
+{
+    UIAlertController *addSiteAlertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                    message:nil
+                                                                             preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *addNewWordPressAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Create WordPress.com site", @"Create WordPress.com site button")
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction *action) {
+                                                                      [self showAddNewWordPressController];
+                                                                  }];
+    UIAlertAction *addSiteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add self-hosted site", @"Add self-hosted site button")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction *action) {
+                                                              [self showLoginControllerForAddingSelfHostedSite];
+                                                          }];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel button")
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:nil];
+    [addSiteAlertController addAction:addNewWordPressAction];
+    [addSiteAlertController addAction:addSiteAction];
+    [addSiteAlertController addAction:cancel];
+    addSiteAlertController.popoverPresentationController.barButtonItem = self.addSiteButton;
+    
+    [self presentViewController:addSiteAlertController animated:YES completion:nil];
+    self.addSiteAlertController = addSiteAlertController;
+}
+
+- (void)showAddNewWordPressController
+{
+    [self setEditing:NO animated:NO];
+    
+    CreateNewBlogViewController *createNewBlogViewController = [[CreateNewBlogViewController alloc] init];
+    [self.navigationController presentViewController:createNewBlogViewController animated:YES completion:nil];
+}
+
+- (void)showLoginControllerForAddingSelfHostedSite
+{
+    [self setEditing:NO animated:NO];
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    loginViewController.cancellable = YES;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+    if (!defaultAccount) {
+        loginViewController.prefersSelfHosted = YES;
+    }
+    loginViewController.dismissBlock = ^(BOOL cancelled){
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+    UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    [self presentViewController:loginNavigationController animated:YES completion:nil];
 }
 
 - (void)visibilitySwitchAction:(id)sender
