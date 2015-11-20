@@ -19,9 +19,9 @@
 #import "RemoteBlog.h"
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
-#import "RemoteBlogSettings.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
+
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -237,7 +237,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
         [remote syncSettingsForBlogID:blog.blogID success:^(RemoteBlogSettings *settings) {
             [self.managedObjectContext performBlock:^{
-                [self updateBlog:blogInContext settingsWithRemoteSettings:settings];
+                [self updateSettings:blogInContext.settings withRemoteSettings:settings];
                 [self.managedObjectContext save:nil];
                 if (success) {
                     success();
@@ -256,7 +256,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [self.managedObjectContext performBlock:^{
         Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
-        [remote updateBlogSettings:[self remoteBlogSettingFromBlog:blogInContext]
+        [remote updateBlogSettings:[self remoteSettingFromSettings:blogInContext.settings]
                          forBlogID:blogInContext.blogID
                            success:^() {
                                [self.managedObjectContext performBlock:^{
@@ -447,10 +447,21 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (Blog *)createBlogWithAccount:(WPAccount *)account
 {
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class])
+    NSString *entityName = NSStringFromClass([Blog class]);
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:entityName
                                                inManagedObjectContext:self.managedObjectContext];
     blog.account = account;
+    blog.settings = [self createSettingsWithBlog:blog];
     return blog;
+}
+
+- (BlogSettings *)createSettingsWithBlog:(Blog *)blog
+{
+    NSString *entityName = [BlogSettings classNameWithoutNamespaces];
+    BlogSettings *settings = [NSEntityDescription insertNewObjectForEntityForName:entityName
+                                                           inManagedObjectContext:self.managedObjectContext];
+    settings.blog = blog;
+    return settings;
 }
 
 - (void)removeBlog:(Blog *)blog
@@ -473,10 +484,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 #pragma mark - Private methods
 
-- (void)mergeBlogs:(NSArray *)blogs
-       withAccount:(WPAccount *)account
-        completion:(void (^)())completion
+- (void)mergeBlogs:(NSArray<RemoteBlog *> *)blogs withAccount:(WPAccount *)account completion:(void (^)())completion
 {
+    // Nuke dead blogs
     NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
     NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
     NSMutableSet *toDelete = [localSet mutableCopy];
@@ -493,21 +503,26 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     // Go through each remote incoming blog and make sure we're up to date with titles, etc.
     // Also adds any blogs we don't have
     for (RemoteBlog *remoteBlog in blogs) {
-        Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc
-                                    inAccount:account];
+        Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc inAccount:account];
+        
         if (!blog && remoteBlog.jetpack) {
-            blog = [self migrateRemoteJetpackBlog:remoteBlog
-                                       forAccount:account];
+            blog = [self migrateRemoteJetpackBlog:remoteBlog forAccount:account];
         }
+        
         if (!blog) {
             DDLogInfo(@"New blog from account %@: %@", account.username, remoteBlog);
             blog = [self createBlogWithAccount:account];
             blog.xmlrpc = remoteBlog.xmlrpc;
         }
+        
+        if (!blog.settings) {
+            blog.settings = [self createSettingsWithBlog:blog];
+        }
+        
         blog.url = remoteBlog.url;
-        blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
-        blog.blogTagline = [remoteBlog.desc stringByDecodingXMLCharacters];
-        blog.blogID = remoteBlog.ID;
+        blog.blogName = [remoteBlog.name stringByDecodingXMLCharacters];
+        blog.blogTagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
+        blog.blogID = remoteBlog.blogID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
         blog.isAdmin = remoteBlog.isAdmin;
@@ -541,7 +556,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     NSArray *blogsWithNoAccount = [self blogsWithNoAccount];
     Blog *jetpackBlog = [[blogsWithNoAccount wp_filter:^BOOL(Blog *blogToTest) {
-        return [blogToTest.xmlrpc isEqualToString:remoteBlog.xmlrpc] && [blogToTest.dotComID isEqual:remoteBlog.ID];
+        return [blogToTest.xmlrpc isEqualToString:remoteBlog.xmlrpc] && [blogToTest.dotComID isEqual:remoteBlog.blogID];
     }] firstObject];
 
     if (jetpackBlog) {
@@ -578,7 +593,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (NSArray *)blogsWithPredicate:(NSPredicate *)predicate
 {
     NSFetchRequest *request = [self fetchRequestWithPredicate:predicate];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"blogName"
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"settings.name"
                                                                      ascending:YES];
     request.sortDescriptors = @[ sortDescriptor ];
 
@@ -756,41 +771,106 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return timeZone;
 }
 
-- (void)updateBlog:(Blog *)blog settingsWithRemoteSettings:(RemoteBlogSettings *)remoteSettings
+- (void)updateSettings:(BlogSettings *)settings withRemoteSettings:(RemoteBlogSettings *)remoteSettings
 {
-    blog.blogName = remoteSettings.name;
-    blog.blogTagline = remoteSettings.desc;
-    if (remoteSettings.defaultCategory) {
-        blog.defaultCategoryID = remoteSettings.defaultCategory;
-    }
-    if (remoteSettings.defaultPostFormat) {
-        blog.defaultPostFormat = remoteSettings.defaultPostFormat;
-    }
-    if (remoteSettings.privacy) {
-        blog.siteVisibility = (SiteVisibility)[remoteSettings.privacy integerValue];
-    }
+    NSParameterAssert(settings);
+    NSParameterAssert(remoteSettings);
+    
+    // Transformables
+    NSSet *separatedBlacklistKeys = [remoteSettings.commentsBlacklistKeys uniqueStringComponentsSeparatedByWhitespace];
+    NSSet *separatedModerationKeys = [remoteSettings.commentsModerationKeys uniqueStringComponentsSeparatedByWhitespace];
+    
+    // General
+    settings.name = remoteSettings.name;
+    settings.tagline = remoteSettings.tagline;
+    settings.privacy = remoteSettings.privacy ?: settings.privacy;
+    
+    // Writing
+    settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;
+    settings.defaultPostFormat = remoteSettings.defaultPostFormat ?: settings.defaultPostFormat;
 
-    blog.relatedPostsAllowed = remoteSettings.relatedPostsAllowed;
-    blog.relatedPostsEnabled = remoteSettings.relatedPostsEnabled;
-    blog.relatedPostsShowHeadline = remoteSettings.relatedPostsShowHeadline;
-    blog.relatedPostsShowThumbnails = remoteSettings.relatedPostsShowThumbnails;
+    // Discussion
+    settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
+    settings.commentsBlacklistKeys = separatedBlacklistKeys;
+    settings.commentsCloseAutomatically = [remoteSettings.commentsCloseAutomatically boolValue];
+    settings.commentsCloseAutomaticallyAfterDays = remoteSettings.commentsCloseAutomaticallyAfterDays;
+    settings.commentsFromKnownUsersWhitelisted = [remoteSettings.commentsFromKnownUsersWhitelisted boolValue];
+    
+    settings.commentsMaximumLinks = remoteSettings.commentsMaximumLinks;
+    settings.commentsModerationKeys = separatedModerationKeys;
+    
+    settings.commentsPagingEnabled = [remoteSettings.commentsPagingEnabled boolValue];
+    settings.commentsPageSize = remoteSettings.commentsPageSize;
+    
+    settings.commentsRequireManualModeration = [remoteSettings.commentsRequireManualModeration boolValue];
+    settings.commentsRequireNameAndEmail = [remoteSettings.commentsRequireNameAndEmail boolValue];
+    settings.commentsRequireRegistration = [remoteSettings.commentsRequireRegistration boolValue];
+    
+    settings.commentsSortOrderAsString = remoteSettings.commentsSortOrder;
+    
+    settings.commentsThreadingDepth = remoteSettings.commentsThreadingDepth;
+    settings.commentsThreadingEnabled = [remoteSettings.commentsThreadingEnabled boolValue];
+    
+    settings.pingbackInboundEnabled = [remoteSettings.pingbackInboundEnabled boolValue];
+    settings.pingbackOutboundEnabled = [remoteSettings.pingbackOutboundEnabled boolValue];
+
+    // Related Posts
+    settings.relatedPostsAllowed = [remoteSettings.relatedPostsAllowed boolValue];
+    settings.relatedPostsEnabled = [remoteSettings.relatedPostsEnabled boolValue];
+    settings.relatedPostsShowHeadline = [remoteSettings.relatedPostsShowHeadline boolValue];
+    settings.relatedPostsShowThumbnails = [remoteSettings.relatedPostsShowThumbnails boolValue];
 }
 
-
--(RemoteBlogSettings *)remoteBlogSettingFromBlog:(Blog *)blog
+- (RemoteBlogSettings *)remoteSettingFromSettings:(BlogSettings *)settings
 {
-    RemoteBlogSettings *remoteBlogSettings = [[RemoteBlogSettings alloc] init];
+    NSParameterAssert(settings);
+    RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
+
+    // Transformables
+    NSString *joinedBlacklistKeys = [[settings.commentsBlacklistKeys allObjects] componentsJoinedByString:@" "];
+    NSString *joinedModerationKeys = [[settings.commentsModerationKeys allObjects] componentsJoinedByString:@" "];
     
-    remoteBlogSettings.name = blog.blogName;
-    remoteBlogSettings.desc = blog.blogTagline;
-    remoteBlogSettings.defaultCategory = blog.defaultCategoryID;
-    remoteBlogSettings.defaultPostFormat = blog.defaultPostFormat;
-    remoteBlogSettings.privacy = @(blog.siteVisibility);
-    remoteBlogSettings.relatedPostsAllowed = blog.relatedPostsAllowed;
-    remoteBlogSettings.relatedPostsEnabled = blog.relatedPostsEnabled;
-    remoteBlogSettings.relatedPostsShowHeadline = blog.relatedPostsShowHeadline;
-    remoteBlogSettings.relatedPostsShowThumbnails = blog.relatedPostsShowThumbnails;
+    // General
+    remoteSettings.name = settings.name;
+    remoteSettings.tagline = settings.tagline;
+    remoteSettings.privacy = settings.privacy;
     
-    return remoteBlogSettings;
+    // Writing
+    remoteSettings.defaultCategoryID = settings.defaultCategoryID;
+    remoteSettings.defaultPostFormat = settings.defaultPostFormat;
+
+    // Discussion
+    remoteSettings.commentsAllowed = @(settings.commentsAllowed);
+    remoteSettings.commentsBlacklistKeys = joinedBlacklistKeys;
+    remoteSettings.commentsCloseAutomatically = @(settings.commentsCloseAutomatically);
+    remoteSettings.commentsCloseAutomaticallyAfterDays = settings.commentsCloseAutomaticallyAfterDays;
+    remoteSettings.commentsFromKnownUsersWhitelisted = @(settings.commentsFromKnownUsersWhitelisted);
+    
+    remoteSettings.commentsMaximumLinks = settings.commentsMaximumLinks;
+    remoteSettings.commentsModerationKeys = joinedModerationKeys;
+    
+    remoteSettings.commentsPagingEnabled = @(settings.commentsPagingEnabled);
+    remoteSettings.commentsPageSize = settings.commentsPageSize;
+    
+    remoteSettings.commentsRequireManualModeration = @(settings.commentsRequireManualModeration);
+    remoteSettings.commentsRequireNameAndEmail = @(settings.commentsRequireNameAndEmail);
+    remoteSettings.commentsRequireRegistration = @(settings.commentsRequireRegistration);
+
+    remoteSettings.commentsSortOrder = settings.commentsSortOrderAsString;
+    
+    remoteSettings.commentsThreadingDepth = settings.commentsThreadingDepth;
+    remoteSettings.commentsThreadingEnabled = @(settings.commentsThreadingEnabled);
+    
+    remoteSettings.pingbackInboundEnabled = @(settings.pingbackInboundEnabled);
+    remoteSettings.pingbackOutboundEnabled = @(settings.pingbackOutboundEnabled);
+    
+    // Related Posts
+    remoteSettings.relatedPostsAllowed = @(settings.relatedPostsAllowed);
+    remoteSettings.relatedPostsEnabled = @(settings.relatedPostsEnabled);
+    remoteSettings.relatedPostsShowHeadline = @(settings.relatedPostsShowHeadline);
+    remoteSettings.relatedPostsShowThumbnails = @(settings.relatedPostsShowThumbnails);
+    
+    return remoteSettings;
 }
+
 @end
