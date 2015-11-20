@@ -241,9 +241,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [alertController addDefaultActionWithTitle:NSLocalizedString(@"OK",@"") handler:^(UIAlertAction *action) {
         [self showBlogSelector];
     }];
-    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel",@"") handler:^(UIAlertAction *action) {
-        
-    }];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel",@"") handler:nil];
     [self presentViewController:alertController animated:YES completion:nil];
 
 }
