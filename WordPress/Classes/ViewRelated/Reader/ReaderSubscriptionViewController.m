@@ -49,7 +49,6 @@ static const CGFloat TitleViewHeight = 32.0;
 
 - (void)dealloc
 {
-    self.searchBar.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

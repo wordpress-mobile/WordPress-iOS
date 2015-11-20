@@ -14,6 +14,7 @@ import Foundation
     private var syncHelper: WPContentSyncHelper!
     private var tableViewController: UITableViewController!
     private var cellForLayout: ReaderPostCardCell!
+    private var crossPostCellForLayout:ReaderCrossPostCell!
     private var resultsStatusView: WPNoResultsView!
     private var footerView: PostListFooterView!
     private var objectIDOfPostForMenu: NSManagedObjectID?
@@ -26,6 +27,8 @@ import Foundation
     private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
     private let readerGapMarkerCellNibName = "ReaderGapMarkerCell"
     private let readerGapMarkerCellReuseIdentifier = "ReaderGapMarkerCellReuseIdentifier"
+    private let readerCrossPostCellNibName = "ReaderCrossPostCell"
+    private let readerCrossPostCellReuseIdentifier = "ReaderCrossPostCellReuseIdentifier"
     private let estimatedRowHeight = CGFloat(100.0)
     private let blockedRowHeight = CGFloat(66.0)
     private let gapMarkerRowHeight = CGFloat(60.0)
@@ -108,6 +111,10 @@ import Foundation
 
     // MARK: - LifeCycle Methods
 
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
     public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         tableViewController = segue.destinationViewController as? UITableViewController
     }
@@ -153,7 +160,8 @@ import Foundation
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
-        if needsRefreshCachedCellHeightsBeforeLayout {
+        // NOTE: For why isViewLoaded is checked here see: https://github.com/wordpress-mobile/WordPress-iOS/pull/4421
+        if isViewLoaded() && needsRefreshCachedCellHeightsBeforeLayout {
             needsRefreshCachedCellHeightsBeforeLayout = false
 
             let width = view.frame.width
@@ -239,6 +247,9 @@ import Foundation
 
         nib = UINib(nibName: readerGapMarkerCellNibName, bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: readerGapMarkerCellReuseIdentifier)
+
+        nib = UINib(nibName: readerCrossPostCellNibName, bundle: nil)
+        tableView.registerNib(nib, forCellReuseIdentifier: readerCrossPostCellReuseIdentifier)
     }
 
     private func setupTableViewHandler() {
@@ -256,11 +267,16 @@ import Foundation
     }
 
     private func setupCellForLayout() {
+        // Construct the layout cells
         cellForLayout = NSBundle.mainBundle().loadNibNamed(readerCardCellNibName, owner: nil, options: nil).first as! ReaderPostCardCell
+        crossPostCellForLayout = NSBundle.mainBundle().loadNibNamed(readerCrossPostCellNibName, owner: nil, options: nil).first as! ReaderCrossPostCell
 
-        // Add layout cell to superview (briefly) so constraint constants reflect the correct size class.
+        // Add layout cells to superview (briefly) so constraint constants reflect the correct size class.
         view.addSubview(cellForLayout)
         cellForLayout.removeFromSuperview()
+
+        view.addSubview(crossPostCellForLayout)
+        crossPostCellForLayout.removeFromSuperview()
     }
 
     private func setupResultsStatusView() {
@@ -757,6 +773,9 @@ import Foundation
         - The current time must be greater than the last sync interval.
     */
     func syncIfAppropriate() {
+        if WordPressAppDelegate.sharedInstance().testSuiteIsRunning {
+            return
+        }
         let lastSynced = readerTopic?.lastSynced == nil ? NSDate(timeIntervalSince1970: 0) : readerTopic!.lastSynced
         if canSync() && Int(lastSynced.timeIntervalSinceNow) < refreshInterval {
             syncHelper.syncContentWithUserInteraction(false)
@@ -906,7 +925,7 @@ import Foundation
             }
         }
 
-        WPAnalytics.track(.StatReaderInfiniteScroll, withProperties: propertyForStats())
+        WPAnalytics.track(.ReaderInfiniteScroll, withProperties: propertyForStats())
     }
 
     func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
@@ -1009,9 +1028,23 @@ import Foundation
         if let context = displayContext {
             return context
         }
+
+        let mainContext = ContextManager.sharedInstance().mainContext
         displayContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        displayContext!.parentContext = ContextManager.sharedInstance().mainContext
+        displayContext!.parentContext = mainContext
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleContextDidSaveNotification:", name: NSManagedObjectContextDidSaveNotification, object: mainContext)
+
         return displayContext!
+    }
+
+    func handleContextDidSaveNotification(notification:NSNotification) {
+        // We want to ignore these notifications when our view has focus so as not
+        // to conflict with the list refresh mechanism. 
+        if view.window != nil {
+            return
+        }
+        displayContext?.mergeChangesFromContextDidSaveNotification(notification)
     }
 
     public func fetchRequest() -> NSFetchRequest? {
@@ -1050,6 +1083,12 @@ import Foundation
             return blockedRowHeight
         }
 
+        if post.isCrossPost() {
+            configureCrossPostCell(crossPostCellForLayout, atIndexPath: indexPath)
+            let size = crossPostCellForLayout.sizeThatFits(CGSize(width:width, height:CGFloat.max))
+            return size.height
+        }
+
         configureCell(cellForLayout, atIndexPath: indexPath)
         let size = cellForLayout.sizeThatFits(CGSize(width:width, height:CGFloat.max))
         return size.height
@@ -1069,6 +1108,12 @@ import Foundation
             let cell = tableView.dequeueReusableCellWithIdentifier(readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
             configureBlockedCell(cell, atIndexPath: indexPath)
             return cell
+        }
+
+        if post.isCrossPost() {
+            let cell = tableView.dequeueReusableCellWithIdentifier(readerCrossPostCellReuseIdentifier) as! ReaderCrossPostCell
+            configureCrossPostCell(cell, atIndexPath: indexPath)
+            return cell;
         }
 
         let cell = tableView.dequeueReusableCellWithIdentifier(readerCardCellReuseIdentifier) as! ReaderPostCardCell
@@ -1107,6 +1152,10 @@ import Foundation
             post.sourceAttribution.blogID != nil {
 
             controller = ReaderPostDetailViewController.detailControllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
+
+        } else if post.isCrossPost() {
+            controller = ReaderPostDetailViewController.detailControllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
+
         } else {
             post = postInMainContext(post)!
             controller = ReaderPostDetailViewController.detailControllerWithPost(post)
@@ -1131,6 +1180,18 @@ import Foundation
         postCell.blogNameButtonIsEnabled = !ReaderHelpers.isTopicSite(readerTopic!)
         postCell.configureCell(post, layoutOnly: layoutOnly)
         postCell.delegate = self
+    }
+
+    public func configureCrossPostCell(cell: ReaderCrossPostCell, atIndexPath indexPath:NSIndexPath) {
+        if tableViewHandler.resultsController.fetchedObjects == nil {
+            return
+        }
+        cell.accessoryType = .None
+        cell.selectionStyle = .None
+
+        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        let post = posts[indexPath.row]
+        cell.configureCell(post)
     }
 
     public func configureBlockedCell(cell: ReaderBlockedSiteCell, atIndexPath indexPath: NSIndexPath) {
@@ -1186,7 +1247,7 @@ import Foundation
         navigationController?.pushViewController(controller, animated: true)
 
         let properties = NSDictionary(object: post.blogURL, forKey: "URL") as! [NSObject : AnyObject]
-        WPAnalytics.track(.StatReaderSitePreviewed, withProperties: properties)
+        WPAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
@@ -1208,7 +1269,7 @@ import Foundation
         navigationController?.pushViewController(controller, animated: true)
 
         let properties = NSDictionary(object: post.primaryTagSlug, forKey: "tag") as! [NSObject : AnyObject]
-        WPAnalytics.track(.StatReaderTagPreviewed, withProperties: properties)
+        WPAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
