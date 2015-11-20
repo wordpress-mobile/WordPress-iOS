@@ -1,11 +1,3 @@
-//
-//  ImmuTableTest.swift
-//  WordPress
-//
-//  Created by Jorge Bernal Ordovas on 20/11/15.
-//  Copyright © 2015 WordPress. All rights reserved.
-//
-
 import XCTest
 @testable import WordPress
 
