@@ -1702,6 +1702,7 @@ EditImageDetailsViewControllerDelegate
             }
             [media remove];
         } else {
+            DDLogError(@"Failed Media Upload: %@", error.localizedDescription);
             [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed];
             [self dismissAssociatedAlertControllerIfVisible:mediaUniqueId];
             self.mediaGlobalProgress.completedUnitCount++;
