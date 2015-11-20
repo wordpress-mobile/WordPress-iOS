@@ -49,7 +49,7 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
 - (void)setup
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    self.backgroundColor = [WPStyleGuide lightGrey];
+    self.backgroundColor = [UIColor clearColor];
 
     MenuItemDrawingView *contentView = [[MenuItemDrawingView alloc] init];
     contentView.drawDelegate = self;
