@@ -80,7 +80,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  *  the BlogSettings PR. They will be removed in another (upcoming) branch.
  */
 @property (nonatomic, strong, readwrite) NSString *blogName;
-@property (nonatomic, strong, readwrite) NSString *blogTagline;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 

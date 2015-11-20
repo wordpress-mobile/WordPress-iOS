@@ -602,16 +602,4 @@ NSString * const PostFormatStandard = @"standard";
     self.settings.name = blogName;
 }
 
-- (NSString *)blogTagline
-{
-    NSParameterAssert(self.settings);
-    return self.settings.tagline;
-}
-
-- (void)setBlogTagline:(NSString *)blogTagline
-{
-    NSParameterAssert(self.settings);
-    self.settings.tagline = blogTagline;
-}
-
 @end
