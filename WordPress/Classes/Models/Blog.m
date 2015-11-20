@@ -249,7 +249,7 @@ NSString * const PostFormatStandard = @"standard";
 
 - (NSString *)defaultPostFormatText
 {
-    return [self postFormatTextFromSlug:self.defaultPostFormat];
+    return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
 }
 
 - (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug
@@ -624,18 +624,6 @@ NSString * const PostFormatStandard = @"standard";
 {
     NSParameterAssert(self.settings);
     self.settings.defaultCategoryID = defaultCategoryID;
-}
-
-- (NSString *)defaultPostFormat
-{
-    NSParameterAssert(self.settings);
-    return self.settings.defaultPostFormat;
-}
-
-- (void)setDefaultPostFormat:(NSString *)defaultPostFormat
-{
-    NSParameterAssert(self.settings);
-    self.settings.defaultPostFormat = defaultPostFormat;
 }
 
 @end
