@@ -32,7 +32,7 @@
 
 - (void)setupStyling
 {
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor = [WPStyleGuide lightGrey];
 }
 
 - (void)setMenu:(Menu *)menu
@@ -200,6 +200,40 @@
     }];
 }
 
+- (MenuItemView *)arrangedItemViewAboveItemView:(MenuItemView *)subjectItemView
+{
+    MenuItemView *itemViewAbove = nil;
+    for(UIView *arrangedView in self.stackView.arrangedSubviews) {
+        // ignore any other views that aren't itemViews
+        if(![arrangedView isKindOfClass:[MenuItemView class]]) {
+            continue;
+        }
+        if(arrangedView == subjectItemView) {
+            break;
+        }
+        itemViewAbove = (MenuItemView *)arrangedView;
+    }
+    
+    return itemViewAbove;
+}
+
+- (MenuItemView *)arrangedItemViewBelowItemView:(MenuItemView *)subjectItemView
+{
+    MenuItemView *itemViewBelow = nil;
+    for(UIView *arrangedView in [self.stackView.arrangedSubviews reverseObjectEnumerator]) {
+        // ignore any other views that aren't itemViews
+        if(![arrangedView isKindOfClass:[MenuItemView class]]) {
+            continue;
+        }
+        if(arrangedView == subjectItemView) {
+            break;
+        }
+        itemViewBelow = (MenuItemView *)arrangedView;
+    }
+    
+    return itemViewBelow;
+}
+
 #pragma mark - MenuItemActionableViewDelegate
 
 - (void)itemActionableViewDidBeginReordering:(MenuItemActionableView *)actionableView
@@ -212,34 +246,27 @@
     if(![actionableView isKindOfClass:[MenuItemActionableView class]]) {
         return;
     }
-    
+
     const CGPoint touchPoint = [[touches anyObject] locationInView:self];
     MenuItemView *selectedItemView = (MenuItemView *)actionableView;
     
     // index of the itemView in the arrangedSubViews list
     const NSUInteger selectedItemViewIndex = [self.stackView.arrangedSubviews indexOfObject:selectedItemView];
     
-    //// indentation detection (child relationships)
+    //// horiztonal indentation detection (child relationships)
+    //// detect if the user is moving horizontally to the right or left to change the indentation
     
     // first check to see if we should pay attention to touches that might signal a change in indentation
-    const CGFloat indentationDetectionXDelta = (selectedItemView.frame.size.width * 5.0) / 100; // a travel of x% should be considered
-    if(fabs(vector.x) > indentationDetectionXDelta) {
+    const BOOL detectedHorizontalIndentationTouches = fabs(vector.x) > ((selectedItemView.frame.size.width * 5.0) / 100); // a travel of x% should be considered
+    const BOOL detectedVerticalIndentationTouches = fabs(vector.y) > ((selectedItemView.frame.size.height * 20.0) / 100); // a travel of y% should be considered
+
+    if(detectedHorizontalIndentationTouches || detectedVerticalIndentationTouches) {
      
         // look for any itemViews that might be above the selectedItemView
-        MenuItemView *itemViewAboveSelected = nil;
-        for(UIView *arrangedView in self.stackView.arrangedSubviews) {
-            // ignore any other views that aren't itemViews
-            if(![arrangedView isKindOfClass:[MenuItemView class]]) {
-                continue;
-            }
-            if(arrangedView == selectedItemView) {
-                break;
-            }
-            itemViewAboveSelected = (MenuItemView *)arrangedView;
-        }
+        MenuItemView *itemViewAboveSelected = [self arrangedItemViewAboveItemView:selectedItemView];
         
         // if there is an itemView above the selectedItemView, check for touches signaling a change in indentation
-        if(itemViewAboveSelected) {
+        if(itemViewAboveSelected && detectedHorizontalIndentationTouches) {
             if(vector.x > 0) {
                 // more indentation
                 NSInteger indentation = selectedItemView.indentationLevel + 1;
@@ -256,28 +283,59 @@
                 }
                 selectedItemView.indentationLevel = indentation;
             }
-            // reset the vector to observe the next delta of interest
-            [selectedItemView resetOrderingTouchesMovedVector];
         }
+        
+        if(detectedVerticalIndentationTouches) {
+            
+            if(vector.y < 0) {
+                
+                if(!itemViewAboveSelected) {
+                    selectedItemView.indentationLevel = 0;
+                }else {
+                    if(selectedItemView.indentationLevel < itemViewAboveSelected.indentationLevel) {
+                        selectedItemView.indentationLevel = itemViewAboveSelected.indentationLevel;
+                    }
+                }
+                
+            }else {
+                
+                MenuItemView *itemViewBelowSelected = [self arrangedItemViewBelowItemView:selectedItemView];
+                if(!itemViewBelowSelected) {
+                    selectedItemView.indentationLevel = 0;
+                }else {
+                    if(selectedItemView.indentationLevel < itemViewBelowSelected.indentationLevel) {
+                        selectedItemView.indentationLevel = itemViewBelowSelected.indentationLevel;
+                    }
+                }
+            }
+        }
+        
+        // reset the vector to observe the next delta of interest
+        [selectedItemView resetOrderingTouchesMovedVector];
     }
     
-    //// ordering detection
+    if(!CGRectContainsPoint(selectedItemView.frame, touchPoint)) {
     
-    // enumerate the itemViews lists since we don't care about other views in the stackView.arrangedSubviews list
-    for(MenuItemView *itemView in self.itemViews) {
-        if(itemView == selectedItemView) {
-            continue;
-        }
-        // detect if the touch is looking to order the selectedItemView in place of another itemView by looking at the frame
-        const CGRect orderingDetectionRect = CGRectInset(itemView.frame, 10.0, 10.0);
-        if(CGRectContainsPoint(orderingDetectionRect, touchPoint)) {
-            
-            // update the indentationLevel to match the itemView we're replacing
-            selectedItemView.indentationLevel = itemView.indentationLevel;
-
-            // update the index of the itemView to the index of the selectedItemView
-            [self.stackView insertArrangedSubview:itemView atIndex:selectedItemViewIndex];
-            break;
+        //// if the touch is over a different item, detect which item to replace the ordering with
+        
+        for(MenuItemView *itemView in self.itemViews) {
+            // enumerate the itemViews lists since we don't care about other views in the stackView.arrangedSubviews list
+            if(itemView == selectedItemView) {
+                continue;
+            }
+            // detect if the touch within a padded inset of an itemView under the touchPoint
+            const CGRect orderingDetectionRect = CGRectInset(itemView.frame, 10.0, 10.0);
+            if(CGRectContainsPoint(orderingDetectionRect, touchPoint)) {
+                
+                selectedItemView.indentationLevel = itemView.indentationLevel;
+                [self.stackView bringSubviewToFront:selectedItemView];
+                
+                [UIView animateWithDuration:0.15 animations:^{
+                    // update the index of the itemView to the index of the selectedItemView to perform a swap
+                    [self.stackView insertArrangedSubview:itemView atIndex:selectedItemViewIndex];
+                }];
+                break;
+            }
         }
     }
 }
