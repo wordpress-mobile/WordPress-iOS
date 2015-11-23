@@ -13,9 +13,17 @@ class MyProfileViewController: UITableViewController {
 
     var account: WPAccount! {
         didSet {
-            buildViewModel()
+            self.service = AccountSettingsService(accountID: account.userID.integerValue, api: account.restApi)
         }
     }
+
+    var service: AccountSettingsService! {
+        didSet {
+            subscribeSettings()
+        }
+    }
+
+    var settingsSubscription: AccountSettingsSubscription?
 
     // MARK: - Table View Controller
 
@@ -36,27 +44,35 @@ class MyProfileViewController: UITableViewController {
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
 
+    override func viewWillAppear(animated: Bool) {
+        subscribeSettings()
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        unsubscribeSettings()
+    }
+
     // MARK: - View Model
 
-    func buildViewModel() {
+    func buildViewModel(settings: AccountSettings?) {
         let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
-            value: "",
+            value: settings?.firstName ?? "",
             action: editFirstName)
 
         let lastNameRow = EditableTextRow(
             title: NSLocalizedString("Last Name", comment: "My Profile last name label"),
-            value: "",
+            value: settings?.lastName ?? "",
             action: editLastName)
 
         let displayNameRow = EditableTextRow(
             title: NSLocalizedString("Display Name", comment: "My Profile display name label"),
-            value: account.displayName,
+            value: settings?.displayName ?? "",
             action: editDisplayName)
 
         let aboutMeRow = EditableTextRow(
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
-            value: "",
+            value: settings?.aboutMe ?? "",
             action: editAboutMe)
 
         viewModel =  ImmuTable(sections: [
@@ -67,6 +83,19 @@ class MyProfileViewController: UITableViewController {
                 aboutMeRow
                 ])
             ])
+    }
+
+    func subscribeSettings() {
+        settingsSubscription = service.subscribeSettings({
+            [unowned self]
+            (settings) -> Void in
+
+            self.buildViewModel(settings)
+        })
+    }
+
+    func unsubscribeSettings() {
+        settingsSubscription = nil
     }
 
     // MARK: - Cell Actions
