@@ -88,7 +88,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    if (self.onValueChanged) {
+    if (self.onValueChanged && ![self.textField.text isEqualToString:self.text]) {
         self.onValueChanged(self.textField.text);
     }
     [super viewDidDisappear:animated];
