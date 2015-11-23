@@ -309,8 +309,10 @@ public protocol ThemePresenter: class {
     
     public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch sections[section] {
-        case .Info: return 0
-        case .Themes: return themesCount
+        case .Info:
+            return 0
+        case .Themes:
+            return themesCount
         }
     }
     
