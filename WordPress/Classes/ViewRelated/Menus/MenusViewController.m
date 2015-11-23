@@ -7,7 +7,7 @@
 #import "WPStyleGuide.h"
 #import "MenusHeaderView.h"
 #import "MenuDetailsView.h"
-#import "MenuItemsView.h"
+#import "MenuItemsStackView.h"
 
 typedef NS_ENUM(NSInteger) {
     MenusSectionSelection = 0,
@@ -26,13 +26,13 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 @end
 
-@interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewDelegate, MenuItemsViewDelegate>
+@interface MenusViewController () <UIScrollViewDelegate, MenusHeaderViewDelegate, MenuDetailsViewDelegate, MenuItemsStackViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (weak, nonatomic) IBOutlet MenusHeaderView *headerView;
 @property (weak, nonatomic) IBOutlet MenuDetailsView *detailsView;
-@property (weak, nonatomic) IBOutlet MenuItemsView *itemsView;
+@property (weak, nonatomic) IBOutlet MenuItemsStackView *itemsView;
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenusService *menusService;
@@ -200,14 +200,14 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [self.headerView refreshMenuViewsUsingMenu:menuDetailView.menu];
 }
 
-#pragma mark - MenuItemsViewDelegate
+#pragma mark - MenuItemsStackViewDelegate
 
-- (void)itemsView:(MenuItemsView *)itemsView prefersScrollingEnabled:(BOOL)enabled
+- (void)itemsView:(MenuItemsStackView *)itemsView prefersScrollingEnabled:(BOOL)enabled
 {
     self.scrollView.scrollEnabled = enabled;
 }
 
-- (void)itemsViewAnimatingContentSizeChanges:(MenuItemsView *)itemsView focusedRect:(CGRect)focusedRect updatedFocusRect:(CGRect)updatedFocusRect
+- (void)itemsViewAnimatingContentSizeChanges:(MenuItemsStackView *)itemsView focusedRect:(CGRect)focusedRect updatedFocusRect:(CGRect)updatedFocusRect
 {
     CGPoint offset = self.scrollView.contentOffset;
     offset.y += updatedFocusRect.origin.y - focusedRect.origin.y;

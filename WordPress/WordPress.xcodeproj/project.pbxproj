@@ -54,8 +54,8 @@
 		08B195421BE409260082E71C /* MenusHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B195411BE409260082E71C /* MenusHeaderView.m */; };
 		08BB107F1BB5D82100DE699D /* MenusService.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BB107E1BB5D82100DE699D /* MenusService.m */; };
 		08D6B2841BC6F4EE00BD022D /* MenusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */; };
-		08F10C2E1BF5286C00130AFF /* MenuItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F10C2D1BF5286C00130AFF /* MenuItemsView.m */; };
-		08F10C311BF5377200130AFF /* MenuItemActionableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F10C301BF5377200130AFF /* MenuItemActionableView.m */; };
+		08F10C2E1BF5286C00130AFF /* MenuItemsStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F10C2D1BF5286C00130AFF /* MenuItemsStackView.m */; };
+		08F10C311BF5377200130AFF /* MenuItemsStackableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F10C301BF5377200130AFF /* MenuItemsStackableView.m */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -749,10 +749,10 @@
 		08BB107D1BB5D82100DE699D /* MenusService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusService.h; sourceTree = "<group>"; };
 		08BB107E1BB5D82100DE699D /* MenusService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusService.m; sourceTree = "<group>"; };
 		08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenusViewController.xib; sourceTree = "<group>"; };
-		08F10C2C1BF5286C00130AFF /* MenuItemsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemsView.h; sourceTree = "<group>"; };
-		08F10C2D1BF5286C00130AFF /* MenuItemsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemsView.m; sourceTree = "<group>"; };
-		08F10C2F1BF5377200130AFF /* MenuItemActionableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemActionableView.h; sourceTree = "<group>"; };
-		08F10C301BF5377200130AFF /* MenuItemActionableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemActionableView.m; sourceTree = "<group>"; };
+		08F10C2C1BF5286C00130AFF /* MenuItemsStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemsStackView.h; sourceTree = "<group>"; };
+		08F10C2D1BF5286C00130AFF /* MenuItemsStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemsStackView.m; sourceTree = "<group>"; };
+		08F10C2F1BF5377200130AFF /* MenuItemsStackableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemsStackableView.h; sourceTree = "<group>"; };
+		08F10C301BF5377200130AFF /* MenuItemsStackableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemsStackableView.m; sourceTree = "<group>"; };
 		08F57ED31BEA835100DB82CB /* MenusDesign.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenusDesign.h; sourceTree = "<group>"; };
 		0CF877DC71756EFA3346E26F /* Pods-WordPressTodayWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.debug.xcconfig"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1944,10 +1944,10 @@
 				080E2C2E1BEC2D4E001E8168 /* MenusSelectionItemView.m */,
 				085548731BE15B9B004A1CBD /* MenuDetailsView.h */,
 				085548741BE15B9B004A1CBD /* MenuDetailsView.m */,
-				08F10C2C1BF5286C00130AFF /* MenuItemsView.h */,
-				08F10C2D1BF5286C00130AFF /* MenuItemsView.m */,
-				08F10C2F1BF5377200130AFF /* MenuItemActionableView.h */,
-				08F10C301BF5377200130AFF /* MenuItemActionableView.m */,
+				08F10C2C1BF5286C00130AFF /* MenuItemsStackView.h */,
+				08F10C2D1BF5286C00130AFF /* MenuItemsStackView.m */,
+				08F10C2F1BF5377200130AFF /* MenuItemsStackableView.h */,
+				08F10C301BF5377200130AFF /* MenuItemsStackableView.m */,
 				08160F281BF6B605004CB971 /* MenuItemPlaceholderView.h */,
 				08160F291BF6B605004CB971 /* MenuItemPlaceholderView.m */,
 				08160F251BF66D86004CB971 /* MenuItemView.h */,
@@ -4417,7 +4417,7 @@
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
 				B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */,
 				B5EFB1C51B31BAA2007608A3 /* NotificationsServiceRemote.swift in Sources */,
-				08F10C2E1BF5286C00130AFF /* MenuItemsView.m in Sources */,
+				08F10C2E1BF5286C00130AFF /* MenuItemsStackView.m in Sources */,
 				B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */,
 				B52F8CD81B43260C00D36025 /* NotificationSettingStreamsViewController.swift in Sources */,
 				B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */,
@@ -4700,7 +4700,7 @@
 				E1F8E1231B0B411E0073E628 /* JetpackService.m in Sources */,
 				0855487B1BE163B4004A1CBD /* MenusSelectionView.m in Sources */,
 				5DA3EE161925090A00294E0B /* MediaService.m in Sources */,
-				08F10C311BF5377200130AFF /* MenuItemActionableView.m in Sources */,
+				08F10C311BF5377200130AFF /* MenuItemsStackableView.m in Sources */,
 				5D6C4B1F1B604425005E3C43 /* WPContentAttributionView.m in Sources */,
 				5D42A406175E76A7005CFF05 /* WPWebVideoViewController.m in Sources */,
 				E65219FB1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift in Sources */,

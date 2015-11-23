@@ -233,7 +233,7 @@
                                         <outlet property="trashButton" destination="2Ga-QQ-XHS" id="Epr-hk-wwc"/>
                                     </connections>
                                 </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="obX-Ts-DGu" customClass="MenuItemsView">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="obX-Ts-DGu" customClass="MenuItemsStackView">
                                     <rect key="frame" x="0.0" y="135" width="600" height="401"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="w8Q-MA-p0C">
