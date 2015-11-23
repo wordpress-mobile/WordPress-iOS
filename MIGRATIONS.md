@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 42 (@koke 2015-11-23)
+
+- Added new entity `AccountSettings`
+- `Account` has now a new one-to-one relationship mapping to `AccountSettings`
+
 ## WordPress 41 (@jleandroperez 2015-11-06)
 
 Changes to the data model:
