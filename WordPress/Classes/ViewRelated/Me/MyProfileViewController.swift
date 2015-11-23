@@ -58,22 +58,22 @@ class MyProfileViewController: UITableViewController {
         let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
             value: settings?.firstName ?? "",
-            action: editFirstName)
+            action: editableTextRowAction)
 
         let lastNameRow = EditableTextRow(
             title: NSLocalizedString("Last Name", comment: "My Profile last name label"),
             value: settings?.lastName ?? "",
-            action: editLastName)
+            action: editableTextRowAction)
 
         let displayNameRow = EditableTextRow(
             title: NSLocalizedString("Display Name", comment: "My Profile display name label"),
             value: settings?.displayName ?? "",
-            action: editDisplayName)
+            action: editableTextRowAction)
 
         let aboutMeRow = EditableTextRow(
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: settings?.aboutMe ?? "",
-            action: editAboutMe)
+            action: editableTextRowAction)
 
         viewModel =  ImmuTable(sections: [
             ImmuTableSection(rows: [
@@ -100,28 +100,7 @@ class MyProfileViewController: UITableViewController {
 
     // MARK: - Cell Actions
 
-    func editFirstName(row: ImmuTableRow) {
-        let row = row as! EditableTextRow
-        let controller = controllerForEditableText(row)
-
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-
-    func editLastName(row: ImmuTableRow) {
-        let row = row as! EditableTextRow
-        let controller = controllerForEditableText(row)
-
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-
-    func editDisplayName(row: ImmuTableRow) {
-        let row = row as! EditableTextRow
-        let controller = controllerForEditableText(row)
-
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-
-    func editAboutMe(row: ImmuTableRow) {
+    func editableTextRowAction(row: ImmuTableRow) {
         let row = row as! EditableTextRow
         let controller = controllerForEditableText(row)
 
