@@ -1,4 +1,4 @@
-#import "MenuItemActionableView.h"
+#import "MenuItemsStackableView.h"
 #import "WPStyleGuide.h"
 #import "MenusDesign.h"
 
@@ -18,12 +18,12 @@
 
 @end
 
-CGFloat const MenuItemActionableViewDefaultHeight = 55.0;
-CGFloat const MenuItemActionableViewAccessoryButtonHeight = 40.0;
+CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
+CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 
-static CGFloat const MenuItemActionableViewIconSize = 10.0;
+static CGFloat const MenuItemsStackableViewIconSize = 10.0;
 
-@interface MenuItemActionableView ()
+@interface MenuItemsStackableView ()
 
 @property (nonatomic, assign) BOOL showsReorderingOptions;
 @property (nonatomic, weak) NSLayoutConstraint *constraintForLeadingIndentation;
@@ -34,7 +34,7 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
 
 @end
 
-@implementation MenuItemActionableView
+@implementation MenuItemsStackableView
 
 - (id)init
 {
@@ -98,8 +98,8 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
         iconView.contentMode = UIViewContentModeScaleAspectFit;
         iconView.backgroundColor = [UIColor clearColor];
         // width and height constraints are (less than or equal to) in case the view is hidden
-        [iconView.widthAnchor constraintLessThanOrEqualToConstant:MenuItemActionableViewIconSize].active = YES;
-        [iconView.heightAnchor constraintLessThanOrEqualToConstant:MenuItemActionableViewIconSize].active = YES;
+        [iconView.widthAnchor constraintLessThanOrEqualToConstant:MenuItemsStackableViewIconSize].active = YES;
+        [iconView.heightAnchor constraintLessThanOrEqualToConstant:MenuItemsStackableViewIconSize].active = YES;
         
         [stackView addArrangedSubview:iconView];
         self.iconView = iconView;
@@ -199,8 +199,8 @@ static CGFloat const MenuItemActionableViewIconSize = 10.0;
     }
     
     CGFloat buttonWidth = 30.0;
-    CGFloat buttonHeight = MenuItemActionableViewAccessoryButtonHeight;
-    CGFloat iconSize = MenuItemActionableViewIconSize;
+    CGFloat buttonHeight = MenuItemsStackableViewAccessoryButtonHeight;
+    CGFloat iconSize = MenuItemsStackableViewIconSize;
     UIEdgeInsets imageInset = UIEdgeInsetsZero;
     imageInset.top = (buttonHeight - iconSize) / 2.0;
     imageInset.bottom = imageInset.top;

@@ -40,7 +40,7 @@
             [button setTitleColor:[WPStyleGuide darkGrey] forState:UIControlStateNormal];
             [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
             [button.widthAnchor constraintLessThanOrEqualToConstant:63].active = YES;
-            [button.heightAnchor constraintEqualToConstant:MenuItemActionableViewAccessoryButtonHeight].active = YES;
+            [button.heightAnchor constraintEqualToConstant:MenuItemsStackableViewAccessoryButtonHeight].active = YES;
             button.hidden = YES;
             
             [self addAccessoryButton:button];

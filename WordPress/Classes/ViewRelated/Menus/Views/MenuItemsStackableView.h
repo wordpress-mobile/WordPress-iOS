@@ -7,8 +7,8 @@ typedef NS_ENUM(NSUInteger) {
     MenuItemActionableIconAdd,
 }MenuItemActionableIconType;
 
-extern CGFloat const MenuItemActionableViewDefaultHeight;
-extern CGFloat const MenuItemActionableViewAccessoryButtonHeight;
+extern CGFloat const MenuItemsStackableViewDefaultHeight;
+extern CGFloat const MenuItemsStackableViewAccessoryButtonHeight;
 
 @protocol MenuItemDrawingViewDelegate <NSObject>
 - (void)drawingViewDrawRect:(CGRect)rect;
@@ -18,11 +18,11 @@ extern CGFloat const MenuItemActionableViewAccessoryButtonHeight;
 
 @end
 
-@protocol MenuItemActionableViewDelegate;
+@protocol MenuItemsStackableViewDelegate;
 
-@interface MenuItemActionableView : UIView <MenuItemDrawingViewDelegate>
+@interface MenuItemsStackableView : UIView <MenuItemDrawingViewDelegate>
 
-@property (nonatomic, weak) id <MenuItemActionableViewDelegate> delegate;
+@property (nonatomic, weak) id <MenuItemsStackableViewDelegate> delegate;
 @property (nonatomic, strong) MenuItemDrawingView *contentView;
 @property (nonatomic, assign) BOOL highlighted;
 @property (nonatomic, assign) BOOL reorderingEnabled;
@@ -43,9 +43,9 @@ extern CGFloat const MenuItemActionableViewAccessoryButtonHeight;
 
 @end
 
-@protocol MenuItemActionableViewDelegate <NSObject>
+@protocol MenuItemsStackableViewDelegate <NSObject>
 @optional
-- (void)itemActionableViewDidBeginReordering:(MenuItemActionableView *)actionableView;
-- (void)itemActionableView:(MenuItemActionableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector;
-- (void)itemActionableViewDidEndReordering:(MenuItemActionableView *)actionableView;
+- (void)itemActionableViewDidBeginReordering:(MenuItemsStackableView *)actionableView;
+- (void)itemActionableView:(MenuItemsStackableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector;
+- (void)itemActionableViewDidEndReordering:(MenuItemsStackableView *)actionableView;
 @end
