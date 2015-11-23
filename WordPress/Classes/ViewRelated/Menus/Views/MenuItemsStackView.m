@@ -1,13 +1,13 @@
-#import "MenuItemsView.h"
+#import "MenuItemsStackView.h"
 #import "Menu.h"
 #import "MenuItem.h"
 #import "WPStyleGuide.h"
-#import "MenuItemActionableView.h"
+#import "MenuItemsStackableView.h"
 #import "MenuItemView.h"
 #import "MenuItemPlaceholderView.h"
 #import "MenusDesign.h"
 
-@interface MenuItemsView () <MenuItemActionableViewDelegate, MenuItemViewDelegate, MenuItemPlaceholderViewDelegate>
+@interface MenuItemsStackView () <MenuItemsStackableViewDelegate, MenuItemViewDelegate, MenuItemPlaceholderViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) NSMutableSet *itemViews;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation MenuItemsView
+@implementation MenuItemsStackView
 
 - (void)awakeFromNib
 {
@@ -45,7 +45,7 @@
 
 - (void)reloadItemViews
 {
-    for(MenuItemActionableView *itemView in self.stackView.arrangedSubviews) {
+    for(MenuItemsStackableView *itemView in self.stackView.arrangedSubviews) {
         [self.stackView removeArrangedSubview:itemView];
         [itemView removeFromSuperview];
     }
@@ -68,7 +68,7 @@
             parentItem = parentItem.parent;
         }
         
-        NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:MenuItemActionableViewDefaultHeight];
+        NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
         heightConstraint.priority = UILayoutPriorityDefaultHigh;
         heightConstraint.active = YES;
         
@@ -101,7 +101,7 @@
             break;
     }
 
-    NSLayoutConstraint *heightConstraint = [placeholderView.heightAnchor constraintEqualToConstant:MenuItemActionableViewDefaultHeight];
+    NSLayoutConstraint *heightConstraint = [placeholderView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
     
@@ -135,7 +135,7 @@
     }
     
     // since we are adding content above the toggledItemView, the toggledItemView (focus) will move downwards with the updated content size
-    updatedRect.origin.y += MenuItemActionableViewDefaultHeight;
+    updatedRect.origin.y += MenuItemsStackableViewDefaultHeight;
     
     for(MenuItemPlaceholderView *placeholderView in self.placeholderViews) {
         placeholderView.hidden = YES;
@@ -160,7 +160,7 @@
 
 - (void)removeItemPlaceholderViews
 {
-    for(MenuItemActionableView *itemView in self.placeholderViews) {
+    for(MenuItemsStackableView *itemView in self.placeholderViews) {
         [self.stackView removeArrangedSubview:itemView];
         [itemView removeFromSuperview];
     }
@@ -181,7 +181,7 @@
     CGRect previousRect = self.activeItemView.frame;
     CGRect updatedRect = previousRect;
     // since we are removing content above the toggledItemView, the toggledItemView (focus) will move upwards with the updated content size
-    updatedRect.origin.y -= MenuItemActionableViewDefaultHeight;
+    updatedRect.origin.y -= MenuItemsStackableViewDefaultHeight;
     
     [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
        
@@ -234,16 +234,16 @@
     return itemViewBelow;
 }
 
-#pragma mark - MenuItemActionableViewDelegate
+#pragma mark - MenuItemsStackableViewDelegate
 
-- (void)itemActionableViewDidBeginReordering:(MenuItemActionableView *)actionableView
+- (void)itemActionableViewDidBeginReordering:(MenuItemsStackableView *)actionableView
 {
     [self.delegate itemsView:self prefersScrollingEnabled:NO];
 }
 
-- (void)itemActionableView:(MenuItemActionableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
+- (void)itemActionableView:(MenuItemsStackableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
 {
-    if(![actionableView isKindOfClass:[MenuItemActionableView class]]) {
+    if(![actionableView isKindOfClass:[MenuItemsStackableView class]]) {
         return;
     }
 
@@ -340,7 +340,7 @@
     }
 }
 
-- (void)itemActionableViewDidEndReordering:(MenuItemActionableView *)actionableView
+- (void)itemActionableViewDidEndReordering:(MenuItemsStackableView *)actionableView
 {
     [self.delegate itemsView:self prefersScrollingEnabled:YES];
 }

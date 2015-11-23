@@ -1,4 +1,4 @@
-#import "MenuItemActionableView.h"
+#import "MenuItemsStackableView.h"
 
 typedef NS_ENUM(NSUInteger) {
     MenuItemPlaceholderViewTypeAbove = 1,
@@ -8,14 +8,14 @@ typedef NS_ENUM(NSUInteger) {
 
 @protocol MenuItemPlaceholderViewDelegate;
 
-@interface MenuItemPlaceholderView : MenuItemActionableView
+@interface MenuItemPlaceholderView : MenuItemsStackableView
 
-@property (nonatomic, weak) id <MenuItemActionableViewDelegate, MenuItemPlaceholderViewDelegate> delegate;
+@property (nonatomic, weak) id <MenuItemsStackableViewDelegate, MenuItemPlaceholderViewDelegate> delegate;
 @property (nonatomic, assign) MenuItemPlaceholderViewType type;
 
 @end
 
-@protocol MenuItemPlaceholderViewDelegate <MenuItemActionableViewDelegate>
+@protocol MenuItemPlaceholderViewDelegate <MenuItemsStackableViewDelegate>
 
 - (void)itemPlaceholderViewSelected:(MenuItemPlaceholderView *)placeholderView;
 
