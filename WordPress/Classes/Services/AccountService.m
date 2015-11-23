@@ -179,6 +179,16 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return [results firstObject];
 }
 
+- (WPAccount *)findAccountWithUserID:(NSNumber *)userID
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"userID = %@", userID]];
+    [request setIncludesPendingChanges:YES];
+
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
+    return [results firstObject];
+}
+
 - (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     NSAssert(account, @"Account can not be nil");

@@ -1,7 +1,7 @@
 import Foundation
 
 class AccountSettingsRemote: ServiceRemoteREST {
-    func getSettings(success: AccountSettings -> Void, failure: ErrorType -> Void) {
+    func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) {
         let endpoint = "me/settings"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
