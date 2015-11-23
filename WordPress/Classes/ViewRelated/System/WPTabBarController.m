@@ -26,6 +26,7 @@ static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigati
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
 static NSString * const WPMeNavigationRestorationID = @"WPMeNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
+static NSString * const WPTabBarButtonClassname = @"UITabBarButton";
 
 // used to restore the last selected tab bar item
 static NSString * const WPTabBarSelectedIndexKey = @"WPTabBarSelectedIndexKey";
@@ -580,8 +581,9 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     // *If* this ever breaks, worst case scenario, we'll notice the assertion below (and of course, we'll fix it!).
     //
     CGRect lastButtonRect = CGRectZero;
+    
     for (UIView *subview in self.tabBar.subviews) {
-        if ([@"UITabBarButton" isEqualToString:NSStringFromClass([subview class])]) {
+        if ([WPTabBarButtonClassname isEqualToString:NSStringFromClass([subview class])]) {
             if (CGRectGetMinX(subview.frame) > CGRectGetMinX(lastButtonRect)) {
                 lastButtonRect = subview.frame;
             }
