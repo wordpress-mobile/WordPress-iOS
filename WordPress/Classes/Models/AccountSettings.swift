@@ -16,6 +16,8 @@ struct AccountSettings {
 }
 
 class ManagedAccountSettings: NSManagedObject {
+    static let entityName = "AccountSettings"
+    
     @NSManaged var firstName: String
     @NSManaged var lastName: String
     @NSManaged var displayName: String
