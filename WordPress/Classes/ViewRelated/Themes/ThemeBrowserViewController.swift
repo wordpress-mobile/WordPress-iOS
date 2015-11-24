@@ -396,6 +396,7 @@ public protocol ThemePresenter: class {
     @IBAction func didTapSearchButton(sender: UIButton) {
         searchController.active = true
         if sections.count > 1 {
+            collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
                 self.collectionView?.deleteSections(NSIndexSet(index: 0))
                 self.sections = [.Themes]
@@ -407,6 +408,7 @@ public protocol ThemePresenter: class {
 
     public func willDismissSearchController(searchController: UISearchController) {
         if sections.count == 1 {
+            collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
                 self.collectionView?.insertSections(NSIndexSet(index: 0))
                 self.sections = [.Info, .Themes]
