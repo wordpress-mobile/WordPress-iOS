@@ -250,7 +250,6 @@
 		852416CF1A12EBDD0030700C /* AppRatingUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 852416CE1A12EBDD0030700C /* AppRatingUtility.m */; };
 		852416D21A12ED690030700C /* AppRatingUtilityTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 852416D11A12ED690030700C /* AppRatingUtilityTests.m */; };
 		8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */ = {isa = PBXBuildFile; fileRef = 8525398A171761D9003F6B32 /* WPComLanguages.m */; };
-		8546B44B1BEAD3B300193C07 /* Info-Alpha.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8546B44A1BEAD3B300193C07 /* Info-Alpha.plist */; };
 		8546B44D1BEAD3EC00193C07 /* Wordpress-Alpha-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8546B44C1BEAD3EC00193C07 /* Wordpress-Alpha-Info.plist */; };
 		8546B44F1BEAD48900193C07 /* WordPress-Alpha.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 8546B44E1BEAD48900193C07 /* WordPress-Alpha.entitlements */; };
 		8546B4511BEAD4D100193C07 /* WordPressTodayWidget-Alpha.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 8546B4501BEAD4D100193C07 /* WordPressTodayWidget-Alpha.entitlements */; };
@@ -443,6 +442,9 @@
 		BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13B3E51B2B58D800A4211D /* BlogListViewController.m */; };
 		BE13B3E81B2B58D800A4211D /* BlogListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BE13B3E61B2B58D800A4211D /* BlogListViewController.xib */; };
 		BE20F5E71B2F76660020694C /* WPSearchControllerConfiguratorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE20F5E61B2F76660020694C /* WPSearchControllerConfiguratorTests.m */; };
+		BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87E19F1BD4054F0075D45B /* WP3DTouchShortcutCreator.swift */; };
+		BE87E1A21BD405790075D45B /* WP3DTouchShortcutHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE87E1A11BD405790075D45B /* WP3DTouchShortcutHandler.swift */; };
+		BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA0E4841BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift */; };
 		BEBFE86F1B2F50C5002C04EF /* WPSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBFE86E1B2F50C5002C04EF /* WPSearchController.m */; };
 		BEBFE8721B2F50E0002C04EF /* WPSearchControllerConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBFE8711B2F50E0002C04EF /* WPSearchControllerConfigurator.m */; };
 		BEC62E2C1BF2F58D007685B2 /* CreateNewBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC62E2B1BF2F58D007685B2 /* CreateNewBlogViewController.m */; };
@@ -1426,6 +1428,9 @@
 		BE13B3E51B2B58D800A4211D /* BlogListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogListViewController.m; sourceTree = "<group>"; };
 		BE13B3E61B2B58D800A4211D /* BlogListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BlogListViewController.xib; sourceTree = "<group>"; };
 		BE20F5E61B2F76660020694C /* WPSearchControllerConfiguratorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPSearchControllerConfiguratorTests.m; path = ViewRelated/System/Search/WPSearchControllerConfiguratorTests.m; sourceTree = "<group>"; };
+		BE87E19F1BD4054F0075D45B /* WP3DTouchShortcutCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WP3DTouchShortcutCreator.swift; path = 3DTouch/WP3DTouchShortcutCreator.swift; sourceTree = "<group>"; };
+		BE87E1A11BD405790075D45B /* WP3DTouchShortcutHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WP3DTouchShortcutHandler.swift; path = 3DTouch/WP3DTouchShortcutHandler.swift; sourceTree = "<group>"; };
+		BEA0E4841BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WP3DTouchShortcutCreatorTests.swift; path = System/3DTouch/WP3DTouchShortcutCreatorTests.swift; sourceTree = "<group>"; };
 		BEBFE86D1B2F50C5002C04EF /* WPSearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPSearchController.h; path = Search/WPSearchController.h; sourceTree = "<group>"; };
 		BEBFE86E1B2F50C5002C04EF /* WPSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPSearchController.m; path = Search/WPSearchController.m; sourceTree = "<group>"; };
 		BEBFE8701B2F50E0002C04EF /* WPSearchControllerConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPSearchControllerConfigurator.h; path = Search/WPSearchControllerConfigurator.h; sourceTree = "<group>"; };
@@ -2761,6 +2766,7 @@
 		8584FDB719243E550019C02E /* System */ = {
 			isa = PBXGroup;
 			children = (
+				BE87E19E1BD4052F0075D45B /* 3DTouch */,
 				2F970F970DF929B8006BD934 /* Constants.h */,
 				B5CC05F51962150600975CAC /* Constants.m */,
 				B5FD4520199D0C9A00286FBB /* WordPress-Bridging-Header.h */,
@@ -3284,6 +3290,15 @@
 			name = Style;
 			sourceTree = "<group>";
 		};
+		BE87E19E1BD4052F0075D45B /* 3DTouch */ = {
+			isa = PBXGroup;
+			children = (
+				BE87E1A11BD405790075D45B /* WP3DTouchShortcutHandler.swift */,
+				BE87E19F1BD4054F0075D45B /* WP3DTouchShortcutCreator.swift */,
+			);
+			name = 3DTouch;
+			sourceTree = "<group>";
+		};
 		BE8A267F1BEC1A3500C1D3D3 /* CreateNewBlog */ = {
 			isa = PBXGroup;
 			children = (
@@ -3291,6 +3306,22 @@
 				BEC62E2B1BF2F58D007685B2 /* CreateNewBlogViewController.m */,
 			);
 			name = CreateNewBlog;
+			sourceTree = "<group>";
+		};
+		BEA0E4821BD8353B000AEE81 /* System */ = {
+			isa = PBXGroup;
+			children = (
+				BEA0E4831BD83545000AEE81 /* 3DTouch */,
+			);
+			name = System;
+			sourceTree = "<group>";
+		};
+		BEA0E4831BD83545000AEE81 /* 3DTouch */ = {
+			isa = PBXGroup;
+			children = (
+				BEA0E4841BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift */,
+			);
+			name = 3DTouch;
 			sourceTree = "<group>";
 		};
 		BEBFE86C1B2F502C002C04EF /* Search */ = {
@@ -3463,6 +3494,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				BEA0E4821BD8353B000AEE81 /* System */,
 				59B48B601B99E0B0008EBB84 /* TestUtilities */,
 				B5AEEC7F1ACAD099008BF2A4 /* Categories */,
 				B5AEEC731ACACF3B008BF2A4 /* Core Data */,
@@ -3879,7 +3911,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
@@ -4041,7 +4073,6 @@
 			files = (
 				93E5284319A7741A003A1A9C /* MainInterface.storyboard in Resources */,
 				8546B4511BEAD4D100193C07 /* WordPressTodayWidget-Alpha.entitlements in Resources */,
-				8546B44B1BEAD3B300193C07 /* Info-Alpha.plist in Resources */,
 				8546B44D1BEAD3EC00193C07 /* Wordpress-Alpha-Info.plist in Resources */,
 				934884AF19B7875C004028D8 /* WordPress-Internal.entitlements in Resources */,
 				8546B44F1BEAD48900193C07 /* WordPress-Alpha.entitlements in Resources */,
@@ -4530,6 +4561,7 @@
 				5DF94E501962BAEB00359241 /* ReaderPostAttributionView.m in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */,
+				BE87E1A21BD405790075D45B /* WP3DTouchShortcutHandler.swift in Sources */,
 				B548458219A258890077E7A5 /* UIActionSheet+Helpers.m in Sources */,
 				FFA9148F1BA6E5170068F8BF /* RotationAwareNavigationViewController.m in Sources */,
 				5D4E30D11AA4B41A000D9904 /* WPStyleGuide+Posts.m in Sources */,
@@ -4607,6 +4639,7 @@
 				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
 				E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
+				BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
 				E1DF5DFD19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m in Sources */,
 				E6396E1F1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift in Sources */,
@@ -4816,6 +4849,7 @@
 				F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */,
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				B5D689FD1A5EBC900063D9E5 /* NotificationsManager+TestHelper.m in Sources */,
+				BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */,
 				85F8E19B1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift in Sources */,
 				59FBD5621B5684F300734466 /* ThemeServiceTests.m in Sources */,
 				85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */,
@@ -5529,6 +5563,7 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5885,6 +5920,7 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5964,6 +6000,7 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -6035,6 +6072,7 @@
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
