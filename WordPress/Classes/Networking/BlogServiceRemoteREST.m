@@ -125,12 +125,24 @@ static NSInteger const BlogRemoteUncategorizedCategory = 1;
                    failure:(void (^)(NSError *error))failure;
 {
     NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    NSMutableDictionary *parameters = [@{ @"blogname" : remoteBlogSettings.name,
-                                  @"blogdescription" : remoteBlogSettings.desc,
-                                  @"default_category" : remoteBlogSettings.defaultCategory,
-                                  @"default_post_format" : remoteBlogSettings.defaultPostFormat,
-                                  @"blog_public" : remoteBlogSettings.privacy,
-                                  } mutableCopy];
+
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    if (remoteBlogSettings.name) {
+        parameters[@"blogname"] = remoteBlogSettings.name;
+    }
+    if (remoteBlogSettings.desc) {
+        parameters[@"blogdescription"] = remoteBlogSettings.desc;
+    }
+    if (remoteBlogSettings.defaultCategory) {
+        parameters[@"default_category"] = remoteBlogSettings.defaultCategory;
+    }
+    if (remoteBlogSettings.defaultPostFormat) {
+        parameters[@"default_post_format"] = remoteBlogSettings.defaultPostFormat;
+    }
+    if (remoteBlogSettings.privacy) {
+        parameters[@"blog_public"] = remoteBlogSettings.privacy;
+    }
+
     if (remoteBlogSettings.relatedPostsEnabled) {
         parameters[@"jetpack_relatedposts_enabled"] = remoteBlogSettings.relatedPostsEnabled;
         parameters[@"jetpack_relatedposts_show_headline"] = remoteBlogSettings.relatedPostsShowHeadline;
