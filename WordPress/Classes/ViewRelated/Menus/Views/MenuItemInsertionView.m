@@ -1,6 +1,6 @@
-#import "MenuItemPlaceholderView.h"
+#import "MenuItemInsertionView.h"
 
-@implementation MenuItemPlaceholderView
+@implementation MenuItemInsertionView
 
 @dynamic delegate;
 
@@ -30,7 +30,7 @@
     return color;
 }
 
-- (void)setType:(MenuItemPlaceholderViewType)type
+- (void)setType:(MenuItemInsertionViewType)type
 {
     if(_type != type) {
         _type = type;
@@ -38,17 +38,17 @@
     }
 }
 
-- (NSString *)textForType:(MenuItemPlaceholderViewType)type
+- (NSString *)textForType:(MenuItemInsertionViewType)type
 {
     NSString *text;
     switch (type) {
-        case MenuItemPlaceholderViewTypeAbove:
+        case MenuItemInsertionViewTypeAbove:
             text = NSLocalizedString(@"Add menu item above", @"");
             break;
-        case MenuItemPlaceholderViewTypeBelow:
+        case MenuItemInsertionViewTypeBelow:
             text = NSLocalizedString(@"Add menu item below", @"");
             break;
-        case MenuItemPlaceholderViewTypeChild:
+        case MenuItemInsertionViewTypeChild:
             text = NSLocalizedString(@"Add menu item to children", @"");
             break;
         default:
@@ -70,7 +70,7 @@
 
 - (void)tellDelegateWasSelected
 {
-    [self.delegate itemPlaceholderViewSelected:self];
+    [self.delegate itemInsertionViewSelected:self];
 }
 
 @end
