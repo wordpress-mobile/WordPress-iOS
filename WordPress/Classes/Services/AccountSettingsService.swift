@@ -1,5 +1,7 @@
 import Foundation
 
+let AccountSettingsServiceChangeSaveFailedNotification = "AccountSettingsServiceChangeSaveFailed"
+
 struct AccountSettingsService {
     let remote: AccountSettingsRemote
     let accountID: Int
@@ -33,6 +35,37 @@ struct AccountSettingsService {
         })
     }
 
+    func saveChange(change: AccountSettingsChange) {
+        guard let reverse = try? applyChange(change) else {
+            return
+        }
+        remote.updateSetting(change, success: { }) { (error) -> Void in
+            do {
+                // revert change
+                try self.applyChange(reverse)
+            } catch {
+                DDLogSwift.logError("Error reverting change \(error)")
+            }
+            DDLogSwift.logError("Error saving account settings change \(error)")
+            // TODO: show/return error to the user (@koke 2015-11-24)
+            // What should be showing the error? Let's post a notification for now so something else can handle it
+            NSNotificationCenter.defaultCenter().postNotificationName(AccountSettingsServiceChangeSaveFailedNotification, object: error as NSError)
+        }
+    }
+
+    private func applyChange(change: AccountSettingsChange) throws -> AccountSettingsChange {
+        guard let settings = accountSettingsWithID(accountID) else {
+            DDLogSwift.logError("Tried to apply a change to nonexistent settings (ID: \(accountID)")
+            throw Errors.NotFound
+        }
+
+        let reverse = settings.applyChange(change)
+
+        ContextManager.sharedInstance().saveContext(context)
+
+        return reverse
+    }
+
     private func updateSettings(settings: AccountSettings) {
         if let managedSettings = accountSettingsWithID(accountID) {
             managedSettings.updateWith(settings)
@@ -61,6 +94,10 @@ struct AccountSettingsService {
         let managedSettings = NSEntityDescription.insertNewObjectForEntityForName(ManagedAccountSettings.entityName, inManagedObjectContext: context) as! ManagedAccountSettings
         managedSettings.updateWith(settings)
         managedSettings.account = account
+    }
+
+    enum Errors: ErrorType {
+        case NotFound
     }
 }
 
@@ -94,3 +131,4 @@ class AccountSettingsSubscription {
         }
     }
 }
+
