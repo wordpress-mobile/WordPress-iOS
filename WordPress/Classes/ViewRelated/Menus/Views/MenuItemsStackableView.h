@@ -25,7 +25,6 @@ extern CGFloat const MenuItemsStackableViewAccessoryButtonHeight;
 @property (nonatomic, weak) id <MenuItemsStackableViewDelegate> delegate;
 @property (nonatomic, strong) MenuItemDrawingView *contentView;
 @property (nonatomic, assign) BOOL highlighted;
-@property (nonatomic, assign) BOOL reorderingEnabled;
 @property (nonatomic, assign) MenuItemActionableIconType iconType;
 @property (nonatomic, assign) NSInteger indentationLevel;
 @property (nonatomic, strong) UIStackView *stackView;
@@ -34,7 +33,6 @@ extern CGFloat const MenuItemsStackableViewAccessoryButtonHeight;
 
 - (void)addAccessoryButton:(UIButton *)button;
 - (UIButton *)addAccessoryButtonIconViewWithType:(MenuItemActionableIconType)type;
-- (void)resetOrderingTouchesMovedVector;
 
 // called on init and when highlighted value changes
 - (UIColor *)contentViewBackgroundColor;
@@ -45,7 +43,5 @@ extern CGFloat const MenuItemsStackableViewAccessoryButtonHeight;
 
 @protocol MenuItemsStackableViewDelegate <NSObject>
 @optional
-- (void)itemsStackableViewDidBeginReordering:(MenuItemsStackableView *)stackableView;
-- (void)itemsStackableView:(MenuItemsStackableView *)stackableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector;
-- (void)itemsStackableViewDidEndReordering:(MenuItemsStackableView *)stackableView;
+
 @end
