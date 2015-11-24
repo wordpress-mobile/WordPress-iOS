@@ -389,11 +389,13 @@ public protocol ThemePresenter: class {
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        switch sections.count {
-        case 1:
-            return Styles.externalMargins
+        switch sections.first {
+        case .Themes?:
+            return Styles.searchMargins
+        case .Info? where syncHelper.hasMoreContent:
+            return Styles.syncingMargins
         default:
-            return Styles.internalMargins
+            return Styles.syncedMargins
         }
     }
 
@@ -401,7 +403,7 @@ public protocol ThemePresenter: class {
     
     @IBAction func didTapSearchButton(sender: UIButton) {
         searchController.active = true
-        if sections.count > 1 {
+        if sections.first == .Info {
             collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
                 self.collectionView?.deleteSections(NSIndexSet(index: 0))
@@ -413,7 +415,7 @@ public protocol ThemePresenter: class {
     // MARK: - UISearchControllerDelegate
 
     public func willDismissSearchController(searchController: UISearchController) {
-        if sections.count == 1 {
+        if sections.first == .Themes {
             collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
                 self.collectionView?.insertSections(NSIndexSet(index: 0))
