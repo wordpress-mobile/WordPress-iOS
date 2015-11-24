@@ -1,5 +1,6 @@
 #import <OCMock/OCMock.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
+#import <OHHTTPStubs/OHPathHelpers.h>
 #import <XCTest/XCTest.h>
 #import "Blog.h"
 #import "BlogServiceRemoteREST.h"
@@ -135,8 +136,14 @@ static NSTimeInterval const TestExpectationTimeout = 5;
     BlogServiceRemoteREST *service  = [[BlogServiceRemoteREST alloc] initWithApi:api];
     XCTAssertNotNil(service, @"Error while creating the new service");
     
-    [OHHTTPStubs stubRequestsWithPath:path responseJsonEncodedFile:mockResponse];
-    
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        return [[request.URL absoluteString] containsString:path];
+    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+        NSString* fixture = OHPathForFile(mockResponse, self.class);
+        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
+                                                statusCode:200 headers:@{@"Content-Type":@"application/json"}];
+    }];
+
     XCTestExpectation *expectation = [self expectationWithDescription:@"Site Settings"];
     
     [service syncSettingsForBlogID:blogID success:^(RemoteBlogSettings *settings) {
