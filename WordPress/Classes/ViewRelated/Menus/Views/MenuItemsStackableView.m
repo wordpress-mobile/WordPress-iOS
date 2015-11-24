@@ -388,8 +388,8 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
             self.observingReorderingTouches = YES;
             self.highlighted = NO;
             
-            if([self.delegate respondsToSelector:@selector(itemActionableViewDidBeginReordering:)]) {
-                [self.delegate itemActionableViewDidBeginReordering:self];
+            if([self.delegate respondsToSelector:@selector(itemsStackableViewDidBeginReordering:)]) {
+                [self.delegate itemsStackableViewDidBeginReordering:self];
             }
             
         }else {
@@ -401,8 +401,8 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
             vector.x = location.x - startLocation.x;
             vector.y = location.y - startLocation.y;
             
-            if([self.delegate respondsToSelector:@selector(itemActionableView:orderingTouchesMoved:withEvent:vector:)]) {
-                [self.delegate itemActionableView:self orderingTouchesMoved:touches withEvent:event vector:vector];
+            if([self.delegate respondsToSelector:@selector(itemsStackableView:orderingTouchesMoved:withEvent:vector:)]) {
+                [self.delegate itemsStackableView:self orderingTouchesMoved:touches withEvent:event vector:vector];
             }
         }
     }
@@ -413,8 +413,8 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
     if(self.reorderingEnabled) {
         self.showsReorderingOptions = NO;
         
-        if([self.delegate respondsToSelector:@selector(itemActionableViewDidEndReordering:)]) {
-            [self.delegate itemActionableViewDidEndReordering:self];
+        if([self.delegate respondsToSelector:@selector(itemsStackableViewDidEndReordering:)]) {
+            [self.delegate itemsStackableViewDidEndReordering:self];
         }
     }
     

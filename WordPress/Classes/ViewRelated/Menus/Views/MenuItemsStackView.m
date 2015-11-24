@@ -236,19 +236,19 @@
 
 #pragma mark - MenuItemsStackableViewDelegate
 
-- (void)itemActionableViewDidBeginReordering:(MenuItemsStackableView *)actionableView
+- (void)itemsStackableViewDidBeginReordering:(MenuItemsStackableView *)stackableView
 {
     [self.delegate itemsView:self prefersScrollingEnabled:NO];
 }
 
-- (void)itemActionableView:(MenuItemsStackableView *)actionableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
+- (void)itemsStackableView:(MenuItemsStackableView *)stackableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
 {
-    if(![actionableView isKindOfClass:[MenuItemsStackableView class]]) {
+    if(![stackableView isKindOfClass:[MenuItemsStackableView class]]) {
         return;
     }
 
     const CGPoint touchPoint = [[touches anyObject] locationInView:self];
-    MenuItemView *selectedItemView = (MenuItemView *)actionableView;
+    MenuItemView *selectedItemView = (MenuItemView *)stackableView;
     
     // index of the itemView in the arrangedSubViews list
     const NSUInteger selectedItemViewIndex = [self.stackView.arrangedSubviews indexOfObject:selectedItemView];
@@ -340,7 +340,7 @@
     }
 }
 
-- (void)itemActionableViewDidEndReordering:(MenuItemsStackableView *)actionableView
+- (void)itemsStackableViewDidEndReordering:(MenuItemsStackableView *)stackableView
 {
     [self.delegate itemsView:self prefersScrollingEnabled:YES];
 }
