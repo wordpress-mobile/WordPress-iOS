@@ -16,8 +16,7 @@ public class WP3DTouchShortcutHandler: NSObject
         }
         
         var type: String {
-            let type: String = NSBundle.mainBundle().bundleIdentifier! + ".\(self.rawValue)"
-            return type
+            return NSBundle.mainBundle().bundleIdentifier! + ".\(self.rawValue)"
         }
     }
     
