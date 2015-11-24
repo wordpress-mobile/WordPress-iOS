@@ -472,7 +472,7 @@ import Foundation
             actionButtonRight
         ]
 
-        if contentProvider == nil {
+        if contentProvider == nil || contentProvider?.sourceAttributionStyle() != SourceAttributionStyle.None {
             resetActionButtons(buttons)
             return
         }
