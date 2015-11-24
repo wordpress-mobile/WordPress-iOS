@@ -10,7 +10,9 @@ public class WP3DTouchShortcutHandler: NSObject
         case Notifications
         
         init?(fullType: String) {
-            guard let last = fullType.componentsSeparatedByString(".").last else { return nil }
+            guard let last = fullType.componentsSeparatedByString(".").last else {
+                        return nil
+                    }
             
             self.init(rawValue: last)
         }
