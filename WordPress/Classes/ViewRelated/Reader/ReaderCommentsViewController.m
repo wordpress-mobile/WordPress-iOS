@@ -63,7 +63,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, assign) UIDeviceOrientation previousOrientation;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
-@property (nonatomic) BOOL canComment;
 @property (nonatomic) BOOL isLoggedIn;
 
 @end
@@ -101,7 +100,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     self.mediaCellCache = [NSMutableDictionary dictionary];
     [self checkIfLoggedIn];
-    [self checkIfCanComment];
 
     [self configureNavbar];
     [self configurePostHeader];
@@ -558,11 +556,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }];
 }
 
-- (void)checkIfCanComment
-{
-    self.canComment = self.post.commentsOpen && self.isLoggedIn;
-}
-
 - (void)checkIfLoggedIn
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -610,6 +603,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (BOOL)isLoadingPost
 {
     return self.post == nil;
+}
+
+- (BOOL)canComment
+{
+    return self.post.commentsOpen && self.isLoggedIn;
 }
 
 - (BOOL)shouldDisplayReplyTextView

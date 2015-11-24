@@ -41,16 +41,6 @@
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "WPDeviceIdentification.h"
 
-typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
-    EditPostViewControllerAlertTagNone,
-    EditPostViewControllerAlertTagLinkHelper,
-    EditPostViewControllerAlertTagFailedMedia,
-    EditPostViewControllerAlertTagFailedMediaBeforeEdit,
-    EditPostViewControllerAlertTagFailedMediaBeforeSave,
-    EditPostViewControllerAlertTagSwitchBlogs,
-    EditPostViewControllerAlertCancelMediaUpload,
-};
-
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
@@ -75,14 +65,6 @@ const CGRect NavigationBarButtonRect = {
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
-NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
-    WPPostViewControllerActionSheetSaveOnExit = 201,
-    WPPostViewControllerActionSheetCancelUpload = 202,
-    WPPostViewControllerActionSheetRetryUpload = 203,
-    WPPostViewControllerActionSheetCancelVideoUpload = 204,
-    WPPostViewControllerActionSheetRetryVideoUpload = 205,
-};
-
 static CGFloat const SpacingBetweeenNavbarButtons = 40.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
 static NSDictionary *DisabledButtonBarStyle;
@@ -96,8 +78,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 @interface WPPostViewController () <
 WPMediaPickerViewControllerDelegate,
-UIActionSheetDelegate,
-UIPopoverControllerDelegate,
 UITextFieldDelegate,
 UITextViewDelegate,
 UIViewControllerRestoration,
@@ -107,14 +87,13 @@ EditImageDetailsViewControllerDelegate
 #pragma mark - Misc properties
 @property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIBarButtonItem *uploadStatusButton;
-@property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
-@property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic) BOOL isOpenedDirectlyForEditing;
 @property (nonatomic) CGRect keyboardRect;
+@property (nonatomic, strong) UIAlertController *currentAlertController;
 
 #pragma mark - Media related properties
-@property (nonatomic, strong) NSProgress * mediaGlobalProgress;
+@property (nonatomic, strong) NSProgress *mediaGlobalProgress;
 @property (nonatomic, strong) NSMutableDictionary *mediaInProgress;
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
 @property (nonatomic, strong) NSString *selectedMediaID;
@@ -154,7 +133,6 @@ EditImageDetailsViewControllerDelegate
 
 - (void)dealloc
 {
-    _failedMediaAlertView.delegate = nil;
     [_mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
     [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
@@ -295,7 +273,6 @@ EditImageDetailsViewControllerDelegate
     
     [self geotagNewPost];
     self.delegate = self;
-    self.failedMediaAlertView = nil;
     [self configureMediaUpload];
     if (!self.isOpenedDirectlyForEditing) {
         [self refreshNavigationBarButtons:NO];
@@ -570,13 +547,9 @@ EditImageDetailsViewControllerDelegate
     NSString *message = NSLocalizedString(@"This post has local changes that were not saved. You can now save them or discard them.",
                                           @"Message of the alert that lets the users know there are unsaved changes in a post they're opening.");
     
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:message
-                                                       delegate:self
-                                              cancelButtonTitle:nil
-                                              otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
-    
-    [alertView show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addActionWithTitle:NSLocalizedString(@"OK",@"") style:UIAlertActionStyleDefault handler:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - Onboarding
@@ -656,30 +629,20 @@ EditImageDetailsViewControllerDelegate
         [self showBlogSelector];
         return;
     }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Change Site", @"Title of an alert prompting the user that they are about to change the blog they are posting to.")
-                                                        message:NSLocalizedString(@"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", @"And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel",@"")
-                                              otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
-    alertView.tag = EditPostViewControllerAlertTagSwitchBlogs;
-    [alertView show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Change Site", @"Title of an alert prompting the user that they are about to change the blog they are posting to.")
+                                                                             message:NSLocalizedString(@"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", @"And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"OK",@"") handler:^(UIAlertAction *action) {
+       [self showBlogSelector]; 
+    }];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel",@"") handler:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showBlogSelector
 {
-    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
-        [self.blogSelectorPopover dismissPopoverAnimated:YES];
-        self.blogSelectorPopover = nil;
-    }
-    
     void (^dismissHandler)() = ^(void) {
-        if (IS_IPAD) {
-            [self.blogSelectorPopover dismissPopoverAnimated:YES];
-        } else {
-            self.dismissingBlogPicker = YES;
-            [self dismissViewControllerAnimated:YES completion:nil];
-            self.dismissingBlogPicker = NO;
-        }
+        [self dismissViewControllerAnimated:YES completion:nil];
     };
     void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -730,19 +693,11 @@ EditImageDetailsViewControllerDelegate
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
-    
-    if (IS_IPAD) {
-        vc.preferredContentSize = CGSizeMake(320.0, 500);
-        self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
-        self.blogSelectorPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-        self.blogSelectorPopover.delegate = self;
-        [self.blogSelectorPopover presentPopoverFromBarButtonItem:self.secondaryLeftUIBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-
-    } else {
-        navController.modalPresentationStyle = UIModalPresentationPageSheet;
-        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        [self presentViewController:navController animated:YES completion:nil];
-    }
+    navController.modalPresentationStyle = UIModalPresentationPopover;
+    navController.popoverPresentationController.barButtonItem = self.secondaryLeftUIBarButtonItem;
+    navController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+    navController.popoverPresentationController.backgroundColor = [WPStyleGuide wordPressBlue];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (Class)classForSettingsViewController
@@ -752,48 +707,49 @@ EditImageDetailsViewControllerDelegate
 
 - (void)showCancelMediaUploadPrompt
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel media uploads", "Dialog box title for when the user is cancelling an upload.")
-                                                        message:NSLocalizedString(@"You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", @"This prompt is displayed when the user attempts to stop media uploads in the post editor.")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".")
-                                              otherButtonTitles:NSLocalizedString(@"Yes", "Yes"), nil];
-    alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
-    [alertView show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Cancel media uploads", "Dialog box title for when the user is cancelling an upload.")
+                                                                             message:NSLocalizedString(@"You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", @"This prompt is displayed when the user attempts to stop media uploads in the post editor.")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Yes", "Yes") handler:^(UIAlertAction *action) {
+        [self cancelMediaUploads];
+    }];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".") handler:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showMediaUploadingAlert
 {
-    //the post is using the network connection and cannot be stoped, show a message to the user
-    UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
-                                                                  message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
-                                                                 delegate:nil
-                                                        cancelButtonTitle:NSLocalizedString(@"OK", @"")
-                                                        otherButtonTitles:nil];
-    [blogIsCurrentlyBusy show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
+                                                                             message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"OK", "") handler:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showFailedMediaRemovalAlert
 {
-    UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to save post with failed media items")
-                                                                              message:NSLocalizedString(@"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
-                                                                             delegate:self
-                                                                    cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
-                                                                    otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
-    failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeSave;
-    [failedMediaAlertView show];
-
-    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to save post with failed media items")
+                                                                             message:NSLocalizedString(@"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Yes", "Yes") handler:^(UIAlertAction *action) {
+        [self removeAllFailedMedia];
+        [self savePostAndDismissVC];
+    }];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".") handler:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showFailedMediaBeforeEditAlert
 {
-    UIAlertView * failedMediaBeforeEditAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to edit html post with failed media items")
-                                                           message:NSLocalizedString(@"Some media uploads failed. Switching to the HTML view of this post will remove failed media.\nSwitch anyway?", @"Confirms with the user if they manually edit the post HTML all media that failed to upload will be removed from it.")
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
-                                                 otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
-    failedMediaBeforeEditAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeEdit;
-    [failedMediaBeforeEditAlertView show];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to edit html post with failed media items")
+                                                                             message:NSLocalizedString(@"Some media uploads failed. Switching to the HTML view of this post will remove failed media.\nSwitch anyway?", @"Confirms with the user if they manually edit the post HTML all media that failed to upload will be removed from it.")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Yes", "Yes") handler:^(UIAlertAction *action) {
+        [self removeAllFailedMedia];
+        [self.editorView showHTMLSource];
+    }];
+    [alertController addCancelActionWithTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".") handler:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showSettings
@@ -854,46 +810,49 @@ EditImageDetailsViewControllerDelegate
     [self.editorView.focusedField blur];
 	
     if ([self.post hasLocalChanges]) {
-        [self showPostHasChangesActionSheet];
+        [self showPostHasChangesAlert];
     } else {
         [self stopEditing];
         [self discardChangesAndUpdateGUI];
     }
 }
 
-- (void)showPostHasChangesActionSheet
+- (void)showPostHasChangesAlert
 {
-	UIActionSheet *actionSheet;
+    UIAlertController *alertController;
+    alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+                                                          message:nil
+                                                   preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addActionWithTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                  style:UIAlertActionStyleCancel
+                                handler:^(UIAlertAction * action) {
+        [self actionSheetKeepEditingButtonPressed];
+    }];
+    [alertController addActionWithTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                  style:UIAlertActionStyleDestructive
+                                handler:^(UIAlertAction * action) {
+        [self actionSheetDiscardButtonPressed];
+    }];
+    
 	if (![self.post.original.status isEqualToString:PostStatusDraft] && ![self isPostLocal]) {
-        // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
-		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-												  delegate:self
-                                         cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-										 otherButtonTitles:nil];
     } else if ([self isPostLocal]) {
         // The post is a local draft or an autosaved draft: Discard or Save
-        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-                                                  delegate:self
-                                         cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                         otherButtonTitles:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post."), nil];
+        [alertController addActionWithTitle:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                      style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+            [self actionSheetSaveDraftButtonPressed];
+        }];
     } else {
         // The post was already a draft
-        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-                                                  delegate:self
-                                         cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                    destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                         otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
+        [alertController addActionWithTitle:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")
+                                      style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * action) {
+            [self actionSheetSaveDraftButtonPressed];
+        }];
     }
     
-    actionSheet.tag = WPPostViewControllerActionSheetSaveOnExit;
-    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    if (IS_IPAD) {
-        [actionSheet showFromBarButtonItem:self.currentCancelButton animated:YES];
-    } else {
-        [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
-    }
+    alertController.popoverPresentationController.barButtonItem = self.currentCancelButton;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)startEditing
@@ -1370,7 +1329,7 @@ EditImageDetailsViewControllerDelegate
     // by deferring the cloning and UI update.
     // Slower devices have the effect of the content appearing after
     // a short delay
-    [self.post.managedObjectContext performBlock:^{
+    [self.post.managedObjectContext performBlockAndWait:^{
         self.post = [self.post createRevision];
         [self.post save];
         [self refreshUIForCurrentPost];
@@ -1445,9 +1404,9 @@ EditImageDetailsViewControllerDelegate
 
 - (void)saveAction
 {
-    if (_currentActionSheet.isVisible) {
-        [_currentActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
-        _currentActionSheet = nil;
+    if (self.currentAlertController) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        self.currentAlertController = nil;
     }
     
 	if ([self isMediaUploading] ) {
@@ -1675,16 +1634,14 @@ EditImageDetailsViewControllerDelegate
             self.mediaGlobalProgress.completedUnitCount++;
         }
     }
-    [self dismissAssociatedActionSheetIfVisible:uniqueMediaId];
+    [self dismissAssociatedAlertControllerIfVisible:uniqueMediaId];
 }
 
-- (void)dismissAssociatedActionSheetIfVisible:(NSString *)uniqueMediaId {
+- (void)dismissAssociatedAlertControllerIfVisible:(NSString *)uniqueMediaId {
     // let's see if we where displaying an action sheet for this image
-    if (self.currentActionSheet && [uniqueMediaId isEqualToString:self.selectedMediaID]){
-        if (self.currentActionSheet.tag == WPPostViewControllerActionSheetCancelUpload ||
-            self.currentActionSheet.tag == WPPostViewControllerActionSheetRetryUpload ) {
-            [self.currentActionSheet dismissWithClickedButtonIndex:self.currentActionSheet.cancelButtonIndex animated:YES];
-        }
+    if (self.currentAlertController && [uniqueMediaId isEqualToString:self.selectedMediaID]){
+        [self dismissViewControllerAnimated:YES completion:nil];
+        self.currentAlertController = nil;
     }
 }
 
@@ -1745,8 +1702,9 @@ EditImageDetailsViewControllerDelegate
             }
             [media remove];
         } else {
+            DDLogError(@"Failed Media Upload: %@", error.localizedDescription);
             [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed];
-            [self dismissAssociatedActionSheetIfVisible:mediaUniqueId];
+            [self dismissAssociatedAlertControllerIfVisible:mediaUniqueId];
             self.mediaGlobalProgress.completedUnitCount++;
             if (media.mediaType == MediaTypeImage) {
                 [self.editorView markImage:mediaUniqueId
@@ -1868,112 +1826,6 @@ EditImageDetailsViewControllerDelegate
     return string;
 }
 
-#pragma mark - UIPopoverControllerDelegate methods
-
-- (void)popoverController:(UIPopoverController *)popoverController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView **)view {
-    if (popoverController == self.blogSelectorPopover) {
-        CGRect titleRect = self.navigationItem.titleView.frame;
-        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-        
-        *view = self.navigationController.view;
-        *rect = titleRect;
-    }
-}
-
-#pragma mark - AlertView Delegate Methods
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch(alertView.tag){
-        case (EditPostViewControllerAlertTagFailedMedia): {
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                DDLogInfo(@"Saving post even after some media failed to upload");
-                [self savePostAndDismissVC];
-            }
-            self.failedMediaAlertView = nil;
-        } break;
-        case (EditPostViewControllerAlertTagSwitchBlogs): {
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                [self showBlogSelector];
-            }
-        } break;
-        case (EditPostViewControllerAlertCancelMediaUpload): {
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                [self cancelMediaUploads];
-            }
-        } break;
-        case (EditPostViewControllerAlertTagFailedMediaBeforeEdit): {
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                [self removeAllFailedMedia];
-                [self.editorView showHTMLSource];
-            }
-        } break;
-        case (EditPostViewControllerAlertTagFailedMediaBeforeSave): {
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                [self removeAllFailedMedia];
-                [self savePostAndDismissVC];
-            }
-        } break;
-    }
-    
-    return;
-}
-
-#pragma mark - ActionSheet Delegate Methods
-
-- (void)willPresentActionSheet:(UIActionSheet *)actionSheet {
-    _currentActionSheet = actionSheet;
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    
-    switch ([actionSheet tag]){
-        case(WPPostViewControllerActionSheetSaveOnExit): {
-            if (buttonIndex == actionSheet.destructiveButtonIndex) {
-                [self actionSheetDiscardButtonPressed];
-            } else if (buttonIndex == actionSheet.cancelButtonIndex) {
-                [self actionSheetKeepEditingButtonPressed];
-            } else if (buttonIndex == actionSheet.firstOtherButtonIndex) {
-                [self actionSheetSaveDraftButtonPressed];
-            }
-        } break;
-        case (WPPostViewControllerActionSheetCancelUpload): {
-            if (buttonIndex == actionSheet.destructiveButtonIndex){
-                [self cancelUploadOfMediaWithId:self.selectedMediaID];
-            }
-            self.selectedMediaID = nil;
-        } break;
-        case (WPPostViewControllerActionSheetRetryUpload): {
-            if (buttonIndex == actionSheet.destructiveButtonIndex){
-                [self stopTrackingProgressOfMediaWithId:self.selectedMediaID];
-                [self.editorView removeImage:self.selectedMediaID];
-                [self.editorView removeVideo:self.selectedMediaID];
-            } else if (buttonIndex == 1) {
-                [self.editorView unmarkImageFailedUpload:self.selectedMediaID];
-                [self.editorView unmarkVideoFailedUpload:self.selectedMediaID];
-                [self retryUploadOfMediaWithId:self.selectedMediaID];
-            }
-            self.selectedMediaID = nil;
-        } break;
-        case (WPPostViewControllerActionSheetCancelVideoUpload): {
-            if (buttonIndex == actionSheet.destructiveButtonIndex){
-                [self cancelUploadOfMediaWithId:self.selectedMediaID];
-            }
-            self.selectedMediaID = nil;
-        } break;
-        case (WPPostViewControllerActionSheetRetryVideoUpload): {
-            if (buttonIndex == actionSheet.destructiveButtonIndex){
-                [self stopTrackingProgressOfMediaWithId:self.selectedMediaID];
-                [self.editorView removeVideo:self.selectedMediaID];
-            } else if (buttonIndex == 1) {
-                [self.editorView unmarkVideoFailedUpload:self.selectedMediaID];
-                [self retryUploadOfMediaWithId:self.selectedMediaID];
-            }
-            self.selectedMediaID = nil;
-        } break;
-    }
-    
-    _currentActionSheet = nil;
-}
 
 #pragma mark - UIActionSheet helper methods
 
@@ -2081,7 +1933,7 @@ EditImageDetailsViewControllerDelegate
     if (imageId.length == 0) {
         [self displayImageDetailsForMeta:imageMeta];
     } else {
-        [self promptForActionForTappedImage:imageId url:url];
+        [self promptForActionForTappedMedia:imageId url:url];
     }
 }
 
@@ -2090,7 +1942,7 @@ EditImageDetailsViewControllerDelegate
                          url:(NSURL *)url
 {
     if (videoID.length > 0) {
-        [self promptForActionForTappedVideo:videoID url:url];
+        [self promptForActionForTappedMedia:videoID url:url];
     }
 }
 
@@ -2127,79 +1979,77 @@ EditImageDetailsViewControllerDelegate
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)promptForActionForTappedImage:(NSString *)imageId url:(NSURL *)url
+- (void)promptForActionForTappedMedia:(NSString *)mediaId url:(NSURL *)url
 {
-    if (imageId.length == 0) {
+    if (mediaId.length == 0) {
         return;
     }
     
-    self.selectedMediaID= imageId;
+    self.selectedMediaID = mediaId;
     
-    NSProgress * mediaProgress = self.mediaInProgress[imageId];
+    NSProgress *mediaProgress = self.mediaInProgress[mediaId];
     if (!mediaProgress){
         // The image is already uploaded so nothing to here, but in the future we could plug in image actions here
         return;
     }
 
     //Are we showing another action sheet?
-    if (self.currentActionSheet != nil){
+    if (self.currentAlertController != nil){
         return;
     }
     
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
     // Is upload still going?
     if (mediaProgress.completedUnitCount < mediaProgress.totalUnitCount) {
-        UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                  delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"User action to dismiss stop upload question")
-                                                    destructiveButtonTitle:NSLocalizedString(@"Stop Upload",@"User action to stop upload")otherButtonTitles:nil];
-        actionSheet.tag = WPPostViewControllerActionSheetCancelUpload;
-        [actionSheet showInView:self.editorView];
+        [alertController addActionWithTitle:NSLocalizedString(@"Cancel", @"User action to dismiss stop upload question")
+                                      style:UIAlertActionStyleCancel
+                                    handler:^(UIAlertAction *action) {
+                                        self.selectedMediaID = nil;
+                                        self.currentAlertController = nil;
+                                    }];
+        [alertController addActionWithTitle:NSLocalizedString(@"Stop Upload",@"User action to stop upload")
+                                      style:UIAlertActionStyleDestructive
+                                    handler:^(UIAlertAction *action) {
+                                        [self cancelUploadOfMediaWithId:self.selectedMediaID];
+                                        self.selectedMediaID = nil;
+                                        self.currentAlertController = nil;
+                                    }];
     } else {
-        UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                  delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"User action to dismiss retry upload question")
-                                                    destructiveButtonTitle:NSLocalizedString(@"Remove Image", @"User action to remove image that failed upload")
-                                                         otherButtonTitles:NSLocalizedString(@"Retry Upload", @"User action to retry upload the image"), nil];
-        actionSheet.tag = WPPostViewControllerActionSheetRetryUpload;
-        [actionSheet showInView:self.editorView];        
-    }
-}
+        [alertController addActionWithTitle:NSLocalizedString(@"Cancel", @"User action to dismiss retry upload question")
+                                      style:UIAlertActionStyleCancel
+                                    handler:^(UIAlertAction *action) {
+                                        self.selectedMediaID = nil;
+                                        self.currentAlertController = nil;
+                                    }];
+        [alertController addActionWithTitle:NSLocalizedString(@"Remove Media", @"User action to remove media that failed upload")
+                                      style:UIAlertActionStyleDestructive
+                                    handler:^(UIAlertAction *action) {
+                                        [self stopTrackingProgressOfMediaWithId:self.selectedMediaID];
+                                        [self.editorView removeImage:self.selectedMediaID];
+                                        [self.editorView removeVideo:self.selectedMediaID];
+                                        self.selectedMediaID = nil;
+                                        self.currentAlertController = nil;
+                                    }];
 
-- (void)promptForActionForTappedVideo:(NSString *)videoID url:(NSURL *)aURL
-{
-    if (videoID.length == 0) {
-        return;
+
+        [alertController addActionWithTitle:NSLocalizedString(@"Retry Upload", @"User action to retry upload the image")
+                                      style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction *action) {
+                                        [self.editorView unmarkImageFailedUpload:self.selectedMediaID];
+                                        [self.editorView unmarkVideoFailedUpload:self.selectedMediaID];
+                                        [self retryUploadOfMediaWithId:self.selectedMediaID];
+                                        self.selectedMediaID = nil;
+                                        self.currentAlertController = nil;
+                                    }];
     }
-    
-    self.selectedMediaID= videoID;
-    
-    NSProgress * mediaProgress = self.mediaInProgress[videoID];
-    if (!mediaProgress){
-        return;
-    }
-    
-    //Are we showing another action sheet?
-    if (self.currentActionSheet != nil){
-        return;
-    }
-    
-    // Is upload still going?
-    if (mediaProgress.completedUnitCount < mediaProgress.totalUnitCount) {
-        UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                  delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"User action to dismiss stop upload question")
-                                                    destructiveButtonTitle:NSLocalizedString(@"Stop Upload",@"User action to stop upload")otherButtonTitles:nil];
-        actionSheet.tag = WPPostViewControllerActionSheetCancelVideoUpload;
-        [actionSheet showInView:self.editorView];
-    } else {
-        UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                  delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"User action to dismiss retry upload question")
-                                                    destructiveButtonTitle:NSLocalizedString(@"Remove Video", @"User action to remove video that failed upload")
-                                                         otherButtonTitles:NSLocalizedString(@"Retry Upload", @"User action to retry upload the video"), nil];
-        actionSheet.tag = WPPostViewControllerActionSheetRetryVideoUpload;
-        [actionSheet showInView:self.editorView];
-    }
+    self.currentAlertController = alertController;
+    alertController.popoverPresentationController.sourceView = self.editorView;
+    alertController.popoverPresentationController.sourceRect = CGRectMake(self.editorView.center.x, self.editorView.center.y, 1, 1);
+    alertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+    [self presentViewController:alertController animated:YES completion:nil];
+
 }
 
 #pragma mark - WPMediaPickerViewControllerDelegate
