@@ -67,6 +67,9 @@ NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
 static CGFloat const SpacingBetweeenNavbarButtons = 40.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
+static CGFloat const CompactTitleButtonWidth = 125.0f;
+static CGFloat const RegularTitleButtonWidth = 300.0f;
+static CGFloat const RegularTitleButtonHeight = 30.0f;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
@@ -1097,6 +1100,14 @@ EditImageDetailsViewControllerDelegate
 
 #pragma mark - Custom UI elements
 
+- (BOOL)isViewHorizontallyCompact
+{
+    if ([self respondsToSelector:@selector(traitCollection)] == false) {
+        return ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) == false;
+    }
+    return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact;
+}
+
 - (WPButtonForNavigationBar*)buttonForBarWithImageNamed:(NSString*)imageName
 												  frame:(CGRect)frame
 												 target:(id)target
@@ -1269,7 +1280,7 @@ EditImageDetailsViewControllerDelegate
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0] }];
         
         [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
-        if (IS_IPAD) {
+        if (![self isViewHorizontallyCompact]) {
             //size to fit here so the iPad popover works properly
             [blogButton sizeToFit];
         }
@@ -1292,18 +1303,17 @@ EditImageDetailsViewControllerDelegate
 - (UIButton *)blogPickerButton
 {
     if (!_blogPickerButton) {
-        CGFloat titleButtonWidth = 140.0f;
-        
-        if ([WPDeviceIdentification isiPhoneSixPlus] || [WPDeviceIdentification isiPhoneSix]) {
-            titleButtonWidth = 190.0f;
-        } else if (IS_IPAD) {
-            titleButtonWidth = 300.0f;
-        }
-        
-        UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, titleButtonWidth , 30.0f) buttonStyle:WPBlogSelectorButtonTypeSingleLine];
+        UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, RegularTitleButtonWidth , RegularTitleButtonHeight) buttonStyle:WPBlogSelectorButtonTypeSingleLine];
         [button addTarget:self action:@selector(showBlogSelectorPrompt:) forControlEvents:UIControlEventTouchUpInside];
         _blogPickerButton = button;
     }
+    
+    // Update the width to the appropriate size for the horizontal size class
+    CGFloat titleButtonWidth = CompactTitleButtonWidth;
+    if (![self isViewHorizontallyCompact]) {
+        titleButtonWidth = RegularTitleButtonWidth;
+    }
+    _blogPickerButton.frame = CGRectMake(_blogPickerButton.frame.origin.x, _blogPickerButton.frame.origin.y, titleButtonWidth, RegularTitleButtonHeight);
     
     return _blogPickerButton;
 }
@@ -1311,7 +1321,7 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)uploadStatusButton
 {
     if (!_uploadStatusButton) {
-        UIButton *button = [WPUploadStatusButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 125.0f , 30.0f)];
+        UIButton *button = [WPUploadStatusButton buttonWithFrame:CGRectMake(0.0f, 0.0f, CompactTitleButtonWidth , RegularTitleButtonHeight)];
         button.titleLabel.text = NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server");
         [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
         _uploadStatusButton = [[UIBarButtonItem alloc] initWithCustomView:button];
