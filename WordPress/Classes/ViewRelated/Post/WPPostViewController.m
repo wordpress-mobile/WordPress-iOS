@@ -59,6 +59,9 @@ static NSString* const WPPostViewControllerPostRestorationKey = @"WPPostViewCont
 static NSString* const WPProgressMediaID = @"WPProgressMediaID";
 static NSString* const WPProgressMedia = @"WPProgressMedia";
 
+NSString* const WPPostViewControllerOptionOpenMediaPicker = @"WPPostViewControllerMediaPicker";
+NSString* const WPPostViewControllerOptionNotAnimated = @"WPPostViewControllerNotAnimated";
+
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
 NSString* const EditButtonOnboardingWasShown = @"OnboardingWasShown";
@@ -119,6 +122,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
 @property (nonatomic, strong) NSString *selectedMediaID;
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaLibraryDataSource;
+@property (nonatomic) BOOL isOpenedDirectlyForPhotoPost;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -174,6 +178,12 @@ EditImageDetailsViewControllerDelegate
     }
     
     return self;
+}
+
+- (instancetype)initWithDraftForLastUsedBlogAndPhotoPost
+{
+    _isOpenedDirectlyForPhotoPost = YES;
+    return [self initWithDraftForLastUsedBlog];
 }
 
 - (instancetype)initWithDraftForLastUsedBlog
@@ -297,7 +307,9 @@ EditImageDetailsViewControllerDelegate
     self.delegate = self;
     self.failedMediaAlertView = nil;
     [self configureMediaUpload];
-    if (!self.isOpenedDirectlyForEditing) {
+    if (self.isOpenedDirectlyForPhotoPost) {
+        [self showMediaPickerAnimated:NO];
+    } else if (!self.isOpenedDirectlyForEditing) {
         [self refreshNavigationBarButtons:NO];
     }
 }
@@ -823,7 +835,7 @@ EditImageDetailsViewControllerDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaPicker
+- (void)showMediaPickerAnimated:(BOOL)animated
 {
     [self.editorView saveSelection];
     self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
@@ -831,7 +843,7 @@ EditImageDetailsViewControllerDelegate
     picker.dataSource = self.mediaLibraryDataSource;
     picker.showMostRecentFirst = YES;
     picker.delegate = self;
-    [self presentViewController:picker animated:YES completion:nil];
+    [self presentViewController:picker animated:animated completion:nil];
 }
 
 #pragma mark - Data Model: Post
@@ -1429,18 +1441,23 @@ EditImageDetailsViewControllerDelegate
     }
 }
 
-- (void)dismissEditView
+- (void)dismissEditViewAnimated:(BOOL)animated
 {
     if (self.onClose) {
         self.onClose();
         self.onClose = nil;
-	} else if (self.presentingViewController) {
-		[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-	} else {
-		[self.navigationController popViewControllerAnimated:YES];
-	}
+    } else if (self.presentingViewController) {
+        [self.presentingViewController dismissViewControllerAnimated:animated completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:animated];
+    }
     
     [WPAnalytics track:WPAnalyticsStatEditorClosed];
+}
+
+- (void)dismissEditView
+{
+    [self dismissEditViewAnimated:YES];
 }
 
 - (void)saveAction
@@ -1786,6 +1803,9 @@ EditImageDetailsViewControllerDelegate
     if (assets.count == 0) {
         return;
     }
+    
+    [self.editorView.contentField focus];
+    
     [self prepareMediaProgressForNumberOfAssets:assets.count];
     for (id<WPMediaAsset> asset in assets) {
         if ([asset isKindOfClass:[PHAsset class]]){
@@ -2046,7 +2066,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaPicker];
+    [self showMediaPickerAnimated:YES];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
@@ -2213,7 +2233,11 @@ EditImageDetailsViewControllerDelegate
 
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.isOpenedDirectlyForPhotoPost) {
+        [self dismissEditViewAnimated:NO];
+    } else {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(id<WPMediaAsset>)mediaAsset
