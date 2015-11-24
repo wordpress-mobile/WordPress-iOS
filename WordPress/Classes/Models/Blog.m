@@ -8,6 +8,7 @@
 #import "ContextManager.h"
 #import "Constants.h"
 #import "BlogSiteVisibilityHelper.h"
+#import "WordPress-Swift.h"
 #import <SFHFKeychainUtils.h>
 #import <WordPressApi/WordPressApi.h>
 
@@ -24,15 +25,12 @@ NSString * const PostFormatStandard = @"standard";
 
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
-@property (nonatomic, strong, readwrite) NSNumber *privacy;
 
 @end
 
 @implementation Blog
 
 @dynamic blogID;
-@dynamic blogName;
-@dynamic blogTagline;
 @dynamic url;
 @dynamic xmlrpc;
 @dynamic apiKey;
@@ -49,7 +47,6 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic lastPagesSync;
 @dynamic lastCommentsSync;
 @dynamic lastUpdateWarning;
-@dynamic geolocationEnabled;
 @dynamic options;
 @dynamic postFormats;
 @dynamic isActivated;
@@ -61,13 +58,7 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic isHostedAtWPcom;
 @dynamic icon;
 @dynamic username;
-@dynamic defaultCategoryID;
-@dynamic defaultPostFormat;
-@dynamic privacy;
-@dynamic relatedPostsAllowed;
-@dynamic relatedPostsEnabled;
-@dynamic relatedPostsShowHeadline;
-@dynamic relatedPostsShowThumbnails;
+@dynamic settings;
 
 
 @synthesize api = _api;
@@ -97,25 +88,6 @@ NSString * const PostFormatStandard = @"standard";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark -
-
-- (BOOL)geolocationEnabled
-{
-    BOOL tmpValue;
-
-    [self willAccessValueForKey:@"geolocationEnabled"];
-    tmpValue = [[self primitiveValueForKey:@"geolocationEnabled"] boolValue];
-    [self didAccessValueForKey:@"geolocationEnabled"];
-
-    return tmpValue;
-}
-
-- (void)setGeolocationEnabled:(BOOL)value
-{
-    [self willChangeValueForKey:@"geolocationEnabled"];
-    [self setPrimitiveValue:[NSNumber numberWithBool:value] forKey:@"geolocationEnabled"];
-    [self didChangeValueForKey:@"geolocationEnabled"];
-}
 
 #pragma mark -
 #pragma mark Custom methods
@@ -342,7 +314,7 @@ NSString * const PostFormatStandard = @"standard";
     if (!self.privacy) {
         [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
     }
-    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.privacy integerValue]];
+    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.privacy intValue]];
 }
 
 
@@ -532,7 +504,7 @@ NSString * const PostFormatStandard = @"standard";
     } else {
         extra = [NSString stringWithFormat:@" jetpack: %@", [self.jetpack description]];
     }
-    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.blogName, self.url, self.xmlrpc, extra];
+    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.settings.name, self.url, self.xmlrpc, extra];
 }
 
 #pragma mark - api accessor
@@ -614,6 +586,81 @@ NSString * const PostFormatStandard = @"standard";
         optionValue = currentOption[@"value"];
     }];
     return optionValue;
+}
+
+
+#pragma mark - BlogSetting Helpers
+
+- (NSString *)blogName
+{
+    NSParameterAssert(self.settings);
+    return self.settings.name;
+}
+
+- (void)setBlogName:(NSString *)blogName
+{
+    NSParameterAssert(self.settings);
+    self.settings.name = blogName;
+}
+
+- (NSString *)blogTagline
+{
+    NSParameterAssert(self.settings);
+    return self.settings.tagline;
+}
+
+- (void)setBlogTagline:(NSString *)blogTagline
+{
+    NSParameterAssert(self.settings);
+    self.settings.tagline = blogTagline;
+}
+
+- (NSNumber *)defaultCategoryID
+{
+    NSParameterAssert(self.settings);
+    return self.settings.defaultCategoryID;
+}
+
+- (void)setDefaultCategoryID:(NSNumber *)defaultCategoryID
+{
+    NSParameterAssert(self.settings);
+    self.settings.defaultCategoryID = defaultCategoryID;
+}
+
+- (NSString *)defaultPostFormat
+{
+    NSParameterAssert(self.settings);
+    return self.settings.defaultPostFormat;
+}
+
+- (void)setDefaultPostFormat:(NSString *)defaultPostFormat
+{
+    NSParameterAssert(self.settings);
+    self.settings.defaultPostFormat = defaultPostFormat;
+}
+
+- (NSNumber *)privacy
+{
+    NSParameterAssert(self.settings);
+    return self.settings.privacy;
+}
+
+- (void)setPrivacy:(NSNumber *)privacy
+{
+    NSParameterAssert(self.settings);
+    self.settings.privacy = privacy;
+}
+
+- (BOOL)geolocationEnabled
+{
+    NSParameterAssert(self.settings);
+    return self.settings.geolocationEnabled;
+}
+
+- (void)setGeolocationEnabled:(BOOL)geolocationEnabled
+{
+    NSParameterAssert(self.settings);
+    self.settings.geolocationEnabled = geolocationEnabled;
 }
 
 @end
