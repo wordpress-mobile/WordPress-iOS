@@ -42,10 +42,14 @@ class MyProfileViewController: UITableViewController {
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+
+        service.refreshSettings({ _ in })
     }
 
     override func viewWillAppear(animated: Bool) {
-        subscribeSettings()
+        if settingsSubscription == nil {
+            subscribeSettings()
+        }
     }
 
     override func viewWillDisappear(animated: Bool) {
@@ -58,22 +62,22 @@ class MyProfileViewController: UITableViewController {
         let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
             value: settings?.firstName ?? "",
-            action: editableTextRowAction)
+            action: editableTextRowAction(AccountSettingsChange.FirstName))
 
         let lastNameRow = EditableTextRow(
             title: NSLocalizedString("Last Name", comment: "My Profile last name label"),
             value: settings?.lastName ?? "",
-            action: editableTextRowAction)
+            action: editableTextRowAction(AccountSettingsChange.LastName))
 
         let displayNameRow = EditableTextRow(
             title: NSLocalizedString("Display Name", comment: "My Profile display name label"),
             value: settings?.displayName ?? "",
-            action: editableTextRowAction)
+            action: editableTextRowAction(AccountSettingsChange.DisplayName))
 
         let aboutMeRow = EditableTextRow(
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: settings?.aboutMe ?? "",
-            action: editableTextRowAction)
+            action: editableTextRowAction(AccountSettingsChange.AboutMe))
 
         viewModel =  ImmuTable(sections: [
             ImmuTableSection(rows: [
@@ -90,6 +94,7 @@ class MyProfileViewController: UITableViewController {
             [unowned self]
             (settings) -> Void in
 
+            DDLogSwift.logDebug("Got settings \(settings)")
             self.buildViewModel(settings)
         })
     }
@@ -100,14 +105,14 @@ class MyProfileViewController: UITableViewController {
 
     // MARK: - Cell Actions
 
-    func editableTextRowAction(row: ImmuTableRow) {
+    func editableTextRowAction(changeType: String -> AccountSettingsChange)(row: ImmuTableRow) {
         let row = row as! EditableTextRow
-        let controller = controllerForEditableText(row)
+        let controller = controllerForEditableText(row, changeType: changeType)
 
         self.navigationController?.pushViewController(controller, animated: true)
     }
 
-    func controllerForEditableText(row: EditableTextRow) -> SettingsTextViewController {
+    func controllerForEditableText(row: EditableTextRow, changeType: String -> AccountSettingsChange) -> SettingsTextViewController {
         let title = row.title
         let value = row.value
 
@@ -119,9 +124,11 @@ class MyProfileViewController: UITableViewController {
 
         controller.title = title
         controller.onValueChanged = {
+            [unowned self]
             value in
 
-            // TODO: to be implemented (@koke 2015-11-17)
+            let change = changeType(value)
+            self.service.saveChange(change)
             DDLogSwift.logDebug("\(title) changed: \(value)")
         }
 
