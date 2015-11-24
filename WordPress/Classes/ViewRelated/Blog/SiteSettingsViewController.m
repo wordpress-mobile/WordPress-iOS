@@ -630,10 +630,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     switch (row) {
         case SiteSettingsWritingDefaultCategory:{
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            NSNumber *defaultCategoryID = self.blog.defaultCategoryID;
-            if (!defaultCategoryID) {
-                defaultCategoryID = @(PostCategoryUncategorized);
-            }
+            NSNumber *defaultCategoryID = self.blog.defaultCategoryID ?: @(PostCategoryUncategorized);
             PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
             NSArray *currentSelection = @[];
             if (postCategory){
@@ -822,13 +819,15 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)saveSettings
 {
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    if ([self.blog hasChanges]) {
-        [blogService updateSettingsForBlog:self.blog success:^{
-        } failure:^(NSError *error) {
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
-        }];
+    if (!self.blog.settings.hasChanges) {
+        return;
     }
+    
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [blogService updateSettingsForBlog:self.blog success:nil failure:^(NSError *error) {
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
+        DDLogError(@"Error while trying to update BlogSettings: %@", error);
+    }];
 }
 
 - (IBAction)cancel:(id)sender

@@ -270,9 +270,7 @@ import WordPressShared
     
     // MARK: - Action Handlers
     @IBAction public func undeleteWasPressed(sender: AnyObject) {
-        if let handler = onUndelete {
-            handler()
-        }
+        onUndelete?()
     }
     
     
