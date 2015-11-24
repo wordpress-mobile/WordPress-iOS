@@ -32,10 +32,8 @@ pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'Simperium', '0.8.9'
 pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
 pod 'WordPress-iOS-Shared', '0.5.0'
-#pod 'WordPress-iOS-Editor', '1.0'
-pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :branch => 'fix/framework-support-2'
-#pod 'WordPressCom-Stats-iOS', '0.4.10'
-pod 'WordPressCom-Stats-iOS', :branch => 'fix/framework-support-take-2', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
+pod 'WordPress-iOS-Editor', '1.1'
+pod 'WordPressCom-Stats-iOS', '0.5.0'
 pod 'WordPressCom-Analytics-iOS', '0.1.0'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
 pod 'WPMediaPicker', '~>0.6.1'
@@ -43,8 +41,7 @@ pod 'ReactiveCocoa', '~> 2.4.7'
 pod 'FormatterKit', '~> 1.8.0'
 
 target 'WordPressTodayWidget', :exclusive => true do
-  #pod 'WordPressCom-Stats-iOS/Services', '0.4.10'
-  pod 'WordPressCom-Stats-iOS/Services', :branch => 'fix/framework-support-take-2', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
+  pod 'WordPressCom-Stats-iOS/Services', '0.5.0'
 end
 
 target :WordPressTest, :exclusive => true do
