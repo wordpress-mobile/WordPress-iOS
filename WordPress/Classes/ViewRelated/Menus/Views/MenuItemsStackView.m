@@ -12,7 +12,11 @@
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) NSMutableSet *itemViews;
 @property (nonatomic, strong) NSMutableSet *insertionViews;
-@property (nonatomic, strong) MenuItemView *activeItemView;
+@property (nonatomic, strong) MenuItemView *itemViewForInsertionToggling;
+@property (nonatomic, assign) CGPoint touchesBeganLocation;
+@property (nonatomic, assign) CGPoint touchesMovedLocation;
+@property (nonatomic, assign) BOOL isOrdering;
+@property (nonatomic, strong) MenuItemView *itemViewForOrdering;
 
 @end
 
@@ -115,7 +119,7 @@
 
 - (void)insertInsertionItemViewsAroundItemView:(MenuItemView *)toggledItemView
 {
-    self.activeItemView = toggledItemView;
+    self.itemViewForInsertionToggling = toggledItemView;
     
     self.insertionViews = [NSMutableSet setWithCapacity:3];
     [self addNewInsertionViewWithType:MenuItemInsertionViewTypeAbove forItemView:toggledItemView];
@@ -168,7 +172,7 @@
     self.insertionViews = nil;
     [self.stackView setNeedsLayout];
     
-    self.activeItemView = nil;
+    self.itemViewForInsertionToggling = nil;
 }
 
 - (void)removeItemInsertionViews:(BOOL)animated
@@ -178,7 +182,7 @@
         return;
     }
     
-    CGRect previousRect = self.activeItemView.frame;
+    CGRect previousRect = self.itemViewForInsertionToggling.frame;
     CGRect updatedRect = previousRect;
     // since we are removing content above the toggledItemView, the toggledItemView (focus) will move upwards with the updated content size
     updatedRect.origin.y -= MenuItemsStackableViewDefaultHeight;
@@ -234,84 +238,101 @@
     return itemViewBelow;
 }
 
-#pragma mark - MenuItemsStackableViewDelegate
+#pragma mark - touches
 
-- (void)itemsStackableViewDidBeginReordering:(MenuItemsStackableView *)stackableView
+- (void)resetTouchesMovedObservationVector
 {
+    self.touchesBeganLocation = self.touchesMovedLocation;
+}
+
+- (void)updateWithTouchesStarted:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    self.touchesBeganLocation = [[touches anyObject] locationInView:self];
+}
+
+- (void)updateWithTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    CGPoint location = [[touches anyObject] locationInView:self];
+    
+    if(!self.isOrdering) {
+        for(MenuItemView *itemView in self.itemViews) {
+            if(CGRectContainsPoint(itemView.frame, location)) {
+                [self beginOrdering:itemView];
+                break;
+            }
+        }
+    }else {
+        
+        CGPoint startLocation = self.touchesBeganLocation;
+        self.touchesMovedLocation = location;
+        CGPoint vector = CGPointZero;
+        vector.x = location.x - startLocation.x;
+        vector.y = location.y - startLocation.y;
+        
+        [self orderingTouchesMoved:touches withEvent:event vector:vector];
+    }
+}
+
+- (void)updateWithTouchesStopped:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    self.touchesBeganLocation = CGPointZero;
+    self.touchesMovedLocation = CGPointZero;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    [self updateWithTouchesStarted:touches withEvent:event];
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesMoved:touches withEvent:event];
+    [self updateWithTouchesMoved:touches withEvent:event];
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    [self updateWithTouchesStopped:touches withEvent:event];
+}
+
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesCancelled:touches withEvent:event];
+    [self updateWithTouchesStopped:touches withEvent:event];
+}
+
+#pragma mark - ordering
+
+- (void)beginOrdering:(MenuItemView *)orderingView
+{
+    self.isOrdering = YES;
+    self.itemViewForOrdering = orderingView;
     [self.delegate itemsView:self prefersScrollingEnabled:NO];
 }
 
-- (void)itemsStackableView:(MenuItemsStackableView *)stackableView orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
+- (void)orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
 {
-    if(![stackableView isKindOfClass:[MenuItemsStackableView class]]) {
-        return;
-    }
-
     const CGPoint touchPoint = [[touches anyObject] locationInView:self];
-    MenuItemView *selectedItemView = (MenuItemView *)stackableView;
+    MenuItemView *selectedItemView = self.itemViewForOrdering;
     
     // index of the itemView in the arrangedSubViews list
-    const NSUInteger selectedItemViewIndex = [self.stackView.arrangedSubviews indexOfObject:selectedItemView];
+//    const NSUInteger selectedItemViewIndex = [self.stackView.arrangedSubviews indexOfObject:selectedItemView];
     
     //// horiztonal indentation detection (child relationships)
     //// detect if the user is moving horizontally to the right or left to change the indentation
     
     // first check to see if we should pay attention to touches that might signal a change in indentation
-    const BOOL detectedHorizontalIndentationTouches = fabs(vector.x) > ((selectedItemView.frame.size.width * 5.0) / 100); // a travel of x% should be considered
-    const BOOL detectedVerticalIndentationTouches = fabs(vector.y) > ((selectedItemView.frame.size.height * 20.0) / 100); // a travel of y% should be considered
+    const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > ((selectedItemView.frame.size.width * 5.0) / 100); // a travel of x% should be considered
 
-    if(detectedHorizontalIndentationTouches || detectedVerticalIndentationTouches) {
-     
-        // look for any itemViews that might be above the selectedItemView
-        MenuItemView *itemViewAboveSelected = [self arrangedItemViewAboveItemView:selectedItemView];
+    if(detectedHorizontalOrderingTouches) {
         
-        // if there is an itemView above the selectedItemView, check for touches signaling a change in indentation
-        if(itemViewAboveSelected && detectedHorizontalIndentationTouches) {
-            if(vector.x > 0) {
-                // more indentation
-                NSInteger indentation = selectedItemView.indentationLevel + 1;
-                const NSInteger maxIndentation = itemViewAboveSelected.indentationLevel + 1;
-                if(indentation > maxIndentation) {
-                    indentation = maxIndentation;
-                }
-                selectedItemView.indentationLevel = indentation;
-            }else {
-                // less indentation
-                NSInteger indentation = selectedItemView.indentationLevel - 1;
-                if(indentation < 0) {
-                    indentation = 0;
-                }
-                selectedItemView.indentationLevel = indentation;
-            }
-        }
+        // detect the child/parent relationship changes and update the model
         
-        if(detectedVerticalIndentationTouches) {
-            
-            if(vector.y < 0) {
-                
-                if(!itemViewAboveSelected) {
-                    selectedItemView.indentationLevel = 0;
-                }else {
-                    if(selectedItemView.indentationLevel < itemViewAboveSelected.indentationLevel) {
-                        selectedItemView.indentationLevel = itemViewAboveSelected.indentationLevel;
-                    }
-                }
-                
-            }else {
-                
-                MenuItemView *itemViewBelowSelected = [self arrangedItemViewBelowItemView:selectedItemView];
-                if(!itemViewBelowSelected) {
-                    selectedItemView.indentationLevel = 0;
-                }else {
-                    if(selectedItemView.indentationLevel > itemViewBelowSelected.indentationLevel) {
-                        selectedItemView.indentationLevel = itemViewBelowSelected.indentationLevel;
-                    }
-                }
-            }
-        }
         
         // reset the vector to observe the next delta of interest
-        [selectedItemView resetOrderingTouchesMovedVector];
+        [self resetTouchesMovedObservationVector];
     }
     
     if(!CGRectContainsPoint(selectedItemView.frame, touchPoint)) {
@@ -327,23 +348,23 @@
             const CGRect orderingDetectionRect = CGRectInset(itemView.frame, 10.0, 10.0);
             if(CGRectContainsPoint(orderingDetectionRect, touchPoint)) {
                 
-                selectedItemView.indentationLevel = itemView.indentationLevel;
-                [self.stackView bringSubviewToFront:selectedItemView];
-                
-                [UIView animateWithDuration:0.15 animations:^{
-                    // update the index of the itemView to the index of the selectedItemView to perform a swap
-                    [self.stackView insertArrangedSubview:itemView atIndex:selectedItemViewIndex];
-                }];
+                // reorder the model
                 break;
             }
         }
     }
+    
+    // update the views based on the model changes
 }
 
-- (void)itemsStackableViewDidEndReordering:(MenuItemsStackableView *)stackableView
+- (void)endReordering
 {
     [self.delegate itemsView:self prefersScrollingEnabled:YES];
 }
+
+#pragma mark - MenuItemsStackableViewDelegate
+
+
 
 #pragma mark - MenuItemViewDelegate
 

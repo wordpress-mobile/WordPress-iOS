@@ -217,11 +217,6 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
     return button;
 }
 
-- (void)resetOrderingTouchesMovedVector
-{
-    self.touchesBeganLocation = self.touchesMovedLocation;
-}
-
 - (UIColor *)contentViewBackgroundColor
 {
     UIColor *color = nil;
@@ -368,80 +363,6 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
     UIColor *borderColor = showsReordering ? [WPStyleGuide lightBlue] : [WPStyleGuide greyLighten30];
     CGContextSetStrokeColorWithColor(context, [borderColor CGColor]);
     CGContextStrokePath(context);
-}
-
-#pragma mark - touches
-
-- (void)updateWithTouchesStarted:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    self.highlighted = YES;
-    self.touchesBeganLocation = [[touches anyObject] locationInView:self];
-}
-
-- (void)updateWithTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    if(self.reorderingEnabled) {
-        
-        if(!self.observingReorderingTouches) {
-         
-            self.showsReorderingOptions = YES;
-            self.observingReorderingTouches = YES;
-            self.highlighted = NO;
-            
-            if([self.delegate respondsToSelector:@selector(itemsStackableViewDidBeginReordering:)]) {
-                [self.delegate itemsStackableViewDidBeginReordering:self];
-            }
-            
-        }else {
-                
-            CGPoint startLocation = self.touchesBeganLocation;
-            CGPoint location = [[touches anyObject] locationInView:self];
-            self.touchesMovedLocation = location;
-            CGPoint vector = CGPointZero;
-            vector.x = location.x - startLocation.x;
-            vector.y = location.y - startLocation.y;
-            
-            if([self.delegate respondsToSelector:@selector(itemsStackableView:orderingTouchesMoved:withEvent:vector:)]) {
-                [self.delegate itemsStackableView:self orderingTouchesMoved:touches withEvent:event vector:vector];
-            }
-        }
-    }
-}
-
-- (void)updateWithTouchesStopped:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    if(self.reorderingEnabled) {
-        self.showsReorderingOptions = NO;
-        
-        if([self.delegate respondsToSelector:@selector(itemsStackableViewDidEndReordering:)]) {
-            [self.delegate itemsStackableViewDidEndReordering:self];
-        }
-    }
-    
-    self.highlighted = NO;
-    self.touchesBeganLocation = CGPointZero;
-    self.touchesMovedLocation = CGPointZero;
-    self.observingReorderingTouches = NO;
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [self updateWithTouchesStarted:touches withEvent:event];
-}
-
-- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [self updateWithTouchesMoved:touches withEvent:event];
-}
-
-- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [self updateWithTouchesStopped:touches withEvent:event];
-}
-
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [self updateWithTouchesStopped:touches withEvent:event];
 }
 
 @end
