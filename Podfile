@@ -35,7 +35,7 @@ pod 'WordPress-iOS-Editor', '1.0.1'
 pod 'WordPressCom-Stats-iOS', '0.4.12'
 pod 'WordPressCom-Analytics-iOS', '0.0.41'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
-pod 'WPMediaPicker', '~> 0.7.0'
+pod 'WPMediaPicker', '~> 0.7.1'
 pod 'ReactiveCocoa', '~> 2.4.7'
 pod 'FormatterKit', '~> 1.8.0'
 
