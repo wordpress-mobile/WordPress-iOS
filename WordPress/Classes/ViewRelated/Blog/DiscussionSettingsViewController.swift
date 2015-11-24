@@ -159,17 +159,17 @@ public class DiscussionSettingsViewController : UITableViewController
             Row(style:      .Switch,
                 title:      NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
                 boolValue:  self.settings.commentsAllowed,
-                handler:    self.pressedAllowComments),
+                handler:    nil),
             
             Row(style:      .Switch,
                 title:      NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks"),
                 boolValue:  self.settings.pingbackOutboundEnabled,
-                handler:    self.pressedSendPingbacks),
+                handler:    nil),
             
             Row(style:      .Switch,
                 title:      NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"),
                 boolValue:  self.settings.pingbackInboundEnabled,
-                handler:    self.pressedReceivePingbacks)
+                handler:    nil)
         ]
         
         return Section(headerText: headerText, footerText: footerText, rows: rows)
@@ -181,36 +181,36 @@ public class DiscussionSettingsViewController : UITableViewController
             Row(style:      .Switch,
                 title:      NSLocalizedString("Require name & email", comment: "Settings: Comments Approval settings"),
                 boolValue:  self.settings.commentsRequireNameAndEmail,
-                handler:    self.pressedRequireRegistration),
+                handler:    nil),
             
             Row(style:      .Switch,
                 title:      NSLocalizedString("Require users to sign in", comment: "Settings: Comments Approval settings"),
                 boolValue:  self.settings.commentsRequireRegistration,
-                handler:    self.pressedRequireRegistration),
+                handler:    nil),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Close After", comment: "Settings: Close comments after X period"),
-                handler:    self.pressedCloseAfter),
+                handler:    nil),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order"),
-                handler:    self.pressedSortBy),
+                handler:    nil),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences"),
-                handler:    self.pressedThreading),
+                handler:    nil),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences"),
-                handler:    self.pressedPaging),
+                handler:    nil),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Automatically Approve", comment: "Settings: Comments Approval settings"),
-                handler:    self.pressedAutomaticallyApprove),
+                handler:    nil),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Links in comments", comment: "Settings: Comments Approval settings"),
-                handler:    self.pressedLinksInComments),
+                handler:    nil),
         ]
 
         return Section(headerText: headerText, rows: rows)
@@ -220,11 +220,11 @@ public class DiscussionSettingsViewController : UITableViewController
         let rows = [
             Row(style:      .Value1,
                 title:      NSLocalizedString("Hold for Moderation", comment: "Settings: Comments Moderation"),
-                handler:    self.pressedModeration ),
+                handler:    nil ),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Blacklist", comment: "Settings: Comments Blacklist"),
-                handler:    self.pressedBlacklist )
+                handler:    nil )
         ]
         
         return Section(rows: rows)
@@ -369,7 +369,8 @@ public class DiscussionSettingsViewController : UITableViewController
     
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        testing = nil
+// Note: Uncommenting the following fixes the retain cycle
+//        testing?.handler = nil
     }
     
     public func hack(sender: AnyObject) {
