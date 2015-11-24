@@ -84,6 +84,8 @@ public protocol ThemePresenter: class {
         searchController.searchBar.autocapitalizationType = .None
         searchController.searchBar.autocorrectionType = .No
         searchController.searchBar.barTintColor = WPStyleGuide.wordPressBlue()
+        searchController.searchBar.layer.borderWidth = 1;
+        searchController.searchBar.layer.borderColor = WPStyleGuide.wordPressBlue().CGColor;
 
         return searchController
     }()
