@@ -10,7 +10,7 @@
 #import "SettingsViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "TodayExtensionService.h"
-#import <WordPressCom_Stats_iOS/WPStatsViewController.h>
+#import <WordPressComStatsiOS/WPStatsViewController.h>
 #import <WordPressShared/WPNoResultsView.h>
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
