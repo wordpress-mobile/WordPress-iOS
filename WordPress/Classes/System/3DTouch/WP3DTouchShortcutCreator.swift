@@ -20,6 +20,7 @@ public class WP3DTouchShortcutCreator: NSObject
     private let newPostShortcutIconImageName = "icon-new-post"
     
     override public init() {
+        super.init()
         application = UIApplication.sharedApplication()
         mainContext = ContextManager.sharedInstance().mainContext
         blogService = BlogService(managedObjectContext: mainContext)
