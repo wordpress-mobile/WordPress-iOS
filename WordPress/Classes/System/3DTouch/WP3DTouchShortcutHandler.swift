@@ -26,7 +26,10 @@ public class WP3DTouchShortcutHandler: NSObject
     public func handleShortcutItem(shortcutItem: UIApplicationShortcutItem) -> Bool {
         var handled = false
         
-        guard let shortCutType = shortcutItem.type as String? else { return false }
+        guard let shortCutType = shortcutItem.type as String? else {
+                    return false
+                }
+        
         let tabBarController: WPTabBarController = WPTabBarController.sharedInstance()
         
         switch shortCutType {
