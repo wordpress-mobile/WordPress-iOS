@@ -13,6 +13,7 @@ public class DiscussionSettingsViewController : UITableViewController
     private var settings : BlogSettings!
 
     
+    
     // MARK: - Initializers
     public convenience init(blog: Blog) {
         self.init(style: .Grouped)
@@ -107,12 +108,12 @@ public class DiscussionSettingsViewController : UITableViewController
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
         
-        rowAtIndexPath(indexPath).handler?()
+        rowAtIndexPath(indexPath).handler?(tableView)
     }
     
     
     
-    // MARK: - Private Methods
+    // MARK: - Cell Setup Helpers
     private func rowAtIndexPath(indexPath: NSIndexPath) -> Row {
         return sections[indexPath.section].rows[indexPath.row]
     }
@@ -140,9 +141,9 @@ public class DiscussionSettingsViewController : UITableViewController
     private func configureSwitchCell(cell: SwitchTableViewCell, row: Row) {
         cell.name       = row.title ?? String()
         cell.on         = row.boolValue ?? true
-//        cell.onChange = { [weak self] (newValue: Bool) in
-//            
-//        }
+        cell.onChange = { (newValue: Bool) in
+            row.handler?(newValue)
+        }
     }
     
     
@@ -158,17 +159,17 @@ public class DiscussionSettingsViewController : UITableViewController
             Row(style:      .Switch,
                 title:      NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
                 boolValue:  self.settings.commentsAllowed,
-                handler:    nil),
+                handler:    self.pressedAllowComments),
             
             Row(style:      .Switch,
                 title:      NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks"),
                 boolValue:  self.settings.pingbackOutboundEnabled,
-                handler:    nil),
+                handler:    self.pressedSendPingbacks),
             
             Row(style:      .Switch,
                 title:      NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"),
                 boolValue:  self.settings.pingbackInboundEnabled,
-                handler:    nil)
+                handler:    self.pressedReceivePingbacks)
         ]
         
         return Section(headerText: headerText, footerText: footerText, rows: rows)
@@ -179,35 +180,37 @@ public class DiscussionSettingsViewController : UITableViewController
         let rows = [
             Row(style:      .Switch,
                 title:      NSLocalizedString("Require name & email", comment: "Settings: Comments Approval settings"),
-                handler:    nil),
+                boolValue:  self.settings.commentsRequireNameAndEmail,
+                handler:    self.pressedRequireRegistration),
             
             Row(style:      .Switch,
                 title:      NSLocalizedString("Require users to sign in", comment: "Settings: Comments Approval settings"),
-                handler:    nil),
+                boolValue:  self.settings.commentsRequireRegistration,
+                handler:    self.pressedRequireRegistration),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Close After", comment: "Settings: Close comments after X period"),
-                handler:    { self.showCloseAfterSettings() }),
+                handler:    self.pressedCloseAfter),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order"),
-                handler:    { self.showSortingSettings() }),
+                handler:    self.pressedSortBy),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences"),
-                handler:    { self.showThreadingSettings() }),
+                handler:    self.pressedThreading),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences"),
-                handler:    { self.showPagingSettings() }),
+                handler:    self.pressedPaging),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Automatically Approve", comment: "Settings: Comments Approval settings"),
-                handler:    { self.showAutomaticallyApprove() }),
+                handler:    self.pressedAutomaticallyApprove),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Links in comments", comment: "Settings: Comments Approval settings"),
-                handler:    { self.showLinksInComments() }),
+                handler:    self.pressedLinksInComments),
         ]
 
         return Section(headerText: headerText, rows: rows)
@@ -217,18 +220,39 @@ public class DiscussionSettingsViewController : UITableViewController
         let rows = [
             Row(style:      .Value1,
                 title:      NSLocalizedString("Hold for Moderation", comment: "Settings: Comments Moderation"),
-                handler:    { self.showModerationSettings() } ),
+                handler:    self.pressedModeration ),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Blacklist", comment: "Settings: Comments Blacklist"),
-                handler:    { self.showBlacklistSettings() } )
+                handler:    self.pressedBlacklist )
         ]
         
         return Section(rows: rows)
     }
     
     
-    private func showCloseAfterSettings() {
+    // MARK: - Row Handlers
+    private func pressedAllowComments(sender: AnyObject) {
+        
+    }
+
+    private func pressedSendPingbacks(sender: AnyObject) {
+        
+    }
+    
+    private func pressedReceivePingbacks(sender: AnyObject) {
+        
+    }
+
+    private func pressedRequireNameAndEmail(sender: AnyObject) {
+        
+    }
+    
+    private func pressedRequireRegistration(sender: AnyObject) {
+        
+    }
+    
+    private func pressedCloseAfter(sender: AnyObject) {
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Close After", comment: "")
         settingsViewController.currentValue     = "30"
@@ -240,7 +264,7 @@ public class DiscussionSettingsViewController : UITableViewController
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
-    private func showSortingSettings() {
+    private func pressedSortBy(sender: AnyObject) {
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Sort By", comment: "")
         settingsViewController.currentValue     = "desc"
@@ -252,7 +276,7 @@ public class DiscussionSettingsViewController : UITableViewController
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
-    private func showThreadingSettings() {
+    private func pressedThreading(sender: AnyObject) {
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Threading", comment: "")
         settingsViewController.currentValue     = "2"
@@ -264,7 +288,7 @@ public class DiscussionSettingsViewController : UITableViewController
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
-    private func showPagingSettings() {
+    private func pressedPaging(sender: AnyObject) {
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Paging", comment: "")
         settingsViewController.currentValue     = "50"
@@ -276,21 +300,22 @@ public class DiscussionSettingsViewController : UITableViewController
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
-    private func showAutomaticallyApprove() {
+    private func pressedAutomaticallyApprove(sender: AnyObject) {
         
     }
 
-    private func showLinksInComments() {
+    private func pressedLinksInComments(sender: AnyObject) {
         
     }
     
-    private func showModerationSettings() {
+    private func pressedModeration(sender: AnyObject) {
         
     }
     
-    private func showBlacklistSettings() {
+    private func pressedBlacklist(sender: AnyObject) {
         
     }
+    
     
     
     // MARK: - Private Nested Classes
@@ -310,8 +335,8 @@ public class DiscussionSettingsViewController : UITableViewController
         let style           : Style
         let title           : String?
         let details         : String?
-        let boolValue       : Bool?
         let handler         : Handler?
+        var boolValue       : Bool?
         
         init(style: Style, title: String? = nil, details: String? = nil, boolValue: Bool? = nil, handler: Handler? = nil) {
             self.style      = style
@@ -321,11 +346,42 @@ public class DiscussionSettingsViewController : UITableViewController
             self.handler    = handler
         }
         
-        typealias Handler = (() -> ())
+        typealias Handler = (AnyObject -> Void)
         
         enum Style : String {
             case Value1     = "Value1"
             case Switch     = "SwitchCell"
         }
     }
+    
+    
+    
+    // MARK: HACK HACK HACK. Remove Me later!
+    
+    deinit {
+        print("Deinitialized")
+    }
+    
+    public override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        testing = Test(handler: hack)
+    }
+    
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        testing = nil
+    }
+    
+    public func hack(sender: AnyObject) {
+        print("Executed!")
+    }
+    
+    public class Test {
+        var handler : (AnyObject -> Void)?
+        
+        init(handler : (AnyObject -> Void)) {
+            self.handler = handler
+        }
+    }
+    public var testing : Test?
 }
