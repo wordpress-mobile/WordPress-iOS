@@ -10,14 +10,13 @@ import Foundation
 public class DiscussionSettingsViewController : UITableViewController
 {
     // MARK: - Private Properties
-    private var blog : Blog!
-
+    private var settings : BlogSettings!
 
     
     // MARK: - Initializers
     public convenience init(blog: Blog) {
         self.init(style: .Grouped)
-        self.blog = blog
+        self.settings = blog.settings
     }
     
     
@@ -108,9 +107,7 @@ public class DiscussionSettingsViewController : UITableViewController
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
         
-        if let handler = rowAtIndexPath(indexPath).handler {
-            handler()
-        }
+        rowAtIndexPath(indexPath).handler?()
     }
     
     
@@ -151,7 +148,7 @@ public class DiscussionSettingsViewController : UITableViewController
     
     // MARK: - Computed Properties
     private var sections : [Section] {
-        return [postsSection, commentsSection, approvalSection, otherSection]
+        return [postsSection, commentsSection, otherSection]
     }
     
     private var postsSection : Section {
@@ -160,14 +157,17 @@ public class DiscussionSettingsViewController : UITableViewController
         let rows = [
             Row(style:      .Switch,
                 title:      NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
+                boolValue:  self.settings.commentsAllowed,
                 handler:    nil),
             
             Row(style:      .Switch,
                 title:      NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks"),
+                boolValue:  self.settings.pingbackOutboundEnabled,
                 handler:    nil),
             
             Row(style:      .Switch,
                 title:      NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"),
+                boolValue:  self.settings.pingbackInboundEnabled,
                 handler:    nil)
         ]
         
@@ -177,6 +177,14 @@ public class DiscussionSettingsViewController : UITableViewController
     private var commentsSection : Section {
         let headerText = NSLocalizedString("Comments", comment: "Settings: Comment Sections")
         let rows = [
+            Row(style:      .Switch,
+                title:      NSLocalizedString("Require name & email", comment: "Settings: Comments Approval settings"),
+                handler:    nil),
+            
+            Row(style:      .Switch,
+                title:      NSLocalizedString("Require users to sign in", comment: "Settings: Comments Approval settings"),
+                handler:    nil),
+            
             Row(style:      .Value1,
                 title:      NSLocalizedString("Close After", comment: "Settings: Close comments after X period"),
                 handler:    { self.showCloseAfterSettings() }),
@@ -193,34 +201,15 @@ public class DiscussionSettingsViewController : UITableViewController
                 title:      NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences"),
                 handler:    { self.showPagingSettings() }),
             
-            Row(style:      .Switch,
-                title:      NSLocalizedString("Must be Manually Approved", comment: "Settings: Comments Approval settings"),
-                handler:    nil),
+            Row(style:      .Value1,
+                title:      NSLocalizedString("Automatically Approve", comment: "Settings: Comments Approval settings"),
+                handler:    { self.showAutomaticallyApprove() }),
             
-            Row(style:      .Switch,
-                title:      NSLocalizedString("Must include name & email", comment: "Settings: Comments Approval settings"),
-                handler:    nil),
-            
-            Row(style:      .Switch,
-                title:      NSLocalizedString("Users must be signed in", comment: "Settings: Comments Approval settings"),
-                handler:    nil)
+            Row(style:      .Value1,
+                title:      NSLocalizedString("Links in comments", comment: "Settings: Comments Approval settings"),
+                handler:    { self.showLinksInComments() }),
         ]
 
-        return Section(headerText: headerText, rows: rows)
-    }
-    
-    private var approvalSection : Section {
-        let headerText = NSLocalizedString("Automatically Approve Comments", comment: "Settings: Auto-Approvals Section Header")
-        let rows = [
-            Row(style:      .Switch,
-                title:      NSLocalizedString("From known users", comment: "Settings: Comments Auto Approval"),
-                handler:    nil),
-    
-            Row(style:      .Switch,
-                title:      NSLocalizedString("With multiple links", comment: "Settings: Comments Auto Approval"),
-                handler:    nil)
-        ]
-        
         return Section(headerText: headerText, rows: rows)
     }
     
@@ -286,7 +275,15 @@ public class DiscussionSettingsViewController : UITableViewController
         
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
+    
+    private func showAutomaticallyApprove() {
+        
+    }
 
+    private func showLinksInComments() {
+        
+    }
+    
     private func showModerationSettings() {
         
     }
@@ -296,7 +293,7 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     
-    // MARK: - Public Nested Classes
+    // MARK: - Private Nested Classes
     private class Section {
         let headerText      : String?
         let footerText      : String?
