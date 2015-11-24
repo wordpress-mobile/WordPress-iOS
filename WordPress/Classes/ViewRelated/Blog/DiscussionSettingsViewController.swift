@@ -159,17 +159,23 @@ public class DiscussionSettingsViewController : UITableViewController
             Row(style:      .Switch,
                 title:      NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
                 boolValue:  self.settings.commentsAllowed,
-                handler:    nil),
+                handler:    {   [weak self] in
+                                self?.pressedCommentsAllowed($0)
+                            }),
             
             Row(style:      .Switch,
                 title:      NSLocalizedString("Send Pingbacks", comment: "Settings: Sending Pingbacks"),
                 boolValue:  self.settings.pingbackOutboundEnabled,
-                handler:    nil),
+                handler:    {   [weak self] in
+                                self?.pressedPingbacksOutbound($0)
+                            }),
             
             Row(style:      .Switch,
                 title:      NSLocalizedString("Receive Pingbacks", comment: "Settings: Receiving Pingbacks"),
                 boolValue:  self.settings.pingbackInboundEnabled,
-                handler:    nil)
+                handler:    {   [weak self] in
+                                self?.pressedPingbacksInbound($0)
+                            })
         ]
         
         return Section(headerText: headerText, footerText: footerText, rows: rows)
@@ -181,36 +187,52 @@ public class DiscussionSettingsViewController : UITableViewController
             Row(style:      .Switch,
                 title:      NSLocalizedString("Require name & email", comment: "Settings: Comments Approval settings"),
                 boolValue:  self.settings.commentsRequireNameAndEmail,
-                handler:    nil),
+                handler:    {   [weak self] in
+                                self?.pressedRequireNameAndEmail($0)
+                            }),
             
             Row(style:      .Switch,
                 title:      NSLocalizedString("Require users to sign in", comment: "Settings: Comments Approval settings"),
                 boolValue:  self.settings.commentsRequireRegistration,
-                handler:    nil),
+                handler:    {   [weak self] in
+                                self?.pressedRequireRegistration($0)
+                            }),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Close After", comment: "Settings: Close comments after X period"),
-                handler:    nil),
+                handler:    {   [weak self] in
+                                self?.pressedCloseAfter($0)
+                            }),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order"),
-                handler:    nil),
+                handler:    {   [weak self] in
+                                self?.pressedSortBy($0)
+                            }),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences"),
-                handler:    nil),
+                handler:    {   [weak self] in
+                                self?.pressedThreading($0)
+                            }),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences"),
-                handler:    nil),
+                handler:    {   [weak self] in
+                                self?.pressedPaging($0)
+                            }),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Automatically Approve", comment: "Settings: Comments Approval settings"),
-                handler:    nil),
+                handler:    {   [weak self] in
+                                self?.pressedAutomaticallyApprove($0)
+                            }),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Links in comments", comment: "Settings: Comments Approval settings"),
-                handler:    nil),
+                handler:    {   [weak self] in
+                                self?.pressedLinksInComments($0)
+                            }),
         ]
 
         return Section(headerText: headerText, rows: rows)
@@ -220,11 +242,11 @@ public class DiscussionSettingsViewController : UITableViewController
         let rows = [
             Row(style:      .Value1,
                 title:      NSLocalizedString("Hold for Moderation", comment: "Settings: Comments Moderation"),
-                handler:    nil ),
+                handler:    self.pressedModeration),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Blacklist", comment: "Settings: Comments Blacklist"),
-                handler:    nil )
+                handler:    self.pressedBlacklist)
         ]
         
         return Section(rows: rows)
@@ -232,15 +254,15 @@ public class DiscussionSettingsViewController : UITableViewController
     
     
     // MARK: - Row Handlers
-    private func pressedAllowComments(sender: AnyObject) {
+    private func pressedCommentsAllowed(sender: AnyObject) {
         
     }
 
-    private func pressedSendPingbacks(sender: AnyObject) {
+    private func pressedPingbacksInbound(sender: AnyObject) {
         
     }
     
-    private func pressedReceivePingbacks(sender: AnyObject) {
+    private func pressedPingbacksOutbound(sender: AnyObject) {
         
     }
 
@@ -353,36 +375,4 @@ public class DiscussionSettingsViewController : UITableViewController
             case Switch     = "SwitchCell"
         }
     }
-    
-    
-    
-    // MARK: HACK HACK HACK. Remove Me later!
-    
-    deinit {
-        print("Deinitialized")
-    }
-    
-    public override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        testing = Test(handler: hack)
-    }
-    
-    public override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-// Note: Uncommenting the following fixes the retain cycle
-//        testing?.handler = nil
-    }
-    
-    public func hack(sender: AnyObject) {
-        print("Executed!")
-    }
-    
-    public class Test {
-        var handler : (AnyObject -> Void)?
-        
-        init(handler : (AnyObject -> Void)) {
-            self.handler = handler
-        }
-    }
-    public var testing : Test?
 }
