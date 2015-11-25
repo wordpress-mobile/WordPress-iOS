@@ -201,6 +201,9 @@ public class ThemeBrowserCell : UICollectionViewCell {
             popover.sourceRect = actionButton.bounds
             popover.permittedArrowDirections = .Any
             popover.canOverlapSourceViewRect = true
+        } else {
+            let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel action title")
+            alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
         }
         alertController.presentFromRootViewController()
     }
