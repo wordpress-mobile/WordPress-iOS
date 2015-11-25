@@ -22,6 +22,7 @@
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
 
+#import <WordPressApi/WordPressApi.h>
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";

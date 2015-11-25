@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared.WPStyleGuide
 
 @objc public class ReaderListStreamHeader: UIView, ReaderStreamHeader
 {

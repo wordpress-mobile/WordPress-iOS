@@ -1,5 +1,6 @@
 import Foundation
-
+import DTCoreText
+import WordPressShared
 
 extension WPStyleGuide
 {

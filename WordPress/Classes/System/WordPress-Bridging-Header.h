@@ -1,11 +1,4 @@
-#import <AFNetworking/AFNetworking.h>
-#import <AFNetworking/UIKit+AFNetworking.h>
-#import <AFNetworking/UIImageView+AFNetworking.h>
-#import <DTCoreText/DTCoreText.h>
 #import <SFHFKeychainUtils.h>
-#import <SVProgressHUD.h>
-#import <WordPress-AppbotX/ABXAppStore.h>
-#import <WordPress-iOS-Shared/UIImage+Util.h>
 
 #import "AccountService.h"
 #import "AppRatingUtility.h"
@@ -24,7 +17,6 @@
 #import "NSAttributedString+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
 #import "NSDate+StringFormatting.h"
-#import "NSDictionary+SafeExpectations.h"
 #import "NSObject+Helpers.h"
 #import "NSURL+Util.h"
 
@@ -52,11 +44,9 @@
 
 #import "UIAlertControllerProxy.h"
 #import "UIDevice+Helpers.h"
-#import "UIImage+Tint.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"
 #import "UIView+Subviews.h"
-#import "UIViewController+SizeClass.h"
 
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
@@ -67,12 +57,12 @@
 #import "WPBlogTableViewCell.h"
 #import "WPContentViewProvider.h"
 #import "WPGUIConstants.h"
-#import "WPFontManager.h"
+#import <WordPressShared/WPFontManager.h>
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPRichTextView.h"
-#import "WPStyleGuide.h"
-#import "WPTableViewCell.h"
+#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/WPTableViewCell.h>
 #import "WPTableViewHandler.h"
-#import "WPTableViewSectionHeaderFooterView.h"
+#import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"

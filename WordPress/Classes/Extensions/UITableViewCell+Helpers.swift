@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared.WPTableViewCell
 
 extension UITableViewCell
 {

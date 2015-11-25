@@ -522,6 +522,74 @@
 
 - (void)testMigrate40to41
 {
+    // Properties
+    NSURL *model40Url = [self urlForModelName:@"WordPress 40" inDirectory:nil];
+    NSURL *model41Url = [self urlForModelName:@"WordPress 41" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress40.sqlite"];
+    
+    // Load a Model 40 Stack
+    NSManagedObjectModel *model40 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model40Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model40];
+    
+    NSDictionary *options = @{
+        NSInferMappingModelAutomaticallyOption          : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+    };
+    
+    NSError *error = nil;
+    [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error];
+    
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+    
+    XCTAssertNil(error, @"Error while loading the PSC for Model 39");
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+    
+    // Insert a Dummy Notification
+    NSNumber *noteID = @(123123123);
+    NSString *simperiumKey = @"42424242";
+    
+    NSManagedObject *note = [NSEntityDescription insertNewObjectForEntityForName:@"Notification" inManagedObjectContext:context];
+    [note setValue:simperiumKey forKey:@"simperiumKey"];
+    [note setValue:noteID forKey:@"id"];
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
+    
+    // Migrate to Model 41
+    NSManagedObjectModel *model41 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model41Url];
+    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
+                                                           ofType:NSSQLiteStoreType
+                                                          toModel:model41
+                                                orderedModelNames:@[@"WordPress 40", @"WordPress 41"]
+                                                            error:&error];
+    if (!migrateResult) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    
+    XCTAssertTrue(migrateResult);
+    
+    // Load a Model 41 Stack
+    NSPersistentStoreCoordinator *psc41 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model41];
+    [psc41 addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error];
+    
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc41;
+    
+    XCTAssertNil(error, @"Error while loading the PSC for Model 41");
+    
+    // Fetch the Notification
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Notification"];
+    request.predicate = [NSPredicate predicateWithFormat:@"simperiumKey == %@", simperiumKey];
+    
+    NSArray *results = [context executeFetchRequest:request error:nil];
+    XCTAssert(results.count == 1, @"Error Fetching Note");
+    
+    NSManagedObject *migratedNote = [results firstObject];
+    XCTAssertEqualObjects([migratedNote valueForKey:@"id"], noteID, @"Oops?");
+}
+
+- (void)testMigrate41to42
+{
     // Migrated Properties
     NSNumber *blogID                        = @(31337);
     NSString *blogName                      = @"Stark Industries";
@@ -565,21 +633,21 @@
         @"relatedPostsShowHeadline"     : relatedPostsShowHeadline,
         @"relatedPostsShowThumbnails"   : relatedPostsShowThumbnails,
     };
-
+    
     // Paths
-    NSURL *model40Url = [self urlForModelName:@"WordPress 40" inDirectory:nil];
     NSURL *model41Url = [self urlForModelName:@"WordPress 41" inDirectory:nil];
-    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress40to41.sqlite"];
+    NSURL *model42Url = [self urlForModelName:@"WordPress 42" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress41to42.sqlite"];
     
     // Load Model 40 and 41
-    NSManagedObjectModel *model40 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model40Url];
     NSManagedObjectModel *model41 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model41Url];
+    NSManagedObjectModel *model42 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model42Url];
     
-    [self cleanModelObjectClassnames:model40];
     [self cleanModelObjectClassnames:model41];
+    [self cleanModelObjectClassnames:model42];
     
     // New Model 40 Stack
-    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model40];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model41];
     
     NSDictionary *options = @{
         NSInferMappingModelAutomaticallyOption          : @(YES),
@@ -611,19 +679,20 @@
     XCTAssertNotNil(ps);
     psc = nil;
     
-    // Migrate to Model 41
+    // Migrate to Model 42
     BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
                                                            ofType:NSSQLiteStoreType
-                                                          toModel:model41
-                                                orderedModelNames:@[@"WordPress 40", @"WordPress 41"]
+                                                          toModel:model42
+                                                orderedModelNames:@[@"WordPress 41", @"WordPress 42"]
                                                             error:&error];
     if (!migrateResult) {
         NSLog(@"Error while migrating: %@", error);
     }
+
     XCTAssertTrue(migrateResult);
     
-    // Load a Model 41 Stack
-    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model41];
+    // Load a Model 42 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model42];
     ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
                            configuration:nil
                                      URL:storeUrl
@@ -645,9 +714,9 @@
     
     
     // Verify the Heavyweight Migration: BlogSettings Entity
-    XCTAssertNoThrow([migratedBlog valueForKey:@"settings"], @"Model 41 supports BlogSettings");
+    XCTAssertNoThrow([migratedBlog valueForKey:@"settings"], @"Model 42 supports BlogSettings");
     NSManagedObject *blogSettings = [migratedBlog valueForKey:@"settings"];
- 
+    
     for (NSString *key in migratedSettingsMap) {
         XCTAssertEqualObjects([blogSettings valueForKey:key], [migratedSettingsMap valueForKey:key], @"Oops");
     }

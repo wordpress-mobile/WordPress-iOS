@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared
 
 public class SeparatorsView : UIView
 {
