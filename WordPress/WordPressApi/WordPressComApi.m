@@ -1,6 +1,6 @@
 #import "WordPressComApi.h"
 #import "NSString+Helpers.h"
-#import <UIDeviceHardware.h>
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "UIDevice+Helpers.h"
 #import "WordPressAppDelegate.h"
 #import "NotificationsManager.h"

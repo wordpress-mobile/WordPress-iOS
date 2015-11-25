@@ -5,7 +5,7 @@
 #import "Blog.h"
 #import "WordPress-Swift.h"
 
-#import <NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
 
 @implementation BlogSyncFacade
 
