@@ -7,12 +7,10 @@
 
 static NSString* const ThemeDomainPublic = @"pub";
 static NSString* const ThemeDomainPremium = @"premium";
-static NSString* const ThemeUrlPreview = @"%@/wp-admin/customize.php?theme=%@/%@";
-static NSString* const ThemeAdminUrlCustomize = @"customize.php?hide_close=true";
+static NSString* const ThemeAdminUrlCustomize = @"customize.php?theme=%@/%@&hide_close=true";
 static NSString* const ThemeUrlDemoParameters = @"?demo=true&iframe=true&theme_preview=true";
 static NSString* const ThemeUrlSupport = @"https://theme.wordpress.com/themes/%@/support/?preview=true&iframe=true";
 static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?preview=true&iframe=true";
-static NSString* const HomeUrlScheme = @"https://";
 
 @implementation Theme
 
@@ -44,7 +42,10 @@ static NSString* const HomeUrlScheme = @"https://";
 
 - (NSString *)customizeUrl
 {
-    return [self.blog adminUrlWithPath:ThemeAdminUrlCustomize];
+    NSString *domain = self.isPremium ? ThemeDomainPremium : ThemeDomainPublic;
+    NSString *tryPath = [NSString stringWithFormat:ThemeAdminUrlCustomize, domain, self.themeId];
+    
+    return [self.blog adminUrlWithPath:tryPath];
 }
 
 - (NSString *)detailsUrl
