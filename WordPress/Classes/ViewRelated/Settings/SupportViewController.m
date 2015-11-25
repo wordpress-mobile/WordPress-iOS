@@ -3,11 +3,11 @@
 #import "ActivityLogViewController.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
-#import <DDFileLogger.h>
+#import <CocoaLumberjack/DDFileLogger.h>
 #import "WPTableViewSectionHeaderFooterView.h"
 #import <Helpshift/Helpshift.h>
 #import "WPAnalytics.h"
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 #import "ContextManager.h"
 #import "WPAccount.h"
 #import "AccountService.h"

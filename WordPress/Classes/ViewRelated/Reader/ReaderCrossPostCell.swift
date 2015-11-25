@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared.WPStyleGuide
 
 public class ReaderCrossPostCell: UITableViewCell
 {
@@ -194,8 +195,10 @@ public class ReaderCrossPostCell: UITableViewCell
     }
 
     private func subDomainNameFromPath(path:String) -> String {
-        let url = NSURL(string: path)!
-        let arr = url.host!.componentsSeparatedByString(".");
-        return "+\(arr.first!)"
+        if let url = NSURL(string: path), host = url.host {
+            let arr = host.componentsSeparatedByString(".")
+            return "+\(arr.first!)"
+        }
+        return ""
     }
 }
