@@ -366,6 +366,22 @@ public class DiscussionSettingsViewController : UITableViewController
     
     
     
+    // MARK: - Persistance!
+    private func saveSettingsIfNeeded() {
+        if !settings.hasChanges {
+            return
+        }
+
+        let service = BlogService(managedObjectContext: settings.managedObjectContext)
+        service.updateSettingsForBlog(settings.blog,
+            success: nil,
+            failure: { (error: NSError!) -> Void in
+                DDLogSwift.logError("Error while persisting settings: \(error)")
+            })
+    }
+    
+    
+    
     // MARK: - Private Nested Classes
     private class Section {
         let headerText      : String?
