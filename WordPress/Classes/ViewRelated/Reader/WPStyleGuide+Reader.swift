@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /**
     A WPStyleGuide extension with styles and methods specific to the

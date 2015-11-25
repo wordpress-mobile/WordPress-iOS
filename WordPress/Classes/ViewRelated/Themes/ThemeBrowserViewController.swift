@@ -1,4 +1,6 @@
 import Foundation
+import WordPressShared.WPStyleGuide
+import WordPressShared.WPNoResultsView
 
 public enum ThemeType {
     case All

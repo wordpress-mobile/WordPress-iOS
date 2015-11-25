@@ -13,8 +13,8 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
-#import <WordPress-AppbotX/ABX.h>
-#import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPress_AppbotX/ABX.h>
+#import <WordPressShared/UIImage+Util.h>
 
 // Other third party libs
 #import "PocketAPI.h"
