@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared
 
 public class ThemeBrowserHeaderView: UICollectionReusableView {
         
