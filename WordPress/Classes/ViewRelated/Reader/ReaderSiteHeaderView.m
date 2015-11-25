@@ -1,6 +1,6 @@
 #import "ReaderSiteHeaderView.h"
 #import "ReaderPostAttributionView.h"
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
 static const CGFloat StandardMargin = 8.0;
