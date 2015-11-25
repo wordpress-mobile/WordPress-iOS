@@ -1,7 +1,7 @@
 #import "BlogDetailHeaderView.h"
 #import "Blog.h"
 #import "UIImageView+Gravatar.h"
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 
 const CGFloat BlogDetailHeaderViewBlavatarSize = 40.0;
 const CGFloat BlogDetailHeaderViewLabelHeight = 20.0;

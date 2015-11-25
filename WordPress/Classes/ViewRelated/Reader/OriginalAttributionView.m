@@ -1,5 +1,6 @@
 #import "OriginalAttributionView.h"
 
+#import <AFNetworking/UIKit+AFNetworking.h>
 #import "UIImageView+Gravatar.h"
 #import "WordPress-Swift.h"
 

@@ -1,5 +1,5 @@
 #import "WPTabBarController.h"
-#import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPressShared/UIImage+Util.h>
 
 #import "WordPressAppDelegate.h"
 #import "AccountService.h"
@@ -19,7 +19,7 @@
 #import "WPLegacyEditPageViewController.h"
 #import "WPScrollableViewController.h"
 #import "HelpshiftUtils.h"
-#import <WordPress-iOS-Shared/WPDeviceIdentification.h>
+#import <WordPressShared/WPDeviceIdentification.h>
 
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";

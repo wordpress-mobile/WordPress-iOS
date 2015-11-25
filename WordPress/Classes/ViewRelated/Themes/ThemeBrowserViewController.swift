@@ -1,4 +1,6 @@
 import Foundation
+import WordPressShared.WPStyleGuide
+import WordPressShared.WPNoResultsView
 
 @objc public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchBarDelegate, WPContentSyncHelperDelegate {
     
