@@ -56,10 +56,10 @@ static NSString *WPThemeSettingsURLQueryTurnOn = @"enabled=1";
 
 + (BOOL)isEnabled
 {
-    // IMPORTANT: only debug builds can have this feature for the time being.  It doesn't make
-    // sense to make this available in release or internal builds yet.
+    // IMPORTANT: only debug or internal builds can have this feature for the time being.  It doesn't make
+    // sense to make this available in release builds yet.
     //
-#ifdef DEBUG
+#if (defined DEBUG) || (defined INTERNAL_BUILD)
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
     return [userDefaults boolForKey:WPThemeSettingsUserDefaultsKey];
