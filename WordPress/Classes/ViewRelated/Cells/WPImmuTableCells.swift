@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import WordPressShared.WPTableViewCell
 
 class WPReusableTableViewCell: WPTableViewCell {
     override func prepareForReuse() {
