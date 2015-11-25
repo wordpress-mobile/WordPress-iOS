@@ -503,8 +503,10 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     // Push the Stats Post Details ViewController
     NSString *identifier = NSStringFromClass([StatsPostDetailsTableViewController class]);
     BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
-    UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:StatsStoryboardName bundle:[NSBundle bundleWithPath:path]];
+    NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
+    NSString *path = [statsBundle pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
+    NSBundle *bundle = [NSBundle bundleWithPath:path];
+    UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:StatsStoryboardName bundle:bundle];
     StatsPostDetailsTableViewController *controller = [statsStoryboard instantiateViewControllerWithIdentifier:identifier];
     NSAssert(controller, @"Couldn't instantiate StatsPostDetailsTableViewController");
 
