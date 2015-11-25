@@ -6,7 +6,7 @@
 #import "RemoteSourcePostAttribution.h"
 #import "ReaderTopicServiceRemote.h"
 #import "WordPressComApi.h"
-#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
 #import "WordPress-Swift.h"
 
 // REST Post dictionary keys

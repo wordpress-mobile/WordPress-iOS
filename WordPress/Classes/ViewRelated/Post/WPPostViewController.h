@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <WordPress-iOS-Editor/WPEditorViewController.h>
+#import <WordPressEditor/WPEditorViewController.h>
 
 @class AbstractPost;
 @class Blog;
@@ -51,9 +51,6 @@ typedef void (^EditPostCompletionHandler)(void);
 
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
 @property (readonly) BOOL hasChanges;
-
-@property (nonatomic, strong) UIActionSheet *currentActionSheet;
-@property (nonatomic, strong) UIAlertView *failedMediaAlertView;
 
 #pragma mark - Initializers
 

@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-
+import WordPressShared.WPFontManager
 
 public class NavigationTitleView : UIView
 {

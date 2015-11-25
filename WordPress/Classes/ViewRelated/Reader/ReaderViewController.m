@@ -1,6 +1,6 @@
 #import "ReaderViewController.h"
 
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 
 #import "AccountService.h"
 #import "ContextManager.h"
