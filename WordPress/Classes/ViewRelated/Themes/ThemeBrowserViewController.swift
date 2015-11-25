@@ -142,7 +142,6 @@ public protocol ThemePresenter: class {
     private var syncHelper: WPContentSyncHelper!
     private var syncingPage = 0
     private let syncPadding = 5
-    private weak var syncIndicator: UIView?
 
     // MARK: - Private Aliases
     
@@ -252,10 +251,6 @@ public protocol ThemePresenter: class {
     }
     
     private func updateResults() {
-        if syncIndicator != nil {
-            collectionView?.collectionViewLayout.invalidateLayout()
-        }
-
         if themesCount == 0 {
             showNoResults()
         } else {
@@ -276,6 +271,7 @@ public protocol ThemePresenter: class {
         }
         noResultsView.titleText = title
         view.addSubview(noResultsView)
+        syncMoreIfNeeded(0)
     }
     
     private func hideNoResults() {
@@ -306,10 +302,13 @@ public protocol ThemePresenter: class {
     
     func syncContentEnded() {
         updateResults()
+        let lastVisibleTheme = collectionView?.indexPathsForVisibleItems().last?.row ?? 0
+        syncMoreIfNeeded(lastVisibleTheme)
     }
     
     func hasNoMoreContent() {
         syncingPage = 0
+        collectionView?.collectionViewLayout.invalidateLayout()
     }
     
     // MARK: - UICollectionViewController protocol UICollectionViewDataSource
@@ -342,7 +341,6 @@ public protocol ThemePresenter: class {
             return header
         case UICollectionElementKindSectionFooter:
             let footer = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: "ThemeBrowserFooterView", forIndexPath: indexPath)
-            syncIndicator = footer
             return footer
         default:
             fatalError("Unexpected theme browser element");
