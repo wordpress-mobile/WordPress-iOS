@@ -277,6 +277,7 @@
 {
     self.touchesBeganLocation = CGPointZero;
     self.touchesMovedLocation = CGPointZero;
+    [self endReordering];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -309,6 +310,8 @@
 {
     self.isOrdering = YES;
     self.itemViewForOrdering = orderingView;
+    orderingView.isPlaceholder = YES;
+    
     [self.delegate itemsView:self prefersScrollingEnabled:NO];
 }
 
@@ -316,6 +319,7 @@
 {
     const CGPoint touchPoint = [[touches anyObject] locationInView:self];
     MenuItemView *selectedItemView = self.itemViewForOrdering;
+    MenuItem *selectedItem = selectedItemView.item;
     
     // index of the itemView in the arrangedSubViews list
 //    const NSUInteger selectedItemViewIndex = [self.stackView.arrangedSubviews indexOfObject:selectedItemView];
@@ -325,11 +329,59 @@
     
     // first check to see if we should pay attention to touches that might signal a change in indentation
     const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > ((selectedItemView.frame.size.width * 5.0) / 100); // a travel of x% should be considered
-
+    BOOL modelUpdated = NO;
+    
     if(detectedHorizontalOrderingTouches) {
         
-        // detect the child/parent relationship changes and update the model
+        NSOrderedSet *orderedItems = self.menu.items;
+        NSUInteger selectedItemIndex = [orderedItems indexOfObject:selectedItem];
         
+        // check if not first item in order
+        if(selectedItemIndex > 0) {
+            // detect the child/parent relationship changes and update the model
+            if(vector.x > 0) {
+                // trying to make a child
+                MenuItem *previousItem = nil;
+                for(MenuItem *item in orderedItems) {
+                    if(item == selectedItem) {
+                        break;
+                    }
+                    previousItem = item;
+                }
+                MenuItem *parent = previousItem;
+                MenuItem *newParent = nil;
+                while (parent && parent != selectedItem.parent) {
+                    newParent = parent;
+                    parent = parent.parent;
+                }
+                
+                if(newParent) {
+                    selectedItem.parent = newParent;
+                    modelUpdated = YES;
+                }
+                
+            }else {
+                if(selectedItem.parent) {
+                    
+                    MenuItem *lastChildItem = nil;
+                    for(MenuItem *item in orderedItems) {
+                        // find the lastChildItem of the parent
+                        if(item.parent != selectedItem.parent) {
+                            continue;
+                        }
+                        lastChildItem = item;
+                    }
+                    
+                    // only the lastChildItem can move up the tree, otherwise it would break the visual child/parent relationship
+                    if(selectedItem == lastChildItem) {
+                        // try to move up the parent tree
+                        MenuItem *parent = selectedItem.parent.parent;
+                        selectedItem.parent = parent;
+                        modelUpdated = YES;
+                    }
+                }
+            }
+        }
         
         // reset the vector to observe the next delta of interest
         [self resetTouchesMovedObservationVector];
@@ -355,10 +407,31 @@
     }
     
     // update the views based on the model changes
+    if(modelUpdated) {
+        
+        for(UIView *arrangedView in self.stackView.arrangedSubviews) {
+            if(![arrangedView isKindOfClass:[MenuItemView class]]) {
+                continue;
+            }
+            
+            MenuItemView *itemView = (MenuItemView *)arrangedView;
+            itemView.indentationLevel = 0;
+            
+            MenuItem *parentItem = itemView.item.parent;
+            while (parentItem) {
+                itemView.indentationLevel++;
+                parentItem = parentItem.parent;
+            }
+        }
+    }
 }
 
 - (void)endReordering
 {
+    self.isOrdering = NO;
+    self.itemViewForOrdering.isPlaceholder = NO;
+    self.itemViewForOrdering = nil;
+    
     [self.delegate itemsView:self prefersScrollingEnabled:YES];
 }
 
