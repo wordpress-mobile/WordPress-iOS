@@ -47,7 +47,6 @@
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"
 #import "UIView+Subviews.h"
-#import "UIViewController+SizeClass.h"
 
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"

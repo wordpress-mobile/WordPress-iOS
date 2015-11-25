@@ -376,7 +376,8 @@ public protocol ThemePresenter: class {
         guard sections[section] == .Info else {
             return CGSize.zero
         }
-        let height = Styles.headerHeight(isViewHorizontallyCompact())
+        let horizontallyCompact = traitCollection.horizontalSizeClass == .Compact
+        let height = Styles.headerHeight(horizontallyCompact)
         
         return CGSize(width: 0, height: height)
     }
