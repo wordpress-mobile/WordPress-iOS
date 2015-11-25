@@ -1,9 +1,9 @@
 #import "WPPostViewController.h"
 
-#import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
 #import <WordPress-iOS-Editor/WPEditorField.h>
 #import <WordPress-iOS-Editor/WPEditorView.h>
-#import <WordPress-iOS-Editor/WPEditorToolbarView.h>
+#import <WordPress-iOS-Editor/WPEditorFormatbarView.h>
 #import <WordPress-iOS-Shared/NSString+Util.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
@@ -60,6 +60,9 @@ static NSString* const WPPostViewControllerPostRestorationKey = @"WPPostViewCont
 static NSString* const WPProgressMediaID = @"WPProgressMediaID";
 static NSString* const WPProgressMedia = @"WPProgressMedia";
 
+NSString* const WPPostViewControllerOptionOpenMediaPicker = @"WPPostViewControllerMediaPicker";
+NSString* const WPPostViewControllerOptionNotAnimated = @"WPPostViewControllerNotAnimated";
+
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
 NSString* const EditButtonOnboardingWasShown = @"OnboardingWasShown";
@@ -92,7 +95,7 @@ static NSDictionary *EnabledButtonBarStyle;
 static void *ProgressObserverContext = &ProgressObserverContext;
 
 @interface WPEditorViewController ()
-@property (nonatomic, strong, readwrite) WPEditorToolbarView *toolbarView;
+@property (nonatomic, strong, readwrite) WPEditorFormatbarView *toolbarView;
 @end
 
 @interface WPPostViewController () <
@@ -120,6 +123,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
 @property (nonatomic, strong) NSString *selectedMediaID;
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaLibraryDataSource;
+@property (nonatomic) BOOL isOpenedDirectlyForPhotoPost;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -175,6 +179,12 @@ EditImageDetailsViewControllerDelegate
     }
     
     return self;
+}
+
+- (instancetype)initWithDraftForLastUsedBlogAndPhotoPost
+{
+    _isOpenedDirectlyForPhotoPost = YES;
+    return [self initWithDraftForLastUsedBlog];
 }
 
 - (instancetype)initWithDraftForLastUsedBlog
@@ -298,7 +308,9 @@ EditImageDetailsViewControllerDelegate
     self.delegate = self;
     self.failedMediaAlertView = nil;
     [self configureMediaUpload];
-    if (!self.isOpenedDirectlyForEditing) {
+    if (self.isOpenedDirectlyForPhotoPost) {
+        [self showMediaPickerAnimated:NO];
+    } else if (!self.isOpenedDirectlyForEditing) {
         [self refreshNavigationBarButtons:NO];
     }
 }
@@ -824,7 +836,7 @@ EditImageDetailsViewControllerDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaPicker
+- (void)showMediaPickerAnimated:(BOOL)animated
 {
     [self.editorView saveSelection];
     self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
@@ -832,7 +844,7 @@ EditImageDetailsViewControllerDelegate
     picker.dataSource = self.mediaLibraryDataSource;
     picker.showMostRecentFirst = YES;
     picker.delegate = self;
-    [self presentViewController:picker animated:YES completion:nil];
+    [self presentViewController:picker animated:animated completion:nil];
 }
 
 #pragma mark - Data Model: Post
@@ -1430,18 +1442,23 @@ EditImageDetailsViewControllerDelegate
     }
 }
 
-- (void)dismissEditView
+- (void)dismissEditViewAnimated:(BOOL)animated
 {
     if (self.onClose) {
         self.onClose();
         self.onClose = nil;
-	} else if (self.presentingViewController) {
-		[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-	} else {
-		[self.navigationController popViewControllerAnimated:YES];
-	}
+    } else if (self.presentingViewController) {
+        [self.presentingViewController dismissViewControllerAnimated:animated completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:animated];
+    }
     
     [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
+}
+
+- (void)dismissEditView
+{
+    [self dismissEditViewAnimated:YES];
 }
 
 - (void)saveAction
@@ -1788,10 +1805,13 @@ EditImageDetailsViewControllerDelegate
     if (assets.count == 0) {
         return;
     }
+    
+    [self.editorView.contentField focus];
+    
     [self prepareMediaProgressForNumberOfAssets:assets.count];
     for (id<WPMediaAsset> asset in assets) {
-        if ([asset isKindOfClass:[ALAsset class]]){
-            [self addDeviceMediaAsset:(ALAsset *)asset];
+        if ([asset isKindOfClass:[PHAsset class]]){
+            [self addDeviceMediaAsset:(PHAsset *)asset];
         } else if ([asset isKindOfClass:[Media class]]) {
             [self addSiteMediaAsset:(Media *)asset];
         }
@@ -1801,7 +1821,7 @@ EditImageDetailsViewControllerDelegate
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
 }
 
-- (void)addDeviceMediaAsset:(ALAsset *)asset
+- (void)addDeviceMediaAsset:(PHAsset *)asset
 {
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     __weak __typeof__(self) weakSelf = self;
@@ -1809,7 +1829,7 @@ EditImageDetailsViewControllerDelegate
     NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
     createMediaProgress.totalUnitCount = 2;
     [self trackMediaWithId:mediaUniqueID usingProgress:createMediaProgress];
-    [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
+    [mediaService createMediaWithPHAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
         __typeof__(self) strongSelf = weakSelf;
         if (!strongSelf) {
             return;
@@ -1822,16 +1842,11 @@ EditImageDetailsViewControllerDelegate
                                 message:error.localizedDescription];
             return;
         }
-        NSURL* url = [[NSURL alloc] initFileURLWithPath:media.absoluteLocalURL];
-        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-            [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:mediaUniqueID];
-        } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
-            UIImage * posterImage = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
-            NSData *data = UIImageJPEGRepresentation(posterImage, 0.7);
-            NSString *posterImagePath = [NSString stringWithFormat:@"%@/%@.jpg", NSTemporaryDirectory(), mediaUniqueID];
-            [data writeToFile:posterImagePath atomically:YES];
-            NSURL * posterURL = [[NSURL alloc] initFileURLWithPath:posterImagePath];
-            [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[posterURL absoluteString]];
+        NSString* thumbnailURL = media.absoluteThumbnailLocalURL;
+        if (media.mediaType == MediaTypeImage) {
+            [strongSelf.editorView insertLocalImage:thumbnailURL uniqueId:mediaUniqueID];
+        } else if (media.mediaType == MediaTypeVideo) {
+            [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:thumbnailURL];
         }
         
         [strongSelf uploadMedia:media trackingId:mediaUniqueID];
@@ -2053,7 +2068,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaPicker];
+    [self showMediaPickerAnimated:YES];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
@@ -2220,7 +2235,11 @@ EditImageDetailsViewControllerDelegate
 
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.isOpenedDirectlyForPhotoPost) {
+        [self dismissEditViewAnimated:NO];
+    } else {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(id<WPMediaAsset>)mediaAsset
@@ -2228,28 +2247,7 @@ EditImageDetailsViewControllerDelegate
     if ([mediaAsset isKindOfClass:[Media class]]){
         return YES;
     }
-    if ([mediaAsset isKindOfClass:[ALAsset class]]){
-        ALAsset *asset = (ALAsset *)[mediaAsset baseAsset];
-        NSString * assetType = [asset valueForProperty:ALAssetPropertyType];
-        
-        if (assetType == ALAssetTypeUnknown) {
-            return NO;
-        }
-        
-        // If the media is from a shared photo stream it may not be available locally to be used
-        if (!asset.defaultRepresentation) {
-            if (assetType == ALAssetTypePhoto) {
-                [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
-                                    message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
-                          withSupportButton:NO];
-            } else {
-                [WPError showAlertWithTitle:NSLocalizedString(@"Video unavailable", @"The title for an alert that says the video the user selected isn't available.")
-                                    message:NSLocalizedString(@"This Photo Stream video cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
-                          withSupportButton:NO];
-            }
-            return NO;
-        }
-        
+    if ([mediaAsset isKindOfClass:[PHAsset class]]){        
         return YES;
     }
     
