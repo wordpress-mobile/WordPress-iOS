@@ -290,6 +290,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 
 - (void)showPostTabWithOptions:(NSDictionary *)options
 {
+    BOOL animated = YES;
     if (self.presentedViewController) {
         [self dismissViewControllerAnimated:NO completion:nil];
     }
@@ -302,10 +303,18 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
             [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
                 withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:[editPostViewController post].blog.dotComID}];
         } else {
-            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
+            if (options[WPPostViewControllerOptionOpenMediaPicker]) {
+                editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlogAndPhotoPost];
+            } else {
+                editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
                                                                       andContent:[options stringForKey:WPNewPostURLParamContentKey]
                                                                          andTags:[options stringForKey:WPNewPostURLParamTagsKey]
                                                                         andImage:[options stringForKey:WPNewPostURLParamImageKey]];
+            }
+            
+            if (options[WPPostViewControllerOptionNotAnimated]) {
+                animated = NO;
+            }
         }
         navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         navController.restorationIdentifier = WPEditorNavigationRestorationID;
@@ -333,7 +342,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
     navController.navigationBar.translucent = NO;
     [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
-    [self presentViewController:navController animated:YES completion:nil];
+    [self presentViewController:navController animated:animated completion:nil];
 }
 
 - (void)switchTabToPostsListForPost:(AbstractPost *)post

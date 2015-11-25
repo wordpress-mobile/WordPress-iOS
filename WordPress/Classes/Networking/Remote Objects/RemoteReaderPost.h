@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 
 @class RemoteSourcePostAttribution;
+@class RemoteReaderCrossPostMeta;
 
 @interface RemoteReaderPost : NSObject
 
@@ -30,6 +31,7 @@
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
 @property (nonatomic, strong) RemoteSourcePostAttribution *sourceAttribution;
+@property (nonatomic, strong) RemoteReaderCrossPostMeta *crossPostMeta;
 
 @property (nonatomic, strong) NSString *primaryTag;
 @property (nonatomic, strong) NSString *primaryTagSlug;
@@ -48,5 +50,6 @@
 @property (nonatomic, strong) NSNumber *postID;
 @property (nonatomic, strong) NSString *postTitle;
 @property (nonatomic, strong) NSString *status;
+
 
 @end

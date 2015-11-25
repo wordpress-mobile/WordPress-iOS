@@ -4,6 +4,7 @@
 #import "AccountService.h"
 #import "Blog.h"
 #import "WPAppAnalytics.h"
+#import "WordPress-Swift.h"
 
 #import <NSString+XMLExtensions.h>
 
@@ -78,6 +79,9 @@
         finishedSync();
     }
 
+    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
+    [shortcutCreator createShortcuts:YES];
+    
     [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
     [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
     [WPAnalytics refreshMetadata];

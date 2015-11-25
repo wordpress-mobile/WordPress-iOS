@@ -478,7 +478,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     NSArray *hints = @[
                        NSLocalizedString(@"Your site is visible to everyone, and it may be indexed by search engines.",
                                          @"Hint for users when public privacy setting is set"),
-                       NSLocalizedString(@"Your site is visible to everyone, but asks to search engines to not index your site.",
+                       NSLocalizedString(@"Your site is visible to everyone, but asks search engines not to index your site.",
                                          @"Hint for users when hidden privacy setting is set"),
                        NSLocalizedString(@"Your site is only visible to you and users you approve.",
                                          @"Hint for users when private privacy setting is set"),
@@ -630,10 +630,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     switch (row) {
         case SiteSettingsWritingDefaultCategory:{
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            NSNumber *defaultCategoryID = self.blog.defaultCategoryID;
-            if (!defaultCategoryID) {
-                defaultCategoryID = @(PostCategoryUncategorized);
-            }
+            NSNumber *defaultCategoryID = self.blog.defaultCategoryID ?: @(PostCategoryUncategorized);
             PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
             NSArray *currentSelection = @[];
             if (postCategory){
@@ -822,13 +819,15 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)saveSettings
 {
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    if ([self.blog hasChanges]) {
-        [blogService updateSettingsForBlog:self.blog success:^{
-        } failure:^(NSError *error) {
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
-        }];
+    if (!self.blog.settings.hasChanges) {
+        return;
     }
+    
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [blogService updateSettingsForBlog:self.blog success:nil failure:^(NSError *error) {
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
+        DDLogError(@"Error while trying to update BlogSettings: %@", error);
+    }];
 }
 
 - (IBAction)cancel:(id)sender
