@@ -352,12 +352,14 @@ import WordPressShared
             requestURL = NSURL(string: sslURL)!
         }
 
+        let request = NSMutableURLRequest(URL: requestURL)
 
         let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let token = acctServ.defaultWordPressComAccount().authToken
-        let request = NSMutableURLRequest(URL: requestURL)
-        let headerValue = String(format: "Bearer %@", token)
-        request.addValue(headerValue, forHTTPHeaderField: "Authorization")
+        if let account = acctServ.defaultWordPressComAccount() {
+            let token = account.authToken
+            let headerValue = String(format: "Bearer %@", token)
+            request.addValue(headerValue, forHTTPHeaderField: "Authorization")
+        }
 
         return request
     }
