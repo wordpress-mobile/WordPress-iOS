@@ -36,16 +36,14 @@ public enum ThemeAction {
         switch self {
         case .Activate:
             print("TODO: .Activate")
-        case .Customize:
+        case .Customize, .TryCustomize:
             presenter.presentCustomizeForTheme(theme)
         case .Details:
             presenter.presentDetailsForTheme(theme)
         case .Support:
             presenter.presentSupportForTheme(theme)
-        case .TryCustomize:
-            print("TODO: .TryCustomize")
         case .View:
-            print("TODO: .Support")
+            presenter.presentViewForTheme(theme)
         }
     }
 }
