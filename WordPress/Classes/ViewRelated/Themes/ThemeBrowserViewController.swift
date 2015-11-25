@@ -183,6 +183,11 @@ public protocol ThemePresenter: class {
         
         collectionView?.collectionViewLayout.invalidateLayout()
     }
+    
+    public override func viewWillDisappear(animated: Bool) {
+        searchController.active = false
+        super.viewWillDisappear(animated)
+    }
 
     // MARK: - Syncing the list of themes
     
@@ -416,6 +421,7 @@ public protocol ThemePresenter: class {
 
     public func willDismissSearchController(searchController: UISearchController) {
         if sections.first == .Themes {
+            searchName = ""
             collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
                 self.collectionView?.insertSections(NSIndexSet(index: 0))
