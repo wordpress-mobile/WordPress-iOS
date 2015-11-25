@@ -1,7 +1,8 @@
-#import <UIKit/UIKit.h>
-#import <XCTest/XCTest.h>
+@import XCTest;
+@import OHHTTPStubs;
+@import OHHTTPStubs.OHPathHelpers;
+
 #import "AppRatingUtility.h"
-#import <OHHTTPStubs/OHHTTPStubs.h>
 
 @interface AppRatingUtility(Tests)
 
@@ -291,10 +292,12 @@
 
 - (void)stubAppReviewCheckWithFile:(NSString *)file
 {
-    [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [[request.URL absoluteString] containsString:@"app-review-prompt-check"];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithFile:file contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
+        NSString* fixture = OHPathForFile(file, self.class);
+        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
+                                                statusCode:200 headers:@{@"Content-Type":@"application/json"}];
     }];
 }
 
