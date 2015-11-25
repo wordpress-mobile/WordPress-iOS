@@ -3,12 +3,7 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 42 (@koke 2015-11-23)
-
-- Added new entity `AccountSettings`
-- `Account` has now a new one-to-one relationship mapping to `AccountSettings`
-
-## WordPress 41 (@jleandroperez 2015-11-06)
+## WordPress 42 (@jleandroperez 2015-11-06)
 
 Changes to the data model:
 - Added new entity: `BlogSettings`, to encapsulate all of the Blog Settings
@@ -23,6 +18,10 @@ Changes to the data model:
 - Migrated the attribute `Blog.relatedPostsEnabled` over to `BlogSettings.relatedPostsEnabled`
 - Migrated the attribute `Blog.relatedPostsShowHeadline` over to `BlogSettings.relatedPostsShowHeadline`
 - Migrated the attribute `Blog.relatedPostsShowThumbnails` over to `BlogSettings.relatedPostsShowThumbnails`
+
+## WordPress 41 (@jleandroperez 2015-11-23)
+
+- `Notification.id` field has been updated to Integer 64
 
 ## WordPress 40 (@alexcurylo 2015-10-14)
 

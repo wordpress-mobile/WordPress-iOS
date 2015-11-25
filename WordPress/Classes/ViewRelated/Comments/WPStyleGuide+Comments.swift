@@ -1,5 +1,6 @@
 import Foundation
-
+import MGImageUtilities
+import WordPressShared
 
 /**
 *  @class           WPStyleGuide+Comments
