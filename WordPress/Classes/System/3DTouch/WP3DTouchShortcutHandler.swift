@@ -1,4 +1,5 @@
 import UIKit
+import WordPressComAnalytics
 
 public class WP3DTouchShortcutHandler: NSObject
 {
