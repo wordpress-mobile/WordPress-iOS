@@ -48,6 +48,7 @@ import WordPressComAnalytics
     private var syncIsFillingGap = false
     private var indexPathForGapMarker: NSIndexPath?
     private var needsRefreshCachedCellHeightsBeforeLayout = false
+    private var didSetupView = false
 
     private var siteID:NSNumber? {
         didSet {
@@ -68,7 +69,7 @@ import WordPressComAnalytics
     public var readerTopic: ReaderAbstractTopic? {
         didSet {
             if readerTopic != nil && readerTopic != oldValue {
-                if isViewLoaded() {
+                if didSetupView {
                     configureControllerForTopic()
                 }
                 // Discard the siteID (if there was one) now that we have a good topic
@@ -134,6 +135,8 @@ import WordPressComAnalytics
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
+        didSetupView = true
+
         if readerTopic != nil {
             configureControllerForTopic()
         } else if siteID != nil || tagSlug != nil {
@@ -143,7 +146,13 @@ import WordPressComAnalytics
 
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        refreshTableViewHeaderLayout()
+
+        // There appears to be a scenario where this method can be called prior to
+        // the view being fully setup in viewDidLoad.
+        // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
+        if didSetupView {
+            refreshTableViewHeaderLayout()
+        }
     }
 
     public override func viewDidAppear(animated: Bool) {
@@ -163,8 +172,10 @@ import WordPressComAnalytics
     public override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
 
-        // NOTE: For why isViewLoaded is checked here see: https://github.com/wordpress-mobile/WordPress-iOS/pull/4421
-        if isViewLoaded() && needsRefreshCachedCellHeightsBeforeLayout {
+        // There appears to be a scenario where this method can be called prior to
+        // the view being fully setup in viewDidLoad.
+        // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/4419
+        if didSetupView && needsRefreshCachedCellHeightsBeforeLayout {
             needsRefreshCachedCellHeightsBeforeLayout = false
 
             let width = view.frame.width

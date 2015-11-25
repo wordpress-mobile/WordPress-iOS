@@ -23,6 +23,7 @@
 #import "PhotonImageURLHelper.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
+#import "WPPostViewController.h"
 
 #import "ReaderCommentsViewController.h"
 #import "ReaderGapMarker.h"
@@ -64,3 +65,4 @@
 #import "WPTableViewHandler.h"
 #import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
 #import "WPWebViewController.h"
+#import "WPTabBarController.h"
