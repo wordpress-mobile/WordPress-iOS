@@ -1,4 +1,6 @@
 import Foundation
+import WordPressShared.WPStyleGuide
+import WordPressShared.WPNoResultsView
 
 public enum ThemeType {
     case All
@@ -35,9 +37,9 @@ public protocol ThemePresenter: class {
     var searchType: ThemeType { get set }
     
     func presentCustomizeForTheme(theme: Theme?)
-    func presentDemoForTheme(theme: Theme?)
     func presentDetailsForTheme(theme: Theme?)
     func presentSupportForTheme(theme: Theme?)
+    func presentViewForTheme(theme: Theme?)
 }
 
 @objc public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate {
@@ -364,7 +366,7 @@ public protocol ThemePresenter: class {
             if theme.isCurrentTheme() {
                 presentCustomizeForTheme(theme)
             } else {
-                presentDemoForTheme(theme)
+                presentViewForTheme(theme)
             }
         }
     }
@@ -375,7 +377,8 @@ public protocol ThemePresenter: class {
         guard sections[section] == .Info else {
             return CGSize.zero
         }
-        let height = Styles.headerHeight(isViewHorizontallyCompact())
+        let horizontallyCompact = traitCollection.horizontalSizeClass == .Compact
+        let height = Styles.headerHeight(horizontallyCompact)
         
         return CGSize(width: 0, height: height)
     }
@@ -488,14 +491,6 @@ public protocol ThemePresenter: class {
         presentUrlForTheme(url)
     }
 
-    public func presentDemoForTheme(theme: Theme?) {
-        guard let theme = theme, url = NSURL(string: theme.demoUrl) else {
-            return
-        }
-        
-        presentUrlForTheme(url)
-    }
-
     public func presentDetailsForTheme(theme: Theme?) {
         guard let theme = theme, url = NSURL(string: theme.detailsUrl()) else {
             return
@@ -506,6 +501,14 @@ public protocol ThemePresenter: class {
     
     public func presentSupportForTheme(theme: Theme?) {
         guard let theme = theme, url = NSURL(string: theme.supportUrl()) else {
+            return
+        }
+        
+        presentUrlForTheme(url)
+    }
+    
+    public func presentViewForTheme(theme: Theme?) {
+        guard let theme = theme, url = NSURL(string: theme.viewUrl()) else {
             return
         }
         
