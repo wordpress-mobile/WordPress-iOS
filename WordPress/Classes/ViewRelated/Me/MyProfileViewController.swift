@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared.WPStyleGuide
 
 class MyProfileViewController: UITableViewController {
     static let cellIdentifier = "MyProfileCell"
