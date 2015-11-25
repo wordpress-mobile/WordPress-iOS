@@ -4,11 +4,14 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "SwitchSettingTableViewCell.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "SettingTableViewCell.h"
 #import "RelatedPostsPreviewTableViewCell.h"
-#import <SVProgressHUD/SVProgressHUD.h>
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPStyleGuide+ReadableMargins.h"
+
+#import <SVProgressHUD/SVProgressHUD.h>
+#import "WordPress-Swift.h"
+
 
 static const CGFloat RelatePostsSettingsCellHeight = 44;
 
@@ -58,9 +61,20 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 }
 
+
+#pragma mark - Properties
+
+- (BlogSettings *)settings
+{
+    return self.blog.settings;
+}
+
+
+#pragma mark - UITableViewDataSource Methods
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if ([self.blog.relatedPostsEnabled boolValue]) {
+    if (self.settings.relatedPostsEnabled) {
         return RelatedPostsSettingsSectionCount;
     } else {
         return RelatedPostsSettingsSectionCount-1;
@@ -71,7 +85,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 {
     switch (section) {
         case RelatedPostsSettingsSectionOptions:{
-            if ([self.blog.relatedPostsEnabled boolValue]) {
+            if (self.settings.relatedPostsEnabled) {
                 return RelatedPostsSettingsOptionsCount;
             } else {
                 return 1;
@@ -202,17 +216,17 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 {
     switch (row) {
         case RelatedPostsSettingsOptionsEnabled:{
-            self.relatedPostsEnabledCell.switchValue = [self.blog.relatedPostsEnabled boolValue];
+            self.relatedPostsEnabledCell.switchValue = self.settings.relatedPostsEnabled;
             return self.relatedPostsEnabledCell;
         }
             break;
         case RelatedPostsSettingsOptionsShowHeader:{
-            self.relatedPostsShowHeaderCell.switchValue = [self.blog.relatedPostsShowHeadline boolValue];
+            self.relatedPostsShowHeaderCell.switchValue = self.settings.relatedPostsShowHeadline;
             return self.relatedPostsShowHeaderCell;
         }
             break;
         case RelatedPostsSettingsOptionsShowThumbnails:{
-            self.relatedPostsShowThumbnailsCell.switchValue = [self.blog.relatedPostsShowThumbnails boolValue];
+            self.relatedPostsShowThumbnailsCell.switchValue = self.settings.relatedPostsShowThumbnails;
             return self.relatedPostsShowThumbnailsCell;
         }
             break;
@@ -221,6 +235,9 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     }
     return nil;
 }
+
+
+#pragma mark - Cell Helpers
 
 - (SwitchSettingTableViewCell *)relatedPostsEnabledCell
 {
@@ -264,18 +281,21 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
         _relatedPostsPreviewTableViewCell = [[RelatedPostsPreviewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                                     reuseIdentifier:nil];
     }
-    _relatedPostsPreviewTableViewCell.enabledImages = [self.blog.relatedPostsShowThumbnails boolValue];
-    _relatedPostsPreviewTableViewCell.enabledHeader = [self.blog.relatedPostsShowHeadline boolValue];
+    _relatedPostsPreviewTableViewCell.enabledImages = self.settings.relatedPostsShowThumbnails;
+    _relatedPostsPreviewTableViewCell.enabledHeader = self.settings.relatedPostsShowHeadline;
     
     return _relatedPostsPreviewTableViewCell;
 
 }
 
+#pragma mark - Helpers
+
 - (IBAction)updateRelatedPostsSettings:(id)sender
 {
-    self.blog.relatedPostsEnabled = [NSNumber numberWithBool:self.relatedPostsEnabledCell.switchValue];
-    self.blog.relatedPostsShowHeadline = [NSNumber numberWithBool:self.relatedPostsShowHeaderCell.switchValue];
-    self.blog.relatedPostsShowThumbnails = [NSNumber numberWithBool:self.relatedPostsShowThumbnailsCell.switchValue];
+    self.settings.relatedPostsEnabled = self.relatedPostsEnabledCell.switchValue;
+    self.settings.relatedPostsShowHeadline = self.relatedPostsShowHeaderCell.switchValue;
+    self.settings.relatedPostsShowThumbnails = self.relatedPostsShowThumbnailsCell.switchValue;
+    
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService updateSettingsForBlog:self.blog success:^{
         [self.tableView reloadData];

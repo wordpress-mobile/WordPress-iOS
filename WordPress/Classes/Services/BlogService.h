@@ -6,7 +6,7 @@
 
 @interface BlogService : LocalCoreDataService
 
--(instancetype) init __attribute__((unavailable("must use initWithManagedObjectContext")));
+- (instancetype) init __attribute__((unavailable("must use initWithManagedObjectContext")));
 
 /**
  Returns the blog that matches with a given blogID
@@ -113,6 +113,8 @@
 - (NSInteger)blogCountVisibleForAllAccounts;
 
 - (NSArray *)blogsForAllAccounts;
+
+- (NSArray *)blogsWithPredicate:(NSPredicate *)predicate;
 
 /**
  Returns every stored blog, arranged in a Dictionary by blogId.

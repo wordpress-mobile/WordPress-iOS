@@ -906,6 +906,21 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.isLikesEnabled = remotePost.isLikesEnabled;
     post.isSiteBlocked = NO;
 
+    if (remotePost.crossPostMeta) {
+        if (!post.crossPostMeta) {
+            ReaderCrossPostMeta *meta = (ReaderCrossPostMeta *)[NSEntityDescription insertNewObjectForEntityForName:[ReaderCrossPostMeta classNameWithoutNamespaces]
+                                                                                     inManagedObjectContext:self.managedObjectContext];
+            post.crossPostMeta = meta;
+        }
+        post.crossPostMeta.siteURL = remotePost.crossPostMeta.siteURL;
+        post.crossPostMeta.postURL = remotePost.crossPostMeta.postURL;
+        post.crossPostMeta.commentURL = remotePost.crossPostMeta.commentURL;
+        post.crossPostMeta.siteID = remotePost.crossPostMeta.siteID;
+        post.crossPostMeta.postID = remotePost.crossPostMeta.postID;
+    } else {
+        post.crossPostMeta = nil;
+    }
+
     NSString *tag = remotePost.primaryTag;
     NSString *slug = remotePost.primaryTagSlug;
     if ([topic isKindOfClass:[ReaderTagTopic class]]) {

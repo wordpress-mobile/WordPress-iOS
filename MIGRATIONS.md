@@ -3,6 +3,22 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 41 (@jleandroperez 2015-11-06)
+
+Changes to the data model:
+- Added new entity: `BlogSettings`, to encapsulate all of the Blog Settings
+- `Blog` has now a new one-to-one relationship mapping to  `BlogSettings`
+- Migrated the attribute `Blog.blogName` over to `BlogSettings.name`
+- Migrated the attribute `Blog.blogTagline` over to `BlogSettings.tagline`
+- Migrated the attribute `Blog.defaultCategoryID` over to `BlogSettings.defaultCategoryID`
+- Migrated the attribute `Blog.defaultPostFormat` over to `BlogSettings.defaultPostFormat`
+- Migrated the attribute `Blog.geolocationEnabled` over to `BlogSettings.geolocationEnabled`
+- Migrated the attribute `Blog.privacy` over to `BlogSettings.privacy`
+- Migrated the attribute `Blog.relatedPostsAllowed` over to `BlogSettings.relatedPostsAllowed`
+- Migrated the attribute `Blog.relatedPostsEnabled` over to `BlogSettings.relatedPostsEnabled`
+- Migrated the attribute `Blog.relatedPostsShowHeadline` over to `BlogSettings.relatedPostsShowHeadline`
+- Migrated the attribute `Blog.relatedPostsShowThumbnails` over to `BlogSettings.relatedPostsShowThumbnails`
+
 ## WordPress 40 (@alexcurylo 2015-10-14)
 
 Changes to the data model:
@@ -12,6 +28,11 @@ Changes to the data model:
 - `Theme` added a new string attribute called `stylesheet` to store identifier used to construct helper links
 - `Theme` added a new number attribute called `order` to store the display order retrieved by
 - Added new entity `Person`
+
+## (@aerych 2015-11-09)
+- Added new entity `ReaderCrossPostMeta`
+- `ReaderPost` added new relationship called `crossPostMeta` to store the source post ID of a cross-post.
+
 
 ## WordPress 39 (@sergioestevao 2015-09-09)
 
