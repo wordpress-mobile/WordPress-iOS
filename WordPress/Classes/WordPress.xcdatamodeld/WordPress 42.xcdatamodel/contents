@@ -20,19 +20,6 @@
         <relationship name="defaultBlog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="accountForDefaultBlog" inverseEntity="Blog" syncable="YES"/>
         <relationship name="jetpackBlogs" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Blog" inverseName="jetpackAccount" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="readerSites" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ReaderSite" inverseName="account" inverseEntity="ReaderSite" syncable="YES"/>
-        <relationship name="settings" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="AccountSettings" inverseName="account" inverseEntity="AccountSettings" syncable="YES"/>
-    </entity>
-    <entity name="AccountSettings" representedClassName=".ManagedAccountSettings" syncable="YES">
-        <attribute name="aboutMe" attributeType="String" syncable="YES"/>
-        <attribute name="displayName" attributeType="String" syncable="YES"/>
-        <attribute name="email" attributeType="String" syncable="YES"/>
-        <attribute name="firstName" attributeType="String" syncable="YES"/>
-        <attribute name="language" attributeType="String" syncable="YES"/>
-        <attribute name="lastName" attributeType="String" syncable="YES"/>
-        <attribute name="primarySiteID" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
-        <attribute name="username" attributeType="String" syncable="YES"/>
-        <attribute name="webAddress" attributeType="String" syncable="YES"/>
-        <relationship name="account" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="settings" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="BasePost" representedClassName="BasePost" isAbstract="YES">
         <attribute name="author" optional="YES" attributeType="String">
@@ -314,7 +301,7 @@
         <attribute name="ghostData" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="header" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="meta" optional="YES" attributeType="Transformable" syncable="YES"/>
         <attribute name="noticon" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="read" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -493,11 +480,9 @@
     </entity>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
-        <element name="AccountSettings" positionX="18" positionY="153" width="128" height="195"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="495"/>
-        <element name="BlogSettings" positionX="18" positionY="153" width="128" height="465"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="375"/>
@@ -517,5 +502,6 @@
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="285"/>
+        <element name="BlogSettings" positionX="18" positionY="153" width="128" height="465"/>
     </elements>
 </model>

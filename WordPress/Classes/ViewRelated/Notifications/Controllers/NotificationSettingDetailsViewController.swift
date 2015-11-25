@@ -1,5 +1,6 @@
 import Foundation
-
+import WordPressShared
+import WordPressComAnalytics
 
 /**
 *  @class           NotificationSettingDetailsViewController

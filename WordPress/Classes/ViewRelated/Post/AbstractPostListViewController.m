@@ -8,6 +8,7 @@
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
 #import "WPSearchControllerConfigurator.h"
+#import <WordPressApi/WordPressApi.h>
 
 const NSTimeInterval PostsControllerRefreshInterval = 300; // 5 minutes
 const NSInteger HTTPErrorCodeForbidden = 403;
