@@ -84,6 +84,8 @@ public protocol ThemePresenter: class {
         searchController.searchBar.autocapitalizationType = .None
         searchController.searchBar.autocorrectionType = .No
         searchController.searchBar.barTintColor = WPStyleGuide.wordPressBlue()
+        searchController.searchBar.layer.borderWidth = 1;
+        searchController.searchBar.layer.borderColor = WPStyleGuide.wordPressBlue().CGColor;
 
         return searchController
     }()
@@ -181,6 +183,11 @@ public protocol ThemePresenter: class {
         
         collectionView?.collectionViewLayout.invalidateLayout()
     }
+    
+    public override func viewWillDisappear(animated: Bool) {
+        searchController.active = false
+        super.viewWillDisappear(animated)
+    }
 
     // MARK: - Syncing the list of themes
     
@@ -269,6 +276,7 @@ public protocol ThemePresenter: class {
         }
         noResultsView.titleText = title
         view.addSubview(noResultsView)
+        syncMoreIfNeeded(0)
     }
     
     private func hideNoResults() {
@@ -299,18 +307,23 @@ public protocol ThemePresenter: class {
     
     func syncContentEnded() {
         updateResults()
+        let lastVisibleTheme = collectionView?.indexPathsForVisibleItems().last?.row ?? 0
+        syncMoreIfNeeded(lastVisibleTheme)
     }
     
     func hasNoMoreContent() {
         syncingPage = 0
+        collectionView?.collectionViewLayout.invalidateLayout()
     }
     
     // MARK: - UICollectionViewController protocol UICollectionViewDataSource
     
     public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch sections[section] {
-        case .Info: return 0
-        case .Themes: return themesCount
+        case .Info:
+            return 0
+        case .Themes:
+            return themesCount
         }
     }
     
@@ -382,11 +395,13 @@ public protocol ThemePresenter: class {
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        switch sections.count {
-        case 1:
-            return Styles.externalMargins
+        switch sections.first {
+        case .Themes?:
+            return Styles.searchMargins
+        case .Info? where syncHelper.hasMoreContent:
+            return Styles.syncingMargins
         default:
-            return Styles.internalMargins
+            return Styles.syncedMargins
         }
     }
 
@@ -394,7 +409,8 @@ public protocol ThemePresenter: class {
     
     @IBAction func didTapSearchButton(sender: UIButton) {
         searchController.active = true
-        if sections.count > 1 {
+        if sections.first == .Info {
+            collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
                 self.collectionView?.deleteSections(NSIndexSet(index: 0))
                 self.sections = [.Themes]
@@ -405,7 +421,9 @@ public protocol ThemePresenter: class {
     // MARK: - UISearchControllerDelegate
 
     public func willDismissSearchController(searchController: UISearchController) {
-        if sections.count == 1 {
+        if sections.first == .Themes {
+            searchName = ""
+            collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
                 self.collectionView?.insertSections(NSIndexSet(index: 0))
                 self.sections = [.Info, .Themes]
