@@ -25,6 +25,7 @@ extern CGFloat const MenuItemsStackableViewAccessoryButtonHeight;
 @property (nonatomic, weak) id <MenuItemsStackableViewDelegate> delegate;
 @property (nonatomic, strong) MenuItemDrawingView *contentView;
 @property (nonatomic, assign) BOOL highlighted;
+@property (nonatomic, assign) BOOL isPlaceholder;
 @property (nonatomic, assign) MenuItemActionableIconType iconType;
 @property (nonatomic, assign) NSInteger indentationLevel;
 @property (nonatomic, strong) UIStackView *stackView;

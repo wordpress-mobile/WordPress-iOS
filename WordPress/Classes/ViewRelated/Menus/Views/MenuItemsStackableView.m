@@ -28,9 +28,6 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
 @property (nonatomic, assign) BOOL showsReorderingOptions;
 @property (nonatomic, weak) NSLayoutConstraint *constraintForLeadingIndentation;
 @property (nonatomic, strong) UIStackView *accessoryStackView;
-@property (nonatomic, assign) CGPoint touchesBeganLocation;
-@property (nonatomic, assign) CGPoint touchesMovedLocation;
-@property (nonatomic, assign) BOOL observingReorderingTouches;
 
 @end
 
@@ -132,6 +129,18 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
     }
 }
 
+- (void)setIsPlaceholder:(BOOL)isPlaceholder
+{
+    if(_isPlaceholder != isPlaceholder) {
+        _isPlaceholder = isPlaceholder;
+        
+        self.contentView.alpha = isPlaceholder ? 0.5 : 1.0;
+        
+        [self setNeedsDisplay];
+        [self.contentView setNeedsDisplay];
+    }
+}
+
 - (void)setIconType:(MenuItemActionableIconType)iconType
 {
     if(_iconType != iconType) {
@@ -147,18 +156,6 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
             self.iconView.hidden = NO;
             self.iconView.image = [[UIImage imageNamed:[self iconNameForType:self.iconType]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         }
-    }
-}
-
-- (void)setShowsReorderingOptions:(BOOL)showsReorderingOptions
-{
-    if(_showsReorderingOptions != showsReorderingOptions) {
-        _showsReorderingOptions = showsReorderingOptions;
-        
-        self.contentView.alpha = showsReorderingOptions ? 0.5 : 1.0;
-        
-        [self setNeedsDisplay];
-        [self.contentView setNeedsDisplay];
     }
 }
 
@@ -340,11 +337,9 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
 - (void)drawingViewDrawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    const BOOL showsReordering = self.showsReorderingOptions;
-        
     CGContextSetLineWidth(context, 1.0);
     
-    if(showsReordering) {
+    if(_isPlaceholder) {
         // draw a line on the top
         // but only while reordering
         // otherwise the line stacks against the other line on the top
@@ -360,7 +355,7 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
     CGContextMoveToPoint(context, 0, 0);
     CGContextAddLineToPoint(context, 0, rect.size.height);
     
-    UIColor *borderColor = showsReordering ? [WPStyleGuide lightBlue] : [WPStyleGuide greyLighten30];
+    UIColor *borderColor = _isPlaceholder ? [WPStyleGuide lightBlue] : [WPStyleGuide greyLighten30];
     CGContextSetStrokeColorWithColor(context, [borderColor CGColor]);
     CGContextStrokePath(context);
 }
