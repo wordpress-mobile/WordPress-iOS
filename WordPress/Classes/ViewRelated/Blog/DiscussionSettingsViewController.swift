@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 
 /**
@@ -27,6 +28,11 @@ public class DiscussionSettingsViewController : UITableViewController
         super.viewDidLoad()
         setupNavBar()
         setupTableView()
+    }
+    
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        saveSettingsIfNeeded()
     }
     
     
@@ -254,27 +260,47 @@ public class DiscussionSettingsViewController : UITableViewController
     
     
     // MARK: - Row Handlers
-    private func pressedCommentsAllowed(sender: AnyObject) {
+    private func pressedCommentsAllowed(payload: AnyObject?) {
+        guard let enabled = payload as? Bool else {
+            return
+        }
         
+        settings.commentsAllowed = enabled
     }
 
-    private func pressedPingbacksInbound(sender: AnyObject) {
+    private func pressedPingbacksInbound(payload: AnyObject?) {
+        guard let enabled = payload as? Bool else {
+            return
+        }
         
+        settings.pingbackInboundEnabled = enabled
     }
     
-    private func pressedPingbacksOutbound(sender: AnyObject) {
+    private func pressedPingbacksOutbound(payload: AnyObject?) {
+        guard let enabled = payload as? Bool else {
+            return
+        }
         
+        settings.pingbackOutboundEnabled = enabled
     }
 
-    private func pressedRequireNameAndEmail(sender: AnyObject) {
+    private func pressedRequireNameAndEmail(payload: AnyObject?) {
+        guard let enabled = payload as? Bool else {
+            return
+        }
         
+        settings.commentsRequireNameAndEmail = enabled
     }
     
-    private func pressedRequireRegistration(sender: AnyObject) {
+    private func pressedRequireRegistration(payload: AnyObject?) {
+        guard let enabled = payload as? Bool else {
+            return
+        }
         
+        settings.commentsRequireRegistration = enabled
     }
     
-    private func pressedCloseAfter(sender: AnyObject) {
+    private func pressedCloseAfter(payload: AnyObject?) {
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Close After", comment: "")
         settingsViewController.currentValue     = "30"
@@ -286,7 +312,7 @@ public class DiscussionSettingsViewController : UITableViewController
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
-    private func pressedSortBy(sender: AnyObject) {
+    private func pressedSortBy(payload: AnyObject?) {
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Sort By", comment: "")
         settingsViewController.currentValue     = "desc"
@@ -298,7 +324,7 @@ public class DiscussionSettingsViewController : UITableViewController
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
-    private func pressedThreading(sender: AnyObject) {
+    private func pressedThreading(payload: AnyObject?) {
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Threading", comment: "")
         settingsViewController.currentValue     = "2"
@@ -310,7 +336,7 @@ public class DiscussionSettingsViewController : UITableViewController
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
-    private func pressedPaging(sender: AnyObject) {
+    private func pressedPaging(payload: AnyObject?) {
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Paging", comment: "")
         settingsViewController.currentValue     = "50"
@@ -322,19 +348,19 @@ public class DiscussionSettingsViewController : UITableViewController
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
-    private func pressedAutomaticallyApprove(sender: AnyObject) {
+    private func pressedAutomaticallyApprove(payload: AnyObject?) {
         
     }
 
-    private func pressedLinksInComments(sender: AnyObject) {
+    private func pressedLinksInComments(payload: AnyObject?) {
         
     }
     
-    private func pressedModeration(sender: AnyObject) {
+    private func pressedModeration(payload: AnyObject?) {
         
     }
     
-    private func pressedBlacklist(sender: AnyObject) {
+    private func pressedBlacklist(payload: AnyObject?) {
         
     }
     
@@ -368,7 +394,7 @@ public class DiscussionSettingsViewController : UITableViewController
             self.handler    = handler
         }
         
-        typealias Handler = (AnyObject -> Void)
+        typealias Handler = (AnyObject? -> Void)
         
         enum Style : String {
             case Value1     = "Value1"
