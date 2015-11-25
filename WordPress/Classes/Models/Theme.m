@@ -54,19 +54,14 @@ static NSString* const HomeUrlScheme = @"https://";
     return [NSString stringWithFormat:ThemeUrlDetails, homeUrl, self.themeId];
 }
 
-- (NSString *)demoUrl
-{
-    static NSString* const key = @"demoUrl";
-    [self willAccessValueForKey:key];
-    NSString *url = [self primitiveValueForKey:key];
-    [self didAccessValueForKey:key];
-    
-    return [url stringByAppendingString:ThemeUrlDemoParameters];
-}
-
 - (NSString *)supportUrl
 {
     return [NSString stringWithFormat:ThemeUrlSupport, self.themeId];
+}
+
+- (NSString *)viewUrl
+{
+    return [self.demoUrl stringByAppendingString:ThemeUrlDemoParameters];
 }
 
 #pragma mark - Misc

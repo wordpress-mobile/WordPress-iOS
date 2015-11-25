@@ -5,7 +5,7 @@
 #import "WordPressAppDelegate.h"
 
 #import "WordPressComApi.h"
-#import <WPXMLRPCClient.h>
+#import <WordPressApi/WPXMLRPCClient.h>
 
 #import "ContextManager.h"
 #import "AccountService.h"
