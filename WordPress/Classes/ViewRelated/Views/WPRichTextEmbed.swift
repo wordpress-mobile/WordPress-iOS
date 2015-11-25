@@ -1,4 +1,5 @@
 import Foundation
+import DTCoreText
 
 class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
 {

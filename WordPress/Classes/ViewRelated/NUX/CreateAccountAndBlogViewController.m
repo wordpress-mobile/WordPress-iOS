@@ -28,7 +28,7 @@
 
 #import "WordPress-Swift.h"
 
-#import <1PasswordExtension/OnePasswordExtension.h>
+#import <OnePasswordExtension/OnePasswordExtension.h>
 
 
 @interface CreateAccountAndBlogViewController ()<UITextFieldDelegate,UIGestureRecognizerDelegate> {

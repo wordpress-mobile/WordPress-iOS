@@ -12,7 +12,7 @@
 #import "WPSearchController.h"
 #import "WPStyleGuide+Posts.h"
 #import "WPTableViewHandler.h"
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
 #import "WordPress-swift.h"
 #import "WPSearchControllerConfigurator.h"
 

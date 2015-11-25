@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared
 
 @objc public class NoteBlockUserTableViewCell : NoteBlockTableViewCell
 {
