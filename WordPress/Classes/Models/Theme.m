@@ -3,6 +3,7 @@
 #import "ContextManager.h"
 #import "WPAccount.h"
 #import "AccountService.h"
+#import "NSString+Helpers.h"
 
 static NSString* const ThemeDomainPublic = @"pub";
 static NSString* const ThemeDomainPremium = @"premium";
@@ -48,7 +49,7 @@ static NSString* const HomeUrlScheme = @"https://";
 
 - (NSString *)detailsUrl
 {
-    NSString *homeUrl = [[self.blog homeURL] stringByReplacingOccurrencesOfString:HomeUrlScheme withString:@""];
+    NSString *homeUrl = self.blog.homeURL.hostname;
 
     return [NSString stringWithFormat:ThemeUrlDetails, homeUrl, self.themeId];
 }
