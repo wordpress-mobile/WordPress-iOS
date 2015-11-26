@@ -190,7 +190,7 @@
     jetpackLegacyBlog.jetpackAccount = wpComAccount;
 
     // Wait on the merge to be completed
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
 
     // test.blog + wp.com + jetpack
     XCTAssertEqual(1, [accountService numberOfAccounts]);
