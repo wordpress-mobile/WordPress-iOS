@@ -7,41 +7,44 @@ inhibit_all_warnings!
 use_frameworks!
 
 platform :ios, '9.0'
-pod '1PasswordExtension', '1.6.4'
-pod 'AFNetworking',	'2.6.3'
-pod 'Reachability',	'3.2'
-pod 'NSURL+IDN', '0.3'
-pod 'DTCoreText',   '1.6.16'
-pod 'UIDeviceIdentifier', '~> 0.1'
-pod 'SVProgressHUD', '~>1.1.3'
-pod 'AMPopTip', '~> 0.7'
-pod 'wpxmlrpc', '~> 0.8'
-pod 'Mixpanel', '2.8.2'
-pod 'CocoaLumberjack', '= 2.0.0'
-pod 'NSLogger-CocoaLumberjack-connector', :git => 'https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git', :tag => '1.5'
-pod 'google-plus-ios-sdk', '~>1.5'
-pod 'HockeySDK', '~>3.8.0'
-pod 'Helpshift', '~>4.10.0'
-pod 'Lookback', '1.1.4', :configurations => ['Release-Internal']
-pod 'MRProgress', '~>0.7.0'
 
-pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.12'
-pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
-pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
-pod 'NSObject-SafeExpectations', '0.0.2'
-pod 'Simperium', '0.8.9'
-pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
-pod 'WordPress-iOS-Shared', '0.5.0'
-pod 'WordPress-iOS-Editor', '1.1'
-pod 'WordPressCom-Stats-iOS', '0.5.0'
-pod 'WordPressCom-Analytics-iOS', '0.1.0'
-pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
-pod 'WPMediaPicker', '~> 0.7.0'
-pod 'ReactiveCocoa', '~> 2.4.7'
-pod 'FormatterKit', '~> 1.8.0'
+target 'WordPress', :exclusive => true do
+  pod '1PasswordExtension', '1.6.4'
+  pod 'AFNetworking',	'2.6.3'
+  pod 'Reachability',	'3.2'
+  pod 'NSURL+IDN', '0.3'
+  pod 'DTCoreText',   '1.6.16'
+  pod 'UIDeviceIdentifier', '~> 0.1'
+  pod 'SVProgressHUD', '~>1.1.3'
+  pod 'AMPopTip', '~> 0.7'
+  pod 'wpxmlrpc', '~> 0.8'
+  pod 'Mixpanel', '2.8.2'
+  pod 'CocoaLumberjack', '~> 2.2.0'
+  pod 'google-plus-ios-sdk', '~>1.5'
+  pod 'HockeySDK', '~>3.8.0'
+  pod 'Helpshift', '~>4.10.0'
+  pod 'Lookback', '1.1.4', :configurations => ['Release-Internal']
+  pod 'MRProgress', '~>0.7.0'
+
+  pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.13'
+  pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
+  pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
+  pod 'NSObject-SafeExpectations', '0.0.2'
+  pod 'Simperium', '0.8.9'
+  pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
+  pod 'WordPress-iOS-Shared', '0.5.1'
+  pod 'WordPress-iOS-Editor', '1.1.1'
+  pod 'WordPressCom-Stats-iOS', '0.5.1'
+  pod 'WordPressCom-Analytics-iOS', '0.1.0'
+  pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
+  pod 'WPMediaPicker', '~> 0.7.0'
+  pod 'ReactiveCocoa', '~> 2.4.7'
+  pod 'FormatterKit', '~> 1.8.0'
+end
 
 target 'WordPressTodayWidget', :exclusive => true do
-  pod 'WordPressCom-Stats-iOS/Services', '0.5.0'
+  pod 'WordPress-iOS-Shared', '0.5.1'
+  pod 'WordPressCom-Stats-iOS/Services', '0.5.1'
 end
 
 target :WordPressTest, :exclusive => true do
