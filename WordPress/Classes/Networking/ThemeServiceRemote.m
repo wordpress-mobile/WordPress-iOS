@@ -172,7 +172,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 
 - (NSOperation *)activateThemeId:(NSString *)themeId
                        forBlogId:(NSNumber *)blogId
-                         success:(ThemeServiceRemoteSuccessBlock)success
+                         success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
                          failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
@@ -186,11 +186,11 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     
     NSOperation *operation = [self.api POST:requestUrl
                                  parameters:parameters
-                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *themeDictionary) {
                                         if (success) {
-                                            NSArray *themeDictionaries = [response arrayForKey:ThemeServiceRemoteThemesKey];
-                                            NSArray<RemoteTheme *> *themes = [self themesFromDictionaries:themeDictionaries];
-                                            success(themes);
+                                            RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
+                                            theme.active = @YES;
+                                            success(theme);
                                         }
                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                         if (failure) {
