@@ -5,9 +5,7 @@
 #import "AccountService.h"
 #import "NSString+Helpers.h"
 
-static NSString* const ThemeDomainPublic = @"pub";
-static NSString* const ThemeDomainPremium = @"premium";
-static NSString* const ThemeAdminUrlCustomize = @"customize.php?theme=%@/%@&hide_close=true";
+static NSString* const ThemeAdminUrlCustomize = @"customize.php?theme=%@&hide_close=true";
 static NSString* const ThemeUrlDemoParameters = @"?demo=true&iframe=true&theme_preview=true";
 static NSString* const ThemeUrlSupport = @"https://theme.wordpress.com/themes/%@/support/?preview=true&iframe=true";
 static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?preview=true&iframe=true";
@@ -42,10 +40,9 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
 
 - (NSString *)customizeUrl
 {
-    NSString *domain = self.isPremium ? ThemeDomainPremium : ThemeDomainPublic;
-    NSString *tryPath = [NSString stringWithFormat:ThemeAdminUrlCustomize, domain, self.themeId];
+    NSString *path = [NSString stringWithFormat:ThemeAdminUrlCustomize, self.stylesheet];
     
-    return [self.blog adminUrlWithPath:tryPath];
+    return [self.blog adminUrlWithPath:path];
 }
 
 - (NSString *)detailsUrl

@@ -248,6 +248,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     static NSString* const ThemeActiveKey = @"active";
     static NSString* const ThemeAuthorKey = @"author";
     static NSString* const ThemeAuthorURLKey = @"author_uri";
+    static NSString* const ThemeCostPath = @"cost.number";
     static NSString* const ThemeDemoURLKey = @"demo_uri";
     static NSString* const ThemeDescriptionKey = @"description";
     static NSString* const ThemeDownloadURLKey = @"download_uri";
@@ -260,6 +261,8 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     static NSString* const ThemeStylesheetKey = @"stylesheet";
     static NSString* const ThemeTrendingRankKey = @"rank_trending";
     static NSString* const ThemeVersionKey = @"version";
+    static NSString* const ThemeDomainPublic = @"pub";
+    static NSString* const ThemeDomainPremium = @"premium";
     
     RemoteTheme *theme = [RemoteTheme new];
     
@@ -280,6 +283,11 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     theme.themeId = [dictionary stringForKey:ThemeIdKey];
     theme.trendingRank = [dictionary numberForKey:ThemeTrendingRankKey];
     theme.version = [dictionary stringForKey:ThemeVersionKey];
+
+    if (!theme.stylesheet) {
+        NSString *domain = [dictionary numberForKeyPath:ThemeCostPath].intValue > 0 ? ThemeDomainPremium : ThemeDomainPublic;
+        theme.stylesheet = [NSString stringWithFormat:@"%@/%@", domain, theme.themeId];
+    }
 
     return theme;
 }
