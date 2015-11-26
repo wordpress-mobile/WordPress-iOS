@@ -324,20 +324,21 @@ public class DiscussionSettingsViewController : UITableViewController
         settingsViewController.defaultValue     = "30"
         settingsViewController.titles           = ["Never", "One day", "One week", "One month"]
         settingsViewController.values           = ["0", "1", "7", "30"]
-        settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
+        settingsViewController.onItemSelected   = { (selected: AnyObject!) in
+        
+        }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
     private func pressedSortBy(payload: AnyObject?) {
-        let availableSortOrders                 = BlogSettings.SortOrder.AllValues
+        typealias SortOrder                     = BlogSettings.SortOrder
 
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Sort By", comment: "")
         settingsViewController.currentValue     = settings.commentsSortOrder
-        settingsViewController.defaultValue     = availableSortOrders.first?.rawValue
-        settingsViewController.titles           = availableSortOrders.map { $0.description }
-        settingsViewController.values           = availableSortOrders.map { $0.rawValue }
+        settingsViewController.titles           = SortOrder.SortTitles
+        settingsViewController.values           = SortOrder.SortValues
         settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
             guard let newSortOrder = selected as? Int else {
                 return
