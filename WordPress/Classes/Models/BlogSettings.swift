@@ -197,7 +197,17 @@ public class BlogSettings : NSManagedObject
         case Ascending  = 0
         case Descending = 1
         
-        static let AscendingStringValue  = "asc"
-        static let DescendingStringValue = "desc"
+        var description : String {
+            switch self {
+            case .Ascending:
+                return NSLocalizedString("Oldest First", comment: "Sort Order")
+            case .Descending:
+                return NSLocalizedString("Newest First", comment: "Sort Order")
+            }
+        }
+        
+        static let AllValues                = [Ascending, Descending]
+        static let AscendingStringValue     = "asc"
+        static let DescendingStringValue    = "desc"
     }
 }
