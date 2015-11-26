@@ -807,7 +807,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.commentsRequireNameAndEmail = [remoteSettings.commentsRequireNameAndEmail boolValue];
     settings.commentsRequireRegistration = [remoteSettings.commentsRequireRegistration boolValue];
     
-    settings.commentsSortOrderAsString = remoteSettings.commentsSortOrder;
+    settings.commentsSortOrderAscending = remoteSettings.commentsSortOrderAscending;
     
     settings.commentsThreadingDepth = remoteSettings.commentsThreadingDepth;
     settings.commentsThreadingEnabled = [remoteSettings.commentsThreadingEnabled boolValue];
@@ -857,7 +857,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     remoteSettings.commentsRequireNameAndEmail = @(settings.commentsRequireNameAndEmail);
     remoteSettings.commentsRequireRegistration = @(settings.commentsRequireRegistration);
 
-    remoteSettings.commentsSortOrder = settings.commentsSortOrderAsString;
+    remoteSettings.commentsSortOrderAscending = settings.commentsSortOrderAscending;
     
     remoteSettings.commentsThreadingDepth = settings.commentsThreadingDepth;
     remoteSettings.commentsThreadingEnabled = @(settings.commentsThreadingEnabled);
