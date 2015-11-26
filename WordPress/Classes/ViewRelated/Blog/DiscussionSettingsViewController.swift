@@ -49,6 +49,22 @@ public class DiscussionSettingsViewController : UITableViewController
 
     
 
+    // MARK: - Persistance!
+    private func saveSettingsIfNeeded() {
+        if !settings.hasChanges {
+            return
+        }
+        
+        let service = BlogService(managedObjectContext: settings.managedObjectContext)
+        service.updateSettingsForBlog(settings.blog,
+            success: nil,
+            failure: { (error: NSError!) -> Void in
+                DDLogSwift.logError("Error while persisting settings: \(error)")
+        })
+    }
+    
+    
+    
     // MARK: - UITableViewDataSoutce Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return sections.count
@@ -151,6 +167,7 @@ public class DiscussionSettingsViewController : UITableViewController
             row.handler?(newValue)
         }
     }
+    
     
     
     // MARK: - Computed Properties
@@ -313,13 +330,21 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     private func pressedSortBy(payload: AnyObject?) {
+        let availableSortOrders                 = BlogSettings.SortOrder.AllValues
+
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Sort By", comment: "")
-        settingsViewController.currentValue     = "desc"
-        settingsViewController.defaultValue     = "desc"
-        settingsViewController.titles           = ["Oldest First", "Newest First"]
-        settingsViewController.values           = ["desc", "asc"]
-        settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
+        settingsViewController.currentValue     = settings.commentsSortOrder
+        settingsViewController.defaultValue     = availableSortOrders.first?.rawValue
+        settingsViewController.titles           = availableSortOrders.map { $0.description }
+        settingsViewController.values           = availableSortOrders.map { $0.rawValue }
+        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
+            guard let newSortOrder = selected as? Int else {
+                return
+            }
+            
+            self?.settings.commentsSortOrder = newSortOrder
+        }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
@@ -362,22 +387,6 @@ public class DiscussionSettingsViewController : UITableViewController
     
     private func pressedBlacklist(payload: AnyObject?) {
         
-    }
-    
-    
-    
-    // MARK: - Persistance!
-    private func saveSettingsIfNeeded() {
-        if !settings.hasChanges {
-            return
-        }
-
-        let service = BlogService(managedObjectContext: settings.managedObjectContext)
-        service.updateSettingsForBlog(settings.blog,
-            success: nil,
-            failure: { (error: NSError!) -> Void in
-                DDLogSwift.logError("Error while persisting settings: \(error)")
-            })
     }
     
     
