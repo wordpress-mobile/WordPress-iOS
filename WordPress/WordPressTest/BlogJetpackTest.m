@@ -42,6 +42,7 @@
                               @"readonly": @YES,
                               },
                       };
+    _blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings" inManagedObjectContext:self.testContextManager.mainContext];
 }
 
 - (void)tearDown {
