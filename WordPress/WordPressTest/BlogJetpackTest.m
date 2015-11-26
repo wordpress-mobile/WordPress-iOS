@@ -188,6 +188,7 @@
                                           },
                                   };
     jetpackLegacyBlog.jetpackAccount = wpComAccount;
+    [[ContextManager sharedInstance] saveContextAndWait:self.testContextManager.mainContext];
 
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
