@@ -529,39 +529,27 @@ public protocol ThemePresenter: class {
     }
 
     public func presentCustomizeForTheme(theme: Theme?) {
-        guard let theme = theme, url = NSURL(string: theme.customizeUrl()) else {
-            return
-        }
-        
-        presentUrlForTheme(url)
+        presentUrlForTheme(theme?.customizeUrl())
     }
 
     public func presentDetailsForTheme(theme: Theme?) {
-        guard let theme = theme, url = NSURL(string: theme.detailsUrl()) else {
-            return
-        }
-        
-        presentUrlForTheme(url)
+        presentUrlForTheme(theme?.detailsUrl())
     }
     
     public func presentSupportForTheme(theme: Theme?) {
-        guard let theme = theme, url = NSURL(string: theme.supportUrl()) else {
-            return
-        }
-        
-        presentUrlForTheme(url)
+        presentUrlForTheme(theme?.supportUrl())
     }
     
     public func presentViewForTheme(theme: Theme?) {
-        guard let theme = theme, url = NSURL(string: theme.viewUrl()) else {
+        presentUrlForTheme(theme?.viewUrl())
+    }
+    
+    public func presentUrlForTheme(url: String?) {
+        guard let url = url where !url.isEmpty else {
             return
         }
         
-        presentUrlForTheme(url)
-    }
-    
-    public func presentUrlForTheme(url: NSURL) {
-        let webViewController = WPWebViewController(URL: url)
+        let webViewController = WPWebViewController(URL: NSURL(string: url))
         
         webViewController.authToken = blog.authToken
         webViewController.username = blog.usernameForSite
