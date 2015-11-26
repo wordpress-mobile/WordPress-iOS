@@ -173,41 +173,18 @@ public class BlogSettings : NSManagedObject
     
     
     
+    // MARK: - Helpers
     
     /**
      *  @details Computed property, meant to help conversion from Remote / String-Based values, into their
      *           Integer counterparts
      */
-    var commentsSortOrderAsString : String? {
+    var commentsSortOrderAscending : Bool {
         set {
-            let isAscending = (newValue == SortOrder.AscendingStringValue)
-            commentsSortOrder = isAscending ? SortOrder.Ascending.rawValue : SortOrder.Descending.rawValue
+            commentsSortOrder = newValue ? SortOrder.Ascending.rawValue : SortOrder.Descending.rawValue
         }
         get {
-            let isAscending = (commentsSortOrder == SortOrder.Ascending.rawValue)
-            return isAscending ? SortOrder.AscendingStringValue : SortOrder.DescendingStringValue
+            return commentsSortOrder == SortOrder.Ascending.rawValue
         }
-    }
-    
-    /**
-     *  @enum    BlogSettings.SortOrder
-     *  @brief   Enumerates all of the valid Sorting Orders
-     */
-    public enum SortOrder : Int {
-        case Ascending  = 0
-        case Descending = 1
-        
-        var description : String {
-            switch self {
-            case .Ascending:
-                return NSLocalizedString("Oldest First", comment: "Sort Order")
-            case .Descending:
-                return NSLocalizedString("Newest First", comment: "Sort Order")
-            }
-        }
-        
-        static let AllValues                = [Ascending, Descending]
-        static let AscendingStringValue     = "asc"
-        static let DescendingStringValue    = "desc"
     }
 }
