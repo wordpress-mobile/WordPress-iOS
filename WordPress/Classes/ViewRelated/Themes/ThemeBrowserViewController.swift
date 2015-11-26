@@ -518,7 +518,7 @@ public protocol ThemePresenter: class {
                     handler: { [weak self] (action: UIAlertAction) in
                         self?.navigationController?.popViewControllerAnimated(true)
                     })
-                alertController.addCancelActionWithTitle(okTitle, handler: nil)
+                alertController.addDefaultActionWithTitle(okTitle, handler: nil)
                 alertController.presentFromRootViewController()
             },
             failure: { (error : NSError!) in
