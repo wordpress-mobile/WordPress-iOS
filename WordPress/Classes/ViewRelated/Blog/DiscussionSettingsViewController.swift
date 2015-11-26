@@ -350,13 +350,21 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     private func pressedThreading(payload: AnyObject?) {
+        typealias Threading                     = BlogSettings.Threading
+        
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Threading", comment: "")
-        settingsViewController.currentValue     = "2"
-        settingsViewController.defaultValue     = "2"
-        settingsViewController.titles           = ["Two levels", "Three levels", "Four levels", "Five levels"]
-        settingsViewController.values           = ["2", "3", "4", "5"]
-        settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
+        settingsViewController.currentValue     = settings.commentsThreadingEnabled ? settings.commentsThreadingDepth : Threading.DepthDisabled
+        settingsViewController.titles           = Threading.DepthTitles
+        settingsViewController.values           = Threading.DepthValues
+        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
+            guard let newThreadingDepth = selected as? Int else {
+                return
+            }
+            
+            self?.settings.commentsThreadingEnabled  = newThreadingDepth != Threading.DepthDisabled
+            self?.settings.commentsThreadingDepth    = newThreadingDepth
+        }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
