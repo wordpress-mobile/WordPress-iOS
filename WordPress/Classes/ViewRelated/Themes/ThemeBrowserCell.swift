@@ -35,7 +35,7 @@ public enum ThemeAction {
     func present(theme: Theme, _ presenter: ThemePresenter) {
         switch self {
         case .Activate:
-            print("TODO: .Activate")
+            presenter.activateTheme(theme)
         case .Customize, .TryCustomize:
             presenter.presentCustomizeForTheme(theme)
         case .Details:
