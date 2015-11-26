@@ -14,7 +14,7 @@ extension BlogSettings
         var description : String {
             return SortOrder.DescriptionMap[self.rawValue]!
         }
-                
+        
         public static var SortTitles : [String] {
             return DescriptionMap.keys.map { $0.description }
         }
@@ -59,6 +59,65 @@ extension BlogSettings
             }
             
             return optionsMap
+        }
+    }
+    
+    
+    
+    public enum AutomaticallyApprove : Int {
+        case Disabled       = 0
+        case FromKnownUsers = 1
+        case Everything     = 2
+        
+        var description : String {
+            return AutomaticallyApprove.OptionsMap[self.rawValue]!
+        }
+        
+        public static var OptionTitles : [String] {
+            return OptionValues.map { OptionsMap[$0]! }
+        }
+        
+        public static var OptionValues : [Int] {
+            return OptionsMap.keys.sort()
+        }
+        
+        private static let OptionsMap = [
+            Disabled.rawValue        : NSLocalizedString("No comments", comment: ""),
+            FromKnownUsers.rawValue  : NSLocalizedString("Known user's comments", comment: ""),
+            Everything.rawValue      : NSLocalizedString("All comments", comment: "")
+        ]
+    }
+    
+    
+    
+    
+    // MARK: - Helpers
+    
+    /**
+    *  @details Computed property, meant to help conversion from Remote / String-Based values, into their
+    *           Integer counterparts
+    */
+    public var commentsSortOrderAscending : Bool {
+        set {
+            commentsSortOrder = newValue ? SortOrder.Ascending.rawValue : SortOrder.Descending.rawValue
+        }
+        get {
+            return commentsSortOrder == SortOrder.Ascending.rawValue
+        }
+    }
+    
+    public var commentsAutoapproval : AutomaticallyApprove {
+        get {
+            if commentsRequireManualModeration {
+                return .Disabled
+            } else if commentsFromKnownUsersWhitelisted {
+                return .FromKnownUsers
+            }
+            return .Everything
+        }
+        set {
+            commentsRequireManualModeration     = newValue == .Disabled
+            commentsFromKnownUsersWhitelisted   = newValue == .FromKnownUsers
         }
     }
 }
