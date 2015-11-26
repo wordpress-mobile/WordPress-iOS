@@ -2,10 +2,16 @@ import Foundation
 import WordPressShared.WPStyleGuide
 import WordPressShared.WPNoResultsView
 
+/**
+ *  @brief      Support for filtering themes by purchasability
+ *  @details    Currently purchasing themes via native apps is unsupported
+ */
 public enum ThemeType {
     case All
     case Free
     case Premium
+    
+    static let mayPurchase = false
     
     static let types = [All, Free, Premium]
 
@@ -105,7 +111,7 @@ public protocol ThemePresenter: class {
             }
        }
     }
-    public var searchType = ThemeType.All {
+    public var searchType: ThemeType = ThemeType.mayPurchase ? .All : .Free {
         didSet {
             if searchType != oldValue {
                 fetchThemes()

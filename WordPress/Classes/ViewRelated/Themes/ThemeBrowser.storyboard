@@ -299,7 +299,7 @@
                                                                 <action selector="didTapSearchTypeButton:" destination="47y-8d-jwn" eventType="touchUpInside" id="VDa-tX-HhH"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="85U-8E-CJ7">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="85U-8E-CJ7">
                                                             <rect key="frame" x="516" y="0.0" width="52" height="53"/>
                                                             <animations/>
                                                             <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
