@@ -38,7 +38,12 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
         didSet {
             if let presenter = presenter {
                 theme = presenter.currentTheme()
-                searchType = presenter.searchType
+                
+                if ThemeType.mayPurchase {
+                    searchType = presenter.searchType
+                } else {
+                    searchTypeButton.hidden = true
+                }
             }
         }
     }
