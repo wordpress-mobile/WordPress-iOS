@@ -26,19 +26,15 @@ target 'WordPress', :exclusive => true do
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal']
   pod 'MRProgress', '~>0.7.0'
 
-  #pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.12'
-  pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :branch => 'try/cocoalumberjack-update'
+  pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.13'
   pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
   pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'Simperium', '0.8.9'
   pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
-  #pod 'WordPress-iOS-Shared', '0.5.0'
-  pod 'WordPress-iOS-Shared', :branch => 'try/cocoalumberjack-update', :git => 'https://github.com/wordpress-mobile/WordPress-Shared-iOS.git'
-  #pod 'WordPress-iOS-Editor', '1.1'
-  pod 'WordPress-iOS-Editor', :branch => 'try/cocoalumberjack-update', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git'
-  #pod 'WordPressCom-Stats-iOS', '0.5.0'
-  pod 'WordPressCom-Stats-iOS', :branch => 'try/cocoalumberjack-update', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
+  pod 'WordPress-iOS-Shared', '0.5.1'
+  pod 'WordPress-iOS-Editor', '1.1.1'
+  pod 'WordPressCom-Stats-iOS', '0.5.1'
   pod 'WordPressCom-Analytics-iOS', '0.1.0'
   pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
   pod 'WPMediaPicker', '~> 0.7.0'
@@ -47,10 +43,8 @@ target 'WordPress', :exclusive => true do
 end
 
 target 'WordPressTodayWidget', :exclusive => true do
-  #pod 'WordPress-iOS-Shared', '0.5.0'
-  pod 'WordPress-iOS-Shared', :branch => 'try/cocoalumberjack-update', :git => 'https://github.com/wordpress-mobile/WordPress-Shared-iOS.git'
-  #pod 'WordPressCom-Stats-iOS/Services', '0.5.0'
-  pod 'WordPressCom-Stats-iOS/Services', :branch => 'try/cocoalumberjack-update', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
+  pod 'WordPress-iOS-Shared', '0.5.1'
+  pod 'WordPressCom-Stats-iOS/Services', '0.5.1'
 end
 
 target :WordPressTest, :exclusive => true do
