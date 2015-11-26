@@ -32,10 +32,16 @@ public enum ThemeType {
     }
 }
 
+/**
+ *  @brief      Publicly exposed theme interaction support
+ *  @details    Held as weak reference by owned subviews
+ */
 public protocol ThemePresenter: class {
-    func currentTheme() -> Theme?
     var searchType: ThemeType { get set }
-    
+
+    func currentTheme() -> Theme?
+    func activateTheme(theme: Theme?)
+
     func presentCustomizeForTheme(theme: Theme?)
     func presentDetailsForTheme(theme: Theme?)
     func presentSupportForTheme(theme: Theme?)
@@ -483,6 +489,45 @@ public protocol ThemePresenter: class {
     
     // MARK: - ThemePresenter
     
+    public func activateTheme(theme: Theme?) {
+        guard let theme = theme where !theme.isCurrentTheme() else {
+            return
+        }
+        
+        themeService.activateTheme(theme,
+            forBlog: blog,
+            success: { [weak self] (theme: Theme?) in
+                self?.collectionView?.reloadData()
+                
+                let successTitle = NSLocalizedString("Theme Activated", comment:"Title of alert when theme activation succeeds")
+                let successFormat = NSLocalizedString("Thanks for choosing %@", comment:"Message of alert when theme activation succeeds")
+                let successMessage = String(format:successFormat, theme?.name ?? "")
+                let manageTitle = NSLocalizedString("Manage site", comment:"Return to blog screen action when theme activation succeeds")
+                let okTitle = NSLocalizedString("OK", comment:"Alert dismissal title")
+                let alertController = UIAlertController(title: successTitle,
+                    message: successMessage,
+                    preferredStyle: .Alert)
+                alertController.addActionWithTitle(manageTitle,
+                    style: .Default,
+                    handler: { [weak self] (action: UIAlertAction) in
+                        self?.navigationController?.popViewControllerAnimated(true)
+                    })
+                alertController.addCancelActionWithTitle(okTitle, handler: nil)
+                alertController.presentFromRootViewController()
+            },
+            failure: { (error : NSError!) in
+                DDLogSwift.logError("Error activating theme \(theme.themeId): \(error.localizedDescription)")
+                
+                let errorTitle = NSLocalizedString("Activation Error", comment:"Title of alert when theme activation fails")
+                let okTitle = NSLocalizedString("OK", comment:"Alert dismissal title")
+                let alertController = UIAlertController(title: errorTitle,
+                    message: error.localizedDescription,
+                    preferredStyle: .Alert)
+                alertController.addDefaultActionWithTitle(okTitle, handler: nil)
+                alertController.presentFromRootViewController()
+        })
+    }
+
     public func presentCustomizeForTheme(theme: Theme?) {
         guard let theme = theme, url = NSURL(string: theme.customizeUrl()) else {
             return
