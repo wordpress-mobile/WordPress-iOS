@@ -274,7 +274,7 @@
 
 - (NSOperation *)activateTheme:(Theme *)theme
                        forBlog:(Blog *)blog
-                       success:(ThemeServiceSuccessBlock)success
+                       success:(ThemeServiceThemeRequestSuccessBlock)success
                        failure:(ThemeServiceFailureBlock)failure
 {
     NSParameterAssert([theme isKindOfClass:[Theme class]]);
@@ -287,8 +287,16 @@
     
     NSOperation *operation = [remote activateThemeId:theme.themeId
                                            forBlogId:[blog dotComID]
-                                             success:success
-                                             failure:failure];
+                                             success:^(RemoteTheme *remoteTheme) {
+                                                 Theme *theme = [self themeFromRemoteTheme:remoteTheme
+                                                                                   forBlog:blog];
+                                                 
+                                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                                     if (success) {
+                                                         success(theme);
+                                                     }
+                                                 }];
+                                             } failure:failure];
     
     return operation;
 }
