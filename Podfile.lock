@@ -22,17 +22,17 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AMPopTip (0.9.13)
-  - Automattic-Tracks-iOS (0.0.12):
-    - CocoaLumberjack (= 2.0.0)
+  - Automattic-Tracks-iOS (0.0.13):
+    - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
     - UIDeviceIdentifier (~> 0.4)
-  - CocoaLumberjack (2.0.0):
-    - CocoaLumberjack/Default (= 2.0.0)
-    - CocoaLumberjack/Extensions (= 2.0.0)
-  - CocoaLumberjack/Core (2.0.0)
-  - CocoaLumberjack/Default (2.0.0):
+  - CocoaLumberjack (2.2.0):
+    - CocoaLumberjack/Default (= 2.2.0)
+    - CocoaLumberjack/Extensions (= 2.2.0)
+  - CocoaLumberjack/Core (2.2.0)
+  - CocoaLumberjack/Default (2.2.0):
     - CocoaLumberjack/Core
-  - CocoaLumberjack/Extensions (2.0.0):
+  - CocoaLumberjack/Extensions (2.2.0):
     - CocoaLumberjack/Default
   - DTCoreText (1.6.16):
     - DTFoundation/Core (~> 1.7.5)
@@ -108,12 +108,6 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
-  - NSLogger (1.5.1):
-    - NSLogger/Standard (= 1.5.1)
-  - NSLogger-CocoaLumberjack-connector (1.5):
-    - CocoaLumberjack (~> 2.0)
-    - NSLogger
-  - NSLogger/Standard (1.5.1)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.1.2)
@@ -156,37 +150,37 @@ PODS:
   - SVProgressHUD (1.1.3)
   - UIDeviceIdentifier (0.5.0)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-iOS-Editor (1.1):
-    - CocoaLumberjack (= 2.0.0)
+  - WordPress-iOS-Editor (1.1.1):
+    - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (~> 0.0.2)
-    - WordPress-iOS-Shared (~> 0.5.0)
+    - WordPress-iOS-Shared (~> 0.5.1)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPress-iOS-Shared (0.5.0):
+  - WordPress-iOS-Shared (0.5.1):
     - AFNetworking (~> 2.5)
-    - CocoaLumberjack (= 2.0.0)
+    - CocoaLumberjack (~> 2.2.0)
   - WordPressApi (0.3.6):
     - AFNetworking (~> 2.6.0)
     - wpxmlrpc (~> 0.7)
   - WordPressCom-Analytics-iOS (0.1.0)
-  - WordPressCom-Stats-iOS (0.5.0):
+  - WordPressCom-Stats-iOS (0.5.1):
     - AFNetworking (~> 2.6.0)
-    - CocoaLumberjack (= 2.0.0)
+    - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.5.0)
+    - WordPress-iOS-Shared (~> 0.5.1)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
-    - WordPressCom-Stats-iOS/Services (= 0.5.0)
-    - WordPressCom-Stats-iOS/UI (= 0.5.0)
-  - WordPressCom-Stats-iOS/Services (0.5.0):
+    - WordPressCom-Stats-iOS/Services (= 0.5.1)
+    - WordPressCom-Stats-iOS/UI (= 0.5.1)
+  - WordPressCom-Stats-iOS/Services (0.5.1):
     - AFNetworking (~> 2.6.0)
-    - CocoaLumberjack (= 2.0.0)
+    - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.5.0)
+    - WordPress-iOS-Shared (~> 0.5.1)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPressCom-Stats-iOS/UI (0.5.0):
+  - WordPressCom-Stats-iOS/UI (0.5.1):
     - AFNetworking (~> 2.6.0)
-    - CocoaLumberjack (= 2.0.0)
+    - CocoaLumberjack (~> 2.2.0)
     - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.5.0)
+    - WordPress-iOS-Shared (~> 0.5.1)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
     - WordPressCom-Stats-iOS/Services
   - WPMediaPicker (0.7.2)
@@ -197,8 +191,8 @@ DEPENDENCIES:
   - AFNetworking (= 2.6.3)
   - AMPopTip (~> 0.7)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`,
-    tag `0.0.12`)
-  - CocoaLumberjack (= 2.0.0)
+    tag `0.0.13`)
+  - CocoaLumberjack (~> 2.2.0)
   - DTCoreText (= 1.6.16)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
@@ -212,8 +206,6 @@ DEPENDENCIES:
     branch `gifsupport`)
   - Mixpanel (= 2.8.2)
   - MRProgress (~> 0.7.0)
-  - NSLogger-CocoaLumberjack-connector (from `https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git`,
-    tag `1.5`)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock (= 3.1.2)
@@ -227,27 +219,24 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
-  - WordPress-iOS-Editor (= 1.1)
-  - WordPress-iOS-Shared (= 0.5.0)
+  - WordPress-iOS-Editor (= 1.1.1)
+  - WordPress-iOS-Shared (= 0.5.1)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
   - WordPressCom-Analytics-iOS (= 0.1.0)
-  - WordPressCom-Stats-iOS (= 0.5.0)
-  - WordPressCom-Stats-iOS/Services (= 0.5.0)
+  - WordPressCom-Stats-iOS (= 0.5.1)
+  - WordPressCom-Stats-iOS/Services (= 0.5.1)
   - WPMediaPicker (~> 0.7.0)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.12
+    :tag: 0.0.13
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
   MGImageUtilities:
     :branch: gifsupport
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
-  NSLogger-CocoaLumberjack-connector:
-    :git: https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git
-    :tag: '1.5'
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -257,13 +246,10 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.12
+    :tag: 0.0.13
   MGImageUtilities:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
-  NSLogger-CocoaLumberjack-connector:
-    :git: https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git
-    :tag: '1.5'
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -275,8 +261,8 @@ SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
   AMPopTip: 17c0fc2bffc9d81314228073f63ea0320f204b11
-  Automattic-Tracks-iOS: 0fe58abad2aee92dd9d57132589e03556cd9a96a
-  CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
+  Automattic-Tracks-iOS: ba47c35576a07376facc7a91740fb78867831e1c
+  CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
   DTFoundation: 46e2b2fafe78d67febfd8d1f85fe9845a093f00e
   EmailChecker: 78dd8dfa9d004826c8b5889be6c380b72b837d44
@@ -290,8 +276,6 @@ SPEC CHECKSUMS:
   MGImageUtilities: b54a815970e231903c495fff33699467158f61a0
   Mixpanel: f4d71ac2a306e7cda6ad03d4a2be249a0fd7a967
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
-  NSLogger: 5ed223a2436df96244e033be750656dacdeec034
-  NSLogger-CocoaLumberjack-connector: 5d03d0d59a5f40093f1b1bdd66df6a71647d4a9c
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
@@ -304,11 +288,11 @@ SPEC CHECKSUMS:
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
-  WordPress-iOS-Editor: 71a7112d49e5d2ad817914bc72e50928901dd21f
-  WordPress-iOS-Shared: 5480e7b5c9c55158ea22c89ff44fca5597852224
+  WordPress-iOS-Editor: 563239f9f42f80a3ca20e61f1d5aeed58698c846
+  WordPress-iOS-Shared: ced218039d88c91572f3205882832f7a05c61f97
   WordPressApi: 39ca2b950a95fd0bf7ae5c86c92a272fb350187b
   WordPressCom-Analytics-iOS: 355b8c6cf1d50d64ca7667e6f9e94c989e466775
-  WordPressCom-Stats-iOS: 2564e78a4584381da8fc884a7b7d840bb57f4a9a
+  WordPressCom-Stats-iOS: 9346d0e9441113eca614a6a9a333216571e4adc8
   WPMediaPicker: 22beabf079a54ece002208efd934e472eaedeed4
   wpxmlrpc: bd391dab54e9bdceb5d1de23d161ecf1ba80f0e0
 

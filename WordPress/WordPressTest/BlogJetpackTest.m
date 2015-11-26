@@ -42,6 +42,7 @@
                               @"readonly": @YES,
                               },
                       };
+    _blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings" inManagedObjectContext:self.testContextManager.mainContext];
 }
 
 - (void)tearDown {
@@ -209,7 +210,7 @@
     } failure:^(NSError *error) {
         XCTFail(@"Sync blogs shouldn't fail");
     }];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
 
     // test.blog + wp.com
     XCTAssertEqual(1, [accountService numberOfAccounts]);
