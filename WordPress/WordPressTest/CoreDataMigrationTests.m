@@ -505,6 +505,75 @@
     XCTAssertNil(error, @"Error while saving context");
 }
 
+- (void)testMigrate40to41
+{
+    // Properties
+    NSURL *model40Url = [self urlForModelName:@"WordPress 40" inDirectory:nil];
+    NSURL *model41Url = [self urlForModelName:@"WordPress 41" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress40.sqlite"];
+    
+    // Load a Model 40 Stack
+    NSManagedObjectModel *model40 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model40Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model40];
+    
+    NSDictionary *options = @{
+        NSInferMappingModelAutomaticallyOption          : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+    };
+    
+    NSError *error = nil;
+    [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error];
+    
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+    
+    XCTAssertNil(error, @"Error while loading the PSC for Model 39");
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+    
+    // Insert a Dummy Notification
+    NSNumber *noteID = @(123123123);
+    NSString *simperiumKey = @"42424242";
+    
+    NSManagedObject *note = [NSEntityDescription insertNewObjectForEntityForName:@"Notification" inManagedObjectContext:context];
+    [note setValue:simperiumKey forKey:@"simperiumKey"];
+    [note setValue:noteID forKey:@"id"];
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
+    
+    // Migrate to Model 41
+    NSManagedObjectModel *model41 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model41Url];
+    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
+                                                           ofType:NSSQLiteStoreType
+                                                          toModel:model41
+                                                orderedModelNames:@[@"WordPress 40", @"WordPress 41"]
+                                                            error:&error];
+    if (!migrateResult) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    
+    XCTAssertTrue(migrateResult);
+    
+    // Load a Model 41 Stack
+    NSPersistentStoreCoordinator *psc41 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model41];
+    [psc41 addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeUrl options:options error:&error];
+    
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc41;
+    
+    XCTAssertNil(error, @"Error while loading the PSC for Model 41");
+    
+    // Fetch the Notification
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Notification"];
+    request.predicate = [NSPredicate predicateWithFormat:@"simperiumKey == %@", simperiumKey];
+    
+    NSArray *results = [context executeFetchRequest:request error:nil];
+    XCTAssert(results.count == 1, @"Error Fetching Note");
+    
+    NSManagedObject *migratedNote = [results firstObject];
+    XCTAssertEqualObjects([migratedNote valueForKey:@"id"], noteID, @"Oops?");
+}
+
+
 #pragma mark - Private Helpers
 
 // Returns the URL for a model file with the given name in the given directory.
