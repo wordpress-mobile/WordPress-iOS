@@ -332,8 +332,6 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     private func pressedSortBy(payload: AnyObject?) {
-        typealias SortOrder                     = BlogSettings.SortOrder
-
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Sort By", comment: "")
         settingsViewController.currentValue     = settings.commentsSortOrder
@@ -351,8 +349,6 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     private func pressedThreading(payload: AnyObject?) {
-        typealias Threading                     = BlogSettings.Threading
-        
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Threading", comment: "")
         settingsViewController.currentValue     = settings.commentsThreadingEnabled ? settings.commentsThreadingDepth : Threading.DepthDisabled
@@ -383,7 +379,20 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     private func pressedAutomaticallyApprove(payload: AnyObject?) {
+        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
+        settingsViewController.title            = NSLocalizedString("Automatically Approve", comment: "")
+        settingsViewController.currentValue     = settings.commentsAutoapproval.rawValue
+        settingsViewController.titles           = AutomaticallyApprove.OptionTitles
+        settingsViewController.values           = AutomaticallyApprove.OptionValues
+        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
+            guard let newApprovalStatus = AutomaticallyApprove(rawValue: selected as! Int) else {
+                return
+            }
+
+            self?.settings.commentsAutoapproval = newApprovalStatus
+        }
         
+        navigationController?.pushViewController(settingsViewController, animated: true)
     }
 
     private func pressedLinksInComments(payload: AnyObject?) {
@@ -398,6 +407,12 @@ public class DiscussionSettingsViewController : UITableViewController
         
     }
     
+    
+    
+    // MARK: - Typealiases
+    private typealias SortOrder             = BlogSettings.SortOrder
+    private typealias Threading             = BlogSettings.Threading
+    private typealias AutomaticallyApprove  = BlogSettings.AutomaticallyApprove
     
     
     // MARK: - Private Nested Classes

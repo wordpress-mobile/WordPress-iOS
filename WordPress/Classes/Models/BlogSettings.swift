@@ -170,21 +170,4 @@ public class BlogSettings : NSManagedObject
      *  @details Indicates whether related posts should show thumbnails.
      */
     @NSManaged var relatedPostsShowThumbnails : Bool
-    
-    
-    
-    // MARK: - Helpers
-    
-    /**
-     *  @details Computed property, meant to help conversion from Remote / String-Based values, into their
-     *           Integer counterparts
-     */
-    var commentsSortOrderAscending : Bool {
-        set {
-            commentsSortOrder = newValue ? SortOrder.Ascending.rawValue : SortOrder.Descending.rawValue
-        }
-        get {
-            return commentsSortOrder == SortOrder.Ascending.rawValue
-        }
-    }
 }
