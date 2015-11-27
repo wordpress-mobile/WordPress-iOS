@@ -506,8 +506,8 @@ public protocol ThemePresenter: class {
                 self?.collectionView?.reloadData()
                 
                 let successTitle = NSLocalizedString("Theme Activated", comment:"Title of alert when theme activation succeeds")
-                let successFormat = NSLocalizedString("Thanks for choosing %@", comment:"Message of alert when theme activation succeeds")
-                let successMessage = String(format:successFormat, theme?.name ?? "")
+                let successFormat = NSLocalizedString("Thanks for choosing %@ by %@", comment:"Message of alert when theme activation succeeds")
+                let successMessage = String(format:successFormat, theme?.name ?? "", theme?.author ?? "")
                 let manageTitle = NSLocalizedString("Manage site", comment:"Return to blog screen action when theme activation succeeds")
                 let okTitle = NSLocalizedString("OK", comment:"Alert dismissal title")
                 let alertController = UIAlertController(title: successTitle,
