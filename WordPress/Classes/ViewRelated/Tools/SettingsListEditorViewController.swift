@@ -14,6 +14,8 @@ public class SettingsListEditorViewController : UITableViewController
     // MARK: - Public Properties
     public var footerText   : String?
     public var emptyText    : String?
+    public var insertTitle  : String?
+    public var editTitle    : String?
     public var onCompletion : ((Set<String>) -> Void)?
     
     
@@ -63,6 +65,7 @@ public class SettingsListEditorViewController : UITableViewController
     // MARK: - Button Handlers
     @IBAction private func addItemPressed(sender: AnyObject?) {
         let settingsViewController = SettingsTextViewController(text: nil, placeholder: nil, hint: nil, isPassword: false)
+        settingsViewController.title = insertTitle
         settingsViewController.onValueChanged = { (updatedValue : String!) in
             self.insertStrings(updatedValue)
             self.tableView.reloadData()
@@ -88,8 +91,9 @@ public class SettingsListEditorViewController : UITableViewController
 
         WPStyleGuide.configureTableViewCell(cell)
 
-        cell.textLabel?.text        = isEmpty() ? emptyText : stringAtIndexPath(indexPath)
-        cell.textLabel?.textColor   = isEmpty() ? WPStyleGuide.greyLighten20() : WPStyleGuide.darkGrey()
+        cell.accessoryType = isEmpty() ? .None : .DisclosureIndicator
+        cell.textLabel?.text = isEmpty() ? emptyText : stringAtIndexPath(indexPath)
+        cell.textLabel?.textColor = isEmpty() ? WPStyleGuide.greyLighten20() : WPStyleGuide.darkGrey()
         
         return cell
     }
@@ -100,8 +104,8 @@ public class SettingsListEditorViewController : UITableViewController
         }
 
         
-        let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title    = unwrappedFooterText
+        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
+        footerView.title = unwrappedFooterText
         
         return footerView
     }
@@ -127,6 +131,7 @@ public class SettingsListEditorViewController : UITableViewController
         let oldText = stringAtIndexPath(indexPath)
         
         let settingsViewController = SettingsTextViewController(text: oldText, placeholder: nil, hint: nil, isPassword: false)
+        settingsViewController.title = editTitle
         settingsViewController.onValueChanged = { (newText : String!) in
             self.replaceString(oldText, newText: newText)
             self.tableView.reloadData()

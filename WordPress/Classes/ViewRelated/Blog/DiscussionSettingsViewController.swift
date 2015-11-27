@@ -381,10 +381,12 @@ public class DiscussionSettingsViewController : UITableViewController
         let moderationKeys                      = settings.commentsModerationKeys
         let settingsViewController              = SettingsListEditorViewController(collection: moderationKeys)
         settingsViewController.title            = NSLocalizedString("Hold for Moderation", comment: "Moderation Keys Title")
+        settingsViewController.insertTitle      = NSLocalizedString("New Moderation Key", comment: "Moderation Keyword Insertion Title")
+        settingsViewController.editTitle        = NSLocalizedString("Edit Moderation Key", comment: "Moderation Keyword Edition Title")
         settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\".",
                                                                     comment: "Text rendered at the bottom of the Discussion Moderation Keys editor")
-        settingsViewController.onCompletion     = { (updated: Set<String>) in
-            self.settings.commentsModerationKeys = updated
+        settingsViewController.onCompletion     = { [weak self] (updated: Set<String>) in
+            self?.settings.commentsModerationKeys = updated
         }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -394,10 +396,12 @@ public class DiscussionSettingsViewController : UITableViewController
         let blacklistKeys                       = settings.commentsBlacklistKeys
         let settingsViewController              = SettingsListEditorViewController(collection: blacklistKeys)
         settingsViewController.title            = NSLocalizedString("Blacklist", comment: "Blacklist Title")
+        settingsViewController.insertTitle      = NSLocalizedString("New Blacklist Key", comment: "Blacklist Keyword Insertion Title")
+        settingsViewController.editTitle        = NSLocalizedString("Edit Blacklist Key", comment: "Blacklist Keyword Edition Title")
         settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".",
                                                                     comment: "Text rendered at the bottom of the Discussion Blacklist Keys editor")
-        settingsViewController.onCompletion     = { (updated: Set<String>) in
-            self.settings.commentsBlacklistKeys = updated
+        settingsViewController.onCompletion     = { [weak self] (updated: Set<String>) in
+            self?.settings.commentsBlacklistKeys = updated
         }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
