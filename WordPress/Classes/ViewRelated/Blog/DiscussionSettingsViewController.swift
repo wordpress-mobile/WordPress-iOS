@@ -10,11 +10,6 @@ import WordPressShared
 
 public class DiscussionSettingsViewController : UITableViewController
 {
-    // MARK: - Private Properties
-    private var settings : BlogSettings!
-
-    
-    
     // MARK: - Initializers
     public convenience init(blog: Blog) {
         self.init(style: .Grouped)
@@ -383,17 +378,27 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     private func pressedModeration(payload: AnyObject?) {
-        // WARNING: Implement Me
-        let moderationKeys                      = settings.commentsModerationKeys?.sort()
-        let settingsViewController              = SettingsCollectionEditorViewController(collection: moderationKeys)
+        let moderationKeys                      = settings.commentsModerationKeys
+        let settingsViewController              = SettingsListEditorViewController(collection: moderationKeys)
+        settingsViewController.title            = NSLocalizedString("Hold for Moderation", comment: "Moderation Keys Title")
+        settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\".",
+                                                                    comment: "Text rendered at the bottom of the Discussion Moderation Keys editor")
+        settingsViewController.onCompletion     = { (updated: Set<String>) in
+            self.settings.commentsModerationKeys = updated
+        }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
     private func pressedBlacklist(payload: AnyObject?) {
-        // WARNING: Implement Me
-        let blacklistKeys                       = settings.commentsBlacklistKeys?.sort()
-        let settingsViewController              = SettingsCollectionEditorViewController(collection: blacklistKeys)
+        let blacklistKeys                       = settings.commentsBlacklistKeys
+        let settingsViewController              = SettingsListEditorViewController(collection: blacklistKeys)
+        settingsViewController.title            = NSLocalizedString("Blacklist", comment: "Blacklist Title")
+        settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".",
+                                                                    comment: "Text rendered at the bottom of the Discussion Blacklist Keys editor")
+        settingsViewController.onCompletion     = { (updated: Set<String>) in
+            self.settings.commentsBlacklistKeys = updated
+        }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
     }
@@ -401,9 +406,9 @@ public class DiscussionSettingsViewController : UITableViewController
     
     
     // MARK: - Typealiases
-    private typealias SortOrder             = BlogSettings.SortOrder
-    private typealias Threading             = BlogSettings.Threading
-    private typealias AutomaticallyApprove  = BlogSettings.AutomaticallyApprove
+    private typealias SortOrder                 = BlogSettings.SortOrder
+    private typealias Threading                 = BlogSettings.Threading
+    private typealias AutomaticallyApprove      = BlogSettings.AutomaticallyApprove
     
     
     // MARK: - Private Nested Classes
@@ -441,4 +446,8 @@ public class DiscussionSettingsViewController : UITableViewController
             case Switch     = "SwitchCell"
         }
     }
+    
+    
+    // MARK: - Private Properties
+    private var settings : BlogSettings!
 }
