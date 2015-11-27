@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSNumber *popularityRank;
 @property (nonatomic, strong) NSString *previewUrl;
 @property (nonatomic, strong) NSString *price;
+@property (nonatomic, strong) NSNumber *purchased;
 @property (nonatomic, strong) NSString *screenshotUrl;
 @property (nonatomic, strong) NSString *stylesheet;
 @property (nonatomic, strong) NSString *themeId;
