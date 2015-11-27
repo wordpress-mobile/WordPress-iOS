@@ -1,4 +1,5 @@
 import Foundation
+import WordPressComAnalytics
 import WordPressShared.WPStyleGuide
 import WordPressShared.WPNoResultsView
 
@@ -503,6 +504,8 @@ public protocol ThemePresenter: class {
         themeService.activateTheme(theme,
             forBlog: blog,
             success: { [weak self] (theme: Theme?) in
+                WPAnalytics.track(.ThemesChangedTheme, withProperties: ["themeId": theme?.themeId ?? ""])
+
                 self?.collectionView?.reloadData()
                 
                 let successTitle = NSLocalizedString("Theme Activated", comment:"Title of alert when theme activation succeeds")
