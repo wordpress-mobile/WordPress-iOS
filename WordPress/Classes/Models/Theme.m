@@ -20,10 +20,13 @@ static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?p
 @dynamic screenshotUrl;
 @dynamic trendingRank;
 @dynamic version;
+@dynamic author;
+@dynamic authorUrl;
 @dynamic tags;
 @dynamic name;
 @dynamic previewUrl;
 @dynamic price;
+@dynamic purchased;
 @dynamic demoUrl;
 @dynamic stylesheet;
 @dynamic order;
