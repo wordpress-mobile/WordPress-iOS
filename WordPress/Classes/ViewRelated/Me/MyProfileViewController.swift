@@ -99,11 +99,16 @@ class MyProfileViewController: ImmuTableViewController {
 
     // MARK: - Cell Actions
 
-    func editableTextRowAction(changeType: String -> AccountSettingsChange)(row: ImmuTableRow) {
-        let row = row as! EditableTextRow
-        let controller = controllerForEditableText(row, changeType: changeType)
+    func editableTextRowAction(changeType: String -> AccountSettingsChange) -> (ImmuTableRow) -> Void {
+        return {
+            [unowned self]
+            row in
 
-        self.navigationController?.pushViewController(controller, animated: true)
+            let row = row as! EditableTextRow
+            let controller = self.controllerForEditableText(row, changeType: changeType)
+
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 
     func controllerForEditableText(row: EditableTextRow, changeType: String -> AccountSettingsChange) -> SettingsTextViewController {
