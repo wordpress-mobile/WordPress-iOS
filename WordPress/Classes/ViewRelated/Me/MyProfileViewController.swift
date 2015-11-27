@@ -1,19 +1,7 @@
 import UIKit
 import WordPressShared
 
-class MyProfileViewController: UITableViewController {
-    static let cellIdentifier = "MyProfileCell"
-
-    var viewModel = ImmuTable(sections: []) {
-        didSet {
-            dataSource.viewModel = viewModel
-            delegate.viewModel = viewModel
-            if isViewLoaded() {
-                tableView.reloadData()
-            }
-        }
-    }
-
+class MyProfileViewController: ImmuTableViewController {
     var account: WPAccount! {
         didSet {
             self.service = AccountSettingsService(accountID: account.userID.integerValue, api: account.restApi)
@@ -27,12 +15,6 @@ class MyProfileViewController: UITableViewController {
     }
 
     var settingsSubscription: AccountSettingsSubscription?
-    lazy var dataSource: ImmuTableDataSource = {
-        return ImmuTableDataSource(viewModel: self.viewModel)
-    }()
-    lazy var delegate: ImmuTableDelegate = {
-        return ImmuTableDelegate(viewModel: self.viewModel)
-    }()
 
     // MARK: - Table View Controller
 
@@ -45,12 +27,9 @@ class MyProfileViewController: UITableViewController {
 
         self.title = NSLocalizedString("My Profile", comment: "My Profile view title")
 
-        tableView.registerImmuTableRows([
+        self.registerRows([
             EditableTextRow.self
             ])
-
-        tableView.dataSource = dataSource
-        tableView.delegate = delegate
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
