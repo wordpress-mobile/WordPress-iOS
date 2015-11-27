@@ -1,11 +1,13 @@
 import UIKit
-import WordPressShared.WPStyleGuide
+import WordPressShared
 
 class MyProfileViewController: UITableViewController {
     static let cellIdentifier = "MyProfileCell"
 
     var viewModel = ImmuTable(sections: []) {
         didSet {
+            dataSource.viewModel = viewModel
+            delegate.viewModel = viewModel
             if isViewLoaded() {
                 tableView.reloadData()
             }
@@ -25,6 +27,12 @@ class MyProfileViewController: UITableViewController {
     }
 
     var settingsSubscription: AccountSettingsSubscription?
+    lazy var dataSource: ImmuTableDataSource = {
+        return ImmuTableDataSource(viewModel: self.viewModel)
+    }()
+    lazy var delegate: ImmuTableDelegate = {
+        return ImmuTableDelegate(viewModel: self.viewModel)
+    }()
 
     // MARK: - Table View Controller
 
@@ -41,8 +49,14 @@ class MyProfileViewController: UITableViewController {
             EditableTextRow.self
             ])
 
+        tableView.dataSource = dataSource
+        tableView.delegate = delegate
+
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        dataSource.configureCell = { cell in
+            WPStyleGuide.configureTableViewCell(cell)
+        }
 
         service.refreshSettings({ _ in })
     }
@@ -135,33 +149,4 @@ class MyProfileViewController: UITableViewController {
 
         return controller
     }
-
-    // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return viewModel.sections.count
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.sections[section].rows.count
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let row = viewModel.rowAtIndexPath(indexPath)
-        let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
-
-        row.configureCell(cell)
-
-        WPStyleGuide.configureTableViewCell(cell)
-
-        return cell
-    }
-
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let row = viewModel.rowAtIndexPath(indexPath)
-        if let action = row.action {
-            action(row)
-        }
-    }
-
 }
