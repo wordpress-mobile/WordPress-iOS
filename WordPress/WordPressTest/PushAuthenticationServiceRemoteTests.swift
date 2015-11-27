@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import WordPress
+import AFNetworking
 
 class PushAuthenticationServiceRemoteTests : XCTestCase {
 

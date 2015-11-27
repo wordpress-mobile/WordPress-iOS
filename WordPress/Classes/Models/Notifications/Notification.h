@@ -1,6 +1,4 @@
-#import <Simperium/SPManagedObject.h>
-
-
+#import <Simperium/Simperium.h>
 
 @class NotificationBlock;
 @class NotificationBlockGroup;
