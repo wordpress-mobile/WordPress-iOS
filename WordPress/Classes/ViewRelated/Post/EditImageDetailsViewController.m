@@ -1,8 +1,8 @@
 #import "EditImageDetailsViewController.h"
 #import <QuartzCore/QuartzCore.h>
-#import <WordPress-iOS-Editor/WPImageMeta.h>
-#import <WordPress-iOS-Shared/UIImage+Util.h>
-#import <WordPress-iOS-Shared/WPTextFieldTableViewCell.h>
+#import <WordPressEditor/WPImageMeta.h>
+#import <WordPressShared/UIImage+Util.h>
+#import <WordPressShared/WPTextFieldTableViewCell.h>
 #import "AbstractPost.h"
 #import "PostSettingsSelectionViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"

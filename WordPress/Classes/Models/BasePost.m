@@ -3,8 +3,8 @@
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
 #import "WPComLanguages.h"
-#import <WordPress-iOS-Shared/NSString+Util.h>
-#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+Util.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
 #import "NSString+Helpers.h"
 
 static const NSUInteger PostDerivedSummaryLength = 150;

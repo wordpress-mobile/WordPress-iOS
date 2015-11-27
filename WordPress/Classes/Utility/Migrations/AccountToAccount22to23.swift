@@ -1,6 +1,6 @@
 import UIKit
 import Foundation
-
+import WordPressComAnalytics
 
 /**
     Note:

@@ -9,7 +9,6 @@
 #import "SettingTableViewCell.h"
 #import "NotificationsManager.h"
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <NSDictionary+SafeExpectations.h>
 #import "NotificationsManager.h"
 #import "AccountService.h"
 #import "ContextManager.h"
@@ -26,6 +25,7 @@
 #import "BlogSiteVisibilityHelper.h"
 #import "RelatedPostsSettingsViewController.h"
 #import "WordPress-Swift.h"
+#import <WordPressApi/WordPressApi.h>
 
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
