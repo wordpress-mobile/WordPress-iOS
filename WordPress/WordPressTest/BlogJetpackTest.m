@@ -1,4 +1,7 @@
-#import <OHHTTPStubs/OHHTTPStubs.h>
+@import XCTest;
+@import OHHTTPStubs;
+@import OHHTTPStubs.OHPathHelpers;
+
 #import "Blog.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
@@ -7,7 +10,6 @@
 #import "JetpackService.h"
 #import "JetpackServiceRemote.h"
 #import "TestContextManager.h"
-#import <XCTest/XCTest.h>
 
 @interface BlogJetpackTest : XCTestCase
 @end
@@ -40,6 +42,7 @@
                               @"readonly": @YES,
                               },
                       };
+    _blog.settings = (BlogSettings *)[NSEntityDescription insertNewObjectForEntityForName:@"BlogSettings" inManagedObjectContext:self.testContextManager.mainContext];
 }
 
 - (void)tearDown {
@@ -47,7 +50,7 @@
     
     _account = nil;
     _blog = nil;
-    [OHHTTPStubs removeAllRequestHandlers];
+    [OHHTTPStubs removeAllStubs];
 
     self.testContextManager = nil;
 }
@@ -71,24 +74,30 @@
 }
 
 - (void)testValidateCredentials {
-    [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [[request.URL absoluteString] isEqualToString:@"https://public-api.wordpress.com/get-user-blogs/1.0?f=json"] &&
         [[request valueForHTTPHeaderField:@"Authorization"] isEqualToString:@"Basic dGVzdDE6dGVzdDE="]; // test1:test1
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithFile:@"get-user-blogs_doesnt-have-blog.json" contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
+        NSString* fixture = OHPathForFile(@"get-user-blogs_doesnt-have-blog.json", self.class);
+        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
+                                                statusCode:200 headers:@{@"Content-Type":@"application/json"}];
     }];
 
-    [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [[request.URL absoluteString] isEqualToString:@"https://public-api.wordpress.com/get-user-blogs/1.0?f=json"] &&
         [[request valueForHTTPHeaderField:@"Authorization"] isEqualToString:@"Basic dGVzdDI6dGVzdDI="]; // test2:test2
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithFile:@"get-user-blogs_has-blog.json" contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
+        NSString* fixture = OHPathForFile(@"get-user-blogs_has-blog.json", self.class);
+        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
+                                                statusCode:200 headers:@{@"Content-Type":@"application/json"}];
     }];
     
-    [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [[request.URL absoluteString] isEqualToString:@"https://public-api.wordpress.com/oauth2/token"];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithFile:@"authtoken.json" contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
+        NSString* fixture = OHPathForFile(@"authtoken.json", self.class);
+        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
+                                                statusCode:200 headers:@{@"Content-Type":@"application/json"}];
     }];
     
     XCTestExpectation *validateJetpackExpectation = [self expectationWithDescription:@"Validate Jetpack expectation"];
@@ -143,10 +152,12 @@
 }
 
 - (void)testWPCCShouldntDuplicateBlogs {
-    [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+    [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [request.URL.path hasSuffix:@"me/sites"];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
-        return [OHHTTPStubsResponse responseWithFile:@"me-sites-with-jetpack.json" contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
+        NSString* fixture = OHPathForFile(@"me-sites-with-jetpack.json", self.class);
+        return [OHHTTPStubsResponse responseWithFileAtPath:fixture
+                                                statusCode:200 headers:@{@"Content-Type":@"application/json"}];
     }];
 
     XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
@@ -199,7 +210,7 @@
     } failure:^(NSError *error) {
         XCTFail(@"Sync blogs shouldn't fail");
     }];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
 
     // test.blog + wp.com
     XCTAssertEqual(1, [accountService numberOfAccounts]);

@@ -22,6 +22,7 @@
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
 
+#import <WordPressApi/WordPressApi.h>
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -45,6 +46,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [defaults setObject:blog.url
                  forKey:LastUsedBlogURLDefaultsKey];
     [defaults synchronize];
+    
+    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
+    [shortcutCreator createShortcuts:YES];
 }
 
 - (Blog *)lastUsedOrFirstBlog

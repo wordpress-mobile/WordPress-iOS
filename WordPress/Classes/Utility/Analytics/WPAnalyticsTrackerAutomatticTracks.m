@@ -4,7 +4,7 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import <TracksService.h>
+#import <Automattic_Tracks_iOS/TracksService.h>
 
 @interface  TracksEventPair : NSObject
 @property (nonatomic, copy) NSString *eventName;
@@ -661,7 +661,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatTwoFactorSentSMS:
             eventName = @"two_factor_sent_sms";
             break;
-            
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:

@@ -1,5 +1,7 @@
 import Foundation
-
+import WordPressShared
+import WordPressComAnalytics
+import WordPress_AppbotX
 
 public class AboutViewController : UITableViewController
 {

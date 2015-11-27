@@ -5,7 +5,7 @@
 #import "Blog.h"
 #import "WordPress-Swift.h"
 
-#import <NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
 
 @implementation BlogSyncFacade
 
@@ -78,6 +78,9 @@
         finishedSync();
     }
 
+    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
+    [shortcutCreator createShortcuts:YES];
+    
     [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
     [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
     [WPAnalytics refreshMetadata];
