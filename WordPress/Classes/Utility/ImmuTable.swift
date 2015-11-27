@@ -108,9 +108,34 @@ public class ImmuTableDelegate: NSObject, UITableViewDelegate {
     }
 }
 
-extension UITableView {
-    func registerImmuTableRows(rows: [ImmuTableRow.Type]) {
-        ImmuTable.registerRows(rows, tableView: self)
+public class ImmuTableViewController: UITableViewController {
+    var viewModel = ImmuTable(sections: []) {
+        didSet {
+            dataSource.viewModel = viewModel
+            delegate.viewModel = viewModel
+            if isViewLoaded() {
+                tableView.reloadData()
+            }
+        }
+    }
+
+    lazy var dataSource: ImmuTableDataSource = {
+        return ImmuTableDataSource(viewModel: self.viewModel)
+    }()
+    
+    lazy var delegate: ImmuTableDelegate = {
+        return ImmuTableDelegate(viewModel: self.viewModel)
+    }()
+
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+
+        tableView.dataSource = dataSource
+        tableView.delegate = delegate
+    }
+
+    public func registerRows(rows: [ImmuTableRow.Type]) {
+        ImmuTable.registerRows(rows, tableView: tableView)
     }
 }
 
