@@ -535,22 +535,22 @@ public protocol ThemePresenter: class {
     }
 
     public func presentCustomizeForTheme(theme: Theme?) {
-        presentUrlForTheme(theme?.customizeUrl())
+        presentUrlForTheme(theme, url: theme?.customizeUrl())
     }
 
     public func presentDetailsForTheme(theme: Theme?) {
-        presentUrlForTheme(theme?.detailsUrl())
+        presentUrlForTheme(theme, url: theme?.detailsUrl())
     }
     
     public func presentSupportForTheme(theme: Theme?) {
-        presentUrlForTheme(theme?.supportUrl())
+        presentUrlForTheme(theme, url: theme?.supportUrl())
     }
     
     public func presentViewForTheme(theme: Theme?) {
-        presentUrlForTheme(theme?.viewUrl())
+        presentUrlForTheme(theme, url: theme?.viewUrl())
     }
     
-    public func presentUrlForTheme(url: String?) {
+    public func presentUrlForTheme(theme: Theme?, url: String?) {
         guard let url = url where !url.isEmpty else {
             return
         }
@@ -561,7 +561,12 @@ public protocol ThemePresenter: class {
         webViewController.username = blog.usernameForSite
         webViewController.password = blog.password
         webViewController.wpLoginURL = NSURL(string: blog.loginUrl())
-        
+
+        webViewController.loadViewIfNeeded()
+        webViewController.navigationItem.rightBarButtonItems = nil
+        webViewController.navigationItem.titleView = nil
+        webViewController.title = theme?.name
+
         navigationController?.pushViewController(webViewController, animated:true)
     }
 }
