@@ -869,8 +869,8 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
                 blog.xmlrpc = blogOptions[@"xmlrpc"];
             }
             blog.blogID = [blogOptions numberForKey:@"blogid"];
-            blog.blogName = [blogOptions[@"blogname"] stringByDecodingXMLCharacters];
             blog.url = blogOptions[@"url"];
+            blog.settings.name = [blogOptions[@"blogname"] stringByDecodingXMLCharacters];
             defaultAccount.defaultBlog = blog;
 
             [[ContextManager sharedInstance] saveContext:context];
