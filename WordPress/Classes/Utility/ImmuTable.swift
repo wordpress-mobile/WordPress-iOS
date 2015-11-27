@@ -65,6 +65,49 @@ public struct ImmuTable {
     }
 }
 
+public class ImmuTableDataSource: NSObject, UITableViewDataSource {
+    var viewModel: ImmuTable
+    var configureCell: ((UITableViewCell) -> Void)?
+
+    init(viewModel: ImmuTable) {
+        self.viewModel = viewModel
+    }
+
+    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return viewModel.sections.count
+    }
+
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.sections[section].rows.count
+    }
+
+    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let row = viewModel.rowAtIndexPath(indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
+
+        row.configureCell(cell)
+
+        configureCell?(cell)
+
+        return cell
+    }
+}
+
+public class ImmuTableDelegate: NSObject, UITableViewDelegate {
+    var viewModel: ImmuTable
+
+    init(viewModel: ImmuTable) {
+        self.viewModel = viewModel
+    }
+
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let row = viewModel.rowAtIndexPath(indexPath)
+        if let action = row.action {
+            action(row)
+        }
+    }
+}
+
 extension UITableView {
     func registerImmuTableRows(rows: [ImmuTableRow.Type]) {
         ImmuTable.registerRows(rows, tableView: self)
