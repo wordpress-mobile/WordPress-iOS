@@ -23,8 +23,9 @@
 #import "WPProgressTableViewCell.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import <WPMediaPicker/WPMediaPicker.h>
-#import "WPGUIConstants.h"
 #import <Photos/Photos.h>
+#import "WPGUIConstants.h"
+#import "WordPress-Swift.h"
 
 typedef enum {
     PostSettingsRowCategories = 0,
@@ -292,7 +293,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFormat]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
 
-    if (self.post.blog.geolocationEnabled || self.post.geolocation) {
+    if (self.post.blog.settings.geolocationEnabled || self.post.geolocation) {
         [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionGeolocation]];
     }
 }
