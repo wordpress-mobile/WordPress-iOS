@@ -16,7 +16,7 @@ extension BlogSettings
         }
         
         public static var SortTitles : [String] {
-            return DescriptionMap.keys.map { $0.description }
+            return DescriptionMap.keys.map { DescriptionMap[$0]! }
         }
         
         public static var SortValues : [Int] {
@@ -76,6 +76,10 @@ extension BlogSettings
         public static var OptionTitles : [String] {
             return OptionValues.map { OptionsMap[$0]! }
         }
+
+        public static var OptionHints : [String] {
+            return OptionValues.map { OptionsHints[$0]! }
+        }
         
         public static var OptionValues : [Int] {
             return OptionsMap.keys.sort()
@@ -85,6 +89,12 @@ extension BlogSettings
             Disabled.rawValue        : NSLocalizedString("No comments", comment: ""),
             FromKnownUsers.rawValue  : NSLocalizedString("Known user's comments", comment: ""),
             Everything.rawValue      : NSLocalizedString("All comments", comment: "")
+        ]
+        
+        private static let OptionsHints = [
+            Disabled.rawValue        : NSLocalizedString("Require manual approval for everyone's comments.", comment: ""),
+            FromKnownUsers.rawValue  : NSLocalizedString("Automatically approve if the user has a previously approved comment.", comment: ""),
+            Everything.rawValue      : NSLocalizedString("Automatically approve everyone's comments.", comment: "")
         ]
     }
     

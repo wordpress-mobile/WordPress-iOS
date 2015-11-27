@@ -318,17 +318,7 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     private func pressedCloseAfter(payload: AnyObject?) {
-        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
-        settingsViewController.title            = NSLocalizedString("Close After", comment: "")
-        settingsViewController.currentValue     = "30"
-        settingsViewController.defaultValue     = "30"
-        settingsViewController.titles           = ["Never", "One day", "One week", "One month"]
-        settingsViewController.values           = ["0", "1", "7", "30"]
-        settingsViewController.onItemSelected   = { (selected: AnyObject!) in
-        
-        }
-        
-        navigationController?.pushViewController(settingsViewController, animated: true)
+        // WARNING: Implement Me
     }
     
     private func pressedSortBy(payload: AnyObject?) {
@@ -367,15 +357,7 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     private func pressedPaging(payload: AnyObject?) {
-        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
-        settingsViewController.title            = NSLocalizedString("Paging", comment: "")
-        settingsViewController.currentValue     = "50"
-        settingsViewController.defaultValue     = "50"
-        settingsViewController.titles           = ["None", "50 comments per page", "100 comments per page", "200 comments per page"]
-        settingsViewController.values           = ["0", "50", "100", "200"]
-        settingsViewController.onItemSelected   = { (selected: AnyObject!) in }
-        
-        navigationController?.pushViewController(settingsViewController, animated: true)
+        // WARNING: Implement Me
     }
     
     private func pressedAutomaticallyApprove(payload: AnyObject?) {
@@ -384,6 +366,7 @@ public class DiscussionSettingsViewController : UITableViewController
         settingsViewController.currentValue     = settings.commentsAutoapproval.rawValue
         settingsViewController.titles           = AutomaticallyApprove.OptionTitles
         settingsViewController.values           = AutomaticallyApprove.OptionValues
+        settingsViewController.hints            = AutomaticallyApprove.OptionHints
         settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
             guard let newApprovalStatus = AutomaticallyApprove(rawValue: selected as! Int) else {
                 return
@@ -396,15 +379,23 @@ public class DiscussionSettingsViewController : UITableViewController
     }
 
     private func pressedLinksInComments(payload: AnyObject?) {
-        
+        // WARNING: Implement Me
     }
     
     private func pressedModeration(payload: AnyObject?) {
+        // WARNING: Implement Me
+        let moderationKeys                      = settings.commentsModerationKeys?.sort()
+        let settingsViewController              = SettingsCollectionEditorViewController(collection: moderationKeys)
         
+        navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
     private func pressedBlacklist(payload: AnyObject?) {
+        // WARNING: Implement Me
+        let blacklistKeys                       = settings.commentsBlacklistKeys?.sort()
+        let settingsViewController              = SettingsCollectionEditorViewController(collection: blacklistKeys)
         
+        navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
     
