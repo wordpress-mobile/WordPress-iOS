@@ -33,9 +33,6 @@ class MyProfileViewController: ImmuTableViewController {
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-        dataSource.configureCell = { cell in
-            WPStyleGuide.configureTableViewCell(cell)
-        }
 
         service.refreshSettings({ _ in })
     }
