@@ -103,10 +103,8 @@
         }
     }];
     id<NSObject> secondKey = [self.mediaLibraryDataSource registerChangeObserverBlock:^{
-        if (weakSelf.currentDataSource == weakSelf.mediaLibraryDataSource) {
-            if (callback) {
-                callback();
-            }
+        if (callback) {
+            callback();
         }
     }];
     
