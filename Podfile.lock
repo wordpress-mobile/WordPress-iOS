@@ -222,7 +222,8 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.1.1)
   - WordPress-iOS-Shared (= 0.5.1)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
-  - WordPressCom-Analytics-iOS (= 0.1.0)
+  - WordPressCom-Analytics-iOS (from `git://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git`,
+    branch `feature/themes-tracking`)
   - WordPressCom-Stats-iOS (= 0.5.1)
   - WordPressCom-Stats-iOS/Services (= 0.5.1)
   - WPMediaPicker (~> 0.7.0)
@@ -242,6 +243,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
+  WordPressCom-Analytics-iOS:
+    :branch: feature/themes-tracking
+    :git: git://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -256,6 +260,9 @@ CHECKOUT OPTIONS:
   WordPressApi:
     :commit: a7dc27935fb30b1978942cb1c791d4040fe65395
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
+  WordPressCom-Analytics-iOS:
+    :commit: 867b7a8d6f4277c317b99dfd149340cc18eefb7d
+    :git: git://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
