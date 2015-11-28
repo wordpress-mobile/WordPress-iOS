@@ -276,6 +276,9 @@ NSString *const SessionCount = @"session_count";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_theme_browser"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_theme_browser"];
             break;
+        case WPAnalyticsStatThemesAccessedSearch:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Accessed Search"];
+            break;
         case WPAnalyticsStatThemesChangedTheme:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Changed Theme"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_changed_theme"];
