@@ -261,7 +261,7 @@ CHECKOUT OPTIONS:
     :commit: a7dc27935fb30b1978942cb1c791d4040fe65395
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressCom-Analytics-iOS:
-    :commit: 867b7a8d6f4277c317b99dfd149340cc18eefb7d
+    :commit: cb526a6f303efe0bce99d0981f4cfe32af06139b
     :git: git://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
 
 SPEC CHECKSUMS:
