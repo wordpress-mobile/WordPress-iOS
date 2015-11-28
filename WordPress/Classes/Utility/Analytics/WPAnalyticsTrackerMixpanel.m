@@ -284,6 +284,9 @@ NSString *const SessionCount = @"session_count";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_changed_theme"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_changed_theme"];
             break;
+        case WPAnalyticsStatThemesCustomizeAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Customize Accessed"];
+            break;
         case WPAnalyticsStatReaderAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_reader"];
