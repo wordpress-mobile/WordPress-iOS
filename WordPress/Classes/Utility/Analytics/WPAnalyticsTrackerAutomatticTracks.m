@@ -664,6 +664,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatThemesDemoAccessed:
             eventName = @"themes_demo_accessed";
             break;
+        case WPAnalyticsStatThemesDetailsAccessed:
+            eventName = @"themes_details_accessed";
+            break;
         case WPAnalyticsStatTwoFactorCodeRequested:
             eventName = @"two_factor_code_requested";
             break;
