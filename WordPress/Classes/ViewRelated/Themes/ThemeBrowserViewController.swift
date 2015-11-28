@@ -539,6 +539,7 @@ public protocol ThemePresenter: class {
     }
 
     public func presentCustomizeForTheme(theme: Theme?) {
+        WPAnalytics.track(.ThemesCustomizeAccessed)
         presentUrlForTheme(theme, url: theme?.customizeUrl())
     }
 
