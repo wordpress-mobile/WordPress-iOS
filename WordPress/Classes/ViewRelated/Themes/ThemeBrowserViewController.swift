@@ -424,6 +424,7 @@ public protocol ThemePresenter: class {
     // MARK: - Search support
     
     @IBAction func didTapSearchButton(sender: UIButton) {
+        WPAnalytics.track(.ThemesAccessedSearch)
         searchController.active = true
         if sections.first == .Info {
             collectionView?.collectionViewLayout.invalidateLayout()
