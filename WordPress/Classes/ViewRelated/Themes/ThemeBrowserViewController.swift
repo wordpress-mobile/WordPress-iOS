@@ -50,6 +50,7 @@ public protocol ThemePresenter: class {
     func activateTheme(theme: Theme?)
 
     func presentCustomizeForTheme(theme: Theme?)
+    func presentPreviewForTheme(theme: Theme?)
     func presentDetailsForTheme(theme: Theme?)
     func presentSupportForTheme(theme: Theme?)
     func presentViewForTheme(theme: Theme?)
@@ -543,6 +544,11 @@ public protocol ThemePresenter: class {
         presentUrlForTheme(theme, url: theme?.customizeUrl())
     }
 
+    public func presentPreviewForTheme(theme: Theme?) {
+        WPAnalytics.track(.ThemesPreviewedSite)
+        presentUrlForTheme(theme, url: theme?.customizeUrl())
+    }
+    
     public func presentDetailsForTheme(theme: Theme?) {
         WPAnalytics.track(.ThemesDetailsAccessed)
         presentUrlForTheme(theme, url: theme?.detailsUrl())

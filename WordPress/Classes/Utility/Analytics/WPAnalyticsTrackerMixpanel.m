@@ -293,6 +293,11 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatThemesDetailsAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Details Accessed"];
             break;
+        case WPAnalyticsStatThemesPreviewedSite:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Previewed Theme for Site"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_previewed_a_theme"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_previewed_a_theme"];
+            break;
         case WPAnalyticsStatReaderAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_reader"];
