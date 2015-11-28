@@ -552,6 +552,7 @@ public protocol ThemePresenter: class {
     }
     
     public func presentViewForTheme(theme: Theme?) {
+        WPAnalytics.track(.ThemesDemoAccessed)
         presentUrlForTheme(theme, url: theme?.viewUrl())
     }
     

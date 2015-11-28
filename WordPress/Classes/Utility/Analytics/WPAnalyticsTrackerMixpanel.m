@@ -287,6 +287,9 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatThemesCustomizeAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Customize Accessed"];
             break;
+        case WPAnalyticsStatThemesDemoAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Demo Accessed"];
+            break;
         case WPAnalyticsStatReaderAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_reader"];
