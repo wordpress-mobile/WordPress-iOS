@@ -59,13 +59,13 @@
     
     MenuItemView *lastItemView = nil;
     for(MenuItem *item in self.menu.items) {
-                
+        
         MenuItemView *itemView = [[MenuItemView alloc] init];
         itemView.delegate = self;
         // set up ordering to help with any drawing
         itemView.item = item;
         itemView.indentationLevel = 0;
-
+        
         MenuItem *parentItem = item.parent;
         while (parentItem) {
             itemView.indentationLevel++;
@@ -104,7 +104,7 @@
             index += 2;
             break;
     }
-
+    
     NSLayoutConstraint *heightConstraint = [insertionView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
@@ -188,7 +188,7 @@
     updatedRect.origin.y -= MenuItemsStackableViewDefaultHeight;
     
     [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
-       
+        
         for(MenuItemInsertionView *insertionView in self.insertionViews) {
             insertionView.hidden = YES;
             insertionView.alpha = 0.0;
@@ -199,43 +199,21 @@
         [self.delegate itemsViewAnimatingContentSizeChanges:self focusedRect:previousRect updatedFocusRect:updatedRect];
         
     } completion:^(BOOL finished) {
-
+        
         [self removeItemInsertionViews];
     }];
 }
 
-- (MenuItemView *)arrangedItemViewAboveItemView:(MenuItemView *)subjectItemView
+- (MenuItemView *)itemViewForItem:(MenuItem *)item
 {
-    MenuItemView *itemViewAbove = nil;
-    for(UIView *arrangedView in self.stackView.arrangedSubviews) {
-        // ignore any other views that aren't itemViews
-        if(![arrangedView isKindOfClass:[MenuItemView class]]) {
-            continue;
-        }
-        if(arrangedView == subjectItemView) {
+    MenuItemView *itemView = nil;
+    for(MenuItemView *arrangedItemView in self.itemViews) {
+        if(arrangedItemView.item == item) {
+            itemView = arrangedItemView;
             break;
         }
-        itemViewAbove = (MenuItemView *)arrangedView;
     }
-    
-    return itemViewAbove;
-}
-
-- (MenuItemView *)arrangedItemViewBelowItemView:(MenuItemView *)subjectItemView
-{
-    MenuItemView *itemViewBelow = nil;
-    for(UIView *arrangedView in [self.stackView.arrangedSubviews reverseObjectEnumerator]) {
-        // ignore any other views that aren't itemViews
-        if(![arrangedView isKindOfClass:[MenuItemView class]]) {
-            continue;
-        }
-        if(arrangedView == subjectItemView) {
-            break;
-        }
-        itemViewBelow = (MenuItemView *)arrangedView;
-    }
-    
-    return itemViewBelow;
+    return itemView;
 }
 
 #pragma mark - touches
@@ -321,14 +299,11 @@
     MenuItemView *selectedItemView = self.itemViewForOrdering;
     MenuItem *selectedItem = selectedItemView.item;
     
-    // index of the itemView in the arrangedSubViews list
-//    const NSUInteger selectedItemViewIndex = [self.stackView.arrangedSubviews indexOfObject:selectedItemView];
-    
     //// horiztonal indentation detection (child relationships)
     //// detect if the user is moving horizontally to the right or left to change the indentation
     
     // first check to see if we should pay attention to touches that might signal a change in indentation
-    const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > ((selectedItemView.frame.size.width * 5.0) / 100); // a travel of x% should be considered
+    const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > ((selectedItemView.frame.size.width * 5.0) / 100); // a travel of x% should be considered for updating relationships
     BOOL modelUpdated = NO;
     
     if(detectedHorizontalOrderingTouches) {
@@ -388,7 +363,7 @@
     }
     
     if(!CGRectContainsPoint(selectedItemView.frame, touchPoint)) {
-    
+        
         //// if the touch is over a different item, detect which item to replace the ordering with
         
         for(MenuItemView *itemView in self.itemViews) {
@@ -400,7 +375,11 @@
             const CGRect orderingDetectionRect = CGRectInset(itemView.frame, 10.0, 10.0);
             if(CGRectContainsPoint(orderingDetectionRect, touchPoint)) {
                 
-                // reorder the model
+                // reorder the model if needed or available
+                BOOL orderingUpdate = [self handleOrderingTouchForItemView:selectedItemView withOtherItemView:itemView touchLocation:touchPoint];
+                if(orderingUpdate) {
+                    modelUpdated = YES;
+                }
                 break;
             }
         }
@@ -426,6 +405,131 @@
     }
 }
 
+- (BOOL)handleOrderingTouchForItemView:(MenuItemView *)itemView withOtherItemView:(MenuItemView *)otherItemView touchLocation:(CGPoint)touchLocation
+{
+    // ordering may may reflect the user wanting to move an item to before or after otherItem
+    // ordering may reflect the user wanting to move an item to be a child of the parent of otherItem
+    // ordering may reflect the user wanting to move an item out of a child stack, or up the parent tree to the next parent
+    
+    if(itemView == otherItemView) {
+        return NO;
+    }
+    
+    MenuItem *item = itemView.item;
+    MenuItem *otherItem = otherItemView.item;
+    
+    // can't order a parent within a child
+    if(otherItem.parent == item) {
+        return NO;
+    }
+    
+    BOOL updated = NO;
+    
+    NSMutableOrderedSet *orderedSet = [NSMutableOrderedSet orderedSetWithOrderedSet:self.menu.items];
+    
+    const BOOL itemIsOrderedBeforeOtherItem = [orderedSet indexOfObject:item] < [orderedSet indexOfObject:otherItem];
+    
+    const BOOL orderingBeforeOtherItem = touchLocation.y < CGRectGetMidY(otherItemView.frame);
+    const BOOL orderingAfterOtherItem = !orderingBeforeOtherItem; // using additional BOOL for readability
+    
+    if(itemIsOrderedBeforeOtherItem) {
+        // descending in ordering
+        
+        if(orderingBeforeOtherItem) {
+            // trying to move up the parent tree
+            
+            if(item.parent != otherItem.parent) {
+                
+                // take the parent of the otherItem, or nil
+                item.parent = otherItem.parent;
+                updated = YES;
+            }
+            
+        }else if(orderingAfterOtherItem) {
+            // trying to order the item after the otherItem
+            
+            if(otherItem.children.count) {
+                // if ordering after a parent, we need to become a child
+                item.parent = otherItem;
+            }else {
+                // assuming the item will take the parent of the otherItem's parent, or nil
+                item.parent = otherItem.parent;
+            }
+            
+            [orderedSet removeObject:otherItem];
+            [orderedSet insertObject:otherItem atIndex:[orderedSet indexOfObject:item]];
+            
+            // update the stackView arrangedSubviews ordering
+            [self.stackView bringSubviewToFront:itemView];
+            [UIView animateWithDuration:0.15 animations:^{
+                NSUInteger itemViewIndex = [[self.stackView arrangedSubviews] indexOfObject:itemView];
+                [self.stackView insertArrangedSubview:otherItemView atIndex:itemViewIndex];
+            }];
+            
+            updated = YES;
+        }
+        
+    }else {
+        // ascending in ordering
+        
+        if(orderingBeforeOtherItem) {
+            // trying to order the item before the otherItem
+            
+            // assuming the item will become the parent of the otherItem's parent, or nil
+            item.parent = otherItem.parent;
+            
+            [orderedSet removeObject:otherItem];
+            
+            MenuItemView *itemViewForExchangingInStackView = nil;
+            
+            if(item.children.count) {
+                // if item has children, move the otherItem to ordered after the last descendant of the item
+                MenuItem *itemForOrderingOtherItemAfter = nil;
+                MenuItem *lastDescendant = item;
+                while (lastDescendant) {
+                    itemForOrderingOtherItemAfter = lastDescendant;
+                    lastDescendant = [lastDescendant.children lastObject];
+                }
+                
+                [orderedSet insertObject:otherItem atIndex:[orderedSet indexOfObject:itemForOrderingOtherItemAfter] + 1];
+                itemViewForExchangingInStackView = [self itemViewForItem:itemForOrderingOtherItemAfter];
+                
+            }else {
+                // move the otherItem to be ordered after the item
+                [orderedSet insertObject:otherItem atIndex:[orderedSet indexOfObject:item] + 1];
+                itemViewForExchangingInStackView = itemView;
+            }
+            
+            // update the stackView arrangedSubviews ordering
+            [self.stackView bringSubviewToFront:itemView];
+            [UIView animateWithDuration:0.15 animations:^{
+                [self.stackView insertArrangedSubview:otherItemView atIndex:[[self.stackView arrangedSubviews] indexOfObject:itemViewForExchangingInStackView]];
+            }];
+            
+            updated = YES;
+            
+        }else if(orderingAfterOtherItem) {
+            // trying to become a child of the otherItem's parent
+            
+            if(item.parent != otherItem.parent) {
+                
+                // can't become a child of the otherItem's parent, if already a child of otherItem
+                if(item.parent != otherItem) {
+                    // become the parent of the otherItem's parent, or nil
+                    item.parent = otherItem.parent;
+                    updated = YES;
+                }
+            }
+        }
+    }
+    
+    if(updated) {
+        self.menu.items = orderedSet;
+    }
+    
+    return updated;
+}
+
 - (void)endReordering
 {
     self.isOrdering = NO;
@@ -436,8 +540,6 @@
 }
 
 #pragma mark - MenuItemsStackableViewDelegate
-
-
 
 #pragma mark - MenuItemViewDelegate
 
