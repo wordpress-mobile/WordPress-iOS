@@ -944,7 +944,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Push the Stats ViewController
     NSString *identifier            = NSStringFromClass([StatsViewAllTableViewController class]);
     
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
+    NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
+    NSString *path = [statsBundle pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
     NSBundle *bundle = [NSBundle bundleWithPath:path];
     UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:@"SiteStats" bundle:bundle];
     StatsViewAllTableViewController *vc = [statsStoryboard instantiateViewControllerWithIdentifier:identifier];

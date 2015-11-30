@@ -28,7 +28,7 @@
 
 #import "WordPress-Swift.h"
 
-#import <1PasswordExtension/OnePasswordExtension.h>
+#import <OnePasswordExtension/OnePasswordExtension.h>
 
 
 @interface CreateAccountAndBlogViewController ()<UITextFieldDelegate,UIGestureRecognizerDelegate> {
@@ -151,6 +151,10 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range
                                                        replacementString:(NSString *)string
 {
+    if ([string isEqualToString:@" "] && ![textField isEqual:_passwordField]) { // Disallow spaces in every field except password
+        return NO;
+    }
+    
     NSArray *fields = @[_emailField, _usernameField, _passwordField, _siteAddressField];
 
     NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
@@ -696,7 +700,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 
 - (BOOL)fieldsValid
 {
-    return [self fieldsFilled] && [self isUsernameUnderFiftyCharacters];
+    return [self fieldsFilled] && [self isUsernameUnderFiftyCharacters] && ![self emailOrUsernameOrSiteAddressContainsSpaces];
 }
 
 - (NSString *)generateSiteTitleFromUsername:(NSString *)username
@@ -711,9 +715,20 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 {
     if (![self isUsernameUnderFiftyCharacters]) {
         [self showError:NSLocalizedString(@"Username must be less than fifty characters.", nil)];
+    } else if ([self emailOrUsernameOrSiteAddressContainsSpaces]) {
+        [self showError:NSLocalizedString(@"Email, Username, and Site Address cannot contain spaces", @"No spaces error message")];
     } else {
         [self showFieldsNotFilledError];
     }
+}
+
+- (BOOL)emailOrUsernameOrSiteAddressContainsSpaces {
+    NSString *space = @" ";
+    NSString *emailTrimmed = [_emailField.text trim];
+    NSString *userNameTrimmed = [_usernameField.text trim];
+    NSString *siteAddressTrimmed = [_siteAddressField.text trim];
+    
+    return ([emailTrimmed containsString:space] || [userNameTrimmed containsString:space] || [siteAddressTrimmed containsString:space]);
 }
 
 - (void)showFieldsNotFilledError
@@ -854,8 +869,8 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
                 blog.xmlrpc = blogOptions[@"xmlrpc"];
             }
             blog.blogID = [blogOptions numberForKey:@"blogid"];
-            blog.blogName = [blogOptions[@"blogname"] stringByDecodingXMLCharacters];
             blog.url = blogOptions[@"url"];
+            blog.settings.name = [blogOptions[@"blogname"] stringByDecodingXMLCharacters];
             defaultAccount.defaultBlog = blog;
 
             [[ContextManager sharedInstance] saveContext:context];

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 @objc public class ReaderTagStreamHeader: UIView, ReaderStreamHeader
 {

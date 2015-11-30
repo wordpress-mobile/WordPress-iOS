@@ -1,12 +1,12 @@
 #import <Foundation/Foundation.h>
 #import <CommonCrypto/CommonDigest.h>
 #import <CoreData/CoreData.h>
-#import <WordPressApi/WordPressApi.h>
 #import "JetpackState.h"
 
 @class BlogSettings;
 @class WPAccount;
 @class WordPressComApi;
+@class WPXMLRPCClient;
 
 extern NSString * const PostFormatStandard;
 
@@ -72,19 +72,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
 @property (nonatomic, strong, readwrite) NSString *icon;
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
-
-/**
- *  TODO: JLP 11.11.2015
- *
- *  The following are *stub* properties, implemented just as a way of minimizing the size of
- *  the BlogSettings PR. They will be removed in another (upcoming) branch.
- */
-@property (nonatomic, strong, readwrite) NSString *blogName;
-@property (nonatomic, strong, readwrite) NSString *blogTagline;
-@property (nonatomic, assign, readwrite) NSNumber *defaultCategoryID;
-@property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
-@property (nonatomic, assign, readwrite) NSNumber *privacy;
-@property (nonatomic, assign, readwrite) BOOL geolocationEnabled;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
