@@ -531,7 +531,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog]) {
-        self.navigationItem.title = self.blog.blogName;
+        self.navigationItem.title = self.blog.settings.name;
         [self.tableView reloadData];
     }
 }
