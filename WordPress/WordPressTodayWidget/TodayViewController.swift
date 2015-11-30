@@ -1,5 +1,6 @@
 import UIKit
 import NotificationCenter
+import WordPressComStatsiOS
 
 class TodayViewController: UIViewController, NCWidgetProviding {
     @IBOutlet var siteNameLabel: UILabel!

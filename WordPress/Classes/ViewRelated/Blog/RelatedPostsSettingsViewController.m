@@ -3,12 +3,15 @@
 #import "Blog.h"
 #import "BlogService.h"
 #import "ContextManager.h"
-#import "SwitchSettingTableViewCell.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "SettingTableViewCell.h"
 #import "RelatedPostsPreviewTableViewCell.h"
-#import <SVProgressHUD/SVProgressHUD.h>
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPStyleGuide+ReadableMargins.h"
+
+#import <WordPressShared/WPStyleGuide.h>
+#import <SVProgressHUD/SVProgressHUD.h>
+#import "WordPress-Swift.h"
+
 
 static const CGFloat RelatePostsSettingsCellHeight = 44;
 
@@ -29,9 +32,9 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 
 @property (nonatomic, strong) Blog *blog;
 
-@property (nonatomic, strong) SwitchSettingTableViewCell *relatedPostsEnabledCell;
-@property (nonatomic, strong) SwitchSettingTableViewCell *relatedPostsShowHeaderCell;
-@property (nonatomic, strong) SwitchSettingTableViewCell *relatedPostsShowThumbnailsCell;
+@property (nonatomic, strong) SwitchTableViewCell *relatedPostsEnabledCell;
+@property (nonatomic, strong) SwitchTableViewCell *relatedPostsShowHeaderCell;
+@property (nonatomic, strong) SwitchTableViewCell *relatedPostsShowThumbnailsCell;
 
 @property (nonatomic, strong) RelatedPostsPreviewTableViewCell *relatedPostsPreviewTableViewCell;
 
@@ -58,9 +61,20 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
 }
 
+
+#pragma mark - Properties
+
+- (BlogSettings *)settings
+{
+    return self.blog.settings;
+}
+
+
+#pragma mark - UITableViewDataSource Methods
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if ([self.blog.relatedPostsEnabled boolValue]) {
+    if (self.settings.relatedPostsEnabled) {
         return RelatedPostsSettingsSectionCount;
     } else {
         return RelatedPostsSettingsSectionCount-1;
@@ -71,7 +85,7 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 {
     switch (section) {
         case RelatedPostsSettingsSectionOptions:{
-            if ([self.blog.relatedPostsEnabled boolValue]) {
+            if (self.settings.relatedPostsEnabled) {
                 return RelatedPostsSettingsOptionsCount;
             } else {
                 return 1;
@@ -202,17 +216,17 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
 {
     switch (row) {
         case RelatedPostsSettingsOptionsEnabled:{
-            self.relatedPostsEnabledCell.switchValue = [self.blog.relatedPostsEnabled boolValue];
+            self.relatedPostsEnabledCell.on = self.settings.relatedPostsEnabled;
             return self.relatedPostsEnabledCell;
         }
             break;
         case RelatedPostsSettingsOptionsShowHeader:{
-            self.relatedPostsShowHeaderCell.switchValue = [self.blog.relatedPostsShowHeadline boolValue];
+            self.relatedPostsShowHeaderCell.on = self.settings.relatedPostsShowHeadline;
             return self.relatedPostsShowHeaderCell;
         }
             break;
         case RelatedPostsSettingsOptionsShowThumbnails:{
-            self.relatedPostsShowThumbnailsCell.switchValue = [self.blog.relatedPostsShowThumbnails boolValue];
+            self.relatedPostsShowThumbnailsCell.on = self.settings.relatedPostsShowThumbnails;
             return self.relatedPostsShowThumbnailsCell;
         }
             break;
@@ -222,36 +236,45 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
     return nil;
 }
 
-- (SwitchSettingTableViewCell *)relatedPostsEnabledCell
+
+#pragma mark - Cell Helpers
+
+- (SwitchTableViewCell *)relatedPostsEnabledCell
 {
     if (!_relatedPostsEnabledCell) {
-        _relatedPostsEnabledCell = [[SwitchSettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Show Related Posts", @"Label for configuration switch to enable/disable related posts")
-                                                                              target:self
-                                                                              action:@selector(updateRelatedPostsSettings:)
-                                                                     reuseIdentifier:nil];
+        _relatedPostsEnabledCell = [SwitchTableViewCell new];
+        _relatedPostsEnabledCell.name = NSLocalizedString(@"Show Related Posts", @"Label for configuration switch to enable/disable related posts");
+        __weak RelatedPostsSettingsViewController *weakSelf = self;
+        _relatedPostsEnabledCell.onChange = ^(BOOL value){
+            [weakSelf updateRelatedPostsSettings:nil];
+        };
     }
     return _relatedPostsEnabledCell;
 }
 
-- (SwitchSettingTableViewCell *)relatedPostsShowHeaderCell
+- (SwitchTableViewCell *)relatedPostsShowHeaderCell
 {
     if (!_relatedPostsShowHeaderCell) {
-        _relatedPostsShowHeaderCell = [[SwitchSettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Show Header", @"Label for configuration switch to show/hide the header for the related posts section")
-                                                                              target:self
-                                                                              action:@selector(updateRelatedPostsSettings:)
-                                                                     reuseIdentifier:nil];
+        _relatedPostsShowHeaderCell = [SwitchTableViewCell new];
+        _relatedPostsShowHeaderCell.name = NSLocalizedString(@"Show Header", @"Label for configuration switch to show/hide the header for the related posts section");
+        __weak RelatedPostsSettingsViewController *weakSelf = self;
+        _relatedPostsShowHeaderCell.onChange = ^(BOOL value){
+            [weakSelf updateRelatedPostsSettings:nil];
+        };
     }
 
     return _relatedPostsShowHeaderCell;
 }
 
-- (SwitchSettingTableViewCell *)relatedPostsShowThumbnailsCell
+- (SwitchTableViewCell *)relatedPostsShowThumbnailsCell
 {
     if (!_relatedPostsShowThumbnailsCell) {
-        _relatedPostsShowThumbnailsCell = [[SwitchSettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Show Images", @"Label for configuration switch to show/hide images thumbnail for the related posts")
-                                                                              target:self
-                                                                              action:@selector(updateRelatedPostsSettings:)
-                                                                     reuseIdentifier:nil];
+        _relatedPostsShowThumbnailsCell = [SwitchTableViewCell new];
+        _relatedPostsShowThumbnailsCell.name = NSLocalizedString(@"Show Images", @"Label for configuration switch to show/hide images thumbnail for the related posts");
+        __weak RelatedPostsSettingsViewController *weakSelf = self;
+        _relatedPostsShowThumbnailsCell.onChange = ^(BOOL value){
+            [weakSelf updateRelatedPostsSettings:nil];
+        };
     }
 
     return _relatedPostsShowThumbnailsCell;
@@ -264,18 +287,21 @@ typedef NS_ENUM(NSInteger, RelatedPostsSettingsOptions) {
         _relatedPostsPreviewTableViewCell = [[RelatedPostsPreviewTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                                                                     reuseIdentifier:nil];
     }
-    _relatedPostsPreviewTableViewCell.enabledImages = [self.blog.relatedPostsShowThumbnails boolValue];
-    _relatedPostsPreviewTableViewCell.enabledHeader = [self.blog.relatedPostsShowHeadline boolValue];
+    _relatedPostsPreviewTableViewCell.enabledImages = self.settings.relatedPostsShowThumbnails;
+    _relatedPostsPreviewTableViewCell.enabledHeader = self.settings.relatedPostsShowHeadline;
     
     return _relatedPostsPreviewTableViewCell;
 
 }
 
+#pragma mark - Helpers
+
 - (IBAction)updateRelatedPostsSettings:(id)sender
 {
-    self.blog.relatedPostsEnabled = [NSNumber numberWithBool:self.relatedPostsEnabledCell.switchValue];
-    self.blog.relatedPostsShowHeadline = [NSNumber numberWithBool:self.relatedPostsShowHeaderCell.switchValue];
-    self.blog.relatedPostsShowThumbnails = [NSNumber numberWithBool:self.relatedPostsShowThumbnailsCell.switchValue];
+    self.settings.relatedPostsEnabled = self.relatedPostsEnabledCell.on;
+    self.settings.relatedPostsShowHeadline = self.relatedPostsShowHeaderCell.on;
+    self.settings.relatedPostsShowThumbnails = self.relatedPostsShowThumbnailsCell.on;
+    
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService updateSettingsForBlog:self.blog success:^{
         [self.tableView reloadData];

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 extension WPStyleGuide {
     public struct People {

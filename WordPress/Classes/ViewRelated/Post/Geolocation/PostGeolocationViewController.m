@@ -8,6 +8,7 @@
 #import "PostAnnotation.h"
 #import "PostGeolocationView.h"
 #import "WPTableViewCell.h"
+#import "WordPress-Swift.h"
 
 @interface PostGeolocationViewController () <MKMapViewDelegate>
 
@@ -109,7 +110,7 @@
         return;
     }
 
-    if (![self.post.blog geolocationEnabled]) {
+    if (!self.post.blog.settings.geolocationEnabled) {
         [WPError showAlertWithTitle:NSLocalizedString(@"Enable Geotagging", @"Title of an alert view stating the user needs to turn on geotagging.")
                             message:NSLocalizedString(@"Geotagging is turned off. \nTo update this post's location, please enable geotagging in this site's settings.", @"Message of an alert explaining that geotagging need to be enabled.")
                   withSupportButton:NO];

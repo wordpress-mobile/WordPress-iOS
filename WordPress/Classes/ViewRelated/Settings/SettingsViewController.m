@@ -24,11 +24,10 @@
 #import "NotificationsManager.h"
 #import "ContextManager.h"
 #import "AccountService.h"
-#import "WPImageOptimizer.h"
 #import "Constants.h"
 #import "Mediaservice.h"
 #import "WPLookbackPresenter.h"
-#import <WordPress-iOS-Shared/WPTableViewCell.h>
+#import <WordPressShared/WPTableViewCell.h>
 
 #ifdef LOOKBACK_ENABLED
 #import <Lookback/Lookback.h>
@@ -64,9 +63,9 @@ static CGFloat const SettingsRowHeight = 44.0;
     return [[self alloc] init];
 }
 
-- (instancetype)initWithStyle:(UITableViewStyle)style
+- (instancetype)init
 {
-    self = [super initWithStyle:style];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.restorationIdentifier = WPSettingsRestorationID;
         self.restorationClass = [self class];

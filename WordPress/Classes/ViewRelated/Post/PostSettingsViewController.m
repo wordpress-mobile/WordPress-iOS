@@ -23,8 +23,9 @@
 #import "WPProgressTableViewCell.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import <WPMediaPicker/WPMediaPicker.h>
+#import <Photos/Photos.h>
 #import "WPGUIConstants.h"
-#import <AssetsLibrary/AssetsLibrary.h>
+#import "WordPress-Swift.h"
 
 typedef enum {
     PostSettingsRowCategories = 0,
@@ -292,7 +293,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFormat]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
 
-    if (self.post.blog.geolocationEnabled || self.post.geolocation) {
+    if (self.post.blog.settings.geolocationEnabled || self.post.geolocation) {
         [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionGeolocation]];
     }
 }
@@ -970,15 +971,14 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     return _imageSource;
 }
 
-- (void)uploadFeatureImage:(ALAsset *)asset
+- (void)uploadFeatureImage:(PHAsset *)asset
 {
     NSProgress * convertingProgress = [NSProgress progressWithTotalUnitCount:1];
-    [convertingProgress setUserInfoObject:[UIImage imageWithCGImage:asset.thumbnail] forKey:WPProgressImageThumbnailKey];
     convertingProgress.localizedDescription = NSLocalizedString(@"Preparing...",@"Label to show while converting and/or resizing media to send to server");
     self.featuredImageProgress = convertingProgress;
     __weak __typeof(self) weakSelf = self;
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [mediaService createMediaWithAsset:asset forPostObjectID:self.apost.objectID completion:^(Media *media, NSError * error) {
+    [mediaService createMediaWithPHAsset:asset forPostObjectID:self.apost.objectID completion:^(Media *media, NSError * error) {
         if (!weakSelf) {
             return;
         }
@@ -1099,16 +1099,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         return;
     }
     
-    if ([[assets firstObject] isKindOfClass:[ALAsset class]]){
-        ALAsset *asset = [assets firstObject];
-        if (!asset.defaultRepresentation) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
-            return;
-        }
-        
+    if ([[assets firstObject] isKindOfClass:[PHAsset class]]){
+        PHAsset *asset = [assets firstObject];
         self.isUploadingMedia = YES;
-        [self uploadFeatureImage:assets[0]];
+        [self uploadFeatureImage:asset];
     } else if ([[assets firstObject] isKindOfClass:[Media class]]){
         Media *media = [assets firstObject];
         if ([media.mediaID intValue] != 0) {
