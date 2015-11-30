@@ -42,6 +42,7 @@ public class SettingsListEditorViewController : UITableViewController
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
+        // Send back the collection!
         let orderedRows = Set<String>(rows.array as! [String])
         onCompletion?(orderedRows)
     }
@@ -67,7 +68,7 @@ public class SettingsListEditorViewController : UITableViewController
         let settingsViewController = SettingsTextViewController(text: nil, placeholder: nil, hint: nil, isPassword: false)
         settingsViewController.title = insertTitle
         settingsViewController.onValueChanged = { (updatedValue : String!) in
-            self.insertStrings(updatedValue)
+            self.insertString(updatedValue)
             self.tableView.reloadData()
         }
         
@@ -82,7 +83,8 @@ public class SettingsListEditorViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // Note: Zero rows > Empty state!
+        // Note: 
+        // We'll always render, at least, one row, with the Empty State text
         return max(rows.count, 1)
     }
     
@@ -141,7 +143,7 @@ public class SettingsListEditorViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+        return isEmpty() == false
     }
     
     public override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
@@ -152,7 +154,7 @@ public class SettingsListEditorViewController : UITableViewController
         // Nuke it from the collection
         removeAtIndexPath(indexPath)
         
-        // Animation!
+        // Empty State: We'll always render a single row, indicating that there are no items
         if isEmpty() {
             tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         } else {
@@ -171,7 +173,7 @@ public class SettingsListEditorViewController : UITableViewController
         rows.removeObjectAtIndex(indexPath.row)
     }
     
-    private func insertStrings(newText: String) {
+    private func insertString(newText: String) {
         if newText.isEmpty {
             return
         }
@@ -185,12 +187,8 @@ public class SettingsListEditorViewController : UITableViewController
             return
         }
         
-        if newText.isEmpty == false {
-            rows.addObject(newText)
-        }
-        
+        insertString(newText)
         rows.removeObject(oldText)
-        sortStrings()
     }
     
     private func sortStrings() {
