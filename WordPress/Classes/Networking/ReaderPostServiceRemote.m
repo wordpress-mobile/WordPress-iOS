@@ -6,7 +6,8 @@
 #import "RemoteSourcePostAttribution.h"
 #import "ReaderTopicServiceRemote.h"
 #import "WordPressComApi.h"
-#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
+#import "WordPress-Swift.h"
 
 // REST Post dictionary keys
 NSString * const PostRESTKeyAttachments = @"attachments";
@@ -56,6 +57,15 @@ NSString * const TagKeyPrimary = @"primaryTag";
 NSString * const TagKeyPrimarySlug = @"primaryTagSlug";
 NSString * const TagKeySecondary = @"secondaryTag";
 NSString * const TagKeySecondarySlug = @"secondaryTagSlug";
+
+// XPost Meta Keys
+NSString * const PostRESTKeyMetadata = @"metadata";
+NSString * const CrossPostMetaKey = @"key";
+NSString * const CrossPostMetaValue = @"value";
+NSString * const CrossPostMetaXPostPermalink = @"_xpost_original_permalink";
+NSString * const CrossPostMetaXCommentPermalink = @"xcomment_original_permalink";
+NSString * const CrossPostMetaXPostOrigin = @"xpost_origin";
+NSString * const CrossPostMetaCommentPrefix = @"comment-";
 
 static const NSInteger AvgWordsPerMinuteRead = 250;
 static const NSInteger MinutesToReadThreshold = 2;
@@ -242,7 +252,52 @@ static const NSInteger MinutesToReadThreshold = 2;
     if ([dict arrayForKeyPath:@"discover_metadata.discover_fp_post_formats"]) {
         post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:PostRESTKeyDiscoverMetadata]];
     }
+
+    RemoteReaderCrossPostMeta *crossPostMeta = [self crossPostMetaFromPostDictionary:dict];
+    if (crossPostMeta) {
+        post.crossPostMeta = crossPostMeta;
+    }
+
     return post;
+}
+
+- (RemoteReaderCrossPostMeta *)crossPostMetaFromPostDictionary:(NSDictionary *)dict
+{
+    BOOL crossPostMetaFound = NO;
+
+    RemoteReaderCrossPostMeta *meta = [RemoteReaderCrossPostMeta new];
+
+    NSArray *metadata = [dict arrayForKey:PostRESTKeyMetadata];
+    for (NSDictionary *obj in metadata) {
+        if ([[obj stringForKey:CrossPostMetaKey] isEqualToString:CrossPostMetaXPostPermalink] ||
+            [[obj stringForKey:CrossPostMetaKey] isEqualToString:CrossPostMetaXCommentPermalink]) {
+
+            NSString *path = [obj stringForKey:CrossPostMetaValue];
+            NSURL *url = [NSURL URLWithString:path];
+            if (!url) {
+                NSLog(@"break");
+            }
+
+            meta.siteURL = [NSString stringWithFormat:@"%@://%@", url.scheme, url.host];
+            meta.postURL = [NSString stringWithFormat:@"%@/%@", meta.siteURL, url.path];
+            if ([url.fragment hasPrefix:CrossPostMetaCommentPrefix]) {
+                meta.commentURL = [url absoluteString];
+            }
+        } else if ([[obj stringForKey:CrossPostMetaKey] isEqualToString:CrossPostMetaXPostOrigin]) {
+            NSString *value = [obj stringForKey:CrossPostMetaValue];
+            NSArray *IDS = [value componentsSeparatedByString:@":"];
+            meta.siteID = [[IDS firstObject] numericValue];
+            meta.postID = [[IDS lastObject] numericValue];
+
+            crossPostMetaFound = YES;
+        }
+    }
+
+    if (!crossPostMetaFound) {
+        return nil;
+    }
+
+    return meta;
 }
 
 - (NSDictionary *)primaryAndSecondaryTagsFromPostDictionary:(NSDictionary *)dict

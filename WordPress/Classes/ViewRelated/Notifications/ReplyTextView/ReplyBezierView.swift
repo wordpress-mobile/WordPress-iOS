@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared.WPStyleGuide
 
 //  NOTE:
 //  ReplyBezierView is a helper class, used to render the ReplyTextView bubble
@@ -41,7 +41,7 @@ public class ReplyBezierView : UIView
     
     private func setupView() {
         // Make sure this is re-drawn on rotation events
-        layer.needsDisplayOnBoundsChange    = true
+        layer.needsDisplayOnBoundsChange = true
     }
     
     // MARK: - View Methods

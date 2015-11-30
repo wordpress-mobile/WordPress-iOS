@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 /**
     A WPStyleGuide extension with styles and methods specific to the
@@ -48,6 +49,54 @@ extension WPStyleGuide
     }
 
     // MARK: - Card Attributed Text Attributes
+
+    public class func readerCrossPostTitleAttributes() -> [NSObject: AnyObject] {
+        let fontSize = Cards.crossPostTitleFontSize
+        let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
+
+        let lineHeight = Cards.crossPostLineHeight
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = lineHeight
+        paragraphStyle.maximumLineHeight = lineHeight
+
+        return [
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: darkGrey()
+        ]
+    }
+
+    public class func readerCrossPostBoldSubtitleAttributes() -> [NSObject: AnyObject] {
+        let fontSize = Cards.crossPostSubtitleFontSize
+        let font = WPFontManager.openSansBoldFontOfSize(fontSize)
+
+        let lineHeight = Cards.crossPostLineHeight
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = lineHeight
+        paragraphStyle.maximumLineHeight = lineHeight
+
+        return [
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: grey()
+        ]
+    }
+
+    public class func readerCrossPostSubtitleAttributes() -> [NSObject: AnyObject] {
+        let fontSize = Cards.crossPostSubtitleFontSize
+        let font = WPFontManager.openSansRegularFontOfSize(fontSize)
+
+        let lineHeight = Cards.crossPostLineHeight
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = lineHeight
+        paragraphStyle.maximumLineHeight = lineHeight
+
+        return [
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: grey()
+        ]
+    }
 
     public class func readerCardTitleAttributes() -> [NSObject: AnyObject] {
         let fontSize = Cards.titleFontSize
@@ -253,6 +302,9 @@ extension WPStyleGuide
         public static let buttonFontSize:CGFloat = 14.0
         public static let subtextFontSize:CGFloat = 12.0
         public static let loadMoreButtonFontSize:CGFloat = 15.0
+        public static let crossPostTitleFontSize:CGFloat = 16.0
+        public static let crossPostSubtitleFontSize:CGFloat = 13.0
+        public static let crossPostLineHeight:CGFloat = 20.0
     }
 
 }

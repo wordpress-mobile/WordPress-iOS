@@ -1,8 +1,17 @@
 import Foundation
+import WordPressShared.WPStyleGuide
 
 public class ThemeBrowserCell : UICollectionViewCell {
     
-    // MARK: - Outlets
+    // MARK: - Constants
+    
+    public static let reuseIdentifier = "ThemeBrowserCell"
+    
+    // MARK: - Private Aliases
+    
+    private typealias Styles = WPStyleGuide.Themes
+    
+   // MARK: - Outlets
     
     @IBOutlet weak var imageView : UIImageView!
     @IBOutlet weak var nameLabel : UILabel!
@@ -20,26 +29,8 @@ public class ThemeBrowserCell : UICollectionViewCell {
     
     private var placeholderImage = UIImage(named: "theme-loading")
     
-    // MARK: - Private Aliases
-    
-    private typealias Styles = WPStyleGuide.Themes
-    
    // MARK: - GUI
-    
-    /**
-    @brief Calculates cell height fitting a given width
-    
-    @param width    Intended width
-    @return         Matching height
-    */
-    public class func heightForWidth(width: CGFloat) -> CGFloat {
         
-        let imageHeight = (width - Styles.cellImageInset) * Styles.cellImageRatio
-        let height = imageHeight + Styles.cellInfoBarHeight
-        
-        return height
-    }
-    
     override public var highlighted: Bool {
         didSet {
             let alphaFinal: CGFloat = highlighted ? 0.3 : 0
@@ -55,7 +46,6 @@ public class ThemeBrowserCell : UICollectionViewCell {
         nameLabel.font = Styles.cellNameFont
         infoLabel.font = Styles.cellInfoFont
         
-        layer.borderColor = Styles.borderColor.CGColor
         layer.borderWidth = 1
     }
     
@@ -75,11 +65,13 @@ public class ThemeBrowserCell : UICollectionViewCell {
             nameLabel.text = theme.name
             if theme.isCurrentTheme() {
                 backgroundColor = Styles.activeCellBackgroundColor
+                layer.borderColor = Styles.activeCellBackgroundColor.CGColor
                 nameLabel.textColor = Styles.activeCellNameColor
                 infoLabel.textColor = Styles.activeCellInfoColor
                 infoLabel.text = NSLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
             } else {
                 backgroundColor = Styles.inactiveCellBackgroundColor
+                layer.borderColor = Styles.barBorderColor.CGColor
                 nameLabel.textColor = Styles.inactiveCellNameColor
                 if theme.isPremium() {
                     infoLabel.textColor = Styles.inactiveCellPriceColor

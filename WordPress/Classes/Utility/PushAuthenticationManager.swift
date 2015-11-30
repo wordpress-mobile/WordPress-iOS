@@ -1,6 +1,6 @@
 import Foundation
 import UIKit
-
+import WordPressComAnalytics
 
 /**
 *  @class           PushAuthenticationManager
@@ -57,7 +57,7 @@ import UIKit
         // Expired: Display a message!
         if isNotificationExpired(userInfo) {
             showLoginExpiredAlert()
-            WPAnalytics.track(.StatPushAuthenticationExpired)
+            WPAnalytics.track(.PushAuthenticationExpired)
             return
         }
         
@@ -72,9 +72,9 @@ import UIKit
         showLoginVerificationAlert(message!) { (approved) -> () in
             if approved {
                 self.authorizeLogin(token!, retryCount: self.initialRetryCount)
-                WPAnalytics.track(.StatPushAuthenticationApproved)
+                WPAnalytics.track(.PushAuthenticationApproved)
             } else {
-                WPAnalytics.track(.StatPushAuthenticationIgnored)
+                WPAnalytics.track(.PushAuthenticationIgnored)
             }
         }
     }
@@ -93,7 +93,7 @@ import UIKit
     */
     private func authorizeLogin(token: String, retryCount: Int) {
         if retryCount == maximumRetryCount {
-            WPAnalytics.track(.StatPushAuthenticationFailed)
+            WPAnalytics.track(.PushAuthenticationFailed)
             return
         }
 

@@ -1,6 +1,6 @@
 #import "CommentServiceRemoteXMLRPC.h"
 #import "RemoteComment.h"
-#import <WordPressApi.h>
+#import <WordPressApi/WordPressApi.h>
 
 static const NSInteger NumberOfCommentsToSync = 100;
 

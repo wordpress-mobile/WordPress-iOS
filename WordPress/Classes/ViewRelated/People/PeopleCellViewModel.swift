@@ -1,4 +1,5 @@
 import Foundation
+import WordPressShared
 
 struct PeopleCellViewModel {
     let displayName: String

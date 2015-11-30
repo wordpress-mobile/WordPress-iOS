@@ -13,8 +13,8 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <WordPressApi/WordPressApi.h>
-#import <WordPress-AppbotX/ABX.h>
-#import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPress_AppbotX/ABX.h>
+#import <WordPressShared/UIImage+Util.h>
 
 // Other third party libs
 #import "PocketAPI.h"
@@ -84,6 +84,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, strong, readwrite) WPUserAgent                    *userAgent;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
+@property (nonatomic, assign) UIApplicationShortcutItem                 *launchedShortcutItem;
 
 /**
  *  @brief      Flag that signals wether Whats New is on screen or not.
@@ -347,7 +348,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
-    [self showWhatsNewIfNeeded];
+    if (self.launchedShortcutItem) {
+        WP3DTouchShortcutHandler *shortcutHandler = [[WP3DTouchShortcutHandler alloc] init];
+        [shortcutHandler handleShortcutItem:self.launchedShortcutItem];
+        self.launchedShortcutItem = nil;
+    } else {
+        [self showWhatsNewIfNeeded];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
@@ -358,6 +365,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
 {
     return self.shouldRestoreApplicationState;
+}
+
+- (void)application: (UIApplication *)application performActionForShortcutItem:(nonnull UIApplicationShortcutItem *)shortcutItem completionHandler:(nonnull void (^)(BOOL))completionHandler
+{
+    WP3DTouchShortcutHandler *shortcutHandler = [[WP3DTouchShortcutHandler alloc] init];
+    completionHandler([shortcutHandler handleShortcutItem:shortcutItem]);
 }
 
 #pragma mark - Application startup
@@ -519,6 +532,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 #pragma mark - Custom methods
 
+- (BOOL)isLoggedIn
+{
+    return !([self noSelfHostedBlogs] && [self noWordPressDotComAccount]);
+}
+
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
 {
     if (self.isWelcomeScreenVisible || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
@@ -641,6 +659,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
     [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setBackgroundColor:[WPStyleGuide greyLighten30]];
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaCollectionViewController class] ]] setBackgroundColor:[WPStyleGuide lightGrey]];
+}
+
+- (void)create3DTouchShortcutItems
+{
+    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
+    [shortcutCreator createShortcuts:[self isLoggedIn]];
 }
 
 #pragma mark - Analytics
@@ -963,7 +987,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [self loginSimperium];
-
     } else {
         if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
             [WPAnalytics track:WPAnalyticsStatLogout];
@@ -979,6 +1002,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
     
+    [self create3DTouchShortcutItems];
     [self toggleExtraDebuggingIfNeeded];
     [self setupSingleSignOn];
     
@@ -1031,9 +1055,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 - (void)showWhatsNewIfNeeded
 {
     if (!self.wasWhatsNewShown) {
-        BOOL userIsLoggedIn = !([self noSelfHostedBlogs] && [self noWordPressDotComAccount]);
-        
-        if (userIsLoggedIn) {
+        if ([self isLoggedIn]) {
             if ([self mustShowWhatsNewPopup]) {
                 
                 static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
