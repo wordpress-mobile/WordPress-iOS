@@ -22,7 +22,8 @@
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "WordPress-Swift.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
-#import "NSString+Helpers.h"
+#import "NSString+Helpers.h"	
+#import "WPAppAnalytics.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
@@ -366,7 +367,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 
     if (![self.post hasUnsavedChanges]) {
-        [WPAnalytics track:WPAnalyticsStatEditorClosed];
+        [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:self.post.blog.dotComID} ];
         [self discardChanges];
         [self dismissEditView];
         return;
@@ -383,7 +384,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                 handler:^(UIAlertAction * action) {
                                     [self discardChanges];
                                     [self dismissEditView];
-                                    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+                                    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:self.post.blog.dotComID} ];
                                 }];
     
     if ([self.post.original.status isEqualToString:PostStatusDraft]) {
@@ -664,12 +665,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         properties[@"word_diff_count"] = @(wordCount - originalWordCount);
     }
 
+    properties[WPAppAnalyticsKeyBlogID] = [self.post blog].dotComID;
+    
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
         properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = @([self.post hasVideo]);
-        
         [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
         [WPAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties];
@@ -959,7 +961,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)insertMedia:(Media *)media
 {
-    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
+    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
     
     NSString *prefix = @"<br /><br />";
 
