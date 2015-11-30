@@ -1,5 +1,7 @@
 import Foundation
-
+import WordPressShared
+import WordPressComAnalytics
+import WordPress_AppbotX
 
 public class AboutViewController : UITableViewController
 {
@@ -147,35 +149,10 @@ public class AboutViewController : UITableViewController
         ABXAppStore.openAppStoreForApp(WPiTunesAppId)
     }
     
-    private func displayTwitterComposer() {
-        if isTwitterUnavailable() {
-            return
-        }
-
+    private func displayTwitterAccount() {
         let twitterURL = NSURL(string: WPTwitterWordPressMobileURL)!
         UIApplication.sharedApplication().openURL(twitterURL)
-
     }
-    
-    
-    // MARK: - Twitter Helpers
-    private func isTwitterUnavailable() -> Bool {
-        let emptyTwitterURL = NSURL(string: WPTwitterWordPressMobileURL)!
-        return UIApplication.sharedApplication().canOpenURL(emptyTwitterURL) == false
-    }
-    
-    private func filterDisabledRows<T>(array: [[T]]) -> [[T]] {
-        var filtered = array
-        
-        if isTwitterUnavailable() {
-            var section = array[twitterIndexPath.section] as [T]
-            section.removeAtIndex(twitterIndexPath.row)
-            filtered[twitterIndexPath.section] = section
-        }
-        
-        return filtered
-    }
-    
     
     // MARK: - Nested Row Class
     private class Row {
@@ -194,7 +171,6 @@ public class AboutViewController : UITableViewController
     
     // MARK: - Private Constants
     private let reuseIdentifier = "reuseIdentifierValue1"
-    private let twitterIndexPath    = NSIndexPath(forRow: 0, inSection: 1)
     private let iconBottomPadding   = CGFloat(30)
     private let footerBottomPadding = CGFloat(12)
     
@@ -204,7 +180,7 @@ public class AboutViewController : UITableViewController
     private var rows : [[Row]] {
         let appsBlogHostname = NSURL(string: WPAutomatticAppsBlogURL)?.host ?? String()
         
-        return filterDisabledRows([
+        return [
             [
                 Row(title:   NSLocalizedString("Version", comment: "Displays the version of the App"),
                     details: NSBundle.mainBundle().shortVersionString(),
@@ -221,7 +197,7 @@ public class AboutViewController : UITableViewController
             [
                 Row(title:   NSLocalizedString("Twitter", comment: "Launches the Twitter App"),
                     details: WPTwitterWordPressHandle,
-                    handler: { self.displayTwitterComposer() }),
+                    handler: { self.displayTwitterAccount() }),
                 
                 Row(title:   NSLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog"),
                     details: appsBlogHostname,
@@ -235,6 +211,6 @@ public class AboutViewController : UITableViewController
                     details: nil,
                     handler: { self.displayWebView(WPGithubMainURL) }),
             ]
-        ])
+        ]
     }
 }

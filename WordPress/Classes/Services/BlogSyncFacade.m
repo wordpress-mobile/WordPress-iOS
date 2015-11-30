@@ -6,7 +6,7 @@
 #import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
-#import <NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
 
 @implementation BlogSyncFacade
 
@@ -40,7 +40,7 @@
             blog.url = url;
         }
         if (blogName) {
-            blog.blogName = [blogName stringByDecodingXMLCharacters];
+            blog.settings.name = [blogName stringByDecodingXMLCharacters];
         }
     }
     blog.username = username;

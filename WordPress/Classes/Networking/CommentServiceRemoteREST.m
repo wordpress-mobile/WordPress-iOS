@@ -2,7 +2,7 @@
 #import "WordPressComApi.h"
 #import "RemoteComment.h"
 #import "NSDate+WordPressJSON.h"
-#import <NSObject+SafeExpectations.h>
+#import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
 
 static const NSInteger NumberOfCommentsToSync = 100;
 

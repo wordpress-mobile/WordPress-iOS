@@ -11,6 +11,7 @@
 #import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WordPress-swift.h"
+#import <WordPressApi/WordPressApi.h>
 
 NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
 CGSize const MediaMaxImageSize = {3000, 3000};
@@ -78,7 +79,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         mediaType = MediaTypeVideo;
     }
     
-    BOOL geoLocationEnabled = post.blog.geolocationEnabled;
+    BOOL geoLocationEnabled = post.blog.settings.geolocationEnabled;
     
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
     if (maxImageSize.width == MediaMaxImageSize.width && maxImageSize.height == MediaMaxImageSize.height) {
