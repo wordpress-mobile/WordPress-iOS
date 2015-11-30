@@ -79,7 +79,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         mediaType = MediaTypeVideo;
     }
     
-    BOOL geoLocationEnabled = post.blog.geolocationEnabled;
+    BOOL geoLocationEnabled = post.blog.settings.geolocationEnabled;
     
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
     if (maxImageSize.width == MediaMaxImageSize.width && maxImageSize.height == MediaMaxImageSize.height) {
