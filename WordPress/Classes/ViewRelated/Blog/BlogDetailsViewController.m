@@ -17,6 +17,7 @@
 #import "WPGUIConstants.h"
 #import "Wordpress-Swift.h"
 #import "WPAppAnalytics.h"
+#import "MenusViewController.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
 const NSInteger BlogDetailsRowViewAdmin = 1;
@@ -32,6 +33,7 @@ const NSInteger BlogDetailsRowPeople = -1;
 const NSInteger BlogDetailsRowEditSite = 0;
 #endif
 const NSInteger BlogDetailsRowThemes = 0;
+const NSInteger BlogDetailsRowMenus = 1;
 
 typedef NS_ENUM(NSInteger, TableSectionContentType) {
     TableViewSectionGeneralType = 0,
@@ -49,7 +51,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
 NSInteger const BlogDetailsRowCountForSectionGeneralType = 3;
 NSInteger const BlogDetailsRowCountForSectionPublishType = 3;
-NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
+NSInteger const BlogDetailsRowCountForSectionAppearance = 2;
 #ifdef WP_PEOPLE_ENABLED
 NSInteger const BlogDetailsRowCountForSectionConfigurationType = 2;
 #else
@@ -134,8 +136,9 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                            @(TableViewSectionPublishType)
                           ];
     
+    BOOL menusEnabled = YES;
     self.themesEnabled = [WPThemeSettings isEnabled];
-    if (self.themesEnabled && [self.blog supports:BlogFeatureThemeBrowsing]) {
+    if ((self.themesEnabled && [self.blog supports:BlogFeatureThemeBrowsing]) || menusEnabled) {
         self.tableSections = [self.tableSections arrayByAddingObject:@(TableViewSectionAppearance)];
     }
 
@@ -296,8 +299,18 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
             }
             break;
         case TableViewSectionAppearance:
-            cell.textLabel.text = NSLocalizedString(@"Themes", @"Themes option in the blog details");
-            cell.imageView.image = [UIImage imageNamed:@"icon-menu-theme"];
+            switch (indexPath.row) {
+                case BlogDetailsRowThemes:
+                    cell.textLabel.text = NSLocalizedString(@"Themes", @"Themes option in the blog details");
+                    cell.imageView.image = [UIImage imageNamed:@"icon-menu-theme"];
+                    break;
+                case BlogDetailsRowMenus:
+                    cell.textLabel.text = NSLocalizedString(@"Menus", @"Menus option in the blog details");
+                    cell.imageView.image = [UIImage imageNamed:@"icon-menu-posts"];
+                    break;
+                default:
+                    break;
+            }
             break;
         case TableViewSectionConfigurationType:
             switch (indexPath.row) {
@@ -369,6 +382,9 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
             switch (indexPath.row) {
                 case BlogDetailsRowThemes:
                     [self showThemesForBlog:self.blog];
+                    break;
+                case BlogDetailsRowMenus:
+                    [self showMenusForBlog:self.blog];
                     break;
                 default:
                     NSAssert(NO, @"Row Handling not implemented");
@@ -497,6 +513,12 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:blog];
     [self.navigationController pushViewController:viewController
                                          animated:YES];
+}
+
+- (void)showMenusForBlog:(Blog *)blog
+{
+    MenusViewController *controller = [[MenusViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showViewSiteForBlog:(Blog *)blog
