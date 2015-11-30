@@ -22,6 +22,7 @@
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
 
+#import <WordPressApi/WordPressApi.h>
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -188,7 +189,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 && defaultBlog != nil
                 && !defaultBlog.isDeleted) {
                 NSNumber *siteId = defaultBlog.blogID;
-                NSString *blogName = defaultBlog.blogName;
+                NSString *blogName = defaultBlog.settings.name;
                 NSTimeZone *timeZone = [self timeZoneForBlog:defaultBlog];
                 NSString *oauth2Token = accountInContext.authToken;
                 
@@ -520,13 +521,16 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         }
         
         blog.url = remoteBlog.url;
-        blog.blogName = [remoteBlog.name stringByDecodingXMLCharacters];
-        blog.blogTagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.blogID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
         blog.isAdmin = remoteBlog.isAdmin;
         blog.visible = remoteBlog.visible;
+        
+        // Update 'Top Level' Settings
+        BlogSettings *settings = blog.settings;
+        settings.name = [remoteBlog.name stringByDecodingXMLCharacters];
+        settings.tagline = [remoteBlog.tagline stringByDecodingXMLCharacters];
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];

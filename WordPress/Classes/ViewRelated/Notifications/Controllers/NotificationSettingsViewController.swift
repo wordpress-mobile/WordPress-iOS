@@ -1,5 +1,6 @@
 import Foundation
-
+import WordPressShared.WPStyleGuide
+import WordPressComAnalytics
 
 /**
 *  @class           NotificationSettingsViewController
@@ -250,7 +251,7 @@ public class NotificationSettingsViewController : UIViewController
         let settings = settingsForRowAtIndexPath(indexPath)!
         switch settings.channel {
         case .Blog(_):
-            cell.textLabel?.text            = settings.blog?.blogName ?? settings.channel.description()
+            cell.textLabel?.text            = settings.blog?.settings?.name ?? settings.channel.description()
             cell.detailTextLabel?.text      = settings.blog?.displayURL ?? String()
             cell.accessoryType              = .DisclosureIndicator
             

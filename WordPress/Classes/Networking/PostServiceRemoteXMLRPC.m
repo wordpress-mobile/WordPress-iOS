@@ -5,7 +5,7 @@
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
 #import "NSMutableDictionary+Helpers.h"
-#import <WordPressApi.h>
+#import <WordPressApi/WordPressApi.h>
 
 const NSInteger HTTP404ErrorCode = 404;
 
