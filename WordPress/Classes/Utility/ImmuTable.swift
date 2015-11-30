@@ -108,13 +108,21 @@ public class ImmuTableDelegate: NSObject, UITableViewDelegate {
     }
 }
 
-public class ImmuTableViewController: UITableViewController {
+public struct ImmuTableViewHandler {
+    let target: UITableViewController
+
+    init(takeOver target: UITableViewController) {
+        self.target = target
+        self.target.tableView.dataSource = dataSource
+        self.target.tableView.delegate = delegate
+    }
+
     var viewModel = ImmuTable(sections: []) {
         didSet {
             dataSource.viewModel = viewModel
             delegate.viewModel = viewModel
-            if isViewLoaded() {
-                tableView.reloadData()
+            if target.isViewLoaded() {
+                target.tableView.reloadData()
             }
         }
     }
@@ -126,17 +134,6 @@ public class ImmuTableViewController: UITableViewController {
     lazy var delegate: ImmuTableDelegate = {
         return ImmuTableDelegate(viewModel: self.viewModel)
     }()
-
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-
-        tableView.dataSource = dataSource
-        tableView.delegate = delegate
-    }
-
-    public func registerRows(rows: [ImmuTableRow.Type]) {
-        ImmuTable.registerRows(rows, tableView: tableView)
-    }
 }
 
 protocol CustomImmuTableRow: ImmuTableRow {
