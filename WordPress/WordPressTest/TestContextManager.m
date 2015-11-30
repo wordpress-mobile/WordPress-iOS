@@ -9,7 +9,9 @@
 
 - (void)dealloc
 {
-    [ContextManager overrideSharedInstance:nil];
+    if ([ContextManager sharedInstance] == self) {
+        [ContextManager overrideSharedInstance:nil];
+    }
 }
 
 - (instancetype)init
