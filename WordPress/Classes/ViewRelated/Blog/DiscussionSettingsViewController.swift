@@ -156,9 +156,9 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     private func configureSwitchCell(cell: SwitchTableViewCell, row: Row) {
-        cell.name       = row.title ?? String()
-        cell.on         = row.boolValue ?? true
-        cell.onChange = { (newValue: Bool) in
+        cell.name                   = row.title ?? String()
+        cell.on                     = row.boolValue ?? true
+        cell.onChange               = { (newValue: Bool) in
             row.handler?(newValue)
         }
     }
@@ -203,7 +203,7 @@ public class DiscussionSettingsViewController : UITableViewController
         let headerText = NSLocalizedString("Comments", comment: "Settings: Comment Sections")
         let rows = [
             Row(style:      .Switch,
-                title:      NSLocalizedString("Require name & email", comment: "Settings: Comments Approval settings"),
+                title:      NSLocalizedString("Require name and email", comment: "Settings: Comments Approval settings"),
                 boolValue:  self.settings.commentsRequireNameAndEmail,
                 handler:    {   [weak self] in
                                 self?.pressedRequireNameAndEmail($0)
@@ -320,14 +320,14 @@ public class DiscussionSettingsViewController : UITableViewController
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Sort By", comment: "")
         settingsViewController.currentValue     = settings.commentsSortOrder
-        settingsViewController.titles           = SortOrder.SortTitles
-        settingsViewController.values           = SortOrder.SortValues
+        settingsViewController.titles           = CommentsSorting.AllTitles
+        settingsViewController.values           = CommentsSorting.AllValues
         settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
-            guard let newSortOrder = selected as? Int else {
+            guard let newSortOrder = CommentsSorting(rawValue: selected as! Int) else {
                 return
             }
             
-            self?.settings.commentsSortOrder = newSortOrder
+            self?.settings.commentsSorting = newSortOrder
         }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -336,16 +336,15 @@ public class DiscussionSettingsViewController : UITableViewController
     private func pressedThreading(payload: AnyObject?) {
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Threading", comment: "")
-        settingsViewController.currentValue     = settings.commentsThreadingEnabled ? settings.commentsThreadingDepth : Threading.DepthDisabled
-        settingsViewController.titles           = Threading.DepthTitles
-        settingsViewController.values           = Threading.DepthValues
+        settingsViewController.currentValue     = settings.commentsThreading.rawValue
+        settingsViewController.titles           = CommentsThreading.AllTitles
+        settingsViewController.values           = CommentsThreading.AllValues
         settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
-            guard let newThreadingDepth = selected as? Int else {
+            guard let newThreadingDepth = CommentsThreading(rawValue: selected as! Int) else {
                 return
             }
-            
-            self?.settings.commentsThreadingEnabled  = newThreadingDepth != Threading.DepthDisabled
-            self?.settings.commentsThreadingDepth    = newThreadingDepth
+
+            self?.settings.commentsThreading = newThreadingDepth
         }
         
         navigationController?.pushViewController(settingsViewController, animated: true)
@@ -359,11 +358,11 @@ public class DiscussionSettingsViewController : UITableViewController
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Automatically Approve", comment: "")
         settingsViewController.currentValue     = settings.commentsAutoapproval.rawValue
-        settingsViewController.titles           = AutomaticallyApprove.OptionTitles
-        settingsViewController.values           = AutomaticallyApprove.OptionValues
-        settingsViewController.hints            = AutomaticallyApprove.OptionHints
+        settingsViewController.titles           = CommentsAutoapproval.AllTitles
+        settingsViewController.values           = CommentsAutoapproval.AllValues
+        settingsViewController.hints            = CommentsAutoapproval.AllHints
         settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
-            guard let newApprovalStatus = AutomaticallyApprove(rawValue: selected as! Int) else {
+            guard let newApprovalStatus = CommentsAutoapproval(rawValue: selected as! Int) else {
                 return
             }
 
@@ -409,12 +408,6 @@ public class DiscussionSettingsViewController : UITableViewController
     
     
     
-    // MARK: - Typealiases
-    private typealias SortOrder                 = BlogSettings.SortOrder
-    private typealias Threading                 = BlogSettings.Threading
-    private typealias AutomaticallyApprove      = BlogSettings.AutomaticallyApprove
-    
-    
     // MARK: - Private Nested Classes
     private class Section {
         let headerText      : String?
@@ -451,6 +444,12 @@ public class DiscussionSettingsViewController : UITableViewController
         }
     }
     
+    
+
+    // MARK: - Typealiases
+    private typealias CommentsSorting       = BlogSettings.CommentsSorting
+    private typealias CommentsThreading     = BlogSettings.CommentsThreading
+    private typealias CommentsAutoapproval  = BlogSettings.CommentsAutoapproval
     
     // MARK: - Private Properties
     private var settings : BlogSettings!
