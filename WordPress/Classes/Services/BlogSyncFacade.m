@@ -39,7 +39,7 @@
             blog.url = url;
         }
         if (blogName) {
-            blog.blogName = [blogName stringByDecodingXMLCharacters];
+            blog.settings.name = [blogName stringByDecodingXMLCharacters];
         }
     }
     blog.username = username;
