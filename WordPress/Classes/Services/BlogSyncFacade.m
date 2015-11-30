@@ -3,6 +3,7 @@
 #import "BlogService.h"
 #import "AccountService.h"
 #import "Blog.h"
+#import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
 #import <WordPressShared/NSString+XMLExtensions.h>
@@ -66,7 +67,7 @@
                 WPAccount *account = [accountService findAccountWithUsername:dotcomUsername];
                 if (account) {
                     blog.jetpackAccount = account;
-                    [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+                    [WPAnalytics track:WPAnalyticsStatSignedInToJetpack withProperties:@{ WPAppAnalyticsKeyBlogID:blog.dotComID }];
                 }
             }
         } else {
