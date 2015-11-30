@@ -133,16 +133,10 @@ class ReaderTopicSwiftTest : XCTestCase
     */
     func testUnsubscribedTopicIsRemovedDuringSync() {
         let remoteTopics = remoteTopicsForTests()
-
-        let request = NSFetchRequest(entityName: ReaderTagTopic.classNameWithoutNamespaces())
-        var error:NSError?
-        let context = ContextManager.sharedInstance().mainContext
-        var count = context.countForFetchRequest(request, error: &error)
-        
-        XCTAssert(false, "Initial Count: \(count)")
         
         // Setup
         var expectation = expectationWithDescription("topics saved expectation")
+        let context = ContextManager.sharedInstance().mainContext
         let service = ReaderTopicService(managedObjectContext: context);
         service.mergeMenuTopics(remoteTopics, withSuccess: { () -> Void in
             expectation.fulfill()
@@ -150,7 +144,9 @@ class ReaderTopicSwiftTest : XCTestCase
         waitForExpectationsWithTimeout(expectationTimeout, handler: nil)
 
         // Topics exist in the context
-        count = context.countForFetchRequest(request, error: &error)
+        var error:NSError?
+        let request = NSFetchRequest(entityName: ReaderTagTopic.classNameWithoutNamespaces())
+        var count = context.countForFetchRequest(request, error: &error)
         XCTAssertEqual(count, remoteTopics.count, "Number of topics in context did not match expectations")
 
         // Merge new set of topics
@@ -171,8 +167,6 @@ class ReaderTopicSwiftTest : XCTestCase
         } catch let error as NSError {
             XCTAssertNil(error, "Error executing fetch request.")
         }
-        
-        XCTAssert(false, "Running Unit Tests: \(WordPressAppDelegate.sharedInstance().testSuiteIsRunning)")
     }
 
     /**
@@ -274,7 +268,7 @@ class ReaderTopicSwiftTest : XCTestCase
     */
     func testPostsDeletedWhenTopicDeleted() {
         // setup
-        var context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.sharedInstance().mainContext
         let topic = NSEntityDescription.insertNewObjectForEntityForName(ReaderListTopic.classNameWithoutNamespaces(),inManagedObjectContext: context) as! ReaderListTopic
         topic.path = "/list/topic"
         topic.title = "topic"
