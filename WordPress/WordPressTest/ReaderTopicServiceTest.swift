@@ -7,7 +7,7 @@ class ReaderTopicSwiftTest : XCTestCase
 {
 
     var testContextManager: TestContextManager?
-    let expectationTimeout = 2.0
+    let expectationTimeout = 5.0
     
     // MARK: - Lifecycle
 
