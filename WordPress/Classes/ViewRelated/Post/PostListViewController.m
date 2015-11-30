@@ -11,6 +11,7 @@
 #import "WPPostViewController.h"
 #import "WPTableImageSource.h"
 #import <WordPressShared/UIImage+Util.h>
+#import "WPAppAnalytics.h"
 
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
@@ -435,8 +436,9 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
 
     [self presentViewController:navController animated:YES completion:nil];
-
-    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
+    
+    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
+        withProperties:@{ @"tap_source": @"posts_view",  WPAppAnalyticsKeyBlogID:self.blog.dotComID }];
 }
 
 - (void)previewEditPost:(AbstractPost *)apost

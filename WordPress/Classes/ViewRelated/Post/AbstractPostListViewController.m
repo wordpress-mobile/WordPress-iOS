@@ -7,6 +7,7 @@
 #import "PostSettingsSelectionViewController.h"
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
+#import "WPAppAnalytics.h"
 #import "WPSearchControllerConfigurator.h"
 #import <WordPressApi/WordPressApi.h>
 
@@ -281,6 +282,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     return @{
              @"type":[self postTypeToSync],
              @"filter":self.currentPostListFilter.title,
+             WPAppAnalyticsKeyBlogID:self.blog.dotComID,
              };
 }
 
