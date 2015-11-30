@@ -20,6 +20,7 @@
 #import "WPScrollableViewController.h"
 #import "HelpshiftUtils.h"
 #import <WordPressShared/WPDeviceIdentification.h>
+#import "WPAppAnalytics.h"
 
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
@@ -296,7 +297,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *editPostViewController;
         if (!options) {
-            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
+            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:[editPostViewController post].blog.dotComID}];
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
         } else {
             if (options[WPPostViewControllerOptionOpenMediaPicker]) {
@@ -318,8 +319,12 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     } else {
         WPLegacyEditPostViewController *editPostLegacyViewController;
         if (!options) {
-            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
             editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+            Blog *blog = [blogService lastUsedOrFirstBlog];
+            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
+                withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:blog.dotComID}];
         } else {
             editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
                                                                                       andContent:[options stringForKey:WPNewPostURLParamContentKey]
