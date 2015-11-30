@@ -216,7 +216,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
 
-        NSString *subtext = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
+        NSString *name = self.post.blog.settings.name;
+        NSString *subtext = name.length == 0 ? self.post.blog.url : name;
         NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
         NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
                                                                                          attributes:subtextAttributes];
@@ -418,7 +419,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         return;
     }
 
-    if (self.post.blog.geolocationEnabled && ![LocationService sharedService].locationServicesDisabled) {
+    if (self.post.blog.settings.geolocationEnabled && ![LocationService sharedService].locationServicesDisabled) {
         [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
             if (location) {
                 if (self.post.isDeleted) {
