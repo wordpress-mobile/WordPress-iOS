@@ -16,8 +16,8 @@
 #import "AccountService.h"
 #import "WPAccount.h"
 #import "LoginViewController.h"
-#import <WordPress-iOS-Shared/WPTableViewCell.h>
-#import <WordPress-iOS-Shared/WPTableViewSectionHeaderFooterView.h>
+#import <WordPressShared/WPTableViewCell.h>
+#import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
 #import "HelpshiftUtils.h"
 #import "WordPress-Swift.h"
 
@@ -404,7 +404,7 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 {
     [WPAnalytics track:WPAnalyticsStatOpenedSettings];
 
-    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    SettingsViewController *settingsViewController = [[SettingsViewController alloc] init];
     [self.navigationController pushViewController:settingsViewController animated:YES];
 }
 

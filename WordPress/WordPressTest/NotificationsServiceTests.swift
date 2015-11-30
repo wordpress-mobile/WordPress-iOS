@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 import WordPress
-
+import OHHTTPStubs
 
 class NotificationsServiceTests : XCTestCase
 {
@@ -28,18 +28,18 @@ class NotificationsServiceTests : XCTestCase
         remoteApi           = WordPressComApi.anonymousApi()
         service             = NotificationsService(managedObjectContext: contextManager.mainContext, wordPressComApi: remoteApi)
 
-        OHHTTPStubs.shouldStubRequestsPassingTest({ (request: NSURLRequest!) -> Bool in
-                return request?.URL?.absoluteString.rangeOfString(self.settingsEndpoint) != nil &&
-                       request.HTTPMethod == "GET"
-            },
-            withStubResponse: { (request: NSURLRequest!) -> OHHTTPStubsResponse! in
-                return OHHTTPStubsResponse(file: self.settingsFilename, contentType: self.contentTypeJson, responseTime: OHHTTPStubsDownloadSpeedWifi)
-            })
+        stub({ request in
+            return request.URL?.absoluteString.rangeOfString(self.settingsEndpoint) != nil
+                && request.HTTPMethod == "GET"
+            }) { _ in
+                let stubPath = OHPathForFile(self.settingsFilename, self.dynamicType)
+                return fixture(stubPath!, headers: ["Content-Type": self.contentTypeJson])
+        }
     }
     
     override func tearDown() {
         super.tearDown()
-        OHHTTPStubs.removeAllRequestHandlers()
+        OHHTTPStubs.removeAllStubs()
     }
     
     

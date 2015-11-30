@@ -1,6 +1,6 @@
 #import "BlogServiceRemoteXMLRPC.h"
-#import <WordPressApi.h>
-#import "RemoteBlogSettings.h"
+#import <WordPressApi/WordPressApi.h>
+#import "WordPress-Swift.h"
 
 @implementation BlogServiceRemoteXMLRPC
 
@@ -68,11 +68,13 @@
                    success:(SuccessHandler)success
                    failure:(void (^)(NSError *error))failure
 {
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID
-                                                     extra:@{@"blog_title" : remoteBlogSettings.name,
-                                                             @"blog_tagline": remoteBlogSettings.desc
-                                                             }
-                           ];
+    NSDictionary *rawParameters = @{
+        @"blog_title"   : remoteBlogSettings.name,
+        @"blog_tagline" : remoteBlogSettings.tagline
+    };
+    
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:rawParameters];
+    
     [self.api callMethod:@"wp.setOptions" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (![responseObject isKindOfClass:[NSDictionary class]]) {
             if (failure) {
@@ -168,10 +170,10 @@
 
 - (RemoteBlogSettings *)remoteBlogSettingFromXMLRPCDictionary:(NSDictionary *)json
 {
-    RemoteBlogSettings *remoteSettings = [[RemoteBlogSettings alloc] init];
+    RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
     
     remoteSettings.name = [json stringForKeyPath:@"blog_title.value"];
-    remoteSettings.desc = [json stringForKeyPath:@"blog_tagline.value"];
+    remoteSettings.tagline = [json stringForKeyPath:@"blog_tagline.value"];
     if (json[@"blog_public"]) {
         remoteSettings.privacy = [json numberForKeyPath:@"blog_public.value"];
     }

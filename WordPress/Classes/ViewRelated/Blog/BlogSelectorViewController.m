@@ -7,6 +7,7 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "AccountService.h"
+#import "WordPress-Swift.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
 
@@ -154,8 +155,10 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     cell.accessoryView = nil;
 
     Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-    if ([blog.blogName length] != 0) {
-        cell.textLabel.text = blog.blogName;
+    NSString *name = blog.settings.name;
+    
+    if (name.length != 0) {
+        cell.textLabel.text = name;
         cell.detailTextLabel.text = blog.url;
     } else {
         cell.textLabel.text = blog.url;
@@ -226,7 +229,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"settings.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
     [fetchRequest setPredicate:[self fetchRequestPredicate]];
 
     _resultsController = [[NSFetchedResultsController alloc]

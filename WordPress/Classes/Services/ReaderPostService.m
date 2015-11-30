@@ -15,6 +15,7 @@
 #import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
+#import "WPAppAnalytics.h"
 
 NSUInteger const ReaderPostServiceNumberToSync = 40;
 NSUInteger const ReaderPostServiceTitleLength = 30;
@@ -137,9 +138,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         void (^successBlock)() = ^void() {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (like) {
-                    [WPAnalytics track:WPAnalyticsStatReaderArticleLiked];
+                    [WPAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:@{ WPAppAnalyticsKeyBlogID:readerPost.siteID }];
                 } else {
-                    [WPAnalytics track:WPAnalyticsStatReaderArticleUnliked];
+                    [WPAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:@{ WPAppAnalyticsKeyBlogID:readerPost.siteID }];
                 }
                 if (success) {
                     success();
@@ -904,6 +905,21 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.isSharingEnabled = remotePost.isSharingEnabled;
     post.isLikesEnabled = remotePost.isLikesEnabled;
     post.isSiteBlocked = NO;
+
+    if (remotePost.crossPostMeta) {
+        if (!post.crossPostMeta) {
+            ReaderCrossPostMeta *meta = (ReaderCrossPostMeta *)[NSEntityDescription insertNewObjectForEntityForName:[ReaderCrossPostMeta classNameWithoutNamespaces]
+                                                                                     inManagedObjectContext:self.managedObjectContext];
+            post.crossPostMeta = meta;
+        }
+        post.crossPostMeta.siteURL = remotePost.crossPostMeta.siteURL;
+        post.crossPostMeta.postURL = remotePost.crossPostMeta.postURL;
+        post.crossPostMeta.commentURL = remotePost.crossPostMeta.commentURL;
+        post.crossPostMeta.siteID = remotePost.crossPostMeta.siteID;
+        post.crossPostMeta.postID = remotePost.crossPostMeta.postID;
+    } else {
+        post.crossPostMeta = nil;
+    }
 
     NSString *tag = remotePost.primaryTag;
     NSString *slug = remotePost.primaryTagSlug;

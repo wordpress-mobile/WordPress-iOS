@@ -10,8 +10,10 @@
 #import "SettingsViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "TodayExtensionService.h"
-#import <WPStatsViewController.h>
-#import <WPNoResultsView.h>
+#import <WordPressComStatsiOS/WPStatsViewController.h>
+#import <WordPressShared/WPNoResultsView.h>
+#import "WordPress-Swift.h"
+#import "WPAppAnalytics.h"
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
@@ -41,8 +43,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [super viewDidLoad];
  
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-    
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
+
+    NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
+    NSString *path = [statsBundle pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
     NSBundle *bundle = [NSBundle bundleWithPath:path];
     self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:bundle] instantiateInitialViewController];
     self.statsVC = self.statsNavVC.viewControllers.firstObject;
@@ -54,7 +57,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     if (self.presentingViewController != nil) {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
         self.navigationItem.rightBarButtonItem = doneButton;
-        self.title = self.blog.blogName;
+        self.title = self.blog.settings.name;
     }
 
     [self initStats];
@@ -118,7 +121,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     TodayExtensionService *service = [TodayExtensionService new];
     [service configureTodayWidgetWithSiteID:self.statsVC.siteID
-                                   blogName:self.blog.blogName
+                                   blogName:self.blog.settings.name
                                siteTimeZone:self.statsVC.siteTimeZone
                              andOAuth2Token:self.statsVC.oauth2Token];
 }
@@ -135,8 +138,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     __weak JetpackSettingsViewController *safeController = controller;
     [controller setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
-            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
-            [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
+            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack withProperties:@{ WPAppAnalyticsKeyBlogID:self.blog.dotComID }];
+            [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withProperties:@{ WPAppAnalyticsKeyBlogID:self.blog.dotComID }];
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
             self.showingJetpackLogin = NO;
