@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-class MyProfileViewController: ImmuTableViewController {
+class MyProfileViewController: UITableViewController {
     var account: WPAccount! {
         didSet {
             self.service = AccountSettingsService(accountID: account.userID.integerValue, api: account.restApi)
@@ -16,6 +16,8 @@ class MyProfileViewController: ImmuTableViewController {
 
     var settingsSubscription: AccountSettingsSubscription?
 
+    var handler: ImmuTableViewHandler!
+
     // MARK: - Table View Controller
 
     required convenience init() {
@@ -27,9 +29,11 @@ class MyProfileViewController: ImmuTableViewController {
 
         self.title = NSLocalizedString("My Profile", comment: "My Profile view title")
 
-        self.registerRows([
+        ImmuTable.registerRows([
             EditableTextRow.self
-            ])
+            ], tableView: self.tableView)
+
+        handler = ImmuTableViewHandler(takeOver: self)
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
@@ -70,7 +74,7 @@ class MyProfileViewController: ImmuTableViewController {
             value: settings?.aboutMe ?? "",
             action: editableTextRowAction(AccountSettingsChange.AboutMe))
 
-        viewModel =  ImmuTable(sections: [
+        handler.viewModel =  ImmuTable(sections: [
             ImmuTableSection(rows: [
                 firstNameRow,
                 lastNameRow,
