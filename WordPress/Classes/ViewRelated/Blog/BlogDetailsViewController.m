@@ -442,7 +442,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 - (void)showCommentsForBlog:(Blog *)blog
 {
     NSNumber *dotComID = blog.dotComID;
-    if(dotComID) {
+    if (dotComID) {
         [WPAnalytics track:WPAnalyticsStatOpenedComments withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
     }else {
         [WPAnalytics track:WPAnalyticsStatOpenedComments];

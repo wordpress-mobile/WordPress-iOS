@@ -1376,9 +1376,9 @@ EditImageDetailsViewControllerDelegate
     NSAssert([context isKindOfClass:[NSManagedObjectContext class]],
              @"The object should be related to a managed object context here.");
     
-    NSNumber *dotComId = [self.post blog].dotComID;
-    if(dotComId) {
-        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId}];
+    NSNumber *dotComID = [self.post blog].dotComID;
+    if (dotComID) {
+        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID}];
     }else {
         [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
     }
@@ -1412,9 +1412,9 @@ EditImageDetailsViewControllerDelegate
 
 - (void)dismissEditViewAnimated:(BOOL)animated
 {
-    NSNumber *dotComId = [self.post blog].dotComID;
-    if(dotComId) {
-        [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId}];
+    NSNumber *dotComID = [self.post blog].dotComID;
+    if (dotComID) {
+        [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID}];
     }else {
         [WPAnalytics track:WPAnalyticsStatEditorClosed];
     }
@@ -1536,9 +1536,9 @@ EditImageDetailsViewControllerDelegate
         properties[@"word_diff_count"] = @(wordCount - originalWordCount);
     }
 
-    NSNumber *dotComId = [self.post blog].dotComID;
-    if(dotComId) {
-        properties[WPAppAnalyticsKeyBlogID] = dotComId;
+    NSNumber *dotComID = [self.post blog].dotComID;
+    if (dotComID) {
+        properties[WPAppAnalyticsKeyBlogID] = dotComID;
     }
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Post", nil)]) {
@@ -1720,17 +1720,17 @@ EditImageDetailsViewControllerDelegate
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         if (media.mediaType == MediaTypeImage) {
-            NSNumber *dotComId = [self.post blog].dotComID;
-            if(dotComId) {
-                [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId}];
+            NSNumber *dotComID = [self.post blog].dotComID;
+            if (dotComID) {
+                [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID}];
             }else {
                 [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
             }
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId];
         } else if (media.mediaType == MediaTypeVideo) {
-            NSNumber *dotComId = [self.post blog].dotComID;
-            if(dotComId) {
-                [WPAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId}];
+            NSNumber *dotComID = [self.post blog].dotComID;
+            if (dotComID) {
+                [WPAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID}];
             }else {
                 [WPAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary];
             }
@@ -1750,9 +1750,9 @@ EditImageDetailsViewControllerDelegate
             [media remove];
         } else {
             DDLogError(@"Failed Media Upload: %@", error.localizedDescription);
-            NSNumber *dotComId = [self.post blog].dotComID;
-            if(dotComId) {
-                [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId}];
+            NSNumber *dotComID = [self.post blog].dotComID;
+            if (dotComID) {
+                [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID}];
             }else {
                 [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed];
             }
@@ -1775,9 +1775,9 @@ EditImageDetailsViewControllerDelegate
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
 {
-    NSNumber *dotComId = [self.post blog].dotComID;
-    if(dotComId) {
-        [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+    NSNumber *dotComID = [self.post blog].dotComID;
+    if (dotComID) {
+        [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
     }else {
         [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried];
     }
@@ -2029,9 +2029,9 @@ EditImageDetailsViewControllerDelegate
 
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
 {
-    NSNumber *dotComId = [self.post blog].dotComID;
-    if(dotComId) {
-        [WPAnalytics track:WPAnalyticsStatEditorEditedImage withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+    NSNumber *dotComID = [self.post blog].dotComID;
+    if (dotComID) {
+        [WPAnalytics track:WPAnalyticsStatEditorEditedImage withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
     }else {
         [WPAnalytics track:WPAnalyticsStatEditorEditedImage];
     }
