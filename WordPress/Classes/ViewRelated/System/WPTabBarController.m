@@ -297,8 +297,13 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *editPostViewController;
         if (!options) {
-            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:[editPostViewController post].blog.dotComID}];
+
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
+            NSNumber *dotComId = [editPostViewController post].blog.dotComID;
+            if(dotComId) {
+                [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:dotComId}];
+            }
+            
         } else {
             if (options[WPPostViewControllerOptionOpenMediaPicker]) {
                 editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlogAndPhotoPost];
@@ -323,8 +328,11 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
             Blog *blog = [blogService lastUsedOrFirstBlog];
-            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
-                withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:blog.dotComID}];
+            NSNumber *dotComId = blog.dotComID;
+            if(dotComId) {
+                [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
+                    withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:dotComId}];
+            }
         } else {
             editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
                                                                                       andContent:[options stringForKey:WPNewPostURLParamContentKey]
