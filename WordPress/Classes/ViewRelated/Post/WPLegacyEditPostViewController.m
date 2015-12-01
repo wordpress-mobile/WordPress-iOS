@@ -367,9 +367,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 
     if (![self.post hasUnsavedChanges]) {
-        NSNumber *dotComId = self.post.blog.dotComID;
-        if(dotComId) {
-            [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+        NSNumber *dotComID = self.post.blog.dotComID;
+        if (dotComID) {
+            [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
         }else {
             [WPAnalytics track:WPAnalyticsStatEditorClosed];
         }
@@ -389,9 +389,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                 handler:^(UIAlertAction * action) {
                                     [self discardChanges];
                                     [self dismissEditView];
-                                    NSNumber *dotComId = self.post.blog.dotComID;
-                                    if(dotComId) {
-                                        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+                                    NSNumber *dotComID = self.post.blog.dotComID;
+                                    if (dotComID) {
+                                        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
                                     }else {
                                         [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
                                     }
@@ -675,9 +675,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         properties[@"word_diff_count"] = @(wordCount - originalWordCount);
     }
 
-    NSNumber *dotComId = [self.post blog].dotComID;
-    if(dotComId) {
-        properties[WPAppAnalyticsKeyBlogID] = dotComId;
+    NSNumber *dotComID = [self.post blog].dotComID;
+    if (dotComID) {
+        properties[WPAppAnalyticsKeyBlogID] = dotComID;
     }
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
@@ -974,9 +974,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)insertMedia:(Media *)media
 {
-    NSNumber *dotComId = [self.post blog].dotComID;
-    if(dotComId) {
-        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+    NSNumber *dotComID = [self.post blog].dotComID;
+    if (dotComID) {
+        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
     }else {
         [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
     }

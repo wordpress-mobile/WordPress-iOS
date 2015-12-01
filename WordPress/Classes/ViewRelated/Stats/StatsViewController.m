@@ -139,10 +139,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [controller setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
             
-            NSNumber *dotComId = self.blog.dotComID;
-            if(dotComId) {
-                [WPAnalytics track:WPAnalyticsStatSignedInToJetpack withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId }];
-                [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId }];
+            NSNumber *dotComID = self.blog.dotComID;
+            if (dotComID) {
+                [WPAnalytics track:WPAnalyticsStatSignedInToJetpack withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID }];
+                [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID }];
             }else {
                 [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
                 [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
