@@ -780,7 +780,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (BOOL)isMediaUploading
 {
     for(NSProgress * progress in self.mediaInProgress.allValues) {
-        if (progress.totalUnitCount != 0){
+        if (!progress.isCancelled && progress.totalUnitCount != 0){
             return YES;
         }
     }
@@ -828,14 +828,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (!uniqueMediaId) {
         return;
     }
-    NSProgress * progress = self.mediaInProgress[uniqueMediaId];
     [self.mediaInProgress removeObjectForKey:uniqueMediaId];
-    if (progress.isCancelled){
-        //on iOS 7 cancelled sub progress don't update the parent progress properly so we need to do it
-        if ( ![UIDevice isOS8] ) {
-            self.mediaGlobalProgress.completedUnitCount++;
-        }
-    }
 }
 
 - (void)trackMediaWithId:(NSString *)uniqueMediaId usingProgress:(NSProgress *)progress
@@ -921,8 +914,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self insertMedia:media];
         [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
     } failure:^(NSError *error) {
-        // the progress was completed event if it was an error state
-        self.mediaGlobalProgress.completedUnitCount++;
         [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
             DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
