@@ -279,11 +279,16 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (NSDictionary *)propertiesForAnalytics
 {
-    return @{
-             @"type":[self postTypeToSync],
-             @"filter":self.currentPostListFilter.title,
-             WPAppAnalyticsKeyBlogID:self.blog.dotComID,
-             };
+    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:3];
+    properties[@"type"] = [self postTypeToSync];
+    properties[@"filter"] = self.currentPostListFilter.title;
+    
+    NSNumber *dotComID = self.blog.dotComID;
+    if(dotComID) {
+        properties[WPAppAnalyticsKeyBlogID] = dotComID;
+    }
+    
+    return properties;
 }
 
 #pragma mark - Actions
