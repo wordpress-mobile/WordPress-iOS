@@ -790,13 +790,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)cancelMediaUploads
 {
     [self.mediaGlobalProgress cancel];
-    NSMutableArray * keys = [NSMutableArray array];
-    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
-        if (progress.isCancelled){
-            [keys addObject:key];
-        }
-    }];
-    [self.mediaInProgress removeObjectsForKeys:keys];
+    [self.mediaInProgress removeAllObjects];
     [self autosaveContent];
     [self setupNavbar];
 }
