@@ -165,6 +165,143 @@ public class DiscussionSettingsViewController : UITableViewController
     
     
     
+    // MARK: - Row Handlers
+    private func pressedCommentsAllowed(payload: AnyObject?) {
+        guard let enabled = payload as? Bool else {
+            return
+        }
+        
+        settings.commentsAllowed = enabled
+    }
+
+    private func pressedPingbacksInbound(payload: AnyObject?) {
+        guard let enabled = payload as? Bool else {
+            return
+        }
+        
+        settings.pingbackInboundEnabled = enabled
+    }
+    
+    private func pressedPingbacksOutbound(payload: AnyObject?) {
+        guard let enabled = payload as? Bool else {
+            return
+        }
+        
+        settings.pingbackOutboundEnabled = enabled
+    }
+
+    private func pressedRequireNameAndEmail(payload: AnyObject?) {
+        guard let enabled = payload as? Bool else {
+            return
+        }
+        
+        settings.commentsRequireNameAndEmail = enabled
+    }
+    
+    private func pressedRequireRegistration(payload: AnyObject?) {
+        guard let enabled = payload as? Bool else {
+            return
+        }
+        
+        settings.commentsRequireRegistration = enabled
+    }
+    
+    private func pressedCloseCommenting(payload: AnyObject?) {
+        // WARNING: Implement Me
+    }
+    
+    private func pressedSortBy(payload: AnyObject?) {
+        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
+        settingsViewController.title            = NSLocalizedString("Sort By", comment: "Discussion Settings Title")
+        settingsViewController.currentValue     = settings.commentsSortOrder
+        settingsViewController.titles           = CommentsSorting.AllTitles
+        settingsViewController.values           = CommentsSorting.AllValues
+        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
+            guard let newSortOrder = CommentsSorting(rawValue: selected as! Int) else {
+                return
+            }
+            
+            self?.settings.commentsSorting = newSortOrder
+        }
+        
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+    
+    private func pressedThreading(payload: AnyObject?) {
+        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
+        settingsViewController.title            = NSLocalizedString("Threading", comment: "Discussion Settings Title")
+        settingsViewController.currentValue     = settings.commentsThreading.rawValue
+        settingsViewController.titles           = CommentsThreading.AllTitles
+        settingsViewController.values           = CommentsThreading.AllValues
+        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
+            guard let newThreadingDepth = CommentsThreading(rawValue: selected as! Int) else {
+                return
+            }
+
+            self?.settings.commentsThreading = newThreadingDepth
+        }
+        
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+    
+    private func pressedPaging(payload: AnyObject?) {
+        // WARNING: Implement Me
+    }
+    
+    private func pressedAutomaticallyApprove(payload: AnyObject?) {
+        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
+        settingsViewController.title            = NSLocalizedString("Automatically Approve", comment: "Discussion Settings Title")
+        settingsViewController.currentValue     = settings.commentsAutoapproval.rawValue
+        settingsViewController.titles           = CommentsAutoapproval.AllTitles
+        settingsViewController.values           = CommentsAutoapproval.AllValues
+        settingsViewController.hints            = CommentsAutoapproval.AllHints
+        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
+            guard let newApprovalStatus = CommentsAutoapproval(rawValue: selected as! Int) else {
+                return
+            }
+
+            self?.settings.commentsAutoapproval = newApprovalStatus
+        }
+        
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+
+    private func pressedLinksInComments(payload: AnyObject?) {
+        // WARNING: Implement Me
+    }
+    
+    private func pressedModeration(payload: AnyObject?) {
+        let moderationKeys                      = settings.commentsModerationKeys
+        let settingsViewController              = SettingsListEditorViewController(collection: moderationKeys)
+        settingsViewController.title            = NSLocalizedString("Hold for Moderation", comment: "Moderation Keys Title")
+        settingsViewController.insertTitle      = NSLocalizedString("New Moderation Key", comment: "Moderation Keyword Insertion Title")
+        settingsViewController.editTitle        = NSLocalizedString("Edit Moderation Key", comment: "Moderation Keyword Edition Title")
+        settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\".",
+            comment: "Text rendered at the bottom of the Discussion Moderation Keys editor")
+        settingsViewController.onCompletion     = { [weak self] (updated: Set<String>) in
+            self?.settings.commentsModerationKeys = updated
+        }
+        
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+    
+    private func pressedBlacklist(payload: AnyObject?) {
+        let blacklistKeys                       = settings.commentsBlacklistKeys
+        let settingsViewController              = SettingsListEditorViewController(collection: blacklistKeys)
+        settingsViewController.title            = NSLocalizedString("Blacklist", comment: "Blacklist Title")
+        settingsViewController.insertTitle      = NSLocalizedString("New Blacklist Key", comment: "Blacklist Keyword Insertion Title")
+        settingsViewController.editTitle        = NSLocalizedString("Edit Blacklist Key", comment: "Blacklist Keyword Edition Title")
+        settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".",
+            comment: "Text rendered at the bottom of the Discussion Blacklist Keys editor")
+        settingsViewController.onCompletion     = { [weak self] (updated: Set<String>) in
+            self?.settings.commentsBlacklistKeys = updated
+        }
+        
+        navigationController?.pushViewController(settingsViewController, animated: true)
+    }
+
+    
+    
     // MARK: - Computed Properties
     private var sections : [Section] {
         return [postsSection, commentsSection, otherSection]
@@ -217,9 +354,9 @@ public class DiscussionSettingsViewController : UITableViewController
                             }),
             
             Row(style:      .Value1,
-                title:      NSLocalizedString("Close After", comment: "Settings: Close comments after X period"),
+                title:      NSLocalizedString("Close Commenting", comment: "Settings: Close comments after X period"),
                 handler:    {   [weak self] in
-                                self?.pressedCloseAfter($0)
+                                self?.pressedCloseCommenting($0)
                             }),
             
             Row(style:      .Value1,
@@ -268,142 +405,6 @@ public class DiscussionSettingsViewController : UITableViewController
         ]
         
         return Section(rows: rows)
-    }
-    
-    
-    // MARK: - Row Handlers
-    private func pressedCommentsAllowed(payload: AnyObject?) {
-        guard let enabled = payload as? Bool else {
-            return
-        }
-        
-        settings.commentsAllowed = enabled
-    }
-
-    private func pressedPingbacksInbound(payload: AnyObject?) {
-        guard let enabled = payload as? Bool else {
-            return
-        }
-        
-        settings.pingbackInboundEnabled = enabled
-    }
-    
-    private func pressedPingbacksOutbound(payload: AnyObject?) {
-        guard let enabled = payload as? Bool else {
-            return
-        }
-        
-        settings.pingbackOutboundEnabled = enabled
-    }
-
-    private func pressedRequireNameAndEmail(payload: AnyObject?) {
-        guard let enabled = payload as? Bool else {
-            return
-        }
-        
-        settings.commentsRequireNameAndEmail = enabled
-    }
-    
-    private func pressedRequireRegistration(payload: AnyObject?) {
-        guard let enabled = payload as? Bool else {
-            return
-        }
-        
-        settings.commentsRequireRegistration = enabled
-    }
-    
-    private func pressedCloseAfter(payload: AnyObject?) {
-        // WARNING: Implement Me
-    }
-    
-    private func pressedSortBy(payload: AnyObject?) {
-        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
-        settingsViewController.title            = NSLocalizedString("Sort By", comment: "")
-        settingsViewController.currentValue     = settings.commentsSortOrder
-        settingsViewController.titles           = CommentsSorting.AllTitles
-        settingsViewController.values           = CommentsSorting.AllValues
-        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
-            guard let newSortOrder = CommentsSorting(rawValue: selected as! Int) else {
-                return
-            }
-            
-            self?.settings.commentsSorting = newSortOrder
-        }
-        
-        navigationController?.pushViewController(settingsViewController, animated: true)
-    }
-    
-    private func pressedThreading(payload: AnyObject?) {
-        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
-        settingsViewController.title            = NSLocalizedString("Threading", comment: "")
-        settingsViewController.currentValue     = settings.commentsThreading.rawValue
-        settingsViewController.titles           = CommentsThreading.AllTitles
-        settingsViewController.values           = CommentsThreading.AllValues
-        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
-            guard let newThreadingDepth = CommentsThreading(rawValue: selected as! Int) else {
-                return
-            }
-
-            self?.settings.commentsThreading = newThreadingDepth
-        }
-        
-        navigationController?.pushViewController(settingsViewController, animated: true)
-    }
-    
-    private func pressedPaging(payload: AnyObject?) {
-        // WARNING: Implement Me
-    }
-    
-    private func pressedAutomaticallyApprove(payload: AnyObject?) {
-        let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
-        settingsViewController.title            = NSLocalizedString("Automatically Approve", comment: "")
-        settingsViewController.currentValue     = settings.commentsAutoapproval.rawValue
-        settingsViewController.titles           = CommentsAutoapproval.AllTitles
-        settingsViewController.values           = CommentsAutoapproval.AllValues
-        settingsViewController.hints            = CommentsAutoapproval.AllHints
-        settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
-            guard let newApprovalStatus = CommentsAutoapproval(rawValue: selected as! Int) else {
-                return
-            }
-
-            self?.settings.commentsAutoapproval = newApprovalStatus
-        }
-        
-        navigationController?.pushViewController(settingsViewController, animated: true)
-    }
-
-    private func pressedLinksInComments(payload: AnyObject?) {
-        // WARNING: Implement Me
-    }
-    
-    private func pressedModeration(payload: AnyObject?) {
-        let moderationKeys                      = settings.commentsModerationKeys
-        let settingsViewController              = SettingsListEditorViewController(collection: moderationKeys)
-        settingsViewController.title            = NSLocalizedString("Hold for Moderation", comment: "Moderation Keys Title")
-        settingsViewController.insertTitle      = NSLocalizedString("New Moderation Key", comment: "Moderation Keyword Insertion Title")
-        settingsViewController.editTitle        = NSLocalizedString("Edit Moderation Key", comment: "Moderation Keyword Edition Title")
-        settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\".",
-                                                                    comment: "Text rendered at the bottom of the Discussion Moderation Keys editor")
-        settingsViewController.onCompletion     = { [weak self] (updated: Set<String>) in
-            self?.settings.commentsModerationKeys = updated
-        }
-        
-        navigationController?.pushViewController(settingsViewController, animated: true)
-    }
-    
-    private func pressedBlacklist(payload: AnyObject?) {
-        let blacklistKeys                       = settings.commentsBlacklistKeys
-        let settingsViewController              = SettingsListEditorViewController(collection: blacklistKeys)
-        settingsViewController.title            = NSLocalizedString("Blacklist", comment: "Blacklist Title")
-        settingsViewController.insertTitle      = NSLocalizedString("New Blacklist Key", comment: "Blacklist Keyword Insertion Title")
-        settingsViewController.editTitle        = NSLocalizedString("Edit Blacklist Key", comment: "Blacklist Keyword Edition Title")
-        settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".",
-                                                                    comment: "Text rendered at the bottom of the Discussion Blacklist Keys editor")
-        settingsViewController.onCompletion     = { [weak self] (updated: Set<String>) in
-            self?.settings.commentsBlacklistKeys = updated
-        }
-        
-        navigationController?.pushViewController(settingsViewController, animated: true)
     }
     
     
