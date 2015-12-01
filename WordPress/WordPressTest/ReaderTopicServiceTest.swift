@@ -7,7 +7,8 @@ class ReaderTopicSwiftTest : XCTestCase
 {
 
     var testContextManager: TestContextManager?
-
+    let expectationTimeout = 5.0
+    
     // MARK: - Lifecycle
 
     override func setUp() {
@@ -132,7 +133,7 @@ class ReaderTopicSwiftTest : XCTestCase
     */
     func testUnsubscribedTopicIsRemovedDuringSync() {
         let remoteTopics = remoteTopicsForTests()
-
+        
         // Setup
         var expectation = expectationWithDescription("topics saved expectation")
         let context = ContextManager.sharedInstance().mainContext
@@ -140,11 +141,11 @@ class ReaderTopicSwiftTest : XCTestCase
         service.mergeMenuTopics(remoteTopics, withSuccess: { () -> Void in
             expectation.fulfill()
         })
-        waitForExpectationsWithTimeout(2.0, handler: nil)
+        waitForExpectationsWithTimeout(expectationTimeout, handler: nil)
 
         // Topics exist in the context
-        let request = NSFetchRequest(entityName: ReaderTagTopic.classNameWithoutNamespaces())
         var error:NSError?
+        let request = NSFetchRequest(entityName: ReaderTagTopic.classNameWithoutNamespaces())
         var count = context.countForFetchRequest(request, error: &error)
         XCTAssertEqual(count, remoteTopics.count, "Number of topics in context did not match expectations")
 
@@ -154,7 +155,7 @@ class ReaderTopicSwiftTest : XCTestCase
         service.mergeMenuTopics([foo], withSuccess: { () -> Void in
             expectation.fulfill()
         })
-        waitForExpectationsWithTimeout(2.0, handler: nil)
+        waitForExpectationsWithTimeout(expectationTimeout, handler: nil)
 
         // Make sure the missing topics were removed when merged
         count = context.countForFetchRequest(request, error: &error)
@@ -185,7 +186,7 @@ class ReaderTopicSwiftTest : XCTestCase
         service.mergeMenuTopics(startingTopics, withSuccess: { () -> Void in
             expectation.fulfill()
         })
-        waitForExpectationsWithTimeout(2.0, handler: nil)
+        waitForExpectationsWithTimeout(expectationTimeout, handler: nil)
 
         // Topics exist in context
         let sortDescriptor = NSSortDescriptor(key: "tagID", ascending: true)
@@ -200,7 +201,7 @@ class ReaderTopicSwiftTest : XCTestCase
         service.mergeMenuTopics(remoteTopics, withSuccess: { () -> Void in
             expectation.fulfill()
         })
-        waitForExpectationsWithTimeout(2.0, handler: nil)
+        waitForExpectationsWithTimeout(expectationTimeout, handler: nil)
 
         // make sure the missing topics were added
         count = context.countForFetchRequest(request, error: &error)
@@ -231,7 +232,7 @@ class ReaderTopicSwiftTest : XCTestCase
         service.mergeMenuTopics(remoteTopics, withSuccess: { () -> Void in
             expectation.fulfill()
         })
-        waitForExpectationsWithTimeout(2.0, handler: nil)
+        waitForExpectationsWithTimeout(expectationTimeout, handler: nil)
 
         XCTAssertNotNil(service.currentTopic, "The current topic was nil.")
 
@@ -267,7 +268,7 @@ class ReaderTopicSwiftTest : XCTestCase
     */
     func testPostsDeletedWhenTopicDeleted() {
         // setup
-        var context = ContextManager.sharedInstance().mainContext
+        let context = ContextManager.sharedInstance().mainContext
         let topic = NSEntityDescription.insertNewObjectForEntityForName(ReaderListTopic.classNameWithoutNamespaces(),inManagedObjectContext: context) as! ReaderListTopic
         topic.path = "/list/topic"
         topic.title = "topic"
@@ -281,17 +282,16 @@ class ReaderTopicSwiftTest : XCTestCase
         ContextManager.sharedInstance().saveContext(context, withCompletionBlock: { () -> Void in
             expectation.fulfill()
         })
-        waitForExpectationsWithTimeout(2.0, handler: nil)
+        waitForExpectationsWithTimeout(expectationTimeout, handler: nil)
 
         // Delete the topic and posts from the context
         context.deleteObject(topic)
 
         expectation = expectationWithDescription("topics saved expectation")
-        context = ContextManager.sharedInstance().mainContext
         ContextManager.sharedInstance().saveContext(context, withCompletionBlock: { () -> Void in
             expectation.fulfill()
         })
-        waitForExpectationsWithTimeout(2.0, handler: nil)
+        waitForExpectationsWithTimeout(expectationTimeout, handler: nil)
 
 
         var request = NSFetchRequest(entityName: ReaderAbstractTopic.classNameWithoutNamespaces())
