@@ -70,13 +70,13 @@ struct AccountSettingsService {
         if let managedSettings = accountSettingsWithID(accountID) {
             managedSettings.updateWith(settings)
         } else {
-            createAccountSetttings(accountID, settings: settings)
+            createAccountSettings(accountID, settings: settings)
         }
 
         ContextManager.sharedInstance().saveContext(context)
     }
 
-    private func accountSettingsWithID(accountID: Int) -> ManagedAccountSettings? {
+    private func accountSetingsWithID(accountID: Int) -> ManagedAccountSettings? {
         let request = NSFetchRequest(entityName: ManagedAccountSettings.entityName)
         request.predicate = NSPredicate(format: "account.userID = %d", accountID)
         request.fetchLimit = 1
