@@ -10,7 +10,8 @@
 #import "WPLegacyEditPostViewController.h"
 #import "WPPostViewController.h"
 #import "WPTableImageSource.h"
-#import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPressShared/UIImage+Util.h>
+#import "WPAppAnalytics.h"
 
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
@@ -435,8 +436,9 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
 
     [self presentViewController:navController animated:YES completion:nil];
-
-    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
+    
+    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
+        withProperties:@{ @"tap_source": @"posts_view",  WPAppAnalyticsKeyBlogID:self.blog.dotComID }];
 }
 
 - (void)previewEditPost:(AbstractPost *)apost
@@ -503,8 +505,10 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     // Push the Stats Post Details ViewController
     NSString *identifier = NSStringFromClass([StatsPostDetailsTableViewController class]);
     BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
-    UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:StatsStoryboardName bundle:[NSBundle bundleWithPath:path]];
+    NSBundle *statsBundle = [NSBundle bundleForClass:[WPStatsViewController class]];
+    NSString *path = [statsBundle pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
+    NSBundle *bundle = [NSBundle bundleWithPath:path];
+    UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:StatsStoryboardName bundle:bundle];
     StatsPostDetailsTableViewController *controller = [statsStoryboard instantiateViewControllerWithIdentifier:identifier];
     NSAssert(controller, @"Couldn't instantiate StatsPostDetailsTableViewController");
 

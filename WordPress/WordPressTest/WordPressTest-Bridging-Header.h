@@ -10,7 +10,7 @@
 #import "Post.h"
 #import "Page.h"
 #import "ReaderPost.h"
-#import "NSDictionary+SafeExpectations.h"
 #import "UIAlertControllerProxy.h"
-#import <WordPressCom-Analytics-iOS/WPAnalytics.h>
+#import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
+#import <WordPressComAnalytics/WPAnalytics.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>

@@ -1,6 +1,7 @@
 #import "ReaderCommentsViewController.h"
 
-#import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPressShared/UIImage+Util.h>
+#import <DTCoreText/DTCoreText.h>
 
 #import "Comment.h"
 #import "CommentContentView.h"
@@ -22,6 +23,7 @@
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 #import "WordPress-Swift.h"
+#import "WPAppAnalytics.h"
 
 
 
@@ -63,7 +65,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, assign) UIDeviceOrientation previousOrientation;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
-@property (nonatomic) BOOL canComment;
 @property (nonatomic) BOOL isLoggedIn;
 
 @end
@@ -101,7 +102,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     self.mediaCellCache = [NSMutableDictionary dictionary];
     [self checkIfLoggedIn];
-    [self checkIfCanComment];
 
     [self configureNavbar];
     [self configurePostHeader];
@@ -558,11 +558,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }];
 }
 
-- (void)checkIfCanComment
-{
-    self.canComment = self.post.commentsOpen && self.isLoggedIn;
-}
-
 - (void)checkIfLoggedIn
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -610,6 +605,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (BOOL)isLoadingPost
 {
     return self.post == nil;
+}
+
+- (BOOL)canComment
+{
+    return self.post.commentsOpen && self.isLoggedIn;
 }
 
 - (BOOL)shouldDisplayReplyTextView
@@ -783,7 +783,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     __typeof(self) __weak weakSelf = self;
     void (^successBlock)() = ^void() {
-        [WPAnalytics track:WPAnalyticsStatReaderArticleCommentedOn];
+        [WPAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:@{ WPAppAnalyticsKeyBlogID:self.post.siteID }];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
     };

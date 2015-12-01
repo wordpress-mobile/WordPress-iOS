@@ -254,7 +254,9 @@
                                                     if (sync) {
                                                         [unsyncedThemes minusSet:[NSSet setWithArray:themes]];
                                                         for (Theme *deleteTheme in unsyncedThemes) {
-                                                            [self.managedObjectContext deleteObject:deleteTheme];
+                                                            if (![blog.currentThemeId isEqualToString:deleteTheme.themeId]) {
+                                                                [self.managedObjectContext deleteObject:deleteTheme];
+                                                            }
                                                         }
                                                     }
                                                     
@@ -308,7 +310,7 @@
 {
     NSParameterAssert([remoteTheme isKindOfClass:[RemoteTheme class]]);
     
-    Theme* theme = [self findOrCreateThemeWithId:remoteTheme.themeId
+    Theme *theme = [self findOrCreateThemeWithId:remoteTheme.themeId
                                          forBlog:blog];
     
     theme.demoUrl = remoteTheme.demoUrl;
@@ -330,6 +332,7 @@
     
     if (blog && remoteTheme.active) {
         blog.currentThemeId = theme.themeId;
+        theme.order = @0;
     }
     
     return theme;

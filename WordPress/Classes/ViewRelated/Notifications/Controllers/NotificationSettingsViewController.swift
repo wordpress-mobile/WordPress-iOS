@@ -1,5 +1,6 @@
 import Foundation
-
+import WordPressShared.WPStyleGuide
+import WordPressComAnalytics
 
 /**
 *  @class           NotificationSettingsViewController
@@ -26,7 +27,7 @@ public class NotificationSettingsViewController : UIViewController
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        WPAnalytics.track(.StatOpenedNotificationSettingsList)
+        WPAnalytics.track(.OpenedNotificationSettingsList)
         
         // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
         tableView.deselectSelectedRowWithAnimation(true)
@@ -250,7 +251,7 @@ public class NotificationSettingsViewController : UIViewController
         let settings = settingsForRowAtIndexPath(indexPath)!
         switch settings.channel {
         case .Blog(_):
-            cell.textLabel?.text            = settings.blog?.blogName ?? settings.channel.description()
+            cell.textLabel?.text            = settings.blog?.settings?.name ?? settings.channel.description()
             cell.detailTextLabel?.text      = settings.blog?.displayURL ?? String()
             cell.accessoryType              = .DisclosureIndicator
             

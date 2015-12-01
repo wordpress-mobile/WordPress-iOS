@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared
 
 /**
 *  @class       NoteTableViewCell
@@ -270,9 +270,7 @@ import Foundation
     
     // MARK: - Action Handlers
     @IBAction public func undeleteWasPressed(sender: AnyObject) {
-        if let handler = onUndelete {
-            handler()
-        }
+        onUndelete?()
     }
     
     
