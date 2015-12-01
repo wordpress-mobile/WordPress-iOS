@@ -827,6 +827,21 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatTwoFactorCodeRequested:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Two Factor - Requested Verification Code"];
             break;
+        case WPAnalyticsStatShortcutLogIn:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Log In"];
+            break;
+        case WPAnalyticsStatShortcutNewPost:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - New Post"];
+            break;
+        case WPAnalyticsStatShortcutNewPhotoPost:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - New Photo Post"];
+            break;
+        case WPAnalyticsStatShortcutStats:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Stats"];
+            break;
+        case WPAnalyticsStatShortcutNotifications:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Notifications"];
+            break;
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatLogSpecialCondition:

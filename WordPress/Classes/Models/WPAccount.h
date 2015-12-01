@@ -1,8 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-#import <WordPressApi/WordPressApi.h>
-
 #import "WordPressComApi.h"
 
 @class Blog;

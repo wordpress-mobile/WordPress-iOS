@@ -1,6 +1,7 @@
 #import "ReaderPreviewHeaderView.h"
 #import "WordPress-Swift.h"
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import <WordPressShared/WPStyleGuide.h>
+#import <DTCoreText/DTCoreText.h>
 
 static const CGFloat LabelTopMargin = 20.0;
 static const CGFloat LabelBottomMargin = 10.0;

@@ -8,7 +8,9 @@
 #import "ContextManager.h"
 #import "Constants.h"
 #import "BlogSiteVisibilityHelper.h"
+#import "WordPress-Swift.h"
 #import <SFHFKeychainUtils.h>
+#import <WordPressApi/WordPressApi.h>
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -23,15 +25,12 @@ NSString * const PostFormatStandard = @"standard";
 
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
-@property (nonatomic, strong, readwrite) NSNumber *privacy;
 
 @end
 
 @implementation Blog
 
 @dynamic blogID;
-@dynamic blogName;
-@dynamic blogTagline;
 @dynamic url;
 @dynamic xmlrpc;
 @dynamic apiKey;
@@ -48,7 +47,6 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic lastPagesSync;
 @dynamic lastCommentsSync;
 @dynamic lastUpdateWarning;
-@dynamic geolocationEnabled;
 @dynamic options;
 @dynamic postFormats;
 @dynamic isActivated;
@@ -60,13 +58,7 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic isHostedAtWPcom;
 @dynamic icon;
 @dynamic username;
-@dynamic defaultCategoryID;
-@dynamic defaultPostFormat;
-@dynamic privacy;
-@dynamic relatedPostsAllowed;
-@dynamic relatedPostsEnabled;
-@dynamic relatedPostsShowHeadline;
-@dynamic relatedPostsShowThumbnails;
+@dynamic settings;
 
 
 @synthesize api = _api;
@@ -96,25 +88,6 @@ NSString * const PostFormatStandard = @"standard";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark -
-
-- (BOOL)geolocationEnabled
-{
-    BOOL tmpValue;
-
-    [self willAccessValueForKey:@"geolocationEnabled"];
-    tmpValue = [[self primitiveValueForKey:@"geolocationEnabled"] boolValue];
-    [self didAccessValueForKey:@"geolocationEnabled"];
-
-    return tmpValue;
-}
-
-- (void)setGeolocationEnabled:(BOOL)value
-{
-    [self willChangeValueForKey:@"geolocationEnabled"];
-    [self setPrimitiveValue:[NSNumber numberWithBool:value] forKey:@"geolocationEnabled"];
-    [self didChangeValueForKey:@"geolocationEnabled"];
-}
 
 #pragma mark -
 #pragma mark Custom methods
@@ -277,7 +250,7 @@ NSString * const PostFormatStandard = @"standard";
 
 - (NSString *)defaultPostFormatText
 {
-    return [self postFormatTextFromSlug:self.defaultPostFormat];
+    return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
 }
 
 - (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug
@@ -297,12 +270,12 @@ NSString * const PostFormatStandard = @"standard";
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isHostedAtWPcom && [self.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
+    return (self.isHostedAtWPcom && [self.settings.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
 }
 
 - (SiteVisibility)siteVisibility
 {
-    switch ([self.privacy integerValue]) {
+    switch ([self.settings.privacy integerValue]) {
         case (SiteVisibilityHidden):
             return SiteVisibilityHidden;
             break;
@@ -322,13 +295,13 @@ NSString * const PostFormatStandard = @"standard";
 {
     switch (siteVisibility) {
         case (SiteVisibilityHidden):
-            self.privacy = @(SiteVisibilityHidden);
+            self.settings.privacy = @(SiteVisibilityHidden);
             break;
         case (SiteVisibilityPublic):
-            self.privacy = @(SiteVisibilityPublic);
+            self.settings.privacy = @(SiteVisibilityPublic);
             break;
         case (SiteVisibilityPrivate):
-            self.privacy = @(SiteVisibilityPrivate);
+            self.settings.privacy = @(SiteVisibilityPrivate);
             break;
         default:
             NSParameterAssert(siteVisibility >= SiteVisibilityPrivate && siteVisibility <= SiteVisibilityPublic);
@@ -338,10 +311,10 @@ NSString * const PostFormatStandard = @"standard";
 
 - (NSString *)textForCurrentSiteVisibility
 {
-    if (!self.privacy) {
+    if (!self.settings.privacy) {
         [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
     }
-    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.privacy integerValue]];
+    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.settings.privacy intValue]];
 }
 
 
@@ -531,7 +504,7 @@ NSString * const PostFormatStandard = @"standard";
     } else {
         extra = [NSString stringWithFormat:@" jetpack: %@", [self.jetpack description]];
     }
-    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.blogName, self.url, self.xmlrpc, extra];
+    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.settings.name, self.url, self.xmlrpc, extra];
 }
 
 #pragma mark - api accessor

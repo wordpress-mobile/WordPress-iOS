@@ -1,5 +1,6 @@
 import Foundation
-
+import WordPressShared
+import WordPressComAnalytics
 
 /**
 *  @class           NotificationSettingDetailsViewController
@@ -34,7 +35,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        WPAnalytics.track(.StatOpenedNotificationSettingDetails)
+        WPAnalytics.track(.OpenedNotificationSettingDetails)
     }
     
     public override func viewWillDisappear(animated: Bool) {
@@ -54,7 +55,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
             let subtitle = stream?.kind.description()
             navigationItem.titleView = NavigationTitleView(title: title, subtitle: subtitle)
         default:
-            let title = settings?.blog?.blogName
+            let title = settings?.blog?.settings?.name
             let subtitle = stream?.kind.description()
             navigationItem.titleView = NavigationTitleView(title: title, subtitle: subtitle)
         }
@@ -235,10 +236,10 @@ public class NotificationSettingDetailsViewController : UITableViewController
             stream              : stream!,
             newValues           : newValues,
             success             : {
-                WPAnalytics.track(.StatNotificationsSettingsUpdated, withProperties: ["success" : true])
+                WPAnalytics.track(.NotificationsSettingsUpdated, withProperties: ["success" : true])
             },
             failure             : { (error: NSError!) in
-                WPAnalytics.track(.StatNotificationsSettingsUpdated, withProperties: ["success" : false])
+                WPAnalytics.track(.NotificationsSettingsUpdated, withProperties: ["success" : false])
                 self.handleUpdateError()
             })
     }

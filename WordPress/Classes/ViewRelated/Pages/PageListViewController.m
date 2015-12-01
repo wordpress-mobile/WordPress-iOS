@@ -6,6 +6,7 @@
 #import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
 #import "WPLegacyEditPageViewController.h"
+#import "WPAppAnalytics.h"
 
 static const CGFloat PageSectionHeaderHeight = 24.0;
 static const CGFloat PageCellEstimatedRowHeight = 44.0;
@@ -356,7 +357,8 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
     [self presentViewController:navController animated:YES completion:nil];
 
-    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
+    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
+        withProperties:@{ @"tap_source": @"posts_view",  WPAppAnalyticsKeyBlogID:self.blog.dotComID }];
 }
 
 - (void)editPage:(AbstractPost *)apost

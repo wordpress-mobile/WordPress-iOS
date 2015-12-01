@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import <WordPress-iOS-Editor/WPEditorViewController.h>
+#import <WordPressEditor/WPEditorViewController.h>
 
 @class AbstractPost;
 @class Blog;
@@ -16,6 +16,9 @@ extern const CGRect NavigationBarButtonRect;
 
 extern NSString* const WPEditorNavigationRestorationID;
 extern NSString* const kUserDefaultsNewEditorEnabled;
+
+extern NSString* const WPPostViewControllerOptionOpenMediaPicker;
+extern NSString* const WPPostViewControllerOptionNotAnimated;
 
 // Secret URL config parameters
 extern NSString* const kWPEditorConfigURLParamAvailable;
@@ -49,10 +52,9 @@ typedef void (^EditPostCompletionHandler)(void);
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
 @property (readonly) BOOL hasChanges;
 
-@property (nonatomic, strong) UIActionSheet *currentActionSheet;
-@property (nonatomic, strong) UIAlertView *failedMediaAlertView;
-
 #pragma mark - Initializers
+
+- (instancetype)initWithDraftForLastUsedBlogAndPhotoPost;
 
 /*
  Compose a new post with the last used blog.
