@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) MenuItem *parent;
 
 + (NSString *)entityName;
+- (BOOL)isDescendantOfItem:(MenuItem *)item;
 
 @end
 
