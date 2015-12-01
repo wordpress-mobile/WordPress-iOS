@@ -1379,6 +1379,8 @@ EditImageDetailsViewControllerDelegate
     NSNumber *dotComId = [self.post blog].dotComID;
     if(dotComId) {
         [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId}];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
     }
     
     self.post = self.post.original;
@@ -1413,6 +1415,8 @@ EditImageDetailsViewControllerDelegate
     NSNumber *dotComId = [self.post blog].dotComID;
     if(dotComId) {
         [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId}];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatEditorClosed];
     }
     
     if (self.onClose) {
@@ -1719,12 +1723,16 @@ EditImageDetailsViewControllerDelegate
             NSNumber *dotComId = [self.post blog].dotComID;
             if(dotComId) {
                 [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId}];
+            }else {
+                [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
             }
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId];
         } else if (media.mediaType == MediaTypeVideo) {
             NSNumber *dotComId = [self.post blog].dotComID;
             if(dotComId) {
                 [WPAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId}];
+            }else {
+                [WPAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary];
             }
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
@@ -1745,6 +1753,8 @@ EditImageDetailsViewControllerDelegate
             NSNumber *dotComId = [self.post blog].dotComID;
             if(dotComId) {
                 [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId}];
+            }else {
+                [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed];
             }
             [self dismissAssociatedAlertControllerIfVisible:mediaUniqueId];
             self.mediaGlobalProgress.completedUnitCount++;
@@ -1768,6 +1778,8 @@ EditImageDetailsViewControllerDelegate
     NSNumber *dotComId = [self.post blog].dotComID;
     if(dotComId) {
         [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried];
     }
 
     NSProgress *progress = self.mediaInProgress[imageUniqueId];
@@ -2020,6 +2032,8 @@ EditImageDetailsViewControllerDelegate
     NSNumber *dotComId = [self.post blog].dotComID;
     if(dotComId) {
         [WPAnalytics track:WPAnalyticsStatEditorEditedImage withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatEditorEditedImage];
     }
     
     EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta forPost:self.post];
