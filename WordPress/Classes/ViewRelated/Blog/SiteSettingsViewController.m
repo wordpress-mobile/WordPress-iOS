@@ -70,7 +70,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
-@property (nonatomic, strong) SettingTableViewCell *geotaggingCell;
+@property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
@@ -238,18 +238,18 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return nil;
 }
 
-- (SettingTableViewCell *)geotaggingCell
+- (SwitchTableViewCell *)geotaggingCell
 {
     if (_geotaggingCell) {
         return _geotaggingCell;
     }
-    _geotaggingCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)")
-                                                         editable:NO
-                                                  reuseIdentifier:nil];
-    UISwitch *geotaggingSwitch = [[UISwitch alloc] init];
-    geotaggingSwitch.on = self.geolocationEnabled;
-    [geotaggingSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
-    _geotaggingCell.accessoryView = geotaggingSwitch;
+    _geotaggingCell = [SwitchTableViewCell new];
+    _geotaggingCell.name = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
+    _geotaggingCell.on = self.geolocationEnabled;
+    __weak SiteSettingsViewController *weakSelf = self;
+    _geotaggingCell.onChange = ^(BOOL value){
+        [weakSelf toggleGeolocation:value];
+    };
     return _geotaggingCell;
 }
 
@@ -291,8 +291,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     switch (row) {
         case (SiteSettingsWritingGeotagging):{
-            UISwitch *geotaggingSwitch =  (UISwitch *)self.geotaggingCell.accessoryView;
-            geotaggingSwitch.on = self.geolocationEnabled;
             return self.geotaggingCell;
         }
         break;
@@ -697,10 +695,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     
 }
 
-- (void)toggleGeolocation:(id)sender
+- (void)toggleGeolocation:(BOOL)value
 {
-    UISwitch *geolocationSwitch = (UISwitch *)sender;
-    self.geolocationEnabled = geolocationSwitch.on;
+    self.geolocationEnabled = value;
 
     // Save the change
     self.blog.settings.geolocationEnabled = self.geolocationEnabled;
