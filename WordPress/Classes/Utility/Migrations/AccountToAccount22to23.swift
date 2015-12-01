@@ -1,6 +1,6 @@
 import UIKit
 import Foundation
-
+import WordPressComAnalytics
 
 /**
     Note:
@@ -188,7 +188,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
             DDLogSwift.logInfo(">> Updating defaultAccount \(defaultAccount)")
 
             setDefaultWordPressAccount(defaultAccount)
-            WPAnalytics.track(.StatPerformedCoreDataMigrationFixFor45)
+            WPAnalytics.track(.PerformedCoreDataMigrationFixFor45)
         } else {
             DDLogSwift.logError(">> Error: couldn't update the Default WordPress.com account")
         }

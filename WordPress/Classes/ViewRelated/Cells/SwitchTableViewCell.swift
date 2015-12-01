@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressShared
 
 /**
 *  @class           SwitchTableViewCell
@@ -42,7 +42,10 @@ public class SwitchTableViewCell : WPTableViewCell
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupSubviews()
     }
-    
+
+    public convenience init() {
+        self.init(style: .Default, reuseIdentifier: nil)
+    }
     
     
     // MARK: - UITapGestureRecognizer Helpers

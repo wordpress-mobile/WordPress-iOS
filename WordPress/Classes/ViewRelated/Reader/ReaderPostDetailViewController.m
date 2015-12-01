@@ -18,6 +18,7 @@
 #import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
 #import "WPUserAgent.h"
+#import "WPAppAnalytics.h"
 
 static CGFloat const VerticalMargin = 40;
 static NSInteger const ReaderPostDetailImageQuality = 65;
@@ -431,7 +432,8 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     NSString *detailType = (self.post.topic.type == ReaderSiteTopic.TopicType) ? ReaderDetailTypePreviewSite : ReaderDetailTypeNormal;
     NSDictionary *properties = @{
                                  ReaderDetailTypeKey:detailType,
-                                 ReaderDetailOfflineKey:isOfflineView
+                                 ReaderDetailOfflineKey:isOfflineView,
+                                 WPAppAnalyticsKeyBlogID:self.post.siteID
                                  };
     [WPAnalytics track:WPAnalyticsStatReaderArticleOpened withProperties:properties];
 }

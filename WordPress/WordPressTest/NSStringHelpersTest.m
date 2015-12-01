@@ -1,5 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "NSString+Helpers.h"
+#import "WordPress-Swift.h"
 
 @interface NSString ()
 + (NSString *)emojiCharacterFromCoreEmojiFilename:(NSString *)filename;
@@ -183,6 +184,18 @@
     NSString *invalid = @"ZZZZZ";
     emojiString = [NSString emojiCharacterFromCoreEmojiFilename:invalid];
     XCTAssert([emojiString length] == 0, @"Should return an empty string for an invalid file name.");
+}
+
+- (void)testUniqueStringComponentsSeparatedByWhitespaceCorrectlyReturnsASetWithItsWords
+{
+    NSString *testString = @"first second third fourth fifth";
+    NSSet *testSet = [testString uniqueStringComponentsSeparatedByWhitespace];
+    XCTAssert([testSet containsObject:@"first"], @"Missing word");
+    XCTAssert([testSet containsObject:@"second"], @"Missing word");
+    XCTAssert([testSet containsObject:@"third"], @"Missing word");
+    XCTAssert([testSet containsObject:@"fourth"], @"Missing word");
+    XCTAssert([testSet containsObject:@"fifth"], @"Missing word");
+    XCTAssert([testSet count] == 5, @"Invalid count");
 }
 
 @end

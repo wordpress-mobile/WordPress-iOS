@@ -1,7 +1,9 @@
 #import "BlogDetailHeaderView.h"
 #import "Blog.h"
 #import "UIImageView+Gravatar.h"
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
+#import "WordPress-Swift.h"
+
 
 const CGFloat BlogDetailHeaderViewBlavatarSize = 40.0;
 const CGFloat BlogDetailHeaderViewLabelHeight = 20.0;
@@ -42,7 +44,8 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [self.blavatarImageView setImageWithSiteIcon:blog.icon];
 
     // if the blog name is missing, we want to show the blog displayURL instead
-    [self.titleLabel setText:((blog.blogName && !blog.blogName.isEmpty) ? blog.blogName : blog.displayURL)];
+    NSString *blogName = blog.settings.name;
+    [self.titleLabel setText:((blogName && !blogName.isEmpty) ? blogName : blog.displayURL)];
     [self.subtitleLabel setText:blog.displayURL];
 }
 

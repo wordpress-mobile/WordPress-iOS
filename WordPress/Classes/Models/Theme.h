@@ -30,6 +30,34 @@
  */
 + (NSString *)entityName;
 
+/**
+ *  @brief      Link to customization page for this theme
+ *
+ *  @returns    The URL to present
+ */
+- (NSString *)customizeUrl;
+
+/**
+ *  @brief      Link to details page for this theme
+ *
+ *  @returns    The URL to present
+ */
+- (NSString *)detailsUrl;
+
+/**
+ *  @brief      Link to support page for this theme
+ *
+ *  @returns    The URL to present
+ */
+- (NSString *)supportUrl;
+
+/**
+ *  @brief      Link to demo viewing page for this theme
+ *
+ *  @returns    The URL to present
+ */
+- (NSString *)viewUrl;
+
 - (BOOL)isCurrentTheme;
 - (BOOL)isPremium;
 

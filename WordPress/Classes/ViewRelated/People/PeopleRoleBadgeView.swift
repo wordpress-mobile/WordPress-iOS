@@ -1,4 +1,5 @@
 import UIKit
+import WordPressShared.WPStyleGuide
 
 @IBDesignable
 class PeopleRoleBadgeView: UILabel {

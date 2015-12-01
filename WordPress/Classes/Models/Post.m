@@ -6,7 +6,7 @@
 #import "NSMutableDictionary+Helpers.h"
 #import "NSString+Helpers.h"
 #import "ContextManager.h"
-#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
+#import <WordPressShared/NSString+XMLExtensions.h>
 
 @interface Post()
 @property (nonatomic, strong) NSString *storedContentPreviewForDisplay;

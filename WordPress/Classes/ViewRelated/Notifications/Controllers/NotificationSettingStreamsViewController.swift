@@ -1,5 +1,7 @@
 import Foundation
-
+import MGImageUtilities
+import WordPressShared
+import WordPressComAnalytics
 
 /**
 *  @class           NotificationSettingStreamsViewController
@@ -31,7 +33,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         
         // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
         tableView.deselectSelectedRowWithAnimation(true)
-        WPAnalytics.track(.StatOpenedNotificationSettingStreams)
+        WPAnalytics.track(.OpenedNotificationSettingStreams)
     }
 
 
@@ -67,7 +69,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         switch streamSettings.channel {
         case let .Blog(blogId):
             _ = blogId
-            title = streamSettings.blog?.blogName ?? streamSettings.channel.description()
+            title = streamSettings.blog?.settings?.name ?? streamSettings.channel.description()
         case .Other:
             title = NSLocalizedString("Other Sites", comment: "Other Notifications Streams Title")
         default:

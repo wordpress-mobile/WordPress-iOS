@@ -1,6 +1,6 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <Helpshift/Helpshift.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPressShared/WPFontManager.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "CreateAccountAndBlogViewController.h"
@@ -127,6 +127,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     [self addMainView];
     [self addControls];
     [self bindToViewModel];
+    [self update3DTouchForLogIn];
 }
 
 - (void)bindToViewModel
@@ -154,6 +155,12 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
         self.viewModel.username = defaultAccount.username;
         self.viewModel.userIsDotCom = YES;
     }
+}
+
+- (void)update3DTouchForLogIn
+{
+    WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
+    [shortcutCreator createShortcuts:self.cancellable];
 }
 
 - (void)viewWillAppear:(BOOL)animated
