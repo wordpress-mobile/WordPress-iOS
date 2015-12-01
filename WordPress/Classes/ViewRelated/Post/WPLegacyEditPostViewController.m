@@ -367,7 +367,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 
     if (![self.post hasUnsavedChanges]) {
-        [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:self.post.blog.dotComID} ];
+        NSNumber *dotComId = self.post.blog.dotComID;
+        if(dotComId) {
+            [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+        }
         [self discardChanges];
         [self dismissEditView];
         return;
@@ -384,7 +387,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                 handler:^(UIAlertAction * action) {
                                     [self discardChanges];
                                     [self dismissEditView];
-                                    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:self.post.blog.dotComID} ];
+                                    NSNumber *dotComId = self.post.blog.dotComID;
+                                    if(dotComId) {
+                                        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+                                    }
                                 }];
     
     if ([self.post.original.status isEqualToString:PostStatusDraft]) {
@@ -665,7 +671,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         properties[@"word_diff_count"] = @(wordCount - originalWordCount);
     }
 
-    properties[WPAppAnalyticsKeyBlogID] = [self.post blog].dotComID;
+    NSNumber *dotComId = [self.post blog].dotComID;
+    if(dotComId) {
+        properties[WPAppAnalyticsKeyBlogID] = dotComId;
+    }
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
         properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
@@ -961,7 +970,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)insertMedia:(Media *)media
 {
-    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:[self.post blog].dotComID} ];
+    NSNumber *dotComId = [self.post blog].dotComID;
+    if(dotComId) {
+        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+    }
     
     NSString *prefix = @"<br /><br />";
 
