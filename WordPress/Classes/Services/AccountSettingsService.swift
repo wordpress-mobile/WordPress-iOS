@@ -76,7 +76,7 @@ struct AccountSettingsService {
         ContextManager.sharedInstance().saveContext(context)
     }
 
-    private func accountSetingsWithID(accountID: Int) -> ManagedAccountSettings? {
+    private func accountSettingsWithID(accountID: Int) -> ManagedAccountSettings? {
         let request = NSFetchRequest(entityName: ManagedAccountSettings.entityName)
         request.predicate = NSPredicate(format: "account.userID = %d", accountID)
         request.fetchLimit = 1
@@ -84,7 +84,7 @@ struct AccountSettingsService {
         return results.first
     }
 
-    private func createAccountSetttings(accountID: Int, settings: AccountSettings) {
+    private func createAccountSettings(accountID: Int, settings: AccountSettings) {
         let accountService = AccountService(managedObjectContext: context)
         guard let account = accountService.findAccountWithUserID(accountID) else {
             DDLogSwift.logError("Tried to create settings for a missing account (ID: \(accountID)): \(settings)")
