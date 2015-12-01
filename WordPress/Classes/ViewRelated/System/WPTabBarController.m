@@ -302,6 +302,8 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
             NSNumber *dotComId = [editPostViewController post].blog.dotComID;
             if(dotComId) {
                 [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:dotComId}];
+            }else {
+                [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"}];
             }
             
         } else {
@@ -332,6 +334,9 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
             if(dotComId) {
                 [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
                     withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:dotComId}];
+            }else {
+                [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
+                    withProperties:@{ @"tap_source": @"tab_bar"}];
             }
         } else {
             editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]

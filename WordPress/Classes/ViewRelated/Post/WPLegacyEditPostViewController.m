@@ -370,6 +370,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         NSNumber *dotComId = self.post.blog.dotComID;
         if(dotComId) {
             [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+        }else {
+            [WPAnalytics track:WPAnalyticsStatEditorClosed];
         }
         [self discardChanges];
         [self dismissEditView];
@@ -390,6 +392,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                     NSNumber *dotComId = self.post.blog.dotComID;
                                     if(dotComId) {
                                         [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+                                    }else {
+                                        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
                                     }
                                 }];
     
@@ -973,6 +977,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSNumber *dotComId = [self.post blog].dotComID;
     if(dotComId) {
         [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId} ];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
     }
     
     NSString *prefix = @"<br /><br />";

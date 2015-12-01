@@ -143,6 +143,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
             if(dotComId) {
                 [WPAnalytics track:WPAnalyticsStatSignedInToJetpack withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId }];
                 [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withProperties:@{ WPAppAnalyticsKeyBlogID:dotComId }];
+            }else {
+                [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+                [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
             }
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
