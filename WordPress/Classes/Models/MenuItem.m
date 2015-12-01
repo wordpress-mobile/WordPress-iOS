@@ -22,4 +22,18 @@
     return NSStringFromClass([self class]);
 }
 
+- (BOOL)isDescendantOfItem:(MenuItem *)item
+{
+    BOOL otherItemIsDescendant = NO;
+    MenuItem *ancestor = self.parent;
+    while (ancestor) {
+        if(ancestor == item) {
+            otherItemIsDescendant = YES;
+            break;
+        }
+        ancestor = ancestor.parent;
+    };
+    return otherItemIsDescendant;
+}
+
 @end
