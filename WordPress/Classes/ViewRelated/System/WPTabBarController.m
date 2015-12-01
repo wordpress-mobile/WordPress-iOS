@@ -299,9 +299,9 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
         if (!options) {
 
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
-            NSNumber *dotComId = [editPostViewController post].blog.dotComID;
-            if(dotComId) {
-                [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:dotComId}];
+            NSNumber *dotComID = [editPostViewController post].blog.dotComID;
+            if (dotComID) {
+                [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:dotComID}];
             }else {
                 [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"}];
             }
@@ -330,10 +330,10 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
             Blog *blog = [blogService lastUsedOrFirstBlog];
-            NSNumber *dotComId = blog.dotComID;
-            if(dotComId) {
+            NSNumber *dotComID = blog.dotComID;
+            if (dotComID) {
                 [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
-                    withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:dotComId}];
+                    withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:dotComID}];
             }else {
                 [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
                     withProperties:@{ @"tap_source": @"tab_bar"}];

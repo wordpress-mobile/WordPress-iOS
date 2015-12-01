@@ -357,10 +357,10 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
     [self presentViewController:navController animated:YES completion:nil];
 
-    NSNumber *dotComId = self.blog.dotComID;
-    if(dotComId) {
+    NSNumber *dotComID = self.blog.dotComID;
+    if (dotComID) {
         [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
-            withProperties:@{ @"tap_source": @"posts_view",  WPAppAnalyticsKeyBlogID:dotComId }];
+            withProperties:@{ @"tap_source": @"posts_view",  WPAppAnalyticsKeyBlogID:dotComID }];
     }else {
         [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view"}];
     }

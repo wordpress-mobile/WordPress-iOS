@@ -284,7 +284,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     properties[@"filter"] = self.currentPostListFilter.title;
     
     NSNumber *dotComID = self.blog.dotComID;
-    if(dotComID) {
+    if (dotComID) {
         properties[WPAppAnalyticsKeyBlogID] = dotComID;
     }
     
