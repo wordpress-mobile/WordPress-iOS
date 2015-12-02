@@ -2,14 +2,9 @@
 
  Settings contents:
 
- - Blogs list
-    - Add blog
-    - Edit/Delete
- - Media Settings
-    - Image Resize
-    - Video API
-    - Video Quality
-    - Video Content
+ - Image Resize
+ - Visual Editor
+ - Shake to Feedback (Internal Beta only)
 
  */
 
@@ -27,6 +22,7 @@
 #import "Constants.h"
 #import "Mediaservice.h"
 #import "WPLookbackPresenter.h"
+#import "WordPress-Swift.h"
 #import <WordPressShared/WPTableViewCell.h>
 
 #ifdef LOOKBACK_ENABLED
@@ -41,18 +37,16 @@ typedef enum {
 } SettingsSection;
 
 static NSString * const WPSettingsRestorationID = @"WPSettingsRestorationID";
+static NSString * const SwitchTableViewCellIdentifier = @"SwitchTableViewCell";
+static NSString * const MediaSizeSliderCellIdentifier = @"MediaSizeSliderCell";
 
-static CGFloat const HorizontalMargin = 16.0;
-static CGFloat const MediaSizeControlHeight = 44.0;
-static CGFloat const MediaSizeControlOffset = 12.0;
 static CGFloat const SettingsRowHeight = 44.0;
+
+static NSInteger const MediaSizeSliderStep = 50;
 
 @interface SettingsViewController () <UIViewControllerRestoration>
 
 @property (nonatomic, assign) BOOL showInternalBetaSection;
-@property (nonatomic, strong) UISlider *mediaSizeSlider;
-@property (nonatomic, strong) UILabel *mediaCellTitleLabel;
-@property (nonatomic, strong) UILabel *mediaCellSizeLabel;
 
 @end
 
@@ -83,14 +77,17 @@ static CGFloat const SettingsRowHeight = 44.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     self.title = NSLocalizedString(@"Settings", @"App Settings");
-    
+
 #ifdef LOOKBACK_ENABLED
     self.showInternalBetaSection = YES;
 #else
     self.showInternalBetaSection = NO;
 #endif
+
+    [self.tableView registerNib:[UINib nibWithNibName:@"MediaSizeSliderCell" bundle:nil] forCellReuseIdentifier:MediaSizeSliderCellIdentifier];
+    [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:SwitchTableViewCellIdentifier];
 
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -104,123 +101,28 @@ static CGFloat const SettingsRowHeight = 44.0;
 }
 
 
-#pragma mark - Custom Getter
+#pragma mark - Cell Actions
 
-- (NSString *)textForMediaCellSize
+- (void)handleImageSizeChanged:(NSInteger)value
 {
-    CGSize savedSize = [MediaService maxImageSizeSetting];
-    if (CGSizeEqualToSize(savedSize, MediaMaxImageSize)) {
-        return NSLocalizedString(@"Original", @"Label title. Indicates an image will use its original size when uploaded.");
-    }
-
-    return [NSString stringWithFormat:@"%.0fpx X %.0fpx", savedSize.width, savedSize.height];
-}
-
-- (NSString *)accessibilityTextForMediaSize
-{
-    CGSize savedSize = [MediaService maxImageSizeSetting];
-    if (CGSizeEqualToSize(savedSize, MediaMaxImageSize)) {
-        return NSLocalizedString(@"Original", @"Label title. Indicates an image will use its original size when uploaded.");
-    }
-
-    return [NSString stringWithFormat:NSLocalizedString(@"%.0f pixels", @"Spoken Text when changing the media size slider"), savedSize.width];
-}
-
-- (UILabel *)mediaCellTitleLabel
-{
-    if (_mediaCellTitleLabel) {
-        return _mediaCellTitleLabel;
-    }
-
-    CGFloat width = CGRectGetWidth(self.tableView.bounds) - (HorizontalMargin * 2);
-    CGRect frame = CGRectMake(HorizontalMargin, 0.0, width, MediaSizeControlHeight);
-    UILabel *label = [[UILabel alloc] initWithFrame:frame];
-    label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    label.font = [WPStyleGuide tableviewTextFont];
-    label.textColor = [WPStyleGuide darkGrey];
-    label.text = NSLocalizedString(@"Max Image Upload Size", @"Title for the image size settings option.");
-    self.mediaCellTitleLabel = label;
-
-    return _mediaCellTitleLabel;
-}
-
-- (UISlider *)mediaSizeSlider
-{
-    if (_mediaSizeSlider) {
-        return _mediaSizeSlider;
-    }
-
-    CGFloat width = CGRectGetWidth(self.tableView.bounds) - (HorizontalMargin * 2);
-    CGFloat y = CGRectGetHeight(self.mediaCellTitleLabel.frame) - MediaSizeControlOffset;
-    CGRect frame = CGRectMake(HorizontalMargin, y, width, MediaSizeControlHeight);
-    UISlider *slider = [[UISlider alloc] initWithFrame:frame];
-    slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    slider.continuous = YES;
-    slider.minimumTrackTintColor = [WPStyleGuide darkBlue];
-    slider.maximumTrackTintColor = [WPStyleGuide darkBlue];
-    slider.minimumValue = MediaMinImageSizeDimension;
-    slider.maximumValue = MediaMaxImageSizeDimension;
-    slider.value = [MediaService maxImageSizeSetting].width;
-    slider.accessibilityValue = [self accessibilityTextForMediaSize];
-    [slider addTarget:self action:@selector(handleImageSizeChanged:) forControlEvents:UIControlEventValueChanged];
-    self.mediaSizeSlider = slider;
-
-    return _mediaSizeSlider;
-}
-
-- (UILabel *)mediaCellSizeLabel
-{
-    if (_mediaCellSizeLabel) {
-        return _mediaCellSizeLabel;
-    }
-
-    CGFloat width = CGRectGetWidth(self.tableView.bounds) - (HorizontalMargin * 2);
-    CGFloat y = CGRectGetMaxY(self.mediaSizeSlider.frame) - MediaSizeControlOffset;
-    CGRect frame = CGRectMake(HorizontalMargin, y, width, MediaSizeControlHeight);
-    UILabel *label = [[UILabel alloc] initWithFrame:frame];
-    // The value of this label is already read by the slider value
-    // Let's mark it hidden so it's not spoken twice
-    label.accessibilityElementsHidden = YES;
-    label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    label.font = [WPStyleGuide tableviewSubtitleFont];
-    label.textColor = [WPStyleGuide whisperGrey];
-    label.text = [self textForMediaCellSize];
-    label.textAlignment = NSTextAlignmentCenter;
-    self.mediaCellSizeLabel = label;
-
-    return _mediaCellSizeLabel;
-}
-
-- (void)handleImageSizeChanged:(id)sender
-{
-    NSInteger value = self.mediaSizeSlider.value;
-    value = value - (value % 50); // steps of 50
-
     [MediaService setMaxImageSizeSetting:CGSizeMake(value, value)];
-
-    [self.mediaSizeSlider setValue:value animated:NO];
-    self.mediaSizeSlider.accessibilityValue = [self accessibilityTextForMediaSize];
-    self.mediaCellSizeLabel.text = [self textForMediaCellSize];
 }
 
-- (void)handleEditorChanged:(id)sender
+- (void)handleEditorChanged:(BOOL)value
 {
-    UISwitch *aSwitch = (UISwitch *)sender;
-    if (aSwitch.on) {
+    if (value) {
         [WPAnalytics track:WPAnalyticsStatEditorToggledOn];
     } else {
         [WPAnalytics track:WPAnalyticsStatEditorToggledOff];
     }
-    [WPPostViewController setNewEditorEnabled:aSwitch.on];
+    [WPPostViewController setNewEditorEnabled:value];
 }
 
-- (void)handleShakeToPullUpFeedbackChanged:(id)sender
+- (void)handleShakeToPullUpFeedbackChanged:(BOOL)value
 {
 #ifdef LOOKBACK_ENABLED
-    UISwitch *aSwitch = (UISwitch *)sender;
-    BOOL shakeForFeedback = aSwitch.on;
-    [[NSUserDefaults standardUserDefaults] setBool:shakeForFeedback forKey:WPLookbackPresenterShakeToPullUpFeedbackKey];
-    [Lookback lookback].shakeToRecord = shakeForFeedback;
+    [[NSUserDefaults standardUserDefaults] setBool:value forKey:WPLookbackPresenterShakeToPullUpFeedbackKey];
+    [Lookback lookback].shakeToRecord = value;
 #endif
 }
 
@@ -236,14 +138,14 @@ static CGFloat const SettingsRowHeight = 44.0;
     switch (section) {
         case SettingsSectionMedia:
             return 1;
-        
-		case SettingsSectionEditor: {
-			if (![WPPostViewController isNewEditorAvailable]) {
-				return 0;
-			} else {
-				return 1;
-			}
-		}
+
+        case SettingsSectionEditor: {
+            if (![WPPostViewController isNewEditorAvailable]) {
+                return 0;
+            } else {
+                return 1;
+            }
+        }
 
         case SettingsSectionInternalBeta:
             if (self.showInternalBetaSection) {
@@ -260,10 +162,10 @@ static CGFloat const SettingsRowHeight = 44.0;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-	if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
-		return nil;
-	}
-    
+    if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
+        return nil;
+    }
+
     WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
     header.title = [self titleForHeaderInSection:section];
     return header;
@@ -271,23 +173,23 @@ static CGFloat const SettingsRowHeight = 44.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-	if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
-		return 1;
-	}
-    
+    if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
+        return 1;
+    }
+
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-	static const CGFloat kDefaultFooterHeight = 16.0f;
-	
-	if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
-		return 1;
-	} else {
-		return kDefaultFooterHeight;
-	}
+    static const CGFloat kDefaultFooterHeight = 16.0f;
+
+    if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
+        return 1;
+    } else {
+        return kDefaultFooterHeight;
+    }
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
@@ -297,7 +199,7 @@ static CGFloat const SettingsRowHeight = 44.0;
 
     } else if (section == SettingsSectionEditor) {
         return NSLocalizedString(@"Editor", @"Title label for the editor settings section in the app settings");
-		
+
     } else if (section == SettingsSectionInternalBeta) {
         if (self.showInternalBetaSection) {
             return NSLocalizedString(@"Internal Beta", @"");
@@ -312,97 +214,72 @@ static CGFloat const SettingsRowHeight = 44.0;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section ==  SettingsSectionMedia) {
-        return CGRectGetMaxY(self.mediaCellSizeLabel.frame);
+        return [MediaSizeSliderCell height];
     }
     return SettingsRowHeight;
 }
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    cell.textLabel.textAlignment = NSTextAlignmentLeft;
-    cell.accessoryType = UITableViewCellAccessoryNone;
+- (UITableViewCell *)cellForMediaSizeInTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    MediaSizeSliderCell *cell = [tableView dequeueReusableCellWithIdentifier:MediaSizeSliderCellIdentifier forIndexPath:indexPath];
+    cell.title = NSLocalizedString(@"Max Image Upload Size", @"Title for the image size settings option.");
+    cell.minValue = MediaMinImageSizeDimension;
+    cell.maxValue = MediaMaxImageSizeDimension;
+    cell.step = MediaSizeSliderStep;
+    cell.value = [MediaService maxImageSizeSetting].width;
 
-    if (indexPath.section == SettingsSectionMedia) {
-        cell.textLabel.text = nil;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    __weak SettingsViewController *weakSelf = self;
+    cell.onChange = ^(NSInteger value) {
+        [weakSelf handleImageSizeChanged:value];
+    };
 
-    } else if (indexPath.section == SettingsSectionEditor){
-        cell.textLabel.text = NSLocalizedString(@"Visual Editor", @"Option to enable the visual editor");
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-        aSwitch.on = [WPPostViewController isNewEditorEnabled];
-        
-    } else if (indexPath.section == SettingsSectionInternalBeta) {
-#ifndef LOOKBACK_ENABLED
-        NSAssert(NO, @"Should never execute this when Lookback is disabled.");
-#else
-        cell.textLabel.text = NSLocalizedString(@"Shake for Feedback", @"Option to allow the user to shake the device to pull up the feedback mechanism");
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-        aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:WPLookbackPresenterShakeToPullUpFeedbackKey];
-#endif
-    }
+    return cell;
 }
 
-- (UITableViewCell *)cellForIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *cellIdentifier = @"Cell";
-    UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
+- (UITableViewCell *)cellForVisualEditorInTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    SwitchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SwitchTableViewCellIdentifier forIndexPath:indexPath];
+    cell.name = NSLocalizedString(@"Visual Editor", @"Option to enable the visual editor");
+    cell.on = [WPPostViewController isNewEditorEnabled];
 
-    if (indexPath.section == SettingsSectionMedia) {
-            cellIdentifier = @"Media";
-            cellStyle = UITableViewCellStyleDefault;
-    } else if (indexPath.section == SettingsSectionEditor) {
-            cellIdentifier = @"Editor";
-            cellStyle = UITableViewCellStyleDefault;
-    }
+    __weak SettingsViewController *weakSelf = self;
+    cell.onChange = ^(BOOL value) {
+        [weakSelf handleEditorChanged:value];
+    };
 
-    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[WPTableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellIdentifier];
-    }
+    return cell;
+}
 
-    if (indexPath.section == SettingsSectionMedia) {
-        CGFloat width = CGRectGetWidth(cell.bounds) - 32.0;
-        CGRect frame = self.mediaCellTitleLabel.frame;
-        frame.size.width = width;
-        self.mediaCellTitleLabel.frame = frame;
-        [cell.contentView addSubview:self.mediaCellTitleLabel];
+- (UITableViewCell *)cellForFeedbackInTableView:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+#ifndef LOOKBACK_ENABLED
+        NSAssert(NO, @"Should never execute this when Lookback is disabled.");
+#endif
+    SwitchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SwitchTableViewCellIdentifier forIndexPath:indexPath];
+    cell.name = NSLocalizedString(@"Shake for Feedback", @"Option to allow the user to shake the device to pull up the feedback mechanism");
+    cell.on = [[NSUserDefaults standardUserDefaults] boolForKey:WPLookbackPresenterShakeToPullUpFeedbackKey];
 
-        frame = self.mediaSizeSlider.frame;
-        frame.size.width = width;
-        self.mediaSizeSlider.frame = frame;
-        [cell.contentView addSubview:self.mediaSizeSlider];
-
-        frame = self.mediaCellSizeLabel.frame;
-        frame.size.width = width;
-        self.mediaCellSizeLabel.frame = frame;
-        [cell.contentView addSubview:self.mediaCellSizeLabel];
-
-        // make sure labels do not clip the slider shadow. 
-        [cell.contentView bringSubviewToFront:self.mediaSizeSlider];
-    }
-
-    if (indexPath.section == SettingsSectionEditor) {
-        UISwitch *optimizeImagesSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-        [optimizeImagesSwitch addTarget:self action:@selector(handleEditorChanged:) forControlEvents:UIControlEventValueChanged];
-        cell.accessoryView = optimizeImagesSwitch;
-    }
-    
-    if (indexPath.section == SettingsSectionInternalBeta) {
-        UISwitch *toggleShakeToPullUpFeedbackSwitch = [[UISwitch alloc] initWithFrame:CGRectZero];
-        [toggleShakeToPullUpFeedbackSwitch addTarget:self action:@selector(handleShakeToPullUpFeedbackChanged:) forControlEvents:UIControlEventValueChanged];
-        cell.accessoryView = toggleShakeToPullUpFeedbackSwitch;
-    }
-
+    __weak SettingsViewController *weakSelf = self;
+    cell.onChange = ^(BOOL value) {
+        [weakSelf handleShakeToPullUpFeedbackChanged:value];
+    };
     return cell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self cellForIndexPath:indexPath];
+    UITableViewCell *cell = nil;
+    switch (indexPath.section) {
+        case SettingsSectionMedia:
+            cell = [self cellForMediaSizeInTableView:tableView indexPath:indexPath];
+            break;
+        case SettingsSectionEditor:
+            cell = [self cellForVisualEditorInTableView:tableView indexPath:indexPath];
+            break;
+        case SettingsSectionInternalBeta:
+            cell = [self cellForFeedbackInTableView:tableView indexPath:indexPath];
+            break;
+    }
+    NSAssert(cell != nil, @"We should have a cell by now");
+
     [WPStyleGuide configureTableViewCell:cell];
-    [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
 }
