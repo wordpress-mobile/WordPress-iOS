@@ -297,8 +297,15 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *editPostViewController;
         if (!options) {
-            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:[editPostViewController post].blog.dotComID}];
+
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
+            NSNumber *dotComID = [editPostViewController post].blog.dotComID;
+            if (dotComID) {
+                [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:dotComID}];
+            }else {
+                [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"}];
+            }
+            
         } else {
             if (options[WPPostViewControllerOptionOpenMediaPicker]) {
                 editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlogAndPhotoPost];
@@ -323,8 +330,14 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
             Blog *blog = [blogService lastUsedOrFirstBlog];
-            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
-                withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:blog.dotComID}];
+            NSNumber *dotComID = blog.dotComID;
+            if (dotComID) {
+                [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
+                    withProperties:@{ @"tap_source": @"tab_bar", WPAppAnalyticsKeyBlogID:dotComID}];
+            }else {
+                [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
+                    withProperties:@{ @"tap_source": @"tab_bar"}];
+            }
         } else {
             editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
                                                                                       andContent:[options stringForKey:WPNewPostURLParamContentKey]
