@@ -191,7 +191,8 @@ public protocol ThemePresenter: class
         
         fetchThemes()
         sections = themesCount == 0 ? [.Themes] : [.Info, .Themes]
-
+        searchController.loadViewIfNeeded()
+        
         updateActiveTheme()
         setupSyncHelper()
     }
