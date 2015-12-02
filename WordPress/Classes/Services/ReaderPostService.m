@@ -138,9 +138,17 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         void (^successBlock)() = ^void() {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (like) {
-                    [WPAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:@{ WPAppAnalyticsKeyBlogID:readerPost.siteID }];
+                    if(readerPost.siteID) {
+                        [WPAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:@{ WPAppAnalyticsKeyBlogID:readerPost.siteID }];
+                    }else {
+                        [WPAnalytics track:WPAnalyticsStatReaderArticleLiked];
+                    }
                 } else {
-                    [WPAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:@{ WPAppAnalyticsKeyBlogID:readerPost.siteID }];
+                    if(readerPost.siteID) {
+                        [WPAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:@{ WPAppAnalyticsKeyBlogID:readerPost.siteID }];
+                    }else {
+                        [WPAnalytics track:WPAnalyticsStatReaderArticleUnliked];
+                    }
                 }
                 if (success) {
                     success();
