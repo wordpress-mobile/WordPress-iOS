@@ -162,8 +162,9 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 + (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlogID:(NSNumber*)blogID {
     NSParameterAssert(properties != nil);
     if (blogID) {
-        [properties setValue:blogID forKey:WPAppAnalyticsKeyBlogID];
-        [WPAnalytics track:stat withProperties:properties];
+        NSMutableDictionary *mutableProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
+        [mutableProperties setObject:blogID forKey:WPAppAnalyticsKeyBlogID];
+        [WPAnalytics track:stat withProperties:mutableProperties];
     }else {
         [WPAnalytics track:stat];
     }
