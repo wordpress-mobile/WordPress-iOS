@@ -4,7 +4,8 @@ import WordPressShared.WPStyleGuide
 /**
  *  @brief      Actions provided in cell button triggered action sheet
  */
-public enum ThemeAction {
+public enum ThemeAction
+{
     case Activate
     case Customize
     case Details
@@ -48,8 +49,8 @@ public enum ThemeAction {
     }
 }
 
-public class ThemeBrowserCell : UICollectionViewCell {
-    
+public class ThemeBrowserCell : UICollectionViewCell
+{
     // MARK: - Constants
     
     public static let reuseIdentifier = "ThemeBrowserCell"
