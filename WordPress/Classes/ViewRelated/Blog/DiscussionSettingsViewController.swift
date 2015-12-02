@@ -207,7 +207,23 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     private func pressedCloseCommenting(payload: AnyObject?) {
-        // WARNING: Implement Me
+        let pickerViewController                = SettingsPickerViewController(style: .Grouped)
+        pickerViewController.title              = NSLocalizedString("Close commenting", comment: "Close Comments Title")
+        pickerViewController.switchRowVisible   = true
+        pickerViewController.switchRowText      = NSLocalizedString("Automatically Close", comment: "Discussion Settings")
+        pickerViewController.switchRowValue     = settings.commentsCloseAutomatically
+        pickerViewController.selectedRowText    = NSLocalizedString("Close after", comment: "")
+        pickerViewController.selectedRowFormat  = NSLocalizedString("%d days", comment: "")
+        pickerViewController.pickerFormat       = NSLocalizedString("%d days", comment: "")
+        pickerViewController.pickerMinimumValue = 1
+        pickerViewController.pickerMaximumValue = 30
+        pickerViewController.pickerSelectedValue = settings.commentsCloseAutomaticallyAfterDays as? Int
+        pickerViewController.onChange           = { [weak self] (enabled : Bool, newValue: Int) in
+            self?.settings.commentsCloseAutomatically = enabled
+            self?.settings.commentsCloseAutomaticallyAfterDays = newValue
+        }
+        
+        navigationController?.pushViewController(pickerViewController, animated: true)
     }
     
     private func pressedSortBy(payload: AnyObject?) {
@@ -245,7 +261,21 @@ public class DiscussionSettingsViewController : UITableViewController
     }
     
     private func pressedPaging(payload: AnyObject?) {
-        // WARNING: Implement Me
+        let pickerViewController                = SettingsPickerViewController(style: .Grouped)
+        pickerViewController.title              = NSLocalizedString("Paging", comment: "Comments Paging")
+        pickerViewController.switchRowVisible   = true
+        pickerViewController.switchRowText      = NSLocalizedString("Paging", comment: "Discussion Settings")
+        pickerViewController.switchRowValue     = settings.commentsPagingEnabled
+        pickerViewController.selectedRowText    = NSLocalizedString("Comments per page", comment: "")
+        pickerViewController.pickerMinimumValue = 1
+        pickerViewController.pickerMaximumValue = 100
+        pickerViewController.pickerSelectedValue = settings.commentsPageSize as? Int
+        pickerViewController.onChange           = { [weak self] (enabled : Bool, newValue: Int) in
+            self?.settings.commentsPagingEnabled = enabled
+            self?.settings.commentsPageSize = newValue
+        }
+        
+        navigationController?.pushViewController(pickerViewController, animated: true)
     }
     
     private func pressedAutomaticallyApprove(payload: AnyObject?) {
@@ -267,7 +297,18 @@ public class DiscussionSettingsViewController : UITableViewController
     }
 
     private func pressedLinksInComments(payload: AnyObject?) {
-        // WARNING: Implement Me
+        let pickerViewController                = SettingsPickerViewController(style: .Grouped)
+        pickerViewController.title              = NSLocalizedString("Links in comments", comment: "Comments Paging")
+        pickerViewController.switchRowVisible   = false
+        pickerViewController.selectedRowText    = NSLocalizedString("Links in comments", comment: "")
+        pickerViewController.pickerMinimumValue = 1
+        pickerViewController.pickerMaximumValue = 100
+        pickerViewController.pickerSelectedValue = settings.commentsMaximumLinks as? Int
+        pickerViewController.onChange           = { [weak self] (enabled : Bool, newValue: Int) in
+            self?.settings.commentsMaximumLinks = newValue
+        }
+        
+        navigationController?.pushViewController(pickerViewController, animated: true)
     }
     
     private func pressedModeration(payload: AnyObject?) {
@@ -277,7 +318,7 @@ public class DiscussionSettingsViewController : UITableViewController
         settingsViewController.insertTitle      = NSLocalizedString("New Moderation Key", comment: "Moderation Keyword Insertion Title")
         settingsViewController.editTitle        = NSLocalizedString("Edit Moderation Key", comment: "Moderation Keyword Edition Title")
         settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\".",
-            comment: "Text rendered at the bottom of the Discussion Moderation Keys editor")
+                                                                    comment: "Text rendered at the bottom of the Discussion Moderation Keys editor")
         settingsViewController.onCompletion     = { [weak self] (updated: Set<String>) in
             self?.settings.commentsModerationKeys = updated
         }
@@ -292,7 +333,7 @@ public class DiscussionSettingsViewController : UITableViewController
         settingsViewController.insertTitle      = NSLocalizedString("New Blacklist Key", comment: "Blacklist Keyword Insertion Title")
         settingsViewController.editTitle        = NSLocalizedString("Edit Blacklist Key", comment: "Blacklist Keyword Edition Title")
         settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".",
-            comment: "Text rendered at the bottom of the Discussion Blacklist Keys editor")
+                                                                    comment: "Text rendered at the bottom of the Discussion Blacklist Keys editor")
         settingsViewController.onCompletion     = { [weak self] (updated: Set<String>) in
             self?.settings.commentsBlacklistKeys = updated
         }
