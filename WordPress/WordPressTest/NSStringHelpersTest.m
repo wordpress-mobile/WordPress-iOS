@@ -196,4 +196,11 @@
     XCTAssert([testSet count] == 3, @"Invalid count");
 }
 
+- (void)testUniqueStringComponentsSeparatedByWhitespaceDoesntAddEmptyStrings
+{
+    NSString *testString = @"";
+    NSSet *testSet = [testString uniqueStringComponentsSeparatedByNewline];
+    XCTAssert([testSet count] == 0, @"Invalid count");
+}
+
 @end
