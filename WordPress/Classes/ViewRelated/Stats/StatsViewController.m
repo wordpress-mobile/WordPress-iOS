@@ -12,6 +12,8 @@
 #import "TodayExtensionService.h"
 #import <WordPressComStatsiOS/WPStatsViewController.h>
 #import <WordPressShared/WPNoResultsView.h>
+#import "WordPress-Swift.h"
+#import "WPAppAnalytics.h"
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
@@ -55,7 +57,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     if (self.presentingViewController != nil) {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
         self.navigationItem.rightBarButtonItem = doneButton;
-        self.title = self.blog.blogName;
+        self.title = self.blog.settings.name;
     }
 
     [self initStats];
@@ -119,7 +121,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     TodayExtensionService *service = [TodayExtensionService new];
     [service configureTodayWidgetWithSiteID:self.statsVC.siteID
-                                   blogName:self.blog.blogName
+                                   blogName:self.blog.settings.name
                                siteTimeZone:self.statsVC.siteTimeZone
                              andOAuth2Token:self.statsVC.oauth2Token];
 }
@@ -136,8 +138,15 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     __weak JetpackSettingsViewController *safeController = controller;
     [controller setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
-            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
-            [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
+            
+            NSNumber *dotComID = self.blog.dotComID;
+            if (dotComID) {
+                [WPAnalytics track:WPAnalyticsStatSignedInToJetpack withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID }];
+                [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID }];
+            }else {
+                [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+                [WPAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen];
+            }
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
             self.showingJetpackLogin = NO;
