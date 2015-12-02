@@ -6,6 +6,7 @@
 #import "WPAnalyticsTrackerAutomatticTracks.h"
 #import "WPTabBarController.h"
 #import "WordPressComApiCredentials.h"
+#import "WordPressAppDelegate.h"
 
 NSString* const WPAppAnalyticsDefaultsKeyUsageTracking = @"usage_tracking_enabled";
 NSString *const WPAppAnalyticsKeyBlogID = @"blog_id";
@@ -141,6 +142,31 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 {
     self.applicationOpenedTime = [NSDate date];
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
+}
+
+
+/**
+ *  @brief      Tracks stats with the blog_id when available
+ */
++ (void)track:(WPAnalyticsStat)stat withBlogID:(NSNumber*)blogID {
+    if (blogID) {
+        [WPAnalytics track:stat withProperties:@{WPAppAnalyticsKeyBlogID:blogID}];
+    }else {
+        [WPAnalytics track:stat];
+    }
+}
+
+/**
+ *  @brief      Tracks stats with the blog_id when available
+ */
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlogID:(NSNumber*)blogID {
+    NSParameterAssert(properties != nil);
+    if (blogID) {
+        [properties setValue:blogID forKey:WPAppAnalyticsKeyBlogID];
+        [WPAnalytics track:stat withProperties:properties];
+    }else {
+        [WPAnalytics track:stat];
+    }
 }
 
 #pragma mark - Usage tracking initialization

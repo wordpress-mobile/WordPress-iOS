@@ -138,17 +138,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         void (^successBlock)() = ^void() {
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (like) {
-                    if(readerPost.siteID) {
-                        [WPAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:@{ WPAppAnalyticsKeyBlogID:readerPost.siteID }];
-                    }else {
-                        [WPAnalytics track:WPAnalyticsStatReaderArticleLiked];
-                    }
+                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleLiked withBlogID:readerPost.siteID];
                 } else {
-                    if(readerPost.siteID) {
-                        [WPAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:@{ WPAppAnalyticsKeyBlogID:readerPost.siteID }];
-                    }else {
-                        [WPAnalytics track:WPAnalyticsStatReaderArticleUnliked];
-                    }
+                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleUnliked withBlogID:readerPost.siteID];
                 }
                 if (success) {
                     success();

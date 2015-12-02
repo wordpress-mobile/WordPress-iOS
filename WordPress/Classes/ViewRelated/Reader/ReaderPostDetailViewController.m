@@ -435,12 +435,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     properties[ReaderDetailTypeKey] = detailType;
     properties[ReaderDetailOfflineKey] = isOfflineView;
     
-    NSNumber *siteID = self.post.siteID;
-    if(siteID) {
-        properties[WPAppAnalyticsKeyBlogID] = siteID;
-    }
-    
-    [WPAnalytics track:WPAnalyticsStatReaderArticleOpened withProperties:properties];
+    [WPAppAnalytics track:WPAnalyticsStatReaderArticleOpened withProperties:properties withBlogID:self.post.siteID];
 }
 
 - (void)bumpPageViewsForPost:(NSNumber *)postID site:(NSNumber *)siteID siteURL:(NSString *)siteURL
