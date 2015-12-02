@@ -105,7 +105,7 @@ class AccountSettingsSubscription {
     private var subscription: NSObjectProtocol? = nil
 
     init(accountID: Int, context: NSManagedObjectContext, changed: ManagedAccountSettings? -> Void) {
-        self.subscription = NSNotificationCenter.defaultCenter().addObserverForName(NSManagedObjectContextDidSaveNotification, object: context, queue: NSOperationQueue.mainQueue()) { (notification) -> Void in
+        subscription = NSNotificationCenter.defaultCenter().addObserverForName(NSManagedObjectContextDidSaveNotification, object: context, queue: NSOperationQueue.mainQueue()) { (notification) -> Void in
             // FIXME: Inspect changed objects in notification instead of fetching for performance (@koke 2015-11-23)
             let account = self.fetchAccount(accountID, context: context)
             changed(account)
