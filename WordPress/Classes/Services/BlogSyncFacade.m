@@ -3,6 +3,7 @@
 #import "BlogService.h"
 #import "AccountService.h"
 #import "Blog.h"
+#import "WPAppAnalytics.h"
 #import "WordPress-Swift.h"
 
 #import <WordPressShared/NSString+XMLExtensions.h>
@@ -39,7 +40,7 @@
             blog.url = url;
         }
         if (blogName) {
-            blog.blogName = [blogName stringByDecodingXMLCharacters];
+            blog.settings.name = [blogName stringByDecodingXMLCharacters];
         }
     }
     blog.username = username;
@@ -66,7 +67,13 @@
                 WPAccount *account = [accountService findAccountWithUsername:dotcomUsername];
                 if (account) {
                     blog.jetpackAccount = account;
-                    [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+                    
+                    NSNumber *dotComID = blog.dotComID;
+                    if (dotComID) {
+                        [WPAnalytics track:WPAnalyticsStatSignedInToJetpack withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID }];
+                    }else {
+                        [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
+                    }
                 }
             }
         } else {
