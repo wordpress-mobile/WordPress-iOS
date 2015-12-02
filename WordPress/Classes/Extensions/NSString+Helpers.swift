@@ -9,8 +9,10 @@ extension NSString
     public func uniqueStringComponentsSeparatedByNewline() -> NSSet {
         let components = componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())
         
+        let filtered = components.filter { !$0.isEmpty }
+        
         let uniqueSet = NSMutableSet()
-        uniqueSet.addObjectsFromArray(components)
+        uniqueSet.addObjectsFromArray(filtered)
         
         return uniqueSet
     }
