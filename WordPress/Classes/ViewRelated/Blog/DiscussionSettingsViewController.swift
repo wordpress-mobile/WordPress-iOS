@@ -209,12 +209,12 @@ public class DiscussionSettingsViewController : UITableViewController
     private func pressedCloseCommenting(payload: AnyObject?) {
         let pickerViewController                = SettingsPickerViewController(style: .Grouped)
         pickerViewController.title              = NSLocalizedString("Close commenting", comment: "Close Comments Title")
-        pickerViewController.switchRowVisible   = true
-        pickerViewController.switchRowText      = NSLocalizedString("Automatically Close", comment: "Discussion Settings")
+        pickerViewController.switchVisible      = true
+        pickerViewController.switchOn           = settings.commentsCloseAutomatically
+        pickerViewController.switchText         = NSLocalizedString("Automatically Close", comment: "Discussion Settings")
+        pickerViewController.selectionText      = NSLocalizedString("Close after", comment: "")
+        pickerViewController.selectionFormat    = NSLocalizedString("%d days", comment: "")
         pickerViewController.pickerHint         = NSLocalizedString("Automatically close comments on articles.", comment: "")
-        pickerViewController.switchRowValue     = settings.commentsCloseAutomatically
-        pickerViewController.selectedRowText    = NSLocalizedString("Close after", comment: "")
-        pickerViewController.selectedRowFormat  = NSLocalizedString("%d days", comment: "")
         pickerViewController.pickerFormat       = NSLocalizedString("%d days", comment: "")
         pickerViewController.pickerMinimumValue = 1
         pickerViewController.pickerMaximumValue = 30
@@ -264,11 +264,11 @@ public class DiscussionSettingsViewController : UITableViewController
     private func pressedPaging(payload: AnyObject?) {
         let pickerViewController                = SettingsPickerViewController(style: .Grouped)
         pickerViewController.title              = NSLocalizedString("Paging", comment: "Comments Paging")
-        pickerViewController.switchRowVisible   = true
-        pickerViewController.switchRowText      = NSLocalizedString("Paging", comment: "Discussion Settings")
+        pickerViewController.switchVisible      = true
+        pickerViewController.switchOn           = settings.commentsPagingEnabled
+        pickerViewController.switchText         = NSLocalizedString("Paging", comment: "Discussion Settings")
+        pickerViewController.selectionText      = NSLocalizedString("Comments per page", comment: "")
         pickerViewController.pickerHint         = NSLocalizedString("Break comment threads into multiple pages.", comment: "")
-        pickerViewController.switchRowValue     = settings.commentsPagingEnabled
-        pickerViewController.selectedRowText    = NSLocalizedString("Comments per page", comment: "")
         pickerViewController.pickerMinimumValue = 1
         pickerViewController.pickerMaximumValue = 100
         pickerViewController.pickerSelectedValue = settings.commentsPageSize as? Int
@@ -301,10 +301,9 @@ public class DiscussionSettingsViewController : UITableViewController
     private func pressedLinksInComments(payload: AnyObject?) {
         let pickerViewController                = SettingsPickerViewController(style: .Grouped)
         pickerViewController.title              = NSLocalizedString("Links in comments", comment: "Comments Paging")
-        pickerViewController.switchRowVisible   = false
-        pickerViewController.selectedRowText    = NSLocalizedString("Links in comments", comment: "")
-        pickerViewController.pickerHint         = NSLocalizedString("Require manual approval for comments that include more than this number of links.",
-                                                                    comment: "")
+        pickerViewController.switchVisible      = false
+        pickerViewController.selectionText      = NSLocalizedString("Links in comments", comment: "")
+        pickerViewController.pickerHint         = NSLocalizedString("Require manual approval for comments that include more than this number of links.", comment: "")
         pickerViewController.pickerMinimumValue = 1
         pickerViewController.pickerMaximumValue = 100
         pickerViewController.pickerSelectedValue = settings.commentsMaximumLinks as? Int
