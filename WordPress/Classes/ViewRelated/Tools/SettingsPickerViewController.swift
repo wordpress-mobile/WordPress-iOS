@@ -2,29 +2,77 @@ import Foundation
 import WordPressShared
 
 
+/**
+ *  @class          SettingsPickerViewController
+ *  @details        Renders a table with the following structure:
+ *
+ *                  Section | Row   ContentView
+ *                  0           1   [Text]  [Switch]    < Shows / Hides Section 1
+ *                  1           0   [Text]  [Text]
+ *                  1           1   [Picker]
+ */
+
 public class SettingsPickerViewController : UITableViewController
 {
-    // MARK: - Switch Settings
-    public var switchRowVisible     = true
-    public var switchRowText        = String()
-    public var switchRowValue       = false
+    /**
+     *  @details    Indicates whether a Switch row should be rendered on top, allowing
+     *              the user to Enable / Disable the picker
+     */
+    public var switchRowVisible = true
+    
+    /**
+     *  @details    Specifies the Switch value, to be displayed on the first row
+     *              (granted that `switchRowVisible` is set to true)
+     */
+    public var switchRowValue = false
+    
+    /**
+     *  @details    Text to be displayed by the first row's Switch
+     */
+    public var switchRowText : String!
 
-    // MARK: - Status Settings
-    public var selectedRowText      : String!
-    public var selectedRowFormat    : String!
+    /**
+     *  @details    Text to be displayed in the "Currently Selected value" row
+     */
+    public var selectedRowText : String!
+    
+    /**
+     *  @details    Indicates the format to be used in the "Currently Selected Value" row
+     */
+    public var selectedRowFormat : String?
 
-    // MARK: - Picker Settings
-    public var pickerFormat         : String?
-    public var pickerSelectedValue  : Int?
-    public var pickerMinimumValue   : Int!
-    public var pickerMaximumValue   : Int!
+    /**
+     *  @details    String format, to be applied over the Picker Rows
+     */
+    public var pickerFormat : String?
+    
+    /**
+     *  @details    Currently selected value.
+     */
+    public var pickerSelectedValue : Int!
+    
+    /**
+     *  @details    Picker's minimum value.
+     */
+    public var pickerMinimumValue : Int!
+    
+    /**
+     *  @details    Picker's maximum value.
+     */
+    public var pickerMaximumValue : Int!
+    
+
+    /**
+     *  @details    Closure to be executed whenever the Switch / Picker is updated
+     */
+    public var onChange : ((enabled : Bool, newValue: Int) -> ())?
     
     
     
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         assert(selectedRowText     != nil)
-        assert(selectedRowFormat   != nil)
+        assert(pickerSelectedValue != nil)
         assert(pickerMinimumValue  != nil)
         assert(pickerMaximumValue  != nil)
 
@@ -102,20 +150,19 @@ public class SettingsPickerViewController : UITableViewController
     }
 
     private func configureTextCell(cell: WPTableViewCell) {
+        let selectionFormat         = selectedRowFormat ?? "%d"
+        
         cell.selectionStyle         = .None
         cell.textLabel?.text        = selectedRowText
-        cell.detailTextLabel?.text  = String(format: selectedRowFormat, pickerSelectedValue!)
+        cell.detailTextLabel?.text  = String(format: selectionFormat, pickerSelectedValue)
         
         WPStyleGuide.configureTableViewCell(cell)
     }
     
     private func configurePickerCell(cell: PickerTableViewCell) {
-        var safeMaxValue            = pickerSelectedValue ?? pickerMaximumValue!
-        safeMaxValue                = max(safeMaxValue, pickerMaximumValue)
-        
         cell.selectionStyle         = .None
         cell.minimumValue           = pickerMinimumValue!
-        cell.maximumValue           = safeMaxValue
+        cell.maximumValue           = max(pickerSelectedValue, pickerMaximumValue)
         cell.selectedValue          = pickerSelectedValue
         cell.textFormat             = pickerFormat
         cell.onChange               = { [weak self] in
@@ -136,11 +183,15 @@ public class SettingsPickerViewController : UITableViewController
         } else {
             tableView.deleteSections(pickerSection, withRowAnimation: .Fade)
         }
+        
+        onChange?(enabled: switchRowValue, newValue: pickerSelectedValue)
     }
     
     private func pickerDidChange(newValue: Int) {
         pickerSelectedValue = newValue
         tableView.reloadRowsAtIndexPaths([pickerIndexPath], withRowAnimation: .None)
+        
+        onChange?(enabled: switchRowValue, newValue: pickerSelectedValue)
     }
     
     
@@ -164,8 +215,8 @@ public class SettingsPickerViewController : UITableViewController
     }
     
     private var pickerIndexPath : NSIndexPath {
-        let pickerSection = switchRowVisible ? 1 : 0
-        return NSIndexPath(forRow: 0, inSection: pickerSection)
+        let section = switchRowVisible ? 1 : 0
+        return NSIndexPath(forRow: 0, inSection: section)
     }
     
     // MARK: - Nested Enums
