@@ -151,6 +151,7 @@ public protocol ThemePresenter: class
     private var noResultsShown: Bool {
         return noResultsView.superview != nil
     }
+    private var presentingTheme: Theme!
    
     /**
      *  @brief      The themes service we'll use in this VC and its helpers
@@ -554,10 +555,11 @@ public protocol ThemePresenter: class
     }
     
     public func presentUrlForTheme(theme: Theme?, url: String?) {
-        guard let url = url where !url.isEmpty else {
+        guard let theme = theme, url = url where !url.isEmpty else {
             return
         }
         
+        presentingTheme = theme
         let webViewController = WPWebViewController(URL: NSURL(string: url))
         
         webViewController.authToken = blog.authToken
@@ -566,10 +568,20 @@ public protocol ThemePresenter: class
         webViewController.wpLoginURL = NSURL(string: blog.loginUrl())
 
         webViewController.loadViewIfNeeded()
-        webViewController.navigationItem.rightBarButtonItems = nil
         webViewController.navigationItem.titleView = nil
-        webViewController.title = theme?.name
+        webViewController.title = theme.name
+        var buttons: [UIBarButtonItem]?
+        if !theme.isCurrentTheme() {
+           let activate = UIBarButtonItem(title: ThemeAction.Activate.title, style: .Plain, target: self, action: "activatePresentingTheme")
+            buttons = [activate]
+        }
+        webViewController.navigationItem.rightBarButtonItems = buttons
 
         navigationController?.pushViewController(webViewController, animated:true)
+    }
+    
+    public func activatePresentingTheme() {
+        navigationController?.popViewControllerAnimated(true)
+        activateTheme(presentingTheme)
     }
 }
