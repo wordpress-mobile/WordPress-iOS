@@ -55,7 +55,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
             let subtitle = stream?.kind.description()
             navigationItem.titleView = NavigationTitleView(title: title, subtitle: subtitle)
         default:
-            let title = settings?.blog?.blogName
+            let title = settings?.blog?.settings?.name
             let subtitle = stream?.kind.description()
             navigationItem.titleView = NavigationTitleView(title: title, subtitle: subtitle)
         }
