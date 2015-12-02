@@ -1010,12 +1010,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)followSiteWithBlock:(NotificationBlock *)block
 {
-    NSNumber *metaSiteID = block.metaSiteID;
-    if(metaSiteID) {
-        [WPAnalytics track:WPAnalyticsStatNotificationsSiteFollowAction withProperties:@{ WPAppAnalyticsKeyBlogID:metaSiteID }];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatNotificationsSiteFollowAction];
-    }
+    
+    [WPAppAnalytics track:WPAnalyticsStatNotificationsSiteFollowAction withBlogID:block.metaSiteID];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -1031,12 +1027,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unfollowSiteWithBlock:(NotificationBlock *)block
 {
-    NSNumber *metaSiteID = block.metaSiteID;
-    if(metaSiteID) {
-        [WPAnalytics track:WPAnalyticsStatNotificationsSiteUnfollowAction withProperties:@{ WPAppAnalyticsKeyBlogID:metaSiteID }];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatNotificationsSiteUnfollowAction];
-    }
+    [WPAppAnalytics track:WPAnalyticsStatNotificationsSiteUnfollowAction withBlogID:block.metaSiteID];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -1052,13 +1043,9 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)likeCommentWithBlock:(NotificationBlock *)block
 {
-    NSNumber *metaSiteID = block.metaSiteID;
-    if(metaSiteID) {
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentLiked withProperties:@{ WPAppAnalyticsKeyBlogID:metaSiteID }];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentLiked];
-    }
 
+    [WPAppAnalytics track:WPAnalyticsStatNotificationsCommentLiked withBlogID:block.metaSiteID];
+    
     // If the associated comment is *not* approved, let's attempt to auto-approve it, automatically
     if (!block.isCommentApproved) {
         [self approveCommentWithBlock:block];
@@ -1079,12 +1066,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unlikeCommentWithBlock:(NotificationBlock *)block
 {
-    NSNumber *metaSiteID = block.metaSiteID;
-    if(metaSiteID) {
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnliked withProperties:@{ WPAppAnalyticsKeyBlogID:metaSiteID }];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnliked];
-    }
+    [WPAppAnalytics track:WPAnalyticsStatNotificationsCommentUnliked withBlogID:block.metaSiteID];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -1100,12 +1082,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)approveCommentWithBlock:(NotificationBlock *)block
 {
-    NSNumber *metaSiteID = block.metaSiteID;
-    if(metaSiteID) {
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentApproved withProperties:@{ WPAppAnalyticsKeyBlogID:metaSiteID }];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentApproved];
-    }
+ 
+    [WPAppAnalytics track:WPAnalyticsStatNotificationsCommentApproved withBlogID:block.metaSiteID];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -1125,13 +1103,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unapproveCommentWithBlock:(NotificationBlock *)block
 {
-    NSNumber *metaSiteID = block.metaSiteID;
-    if(metaSiteID) {
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnapproved withProperties:@{ WPAppAnalyticsKeyBlogID:metaSiteID }];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnapproved];
-    }
-    
+    [WPAppAnalytics track:WPAnalyticsStatNotificationsCommentUnapproved withBlogID:block.metaSiteID];
+  
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     __typeof(self) __weak weakSelf  = self;
@@ -1166,12 +1139,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
             onCompletion(NO);
         }];
         
-        NSNumber *metaSiteID = block.metaSiteID;
-        if(metaSiteID) {
-            [WPAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam withProperties:@{ WPAppAnalyticsKeyBlogID:metaSiteID }];
-        }else {
-            [WPAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam];
-        }
+        [WPAppAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam withBlogID:block.metaSiteID];
     };
     
     // Confirmation AlertView
@@ -1209,12 +1177,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
             onCompletion(NO);
         }];
         
-        NSNumber *metaSiteID = block.metaSiteID;
-        if(metaSiteID) {
-            [WPAnalytics track:WPAnalyticsStatNotificationsCommentTrashed withProperties:@{ WPAppAnalyticsKeyBlogID:metaSiteID }];
-        }else {
-            [WPAnalytics track:WPAnalyticsStatNotificationsCommentTrashed];
-        }
+        [WPAppAnalytics track:WPAnalyticsStatNotificationsCommentTrashed withBlogID:block.metaSiteID];
     };
     
     // Confirmation AlertView

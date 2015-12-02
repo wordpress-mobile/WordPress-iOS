@@ -441,13 +441,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showCommentsForBlog:(Blog *)blog
 {
-    NSNumber *dotComID = blog.dotComID;
-    if (dotComID) {
-        [WPAnalytics track:WPAnalyticsStatOpenedComments withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatOpenedComments];
-    }
-    
+    [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlogID:blog.dotComID];
     CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     controller.blog = blog;
     [self.navigationController pushViewController:controller animated:YES];
@@ -455,26 +449,14 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showPostListForBlog:(Blog *)blog
 {
-    NSNumber *dotComID = blog.dotComID;
-    if(dotComID) {
-        [WPAnalytics track:WPAnalyticsStatOpenedPosts withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatOpenedPosts];
-    }
-    
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPosts withBlogID:blog.dotComID];
     PostListViewController *controller = [PostListViewController controllerWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showPageListForBlog:(Blog *)blog
 {
-    NSNumber *dotComID = blog.dotComID;
-    if(dotComID) {
-        [WPAnalytics track:WPAnalyticsStatOpenedPages withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatOpenedPages];
-    }
-    
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPages withBlogID:blog.dotComID];
     PageListViewController *controller = [PageListViewController controllerWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -489,26 +471,14 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showSettingsForBlog:(Blog *)blog
 {
-    NSNumber *dotComID = blog.dotComID;
-    if(dotComID) {
-        [WPAnalytics track:WPAnalyticsStatOpenedSettings withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatOpenedSettings];
-    }
-    
+    [WPAppAnalytics track:WPAnalyticsStatOpenedSettings withBlogID:blog.dotComID];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showStatsForBlog:(Blog *)blog
 {
-    NSNumber *dotComID = blog.dotComID;
-    if(dotComID) {
-        [WPAnalytics track:WPAnalyticsStatStatsAccessed withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatStatsAccessed];
-    }
-    
+    [WPAppAnalytics track:WPAnalyticsStatStatsAccessed withBlogID:blog.dotComID];
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = blog;
     [self.navigationController pushViewController:statsView animated:YES];
@@ -516,13 +486,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showThemesForBlog:(Blog *)blog
 {
-    NSNumber *dotComID = blog.dotComID;
-    if(dotComID) {
-        [WPAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser];
-    }
-    
+    [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlogID:blog.dotComID];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:blog];
     [self.navigationController pushViewController:viewController
                                          animated:YES];
@@ -530,13 +494,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showViewSiteForBlog:(Blog *)blog
 {
-    NSNumber *dotComID = blog.dotComID;
-    if(dotComID) {
-        [WPAnalytics track:WPAnalyticsStatOpenedViewSite withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
-    }
-    
+    [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlogID:blog.dotComID];
     NSURL *targetURL = [NSURL URLWithString:blog.homeURL];
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
     webViewController.authToken = blog.authToken;
@@ -555,12 +513,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
         return;
     }
 
-    NSNumber *dotComID = blog.dotComID;
-    if(dotComID) {
-        [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
-    }
+    [WPAppAnalytics track:WPAnalyticsStatOpenedViewAdmin withBlogID:blog.dotComID];
     
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
