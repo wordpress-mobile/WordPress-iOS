@@ -18,28 +18,28 @@ public class SettingsPickerViewController : UITableViewController
      *  @details    Indicates whether a Switch row should be rendered on top, allowing
      *              the user to Enable / Disable the picker
      */
-    public var switchRowVisible = true
+    public var switchVisible = true
     
     /**
      *  @details    Specifies the Switch value, to be displayed on the first row
-     *              (granted that `switchRowVisible` is set to true)
+     *              (granted that `switchVisible` is set to true)
      */
-    public var switchRowValue = false
+    public var switchOn = false
     
     /**
      *  @details    Text to be displayed by the first row's Switch
      */
-    public var switchRowText : String!
+    public var switchText : String!
     
     /**
      *  @details    Text to be displayed in the "Currently Selected value" row
      */
-    public var selectedRowText : String!
+    public var selectionText : String!
     
     /**
      *  @details    Indicates the format to be used in the "Currently Selected Value" row
      */
-    public var selectedRowFormat : String?
+    public var selectionFormat : String?
 
     /**
      *  @details    Hint Text, to be displayed on top of the Picker
@@ -75,7 +75,7 @@ public class SettingsPickerViewController : UITableViewController
     
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
-        assert(selectedRowText     != nil)
+        assert(selectionText     != nil)
         assert(pickerSelectedValue != nil)
         assert(pickerMinimumValue  != nil)
         assert(pickerMaximumValue  != nil)
@@ -164,19 +164,19 @@ public class SettingsPickerViewController : UITableViewController
     
     private func configureSwitchCell(cell: SwitchTableViewCell) {
         cell.selectionStyle         = .None
-        cell.name                   = switchRowText
-        cell.on                     = switchRowValue
+        cell.name                   = switchText
+        cell.on                     = switchOn
         cell.onChange               = { [weak self] in
             self?.switchDidChange($0)
         }
     }
 
     private func configureTextCell(cell: WPTableViewCell) {
-        let selectionFormat         = selectedRowFormat ?? "%d"
+        let format                  = selectionFormat ?? "%d"
         
         cell.selectionStyle         = .None
-        cell.textLabel?.text        = selectedRowText
-        cell.detailTextLabel?.text  = String(format: selectionFormat, pickerSelectedValue)
+        cell.textLabel?.text        = selectionText
+        cell.detailTextLabel?.text  = String(format: format, pickerSelectedValue)
         
         WPStyleGuide.configureTableViewCell(cell)
     }
@@ -196,7 +196,7 @@ public class SettingsPickerViewController : UITableViewController
     
     // MARK: - Button Handlers Properties
     private func switchDidChange(newValue: Bool) {
-        switchRowValue = newValue
+        switchOn = newValue
         
         // Show / Hide the Picker Section
         let pickerSectionIndexSet = NSIndexSet(index: pickerSection)
@@ -208,7 +208,7 @@ public class SettingsPickerViewController : UITableViewController
         }
         
         // Hit the Callback
-        onChange?(enabled: switchRowValue, newValue: pickerSelectedValue)
+        onChange?(enabled: switchOn, newValue: pickerSelectedValue)
     }
     
     private func pickerDidChange(newValue: Int) {
@@ -218,7 +218,7 @@ public class SettingsPickerViewController : UITableViewController
         tableView.reloadRowsAtIndexPaths([pickerIndexPath], withRowAnimation: .None)
         
         // Hit the Callback
-        onChange?(enabled: switchRowValue, newValue: pickerSelectedValue)
+        onChange?(enabled: switchOn, newValue: pickerSelectedValue)
     }
     
     
@@ -234,11 +234,11 @@ public class SettingsPickerViewController : UITableViewController
     private var sections : [[Row]] {
         var sections = [[Row]]()
         
-        if switchRowVisible {
+        if switchVisible {
             sections.append([.Switch])
         }
         
-        if switchRowValue || !switchRowVisible {
+        if switchOn || !switchVisible {
             sections.append([.Value1, .Picker])
         }
 
@@ -246,7 +246,7 @@ public class SettingsPickerViewController : UITableViewController
     }
     
     private var pickerSection : Int {
-        return switchRowVisible ? 1 : 0
+        return switchVisible ? 1 : 0
     }
     
     private var pickerIndexPath : NSIndexPath {
