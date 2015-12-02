@@ -6,7 +6,8 @@ import WordPressShared.WPNoResultsView
  *  @brief      Support for filtering themes by purchasability
  *  @details    Currently purchasing themes via native apps is unsupported
  */
-public enum ThemeType {
+public enum ThemeType
+{
     case All
     case Free
     case Premium
@@ -42,7 +43,8 @@ public enum ThemeType {
  *  @brief      Publicly exposed theme interaction support
  *  @details    Held as weak reference by owned subviews
  */
-public protocol ThemePresenter: class {
+public protocol ThemePresenter: class
+{
     var searchType: ThemeType { get set }
 
     func currentTheme() -> Theme?
@@ -54,8 +56,8 @@ public protocol ThemePresenter: class {
     func presentViewForTheme(theme: Theme?)
 }
 
-@objc public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate {
-    
+@objc public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
+{
     // MARK: - Properties: must be set by parent
     
     /**
@@ -124,7 +126,8 @@ public protocol ThemePresenter: class {
      *  @brief      Collection view support
      */
     
-    private enum Section {
+    private enum Section
+    {
         case Info
         case Themes
     }
