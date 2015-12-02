@@ -355,11 +355,11 @@
 		B535209B1AF7BBB800B33BA8 /* PushAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209A1AF7BBB800B33BA8 /* PushAuthenticationManager.swift */; };
 		B535209D1AF7EB9F00B33BA8 /* PushAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */; };
 		B535209F1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209E1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift */; };
-		B53AD9BB1BE95687009AB87E /* SettingsMultiTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9B71BE95687009AB87E /* SettingsMultiTextViewController.m */; };
 		B53AD9BC1BE95687009AB87E /* SettingsTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */; };
 		B53AD9BF1BE9584B009AB87E /* SettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */; };
 		B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */; };
 		B54106901B6FE38400C880D0 /* WPWebViewController+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541068F1B6FE38400C880D0 /* WPWebViewController+Auth.swift */; };
+		B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B541276A1C0F7D610015CA80 /* SettingsMultiTextViewController.m */; };
 		B548458219A258890077E7A5 /* UIActionSheet+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */; };
 		B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */; };
 		B54E1DF01A0A7BAA00807537 /* ReplyBezierView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E1DED1A0A7BAA00807537 /* ReplyBezierView.swift */; };
@@ -1317,14 +1317,14 @@
 		B535209A1AF7BBB800B33BA8 /* PushAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationManager.swift; sourceTree = "<group>"; };
 		B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationService.swift; sourceTree = "<group>"; };
 		B535209E1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationServiceRemote.swift; sourceTree = "<group>"; };
-		B53AD9B61BE95687009AB87E /* SettingsMultiTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMultiTextViewController.h; sourceTree = "<group>"; };
-		B53AD9B71BE95687009AB87E /* SettingsMultiTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsMultiTextViewController.m; sourceTree = "<group>"; };
 		B53AD9B81BE95687009AB87E /* SettingsTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTextViewController.h; sourceTree = "<group>"; };
 		B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTextViewController.m; sourceTree = "<group>"; };
 		B53AD9BD1BE9584A009AB87E /* SettingsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsSelectionViewController.h; sourceTree = "<group>"; };
 		B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsSelectionViewController.m; sourceTree = "<group>"; };
 		B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Helpers.swift"; sourceTree = "<group>"; };
 		B541068F1B6FE38400C880D0 /* WPWebViewController+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPWebViewController+Auth.swift"; sourceTree = "<group>"; };
+		B54127691C0F7D610015CA80 /* SettingsMultiTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMultiTextViewController.h; sourceTree = "<group>"; };
+		B541276A1C0F7D610015CA80 /* SettingsMultiTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsMultiTextViewController.m; sourceTree = "<group>"; };
 		B54810F61AA656B40081B54D /* WordPress 28.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 28.xcdatamodel"; sourceTree = "<group>"; };
 		B548458019A258890077E7A5 /* UIActionSheet+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Helpers.h"; sourceTree = "<group>"; };
 		B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Helpers.m"; sourceTree = "<group>"; };
@@ -3024,10 +3024,10 @@
 		B53AD9B31BE9560F009AB87E /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				B54127691C0F7D610015CA80 /* SettingsMultiTextViewController.h */,
+				B541276A1C0F7D610015CA80 /* SettingsMultiTextViewController.m */,
 				B53AD9BD1BE9584A009AB87E /* SettingsSelectionViewController.h */,
 				B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */,
-				B53AD9B61BE95687009AB87E /* SettingsMultiTextViewController.h */,
-				B53AD9B71BE95687009AB87E /* SettingsMultiTextViewController.m */,
 				B53AD9B81BE95687009AB87E /* SettingsTextViewController.h */,
 				B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */,
 			);
@@ -4554,6 +4554,7 @@
 				E166FA1B1BB0656B00374B5B /* PeopleCellViewModel.swift in Sources */,
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
 				B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */,
+				B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */,
 				838C672E1210C3C300B09CA3 /* Post.m in Sources */,
 				834CAE7C122D528A003DDF49 /* UIImage+Resize.m in Sources */,
 				5D9B17C519998A430047A4A2 /* ReaderBlockedTableViewCell.m in Sources */,
@@ -4683,7 +4684,6 @@
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
 				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
 				E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */,
-				B53AD9BB1BE95687009AB87E /* SettingsMultiTextViewController.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
@@ -4766,7 +4766,6 @@
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
 				5DF94E461962BAA700359241 /* WPRichTextView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
-				FF8DDCE61B6148E80098826F /* SettingsMultiTextViewController.m in Sources */,
 				E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */,
 				85D239B01AE5A5FC0074768D /* LoginFacade.m in Sources */,
 				E1209FA41BB4978B00D69778 /* PeopleService.swift in Sources */,
