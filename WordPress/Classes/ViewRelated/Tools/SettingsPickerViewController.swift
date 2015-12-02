@@ -30,7 +30,7 @@ public class SettingsPickerViewController : UITableViewController
      *  @details    Text to be displayed by the first row's Switch
      */
     public var switchRowText : String!
-
+    
     /**
      *  @details    Text to be displayed in the "Currently Selected value" row
      */
@@ -41,6 +41,11 @@ public class SettingsPickerViewController : UITableViewController
      */
     public var selectedRowFormat : String?
 
+    /**
+     *  @details    Hint Text, to be displayed on top of the Picker
+     */
+    public var pickerHint : String?
+    
     /**
      *  @details    String format, to be applied over the Picker Rows
      */
@@ -60,7 +65,6 @@ public class SettingsPickerViewController : UITableViewController
      *  @details    Picker's maximum value.
      */
     public var pickerMaximumValue : Int!
-    
 
     /**
      *  @details    Closure to be executed whenever the Switch / Picker is updated
@@ -118,6 +122,24 @@ public class SettingsPickerViewController : UITableViewController
         return cell
     }
     
+    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section != sectionWithFooter || pickerHint == nil {
+            return 0
+        }
+        
+        return WPTableViewSectionHeaderFooterView.heightForFooter(pickerHint!, width: tableView.bounds.width)
+    }
+    
+    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if section != sectionWithFooter || pickerHint == nil {
+            return nil
+        }
+        
+        let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
+        footerView.title = pickerHint!
+        return footerView
+    }
+    
     
     
     // MARK: - Cell Setup Helpers
@@ -145,7 +167,7 @@ public class SettingsPickerViewController : UITableViewController
         cell.name                   = switchRowText
         cell.on                     = switchRowValue
         cell.onChange               = { [weak self] in
-            self?.pressedSwitchRow($0)
+            self?.switchDidChange($0)
         }
     }
 
@@ -173,38 +195,47 @@ public class SettingsPickerViewController : UITableViewController
     
     
     // MARK: - Button Handlers Properties
-    private func pressedSwitchRow(newValue: Bool) {
+    private func switchDidChange(newValue: Bool) {
         switchRowValue = newValue
         
-        let pickerSection = NSIndexSet(index: pickerIndexPath.section)
+        // Show / Hide the Picker Section
+        let pickerSectionIndexSet = NSIndexSet(index: pickerSection)
         
         if newValue {
-            tableView.insertSections(pickerSection, withRowAnimation: .Fade)
+            tableView.insertSections(pickerSectionIndexSet, withRowAnimation: .Fade)
         } else {
-            tableView.deleteSections(pickerSection, withRowAnimation: .Fade)
+            tableView.deleteSections(pickerSectionIndexSet, withRowAnimation: .Fade)
         }
         
+        // Hit the Callback
         onChange?(enabled: switchRowValue, newValue: pickerSelectedValue)
     }
     
     private func pickerDidChange(newValue: Int) {
         pickerSelectedValue = newValue
+        
+        // Refresh the 'Current Value' row
         tableView.reloadRowsAtIndexPaths([pickerIndexPath], withRowAnimation: .None)
         
+        // Hit the Callback
         onChange?(enabled: switchRowValue, newValue: pickerSelectedValue)
     }
     
     
     
-    // MARK: - Private Constants
-    private let estimatedRowHeight = CGFloat(300)
+    // MARK: - Nested Enums
+    private enum Row : String {
+        case Value1 = "Value1"
+        case Switch = "SwitchCell"
+        case Picker = "Picker"
+    }
     
     // MARK: - Computed Properties
     private var sections : [[Row]] {
         var sections = [[Row]]()
         
         if switchRowVisible {
-            sections.append([Row.Switch])
+            sections.append([.Switch])
         }
         
         if switchRowValue || !switchRowVisible {
@@ -214,15 +245,15 @@ public class SettingsPickerViewController : UITableViewController
         return sections
     }
     
-    private var pickerIndexPath : NSIndexPath {
-        let section = switchRowVisible ? 1 : 0
-        return NSIndexPath(forRow: 0, inSection: section)
+    private var pickerSection : Int {
+        return switchRowVisible ? 1 : 0
     }
     
-    // MARK: - Nested Enums
-    private enum Row : String {
-        case Value1 = "Value1"
-        case Switch = "SwitchCell"
-        case Picker = "Picker"
+    private var pickerIndexPath : NSIndexPath {
+        return NSIndexPath(forRow: 0, inSection: pickerSection)
     }
+    
+    // MARK: - Private Constants
+    private let estimatedRowHeight  = CGFloat(300)
+    private let sectionWithFooter   = 0
 }
