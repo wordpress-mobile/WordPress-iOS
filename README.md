@@ -47,3 +47,7 @@ More information on building the project and the tools required can be found in 
 ## Logging in
 
 In order to login to a WordPress.com account, you will need to create an account over at https://developer.wordpress.com. The only account you will be able to login in with is the one affiliated with your developer account. Once you have an account and a corresponding app id and app secret, you will need to setup a ~/.wpcom_app_credentials file as detailed [here](http://make.wordpress.org/mobile/handbook/pathways/ios/tutorials-guides/#3-%c2%a0setup-wpcom_app_credentials). For more details see http://developer.wordpress.com/2014/07/04/authentication-improvements-for-testing-your-apps/.
+
+## License
+
+WordPress for iOS is an Open Source project covered by the [GNU General Public License version 2](LICENSE).
