@@ -19,4 +19,21 @@ extension Int {
         let half = divisor / 2
         return self + sign * (half - (abs(self) + half) % divisor)
     }
+
+    /**
+     Clamps self between a minimum and maximum value
+     
+     - returns: the method returns
+        - min if self < min
+        - max if self > max
+        - otherwise it returns self
+     
+     */
+    func clamp(min minValue: Int, max maxValue: Int) -> Int {
+        return clampInt(self, min: minValue, max: maxValue)
+    }
+}
+
+private func clampInt(x: Int, min minValue: Int, max maxValue: Int) -> Int {
+    return min(max(x, minValue), maxValue)
 }
