@@ -123,7 +123,7 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
     }
 
 
-    public func configureCell(contentProvider:ReaderPostContentProvider) {
+    public func configureView(contentProvider:ReaderPostContentProvider) {
 
         self.contentProvider = contentProvider
 
@@ -132,7 +132,6 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
         configureTitle()
         configureRichText()
 
-        setNeedsUpdateConstraints()
     }
 
 
