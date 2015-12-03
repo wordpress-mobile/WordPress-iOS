@@ -6,6 +6,7 @@ extension Int {
      That is, `-3.round(5)` rounds to `-5` and `3.round(5)` rounds to `5`
      
      - parameter divisor: a positive number that's a divisor of the result.
+     - precondition: divisor must be > 0
      - returns: an Int rounded to the nearest integer that's a multiple of the argument.
      */
     func round(divisor: UInt) -> Int {
