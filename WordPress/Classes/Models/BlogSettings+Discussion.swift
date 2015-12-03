@@ -269,7 +269,10 @@ extension BlogSettings
         }
         set {
             commentsThreadingEnabled = !newValue.isDisabled
-            commentsThreadingDepth = newValue.rawValue
+            
+            if !newValue.isDisabled {
+                commentsThreadingDepth = newValue.rawValue
+            }
         }
     }
 }
