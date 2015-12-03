@@ -80,7 +80,7 @@ public class BlogSettingsDiscussionTests : XCTestCase
     typealias Sorting = BlogSettings.CommentsSorting
     
     // MARK: - Private Helpers
-    public func newSettings() -> BlogSettings {
+    private func newSettings() -> BlogSettings {
         let context = manager!.mainContext
         let name = BlogSettings.classNameWithoutNamespaces()
         let entity = NSEntityDescription.insertNewObjectForEntityForName(name, inManagedObjectContext: context)
