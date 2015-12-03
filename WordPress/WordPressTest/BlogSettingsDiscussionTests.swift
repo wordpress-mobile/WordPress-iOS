@@ -2,15 +2,15 @@ import Foundation
 @testable import WordPress
 
 
-public class BlogSettingsDiscussionTests : XCTestCase
+class BlogSettingsDiscussionTests : XCTestCase
 {
     private var manager : TestContextManager!
     
-    public override func setUp() {
+    override func setUp() {
         manager = TestContextManager()
     }
     
-    public override func tearDown() {
+    override func tearDown() {
         manager = nil
     }
     
@@ -80,7 +80,7 @@ public class BlogSettingsDiscussionTests : XCTestCase
     typealias Sorting = BlogSettings.CommentsSorting
     
     // MARK: - Private Helpers
-    public func newSettings() -> BlogSettings {
+    private func newSettings() -> BlogSettings {
         let context = manager!.mainContext
         let name = BlogSettings.classNameWithoutNamespaces()
         let entity = NSEntityDescription.insertNewObjectForEntityForName(name, inManagedObjectContext: context)
