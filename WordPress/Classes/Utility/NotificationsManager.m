@@ -244,7 +244,6 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
         // Token should be always available here
         [mutablePushProperties setObject:token forKey:@"push_notification_token"];
     }
-    [mutablePushProperties setObject:@"apple" forKey:@"push_notification_device_type"];
     
     if (state == UIApplicationStateBackground) {
         // The notification is delivered when the app isn’t running in the foreground.
@@ -253,7 +252,6 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
         // The user taps the notification item in the notifications center
         [WPAnalytics track:WPAnalyticsStatPushNotificationAlertPressed withProperties:mutablePushProperties];
     }
-
     
     // Notification-Y Push Notifications
     if (state == UIApplicationStateInactive) {
