@@ -14,7 +14,7 @@ extension BlogSettings
      *  @enum   BlogSettings.CommentsAutoapproval
      *  @brief  Enumerates all of the Comments AutoApproval settings
      */
-    public enum CommentsAutoapproval : Int {
+    enum CommentsAutoapproval : Int {
         case Disabled       = 0
         case FromKnownUsers = 1
         case Everything     = 2
@@ -23,7 +23,7 @@ extension BlogSettings
         /**
          *  @details Returns the localized description of the current enum value
          */
-        public var description : String {
+        var description : String {
             return CommentsAutoapproval.descriptionMap[rawValue]!
         }
         
@@ -32,7 +32,7 @@ extension BlogSettings
          *  @details Returns the sorted collection of all of the Localized Enum Titles.
          *           Order is guarranteed to match exactly with *allValues*.
          */
-        public static var allTitles : [String] {
+        static var allTitles : [String] {
             return allValues.flatMap { descriptionMap[$0] }
         }
 
@@ -40,7 +40,7 @@ extension BlogSettings
          *  @details Returns the sorted collection of Localized Hints for all of the Enum Case's.
          *           Order is guarranteed to match exactly with *allValues*.
          */
-        public static var allHints : [String] {
+        static var allHints : [String] {
             return allValues.flatMap { hintsMap[$0] }
         }
         
@@ -48,7 +48,7 @@ extension BlogSettings
         /**
          *  @details Returns the sorted collection of all of the possible Enum Values.
          */
-        public static var allValues : [Int] {
+        static var allValues : [Int] {
             return descriptionMap.keys.sort()
         }
         
@@ -74,7 +74,7 @@ extension BlogSettings
      *  @enum   BlogSettings.CommentsSorting
      *  @brief  Enumerates all of the valid Comment Sort Order options
      */
-    public enum CommentsSorting : Int {
+    enum CommentsSorting : Int {
         case Ascending  = 0
         case Descending = 1
         
@@ -82,7 +82,7 @@ extension BlogSettings
         /**
          *  @details Returns the localized description of the current enum value
          */
-        public var description : String {
+        var description : String {
             return CommentsSorting.descriptionMap[rawValue]!
         }
         
@@ -91,7 +91,7 @@ extension BlogSettings
          *  @details Returns the sorted collection of all of the Localized Enum Titles.
          *           Order is guarranteed to match exactly with *allValues*.
          */
-        public static var allTitles : [String] {
+        static var allTitles : [String] {
             return allValues.flatMap { descriptionMap[$0] }
         }
         
@@ -99,7 +99,7 @@ extension BlogSettings
         /**
          *  @details Returns the sorted collection of all of the possible Enum Values.
          */
-        public static var allValues : [Int] {
+        static var allValues : [Int] {
             return descriptionMap.keys.sort()
         }
         
@@ -118,7 +118,7 @@ extension BlogSettings
      *  @enum   BlogSettings.CommentsThreading
      *  @brief  Enumerates all of the valid Threading options
      */
-    public enum CommentsThreading {
+    enum CommentsThreading {
         case Disabled
         case Enabled(depth: Int)
         
@@ -142,7 +142,7 @@ extension BlogSettings
         /**
          *  @details Returns the Raw Value (for Core Data / Transport Layer usage)
          */
-        public var rawValue : Int {
+        var rawValue : Int {
             switch self {
             case .Disabled:
                 return CommentsThreading.disabledValue
@@ -155,7 +155,7 @@ extension BlogSettings
         /**
          *  @details Returns the localized description of the current enum value
          */
-        public var description : String {
+        var description : String {
             return CommentsThreading.descriptionMap[rawValue]!
         }
         
@@ -163,7 +163,7 @@ extension BlogSettings
         /**
          *  @details Convenience helper that will return *true* whenever the case is *Disabled*
          */
-        public var isDisabled : Bool {
+        var isDisabled : Bool {
             return rawValue == CommentsThreading.disabledValue
         }
         
@@ -172,7 +172,7 @@ extension BlogSettings
          *  @details Returns the sorted collection of all of the Localized Enum Titles.
          *           Order is guarranteed to match exactly with *allValues*.
          */
-        public static var allTitles : [String] {
+        static var allTitles : [String] {
             return allValues.flatMap { descriptionMap[$0] }
         }
         
@@ -180,7 +180,7 @@ extension BlogSettings
         /**
          *  @details Returns the sorted collection of all of the possible Enum Values.
          */
-        public static var allValues : [Int] {
+        static var allValues : [Int] {
             return descriptionMap.keys.sort()
         }
         
@@ -214,7 +214,7 @@ extension BlogSettings
     /**
     *  @details Wraps Core Data values into Swift's CommentsAutoapproval Enum
     */
-    public var commentsAutoapproval : CommentsAutoapproval {
+    var commentsAutoapproval : CommentsAutoapproval {
         get {
             if commentsRequireManualModeration {
                 return .Disabled
@@ -234,7 +234,7 @@ extension BlogSettings
     /**
      *  @details Wraps Core Data values into Swift's CommentsSorting Enum
      */
-    public var commentsSorting : CommentsSorting {
+    var commentsSorting : CommentsSorting {
         get {
             return CommentsSorting(rawValue: commentsSortOrder as! Int) ?? .Ascending
         }
@@ -247,7 +247,7 @@ extension BlogSettings
     /**
      *  @details Helper, to aid in setting SortOrder in ObjC code. True when Ascending, False otherwise.
      */
-    public var commentsSortOrderAscending : Bool {
+    var commentsSortOrderAscending : Bool {
         get {
             return commentsSortOrder == CommentsSorting.Ascending.rawValue
         }
@@ -258,9 +258,9 @@ extension BlogSettings
     
     
     /**
-    *  @details Wraps Core Data values into Swift's CommentsThreading Enum
+     *  @details Wraps Core Data values into Swift's CommentsThreading Enum
      */
-    public var commentsThreading : CommentsThreading {
+    var commentsThreading : CommentsThreading {
         get {
             if commentsThreadingEnabled && commentsThreadingDepth != nil {
                 return .Enabled(depth: commentsThreadingDepth as! Int)
