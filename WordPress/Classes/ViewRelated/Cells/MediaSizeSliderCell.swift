@@ -101,10 +101,9 @@ class MediaSizeSliderCell: UITableViewCell {
         var value: Int {
             didSet {
                 if step > 1 {
-                    var rounded = value.round(UInt(step))
-                    rounded = min(rounded, maxValue)
-                    rounded = max(rounded, minValue)
-                    value = rounded
+                    value = value
+                        .round(UInt(step))
+                        .clamp(min: minValue, max: maxValue)
                 }
             }
         }
