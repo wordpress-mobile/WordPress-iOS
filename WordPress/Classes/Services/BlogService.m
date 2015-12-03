@@ -347,6 +347,22 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return [self blogCountVisibleForWPComAccounts] > 0;
 }
 
+- (BOOL)hasAnyJetpackBlogs
+{
+    NSPredicate *jetpackManagedPredicate = [NSPredicate predicateWithFormat:@"account != NULL AND isHostedAtWPcom = NO"];
+    NSInteger jetpackManagedCount = [self blogCountWithPredicate:jetpackManagedPredicate];
+    if (jetpackManagedCount > 0) {
+        return YES;
+    }
+
+    NSArray *selfHostedBlogs = [self blogsWithNoAccount];
+    NSArray *jetpackUnmanagedBlogs = [selfHostedBlogs wp_filter:^BOOL(Blog *blog) {
+        return blog.jetpack.isConnected;
+    }];
+
+    return [jetpackUnmanagedBlogs count] > 0;
+}
+
 - (NSInteger)blogCountForAllAccounts
 {
     return [self blogCountWithPredicate:nil];
