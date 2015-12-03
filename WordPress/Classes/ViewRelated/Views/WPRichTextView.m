@@ -95,6 +95,22 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
     return self;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _mediaArray = [NSMutableArray array];
+        _mediaIndexPathsNeedingLayout = [NSMutableArray array];
+        _mediaIndexPathsPendingDownload = [NSMutableArray array];
+        _textOptions = [[self class] defaultDTCoreTextOptions];
+        _textContentView = [self buildTextContentView];
+        [self addSubview:self.textContentView];
+        [self configureConstraints];
+    }
+    return self;
+}
+
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
