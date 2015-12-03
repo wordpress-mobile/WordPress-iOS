@@ -231,8 +231,8 @@ public class DiscussionSettingsViewController : UITableViewController
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Sort By", comment: "Discussion Settings Title")
         settingsViewController.currentValue     = settings.commentsSortOrder
-        settingsViewController.titles           = CommentsSorting.AllTitles
-        settingsViewController.values           = CommentsSorting.AllValues
+        settingsViewController.titles           = CommentsSorting.allTitles
+        settingsViewController.values           = CommentsSorting.allValues
         settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
             guard let newSortOrder = CommentsSorting(rawValue: selected as! Int) else {
                 return
@@ -248,8 +248,8 @@ public class DiscussionSettingsViewController : UITableViewController
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Threading", comment: "Discussion Settings Title")
         settingsViewController.currentValue     = settings.commentsThreading.rawValue
-        settingsViewController.titles           = CommentsThreading.AllTitles
-        settingsViewController.values           = CommentsThreading.AllValues
+        settingsViewController.titles           = CommentsThreading.allTitles
+        settingsViewController.values           = CommentsThreading.allValues
         settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
             guard let newThreadingDepth = CommentsThreading(rawValue: selected as! Int) else {
                 return
@@ -284,9 +284,9 @@ public class DiscussionSettingsViewController : UITableViewController
         let settingsViewController              = SettingsSelectionViewController(style: .Grouped)
         settingsViewController.title            = NSLocalizedString("Automatically Approve", comment: "Discussion Settings Title")
         settingsViewController.currentValue     = settings.commentsAutoapproval.rawValue
-        settingsViewController.titles           = CommentsAutoapproval.AllTitles
-        settingsViewController.values           = CommentsAutoapproval.AllValues
-        settingsViewController.hints            = CommentsAutoapproval.AllHints
+        settingsViewController.titles           = CommentsAutoapproval.allTitles
+        settingsViewController.values           = CommentsAutoapproval.allValues
+        settingsViewController.hints            = CommentsAutoapproval.allHints
         settingsViewController.onItemSelected   = { [weak self] (selected: AnyObject!) in
             guard let newApprovalStatus = CommentsAutoapproval(rawValue: selected as! Int) else {
                 return
