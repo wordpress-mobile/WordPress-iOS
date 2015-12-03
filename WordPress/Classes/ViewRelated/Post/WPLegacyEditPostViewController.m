@@ -367,7 +367,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 
     if (![self.post hasUnsavedChanges]) {
-        [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlogID:self.post.blog.dotComID];
+        [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
 
         [self discardChanges];
         [self dismissEditView];
@@ -385,7 +385,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                 handler:^(UIAlertAction * action) {
                                     [self discardChanges];
                                     [self dismissEditView];
-                                    [WPAppAnalytics track:WPAnalyticsStatEditorDiscardedChanges withBlogID:self.post.blog.dotComID];
+                                    [WPAppAnalytics track:WPAnalyticsStatEditorDiscardedChanges withBlog:self.post.blog];
                                 }];
     
     if ([self.post.original.status isEqualToString:PostStatusDraft]) {
@@ -965,7 +965,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)insertMedia:(Media *)media
 {
-    [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlogID:self.post.blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
     NSString *prefix = @"<br /><br />";
 
     if (self.post.content == nil || [self.post.content isEqualToString:@""]) {

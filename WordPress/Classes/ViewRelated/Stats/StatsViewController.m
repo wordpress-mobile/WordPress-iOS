@@ -139,8 +139,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [controller setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
             
-            [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withBlogID:self.blog.dotComID];
-            [WPAppAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withBlogID:self.blog.dotComID];
+            [WPAppAnalytics track:WPAnalyticsStatSignedInToJetpack withBlog:self.blog];
+            [WPAppAnalytics track:WPAnalyticsStatPerformedJetpackSignInFromStatsScreen withBlog:self.blog];
 
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
