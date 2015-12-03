@@ -357,7 +357,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
     [self presentViewController:navController animated:YES completion:nil];
     
-    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{@"tap_source": @"posts_view"} withBlogID:self.blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{@"tap_source": @"posts_view"} withBlog:self.blog];
 }
 
 - (void)editPage:(AbstractPost *)apost

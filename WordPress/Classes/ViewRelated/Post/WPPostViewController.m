@@ -1376,7 +1376,7 @@ EditImageDetailsViewControllerDelegate
     NSAssert([context isKindOfClass:[NSManagedObjectContext class]],
              @"The object should be related to a managed object context here.");
     
-    [WPAppAnalytics track:WPAnalyticsStatEditorDiscardedChanges withBlogID:self.post.blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatEditorDiscardedChanges withBlog:self.post.blog];
     self.post = self.post.original;
     [self.post deleteRevision];
     
@@ -1406,7 +1406,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)dismissEditViewAnimated:(BOOL)animated
 {
-    [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlogID:self.post.blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
     
     if (self.onClose) {
         self.onClose();
@@ -1709,10 +1709,10 @@ EditImageDetailsViewControllerDelegate
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         if (media.mediaType == MediaTypeImage) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlogID:self.post.blog.dotComID];
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId];
         } else if (media.mediaType == MediaTypeVideo) {
-            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlogID:self.post.blog.dotComID];
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlog:self.post.blog];
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
                                         remotePoster:media.posterImageURL
@@ -1729,7 +1729,7 @@ EditImageDetailsViewControllerDelegate
             [media remove];
         } else {
             DDLogError(@"Failed Media Upload: %@", error.localizedDescription);
-            [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withBlogID:self.post.blog.dotComID];
+            [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withBlog:self.post.blog];
             [self dismissAssociatedAlertControllerIfVisible:mediaUniqueId];
             self.mediaGlobalProgress.completedUnitCount++;
             if (media.mediaType == MediaTypeImage) {
@@ -1749,7 +1749,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
 {
-    [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withBlogID:self.post.blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withBlog:self.post.blog];
 
     NSProgress *progress = self.mediaInProgress[imageUniqueId];
     if (!progress) {
@@ -1998,7 +1998,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
 {
-    [WPAppAnalytics track:WPAnalyticsStatEditorEditedImage withBlogID:self.post.blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatEditorEditedImage withBlog:self.post.blog];
     EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta forPost:self.post];
     controller.delegate = self;
 
