@@ -29,15 +29,6 @@ extension Int {
         - otherwise it returns self
      */
     func clamp(min minValue: Int, max maxValue: Int) -> Int {
-        return clampInt(self, min: minValue, max: maxValue)
+        return Swift.min(Swift.max(self, minValue), maxValue)
     }
-}
-
-/*
-The reason this is implemented as a separate function and it's not just in the
-body of Int.clamp, is that `Int.min` and `Int.max` already exist as constants and
-overshadow the top level `min` and `max` functions.
-*/
-private func clampInt(x: Int, min minValue: Int, max maxValue: Int) -> Int {
-    return min(max(x, minValue), maxValue)
 }
