@@ -2,15 +2,15 @@ import Foundation
 @testable import WordPress
 
 
-public class BlogSettingsDiscussionTests : XCTestCase
+class BlogSettingsDiscussionTests : XCTestCase
 {
     private var manager : TestContextManager!
     
-    public override func setUp() {
+    override func setUp() {
         manager = TestContextManager()
     }
     
-    public override func tearDown() {
+    override func tearDown() {
         manager = nil
     }
     
