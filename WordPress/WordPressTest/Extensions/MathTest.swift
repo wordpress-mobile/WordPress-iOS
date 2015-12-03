@@ -22,4 +22,12 @@ class MathTest: XCTestCase {
         expect(245.round(50)).to(equal(250))
     }
 
+    func testClamp() {
+        expect(5.clamp(min: 10, max: 20)).to(equal(10))
+        expect(10.clamp(min: 10, max: 20)).to(equal(10))
+        expect(15.clamp(min: 10, max: 20)).to(equal(15))
+        expect(20.clamp(min: 10, max: 20)).to(equal(20))
+        expect(30.clamp(min: 10, max: 20)).to(equal(20))
+    }
+
 }
