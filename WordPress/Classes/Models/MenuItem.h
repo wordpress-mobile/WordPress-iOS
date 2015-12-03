@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *typeLabel;
 @property (nullable, nonatomic, retain) NSString *urlStr;
 @property (nullable, nonatomic, retain) Menu *menu;
-@property (nullable, nonatomic, retain) NSOrderedSet<MenuItem *> *children;
+@property (nullable, nonatomic, retain) NSSet<MenuItem *> *children;
 @property (nullable, nonatomic, retain) MenuItem *parent;
 
 + (NSString *)entityName;
@@ -27,16 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MenuItem (CoreDataGeneratedAccessors)
 
-- (void)insertObject:(MenuItem *)value inChildrenAtIndex:(NSUInteger)idx;
-- (void)removeObjectFromChildrenAtIndex:(NSUInteger)idx;
-- (void)insertChildren:(NSArray<MenuItem *> *)value atIndexes:(NSIndexSet *)indexes;
-- (void)removeChildrenAtIndexes:(NSIndexSet *)indexes;
-- (void)replaceObjectInChildrenAtIndex:(NSUInteger)idx withObject:(MenuItem *)value;
-- (void)replaceChildrenAtIndexes:(NSIndexSet *)indexes withChildren:(NSArray<MenuItem *> *)values;
 - (void)addChildrenObject:(MenuItem *)value;
 - (void)removeChildrenObject:(MenuItem *)value;
-- (void)addChildren:(NSOrderedSet<MenuItem *> *)values;
-- (void)removeChildren:(NSOrderedSet<MenuItem *> *)values;
+- (void)addChildren:(NSSet<MenuItem *> *)values;
+- (void)removeChildren:(NSSet<MenuItem *> *)values;
 
 @end
 
