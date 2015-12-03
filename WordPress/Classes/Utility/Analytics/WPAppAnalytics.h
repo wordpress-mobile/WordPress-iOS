@@ -67,4 +67,11 @@ extern NSString* const WPAppAnalyticsKeyBlogID;
 + (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlogID:(NSNumber*)blogID;
 
 
+/**
+ *  @brief      Pass-through methods to WPAnalytics
+ */
++ (void)track:(WPAnalyticsStat)stat;
+
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties;
+
 @end

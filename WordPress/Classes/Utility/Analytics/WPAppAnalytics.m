@@ -183,10 +183,24 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     }
     
     if ([mutableProperties count] > 0) {
-        [WPAnalytics track:stat withProperties:mutableProperties];
+        [WPAppAnalytics track:stat withProperties:mutableProperties];
     } else {
-        [WPAnalytics track:stat];
+        [WPAppAnalytics track:stat];
     }
+}
+
+/**
+ *  @brief      Pass-through method to [WPAnalytics track:stat]. Use this method instead of calling WPAnalytics directly.
+ */
++ (void)track:(WPAnalyticsStat)stat {
+    [WPAnalytics track:stat];
+}
+
+/**
+ *  @brief      Pass-through method to WPAnalytics. Use this method instead of calling WPAnalytics directly.
+ */
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties {
+    [WPAnalytics track:stat withProperties:properties];
 }
 
 #pragma mark - Usage tracking initialization
