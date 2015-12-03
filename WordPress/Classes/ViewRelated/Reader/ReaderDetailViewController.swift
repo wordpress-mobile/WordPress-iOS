@@ -93,6 +93,7 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
         isLoggedIn = account != nil
 
         setupNavBar()
+        setupDetailView()
 
         if post != nil {
             configureView()
@@ -102,11 +103,13 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
 
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        resizeDetailView()
     }
 
 
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        resizeDetailView()
     }
 
 
@@ -119,6 +122,7 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
         super.traitCollectionDidChange(previousTraitCollection)
 
         view.layoutIfNeeded()
+        resizeDetailView()
         // TODO: Refresh media layout
     }
 
@@ -177,6 +181,12 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
     }
 
 
+    func setupDetailView() {
+        detailView = NSBundle.mainBundle().loadNibNamed("ReaderDetailView", owner: nil, options: nil).first as! ReaderDetailView
+        scrollView.addSubview(detailView)
+    }
+
+
     // MARK: - Configuration
 
     func configureView() {
@@ -188,7 +198,18 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
 
 
     func configureDetailView() {
+        detailView.configureView(post!)
 
+        resizeDetailView()
+    }
+
+    func resizeDetailView() {
+        var frame = detailView.frame
+        let size = detailView.sizeThatFits(CGSize(width: self.view.frame.width, height: CGFloat.max))
+        frame.size.width = size.width
+        frame.size.height = size.height
+        detailView.frame = frame
+        scrollView.contentSize = detailView.sizeThatFits(size)
     }
 
     private func configureTitle() {
