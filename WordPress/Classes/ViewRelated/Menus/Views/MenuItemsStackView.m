@@ -11,8 +11,10 @@
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) NSMutableSet *itemViews;
+
 @property (nonatomic, strong) NSMutableSet *insertionViews;
 @property (nonatomic, strong) MenuItemView *itemViewForInsertionToggling;
+
 @property (nonatomic, assign) CGPoint touchesBeganLocation;
 @property (nonatomic, assign) CGPoint touchesMovedLocation;
 @property (nonatomic, assign) BOOL touchesOrdering;
@@ -285,19 +287,29 @@
 - (void)beginOrdering:(MenuItemView *)orderingView
 {
     self.touchesOrdering = YES;
+    
     self.itemViewForOrdering = orderingView;
+    [self toggleOrderingPlaceHolder:YES forItemViewsWithSelectedItemView:orderingView];
     
     [self.delegate itemsView:self prefersScrollingEnabled:NO];
 }
 
-- (void)orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
+- (void)endReordering
 {
+    // cleanup
+    
+    self.touchesOrdering = NO;
+    
+    [self toggleOrderingPlaceHolder:NO forItemViewsWithSelectedItemView:self.itemViewForOrdering];
+    self.itemViewForOrdering = nil;
+
+    [self.delegate itemsView:self prefersScrollingEnabled:YES];
+}
+
+- (void)orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
+{    
     const CGPoint touchPoint = [[touches anyObject] locationInView:self];
     MenuItemView *selectedItemView = self.itemViewForOrdering;
-    
-    if(!selectedItemView.isPlaceholder) {
-        selectedItemView.isPlaceholder = YES;
-    }
     
     MenuItem *selectedItem = selectedItemView.item;
     
@@ -318,22 +330,20 @@
             // detect the child/parent relationship changes and update the model
             if(vector.x > 0) {
                 // trying to make a child
-                MenuItem *previousItem = nil;
-                for(MenuItem *item in orderedItems) {
-                    if(item == selectedItem) {
-                        break;
-                    }
-                    previousItem = item;
-                }
+                MenuItem *previousItem = [orderedItems objectAtIndex:selectedItemIndex - 1];
                 MenuItem *parent = previousItem;
                 MenuItem *newParent = nil;
-                while (parent && parent != selectedItem.parent) {
+                while (parent) {
+                    if(parent == selectedItem.parent) {
+                        break;
+                    }
                     newParent = parent;
                     parent = parent.parent;
                 }
                 
                 if(newParent) {
                     selectedItem.parent = newParent;
+                    NSLog(@">>>>> newparent: %@", selectedItem.parent.name);
                     modelUpdated = YES;
                 }
                 
@@ -341,19 +351,24 @@
                 if(selectedItem.parent) {
                     
                     MenuItem *lastChildItem = nil;
-                    for(MenuItem *item in orderedItems) {
-                        // find the lastChildItem of the parent
-                        if(item.parent != selectedItem.parent) {
-                            continue;
+                    NSUInteger parentIndex = [orderedItems indexOfObject:selectedItem.parent];
+                    for(NSUInteger i = parentIndex + 1; i < orderedItems.count; i++) {
+                        MenuItem *child = [orderedItems objectAtIndex:i];
+                        if(child.parent == selectedItem.parent) {
+                            lastChildItem = child;
                         }
-                        lastChildItem = item;
+                        if(![lastChildItem isDescendantOfItem:selectedItem.parent]) {
+                            break;
+                        }
                     }
+                    NSLog(@"lastChildItem: %@", lastChildItem.name);
                     
                     // only the lastChildItem can move up the tree, otherwise it would break the visual child/parent relationship
                     if(selectedItem == lastChildItem) {
                         // try to move up the parent tree
                         MenuItem *parent = selectedItem.parent.parent;
                         selectedItem.parent = parent;
+                        NSLog(@"<<<<< newparent: %@", selectedItem.parent.name);
                         modelUpdated = YES;
                     }
                 }
@@ -503,15 +518,20 @@
             
             if(item.children.count) {
                 // if item has children, move the otherItem to ordered after the last descendant of the item
-                MenuItem *itemForOrderingOtherItemAfter = nil;
                 MenuItem *lastDescendant = item;
-                while (lastDescendant) {
-                    itemForOrderingOtherItemAfter = lastDescendant;
-                    lastDescendant = [lastDescendant.children lastObject];
+                
+                NSUInteger itemIndex = [orderedItems indexOfObject:item];
+                for(NSUInteger i = itemIndex + 1; i < orderedItems.count; i++) {
+                    MenuItem *anItem = [orderedItems objectAtIndex:i];
+                    if(![anItem isDescendantOfItem:item]) {
+                        break;
+                    }
+                    
+                    lastDescendant = anItem;
                 }
                 
-                [orderedItems insertObject:otherItem atIndex:[orderedItems indexOfObject:itemForOrderingOtherItemAfter] + 1];
-                itemViewForExchangingInStackView = [self itemViewForItem:itemForOrderingOtherItemAfter];
+                [orderedItems insertObject:otherItem atIndex:[orderedItems indexOfObject:lastDescendant] + 1];
+                itemViewForExchangingInStackView = [self itemViewForItem:lastDescendant];
 
             }else {
                 // move the otherItem to be ordered after the item
@@ -552,26 +572,18 @@
     return updated;
 }
 
-- (void)endReordering
-{
-    self.touchesOrdering = NO;
-    self.itemViewForOrdering.isPlaceholder = NO;
-    self.itemViewForOrdering = nil;
-    
-    [self.delegate itemsView:self prefersScrollingEnabled:YES];
-}
-
 - (MenuItem *)nextAvailableItemForOrderingAfterItem:(MenuItem *)item
 {
     MenuItem *availableItem = nil;
-    for(MenuItem *anItem in [self.menu.items reverseObjectEnumerator]) {
-        if(anItem == item) {
+    NSUInteger itemIndex = [self.menu.items indexOfObject:item];
+    
+    for(NSUInteger i = itemIndex + 1; itemIndex < self.menu.items.count; i++) {
+        
+        MenuItem *anItem = [self.menu.items objectAtIndex:i];
+        if(![anItem isDescendantOfItem:item]) {
+            availableItem = anItem;
             break;
         }
-        if([anItem isDescendantOfItem:item]) {
-            break;
-        }
-        availableItem = anItem;
     }
     
     return availableItem;
@@ -579,15 +591,36 @@
 
 - (MenuItem *)nextAvailableItemForOrderingBeforeItem:(MenuItem *)item
 {
-    MenuItem *availableItem = nil;
-    for(MenuItem *anItem in self.menu.items) {
-        if(anItem == item) {
-            break;
-        }
-        availableItem = anItem;
+    NSUInteger itemIndex = [self.menu.items indexOfObject:item];
+    if(itemIndex == 0) {
+        return nil;
     }
     
+    MenuItem *availableItem = [self.menu.items objectAtIndex:itemIndex - 1];
     return availableItem;
+}
+
+- (void)toggleOrderingPlaceHolder:(BOOL)showsPlaceholder forItemViewsWithSelectedItemView:(MenuItemView *)selectedItemView
+{
+    selectedItemView.isPlaceholder = showsPlaceholder;
+    
+    if(!selectedItemView.item.children.count) {
+        return;
+    }
+    
+    // find any descendant MenuItemViews that should also be set as a placeholder or not
+    NSArray *arrangedViews = self.stackView.arrangedSubviews;
+    
+    NSUInteger itemViewIndex = [arrangedViews indexOfObject:selectedItemView];
+    for(NSUInteger i = itemViewIndex + 1; i < arrangedViews.count; i++) {
+        UIView *view = [arrangedViews objectAtIndex:i];
+        if([view isKindOfClass:[MenuItemView class]]) {
+            MenuItemView *itemView = (MenuItemView *)view;
+            if([itemView.item isDescendantOfItem:selectedItemView.item]) {
+                itemView.isPlaceholder = showsPlaceholder;
+            }
+        }
+    }
 }
 
 - (void)orderingAnimationWithBlock:(void(^)())block
@@ -596,6 +629,7 @@
         block();
     } completion:nil];
 }
+
 
 #pragma mark - MenuItemsStackableViewDelegate
 
