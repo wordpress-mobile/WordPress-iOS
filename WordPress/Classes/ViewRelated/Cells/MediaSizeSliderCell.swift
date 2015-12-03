@@ -116,7 +116,7 @@ class MediaSizeSliderCell: UITableViewCell {
                 return NSLocalizedString("Original", comment: "Indicates an image will use its original size when uploaded.")
             }
             let format = NSLocalizedString("%dx%dpx", comment: "Max image size in pixels (e.g. 300x300px)")
-            return NSString(format: format, value, value) as String
+            return String(format: format, value, value)
         }
 
         var accessibleText: String {
@@ -124,7 +124,7 @@ class MediaSizeSliderCell: UITableViewCell {
                 return NSLocalizedString("Original", comment: "Indicates an image will use its original size when uploaded.")
             }
             let format = NSLocalizedString("%d pixels", comment: "Sepoken image size in pixels (e.g. 300 pixels)")
-            return NSString(format: format, value) as String
+            return String(format: format, value)
         }
 
         var sliderValue: Float {
