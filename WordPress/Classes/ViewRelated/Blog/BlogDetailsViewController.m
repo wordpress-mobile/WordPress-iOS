@@ -441,7 +441,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showCommentsForBlog:(Blog *)blog
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlogID:blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlog:blog];
     CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     controller.blog = blog;
     [self.navigationController pushViewController:controller animated:YES];
@@ -449,14 +449,14 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showPostListForBlog:(Blog *)blog
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPosts withBlogID:blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPosts withBlog:blog];
     PostListViewController *controller = [PostListViewController controllerWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showPageListForBlog:(Blog *)blog
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedPages withBlogID:blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedPages withBlog:blog];
     PageListViewController *controller = [PageListViewController controllerWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -471,14 +471,14 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showSettingsForBlog:(Blog *)blog
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedSettings withBlogID:blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedSettings withBlog:blog];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showStatsForBlog:(Blog *)blog
 {
-    [WPAppAnalytics track:WPAnalyticsStatStatsAccessed withBlogID:blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatStatsAccessed withBlog:blog];
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = blog;
     [self.navigationController pushViewController:statsView animated:YES];
@@ -486,7 +486,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showThemesForBlog:(Blog *)blog
 {
-    [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlogID:blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:blog];
     [self.navigationController pushViewController:viewController
                                          animated:YES];
@@ -494,7 +494,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showViewSiteForBlog:(Blog *)blog
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlogID:blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlog:blog];
     NSURL *targetURL = [NSURL URLWithString:blog.homeURL];
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
     webViewController.authToken = blog.authToken;
@@ -513,7 +513,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
         return;
     }
 
-    [WPAppAnalytics track:WPAnalyticsStatOpenedViewAdmin withBlogID:blog.dotComID];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedViewAdmin withBlog:blog];
     
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];

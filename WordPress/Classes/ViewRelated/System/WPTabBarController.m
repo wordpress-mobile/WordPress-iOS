@@ -298,7 +298,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
         WPPostViewController *editPostViewController;
         if (!options) {
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
-            [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlogID:[editPostViewController post].blog.dotComID];
+            [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:[editPostViewController post].blog];
         } else {
             if (options[WPPostViewControllerOptionOpenMediaPicker]) {
                 editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlogAndPhotoPost];
@@ -323,7 +323,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
             Blog *blog = [blogService lastUsedOrFirstBlog];
-            [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlogID:blog.dotComID];
+            [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar"} withBlog:blog];
         } else {
             editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
                                                                                       andContent:[options stringForKey:WPNewPostURLParamContentKey]

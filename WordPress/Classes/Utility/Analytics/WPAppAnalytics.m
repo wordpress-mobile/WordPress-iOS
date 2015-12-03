@@ -7,6 +7,7 @@
 #import "WPTabBarController.h"
 #import "WordPressComApiCredentials.h"
 #import "WordPressAppDelegate.h"
+#import "Blog.h"
 
 NSString* const WPAppAnalyticsDefaultsKeyUsageTracking = @"usage_tracking_enabled";
 NSString *const WPAppAnalyticsKeyBlogID = @"blog_id";
@@ -146,26 +147,44 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 
 /**
- *  @brief      Tracks stats with the blog_id when available
+ *  @brief      Tracks stats with the blog details when available
  */
-+ (void)track:(WPAnalyticsStat)stat withBlogID:(NSNumber*)blogID {
-    if (blogID) {
-        [WPAnalytics track:stat withProperties:@{WPAppAnalyticsKeyBlogID:blogID}];
-    }else {
-        [WPAnalytics track:stat];
-    }
++ (void)track:(WPAnalyticsStat)stat withBlog:(Blog *)blog {
+    [WPAppAnalytics track:stat withBlogID:blog.dotComID];
 }
 
 /**
  *  @brief      Tracks stats with the blog_id when available
  */
-+ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlogID:(NSNumber*)blogID {
-    NSParameterAssert(properties != nil);
++ (void)track:(WPAnalyticsStat)stat withBlogID:(NSNumber *)blogID {
+    [WPAppAnalytics track:stat withProperties:nil withBlogID:blogID];
+}
+
+/**
+ *  @brief      Tracks stats with the blog details when available
+ */
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlog:(Blog *)blog {
+    [WPAppAnalytics track:stat withProperties:properties withBlogID:blog.dotComID];
+}
+
+/**
+ *  @brief      Tracks stats with the blog_id when available
+ */
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlogID:(NSNumber *)blogID {
+    NSMutableDictionary *mutableProperties;
+    if (properties) {
+        mutableProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
+    } else {
+        mutableProperties = [NSMutableDictionary new];
+    }
+    
     if (blogID) {
-        NSMutableDictionary *mutableProperties = [NSMutableDictionary dictionaryWithDictionary:properties];
         [mutableProperties setObject:blogID forKey:WPAppAnalyticsKeyBlogID];
+    }
+    
+    if ([mutableProperties count] > 0) {
         [WPAnalytics track:stat withProperties:mutableProperties];
-    }else {
+    } else {
         [WPAnalytics track:stat];
     }
 }
