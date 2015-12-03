@@ -17,6 +17,7 @@
 #import <Simperium/Simperium.h>
 #import <Mixpanel/Mixpanel.h>
 #import "Blog.h"
+#import "WPAnalyticsTrackerWPCom.h"
 
 #import "WordPress-Swift.h"
 
@@ -227,6 +228,32 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
         [authenticationManager handlePushAuthenticationNotification:userInfo];
         return;
     }
+    
+    //Bump Analytics here
+    NSMutableDictionary *mutablePushProperties = [NSMutableDictionary new];
+    if ([userInfo numberForKey:@"note_id"]) {
+         [mutablePushProperties setObject:[[userInfo numberForKey:@"note_id"] stringValue]
+                                   forKey:@"push_notification_note_id"];
+    }
+    if ([userInfo stringForKey:@"type"]) {
+        [mutablePushProperties setObject:[userInfo stringForKey:@"type"]
+                                  forKey:@"push_notification_type"];
+    }
+    NSString *token = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
+    if (token) {
+        // Token should be always here
+        [mutablePushProperties setObject:token forKey:@"push_notification_token"];
+    }
+    [mutablePushProperties setObject:@"apple" forKey:@"push_notification_device_type"];
+    
+    if (state == UIApplicationStateBackground) {
+        // The notification is delivered when the app isn’t running in the foreground.
+        // [WPAnalytics track:stat withProperties:mutablePushProperties];
+    } else if (state == UIApplicationStateInactive) {
+        // The user taps the notification item in the notifications center
+        [WPAnalytics track:WPAnalyticsStatPushNotificationAlertPressed withProperties:mutablePushProperties];
+    }
+
     
     // Notification-Y Push Notifications
     if (state == UIApplicationStateInactive) {
