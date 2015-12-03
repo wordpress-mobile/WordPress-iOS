@@ -797,8 +797,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     NSParameterAssert(remoteSettings);
     
     // Transformables
-    NSSet *separatedBlacklistKeys = [remoteSettings.commentsBlacklistKeys uniqueStringComponentsSeparatedByWhitespace];
-    NSSet *separatedModerationKeys = [remoteSettings.commentsModerationKeys uniqueStringComponentsSeparatedByWhitespace];
+    NSSet *separatedBlacklistKeys = [remoteSettings.commentsBlacklistKeys uniqueStringComponentsSeparatedByNewline];
+    NSSet *separatedModerationKeys = [remoteSettings.commentsModerationKeys uniqueStringComponentsSeparatedByNewline];
     
     // General
     settings.name = remoteSettings.name;
@@ -847,8 +847,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
 
     // Transformables
-    NSString *joinedBlacklistKeys = [[settings.commentsBlacklistKeys allObjects] componentsJoinedByString:@" "];
-    NSString *joinedModerationKeys = [[settings.commentsModerationKeys allObjects] componentsJoinedByString:@" "];
+    NSString *joinedBlacklistKeys = [[settings.commentsBlacklistKeys allObjects] componentsJoinedByString:@"\n"];
+    NSString *joinedModerationKeys = [[settings.commentsModerationKeys allObjects] componentsJoinedByString:@"\n"];
     
     // General
     remoteSettings.name = settings.name;
