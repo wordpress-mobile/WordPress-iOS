@@ -102,6 +102,8 @@
 
 - (BOOL)hasVisibleWPComAccounts;
 
+- (BOOL)hasAnyJetpackBlogs;
+
 - (NSInteger)blogCountForAllAccounts;
 
 - (NSInteger)blogCountSelfHosted;
