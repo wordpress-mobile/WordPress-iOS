@@ -783,13 +783,14 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     __typeof(self) __weak weakSelf = self;
     void (^successBlock)() = ^void() {
+        NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+        properties[WPAppAnalyticsKeyPostID] = self.post.postID;
         NSNumber *siteID = self.post.siteID;
-        if(siteID) {
-            [WPAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:@{ WPAppAnalyticsKeyBlogID:siteID}];
-        }else {
-            [WPAnalytics track:WPAnalyticsStatReaderArticleCommentedOn];
+        if (siteID) {
+            properties[WPAppAnalyticsKeyBlogID] = siteID;
         }
-        
+        [WPAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
+
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
     };

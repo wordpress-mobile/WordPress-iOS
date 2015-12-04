@@ -7,10 +7,11 @@
 #import "WPTabBarController.h"
 #import "WordPressComApiCredentials.h"
 
-NSString* const WPAppAnalyticsDefaultsKeyUsageTracking = @"usage_tracking_enabled";
-NSString *const WPAppAnalyticsKeyBlogID = @"blog_id";
-static NSString* const WPAppAnalyticsKeyLastVisibleScreen = @"last_visible_screen";
-static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
+NSString * const WPAppAnalyticsDefaultsKeyUsageTracking = @"usage_tracking_enabled";
+NSString * const WPAppAnalyticsKeyBlogID = @"blog_id";
+NSString * const WPAppAnalyticsKeyPostID = @"post_id";
+static NSString * const WPAppAnalyticsKeyLastVisibleScreen = @"last_visible_screen";
+static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 @interface WPAppAnalytics ()
 
