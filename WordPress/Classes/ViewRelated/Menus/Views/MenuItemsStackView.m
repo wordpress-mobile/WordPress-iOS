@@ -6,6 +6,7 @@
 #import "MenuItemView.h"
 #import "MenuItemInsertionView.h"
 #import "MenusDesign.h"
+#import "MenuItemsVisualOrderingView.h"
 
 @interface MenuItemsStackView () <MenuItemsStackableViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate>
 
@@ -19,6 +20,7 @@
 @property (nonatomic, assign) CGPoint touchesMovedLocation;
 @property (nonatomic, assign) BOOL touchesOrdering;
 @property (nonatomic, strong) MenuItemView *itemViewForOrdering;
+@property (nonatomic, strong) MenuItemsVisualOrderingView *visualOrderingView;
 
 @end
 
@@ -32,6 +34,9 @@
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.stackView.alignment = UIStackViewAlignmentTop;
     self.stackView.spacing = 0.0;
+    
+    self.touchesBeganLocation = CGPointZero;
+    self.touchesMovedLocation = CGPointZero;
     
     [self setupStyling];
 }
@@ -51,9 +56,9 @@
 
 - (void)reloadItemViews
 {
-    for(MenuItemsStackableView *itemView in self.stackView.arrangedSubviews) {
-        [self.stackView removeArrangedSubview:itemView];
-        [itemView removeFromSuperview];
+    for(MenuItemsStackableView *stackableView in self.stackView.arrangedSubviews) {
+        [self.stackView removeArrangedSubview:stackableView];
+        [stackableView removeFromSuperview];
     }
     
     self.itemViews = [NSMutableSet set];
@@ -220,9 +225,20 @@
 
 #pragma mark - touches
 
-- (void)resetTouchesMovedObservationVector
+- (void)resetTouchesMovedObservationVectorX
 {
-    self.touchesBeganLocation = self.touchesMovedLocation;
+    CGPoint reset = CGPointZero;
+    reset.x = self.touchesMovedLocation.x;
+    reset.y = self.touchesBeganLocation.y;
+    self.touchesBeganLocation = reset;
+}
+
+- (void)resetTouchesMovedObservationVectorY
+{
+    CGPoint reset = CGPointZero;
+    reset.y = self.touchesMovedLocation.y;
+    reset.x = self.touchesBeganLocation.x;
+    self.touchesBeganLocation = reset;
 }
 
 - (void)updateWithTouchesStarted:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
@@ -289,7 +305,10 @@
     self.touchesOrdering = YES;
     
     self.itemViewForOrdering = orderingView;
+    
     [self toggleOrderingPlaceHolder:YES forItemViewsWithSelectedItemView:orderingView];
+    [self prepareVisualOrderingViewWithItemView:orderingView];
+    [self showVisualOrderingView];
     
     [self.delegate itemsView:self prefersScrollingEnabled:NO];
 }
@@ -301,6 +320,8 @@
     self.touchesOrdering = NO;
     
     [self toggleOrderingPlaceHolder:NO forItemViewsWithSelectedItemView:self.itemViewForOrdering];
+    [self hideVisualOrderingView];
+    
     self.itemViewForOrdering = nil;
 
     [self.delegate itemsView:self prefersScrollingEnabled:YES];
@@ -319,6 +340,8 @@
     // first check to see if we should pay attention to touches that might signal a change in indentation
     const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > ((selectedItemView.frame.size.width * 5.0) / 100); // a travel of x% should be considered for updating relationships
     BOOL modelUpdated = NO;
+    
+    [self.visualOrderingView updateWithTouchLocation:touchPoint vector:vector];
     
     if(detectedHorizontalOrderingTouches) {
         
@@ -343,7 +366,6 @@
                 
                 if(newParent) {
                     selectedItem.parent = newParent;
-                    NSLog(@">>>>> newparent: %@", selectedItem.parent.name);
                     modelUpdated = YES;
                 }
                 
@@ -361,14 +383,12 @@
                             break;
                         }
                     }
-                    NSLog(@"lastChildItem: %@", lastChildItem.name);
                     
                     // only the lastChildItem can move up the tree, otherwise it would break the visual child/parent relationship
                     if(selectedItem == lastChildItem) {
                         // try to move up the parent tree
                         MenuItem *parent = selectedItem.parent.parent;
                         selectedItem.parent = parent;
-                        NSLog(@"<<<<< newparent: %@", selectedItem.parent.name);
                         modelUpdated = YES;
                     }
                 }
@@ -376,7 +396,7 @@
         }
         
         // reset the vector to observe the next delta of interest
-        [self resetTouchesMovedObservationVector];
+        [self resetTouchesMovedObservationVectorX];
     }
     
     if(!CGRectContainsPoint(selectedItemView.frame, touchPoint)) {
@@ -419,6 +439,8 @@
                 parentItem = parentItem.parent;
             }
         }
+        
+        [self.visualOrderingView updateForOrderingMenuItemsModelChange];
     }
 }
 
@@ -630,6 +652,39 @@
     } completion:nil];
 }
 
+- (void)prepareVisualOrderingViewWithItemView:(MenuItemView *)selectedItemView
+{
+    MenuItemsVisualOrderingView *orderingView = self.visualOrderingView;
+    if(!orderingView) {
+        orderingView = [[MenuItemsVisualOrderingView alloc] initWithFrame:self.stackView.bounds];
+        orderingView.translatesAutoresizingMaskIntoConstraints = NO;
+        orderingView.backgroundColor = [UIColor clearColor];
+        orderingView.userInteractionEnabled = NO;
+        orderingView.hidden = YES;
+        
+        [self addSubview:orderingView];
+        [NSLayoutConstraint activateConstraints:@[
+                                                  [orderingView.topAnchor constraintEqualToAnchor:self.stackView.topAnchor],
+                                                  [orderingView.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor],
+                                                  [orderingView.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor],
+                                                  [orderingView.bottomAnchor constraintEqualToAnchor:self.stackView.bottomAnchor]
+                                                  ]];
+        
+        self.visualOrderingView = orderingView;
+    }
+    
+    [self.visualOrderingView setVisualOrderingForItemView:selectedItemView];
+}
+
+- (void)showVisualOrderingView
+{
+    self.visualOrderingView.hidden = NO;
+}
+
+- (void)hideVisualOrderingView
+{
+    self.visualOrderingView.hidden = YES;
+}
 
 #pragma mark - MenuItemsStackableViewDelegate
 

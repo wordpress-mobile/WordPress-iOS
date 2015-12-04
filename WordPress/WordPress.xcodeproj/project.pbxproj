@@ -37,6 +37,7 @@
 		00F2E3FA166EEFBE00D0527C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3653158F2D4500419A93 /* UIKit.framework */; };
 		00F2E3FB166EEFE100D0527C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E10B3651158F2D3F00419A93 /* QuartzCore.framework */; };
 		0802F4B01C05467A006C1A4E /* MenusService.m in Sources */ = {isa = PBXBuildFile; fileRef = 08BB107E1BB5D82100DE699D /* MenusService.m */; };
+		080CBDA41C10F18A00ECC7A9 /* MenuItemsVisualOrderingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 080CBDA31C10F18A00ECC7A9 /* MenuItemsVisualOrderingView.m */; };
 		080E2C2F1BEC2D4E001E8168 /* MenusSelectionItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 080E2C2E1BEC2D4E001E8168 /* MenusSelectionItemView.m */; };
 		08160F271BF66D86004CB971 /* MenuItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08160F261BF66D86004CB971 /* MenuItemView.m */; };
 		08160F2A1BF6B605004CB971 /* MenuItemInsertionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08160F291BF6B605004CB971 /* MenuItemInsertionView.m */; };
@@ -738,6 +739,8 @@
 
 /* Begin PBXFileReference section */
 		052EFF90F810139789A446FB /* Pods-WordPressTodayWidget.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.release-internal.xcconfig"; sourceTree = "<group>"; };
+		080CBDA21C10F18A00ECC7A9 /* MenuItemsVisualOrderingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemsVisualOrderingView.h; sourceTree = "<group>"; };
+		080CBDA31C10F18A00ECC7A9 /* MenuItemsVisualOrderingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemsVisualOrderingView.m; sourceTree = "<group>"; };
 		080E2C2D1BEC2D4E001E8168 /* MenusSelectionItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionItemView.h; sourceTree = "<group>"; };
 		080E2C2E1BEC2D4E001E8168 /* MenusSelectionItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionItemView.m; sourceTree = "<group>"; };
 		08160F251BF66D86004CB971 /* MenuItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemView.h; sourceTree = "<group>"; };
@@ -2011,6 +2014,8 @@
 				085548741BE15B9B004A1CBD /* MenuDetailsView.m */,
 				08F10C2C1BF5286C00130AFF /* MenuItemsStackView.h */,
 				08F10C2D1BF5286C00130AFF /* MenuItemsStackView.m */,
+				080CBDA21C10F18A00ECC7A9 /* MenuItemsVisualOrderingView.h */,
+				080CBDA31C10F18A00ECC7A9 /* MenuItemsVisualOrderingView.m */,
 				08F10C2F1BF5377200130AFF /* MenuItemsStackableView.h */,
 				08F10C301BF5377200130AFF /* MenuItemsStackableView.m */,
 				08160F281BF6B605004CB971 /* MenuItemInsertionView.h */,
@@ -4648,6 +4653,7 @@
 				5DA5BF4418E32DCF005F11F9 /* Theme.m in Sources */,
 				ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */,
 				0884D9911BB4760C001CDC7B /* RemoteMenu.m in Sources */,
+				080CBDA41C10F18A00ECC7A9 /* MenuItemsVisualOrderingView.m in Sources */,
 				B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */,
 				082108A31BE96D760084C522 /* MenusActionButton.m in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
