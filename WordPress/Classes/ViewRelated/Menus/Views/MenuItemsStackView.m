@@ -471,21 +471,26 @@
     const BOOL orderingTouchesBeforeOtherItem = touchLocation.y < CGRectGetMidY(otherItemView.frame);
     const BOOL orderingTouchesAfterOtherItem = !orderingTouchesBeforeOtherItem; // using additional BOOL for readability
     
-    // check to make sure we're only trying to order items based on the order they occur
-    // prevents touches that skip around the screen and break the ordering by ordering with an otherItem not adjacent to the item
-    if(itemIsOrderedBeforeOtherItem) {
-        if(orderingTouchesAfterOtherItem) {
-            if([self nextAvailableItemForOrderingAfterItem:item] != otherItem) {
-                return NO;
+    void (^moveItemAndDescendantsOrderingWithOtherItem)(BOOL) = ^ (BOOL afterOtherItem) {
+        
+        // get the item and its descendants
+        NSMutableArray *movingItems = [NSMutableArray array];
+        for(NSUInteger i = [orderedItems indexOfObject:item]; i < orderedItems.count; i++) {
+            MenuItem *orderedItem = [orderedItems objectAtIndex:i];
+            if(orderedItem != item && ![orderedItem isDescendantOfItem:item]) {
+                break;
             }
+            [movingItems addObject:orderedItem];
         }
-    }else {
-        if(orderingTouchesBeforeOtherItem) {
-            if([self nextAvailableItemForOrderingBeforeItem:item] != otherItem) {
-                return NO;
-            }
-        }
-    }
+        
+        [orderedItems removeObjectsInArray:movingItems];
+        
+        // insert the items in new position
+        NSUInteger otherItemIndex = [orderedItems indexOfObject:otherItem];
+        NSUInteger insertionIndex = afterOtherItem ? otherItemIndex + 1 : otherItemIndex;
+        
+        [orderedItems insertObjects:movingItems atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(insertionIndex, movingItems.count)]];
+    };
     
     if(itemIsOrderedBeforeOtherItem) {
         // descending in ordering
@@ -512,15 +517,7 @@
                 item.parent = otherItem.parent;
             }
             
-            [orderedItems removeObject:otherItem];
-            [orderedItems insertObject:otherItem atIndex:[orderedItems indexOfObject:item]];
-            
-            // update the stackView arrangedSubviews ordering
-            [self.stackView sendSubviewToBack:otherItemView];
-            [self orderingAnimationWithBlock:^{
-                NSUInteger exchangeItemViewIndex = [[self.stackView arrangedSubviews] indexOfObject:itemView];
-                [self.stackView insertArrangedSubview:otherItemView atIndex:exchangeItemViewIndex];
-            }];
+            moveItemAndDescendantsOrderingWithOtherItem(YES);
             
             updated = YES;
         }
@@ -534,39 +531,7 @@
             // assuming the item will become the parent of the otherItem's parent, or nil
             item.parent = otherItem.parent;
             
-            [orderedItems removeObject:otherItem];
-            
-            MenuItemView *itemViewForExchangingInStackView = nil;
-            
-            if(item.children.count) {
-                // if item has children, move the otherItem to ordered after the last descendant of the item
-                MenuItem *lastDescendant = item;
-                
-                NSUInteger itemIndex = [orderedItems indexOfObject:item];
-                for(NSUInteger i = itemIndex + 1; i < orderedItems.count; i++) {
-                    MenuItem *anItem = [orderedItems objectAtIndex:i];
-                    if(![anItem isDescendantOfItem:item]) {
-                        break;
-                    }
-                    
-                    lastDescendant = anItem;
-                }
-                
-                [orderedItems insertObject:otherItem atIndex:[orderedItems indexOfObject:lastDescendant] + 1];
-                itemViewForExchangingInStackView = [self itemViewForItem:lastDescendant];
-
-            }else {
-                // move the otherItem to be ordered after the item
-                [orderedItems insertObject:otherItem atIndex:[orderedItems indexOfObject:item] + 1];
-                itemViewForExchangingInStackView = itemView;
-            }
-            
-            // update the stackView arrangedSubviews ordering
-            [self.stackView sendSubviewToBack:otherItemView];
-            [self orderingAnimationWithBlock:^{
-                NSUInteger exchangeItemViewIndex = [[self.stackView arrangedSubviews] indexOfObject:itemViewForExchangingInStackView];
-                [self.stackView insertArrangedSubview:otherItemView atIndex:exchangeItemViewIndex];
-            }];
+            moveItemAndDescendantsOrderingWithOtherItem(NO);
             
             updated = YES;
             
@@ -588,6 +553,18 @@
     }
     
     if(updated) {
+        
+        // update the stackView arrangedSubviews ordering to reflect the ordering in orderedItems
+        [self.stackView sendSubviewToBack:otherItemView];
+        [self orderingAnimationWithBlock:^{
+            for(NSUInteger i = 0; i < orderedItems.count; i++) {
+                
+                MenuItem *item = [orderedItems objectAtIndex:i];
+                MenuItemView *itemView = [self itemViewForItem:item];
+                [self.stackView insertArrangedSubview:itemView atIndex:i];
+            }
+        }];
+        
         self.menu.items = orderedItems;
     }
     
