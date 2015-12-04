@@ -22,7 +22,8 @@
 #import <WPMediaPicker/WPMediaPicker.h>
 #import "WordPress-Swift.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
-#import "NSString+Helpers.h"
+#import "NSString+Helpers.h"	
+#import "WPAppAnalytics.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
@@ -366,7 +367,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 
     if (![self.post hasUnsavedChanges]) {
-        [WPAnalytics track:WPAnalyticsStatEditorClosed];
+        NSNumber *dotComID = self.post.blog.dotComID;
+        if (dotComID) {
+            [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
+        }else {
+            [WPAnalytics track:WPAnalyticsStatEditorClosed];
+        }
         [self discardChanges];
         [self dismissEditView];
         return;
@@ -383,7 +389,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                 handler:^(UIAlertAction * action) {
                                     [self discardChanges];
                                     [self dismissEditView];
-                                    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+                                    NSNumber *dotComID = self.post.blog.dotComID;
+                                    if (dotComID) {
+                                        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
+                                    }else {
+                                        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+                                    }
                                 }];
     
     if ([self.post.original.status isEqualToString:PostStatusDraft]) {
@@ -664,12 +675,16 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         properties[@"word_diff_count"] = @(wordCount - originalWordCount);
     }
 
+    NSNumber *dotComID = [self.post blog].dotComID;
+    if (dotComID) {
+        properties[WPAppAnalyticsKeyBlogID] = dotComID;
+    }
+    
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Publish", nil)]) {
         properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
         properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = @([self.post hasVideo]);
-        
         [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
         [WPAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties];
@@ -959,7 +974,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)insertMedia:(Media *)media
 {
-    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
+    NSNumber *dotComID = [self.post blog].dotComID;
+    if (dotComID) {
+        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
+    }
     
     NSString *prefix = @"<br /><br />";
 

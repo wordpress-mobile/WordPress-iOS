@@ -188,14 +188,19 @@
 
 - (void)testUniqueStringComponentsSeparatedByWhitespaceCorrectlyReturnsASetWithItsWords
 {
-    NSString *testString = @"first second third fourth fifth";
-    NSSet *testSet = [testString uniqueStringComponentsSeparatedByWhitespace];
-    XCTAssert([testSet containsObject:@"first"], @"Missing word");
-    XCTAssert([testSet containsObject:@"second"], @"Missing word");
-    XCTAssert([testSet containsObject:@"third"], @"Missing word");
-    XCTAssert([testSet containsObject:@"fourth"], @"Missing word");
-    XCTAssert([testSet containsObject:@"fifth"], @"Missing word");
-    XCTAssert([testSet count] == 5, @"Invalid count");
+    NSString *testString = @"first\nsecond third\nfourth fifth";
+    NSSet *testSet = [testString uniqueStringComponentsSeparatedByNewline];
+    XCTAssert([testSet containsObject:@"first"], @"Missing line");
+    XCTAssert([testSet containsObject:@"second third"], @"Missing line");
+    XCTAssert([testSet containsObject:@"fourth fifth"], @"Missing line");
+    XCTAssert([testSet count] == 3, @"Invalid count");
+}
+
+- (void)testUniqueStringComponentsSeparatedByWhitespaceDoesntAddEmptyStrings
+{
+    NSString *testString = @"";
+    NSSet *testSet = [testString uniqueStringComponentsSeparatedByNewline];
+    XCTAssert([testSet count] == 0, @"Invalid count");
 }
 
 @end

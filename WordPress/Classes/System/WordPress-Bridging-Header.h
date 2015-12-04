@@ -36,6 +36,7 @@
 #import "RemoteReaderTopic.h"
 
 #import "ServiceRemoteREST.h"
+#import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingsTextViewController.h"
 #import "SourcePostAttribution.h"
