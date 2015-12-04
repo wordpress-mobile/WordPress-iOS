@@ -30,11 +30,11 @@ class AccountSettingsRemote: ServiceRemoteREST {
         api.POST(path,
             parameters: parameters,
             success: {
-                (operation, responseObject) -> Void in
+                operation, responseObject in
 
                 success()
             },
-            failure: { (operation, error) -> Void in
+            failure: { operation, error in
                 failure(error)
         })
     }
