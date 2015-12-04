@@ -134,7 +134,7 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
     if(_isPlaceholder != isPlaceholder) {
         _isPlaceholder = isPlaceholder;
         
-        self.contentView.alpha = isPlaceholder ? 0.5 : 1.0;
+        self.contentView.alpha = isPlaceholder ? 0.45 : 1.0;
         
         [self setNeedsDisplay];
         [self.contentView setNeedsDisplay];
