@@ -4,13 +4,13 @@ let AccountSettingsServiceChangeSaveFailedNotification = "AccountSettingsService
 
 struct AccountSettingsService {
     let remote: AccountSettingsRemote
-    let accountID: Int
+    let userID: Int
 
     private let context = ContextManager.sharedInstance().mainContext
 
-    init(accountID: Int, api: WordPressComApi) {
+    init(userID: Int, api: WordPressComApi) {
         self.remote = AccountSettingsRemote(api: api)
-        self.accountID = accountID
+        self.userID = userID
     }
 
     func refreshSettings(completion: (Bool) -> Void) {
@@ -29,7 +29,7 @@ struct AccountSettingsService {
     }
 
     func subscribeSettings(next: AccountSettings? -> Void) -> AccountSettingsSubscription {
-        return AccountSettingsSubscription(accountID: accountID, context: context, changed: { (managedSettings) -> Void in
+        return AccountSettingsSubscription(userID: userID, context: context, changed: { (managedSettings) -> Void in
             let settings = managedSettings.map({ AccountSettings(managed: $0) })
             next(settings)
         })
@@ -54,8 +54,8 @@ struct AccountSettingsService {
     }
 
     private func applyChange(change: AccountSettingsChange) throws -> AccountSettingsChange {
-        guard let settings = accountSettingsWithID(accountID) else {
-            DDLogSwift.logError("Tried to apply a change to nonexistent settings (ID: \(accountID)")
+        guard let settings = accountSettingsWithID(userID) else {
+            DDLogSwift.logError("Tried to apply a change to nonexistent settings (ID: \(userID)")
             throw Errors.NotFound
         }
 
@@ -67,27 +67,27 @@ struct AccountSettingsService {
     }
 
     private func updateSettings(settings: AccountSettings) {
-        if let managedSettings = accountSettingsWithID(accountID) {
+        if let managedSettings = accountSettingsWithID(userID) {
             managedSettings.updateWith(settings)
         } else {
-            createAccountSettings(accountID, settings: settings)
+            createAccountSettings(userID, settings: settings)
         }
 
         ContextManager.sharedInstance().saveContext(context)
     }
 
-    private func accountSettingsWithID(accountID: Int) -> ManagedAccountSettings? {
+    private func accountSettingsWithID(userID: Int) -> ManagedAccountSettings? {
         let request = NSFetchRequest(entityName: ManagedAccountSettings.entityName)
-        request.predicate = NSPredicate(format: "account.userID = %d", accountID)
+        request.predicate = NSPredicate(format: "account.userID = %d", userID)
         request.fetchLimit = 1
         let results = (try? context.executeFetchRequest(request) as! [ManagedAccountSettings]) ?? []
         return results.first
     }
 
-    private func createAccountSettings(accountID: Int, settings: AccountSettings) {
+    private func createAccountSettings(userID: Int, settings: AccountSettings) {
         let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.findAccountWithUserID(accountID) else {
-            DDLogSwift.logError("Tried to create settings for a missing account (ID: \(accountID)): \(settings)")
+        guard let account = accountService.findAccountWithUserID(userID) else {
+            DDLogSwift.logError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
             return
         }
 
@@ -104,24 +104,24 @@ struct AccountSettingsService {
 class AccountSettingsSubscription {
     private var subscription: NSObjectProtocol? = nil
 
-    init(accountID: Int, context: NSManagedObjectContext, changed: ManagedAccountSettings? -> Void) {
+    init(userID: Int, context: NSManagedObjectContext, changed: ManagedAccountSettings? -> Void) {
         subscription = NSNotificationCenter.defaultCenter().addObserverForName(NSManagedObjectContextDidSaveNotification, object: context, queue: NSOperationQueue.mainQueue()) {
             [unowned self]
             notification in
             // FIXME: Inspect changed objects in notification instead of fetching for performance (@koke 2015-11-23)
-            let account = self.fetchAccount(accountID, context: context)
+            let account = self.fetchAccount(userID, context: context)
             changed(account)
         }
 
-        let initial = fetchAccount(accountID, context: context)
+        let initial = fetchAccount(userID, context: context)
         dispatch_async(dispatch_get_main_queue()) {
             changed(initial)
         }
     }
 
-    private func fetchAccount(accountID: Int, context: NSManagedObjectContext) -> ManagedAccountSettings? {
+    private func fetchAccount(userID: Int, context: NSManagedObjectContext) -> ManagedAccountSettings? {
         let request = NSFetchRequest(entityName: ManagedAccountSettings.entityName)
-        request.predicate = NSPredicate(format: "account.userID = %d", accountID)
+        request.predicate = NSPredicate(format: "account.userID = %d", userID)
         request.fetchLimit = 1
         let results = (try? context.executeFetchRequest(request) as! [ManagedAccountSettings]) ?? []
         return results.first
