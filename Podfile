@@ -53,6 +53,7 @@ target :WordPressTest, :exclusive => true do
   pod 'OCMock', '3.1.2'
   pod 'Specta', '1.0.5'
   pod 'Expecta', '0.3.2'
+  pod 'Nimble', '~> 3.0.0'
 end
 
 target 'UITests', :exclusive => true do
