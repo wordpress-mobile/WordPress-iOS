@@ -431,9 +431,10 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     NSString *isOfflineView = [ReachabilityUtils isInternetReachable] ? @"no" : @"yes";
     NSString *detailType = (self.post.topic.type == ReaderSiteTopic.TopicType) ? ReaderDetailTypePreviewSite : ReaderDetailTypeNormal;
 
-    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:3];
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     properties[ReaderDetailTypeKey] = detailType;
     properties[ReaderDetailOfflineKey] = isOfflineView;
+    properties[WPAppAnalyticsKeyPostID] = self.post.postID;
     
     NSNumber *siteID = self.post.siteID;
     if(siteID) {
