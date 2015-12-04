@@ -107,14 +107,14 @@ class AccountSettingsSubscription {
     init(accountID: Int, context: NSManagedObjectContext, changed: ManagedAccountSettings? -> Void) {
         subscription = NSNotificationCenter.defaultCenter().addObserverForName(NSManagedObjectContextDidSaveNotification, object: context, queue: NSOperationQueue.mainQueue()) {
             [unowned self]
-            (notification) -> Void in
+            notification in
             // FIXME: Inspect changed objects in notification instead of fetching for performance (@koke 2015-11-23)
             let account = self.fetchAccount(accountID, context: context)
             changed(account)
         }
 
         let initial = fetchAccount(accountID, context: context)
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+        dispatch_async(dispatch_get_main_queue()) {
             changed(initial)
         }
     }
