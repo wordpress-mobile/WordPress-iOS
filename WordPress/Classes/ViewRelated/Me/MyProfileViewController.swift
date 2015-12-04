@@ -4,7 +4,7 @@ import WordPressShared
 class MyProfileViewController: UITableViewController {
     var account: WPAccount! {
         didSet {
-            self.service = AccountSettingsService(accountID: account.userID.integerValue, api: account.restApi)
+            self.service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
         }
     }
 
