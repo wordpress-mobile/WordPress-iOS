@@ -11,6 +11,7 @@ NSString * const WPAppAnalyticsDefaultsKeyUsageTracking = @"usage_tracking_enabl
 NSString * const WPAppAnalyticsKeyBlogID = @"blog_id";
 NSString * const WPAppAnalyticsKeyPostID = @"post_id";
 NSString * const WPAppAnalyticsKeyFeedID = @"feed_id";
+NSString * const WPAppAnalyticsKeyFeedItemID = @"feed_item_id";
 static NSString * const WPAppAnalyticsKeyLastVisibleScreen = @"last_visible_screen";
 static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
