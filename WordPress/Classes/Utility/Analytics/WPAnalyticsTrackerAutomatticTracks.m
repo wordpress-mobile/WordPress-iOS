@@ -389,7 +389,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"posts" };
             break;
-        case WPAnalyticsStatOpenedSettings:
+        case WPAnalyticsStatOpenedSiteSettings:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"settings" };
             break;
