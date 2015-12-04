@@ -434,10 +434,11 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     properties[ReaderDetailTypeKey] = detailType;
     properties[ReaderDetailOfflineKey] = isOfflineView;
-    properties[WPAppAnalyticsKeyPostID] = self.post.postID;
     if (self.post.isExternal) {
         properties[WPAppAnalyticsKeyFeedID] = self.post.siteID;
+        properties[WPAppAnalyticsKeyFeedItemID] = self.post.postID;
     } else {
+        properties[WPAppAnalyticsKeyPostID] = self.post.postID;
         properties[WPAppAnalyticsKeyBlogID] = self.post.siteID;
     }
     [WPAnalytics track:WPAnalyticsStatReaderArticleOpened withProperties:properties];
