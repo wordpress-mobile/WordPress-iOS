@@ -16,7 +16,7 @@ class MediaSizeSliderCell: UITableViewCell {
         }
     }
 
-    static let height = 108.0
+    static let height: Float = 108.0
 
     // MARK: - Public interface
     var value: Int {

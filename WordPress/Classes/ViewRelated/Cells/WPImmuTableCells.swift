@@ -151,7 +151,7 @@ struct SwitchRow: CustomCellImmuTableRow {
 struct MediaSizeRow: CustomNibImmuTableRow {
     typealias CellType = MediaSizeSliderCell
     static let nib = UINib(nibName: "MediaSizeSliderCell", bundle: NSBundle(forClass: CellType.self))
-    static let customHeight: Float? = 108.0
+    static let customHeight: Float? = CellType.height
 
     let title: String
     let value: Int
