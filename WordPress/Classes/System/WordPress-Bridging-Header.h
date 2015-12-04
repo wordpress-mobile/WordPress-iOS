@@ -11,6 +11,8 @@
 
 #import "DDLogSwift.h"
 
+#import "MediaService.h"
+
 #import "Notification.h"
 #import "Notification+Internals.h"
 #import "NotificationsManager.h"
