@@ -95,16 +95,10 @@ public class ThemeBrowserCell : UICollectionViewCell
         super.awakeFromNib()
         
         layer.borderWidth = 1
-        
         infoBar.layer.borderWidth = 1
-        infoBar.layer.borderColor = Styles.barDividerColor.CGColor
-
         nameLabel.font = Styles.cellNameFont
-        
         infoLabel.font = Styles.cellInfoFont
-        
         actionButton.layer.borderWidth = 1
-        actionButton.layer.borderColor = Styles.barDividerColor.CGColor
     }
     
     override public func prepareForReuse() {
@@ -125,12 +119,18 @@ public class ThemeBrowserCell : UICollectionViewCell
             if theme.isCurrentTheme() {
                 backgroundColor = Styles.activeCellBackgroundColor
                 layer.borderColor = Styles.activeCellBackgroundColor.CGColor
+                infoBar.layer.borderColor = Styles.activeCellDividerColor.CGColor
+                actionButton.layer.borderColor = Styles.activeCellDividerColor.CGColor
+                
                 nameLabel.textColor = Styles.activeCellNameColor
                 infoLabel.textColor = Styles.activeCellInfoColor
                 infoLabel.text = NSLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
             } else {
                 backgroundColor = Styles.inactiveCellBackgroundColor
                 layer.borderColor = Styles.barBorderColor.CGColor
+                infoBar.layer.borderColor = Styles.barDividerColor.CGColor
+                actionButton.layer.borderColor = Styles.barDividerColor.CGColor
+
                 nameLabel.textColor = Styles.inactiveCellNameColor
                 if theme.isPremium() {
                     infoLabel.textColor = Styles.inactiveCellPriceColor
