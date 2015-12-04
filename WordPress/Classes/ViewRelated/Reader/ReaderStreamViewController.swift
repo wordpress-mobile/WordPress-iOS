@@ -1260,9 +1260,10 @@ import WordPressComAnalytics
         let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
+        let siteIDKey = post.isExternal ? "feed_id" : "blog_id"
         let properties = [
             "URL": post.blogURL,
-            "blog_id": post.siteID,
+            siteIDKey: post.siteID,
             "post_id": post.postID
         ] as [NSObject : AnyObject]
         WPAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
@@ -1286,9 +1287,10 @@ import WordPressComAnalytics
         let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
         navigationController?.pushViewController(controller, animated: true)
 
+        let siteIDKey = post.isExternal ? "feed_id" : "blog_id"
         let properties = [
             "tag": post.primaryTagSlug,
-            "blog_id": post.siteID,
+            siteIDKey: post.siteID,
             "post_id": post.postID
             ] as [NSObject : AnyObject]
         WPAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
