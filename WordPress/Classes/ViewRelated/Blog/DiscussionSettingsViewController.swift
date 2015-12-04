@@ -25,6 +25,12 @@ public class DiscussionSettingsViewController : UITableViewController
         setupTableView()
     }
     
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadSelectedRow()
+        tableView.deselectSelectedRowWithAnimation(true)
+    }
+    
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         saveSettingsIfNeeded()
@@ -123,8 +129,6 @@ public class DiscussionSettingsViewController : UITableViewController
     
     // MARK: - UITableViewDelegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectSelectedRowWithAnimation(true)
-        
         rowAtIndexPath(indexPath).handler?(tableView)
     }
     
@@ -142,7 +146,7 @@ public class DiscussionSettingsViewController : UITableViewController
         
         switch row.style {
         case .Value1:
-            return WPTableViewCell(style: .Default, reuseIdentifier: row.style.rawValue)
+            return WPTableViewCell(style: .Value1, reuseIdentifier: row.style.rawValue)
         case .Switch:
             return SwitchTableViewCell(style: .Default, reuseIdentifier: row.style.rawValue)
         }
@@ -399,36 +403,42 @@ public class DiscussionSettingsViewController : UITableViewController
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Close Commenting", comment: "Settings: Close comments after X period"),
+                details:    self.detailsForCloseCommenting,
                 handler:    {   [weak self] in
                                 self?.pressedCloseCommenting($0)
                             }),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Sort By", comment: "Settings: Comments Sort Order"),
+                details:    self.detailsForSortBy,
                 handler:    {   [weak self] in
                                 self?.pressedSortBy($0)
                             }),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Threading", comment: "Settings: Comments Threading preferences"),
+                details:    self.detailsForThreading,
                 handler:    {   [weak self] in
                                 self?.pressedThreading($0)
                             }),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Paging", comment: "Settings: Comments Paging preferences"),
+                details:    self.detailsForPaging,
                 handler:    {   [weak self] in
                                 self?.pressedPaging($0)
                             }),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Automatically Approve", comment: "Settings: Comments Approval settings"),
+                details:    self.detailsForAutomaticallyApprove,
                 handler:    {   [weak self] in
                                 self?.pressedAutomaticallyApprove($0)
                             }),
             
             Row(style:      .Value1,
                 title:      NSLocalizedString("Links in comments", comment: "Settings: Comments Approval settings"),
+                details:    self.detailsForLinksInComments,
                 handler:    {   [weak self] in
                                 self?.pressedLinksInComments($0)
                             }),
@@ -449,6 +459,63 @@ public class DiscussionSettingsViewController : UITableViewController
         ]
         
         return Section(rows: rows)
+    }
+
+    
+    
+    // MARK: - Row Detail Helpers
+    private var detailsForCloseCommenting : String {
+        if !settings.commentsCloseAutomatically {
+            return NSLocalizedString("Off", comment: "Disabled")
+        }
+        
+        let numberOfDays = settings.commentsCloseAutomaticallyAfterDays ?? 0
+        let format = NSLocalizedString("%@ days", comment: "Number of days after which comments should autoclose")
+        return String(format: format, numberOfDays)
+    }
+    
+    private var detailsForSortBy : String {
+        return settings.commentsSorting.description
+    }
+    
+    private var detailsForThreading : String {
+        if !settings.commentsThreadingEnabled {
+            return NSLocalizedString("Off", comment: "Disabled")
+        }
+
+        let levels = settings.commentsThreadingDepth ?? 0
+        let format = NSLocalizedString("%@ levels", comment: "Number of Threading Levels")
+        return String(format: format, levels)
+    }
+    
+    private var detailsForPaging : String {
+        if !settings.commentsPagingEnabled {
+            return NSLocalizedString("None", comment: "Disabled")
+        }
+        
+        let pageSize = settings.commentsPageSize ?? 0
+        let format = NSLocalizedString("%@ comments", comment: "Number of Comments per Page")
+        return String(format: format, pageSize)
+    }
+    
+    private var detailsForAutomaticallyApprove : String {
+        switch settings.commentsAutoapproval {
+        case .Disabled:
+            return NSLocalizedString("None", comment: "No comment will be autoapproved")
+        case .Everything:
+            return NSLocalizedString("All", comment: "Autoapprove every comment")
+        case .FromKnownUsers:
+            return NSLocalizedString("Known Users", comment: "Autoapprove only from known users")
+        }
+    }
+    
+    private var detailsForLinksInComments : String {
+        guard let numberOfLinks = settings.commentsMaximumLinks else {
+            return String()
+        }
+
+        let format = NSLocalizedString("%@ links", comment: "Number of Links")
+        return String(format: format, numberOfLinks)
     }
     
     
