@@ -170,34 +170,4 @@ public class BlogSettings : NSManagedObject
      *  @details Indicates whether related posts should show thumbnails.
      */
     @NSManaged var relatedPostsShowThumbnails : Bool
-    
-    
-    
-    
-    /**
-     *  @details Computed property, meant to help conversion from Remote / String-Based values, into their
-     *           Integer counterparts
-     */
-    var commentsSortOrderAsString : String? {
-        set {
-            let isAscending = (newValue == SortOrder.AscendingStringValue)
-            commentsSortOrder = isAscending ? SortOrder.Ascending.rawValue : SortOrder.Descending.rawValue
-        }
-        get {
-            let isAscending = (commentsSortOrder == SortOrder.Ascending.rawValue)
-            return isAscending ? SortOrder.AscendingStringValue : SortOrder.DescendingStringValue
-        }
-    }
-    
-    /**
-     *  @enum    BlogSettings.SortOrder
-     *  @brief   Enumerates all of the valid Sorting Orders
-     */
-    public enum SortOrder : Int {
-        case Ascending  = 0
-        case Descending = 1
-        
-        static let AscendingStringValue  = "asc"
-        static let DescendingStringValue = "desc"
-    }
 }
