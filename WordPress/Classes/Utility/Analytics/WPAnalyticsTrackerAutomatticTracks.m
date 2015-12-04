@@ -660,6 +660,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatTwoFactorSentSMS:
             eventName = @"two_factor_sent_sms";
             break;
+        case WPAnalyticsStatOpenedAccountSettings:
+            eventName = @"account_settings_opened";
+            break;
+        case WPAnalyticsStatOpenedMyProfile:
+            eventName = @"my_profile_opened";
+            break;
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
