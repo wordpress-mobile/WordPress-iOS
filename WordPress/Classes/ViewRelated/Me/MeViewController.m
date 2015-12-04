@@ -244,7 +244,7 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
     if (indexPath.section == MeSectionsAccount) {
         switch (indexPath.row) {
             case MeSectionAccountMyProfile:
-                cell.textLabel.text = NSLocalizedString(@"My Profile", @"");
+                cell.textLabel.text = NSLocalizedString(@"My Profile", @"Link to My Profile section");
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
