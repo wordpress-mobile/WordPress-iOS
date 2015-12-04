@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSMutableSet *insertionViews;
 @property (nonatomic, strong) MenuItemView *itemViewForInsertionToggling;
+@property (nonatomic, assign) BOOL isEditingForItemViewInsertion;
 
 @property (nonatomic, assign) CGPoint touchesBeganLocation;
 @property (nonatomic, assign) CGPoint touchesMovedLocation;
@@ -136,6 +137,8 @@
 
 - (void)insertItemInsertionViewsAroundItemView:(MenuItemView *)toggledItemView animated:(BOOL)animated
 {
+    self.isEditingForItemViewInsertion = YES;
+    
     CGRect previousRect = toggledItemView.frame;
     CGRect updatedRect = toggledItemView.frame;
     
@@ -184,6 +187,8 @@
 
 - (void)removeItemInsertionViews:(BOOL)animated
 {
+    self.isEditingForItemViewInsertion = NO;
+    
     if(!animated) {
         [self removeItemInsertionViews];
         return;
@@ -246,6 +251,11 @@
     CGPoint location = [[touches anyObject] locationInView:self];
 
     self.touchesBeganLocation = location;
+    
+    if(self.isEditingForItemViewInsertion) {
+        return;
+    }
+    
     for(MenuItemView *itemView in self.itemViews) {
         if(CGRectContainsPoint(itemView.frame, location)) {
             [self beginOrdering:itemView];
@@ -263,6 +273,10 @@
     CGPoint vector = CGPointZero;
     vector.x = location.x - startLocation.x;
     vector.y = location.y - startLocation.y;
+    
+    if(self.isEditingForItemViewInsertion) {
+        return;
+    }
     
     [self orderingTouchesMoved:touches withEvent:event vector:vector];
 }
@@ -328,7 +342,10 @@
 }
 
 - (void)orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
-{    
+{
+    if(!self.touchesOrdering)
+        return;
+    
     const CGPoint touchPoint = [[touches anyObject] locationInView:self];
     MenuItemView *selectedItemView = self.itemViewForOrdering;
     
