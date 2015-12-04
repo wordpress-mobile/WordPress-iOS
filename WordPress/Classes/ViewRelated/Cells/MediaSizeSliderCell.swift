@@ -1,7 +1,8 @@
 import Foundation
 import UIKit
+import WordPressShared
 
-class MediaSizeSliderCell: UITableViewCell {
+class MediaSizeSliderCell: WPTableViewCell {
     // MARK: - Default values
     struct Default {
         static let value = 1500
