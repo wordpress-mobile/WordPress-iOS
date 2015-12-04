@@ -58,6 +58,7 @@ public class SettingsListEditorViewController : UITableViewController
     
     private func setupTableView() {
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.cellLayoutMarginsFollowReadableWidth = false
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
