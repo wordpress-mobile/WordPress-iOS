@@ -154,4 +154,29 @@ public class RemoteBlogSettings : NSObject
      *  @details Indicates whether related posts should show thumbnails.
      */
     var relatedPostsShowThumbnails : NSNumber?
+    
+    
+    
+    
+    // MARK: - Helpers
+    
+    /**
+    *  @details Computed property, meant to help conversion from Remote / String-Based values, into their
+    *           Integer counterparts
+    */
+    var commentsSortOrderAscending : Bool {
+        set {
+            commentsSortOrder = newValue ? RemoteBlogSettings.AscendingStringValue :  RemoteBlogSettings.DescendingStringValue
+        }
+        get {
+            return commentsSortOrder == RemoteBlogSettings.AscendingStringValue
+        }
+    }
+    
+
+    
+    // MARK: - Private
+    
+    private static let AscendingStringValue     = "asc"
+    private static let DescendingStringValue    = "desc"
 }
