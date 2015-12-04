@@ -480,6 +480,9 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatPushNotificationAlertPressed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Notification - Alert Tapped"];
             break;
+        case WPAnalyticsStatPushNotificationReceived:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Notification - Received"];
+            break;
         case WPAnalyticsStatEditorUpdatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Updated Post"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_updated_post"];
