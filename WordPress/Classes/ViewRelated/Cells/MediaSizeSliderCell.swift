@@ -1,7 +1,8 @@
 import Foundation
 import UIKit
+import WordPressShared
 
-class MediaSizeSliderCell: UITableViewCell {
+class MediaSizeSliderCell: WPTableViewCell {
     // MARK: - Default values
     struct Default {
         static let value = 1500
@@ -81,9 +82,17 @@ class MediaSizeSliderCell: UITableViewCell {
         valueLabel.text = model.valueText
     }
 
+    func customizeAppearance() {
+        titleLabel.font = WPStyleGuide.tableviewTextFont()
+        titleLabel.textColor = WPStyleGuide.darkGrey()
+        valueLabel.font = WPStyleGuide.tableviewSubtitleFont()
+        valueLabel.textColor = WPStyleGuide.grey()
+    }
+
     // MARK: - UIKit bindings
     override func awakeFromNib() {
         super.awakeFromNib()
+        customizeAppearance()
         updateSubviews()
     }
 

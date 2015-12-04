@@ -347,6 +347,22 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return [self blogCountVisibleForWPComAccounts] > 0;
 }
 
+- (BOOL)hasAnyJetpackBlogs
+{
+    NSPredicate *jetpackManagedPredicate = [NSPredicate predicateWithFormat:@"account != NULL AND isHostedAtWPcom = NO"];
+    NSInteger jetpackManagedCount = [self blogCountWithPredicate:jetpackManagedPredicate];
+    if (jetpackManagedCount > 0) {
+        return YES;
+    }
+
+    NSArray *selfHostedBlogs = [self blogsWithNoAccount];
+    NSArray *jetpackUnmanagedBlogs = [selfHostedBlogs wp_filter:^BOOL(Blog *blog) {
+        return blog.jetpack.isConnected;
+    }];
+
+    return [jetpackUnmanagedBlogs count] > 0;
+}
+
 - (NSInteger)blogCountForAllAccounts
 {
     return [self blogCountWithPredicate:nil];
@@ -781,8 +797,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     NSParameterAssert(remoteSettings);
     
     // Transformables
-    NSSet *separatedBlacklistKeys = [remoteSettings.commentsBlacklistKeys uniqueStringComponentsSeparatedByWhitespace];
-    NSSet *separatedModerationKeys = [remoteSettings.commentsModerationKeys uniqueStringComponentsSeparatedByWhitespace];
+    NSSet *separatedBlacklistKeys = [remoteSettings.commentsBlacklistKeys uniqueStringComponentsSeparatedByNewline];
+    NSSet *separatedModerationKeys = [remoteSettings.commentsModerationKeys uniqueStringComponentsSeparatedByNewline];
     
     // General
     settings.name = remoteSettings.name;
@@ -810,7 +826,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.commentsRequireNameAndEmail = [remoteSettings.commentsRequireNameAndEmail boolValue];
     settings.commentsRequireRegistration = [remoteSettings.commentsRequireRegistration boolValue];
     
-    settings.commentsSortOrderAsString = remoteSettings.commentsSortOrder;
+    settings.commentsSortOrderAscending = remoteSettings.commentsSortOrderAscending;
     
     settings.commentsThreadingDepth = remoteSettings.commentsThreadingDepth;
     settings.commentsThreadingEnabled = [remoteSettings.commentsThreadingEnabled boolValue];
@@ -831,8 +847,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
 
     // Transformables
-    NSString *joinedBlacklistKeys = [[settings.commentsBlacklistKeys allObjects] componentsJoinedByString:@" "];
-    NSString *joinedModerationKeys = [[settings.commentsModerationKeys allObjects] componentsJoinedByString:@" "];
+    NSString *joinedBlacklistKeys = [[settings.commentsBlacklistKeys allObjects] componentsJoinedByString:@"\n"];
+    NSString *joinedModerationKeys = [[settings.commentsModerationKeys allObjects] componentsJoinedByString:@"\n"];
     
     // General
     remoteSettings.name = settings.name;
@@ -859,8 +875,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     remoteSettings.commentsRequireManualModeration = @(settings.commentsRequireManualModeration);
     remoteSettings.commentsRequireNameAndEmail = @(settings.commentsRequireNameAndEmail);
     remoteSettings.commentsRequireRegistration = @(settings.commentsRequireRegistration);
-
-    remoteSettings.commentsSortOrder = settings.commentsSortOrderAsString;
+    
+    remoteSettings.commentsSortOrderAscending = settings.commentsSortOrderAscending;
     
     remoteSettings.commentsThreadingDepth = settings.commentsThreadingDepth;
     remoteSettings.commentsThreadingEnabled = @(settings.commentsThreadingEnabled);
