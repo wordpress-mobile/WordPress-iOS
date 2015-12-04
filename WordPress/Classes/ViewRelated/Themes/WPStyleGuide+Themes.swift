@@ -61,6 +61,7 @@ extension WPStyleGuide
         public static let placeholderColor = WPStyleGuide.greyLighten20()
 
         public static let activeCellBackgroundColor = WPStyleGuide.mediumBlue()
+        public static let activeCellDividerColor = WPStyleGuide.lightBlue()
         public static let activeCellNameColor = UIColor.whiteColor()
         public static let activeCellInfoColor = WPStyleGuide.lightBlue()
 
