@@ -8,7 +8,7 @@ class AccountSettingsRemote: ServiceRemoteREST {
         api.GET(path,
             parameters: nil,
             success: {
-                (operation, responseObject) -> Void in
+                operation, responseObject in
 
                 do {
                     let settings = try self.settingsFromResponse(responseObject)
@@ -17,7 +17,7 @@ class AccountSettingsRemote: ServiceRemoteREST {
                     failure(error)
                 }
             },
-            failure: { (operation, error) -> Void in
+            failure: { operation, error in
                 failure(error)
         })
     }
