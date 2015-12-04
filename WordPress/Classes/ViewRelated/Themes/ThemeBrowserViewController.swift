@@ -151,7 +151,7 @@ public protocol ThemePresenter: class
     private var noResultsShown: Bool {
         return noResultsView.superview != nil
     }
-    private var presentingTheme: Theme!
+    private var presentingTheme: Theme?
    
     /**
      *  @brief      The themes service we'll use in this VC and its helpers
@@ -201,6 +201,19 @@ public protocol ThemePresenter: class
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
         collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        guard let theme = presentingTheme else {
+            return
+        }
+        presentingTheme = nil
+        if !theme.isCurrentTheme() {
+            // presented page may have activated this theme
+            updateActiveTheme()
+        }
     }
     
     public override func viewWillDisappear(animated: Bool) {
@@ -584,5 +597,6 @@ public protocol ThemePresenter: class
     public func activatePresentingTheme() {
         navigationController?.popViewControllerAnimated(true)
         activateTheme(presentingTheme)
+        presentingTheme = nil
     }
 }
