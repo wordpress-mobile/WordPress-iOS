@@ -1,9 +1,10 @@
 import Foundation
+import WordPressShared
 
 public class ReaderDetailView : UIView, WPRichTextViewDelegate
 {
     // Wrapper views
-    @IBOutlet private weak var innerContentView: UIView!
+    @IBOutlet private weak var innerContentView: UIStackView!
 
     // Header realated Views
     @IBOutlet private weak var headerView: UIView!
@@ -12,8 +13,7 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
     @IBOutlet private weak var bylineLabel: UILabel!
     @IBOutlet private weak var menuButton: UIButton!
 
-    // Card views
-    @IBOutlet private weak var featuredMediaView: UIView!
+    // Content views
     @IBOutlet private weak var featuredImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var richTextView: WPRichTextView!
@@ -21,14 +21,7 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
 
 
     // Layout Constraints
-    @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var featuredMediaBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var titleLabelBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var richTextHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var richTextBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var attributionHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var contentBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var maxIPadWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var featuredMediaAspectRatioConstraint: NSLayoutConstraint!
     
 
     public weak var contentProvider: ReaderPostContentProvider?
@@ -53,50 +46,56 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
         setupAvatarTapGestureRecognizer()
         setupRichText()
     }
-    
 
-    public override func sizeThatFits(size: CGSize) -> CGSize {
-        let innerWidth = innerWidthForSize(size)
-        let innerSize = CGSize(width: innerWidth, height: CGFloat.max)
 
-        var height = innerContentView.frame.minY // TODO: Which view?
 
-        height += featuredMediaView.frame.minY
-        height += featuredMediaHeightConstraint.constant
-        height += featuredMediaBottomConstraint.constant
-
-        height += titleLabel.sizeThatFits(innerSize).height
-        height += titleLabelBottomConstraint.constant
-
-        height += richTextView.sizeThatFits(innerSize).height
-        height += richTextBottomConstraint.constant
-
-        // The attribution view's height constraint is to be less than or equal
-        // to the constant. Skip the math when the constant is zero, but use
-        // the height returned from sizeThatFits otherwise.
-        if attributionHeightConstraint.constant > 0 {
-            height += attributionView.sizeThatFits(innerSize).height
-        }
-
-        height += contentBottomConstraint.constant
-
-        return CGSize(width: size.width, height: height)
+    public override func intrinsicContentSize() -> CGSize {
+        return innerContentView.intrinsicContentSize()
     }
 
 
-    private func innerWidthForSize(size: CGSize) -> CGFloat {
-        var width = CGFloat(0.0)
-        var horizontalMargin = headerView.frame.minX
-
-        if UIDevice.isPad() {
-            width = min(size.width, maxIPadWidthConstraint.constant)
-        } else {
-            width = size.width
-            horizontalMargin += innerContentView.frame.minX // TODO: Which view?
-        }
-        width -= (horizontalMargin * 2)
-        return width
-    }
+//    public override func sizeThatFits(size: CGSize) -> CGSize {
+//        let innerWidth = innerWidthForSize(size)
+//        let innerSize = CGSize(width: innerWidth, height: CGFloat.max)
+//
+//        var height = innerContentView.frame.minY // TODO: Which view?
+//
+//        height += featuredMediaView.frame.minY
+//        height += featuredMediaHeightConstraint.constant
+//        height += featuredMediaBottomConstraint.constant
+//
+//        height += titleLabel.sizeThatFits(innerSize).height
+//        height += titleLabelBottomConstraint.constant
+//
+//        height += richTextView.sizeThatFits(innerSize).height
+//        height += richTextBottomConstraint.constant
+//
+//        // The attribution view's height constraint is to be less than or equal
+//        // to the constant. Skip the math when the constant is zero, but use
+//        // the height returned from sizeThatFits otherwise.
+//        if attributionHeightConstraint.constant > 0 {
+//            height += attributionView.sizeThatFits(innerSize).height
+//        }
+//
+//        height += contentBottomConstraint.constant
+//
+//        return CGSize(width: size.width, height: height)
+//    }
+//
+//
+//    private func innerWidthForSize(size: CGSize) -> CGFloat {
+//        var width = CGFloat(0.0)
+//        var horizontalMargin = headerView.frame.minX
+//
+//        if UIDevice.isPad() {
+//            width = min(size.width, maxIPadWidthConstraint.constant)
+//        } else {
+//            width = size.width
+//            horizontalMargin += innerContentView.frame.minX // TODO: Which view?
+//        }
+//        width -= (horizontalMargin * 2)
+//        return width
+//    }
 
 
     private func setupAvatarTapGestureRecognizer() {
@@ -128,7 +127,7 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
         self.contentProvider = contentProvider
 
         configureHeader()
-        configureCardImage()
+        configureFeaturedImage()
         configureTitle()
         configureRichText()
 
@@ -160,18 +159,19 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
     }
 
 
-    private func configureCardImage() {
-        if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
-//            featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
-//            featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
+    private func configureFeaturedImage() {
+        featuredImageView.hidden = true
 
-            // Always clear the previous image so there is no stale or unexpected image
-            // momentarily visible.
-            featuredImageView.image = nil
+        if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
             var url = featuredImageURL
+            // TODO: We need a completion handler for when the image is loaded.
+            // In the completion handler, we need to update the aspect ratio constraint
+            // and make the imageView visible.
+
+            featuredImageView.image = nil
+
             if !(contentProvider!.isPrivate()) {
-//                let size = CGSize(width:featuredMediaView.frame.width, height:featuredMediaHeightConstraintConstant)
-                let size = CGSize(width:featuredMediaView.frame.width, height:100) //TODO: Height
+                let size = CGSize(width:featuredImageView.frame.width, height:100) //TODO: Height
                 url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
                 featuredImageView.setImageWithURL(url, placeholderImage:nil)
 
@@ -184,10 +184,7 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
                 // private but not a wpcom hosted image
                 featuredImageView.setImageWithURL(url, placeholderImage:nil)
             }
-
         }
-
-        featuredMediaView.setNeedsUpdateConstraints()
     }
 
 
@@ -200,13 +197,15 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
             requestURL = NSURL(string: sslURL)!
         }
 
+        let request = NSMutableURLRequest(URL: requestURL)
 
         let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let token = acctServ.defaultWordPressComAccount().authToken
-        let request = NSMutableURLRequest(URL: requestURL)
-        let headerValue = String(format: "Bearer %@", token)
-        request.addValue(headerValue, forHTTPHeaderField: "Authorization")
-
+        if let account = acctServ.defaultWordPressComAccount() {
+            let token = account.authToken
+            let headerValue = String(format: "Bearer %@", token)
+            request.addValue(headerValue, forHTTPHeaderField: "Authorization")
+        }
+        
         return request
     }
 
@@ -215,11 +214,11 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
         if let title = contentProvider?.titleForDisplay() {
             let attributes = WPStyleGuide.readerCardTitleAttributes() as! [String: AnyObject]
             titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
-//            titleLabelBottomConstraint.constant = titleLabelBottomConstraintConstant
+            titleLabel.hidden = false
 
         } else {
             titleLabel.attributedText = nil
-            titleLabelBottomConstraint.constant = 0.0
+            titleLabel.hidden = true
         }
     }
 
@@ -272,6 +271,7 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
 
     public func richTextViewDidLoadMediaBatch(richTextView: WPRichTextView!) {
 //        delegate?.richTextViewDidLoadMediaBatch(richTextView)
+        invalidateIntrinsicContentSize()
     }
 
 }

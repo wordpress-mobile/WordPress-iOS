@@ -1,4 +1,6 @@
 import Foundation
+import WordPressShared
+import WordPressComAnalytics
 
 public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
 {
@@ -320,7 +322,7 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
             DetailAnalyticsConstants.OfflineKey : isOfflineView
         ]
 
-        WPAnalytics.track(WPAnalyticsStat.StatReaderArticleOpened, withProperties: properties)
+        WPAnalytics.track(WPAnalyticsStat.ReaderArticleOpened, withProperties: properties)
     }
 
 
@@ -385,7 +387,7 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
         navigationController?.pushViewController(controller, animated: true)
 
         let properties = NSDictionary(object: post!.primaryTagSlug, forKey: "tag") as [NSObject : AnyObject]
-        WPAnalytics.track(.StatReaderTagPreviewed, withProperties: properties)
+        WPAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
     }
 
     @IBAction func didTapActionButton(sender: UIButton) {
