@@ -23,7 +23,7 @@ target 'WordPress', :exclusive => true do
   pod 'google-plus-ios-sdk', '~>1.5'
   pod 'HockeySDK', '~>3.8.0'
   pod 'Helpshift', '~>4.10.0'
-  pod 'Lookback', '1.1.4', :configurations => ['Release-Internal']
+  pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
 
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.13'
