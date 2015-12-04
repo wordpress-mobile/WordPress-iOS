@@ -841,6 +841,12 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatShortcutNotifications:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Notifications"];
             break;
+        case WPAnalyticsStatOpenedAccountSettings:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened Account Settings"];
+            break;
+        case WPAnalyticsStatOpenedMyProfile:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened My Profile"];
+            break;
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatLogSpecialCondition:
