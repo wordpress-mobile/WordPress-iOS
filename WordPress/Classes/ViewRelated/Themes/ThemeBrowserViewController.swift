@@ -540,7 +540,7 @@ public protocol ThemePresenter: class
     }
 
     public func presentCustomizeForTheme(theme: Theme?) {
-        presentUrlForTheme(theme, url: theme?.customizeUrl())
+        presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
     }
 
     public func presentDetailsForTheme(theme: Theme?) {
@@ -555,7 +555,7 @@ public protocol ThemePresenter: class
         presentUrlForTheme(theme, url: theme?.viewUrl())
     }
     
-    public func presentUrlForTheme(theme: Theme?, url: String?) {
+    public func presentUrlForTheme(theme: Theme?, url: String?, activeButton: Bool = true) {
         guard let theme = theme, url = url where !url.isEmpty else {
             return
         }
@@ -572,7 +572,7 @@ public protocol ThemePresenter: class
         webViewController.navigationItem.titleView = nil
         webViewController.title = theme.name
         var buttons: [UIBarButtonItem]?
-        if !theme.isCurrentTheme() {
+        if activeButton && !theme.isCurrentTheme() {
            let activate = UIBarButtonItem(title: ThemeAction.Activate.title, style: .Plain, target: self, action: "activatePresentingTheme")
             buttons = [activate]
         }
