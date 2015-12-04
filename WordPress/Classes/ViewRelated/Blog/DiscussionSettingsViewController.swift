@@ -220,8 +220,8 @@ public class DiscussionSettingsViewController : UITableViewController
         pickerViewController.selectionFormat    = NSLocalizedString("%d days", comment: "")
         pickerViewController.pickerHint         = NSLocalizedString("Automatically close comments on articles.", comment: "")
         pickerViewController.pickerFormat       = NSLocalizedString("%d days", comment: "")
-        pickerViewController.pickerMinimumValue = 1
-        pickerViewController.pickerMaximumValue = 30
+        pickerViewController.pickerMinimumValue = commentsAutocloseMinimumValue
+        pickerViewController.pickerMaximumValue = commentsAutocloseMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsCloseAutomaticallyAfterDays as? Int
         pickerViewController.onChange           = { [weak self] (enabled : Bool, newValue: Int) in
             self?.settings.commentsCloseAutomatically = enabled
@@ -273,8 +273,8 @@ public class DiscussionSettingsViewController : UITableViewController
         pickerViewController.switchText         = NSLocalizedString("Paging", comment: "Discussion Settings")
         pickerViewController.selectionText      = NSLocalizedString("Comments per page", comment: "")
         pickerViewController.pickerHint         = NSLocalizedString("Break comment threads into multiple pages.", comment: "")
-        pickerViewController.pickerMinimumValue = 1
-        pickerViewController.pickerMaximumValue = 100
+        pickerViewController.pickerMinimumValue = commentsPagingMinimumValue
+        pickerViewController.pickerMaximumValue = commentsPagingMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsPageSize as? Int
         pickerViewController.onChange           = { [weak self] (enabled : Bool, newValue: Int) in
             self?.settings.commentsPagingEnabled = enabled
@@ -308,8 +308,8 @@ public class DiscussionSettingsViewController : UITableViewController
         pickerViewController.switchVisible      = false
         pickerViewController.selectionText      = NSLocalizedString("Links in comments", comment: "")
         pickerViewController.pickerHint         = NSLocalizedString("Require manual approval for comments that include more than this number of links.", comment: "")
-        pickerViewController.pickerMinimumValue = 1
-        pickerViewController.pickerMaximumValue = 100
+        pickerViewController.pickerMinimumValue = commentsLinksMinimumValue
+        pickerViewController.pickerMaximumValue = commentsLinksMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsMaximumLinks as? Int
         pickerViewController.onChange           = { [weak self] (enabled : Bool, newValue: Int) in
             self?.settings.commentsMaximumLinks = newValue
@@ -558,11 +558,19 @@ public class DiscussionSettingsViewController : UITableViewController
     
     
 
-    // MARK: - Typealiases
-    private typealias CommentsSorting       = BlogSettings.CommentsSorting
-    private typealias CommentsThreading     = BlogSettings.CommentsThreading
-    private typealias CommentsAutoapproval  = BlogSettings.CommentsAutoapproval
-    
     // MARK: - Private Properties
     private var settings : BlogSettings!
+    
+    // MARK: - Typealiases
+    private typealias CommentsSorting           = BlogSettings.CommentsSorting
+    private typealias CommentsThreading         = BlogSettings.CommentsThreading
+    private typealias CommentsAutoapproval      = BlogSettings.CommentsAutoapproval
+    
+    // MARK: - Constants
+    private let commentsPagingMinimumValue      = 1
+    private let commentsPagingMaximumValue      = 100
+    private let commentsLinksMinimumValue       = 1
+    private let commentsLinksMaximumValue       = 100
+    private let commentsAutocloseMinimumValue   = 1
+    private let commentsAutocloseMaximumValue   = 120
 }
