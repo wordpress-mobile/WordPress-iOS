@@ -82,9 +82,17 @@ class MediaSizeSliderCell: WPTableViewCell {
         valueLabel.text = model.valueText
     }
 
+    func customizeAppearance() {
+        titleLabel.font = WPStyleGuide.tableviewTextFont()
+        titleLabel.textColor = WPStyleGuide.darkGrey()
+        valueLabel.font = WPStyleGuide.tableviewSubtitleFont()
+        valueLabel.textColor = WPStyleGuide.grey()
+    }
+
     // MARK: - UIKit bindings
     override func awakeFromNib() {
         super.awakeFromNib()
+        customizeAppearance()
         updateSubviews()
     }
 
