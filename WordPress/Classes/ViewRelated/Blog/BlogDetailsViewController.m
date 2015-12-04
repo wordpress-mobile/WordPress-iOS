@@ -491,9 +491,9 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 {
     NSNumber *dotComID = blog.dotComID;
     if(dotComID) {
-        [WPAnalytics track:WPAnalyticsStatOpenedSettings withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
+        [WPAnalytics track:WPAnalyticsStatOpenedSiteSettings withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
     }else {
-        [WPAnalytics track:WPAnalyticsStatOpenedSettings];
+        [WPAnalytics track:WPAnalyticsStatOpenedSiteSettings];
     }
     
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:blog];
