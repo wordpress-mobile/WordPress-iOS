@@ -119,7 +119,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
     
     [sections addObject:@(SiteSettingsSectionWriting)];
-    [sections addObject:@(SiteSettingsSectionDiscussion)];
+    
+    if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
+        [sections addObject:@(SiteSettingsSectionDiscussion)];
+    }
     
     if ([self.blog supports:BlogFeatureRemovable]) {
         [sections addObject:@(SiteSettingsSectionRemoveSite)];
