@@ -9,9 +9,9 @@
 #pragma mark - Changing the user agent
 
 /**
- *  @brief      Sets the App's user agent to be the WordPress one.
+ *  @brief      Sets User-Agent header of all UIWebViews to be the WordPress one.
  */
-- (void)useWordPressUserAgent;
+- (void)useWordPressUserAgentInUIWebViews;
 
 #pragma mark - Getting the user agent
 

@@ -48,12 +48,12 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 #pragma mark - Changing the user agent
 
-- (void)useWordPressUserAgent
+- (void)useWordPressUserAgentInUIWebViews
 {
-    [self setUserAgent:[self wordPressUserAgent]];
+    [self setUserAgentForUIWebViews:[self wordPressUserAgent]];
 }
 
-- (void)setUserAgent:(NSString*)userAgent
+- (void)setUserAgentForUIWebViews:(NSString *)userAgent
 {
     NSParameterAssert([userAgent isKindOfClass:[NSString class]]);
     
