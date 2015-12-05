@@ -16,6 +16,13 @@
 #pragma mark - Getting the user agent
 
 /**
+ *  @brief      Get WordPress User-Agent header.
+ *
+ *  @returns    WordPress custom User-Agent header.
+ */
+- (NSString *)wordPressUserAgent;
+
+/**
  *  @brief      Call this method to get the current user agent.
  *
  *  @returns    The current user agent.
