@@ -52,19 +52,6 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
     return userAgent;
 }
 
-- (void)testUseDefaultUserAgent
-{
-    NSString *defaultUA = [self defaultUserAgent];
-    WPUserAgent *userAgent = nil;
-    
-    XCTAssertNoThrow(userAgent = [[WPUserAgent alloc] init]);
-    XCTAssertTrue([userAgent isKindOfClass:[WPUserAgent class]]);
-    
-    [userAgent useDefaultUserAgent];
-    
-    XCTAssertTrue([[userAgent currentUserAgent] isEqualToString:defaultUA]);
-}
-
 - (void)testUseWordPressUserAgent
 {
     NSString *wordPressUA = [self wordPressUserAgent];

@@ -9,11 +9,6 @@
 #pragma mark - Changing the user agent
 
 /**
- *  @brief      Sets the App's user agent to be the default one.
- */
-- (void)useDefaultUserAgent;
-
-/**
  *  @brief      Sets the App's user agent to be the WordPress one.
  */
 - (void)useWordPressUserAgent;
