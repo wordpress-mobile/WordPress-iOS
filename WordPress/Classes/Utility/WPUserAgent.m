@@ -11,8 +11,6 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 @implementation WPUserAgent
 
-#pragma mark - Default and WordPress User-Agents
-
 - (NSString *)defaultUserAgent
 {
     if (! _defaultUserAgent) {
@@ -45,8 +43,6 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     
     return _wordPressUserAgent;
 }
-
-#pragma mark - Changing the user agent
 
 - (void)useWordPressUserAgentInUIWebViews
 {
