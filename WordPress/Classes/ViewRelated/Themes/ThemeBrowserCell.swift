@@ -79,6 +79,8 @@ public class ThemeBrowserCell : UICollectionViewCell
     public weak var presenter: ThemePresenter?
     
     private var placeholderImage = UIImage(named: "theme-loading")
+    private var activeEllipsisImage = UIImage(named: "icon-menu-ellipsis-white")
+    private var inactiveEllipsisImage = UIImage(named: "icon-menu-ellipsis")
     
    // MARK: - GUI
         
@@ -121,6 +123,7 @@ public class ThemeBrowserCell : UICollectionViewCell
                 layer.borderColor = Styles.activeCellBackgroundColor.CGColor
                 infoBar.layer.borderColor = Styles.activeCellDividerColor.CGColor
                 actionButton.layer.borderColor = Styles.activeCellDividerColor.CGColor
+                actionButton.setImage(activeEllipsisImage, forState: .Normal)
                 
                 nameLabel.textColor = Styles.activeCellNameColor
                 infoLabel.textColor = Styles.activeCellInfoColor
@@ -130,6 +133,7 @@ public class ThemeBrowserCell : UICollectionViewCell
                 layer.borderColor = Styles.barBorderColor.CGColor
                 infoBar.layer.borderColor = Styles.barDividerColor.CGColor
                 actionButton.layer.borderColor = Styles.barDividerColor.CGColor
+                actionButton.setImage(inactiveEllipsisImage, forState: .Normal)
 
                 nameLabel.textColor = Styles.inactiveCellNameColor
                 if theme.isPremium() {
