@@ -3,8 +3,6 @@
 #import "WPUserAgent.h"
 
 static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
-static NSString* const WPUserAgentKeyDefaultUserAgent = @"DefaultUserAgent";
-static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
 
 @interface WPUserAgentTests : XCTestCase
 @end
