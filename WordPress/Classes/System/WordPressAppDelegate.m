@@ -404,7 +404,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     self.userAgent = [[WPUserAgent alloc] init];
-    [self.userAgent useWordPressUserAgent];
+    [self.userAgent useWordPressUserAgentInUIWebViews];
     [self setupSingleSignOn];
 
     // WORKAROUND: Preload the Merriweather regular font to ensure it is not overridden
