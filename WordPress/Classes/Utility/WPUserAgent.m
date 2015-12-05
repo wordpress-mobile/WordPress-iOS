@@ -64,12 +64,4 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     DDLogVerbose(@"User-Agent set to: %@", userAgent);
 }
 
-#pragma mark - Getting the user agent
-
-- (NSString *)currentUserAgent
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:WPUserAgentKeyUserAgent];
-}
-
-
 @end
