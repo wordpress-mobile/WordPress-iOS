@@ -26,7 +26,7 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     [tempRegisteredDefaults removeObjectForKey:WPUserAgentKeyUserAgent];
     [[NSUserDefaults standardUserDefaults] registerDefaults:tempRegisteredDefaults];
     
-    NSString *userAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    NSString *userAgent = [self currentUserAgentFromUIWebView];
     XCTAssertNotNil(userAgent, @"User agent shouldn't be nil");
     XCTAssertTrue([userAgent length] > 0, @"User agent shouldn't be empty");
     
@@ -55,6 +55,11 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     return [[NSUserDefaults standardUserDefaults] objectForKey:WPUserAgentKeyUserAgent];
 }
 
+- (NSString *)currentUserAgentFromUIWebView
+{
+    return [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+}
+
 - (void)testWordPressUserAgent
 {
     NSString *wordPressUA = [self wordPressUserAgent];
@@ -76,10 +81,12 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     XCTAssertTrue([userAgent isKindOfClass:[WPUserAgent class]]);
     
     XCTAssertTrue([[self currentUserAgentFromUserDefaults] isEqualToString:defaultUA]);
+    XCTAssertTrue([[self currentUserAgentFromUIWebView] isEqualToString:defaultUA]);
     
     [userAgent useWordPressUserAgentInUIWebViews];
     
     XCTAssertTrue([[self currentUserAgentFromUserDefaults] isEqualToString:wordPressUA]);
+    XCTAssertTrue([[self currentUserAgentFromUIWebView] isEqualToString:wordPressUA]);
 }
 
 @end
