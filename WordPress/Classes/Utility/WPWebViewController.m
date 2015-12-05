@@ -438,7 +438,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 - (NSURLRequest *)newRequestForWebsite
 {
-    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
+    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent wordPressUserAgent];
     if (!self.needsLogin) {
         return [WPURLRequest requestWithURL:self.url userAgent:userAgent];
     }
