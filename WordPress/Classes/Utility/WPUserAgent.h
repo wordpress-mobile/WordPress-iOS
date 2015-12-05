@@ -6,14 +6,10 @@
  */
 @interface WPUserAgent : NSObject
 
-#pragma mark - Changing the user agent
-
 /**
  *  @brief      Sets User-Agent header of all UIWebViews to be the WordPress one.
  */
 - (void)useWordPressUserAgentInUIWebViews;
-
-#pragma mark - Getting the user agent
 
 /**
  *  @brief      Get WordPress User-Agent header.
