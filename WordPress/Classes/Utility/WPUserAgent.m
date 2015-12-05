@@ -11,6 +11,17 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 @implementation WPUserAgent
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        // Cleanup unused NSUserDefaults keys from older WPUserAgent implementation
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"DefaultUserAgent"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"AppUserAgent"];
+    }
+    return self;
+}
+
 - (NSString *)defaultUserAgent
 {
     if (! _defaultUserAgent) {
