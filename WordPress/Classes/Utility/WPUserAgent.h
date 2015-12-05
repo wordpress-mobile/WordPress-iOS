@@ -22,11 +22,4 @@
  */
 - (NSString *)wordPressUserAgent;
 
-/**
- *  @brief      Call this method to get the current user agent.
- *
- *  @returns    The current user agent.
- */
-- (NSString *)currentUserAgent;
-
 @end
