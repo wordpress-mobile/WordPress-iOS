@@ -4,8 +4,8 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 @interface WPUserAgent ()
 
-@property (nonatomic, strong) NSString *defaultUserAgent;
-@property (nonatomic, strong) NSString *wordPressUserAgent;
+@property (nonatomic, strong, readwrite) NSString *defaultUserAgent;
+@property (nonatomic, strong, readwrite) NSString *wordPressUserAgent;
 
 @end
 

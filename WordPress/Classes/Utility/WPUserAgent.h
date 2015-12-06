@@ -7,15 +7,13 @@
 @interface WPUserAgent : NSObject
 
 /**
+ *  @brief      WordPress custom User-Agent header.
+ */
+@property (nonatomic, strong, readonly) NSString *wordPressUserAgent;
+
+/**
  *  @brief      Sets User-Agent header of all UIWebViews to be the WordPress one.
  */
 - (void)useWordPressUserAgentInUIWebViews;
-
-/**
- *  @brief      Get WordPress User-Agent header.
- *
- *  @returns    WordPress custom User-Agent header.
- */
-- (NSString *)wordPressUserAgent;
 
 @end
