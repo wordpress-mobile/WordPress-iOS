@@ -470,6 +470,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatPushNotificationAlertPressed:
             eventName = @"push_notification_alert_tapped";
             break;
+        case WPAnalyticsStatPushNotificationReceived:
+            eventName = @"push_notification_received";
+            break;
         case WPAnalyticsStatReaderAccessed:
             eventName = @"reader_accessed";
             break;
