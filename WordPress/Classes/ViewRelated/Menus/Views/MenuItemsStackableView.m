@@ -112,6 +112,7 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
         [stackView addArrangedSubview:label];
         
         [label.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
+        [label.widthAnchor constraintGreaterThanOrEqualToConstant:50].active = YES;
     }
 }
 
@@ -271,6 +272,32 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
     }
     
     return name;
+}
+
+#pragma mark - touches
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    self.highlighted = YES;
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesMoved:touches withEvent:event];
+    self.highlighted = NO;
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [super touchesEnded:touches withEvent:event];
+    self.highlighted = NO;
+}
+
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self touchesCancelled:touches withEvent:event];
+    self.highlighted = NO;
 }
 
 #pragma mark - overrides

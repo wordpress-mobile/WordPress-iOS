@@ -61,11 +61,10 @@
     
     CGRect layoutFrame = [self convertRect:self.itemView.frame fromView:self.itemView.superview];
     MenuItemView *orderingView = [[MenuItemView alloc] init];
-    orderingView.showsEditingButtonOptions = NO;
-    orderingView.showsCancelButtonOption = NO;
     orderingView.item = item;
     orderingView.indentationLevel = self.itemView.indentationLevel;
     orderingView.alpha = 0.65;
+    orderingView.userInteractionEnabled = NO;
     
     CALayer *contentLayer = orderingView.contentView.layer;
     contentLayer.shadowColor = [[UIColor blackColor] CGColor];
