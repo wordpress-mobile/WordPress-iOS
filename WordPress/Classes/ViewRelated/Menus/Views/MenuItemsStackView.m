@@ -8,7 +8,7 @@
 #import "MenusDesign.h"
 #import "MenuItemsVisualOrderingView.h"
 
-@interface MenuItemsStackView () <MenuItemsStackableViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate>
+@interface MenuItemsStackView () <MenuItemsStackableViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) NSMutableSet *itemViews;
@@ -358,7 +358,7 @@
     const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > ((selectedItemView.frame.size.width * 5.0) / 100); // a travel of x% should be considered for updating relationships
     BOOL modelUpdated = NO;
     
-    [self.visualOrderingView updateWithTouchLocation:touchPoint vector:vector];
+    [self.visualOrderingView updateVisualOrderingWithTouchLocation:touchPoint vector:vector];
     
     if(detectedHorizontalOrderingTouches) {
         
@@ -457,7 +457,7 @@
             }
         }
         
-        [self.visualOrderingView updateForOrderingMenuItemsModelChange];
+        [self.visualOrderingView updateForVisualOrderingMenuItemsModelChange];
     }
 }
 
@@ -651,6 +651,7 @@
     MenuItemsVisualOrderingView *orderingView = self.visualOrderingView;
     if(!orderingView) {
         orderingView = [[MenuItemsVisualOrderingView alloc] initWithFrame:self.stackView.bounds];
+        orderingView.delegate = self;
         orderingView.translatesAutoresizingMaskIntoConstraints = NO;
         orderingView.backgroundColor = [UIColor clearColor];
         orderingView.userInteractionEnabled = NO;
@@ -667,7 +668,7 @@
         self.visualOrderingView = orderingView;
     }
     
-    [self.visualOrderingView setVisualOrderingForItemView:selectedItemView];
+    [self.visualOrderingView setupVisualOrderingWithItemView:selectedItemView];
 }
 
 - (void)showVisualOrderingView
@@ -680,7 +681,12 @@
     self.visualOrderingView.hidden = YES;
 }
 
-#pragma mark - MenuItemsStackableViewDelegate
+#pragma mark - MenuItemsVisualOrderingViewDelegate
+
+- (void)visualOrderingView:(MenuItemsVisualOrderingView *)visualOrderingView animatingVisualItemViewForOrdering:(MenuItemView *)orderingView
+{
+    [self.delegate itemsView:self prefersAdjustingScrollingOffsetForAnimatingView:orderingView];
+}
 
 #pragma mark - MenuItemViewDelegate
 
