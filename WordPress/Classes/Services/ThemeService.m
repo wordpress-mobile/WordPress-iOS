@@ -7,6 +7,12 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 
+/**
+ *  @brief      Place unordered themes after loaded pages
+ */
+const NSInteger ThemeOrderUnspecified = 0;
+const NSInteger ThemeOrderTrailing = 9999;
+
 @implementation ThemeService
 
 #pragma mark - Themes availability
@@ -329,8 +335,10 @@
     theme.details = remoteTheme.desc;
     theme.launchDate = remoteTheme.launchDate;
     theme.name = remoteTheme.name;
-    if (remoteTheme.order > 0) {
+    if (remoteTheme.order != ThemeOrderUnspecified) {
         theme.order = @(remoteTheme.order);
+    } else if (theme.order.integerValue == ThemeOrderUnspecified) {
+        theme.order = @(ThemeOrderTrailing);
     }
     theme.popularityRank = remoteTheme.popularityRank;
     theme.previewUrl = remoteTheme.previewUrl;
@@ -346,7 +354,6 @@
     
     if (blog && remoteTheme.active) {
         blog.currentThemeId = theme.themeId;
-        theme.order = @0;
     }
     
     return theme;
