@@ -483,12 +483,12 @@ import WordPressComAnalytics
     private func statsPropertiesForPost(post:ReaderPost, andValue value:AnyObject, forKey key:String) -> [NSObject: AnyObject] {
         var properties = [NSObject: AnyObject]();
         properties[key] = value
-        if post.isExternal {
-            properties["feed_id"] = post.siteID
-            properties["feed_item_id"] = post.postID
-        } else {
-            properties["blog_id"] = post.siteID
-            properties["post_id"] = post.postID
+        properties["blog_id"] = post.siteID
+        properties["post_id"] = post.postID
+        properties["is_jetpack"] = post.isJetpack
+        if let feedID = post.feedID, feedItemID = post.feedItemID {
+            properties["feed_id"] = feedID
+            properties["feed_item_id"] = feedItemID
         }
         return properties
     }
