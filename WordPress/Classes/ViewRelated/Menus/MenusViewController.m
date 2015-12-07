@@ -207,6 +207,37 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.scrollView.scrollEnabled = enabled;
 }
 
+- (void)itemsView:(MenuItemsStackView *)itemsView prefersAdjustingScrollingOffsetForAnimatingView:(UIView *)view
+{
+    // adjust the scrollView offset to ensure this view is easily viewable
+    const CGFloat padding = 10.0;
+    CGRect viewRectWithinScrollViewWindow = [self.scrollView.window convertRect:view.frame fromView:view.superview];
+    CGRect visibleContentRect = [self.scrollView.window convertRect:self.scrollView.frame fromView:self.view];
+    
+    CGPoint offset = self.scrollView.contentOffset;
+    
+    visibleContentRect.origin.y += offset.y;
+    viewRectWithinScrollViewWindow.origin.y += offset.y;
+    
+    BOOL updated = NO;
+    
+    if(viewRectWithinScrollViewWindow.origin.y < visibleContentRect.origin.y + padding) {
+        
+        offset.y -= viewRectWithinScrollViewWindow.size.height;
+        updated = YES;
+        
+    }else if(viewRectWithinScrollViewWindow.origin.y + viewRectWithinScrollViewWindow.size.height > (visibleContentRect.origin.y + visibleContentRect.size.height) - padding) {
+        offset.y += viewRectWithinScrollViewWindow.size.height;
+        updated = YES;
+    }
+    
+    if(updated) {
+        [UIView animateWithDuration:0.25 animations:^{
+            self.scrollView.contentOffset = offset;
+        }];
+    }
+}
+
 - (void)itemsViewAnimatingContentSizeChanges:(MenuItemsStackView *)itemsView focusedRect:(CGRect)focusedRect updatedFocusRect:(CGRect)updatedFocusRect
 {
     CGPoint offset = self.scrollView.contentOffset;

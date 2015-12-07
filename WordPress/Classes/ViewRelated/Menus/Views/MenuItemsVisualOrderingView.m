@@ -5,7 +5,7 @@
 @interface MenuItemsVisualOrderingView ()
 
 @property (nonatomic, assign) CGRect startingOrderedItemViewFrame;
-@property (nonatomic, strong) MenuItemView *orderingView;
+@property (nonatomic, strong) MenuItemView *itemView;
 @property (nonatomic, strong) MenuItemView *visualOrderingView;
 @property (nonatomic, strong) NSLayoutConstraint *topConstraintForVisualTouchUpdates;
 
@@ -13,20 +13,20 @@
 
 @implementation MenuItemsVisualOrderingView
 
-- (void)setVisualOrderingForItemView:(MenuItemView *)orderingView
+- (void)setupVisualOrderingWithItemView:(MenuItemView *)itemView
 {
-    self.orderingView = orderingView;
-    self.startingOrderedItemViewFrame = orderingView.frame;
+    self.itemView = itemView;
+    self.startingOrderedItemViewFrame = itemView.frame;
     
     [self reloadItemViews];
 }
 
-- (void)updateForOrderingMenuItemsModelChange
+- (void)updateForVisualOrderingMenuItemsModelChange
 {
-    self.visualOrderingView.indentationLevel = self.orderingView.indentationLevel;
+    self.visualOrderingView.indentationLevel = self.itemView.indentationLevel;
 }
 
-- (void)updateWithTouchLocation:(CGPoint)touchLocation vector:(CGPoint)vector
+- (void)updateVisualOrderingWithTouchLocation:(CGPoint)touchLocation vector:(CGPoint)vector
 {
     CGFloat constraintConstValue = self.startingOrderedItemViewFrame.origin.y + vector.y;
     const CGFloat boundsPadding = 20.0;
@@ -42,6 +42,10 @@
     }
     
     self.topConstraintForVisualTouchUpdates.constant = constraintConstValue;
+    
+    if([self.delegate respondsToSelector:@selector(visualOrderingView:animatingVisualItemViewForOrdering:)]) {
+        [self.delegate visualOrderingView:self animatingVisualItemViewForOrdering:self.visualOrderingView];
+    }
 }
 
 #pragma mark - private
@@ -53,35 +57,35 @@
     [self.visualOrderingView removeFromSuperview];
     self.visualOrderingView = nil;
     
-    MenuItem *item = self.orderingView.item;
+    MenuItem *item = self.itemView.item;
     
-    CGRect layoutFrame = [self convertRect:self.orderingView.frame fromView:self.orderingView.superview];
-    MenuItemView *itemView = [[MenuItemView alloc] init];
-    itemView.showsEditingButtonOptions = NO;
-    itemView.showsCancelButtonOption = NO;
-    itemView.item = item;
-    itemView.indentationLevel = self.orderingView.indentationLevel;
-    itemView.alpha = 0.65;
+    CGRect layoutFrame = [self convertRect:self.itemView.frame fromView:self.itemView.superview];
+    MenuItemView *orderingView = [[MenuItemView alloc] init];
+    orderingView.showsEditingButtonOptions = NO;
+    orderingView.showsCancelButtonOption = NO;
+    orderingView.item = item;
+    orderingView.indentationLevel = self.itemView.indentationLevel;
+    orderingView.alpha = 0.65;
     
-    CALayer *contentLayer = itemView.contentView.layer;
+    CALayer *contentLayer = orderingView.contentView.layer;
     contentLayer.shadowColor = [[UIColor blackColor] CGColor];
     contentLayer.shadowOpacity = 0.3;
     contentLayer.shadowRadius = 10.0;
     contentLayer.shadowOffset = CGSizeMake(0, 0);
     
-    NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
+    NSLayoutConstraint *heightConstraint = [orderingView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
     heightConstraint.active = YES;
     
-    [self addSubview:itemView];
-    self.visualOrderingView = itemView;
+    [self addSubview:orderingView];
+    self.visualOrderingView = orderingView;
     
-    NSLayoutConstraint *topConstraint = [itemView.topAnchor constraintEqualToAnchor:self.topAnchor];
+    NSLayoutConstraint *topConstraint = [orderingView.topAnchor constraintEqualToAnchor:self.topAnchor];
     topConstraint.constant = layoutFrame.origin.y;
     self.topConstraintForVisualTouchUpdates = topConstraint;
     [NSLayoutConstraint activateConstraints:@[
                                               topConstraint,
-                                              [itemView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                              [itemView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
+                                              [orderingView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                              [orderingView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor]
                                               ]];
 }
 
