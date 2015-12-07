@@ -202,6 +202,11 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 #pragma mark - MenuItemsStackViewDelegate
 
+- (void)itemsView:(MenuItemsStackView *)itemsView selectedMenuItemForEditing:(MenuItem *)item
+{
+    // show detail controller
+}
+
 - (void)itemsView:(MenuItemsStackView *)itemsView prefersScrollingEnabled:(BOOL)enabled
 {
     self.scrollView.scrollEnabled = enabled;

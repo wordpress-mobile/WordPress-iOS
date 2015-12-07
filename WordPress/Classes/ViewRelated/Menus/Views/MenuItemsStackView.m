@@ -19,7 +19,7 @@
 
 @property (nonatomic, assign) CGPoint touchesBeganLocation;
 @property (nonatomic, assign) CGPoint touchesMovedLocation;
-@property (nonatomic, assign) BOOL touchesOrdering;
+@property (nonatomic, assign) BOOL showingTouchesOrdering;
 @property (nonatomic, strong) MenuItemView *itemViewForOrdering;
 @property (nonatomic, strong) MenuItemsVisualOrderingView *visualOrderingView;
 
@@ -278,6 +278,7 @@
         return;
     }
     
+    [self showOrdering];
     [self orderingTouchesMoved:touches withEvent:event vector:vector];
 }
 
@@ -316,35 +317,42 @@
 
 - (void)beginOrdering:(MenuItemView *)orderingView
 {
-    self.touchesOrdering = YES;
-    
     self.itemViewForOrdering = orderingView;
-    
-    [self toggleOrderingPlaceHolder:YES forItemViewsWithSelectedItemView:orderingView];
     [self prepareVisualOrderingViewWithItemView:orderingView];
-    [self showVisualOrderingView];
     
     [self.delegate itemsView:self prefersScrollingEnabled:NO];
+}
+
+- (void)showOrdering
+{
+    if(!self.showingTouchesOrdering) {
+        self.showingTouchesOrdering = YES;
+        [self showVisualOrderingView];
+        [self toggleOrderingPlaceHolder:YES forItemViewsWithSelectedItemView:self.itemViewForOrdering];
+    }
+}
+
+- (void)hideOrdering
+{
+    self.showingTouchesOrdering = NO;
+    [self toggleOrderingPlaceHolder:NO forItemViewsWithSelectedItemView:self.itemViewForOrdering];
+    [self hideVisualOrderingView];
 }
 
 - (void)endReordering
 {
     // cleanup
     
-    self.touchesOrdering = NO;
-    
-    [self toggleOrderingPlaceHolder:NO forItemViewsWithSelectedItemView:self.itemViewForOrdering];
-    [self hideVisualOrderingView];
-    
+    [self hideOrdering];
     self.itemViewForOrdering = nil;
-
     [self.delegate itemsView:self prefersScrollingEnabled:YES];
 }
 
 - (void)orderingTouchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event vector:(CGPoint)vector
 {
-    if(!self.touchesOrdering)
+    if(!self.itemViewForOrdering) {
         return;
+    }
     
     const CGPoint touchPoint = [[touches anyObject] locationInView:self];
     MenuItemView *selectedItemView = self.itemViewForOrdering;
@@ -689,6 +697,16 @@
 }
 
 #pragma mark - MenuItemViewDelegate
+
+- (void)itemViewSelected:(MenuItemView *)itemView
+{
+    [self.delegate itemsView:self selectedMenuItemForEditing:itemView.item];
+}
+
+- (void)itemViewEditingButtonPressed:(MenuItemView *)itemView
+{
+    [self.delegate itemsView:self selectedMenuItemForEditing:itemView.item];
+}
 
 - (void)itemViewAddButtonPressed:(MenuItemView *)itemView
 {
