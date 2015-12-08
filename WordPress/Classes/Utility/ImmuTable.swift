@@ -84,7 +84,6 @@ public struct ImmuTable {
 
 public class ImmuTableDataSource: NSObject, UITableViewDataSource {
     var viewModel: ImmuTable
-    var configureCell: ((UITableViewCell) -> Void)?
 
     init(viewModel: ImmuTable) {
         self.viewModel = viewModel
@@ -103,8 +102,6 @@ public class ImmuTableDataSource: NSObject, UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
 
         row.configureCell(cell)
-
-        configureCell?(cell)
 
         return cell
     }
