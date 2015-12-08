@@ -2,7 +2,7 @@ import Foundation
 import WordPressShared
 import WordPressComAnalytics
 
-public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
+public class ReaderDetailViewController : UIViewController
 {
 
     // Structs for Constants
@@ -24,13 +24,11 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
 
     // MARK: - Properties
 
-    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var detailView: ReaderDetailView!
     @IBOutlet private weak var footerView: UIView!
     @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var actionButtonRight: UIButton!
     @IBOutlet private weak var actionButtonLeft: UIButton!
-
-    private weak var detailView: ReaderDetailView!
 
     private var didBumpStats: Bool = false
     private var didBumpPageViews: Bool = false
@@ -184,8 +182,8 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
 
 
     func setupDetailView() {
-        detailView = NSBundle.mainBundle().loadNibNamed("ReaderDetailView", owner: nil, options: nil).first as! ReaderDetailView
-        scrollView.addSubview(detailView)
+//        detailView = NSBundle.mainBundle().loadNibNamed("ReaderDetailView", owner: nil, options: nil).first as! ReaderDetailView
+//        scrollView.addSubview(detailView)
     }
 
 
@@ -206,12 +204,12 @@ public class ReaderDetailViewController : UIViewController, UIScrollViewDelegate
     }
 
     func resizeDetailView() {
-        var frame = detailView.frame
-        let size = detailView.sizeThatFits(CGSize(width: self.view.frame.width, height: CGFloat.max))
-        frame.size.width = size.width
-        frame.size.height = size.height
-        detailView.frame = frame
-        scrollView.contentSize = detailView.sizeThatFits(size)
+//        var frame = detailView.frame
+//        let size = detailView.sizeThatFits(CGSize(width: self.view.frame.width, height: CGFloat.max))
+//        frame.size.width = size.width
+//        frame.size.height = size.height
+//        detailView.frame = frame
+//        scrollView.contentSize = detailView.sizeThatFits(size)
     }
 
     private func configureTitle() {
