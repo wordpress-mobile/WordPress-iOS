@@ -3,24 +3,25 @@ import UIKit
 
 public typealias ImmuTableActionType = (ImmuTableRow) -> Void
 
-public protocol Reusable {
-    static var reusableIdentifier: String { get }
-}
-
-extension Reusable {
-    var reusableIdentifier: String {
-        get {
-            return self.dynamicType.reusableIdentifier
-        }
-    }
-}
-
-public protocol ImmuTableRow: Reusable {
+public protocol ImmuTableRow {
     var action: ImmuTableActionType? { get }
-    static var cellClass: AnyClass { get }
     func configureCell(cell: UITableViewCell)
-    static var registrable: CellRegistrable { get }
+    static var cell: ImmuTableCell { get }
     static var customHeight: Float? { get }
+}
+
+extension ImmuTableRow {
+    public var reusableIdentifier: String {
+        return self.dynamicType.cell.reusableIdentifier
+    }
+
+    public var cellClass: UITableViewCell.Type {
+        return self.dynamicType.cell.cellClass
+    }
+
+    public static var customHeight: Float? {
+        return nil;
+    }
 }
 
 public struct ImmuTableSection {
@@ -41,27 +42,57 @@ public struct ImmuTableSection {
     }
 }
 
-public enum CellRegistrable {
-    case Nib(UINib)
-    case Class(AnyClass)
-}
+public enum ImmuTableCell {
+    case Nib(UINib, UITableViewCell.Type)
+    case Class(UITableViewCell.Type)
 
-public protocol CellRegistrator {
-    func register(registrable: CellRegistrable, cellReuseIdentifier: String)
-}
-
-
-extension UITableView: CellRegistrator {
-    public func register(registrable: CellRegistrable, cellReuseIdentifier: String) {
-        switch registrable {
-        case .Nib(let nib):
-            registerNib(nib, forCellReuseIdentifier: cellReuseIdentifier)
+    public var reusableIdentifier: String {
+        switch self {
         case .Class(let cellClass):
-            registerClass(cellClass, forCellReuseIdentifier: cellReuseIdentifier)
+            return NSStringFromClass(cellClass)
+        case .Nib(_, let cellClass):
+            return NSStringFromClass(cellClass)
+        }
+    }
+
+    public var cellClass: UITableViewCell.Type {
+        switch self {
+        case .Class(let cellClass):
+            return cellClass
+        case .Nib(_, let cellClass):
+            return cellClass
         }
     }
 }
 
+public protocol CellRegistrator {
+    func register(cell: ImmuTableCell, cellReuseIdentifier: String)
+}
+
+
+extension UITableView: CellRegistrator {
+    public func register(cell: ImmuTableCell, cellReuseIdentifier: String) {
+        switch cell {
+        case .Nib(let nib, _):
+            registerNib(nib, forCellReuseIdentifier: cell.reusableIdentifier)
+        case .Class(let cellClass):
+            registerClass(cellClass, forCellReuseIdentifier: cell.reusableIdentifier)
+        }
+    }
+}
+
+/**
+ ImmuTable represents the view model for a static UITableView.
+
+ ImmuTable consists of zero or more sections, each one containing zero or more rows,
+ and an optional header and footer text.
+
+ Each row contains the model necessary to configure a specific type of UITableViewCell.
+
+ - attention: before using any ImmuTableRow type, you need to call `registerRows(_:tableView:)`
+ passing the row type. This is needed so ImmuTable can register the class or nib with the table view.
+ If you fail to do this, UIKit will raise an exception when it tries to load the row.
+ */
 public struct ImmuTable {
     public let sections: [ImmuTableSection]
 
@@ -75,9 +106,9 @@ public struct ImmuTable {
 
     public static func registerRows(rows: [ImmuTableRow.Type], tableView: CellRegistrator) {
         let registrables = rows.reduce([:]) {
-            (var classes, row) -> [String: CellRegistrable] in
+            (var classes, row) -> [String: ImmuTableCell] in
 
-            classes[row.reusableIdentifier] = row.registrable
+            classes[row.cell.reusableIdentifier] = row.cell
             return classes
         }
         for (identifier, registrable) in registrables {
@@ -133,49 +164,6 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
             return CGFloat(customHeight)
         }
         return tableView.rowHeight
-    }
-}
-
-public protocol CustomImmuTableRow: ImmuTableRow {
-    typealias CellType: AnyObject
-}
-
-extension CustomImmuTableRow {
-    public static var reusableIdentifier: String {
-        get {
-            return NSStringFromClass(cellClass)
-        }
-    }
-
-    public static var cellClass: AnyClass {
-        get {
-            return CellType.self
-        }
-    }
-}
-
-public protocol CustomCellImmuTableRow: CustomImmuTableRow { }
-extension CustomCellImmuTableRow {
-    public static var customHeight: Float? {
-        get {
-            return nil
-        }
-    }
-    public static var registrable: CellRegistrable {
-        get {
-            return .Class(cellClass)
-        }
-    }
-}
-
-protocol CustomNibImmuTableRow: CustomImmuTableRow {
-    static var nib: UINib { get }
-}
-extension CustomNibImmuTableRow {
-    static var registrable: CellRegistrable {
-        get {
-            return .Nib(nib)
-        }
     }
 }
 
