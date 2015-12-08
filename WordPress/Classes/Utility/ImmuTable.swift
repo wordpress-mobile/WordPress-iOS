@@ -116,9 +116,7 @@ public class ImmuTableDelegate: NSObject, UITableViewDelegate {
 
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let row = viewModel.rowAtIndexPath(indexPath)
-        if let action = row.action {
-            action(row)
-        }
+        row.action?(row)
     }
 
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
