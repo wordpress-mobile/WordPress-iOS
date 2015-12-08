@@ -86,11 +86,23 @@ public struct ImmuTable {
     }
 }
 
-public class ImmuTableDataSource: NSObject, UITableViewDataSource {
-    var viewModel: ImmuTable
+public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
+    unowned let target: UITableViewController
 
-    init(viewModel: ImmuTable) {
-        self.viewModel = viewModel
+    public init(takeOver target: UITableViewController) {
+        self.target = target
+        super.init()
+
+        self.target.tableView.dataSource = self
+        self.target.tableView.delegate = self
+    }
+
+    public var viewModel = ImmuTable(sections: []) {
+        didSet {
+            if target.isViewLoaded() {
+                target.tableView.reloadData()
+            }
+        }
     }
 
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -109,14 +121,6 @@ public class ImmuTableDataSource: NSObject, UITableViewDataSource {
 
         return cell
     }
-}
-
-public class ImmuTableDelegate: NSObject, UITableViewDelegate {
-    var viewModel: ImmuTable
-
-    init(viewModel: ImmuTable) {
-        self.viewModel = viewModel
-    }
 
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let row = viewModel.rowAtIndexPath(indexPath)
@@ -130,34 +134,6 @@ public class ImmuTableDelegate: NSObject, UITableViewDelegate {
         }
         return tableView.rowHeight
     }
-}
-
-public struct ImmuTableViewHandler {
-    unowned let target: UITableViewController
-
-    public init(takeOver target: UITableViewController) {
-        self.target = target
-        self.target.tableView.dataSource = dataSource
-        self.target.tableView.delegate = delegate
-    }
-
-    public var viewModel = ImmuTable(sections: []) {
-        didSet {
-            dataSource.viewModel = viewModel
-            delegate.viewModel = viewModel
-            if target.isViewLoaded() {
-                target.tableView.reloadData()
-            }
-        }
-    }
-
-    lazy var dataSource: ImmuTableDataSource = {
-        return ImmuTableDataSource(viewModel: self.viewModel)
-    }()
-
-    lazy var delegate: ImmuTableDelegate = {
-        return ImmuTableDelegate(viewModel: self.viewModel)
-    }()
 }
 
 public protocol CustomImmuTableRow: ImmuTableRow {
