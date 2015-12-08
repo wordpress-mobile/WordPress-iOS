@@ -1,86 +1,6 @@
 import Foundation
 import UIKit
 
-public typealias ImmuTableActionType = (ImmuTableRow) -> Void
-
-public protocol ImmuTableRow {
-    var action: ImmuTableActionType? { get }
-    func configureCell(cell: UITableViewCell)
-    static var cell: ImmuTableCell { get }
-    static var customHeight: Float? { get }
-}
-
-extension ImmuTableRow {
-    public var reusableIdentifier: String {
-        return self.dynamicType.cell.reusableIdentifier
-    }
-
-    public var cellClass: UITableViewCell.Type {
-        return self.dynamicType.cell.cellClass
-    }
-
-    public static var customHeight: Float? {
-        return nil;
-    }
-}
-
-public struct ImmuTableSection {
-    let headerText: String?
-    let rows: [ImmuTableRow]
-    let footerText: String?
-
-    public init(rows: [ImmuTableRow]) {
-        self.headerText = nil
-        self.rows = rows
-        self.footerText = nil
-    }
-
-    public init(headerText: String?, rows: [ImmuTableRow], footerText: String?) {
-        self.headerText = headerText
-        self.rows = rows
-        self.footerText = footerText
-    }
-}
-
-public enum ImmuTableCell {
-    case Nib(UINib, UITableViewCell.Type)
-    case Class(UITableViewCell.Type)
-
-    public var reusableIdentifier: String {
-        switch self {
-        case .Class(let cellClass):
-            return NSStringFromClass(cellClass)
-        case .Nib(_, let cellClass):
-            return NSStringFromClass(cellClass)
-        }
-    }
-
-    public var cellClass: UITableViewCell.Type {
-        switch self {
-        case .Class(let cellClass):
-            return cellClass
-        case .Nib(_, let cellClass):
-            return cellClass
-        }
-    }
-}
-
-protocol CellRegistrator {
-    func register(cell: ImmuTableCell, cellReuseIdentifier: String)
-}
-
-
-extension UITableView: CellRegistrator {
-    public func register(cell: ImmuTableCell, cellReuseIdentifier: String) {
-        switch cell {
-        case .Nib(let nib, _):
-            registerNib(nib, forCellReuseIdentifier: cell.reusableIdentifier)
-        case .Class(let cellClass):
-            registerClass(cellClass, forCellReuseIdentifier: cell.reusableIdentifier)
-        }
-    }
-}
-
 /**
  ImmuTable represents the view model for a static UITableView.
 
@@ -155,6 +75,84 @@ public struct ImmuTable {
     }
 }
 
+
+// MARK: -
+
+
+public struct ImmuTableSection {
+    let headerText: String?
+    let rows: [ImmuTableRow]
+    let footerText: String?
+
+    public init(rows: [ImmuTableRow]) {
+        self.headerText = nil
+        self.rows = rows
+        self.footerText = nil
+    }
+
+    public init(headerText: String?, rows: [ImmuTableRow], footerText: String?) {
+        self.headerText = headerText
+        self.rows = rows
+        self.footerText = footerText
+    }
+}
+
+
+// MARK: - ImmuTableRow
+
+
+public protocol ImmuTableRow {
+    var action: ImmuTableActionType? { get }
+    func configureCell(cell: UITableViewCell)
+    static var cell: ImmuTableCell { get }
+    static var customHeight: Float? { get }
+}
+
+extension ImmuTableRow {
+    public var reusableIdentifier: String {
+        return self.dynamicType.cell.reusableIdentifier
+    }
+
+    public var cellClass: UITableViewCell.Type {
+        return self.dynamicType.cell.cellClass
+    }
+
+    public static var customHeight: Float? {
+        return nil;
+    }
+}
+
+
+// MARK: - ImmuTableCell
+
+
+public enum ImmuTableCell {
+    case Nib(UINib, UITableViewCell.Type)
+    case Class(UITableViewCell.Type)
+
+    public var reusableIdentifier: String {
+        switch self {
+        case .Class(let cellClass):
+            return NSStringFromClass(cellClass)
+        case .Nib(_, let cellClass):
+            return NSStringFromClass(cellClass)
+        }
+    }
+
+    public var cellClass: UITableViewCell.Type {
+        switch self {
+        case .Class(let cellClass):
+            return cellClass
+        case .Nib(_, let cellClass):
+            return cellClass
+        }
+    }
+}
+
+
+// MARK: -
+
+
 public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
     unowned let target: UITableViewController
 
@@ -202,6 +200,32 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
             return CGFloat(customHeight)
         }
         return tableView.rowHeight
+    }
+}
+
+
+// MARK: - Type aliases
+
+
+public typealias ImmuTableActionType = (ImmuTableRow) -> Void
+
+
+// MARK: - Internal testing helpers
+
+
+protocol CellRegistrator {
+    func register(cell: ImmuTableCell, cellReuseIdentifier: String)
+}
+
+
+extension UITableView: CellRegistrator {
+    public func register(cell: ImmuTableCell, cellReuseIdentifier: String) {
+        switch cell {
+        case .Nib(let nib, _):
+            registerNib(nib, forCellReuseIdentifier: cell.reusableIdentifier)
+        case .Class(let cellClass):
+            registerClass(cellClass, forCellReuseIdentifier: cell.reusableIdentifier)
+        }
     }
 }
 
