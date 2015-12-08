@@ -24,7 +24,7 @@
     if(self.highlighted) {
         color = [super contentViewBackgroundColor];
     }else {
-        color = [UIColor colorWithWhite:0.98 alpha:1.0];
+        color = [UIColor colorWithWhite:0.96 alpha:1.0];
     }
     
     return color;
