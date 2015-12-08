@@ -153,10 +153,27 @@ extension ImmuTableRow {
 // MARK: - ImmuTableCell
 
 
+/**
+ImmuTableCell describes cell types so they can be registered with a table view.
+
+It supports two options:
+    - Nib for Interface Builder defined cells.
+    - Class for cells defined in code.
+Both cases presume a custom UITableViewCell subclass. If you aren't subclassing,
+you can also use UITableViewCell as the type.
+
+- note: If you need to use any cell style other than .Default we recommend you
+  subclass UITableViewCell and override init(style:reuseIdentifier:).
+*/
 public enum ImmuTableCell {
+
+    /// A cell using a UINib. Values are the UINib object and the custom cell class.
     case Nib(UINib, UITableViewCell.Type)
+
+    /// A cell using a custom class. The associated value is the custom cell class.
     case Class(UITableViewCell.Type)
 
+    /// A String that uniquely identifies the cell type
     public var reusableIdentifier: String {
         switch self {
         case .Class(let cellClass):
@@ -166,6 +183,7 @@ public enum ImmuTableCell {
         }
     }
 
+    /// The class of the custom cell
     public var cellClass: UITableViewCell.Type {
         switch self {
         case .Class(let cellClass):
