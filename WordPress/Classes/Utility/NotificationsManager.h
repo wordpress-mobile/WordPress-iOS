@@ -14,11 +14,6 @@ extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
 ///--------------------------------
 
 /**
- Register for push notifications with iOS
- */
-+ (void)registerForPushNotifications;
-
-/**
  Register to receive notifications from WordPress.com
  
  @param deviceToken received from applicationDidRegisterForRemoteNotifications:
@@ -37,13 +32,6 @@ extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
  */
 + (void)unregisterDeviceToken;
 
-
-/**
- Returns whether the app has Push Notifications Enabled in Settings.app
- @return Boolean, indicating whether Push Notifications are enabled, or not.
- */
-
-+ (BOOL)pushNotificationsEnabledInDeviceSettings;
 
 /**
  Retrieves and returns the last registered Device Token
