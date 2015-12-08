@@ -415,7 +415,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self customizeAppearance];
     
     // Push notifications
-    [NotificationsManager registerForPushNotifications];
+    [[PushNotificationsManager sharedInstance] registerForPushNotifications];
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -765,6 +765,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     
     self.connectionAvailable = [self.internetReachability isReachable];
 }
+
 
 #pragma mark - Simperium
 
