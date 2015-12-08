@@ -117,7 +117,36 @@ You should implement your own types that conform to ImmuTableRow to define your 
 */
 public protocol ImmuTableRow {
 
-    /// The closure to call when the row is tapped. The row is passed as an argument to the closure.
+    /**
+     The closure to call when the row is tapped. The row is passed as an argument to the closure.
+
+     To improve readability, we recommend that you implement the action logic in one of
+     your view controller methods, instead of including the closure inline.
+     
+     Also, be mindful of retain cycles. If your closure needs to reference `self` in
+     any way, make sure to use `[unowned self]` in the parameter list.
+     
+     An example row with its action could look like this:
+
+         class ViewController: UITableViewController {
+
+             func buildViewModel() {
+                 let item1Row = NavigationItemRow(title: "Item 1", action: navigationAction())
+                 ...
+             }
+
+             func navigationAction() -> ImmuTableRow -> Void {
+                 return { [unowned self] row in
+                     let controller = self.controllerForRow(row)
+                     self.navigationController?.pushViewController(controller, animated: true)
+                 }
+             }
+
+             ...
+             
+         }
+
+     */
     var action: ImmuTableActionType? { get }
 
     /// This method is called when an associated cell needs to be configured.
