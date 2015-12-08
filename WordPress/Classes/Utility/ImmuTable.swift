@@ -106,7 +106,7 @@ extension UITableView: CellRegistrator {
 
  The easiest way to use ImmuTable is through ImmuTableViewHandler, which takes a
  UITableViewController as an argument, and acts as the table view delegate and data
- source. You would then assign an `ImmuTable` object to the handler's `viewModel`
+ source. You would then assign an ImmuTable object to the handler's `viewModel`
  property.
 
  - attention: before using any ImmuTableRow type, you need to call `registerRows(_:tableView:)`
@@ -122,14 +122,26 @@ public struct ImmuTable {
         self.sections = sections
     }
 
+    /**
+     Returns the row model for a specific index path.
+     
+     - precondition: `indexPath` should represent a valid section and row,
+     otherwise this method will raise an exception.
+     */
     public func rowAtIndexPath(indexPath: NSIndexPath) -> ImmuTableRow {
         return sections[indexPath.section].rows[indexPath.row]
     }
 
+    /**
+     Registers the row custom class or nib with the table view so it can later be
+     dequeued with `dequeueReusableCellWithIdentifier(_:forIndexPath:)`
+     */
     public static func registerRows(rows: [ImmuTableRow.Type], tableView: UITableView) {
         registerRows(rows, registrator: tableView)
     }
 
+    /// This function exists for testing purposes
+    /// - seealso: registerRows(_:tableView:)
     internal static func registerRows(rows: [ImmuTableRow.Type], registrator: CellRegistrator) {
         let registrables = rows.reduce([:]) {
             (var classes, row) -> [String: ImmuTableCell] in
