@@ -19,6 +19,7 @@
 #import "NSDate+StringFormatting.h"
 #import "NSObject+Helpers.h"
 #import "NSURL+Util.h"
+#import "UIApplication+Helpers.h"
 
 #import "PhotonImageURLHelper.h"
 #import "PostListFooterView.h"
