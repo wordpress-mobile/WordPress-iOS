@@ -34,12 +34,6 @@ static NSString *const NotificationsDeviceIdKey                     = @"notifica
 static NSString *const NotificationsLegacyPreferencesKey            = @"notification_preferences";
 static NSString *const NotificationsDeviceToken                     = @"apnsDeviceToken";
 
-// These correspond to the 'category' data WP.com will send with a push notification
-static NSString *const NotificationCategoryCommentApprove           = @"approve-comment";
-static NSString *const NotificationCategoryCommentLike              = @"like-comment";
-static NSString *const NotificationCategoryCommentReply             = @"replyto-comment";
-static NSString *const NotificationCategoryCommentReplyWithLike     = @"replyto-like-comment";
-
 static NSString *const NotificationActionCommentReply               = @"COMMENT_REPLY";
 static NSString *const NotificationActionCommentLike                = @"COMMENT_LIKE";
 static NSString *const NotificationActionCommentApprove             = @"COMMENT_MODERATE_APPROVE";
@@ -50,31 +44,6 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 #pragma mark ====================================================================================
 
 @implementation NotificationsManager
-
-+ (void)registerForPushNotifications
-{
-#if TARGET_IPHONE_SIMULATOR || ALPHA_BUILD
-    return;
-#endif
-
-    BOOL canRegisterUserNotifications = [[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)];
-    if (!canRegisterUserNotifications) {
-        // iOS 7 notifications registration
-        UIRemoteNotificationType types = (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert);
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
-    } else {
-        // iOS 8 or higher notifications registration
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
-
-        // Add the categories to UIUserNotificationSettings
-        UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:[self buildNotificationCategories]];
-
-        // Finally, register the notification settings
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    }
-}
-
 
 #pragma mark - Device token registration
 
@@ -160,20 +129,6 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
                                                                    success:successBlock
                                                                    failure:failureBlock];
     }
-}
-
-+ (BOOL)pushNotificationsEnabledInDeviceSettings
-{
-    // TODO: I must insist. Let's refactor this entire class please, in another issue!. JLP. Jul.15.2015
-    UIApplication *application = [UIApplication sharedApplication];
-    
-    // iOS 8+
-    if ([application respondsToSelector:@selector(currentUserNotificationSettings)]) {
-        return application.currentUserNotificationSettings.types != UIUserNotificationTypeNone;
-    }
-    
-    // iOS 7
-    return application.enabledRemoteNotificationTypes != UIRemoteNotificationTypeNone;
 }
 
 + (NSString *)registeredPushNotificationsToken
@@ -357,52 +312,6 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
      ];
 }
 
-
-#pragma mark - Enhanced Notifications
-
-+ (NSSet *)buildNotificationCategories
-{
-    // Build the notification actions
-    UIMutableUserNotificationAction *commentReplyAction = [[UIMutableUserNotificationAction alloc] init];
-    commentReplyAction.identifier = NotificationActionCommentReply;
-    commentReplyAction.title = NSLocalizedString(@"Reply", @"Reply to a comment (verb)");
-    commentReplyAction.activationMode = UIUserNotificationActivationModeForeground;
-    commentReplyAction.destructive = NO;
-    commentReplyAction.authenticationRequired = NO;
-
-    UIMutableUserNotificationAction *commentLikeAction = [[UIMutableUserNotificationAction alloc] init];
-    commentLikeAction.identifier = NotificationActionCommentLike;
-    commentLikeAction.title = NSLocalizedString(@"Like", @"Like (verb)");
-    commentLikeAction.activationMode = UIUserNotificationActivationModeBackground;
-    commentLikeAction.destructive = NO;
-    commentLikeAction.authenticationRequired = NO;
-
-    UIMutableUserNotificationAction *commentApproveAction = [[UIMutableUserNotificationAction alloc] init];
-    commentApproveAction.identifier = NotificationActionCommentApprove;
-    commentApproveAction.title = NSLocalizedString(@"Approve", @"Approve comment (verb)");
-    commentApproveAction.activationMode = UIUserNotificationActivationModeBackground;
-    commentApproveAction.destructive = NO;
-    commentApproveAction.authenticationRequired = NO;
-
-    // Add actions to categories
-    UIMutableUserNotificationCategory *commentApproveCategory = [[UIMutableUserNotificationCategory alloc] init];
-    commentApproveCategory.identifier = NotificationCategoryCommentApprove;
-    [commentApproveCategory setActions:@[commentApproveAction] forContext:UIUserNotificationActionContextDefault];
-
-    UIMutableUserNotificationCategory *commentReplyCategory = [[UIMutableUserNotificationCategory alloc] init];
-    commentReplyCategory.identifier = NotificationCategoryCommentReply;
-    [commentReplyCategory setActions:@[commentReplyAction] forContext:UIUserNotificationActionContextDefault];
-
-    UIMutableUserNotificationCategory *commentLikeCategory = [[UIMutableUserNotificationCategory alloc] init];
-    commentLikeCategory.identifier = NotificationCategoryCommentLike;
-    [commentLikeCategory setActions:@[commentLikeAction] forContext:UIUserNotificationActionContextDefault];
-
-    UIMutableUserNotificationCategory *commentReplyWithLikeCategory = [[UIMutableUserNotificationCategory alloc] init];
-    commentReplyWithLikeCategory.identifier = NotificationCategoryCommentReplyWithLike;
-    [commentReplyWithLikeCategory setActions:@[commentLikeAction, commentReplyAction] forContext:UIUserNotificationActionContextDefault];
-
-    return [NSSet setWithObjects:commentApproveCategory, commentReplyCategory, commentLikeCategory, commentReplyWithLikeCategory, nil];
-}
 
 #pragma mark - Mixpanel A/B Tests
 
