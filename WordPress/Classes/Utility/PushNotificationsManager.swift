@@ -42,7 +42,8 @@ public class PushNotificationsManager : NSObject
         sharedApplication.registerForRemoteNotifications()
         
         // User Notifications Registration
-        let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: noteUserCategories)
+        let categories = notificationCategories(NoteCategoryDefinition.allDefinitions)
+        let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: categories)
         sharedApplication.registerUserNotificationSettings(settings)
     }
     
@@ -65,21 +66,25 @@ public class PushNotificationsManager : NSObject
     // MARK: - Private Helpers
     
     /**
-     *  @brief      Returns a Set of UIUserNotificationCategory instances, which, in turn, encapsulate
-     *              all of the UIUserNotificationAction that our app can deal with.
+     *  @brief      Parses a given array of NoteCategoryDefinition, and returns a set of 
+     *              *UIUserNotificationCategory* instances.
+     *  @param      definitions     A collection of definitions to be instantiated.
+     *  @returns                    A set of *UIUserNotificationCategory* instances.
      */
-    private var noteUserCategories : Set<UIUserNotificationCategory>? {
+    
+    private func notificationCategories(definitions: [NoteCategoryDefinition]) -> Set<UIUserNotificationCategory> {
         var categories = Set<UIUserNotificationCategory>()
-        var actionMap = noteUserActions
+        let rawActions = definitions.flatMap { $0.actions }
+        let actionsMap = notificationActionsMap(rawActions)
         
-        for category in NoteCategory.allCategories {
-            let noteCategory = UIMutableUserNotificationCategory()
-            noteCategory.identifier = category.identifier
+        for definition in definitions {
+            let category = UIMutableUserNotificationCategory()
+            category.identifier = definition.identifier
             
-            let noteActions = category.actions.flatMap { actionMap[$0] }
-            noteCategory.setActions(noteActions, forContext: .Default)
+            let actions = definition.actions.flatMap { actionsMap[$0] }
+            category.setActions(actions, forContext: .Default)
             
-            categories.insert(noteCategory)
+            categories.insert(category)
         }
         
         return categories
@@ -88,21 +93,24 @@ public class PushNotificationsManager : NSObject
     
     
     /**
-     *  @brief      Returns a map of [NoteAction > UserNotificationAction], which contains all of the
-     *              actions that WPiOS can perform in response to a Push Notification event.
+     *  @brief      Parses a given array of NoteActionDefinition, and returns a collection mapping them
+     *              with their *UIUserNotificationAction* counterparts.
+     *
+     *  @param      definitions     A collection of definitions to be instantiated.
+     *  @returns                    A map of Definition > NotificationAction instances
      */
-    private var noteUserActions : [NoteAction : UIUserNotificationAction] {
-        var actionMap = [NoteAction : UIUserNotificationAction]()
+    private func notificationActionsMap(definitions: [NoteActionDefinition]) -> [NoteActionDefinition : UIUserNotificationAction] {
+        var actionMap = [NoteActionDefinition : UIUserNotificationAction]()
         
-        for action in NoteAction.allActions {
-            let noteAction = UIMutableUserNotificationAction()
-            noteAction.identifier = action.identifier
-            noteAction.title = action.description
-            noteAction.activationMode = action.requiresBackground ? .Background : .Foreground
-            noteAction.destructive = action.destructive
-            noteAction.authenticationRequired = action.requiresAuthentication
+        for definition in definitions {
+            let action = UIMutableUserNotificationAction()
+            action.identifier = definition.identifier
+            action.title = definition.description
+            action.activationMode = definition.requiresBackground ? .Background : .Foreground
+            action.destructive = definition.destructive
+            action.authenticationRequired = definition.requiresAuthentication
             
-            actionMap[action] = noteAction
+            actionMap[definition] = action
         }
         
         return actionMap
@@ -111,31 +119,31 @@ public class PushNotificationsManager : NSObject
     
     
     /**
-     *  @enum       NoteCategory
+     *  @enum       NoteCategoryDefinition
      *  @brief      Describes information about Custom Actions that WPiOS can perform, as a response to
      *              a Push Notification event.
      */
-    private enum NoteCategory {
+    private enum NoteCategoryDefinition {
         case CommentApprove
         case CommentLike
         case CommentReply
         case CommentReplyWithLike
         
-        var actions : [NoteAction] {
-            return self.dynamicType.actionsMap[self] ?? [NoteAction]()
+        var actions : [NoteActionDefinition] {
+            return self.dynamicType.actionsMap[self] ?? [NoteActionDefinition]()
         }
         
         var identifier : String {
             return self.dynamicType.identifiersMap[self] ?? String()
         }
         
-        static var allCategories = [CommentApprove, CommentLike, CommentReply, CommentReplyWithLike]
+        static var allDefinitions = [CommentApprove, CommentLike, CommentReply, CommentReplyWithLike]
         
         private static let actionsMap = [
-            CommentApprove          : [NoteAction.CommentApprove],
-            CommentLike             : [NoteAction.CommentLike],
-            CommentReply            : [NoteAction.CommentReply],
-            CommentReplyWithLike    : [NoteAction.CommentLike, NoteAction.CommentReply]
+            CommentApprove          : [NoteActionDefinition.CommentApprove],
+            CommentLike             : [NoteActionDefinition.CommentLike],
+            CommentReply            : [NoteActionDefinition.CommentReply],
+            CommentReplyWithLike    : [NoteActionDefinition.CommentLike, NoteActionDefinition.CommentReply]
         ]
         
         private static let identifiersMap = [
@@ -152,7 +160,7 @@ public class PushNotificationsManager : NSObject
      *  @enum       NoteAction
      *  @brief      Describes the custom actions that WPiOS can perform in response to a Push notification.
      */
-    private enum NoteAction {
+    private enum NoteActionDefinition {
         case CommentApprove
         case CommentLike
         case CommentReply
@@ -177,7 +185,7 @@ public class PushNotificationsManager : NSObject
             return self != .CommentReply
         }
         
-        static var allActions = [CommentApprove, CommentLike, CommentReply]
+        static var allDefinitions = [CommentApprove, CommentLike, CommentReply]
         
         private static let descriptionMap = [
             CommentApprove  : NSLocalizedString("Approve", comment: "Approve comment (verb)"),
