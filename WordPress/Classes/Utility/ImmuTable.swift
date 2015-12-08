@@ -198,9 +198,22 @@ public enum ImmuTableCell {
 // MARK: -
 
 
+/**
+ImmuTableViewHandler is a helper to facilitate integration of ImmuTable in your
+table view controllers.
+
+It acts as the table view data source and delegate, and signals the table view to
+reload its data when the underlying model changes.
+
+- note: as it keeps a weak reference to its target, you should keep a strong 
+  reference to the handler from your view controller.
+*/
 public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
     unowned let target: UITableViewController
 
+    /// Initializes the handler with a target table view controller.
+    /// - postcondition: After initialization, it becomse the data source and
+    ///   delegate for the the target's table view.
     public init(takeOver target: UITableViewController) {
         self.target = target
         super.init()
@@ -209,6 +222,7 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
         self.target.tableView.delegate = self
     }
 
+    /// An ImmuTable object representing the table structure.
     public var viewModel = ImmuTable(sections: []) {
         didSet {
             if target.isViewLoaded() {
@@ -216,6 +230,8 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
             }
         }
     }
+
+    // MARK: Table View Data Source
 
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return viewModel.sections.count
@@ -233,6 +249,8 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
 
         return cell
     }
+
+    // MARK: Table View Delegate
 
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let row = viewModel.rowAtIndexPath(indexPath)
