@@ -65,7 +65,7 @@ public enum ImmuTableCell {
     }
 }
 
-public protocol CellRegistrator {
+protocol CellRegistrator {
     func register(cell: ImmuTableCell, cellReuseIdentifier: String)
 }
 
@@ -126,7 +126,11 @@ public struct ImmuTable {
         return sections[indexPath.section].rows[indexPath.row]
     }
 
-    public static func registerRows(rows: [ImmuTableRow.Type], tableView: CellRegistrator) {
+    public static func registerRows(rows: [ImmuTableRow.Type], tableView: UITableView) {
+        registerRows(rows, registrator: tableView)
+    }
+
+    internal static func registerRows(rows: [ImmuTableRow.Type], registrator: CellRegistrator) {
         let registrables = rows.reduce([:]) {
             (var classes, row) -> [String: ImmuTableCell] in
 
@@ -134,7 +138,7 @@ public struct ImmuTable {
             return classes
         }
         for (identifier, registrable) in registrables {
-            tableView.register(registrable, cellReuseIdentifier: identifier)
+            registrator.register(registrable, cellReuseIdentifier: identifier)
         }
     }
 }
