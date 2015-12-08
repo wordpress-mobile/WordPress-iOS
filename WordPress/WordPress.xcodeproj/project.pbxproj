@@ -2669,9 +2669,9 @@
 				5DA988051AEEA594002AFB12 /* DisplayableImageHelperTest.m */,
 				E1266D2E1BBEC37B00FCB6B6 /* GravatarTest.swift */,
 				93A379EB19FFBF7900415023 /* KeychainTest.m */,
+				5D2BEB4819758102005425F7 /* PhotonImageURLHelperTest.m */,
 				5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */,
 				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
-				5D2BEB4819758102005425F7 /* PhotonImageURLHelperTest.m */,
 				5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */,
 				85D790AB1AE5D95E0033AE83 /* MixpanelProxyTests.m */,
 				8514B8D31AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m */,
@@ -2856,9 +2856,6 @@
 			isa = PBXGroup;
 			children = (
 				59E2AAE91B20E3FB0051DC06 /* Remote Services */,
-				85B125401B028E34008A3D95 /* PushAuthenticationManagerTests.swift */,
-				85F8E19A1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift */,
-				85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */,
 				85F8E19E1B0186D0000859BB /* MockWordPressComApi.swift */,
 				E61084C31B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m */,
 				E66969C91B9E0C4F00EC9C00 /* ReaderTopicServiceRemoteTests.m */,
@@ -3058,6 +3055,18 @@
 				B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */,
 			);
 			path = Tools;
+			sourceTree = "<group>";
+		};
+		B5416CF81C17542900006DD8 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				B5AEEC711ACACF2F008BF2A4 /* NotificationTests.m */,
+				85B125401B028E34008A3D95 /* PushAuthenticationManagerTests.swift */,
+				85F8E19A1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift */,
+				85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */,
+				B5416CFD1C1756B900006DD8 /* PushNotificationsManagerTests.m */,
+			);
+			name = Notifications;
 			sourceTree = "<group>";
 		};
 		B545186718E9E08000AC3A54 /* Notifications */ = {
@@ -3548,9 +3557,9 @@
 				85F8E1991B017A8E000859BB /* Networking */,
 				85D239BD1AE5A6EE0074768D /* NUX */,
 				E6B9B8AB1B94EA710001B92F /* Reader */,
+				B5416CF81C17542900006DD8 /* Notifications */,
 				B5AEEC7E1ACAD088008BF2A4 /* Services */,
 				852416D01A12ED2D0030700C /* Utility */,
-				B5AEEC711ACACF2F008BF2A4 /* NotificationTests.m */,
 				B5AEEC801ACAD0A5008BF2A4 /* ViewControllers */,
 				BE20F5E11B2F738E0020694C /* ViewRelated */,
 			);
@@ -4944,6 +4953,7 @@
 				5DA988061AEEA594002AFB12 /* DisplayableImageHelperTest.m in Sources */,
 				B566EC751B83867800278395 /* NSMutableAttributedStringTest.swift in Sources */,
 				E6B9B8AF1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift in Sources */,
+				B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */,
 				BE20F5E71B2F76660020694C /* WPSearchControllerConfiguratorTests.m in Sources */,
 				59B48B621B99E132008EBB84 /* JSONLoader.swift in Sources */,
 				9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */,
