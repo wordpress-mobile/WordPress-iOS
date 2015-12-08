@@ -129,7 +129,7 @@ public class ImmuTableDelegate: NSObject, UITableViewDelegate {
 }
 
 public struct ImmuTableViewHandler {
-    let target: UITableViewController
+    unowned let target: UITableViewController
 
     init(takeOver target: UITableViewController) {
         self.target = target
