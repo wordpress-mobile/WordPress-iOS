@@ -62,6 +62,18 @@ extension UITableView: CellRegistrator {
     }
 }
 
+/**
+ ImmuTable represents the view model for a static UITableView.
+ 
+ ImmuTable consists of zero or more sections, each one containing zero or more rows,
+ and an optional header and footer text.
+ 
+ Each row contains the model necessary to configure a specific type of UITableViewCell.
+ 
+ - attention: before using any ImmuTableRow type, you need to call `registerRows(_:tableView:)`
+ passing the row type. This is needed so ImmuTable can register the class or nib with the table view.
+ If you fail to do this, UIKit will raise an exception when it tries to load the row.
+*/
 public struct ImmuTable {
     public let sections: [ImmuTableSection]
 
