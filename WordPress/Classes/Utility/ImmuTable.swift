@@ -28,13 +28,13 @@ public struct ImmuTableSection {
     let rows: [ImmuTableRow]
     let footerText: String?
 
-    init(rows: [ImmuTableRow]) {
+    public init(rows: [ImmuTableRow]) {
         self.headerText = nil
         self.rows = rows
         self.footerText = nil
     }
 
-    init(headerText: String?, rows: [ImmuTableRow], footerText: String?) {
+    public init(headerText: String?, rows: [ImmuTableRow], footerText: String?) {
         self.headerText = headerText
         self.rows = rows
         self.footerText = footerText
@@ -65,6 +65,10 @@ extension UITableView: CellRegistrator {
 public struct ImmuTable {
     public let sections: [ImmuTableSection]
 
+    public init(sections: [ImmuTableSection]) {
+        self.sections = sections
+    }
+
     public func rowAtIndexPath(indexPath: NSIndexPath) -> ImmuTableRow {
         return sections[indexPath.section].rows[indexPath.row]
     }
@@ -82,12 +86,23 @@ public struct ImmuTable {
     }
 }
 
-public class ImmuTableDataSource: NSObject, UITableViewDataSource {
-    var viewModel: ImmuTable
-    var configureCell: ((UITableViewCell) -> Void)?
+public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewDelegate {
+    unowned let target: UITableViewController
 
-    init(viewModel: ImmuTable) {
-        self.viewModel = viewModel
+    public init(takeOver target: UITableViewController) {
+        self.target = target
+        super.init()
+
+        self.target.tableView.dataSource = self
+        self.target.tableView.delegate = self
+    }
+
+    public var viewModel = ImmuTable(sections: []) {
+        didSet {
+            if target.isViewLoaded() {
+                target.tableView.reloadData()
+            }
+        }
     }
 
     public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -104,24 +119,12 @@ public class ImmuTableDataSource: NSObject, UITableViewDataSource {
 
         row.configureCell(cell)
 
-        configureCell?(cell)
-
         return cell
-    }
-}
-
-public class ImmuTableDelegate: NSObject, UITableViewDelegate {
-    var viewModel: ImmuTable
-
-    init(viewModel: ImmuTable) {
-        self.viewModel = viewModel
     }
 
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let row = viewModel.rowAtIndexPath(indexPath)
-        if let action = row.action {
-            action(row)
-        }
+        row.action?(row)
     }
 
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -133,60 +136,32 @@ public class ImmuTableDelegate: NSObject, UITableViewDelegate {
     }
 }
 
-public struct ImmuTableViewHandler {
-    let target: UITableViewController
-
-    init(takeOver target: UITableViewController) {
-        self.target = target
-        self.target.tableView.dataSource = dataSource
-        self.target.tableView.delegate = delegate
-    }
-
-    var viewModel = ImmuTable(sections: []) {
-        didSet {
-            dataSource.viewModel = viewModel
-            delegate.viewModel = viewModel
-            if target.isViewLoaded() {
-                target.tableView.reloadData()
-            }
-        }
-    }
-
-    lazy var dataSource: ImmuTableDataSource = {
-        return ImmuTableDataSource(viewModel: self.viewModel)
-    }()
-    
-    lazy var delegate: ImmuTableDelegate = {
-        return ImmuTableDelegate(viewModel: self.viewModel)
-    }()
-}
-
-protocol CustomImmuTableRow: ImmuTableRow {
+public protocol CustomImmuTableRow: ImmuTableRow {
     typealias CellType: AnyObject
 }
 
 extension CustomImmuTableRow {
-    static var reusableIdentifier: String {
+    public static var reusableIdentifier: String {
         get {
             return NSStringFromClass(cellClass)
         }
     }
 
-    static var cellClass: AnyClass {
+    public static var cellClass: AnyClass {
         get {
             return CellType.self
         }
     }
 }
 
-protocol CustomCellImmuTableRow: CustomImmuTableRow { }
+public protocol CustomCellImmuTableRow: CustomImmuTableRow { }
 extension CustomCellImmuTableRow {
-    static var customHeight: Float? {
+    public static var customHeight: Float? {
         get {
             return nil
         }
     }
-    static var registrable: CellRegistrable {
+    public static var registrable: CellRegistrable {
         get {
             return .Class(cellClass)
         }
