@@ -1,9 +1,10 @@
 import Foundation
 import WordPressShared
 
-public class ReaderDetailView : UIView, WPRichTextViewDelegate
+public class ReaderDetailView : UIView, UIScrollViewDelegate, WPRichTextViewDelegate
 {
     // Wrapper views
+    @IBOutlet private weak var scrollView: UIScrollView!
     @IBOutlet private weak var innerContentView: UIStackView!
 
     // Header realated Views
@@ -48,12 +49,12 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
     }
 
 
-
-    public override func intrinsicContentSize() -> CGSize {
-        return innerContentView.intrinsicContentSize()
-    }
-
-
+//
+//    public override func intrinsicContentSize() -> CGSize {
+//        return innerContentView.intrinsicContentSize()
+//    }
+//
+//
 //    public override func sizeThatFits(size: CGSize) -> CGSize {
 //        let innerWidth = innerWidthForSize(size)
 //        let innerSize = CGSize(width: innerWidth, height: CGFloat.max)
@@ -131,6 +132,7 @@ public class ReaderDetailView : UIView, WPRichTextViewDelegate
         configureTitle()
         configureRichText()
 
+        invalidateIntrinsicContentSize()
     }
 
 
