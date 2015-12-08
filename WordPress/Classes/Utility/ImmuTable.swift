@@ -79,17 +79,26 @@ public struct ImmuTable {
 // MARK: -
 
 
+/**
+ImmuTableSection represents the view model for a table view section.
+
+A section has an optional header and footer text, and zero or more rows.
+
+- seealso: ImmuTableRow
+*/
 public struct ImmuTableSection {
     let headerText: String?
     let rows: [ImmuTableRow]
     let footerText: String?
 
+    /// Initializes a ImmuTableSection with the given rows and no header or footer text
     public init(rows: [ImmuTableRow]) {
         self.headerText = nil
         self.rows = rows
         self.footerText = nil
     }
 
+    /// Initializes a ImmuTableSection with the given rows and optionally header and footer text
     public init(headerText: String?, rows: [ImmuTableRow], footerText: String?) {
         self.headerText = headerText
         self.rows = rows
@@ -101,10 +110,28 @@ public struct ImmuTableSection {
 // MARK: - ImmuTableRow
 
 
+/**
+ImmuTableRow represents the minimum common elements of a row model.
+
+You should implement your own types that conform to ImmuTableRow to define your custom rows.
+*/
 public protocol ImmuTableRow {
+
+    /// The closure to call when the row is tapped. The row is passed as an argument to the closure.
     var action: ImmuTableActionType? { get }
+
+    /// This method is called when an associated cell needs to be configured.
+    /// - precondition: You can assume that the passed cell is of the type defined
+    ///   by cell.cellClass and force downcast accordingly.
     func configureCell(cell: UITableViewCell)
+
+    /// An ImmuTableCell value defining the associated cell type.
+    /// - seealso: See ImmuTableCell for possible options.
     static var cell: ImmuTableCell { get }
+
+    /// The desired row height (Optional)
+    ///
+    /// If not defined or nil, the default height will be used.
     static var customHeight: Float? { get }
 }
 
