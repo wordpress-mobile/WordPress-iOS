@@ -428,13 +428,11 @@ public protocol ThemePresenter: class
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        switch sections.first {
-        case .Themes?:
-            return Styles.searchMargins
-        case .Info? where syncHelper.hasMoreContent:
-            return Styles.syncingMargins
-        default:
-            return Styles.syncedMargins
+        switch sections[section] {
+        case .Themes:
+            return Styles.themeMargins
+        case .Info:
+            return Styles.infoMargins
         }
     }
 
