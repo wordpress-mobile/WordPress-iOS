@@ -128,6 +128,8 @@
 - (void)insertInsertionItemViewsAroundItemView:(MenuItemView *)toggledItemView
 {
     self.itemViewForInsertionToggling = toggledItemView;
+    toggledItemView.showsCancelButtonOption = YES;
+    toggledItemView.showsEditingButtonOptions = NO;
     
     self.insertionViews = [NSMutableSet setWithCapacity:3];
     [self addNewInsertionViewWithType:MenuItemInsertionViewTypeAbove forItemView:toggledItemView];
@@ -137,6 +139,10 @@
 
 - (void)insertItemInsertionViewsAroundItemView:(MenuItemView *)toggledItemView animated:(BOOL)animated
 {
+    if(self.isEditingForItemViewInsertion) {
+        [self removeItemInsertionViews:NO];
+    }
+    
     self.isEditingForItemViewInsertion = YES;
     
     CGRect previousRect = toggledItemView.frame;
@@ -162,7 +168,6 @@
             insertionView.hidden = NO;
             insertionView.alpha = 1.0;
         }
-        
         // inform the delegate to handle this content change based on the rect we are focused on
         // a delegate will likely scroll the content with the size change
         [self.delegate itemsViewAnimatingContentSizeChanges:self focusedRect:previousRect updatedFocusRect:updatedRect];
@@ -180,14 +185,14 @@
     }
     
     self.insertionViews = nil;
-    [self.stackView setNeedsLayout];
-    
     self.itemViewForInsertionToggling = nil;
 }
 
 - (void)removeItemInsertionViews:(BOOL)animated
 {
     self.isEditingForItemViewInsertion = NO;
+    self.itemViewForInsertionToggling.showsCancelButtonOption = NO;
+    self.itemViewForInsertionToggling.showsEditingButtonOptions = YES;
     
     if(!animated) {
         [self removeItemInsertionViews];
@@ -710,19 +715,11 @@
 
 - (void)itemViewAddButtonPressed:(MenuItemView *)itemView
 {
-    itemView.showsCancelButtonOption = YES;
-    for(MenuItemView *childItemView in self.itemViews) {
-        childItemView.showsEditingButtonOptions = NO;
-    }
     [self insertItemInsertionViewsAroundItemView:itemView animated:YES];
 }
 
 - (void)itemViewCancelButtonPressed:(MenuItemView *)itemView
 {
-    itemView.showsCancelButtonOption = NO;
-    for(MenuItemView *childItemView in self.itemViews) {
-        childItemView.showsEditingButtonOptions = YES;
-    }
     [self removeItemInsertionViews:YES];
 }
 

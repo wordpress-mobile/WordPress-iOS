@@ -112,7 +112,8 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
         [stackView addArrangedSubview:label];
         
         [label.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
-        [label.widthAnchor constraintGreaterThanOrEqualToConstant:50].active = YES;
+        [label setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+        [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     }
 }
 
@@ -296,7 +297,7 @@ static CGFloat const MenuItemsStackableViewIconSize = 10.0;
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-    [self touchesCancelled:touches withEvent:event];
+    [super touchesCancelled:touches withEvent:event];
     self.highlighted = NO;
 }
 
