@@ -9,6 +9,8 @@ import Foundation
 
 public class PushNotificationsManager : NSObject
 {
+    // MARK: - Public Methods
+    
     /**
      *  @details    Returns the shared PushNotificationsManager instance.
      */
@@ -63,7 +65,7 @@ public class PushNotificationsManager : NSObject
     // MARK: - Private Helpers
     
     /**
-     *  @brief      Contains a Set of UIUserNotificationCategory instances, which, in turn, encapsulate
+     *  @brief      Returns a Set of UIUserNotificationCategory instances, which, in turn, encapsulate
      *              all of the UIUserNotificationAction that our app can deal with.
      */
     private var noteUserCategories : Set<UIUserNotificationCategory>? {
@@ -86,7 +88,7 @@ public class PushNotificationsManager : NSObject
     
     
     /**
-     *  @brief      Returns a map of [NoteAction > UserNotificationAction], which describe all of the
+     *  @brief      Returns a map of [NoteAction > UserNotificationAction], which contains all of the
      *              actions that WPiOS can perform in response to a Push Notification event.
      */
     private var noteUserActions : [NoteAction : UIUserNotificationAction] {
@@ -110,7 +112,7 @@ public class PushNotificationsManager : NSObject
     
     /**
      *  @enum       NoteCategory
-     *  @brief      Encapsulates information about Custom Actions that WPiOS can perform, as a response to
+     *  @brief      Describes information about Custom Actions that WPiOS can perform, as a response to
      *              a Push Notification event.
      */
     private enum NoteCategory {
