@@ -51,7 +51,7 @@ public class PushNotificationsManager : NSObject
      *  @return     True if Push Notifications are enabled in the Settings.app
      */
     public func pushNotificationsEnabledInSettings() -> Bool {
-        guard let settings = UIApplication.sharedApplication().currentUserNotificationSettings() else {
+        guard let settings = sharedApplication.currentUserNotificationSettings() else {
             return false
         }
         
