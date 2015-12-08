@@ -113,6 +113,7 @@ public protocol ThemePresenter: class
             }
        }
     }
+    private var suspendedSearch = ""
     public var searchType: ThemeType = ThemeType.mayPurchase ? .All : .Free {
         didSet {
             if searchType != oldValue {
@@ -205,6 +206,11 @@ public protocol ThemePresenter: class
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if !suspendedSearch.isEmpty {
+            beginSearchFor(suspendedSearch)
+            suspendedSearch = ""
+        }
         
         guard let theme = presentingTheme else {
             return
@@ -439,7 +445,12 @@ public protocol ThemePresenter: class
     // MARK: - Search support
     
     @IBAction func didTapSearchButton(sender: UIButton) {
+        beginSearchFor()
+    }
+    
+    private func beginSearchFor(pattern: String = "") {
         searchController.active = true
+        searchController.searchBar.text = pattern
         if sections.first == .Info {
             collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
@@ -451,9 +462,8 @@ public protocol ThemePresenter: class
 
     // MARK: - UISearchControllerDelegate
 
-    public func willDismissSearchController(searchController: UISearchController) {
+    public func didDismissSearchController(searchController: UISearchController) {
         if sections.first == .Themes {
-            searchName = ""
             collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
                 self.collectionView?.insertSections(NSIndexSet(index: 0))
@@ -516,6 +526,7 @@ public protocol ThemePresenter: class
             return
         }
         
+        searchController.active = false
         themeService.activateTheme(theme,
             forBlog: blog,
             success: { [weak self] (theme: Theme?) in
@@ -571,6 +582,8 @@ public protocol ThemePresenter: class
             return
         }
         
+        suspendedSearch = searchName
+        searchController.active = false
         presentingTheme = theme
         let webViewController = WPWebViewController(URL: NSURL(string: url))
         
@@ -593,6 +606,7 @@ public protocol ThemePresenter: class
     }
     
     public func activatePresentingTheme() {
+        suspendedSearch = ""
         navigationController?.popViewControllerAnimated(true)
         activateTheme(presentingTheme)
         presentingTheme = nil
