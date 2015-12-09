@@ -7,6 +7,7 @@
 #import "MenuItemInsertionView.h"
 #import "MenusDesign.h"
 #import "MenuItemsVisualOrderingView.h"
+#import "MenuItemEditingView.h"
 
 @interface MenuItemsStackView () <MenuItemsStackableViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
 
@@ -22,6 +23,8 @@
 @property (nonatomic, assign) BOOL showingTouchesOrdering;
 @property (nonatomic, strong) MenuItemView *itemViewForOrdering;
 @property (nonatomic, strong) MenuItemsVisualOrderingView *visualOrderingView;
+
+@property (nonatomic, strong) MenuItemEditingView *editingView;
 
 @end
 
@@ -694,6 +697,113 @@
     self.visualOrderingView.hidden = YES;
 }
 
+#pragma mark - editing
+
+- (void)itemViewWasSelectedForEditing:(MenuItemView *)itemView
+{
+    if(self.editingView) {
+        
+        __weak MenuItemsStackView *weakSelf = self;
+        MenuItemEditingView *currentEditingView = self.editingView;
+
+        if(currentEditingView.item == itemView.item) {
+            
+            self.editingView = nil;
+            [self hideEditingView:currentEditingView completion:nil];
+            
+        }else {
+            
+            self.editingView = [self insertEditingViewForSelectedItemView:itemView];
+            [self hideEditingView:currentEditingView completion:^{
+                [weakSelf showEditingView:self.editingView];
+            }];
+        }
+        
+    }else {
+        
+        self.editingView = [self insertEditingViewForSelectedItemView:itemView];
+        [self showEditingView:self.editingView];
+    }
+}
+
+- (void)showEditingView:(MenuItemEditingView *)editingView
+{
+    const CGFloat duration = 0.45;
+    [UIView animateWithDuration:duration animations:^{
+        
+        editingView.hidden = NO;
+        editingView.alpha = 1.0;
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self.delegate itemsView:self requiresScrollingToCenterView:editingView];
+    }];
+}
+
+- (void)hideEditingView:(MenuItemEditingView *)editingView completion:(void(^)())completion
+{
+    const CGFloat duration = 0.25;
+    MenuItemView *itemView = [self itemViewForItem:editingView.item];
+    
+    [UIView animateWithDuration:duration animations:^{
+        
+        editingView.hidden = YES;
+        editingView.alpha = 0.0;
+        
+    } completion:^(BOOL finished) {
+        
+        [self.stackView removeArrangedSubview:editingView];
+        [editingView removeFromSuperview];
+        
+        if(completion) {
+            completion();
+        }
+    }];
+    
+    [UIView animateWithDuration:duration animations:^{
+        [self.delegate itemsView:self requiresScrollingToCenterView:itemView];
+    }];
+}
+
+- (MenuItemEditingView *)insertEditingViewForSelectedItemView:(MenuItemView *)itemView
+{
+    NSUInteger viewIndex = [self.stackView.arrangedSubviews indexOfObject:itemView];
+    
+    MenuItemEditingView *editingView = [[MenuItemEditingView alloc] initWithItem:itemView.item];
+    editingView.hidden = YES;
+    editingView.alpha = 0.0;
+
+    [self.stackView insertArrangedSubview:editingView atIndex:viewIndex + 1];
+    
+    [editingView.widthAnchor constraintEqualToAnchor:self.stackView.widthAnchor].active = YES;
+    
+    NSLayoutConstraint *heightConstraint = [editingView.heightAnchor constraintEqualToConstant:400];
+    heightConstraint.priority = UILayoutPriorityDefaultHigh;
+    heightConstraint.active = YES;
+    
+    return editingView;
+}
+
+- (void)removeEditingView:(MenuItemEditingView *)editingView completion:(void(^)())completion
+{
+    [UIView animateWithDuration:0.20 animations:^{
+        
+        editingView.hidden = YES;
+        
+    } completion:^(BOOL finished) {
+        
+        [self.stackView removeArrangedSubview:editingView];
+        [editingView removeFromSuperview];
+        
+        if(completion) {
+            completion();
+        }
+    }];
+}
+
 #pragma mark - MenuItemsVisualOrderingViewDelegate
 
 - (void)visualOrderingView:(MenuItemsVisualOrderingView *)visualOrderingView animatingVisualItemViewForOrdering:(MenuItemView *)orderingView
@@ -705,12 +815,12 @@
 
 - (void)itemViewSelected:(MenuItemView *)itemView
 {
-    [self.delegate itemsView:self selectedMenuItemForEditing:itemView.item];
+    [self itemViewWasSelectedForEditing:itemView];
 }
 
 - (void)itemViewEditingButtonPressed:(MenuItemView *)itemView
 {
-    [self.delegate itemsView:self selectedMenuItemForEditing:itemView.item];
+    [self itemViewWasSelectedForEditing:itemView];
 }
 
 - (void)itemViewAddButtonPressed:(MenuItemView *)itemView

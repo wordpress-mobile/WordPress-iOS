@@ -14,7 +14,7 @@
 
 @protocol MenuItemsStackViewDelegate <NSObject>
 
-- (void)itemsView:(MenuItemsStackView *)itemsView selectedMenuItemForEditing:(MenuItem *)item;
+- (void)itemsView:(MenuItemsStackView *)itemsView requiresScrollingToCenterView:(UIView *)viewForScrolling;
 - (void)itemsView:(MenuItemsStackView *)itemsView prefersScrollingEnabled:(BOOL)enabled;
 - (void)itemsView:(MenuItemsStackView *)itemsView prefersAdjustingScrollingOffsetForAnimatingView:(UIView *)view;
 - (void)itemsViewAnimatingContentSizeChanges:(MenuItemsStackView *)itemsView focusedRect:(CGRect)focusedRect updatedFocusRect:(CGRect)updatedFocusRect;
