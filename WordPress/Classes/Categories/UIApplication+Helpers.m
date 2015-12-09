@@ -7,19 +7,19 @@
 - (BOOL)isRunningSimulator
 {
 #if TARGET_IPHONE_SIMULATOR
-    return true;
+    return YES;
 #endif
     
-    return false;
+    return NO;
 }
 
 - (BOOL)isAlphaBuild
 {
 #if ALPHA_BUILD
-    return true;
+    return YES;
 #endif
     
-    return false;
+    return NO;
 }
 
 @end
