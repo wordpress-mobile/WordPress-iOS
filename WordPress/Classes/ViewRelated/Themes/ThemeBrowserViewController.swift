@@ -138,10 +138,12 @@ public protocol ThemePresenter: class
         collectionView?.reloadData()
         updateResults()
     }
+    
     private func themeAtIndex(index: Int) -> Theme? {
         let indexPath = NSIndexPath(forRow: index, inSection: 0)
         return themesController.objectAtIndexPath(indexPath) as? Theme
     }
+    
     private lazy var noResultsView: WPNoResultsView = {
         let noResultsView = WPNoResultsView()
         let drakeImage = UIImage(named: "theme-empty-results")
@@ -149,6 +151,7 @@ public protocol ThemePresenter: class
         
         return noResultsView
     }()
+    
     private var noResultsShown: Bool {
         return noResultsView.superview != nil
     }
