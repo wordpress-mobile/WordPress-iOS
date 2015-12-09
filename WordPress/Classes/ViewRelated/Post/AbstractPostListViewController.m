@@ -4,9 +4,10 @@
 #import "AbstractPost.h"
 #import "SiteSettingsViewController.h"
 #import "PostPreviewViewController.h"
-#import "PostSettingsSelectionViewController.h"
+#import "SettingsSelectionViewController.h"
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
+#import "WPAppAnalytics.h"
 #import "WPSearchControllerConfigurator.h"
 #import <WordPressApi/WordPressApi.h>
 
@@ -278,10 +279,16 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (NSDictionary *)propertiesForAnalytics
 {
-    return @{
-             @"type":[self postTypeToSync],
-             @"filter":self.currentPostListFilter.title,
-             };
+    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:3];
+    properties[@"type"] = [self postTypeToSync];
+    properties[@"filter"] = self.currentPostListFilter.title;
+    
+    NSNumber *dotComID = self.blog.dotComID;
+    if (dotComID) {
+        properties[WPAppAnalyticsKeyBlogID] = dotComID;
+    }
+    
+    return properties;
 }
 
 #pragma mark - Actions
@@ -797,7 +804,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
                            SettingsSelectionCurrentValueKey   : [self currentPostListFilter]
                            };
 
-    PostSettingsSelectionViewController *controller = [[PostSettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
+    SettingsSelectionViewController *controller = [[SettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
     controller.onItemSelected = ^(NSDictionary *selectedValue) {
         [self setCurrentFilterIndex:[self.postListFilters indexOfObject:selectedValue]];
         [self dismissViewControllerAnimated:YES completion:nil];

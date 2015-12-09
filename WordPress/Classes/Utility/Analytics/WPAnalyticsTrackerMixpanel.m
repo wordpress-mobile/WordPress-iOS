@@ -117,27 +117,23 @@ NSString *const SessionCount = @"session_count";
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         
         blogCount = [blogService blogCountForAllAccounts];
+        jetpackBlogsPresent = [blogService hasAnyJetpackBlogs];
         if (account != nil) {
             username = account.username;
             emailAddress = account.email;
             accountPresent = YES;
-            jetpackBlogsPresent = [account jetpackBlogs].count > 0;
         }
     }];
     
     BOOL dotcom_user = NO;
-    BOOL jetpack_user = NO;
     if (accountPresent) {
         dotcom_user = YES;
-        if (jetpackBlogsPresent) {
-            jetpack_user = YES;
-        }
     }
 
     NSMutableDictionary *superProperties = [NSMutableDictionary new];
     superProperties[@"platform"] = @"iOS";
     superProperties[@"dotcom_user"] = @(dotcom_user);
-    superProperties[@"jetpack_user"] = @(jetpack_user);
+    superProperties[@"jetpack_user"] = @(jetpackBlogsPresent);
     superProperties[@"number_of_blogs"] = @(blogCount);
     superProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
     [self.mixpanelProxy registerSuperProperties:superProperties];
@@ -503,6 +499,9 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatPushNotificationAlertPressed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Notification - Alert Tapped"];
+            break;
+        case WPAnalyticsStatPushNotificationReceived:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Notification - Received"];
             break;
         case WPAnalyticsStatEditorUpdatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Updated Post"];

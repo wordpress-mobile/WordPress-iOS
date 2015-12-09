@@ -3,7 +3,8 @@
 #import "WordPressComApi.h"
 #import "ALIterativeMigrator.h"
 
-static ContextManager *instance;
+static ContextManager *_instance;
+static ContextManager *_override;
 
 @interface ContextManager ()
 
@@ -20,15 +21,15 @@ static ContextManager *instance;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[ContextManager alloc] init];
+        _instance = [[ContextManager alloc] init];
     });
-    return instance;
+    return _override ?: _instance;
 }
 
 + (void)overrideSharedInstance:(ContextManager *)contextManager
 {
     [ContextManager sharedInstance];
-    instance = contextManager;
+    _override = contextManager;
 }
 
 - (void)dealloc

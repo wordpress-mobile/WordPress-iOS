@@ -226,15 +226,6 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
 }
 
 
-#pragma mark - Helpers
-
-- (NSURL *)blavatarURL
-{
-    NSInteger size = (NSInteger)ceil(CGRectGetWidth(self.avatarImageView.frame) * [[UIScreen mainScreen] scale]);
-    return [self.avatarImageView blavatarURLForHost:[self.contentProvider blavatarForDisplay] withSize:size];
-}
-
-
 #pragma mark - Configuration
 
 - (void)preserveStartingConstraintConstants
@@ -312,8 +303,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     self.authorBlogLabel.text = [self.contentProvider blogNameForDisplay];
     self.authorNameLabel.text = [self.contentProvider authorNameForDisplay];
     UIImage *placeholder = [UIImage imageNamed:@"post-blavatar-placeholder"];
-    [self.avatarImageView setImageWithURL:[self blavatarURL]
-                         placeholderImage:placeholder];
+
+    [self.avatarImageView setImageWithSiteIcon:[self.contentProvider blavatarForDisplay] placeholderImage:placeholder];
 }
 
 - (void)configureCardImage

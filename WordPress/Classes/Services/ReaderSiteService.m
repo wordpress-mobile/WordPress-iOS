@@ -11,6 +11,7 @@
 #import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "WordPress-Swift.h"
+#import "WPAppAnalytics.h"
 
 NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
@@ -86,7 +87,13 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             if (success) {
                 success();
             }
-            [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed];
+            
+            if(siteID) {
+                [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed withProperties:@{ WPAppAnalyticsKeyBlogID:@(siteID) }];
+            }else {
+                [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed];
+            }
+            
         } failure:failure];
 
     } failure:^(NSError *error) {
@@ -111,7 +118,13 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         if (success) {
             success();
         }
-        [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed];
+        
+        if(siteID) {
+            [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withProperties:@{ WPAppAnalyticsKeyBlogID:@(siteID) }];
+        }else {
+            [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed];
+        }
+        
     } failure:failure];
 }
 
@@ -236,7 +249,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
 
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
     [service flagSiteWithID:[siteID integerValue] asBlocked:blocked success:^{
-        NSDictionary *properties = @{@"siteID":siteID};
+        NSDictionary *properties = @{@"siteID":siteID, WPAppAnalyticsKeyBlogID:siteID};
         [WPAnalytics track:WPAnalyticsStatReaderSiteBlocked withProperties:properties];
 
         if (success) {

@@ -7,7 +7,8 @@ import WordPressShared.WPNoResultsView
  *  @brief      Support for filtering themes by purchasability
  *  @details    Currently purchasing themes via native apps is unsupported
  */
-public enum ThemeType {
+public enum ThemeType
+{
     case All
     case Free
     case Premium
@@ -43,7 +44,8 @@ public enum ThemeType {
  *  @brief      Publicly exposed theme interaction support
  *  @details    Held as weak reference by owned subviews
  */
-public protocol ThemePresenter: class {
+public protocol ThemePresenter: class
+{
     var searchType: ThemeType { get set }
 
     func currentTheme() -> Theme?
@@ -56,8 +58,8 @@ public protocol ThemePresenter: class {
     func presentViewForTheme(theme: Theme?)
 }
 
-@objc public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate {
-    
+@objc public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
+{
     // MARK: - Properties: must be set by parent
     
     /**
@@ -113,6 +115,7 @@ public protocol ThemePresenter: class {
             }
        }
     }
+    private var suspendedSearch = ""
     public var searchType: ThemeType = ThemeType.mayPurchase ? .All : .Free {
         didSet {
             if searchType != oldValue {
@@ -126,7 +129,8 @@ public protocol ThemePresenter: class {
      *  @brief      Collection view support
      */
     
-    private enum Section {
+    private enum Section
+    {
         case Info
         case Themes
     }
@@ -136,10 +140,12 @@ public protocol ThemePresenter: class {
         collectionView?.reloadData()
         updateResults()
     }
+    
     private func themeAtIndex(index: Int) -> Theme? {
         let indexPath = NSIndexPath(forRow: index, inSection: 0)
         return themesController.objectAtIndexPath(indexPath) as? Theme
     }
+    
     private lazy var noResultsView: WPNoResultsView = {
         let noResultsView = WPNoResultsView()
         let drakeImage = UIImage(named: "theme-empty-results")
@@ -147,9 +153,11 @@ public protocol ThemePresenter: class {
         
         return noResultsView
     }()
+    
     private var noResultsShown: Bool {
         return noResultsView.superview != nil
     }
+    private var presentingTheme: Theme?
    
     /**
      *  @brief      The themes service we'll use in this VC and its helpers
@@ -189,7 +197,8 @@ public protocol ThemePresenter: class {
         
         fetchThemes()
         sections = themesCount == 0 ? [.Themes] : [.Info, .Themes]
-
+        searchController.loadViewIfNeeded()
+        
         updateActiveTheme()
         setupSyncHelper()
     }
@@ -198,6 +207,24 @@ public protocol ThemePresenter: class {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
         collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if !suspendedSearch.isEmpty {
+            beginSearchFor(suspendedSearch)
+            suspendedSearch = ""
+        }
+        
+        guard let theme = presentingTheme else {
+            return
+        }
+        presentingTheme = nil
+        if !theme.isCurrentTheme() {
+            // presented page may have activated this theme
+            updateActiveTheme()
+        }
     }
     
     public override func viewWillDisappear(animated: Bool) {
@@ -412,13 +439,11 @@ public protocol ThemePresenter: class {
     }
     
     public func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        switch sections.first {
-        case .Themes?:
-            return Styles.searchMargins
-        case .Info? where syncHelper.hasMoreContent:
-            return Styles.syncingMargins
-        default:
-            return Styles.syncedMargins
+        switch sections[section] {
+        case .Themes:
+            return Styles.themeMargins
+        case .Info:
+            return Styles.infoMargins
         }
     }
 
@@ -426,7 +451,12 @@ public protocol ThemePresenter: class {
     
     @IBAction func didTapSearchButton(sender: UIButton) {
         WPAnalytics.track(.ThemesAccessedSearch)
+        beginSearchFor("")
+    }
+    
+    private func beginSearchFor(pattern: String) {
         searchController.active = true
+        searchController.searchBar.text = pattern
         if sections.first == .Info {
             collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
@@ -438,9 +468,8 @@ public protocol ThemePresenter: class {
 
     // MARK: - UISearchControllerDelegate
 
-    public func willDismissSearchController(searchController: UISearchController) {
+    public func didDismissSearchController(searchController: UISearchController) {
         if sections.first == .Themes {
-            searchName = ""
             collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
                 self.collectionView?.insertSections(NSIndexSet(index: 0))
@@ -503,6 +532,7 @@ public protocol ThemePresenter: class {
             return
         }
         
+        searchController.active = false
         themeService.activateTheme(theme,
             forBlog: blog,
             success: { [weak self] (theme: Theme?) in
@@ -541,7 +571,7 @@ public protocol ThemePresenter: class {
 
     public func presentCustomizeForTheme(theme: Theme?) {
         WPAnalytics.track(.ThemesCustomizeAccessed)
-        presentUrlForTheme(theme, url: theme?.customizeUrl())
+        presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
     }
 
     public func presentPreviewForTheme(theme: Theme?) {
@@ -564,11 +594,14 @@ public protocol ThemePresenter: class {
         presentUrlForTheme(theme, url: theme?.viewUrl())
     }
     
-    public func presentUrlForTheme(theme: Theme?, url: String?) {
-        guard let url = url where !url.isEmpty else {
+    public func presentUrlForTheme(theme: Theme?, url: String?, activeButton: Bool = true) {
+        guard let theme = theme, url = url where !url.isEmpty else {
             return
         }
         
+        suspendedSearch = searchName
+        searchController.active = false
+        presentingTheme = theme
         let webViewController = WPWebViewController(URL: NSURL(string: url))
         
         webViewController.authToken = blog.authToken
@@ -577,10 +610,22 @@ public protocol ThemePresenter: class {
         webViewController.wpLoginURL = NSURL(string: blog.loginUrl())
 
         webViewController.loadViewIfNeeded()
-        webViewController.navigationItem.rightBarButtonItems = nil
         webViewController.navigationItem.titleView = nil
-        webViewController.title = theme?.name
+        webViewController.title = theme.name
+        var buttons: [UIBarButtonItem]?
+        if activeButton && !theme.isCurrentTheme() {
+           let activate = UIBarButtonItem(title: ThemeAction.Activate.title, style: .Plain, target: self, action: "activatePresentingTheme")
+            buttons = [activate]
+        }
+        webViewController.navigationItem.rightBarButtonItems = buttons
 
         navigationController?.pushViewController(webViewController, animated:true)
+    }
+    
+    public func activatePresentingTheme() {
+        suspendedSearch = ""
+        navigationController?.popViewControllerAnimated(true)
+        activateTheme(presentingTheme)
+        presentingTheme = nil
     }
 }

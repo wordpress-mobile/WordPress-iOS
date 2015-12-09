@@ -15,6 +15,7 @@
 #import "PageListViewController.h"
 #import "WPGUIConstants.h"
 #import "Wordpress-Swift.h"
+#import "WPAppAnalytics.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
 const NSInteger BlogDetailsRowViewAdmin = 1;
@@ -428,7 +429,13 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showCommentsForBlog:(Blog *)blog
 {
-    [WPAnalytics track:WPAnalyticsStatOpenedComments];
+    NSNumber *dotComID = blog.dotComID;
+    if (dotComID) {
+        [WPAnalytics track:WPAnalyticsStatOpenedComments withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatOpenedComments];
+    }
+    
     CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     controller.blog = blog;
     [self.navigationController pushViewController:controller animated:YES];
@@ -436,14 +443,26 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showPostListForBlog:(Blog *)blog
 {
-    [WPAnalytics track:WPAnalyticsStatOpenedPosts];
+    NSNumber *dotComID = blog.dotComID;
+    if(dotComID) {
+        [WPAnalytics track:WPAnalyticsStatOpenedPosts withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatOpenedPosts];
+    }
+    
     PostListViewController *controller = [PostListViewController controllerWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showPageListForBlog:(Blog *)blog
 {
-    [WPAnalytics track:WPAnalyticsStatOpenedPages];
+    NSNumber *dotComID = blog.dotComID;
+    if(dotComID) {
+        [WPAnalytics track:WPAnalyticsStatOpenedPages withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatOpenedPages];
+    }
+    
     PageListViewController *controller = [PageListViewController controllerWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -458,14 +477,26 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showSettingsForBlog:(Blog *)blog
 {
-    [WPAnalytics track:WPAnalyticsStatOpenedSettings];
+    NSNumber *dotComID = blog.dotComID;
+    if(dotComID) {
+        [WPAnalytics track:WPAnalyticsStatOpenedSettings withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatOpenedSettings];
+    }
+    
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showStatsForBlog:(Blog *)blog
 {
-    [WPAnalytics track:WPAnalyticsStatStatsAccessed];
+    NSNumber *dotComID = blog.dotComID;
+    if(dotComID) {
+        [WPAnalytics track:WPAnalyticsStatStatsAccessed withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatStatsAccessed];
+    }
+    
     StatsViewController *statsView = [StatsViewController new];
     statsView.blog = blog;
     [self.navigationController pushViewController:statsView animated:YES];
@@ -473,7 +504,13 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showThemesForBlog:(Blog *)blog
 {
-    [WPAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser];
+    NSNumber *dotComID = blog.dotComID;
+    if(dotComID) {
+        [WPAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser];
+    }
+    
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:blog];
     [self.navigationController pushViewController:viewController
                                          animated:YES];
@@ -481,8 +518,13 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showViewSiteForBlog:(Blog *)blog
 {
-    [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
-
+    NSNumber *dotComID = blog.dotComID;
+    if(dotComID) {
+        [WPAnalytics track:WPAnalyticsStatOpenedViewSite withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
+    }
+    
     NSURL *targetURL = [NSURL URLWithString:blog.homeURL];
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
     webViewController.authToken = blog.authToken;
@@ -501,8 +543,13 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
         return;
     }
 
-    [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
-
+    NSNumber *dotComID = blog.dotComID;
+    if(dotComID) {
+        [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin withProperties:@{WPAppAnalyticsKeyBlogID:dotComID}];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
+    }
+    
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
@@ -519,7 +566,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog]) {
-        self.navigationItem.title = self.blog.blogName;
+        self.navigationItem.title = self.blog.settings.name;
         [self.tableView reloadData];
     }
 }

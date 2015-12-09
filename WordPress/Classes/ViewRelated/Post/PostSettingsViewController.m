@@ -11,7 +11,7 @@
 #import "PostFeaturedImageCell.h"
 #import "PostGeolocationCell.h"
 #import "PostGeolocationViewController.h"
-#import "PostSettingsSelectionViewController.h"
+#import "SettingsSelectionViewController.h"
 #import "PublishDatePickerView.h"
 #import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
@@ -23,8 +23,9 @@
 #import "WPProgressTableViewCell.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import <WPMediaPicker/WPMediaPicker.h>
-#import "WPGUIConstants.h"
 #import <Photos/Photos.h>
+#import "WPGUIConstants.h"
+#import "WordPress-Swift.h"
 
 typedef enum {
     PostSettingsRowCategories = 0,
@@ -292,7 +293,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFormat]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
 
-    if (self.post.blog.geolocationEnabled || self.post.geolocation) {
+    if (self.post.blog.settings.geolocationEnabled || self.post.geolocation) {
         [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionGeolocation]];
     }
 }
@@ -764,8 +765,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                                  @"Values" : statuses,
                                  @"CurrentValue" : self.apost.status
                                  };
-    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:statusDict];
-    __weak PostSettingsSelectionViewController *weakVc = vc;
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:statusDict];
+    __weak SettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
         self.apost.status = status;
         [weakVc dismiss];
@@ -787,8 +788,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                                     @"Titles" : titles,
                                     @"Values" : titles,
                                     @"CurrentValue" : [self titleForVisibility]};
-    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:visiblityDict];
-    __weak PostSettingsSelectionViewController *weakVc = vc;
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:visiblityDict];
+    __weak SettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *visibility) {
         [weakVc dismiss];
         
@@ -851,8 +852,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         @"CurrentValue"   : post.postFormatText
     };
 
-    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
-    __weak PostSettingsSelectionViewController *weakVc = vc;
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
+    __weak SettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
         if ([status isKindOfClass:[NSString class]]) {

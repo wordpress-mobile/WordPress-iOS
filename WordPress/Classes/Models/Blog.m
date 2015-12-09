@@ -250,7 +250,7 @@ NSString * const PostFormatStandard = @"standard";
 
 - (NSString *)defaultPostFormatText
 {
-    return [self postFormatTextFromSlug:self.defaultPostFormat];
+    return [self postFormatTextFromSlug:self.settings.defaultPostFormat];
 }
 
 - (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug
@@ -270,12 +270,12 @@ NSString * const PostFormatStandard = @"standard";
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isHostedAtWPcom && [self.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
+    return (self.isHostedAtWPcom && [self.settings.privacy isEqualToNumber:@(SiteVisibilityPrivate)]);
 }
 
 - (SiteVisibility)siteVisibility
 {
-    switch ([self.privacy integerValue]) {
+    switch ([self.settings.privacy integerValue]) {
         case (SiteVisibilityHidden):
             return SiteVisibilityHidden;
             break;
@@ -295,13 +295,13 @@ NSString * const PostFormatStandard = @"standard";
 {
     switch (siteVisibility) {
         case (SiteVisibilityHidden):
-            self.privacy = @(SiteVisibilityHidden);
+            self.settings.privacy = @(SiteVisibilityHidden);
             break;
         case (SiteVisibilityPublic):
-            self.privacy = @(SiteVisibilityPublic);
+            self.settings.privacy = @(SiteVisibilityPublic);
             break;
         case (SiteVisibilityPrivate):
-            self.privacy = @(SiteVisibilityPrivate);
+            self.settings.privacy = @(SiteVisibilityPrivate);
             break;
         default:
             NSParameterAssert(siteVisibility >= SiteVisibilityPrivate && siteVisibility <= SiteVisibilityPublic);
@@ -311,10 +311,10 @@ NSString * const PostFormatStandard = @"standard";
 
 - (NSString *)textForCurrentSiteVisibility
 {
-    if (!self.privacy) {
+    if (!self.settings.privacy) {
         [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
     }
-    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.privacy intValue]];
+    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.settings.privacy intValue]];
 }
 
 
@@ -586,81 +586,6 @@ NSString * const PostFormatStandard = @"standard";
         optionValue = currentOption[@"value"];
     }];
     return optionValue;
-}
-
-
-#pragma mark - BlogSetting Helpers
-
-- (NSString *)blogName
-{
-    NSParameterAssert(self.settings);
-    return self.settings.name;
-}
-
-- (void)setBlogName:(NSString *)blogName
-{
-    NSParameterAssert(self.settings);
-    self.settings.name = blogName;
-}
-
-- (NSString *)blogTagline
-{
-    NSParameterAssert(self.settings);
-    return self.settings.tagline;
-}
-
-- (void)setBlogTagline:(NSString *)blogTagline
-{
-    NSParameterAssert(self.settings);
-    self.settings.tagline = blogTagline;
-}
-
-- (NSNumber *)defaultCategoryID
-{
-    NSParameterAssert(self.settings);
-    return self.settings.defaultCategoryID;
-}
-
-- (void)setDefaultCategoryID:(NSNumber *)defaultCategoryID
-{
-    NSParameterAssert(self.settings);
-    self.settings.defaultCategoryID = defaultCategoryID;
-}
-
-- (NSString *)defaultPostFormat
-{
-    NSParameterAssert(self.settings);
-    return self.settings.defaultPostFormat;
-}
-
-- (void)setDefaultPostFormat:(NSString *)defaultPostFormat
-{
-    NSParameterAssert(self.settings);
-    self.settings.defaultPostFormat = defaultPostFormat;
-}
-
-- (NSNumber *)privacy
-{
-    NSParameterAssert(self.settings);
-    return self.settings.privacy;
-}
-
-- (void)setPrivacy:(NSNumber *)privacy
-{
-    NSParameterAssert(self.settings);
-    self.settings.privacy = privacy;
-}
-
-- (BOOL)geolocationEnabled
-{
-    NSParameterAssert(self.settings);
-    return self.settings.geolocationEnabled;
-}
-
-- (void)setGeolocationEnabled:(BOOL)geolocationEnabled
-{
-    NSParameterAssert(self.settings);
-    self.settings.geolocationEnabled = geolocationEnabled;
 }
 
 @end
