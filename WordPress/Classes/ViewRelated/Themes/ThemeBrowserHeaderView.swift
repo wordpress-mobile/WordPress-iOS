@@ -1,8 +1,8 @@
 import UIKit
 import WordPressShared
 
-public class ThemeBrowserHeaderView: UICollectionReusableView {
-        
+public class ThemeBrowserHeaderView: UICollectionReusableView
+{
     // MARK: - Constants
 
     public static let reuseIdentifier = "ThemeBrowserHeaderView"
@@ -15,10 +15,12 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
 
     @IBOutlet weak var currentThemeBar: UIView!
     @IBOutlet weak var currentThemeLabel: UILabel!
+    @IBOutlet weak var currentThemeDivider: UIView!
     @IBOutlet weak var currentThemeName: UILabel!
     @IBOutlet weak var customizeButton: UIButton!
     @IBOutlet weak var detailsButton: UIButton!
     @IBOutlet weak var supportButton: UIButton!
+    @IBOutlet var searchBarBorders: [UIView]!
     @IBOutlet weak var searchBar: UIView!
     @IBOutlet weak var searchTypeButton: UIButton!
     
@@ -57,7 +59,8 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
     }
     
     private func applyStyles() {
-        Styles.styleBar(currentThemeBar, background: Styles.barDividerColor)
+        currentThemeBar.backgroundColor = Styles.currentThemeBackgroundColor
+        currentThemeDivider.backgroundColor = Styles.currentThemeDividerColor
 
         currentThemeLabel.font = Styles.currentThemeLabelFont
         currentThemeLabel.textColor = Styles.currentThemeLabelColor
@@ -68,7 +71,8 @@ public class ThemeBrowserHeaderView: UICollectionReusableView {
         let currentThemeButtons = [customizeButton, detailsButton, supportButton]
         currentThemeButtons.forEach { Styles.styleCurrentThemeButton($0) }
 
-        Styles.styleBar(searchBar, background: Styles.barBackgroundColor)
+        searchBar.backgroundColor = Styles.searchBarBackgroundColor
+        searchBarBorders.forEach { $0.backgroundColor = Styles.searchBarBorderColor }
     }
     
     override public func prepareForReuse() {

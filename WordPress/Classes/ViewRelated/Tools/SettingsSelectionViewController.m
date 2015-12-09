@@ -1,5 +1,6 @@
-#import "PostSettingsSelectionViewController.h"
+#import "SettingsSelectionViewController.h"
 #import "WPStyleGuide.h"
+#import "NSDictionary+SafeExpectations.h"
 #import "NSString+XMLExtensions.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
@@ -11,41 +12,22 @@ NSString * const SettingsSelectionHintsKey = @"Hints";
 NSString * const SettingsSelectionDefaultValueKey = @"DefaultValue";
 NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
 
-@interface PostSettingsSelectionViewController ()
-
-@property (nonatomic, strong) NSArray *titles;
-@property (nonatomic, strong) NSArray *values;
-@property (nonatomic, strong) NSArray *hints;
-@property (nonatomic, strong) NSString *defaultValue;
-@property (nonatomic, strong) NSObject *currentValue;
+@interface SettingsSelectionViewController ()
 @property (nonatomic, strong) WPTableViewSectionHeaderFooterView *hintView;
-
 @end
 
-@implementation PostSettingsSelectionViewController
+@implementation SettingsSelectionViewController
 
-// Dictionary should be in the following format
-/*
-{
-    CurrentValue = 0;
-    DefaultValue = 0;
-    Title = "Image Resize";
-    Titles =             (
-                          "Always Ask",
-                          Small,
-                          Medium,
-                          Large,
-                          Disabled
-                          );
-    Values =             (
-                          0,
-                          1,
-                          2,
-                          3,
-                          4
-                          );
-}
-*/
+/**
+    Dictionary should be in the following format:
+     {
+        CurrentValue    : 0,
+        DefaultValue    : 0,
+        Title           : "Image Resize",
+        Titles          : [ "Always Ask", "Small", "Medium", "Large", "Disabled" ],
+        Values          : [ 0, 1, 2, 3, 4, 5 ]
+     }
+ */
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
@@ -56,17 +38,14 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
 {
     self = [self initWithStyle:style];
     if (self) {
-        self.title = [dictionary objectForKey:SettingsSelectionTitleKey];
-        _titles = [dictionary objectForKey:SettingsSelectionTitlesKey];
-        _values = [dictionary objectForKey:SettingsSelectionValuesKey];
-        _hints = [dictionary objectForKey:SettingsSelectionHintsKey];
-        _defaultValue = [dictionary objectForKey:SettingsSelectionDefaultValueKey];
-        _currentValue = [dictionary objectForKey:SettingsSelectionCurrentValueKey];
-
-        if (_currentValue == nil) {
-            _currentValue = _defaultValue;
-        }
+        self.title = [dictionary stringForKey:SettingsSelectionTitleKey];
+        _titles = [dictionary arrayForKey:SettingsSelectionTitlesKey];
+        _values = [dictionary arrayForKey:SettingsSelectionValuesKey];
+        _hints = [dictionary arrayForKey:SettingsSelectionHintsKey];
+        _defaultValue = dictionary[SettingsSelectionDefaultValueKey];
+        _currentValue = dictionary[SettingsSelectionCurrentValueKey] ?: _defaultValue;
     }
+    
     return self;
 }
 
@@ -108,15 +87,14 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
     if (!self.hints) {
         return nil;
     }
+    
     if (!_hintView) {
         _hintView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
     }
+    
     NSUInteger position = [self.values indexOfObject:self.currentValue];
-    NSString * hint = @"";
-    if (position != NSNotFound) {
-        hint = self.hints[position];
-    }
-    [_hintView setTitle:hint];
+    _hintView.title = (position != NSNotFound) ? self.hints[position] : [NSString string];
+
     return _hintView;
 }
 
@@ -142,14 +120,10 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
     if (cell == nil) {
         cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
     }
-    cell.accessoryType = UITableViewCellAccessoryNone;
-
-    cell.textLabel.text = [NSString decodeXMLCharactersIn:[self.titles objectAtIndex:indexPath.row]];
 
     NSString *val = [self.values objectAtIndex:indexPath.row];
-    if ([self.currentValue isEqual:val]) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }
+    cell.accessoryType = [self.currentValue isEqual:val] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    cell.textLabel.text = [NSString decodeXMLCharactersIn:[self.titles objectAtIndex:indexPath.row]];
 
     [WPStyleGuide configureTableViewCell:cell];
 
@@ -160,8 +134,9 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    NSObject *val = [self.values objectAtIndex:indexPath.row];
+    NSObject *val = self.values[indexPath.row];
     self.currentValue = val;
+    
     [self.tableView reloadData];
 
     if (self.onItemSelected != nil) {

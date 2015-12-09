@@ -23,6 +23,7 @@
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 #import "WordPress-Swift.h"
+#import "WPAppAnalytics.h"
 
 
 
@@ -782,7 +783,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     __typeof(self) __weak weakSelf = self;
     void (^successBlock)() = ^void() {
-        [WPAnalytics track:WPAnalyticsStatReaderArticleCommentedOn];
+        NSNumber *siteID = self.post.siteID;
+        if(siteID) {
+            [WPAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:@{ WPAppAnalyticsKeyBlogID:siteID}];
+        }else {
+            [WPAnalytics track:WPAnalyticsStatReaderArticleCommentedOn];
+        }
+        
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
     };

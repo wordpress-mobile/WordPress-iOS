@@ -2,6 +2,7 @@
 #import "Media.h"
 #import "ContextManager.h"
 #import "NSDate+StringFormatting.h"
+#import "WordPress-Swift.h"
 
 @implementation AbstractPost
 
@@ -282,7 +283,7 @@
 
 - (NSString *)blogNameForDisplay
 {
-    return self.blog.blogName;
+    return self.blog.settings.name;
 }
 
 - (NSURL *)blogURL

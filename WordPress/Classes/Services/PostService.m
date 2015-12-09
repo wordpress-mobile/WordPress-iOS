@@ -12,6 +12,7 @@
 #import "ContextManager.h"
 #import "NSDate+WordPressJSON.h"
 #import "CommentService.h"
+#import "WordPress-Swift.h"
 
 NSString * const PostServiceTypePost = @"post";
 NSString * const PostServiceTypePage = @"page";
@@ -31,11 +32,11 @@ const NSInteger PostServiceNumberToFetch = 40;
     post.blog = blog;
     post.remoteStatus = AbstractPostRemoteStatusSync;
     PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    PostCategory *category = [postCategoryService findWithBlogObjectID:blog.objectID andCategoryID:blog.defaultCategoryID];
+    PostCategory *category = [postCategoryService findWithBlogObjectID:blog.objectID andCategoryID:blog.settings.defaultCategoryID];
     if (category) {
         [post addCategoriesObject:category];
     }
-    post.postFormat = blog.defaultPostFormat;
+    post.postFormat = blog.settings.defaultPostFormat;
     return post;
 }
 
