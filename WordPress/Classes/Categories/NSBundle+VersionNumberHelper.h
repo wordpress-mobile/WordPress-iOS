@@ -4,5 +4,6 @@
 
 - (NSString *)detailedVersionNumber;
 - (NSString *)shortVersionString;
+- (NSString *)bundleVersion;
 
 @end
