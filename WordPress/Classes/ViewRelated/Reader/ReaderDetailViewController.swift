@@ -30,11 +30,29 @@ final public class ReaderDetailViewController : UIViewController
 
     // MARK: - Properties & Accessors
 
-    @IBOutlet private weak var detailView: ReaderDetailView!
+    // Footer views
     @IBOutlet private weak var footerView: UIView!
     @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var commentButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
+
+    // Wrapper views
+    @IBOutlet private weak var scrollView: UIScrollView!
+    @IBOutlet private weak var contentStackView: UIStackView!
+
+    // Header realated Views
+    @IBOutlet private weak var headerView: UIView!
+    @IBOutlet private weak var avatarImageView: UIImageView!
+    @IBOutlet private weak var blogNameButton: UIButton!
+    @IBOutlet private weak var bylineLabel: UILabel!
+    @IBOutlet private weak var menuButton: UIButton!
+
+    // Content views
+    @IBOutlet private weak var featuredImageView: UIImageView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private(set) public weak var richTextView: WPRichTextView!
+    @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
+
 
     private var didBumpStats: Bool = false
     private var didBumpPageViews: Bool = false
@@ -134,14 +152,14 @@ final public class ReaderDetailViewController : UIViewController
 
         view.layoutIfNeeded()
 
-        detailView.richTextView.refreshMediaLayout()
+        richTextView.refreshMediaLayout()
     }
 
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         coordinator.animateAlongsideTransition(nil, completion: { (context:UIViewControllerTransitionCoordinatorContext) in
-            self.detailView.richTextView.refreshMediaLayout()
+            self.richTextView.refreshMediaLayout()
         })
     }
 
@@ -161,7 +179,7 @@ final public class ReaderDetailViewController : UIViewController
     private func handleApplicationDidBecomeActive(notification: NSNotification) {
         view.layoutIfNeeded()
 
-        detailView.richTextView.refreshMediaLayout()
+        richTextView.refreshMediaLayout()
     }
 
 
@@ -194,7 +212,7 @@ final public class ReaderDetailViewController : UIViewController
     private func setupNavBar() {
         // Don't show 'Reader' in the next-view back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
-        configureTitle()
+        configureNavTitle()
     }
 
 
@@ -206,25 +224,33 @@ final public class ReaderDetailViewController : UIViewController
 
     // MARK: - Configuration
 
+    /**
+    Applies the default styles to the cell's subviews
+    */
+    private func applyStyles() {
+        //backgroundColor = WPStyleGuide.greyLighten30()
+
+        WPStyleGuide.applyReaderCardSiteButtonStyle(blogNameButton)
+        WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
+        WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
+
+    }
+
     private func configureView() {
-        configureTitle();
+        configureNavTitle();
+        configureHeader()
+        configureFeaturedImage()
+        configureTitle()
+        configureRichText()
         configureTag()
         configureActionButtons()
-        configureDetailView()
 
         bumpStats()
         bumpPageViewsForPost()
     }
 
 
-    private func configureDetailView() {
-        // TODO: logged in features
-        detailView.richTextView.delegate = self
-        detailView.configureView(post!)
-    }
-
-
-    private func configureTitle() {
+    private func configureNavTitle() {
         if let postTitle = post?.postTitle {
             self.title = postTitle
         } else {
@@ -232,6 +258,102 @@ final public class ReaderDetailViewController : UIViewController
         }
     }
 
+
+    private func configureHeader() {
+        // Always reset
+        avatarImageView.image = nil
+
+        let placeholder = UIImage(named: "post-blavatar-placeholder")
+
+        let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
+        let url = post?.siteIconForDisplayOfSize(Int(size))
+        avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
+
+
+        let blogName = post?.blogNameForDisplay()
+        blogNameButton.setTitle(blogName, forState: .Normal)
+        blogNameButton.setTitle(blogName, forState: .Highlighted)
+        blogNameButton.setTitle(blogName, forState: .Disabled)
+
+        var byline = post?.dateForDisplay().shortString()
+        if let author = post?.authorForDisplay() {
+            byline = String(format: "%@ · %@", author, byline!)
+        }
+
+        bylineLabel.text = byline
+    }
+
+
+    private func configureFeaturedImage() {
+        featuredImageView.hidden = true
+
+        if let featuredImageURL = post?.featuredImageURLForDisplay() {
+            var url = featuredImageURL
+            // TODO: We need a completion handler for when the image is loaded.
+            // In the completion handler, we need to update the aspect ratio constraint
+            // and make the imageView visible.
+
+            featuredImageView.image = nil
+
+            if !(post!.isPrivate()) {
+                let size = CGSize(width:featuredImageView.frame.width, height:100) //TODO: Height
+                url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
+                featuredImageView.setImageWithURL(url, placeholderImage:nil)
+
+            } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
+                // private wpcom image needs special handling.
+                let request = requestForURL(url)
+                featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
+
+            } else {
+                // private but not a wpcom hosted image
+                featuredImageView.setImageWithURL(url, placeholderImage:nil)
+            }
+        }
+    }
+
+
+    private func requestForURL(url:NSURL) -> NSURLRequest {
+        var requestURL = url
+
+        let absoluteString = requestURL.absoluteString
+        if !(absoluteString.hasPrefix("https")) {
+            let sslURL = absoluteString.stringByReplacingOccurrencesOfString("http", withString: "https")
+            requestURL = NSURL(string: sslURL)!
+        }
+
+        let request = NSMutableURLRequest(URL: requestURL)
+
+        let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        if let account = acctServ.defaultWordPressComAccount() {
+            let token = account.authToken
+            let headerValue = String(format: "Bearer %@", token)
+            request.addValue(headerValue, forHTTPHeaderField: "Authorization")
+        }
+
+        return request
+    }
+
+
+    private func configureTitle() {
+        if let title = post?.titleForDisplay() {
+            let attributes = WPStyleGuide.readerCardTitleAttributes() as! [String: AnyObject]
+            titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
+            titleLabel.hidden = false
+
+        } else {
+            titleLabel.attributedText = nil
+            titleLabel.hidden = true
+        }
+    }
+    
+    
+    private func configureRichText() {
+        richTextView.delegate = self
+        richTextView.content = post!.contentForDisplay()
+        richTextView.privateContent = post!.isPrivate()
+    }
+    
 
     private func configureTag() {
         var tag = ""
