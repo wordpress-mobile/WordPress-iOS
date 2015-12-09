@@ -96,7 +96,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+        
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -202,9 +202,12 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 #pragma mark - MenuItemsStackViewDelegate
 
-- (void)itemsView:(MenuItemsStackView *)itemsView selectedMenuItemForEditing:(MenuItem *)item
+- (void)itemsView:(MenuItemsStackView *)itemsView requiresScrollingToCenterView:(UIView *)viewForScrolling
 {
-    // show detail controller
+    CGRect visibleRect = [self.scrollView convertRect:viewForScrolling.frame fromView:viewForScrolling.superview];
+    visibleRect.origin.y -= (self.scrollView.frame.size.height - visibleRect.size.height) / 2.0;
+    visibleRect.size.height = self.scrollView.frame.size.height;
+    [self.scrollView scrollRectToVisible:visibleRect animated:NO];
 }
 
 - (void)itemsView:(MenuItemsStackView *)itemsView prefersScrollingEnabled:(BOOL)enabled
