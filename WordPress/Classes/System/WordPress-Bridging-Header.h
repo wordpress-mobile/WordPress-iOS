@@ -45,6 +45,7 @@
 #import "ThemeService.h"
 
 #import "UIAlertControllerProxy.h"
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "UIDevice+Helpers.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"
