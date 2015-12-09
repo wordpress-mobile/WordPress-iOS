@@ -4,7 +4,8 @@ import WordPressShared.WPStyleGuide
 /**
  *  @brief      Actions provided in cell button triggered action sheet
  */
-public enum ThemeAction {
+public enum ThemeAction
+{
     case Activate
     case Customize
     case Details
@@ -50,8 +51,8 @@ public enum ThemeAction {
     }
 }
 
-public class ThemeBrowserCell : UICollectionViewCell {
-    
+public class ThemeBrowserCell : UICollectionViewCell
+{
     // MARK: - Constants
     
     public static let reuseIdentifier = "ThemeBrowserCell"
@@ -80,6 +81,8 @@ public class ThemeBrowserCell : UICollectionViewCell {
     public weak var presenter: ThemePresenter?
     
     private var placeholderImage = UIImage(named: "theme-loading")
+    private var activeEllipsisImage = UIImage(named: "icon-menu-ellipsis-white")
+    private var inactiveEllipsisImage = UIImage(named: "icon-menu-ellipsis")
     
    // MARK: - GUI
         
@@ -96,16 +99,10 @@ public class ThemeBrowserCell : UICollectionViewCell {
         super.awakeFromNib()
         
         layer.borderWidth = 1
-        
         infoBar.layer.borderWidth = 1
-        infoBar.layer.borderColor = Styles.barDividerColor.CGColor
-
         nameLabel.font = Styles.cellNameFont
-        
         infoLabel.font = Styles.cellInfoFont
-        
         actionButton.layer.borderWidth = 1
-        actionButton.layer.borderColor = Styles.barDividerColor.CGColor
     }
     
     override public func prepareForReuse() {
@@ -125,13 +122,21 @@ public class ThemeBrowserCell : UICollectionViewCell {
             nameLabel.text = theme.name
             if theme.isCurrentTheme() {
                 backgroundColor = Styles.activeCellBackgroundColor
-                layer.borderColor = Styles.activeCellBackgroundColor.CGColor
+                layer.borderColor = Styles.activeCellBorderColor.CGColor
+                infoBar.layer.borderColor = Styles.activeCellDividerColor.CGColor
+                actionButton.layer.borderColor = Styles.activeCellDividerColor.CGColor
+                actionButton.setImage(activeEllipsisImage, forState: .Normal)
+                
                 nameLabel.textColor = Styles.activeCellNameColor
                 infoLabel.textColor = Styles.activeCellInfoColor
                 infoLabel.text = NSLocalizedString("ACTIVE", comment: "Label for active Theme browser cell")
             } else {
                 backgroundColor = Styles.inactiveCellBackgroundColor
-                layer.borderColor = Styles.barBorderColor.CGColor
+                layer.borderColor = Styles.inactiveCellBorderColor.CGColor
+                infoBar.layer.borderColor = Styles.inactiveCellDividerColor.CGColor
+                actionButton.layer.borderColor = Styles.inactiveCellDividerColor.CGColor
+                actionButton.setImage(inactiveEllipsisImage, forState: .Normal)
+
                 nameLabel.textColor = Styles.inactiveCellNameColor
                 if theme.isPremium() {
                     infoLabel.textColor = Styles.inactiveCellPriceColor

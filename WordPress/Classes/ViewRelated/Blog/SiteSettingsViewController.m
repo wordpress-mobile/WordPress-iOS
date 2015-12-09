@@ -21,7 +21,7 @@
 #import "PostCategoryService.h"
 #import "PostCategory.h"
 #import "PostCategoriesViewController.h"
-#import "PostSettingsSelectionViewController.h"
+#import "SettingsSelectionViewController.h"
 #import "BlogSiteVisibilityHelper.h"
 #import "RelatedPostsSettingsViewController.h"
 #import "WordPress-Swift.h"
@@ -70,7 +70,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
-@property (nonatomic, strong) SettingTableViewCell *geotaggingCell;
+@property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
@@ -129,7 +129,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     self.authToken = self.blog.authToken;
     self.username = self.blog.usernameForSite;
     self.password = self.blog.password;
-    self.geolocationEnabled = self.blog.geolocationEnabled;
+    self.geolocationEnabled = self.blog.settings.geolocationEnabled;
     
     [self refreshData];
 }
@@ -238,18 +238,18 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return nil;
 }
 
-- (SettingTableViewCell *)geotaggingCell
+- (SwitchTableViewCell *)geotaggingCell
 {
     if (_geotaggingCell) {
         return _geotaggingCell;
     }
-    _geotaggingCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)")
-                                                         editable:NO
-                                                  reuseIdentifier:nil];
-    UISwitch *geotaggingSwitch = [[UISwitch alloc] init];
-    geotaggingSwitch.on = self.geolocationEnabled;
-    [geotaggingSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
-    _geotaggingCell.accessoryView = geotaggingSwitch;
+    _geotaggingCell = [SwitchTableViewCell new];
+    _geotaggingCell.name = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
+    _geotaggingCell.on = self.geolocationEnabled;
+    __weak SiteSettingsViewController *weakSelf = self;
+    _geotaggingCell.onChange = ^(BOOL value){
+        [weakSelf toggleGeolocation:value];
+    };
     return _geotaggingCell;
 }
 
@@ -291,14 +291,12 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     switch (row) {
         case (SiteSettingsWritingGeotagging):{
-            UISwitch *geotaggingSwitch =  (UISwitch *)self.geotaggingCell.accessoryView;
-            geotaggingSwitch.on = self.geolocationEnabled;
             return self.geotaggingCell;
         }
         break;
         case (SiteSettingsWritingDefaultCategory):{
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.defaultCategoryID];
+            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.settings.defaultCategoryID];
             [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
             return self.defaultCategoryCell;
         }
@@ -364,19 +362,13 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     switch (row) {
         case SiteSettingsGeneralTitle: {
-            if (self.blog.blogName) {
-                [self.siteTitleCell setTextValue:self.blog.blogName];
-            } else {
-                [self.siteTitleCell setTextValue:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")];
-            }
+            NSString *name = self.blog.settings.name ?: NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
+            [self.siteTitleCell setTextValue:name];
             return self.siteTitleCell;
         } break;
         case SiteSettingsGeneralTagline: {
-            if (self.blog.blogTagline) {
-                [self.siteTaglineCell setTextValue:self.blog.blogTagline];
-            } else {
-                [self.siteTaglineCell setTextValue:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")];
-            }
+            NSString *tagline = self.blog.settings.tagline ?: NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site");
+            [self.siteTaglineCell setTextValue:tagline];
             return self.siteTaglineCell;
         } break;
         case SiteSettingsGeneralURL: {
@@ -498,7 +490,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
                                       SettingsSelectionHintsKey          : hints
                                       };
     
-    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:settingsSelectionConfiguration];
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:settingsSelectionConfiguration];
     __weak __typeof__(self) weakSelf = self;
     vc.onItemSelected = ^(NSNumber *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
@@ -521,15 +513,15 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             if (!self.blog.isAdmin) {
                 return;
             }
-            SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.blogName
-                                                                                                 placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
+            SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.settings.name
+                                                                                                       placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
                                                                                                               hint:@""
                                                                                                         isPassword:NO];
             siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
             siteTitleViewController.onValueChanged = ^(NSString *value) {
                 self.siteTitleCell.detailTextLabel.text = value;
-                if (![value isEqualToString:self.blog.blogName]){
-                    self.blog.blogName = value;
+                if (![value isEqualToString:self.blog.settings.name]){
+                    self.blog.settings.name = value;
                     [self saveSettings];
                 }
             };
@@ -539,16 +531,16 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             if (!self.blog.isAdmin) {
                 return;
             }
-            SettingsMultiTextViewController *siteTaglineViewController = [[SettingsMultiTextViewController alloc] initWithText:self.blog.blogTagline
-                                                                                                 placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
-                                                                                                              hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
-                                                                                                        isPassword:NO];
+            SettingsMultiTextViewController *siteTaglineViewController = [[SettingsMultiTextViewController alloc] initWithText:self.blog.settings.tagline
+                                                                                                                   placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
+                                                                                                                          hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
+                                                                                                                    isPassword:NO];
             siteTaglineViewController.title = NSLocalizedString(@"Tagline", @"Title for screen that show tagline editor");
             siteTaglineViewController.onValueChanged = ^(NSString *value) {
                 NSString *normalizedTagline = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 self.siteTaglineCell.detailTextLabel.text = normalizedTagline;
-                if (![normalizedTagline isEqualToString:self.blog.blogTagline]){
-                    self.blog.blogTagline = normalizedTagline;
+                if (![normalizedTagline isEqualToString:self.blog.settings.tagline]){
+                    self.blog.settings.tagline = normalizedTagline;
                     [self saveSettings];
                 }
             };
@@ -591,7 +583,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     if (titles.count == 0 || self.blog.defaultPostFormatText == nil) {
         return;
     }
-    NSString *currentDefaultPostFormat = self.blog.defaultPostFormat;
+    NSString *currentDefaultPostFormat = self.blog.settings.defaultPostFormat;
     if (!currentDefaultPostFormat) {
         currentDefaultPostFormat = formats[0];
     }
@@ -603,13 +595,13 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
                                       SettingsSelectionCurrentValueKey   : currentDefaultPostFormat
                                       };
     
-    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
+    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
     __weak __typeof__(self) weakSelf = self;
     vc.onItemSelected = ^(NSString *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
         if ([status isKindOfClass:[NSString class]]) {
-            if (weakSelf.blog.defaultPostFormat != status) {
-                weakSelf.blog.defaultPostFormat = status;
+            if (weakSelf.blog.settings.defaultPostFormat != status) {
+                weakSelf.blog.settings.defaultPostFormat = status;
                 [weakSelf saveSettings];
             }
         }
@@ -630,7 +622,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     switch (row) {
         case SiteSettingsWritingDefaultCategory:{
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            NSNumber *defaultCategoryID = self.blog.defaultCategoryID ?: @(PostCategoryUncategorized);
+            NSNumber *defaultCategoryID = self.blog.settings.defaultCategoryID ?: @(PostCategoryUncategorized);
             PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
             NSArray *currentSelection = @[];
             if (postCategory){
@@ -703,13 +695,12 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     
 }
 
-- (void)toggleGeolocation:(id)sender
+- (void)toggleGeolocation:(BOOL)value
 {
-    UISwitch *geolocationSwitch = (UISwitch *)sender;
-    self.geolocationEnabled = geolocationSwitch.on;
+    self.geolocationEnabled = value;
 
     // Save the change
-    self.blog.geolocationEnabled = self.geolocationEnabled;
+    self.blog.settings.geolocationEnabled = self.geolocationEnabled;
     [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
 }
 
@@ -886,7 +877,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 - (void)postCategoriesViewController:(PostCategoriesViewController *)controller
                    didSelectCategory:(PostCategory *)category
 {
-    self.blog.defaultCategoryID = category.categoryID;
+    self.blog.settings.defaultCategoryID = category.categoryID;
     self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
     [self saveSettings];
 }

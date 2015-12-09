@@ -3,6 +3,7 @@
 typedef NSString*(^WPAppAnalyticsLastVisibleScreenCallback)();
 
 extern NSString* const WPAppAnalyticsDefaultsKeyUsageTracking;
+extern NSString* const WPAppAnalyticsKeyBlogID;
 
 /**
  *  @class      WPAppAnalytics

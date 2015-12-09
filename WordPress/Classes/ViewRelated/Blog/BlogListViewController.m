@@ -20,6 +20,7 @@
 #import "WPSearchControllerConfigurator.h"
 #import "WPGUIConstants.h"
 #import "CreateNewBlogViewController.h"
+#import "WordPress-Swift.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
@@ -409,8 +410,10 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (void)configureBlogCell:(WPBlogTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-    if ([blog.blogName length] != 0) {
-        cell.textLabel.text = blog.blogName;
+    NSString *name = blog.settings.name;
+    
+    if (name.length != 0) {
+        cell.textLabel.text = name;
         cell.detailTextLabel.text = [blog displayURL];
     } else {
         cell.textLabel.text = [blog displayURL];
@@ -424,7 +427,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     cell.visibilitySwitch.on = blog.visible;
     cell.visibilitySwitch.tag = indexPath.row;
     [cell.visibilitySwitch addTarget:self action:@selector(visibilitySwitchAction:) forControlEvents:UIControlEventValueChanged];
-    cell.visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", blog.blogName];
+    cell.visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", name];
 
     // Make textLabel light gray if blog is not-visible
     if (!blog.visible) {
