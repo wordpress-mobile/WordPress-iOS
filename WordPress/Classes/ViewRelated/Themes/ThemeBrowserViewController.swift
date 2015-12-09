@@ -445,10 +445,10 @@ public protocol ThemePresenter: class
     // MARK: - Search support
     
     @IBAction func didTapSearchButton(sender: UIButton) {
-        beginSearchFor()
+        beginSearchFor("")
     }
     
-    private func beginSearchFor(pattern: String = "") {
+    private func beginSearchFor(pattern: String) {
         searchController.active = true
         searchController.searchBar.text = pattern
         if sections.first == .Info {
