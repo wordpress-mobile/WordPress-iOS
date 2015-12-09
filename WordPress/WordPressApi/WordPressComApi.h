@@ -59,17 +59,4 @@ extern NSString *const WordPressComApiPushAppId;
 // Wipe the OAuth2 token
 - (void)invalidateOAuth2Token;
 
-
-///--------------------
-/// @name Notifications
-///--------------------
-
-- (void)unregisterForPushNotificationsWithDeviceId:(NSString *)deviceId
-                                           success:(void (^)())success
-                                           failure:(void (^)(NSError *error))failure;
-
-- (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
-                                        success:(void (^)(NSString *deviceId, NSDictionary *settings))success
-                                        failure:(void (^)(NSError *error))failure;
-
 @end
