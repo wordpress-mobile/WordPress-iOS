@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenusViewController">
@@ -42,10 +42,8 @@
                                                                     <subviews>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="P1v-Mj-Ao7">
                                                                             <rect key="frame" x="0.0" y="0.0" width="285" height="65"/>
-                                                                            <animations/>
                                                                         </stackView>
                                                                     </subviews>
-                                                                    <animations/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="trailing" secondItem="P1v-Mj-Ao7" secondAttribute="trailing" id="2H1-GD-4w0"/>
@@ -61,10 +59,8 @@
                                                                     </connections>
                                                                 </view>
                                                             </subviews>
-                                                            <animations/>
                                                         </stackView>
                                                     </subviews>
-                                                    <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="Lvz-SB-8Wr" secondAttribute="trailing" id="Bz8-uv-EK5"/>
@@ -79,7 +75,6 @@
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalCompressionResistancePriority="760" text="uses" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="50" translatesAutoresizingMaskIntoConstraints="NO" id="zti-gC-KhM">
                                                     <rect key="frame" x="285" y="26" width="30" height="14"/>
-                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="D9J-3A-ryX"/>
                                                     </constraints>
@@ -98,10 +93,8 @@
                                                                     <subviews>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZuD-DO-djQ">
                                                                             <rect key="frame" x="0.0" y="0.0" width="285" height="65"/>
-                                                                            <animations/>
                                                                         </stackView>
                                                                     </subviews>
-                                                                    <animations/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <constraints>
                                                                         <constraint firstItem="ZuD-DO-djQ" firstAttribute="width" secondItem="ayP-tI-Z6q" secondAttribute="width" id="5YW-ck-U8d"/>
@@ -117,10 +110,8 @@
                                                                     </connections>
                                                                 </view>
                                                             </subviews>
-                                                            <animations/>
                                                         </stackView>
                                                     </subviews>
-                                                    <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="5V4-1N-wjI" secondAttribute="bottom" id="BRj-pU-Wg3"/>
@@ -134,14 +125,12 @@
                                                     </connections>
                                                 </view>
                                             </subviews>
-                                            <animations/>
                                             <constraints>
                                                 <constraint firstItem="zti-gC-KhM" firstAttribute="centerX" secondItem="MxU-jC-Ocf" secondAttribute="centerX" id="bi3-Oe-Lcv"/>
                                             </constraints>
                                             <variation key="heightClass=regular-widthClass=compact" alignment="fill" axis="vertical" distribution="equalSpacing"/>
                                         </stackView>
                                     </subviews>
-                                    <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="MxU-jC-Ocf" firstAttribute="width" secondItem="P7u-xT-eP5" secondAttribute="width" id="13V-0E-crm"/>
@@ -168,7 +157,6 @@
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Menu name text field" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3sy-f5-O7T">
                                                             <rect key="frame" x="10" y="10" width="451" height="30"/>
-                                                            <animations/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                             <connections>
@@ -176,7 +164,6 @@
                                                             </connections>
                                                         </textField>
                                                     </subviews>
-                                                    <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="50" id="0Ky-xr-Li7"/>
@@ -188,7 +175,6 @@
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ga-QQ-XHS" customClass="MenusActionButton">
                                                     <rect key="frame" x="481" y="15" width="46" height="40"/>
-                                                    <animations/>
                                                     <color key="backgroundColor" red="1" green="0.051290923320000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="bqh-BP-dK2"/>
@@ -200,7 +186,6 @@
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yBv-SA-Km5" customClass="MenusActionButton">
                                                     <rect key="frame" x="537" y="15" width="63" height="40"/>
-                                                    <animations/>
                                                     <color key="backgroundColor" red="0.1076004438" green="0.55510221439999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="63" id="YkJ-Ic-J4k"/>
@@ -211,10 +196,8 @@
                                                     </state>
                                                 </button>
                                             </subviews>
-                                            <animations/>
                                         </stackView>
                                     </subviews>
-                                    <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="yZs-u8-1Mv" firstAttribute="height" secondItem="EN3-TW-klK" secondAttribute="height" id="ABS-8N-pax"/>
@@ -238,10 +221,8 @@
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="w8Q-MA-p0C">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="401"/>
-                                            <animations/>
                                         </stackView>
                                     </subviews>
-                                    <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="w8Q-MA-p0C" secondAttribute="bottom" id="8Y7-jQ-WUW"/>
@@ -254,7 +235,6 @@
                                     </connections>
                                 </view>
                             </subviews>
-                            <animations/>
                             <constraints>
                                 <constraint firstItem="P7u-xT-eP5" firstAttribute="width" secondItem="6gb-mh-Ce6" secondAttribute="width" id="95d-fB-mct"/>
                                 <constraint firstItem="EN3-TW-klK" firstAttribute="width" secondItem="6gb-mh-Ce6" secondAttribute="width" id="OcM-SO-N7v"/>
@@ -262,7 +242,6 @@
                             </constraints>
                         </stackView>
                     </subviews>
-                    <animations/>
                     <constraints>
                         <constraint firstItem="6gb-mh-Ce6" firstAttribute="centerY" secondItem="7To-gP-Od0" secondAttribute="centerY" placeholder="YES" id="CcJ-6U-zBZ"/>
                         <constraint firstItem="6gb-mh-Ce6" firstAttribute="leading" secondItem="7To-gP-Od0" secondAttribute="leading" id="HpK-Xv-ZwS"/>
@@ -277,7 +256,6 @@
                     </connections>
                 </scrollView>
             </subviews>
-            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="7To-gP-Od0" secondAttribute="bottom" id="8t0-p6-oQf"/>
