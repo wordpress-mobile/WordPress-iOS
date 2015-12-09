@@ -38,6 +38,17 @@ extern NSString *const WordPressComApiPushAppId;
 - (void)reset;
 
 
+/**
+ Returns a AFHTTPRequestOperation instance for a POST OP, with the specified paramteres.
+ As an addition to the standard AFNetworking helpers, our kiddo allows for cancellable operations.
+ */
+- (AFHTTPRequestOperation *)POST:(NSString *)URLString
+                      parameters:(id)parameters
+                     cancellable:(BOOL)cancellable
+                         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
+
+
 ///-------------------------
 /// @name Account management
 ///-------------------------

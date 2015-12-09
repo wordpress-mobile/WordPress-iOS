@@ -125,7 +125,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     return operation;
 }
 
-- (WPJSONRequestOperation *)POST:(NSString *)URLString
+- (AFHTTPRequestOperation *)POST:(NSString *)URLString
                       parameters:(id)parameters
                      cancellable:(BOOL)cancellable
                          success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
