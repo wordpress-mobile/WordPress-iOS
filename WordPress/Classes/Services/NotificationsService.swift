@@ -83,6 +83,38 @@ public class NotificationsService : LocalCoreDataService
             })
     }
 
+
+    /**
+     *  @details     Registers a given Push Notifications Token against the WordPress.com backend.
+     *  @param       token          Apple's Push Notifications Device Token
+     *  @param       success        Closure to be called on success.
+     *  @param       failure        Closure to be called on failure, with the associated error.
+     */
+    public func registerDeviceForPushNotifications(token: String, success: ((deviceId: String) -> ())?, failure: (NSError -> Void)?) {
+        if token.isEmpty {
+            DDLogSwift.logWarn("Error: registerDeviceForPushNotifications called with an empty token!")
+            return
+        }
+        
+        notificationsServiceRemote?.registerDeviceForPushNotifications(token, success: success, failure: failure)
+    }
+    
+    
+    /**
+     *  @details     Unregisters the given deviceID for Push Notification Events.
+     *  @param       deviceId       Identifier of the device to be unregistered
+     *  @param       success        Closure to be called on success.
+     *  @param       failure        Closure to be called on failure, with the associated error.
+     */
+    public func unregisterDeviceForPushNotifications(deviceId: String, success: (() -> ())?, failure: (NSError -> Void)?) {
+        if deviceId.isEmpty {
+            DDLogSwift.logWarn("Error: unregisterDeviceForPushNotifications called with an empty deviceId!")
+            return
+        }
+
+        notificationsServiceRemote?.unregisterDeviceForPushNotifications(deviceId, success: success, failure: failure)
+    }
+    
     
     /**
     *  @details     Static Helper that will parse RemoteNotificationSettings instances into a collection of
