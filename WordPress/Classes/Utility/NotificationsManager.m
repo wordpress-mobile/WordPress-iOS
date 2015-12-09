@@ -113,7 +113,7 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     [[NSNotificationCenter defaultCenter] postNotificationName:NotificationsManagerDidRegisterDeviceToken object:newToken];
 
     [self nukeLegacyPreferences];
-    [self syncPushNotificationInfo];
+    [self registerDeviceTokenWithTokenString:newToken];
 }
 
 + (void)registrationDidFail:(NSError *)error
@@ -124,12 +124,13 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 
 + (void)unregisterDeviceToken
 {
-    NSString *deviceId              = [[NSUserDefaults standardUserDefaults] stringForKey:NotificationsDeviceIdKey];
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount       = [accountService defaultWordPressComAccount];
-
-    void (^successBlock)(void) = ^{
+    NSManagedObjectContext *context     = [[ContextManager sharedInstance] mainContext];
+    NotificationsService *noteService   = [[NotificationsService alloc] initWithManagedObjectContext:context];
+    NSString *deviceId                  = [self registeredPushNotificationsDeviceId];
+    
+    [noteService unregisterDeviceForPushNotifications:deviceId success:^{
+        DDLogInfo(@"Successfully unregistered Device ID %@ for Push Notifications!", deviceId);
+        
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults removeObjectForKey:NotificationsDeviceToken];
         [defaults removeObjectForKey:NotificationsDeviceIdKey];
@@ -137,29 +138,10 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
         
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
         [nc postNotificationName:NotificationsManagerDidUnregisterDeviceToken object:nil];
-    };
-    
-    void (^failureBlock)(NSError *error) = ^(NSError *error){
-        DDLogError(@"Couldn't unregister push token: %@", [error localizedDescription]);
-    };
-    
-    // This method may have been called as a result of an issue that's setting authTokens to nil
-    // in WordPress v5.3, if the user decides to log out of his WP.com account.  This is part of a
-    // hotfix for WordPress v5.3.1.
-    //
-    // The following conditional check is only performed in case the authToken is nil, since we
-    // can't really use the restApi to unregister the token in this case.
-    //
-    // For more info on the issue check this URL:
-    // https://github.com/wordpress-mobile/WordPress-iOS/pull/3956
-    //
-    // Feel free to remove the following code once we're in a galaxy far, far away (from WPiOS 5.3).
-    //
-    if (defaultAccount.authToken) {
-        [defaultAccount.restApi unregisterForPushNotificationsWithDeviceId:deviceId
-                                                                   success:successBlock
-                                                                   failure:failureBlock];
     }
+    failure:^(NSError *error){
+        DDLogError(@"Unable to unregister push for Device ID %@: %@", deviceId, [error localizedDescription]);
+    }];
 }
 
 + (BOOL)pushNotificationsEnabledInDeviceSettings
@@ -337,24 +319,21 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     [userDefaults synchronize];
 }
 
-+ (void)syncPushNotificationInfo
++ (void)registerDeviceTokenWithTokenString:(NSString *)token
 {
-    NSString *token                 = [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount       = [accountService defaultWordPressComAccount];
+    NotificationsService *noteService = [[NotificationsService alloc] initWithManagedObjectContext:context];
 
-    [[defaultAccount restApi] syncPushNotificationInfoWithDeviceToken:token
-                                         success:^(NSString *deviceId, NSDictionary *settings) {
-                                             DDLogVerbose(@"Synced push notification token and received device ID %@ with settings:\n %@", deviceId, settings);
+    [noteService registerDeviceForPushNotifications:token success:^(NSString *deviceId) {
+        DDLogVerbose(@"Successfully registered Device ID %@ for Push Notifications", deviceId);
 
-                                             NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                                             [defaults setObject:deviceId forKey:NotificationsDeviceIdKey];
-                                             [defaults synchronize];
-                                         } failure:^(NSError *error) {
-                                             DDLogError(@"Failed to receive supported notification list: %@", error);
-                                         }
-     ];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:deviceId forKey:NotificationsDeviceIdKey];
+        [defaults synchronize];
+    }
+    failure:^(NSError *error) {
+        DDLogError(@"Unable to register Device for Push Notifications: %@", error);
+    }];
 }
 
 
