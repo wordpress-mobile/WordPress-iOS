@@ -1,11 +1,13 @@
 import Foundation
 import WordPressShared
 
-public class ReaderDetailView : UIView, UIScrollViewDelegate, WPRichTextViewDelegate
+// TODO: Go through our Swift StyleGuide and make sure all conventions are adopted.
+
+public class ReaderDetailView : UIView, UIScrollViewDelegate
 {
     // Wrapper views
     @IBOutlet private weak var scrollView: UIScrollView!
-    @IBOutlet private weak var innerContentView: UIStackView!
+    @IBOutlet private weak var contentStackView: UIStackView!
 
     // Header realated Views
     @IBOutlet private weak var headerView: UIView!
@@ -17,9 +19,8 @@ public class ReaderDetailView : UIView, UIScrollViewDelegate, WPRichTextViewDele
     // Content views
     @IBOutlet private weak var featuredImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var richTextView: WPRichTextView!
+    @IBOutlet private(set) public weak var richTextView: WPRichTextView!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
-
 
     // Layout Constraints
     @IBOutlet private weak var featuredMediaAspectRatioConstraint: NSLayoutConstraint!
@@ -37,78 +38,13 @@ public class ReaderDetailView : UIView, UIScrollViewDelegate, WPRichTextViewDele
         }
     }
 
-
     // MARK: - Lifecycle Methods
 
     public override func awakeFromNib() {
         super.awakeFromNib()
 
         applyStyles()
-        setupAvatarTapGestureRecognizer()
-        setupRichText()
     }
-
-
-//
-//    public override func intrinsicContentSize() -> CGSize {
-//        return innerContentView.intrinsicContentSize()
-//    }
-//
-//
-//    public override func sizeThatFits(size: CGSize) -> CGSize {
-//        let innerWidth = innerWidthForSize(size)
-//        let innerSize = CGSize(width: innerWidth, height: CGFloat.max)
-//
-//        var height = innerContentView.frame.minY // TODO: Which view?
-//
-//        height += featuredMediaView.frame.minY
-//        height += featuredMediaHeightConstraint.constant
-//        height += featuredMediaBottomConstraint.constant
-//
-//        height += titleLabel.sizeThatFits(innerSize).height
-//        height += titleLabelBottomConstraint.constant
-//
-//        height += richTextView.sizeThatFits(innerSize).height
-//        height += richTextBottomConstraint.constant
-//
-//        // The attribution view's height constraint is to be less than or equal
-//        // to the constant. Skip the math when the constant is zero, but use
-//        // the height returned from sizeThatFits otherwise.
-//        if attributionHeightConstraint.constant > 0 {
-//            height += attributionView.sizeThatFits(innerSize).height
-//        }
-//
-//        height += contentBottomConstraint.constant
-//
-//        return CGSize(width: size.width, height: height)
-//    }
-//
-//
-//    private func innerWidthForSize(size: CGSize) -> CGFloat {
-//        var width = CGFloat(0.0)
-//        var horizontalMargin = headerView.frame.minX
-//
-//        if UIDevice.isPad() {
-//            width = min(size.width, maxIPadWidthConstraint.constant)
-//        } else {
-//            width = size.width
-//            horizontalMargin += innerContentView.frame.minX // TODO: Which view?
-//        }
-//        width -= (horizontalMargin * 2)
-//        return width
-//    }
-
-
-    private func setupAvatarTapGestureRecognizer() {
-        let tgr = UITapGestureRecognizer(target: self, action: Selector("didTapHeaderAvatar:"))
-        avatarImageView.addGestureRecognizer(tgr)
-    }
-
-
-    private func setupRichText() {
-        self.richTextView.delegate = self
-    }
-
 
     /**
      Applies the default styles to the cell's subviews
@@ -131,8 +67,6 @@ public class ReaderDetailView : UIView, UIScrollViewDelegate, WPRichTextViewDele
         configureFeaturedImage()
         configureTitle()
         configureRichText()
-
-        invalidateIntrinsicContentSize()
     }
 
 
@@ -228,52 +162,6 @@ public class ReaderDetailView : UIView, UIScrollViewDelegate, WPRichTextViewDele
     private func configureRichText() {
         richTextView.content = contentProvider!.contentForDisplay()
         richTextView.privateContent = contentProvider!.isPrivate()
-    }
-
-
-    // MARK: -
-
-    func notifyDelegateHeaderWasTapped() {
-        if blogNameButtonIsEnabled {
-//            delegate?.readerCell(self, headerActionForProvider: contentProvider!)
-        }
-    }
-
-
-    // MARK: - Actions
-
-    func didTapHeaderAvatar(gesture: UITapGestureRecognizer) {
-        if gesture.state == .Ended {
-            notifyDelegateHeaderWasTapped()
-        }
-    }
-
-
-    @IBAction func didTapBlogNameButton(sender: UIButton) {
-        notifyDelegateHeaderWasTapped()
-    }
-
-
-    @IBAction func didTapMenuButton(sender: UIButton) {
-//        delegate?.readerCell(self, menuActionForProvider: contentProvider!, fromView: sender)
-    }
-    
-
-    // MARK: - WPRichTextView Delegate Methods
-
-    public func richTextView(richTextView: WPRichTextView!, didReceiveImageLinkAction imageControl: WPRichTextImage!) {
-//        delegate?.readerCell(self, didReceiveImageLinkAction: imageControl)
-    }
-
-
-    public func richTextView(richTextView: WPRichTextView!, didReceiveLinkAction linkURL: NSURL!) {
-//        delegate?.readerCell(self, didReceiveLinkAction: linkURL)
-    }
-
-
-    public func richTextViewDidLoadMediaBatch(richTextView: WPRichTextView!) {
-//        delegate?.richTextViewDidLoadMediaBatch(richTextView)
-        invalidateIntrinsicContentSize()
     }
 
 }

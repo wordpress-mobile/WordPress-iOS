@@ -8,6 +8,7 @@
 
 #import "Constants.h"
 #import "ContextManager.h"
+#import "CustomHighlightButton.h"
 
 #import "DDLogSwift.h"
 
@@ -59,6 +60,7 @@
 #import "WPContentViewProvider.h"
 #import "WPGUIConstants.h"
 #import <WordPressShared/WPFontManager.h>
+#import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPRichTextView.h"
 #import <WordPressShared/WPStyleGuide.h>
