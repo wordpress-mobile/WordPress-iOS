@@ -61,7 +61,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="476"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" layoutMarginsFollowReadableWidth="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="LMp-cd-vT3">
-                                                <rect key="frame" x="0.0" y="0.0" width="600" height="476"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="600" height="234"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A1K-ZI-1wr">
                                                         <rect key="frame" x="0.0" y="0.0" width="600" height="66"/>
@@ -96,7 +96,7 @@
                                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </state>
                                                                 <connections>
-                                                                    <action selector="didTapBlogNameButton:" destination="i74-qu-g9l" eventType="touchUpInside" id="IdW-3Z-sav"/>
+                                                                    <action selector="didTapBlogNameButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="rUK-Al-gnk"/>
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sz9-nP-NnE">
@@ -110,7 +110,7 @@
                                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                                 </state>
                                                                 <connections>
-                                                                    <action selector="didTapMenuButton:" destination="i74-qu-g9l" eventType="touchUpInside" id="jYq-f6-aA1"/>
+                                                                    <action selector="didTapMenuButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="hAt-zK-ne8"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -145,12 +145,12 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oGg-wx-n8s" customClass="WPRichTextView">
-                                                        <rect key="frame" x="16" y="140" width="568" height="292"/>
+                                                        <rect key="frame" x="16" y="140" width="568" height="50"/>
                                                         <animations/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </view>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UJH-3y-QkU" customClass="ReaderCardDiscoverAttributionView" customModule="WordPress">
-                                                        <rect key="frame" x="16" y="432" width="568" height="44"/>
+                                                        <rect key="frame" x="16" y="190" width="568" height="44"/>
                                                         <subviews>
                                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7CF-n4-qzA" customClass="CircularImageView" customModule="WordPress">
                                                                 <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
@@ -160,8 +160,8 @@
                                                                     <constraint firstAttribute="width" constant="20" id="icl-6u-jmI"/>
                                                                 </constraints>
                                                             </imageView>
-                                                            <view userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zzx-Ob-0cJ" customClass="RichTextView" customModule="WordPress">
-                                                                <rect key="frame" x="28" y="-2" width="540" height="2"/>
+                                                            <view userInteractionEnabled="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zzx-Ob-0cJ" customClass="RichTextView" customModule="WordPress">
+                                                                <rect key="frame" x="28" y="-2" width="540" height="46"/>
                                                                 <animations/>
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </view>
@@ -224,9 +224,9 @@
                                     <outlet property="avatarImageView" destination="y56-tB-S9Z" id="MSU-3Z-VzT"/>
                                     <outlet property="blogNameButton" destination="MZS-4C-m9c" id="RJ7-Uf-DEE"/>
                                     <outlet property="bylineLabel" destination="RfN-yk-yXb" id="NqT-zG-ygs"/>
+                                    <outlet property="contentStackView" destination="LMp-cd-vT3" id="It0-iv-OMZ"/>
                                     <outlet property="featuredImageView" destination="cAC-kN-MLi" id="iow-7k-XZS"/>
                                     <outlet property="headerView" destination="A1K-ZI-1wr" id="jZt-Yb-8FZ"/>
-                                    <outlet property="innerContentView" destination="LMp-cd-vT3" id="pcF-qd-dYW"/>
                                     <outlet property="menuButton" destination="Sz9-nP-NnE" id="K2p-ix-XDv"/>
                                     <outlet property="richTextView" destination="oGg-wx-n8s" id="EKN-z6-B1Z"/>
                                     <outlet property="scrollView" destination="IqL-oc-D5S" id="3Z9-Eg-sms"/>
@@ -236,26 +236,26 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vSH-j9-J3c">
                                 <rect key="frame" x="0.0" y="476" width="600" height="60"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="66I-9V-Egq">
-                                        <rect key="frame" x="16" y="16" width="568" height="22"/>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mBC-NT-IsJ">
+                                        <rect key="frame" x="16" y="18" width="30" height="24"/>
+                                        <animations/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="24" id="b7i-Zv-IYS"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="#tag">
+                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapTagButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="fLH-5J-6K2"/>
+                                        </connections>
+                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="PVU-1Y-fyZ">
+                                        <rect key="frame" x="475" y="18" width="109" height="24"/>
                                         <subviews>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mBC-NT-IsJ">
-                                                <rect key="frame" x="0.0" y="-1" width="30" height="24"/>
-                                                <animations/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="24" id="b7i-Zv-IYS"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <state key="normal" title="#tag">
-                                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                                </state>
-                                                <connections>
-                                                    <action selector="didTapTagButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="fLH-5J-6K2"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XmB-eN-d59" customClass="PostMetaButton">
-                                                <rect key="frame" x="473" y="-1" width="32" height="24"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="32" height="24"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="T1s-fS-Zer"/>
@@ -267,11 +267,11 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="didTapActionButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="yZV-zA-uQu"/>
+                                                    <action selector="didTapCommentButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="QWc-ZU-ahT"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2yJ-O3-UEu" customClass="PostMetaButton">
-                                                <rect key="frame" x="521" y="-1" width="47" height="24"/>
+                                                <rect key="frame" x="62" y="0.0" width="47" height="24"/>
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="7k7-Il-kBP"/>
@@ -283,31 +283,21 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
-                                                    <action selector="didTapActionButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="ahX-fX-LkF"/>
+                                                    <action selector="didTapLikeButton:" destination="p0j-e1-c0h" eventType="touchUpInside" id="hhU-Es-Syh"/>
                                                 </connections>
                                             </button>
                                         </subviews>
                                         <animations/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="2yJ-O3-UEu" secondAttribute="trailing" id="1DZ-9y-OgK"/>
-                                            <constraint firstAttribute="height" constant="22" id="AR7-a9-4Hw"/>
-                                            <constraint firstAttribute="centerY" secondItem="mBC-NT-IsJ" secondAttribute="centerY" id="OtZ-th-aUi"/>
-                                            <constraint firstAttribute="centerY" secondItem="2yJ-O3-UEu" secondAttribute="centerY" id="dj0-oP-aa6"/>
-                                            <constraint firstItem="XmB-eN-d59" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mBC-NT-IsJ" secondAttribute="trailing" id="e3M-dM-8oo"/>
-                                            <constraint firstAttribute="centerY" secondItem="XmB-eN-d59" secondAttribute="centerY" id="ey0-IO-c96"/>
-                                            <constraint firstItem="mBC-NT-IsJ" firstAttribute="leading" secondItem="66I-9V-Egq" secondAttribute="leading" id="su7-dO-cd0"/>
-                                            <constraint firstItem="2yJ-O3-UEu" firstAttribute="leading" secondItem="XmB-eN-d59" secondAttribute="trailing" constant="16" id="w0Y-tB-h1g"/>
-                                        </constraints>
-                                    </view>
+                                    </stackView>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="66I-9V-Egq" secondAttribute="trailing" constant="16" id="1WX-Cv-dMn"/>
+                                    <constraint firstItem="mBC-NT-IsJ" firstAttribute="centerY" secondItem="vSH-j9-J3c" secondAttribute="centerY" id="6kh-hb-BV3"/>
+                                    <constraint firstItem="mBC-NT-IsJ" firstAttribute="leading" secondItem="vSH-j9-J3c" secondAttribute="leading" constant="16" id="6rp-yd-n95"/>
                                     <constraint firstAttribute="height" constant="60" id="DZ4-kQ-gyy"/>
-                                    <constraint firstItem="66I-9V-Egq" firstAttribute="top" secondItem="vSH-j9-J3c" secondAttribute="top" constant="16" id="EfF-UG-oxP"/>
-                                    <constraint firstItem="66I-9V-Egq" firstAttribute="leading" secondItem="vSH-j9-J3c" secondAttribute="leading" constant="16" id="PXa-b4-cqz"/>
+                                    <constraint firstAttribute="trailing" secondItem="PVU-1Y-fyZ" secondAttribute="trailing" constant="16" id="JCk-Bd-RtT"/>
+                                    <constraint firstItem="PVU-1Y-fyZ" firstAttribute="centerY" secondItem="vSH-j9-J3c" secondAttribute="centerY" id="JGW-8Z-tGc"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -325,10 +315,10 @@
                     </view>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
-                        <outlet property="actionButtonLeft" destination="XmB-eN-d59" id="9HI-mC-rdQ"/>
-                        <outlet property="actionButtonRight" destination="2yJ-O3-UEu" id="rwh-5J-CQh"/>
+                        <outlet property="commentButton" destination="XmB-eN-d59" id="nAO-lB-cA3"/>
                         <outlet property="detailView" destination="i74-qu-g9l" id="P5q-yb-MDH"/>
                         <outlet property="footerView" destination="vSH-j9-J3c" id="tRl-Z2-Oo1"/>
+                        <outlet property="likeButton" destination="2yJ-O3-UEu" id="bB9-Wv-BHT"/>
                         <outlet property="tagButton" destination="mBC-NT-IsJ" id="fV5-hf-glc"/>
                     </connections>
                 </viewController>
