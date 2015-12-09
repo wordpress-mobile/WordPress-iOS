@@ -2,8 +2,13 @@ import Foundation
 import WordPressShared
 import WordPressComAnalytics
 
-public class ReaderDetailViewController : UIViewController
+// TODO: Go through our Swift StyleGuide and make sure all conventions are adopted.
+
+final public class ReaderDetailViewController : UIViewController
 {
+    // TODO: Make sure that changes to analytics in the old VC are applied here
+    // after the are merged.
+
 
     // Structs for Constants
 
@@ -11,6 +16,7 @@ public class ReaderDetailViewController : UIViewController
     {
         static let LikeCountKeyPath = "likeCount"
     }
+
 
     private struct DetailAnalyticsConstants
     {
@@ -22,13 +28,13 @@ public class ReaderDetailViewController : UIViewController
     }
 
 
-    // MARK: - Properties
+    // MARK: - Properties & Accessors
 
     @IBOutlet private weak var detailView: ReaderDetailView!
     @IBOutlet private weak var footerView: UIView!
     @IBOutlet private weak var tagButton: UIButton!
-    @IBOutlet private weak var actionButtonRight: UIButton!
-    @IBOutlet private weak var actionButtonLeft: UIButton!
+    @IBOutlet private weak var commentButton: UIButton!
+    @IBOutlet private weak var likeButton: UIButton!
 
     private var didBumpStats: Bool = false
     private var didBumpPageViews: Bool = false
@@ -36,11 +42,19 @@ public class ReaderDetailViewController : UIViewController
 
 
     public var post: ReaderPost? {
-        didSet{
+        didSet {
+            oldValue?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
+
+            post?.addObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath, options: .New, context: nil)
             if isViewLoaded() {
                 configureView()
             }
         }
+    }
+
+
+    var isLoaded : Bool {
+        return post != nil
     }
 
 
@@ -62,6 +76,7 @@ public class ReaderDetailViewController : UIViewController
         return controller
     }
 
+
     public class func controllerWithPostID(postID:NSNumber, siteID:NSNumber) -> ReaderDetailViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderDetailViewController") as! ReaderDetailViewController
@@ -72,9 +87,9 @@ public class ReaderDetailViewController : UIViewController
 
 
     // MARK: - LifeCycle Methods
+
     deinit {
-        //TODO:
-//        post?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
+        post?.removeObserver(self, forKeyPath: DetailConstants.LikeCountKeyPath)
         NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
@@ -84,8 +99,8 @@ public class ReaderDetailViewController : UIViewController
 
         // Styles
         WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonLeft)
-        WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonRight)
+        WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
 
         // Is Logged In
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
@@ -93,7 +108,6 @@ public class ReaderDetailViewController : UIViewController
         isLoggedIn = account != nil
 
         setupNavBar()
-        setupDetailView()
 
         if post != nil {
             configureView()
@@ -101,20 +115,17 @@ public class ReaderDetailViewController : UIViewController
     }
 
 
-    public override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        resizeDetailView()
-    }
-
-
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        resizeDetailView()
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleApplicationDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
 
 
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
 
 
@@ -122,8 +133,16 @@ public class ReaderDetailViewController : UIViewController
         super.traitCollectionDidChange(previousTraitCollection)
 
         view.layoutIfNeeded()
-        resizeDetailView()
-        // TODO: Refresh media layout
+
+        detailView.richTextView.refreshMediaLayout()
+    }
+
+
+    public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        coordinator.animateAlongsideTransition(nil, completion: { (context:UIViewControllerTransitionCoordinatorContext) in
+            self.detailView.richTextView.refreshMediaLayout()
+        })
     }
 
 
@@ -132,22 +151,23 @@ public class ReaderDetailViewController : UIViewController
             // Note: The intent here is to update the action buttons, specifically the
             // like button, *after* both likeCount and isLiked has changed. The order
             // of the properties is important.
-            // TODO: Update the view
+            configureLikeActionButton()
         }
     }
 
 
     // MARK: - Multitasking Splitview Support
 
-    func handleApplicationDidBecomeActive(notification: NSNotification) {
+    private func handleApplicationDidBecomeActive(notification: NSNotification) {
         view.layoutIfNeeded()
-        // TODO: Refresh media layout
+
+        detailView.richTextView.refreshMediaLayout()
     }
 
 
     // MARK: - Setup
 
-    func setupWithPostID(postID:NSNumber, siteID:NSNumber) {
+    private func setupWithPostID(postID:NSNumber, siteID:NSNumber) {
         let title = NSLocalizedString("Loading Post...", comment:"Text displayed while loading a post.")
         WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: view)
 
@@ -171,55 +191,52 @@ public class ReaderDetailViewController : UIViewController
     }
 
 
-    func setupNavBar() {
+    private func setupNavBar() {
         // Don't show 'Reader' in the next-view back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
         configureTitle()
-
-        // TODO: ?? do we need this?
-        //        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.shareButton forNavigationItem:self.navigationItem];
     }
 
 
-    func setupDetailView() {
-//        detailView = NSBundle.mainBundle().loadNibNamed("ReaderDetailView", owner: nil, options: nil).first as! ReaderDetailView
-//        scrollView.addSubview(detailView)
+    private func setupAvatarTapGestureRecognizer() {
+        //        let tgr = UITapGestureRecognizer(target: self, action: Selector("didTapHeaderAvatar:"))
+        //        detailView.avatarImageView.addGestureRecognizer(tgr)
     }
 
 
     // MARK: - Configuration
 
-    func configureView() {
+    private func configureView() {
         configureTitle();
         configureTag()
         configureActionButtons()
         configureDetailView()
+
+        bumpStats()
+        bumpPageViewsForPost()
     }
 
 
-    func configureDetailView() {
+    private func configureDetailView() {
+        // TODO: logged in features
+        detailView.richTextView.delegate = self
         detailView.configureView(post!)
-
-        resizeDetailView()
     }
 
-    func resizeDetailView() {
-//        var frame = detailView.frame
-//        let size = detailView.sizeThatFits(CGSize(width: self.view.frame.width, height: CGFloat.max))
-//        frame.size.width = size.width
-//        frame.size.height = size.height
-//        detailView.frame = frame
-//        scrollView.contentSize = detailView.sizeThatFits(size)
-    }
 
     private func configureTitle() {
-        self.title = (post != nil) ? post?.postTitle : NSLocalizedString("Post", comment:"Placeholder title for ReaderPostDetails.")
+        if let postTitle = post?.postTitle {
+            self.title = postTitle
+        } else {
+            self.title = NSLocalizedString("Post", comment:"Placeholder title for ReaderPostDetails.")
+        }
     }
+
 
     private func configureTag() {
         var tag = ""
         if let rawTag = post?.primaryTag {
-            if (rawTag.characters.count > 0) {
+            if rawTag.characters.count > 0 {
                 tag = "#\(rawTag)"
             }
         }
@@ -230,16 +247,12 @@ public class ReaderDetailViewController : UIViewController
 
 
     private func configureActionButtons() {
-
-        var buttons = [
-            actionButtonLeft,
-            actionButtonRight
-        ]
+        resetActionButton(likeButton)
+        resetActionButton(commentButton)
 
         // Show likes if logged in, or if likes exist, but not if external
         if (isLoggedIn || post!.likeCount.integerValue > 0) && !post!.isExternal {
-            let button = buttons.removeLast() as UIButton
-            configureLikeActionButton(button)
+            configureLikeActionButton()
         }
 
         // Show comments if logged in and comments are enabled, or if comments exist.
@@ -247,19 +260,11 @@ public class ReaderDetailViewController : UIViewController
         // Nesting this conditional cos it seems clearer that way
         if post!.isWPCom {
             if (isLoggedIn && post!.commentsOpen) || post!.commentCount.integerValue > 0 {
-                let button = buttons.removeLast() as UIButton
-                configureCommentActionButton(button)
+                configureCommentActionButton()
             }
         }
-
-        resetActionButtons(buttons)
     }
 
-    private func resetActionButtons(buttons:[UIButton!]) {
-        for button in buttons {
-            resetActionButton(button)
-        }
-    }
 
     private func resetActionButton(button:UIButton) {
         button.setTitle(nil, forState: .Normal)
@@ -273,6 +278,7 @@ public class ReaderDetailViewController : UIViewController
         button.enabled = true
     }
 
+
     private func configureActionButton(button: UIButton, title: String?, image: UIImage?, highlightedImage: UIImage?, selected:Bool) {
         button.setTitle(title, forState: .Normal)
         button.setTitle(title, forState: .Highlighted)
@@ -284,37 +290,58 @@ public class ReaderDetailViewController : UIViewController
         button.hidden = false
     }
 
-    private func configureLikeActionButton(button: UIButton) {
-        button.tag = CardAction.Like.rawValue
-        button.enabled = isLoggedIn
+
+    private func configureLikeActionButton() {
+        likeButton.enabled = isLoggedIn
 
         let title = post!.likeCountForDisplay()
         let imageName = post!.isLiked ? "icon-reader-liked" : "icon-reader-like"
         let image = UIImage(named: imageName)
         let highlightImage = UIImage(named: "icon-reader-like-highlight")
         let selected = post!.isLiked
-        configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:selected)
+        configureActionButton(likeButton, title: title, image: image, highlightedImage: highlightImage, selected:selected)
     }
 
-    private func configureCommentActionButton(button: UIButton) {
-        button.tag = CardAction.Comment.rawValue
-        let title = post?.commentCount.stringValue
+
+    private func configureCommentActionButton() {
+        let title = post!.commentCount.stringValue
         let image = UIImage(named: "icon-reader-comment")
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")
-        configureActionButton(button, title: title, image: image, highlightedImage: highlightImage, selected:false)
+        configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected:false)
     }
+
+
+    // MARK: - Instance Methods
+
+    func presentWebViewControllerWithURL(url:NSURL) {
+        let controller = WPWebViewController.authenticatedWebViewController(url)
+        let navController = UINavigationController(rootViewController: controller)
+        presentViewController(navController, animated: true, completion: nil)
+    }
+
+
+    func previewSite() {
+        let controller = ReaderStreamViewController.controllerWithSiteID(post!.siteID, isFeed: post!.isExternal)
+        navigationController?.pushViewController(controller, animated: true)
+
+        // TODO: Duplicated in reader stream. Extract this into a helper method
+        let properties = NSDictionary(object: post!.blogURL, forKey: "URL") as [NSObject : AnyObject]
+        WPAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
+    }
+
 
     // MARK: - Analytics
 
-    func bumpStats() {
+    private func bumpStats() {
         if didBumpStats {
             return
         }
         didBumpStats = true
 
         let isOfflineView = ReachabilityUtils.isInternetReachable() ? "no" : "yes"
-        let detailType = post!.topic.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal // TODO: this can be an enum instead of string consts in a struct
+        let detailType = post!.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal // TODO: this can be an enum instead of string consts in a struct
 
+        // TODO: Update to latest stats
         let properties = [
             DetailAnalyticsConstants.TypeKey : detailType,
             DetailAnalyticsConstants.OfflineKey : isOfflineView
@@ -324,11 +351,16 @@ public class ReaderDetailViewController : UIViewController
     }
 
 
-    func bumpPageViewsForPost(postID:NSNumber, siteID:NSNumber, siteURL:String) {
-        if (didBumpPageViews) {
+    private func bumpPageViewsForPost() {
+        if didBumpPageViews || (post!.isExternal && !post!.isJetpack) {
             return;
         }
         didBumpPageViews = true;
+
+        // Don't bump page views for feeds else the wrong blog/post get's bumped
+        if post!.isExternal && !post!.isJetpack {
+            return;
+        }
 
         // If the user is an admin on the post's site do not bump the page view unless
         // the the post is private.
@@ -336,7 +368,7 @@ public class ReaderDetailViewController : UIViewController
             return;
         }
 
-        let site = NSURL(string: siteURL)
+        let site = NSURL(string: post!.blogURL)
         if site?.host == nil {
             return;
         }
@@ -346,18 +378,19 @@ public class ReaderDetailViewController : UIViewController
             "v=wpcom",
             "reader=1",
             "ref=\(DetailAnalyticsConstants.PixelStatReferrer)",
-            "host=\(site!.host)",
-            "blog=\(siteID)",
-            "post=\(postID)",
+            "host=\(site!.host!)",
+            "blog=\(post!.siteID)",
+            "post=\(post!.postID)",
             NSString(format:"t=%d", arc4random())
         ]
 
-        let path  = NSString(format: "%@?%@", pixel, params.componentsJoinedByString("&"))
         let userAgent = WordPressAppDelegate.sharedInstance().userAgent.currentUserAgent()
+        let path  = NSString(format: "%@?%@", pixel, params.componentsJoinedByString("&")) as String
+        let url = NSURL(string: path)
 
-        let request = NSMutableURLRequest(URL: NSURL(string: path as String)!)
+        let request = NSMutableURLRequest(URL: url!)
         request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-        request.setValue(DetailAnalyticsConstants.PixelStatReferrer, forKey: "Referer")
+        request.addValue(DetailAnalyticsConstants.PixelStatReferrer, forHTTPHeaderField: "Referer")
 
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request)
@@ -365,19 +398,21 @@ public class ReaderDetailViewController : UIViewController
     }
 
 
-    func isUserAdminOnSiteWithID(siteID:NSNumber) -> Bool {
+    private func isUserAdminOnSiteWithID(siteID:NSNumber) -> Bool {
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
-        let blog = blogService.blogByBlogId(siteID)
-        return blog.isAdmin;
+        if let blog = blogService.blogByBlogId(siteID) {
+            return blog.isAdmin;
+        }
+        return false
     }
-
 
 
     // MARK: - Actions
 
     @IBAction func didTapTagButton(sender: UIButton) {
-        if post == nil {
+        // TODO: When should this be a secondary as opposed to a primary tag?
+        if !isLoaded {
             return
         }
 
@@ -388,40 +423,119 @@ public class ReaderDetailViewController : UIViewController
         WPAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
     }
 
-    @IBAction func didTapActionButton(sender: UIButton) {
-        if post == nil {
+
+    @IBAction func didTapCommentButton(sender: UIButton) {
+        if !isLoaded {
             return
         }
 
-        let tag = CardAction(rawValue: sender.tag)!
-        switch tag {
+        let controller = ReaderCommentsViewController(post: post)
+        navigationController?.pushViewController(controller, animated: true)
+    }
 
-        case .Comment :
-            // Comment action
-            let controller = ReaderCommentsViewController(post: post)
-            navigationController?.pushViewController(controller, animated: true)
 
-        case .Like :
-            // Like Action
-            let service = ReaderPostService(managedObjectContext: post!.managedObjectContext)
-            service.toggleLikedForPost(post, success: nil, failure: { (error:NSError?) in
-                if let anError = error {
-                    DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
-                }
-            })
+    @IBAction func didTapLikeButton(sender: UIButton) {
+        if !isLoaded {
+            return
+        }
+
+        let service = ReaderPostService(managedObjectContext: post!.managedObjectContext)
+        service.toggleLikedForPost(post, success: nil, failure: { (error:NSError?) in
+            if let anError = error {
+                DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
+            }
+        })
+    }
+
+
+    func didTapHeaderAvatar(gesture: UITapGestureRecognizer) {
+        if gesture.state == .Ended {
+            // TODO: When should this be disabled?
+            previewSite();
         }
     }
-    
 
 
+    @IBAction func didTapBlogNameButton(sender: UIButton) {
+        // TODO: When should this be disabled?
+        previewSite()
+    }
 
 
-    // MARK: - Private Types
+    @IBAction func didTapMenuButton(sender: UIButton) {
+        //TODO: menu wrangling
+    }
 
-    private enum CardAction: Int
-    {
-        case Comment = 1
-        case Like
+
+    func didTapFeaturedImage() {
+//TODO:
+//        UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
+//        UIImageView *imageView = (UIImageView *)gesture.view;
+//        WPImageViewController *controller = [[WPImageViewController alloc] initWithImage:imageView.image];
+//
+//        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//        controller.modalPresentationStyle = UIModalPresentationFullScreen;
+//        [self presentViewController:controller animated:YES completion:nil];
+
+    }
+
+
+    func didTapDiscoverAttribution() {
+// TODO:
+//        if (!self.post.sourceAttribution) {
+//            return;
+//        }
+//        if (self.post.sourceAttribution.blogID) {
+//            ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:self.post.sourceAttribution.blogID isFeed:NO];
+//            [self.navigationController pushViewController:controller animated:YES];
+//            return;
+//        }
+//
+//        NSString *path;
+//        if ([self.post.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {
+//            path = self.post.sourceAttribution.permalink;
+//        } else {
+//            path = self.post.sourceAttribution.blogURL;
+//        }
+//        NSURL *linkURL = [NSURL URLWithString:path];
+//        [self presentWebViewControllerWithLink:linkURL];
+
+    }
+
+}
+
+
+// MARK: - WPRichTextView Delegate Methods
+extension ReaderDetailViewController : WPRichTextViewDelegate {
+
+    public func richTextView(richTextView: WPRichTextView!, didReceiveImageLinkAction imageControl: WPRichTextImage!) {
+        var controller: WPImageViewController
+
+        if WPImageViewController.isUrlSupported(imageControl.linkURL) {
+            controller = WPImageViewController(image: imageControl.imageView.image, andURL: imageControl.linkURL)
+
+        } else if let linkURL = imageControl.linkURL {
+            presentWebViewControllerWithURL(linkURL)
+            return
+
+        } else {
+            controller = WPImageViewController(image: imageControl.imageView.image)
+        }
+
+        controller.modalTransitionStyle = .CrossDissolve
+        controller.modalPresentationStyle = .FullScreen
+
+        presentViewController(controller, animated: true, completion: nil)
+    }
+
+
+    public func richTextView(richTextView: WPRichTextView!, didReceiveLinkAction linkURL: NSURL!) {
+        var url = linkURL
+        if url.host != nil {
+            let postURL = NSURL(string: post!.permaLink)
+            url = NSURL(string: linkURL.absoluteString, relativeToURL: postURL)
+        }
+        presentWebViewControllerWithURL(url)
     }
 
 }
