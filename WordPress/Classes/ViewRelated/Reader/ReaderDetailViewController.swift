@@ -251,6 +251,7 @@ final public class ReaderDetailViewController : UIViewController
         configureFeaturedImage()
         configureTitle()
         configureRichText()
+        configureDiscoverAttribution()
         configureTag()
         configureActionButtons()
 
@@ -381,7 +382,19 @@ final public class ReaderDetailViewController : UIViewController
         richTextView.content = post!.contentForDisplay()
         richTextView.privateContent = post!.isPrivate()
     }
-    
+
+
+    private func configureDiscoverAttribution() {
+        if post?.sourceAttributionStyle() == SourceAttributionStyle.None {
+            attributionView.hidden = true
+        } else {
+            attributionView.configureViewWithVerboseSiteAttribution(post!)
+
+            let tgr = UITapGestureRecognizer(target: self, action: "didTapDiscoverAttribution")
+            attributionView.addGestureRecognizer(tgr)
+        }
+    }
+
 
     private func configureTag() {
         var tag = ""
