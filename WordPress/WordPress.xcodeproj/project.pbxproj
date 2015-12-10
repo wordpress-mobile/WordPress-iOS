@@ -618,6 +618,7 @@
 		E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */; };
 		E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */; };
 		E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */; };
+		E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */; };
 		F128C31C1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */; };
 		F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */; };
 		F1A0C49C1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F1A0C49B1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m */; };
@@ -1728,6 +1729,7 @@
 		E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderCrossPostCell.swift; sourceTree = "<group>"; };
 		E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderCrossPostCell.xib; sourceTree = "<group>"; };
 		E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderHelpers.swift; sourceTree = "<group>"; };
+		E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostMenu.swift; sourceTree = "<group>"; };
 		F128C31A1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
 		F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPMediaPickerViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
 		F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringHelpersTest.m; sourceTree = "<group>"; };
@@ -2289,6 +2291,7 @@
 				5D1D04741B7A50B100CDE646 /* ReaderStreamViewController.swift */,
 				E69551F51B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift */,
 				E69EF9D21BFA539F00ED0554 /* ReaderDetailViewController.swift */,
+				E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */,
 				E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */,
 				5DDC44651A72BB07007F538E /* ReaderViewController.h */,
 				5DDC44661A72BB07007F538E /* ReaderViewController.m */,
@@ -4634,6 +4637,7 @@
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,
 				5D9BFF071A85584A001D6D63 /* ReaderPostUnattributedContentView.m in Sources */,
+				E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */,
 				B5B410B61B1772B000CFCF8D /* NavigationTitleView.swift in Sources */,
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
