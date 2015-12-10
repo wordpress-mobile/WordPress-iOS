@@ -2,24 +2,36 @@ import Foundation
 
 
 /**
- *  @extension      PushNotificationsManager
- *  @details        In this Extension, we'll encapsulate all of the helpers related to
- *                  UIUserNotificationCategory + UIUserNotificationAction instantiation.
+ *  @extension      InteractiveNotificationsHandler
+ *  @details        In this class, we'll encapsulate all of the code related to UIUserNotificationCategory and 
+ *                  UIUserNotificationAction instantiation, along with the required handlers.
  */
 
-extension PushNotificationsManager
+final public class InteractiveNotificationsHandler
 {
     /**
-    *  @brief      Parses a given array of NoteCategoryDefinition, and returns a set of
-    *              *UIUserNotificationCategory* instances.
-    *  @param      definitions     A collection of definitions to be instantiated.
-    *  @returns                    A set of *UIUserNotificationCategory* instances.
-    */
+     *  @brief      Returns a collection of *UIUserNotificationCategory* instances, for each one of the
+     *              supported NoteCategoryDefinition enum case's.
+     *  @returns    A set of *UIUserNotificationCategory* instances.
+     */
     
-    internal func notificationCategories(definitions: [NoteCategoryDefinition]) -> Set<UIUserNotificationCategory> {
-        var categories = Set<UIUserNotificationCategory>()
-        let rawActions = definitions.flatMap { $0.actions }
-        let actionsMap = notificationActionsMap(rawActions)
+    func supportedNotificationCategories() -> Set<UIUserNotificationCategory> {
+        return notificationCategories(NoteCategoryDefinition.allDefinitions)
+    }
+    
+    
+    
+    /**
+     *  @brief      Parses a given array of NoteCategoryDefinition, and returns a collection of their
+     *              *UIUserNotificationCategory* counterparts.
+     *
+     *  @param      definitions     A collection of definitions to be instantiated.
+     *  @returns                    A collection of UIUserNotificationCategory instances
+     */
+    private func notificationCategories(definitions: [NoteCategoryDefinition]) -> Set<UIUserNotificationCategory> {
+        var categories  = Set<UIUserNotificationCategory>()
+        let rawActions  = definitions.flatMap { $0.actions }
+        let actionsMap  = notificationActionsMap(rawActions)
         
         for definition in definitions {
             let category = UIMutableUserNotificationCategory()
@@ -43,7 +55,7 @@ extension PushNotificationsManager
      *  @param      definitions     A collection of definitions to be instantiated.
      *  @returns                    A map of Definition > NotificationAction instances
      */
-    internal func notificationActionsMap(definitions: [NoteActionDefinition]) -> [NoteActionDefinition : UIUserNotificationAction] {
+    private func notificationActionsMap(definitions: [NoteActionDefinition]) -> [NoteActionDefinition : UIUserNotificationAction] {
         var actionMap = [NoteActionDefinition : UIUserNotificationAction]()
         
         for definition in definitions {
@@ -67,18 +79,18 @@ extension PushNotificationsManager
      *  @brief      Describes information about Custom Actions that WPiOS can perform, as a response to
      *              a Push Notification event.
      */
-    internal enum NoteCategoryDefinition {
-        case CommentApprove
-        case CommentLike
-        case CommentReply
-        case CommentReplyWithLike
+    private enum NoteCategoryDefinition : String {
+        case CommentApprove         = "approve-comment"
+        case CommentLike            = "like-comment"
+        case CommentReply           = "replyto-comment"
+        case CommentReplyWithLike   = "replyto-like-comment"
         
         var actions : [NoteActionDefinition] {
             return self.dynamicType.actionsMap[self] ?? [NoteActionDefinition]()
         }
         
         var identifier : String {
-            return self.dynamicType.identifiersMap[self] ?? String()
+            return rawValue
         }
         
         static var allDefinitions = [CommentApprove, CommentLike, CommentReply, CommentReplyWithLike]
@@ -89,25 +101,18 @@ extension PushNotificationsManager
             CommentReply            : [NoteActionDefinition.CommentReply],
             CommentReplyWithLike    : [NoteActionDefinition.CommentLike, NoteActionDefinition.CommentReply]
         ]
-        
-        private static let identifiersMap = [
-            CommentApprove          : "approve-comment",
-            CommentLike             : "like-comment",
-            CommentReply            : "replyto-comment",
-            CommentReplyWithLike    : "replyto-like-comment"
-        ]
     }
     
     
     
     /**
-     *  @enum       NoteAction
+     *  @enum       NoteActionDefinition
      *  @brief      Describes the custom actions that WPiOS can perform in response to a Push notification.
      */
-    internal enum NoteActionDefinition {
-        case CommentApprove
-        case CommentLike
-        case CommentReply
+    private enum NoteActionDefinition : String {
+        case CommentApprove = "COMMENT_MODERATE_APPROVE"
+        case CommentLike    = "COMMENT_LIKE"
+        case CommentReply   = "COMMENT_REPLY"
         
         var description : String {
             return self.dynamicType.descriptionMap[self] ?? String()
@@ -118,7 +123,7 @@ extension PushNotificationsManager
         }
         
         var identifier : String {
-            return self.dynamicType.identifiersMap[self] ?? String()
+            return rawValue
         }
         
         var requiresAuthentication : Bool {
@@ -135,12 +140,6 @@ extension PushNotificationsManager
             CommentApprove  : NSLocalizedString("Approve", comment: "Approve comment (verb)"),
             CommentLike     : NSLocalizedString("Like", comment: "Like (verb)"),
             CommentReply    : NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
-        ]
-        
-        private static let identifiersMap = [
-            CommentApprove  : "COMMENT_MODERATE_APPROVE",
-            CommentLike     : "COMMENT_LIKE",
-            CommentReply    : "COMMENT_REPLY"
         ]
     }
 }

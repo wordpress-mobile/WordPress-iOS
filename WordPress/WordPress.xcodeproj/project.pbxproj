@@ -417,7 +417,7 @@
 		B5B410B61B1772B000CFCF8D /* NavigationTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B410B51B1772B000CFCF8D /* NavigationTitleView.swift */; };
 		B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3019AFB68800B4E29B /* WPStyleGuide+Reply.swift */; };
 		B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */; };
-		B5B68BD41C19AAED00EB59E0 /* PushNotificationsManager+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B68BD31C19AAED00EB59E0 /* PushNotificationsManager+Actions.swift */; };
+		B5B68BD41C19AAED00EB59E0 /* InteractiveNotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B68BD31C19AAED00EB59E0 /* InteractiveNotificationsHandler.swift */; };
 		B5C66B701ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B6F1ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib */; };
 		B5C66B721ACF071100F68370 /* NoteBlockTextTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B711ACF071000F68370 /* NoteBlockTextTableViewCell.xib */; };
 		B5C66B741ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B731ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib */; };
@@ -1406,7 +1406,7 @@
 		B5B56D3019AFB68800B4E29B /* WPStyleGuide+Reply.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Reply.swift"; sourceTree = "<group>"; };
 		B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "WPStyleGuide+Notifications.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 19.xcdatamodel"; sourceTree = "<group>"; };
-		B5B68BD31C19AAED00EB59E0 /* PushNotificationsManager+Actions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PushNotificationsManager+Actions.swift"; sourceTree = "<group>"; };
+		B5B68BD31C19AAED00EB59E0 /* InteractiveNotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveNotificationsHandler.swift; sourceTree = "<group>"; };
 		B5B9C08F1A38A23A00B5B85F /* Notification+Internals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Notification+Internals.h"; sourceTree = "<group>"; };
 		B5C66B6F1ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		B5C66B711ACF071000F68370 /* NoteBlockTextTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockTextTableViewCell.xib; sourceTree = "<group>"; };
@@ -3042,7 +3042,7 @@
 				C57A31A3183D2111007745B9 /* NotificationsManager.m */,
 				B535209A1AF7BBB800B33BA8 /* PushAuthenticationManager.swift */,
 				B5416CF41C171D7100006DD8 /* PushNotificationsManager.swift */,
-				B5B68BD31C19AAED00EB59E0 /* PushNotificationsManager+Actions.swift */,
+				B5B68BD31C19AAED00EB59E0 /* InteractiveNotificationsHandler.swift */,
 			);
 			name = Notifications;
 			sourceTree = "<group>";
@@ -4789,7 +4789,7 @@
 				B580E4791AEA91000091A094 /* UIViewController+Helpers.swift in Sources */,
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				937F3E321AD6FDA7006BA498 /* WPAnalyticsTrackerAutomatticTracks.m in Sources */,
-				B5B68BD41C19AAED00EB59E0 /* PushNotificationsManager+Actions.swift in Sources */,
+				B5B68BD41C19AAED00EB59E0 /* InteractiveNotificationsHandler.swift in Sources */,
 				B54E1DF01A0A7BAA00807537 /* ReplyBezierView.swift in Sources */,
 				5DF738941965FAB900393584 /* SubscribedTopicsViewController.m in Sources */,
 				596C035E1B84F21D00899EEB /* ThemeBrowserViewController.swift in Sources */,

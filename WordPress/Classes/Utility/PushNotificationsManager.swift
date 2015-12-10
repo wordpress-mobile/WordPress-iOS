@@ -17,7 +17,7 @@ public let NotificationsManagerDidUnregisterDeviceToken = "NotificationsManagerD
  *                  Push Notifications Registration + Handling, including iOS "Actionable" Notifications.
  */
 
-public class PushNotificationsManager : NSObject
+final public class PushNotificationsManager : NSObject
 {
     // MARK: - Public Properties
     
@@ -73,8 +73,8 @@ public class PushNotificationsManager : NSObject
         sharedApplication.registerForRemoteNotifications()
 
         // User Notifications Registration
-        let categories = notificationCategories(NoteCategoryDefinition.allDefinitions)
-        let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: categories)
+        let categories  = interactiveHandler.supportedNotificationCategories()
+        let settings    = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: categories)
         sharedApplication.registerUserNotificationSettings(settings)
     }
     
@@ -90,7 +90,9 @@ public class PushNotificationsManager : NSObject
     
     
     /**
-     *  @brief      .
+     *  @brief      Registers the Device Token agains WordPress.com backend, if there's a default account.
+     *  @details    Both Helpshift and Mixpanel will also be initialized. The token will be persisted across
+     *              App Sessions.
      */
     func registerDeviceToken(tokenData: NSData) {
         // We want to register Helpshift regardless so that way if a user isn't logged in
@@ -137,8 +139,7 @@ public class PushNotificationsManager : NSObject
      *  @brief     Perform cleanup when the registration for iOS notifications failed
      *  @param     error detailing the reason for failure
      */
-    func registrationDidFail(error: NSError)
-    {
+    func registrationDidFail(error: NSError) {
         DDLogSwift.logError("Failed to register for push notifications: \(error)")
         unregisterDeviceToken()
     }
@@ -148,8 +149,7 @@ public class PushNotificationsManager : NSObject
     /**
      *  @brief      Unregister the device from WordPress.com notifications
      */
-    func unregisterDeviceToken()
-    {
+    func unregisterDeviceToken() {
         guard let knownDeviceId = deviceId else {
             return
         }
@@ -226,6 +226,9 @@ public class PushNotificationsManager : NSObject
     }
     
     
+    
+    // MARK: - Private Properties
+    private let interactiveHandler = InteractiveNotificationsHandler()
     
     // MARK: - Private Constants
     private let deviceTokenKey  = "apnsDeviceToken"
