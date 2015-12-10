@@ -106,7 +106,7 @@ final public class PushNotificationsManager : NSObject
         }
 
         // Token Cleanup
-        let newToken = tokenFromAppleData(tokenData)
+        let newToken = parseTokenFromAppleData(tokenData)
         
         if deviceToken != newToken {
             DDLogSwift.logInfo("Device Token has changed! OLD Value: \(deviceToken), NEW value: \(newToken)")
@@ -192,7 +192,7 @@ final public class PushNotificationsManager : NSObject
     /**
      *  @brief      Parses the NSData sent by Apple's Push Service, and extracts the Device Token
      */
-    private func tokenFromAppleData(tokenData: NSData) -> String {
+    private func parseTokenFromAppleData(tokenData: NSData) -> String {
         var newToken = tokenData.description.stringByReplacingOccurrencesOfString("<", withString: "")
         newToken = newToken.stringByReplacingOccurrencesOfString(">", withString: "")
         newToken = newToken.stringByReplacingOccurrencesOfString(" ", withString: "")
