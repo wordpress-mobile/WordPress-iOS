@@ -1,4 +1,14 @@
 import Foundation
+import Mixpanel
+
+
+
+/**
+ *  @details        These notifications are sent when the user Registers / Unregisters for Push Notifications.
+ */
+public let NotificationsManagerDidRegisterDeviceToken   = "NotificationsManagerDidRegisterDeviceToken"
+public let NotificationsManagerDidUnregisterDeviceToken = "NotificationsManagerDidUnregisterDeviceToken"
+
 
 
 /**
@@ -9,7 +19,7 @@ import Foundation
 
 public class PushNotificationsManager : NSObject
 {
-    // MARK: - Public Methods
+    // MARK: - Public Properties
     
     /**
      *  @details    Returns the shared PushNotificationsManager instance.
@@ -17,186 +27,207 @@ public class PushNotificationsManager : NSObject
     static let sharedInstance = PushNotificationsManager()
     
     
-    
     /**
-     *  @details    Returns the SharedApplication instance. This is meant for mock-replacement, to aid
-     *              in the unit testing process.
+     *  @details    Returns the SharedApplication instance. This is meant for Unit Testing purposes.
      */
-    public var sharedApplication : UIApplication {
+    var sharedApplication : UIApplication {
         return UIApplication.sharedApplication()
     }
     
+
+
+    /**
+     *  @details    Stores the Apple's Push Notifications Token
+     */
+    var deviceToken : String? {
+        didSet {
+            save()
+        }
+    }
+
     
+    /**
+     *  @details    Stores the WordPress.com Device identifier
+     */
+    var deviceId : String? {
+        didSet {
+            save()
+        }
+    }
+    
+    
+    
+    // MARK: - Public Methods
     
     /**
      *  @brief      Registers the device for Remote + User Notifications.
      *  @details    We'll wire Badge + Sound + Alert notifications, along with support for
      *              iOS User Notifications Actions.
      */
-    public func registerForPushNotifications() {
+    func registerForPushNotifications() {
         if sharedApplication.isRunningSimulator() || sharedApplication.isAlphaBuild() {
             return;
         }
         
         // Remote Notifications Registration
         sharedApplication.registerForRemoteNotifications()
-        
+
         // User Notifications Registration
         let categories = notificationCategories(NoteCategoryDefinition.allDefinitions)
         let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: categories)
         sharedApplication.registerUserNotificationSettings(settings)
     }
     
-    
-    
-    /**
-     *  @brief      Returns whether the app has Push Notifications Enabled in Settings.app
-     *  @return     True if Push Notifications are enabled in the Settings.app
-     */
-    public func pushNotificationsEnabledInSettings() -> Bool {
-        guard let settings = sharedApplication.currentUserNotificationSettings() else {
-            return false
-        }
-        
-        return settings.types != .None
-    }
-    
-    
-    
-    // MARK: - Private Helpers
+
     
     /**
-     *  @brief      Parses a given array of NoteCategoryDefinition, and returns a set of 
-     *              *UIUserNotificationCategory* instances.
-     *  @param      definitions     A collection of definitions to be instantiated.
-     *  @returns                    A set of *UIUserNotificationCategory* instances.
+     *  @details    Indicates whether Push Notifications are enabled in Settings.app, or not.
      */
-    
-    private func notificationCategories(definitions: [NoteCategoryDefinition]) -> Set<UIUserNotificationCategory> {
-        var categories = Set<UIUserNotificationCategory>()
-        let rawActions = definitions.flatMap { $0.actions }
-        let actionsMap = notificationActionsMap(rawActions)
-        
-        for definition in definitions {
-            let category = UIMutableUserNotificationCategory()
-            category.identifier = definition.identifier
-            
-            let actions = definition.actions.flatMap { actionsMap[$0] }
-            category.setActions(actions, forContext: .Default)
-            
-            categories.insert(category)
-        }
-        
-        return categories
+    func notificationsEnabledInDeviceSettings() -> Bool {
+        return (sharedApplication.currentUserNotificationSettings()?.types ?? .None) != .None
     }
     
     
     
     /**
-     *  @brief      Parses a given array of NoteActionDefinition, and returns a collection mapping them
-     *              with their *UIUserNotificationAction* counterparts.
-     *
-     *  @param      definitions     A collection of definitions to be instantiated.
-     *  @returns                    A map of Definition > NotificationAction instances
+     *  @brief      .
      */
-    private func notificationActionsMap(definitions: [NoteActionDefinition]) -> [NoteActionDefinition : UIUserNotificationAction] {
-        var actionMap = [NoteActionDefinition : UIUserNotificationAction]()
+    func registerDeviceToken(tokenData: NSData) {
+        // We want to register Helpshift regardless so that way if a user isn't logged in
+        // they can still get push notifications that we replied to their support ticket.
+        Helpshift.sharedInstance().registerDeviceToken(tokenData)
+        Mixpanel.sharedInstance().people?.addPushDeviceToken(tokenData)
+
+        // Don't bother registering for WordPress anything if the user isn't logged in
+        if wordPressDotComAvailable() == false {
+            return
+        }
+
+        // Token Cleanup
+        let newToken = tokenFromAppleData(tokenData)
         
-        for definition in definitions {
-            let action = UIMutableUserNotificationAction()
-            action.identifier = definition.identifier
-            action.title = definition.description
-            action.activationMode = definition.requiresBackground ? .Background : .Foreground
-            action.destructive = definition.destructive
-            action.authenticationRequired = definition.requiresAuthentication
-            
-            actionMap[definition] = action
+        if deviceToken != newToken {
+            DDLogSwift.logInfo("Device Token has changed! OLD Value: \(deviceToken), NEW value: \(newToken)")
+        } else {
+            DDLogSwift.logInfo("Device Token received in didRegisterForRemoteNotificationsWithDeviceToken: \(newToken)")
         }
         
-        return actionMap
+        deviceToken = newToken
+        
+        // Register against WordPress.com
+        let noteService = NotificationsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        
+        noteService.registerDeviceForPushNotifications(newToken,
+            success: { (deviceId: String) -> () in
+                DDLogSwift.logVerbose("Successfully registered Device ID \(deviceId) for Push Notifications")
+                self.deviceId = deviceId
+            },
+            failure: { (error: NSError) -> Void in
+                DDLogSwift.logError("Unable to register Device for Push Notifications: \(error)")
+            })
+        
+        // Notify Listeners
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.postNotificationName(NotificationsManagerDidRegisterDeviceToken, object: newToken)
     }
     
     
     
     /**
-     *  @enum       NoteCategoryDefinition
-     *  @brief      Describes information about Custom Actions that WPiOS can perform, as a response to
-     *              a Push Notification event.
+     *  @brief     Perform cleanup when the registration for iOS notifications failed
+     *  @param     error detailing the reason for failure
      */
-    private enum NoteCategoryDefinition {
-        case CommentApprove
-        case CommentLike
-        case CommentReply
-        case CommentReplyWithLike
-        
-        var actions : [NoteActionDefinition] {
-            return self.dynamicType.actionsMap[self] ?? [NoteActionDefinition]()
-        }
-        
-        var identifier : String {
-            return self.dynamicType.identifiersMap[self] ?? String()
-        }
-        
-        static var allDefinitions = [CommentApprove, CommentLike, CommentReply, CommentReplyWithLike]
-        
-        private static let actionsMap = [
-            CommentApprove          : [NoteActionDefinition.CommentApprove],
-            CommentLike             : [NoteActionDefinition.CommentLike],
-            CommentReply            : [NoteActionDefinition.CommentReply],
-            CommentReplyWithLike    : [NoteActionDefinition.CommentLike, NoteActionDefinition.CommentReply]
-        ]
-        
-        private static let identifiersMap = [
-            CommentApprove          : "approve-comment",
-            CommentLike             : "like-comment",
-            CommentReply            : "replyto-comment",
-            CommentReplyWithLike    : "replyto-like-comment"
-        ]
+    func registrationDidFail(error: NSError)
+    {
+        DDLogSwift.logError("Failed to register for push notifications: \(error)")
+        unregisterDeviceToken()
     }
     
     
     
     /**
-     *  @enum       NoteAction
-     *  @brief      Describes the custom actions that WPiOS can perform in response to a Push notification.
+     *  @brief      Unregister the device from WordPress.com notifications
      */
-    private enum NoteActionDefinition {
-        case CommentApprove
-        case CommentLike
-        case CommentReply
-        
-        var description : String {
-            return self.dynamicType.descriptionMap[self] ?? String()
+    func unregisterDeviceToken()
+    {
+        guard let knownDeviceId = deviceId else {
+            return
         }
         
-        var destructive : Bool {
-            return false
-        }
+        let noteService = NotificationsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         
-        var identifier : String {
-            return self.dynamicType.identifiersMap[self] ?? String()
-        }
-        
-        var requiresAuthentication : Bool {
-            return false
-        }
-        
-        var requiresBackground : Bool {
-            return self != .CommentReply
-        }
-        
-        static var allDefinitions = [CommentApprove, CommentLike, CommentReply]
-        
-        private static let descriptionMap = [
-            CommentApprove  : NSLocalizedString("Approve", comment: "Approve comment (verb)"),
-            CommentLike     : NSLocalizedString("Like", comment: "Like (verb)"),
-            CommentReply    : NSLocalizedString("Reply", comment: "Reply to a comment (verb)")
-        ]
-        
-        private static let identifiersMap = [
-            CommentApprove  : "COMMENT_MODERATE_APPROVE",
-            CommentLike     : "COMMENT_LIKE",
-            CommentReply    : "COMMENT_REPLY"
-        ]
+        noteService.unregisterDeviceForPushNotifications(knownDeviceId,
+            success: {
+                DDLogSwift.logInfo("Successfully unregistered Device ID \(knownDeviceId) for Push Notifications!")
+                
+                self.deviceToken = nil
+                self.deviceId = nil
+                
+                let notificationCenter = NSNotificationCenter.defaultCenter()
+                notificationCenter.postNotificationName(NotificationsManagerDidUnregisterDeviceToken, object: nil)
+                
+            },
+            failure: { (error: NSError) -> Void in
+                DDLogSwift.logError("Unable to unregister push for Device ID \(knownDeviceId): \(error)")
+            })
     }
+    
+    
+    
+
+    // MARK: - Private Methods
+    
+    /**
+     *  @brief      Indicates whether there is a default WordPress.com accounta available, or not
+     */
+    private func wordPressDotComAvailable() -> Bool {
+        let mainContext = ContextManager.sharedInstance().mainContext
+        let accountService = AccountService(managedObjectContext: mainContext)
+        
+        return accountService.defaultWordPressComAccount() != nil
+    }
+
+    
+    
+    /**
+     *  @brief      Parses the NSData sent by Apple's Push Service, and extracts the Device Token
+     */
+    private func tokenFromAppleData(tokenData: NSData) -> String {
+        var newToken = tokenData.description.stringByReplacingOccurrencesOfString("<", withString: "")
+        newToken = newToken.stringByReplacingOccurrencesOfString(">", withString: "")
+        newToken = newToken.stringByReplacingOccurrencesOfString(" ", withString: "")
+        
+        return newToken
+    }
+    
+    
+    
+    /**
+    *  @brief      Persists the deviceToken + deviceId
+    */
+    private func save() {
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setObject(deviceToken, forKey: deviceTokenKey)
+        defaults.setObject(deviceId, forKey: deviceIdKey)
+        defaults.synchronize()
+    }
+    
+    
+    
+    /**
+     *  @brief      Default Initializer
+     */
+    private override init() {
+        let defaults    = NSUserDefaults.standardUserDefaults()
+        deviceToken     = defaults.stringForKey(deviceTokenKey) ?? String()
+        deviceId        = defaults.stringForKey(deviceIdKey) ?? String()
+        
+        super.init()
+    }
+    
+    
+    
+    // MARK: - Private Constants
+    private let deviceTokenKey  = "apnsDeviceToken"
+    private let deviceIdKey     = "notification_device_id"
 }
