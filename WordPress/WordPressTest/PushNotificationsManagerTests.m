@@ -9,24 +9,28 @@
 
 @implementation PushNotificationsManagerTests
 
-- (void)testRegisterForPushNotificationsCallsSharedApplicationRegisterForRemoteNotifications
+- (void)testDeviceTokenAndDeviceIdentifierArePersistedAcrossSessions
 {
-    // Note:
-    // PushNotifications registration methods don't crash the sim, anymore, as per iOS 9.
-    // We'll override the check just for evil unit testing purposes.
+    // Store
+    PushNotificationsManager *manager = [PushNotificationsManager new];
+    manager.deviceId = @"1234";
+    manager.deviceToken = @"4567";
     
-    id mockApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-    [[mockApplication expect] registerForRemoteNotifications];
-    [[mockApplication expect] registerUserNotificationSettings:[OCMArg isNotNil]];
+    // Verify persistance
+    manager = [PushNotificationsManager new];
+    XCTAssertEqualObjects(manager.deviceId, @"1234");
+    XCTAssertEqualObjects(manager.deviceToken, @"4567");
     
-    [[[mockApplication stub] andReturnValue:OCMOCK_VALUE(false)] isRunningSimulator];
+    // Nuke
+    manager.deviceId = nil;
+    manager.deviceToken = nil;
     
-    id mockManager = [OCMockObject partialMockForObject:[PushNotificationsManager sharedInstance]];
-    [[[mockManager stub] andReturn:mockApplication] sharedApplication];
-    
-    [mockManager registerForPushNotifications];
-    [mockApplication verify];
+    // Verify persistance
+    manager = [PushNotificationsManager new];
+    XCTAssert([manager.deviceId isEmpty]);
+    XCTAssert([manager.deviceToken isEmpty]);
 }
+
 
 - (void)testPushNotificationsDisabledInSettingsWhenRegisteredTypeIsNone
 {
@@ -54,6 +58,25 @@
     [[[mockManager stub] andReturn:mockApplication] sharedApplication];
     
     XCTAssertTrue([mockManager notificationsEnabledInDeviceSettings]);
+}
+
+- (void)testRegisterForPushNotificationsCallsSharedApplicationRegisterForRemoteAndUserNotifications
+{
+    // Note:
+    // PushNotifications registration methods don't crash the sim, anymore, as per iOS 9.
+    // We'll override the check just for evil unit testing purposes.
+    
+    id mockApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
+    [[mockApplication expect] registerForRemoteNotifications];
+    [[mockApplication expect] registerUserNotificationSettings:[OCMArg isNotNil]];
+    
+    [[[mockApplication stub] andReturnValue:OCMOCK_VALUE(false)] isRunningSimulator];
+    
+    id mockManager = [OCMockObject partialMockForObject:[PushNotificationsManager sharedInstance]];
+    [[[mockManager stub] andReturn:mockApplication] sharedApplication];
+    
+    [mockManager registerForPushNotifications];
+    [mockApplication verify];
 }
 
 @end
