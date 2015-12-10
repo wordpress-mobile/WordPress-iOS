@@ -39,7 +39,7 @@
     id mockManager = [OCMockObject partialMockForObject:[PushNotificationsManager sharedInstance]];
     [[[mockManager stub] andReturn:mockApplication] sharedApplication];
 
-    XCTAssertFalse([mockManager pushNotificationsEnabledInSettings]);
+    XCTAssertFalse([mockManager notificationsEnabledInDeviceSettings]);
 }
 
 - (void)testPushNotificationsEnabledInSettingsWhenRegisteredTypeIsAlert
@@ -53,7 +53,7 @@
     id mockManager = [OCMockObject partialMockForObject:[PushNotificationsManager sharedInstance]];
     [[[mockManager stub] andReturn:mockApplication] sharedApplication];
     
-    XCTAssertTrue([mockManager pushNotificationsEnabledInSettings]);
+    XCTAssertTrue([mockManager notificationsEnabledInDeviceSettings]);
 }
 
 @end
