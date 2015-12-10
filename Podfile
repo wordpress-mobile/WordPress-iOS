@@ -23,7 +23,7 @@ target 'WordPress', :exclusive => true do
   pod 'google-plus-ios-sdk', '~>1.5'
   pod 'HockeySDK', '~>3.8.0'
   pod 'Helpshift', '~>4.10.0'
-  pod 'Lookback', '1.1.4', :configurations => ['Release-Internal']
+  pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
 
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.13'
@@ -35,7 +35,7 @@ target 'WordPress', :exclusive => true do
   pod 'WordPress-iOS-Shared', '0.5.1'
   pod 'WordPress-iOS-Editor', '1.1.1'
   pod 'WordPressCom-Stats-iOS', '0.5.1'
-  pod 'WordPressCom-Analytics-iOS', '0.1.0'
+  pod 'WordPressCom-Analytics-iOS', '0.1.2'
   pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
   pod 'WPMediaPicker', '~> 0.7.0'
   pod 'ReactiveCocoa', '~> 2.4.7'
@@ -53,6 +53,7 @@ target :WordPressTest, :exclusive => true do
   pod 'OCMock', '3.1.2'
   pod 'Specta', '1.0.5'
   pod 'Expecta', '0.3.2'
+  pod 'Nimble', '~> 3.0.0'
 end
 
 target 'UITests', :exclusive => true do

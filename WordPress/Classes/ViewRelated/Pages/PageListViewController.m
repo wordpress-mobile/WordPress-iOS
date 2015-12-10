@@ -357,8 +357,13 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
     [self presentViewController:navController animated:YES completion:nil];
 
-    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
-        withProperties:@{ @"tap_source": @"posts_view",  WPAppAnalyticsKeyBlogID:self.blog.dotComID }];
+    NSNumber *dotComID = self.blog.dotComID;
+    if (dotComID) {
+        [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
+            withProperties:@{ @"tap_source": @"posts_view",  WPAppAnalyticsKeyBlogID:dotComID }];
+    }else {
+        [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view"}];
+    }
 }
 
 - (void)editPage:(AbstractPost *)apost
