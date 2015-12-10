@@ -12,6 +12,8 @@
 
 #import "DDLogSwift.h"
 
+#import "MediaService.h"
+
 #import "Notification.h"
 #import "Notification+Internals.h"
 #import "NotificationsManager.h"
@@ -38,6 +40,7 @@
 #import "RemoteReaderTopic.h"
 
 #import "ServiceRemoteREST.h"
+#import "SettingsSelectionViewController.h"
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"
 
