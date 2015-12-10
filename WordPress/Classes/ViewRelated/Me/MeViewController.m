@@ -403,7 +403,7 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
 - (void)navigateToMyProfile
 {
-    // TODO: add analytics (@koke 2015-11-17)
+    [WPAnalytics track:WPAnalyticsStatOpenedMyProfile];
     MyProfileViewController *controller = [MyProfileViewController new];
     controller.account = [self defaultAccount];
     [self.navigationController pushViewController:controller animated:YES];
