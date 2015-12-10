@@ -101,7 +101,7 @@ typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
  */
 - (NSOperation *)activateThemeId:(NSString*)themeId
                        forBlogId:(NSNumber *)blogId
-                         success:(ThemeServiceRemoteSuccessBlock)success
+                         success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
                          failure:(ThemeServiceRemoteFailureBlock)failure;
 
 @end
