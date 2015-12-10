@@ -55,7 +55,6 @@ final public class ReaderDetailViewController : UIViewController
 
     private var didBumpStats: Bool = false
     private var didBumpPageViews: Bool = false
-    public var isLoggedIn: Bool = true
 
 
     public var post: ReaderPost? {
@@ -117,13 +116,7 @@ final public class ReaderDetailViewController : UIViewController
         // Styles
         applyStyles()
 
-        // Is Logged In
-        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let account = service.defaultWordPressComAccount()
-        isLoggedIn = account != nil
-
         setupNavBar()
-        setupAvatarTapGestureRecognizer()
 
         if post != nil {
             configureView()
@@ -223,12 +216,6 @@ final public class ReaderDetailViewController : UIViewController
     }
 
 
-    private func setupAvatarTapGestureRecognizer() {
-        let tgr = UITapGestureRecognizer(target: self, action: "didTapHeaderAvatar:")
-        avatarImageView.addGestureRecognizer(tgr)
-    }
-
-
     // MARK: - Configuration
 
     /**
@@ -257,6 +244,11 @@ final public class ReaderDetailViewController : UIViewController
 
         bumpStats()
         bumpPageViewsForPost()
+
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "handleBlockSiteNotification:",
+            name: ReaderPostMenu.BlockSiteNotification,
+            object: nil)
     }
 
 
@@ -270,26 +262,34 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func configureHeader() {
-        // Always reset
-        avatarImageView.image = nil
-
+        // Avatar
         let placeholder = UIImage(named: "post-blavatar-placeholder")
-
         let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
         let url = post?.siteIconForDisplayOfSize(Int(size))
         avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
 
-
+        // Site name
         let blogName = post?.blogNameForDisplay()
         blogNameButton.setTitle(blogName, forState: .Normal)
         blogNameButton.setTitle(blogName, forState: .Highlighted)
         blogNameButton.setTitle(blogName, forState: .Disabled)
 
+        // Enable button only if not previewing a site.
+        if let topic = post!.topic {
+            blogNameButton.enabled = !ReaderHelpers.isTopicSite(topic)
+        }
+
+        // If the button is enabled also listen for taps on the avatar.
+        if blogNameButton.enabled {
+            let tgr = UITapGestureRecognizer(target: self, action: "didTapHeaderAvatar:")
+            avatarImageView.addGestureRecognizer(tgr)
+        }
+
+        // Byline
         var byline = post?.dateForDisplay().shortString()
         if let author = post?.authorForDisplay() {
             byline = String(format: "%@ · %@", author, byline!)
         }
-
         bylineLabel.text = byline
     }
 
@@ -324,21 +324,29 @@ final public class ReaderDetailViewController : UIViewController
                 return
             }
 
-            // Now that we have the image, create an aspect ratio constraint for
-            // the featuredImageView
-            let ratio = image.size.width / image.size.height
-            let constraint = NSLayoutConstraint(item: self!.featuredImageView,
-                attribute: .Width,
-                relatedBy: .Equal,
-                toItem: self!.featuredImageView,
-                attribute: .Height,
-                multiplier: ratio,
-                constant: 0)
-            self!.featuredImageView.addConstraint(constraint)
-            self!.featuredImageView.image = image
+            self!.configureFeaturedImageWithImage(image)
         }
 
         featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: successBlock, failure: nil)
+    }
+
+
+    private func configureFeaturedImageWithImage(image: UIImage) {
+        // Now that we have the image, create an aspect ratio constraint for
+        // the featuredImageView
+        let ratio = image.size.width / image.size.height
+        let constraint = NSLayoutConstraint(item: featuredImageView,
+            attribute: .Width,
+            relatedBy: .Equal,
+            toItem: featuredImageView,
+            attribute: .Height,
+            multiplier: ratio,
+            constant: 0)
+        featuredImageView.addConstraint(constraint)
+        featuredImageView.image = image
+
+        let tgr = UITapGestureRecognizer(target: self, action: "didTapFeaturedImage:")
+        featuredImageView.addGestureRecognizer(tgr)
     }
 
 
@@ -414,7 +422,7 @@ final public class ReaderDetailViewController : UIViewController
         resetActionButton(commentButton)
 
         // Show likes if logged in, or if likes exist, but not if external
-        if (isLoggedIn || post!.likeCount.integerValue > 0) && !post!.isExternal {
+        if (ReaderHelpers.isLoggedIn() || post!.likeCount.integerValue > 0) && !post!.isExternal {
             configureLikeActionButton()
         }
 
@@ -422,7 +430,7 @@ final public class ReaderDetailViewController : UIViewController
         // But only if it is from wpcom (jetpack and external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
         if post!.isWPCom {
-            if (isLoggedIn && post!.commentsOpen) || post!.commentCount.integerValue > 0 {
+            if (ReaderHelpers.isLoggedIn() && post!.commentsOpen) || post!.commentCount.integerValue > 0 {
                 configureCommentActionButton()
             }
         }
@@ -455,7 +463,7 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func configureLikeActionButton() {
-        likeButton.enabled = isLoggedIn
+        likeButton.enabled = ReaderHelpers.isLoggedIn()
 
         let title = post!.likeCountForDisplay()
         let imageName = post!.isLiked ? "icon-reader-liked" : "icon-reader-like"
@@ -487,7 +495,6 @@ final public class ReaderDetailViewController : UIViewController
         let controller = ReaderStreamViewController.controllerWithSiteID(post!.siteID, isFeed: post!.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
-        // TODO: Duplicated in reader stream. Extract this into a helper method
         let properties = NSDictionary(object: post!.blogURL, forKey: "URL") as [NSObject : AnyObject]
         WPAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
     }
@@ -573,7 +580,6 @@ final public class ReaderDetailViewController : UIViewController
     // MARK: - Actions
 
     @IBAction func didTapTagButton(sender: UIButton) {
-        // TODO: When should this be a secondary as opposed to a primary tag?
         if !isLoaded {
             return
         }
@@ -614,24 +620,21 @@ final public class ReaderDetailViewController : UIViewController
         if gesture.state != .Ended {
             return
         }
-        // TODO: When should this be disabled?
         previewSite()
     }
 
 
     @IBAction func didTapBlogNameButton(sender: UIButton) {
-        // TODO: When should this be disabled?
         previewSite()
     }
 
 
     @IBAction func didTapMenuButton(sender: UIButton) {
-        //TODO: menu wrangling
+        ReaderPostMenu.showMenuForPost(post!, fromView: menuButton, inViewController: self)
     }
 
 
     func didTapFeaturedImage(gesture: UITapGestureRecognizer) {
-        //TODO: Wire up the event
         if gesture.state != .Ended {
             return
         }
@@ -644,7 +647,6 @@ final public class ReaderDetailViewController : UIViewController
 
 
     func didTapDiscoverAttribution() {
-        // TODO: wire up the event
         if post?.sourceAttribution == nil {
             return
         }
@@ -666,11 +668,21 @@ final public class ReaderDetailViewController : UIViewController
             presentWebViewControllerWithURL(linkURL)
         }
     }
+
+
+    func handleBlockSiteNotification(notification:NSNotification) {
+        if let userInfo = notification.userInfo, aPost = userInfo["post"] as? NSObject {
+            if aPost == post! {
+                navigationController?.popViewControllerAnimated(true)
+            }
+        }
+    }
 }
 
 
 // MARK: - WPRichTextView Delegate Methods
-extension ReaderDetailViewController : WPRichTextViewDelegate {
+extension ReaderDetailViewController : WPRichTextViewDelegate
+{
 
     public func richTextView(richTextView: WPRichTextView!, didReceiveImageLinkAction imageControl: WPRichTextImage!) {
         var controller: WPImageViewController

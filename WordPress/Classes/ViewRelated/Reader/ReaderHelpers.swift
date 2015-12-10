@@ -1,4 +1,5 @@
 import Foundation
+import SVProgressHUD
 import WordPressComAnalytics
 
 public class ReaderHelpers {
@@ -133,6 +134,16 @@ public class ReaderHelpers {
         if (stat != nil) {
             WPAnalytics.track(stat!, withProperties: properties)
         }
+    }
+
+
+    // MARK: Logged in helper
+
+    public class func isLoggedIn() -> Bool {
+        // Is Logged In
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let account = service.defaultWordPressComAccount()
+        return account != nil
     }
 
 }
