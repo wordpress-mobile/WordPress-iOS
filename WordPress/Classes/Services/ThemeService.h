@@ -143,7 +143,7 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  */
 - (NSOperation *)activateTheme:(Theme *)theme
                        forBlog:(Blog *)blog
-                       success:(ThemeServiceSuccessBlock)success
+                       success:(ThemeServiceThemeRequestSuccessBlock)success
                        failure:(ThemeServiceFailureBlock)failure;
 
 @end

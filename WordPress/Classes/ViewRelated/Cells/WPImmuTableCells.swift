@@ -54,15 +54,13 @@ class WPTableViewCellValue2: WPReusableTableViewCell {
     }
 }
 
-struct NavigationItemRow : CustomImmuTableRow {
-    typealias CellType = WPTableViewCellDefault
+struct NavigationItemRow : ImmuTableRow {
+    static let cell = ImmuTableCell.Class(WPTableViewCellDefault)
 
     let title: String
     let action: ImmuTableActionType?
 
     func configureCell(cell: UITableViewCell) {
-        let cell = cell as! CellType
-
         cell.textLabel?.text = title
         cell.accessoryType = .DisclosureIndicator
 
@@ -70,8 +68,8 @@ struct NavigationItemRow : CustomImmuTableRow {
     }
 }
 
-struct EditableTextRow : CustomImmuTableRow {
-    typealias CellType = WPTableViewCellValue1
+struct EditableTextRow : ImmuTableRow {
+    static let cell = ImmuTableCell.Class(WPTableViewCellValue1)
 
     let title: String
     let value: String
@@ -86,8 +84,8 @@ struct EditableTextRow : CustomImmuTableRow {
     }
 }
 
-struct TextRow : CustomImmuTableRow {
-    typealias CellType = WPTableViewCellValue1
+struct TextRow : ImmuTableRow {
+    static let cell = ImmuTableCell.Class(WPTableViewCellValue1)
 
     let title: String
     let value: String
@@ -102,8 +100,8 @@ struct TextRow : CustomImmuTableRow {
     }
 }
 
-struct LinkRow : CustomImmuTableRow {
-    typealias CellType = WPTableViewCellValue1
+struct LinkRow : ImmuTableRow {
+    static let cell = ImmuTableCell.Class(WPTableViewCellValue1)
 
     let title: String
     let action: ImmuTableActionType?
@@ -115,8 +113,8 @@ struct LinkRow : CustomImmuTableRow {
     }
 }
 
-struct LinkWithValueRow : CustomImmuTableRow {
-    typealias CellType = WPTableViewCellValue1
+struct LinkWithValueRow : ImmuTableRow {
+    static let cell = ImmuTableCell.Class(WPTableViewCellValue1)
 
     let title: String
     let value: String
@@ -127,5 +125,50 @@ struct LinkWithValueRow : CustomImmuTableRow {
         cell.detailTextLabel?.text = value
 
         WPStyleGuide.configureTableViewActionCell(cell)
+    }
+}
+
+struct SwitchRow: ImmuTableRow {
+    static let cell = ImmuTableCell.Class(SwitchTableViewCell)
+
+    let title: String
+    let value: Bool
+    let action: ImmuTableActionType? = nil
+    let onChange: Bool -> Void
+
+    func configureCell(cell: UITableViewCell) {
+        let cell = cell as! SwitchTableViewCell
+
+        cell.textLabel?.text = title
+        cell.selectionStyle = .None
+        cell.on = value
+        cell.onChange = onChange
+    }
+}
+
+struct MediaSizeRow: ImmuTableRow {
+    typealias CellType = MediaSizeSliderCell
+
+    static let cell: ImmuTableCell = {
+        let nib = UINib(nibName: "MediaSizeSliderCell", bundle: NSBundle(forClass: CellType.self))
+        return ImmuTableCell.Nib(nib, CellType.self)
+    }()
+    static let customHeight: Float? = CellType.height
+
+    let title: String
+    let value: Int
+    let onChange: Int -> Void
+
+    let action: ImmuTableActionType? = nil
+
+    func configureCell(cell: UITableViewCell) {
+        let cell = cell as! CellType
+
+        cell.title = title
+        cell.value = value
+        cell.onChange = onChange
+
+        cell.minValue = MediaMinImageSizeDimension
+        cell.maxValue = MediaMaxImageSizeDimension
     }
 }
