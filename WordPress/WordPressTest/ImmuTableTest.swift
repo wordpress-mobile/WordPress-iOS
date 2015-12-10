@@ -9,7 +9,7 @@ class ImmuTableTest: XCTestCase {
             TestWithNibImmuTableRow.self
         ]
 
-        ImmuTable.registerRows(rowsToRegister, tableView: mockTable)
+        ImmuTable.registerRows(rowsToRegister, registrator: mockTable)
         XCTAssertEqual(mockTable.registeredNibs.count, 1, "The table should have registered a nib for TestWithNibImmuTableRow")
         XCTAssertEqual(mockTable.registeredClasses.count, 0, "The table shouldn't have registered any classes for TestWithNibImmuTableRow")
     }
@@ -22,7 +22,7 @@ class ImmuTableTest: XCTestCase {
             TestImmuTableRow.self
         ]
 
-        ImmuTable.registerRows(rowsToRegister, tableView: mockTable)
+        ImmuTable.registerRows(rowsToRegister, registrator: mockTable)
         XCTAssertEqual(2, mockTable.registeredClasses.count, "Each cell class shouldn't be registered more than once")
     }
 
