@@ -7,6 +7,12 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 
+/**
+ *  @brief      Place unordered themes after loaded pages
+ */
+const NSInteger ThemeOrderUnspecified = 0;
+const NSInteger ThemeOrderTrailing = 9999;
+
 @implementation ThemeService
 
 #pragma mark - Themes availability
@@ -274,7 +280,7 @@
 
 - (NSOperation *)activateTheme:(Theme *)theme
                        forBlog:(Blog *)blog
-                       success:(ThemeServiceSuccessBlock)success
+                       success:(ThemeServiceThemeRequestSuccessBlock)success
                        failure:(ThemeServiceFailureBlock)failure
 {
     NSParameterAssert([theme isKindOfClass:[Theme class]]);
@@ -287,8 +293,16 @@
     
     NSOperation *operation = [remote activateThemeId:theme.themeId
                                            forBlogId:[blog dotComID]
-                                             success:success
-                                             failure:failure];
+                                             success:^(RemoteTheme *remoteTheme) {
+                                                 Theme *theme = [self themeFromRemoteTheme:remoteTheme
+                                                                                   forBlog:blog];
+                                                 
+                                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                                     if (success) {
+                                                         success(theme);
+                                                     }
+                                                 }];
+                                             } failure:failure];
     
     return operation;
 }
@@ -313,17 +327,25 @@
     Theme *theme = [self findOrCreateThemeWithId:remoteTheme.themeId
                                          forBlog:blog];
     
+    if (remoteTheme.author) {
+        theme.author = remoteTheme.author;
+        theme.authorUrl = remoteTheme.authorUrl;
+    }
     theme.demoUrl = remoteTheme.demoUrl;
     theme.details = remoteTheme.desc;
     theme.launchDate = remoteTheme.launchDate;
     theme.name = remoteTheme.name;
-    if (remoteTheme.order > 0) {
+    if (remoteTheme.order != ThemeOrderUnspecified) {
         theme.order = @(remoteTheme.order);
+    } else if (theme.order.integerValue == ThemeOrderUnspecified) {
+        theme.order = @(ThemeOrderTrailing);
     }
     theme.popularityRank = remoteTheme.popularityRank;
     theme.previewUrl = remoteTheme.previewUrl;
-    theme.premium = remoteTheme.price.length == 0 ? @NO: @YES;
+    BOOL availableFree = remoteTheme.purchased.boolValue || remoteTheme.price.length == 0;
+    theme.premium = @(!availableFree);
     theme.price = remoteTheme.price;
+    theme.purchased = remoteTheme.purchased;
     theme.screenshotUrl = remoteTheme.screenshotUrl;
     theme.stylesheet = remoteTheme.stylesheet;
     theme.themeId = remoteTheme.themeId;
@@ -332,7 +354,6 @@
     
     if (blog && remoteTheme.active) {
         blog.currentThemeId = theme.themeId;
-        theme.order = @0;
     }
     
     return theme;

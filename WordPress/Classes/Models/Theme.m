@@ -5,14 +5,10 @@
 #import "AccountService.h"
 #import "NSString+Helpers.h"
 
-static NSString* const ThemeDomainPublic = @"pub";
-static NSString* const ThemeDomainPremium = @"premium";
-static NSString* const ThemeUrlPreview = @"%@/wp-admin/customize.php?theme=%@/%@";
-static NSString* const ThemeAdminUrlCustomize = @"customize.php?hide_close=true";
+static NSString* const ThemeAdminUrlCustomize = @"customize.php?theme=%@&hide_close=true";
 static NSString* const ThemeUrlDemoParameters = @"?demo=true&iframe=true&theme_preview=true";
-static NSString* const ThemeUrlSupport = @"https://theme.wordpress.com/themes/%@/support/?preview=true&iframe=true";
+static NSString* const ThemeUrlSupport = @"https://wordpress.com/themes/%@/support/?preview=true&iframe=true";
 static NSString* const ThemeUrlDetails = @"https://wordpress.com/themes/%@/%@/?preview=true&iframe=true";
-static NSString* const HomeUrlScheme = @"https://";
 
 @implementation Theme
 
@@ -24,10 +20,13 @@ static NSString* const HomeUrlScheme = @"https://";
 @dynamic screenshotUrl;
 @dynamic trendingRank;
 @dynamic version;
+@dynamic author;
+@dynamic authorUrl;
 @dynamic tags;
 @dynamic name;
 @dynamic previewUrl;
 @dynamic price;
+@dynamic purchased;
 @dynamic demoUrl;
 @dynamic stylesheet;
 @dynamic order;
@@ -44,7 +43,9 @@ static NSString* const HomeUrlScheme = @"https://";
 
 - (NSString *)customizeUrl
 {
-    return [self.blog adminUrlWithPath:ThemeAdminUrlCustomize];
+    NSString *path = [NSString stringWithFormat:ThemeAdminUrlCustomize, self.stylesheet];
+    
+    return [self.blog adminUrlWithPath:path];
 }
 
 - (NSString *)detailsUrl
