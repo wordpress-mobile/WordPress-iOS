@@ -437,12 +437,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [NotificationsManager registerDeviceToken:deviceToken];
+    [[PushNotificationsManager sharedInstance] registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    [NotificationsManager registrationDidFail:error];
+    [[PushNotificationsManager sharedInstance] registrationDidFail:error];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -903,7 +903,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     DDLogInfo(@"OS:        %@ %@", device.systemName, device.systemVersion);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
-    DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
+    DDLogInfo(@"APN token: %@", [[PushNotificationsManager sharedInstance] deviceToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
     
     if (blogs.count > 0) {

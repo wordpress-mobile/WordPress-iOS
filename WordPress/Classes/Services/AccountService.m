@@ -92,8 +92,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (void)removeDefaultWordPressComAccount
 {
     NSAssert([NSThread isMainThread], @"This method should only be called from the main thread");
-    
-    [NotificationsManager unregisterDeviceToken];
+
+    [[PushNotificationsManager sharedInstance] unregisterDeviceToken];
 
     WPAccount *account = [self defaultWordPressComAccount];
     if (account) {
