@@ -129,7 +129,7 @@
                                                     <constraint firstItem="RfN-yk-yXb" firstAttribute="leading" secondItem="y56-tB-S9Z" secondAttribute="trailing" constant="10" id="wg9-9P-WGd"/>
                                                 </constraints>
                                             </view>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cAC-kN-MLi">
+                                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cAC-kN-MLi">
                                                 <rect key="frame" x="0.0" y="66" width="600" height="200"/>
                                                 <animations/>
                                             </imageView>
@@ -234,7 +234,7 @@
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="T1s-fS-Zer"/>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="nt6-Mr-9t8"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="nt6-Mr-9t8"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
@@ -250,7 +250,7 @@
                                                 <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="7k7-Il-kBP"/>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="HTK-fj-KBV"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="750" constant="30" id="HTK-fj-KBV"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
