@@ -27,11 +27,6 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-NSString *const NotificationsManagerDidRegisterDeviceToken          = @"NotificationsManagerDidRegisterDeviceToken";
-NSString *const NotificationsManagerDidUnregisterDeviceToken        = @"NotificationsManagerDidUnregisterDeviceToken";
-
-static NSString *const NotificationsDeviceIdKey                     = @"notification_device_id";
-static NSString *const NotificationsLegacyPreferencesKey            = @"notification_preferences";
 static NSString *const NotificationsDeviceToken                     = @"apnsDeviceToken";
 
 static NSString *const NotificationActionCommentReply               = @"COMMENT_REPLY";
@@ -44,86 +39,6 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 #pragma mark ====================================================================================
 
 @implementation NotificationsManager
-
-#pragma mark - Device token registration
-
-+ (void)registerDeviceToken:(NSData *)deviceToken
-{
-    // We want to register Helpshift regardless so that way if a user isn't logged in
-    // they can still get push notifications that we replied to their support ticket.
-    [[Helpshift sharedInstance] registerDeviceToken:deviceToken];
-
-    [[Mixpanel sharedInstance].people addPushDeviceToken:deviceToken];
-
-    // Don't bother registering for WordPress anything if the user isn't logged in
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    if (![accountService defaultWordPressComAccount]) {
-        return;
-    }
-
-    NSString *newToken  = [deviceToken.description stringByReplacingOccurrencesOfString: @"<" withString: @""];
-    newToken            = [newToken stringByReplacingOccurrencesOfString: @">" withString: @""];
-    newToken            = [newToken stringByReplacingOccurrencesOfString: @" " withString: @""];
-    
-    DDLogInfo(@"Device token received in didRegisterForRemoteNotificationsWithDeviceToken: %@", newToken);
-
-    // Store the token
-    NSUserDefaults *userDefaults    = [NSUserDefaults standardUserDefaults];
-    NSString *previousToken         = [userDefaults objectForKey:NotificationsDeviceToken];
-    
-    if (![previousToken isEqualToString:newToken]) {
-        DDLogInfo(@"Device Token has changed! OLD Value %@, NEW value %@", previousToken, newToken);
-        [userDefaults setObject:newToken forKey:NotificationsDeviceToken];
-        [userDefaults synchronize];
-    }
-    
-    // Notify Listeners
-    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationsManagerDidRegisterDeviceToken object:newToken];
-
-    [self nukeLegacyPreferences];
-    [self registerDeviceTokenWithTokenString:newToken];
-}
-
-+ (void)registrationDidFail:(NSError *)error
-{
-    DDLogError(@"Failed to register for push notifications: %@", error);
-    [self unregisterDeviceToken];
-}
-
-+ (void)unregisterDeviceToken
-{
-    NSManagedObjectContext *context     = [[ContextManager sharedInstance] mainContext];
-    NotificationsService *noteService   = [[NotificationsService alloc] initWithManagedObjectContext:context];
-    NSString *deviceId                  = [self registeredPushNotificationsDeviceId];
-    
-    [noteService unregisterDeviceForPushNotifications:deviceId success:^{
-        DDLogInfo(@"Successfully unregistered Device ID %@ for Push Notifications!", deviceId);
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults removeObjectForKey:NotificationsDeviceToken];
-        [defaults removeObjectForKey:NotificationsDeviceIdKey];
-        [defaults synchronize];
-        
-        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc postNotificationName:NotificationsManagerDidUnregisterDeviceToken object:nil];
-    }
-    failure:^(NSError *error){
-        DDLogError(@"Unable to unregister push for Device ID %@: %@", deviceId, [error localizedDescription]);
-    }];
-}
-
-+ (NSString *)registeredPushNotificationsToken
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
-}
-
-+ (NSString *)registeredPushNotificationsDeviceId
-{
-    // TODO: Refactor this entire class please!. JLP. Jun.24.2015
-    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceIdKey];
-}
-
 
 #pragma mark - Notification handling
 
@@ -262,33 +177,6 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
         NSString *notificationID = [[remoteNotification numberForKey:@"note_id"] stringValue];
         [[WPTabBarController sharedInstance] showNotificationsTabForNoteWithID:notificationID];
     }
-}
-
-
-#pragma mark - WordPress.com XML RPC API
-
-+ (void)nukeLegacyPreferences
-{
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults removeObjectForKey:NotificationsLegacyPreferencesKey];
-    [userDefaults synchronize];
-}
-
-+ (void)registerDeviceTokenWithTokenString:(NSString *)token
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NotificationsService *noteService = [[NotificationsService alloc] initWithManagedObjectContext:context];
-
-    [noteService registerDeviceForPushNotifications:token success:^(NSString *deviceId) {
-        DDLogVerbose(@"Successfully registered Device ID %@ for Push Notifications", deviceId);
-
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setObject:deviceId forKey:NotificationsDeviceIdKey];
-        [defaults synchronize];
-    }
-    failure:^(NSError *error) {
-        DDLogError(@"Unable to register Device for Push Notifications: %@", error);
-    }];
 }
 
 
