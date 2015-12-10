@@ -7,7 +7,6 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "BlogService.h"
-#import "SettingsViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "TodayExtensionService.h"
 #import <WordPressComStatsiOS/WPStatsViewController.h>

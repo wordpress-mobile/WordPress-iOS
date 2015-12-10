@@ -8,7 +8,6 @@
 // | Log out
 
 #import "MeViewController.h"
-#import "SettingsViewController.h"
 #import "SupportViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import "MeHeaderView.h"
