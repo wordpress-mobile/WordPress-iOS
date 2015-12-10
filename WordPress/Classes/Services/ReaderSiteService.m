@@ -87,7 +87,13 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             if (success) {
                 success();
             }
-            [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed withProperties:@{ WPAppAnalyticsKeyBlogID:@(siteID) }];
+            
+            if(siteID) {
+                [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed withProperties:@{ WPAppAnalyticsKeyBlogID:@(siteID) }];
+            }else {
+                [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed];
+            }
+            
         } failure:failure];
 
     } failure:^(NSError *error) {
@@ -112,7 +118,13 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         if (success) {
             success();
         }
-        [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withProperties:@{ WPAppAnalyticsKeyBlogID:@(siteID) }];
+        
+        if(siteID) {
+            [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withProperties:@{ WPAppAnalyticsKeyBlogID:@(siteID) }];
+        }else {
+            [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed];
+        }
+        
     } failure:failure];
 }
 

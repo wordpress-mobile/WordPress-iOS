@@ -430,11 +430,16 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     self.didBumpStats = YES;
     NSString *isOfflineView = [ReachabilityUtils isInternetReachable] ? @"no" : @"yes";
     NSString *detailType = (self.post.topic.type == ReaderSiteTopic.TopicType) ? ReaderDetailTypePreviewSite : ReaderDetailTypeNormal;
-    NSDictionary *properties = @{
-                                 ReaderDetailTypeKey:detailType,
-                                 ReaderDetailOfflineKey:isOfflineView,
-                                 WPAppAnalyticsKeyBlogID:self.post.siteID
-                                 };
+
+    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:3];
+    properties[ReaderDetailTypeKey] = detailType;
+    properties[ReaderDetailOfflineKey] = isOfflineView;
+    
+    NSNumber *siteID = self.post.siteID;
+    if(siteID) {
+        properties[WPAppAnalyticsKeyBlogID] = siteID;
+    }
+    
     [WPAnalytics track:WPAnalyticsStatReaderArticleOpened withProperties:properties];
 }
 
