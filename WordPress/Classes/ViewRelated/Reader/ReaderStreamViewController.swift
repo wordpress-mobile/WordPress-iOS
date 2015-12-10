@@ -49,6 +49,7 @@ import WordPressComAnalytics
     private var indexPathForGapMarker: NSIndexPath?
     private var needsRefreshCachedCellHeightsBeforeLayout = false
     private var didSetupView = false
+    private var listentingForBlockedSiteNotification = false
 
     private var siteID:NSNumber? {
         didSet {
@@ -419,6 +420,14 @@ import WordPressComAnalytics
             displayNoResultsView()
         }
 
+        if !listentingForBlockedSiteNotification {
+            listentingForBlockedSiteNotification = true
+            NSNotificationCenter.defaultCenter().addObserver(self,
+                selector: "handleBlockSiteNotification:",
+                name: ReaderPostMenu.BlockSiteNotification,
+                object: nil)
+        }
+
         ReaderHelpers.trackLoadedTopic(readerTopic!, withProperties: propertyForStats())
     }
 
@@ -738,6 +747,15 @@ import WordPressComAnalytics
                 alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
                 alertController.presentFromRootViewController()
             })
+    }
+
+
+    private func handleBlockSiteNotification(notification:NSNotification) {
+        if let userInfo = notification.userInfo, post = userInfo["post"] as? NSObject {
+            if let _ = tableViewHandler.resultsController.indexPathForObject(post) {
+                blockSiteForPost(post as! ReaderPost)
+            }
+        }
     }
 
 
