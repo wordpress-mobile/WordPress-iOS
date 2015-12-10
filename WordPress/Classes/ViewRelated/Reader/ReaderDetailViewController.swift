@@ -50,9 +50,8 @@ final public class ReaderDetailViewController : UIViewController
     // Content views
     @IBOutlet private weak var featuredImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private(set) public weak var richTextView: WPRichTextView!
+    @IBOutlet private weak var richTextView: WPRichTextView!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
-
 
     private var didBumpStats: Bool = false
     private var didBumpPageViews: Bool = false
@@ -116,9 +115,7 @@ final public class ReaderDetailViewController : UIViewController
         super.viewDidLoad()
 
         // Styles
-        WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
+        applyStyles()
 
         // Is Logged In
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
@@ -126,6 +123,7 @@ final public class ReaderDetailViewController : UIViewController
         isLoggedIn = account != nil
 
         setupNavBar()
+        setupAvatarTapGestureRecognizer()
 
         if post != nil {
             configureView()
@@ -136,6 +134,8 @@ final public class ReaderDetailViewController : UIViewController
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
+        // The UIApplicationDidBecomeActiveNotification notification is broadcast
+        // when the app is resumed as a part of split screen multitasking on the iPad.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleApplicationDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
 
@@ -150,14 +150,19 @@ final public class ReaderDetailViewController : UIViewController
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
+        // This is something we do to help with the resizing that can occur with 
+        // split screen multitasking on the iPad.
         view.layoutIfNeeded()
-
         richTextView.refreshMediaLayout()
     }
 
 
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+
+        // The image frames in the RichTextView are a little bit dumb about their
+        // resizing after an orientation change. Use the completion block to 
+        // refresh media layout.
         coordinator.animateAlongsideTransition(nil, completion: { (context:UIViewControllerTransitionCoordinatorContext) in
             self.richTextView.refreshMediaLayout()
         })
@@ -179,6 +184,8 @@ final public class ReaderDetailViewController : UIViewController
     private func handleApplicationDidBecomeActive(notification: NSNotification) {
         view.layoutIfNeeded()
 
+        // Refresh media layout as our sizing may have changed if the user expanded
+        // or shrank the split screen handle.
         richTextView.refreshMediaLayout()
     }
 
@@ -217,8 +224,8 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func setupAvatarTapGestureRecognizer() {
-        //        let tgr = UITapGestureRecognizer(target: self, action: Selector("didTapHeaderAvatar:"))
-        //        detailView.avatarImageView.addGestureRecognizer(tgr)
+        let tgr = UITapGestureRecognizer(target: self, action: "didTapHeaderAvatar:")
+        avatarImageView.addGestureRecognizer(tgr)
     }
 
 
@@ -229,15 +236,17 @@ final public class ReaderDetailViewController : UIViewController
     */
     private func applyStyles() {
         //backgroundColor = WPStyleGuide.greyLighten30()
-
         WPStyleGuide.applyReaderCardSiteButtonStyle(blogNameButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
-
+        WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
+        WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
     }
 
+
     private func configureView() {
-        configureNavTitle();
+        configureNavTitle()
         configureHeader()
         configureFeaturedImage()
         configureTitle()
@@ -285,31 +294,50 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func configureFeaturedImage() {
-        featuredImageView.hidden = true
+        var url = post!.featuredImageURLForDisplay()
 
-        if let featuredImageURL = post?.featuredImageURLForDisplay() {
-            var url = featuredImageURL
-            // TODO: We need a completion handler for when the image is loaded.
-            // In the completion handler, we need to update the aspect ratio constraint
-            // and make the imageView visible.
-
-            featuredImageView.image = nil
-
-            if !(post!.isPrivate()) {
-                let size = CGSize(width:featuredImageView.frame.width, height:100) //TODO: Height
-                url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
-                featuredImageView.setImageWithURL(url, placeholderImage:nil)
-
-            } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
-                // private wpcom image needs special handling.
-                let request = requestForURL(url)
-                featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
-
-            } else {
-                // private but not a wpcom hosted image
-                featuredImageView.setImageWithURL(url, placeholderImage:nil)
-            }
+        guard url != nil else {
+            featuredImageView.hidden = true
+            return
         }
+
+        var request: NSURLRequest
+
+        if !(post!.isPrivate()) {
+            let size = CGSize(width:featuredImageView.frame.width, height:0)
+            url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
+            request = NSURLRequest(URL: url)
+
+        } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
+            // private wpcom image needs special handling.
+            request = requestForURL(url)
+
+        } else {
+            // private but not a wpcom hosted image
+            request = NSURLRequest(URL: url)
+        }
+
+        // Define a success block to make the image visible and update its aspect ratio constraint
+        let successBlock : ((NSURLRequest, NSHTTPURLResponse?, UIImage) -> Void) = { [weak self] (request:NSURLRequest, response:NSHTTPURLResponse?, image:UIImage) in
+            guard self != nil else {
+                return
+            }
+
+            // Now that we have the image, create an aspect ratio constraint for
+            // the featuredImageView
+            let ratio = image.size.width / image.size.height
+            let constraint = NSLayoutConstraint(item: self!.featuredImageView,
+                attribute: .Width,
+                relatedBy: .Equal,
+                toItem: self!.featuredImageView,
+                attribute: .Height,
+                multiplier: ratio,
+                constant: 0)
+            self!.featuredImageView.addConstraint(constraint)
+            self!.featuredImageView.image = image
+        }
+
+        featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: successBlock, failure: nil)
     }
 
 
@@ -461,9 +489,8 @@ final public class ReaderDetailViewController : UIViewController
         didBumpStats = true
 
         let isOfflineView = ReachabilityUtils.isInternetReachable() ? "no" : "yes"
-        let detailType = post!.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal // TODO: this can be an enum instead of string consts in a struct
+        let detailType = post!.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal
 
-        // TODO: Update to latest stats
         let properties = [
             DetailAnalyticsConstants.TypeKey : detailType,
             DetailAnalyticsConstants.OfflineKey : isOfflineView
@@ -475,24 +502,24 @@ final public class ReaderDetailViewController : UIViewController
 
     private func bumpPageViewsForPost() {
         if didBumpPageViews || (post!.isExternal && !post!.isJetpack) {
-            return;
+            return
         }
-        didBumpPageViews = true;
+        didBumpPageViews = true
 
         // Don't bump page views for feeds else the wrong blog/post get's bumped
         if post!.isExternal && !post!.isJetpack {
-            return;
+            return
         }
 
         // If the user is an admin on the post's site do not bump the page view unless
         // the the post is private.
         if !post!.isPrivate() && isUserAdminOnSiteWithID(post!.siteID) {
-            return;
+            return
         }
 
         let site = NSURL(string: post!.blogURL)
         if site?.host == nil {
-            return;
+            return
         }
 
         let pixel = "https://pixel.wp.com/g.gif"
@@ -524,7 +551,7 @@ final public class ReaderDetailViewController : UIViewController
         let context = ContextManager.sharedInstance().mainContext
         let blogService = BlogService(managedObjectContext: context)
         if let blog = blogService.blogByBlogId(siteID) {
-            return blog.isAdmin;
+            return blog.isAdmin
         }
         return false
     }
@@ -571,10 +598,11 @@ final public class ReaderDetailViewController : UIViewController
 
 
     func didTapHeaderAvatar(gesture: UITapGestureRecognizer) {
-        if gesture.state == .Ended {
-            // TODO: When should this be disabled?
-            previewSite();
+        if gesture.state != .Ended {
+            return
         }
+        // TODO: When should this be disabled?
+        previewSite()
     }
 
 
@@ -589,41 +617,42 @@ final public class ReaderDetailViewController : UIViewController
     }
 
 
-    func didTapFeaturedImage() {
-//TODO:
-//        UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
-//        UIImageView *imageView = (UIImageView *)gesture.view;
-//        WPImageViewController *controller = [[WPImageViewController alloc] initWithImage:imageView.image];
-//
-//        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//        controller.modalPresentationStyle = UIModalPresentationFullScreen;
-//        [self presentViewController:controller animated:YES completion:nil];
+    func didTapFeaturedImage(gesture: UITapGestureRecognizer) {
+        //TODO: Wire up the event
+        if gesture.state != .Ended {
+            return
+        }
 
+        let controller = WPImageViewController(image: featuredImageView.image)
+        controller.modalTransitionStyle = .CrossDissolve
+        controller.modalPresentationStyle = .FullScreen
+        presentViewController(controller, animated: true, completion: nil)
     }
 
 
     func didTapDiscoverAttribution() {
-// TODO:
-//        if (!self.post.sourceAttribution) {
-//            return;
-//        }
-//        if (self.post.sourceAttribution.blogID) {
-//            ReaderStreamViewController *controller = [ReaderStreamViewController controllerWithSiteID:self.post.sourceAttribution.blogID isFeed:NO];
-//            [self.navigationController pushViewController:controller animated:YES];
-//            return;
-//        }
-//
-//        NSString *path;
-//        if ([self.post.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {
-//            path = self.post.sourceAttribution.permalink;
-//        } else {
-//            path = self.post.sourceAttribution.blogURL;
-//        }
-//        NSURL *linkURL = [NSURL URLWithString:path];
-//        [self presentWebViewControllerWithLink:linkURL];
+        // TODO: wire up the event
+        if post?.sourceAttribution == nil {
+            return
+        }
 
+        if let blogID = post?.sourceAttribution.blogID {
+            let controller = ReaderStreamViewController.controllerWithSiteID(blogID, isFeed: false)
+            navigationController?.pushViewController(controller, animated: true)
+            return
+        }
+
+        var path: String?
+        if post?.sourceAttribution.attributionType == SourcePostAttributionTypePost {
+            path = post?.sourceAttribution.permalink
+        } else {
+            path = post?.sourceAttribution.blogURL
+        }
+
+        if let linkURL = NSURL(string: path!) {
+            presentWebViewControllerWithURL(linkURL)
+        }
     }
-
 }
 
 
