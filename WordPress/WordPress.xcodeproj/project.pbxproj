@@ -41,14 +41,16 @@
 		080E2C2F1BEC2D4E001E8168 /* MenusSelectionItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 080E2C2E1BEC2D4E001E8168 /* MenusSelectionItemView.m */; };
 		08160F271BF66D86004CB971 /* MenuItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08160F261BF66D86004CB971 /* MenuItemView.m */; };
 		08160F2A1BF6B605004CB971 /* MenuItemInsertionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08160F291BF6B605004CB971 /* MenuItemInsertionView.m */; };
+		081D84001C1A194500C7BF40 /* MenuItemEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 081D83FE1C1A194500C7BF40 /* MenuItemEditingViewController.m */; };
+		081D84011C1A194500C7BF40 /* MenuItemEditingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 081D83FF1C1A194500C7BF40 /* MenuItemEditingViewController.xib */; };
+		081D84051C1A1D8300C7BF40 /* MenuItemEditingHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 081D84041C1A1D8300C7BF40 /* MenuItemEditingHeaderView.m */; };
+		081D84081C1A1F0F00C7BF40 /* MenuItemEditingFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 081D84071C1A1F0F00C7BF40 /* MenuItemEditingFooterView.m */; };
 		082108A31BE96D760084C522 /* MenusActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 082108A21BE96D760084C522 /* MenusActionButton.m */; };
 		082E73B41BB341B900DA77AE /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73AA1BB341B900DA77AE /* Menu.m */; };
 		082E73B61BB341B900DA77AE /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73AE1BB341B900DA77AE /* MenuItem.m */; };
 		082E73B81BB341B900DA77AE /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73B21BB341B900DA77AE /* MenuLocation.m */; };
 		085548751BE15B9B004A1CBD /* MenuDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 085548741BE15B9B004A1CBD /* MenuDetailsView.m */; };
 		0855487B1BE163B4004A1CBD /* MenusSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0855487A1BE163B4004A1CBD /* MenusSelectionView.m */; };
-		086A669C1C18C4BE0032E6FA /* MenuItemEditingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 086A669B1C18C4BE0032E6FA /* MenuItemEditingView.m */; };
-		086A669E1C18C56D0032E6FA /* MenuItemEditingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 086A669D1C18C56D0032E6FA /* MenuItemEditingView.xib */; };
 		086E1FE01BBB35D2002D86CA /* MenusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086E1FDF1BBB35D2002D86CA /* MenusViewController.m */; };
 		0884D9911BB4760C001CDC7B /* RemoteMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 0884D98C1BB4760C001CDC7B /* RemoteMenu.m */; };
 		0884D9921BB4760C001CDC7B /* RemoteMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0884D98E1BB4760C001CDC7B /* RemoteMenuItem.m */; };
@@ -756,6 +758,13 @@
 		08160F261BF66D86004CB971 /* MenuItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemView.m; sourceTree = "<group>"; };
 		08160F281BF6B605004CB971 /* MenuItemInsertionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemInsertionView.h; sourceTree = "<group>"; };
 		08160F291BF6B605004CB971 /* MenuItemInsertionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemInsertionView.m; sourceTree = "<group>"; };
+		081D83FD1C1A194500C7BF40 /* MenuItemEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemEditingViewController.h; sourceTree = "<group>"; };
+		081D83FE1C1A194500C7BF40 /* MenuItemEditingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemEditingViewController.m; sourceTree = "<group>"; };
+		081D83FF1C1A194500C7BF40 /* MenuItemEditingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuItemEditingViewController.xib; sourceTree = "<group>"; };
+		081D84031C1A1D8300C7BF40 /* MenuItemEditingHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemEditingHeaderView.h; sourceTree = "<group>"; };
+		081D84041C1A1D8300C7BF40 /* MenuItemEditingHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemEditingHeaderView.m; sourceTree = "<group>"; };
+		081D84061C1A1F0F00C7BF40 /* MenuItemEditingFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemEditingFooterView.h; sourceTree = "<group>"; };
+		081D84071C1A1F0F00C7BF40 /* MenuItemEditingFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemEditingFooterView.m; sourceTree = "<group>"; };
 		082108A11BE96D760084C522 /* MenusActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusActionButton.h; sourceTree = "<group>"; };
 		082108A21BE96D760084C522 /* MenusActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusActionButton.m; sourceTree = "<group>"; };
 		082435131C0CE9B2008E42A8 /* WordPress 44.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 44.xcdatamodel"; sourceTree = "<group>"; };
@@ -769,9 +778,6 @@
 		085548741BE15B9B004A1CBD /* MenuDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDetailsView.m; sourceTree = "<group>"; };
 		085548791BE163B4004A1CBD /* MenusSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionView.h; sourceTree = "<group>"; };
 		0855487A1BE163B4004A1CBD /* MenusSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionView.m; sourceTree = "<group>"; };
-		086A669A1C18C4BE0032E6FA /* MenuItemEditingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemEditingView.h; sourceTree = "<group>"; };
-		086A669B1C18C4BE0032E6FA /* MenuItemEditingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemEditingView.m; sourceTree = "<group>"; };
-		086A669D1C18C56D0032E6FA /* MenuItemEditingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuItemEditingView.xib; sourceTree = "<group>"; };
 		086E1FDE1BBB35D2002D86CA /* MenusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusViewController.h; sourceTree = "<group>"; };
 		086E1FDF1BBB35D2002D86CA /* MenusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusViewController.m; sourceTree = "<group>"; };
 		0884D98B1BB4760C001CDC7B /* RemoteMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteMenu.h; path = "Remote Objects/RemoteMenu.h"; sourceTree = "<group>"; };
@@ -2032,10 +2038,22 @@
 				085548731BE15B9B004A1CBD /* MenuDetailsView.h */,
 				085548741BE15B9B004A1CBD /* MenuDetailsView.m */,
 				086A669F1C18C5DD0032E6FA /* MenuItem Views */,
+				081D84021C1A1CBC00C7BF40 /* MenuItem Editing */,
 				082108A11BE96D760084C522 /* MenusActionButton.h */,
 				082108A21BE96D760084C522 /* MenusActionButton.m */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		081D84021C1A1CBC00C7BF40 /* MenuItem Editing */ = {
+			isa = PBXGroup;
+			children = (
+				081D84031C1A1D8300C7BF40 /* MenuItemEditingHeaderView.h */,
+				081D84041C1A1D8300C7BF40 /* MenuItemEditingHeaderView.m */,
+				081D84061C1A1F0F00C7BF40 /* MenuItemEditingFooterView.h */,
+				081D84071C1A1F0F00C7BF40 /* MenuItemEditingFooterView.m */,
+			);
+			name = "MenuItem Editing";
 			sourceTree = "<group>";
 		};
 		086A669F1C18C5DD0032E6FA /* MenuItem Views */ = {
@@ -2051,19 +2069,8 @@
 				08160F291BF6B605004CB971 /* MenuItemInsertionView.m */,
 				08160F251BF66D86004CB971 /* MenuItemView.h */,
 				08160F261BF66D86004CB971 /* MenuItemView.m */,
-				086A66A01C18C6050032E6FA /* Item Editing */,
 			);
 			name = "MenuItem Views";
-			sourceTree = "<group>";
-		};
-		086A66A01C18C6050032E6FA /* Item Editing */ = {
-			isa = PBXGroup;
-			children = (
-				086A669A1C18C4BE0032E6FA /* MenuItemEditingView.h */,
-				086A669B1C18C4BE0032E6FA /* MenuItemEditingView.m */,
-				086A669D1C18C56D0032E6FA /* MenuItemEditingView.xib */,
-			);
-			name = "Item Editing";
 			sourceTree = "<group>";
 		};
 		086E1FDD1BBB358D002D86CA /* Menus */ = {
@@ -2072,6 +2079,9 @@
 				086E1FDE1BBB35D2002D86CA /* MenusViewController.h */,
 				086E1FDF1BBB35D2002D86CA /* MenusViewController.m */,
 				08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */,
+				081D83FD1C1A194500C7BF40 /* MenuItemEditingViewController.h */,
+				081D83FE1C1A194500C7BF40 /* MenuItemEditingViewController.m */,
+				081D83FF1C1A194500C7BF40 /* MenuItemEditingViewController.xib */,
 				0810266D1BC322A1001E000D /* Views */,
 			);
 			path = Menus;
@@ -4238,7 +4248,6 @@
 				E6A3384E1BB0A50900371587 /* ReaderGapMarkerCell.xib in Resources */,
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
-				086A669E1C18C56D0032E6FA /* MenuItemEditingView.xib in Resources */,
 				E149771A1C0DCB6F0057CD60 /* MediaSizeSliderCell.xib in Resources */,
 				5D6C4AF41B603C75005E3C43 /* WPWhatsNewView.xib in Resources */,
 				E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */,
@@ -4250,6 +4259,7 @@
 				B5C66B721ACF071100F68370 /* NoteBlockTextTableViewCell.xib in Resources */,
 				5D6C4AFC1B603CC0005E3C43 /* ThemeDetailsViewController~ipad.xib in Resources */,
 				E6D2E1611B8AA4410000ED14 /* ReaderTagStreamHeader.xib in Resources */,
+				081D84011C1A194500C7BF40 /* MenuItemEditingViewController.xib in Resources */,
 				B5CEEB901B79244D00E7B7B0 /* CommentsTableViewCell.xib in Resources */,
 				08D6B2841BC6F4EE00BD022D /* MenusViewController.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
@@ -4692,6 +4702,7 @@
 				B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */,
 				B52F8CD81B43260C00D36025 /* NotificationSettingStreamsViewController.swift in Sources */,
 				B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */,
+				081D84001C1A194500C7BF40 /* MenuItemEditingViewController.m in Sources */,
 				E6C09B3E1BF0FDEB003074CB /* ReaderCrossPostMeta.swift in Sources */,
 				E1CC9B511B3006690051398F /* JetpackREST.m in Sources */,
 				E149D65119349E69006A843D /* MediaServiceRemoteXMLRPC.m in Sources */,
@@ -4751,6 +4762,7 @@
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
 				B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */,
 				B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */,
+				081D84051C1A1D8300C7BF40 /* MenuItemEditingHeaderView.m in Sources */,
 				838C672E1210C3C300B09CA3 /* Post.m in Sources */,
 				834CAE7C122D528A003DDF49 /* UIImage+Resize.m in Sources */,
 				5D9B17C519998A430047A4A2 /* ReaderBlockedTableViewCell.m in Sources */,
@@ -4820,7 +4832,6 @@
 				E1D04D8419374F2C002FADD7 /* BlogServiceRemoteREST.m in Sources */,
 				B5066D031BEBFAA900355819 /* RemoteBlogSettings.swift in Sources */,
 				082E73B61BB341B900DA77AE /* MenuItem.m in Sources */,
-				086A669C1C18C4BE0032E6FA /* MenuItemEditingView.m in Sources */,
 				5D6C4B1E1B604425005E3C43 /* WPContentActionView.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
 				5926E1E31AC4468300964783 /* WPCrashlytics.m in Sources */,
@@ -4948,6 +4959,7 @@
 				5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */,
 				E1249B4319408C910035E895 /* RemoteComment.m in Sources */,
 				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
+				081D84081C1A1F0F00C7BF40 /* MenuItemEditingFooterView.m in Sources */,
 				5DE293C11AD8009E00825DE5 /* PostListFilter.m in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
 				5DA357A71B52D33B00FB724F /* OriginalSiteAttributionView.m in Sources */,

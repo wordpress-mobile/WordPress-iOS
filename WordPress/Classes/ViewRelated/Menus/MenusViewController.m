@@ -8,6 +8,7 @@
 #import "MenusHeaderView.h"
 #import "MenuDetailsView.h"
 #import "MenuItemsStackView.h"
+#import "MenuItemEditingViewController.h"
 
 typedef NS_ENUM(NSInteger) {
     MenusSectionSelection = 0,
@@ -202,12 +203,10 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 #pragma mark - MenuItemsStackViewDelegate
 
-- (void)itemsView:(MenuItemsStackView *)itemsView requiresScrollingToCenterView:(UIView *)viewForScrolling
+- (void)itemsView:(MenuItemsStackView *)itemsView selectedItemForEditing:(MenuItem *)item
 {
-    CGRect visibleRect = [self.scrollView convertRect:viewForScrolling.frame fromView:viewForScrolling.superview];
-    visibleRect.origin.y -= (self.scrollView.frame.size.height - visibleRect.size.height) / 2.0;
-    visibleRect.size.height = self.scrollView.frame.size.height;
-    [self.scrollView scrollRectToVisible:visibleRect animated:NO];
+    MenuItemEditingViewController *controller = [[MenuItemEditingViewController alloc] initWithItem:item];
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 - (void)itemsView:(MenuItemsStackView *)itemsView prefersScrollingEnabled:(BOOL)enabled
