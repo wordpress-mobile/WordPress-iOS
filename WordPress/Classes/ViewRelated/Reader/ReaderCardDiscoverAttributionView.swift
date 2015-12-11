@@ -101,7 +101,7 @@ import WordPressShared
 
     private func patternForSiteAttribution(verbose: Bool) -> String {
         var pattern: String
-        if true {
+        if verbose {
             pattern = NSLocalizedString("Visit %@ for more", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
         } else {
             pattern = NSLocalizedString("Visit %@", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
