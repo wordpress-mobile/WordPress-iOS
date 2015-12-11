@@ -22,15 +22,15 @@
     self = [super init];
     if(self) {
         
-        self.iconType = MenuItemActionableIconDefault;
+        self.iconType = MenuItemIconDefault;
         
         {
-            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuItemActionableIconEdit];
+            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuItemIconEdit];
             [button addTarget:self action:@selector(editButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             self.editButton = button;
         }
         {
-            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuItemActionableIconAdd];
+            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuItemIconAdd];
             [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             self.addButton = button;
         }
