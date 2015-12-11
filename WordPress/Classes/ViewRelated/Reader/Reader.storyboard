@@ -58,7 +58,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="486"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" layoutMarginsFollowReadableWidth="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="LMp-cd-vT3">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="486"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A1K-ZI-1wr">
                                                 <rect key="frame" x="0.0" y="0.0" width="600" height="66"/>
@@ -137,7 +137,7 @@
                                                 <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="8" id="bGU-WI-BPq"/>
+                                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="8" id="bGU-WI-BPq"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" ambiguous="YES" misplaced="YES" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="ut9-jn-WNM">
@@ -203,11 +203,11 @@
                                                 </connections>
                                             </view>
                                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3tc-Lf-3D1">
-                                                <rect key="frame" x="0.0" y="442" width="600" height="44"/>
+                                                <rect key="frame" x="0.0" y="442" width="600" height="50"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="44" id="ViT-sA-O9O"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="ViT-sA-O9O"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -245,7 +245,7 @@
                                 <rect key="frame" x="0.0" y="486" width="600" height="50"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="utM-eb-n7b">
-                                        <rect key="frame" x="16" y="0.0" width="568" height="1"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="1"/>
                                         <animations/>
                                         <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -311,9 +311,9 @@
                                 <constraints>
                                     <constraint firstItem="mBC-NT-IsJ" firstAttribute="centerY" secondItem="vSH-j9-J3c" secondAttribute="centerY" id="6kh-hb-BV3"/>
                                     <constraint firstItem="mBC-NT-IsJ" firstAttribute="leading" secondItem="vSH-j9-J3c" secondAttribute="leading" constant="16" id="6rp-yd-n95"/>
-                                    <constraint firstItem="utM-eb-n7b" firstAttribute="leading" secondItem="vSH-j9-J3c" secondAttribute="leading" constant="16" id="AGa-qi-Ch2"/>
+                                    <constraint firstItem="utM-eb-n7b" firstAttribute="leading" secondItem="vSH-j9-J3c" secondAttribute="leading" id="AGa-qi-Ch2"/>
                                     <constraint firstAttribute="height" constant="50" id="DZ4-kQ-gyy"/>
-                                    <constraint firstAttribute="trailing" secondItem="utM-eb-n7b" secondAttribute="trailing" constant="16" id="GbC-hh-C2d"/>
+                                    <constraint firstAttribute="trailing" secondItem="utM-eb-n7b" secondAttribute="trailing" id="GbC-hh-C2d"/>
                                     <constraint firstAttribute="trailing" secondItem="PVU-1Y-fyZ" secondAttribute="trailing" constant="16" id="JCk-Bd-RtT"/>
                                     <constraint firstItem="PVU-1Y-fyZ" firstAttribute="centerY" secondItem="vSH-j9-J3c" secondAttribute="centerY" id="JGW-8Z-tGc"/>
                                     <constraint firstItem="utM-eb-n7b" firstAttribute="top" secondItem="vSH-j9-J3c" secondAttribute="top" id="V7Y-Nt-gKt"/>
