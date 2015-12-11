@@ -86,12 +86,12 @@ static CGFloat const HorizontalMargin = 15.0f;
     return _hintView;
 }
 
-- (void)viewDidDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
+    [super viewWillDisappear:animated];
     if (self.onValueChanged) {
         self.onValueChanged(self.textField.text);
     }
-    [super viewDidDisappear:animated];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

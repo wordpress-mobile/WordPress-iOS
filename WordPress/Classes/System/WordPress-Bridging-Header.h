@@ -39,6 +39,7 @@
 
 #import "ServiceRemoteREST.h"
 #import "SettingsSelectionViewController.h"
+#import "SettingsTextViewController.h"
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"
 
