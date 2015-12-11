@@ -750,11 +750,22 @@ import WordPressComAnalytics
     }
 
 
-    private func handleBlockSiteNotification(notification:NSNotification) {
-        if let userInfo = notification.userInfo, post = userInfo["post"] as? NSObject {
-            if let _ = tableViewHandler.resultsController.indexPathForObject(post) {
-                blockSiteForPost(post as! ReaderPost)
+    func handleBlockSiteNotification(notification:NSNotification) {
+        guard let userInfo = notification.userInfo, aPost = userInfo["post"] as? ReaderPost else {
+            return
+        }
+
+        do {
+            guard let post = try managedObjectContext().existingObjectWithID(aPost.objectID) as? ReaderPost else {
+                return
             }
+
+            if let _ = tableViewHandler.resultsController.indexPathForObject(post) {
+                blockSiteForPost(post)
+            }
+
+        } catch let error as NSError {
+            DDLogSwift.logError("Error fetching existing post from context: \(error.localizedDescription)")
         }
     }
 
