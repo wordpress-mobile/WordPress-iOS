@@ -476,6 +476,8 @@
         <relationship name="post" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="sourceAttribution" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="Theme" representedClassName="Theme" syncable="YES">
+        <attribute name="author" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="demoUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="launchDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -485,6 +487,7 @@
         <attribute name="premium" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="previewUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purchased" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="screenshotUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="stylesheet" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tags" optional="YES" attributeType="Transformable" syncable="YES"/>
@@ -518,6 +521,6 @@
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
-        <element name="Theme" positionX="9" positionY="153" width="128" height="285"/>
+        <element name="Theme" positionX="9" positionY="153" width="128" height="330"/>
     </elements>
 </model>

@@ -13,6 +13,11 @@ data model as well as any custom migrations.
 - Added new entity `AccountSettings`
 - `Account` has now a new one-to-one relationship mapping to `AccountSettings`
 
+#### (@alexcurylo 2015-11-26)
+
+- `Theme` added new string attributes `author` and `authorUrl` to store a theme's author information  
+- `Theme` added new boolean attribute `purchased` to store a premium theme's purchased status
+
 ## WordPress 42 (@jleandroperez 2015-11-06)
 
 Changes to the data model:
