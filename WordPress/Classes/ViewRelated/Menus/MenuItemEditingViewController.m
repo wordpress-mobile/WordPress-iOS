@@ -31,13 +31,8 @@
     self.view.backgroundColor = [WPStyleGuide lightGrey];
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     
-    {
-        UIEdgeInsets margins = UIEdgeInsetsZero;
-        margins.top = [[UIApplication sharedApplication] statusBarFrame].size.height;
-        self.stackView.layoutMargins = margins;
-        self.stackView.layoutMarginsRelativeArrangement = YES;
-    }
-    
+    self.headerView.item = self.item;
+    self.footerView.item = self.item;
     self.footerView.delegate = self;
 }
 
@@ -45,6 +40,11 @@
 {
     [super viewDidLoad];
     
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 #pragma mark - MenuItemEditingFooterViewDelegate

@@ -21,14 +21,28 @@
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5rT-g7-Unk" customClass="MenuItemEditingHeaderView">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OSq-eW-1Qe">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
+                                </stackView>
+                            </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="60" id="1YA-Ho-zu8"/>
+                                <constraint firstAttribute="height" constant="75" placeholder="YES" id="1YA-Ho-zu8"/>
+                                <constraint firstAttribute="trailing" secondItem="OSq-eW-1Qe" secondAttribute="trailing" id="5EF-P2-TVn"/>
+                                <constraint firstAttribute="bottom" secondItem="OSq-eW-1Qe" secondAttribute="bottom" id="HOG-Gr-RgV"/>
+                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="top" secondItem="5rT-g7-Unk" secondAttribute="top" id="U6P-7E-r8J"/>
+                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="height" secondItem="5rT-g7-Unk" secondAttribute="height" id="Xbk-z1-ciU"/>
+                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="width" secondItem="5rT-g7-Unk" secondAttribute="width" id="fe3-GC-ewF"/>
+                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="leading" secondItem="5rT-g7-Unk" secondAttribute="leading" id="jbc-yu-wSm"/>
                             </constraints>
+                            <connections>
+                                <outlet property="stackView" destination="OSq-eW-1Qe" id="gDJ-5k-cYK"/>
+                            </connections>
                         </view>
                         <view contentMode="scaleToFill" verticalHuggingPriority="240" verticalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="gOG-Q3-Xfr">
-                            <rect key="frame" x="0.0" y="60" width="600" height="480"/>
+                            <rect key="frame" x="0.0" y="75" width="600" height="465"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TSX-DY-vhd" customClass="MenuItemEditingFooterView">

@@ -9,7 +9,7 @@
     self = [super init];
     if(self) {
         
-        self.iconType = MenuItemActionableIconAdd;
+        self.iconType = MenuItemIconNone;
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
         [self.contentView addGestureRecognizer:tap];
