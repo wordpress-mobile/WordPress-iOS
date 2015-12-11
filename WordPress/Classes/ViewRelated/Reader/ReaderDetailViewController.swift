@@ -4,6 +4,8 @@ import WordPressComAnalytics
 
 // TODO: Go through our Swift StyleGuide and make sure all conventions are adopted.
 
+// TODO: All the UI things, also on iPad.
+
 final public class ReaderDetailViewController : UIViewController
 {
     // TODO: Make sure that changes to analytics in the old VC are applied here
@@ -52,6 +54,11 @@ final public class ReaderDetailViewController : UIViewController
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var richTextView: WPRichTextView!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
+
+    // Spacers
+    @IBOutlet private weak var featuredImageBottomPaddingView: UIView!
+    @IBOutlet private weak var titleBottomPaddingView: UIView!
+    @IBOutlet private weak var richtTextBottomPaddingView: UIView!
 
     private var didBumpStats: Bool = false
     private var didBumpPageViews: Bool = false
@@ -112,6 +119,9 @@ final public class ReaderDetailViewController : UIViewController
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+
+        featuredImageView.hidden = true
+
 
         // Styles
         applyStyles()
@@ -354,7 +364,7 @@ final public class ReaderDetailViewController : UIViewController
         var requestURL = url
 
         let absoluteString = requestURL.absoluteString
-        if !(absoluteString.hasPrefix("https")) {
+        if !absoluteString.hasPrefix("https") {
             let sslURL = absoluteString.stringByReplacingOccurrencesOfString("http", withString: "https")
             requestURL = NSURL(string: sslURL)!
         }
@@ -681,6 +691,7 @@ final public class ReaderDetailViewController : UIViewController
 
 
 // MARK: - WPRichTextView Delegate Methods
+
 extension ReaderDetailViewController : WPRichTextViewDelegate
 {
 
