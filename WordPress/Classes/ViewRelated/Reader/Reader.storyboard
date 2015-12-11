@@ -135,12 +135,12 @@
                                                     <constraint firstAttribute="height" constant="50" placeholder="YES" id="X1F-jr-yxm"/>
                                                 </constraints>
                                             </imageView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H39-2a-c92">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H39-2a-c92" customClass="ReaderSpacerView" customModule="WordPress">
                                                 <rect key="frame" x="0.0" y="116" width="600" height="8"/>
                                                 <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="8" id="bGU-WI-BPq"/>
+                                                    <constraint firstAttribute="height" constant="8" placeholder="YES" id="bGU-WI-BPq"/>
                                                 </constraints>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="ut9-jn-WNM">
@@ -192,7 +192,7 @@
                                                 <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="7CF-n4-qzA" secondAttribute="bottom" constant="24" id="OnD-Jq-QcE"/>
+                                                    <constraint firstAttribute="bottom" secondItem="7CF-n4-qzA" secondAttribute="bottom" constant="24" placeholder="YES" id="OnD-Jq-QcE"/>
                                                     <constraint firstItem="zzx-Ob-0cJ" firstAttribute="leading" secondItem="UJH-3y-QkU" secondAttribute="leading" constant="28" id="Stk-Yw-KJD"/>
                                                     <constraint firstAttribute="trailing" secondItem="zzx-Ob-0cJ" secondAttribute="trailing" id="aDg-p4-65A"/>
                                                     <constraint firstItem="zzx-Ob-0cJ" firstAttribute="top" secondItem="UJH-3y-QkU" secondAttribute="top" constant="-2" id="kO3-zA-Xx7"/>
