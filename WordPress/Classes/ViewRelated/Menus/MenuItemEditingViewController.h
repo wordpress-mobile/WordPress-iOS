@@ -2,7 +2,7 @@
 
 @class MenuItem;
 
-@interface MenuItemEditingView : UIView
+@interface MenuItemEditingViewController : UIViewController
 
 @property (nonatomic, strong) MenuItem *item;
 
