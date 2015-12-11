@@ -33,12 +33,6 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     return self;
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    [self setupStyling];
-}
-
 - (UIImage *)templatedIconImageNamed:(NSString *)imageName
 {
     return [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -58,7 +52,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     self.tintColor = defaultContentColor;
     
     self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
-    self.titleLabel.textColor = defaultContentColor;
+    [self setTitleColor:defaultContentColor forState:UIControlStateNormal];
     
     [self updateDesignInsets];
 }
