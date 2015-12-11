@@ -8,7 +8,9 @@
             <connections>
                 <outlet property="footerView" destination="TSX-DY-vhd" id="TyK-Fp-Txp"/>
                 <outlet property="headerView" destination="5rT-g7-Unk" id="LnY-fU-93W"/>
+                <outlet property="sourceView" destination="r1R-uA-XmG" id="m1W-Oe-MhN"/>
                 <outlet property="stackView" destination="73c-Qn-y4X" id="8et-Df-fHV"/>
+                <outlet property="stackViewBottomConstraint" destination="9qh-3b-qie" id="iYx-tS-A2K"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -41,10 +43,31 @@
                                 <outlet property="stackView" destination="OSq-eW-1Qe" id="gDJ-5k-cYK"/>
                             </connections>
                         </view>
-                        <view contentMode="scaleToFill" verticalHuggingPriority="240" verticalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="gOG-Q3-Xfr">
+                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jw-S1-BbA">
                             <rect key="frame" x="0.0" y="75" width="600" height="465"/>
-                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        </view>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r1R-uA-XmG" customClass="MenuItemEditingSourceView">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="V8o-3z-Kjc">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
+                                        </stackView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstItem="V8o-3z-Kjc" firstAttribute="height" secondItem="r1R-uA-XmG" secondAttribute="height" id="1NA-05-l9g"/>
+                                        <constraint firstItem="V8o-3z-Kjc" firstAttribute="leading" secondItem="r1R-uA-XmG" secondAttribute="leading" id="K65-hA-MhX"/>
+                                        <constraint firstItem="V8o-3z-Kjc" firstAttribute="width" secondItem="r1R-uA-XmG" secondAttribute="width" id="L6N-QN-NID"/>
+                                        <constraint firstItem="V8o-3z-Kjc" firstAttribute="top" secondItem="r1R-uA-XmG" secondAttribute="top" id="R2B-Ed-SZP"/>
+                                        <constraint firstAttribute="trailing" secondItem="V8o-3z-Kjc" secondAttribute="trailing" id="TTT-8m-K4h"/>
+                                        <constraint firstAttribute="bottom" secondItem="V8o-3z-Kjc" secondAttribute="bottom" id="iRo-4N-bBt"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="stackView" destination="V8o-3z-Kjc" id="1pE-4a-fy5"/>
+                                    </connections>
+                                </view>
+                            </subviews>
+                        </stackView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TSX-DY-vhd" customClass="MenuItemEditingFooterView">
                             <rect key="frame" x="0.0" y="540" width="600" height="60"/>
                             <subviews>
@@ -104,7 +127,6 @@
                 <constraint firstItem="73c-Qn-y4X" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="995-4N-sI8"/>
                 <constraint firstAttribute="bottom" secondItem="73c-Qn-y4X" secondAttribute="bottom" id="9qh-3b-qie"/>
                 <constraint firstAttribute="trailing" secondItem="73c-Qn-y4X" secondAttribute="trailing" id="FRF-b1-aAr"/>
-                <constraint firstItem="73c-Qn-y4X" firstAttribute="height" secondItem="i5M-Pr-FkT" secondAttribute="height" id="Y9e-yU-BL0"/>
                 <constraint firstItem="73c-Qn-y4X" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="bfa-8u-ZzH"/>
                 <constraint firstItem="73c-Qn-y4X" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="qlx-VP-YFl"/>
             </constraints>
