@@ -4,7 +4,7 @@
 #import "AbstractPost.h"
 #import "SiteSettingsViewController.h"
 #import "PostPreviewViewController.h"
-#import "PostSettingsSelectionViewController.h"
+#import "SettingsSelectionViewController.h"
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
 #import "WPAppAnalytics.h"
@@ -804,7 +804,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
                            SettingsSelectionCurrentValueKey   : [self currentPostListFilter]
                            };
 
-    PostSettingsSelectionViewController *controller = [[PostSettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
+    SettingsSelectionViewController *controller = [[SettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
     controller.onItemSelected = ^(NSDictionary *selectedValue) {
         [self setCurrentFilterIndex:[self.postListFilters indexOfObject:selectedValue]];
         [self dismissViewControllerAnimated:YES completion:nil];

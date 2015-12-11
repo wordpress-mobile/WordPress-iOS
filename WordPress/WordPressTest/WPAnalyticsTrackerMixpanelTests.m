@@ -63,7 +63,6 @@ void (^createBlog)() = ^{
                              @"readonly": @YES,
                              },
                      };
-    blog.account = account;
     [testContextManager.mainContext save:nil];
 };
 
@@ -148,21 +147,20 @@ describe(@"refreshMetadata", ^{
                 createBlog();
             });
             
-            it(@"should be NO when the user isn't connected to Jetpack", ^{
+            it(@"should be YES when the blog has Jetpack installed", ^{
                 interceptSuperProperties(^(NSDictionary *superProperties){
-                    expect(superProperties[@"jetpack_user"]).to.beFalsy();
+                    expect(superProperties[@"jetpack_user"]).to.beTruthy();
                 });
                 
                 [mixpanelTracker refreshMetadata];
             });
             
-            it(@"should be YES when the user is connected to Jetpack", ^{
-                blog.jetpackAccount = account;
-                [account addJetpackBlogsObject:blog];
+            it(@"should be NO when the blog doesn't have Jetpack installed", ^{
+                blog.options = @{};
                 [testContextManager.mainContext save:nil];
                 
                 interceptSuperProperties(^(NSDictionary *superProperties){
-                    expect(superProperties[@"jetpack_user"]).to.beTruthy();
+                    expect(superProperties[@"jetpack_user"]).to.beFalsy();
                 });
                 
                 [mixpanelTracker refreshMetadata];
