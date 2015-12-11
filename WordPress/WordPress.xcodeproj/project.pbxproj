@@ -158,7 +158,6 @@
 		5D6C4B021B603D1F005E3C43 /* WPWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D6C4B011B603D1F005E3C43 /* WPWebViewController.xib */; };
 		5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C4B051B603E03005E3C43 /* WPContentSyncHelper.swift */; };
 		5D6C4B091B603E03005E3C43 /* WPTableViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C4B071B603E03005E3C43 /* WPTableViewHandler.m */; };
-		5D6C4B0C1B604110005E3C43 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C4B0B1B604110005E3C43 /* WPChromelessWebViewController.m */; };
 		5D6C4B111B604190005E3C43 /* NSAttributedString+RichTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C4B0E1B604190005E3C43 /* NSAttributedString+RichTextView.swift */; };
 		5D6C4B121B604190005E3C43 /* RichTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C4B0F1B604190005E3C43 /* RichTextView.swift */; };
 		5D6C4B131B604190005E3C43 /* UITextView+RichTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C4B101B604190005E3C43 /* UITextView+RichTextView.swift */; };
@@ -256,7 +255,6 @@
 		855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */ = {isa = PBXBuildFile; fileRef = 855408851A6F105700DDBD79 /* app-review-prompt-all-enabled.json */; };
 		855408881A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json in Resources */ = {isa = PBXBuildFile; fileRef = 855408871A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json */; };
 		8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */ = {isa = PBXBuildFile; fileRef = 855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */; };
-		857610D618C0377300EDF406 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 857610D518C0377300EDF406 /* StatsWebViewController.m */; };
 		858DE40F1730384F000AC628 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* LoginViewController.m */; };
 		859F761D18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m in Sources */ = {isa = PBXBuildFile; fileRef = 859F761C18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m */; };
 		85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6AEB173CCF9E002CB896 /* WPNUXPrimaryButton.m */; };
@@ -951,8 +949,6 @@
 		5D6C4B051B603E03005E3C43 /* WPContentSyncHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPContentSyncHelper.swift; sourceTree = "<group>"; };
 		5D6C4B061B603E03005E3C43 /* WPTableViewHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewHandler.h; sourceTree = "<group>"; };
 		5D6C4B071B603E03005E3C43 /* WPTableViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewHandler.m; sourceTree = "<group>"; };
-		5D6C4B0A1B604110005E3C43 /* WPChromelessWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPChromelessWebViewController.h; sourceTree = "<group>"; };
-		5D6C4B0B1B604110005E3C43 /* WPChromelessWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPChromelessWebViewController.m; sourceTree = "<group>"; };
 		5D6C4B0E1B604190005E3C43 /* NSAttributedString+RichTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+RichTextView.swift"; sourceTree = "<group>"; };
 		5D6C4B0F1B604190005E3C43 /* RichTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RichTextView.swift; sourceTree = "<group>"; };
 		5D6C4B101B604190005E3C43 /* UITextView+RichTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextView+RichTextView.swift"; sourceTree = "<group>"; };
@@ -1147,8 +1143,6 @@
 		8574469C1BF154E1007FDB5F /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8574469D1BF154E2007FDB5F /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8574469E1BF154E3007FDB5F /* cy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cy; path = cy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		857610D418C0377300EDF406 /* StatsWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatsWebViewController.h; sourceTree = "<group>"; };
-		857610D518C0377300EDF406 /* StatsWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatsWebViewController.m; sourceTree = "<group>"; };
 		858DE40D1730384F000AC628 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		858DE40E1730384F000AC628 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LoginViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		859F761B18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAnalyticsTrackerMixpanelInstructionsForStat.h; sourceTree = "<group>"; };
@@ -2166,10 +2160,6 @@
 				5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */,
 				C56636E61868D0CE00226AAB /* StatsViewController.h */,
 				C56636E71868D0CE00226AAB /* StatsViewController.m */,
-				857610D418C0377300EDF406 /* StatsWebViewController.h */,
-				857610D518C0377300EDF406 /* StatsWebViewController.m */,
-				5D6C4B0A1B604110005E3C43 /* WPChromelessWebViewController.h */,
-				5D6C4B0B1B604110005E3C43 /* WPChromelessWebViewController.m */,
 			);
 			path = Stats;
 			sourceTree = "<group>";
@@ -4815,7 +4805,6 @@
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
 				E1DF5DFE19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m in Sources */,
 				E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */,
-				5D6C4B0C1B604110005E3C43 /* WPChromelessWebViewController.m in Sources */,
 				E66969DA1B9E55AB00EC9C00 /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
 				85D239AD1AE5A5FC0074768D /* AccountServiceFacade.m in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
@@ -4885,7 +4874,6 @@
 				85D790AA1AE5C6790033AE83 /* MixpanelProxy.m in Sources */,
 				E1B912831BB01047003C25B9 /* PeopleRoleBadgeView.swift in Sources */,
 				E120D90E1B09D8C300FB9A6E /* JetpackState.m in Sources */,
-				857610D618C0377300EDF406 /* StatsWebViewController.m in Sources */,
 				5DBFC8A71A9BC34F00E00DE4 /* PostListViewController.m in Sources */,
 				5D08B90419648C3400D5B381 /* ReaderSubscriptionViewController.m in Sources */,
 				E1EBC36F1C118EA500F638E0 /* ImmuTable.swift in Sources */,
