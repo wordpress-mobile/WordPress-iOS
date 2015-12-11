@@ -3,15 +3,12 @@ import WordPressShared
 import WordPressComAnalytics
 
 // TODO: Go through our Swift StyleGuide and make sure all conventions are adopted.
-
-// TODO: All the UI things, also on iPad.
+// TODO: Animate appearance of Featured Image rather than pop into view
+// TODO: Share button?  Other feedback
+// TODO: Make sure that changes to analytics in the old VC are applied here
 
 final public class ReaderDetailViewController : UIViewController
 {
-    // TODO: Make sure that changes to analytics in the old VC are applied here
-    // after the are merged.
-
-
     // Structs for Constants
 
     private struct DetailConstants
@@ -120,6 +117,7 @@ final public class ReaderDetailViewController : UIViewController
 
     public override func viewDidLoad() {
         super.viewDidLoad()
+        scrollView.alpha = 0
 
         // Hide the featured image and its padding until we know there is one to load.
         featuredImageView.hidden = true
@@ -245,6 +243,7 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func configureView() {
+        scrollView.alpha = 1
         configureNavTitle()
         configureHeader()
         configureFeaturedImage()
@@ -314,7 +313,7 @@ final public class ReaderDetailViewController : UIViewController
             return
         }
 
-        // Do not display the featured image if it exists in the content. 
+        // Do not display the featured image if it exists in the content.
         if post!.contentIncludesFeaturedImage() {
             return
         }
