@@ -37,6 +37,7 @@ final public class ReaderDetailViewController : UIViewController
     @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var commentButton: UIButton!
     @IBOutlet private weak var likeButton: UIButton!
+    @IBOutlet private weak var footerViewHeightConstraint: NSLayoutConstraint!
 
     // Wrapper views
     @IBOutlet private weak var scrollView: UIScrollView!
@@ -120,8 +121,9 @@ final public class ReaderDetailViewController : UIViewController
     public override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Hide the featured image and its padding until we know there is one to load.
         featuredImageView.hidden = true
-
+        featuredImageBottomPaddingView.hidden = true
 
         // Styles
         applyStyles()
@@ -251,6 +253,7 @@ final public class ReaderDetailViewController : UIViewController
         configureDiscoverAttribution()
         configureTag()
         configureActionButtons()
+        configureFooterIfNeeded()
 
         bumpStats()
         bumpPageViewsForPost()
@@ -308,7 +311,11 @@ final public class ReaderDetailViewController : UIViewController
         var url = post!.featuredImageURLForDisplay()
 
         guard url != nil else {
-            featuredImageView.hidden = true
+            return
+        }
+
+        // Do not display the featured image if it exists in the content. 
+        if post!.contentIncludesFeaturedImage() {
             return
         }
 
@@ -342,6 +349,10 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func configureFeaturedImageWithImage(image: UIImage) {
+        // Unhide the views
+        featuredImageView.hidden = false
+        featuredImageBottomPaddingView.hidden = false
+
         // Now that we have the image, create an aspect ratio constraint for
         // the featuredImageView
         let ratio = image.size.width / image.size.height
@@ -352,9 +363,12 @@ final public class ReaderDetailViewController : UIViewController
             attribute: .Height,
             multiplier: ratio,
             constant: 0)
+        constraint.priority = UILayoutPriorityDefaultHigh
         featuredImageView.addConstraint(constraint)
+        featuredImageView.setNeedsUpdateConstraints()
         featuredImageView.image = image
 
+        // Listen for taps so we can display the image detail
         let tgr = UITapGestureRecognizer(target: self, action: "didTapFeaturedImage:")
         featuredImageView.addGestureRecognizer(tgr)
     }
@@ -489,6 +503,18 @@ final public class ReaderDetailViewController : UIViewController
         let image = UIImage(named: "icon-reader-comment")
         let highlightImage = UIImage(named: "icon-reader-comment-highlight")
         configureActionButton(commentButton, title: title, image: image, highlightedImage: highlightImage, selected:false)
+    }
+
+
+    private func configureFooterIfNeeded() {
+        if tagButton.hidden && likeButton.hidden && commentButton.hidden {
+            UIView.animateWithDuration(0.25,
+                animations: { () -> Void in
+                    self.footerViewHeightConstraint.constant = 0
+                }, completion: { (_) -> Void in
+                    self.footerView.hidden = true
+            })
+        }
     }
 
 
