@@ -172,7 +172,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
 
 - (NSOperation *)activateThemeId:(NSString *)themeId
                        forBlogId:(NSNumber *)blogId
-                         success:(ThemeServiceRemoteSuccessBlock)success
+                         success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
                          failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
@@ -186,11 +186,11 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     
     NSOperation *operation = [self.api POST:requestUrl
                                  parameters:parameters
-                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *themeDictionary) {
                                         if (success) {
-                                            NSArray *themeDictionaries = [response arrayForKey:ThemeServiceRemoteThemesKey];
-                                            NSArray<RemoteTheme *> *themes = [self themesFromDictionaries:themeDictionaries];
-                                            success(themes);
+                                            RemoteTheme *theme = [self themeFromDictionary:themeDictionary];
+                                            theme.active = @YES;
+                                            success(theme);
                                         }
                                     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                         if (failure) {
@@ -248,6 +248,7 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     static NSString* const ThemeActiveKey = @"active";
     static NSString* const ThemeAuthorKey = @"author";
     static NSString* const ThemeAuthorURLKey = @"author_uri";
+    static NSString* const ThemeCostPath = @"cost.number";
     static NSString* const ThemeDemoURLKey = @"demo_uri";
     static NSString* const ThemeDescriptionKey = @"description";
     static NSString* const ThemeDownloadURLKey = @"download_uri";
@@ -255,11 +256,14 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     static NSString* const ThemeNameKey = @"name";
     static NSString* const ThemePreviewURLKey = @"preview_url";
     static NSString* const ThemePriceKey = @"price";
+    static NSString* const ThemePurchasedKey = @"purchased";
     static NSString* const ThemePopularityRankKey = @"rank_popularity";
     static NSString* const ThemeScreenshotKey = @"screenshot";
     static NSString* const ThemeStylesheetKey = @"stylesheet";
     static NSString* const ThemeTrendingRankKey = @"rank_trending";
     static NSString* const ThemeVersionKey = @"version";
+    static NSString* const ThemeDomainPublic = @"pub";
+    static NSString* const ThemeDomainPremium = @"premium";
     
     RemoteTheme *theme = [RemoteTheme new];
     
@@ -275,11 +279,17 @@ static NSString* const ThemeServiceRemoteThemeCountKey = @"found";
     theme.popularityRank = [dictionary numberForKey:ThemePopularityRankKey];
     theme.previewUrl = [dictionary stringForKey:ThemePreviewURLKey];
     theme.price = [dictionary stringForKey:ThemePriceKey];
+    theme.purchased = [dictionary numberForKey:ThemePurchasedKey];
     theme.screenshotUrl = [dictionary stringForKey:ThemeScreenshotKey];
     theme.stylesheet = [dictionary stringForKey:ThemeStylesheetKey];
     theme.themeId = [dictionary stringForKey:ThemeIdKey];
     theme.trendingRank = [dictionary numberForKey:ThemeTrendingRankKey];
     theme.version = [dictionary stringForKey:ThemeVersionKey];
+
+    if (!theme.stylesheet) {
+        NSString *domain = [dictionary numberForKeyPath:ThemeCostPath].intValue > 0 ? ThemeDomainPremium : ThemeDomainPublic;
+        theme.stylesheet = [NSString stringWithFormat:@"%@/%@", domain, theme.themeId];
+    }
 
     return theme;
 }
