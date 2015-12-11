@@ -35,6 +35,21 @@
     }
 }
 
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
+    CGContextSetLineWidth(context, 1.0);
+    
+    CGContextMoveToPoint(context, 0, 0);
+    CGContextAddLineToPoint(context, rect.size.width, 0);
+    
+    CGContextStrokePath(context);
+}
+
 #pragma mark - buttons
 
 - (void)cancelButtonPressed

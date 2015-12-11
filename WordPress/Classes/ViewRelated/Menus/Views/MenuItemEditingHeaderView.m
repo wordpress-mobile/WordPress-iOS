@@ -23,14 +23,7 @@
     self.backgroundColor = [WPStyleGuide mediumBlue];
     
     {
-        UIEdgeInsets margins = UIEdgeInsetsZero;
-        const CGFloat margin = MenusDesignDefaultContentSpacing / 2.0;
-        margins.top = margin;
-        margins.top += [[UIApplication sharedApplication] statusBarFrame].size.height;
-        margins.left = MenusDesignDefaultContentSpacing;
-        margins.right = margin;
-        margins.bottom = margin;
-        self.stackView.layoutMargins = margins;
+        [self setStackViewMargins];
         self.stackView.layoutMarginsRelativeArrangement = YES;
         self.stackView.distribution = UIStackViewDistributionFillProportionally;
         self.stackView.alignment = UIStackViewAlignmentCenter;
@@ -41,8 +34,8 @@
         iconView.translatesAutoresizingMaskIntoConstraints = NO;
         iconView.contentMode = UIViewContentModeScaleAspectFit;
         iconView.backgroundColor = [UIColor clearColor];
-        [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize].active = YES;
-        [iconView.heightAnchor constraintEqualToConstant:MenusDesignItemIconSize].active = YES;
+        [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize + 4.0].active = YES;
+        [iconView.heightAnchor constraintEqualToConstant:MenusDesignItemIconSize + 4.0].active = YES;
         iconView.tintColor = [UIColor whiteColor];
         
         [self.stackView addArrangedSubview:iconView];
@@ -75,6 +68,7 @@
         textField.textColor = [WPStyleGuide darkGrey];
         textField.font = [WPStyleGuide regularTextFont];
         textField.backgroundColor = [UIColor clearColor];
+        [textField addTarget:self action:@selector(textFieldKeyboardDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
         
         [textFieldContainerView addSubview:textField];
         
@@ -87,6 +81,14 @@
                                                   [textField.bottomAnchor constraintEqualToAnchor:marginGuide.bottomAnchor]
                                                  ]];
     }
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    
+    [self setStackViewMargins];
+    [self setNeedsDisplay];
 }
 
 - (void)setIconType:(MenuItemIconType)iconType
@@ -114,9 +116,45 @@
         
         self.textField.text = item.name;
         self.iconType = MenuItemIconDefault;
+        [self setNeedsDisplay];
     }
 }
 
+- (void)setStackViewMargins
+{
+    UIEdgeInsets margins = UIEdgeInsetsZero;
+    const CGFloat margin = MenusDesignDefaultContentSpacing / 2.0;
+    margins.top = margin;
+    margins.left = MenusDesignDefaultContentSpacing;
+    margins.right = margin;
+    margins.bottom = margin;
+    
+    if([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithVerticalSizeClass:UIUserInterfaceSizeClassRegular]]) {
+        margins.top += [[UIApplication sharedApplication] statusBarFrame].size.height;
+    }
+    
+    self.stackView.layoutMargins = margins;
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
+    CGContextBeginPath(context);
+    CGContextMoveToPoint(context, self.iconView.center.x, rect.size.height - 10.0);
+    CGContextAddLineToPoint(context, self.iconView.frame.origin.x - 5.0, rect.size.height);
+    CGContextAddLineToPoint(context, self.iconView.frame.origin.x + self.iconView.frame.size.width + 5.0, rect.size.height);
+    CGContextClosePath(context);
+    CGContextFillPath(context);
+}
+
 #pragma mark - UITextFieldDelegate
+
+- (void)textFieldKeyboardDidEndOnExit
+{
+    [self.textField resignFirstResponder];
+}
 
 @end
