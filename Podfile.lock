@@ -21,7 +21,7 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - AMPopTip (0.10.0)
+  - AMPopTip (0.10.1)
   - Automattic-Tracks-iOS (0.0.13):
     - CocoaLumberjack (~> 2.2.0)
     - Reachability (~> 3.1)
@@ -108,6 +108,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
+  - Nimble (3.0.0)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.1.2)
@@ -161,7 +162,7 @@ PODS:
   - WordPressApi (0.3.6):
     - AFNetworking (~> 2.6.0)
     - wpxmlrpc (~> 0.7)
-  - WordPressCom-Analytics-iOS (0.1.0)
+  - WordPressCom-Analytics-iOS (0.1.2)
   - WordPressCom-Stats-iOS (0.5.1):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (~> 2.2.0)
@@ -206,6 +207,7 @@ DEPENDENCIES:
     branch `gifsupport`)
   - Mixpanel (= 2.8.2)
   - MRProgress (~> 0.7.0)
+  - Nimble (~> 3.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock (= 3.1.2)
@@ -222,7 +224,7 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.1.1)
   - WordPress-iOS-Shared (= 0.5.1)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
-  - WordPressCom-Analytics-iOS (= 0.1.0)
+  - WordPressCom-Analytics-iOS (= 0.1.2)
   - WordPressCom-Stats-iOS (= 0.5.1)
   - WordPressCom-Stats-iOS/Services (= 0.5.1)
   - WPMediaPicker (~> 0.7.0)
@@ -260,7 +262,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  AMPopTip: 248dc337bdd4cde13878b1ac8101ff016a901792
+  AMPopTip: b0b5d009f3ed47b10f118438a18e0ab5cd03c40d
   Automattic-Tracks-iOS: ba47c35576a07376facc7a91740fb78867831e1c
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
@@ -276,6 +278,7 @@ SPEC CHECKSUMS:
   MGImageUtilities: b54a815970e231903c495fff33699467158f61a0
   Mixpanel: f4d71ac2a306e7cda6ad03d4a2be249a0fd7a967
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
+  Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
@@ -291,7 +294,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 563239f9f42f80a3ca20e61f1d5aeed58698c846
   WordPress-iOS-Shared: ced218039d88c91572f3205882832f7a05c61f97
   WordPressApi: 39ca2b950a95fd0bf7ae5c86c92a272fb350187b
-  WordPressCom-Analytics-iOS: 355b8c6cf1d50d64ca7667e6f9e94c989e466775
+  WordPressCom-Analytics-iOS: 2ac1c37608733eb959a24b8993678289b8329b89
   WordPressCom-Stats-iOS: 9346d0e9441113eca614a6a9a333216571e4adc8
   WPMediaPicker: 6bbce465f5a5c071267ae28bdf31d0fd6e109721
   wpxmlrpc: bd391dab54e9bdceb5d1de23d161ecf1ba80f0e0

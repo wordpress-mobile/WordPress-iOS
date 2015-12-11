@@ -480,6 +480,9 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatPushNotificationAlertPressed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Notification - Alert Tapped"];
             break;
+        case WPAnalyticsStatPushNotificationReceived:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Notification - Received"];
+            break;
         case WPAnalyticsStatEditorUpdatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Updated Post"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_updated_post"];
@@ -623,7 +626,7 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatOpenedNotificationSettingDetails:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Accessed Details"];
             break;
-        case WPAnalyticsStatOpenedSettings:
+        case WPAnalyticsStatOpenedSiteSettings:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Settings"];
             break;
         case WPAnalyticsStatOpenedSupport:
@@ -837,6 +840,12 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatShortcutNotifications:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Notifications"];
+            break;
+        case WPAnalyticsStatOpenedAccountSettings:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened Account Settings"];
+            break;
+        case WPAnalyticsStatOpenedMyProfile:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened My Profile"];
             break;
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:
