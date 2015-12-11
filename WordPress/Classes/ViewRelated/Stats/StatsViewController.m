@@ -160,14 +160,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 }
 
 
-- (void)statsViewController:(WPStatsViewController *)statsViewController didSelectViewWebStatsForSiteID:(NSNumber *)siteID
-{
-    StatsWebViewController *vc = [[StatsWebViewController alloc] init];
-    vc.blog = self.blog;
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-
 - (void)statsViewController:(WPStatsViewController *)controller openURL:(NSURL *)url
 {
     WPChromelessWebViewController *vc = [[WPChromelessWebViewController alloc] init];
