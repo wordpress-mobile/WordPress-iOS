@@ -91,28 +91,24 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         
         blogCount = [blogService blogCountForAllAccounts];
+        jetpackBlogsPresent = [blogService hasAnyJetpackBlogs];
         if (account != nil) {
             username = account.username;
             userID = nil;
             emailAddress = account.email;
             accountPresent = YES;
-            jetpackBlogsPresent = [account jetpackBlogs].count > 0;
         }
     }];
     
     BOOL dotcom_user = NO;
-    BOOL jetpack_user = NO;
     if (accountPresent) {
         dotcom_user = YES;
-        if (jetpackBlogsPresent) {
-            jetpack_user = YES;
-        }
     }
     
     NSMutableDictionary *userProperties = [NSMutableDictionary new];
     userProperties[@"platform"] = @"iOS";
     userProperties[@"dotcom_user"] = @(dotcom_user);
-    userProperties[@"jetpack_user"] = @(jetpack_user);
+    userProperties[@"jetpack_user"] = @(jetpackBlogsPresent);
     userProperties[@"number_of_blogs"] = @(blogCount);
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
 
@@ -393,7 +389,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"posts" };
             break;
-        case WPAnalyticsStatOpenedSettings:
+        case WPAnalyticsStatOpenedSiteSettings:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"settings" };
             break;
@@ -473,6 +469,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatPushNotificationAlertPressed:
             eventName = @"push_notification_alert_tapped";
+            break;
+        case WPAnalyticsStatPushNotificationReceived:
+            eventName = @"push_notification_received";
             break;
         case WPAnalyticsStatReaderAccessed:
             eventName = @"reader_accessed";
@@ -660,6 +659,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatTwoFactorSentSMS:
             eventName = @"two_factor_sent_sms";
+            break;
+        case WPAnalyticsStatOpenedAccountSettings:
+            eventName = @"account_settings_opened";
+            break;
+        case WPAnalyticsStatOpenedMyProfile:
+            eventName = @"my_profile_opened";
             break;
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
