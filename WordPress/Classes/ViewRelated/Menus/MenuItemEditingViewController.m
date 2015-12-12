@@ -3,7 +3,7 @@
 #import "WPStyleGuide.h"
 #import "MenuItemEditingHeaderView.h"
 #import "MenuItemEditingFooterView.h"
-#import "MenuItemEditingSourceView.h"
+#import "MenuItemSourceView.h"
 
 @interface MenuItemEditingViewController () <MenuItemEditingFooterViewDelegate>
 
@@ -11,7 +11,7 @@
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet MenuItemEditingHeaderView *headerView;
 @property (nonatomic, strong) IBOutlet MenuItemEditingFooterView *footerView;
-@property (nonatomic, strong) IBOutlet MenuItemEditingSourceView *sourceView;
+@property (nonatomic, strong) IBOutlet MenuItemSourceView *sourceView;
 
 @end
 
