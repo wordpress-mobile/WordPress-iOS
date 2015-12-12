@@ -46,7 +46,7 @@
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jw-S1-BbA">
                             <rect key="frame" x="0.0" y="75" width="600" height="465"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r1R-uA-XmG" customClass="MenuItemEditingSourceView">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r1R-uA-XmG" customClass="MenuItemSourceView">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="V8o-3z-Kjc">
