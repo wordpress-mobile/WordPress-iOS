@@ -1,7 +1,7 @@
-#import "MenuItemEditingSourceView.h"
+#import "MenuItemSourceView.h"
 #import "MenusDesign.h"
 
-@interface MenuItemEditingSourceView ()
+@interface MenuItemSourceView ()
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) UIView *searchFieldContainerView;
@@ -9,7 +9,7 @@
 
 @end
 
-@implementation MenuItemEditingSourceView
+@implementation MenuItemSourceView
 
 - (void)awakeFromNib
 {
