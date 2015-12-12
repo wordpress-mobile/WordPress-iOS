@@ -2,8 +2,6 @@ import Foundation
 import WordPressShared
 import WordPressComAnalytics
 
-// TODO: Go through our Swift StyleGuide and make sure all conventions are adopted.
-// TODO: Animate appearance of Featured Image rather than pop into view
 // TODO: Share button?  Other feedback
 // TODO: Make sure that changes to analytics in the old VC are applied here
 
@@ -166,9 +164,9 @@ final public class ReaderDetailViewController : UIViewController
         // The image frames in the RichTextView are a little bit dumb about their
         // resizing after an orientation change. Use the completion block to 
         // refresh media layout.
-        coordinator.animateAlongsideTransition(nil, completion: { (context:UIViewControllerTransitionCoordinatorContext) in
+        coordinator.animateAlongsideTransition(nil) { (_) in
             self.richTextView.refreshMediaLayout()
-        })
+        }
     }
 
 
@@ -205,11 +203,11 @@ final public class ReaderDetailViewController : UIViewController
         service.fetchPost(
             postID.unsignedIntegerValue,
             forSite: siteID.unsignedIntegerValue,
-            success: {[weak self] (post:ReaderPost!) -> Void in
+            success: {[weak self] (post:ReaderPost!) in
                 self?.post = post
                 WPNoResultsView.removeFromView(self?.view)
             },
-            failure: {[weak self] (error:NSError!) -> Void in
+            failure: {[weak self] (error:NSError!) in
                 DDLogSwift.logError("Error fetching post for detail: \(error.localizedDescription)")
 
                 let title = NSLocalizedString("Error Loading Post", comment:"Text displayed when load post fails.")
@@ -232,7 +230,6 @@ final public class ReaderDetailViewController : UIViewController
     Applies the default styles to the cell's subviews
     */
     private func applyStyles() {
-        //backgroundColor = WPStyleGuide.greyLighten30()
         WPStyleGuide.applyReaderCardSiteButtonStyle(blogNameButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
@@ -506,14 +503,7 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func configureFooterIfNeeded() {
-        if tagButton.hidden && likeButton.hidden && commentButton.hidden {
-            UIView.animateWithDuration(0.25,
-                animations: { () -> Void in
-                    self.footerViewHeightConstraint.constant = 0
-                }, completion: { (_) -> Void in
-                    self.footerView.hidden = true
-            })
-        }
+        self.footerView.hidden = tagButton.hidden && likeButton.hidden && commentButton.hidden
     }
 
 

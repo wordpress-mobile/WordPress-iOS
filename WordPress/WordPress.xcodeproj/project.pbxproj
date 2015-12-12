@@ -2239,6 +2239,7 @@
 		5D08B8FC19647C0300D5B381 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E66EB6F81C1B7A76003DABC5 /* ReaderSpacerView.swift */,
 				5DB93EE819B6190700EC88EB /* CommentContentView.h */,
 				5DB93EE919B6190700EC88EB /* CommentContentView.m */,
 				5DB93EEA19B6190700EC88EB /* ReaderCommentCell.h */,
@@ -2283,7 +2284,6 @@
 				5D6C4B1B1B604425005E3C43 /* WPRichContentView.m */,
 				5D6C4B1C1B604425005E3C43 /* WPSimpleContentAttributionView.h */,
 				5D6C4B1D1B604425005E3C43 /* WPSimpleContentAttributionView.m */,
-				E66EB6F81C1B7A76003DABC5 /* ReaderSpacerView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
