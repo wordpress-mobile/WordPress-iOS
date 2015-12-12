@@ -389,7 +389,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"posts" };
             break;
-        case WPAnalyticsStatOpenedSettings:
+        case WPAnalyticsStatOpenedSiteSettings:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"settings" };
             break;
@@ -659,6 +659,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatTwoFactorSentSMS:
             eventName = @"two_factor_sent_sms";
+            break;
+        case WPAnalyticsStatOpenedAccountSettings:
+            eventName = @"account_settings_opened";
+            break;
+        case WPAnalyticsStatOpenedMyProfile:
+            eventName = @"my_profile_opened";
             break;
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
