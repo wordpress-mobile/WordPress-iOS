@@ -38,6 +38,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenusService *menusService;
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
+@property (nonatomic, assign) BOOL observesKeyboardChanges;
 
 @end
 
@@ -97,8 +98,6 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.navigationItem.title = NSLocalizedString(@"Menus", @"Title for screen that allows configuration of your site's menus");
@@ -117,6 +116,10 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     [super viewWillAppear:animated];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    
     self.activity.center = self.scrollView.center;
 }
 
@@ -124,6 +127,13 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     [super viewDidAppear:animated];
 
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
@@ -205,8 +215,16 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)itemsView:(MenuItemsStackView *)itemsView selectedItemForEditing:(MenuItem *)item
 {
-    MenuItemEditingViewController *controller = [[MenuItemEditingViewController alloc] initWithItem:item];
+    MenuItemEditingViewController *controller = [[MenuItemEditingViewController alloc] initWithItem:item];    
     [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void)itemsView:(MenuItemsStackView *)itemsView requiresScrollingToCenterView:(UIView *)viewForScrolling
+{
+    CGRect visibleRect = [self.scrollView convertRect:viewForScrolling.frame fromView:viewForScrolling.superview];
+    visibleRect.origin.y -= (self.scrollView.frame.size.height - visibleRect.size.height) / 2.0;
+    visibleRect.size.height = self.scrollView.frame.size.height;
+    [self.scrollView scrollRectToVisible:visibleRect animated:NO];
 }
 
 - (void)itemsView:(MenuItemsStackView *)itemsView prefersScrollingEnabled:(BOOL)enabled
@@ -254,7 +272,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 #pragma mark - notifications
 
-- (void)keyboardWillChangeFrameNotification:(NSNotification *)notification
+- (void)updateWithKeyboardNotification:(NSNotification *)notification
 {
     CGRect frame = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     frame = [self.view.window convertRect:frame toView:self.view];
@@ -262,7 +280,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     CGFloat insetPadding = 10.0;
     UIEdgeInsets inset = self.scrollView.contentInset;
     UIEdgeInsets scrollInset = self.scrollView.scrollIndicatorInsets;
-
+    
     if(frame.origin.y > self.view.frame.size.height) {
         inset.bottom = 0.0;
         scrollInset.bottom = 0.0;
@@ -273,6 +291,31 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
     self.scrollView.contentInset = inset;
     self.scrollView.scrollIndicatorInsets = scrollInset;
+}
+
+- (void)keyboardWillHideNotification:(NSNotification *)notification
+{
+    self.observesKeyboardChanges = NO;
+    
+    UIEdgeInsets inset = self.scrollView.contentInset;
+    UIEdgeInsets scrollInset = self.scrollView.scrollIndicatorInsets;
+    inset.bottom = 0;
+    scrollInset.bottom = 0;
+    self.scrollView.contentInset = inset;
+    self.scrollView.scrollIndicatorInsets = scrollInset;
+}
+
+- (void)keyboardWillShowNotification:(NSNotification *)notification
+{
+    self.observesKeyboardChanges = YES;
+    [self updateWithKeyboardNotification:notification];
+}
+
+- (void)keyboardWillChangeFrameNotification:(NSNotification *)notification
+{
+    if(self.observesKeyboardChanges) {
+        [self updateWithKeyboardNotification:notification];
+    }
 }
 
 @end
