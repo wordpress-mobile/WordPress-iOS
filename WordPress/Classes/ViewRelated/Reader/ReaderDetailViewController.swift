@@ -218,9 +218,20 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func setupNavBar() {
+        configureNavTitle()
+
         // Don't show 'Reader' in the next-view back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
-        configureNavTitle()
+
+        // Share button.
+        let image = UIImage(named: "icon-posts-share")!
+        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        button.setImage(image, forState: .Normal)
+        button.addTarget(self, action: "didTapShareButton:", forControlEvents: .TouchUpInside)
+
+        let shareButton = UIBarButtonItem(customView: button)
+        shareButton.accessibilityLabel = NSLocalizedString("Share", comment:"Spoken accessibility label")
+        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(shareButton, forNavigationItem: navigationItem)
     }
 
 
@@ -692,6 +703,11 @@ final public class ReaderDetailViewController : UIViewController
         if let linkURL = NSURL(string: path!) {
             presentWebViewControllerWithURL(linkURL)
         }
+    }
+
+
+    func didTapShareButton(sender: UIButton) {
+        ReaderHelpers.sharePost(post!, fromView: sender, inViewController: self)
     }
 
 
