@@ -11,6 +11,7 @@
                 <outlet property="sourceView" destination="r1R-uA-XmG" id="m1W-Oe-MhN"/>
                 <outlet property="stackView" destination="73c-Qn-y4X" id="8et-Df-fHV"/>
                 <outlet property="stackViewBottomConstraint" destination="9qh-3b-qie" id="iYx-tS-A2K"/>
+                <outlet property="typeSelectionView" destination="3ST-Kk-VgV" id="xc8-bl-u6a"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -46,25 +47,16 @@
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jw-S1-BbA">
                             <rect key="frame" x="0.0" y="75" width="600" height="465"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r1R-uA-XmG" customClass="MenuItemSourceView">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
-                                    <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="V8o-3z-Kjc">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
-                                        </stackView>
-                                    </subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ST-Kk-VgV" customClass="MenuItemEditingTypeView">
+                                    <rect key="frame" x="0.0" y="0.0" width="240" height="465"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstItem="V8o-3z-Kjc" firstAttribute="height" secondItem="r1R-uA-XmG" secondAttribute="height" id="1NA-05-l9g"/>
-                                        <constraint firstItem="V8o-3z-Kjc" firstAttribute="leading" secondItem="r1R-uA-XmG" secondAttribute="leading" id="K65-hA-MhX"/>
-                                        <constraint firstItem="V8o-3z-Kjc" firstAttribute="width" secondItem="r1R-uA-XmG" secondAttribute="width" id="L6N-QN-NID"/>
-                                        <constraint firstItem="V8o-3z-Kjc" firstAttribute="top" secondItem="r1R-uA-XmG" secondAttribute="top" id="R2B-Ed-SZP"/>
-                                        <constraint firstAttribute="trailing" secondItem="V8o-3z-Kjc" secondAttribute="trailing" id="TTT-8m-K4h"/>
-                                        <constraint firstAttribute="bottom" secondItem="V8o-3z-Kjc" secondAttribute="bottom" id="iRo-4N-bBt"/>
+                                        <constraint firstAttribute="width" priority="750" constant="240" id="z8c-Ul-Z8h"/>
                                     </constraints>
-                                    <connections>
-                                        <outlet property="stackView" destination="V8o-3z-Kjc" id="1pE-4a-fy5"/>
-                                    </connections>
+                                </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r1R-uA-XmG" customClass="MenuItemSourceView">
+                                    <rect key="frame" x="240" y="0.0" width="360" height="465"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                             </subviews>
                         </stackView>

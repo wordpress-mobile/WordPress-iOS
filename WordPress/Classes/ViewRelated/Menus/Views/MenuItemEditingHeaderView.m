@@ -15,9 +15,18 @@
 
 @implementation MenuItemEditingHeaderView
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    self.shouldProvidePaddingForStatusBar = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChangeNotification) name:UIDeviceOrientationDidChangeNotification object:nil];
     
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.backgroundColor = [WPStyleGuide mediumBlue];
@@ -129,8 +138,10 @@
     margins.right = margin;
     margins.bottom = margin;
     
-    if([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithVerticalSizeClass:UIUserInterfaceSizeClassRegular]]) {
-        margins.top += [[UIApplication sharedApplication] statusBarFrame].size.height;
+    if(self.shouldProvidePaddingForStatusBar) {
+        if(![[UIApplication sharedApplication] isStatusBarHidden]) {
+            margins.top += [[UIApplication sharedApplication] statusBarFrame].size.height;
+        }
     }
     
     self.stackView.layoutMargins = margins;
@@ -144,8 +155,8 @@
     CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
     CGContextBeginPath(context);
     CGContextMoveToPoint(context, self.iconView.center.x, rect.size.height - 10.0);
-    CGContextAddLineToPoint(context, self.iconView.frame.origin.x - 5.0, rect.size.height);
-    CGContextAddLineToPoint(context, self.iconView.frame.origin.x + self.iconView.frame.size.width + 5.0, rect.size.height);
+    CGContextAddLineToPoint(context, self.iconView.frame.origin.x - 3.0, rect.size.height);
+    CGContextAddLineToPoint(context, self.iconView.frame.origin.x + self.iconView.frame.size.width + 3.0, rect.size.height);
     CGContextClosePath(context);
     CGContextFillPath(context);
 }
@@ -155,6 +166,13 @@
 - (void)textFieldKeyboardDidEndOnExit
 {
     [self.textField resignFirstResponder];
+}
+
+#pragma mark - notifications
+
+- (void)deviceOrientationDidChangeNotification
+{
+    [self setNeedsDisplay];
 }
 
 @end
