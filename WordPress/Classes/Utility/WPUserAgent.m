@@ -57,11 +57,8 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 - (void)useWordPressUserAgentInUIWebViews
 {
-    [self setUserAgentForUIWebViews:[self wordPressUserAgent]];
-}
+    NSString *userAgent = [self wordPressUserAgent];
 
-- (void)setUserAgentForUIWebViews:(NSString *)userAgent
-{
     NSParameterAssert([userAgent isKindOfClass:[NSString class]]);
     
     NSDictionary *dictionary = @{WPUserAgentKeyUserAgent: userAgent};
