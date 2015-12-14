@@ -31,16 +31,12 @@ public class ReaderPostMenu
         }
 
         // Following
-        if let topic = post.topic {
-            if ReaderHelpers.topicIsFollowing(topic) {
-                let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
-                alertController.addActionWithTitle(buttonTitle,
-                    style: .Default,
-                    handler: { (action:UIAlertAction) in
-                        self.toggleFollowingForPost(post)
-                })
-            }
-        }
+        let buttonTitle = post.isFollowing ? ReaderPostMenuButtonTitles.unfollow : ReaderPostMenuButtonTitles.follow
+        alertController.addActionWithTitle(buttonTitle,
+            style: .Default,
+            handler: { (action:UIAlertAction) in
+                self.toggleFollowingForPost(post)
+        })
 
         // Visit site
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.visit,
@@ -53,7 +49,7 @@ public class ReaderPostMenu
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
             style: .Default,
             handler: { (action:UIAlertAction) in
-                self.sharePost(post, fromView: anchorView, inViewController: viewController)
+                ReaderHelpers.sharePost(post, fromView: anchorView, inViewController: viewController)
         })
 
         if UIDevice.isPad() {
@@ -125,29 +121,4 @@ public class ReaderPostMenu
         let navController = UINavigationController(rootViewController: controller)
         viewController.presentViewController(navController, animated: true, completion: nil)
     }
-
-
-    private class func sharePost(post:ReaderPost, fromView anchorView:UIView, inViewController viewController:UIViewController) {
-        let controller = ReaderHelpers.shareController(
-            post.titleForDisplay(),
-            summary: post.contentPreviewForDisplay(),
-            tags: post.tags,
-            link: post.permaLink
-        )
-
-        if !UIDevice.isPad() {
-            viewController.presentViewController(controller, animated: true, completion: nil)
-            return
-        }
-
-        // Silly iPad popover rules.
-        controller.modalPresentationStyle = .Popover
-        viewController.presentViewController(controller, animated: true, completion: nil)
-        if let presentationController = controller.popoverPresentationController {
-            presentationController.permittedArrowDirections = .Unknown
-            presentationController.sourceView = anchorView
-            presentationController.sourceRect = anchorView.bounds
-        }
-    }
-
 }
