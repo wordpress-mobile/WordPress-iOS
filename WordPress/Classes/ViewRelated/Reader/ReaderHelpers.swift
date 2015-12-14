@@ -40,6 +40,31 @@ public class ReaderHelpers {
     }
 
 
+    public class func sharePost(post:ReaderPost, fromView anchorView:UIView, inViewController viewController:UIViewController) {
+        let controller = ReaderHelpers.shareController(
+            post.titleForDisplay(),
+            summary: post.contentPreviewForDisplay(),
+            tags: post.tags,
+            link: post.permaLink
+        )
+
+        if !UIDevice.isPad() {
+            viewController.presentViewController(controller, animated: true, completion: nil)
+            return
+        }
+
+        // Silly iPad popover rules.
+        controller.modalPresentationStyle = .Popover
+        viewController.presentViewController(controller, animated: true, completion: nil)
+        if let presentationController = controller.popoverPresentationController {
+            presentationController.permittedArrowDirections = .Unknown
+            presentationController.sourceView = anchorView
+            presentationController.sourceRect = anchorView.bounds
+        }
+    }
+
+
+
     // MARK: - Topic Helpers
 
     /**
