@@ -4,7 +4,9 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 @interface WPUserAgent ()
 
-@property (nonatomic, strong, readwrite) NSString *defaultUserAgent;
+// Default UA to append "wp-iphone/<version>" to
+- (NSString *)defaultUserAgent;
+
 @property (nonatomic, strong, readwrite) NSString *wordPressUserAgent;
 
 @end
@@ -24,24 +26,22 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
 
 - (NSString *)defaultUserAgent
 {
-    if (! _defaultUserAgent) {
-        // Temporarily unset "UserAgent" from registered user defaults so that we
-        // always get the default value, independently from what's currently set as
-        // User-Agent
-        NSDictionary *originalRegisteredDefaults = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
+    // Temporarily unset "UserAgent" from registered user defaults so that we
+    // always get the default value, independently from what's currently set as
+    // User-Agent
+    NSDictionary *originalRegisteredDefaults = [[NSUserDefaults standardUserDefaults] volatileDomainForName:NSRegistrationDomain];
 
-        NSMutableDictionary *tempRegisteredDefaults = [NSMutableDictionary dictionaryWithDictionary:originalRegisteredDefaults];
-        [tempRegisteredDefaults removeObjectForKey:WPUserAgentKeyUserAgent];
-        [[NSUserDefaults standardUserDefaults] registerDefaults:tempRegisteredDefaults];
-        
-        _defaultUserAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-        NSAssert(_defaultUserAgent != nil, @"User agent shouldn't be nil");
-        NSAssert(! [_defaultUserAgent isEmpty], @"User agent shouldn't be empty");
-        
-        [[NSUserDefaults standardUserDefaults] registerDefaults:originalRegisteredDefaults];
-    }
+    NSMutableDictionary *tempRegisteredDefaults = [NSMutableDictionary dictionaryWithDictionary:originalRegisteredDefaults];
+    [tempRegisteredDefaults removeObjectForKey:WPUserAgentKeyUserAgent];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:tempRegisteredDefaults];
     
-    return _defaultUserAgent;
+    NSString *defaultUserAgent = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    NSAssert(defaultUserAgent != nil, @"User agent shouldn't be nil");
+    NSAssert([defaultUserAgent length] > 0, @"User agent shouldn't be empty");
+    
+    [[NSUserDefaults standardUserDefaults] registerDefaults:originalRegisteredDefaults];
+    
+    return defaultUserAgent;
 }
 
 - (NSString *)wordPressUserAgent
