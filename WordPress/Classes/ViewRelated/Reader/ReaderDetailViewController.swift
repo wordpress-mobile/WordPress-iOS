@@ -405,7 +405,7 @@ final public class ReaderDetailViewController : UIViewController
 
     private func configureTitle() {
         if let title = post?.titleForDisplay() {
-            let attributes = WPStyleGuide.readerCardTitleAttributes() as! [String: AnyObject]
+            let attributes = WPStyleGuide.readerDetailTitleAttributes() as! [String: AnyObject]
             titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
             titleLabel.hidden = false
 
