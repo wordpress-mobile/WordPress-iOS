@@ -58,8 +58,10 @@
 		0884D9931BB4760C001CDC7B /* RemoteMenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0884D9901BB4760C001CDC7B /* RemoteMenuLocation.m */; };
 		0884D9961BB47667001CDC7B /* MenusServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 0884D9951BB47667001CDC7B /* MenusServiceRemote.m */; };
 		08906CF41BDED5D8003A7AA4 /* MenusSelectionDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08906CF31BDED5D8003A7AA4 /* MenusSelectionDetailView.m */; };
+		08B056701C1BCEE500256F77 /* MenuItemSourceSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B0566F1C1BCEE500256F77 /* MenuItemSourceSearchBar.m */; };
 		08B195421BE409260082E71C /* MenusHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B195411BE409260082E71C /* MenusHeaderView.m */; };
 		08D6B2841BC6F4EE00BD022D /* MenusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */; };
+		08E7440E1C1F50FB00815DB9 /* MenuItemEditingTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E7440D1C1F50FB00815DB9 /* MenuItemEditingTypeView.m */; };
 		08F10C2E1BF5286C00130AFF /* MenuItemsStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F10C2D1BF5286C00130AFF /* MenuItemsStackView.m */; };
 		08F10C311BF5377200130AFF /* MenuItemsStackableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F10C301BF5377200130AFF /* MenuItemsStackableView.m */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
@@ -797,11 +799,15 @@
 		0884D9951BB47667001CDC7B /* MenusServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemote.m; sourceTree = "<group>"; };
 		08906CF21BDED5D8003A7AA4 /* MenusSelectionDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionDetailView.h; sourceTree = "<group>"; };
 		08906CF31BDED5D8003A7AA4 /* MenusSelectionDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionDetailView.m; sourceTree = "<group>"; };
+		08B0566E1C1BCEE500256F77 /* MenuItemSourceSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceSearchBar.h; sourceTree = "<group>"; };
+		08B0566F1C1BCEE500256F77 /* MenuItemSourceSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceSearchBar.m; sourceTree = "<group>"; };
 		08B195401BE409260082E71C /* MenusHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusHeaderView.h; sourceTree = "<group>"; };
 		08B195411BE409260082E71C /* MenusHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusHeaderView.m; sourceTree = "<group>"; };
 		08BB107D1BB5D82100DE699D /* MenusService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusService.h; sourceTree = "<group>"; };
 		08BB107E1BB5D82100DE699D /* MenusService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusService.m; sourceTree = "<group>"; };
 		08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenusViewController.xib; sourceTree = "<group>"; };
+		08E7440C1C1F50FB00815DB9 /* MenuItemEditingTypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemEditingTypeView.h; sourceTree = "<group>"; };
+		08E7440D1C1F50FB00815DB9 /* MenuItemEditingTypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemEditingTypeView.m; sourceTree = "<group>"; };
 		08F10C2C1BF5286C00130AFF /* MenuItemsStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemsStackView.h; sourceTree = "<group>"; };
 		08F10C2D1BF5286C00130AFF /* MenuItemsStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemsStackView.m; sourceTree = "<group>"; };
 		08F10C2F1BF5377200130AFF /* MenuItemsStackableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemsStackableView.h; sourceTree = "<group>"; };
@@ -2063,8 +2069,12 @@
 				081D84041C1A1D8300C7BF40 /* MenuItemEditingHeaderView.m */,
 				081D84061C1A1F0F00C7BF40 /* MenuItemEditingFooterView.h */,
 				081D84071C1A1F0F00C7BF40 /* MenuItemEditingFooterView.m */,
+				08E7440C1C1F50FB00815DB9 /* MenuItemEditingTypeView.h */,
+				08E7440D1C1F50FB00815DB9 /* MenuItemEditingTypeView.m */,
 				08823B1A1C1B7756000581E8 /* MenuItemSourceView.h */,
 				08823B1B1C1B7756000581E8 /* MenuItemSourceView.m */,
+				08B0566E1C1BCEE500256F77 /* MenuItemSourceSearchBar.h */,
+				08B0566F1C1BCEE500256F77 /* MenuItemSourceSearchBar.m */,
 			);
 			name = "MenuItem Editing";
 			sourceTree = "<group>";
@@ -4977,6 +4987,7 @@
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */,
 				E1249B4319408C910035E895 /* RemoteComment.m in Sources */,
+				08B056701C1BCEE500256F77 /* MenuItemSourceSearchBar.m in Sources */,
 				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
 				081D84081C1A1F0F00C7BF40 /* MenuItemEditingFooterView.m in Sources */,
 				5DE293C11AD8009E00825DE5 /* PostListFilter.m in Sources */,
@@ -5065,6 +5076,7 @@
 				85CE4C201A703CF200780DFE /* NSBundle+VersionNumberHelper.m in Sources */,
 				E6A338501BB0A70F00371587 /* ReaderGapMarkerCell.swift in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
+				08E7440E1C1F50FB00815DB9 /* MenuItemEditingTypeView.m in Sources */,
 				591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */,
 				08160F2A1BF6B605004CB971 /* MenuItemInsertionView.m in Sources */,
 				85D790AA1AE5C6790033AE83 /* MixpanelProxy.m in Sources */,
