@@ -441,7 +441,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
         properties[WPAppAnalyticsKeyFeedID] = self.post.feedID;
         properties[WPAppAnalyticsKeyFeedItemID] = self.post.feedItemID;
     }
-    [WPAnalytics track:WPAnalyticsStatReaderArticleOpened withProperties:properties];
+    [WPAppAnalytics track:WPAnalyticsStatReaderArticleOpened withProperties:properties];
 }
 
 - (void)bumpPageViewsForPost:(NSNumber *)postID site:(NSNumber *)siteID siteURL:(NSString *)siteURL

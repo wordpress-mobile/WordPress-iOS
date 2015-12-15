@@ -142,9 +142,9 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                                               WPAppAnalyticsKeyBlogID: readerPost.siteID
                                               };
                 if (like) {
-                    [WPAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:properties];
+                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:properties];
                 } else {
-                    [WPAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:properties];
+                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:properties];
                 }
                 if (success) {
                     success();

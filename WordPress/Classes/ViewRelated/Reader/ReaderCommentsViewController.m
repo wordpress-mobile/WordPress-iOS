@@ -792,7 +792,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
             properties[WPAppAnalyticsKeyFeedID] = post.feedID;
             properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
         }
-        [WPAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
+        [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
 
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];

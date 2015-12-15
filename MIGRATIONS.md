@@ -3,7 +3,7 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 43 (@aerych 2015-12-07
+## WordPress 43 (@aerych 2015-12-07)
 
 - `ReaderPost` added new integer64 called `feedID` to store a post's feed ID if it exists.
 - `ReaderPost` added new integer64 called `feedItemID` to store a post's feed item ID if it exists.

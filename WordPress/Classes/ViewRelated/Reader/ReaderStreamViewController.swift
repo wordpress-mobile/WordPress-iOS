@@ -952,7 +952,7 @@ import WordPressComAnalytics
             }
         }
 
-        WPAnalytics.track(.ReaderInfiniteScroll, withProperties: topicPropertyForStats())
+        WPAppAnalytics.track(.ReaderInfiniteScroll, withProperties: topicPropertyForStats())
     }
 
     func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
@@ -1274,7 +1274,7 @@ import WordPressComAnalytics
         navigationController?.pushViewController(controller, animated: true)
 
         let properties = statsPropertiesForPost(post, andValue: post.blogURL, forKey: "URL")
-        WPAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
+        WPAppAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
@@ -1296,7 +1296,7 @@ import WordPressComAnalytics
         navigationController?.pushViewController(controller, animated: true)
 
         let properties =  statsPropertiesForPost(post, andValue: post.primaryTagSlug, forKey: "tag")
-        WPAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
+        WPAppAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
