@@ -606,8 +606,8 @@ final public class ReaderDetailViewController : UIViewController
         let controller = ReaderStreamViewController.controllerWithSiteID(post!.siteID, isFeed: post!.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties = NSDictionary(object: post!.blogURL, forKey: "URL") as [NSObject : AnyObject]
-        WPAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
+        let properties = ReaderHelpers.statsPropertiesForPost(post!, andValue: post!.blogURL, forKey: "URL")
+        WPAppAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
     }
 
 
@@ -653,12 +653,10 @@ final public class ReaderDetailViewController : UIViewController
         let isOfflineView = ReachabilityUtils.isInternetReachable() ? "no" : "yes"
         let detailType = post!.topic?.type == ReaderSiteTopic.TopicType ? DetailAnalyticsConstants.TypePreviewSite : DetailAnalyticsConstants.TypeNormal
 
-        let properties = [
-            DetailAnalyticsConstants.TypeKey : detailType,
-            DetailAnalyticsConstants.OfflineKey : isOfflineView
-        ]
-
-        WPAnalytics.track(WPAnalyticsStat.ReaderArticleOpened, withProperties: properties)
+        var properties = ReaderHelpers.statsPropertiesForPost(post!, andValue: nil, forKey: nil)
+        properties[DetailAnalyticsConstants.TypeKey] = detailType
+        properties[DetailAnalyticsConstants.OfflineKey] = isOfflineView
+        WPAppAnalytics.track(WPAnalyticsStat.ReaderArticleOpened, withProperties: properties)
     }
 
 
@@ -695,7 +693,7 @@ final public class ReaderDetailViewController : UIViewController
             NSString(format:"t=%d", arc4random())
         ]
 
-        let userAgent = WordPressAppDelegate.sharedInstance().userAgent.currentUserAgent()
+        let userAgent = WordPressAppDelegate.sharedInstance().userAgent.wordPressUserAgent
         let path  = NSString(format: "%@?%@", pixel, params.componentsJoinedByString("&")) as String
         let url = NSURL(string: path)
 
@@ -729,8 +727,8 @@ final public class ReaderDetailViewController : UIViewController
         let controller = ReaderStreamViewController.controllerWithTagSlug(post!.primaryTagSlug)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties = NSDictionary(object: post!.primaryTagSlug, forKey: "tag") as [NSObject : AnyObject]
-        WPAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
+        let properties =  ReaderHelpers.statsPropertiesForPost(post!, andValue: post!.primaryTagSlug, forKey: "tag")
+        WPAppAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
     }
 
 

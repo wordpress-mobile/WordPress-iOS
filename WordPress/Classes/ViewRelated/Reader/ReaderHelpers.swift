@@ -162,6 +162,24 @@ public class ReaderHelpers {
     }
 
 
+    public class func statsPropertiesForPost(post:ReaderPost, andValue value:AnyObject?, forKey key:String?) -> [NSObject: AnyObject] {
+        var properties = [NSObject: AnyObject]();
+        properties[WPAppAnalyticsKeyBlogID] = post.siteID
+        properties[WPAppAnalyticsKeyPostID] = post.postID
+        properties[WPAppAnalyticsKeyIsJetpack] = post.isJetpack
+        if let feedID = post.feedID, feedItemID = post.feedItemID {
+            properties[WPAppAnalyticsKeyFeedID] = feedID
+            properties[WPAppAnalyticsKeyFeedItemID] = feedItemID
+        }
+
+        if let value = value, key = key {
+            properties[key] = value
+        }
+
+        return properties
+    }
+
+
     // MARK: Logged in helper
 
     public class func isLoggedIn() -> Bool {
