@@ -489,19 +489,6 @@ import WordPressComAnalytics
         return [key : title]
     }
 
-    private func statsPropertiesForPost(post:ReaderPost, andValue value:AnyObject, forKey key:String) -> [NSObject: AnyObject] {
-        var properties = [NSObject: AnyObject]();
-        properties[key] = value
-        properties["blog_id"] = post.siteID
-        properties["post_id"] = post.postID
-        properties["is_jetpack"] = post.isJetpack
-        if let feedID = post.feedID, feedItemID = post.feedItemID {
-            properties["feed_id"] = feedID
-            properties["feed_item_id"] = feedItemID
-        }
-        return properties
-    }
-
     private func shouldShowBlockSiteMenuItem() -> Bool {
         if (isLoggedIn) {
             return ReaderHelpers.isTopicTag(readerTopic!) || ReaderHelpers.topicIsFreshlyPressed(readerTopic!)
@@ -1302,7 +1289,7 @@ import WordPressComAnalytics
         let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties = statsPropertiesForPost(post, andValue: post.blogURL, forKey: "URL")
+        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL, forKey: "URL")
         WPAppAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
     }
 
@@ -1324,7 +1311,7 @@ import WordPressComAnalytics
         let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties =  statsPropertiesForPost(post, andValue: post.primaryTagSlug, forKey: "tag")
+        let properties =  ReaderHelpers.statsPropertiesForPost(post, andValue: post.primaryTagSlug, forKey: "tag")
         WPAppAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
     }
 
