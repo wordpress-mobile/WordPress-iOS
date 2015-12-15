@@ -147,7 +147,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             if (success) {
                 success();
             }
-            [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed withProperties:@{ @"URL":sanitizedURL }];
+            [WPAppAnalytics track:WPAnalyticsStatReaderSiteFollowed withProperties:@{ @"URL":sanitizedURL }];
 
         } failure:failure];
     } failure:^(NSError *error) {
@@ -172,7 +172,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         if (success) {
             success();
         }
-        [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withProperties:@{@"URL":siteURL}];
+        [WPAppAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withProperties:@{@"URL":siteURL}];
     } failure:failure];
 }
 
@@ -241,7 +241,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
     [service flagSiteWithID:[siteID integerValue] asBlocked:blocked success:^{
         NSDictionary *properties = @{@"siteID":siteID, WPAppAnalyticsKeyBlogID:siteID};
-        [WPAnalytics track:WPAnalyticsStatReaderSiteBlocked withProperties:properties];
+        [WPAppAnalytics track:WPAnalyticsStatReaderSiteBlocked withProperties:properties];
         
         if (success) {
             success();
