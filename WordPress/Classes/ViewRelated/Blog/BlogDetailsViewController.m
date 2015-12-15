@@ -471,7 +471,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showSettingsForBlog:(Blog *)blog
 {
-    [WPAppAnalytics track:WPAnalyticsStatOpenedSettings withBlog:blog];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedSiteSettings withBlog:blog];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }

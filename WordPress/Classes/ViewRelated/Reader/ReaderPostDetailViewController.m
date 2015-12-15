@@ -467,7 +467,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
                         ];
 
     NSString *path = [NSString stringWithFormat:@"%@?%@", pixel, [params componentsJoinedByString:@"&"]];
-    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
+    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent wordPressUserAgent];
 
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:path]];
     [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
