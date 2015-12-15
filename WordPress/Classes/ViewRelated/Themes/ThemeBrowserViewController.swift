@@ -463,7 +463,7 @@ public protocol ThemePresenter: class
     // MARK: - Search support
     
     @IBAction func didTapSearchButton(sender: UIButton) {
-        WPAnalytics.track(.ThemesAccessedSearch)
+        WPAppAnalytics.track(.ThemesAccessedSearch, withBlog: self.blog)
         beginSearchFor("")
     }
     
@@ -549,7 +549,7 @@ public protocol ThemePresenter: class
         themeService.activateTheme(theme,
             forBlog: blog,
             success: { [weak self] (theme: Theme?) in
-                WPAnalytics.track(.ThemesChangedTheme, withProperties: ["themeId": theme?.themeId ?? ""])
+                WPAppAnalytics.track(.ThemesChangedTheme, withProperties: ["themeId": theme?.themeId ?? ""], withBlog: self?.blog)
 
                 self?.collectionView?.reloadData()
                 
@@ -583,27 +583,27 @@ public protocol ThemePresenter: class
     }
 
     public func presentCustomizeForTheme(theme: Theme?) {
-        WPAnalytics.track(.ThemesCustomizeAccessed)
+        WPAppAnalytics.track(.ThemesCustomizeAccessed, withBlog: self.blog)
         presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
     }
 
     public func presentPreviewForTheme(theme: Theme?) {
-        WPAnalytics.track(.ThemesPreviewedSite)
+        WPAppAnalytics.track(.ThemesPreviewedSite, withBlog: self.blog)
         presentUrlForTheme(theme, url: theme?.customizeUrl())
     }
     
     public func presentDetailsForTheme(theme: Theme?) {
-        WPAnalytics.track(.ThemesDetailsAccessed)
+        WPAppAnalytics.track(.ThemesDetailsAccessed, withBlog: self.blog)
         presentUrlForTheme(theme, url: theme?.detailsUrl())
     }
     
     public func presentSupportForTheme(theme: Theme?) {
-        WPAnalytics.track(.ThemesSupportAccessed)
+        WPAppAnalytics.track(.ThemesSupportAccessed, withBlog: self.blog)
         presentUrlForTheme(theme, url: theme?.supportUrl())
     }
     
     public func presentViewForTheme(theme: Theme?) {
-        WPAnalytics.track(.ThemesDemoAccessed)
+        WPAppAnalytics.track(.ThemesDemoAccessed, withBlog: self.blog)
         presentUrlForTheme(theme, url: theme?.viewUrl())
     }
     
