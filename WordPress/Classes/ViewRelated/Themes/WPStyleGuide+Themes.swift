@@ -110,6 +110,10 @@ extension WPStyleGuide
             let cellHeight = cellHeightForCellWidth(cellWidth)
             return CGSize(width: cellWidth, height: cellHeight)
         }
+        public static func imageWidthForFrameWidth(width: CGFloat) -> CGFloat {
+            let cellWidth = cellWidthForFrameWidth(width)
+            return cellWidth - cellImageInset
+        }
 
         public static let footerHeight: CGFloat = 50
 

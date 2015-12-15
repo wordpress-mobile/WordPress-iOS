@@ -406,6 +406,8 @@
         <attribute name="commentsOpen" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="dateSynced" optional="YES" attributeType="Date" indexed="YES" syncable="YES"/>
         <attribute name="featuredImage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="feedID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="feedItemID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="globalID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="isBlogPrivate" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isExternal" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -514,7 +516,7 @@
         <element name="ReaderDefaultTopic" positionX="18" positionY="162" width="128" height="45"/>
         <element name="ReaderGapMarker" positionX="18" positionY="153" width="128" height="45"/>
         <element name="ReaderListTopic" positionX="45" positionY="189" width="128" height="135"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="570"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="600"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderSiteTopic" positionX="36" positionY="180" width="128" height="195"/>
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>

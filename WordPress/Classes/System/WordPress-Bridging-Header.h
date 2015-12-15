@@ -57,6 +57,7 @@
 #import "WPActivityDefaults.h"
 #import "WPAnimatedBox.h"
 #import "WPAnalyticsTrackerWPCom.h"
+#import "WPAppAnalytics.h"
 #import "WPBlogTableViewCell.h"
 #import "WPContentViewProvider.h"
 #import "WPGUIConstants.h"
