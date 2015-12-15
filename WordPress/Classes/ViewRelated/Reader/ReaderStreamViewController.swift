@@ -428,7 +428,7 @@ import WordPressComAnalytics
                 object: nil)
         }
 
-        ReaderHelpers.trackLoadedTopic(readerTopic!, withProperties: propertyForStats())
+        ReaderHelpers.trackLoadedTopic(readerTopic!, withProperties: topicPropertyForStats())
     }
 
     func configureTitleForTopic() {
@@ -477,7 +477,7 @@ import WordPressComAnalytics
         tableView.setContentOffset(CGPoint.zero, animated: true)
     }
 
-    private func propertyForStats() -> [NSObject: AnyObject] {
+    private func topicPropertyForStats() -> [NSObject: AnyObject] {
         assert(readerTopic != nil, "A reader topic is required")
         let title = readerTopic!.title ?? ""
         var key: String = "list"
@@ -487,6 +487,19 @@ import WordPressComAnalytics
             key = "site"
         }
         return [key : title]
+    }
+
+    private func statsPropertiesForPost(post:ReaderPost, andValue value:AnyObject, forKey key:String) -> [NSObject: AnyObject] {
+        var properties = [NSObject: AnyObject]();
+        properties[key] = value
+        properties["blog_id"] = post.siteID
+        properties["post_id"] = post.postID
+        properties["is_jetpack"] = post.isJetpack
+        if let feedID = post.feedID, feedItemID = post.feedItemID {
+            properties["feed_id"] = feedID
+            properties["feed_item_id"] = feedItemID
+        }
+        return properties
     }
 
     private func shouldShowBlockSiteMenuItem() -> Bool {
@@ -968,7 +981,7 @@ import WordPressComAnalytics
             }
         }
 
-        WPAnalytics.track(.ReaderInfiniteScroll, withProperties: propertyForStats())
+        WPAppAnalytics.track(.ReaderInfiniteScroll, withProperties: topicPropertyForStats())
     }
 
     func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
@@ -1289,8 +1302,8 @@ import WordPressComAnalytics
         let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties = NSDictionary(object: post.blogURL, forKey: "URL") as! [NSObject : AnyObject]
-        WPAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
+        let properties = statsPropertiesForPost(post, andValue: post.blogURL, forKey: "URL")
+        WPAppAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider) {
@@ -1311,8 +1324,8 @@ import WordPressComAnalytics
         let controller = ReaderStreamViewController.controllerWithTagSlug(post.primaryTagSlug)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties = NSDictionary(object: post.primaryTagSlug, forKey: "tag") as! [NSObject : AnyObject]
-        WPAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
+        let properties =  statsPropertiesForPost(post, andValue: post.primaryTagSlug, forKey: "tag")
+        WPAppAnalytics.track(.ReaderTagPreviewed, withProperties: properties)
     }
 
     public func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView) {
