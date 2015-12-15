@@ -782,10 +782,18 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)sendReplyWithNewContent:(NSString *)content
 {
     __typeof(self) __weak weakSelf = self;
+    ReaderPost *post = self.post;
     void (^successBlock)() = ^void() {
-        
-        [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withBlogID:self.post.siteID];
-        
+        NSMutableDictionary *properties = [NSMutableDictionary dictionary];
+        properties[WPAppAnalyticsKeyBlogID] = post.siteID;
+        properties[WPAppAnalyticsKeyPostID] = post.postID;
+        properties[WPAppAnalyticsKeyIsJetpack] = @(post.isJetpack);
+        if (post.feedID && post.feedItemID) {
+            properties[WPAppAnalyticsKeyFeedID] = post.feedID;
+            properties[WPAppAnalyticsKeyFeedItemID] = post.feedItemID;
+        }
+        [WPAppAnalytics track:WPAnalyticsStatReaderArticleCommentedOn withProperties:properties];
+
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
         [weakSelf refreshReplyTextViewPlaceholder];
     };

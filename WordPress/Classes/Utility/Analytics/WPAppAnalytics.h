@@ -4,8 +4,12 @@
 
 typedef NSString*(^WPAppAnalyticsLastVisibleScreenCallback)();
 
-extern NSString* const WPAppAnalyticsDefaultsKeyUsageTracking;
-extern NSString* const WPAppAnalyticsKeyBlogID;
+extern NSString * const WPAppAnalyticsDefaultsKeyUsageTracking;
+extern NSString * const WPAppAnalyticsKeyBlogID;
+extern NSString * const WPAppAnalyticsKeyPostID;
+extern NSString * const WPAppAnalyticsKeyFeedID;
+extern NSString * const WPAppAnalyticsKeyFeedItemID;
+extern NSString * const WPAppAnalyticsKeyIsJetpack;
 
 /**
  *  @class      WPAppAnalytics
