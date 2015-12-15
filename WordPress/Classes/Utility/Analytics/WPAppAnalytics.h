@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+@class Blog;
+
 typedef NSString*(^WPAppAnalyticsLastVisibleScreenCallback)();
 
 extern NSString * const WPAppAnalyticsDefaultsKeyUsageTracking;
@@ -47,5 +49,33 @@ extern NSString * const WPAppAnalyticsKeyIsJetpack;
  *  @param      trackingUsage   The new status for usage tracking.
  */
 - (void)setTrackingUsage:(BOOL)trackingUsage;
+
+/**
+ *  @brief      Tracks stats with the blog details when available
+ */
++ (void)track:(WPAnalyticsStat)stat withBlog:(Blog *)blog;
+
+/**
+ *  @brief      Tracks stats with the blog_id when available
+ */
++ (void)track:(WPAnalyticsStat)stat withBlogID:(NSNumber*)blogID;
+
+/**
+ *  @brief      Tracks stats with the blog details when available
+ */
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlog:(Blog *)blog;
+
+/**
+ *  @brief      Tracks stats with the blog_id when available
+ */
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties withBlogID:(NSNumber*)blogID;
+
+
+/**
+ *  @brief      Pass-through methods to WPAnalytics
+ */
++ (void)track:(WPAnalyticsStat)stat;
+
++ (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties;
 
 @end

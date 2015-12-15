@@ -367,12 +367,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 
     if (![self.post hasUnsavedChanges]) {
-        NSNumber *dotComID = self.post.blog.dotComID;
-        if (dotComID) {
-            [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
-        }else {
-            [WPAnalytics track:WPAnalyticsStatEditorClosed];
-        }
+        [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
+
         [self discardChanges];
         [self dismissEditView];
         return;
@@ -389,12 +385,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                 handler:^(UIAlertAction * action) {
                                     [self discardChanges];
                                     [self dismissEditView];
-                                    NSNumber *dotComID = self.post.blog.dotComID;
-                                    if (dotComID) {
-                                        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
-                                    }else {
-                                        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
-                                    }
+                                    [WPAppAnalytics track:WPAnalyticsStatEditorDiscardedChanges withBlog:self.post.blog];
                                 }];
     
     if ([self.post.original.status isEqualToString:PostStatusDraft]) {
@@ -974,13 +965,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)insertMedia:(Media *)media
 {
-    NSNumber *dotComID = [self.post blog].dotComID;
-    if (dotComID) {
-        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
-    }
-    
+    [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
     NSString *prefix = @"<br /><br />";
 
     if (self.post.content == nil || [self.post.content isEqualToString:@""]) {
