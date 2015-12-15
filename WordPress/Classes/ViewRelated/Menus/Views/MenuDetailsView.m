@@ -20,19 +20,10 @@
 
 @implementation MenuDetailsView
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
-    [center addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
-
     [self setupStyling];
 }
 
@@ -114,7 +105,7 @@
     [self.textFieldDesignIcon setNeedsLayout];
 }
 
-- (void)showTextFieldEditingState:(NSTimeInterval)duration animaitonOptions:(UIViewAnimationOptions)options
+- (void)showTextFieldEditingState:(NSTimeInterval)duration animationOptions:(UIViewAnimationOptions)options
 {
     [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
         
@@ -126,7 +117,7 @@
     }];
 }
 
-- (void)hideTextFieldEditingState:(NSTimeInterval)duration animaitonOptions:(UIViewAnimationOptions)options
+- (void)hideTextFieldEditingState:(NSTimeInterval)duration animationOptions:(UIViewAnimationOptions)options
 {
     [UIView animateWithDuration:duration delay:0.0 options:options animations:^{
         
@@ -153,6 +144,11 @@
 
 #pragma mark - UITextField
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self showTextFieldEditingState:0.3 animationOptions:UIViewAnimationOptionCurveEaseOut];
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if(!textField.text.length) {
@@ -168,26 +164,8 @@
     [UIView animateWithDuration:0.25 animations:^{
         self.textFieldDesignIcon.hidden = NO;
     }];
-}
-
-#pragma mark - keyboard notifications
-
-- (void)keyboardWillShowNotification:(NSNotification *)notification
-{
-    if(![self.textField isFirstResponder]) {
-        return;
-    }
     
-    [self showTextFieldEditingState:[[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue] animaitonOptions:[[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue]];
-}
-
-- (void)keyboardWillHideNotification:(NSNotification *)notification
-{
-    if(![self.textField isFirstResponder]) {
-        return;
-    }
-
-    [self hideTextFieldEditingState:[[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue] animaitonOptions:[[notification.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] unsignedIntegerValue]];
+    [self hideTextFieldEditingState:0.3 animationOptions:UIViewAnimationOptionCurveEaseOut];
 }
 
 @end
