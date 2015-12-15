@@ -437,13 +437,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
     [self presentViewController:navController animated:YES completion:nil];
     
-    NSNumber *dotComID = self.blog.dotComID;
-    if (dotComID) {
-        [WPAnalytics track:WPAnalyticsStatEditorCreatedPost
-            withProperties:@{ @"tap_source": @"posts_view", WPAppAnalyticsKeyBlogID:dotComID}];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view"}];
-    }
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{@"tap_source": @"posts_view"} withBlog:self.blog];
 }
 
 - (void)previewEditPost:(AbstractPost *)apost
