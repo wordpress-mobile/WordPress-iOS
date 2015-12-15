@@ -94,7 +94,7 @@
 
 - (void)updateTypeSelectionViewDisplay
 {
-    if(self.view.frame.size.width >= self.view.frame.size.height) {
+    if(self.view.frame.size.width >= self.view.frame.size.height || IS_IPAD) {
         self.typeSelectionView.hidden = NO;
     }else {
         self.typeSelectionView.hidden = YES;
