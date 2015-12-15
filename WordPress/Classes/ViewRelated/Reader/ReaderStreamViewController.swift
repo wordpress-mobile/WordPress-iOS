@@ -1189,19 +1189,19 @@ import WordPressComAnalytics
             return
         }
 
-        var controller: ReaderPostDetailViewController?
+        var controller: ReaderDetailViewController?
         if post.sourceAttributionStyle() == .Post &&
             post.sourceAttribution.postID != nil &&
             post.sourceAttribution.blogID != nil {
 
-            controller = ReaderPostDetailViewController.detailControllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
+            controller = ReaderDetailViewController.controllerWithPostID(post.sourceAttribution.postID!, siteID: post.sourceAttribution.blogID!)
 
         } else if post.isCrossPost() {
-            controller = ReaderPostDetailViewController.detailControllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
+            controller = ReaderDetailViewController.controllerWithPostID(post.crossPostMeta.postID, siteID: post.crossPostMeta.siteID)
 
         } else {
             post = postInMainContext(post)!
-            controller = ReaderPostDetailViewController.detailControllerWithPost(post)
+            controller = ReaderDetailViewController.controllerWithPost(post)
         }
 
         navigationController?.pushViewController(controller!, animated: true)

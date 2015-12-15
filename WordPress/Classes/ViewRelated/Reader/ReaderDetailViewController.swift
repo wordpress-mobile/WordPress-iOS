@@ -60,8 +60,9 @@ final public class ReaderDetailViewController : UIViewController
     @IBOutlet private weak var bylineBottomPaddingView: UIView!
     @IBOutlet private weak var richtTextBottomPaddingView: UIView!
 
-    private var didBumpStats: Bool = false
-    private var didBumpPageViews: Bool = false
+    public var shouldHideComments = false
+    private var didBumpStats = false
+    private var didBumpPageViews = false
     private var footerViewHeightConstraintConstant: CGFloat = 0.0
 
     public var post: ReaderPost? {
@@ -200,7 +201,7 @@ final public class ReaderDetailViewController : UIViewController
 
     // MARK: - Setup
 
-    private func setupWithPostID(postID:NSNumber, siteID:NSNumber) {
+    public func setupWithPostID(postID:NSNumber, siteID:NSNumber) {
         let title = NSLocalizedString("Loading Post...", comment:"Text displayed while loading a post.")
         WPNoResultsView.displayAnimatedBoxWithTitle(title, message: nil, view: view)
 
@@ -486,7 +487,7 @@ final public class ReaderDetailViewController : UIViewController
         // Show comments if logged in and comments are enabled, or if comments exist.
         // But only if it is from wpcom (jetpack and external is not yet supported).
         // Nesting this conditional cos it seems clearer that way
-        if post!.isWPCom {
+        if post!.isWPCom && !shouldHideComments {
             if (ReaderHelpers.isLoggedIn() && post!.commentsOpen) || post!.commentCount.integerValue > 0 {
                 configureCommentActionButton()
             }
