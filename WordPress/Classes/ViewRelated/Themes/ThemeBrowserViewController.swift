@@ -47,6 +47,8 @@ public enum ThemeType
 public protocol ThemePresenter: class
 {
     var searchType: ThemeType { get set }
+    
+    var screenshotWidth: Int { get }
 
     func currentTheme() -> Theme?
     func activateTheme(theme: Theme?)
@@ -159,6 +161,17 @@ public protocol ThemePresenter: class
     }
     private var presentingTheme: Theme?
    
+    /**
+     *  @brief      Load theme screenshots at maximum displayed width
+     */
+    public var screenshotWidth: Int = {
+        let windowSize = UIApplication.sharedApplication().keyWindow!.bounds.size
+        let vWidth = Styles.imageWidthForFrameWidth(windowSize.width)
+        let hWidth = Styles.imageWidthForFrameWidth(windowSize.height)
+        let maxWidth = Int(max(hWidth, vWidth))
+        return maxWidth
+    }()
+    
     /**
      *  @brief      The themes service we'll use in this VC and its helpers
      */
@@ -374,8 +387,8 @@ public protocol ThemePresenter: class
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ThemeBrowserCell.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserCell
         
-        cell.theme = themeAtIndex(indexPath.row)
         cell.presenter = self
+        cell.theme = themeAtIndex(indexPath.row)
         
         syncMoreIfNeeded(indexPath.row)
         
