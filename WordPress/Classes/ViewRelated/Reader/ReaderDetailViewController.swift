@@ -58,7 +58,7 @@ final public class ReaderDetailViewController : UIViewController
 
     private var didBumpStats: Bool = false
     private var didBumpPageViews: Bool = false
-
+    private var footerViewHeightConstraintConstant: CGFloat = 0.0
 
     public var post: ReaderPost? {
         didSet {
@@ -143,6 +143,8 @@ final public class ReaderDetailViewController : UIViewController
 
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+
+        setBarsHidden(false)
 
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
@@ -514,6 +516,7 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func configureFooterIfNeeded() {
+        footerViewHeightConstraintConstant = footerViewHeightConstraint.constant
         self.footerView.hidden = tagButton.hidden && likeButton.hidden && commentButton.hidden
     }
 
@@ -533,6 +536,37 @@ final public class ReaderDetailViewController : UIViewController
 
         let properties = NSDictionary(object: post!.blogURL, forKey: "URL") as [NSObject : AnyObject]
         WPAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
+    }
+
+
+    func setBarsHidden(hidden:Bool) {
+        if (navigationController?.navigationBarHidden == hidden) {
+            return
+        }
+
+        if (hidden) {
+            // Hides the navbar and footer view
+            navigationController?.setNavigationBarHidden(true, animated: true)
+            footerViewHeightConstraint.constant = 0.0
+            UIView.animateWithDuration(0.3,
+                delay: 0.0,
+                options: UIViewAnimationOptions.BeginFromCurrentState,
+                animations: { () -> Void in
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+
+        } else {
+            // Shows the navbar and footer view
+            navigationController?.setNavigationBarHidden(false, animated: true)
+            footerViewHeightConstraint.constant = footerViewHeightConstraintConstant
+            UIView.animateWithDuration(0.3,
+                delay: 0.0,
+                options: UIViewAnimationOptions.BeginFromCurrentState,
+                animations: { () -> Void in
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+        }
+
     }
 
 
@@ -754,6 +788,23 @@ extension ReaderDetailViewController : WPRichTextViewDelegate
             url = NSURL(string: linkURL.absoluteString, relativeToURL: postURL)
         }
         presentWebViewControllerWithURL(url)
+    }
+
+}
+
+
+extension ReaderDetailViewController : UIScrollViewDelegate
+{
+    public func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        if UIDevice.isPad() || footerView.hidden || !isLoaded {
+            return
+        }
+
+        if targetContentOffset.memory.y > scrollView.contentOffset.y {
+            setBarsHidden(true)
+        } else {
+            setBarsHidden(false)
+        }
     }
 
 }

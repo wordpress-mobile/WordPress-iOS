@@ -248,8 +248,11 @@
                                     <constraint firstAttribute="trailing" secondItem="LMp-cd-vT3" secondAttribute="trailing" placeholder="YES" id="XQa-la-496"/>
                                     <constraint firstItem="LMp-cd-vT3" firstAttribute="top" secondItem="IqL-oc-D5S" secondAttribute="top" id="vWJ-Li-Vec"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="p0j-e1-c0h" id="ucU-YW-Qwc"/>
+                                </connections>
                             </scrollView>
-                            <view contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vSH-j9-J3c">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" layoutMarginsFollowReadableWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vSH-j9-J3c">
                                 <rect key="frame" x="0.0" y="486" width="600" height="50"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="utM-eb-n7b">
