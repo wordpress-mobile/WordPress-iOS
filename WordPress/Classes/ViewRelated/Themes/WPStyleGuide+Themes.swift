@@ -9,20 +9,10 @@ extension WPStyleGuide
 {
     public struct Themes
     {
-        // MARK: - Bar Styles
-
-        public static let barBorderColor = UIColor(red: 208.0/255.0, green: 220.0/255.0, blue: 229.0/255.0, alpha: 1)
-        public static let barDividerColor = UIColor(red: 224.0/255.0, green: 239.0/255.0, blue: 233.0/255.0, alpha: 1)
-        public static let barBackgroundColor = UIColor.whiteColor()
-        public static let barContentInset = 15
-
-        public static func styleBar(view: UIView, background: UIColor) {
-            view.layer.borderWidth = 1
-            view.layer.borderColor = barBorderColor.CGColor
-            view.backgroundColor = background
-        }
-        
         // MARK: - Current Theme Styles
+
+        public static let currentThemeBackgroundColor = UIColor.whiteColor()
+        public static let currentThemeDividerColor = WPStyleGuide.greyLighten30()
 
         public static let currentThemeLabelFont = WPFontManager.openSansRegularFontOfSize(11)
         public static let currentThemeLabelColor = WPStyleGuide.greyDarken20()
@@ -39,6 +29,9 @@ extension WPStyleGuide
         }
         
         // MARK: - Search Styles
+
+        public static let searchBarBackgroundColor = WPStyleGuide.lightGrey()
+        public static let searchBarBorderColor = WPStyleGuide.greyLighten20()
 
         public static let searchTypeTitleFont = WPFontManager.openSansSemiBoldFontOfSize(14)
         public static let searchTypeTitleColor = WPStyleGuide.darkGrey()
@@ -61,22 +54,25 @@ extension WPStyleGuide
         public static let placeholderColor = WPStyleGuide.greyLighten20()
 
         public static let activeCellBackgroundColor = WPStyleGuide.mediumBlue()
+        public static let activeCellBorderColor = WPStyleGuide.mediumBlue()
+        public static let activeCellDividerColor = WPStyleGuide.lightBlue()
         public static let activeCellNameColor = UIColor.whiteColor()
         public static let activeCellInfoColor = WPStyleGuide.lightBlue()
 
         public static let inactiveCellBackgroundColor = UIColor.whiteColor()
+        public static let inactiveCellBorderColor = WPStyleGuide.greyLighten20()
+        public static let inactiveCellDividerColor = WPStyleGuide.greyLighten30()
         public static let inactiveCellNameColor = WPStyleGuide.darkGrey()
         public static let inactiveCellPriceColor = WPStyleGuide.validGreen()
 
         // MARK: - Metrics
 
-        public static let rowMargin: CGFloat = 16
         public static let currentBarLineHeight: CGFloat = 53
         public static let currentBarSeparator: CGFloat = 1
         public static let searchBarHeight: CGFloat = 53
        
         public static func headerHeight(horizontallyCompact: Bool) -> CGFloat {
-            var headerHeight = searchBarHeight + (rowMargin * 3)
+            var headerHeight = searchBarHeight + (currentBarSeparator * 2)
             if (horizontallyCompact) {
                 headerHeight += (currentBarLineHeight * 2) + currentBarSeparator
             } else {
@@ -85,7 +81,8 @@ extension WPStyleGuide
             return headerHeight
         }
 
-        public static let columnMargin: CGFloat = 16
+        public static let columnMargin: CGFloat = 7
+        public static let rowMargin: CGFloat = 10
         public static let minimumColumnWidth: CGFloat = 330
 
         public static let cellImageInset: CGFloat = 2
@@ -113,12 +110,15 @@ extension WPStyleGuide
             let cellHeight = cellHeightForCellWidth(cellWidth)
             return CGSize(width: cellWidth, height: cellHeight)
         }
+        public static func imageWidthForFrameWidth(width: CGFloat) -> CGFloat {
+            let cellWidth = cellWidthForFrameWidth(width)
+            return cellWidth - cellImageInset
+        }
 
         public static let footerHeight: CGFloat = 50
 
-        public static let searchMargins = UIEdgeInsets(top: rowMargin, left: columnMargin, bottom: rowMargin, right: columnMargin)
-        public static let syncingMargins = UIEdgeInsets(top: 0, left:columnMargin, bottom: 0, right: columnMargin)
-        public static let syncedMargins = UIEdgeInsets(top: 0, left:columnMargin, bottom: rowMargin, right: columnMargin)
+        public static let themeMargins = UIEdgeInsets(top: rowMargin, left: columnMargin, bottom: rowMargin, right: columnMargin)
+        public static let infoMargins = UIEdgeInsets()
     }
 
 }
