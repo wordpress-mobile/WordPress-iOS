@@ -116,6 +116,7 @@ final public class ReaderDetailViewController : UIViewController
     public override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.alpha = 0
+        footerView.hidden = true
 
         // Hide the featured image and its padding until we know there is one to load.
         featuredImageView.hidden = true
@@ -177,7 +178,7 @@ final public class ReaderDetailViewController : UIViewController
             // Note: The intent here is to update the action buttons, specifically the
             // like button, *after* both likeCount and isLiked has changed. The order
             // of the properties is important.
-            configureLikeActionButton()
+            configureLikeActionButton(true)
         }
     }
 
@@ -224,16 +225,6 @@ final public class ReaderDetailViewController : UIViewController
 
         // Don't show 'Reader' in the next-view back button
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .Plain, target: nil, action: nil)
-
-        // Share button.
-        let image = UIImage(named: "icon-posts-share")!
-        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
-        button.setImage(image, forState: .Normal)
-        button.addTarget(self, action: "didTapShareButton:", forControlEvents: .TouchUpInside)
-
-        let shareButton = UIBarButtonItem(customView: button)
-        shareButton.accessibilityLabel = NSLocalizedString("Share", comment:"Spoken accessibility label")
-        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(shareButton, forNavigationItem: navigationItem)
     }
 
 
@@ -255,6 +246,7 @@ final public class ReaderDetailViewController : UIViewController
     private func configureView() {
         scrollView.alpha = 1
         configureNavTitle()
+        configureShareButton()
         configureHeader()
         configureFeaturedImage()
         configureTitle()
@@ -280,6 +272,19 @@ final public class ReaderDetailViewController : UIViewController
         } else {
             self.title = NSLocalizedString("Post", comment:"Placeholder title for ReaderPostDetails.")
         }
+    }
+
+
+    private func configureShareButton() {
+        // Share button.
+        let image = UIImage(named: "icon-posts-share")!
+        let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
+        button.setImage(image, forState: .Normal)
+        button.addTarget(self, action: "didTapShareButton:", forControlEvents: .TouchUpInside)
+
+        let shareButton = UIBarButtonItem(customView: button)
+        shareButton.accessibilityLabel = NSLocalizedString("Share", comment:"Spoken accessibility label")
+        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(shareButton, forNavigationItem: navigationItem)
     }
 
 
@@ -495,7 +500,7 @@ final public class ReaderDetailViewController : UIViewController
     }
 
 
-    private func configureLikeActionButton() {
+    private func configureLikeActionButton(animated:Bool = false) {
         likeButton.enabled = ReaderHelpers.isLoggedIn()
 
         let title = post!.likeCountForDisplay()
@@ -504,6 +509,73 @@ final public class ReaderDetailViewController : UIViewController
         let highlightImage = UIImage(named: "icon-reader-like-highlight")
         let selected = post!.isLiked
         configureActionButton(likeButton, title: title, image: image, highlightedImage: highlightImage, selected:selected)
+
+        if animated {
+            playLikeButtonAnimation()
+        }
+    }
+
+
+    private func playLikeButtonAnimation() {
+        let likeImageView = likeButton.imageView!
+        let frame = likeButton.convertRect(likeImageView.frame, fromView: likeImageView)
+
+        let imageView = UIImageView(image: UIImage(named: "icon-reader-liked"))
+        imageView.frame = frame
+        likeButton.addSubview(imageView)
+
+        let animationDuration = 0.3
+
+        if likeButton.selected {
+            // Prep a mask to hide the likeButton's image, since changes to visiblility and alpha are ignored
+            let mask = UIView(frame: frame)
+            mask.backgroundColor = view.backgroundColor
+            likeButton.addSubview(mask)
+            likeButton.bringSubviewToFront(imageView)
+
+            // Configure starting state
+            imageView.alpha = 0.0
+            let angle = CGFloat((-270.0 * M_PI) / 180.0)
+            let rotate = CGAffineTransformMakeRotation(angle)
+            let scale = CGAffineTransformMakeScale(3.0, 3.0)
+            imageView.transform = CGAffineTransformConcat(rotate, scale)
+
+            // Perform the animations
+            UIView.animateWithDuration(animationDuration,
+                animations: { () in
+                    let angle = CGFloat((1.0 * M_PI) / 180.0)
+                    let rotate = CGAffineTransformMakeRotation(angle)
+                    let scale = CGAffineTransformMakeScale(0.75, 0.75)
+                    imageView.transform = CGAffineTransformConcat(rotate, scale)
+                    imageView.alpha = 1.0;
+                    imageView.center = likeImageView.center // In case the button's imageView shifted position
+                },
+                completion: { (_) in
+                    UIView.animateWithDuration(animationDuration,
+                        animations: { () in
+                            imageView.transform = CGAffineTransformMakeScale(1.0, 1.0)
+                        },
+                        completion: { (_) in
+                            mask.removeFromSuperview()
+                            imageView.removeFromSuperview()
+                    })
+            })
+
+        } else {
+
+            UIView .animateWithDuration(animationDuration,
+                animations: { () -> Void in
+                    let angle = CGFloat((120.0 * M_PI) / 180.0)
+                    let rotate = CGAffineTransformMakeRotation(angle)
+                    let scale = CGAffineTransformMakeScale(3.0, 3.0)
+                    imageView.transform = CGAffineTransformConcat(rotate, scale)
+                    imageView.alpha = 0;
+                },
+                completion: { (_) in
+                    imageView.removeFromSuperview()
+            })
+
+        }
     }
 
 
