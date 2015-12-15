@@ -33,7 +33,6 @@
 #import "ReaderGapMarker.h"
 #import "ReaderPost.h"
 #import "ReaderPostContentProvider.h"
-#import "ReaderPostDetailViewController.h"
 #import "ReaderPostService.h"
 #import "ReaderSiteService.h"
 #import "ReaderTopicService.h"
