@@ -137,18 +137,14 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         // Define success block. Make sure work is performed on the main queue
         void (^successBlock)() = ^void() {
             dispatch_async(dispatch_get_main_queue(), ^{
+                NSDictionary *properties = @{
+                                              WPAppAnalyticsKeyPostID: readerPost.postID,
+                                              WPAppAnalyticsKeyBlogID: readerPost.siteID
+                                              };
                 if (like) {
-                    if(readerPost.siteID) {
-                        [WPAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:@{ WPAppAnalyticsKeyBlogID:readerPost.siteID }];
-                    }else {
-                        [WPAnalytics track:WPAnalyticsStatReaderArticleLiked];
-                    }
+                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:properties];
                 } else {
-                    if(readerPost.siteID) {
-                        [WPAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:@{ WPAppAnalyticsKeyBlogID:readerPost.siteID }];
-                    }else {
-                        [WPAnalytics track:WPAnalyticsStatReaderArticleUnliked];
-                    }
+                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:properties];
                 }
                 if (success) {
                     success();
@@ -896,6 +892,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     post.content = [self formatContent:remotePost.content];
     post.date_created_gmt = [DateUtils dateFromISOString:remotePost.date_created_gmt];
     post.featuredImage = remotePost.featuredImage;
+    post.feedID = remotePost.feedID;
+    post.feedItemID = remotePost.feedItemID;
     post.globalID = remotePost.globalID;
     post.isBlogPrivate = remotePost.isBlogPrivate;
     post.isFollowing = remotePost.isFollowing;

@@ -23,6 +23,8 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSNumber *commentCount;
 @property (nonatomic) BOOL commentsOpen;
 @property (nonatomic, strong) NSString *featuredImage;
+@property (nonatomic, strong) NSNumber *feedID;
+@property (nonatomic, strong) NSNumber *feedItemID;
 @property (nonatomic, strong) NSString *globalID;
 @property (nonatomic) BOOL isBlogPrivate;
 @property (nonatomic) BOOL isFollowing;
