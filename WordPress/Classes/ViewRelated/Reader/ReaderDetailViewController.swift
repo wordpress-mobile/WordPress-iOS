@@ -40,20 +40,24 @@ final public class ReaderDetailViewController : UIViewController
 
     // Header realated Views
     @IBOutlet private weak var headerView: UIView!
-    @IBOutlet private weak var avatarImageView: UIImageView!
+    @IBOutlet private weak var blavatarImageView: UIImageView!
     @IBOutlet private weak var blogNameButton: UIButton!
-    @IBOutlet private weak var bylineLabel: UILabel!
+    @IBOutlet private weak var blogURLLabel: UILabel!
     @IBOutlet private weak var menuButton: UIButton!
 
     // Content views
     @IBOutlet private weak var featuredImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var bylineView: UIView!
+    @IBOutlet private weak var avatarImageView: CircularImageView!
+    @IBOutlet private weak var bylineLabel: UILabel!
     @IBOutlet private weak var richTextView: WPRichTextView!
     @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
 
     // Spacers
     @IBOutlet private weak var featuredImageBottomPaddingView: UIView!
     @IBOutlet private weak var titleBottomPaddingView: UIView!
+    @IBOutlet private weak var bylineBottomPaddingView: UIView!
     @IBOutlet private weak var richtTextBottomPaddingView: UIView!
 
     private var didBumpStats: Bool = false
@@ -236,6 +240,7 @@ final public class ReaderDetailViewController : UIViewController
     private func applyStyles() {
         WPStyleGuide.applyReaderCardSiteButtonStyle(blogNameButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
+        WPStyleGuide.applyReaderCardBylineLabelStyle(blogURLLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
         WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
@@ -250,6 +255,7 @@ final public class ReaderDetailViewController : UIViewController
         configureHeader()
         configureFeaturedImage()
         configureTitle()
+        configureByLine()
         configureRichText()
         configureDiscoverAttribution()
         configureTag()
@@ -289,11 +295,11 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func configureHeader() {
-        // Avatar
+        // Blavatar
         let placeholder = UIImage(named: "post-blavatar-placeholder")
-        let size = avatarImageView.frame.size.width * UIScreen.mainScreen().scale
+        let size = blavatarImageView.frame.size.width * UIScreen.mainScreen().scale
         let url = post?.siteIconForDisplayOfSize(Int(size))
-        avatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
+        blavatarImageView.setImageWithURL(url!, placeholderImage: placeholder)
 
         // Site name
         let blogName = post?.blogNameForDisplay()
@@ -309,15 +315,12 @@ final public class ReaderDetailViewController : UIViewController
         // If the button is enabled also listen for taps on the avatar.
         if blogNameButton.enabled {
             let tgr = UITapGestureRecognizer(target: self, action: "didTapHeaderAvatar:")
-            avatarImageView.addGestureRecognizer(tgr)
+            blavatarImageView.addGestureRecognizer(tgr)
         }
 
-        // Byline
-        var byline = post?.dateForDisplay().shortString()
-        if let author = post?.authorForDisplay() {
-            byline = String(format: "%@ · %@", author, byline!)
+        if let siteURL:NSString = post!.siteURLForDisplay() {
+            blogURLLabel.text = siteURL.componentsSeparatedByString("//").last
         }
-        bylineLabel.text = byline
     }
 
 
@@ -422,7 +425,23 @@ final public class ReaderDetailViewController : UIViewController
         }
     }
     
-    
+
+    private func configureByLine() {
+        // Avatar
+        let placeholder = UIImage(named: "gravatar-reader")
+        if let url = NSURL(string: post!.authorAvatarURL) {
+            avatarImageView.setImageWithURL(url, placeholderImage: placeholder)
+        }
+
+        // Byline
+        var byline = post?.dateForDisplay().shortString()
+        if let author = post?.authorForDisplay() {
+            byline = String(format: "%@ · %@", author, byline!)
+        }
+        bylineLabel.text = byline
+
+    }
+
     private func configureRichText() {
         richTextView.delegate = self
         richTextView.content = post!.contentForDisplay()
