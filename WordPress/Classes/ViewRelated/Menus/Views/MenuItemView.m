@@ -79,30 +79,6 @@
     self.cancelButton.hidden = !showsCancelButtonOption;
 }
 
-- (UIColor *)contentViewBackgroundColor
-{
-    UIColor *color = nil;
-    if(self.highlighted) {
-        color = [UIColor colorWithWhite:0.99 alpha:1.0];;
-    }else {
-        color = [UIColor whiteColor];
-    }
-    
-    return color;
-}
-
-- (UIColor *)textLabelColor
-{
-    UIColor *color = [WPStyleGuide darkGrey];
-    return color;
-}
-
-- (UIColor *)iconTintColor
-{
-    UIColor *color = [WPStyleGuide mediumBlue];
-    return color;
-}
-
 #pragma mark - buttons
 
 - (void)addButtonPressed
