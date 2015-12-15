@@ -87,9 +87,8 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             if (success) {
                 success();
             }
-
             [WPAppAnalytics track:WPAnalyticsStatReaderSiteFollowed withBlogID:[NSNumber numberWithUnsignedInteger:siteID]];
-            
+
         } failure:failure];
 
     } failure:^(NSError *error) {
@@ -114,7 +113,6 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         if (success) {
             success();
         }
-        
         [WPAppAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withBlogID:[NSNumber numberWithUnsignedInteger:siteID]];
         
     } failure:failure];
@@ -149,7 +147,8 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
             if (success) {
                 success();
             }
-            [WPAnalytics track:WPAnalyticsStatReaderSiteFollowed];
+            [WPAppAnalytics track:WPAnalyticsStatReaderSiteFollowed withProperties:@{ @"URL":sanitizedURL }];
+
         } failure:failure];
     } failure:^(NSError *error) {
         if (failure) {
@@ -173,7 +172,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
         if (success) {
             success();
         }
-        [WPAnalytics track:WPAnalyticsStatReaderSiteUnfollowed];
+        [WPAppAnalytics track:WPAnalyticsStatReaderSiteUnfollowed withProperties:@{@"URL":siteURL}];
     } failure:failure];
 }
 
@@ -242,7 +241,7 @@ NSString * const ReaderSiteServiceErrorDomain = @"ReaderSiteServiceErrorDomain";
     ReaderSiteServiceRemote *service = [[ReaderSiteServiceRemote alloc] initWithApi:api];
     [service flagSiteWithID:[siteID integerValue] asBlocked:blocked success:^{
         NSDictionary *properties = @{@"siteID":siteID, WPAppAnalyticsKeyBlogID:siteID};
-        [WPAnalytics track:WPAnalyticsStatReaderSiteBlocked withProperties:properties];
+        [WPAppAnalytics track:WPAnalyticsStatReaderSiteBlocked withProperties:properties];
         
         if (success) {
             success();
