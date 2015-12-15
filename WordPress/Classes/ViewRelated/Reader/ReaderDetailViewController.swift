@@ -800,7 +800,10 @@ extension ReaderDetailViewController : UIScrollViewDelegate
             return
         }
 
-        if targetContentOffset.memory.y > scrollView.contentOffset.y {
+        let y = targetContentOffset.memory.y
+        let topThreshold: CGFloat = 50.0 // Arbitrary upper padding before letting the content hide.
+
+        if y > scrollView.contentOffset.y && y > topThreshold {
             setBarsHidden(true)
         } else {
             setBarsHidden(false)
