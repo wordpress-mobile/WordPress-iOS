@@ -14,6 +14,8 @@
 
 #import "DDLogSwift.h"
 
+#import "MediaService.h"
+
 #import "Notification.h"
 #import "Notification+Internals.h"
 #import "NotificationsManager.h"
@@ -59,6 +61,7 @@
 #import "WPActivityDefaults.h"
 #import "WPAnimatedBox.h"
 #import "WPAnalyticsTrackerWPCom.h"
+#import "WPAppAnalytics.h"
 #import "WPBlogTableViewCell.h"
 #import "WPContentViewProvider.h"
 #import "WPGUIConstants.h"

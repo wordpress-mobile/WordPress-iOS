@@ -3,10 +3,20 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 43 (@koke 2015-11-23)
+## WordPress 43 (@aerych 2015-12-07)
+
+- `ReaderPost` added new integer64 called `feedID` to store a post's feed ID if it exists.
+- `ReaderPost` added new integer64 called `feedItemID` to store a post's feed item ID if it exists.
+
+## (@koke 2015-11-23)
 
 - Added new entity `AccountSettings`
 - `Account` has now a new one-to-one relationship mapping to `AccountSettings`
+
+#### (@alexcurylo 2015-11-26)
+
+- `Theme` added new string attributes `author` and `authorUrl` to store a theme's author information  
+- `Theme` added new boolean attribute `purchased` to store a premium theme's purchased status
 
 ## WordPress 42 (@jleandroperez 2015-11-06)
 
