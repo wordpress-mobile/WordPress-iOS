@@ -93,6 +93,17 @@ public class ReaderHelpers {
     }
 
     /**
+     Check if the specified topic is for Discover
+
+     @param topic A ReaderAbstractTopic
+     @return True if the topic is for Discover
+     */
+    public class func topicIsDiscover(topic: ReaderAbstractTopic) -> Bool {
+        let path = topic.path as NSString!
+        return path.containsString("/read/sites/53424024/posts")
+    }
+
+    /**
     Check if the specified topic is for Following
 
     @param topic A ReaderAbstractTopic
@@ -122,6 +133,10 @@ public class ReaderHelpers {
 
         if topicIsFreshlyPressed(topic) {
             stat = .ReaderFreshlyPressedLoaded
+
+        } else if isTopicDefault(topic) && topicIsDiscover(topic) {
+            // Tracks Discover only if it was one of the default menu items.
+            stat = .ReaderDiscoverViewed
 
         } else if isTopicList(topic) {
             stat = .ReaderListLoaded
