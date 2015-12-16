@@ -132,6 +132,17 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
 
+- (void)setSelectedIndex:(NSUInteger)selectedIndex
+{
+    [super setSelectedIndex:selectedIndex];
+    if (selectedIndex == WPTabReader) {
+        // Bumping the stat in this method works for cases where the selected tab is
+        // set in response to other feature behavior (e.g. a notifications), and
+        // when set via state restoration.
+        [WPAnalytics track:WPAnalyticsStatReaderAccessed];
+    }
+}
+
 #pragma mark - UIViewControllerRestoration methods
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
@@ -273,7 +284,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
 - (void)showReaderTab
 {
     [self showTabForIndex:WPTabReader];
-    [WPAnalytics track:WPAnalyticsStatReaderAccessed];
 }
 
 - (void)showPostTab
@@ -434,6 +444,9 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
                 }
             }
         }
+    } else if ([tabBarController.viewControllers indexOfObject:viewController] == WPTabReader && tabBarController.selectedIndex != WPTabReader) {
+        // Bump the accessed stat when switching to the reader tab, but not if the tab is tapped when already selected.
+        [WPAnalytics track:WPAnalyticsStatReaderAccessed];
     }
 
     // If the current view controller is selected already and it's at its root then scroll to the top
