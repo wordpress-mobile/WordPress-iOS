@@ -98,6 +98,8 @@ public class ThemeBrowserCell : UICollectionViewCell
     override public func awakeFromNib() {
         super.awakeFromNib()
         
+        actionButton.exclusiveTouch = true
+        
         layer.borderWidth = 1
         infoBar.layer.borderWidth = 1
         nameLabel.font = Styles.cellNameFont
