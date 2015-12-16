@@ -48,6 +48,7 @@
 #import "ThemeService.h"
 
 #import "UIAlertControllerProxy.h"
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "UIDevice+Helpers.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"
@@ -59,6 +60,7 @@
 #import "WPActivityDefaults.h"
 #import "WPAnimatedBox.h"
 #import "WPAnalyticsTrackerWPCom.h"
+#import "WPAppAnalytics.h"
 #import "WPBlogTableViewCell.h"
 #import "WPContentViewProvider.h"
 #import "WPGUIConstants.h"

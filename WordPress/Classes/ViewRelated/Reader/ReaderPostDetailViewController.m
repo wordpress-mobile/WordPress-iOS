@@ -431,16 +431,17 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     NSString *isOfflineView = [ReachabilityUtils isInternetReachable] ? @"no" : @"yes";
     NSString *detailType = (self.post.topic.type == ReaderSiteTopic.TopicType) ? ReaderDetailTypePreviewSite : ReaderDetailTypeNormal;
 
-    NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:3];
+    NSMutableDictionary *properties = [NSMutableDictionary dictionary];
     properties[ReaderDetailTypeKey] = detailType;
     properties[ReaderDetailOfflineKey] = isOfflineView;
-    
-    NSNumber *siteID = self.post.siteID;
-    if(siteID) {
-        properties[WPAppAnalyticsKeyBlogID] = siteID;
+    properties[WPAppAnalyticsKeyPostID] = self.post.postID;
+    properties[WPAppAnalyticsKeyBlogID] = self.post.siteID;
+    properties[WPAppAnalyticsKeyIsJetpack] = @(self.post.isJetpack);
+    if (self.post.feedID && self.post.feedItemID) {
+        properties[WPAppAnalyticsKeyFeedID] = self.post.feedID;
+        properties[WPAppAnalyticsKeyFeedItemID] = self.post.feedItemID;
     }
-    
-    [WPAnalytics track:WPAnalyticsStatReaderArticleOpened withProperties:properties];
+    [WPAppAnalytics track:WPAnalyticsStatReaderArticleOpened withProperties:properties];
 }
 
 - (void)bumpPageViewsForPost:(NSNumber *)postID site:(NSNumber *)siteID siteURL:(NSString *)siteURL
@@ -472,7 +473,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
                         ];
 
     NSString *path = [NSString stringWithFormat:@"%@?%@", pixel, [params componentsJoinedByString:@"&"]];
-    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
+    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent wordPressUserAgent];
 
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:path]];
     [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];

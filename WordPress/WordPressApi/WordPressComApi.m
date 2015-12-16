@@ -80,7 +80,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 		
         [self setAuthorizationHeaderWithToken:_authToken];
 		
-        NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
+        NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent wordPressUserAgent];
 		[self.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 	}
 	
@@ -125,7 +125,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     return operation;
 }
 
-- (WPJSONRequestOperation *)POST:(NSString *)URLString
+- (AFHTTPRequestOperation *)POST:(NSString *)URLString
                       parameters:(id)parameters
                      cancellable:(BOOL)cancellable
                          success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
@@ -238,7 +238,7 @@ constructingBodyWithBlock:block
         DDLogVerbose(@"Initializing anonymous API");
         _anonymousApi = [[self alloc] initWithBaseURL:[NSURL URLWithString:WordPressComApiClientEndpointURL] ];
 
-        NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
+        NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent wordPressUserAgent];
 		[_anonymousApi.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
     });
 
@@ -270,76 +270,6 @@ constructingBodyWithBlock:block
     [self setAuthToken:nil];
 }
 
-#pragma mark - Notifications
-
-- (void)unregisterForPushNotificationsWithDeviceId:(NSString *)deviceId
-                                           success:(void (^)())success
-                                           failure:(void (^)(NSError *error))failure {
-    if (deviceId.length == 0) {
-        DDLogWarn(@"Unable to fetchNotificationSettings - Device ID is empty!");
-        return;
-    }
-
-    NSString *path = [NSString stringWithFormat:@"v1.1/devices/%@/delete", deviceId];
-    WordPressComApiRestSuccessResponseBlock successBlock = ^(AFHTTPRequestOperation *operation, id responseObject) {
-        DDLogInfo(@"Successfully unregistered device ID %@", deviceId);
-        if (success) {
-            success();
-        }
-    };
-    
-    WordPressComApiRestSuccessFailureBlock failureBlock = ^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Unable to unregister push for device ID %@: %@", deviceId, error);
-        if (failure) {
-            failure(error);
-        }
-    };
-
-    [self POST:path parameters:nil cancellable:NO success:successBlock failure:failureBlock];
-}
-
-- (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
-                                        success:(void (^)(NSString *deviceId, NSDictionary *settings))success
-                                        failure:(void (^)(NSError *error))failure {
-    if (token.length == 0) {
-        DDLogWarn(@"syncPushNotificationInfoWithDeviceToken called with no token!");
-        return;
-    }
-
-    if (![self hasCredentials]) {
-        DDLogWarn(@"syncPushNotificationInfoWithDeviceToken called with no credentials!");
-        return;
-    }
-        
-    NSDictionary *parameters = @{@"device_token"    : token,
-                                 @"device_family"   : @"apple",
-                                 @"app_secret_key"  : WordPressComApiPushAppId,
-                                 @"device_name"     : [[UIDevice currentDevice] name],
-                                 @"device_model"    : [UIDeviceHardware platform],
-                                 @"os_version"      : [[UIDevice currentDevice] systemVersion],
-                                 @"app_version"     : [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
-                                 @"device_uuid"     : [[UIDevice currentDevice] wordPressIdentifier],
-                                 };
-    
-    [self POST:@"v1.1/devices/new"
-        parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary");
-               
-               if (success) {
-                   NSString *deviceId = [responseObject stringForKey:@"ID"];
-                   NSDictionary *settings = [responseObject dictionaryForKey:@"settings"];
-                   
-                   success(deviceId, settings);
-               }
-           }
-           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }
-     ];
-}
 
 #pragma mark - User Details
 

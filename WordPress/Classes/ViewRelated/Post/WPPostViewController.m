@@ -1376,13 +1376,7 @@ EditImageDetailsViewControllerDelegate
     NSAssert([context isKindOfClass:[NSManagedObjectContext class]],
              @"The object should be related to a managed object context here.");
     
-    NSNumber *dotComID = [self.post blog].dotComID;
-    if (dotComID) {
-        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID}];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
-    }
-    
+    [WPAppAnalytics track:WPAnalyticsStatEditorDiscardedChanges withBlog:self.post.blog];
     self.post = self.post.original;
     [self.post deleteRevision];
     
@@ -1412,12 +1406,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)dismissEditViewAnimated:(BOOL)animated
 {
-    NSNumber *dotComID = [self.post blog].dotComID;
-    if (dotComID) {
-        [WPAnalytics track:WPAnalyticsStatEditorClosed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID}];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatEditorClosed];
-    }
+    [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
     
     if (self.onClose) {
         self.onClose();
@@ -1720,20 +1709,10 @@ EditImageDetailsViewControllerDelegate
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         if (media.mediaType == MediaTypeImage) {
-            NSNumber *dotComID = [self.post blog].dotComID;
-            if (dotComID) {
-                [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID}];
-            }else {
-                [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
-            }
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId];
         } else if (media.mediaType == MediaTypeVideo) {
-            NSNumber *dotComID = [self.post blog].dotComID;
-            if (dotComID) {
-                [WPAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID}];
-            }else {
-                [WPAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary];
-            }
+            [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlog:self.post.blog];
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
                                         remotePoster:media.posterImageURL
@@ -1750,12 +1729,7 @@ EditImageDetailsViewControllerDelegate
             [media remove];
         } else {
             DDLogError(@"Failed Media Upload: %@", error.localizedDescription);
-            NSNumber *dotComID = [self.post blog].dotComID;
-            if (dotComID) {
-                [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID}];
-            }else {
-                [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed];
-            }
+            [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaFailed withBlog:self.post.blog];
             [self dismissAssociatedAlertControllerIfVisible:mediaUniqueId];
             self.mediaGlobalProgress.completedUnitCount++;
             if (media.mediaType == MediaTypeImage) {
@@ -1775,12 +1749,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
 {
-    NSNumber *dotComID = [self.post blog].dotComID;
-    if (dotComID) {
-        [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried];
-    }
+    [WPAppAnalytics track:WPAnalyticsStatEditorUploadMediaRetried withBlog:self.post.blog];
 
     NSProgress *progress = self.mediaInProgress[imageUniqueId];
     if (!progress) {
@@ -2029,13 +1998,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
 {
-    NSNumber *dotComID = [self.post blog].dotComID;
-    if (dotComID) {
-        [WPAnalytics track:WPAnalyticsStatEditorEditedImage withProperties:@{ WPAppAnalyticsKeyBlogID:dotComID} ];
-    }else {
-        [WPAnalytics track:WPAnalyticsStatEditorEditedImage];
-    }
-    
+    [WPAppAnalytics track:WPAnalyticsStatEditorEditedImage withBlog:self.post.blog];
     EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta forPost:self.post];
     controller.delegate = self;
 

@@ -165,11 +165,12 @@ public class ThemeBrowserCell : UICollectionViewCell
     }
     
     private func refreshScreenshotImage(imageUrl: String) {
-        let imageUrl = NSURL(string: imageUrl)
+        let imageUrlForWidth = imageUrl + "?w=\(presenter!.screenshotWidth)"
+        let screenshotUrl = NSURL(string: imageUrlForWidth)
         
         imageView.backgroundColor = Styles.placeholderColor
         activityView.startAnimating()
-        imageView.downloadImage(imageUrl,
+        imageView.downloadImage(screenshotUrl,
             placeholderImage: nil,
             success: { [weak self] (image: UIImage) in
                 self?.showScreenshot()
