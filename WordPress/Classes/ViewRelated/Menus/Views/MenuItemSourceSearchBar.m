@@ -47,6 +47,10 @@
             textField.translatesAutoresizingMaskIntoConstraints = NO;
             textField.delegate = self;
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+            textField.returnKeyType = UIReturnKeyDone;
+            
+            [textField addTarget:self action:@selector(textFieldDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
+            [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventValueChanged];
             
             UIFont *font = [WPFontManager openSansRegularFontOfSize:16.0];
             NSString *placeholder = NSLocalizedString(@"Search...", @"");
@@ -77,9 +81,28 @@
     CGContextSetLineWidth(context, 1.0);
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
     CGContextStrokeRect(context, CGRectInset(rect, 1.0, 1.0));
-
 }
 
 #pragma mark - UITextFieldDelegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self.delegate sourceSearchBarDidBeginSearching:self];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self.delegate sourceSearchBarDidEndSearching:self];
+}
+
+- (void)textFieldValueDidChange:(UITextField *)textField
+{
+    [self.delegate sourceSearchBar:self didUpdateSearchWithText:textField.text];
+}
+
+- (void)textFieldDidEndOnExit:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+}
 
 @end

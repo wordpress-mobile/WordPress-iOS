@@ -1,6 +1,5 @@
 #import "MenuItemSourceView.h"
 #import "MenusDesign.h"
-#import "MenuItemSourceSearchBar.h"
 
 @interface MenuItemSourceView ()
 
@@ -36,6 +35,21 @@
         result.title = @"Contact";
         [self.results addObject:result];
     }
+    {
+        MenuItemSourceResult *result = [MenuItemSourceResult new];
+        result.title = @"About";
+        [self.results addObject:result];
+    }
+    {
+        MenuItemSourceResult *result = [MenuItemSourceResult new];
+        result.title = @"Work";
+        [self.results addObject:result];
+    }
+    {
+        MenuItemSourceResult *result = [MenuItemSourceResult new];
+        result.title = @"Contact";
+        [self.results addObject:result];
+    }
     
     self.backgroundColor = [UIColor whiteColor];
     self.translatesAutoresizingMaskIntoConstraints = NO;
@@ -50,7 +64,6 @@
         UIEdgeInsets margins = UIEdgeInsetsZero;
         margins.top = MenusDesignDefaultContentSpacing;
         margins.left = MenusDesignDefaultContentSpacing;
-        margins.bottom = MenusDesignDefaultContentSpacing;
         margins.right = MenusDesignDefaultContentSpacing;
         stackView.layoutMargins = margins;
         stackView.layoutMarginsRelativeArrangement = YES;
@@ -133,6 +146,23 @@
     
     MenuItemSourceResult *result = [self.results objectAtIndex:indexPath.row];
     result.selected = YES;
+}
+
+#pragma mark - MenuItemSourceSearchBarDelegate
+
+- (void)sourceSearchBarDidBeginSearching:(MenuItemSourceSearchBar *)searchBar
+{
+    
+}
+
+- (void)sourceSearchBar:(MenuItemSourceSearchBar *)searchBar didUpdateSearchWithText:(NSString *)text
+{
+    
+}
+
+- (void)sourceSearchBarDidEndSearching:(MenuItemSourceSearchBar *)searchBar
+{
+    
 }
 
 @end
