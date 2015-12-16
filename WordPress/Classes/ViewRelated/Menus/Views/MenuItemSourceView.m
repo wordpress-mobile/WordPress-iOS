@@ -81,6 +81,7 @@
     {
         MenuItemSourceSearchBar *searchBar = [[MenuItemSourceSearchBar alloc] init];
         searchBar.translatesAutoresizingMaskIntoConstraints = NO;
+        searchBar.delegate = self;
         [self.stackView addArrangedSubview:searchBar];
         [searchBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         [searchBar setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
@@ -152,7 +153,7 @@
 
 - (void)sourceSearchBarDidBeginSearching:(MenuItemSourceSearchBar *)searchBar
 {
-    
+    [self.delegate sourceViewDidBeginTyping:self];
 }
 
 - (void)sourceSearchBar:(MenuItemSourceSearchBar *)searchBar didUpdateSearchWithText:(NSString *)text
@@ -162,7 +163,7 @@
 
 - (void)sourceSearchBarDidEndSearching:(MenuItemSourceSearchBar *)searchBar
 {
-    
+    [self.delegate sourceViewDidEndTyping:self];
 }
 
 @end

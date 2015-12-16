@@ -10,7 +10,7 @@
 static CGFloat const MenuItemEditingFooterViewDefaultHeight = 60.0;
 static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
-@interface MenuItemEditingViewController () <MenuItemEditingFooterViewDelegate>
+@interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIStackView *baseStackView;
 @property (nonatomic, strong) IBOutlet UIStackView *itemEditingStackView;
@@ -55,6 +55,8 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     self.itemEditingStackView.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.headerView.item = self.item;
+    self.sourceView.item = self.item;
+    self.sourceView.delegate = self;
     self.footerView.item = self.item;
     self.footerView.delegate = self;
 }
@@ -111,11 +113,19 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 - (void)updateTypeSelectionViewDisplay
 {
-    if(self.view.frame.size.width >= self.view.frame.size.height || IS_IPAD) {
-        [self setDisplayForRegularWidth];
-    }else {
+    if([self shouldDisplayForCompactWidth]) {
         [self setDisplayForCompactWidth];
+    }else {
+        [self setDisplayForRegularWidth];
     }
+}
+
+- (BOOL)shouldDisplayForCompactWidth
+{
+    if(IS_IPAD) {
+        return NO;
+    }
+    return (self.view.frame.size.width <= self.view.frame.size.height);
 }
 
 - (void)setDisplayForRegularWidth
@@ -123,7 +133,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     self.typeSelectionView.hidden = NO;
     self.selectionButton.hidden = YES;
     
-    if(!IS_IPAD) {
+    if(IS_IPHONE) {
         // iPad has much more room to work with than iPhone
         self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewCompactHeight;
     }
@@ -134,6 +144,18 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     self.typeSelectionView.hidden = YES;
     self.selectionButton.hidden = NO;
     self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewDefaultHeight;
+}
+
+#pragma mark - MenuItemSourceViewDelegate
+
+- (void)sourceViewDidBeginTyping:(MenuItemSourceView *)sourceView
+{
+
+}
+
+- (void)sourceViewDidEndTyping:(MenuItemSourceView *)sourceView
+{
+
 }
 
 #pragma mark - MenuItemEditingFooterViewDelegate
