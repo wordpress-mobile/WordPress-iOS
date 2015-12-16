@@ -142,15 +142,17 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
 - (void)updateDesignInsets
 {
     const BOOL highlighted = self.showsDesignHighlighted;
-    // inset the imageView image 28% of the ideal width of the button
+    // inset the imageView image % of the ideal width of the button
     // if we don't have a width, default to 20pt inset
     // this draws a nicely sized image within the button
     UIEdgeInsets imageEdgeInsets = UIEdgeInsetsZero;
-    CGFloat imageInset = self.frame.size.width ? (self.frame.size.width * 28) / 100 : 20;
-    imageEdgeInsets.left = imageInset;
-    imageEdgeInsets.top = imageInset;
-    imageEdgeInsets.right = imageInset;
-    imageEdgeInsets.bottom = imageInset;
+    CGFloat imageInsetHorizontal = self.frame.size.width ? (self.frame.size.width * 0.38) : 20;
+    CGFloat imageInsetVertical = self.frame.size.height ? (self.frame.size.height * 0.15) : 10;
+
+    imageEdgeInsets.left = imageInsetHorizontal;
+    imageEdgeInsets.top = imageInsetVertical;
+    imageEdgeInsets.right = imageInsetHorizontal;
+    imageEdgeInsets.bottom = imageInsetVertical;
     
     UIEdgeInsets titleEdgeInsets = UIEdgeInsetsZero;
     

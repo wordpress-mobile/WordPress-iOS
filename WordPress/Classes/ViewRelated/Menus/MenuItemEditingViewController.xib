@@ -7,7 +7,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenuItemEditingViewController">
             <connections>
                 <outlet property="footerView" destination="TSX-DY-vhd" id="TyK-Fp-Txp"/>
+                <outlet property="footerViewHeightConstraint" destination="E2v-oz-4Rk" id="dpp-uK-5uM"/>
                 <outlet property="headerView" destination="5rT-g7-Unk" id="LnY-fU-93W"/>
+                <outlet property="selectionButton" destination="Ehk-yL-Bgu" id="3IN-FZ-eQ9"/>
                 <outlet property="sourceView" destination="r1R-uA-XmG" id="m1W-Oe-MhN"/>
                 <outlet property="stackView" destination="73c-Qn-y4X" id="8et-Df-fHV"/>
                 <outlet property="stackViewBottomConstraint" destination="9qh-3b-qie" id="iYx-tS-A2K"/>
@@ -44,18 +46,25 @@
                                 <outlet property="stackView" destination="OSq-eW-1Qe" id="gDJ-5k-cYK"/>
                             </connections>
                         </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ehk-yL-Bgu" customClass="MenuItemSourceTypeSelectionView">
+                            <rect key="frame" x="0.0" y="75" width="600" height="54"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="750" constant="54" id="Ce3-xv-vR0"/>
+                            </constraints>
+                        </view>
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jw-S1-BbA">
-                            <rect key="frame" x="0.0" y="75" width="600" height="465"/>
+                            <rect key="frame" x="0.0" y="129" width="600" height="411"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ST-Kk-VgV" customClass="MenuItemEditingTypeView">
-                                    <rect key="frame" x="0.0" y="0.0" width="240" height="465"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="240" height="411"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="width" priority="750" constant="240" id="z8c-Ul-Z8h"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r1R-uA-XmG" customClass="MenuItemSourceView">
-                                    <rect key="frame" x="240" y="0.0" width="360" height="465"/>
+                                    <rect key="frame" x="240" y="0.0" width="360" height="411"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </view>
                             </subviews>
