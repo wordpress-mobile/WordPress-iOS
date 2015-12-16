@@ -30,11 +30,11 @@ target 'WordPress', :exclusive => true do
   pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
   pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
   pod 'NSObject-SafeExpectations', '0.0.2'
-  pod 'Simperium', '0.8.9'
+  pod 'Simperium', '0.8.10'
   pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
   pod 'WordPress-iOS-Shared', '0.5.1'
   pod 'WordPress-iOS-Editor', '1.1.1'
-  pod 'WordPressCom-Stats-iOS', '0.5.1'
+  pod 'WordPressCom-Stats-iOS/UI', '0.6.0'
   pod 'WordPressCom-Analytics-iOS', '0.1.2'
   pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
   pod 'WPMediaPicker', '~> 0.7.0'
@@ -44,7 +44,7 @@ end
 
 target 'WordPressTodayWidget', :exclusive => true do
   pod 'WordPress-iOS-Shared', '0.5.1'
-  pod 'WordPressCom-Stats-iOS/Services', '0.5.1'
+  pod 'WordPressCom-Stats-iOS/Services', '0.6.0'
 end
 
 target :WordPressTest, :exclusive => true do
