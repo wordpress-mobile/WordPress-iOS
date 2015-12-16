@@ -6,13 +6,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenuItemEditingViewController">
             <connections>
+                <outlet property="baseStackView" destination="b5L-ih-3wb" id="B6i-ak-lS1"/>
                 <outlet property="footerView" destination="TSX-DY-vhd" id="TyK-Fp-Txp"/>
                 <outlet property="footerViewHeightConstraint" destination="E2v-oz-4Rk" id="dpp-uK-5uM"/>
                 <outlet property="headerView" destination="5rT-g7-Unk" id="LnY-fU-93W"/>
+                <outlet property="itemEditingScrollView" destination="I6Y-Wo-WOk" id="YYA-S8-I1k"/>
+                <outlet property="itemEditingStackView" destination="73c-Qn-y4X" id="aV0-C1-T5k"/>
                 <outlet property="selectionButton" destination="Ehk-yL-Bgu" id="3IN-FZ-eQ9"/>
                 <outlet property="sourceView" destination="r1R-uA-XmG" id="m1W-Oe-MhN"/>
-                <outlet property="stackView" destination="73c-Qn-y4X" id="8et-Df-fHV"/>
-                <outlet property="stackViewBottomConstraint" destination="9qh-3b-qie" id="iYx-tS-A2K"/>
+                <outlet property="stackViewBottomConstraint" destination="r8L-Oi-Iel" id="Muw-J4-iFF"/>
                 <outlet property="typeSelectionView" destination="3ST-Kk-VgV" id="xc8-bl-u6a"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -22,53 +24,72 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="73c-Qn-y4X">
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="b5L-ih-3wb">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5rT-g7-Unk" customClass="MenuItemEditingHeaderView">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I6Y-Wo-WOk">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="540"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OSq-eW-1Qe">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="73c-Qn-y4X">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="540"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5rT-g7-Unk" customClass="MenuItemEditingHeaderView">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OSq-eW-1Qe">
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
+                                                </stackView>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="75" placeholder="YES" id="1YA-Ho-zu8"/>
+                                                <constraint firstAttribute="trailing" secondItem="OSq-eW-1Qe" secondAttribute="trailing" id="5EF-P2-TVn"/>
+                                                <constraint firstAttribute="bottom" secondItem="OSq-eW-1Qe" secondAttribute="bottom" id="HOG-Gr-RgV"/>
+                                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="top" secondItem="5rT-g7-Unk" secondAttribute="top" id="U6P-7E-r8J"/>
+                                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="height" secondItem="5rT-g7-Unk" secondAttribute="height" id="Xbk-z1-ciU"/>
+                                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="width" secondItem="5rT-g7-Unk" secondAttribute="width" id="fe3-GC-ewF"/>
+                                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="leading" secondItem="5rT-g7-Unk" secondAttribute="leading" id="jbc-yu-wSm"/>
+                                            </constraints>
+                                            <connections>
+                                                <outlet property="stackView" destination="OSq-eW-1Qe" id="gDJ-5k-cYK"/>
+                                            </connections>
+                                        </view>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ehk-yL-Bgu" customClass="MenuItemSourceTypeSelectionView">
+                                            <rect key="frame" x="0.0" y="75" width="600" height="54"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" priority="750" constant="54" id="Ce3-xv-vR0"/>
+                                            </constraints>
+                                        </view>
+                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jw-S1-BbA">
+                                            <rect key="frame" x="0.0" y="129" width="600" height="411"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ST-Kk-VgV" customClass="MenuItemEditingTypeView">
+                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="411"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" priority="750" constant="240" id="z8c-Ul-Z8h"/>
+                                                    </constraints>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r1R-uA-XmG" customClass="MenuItemSourceView">
+                                                    <rect key="frame" x="240" y="0.0" width="360" height="411"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </view>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
                                 </stackView>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="75" placeholder="YES" id="1YA-Ho-zu8"/>
-                                <constraint firstAttribute="trailing" secondItem="OSq-eW-1Qe" secondAttribute="trailing" id="5EF-P2-TVn"/>
-                                <constraint firstAttribute="bottom" secondItem="OSq-eW-1Qe" secondAttribute="bottom" id="HOG-Gr-RgV"/>
-                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="top" secondItem="5rT-g7-Unk" secondAttribute="top" id="U6P-7E-r8J"/>
-                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="height" secondItem="5rT-g7-Unk" secondAttribute="height" id="Xbk-z1-ciU"/>
-                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="width" secondItem="5rT-g7-Unk" secondAttribute="width" id="fe3-GC-ewF"/>
-                                <constraint firstItem="OSq-eW-1Qe" firstAttribute="leading" secondItem="5rT-g7-Unk" secondAttribute="leading" id="jbc-yu-wSm"/>
+                                <constraint firstAttribute="bottom" secondItem="73c-Qn-y4X" secondAttribute="bottom" id="56A-HM-fJB"/>
+                                <constraint firstAttribute="trailing" secondItem="73c-Qn-y4X" secondAttribute="trailing" id="BUo-rA-J1X"/>
+                                <constraint firstItem="73c-Qn-y4X" firstAttribute="leading" secondItem="I6Y-Wo-WOk" secondAttribute="leading" id="Gtx-Oh-xR2"/>
+                                <constraint firstItem="73c-Qn-y4X" firstAttribute="width" secondItem="I6Y-Wo-WOk" secondAttribute="width" id="VMp-82-6uL"/>
+                                <constraint firstItem="73c-Qn-y4X" firstAttribute="centerY" secondItem="I6Y-Wo-WOk" secondAttribute="centerY" id="ZXe-Rz-rWq"/>
+                                <constraint firstItem="73c-Qn-y4X" firstAttribute="centerX" secondItem="I6Y-Wo-WOk" secondAttribute="centerX" id="uAD-ke-qc1"/>
+                                <constraint firstItem="73c-Qn-y4X" firstAttribute="top" secondItem="I6Y-Wo-WOk" secondAttribute="top" id="xVU-er-q8z"/>
                             </constraints>
-                            <connections>
-                                <outlet property="stackView" destination="OSq-eW-1Qe" id="gDJ-5k-cYK"/>
-                            </connections>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ehk-yL-Bgu" customClass="MenuItemSourceTypeSelectionView">
-                            <rect key="frame" x="0.0" y="75" width="600" height="54"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" priority="750" constant="54" id="Ce3-xv-vR0"/>
-                            </constraints>
-                        </view>
-                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jw-S1-BbA">
-                            <rect key="frame" x="0.0" y="129" width="600" height="411"/>
-                            <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ST-Kk-VgV" customClass="MenuItemEditingTypeView">
-                                    <rect key="frame" x="0.0" y="0.0" width="240" height="411"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" priority="750" constant="240" id="z8c-Ul-Z8h"/>
-                                    </constraints>
-                                </view>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r1R-uA-XmG" customClass="MenuItemSourceView">
-                                    <rect key="frame" x="240" y="0.0" width="360" height="411"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </view>
-                            </subviews>
-                        </stackView>
+                        </scrollView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TSX-DY-vhd" customClass="MenuItemEditingFooterView">
                             <rect key="frame" x="0.0" y="540" width="600" height="60"/>
                             <subviews>
@@ -125,11 +146,11 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="73c-Qn-y4X" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="995-4N-sI8"/>
-                <constraint firstAttribute="bottom" secondItem="73c-Qn-y4X" secondAttribute="bottom" id="9qh-3b-qie"/>
-                <constraint firstAttribute="trailing" secondItem="73c-Qn-y4X" secondAttribute="trailing" id="FRF-b1-aAr"/>
-                <constraint firstItem="73c-Qn-y4X" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="bfa-8u-ZzH"/>
-                <constraint firstItem="73c-Qn-y4X" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="qlx-VP-YFl"/>
+                <constraint firstAttribute="trailing" secondItem="b5L-ih-3wb" secondAttribute="trailing" id="8ip-EF-psO"/>
+                <constraint firstItem="b5L-ih-3wb" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="Van-fQ-gF8"/>
+                <constraint firstItem="b5L-ih-3wb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Yaw-L8-rVz"/>
+                <constraint firstAttribute="bottom" secondItem="b5L-ih-3wb" secondAttribute="bottom" id="r8L-Oi-Iel"/>
+                <constraint firstItem="b5L-ih-3wb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="z58-wd-YPX"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <point key="canvasLocation" x="593" y="345"/>
