@@ -1,3 +1,4 @@
+
 var target = UIATarget.localTarget();
 var app = target.frontMostApp();
 var win = app.mainWindow();
@@ -72,8 +73,8 @@ if (app.tabBar().checkIsValid()) {
     app.tabBar().buttons()[3].tap();
     sleep(5);
     
-    target.frontMostApp().mainWindow().tableViews()[0].cells()[2].scrollToVisible(); sleep(2);
-    target.frontMostApp().mainWindow().tableViews()[0].cells()[2].tap();        
+    target.frontMostApp().mainWindow().tableViews()[0].cells()[4].scrollToVisible(); sleep(2);
+    target.frontMostApp().mainWindow().tableViews()[0].cells()[4].tap();     
     
     sleep(5);
     
@@ -110,14 +111,14 @@ if (isIpad()) {
     app.navigationBar().buttons()[0].tap(); sleep(2); sleep(2);    
 }
 
-target.frontMostApp().mainWindow().elements()["Pager View"].scrollViews()[0].tableViews()[0].cells()[0].tap(); sleep(5);
+target.frontMostApp().mainWindow().elements()["Pager View"].scrollViews()[0].tableViews()[0].cells()[1].tap(); sleep(5);
 captureLocalizedScreenshot("1-reader");
 
 target.frontMostApp().tabBar().buttons()[4].tap(); sleep(5);
 captureLocalizedScreenshot("2-notifications");
 
 target.frontMostApp().tabBar().buttons()[0].tap(); sleep(2);
-target.frontMostApp().mainWindow().tableViews()[0].cells()[2].tap(); sleep(5);
+target.frontMostApp().mainWindow().tableViews()[0].cells()[3].tap(); sleep(5);
 captureLocalizedScreenshot("3-posts");
 
 target.frontMostApp().mainWindow().tableViews()["PostsTable"].visibleCells()[0].tap(); sleep(3);
@@ -129,16 +130,17 @@ if (isIpad()) {
 }
 captureLocalizedScreenshot("4-post-editor");
 
+
 target.frontMostApp().navigationBar().buttons()[0].tap(); sleep(2);
 if (isIpad()) {
     target.frontMostApp().mainWindow().popover().actionSheet().collectionViews()[0].cells()[0].buttons()[0].tap();
 } else {
-    target.frontMostApp().actionSheet().collectionViews()[0].cells()[0].buttons()[0].tap();
+    target.frontMostApp().actionSheet().collectionViews()[0].cells()[0].buttons()[0].tap(); sleep(2);
 }
 
 target.frontMostApp().navigationBar().buttons()[0].tap(); sleep(2);
 target.frontMostApp().navigationBar().leftButton().tap(); sleep(2);
-target.frontMostApp().mainWindow().tableViews()[0].cells()[1].tap(); sleep(5);
+target.frontMostApp().mainWindow().tableViews()[0].cells()[2].tap(); sleep(5);
 captureLocalizedScreenshot("5-stats");
 
 UIALogger.logPass("screenshots");
