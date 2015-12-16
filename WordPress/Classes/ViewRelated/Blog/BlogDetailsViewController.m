@@ -13,7 +13,6 @@
 #import "WPAccount.h"
 #import "PostListViewController.h"
 #import "PageListViewController.h"
-#import "WPThemeSettings.h"
 #import "WPGUIConstants.h"
 #import "Wordpress-Swift.h"
 #import "WPAppAnalytics.h"
@@ -62,16 +61,6 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 @property (nonatomic, weak) UIActionSheet *removeSiteActionSheet;
 @property (nonatomic, weak) UIAlertView *removeSiteAlertView;
 @property (nonatomic, strong) NSArray *tableSections;
-
-/**
- *  @brief      Property to store the themes-enabled state when the VC opens.
- *  @details    The reason it's important to store this in a property as opposed to checking if
- *              themes are enabled in real time, is that this VC is not ready to update the themes
- *              feature visibility if it's changed when this VC is open.  This is not a big problem
- *              though since this feature exists only for testing purposes, but it could still crash
- *              the app if not handled properly.
- */
-@property (nonatomic, assign, readwrite, getter=areThemesEnabled) BOOL themesEnabled;
 
 @end
 
@@ -134,8 +123,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                            @(TableViewSectionPublishType)
                           ];
     
-    self.themesEnabled = [WPThemeSettings isEnabled];
-    if (self.themesEnabled && [self.blog supports:BlogFeatureThemeBrowsing]) {
+    if ([self.blog supports:BlogFeatureThemeBrowsing]) {
         self.tableSections = [self.tableSections arrayByAddingObject:@(TableViewSectionAppearance)];
     }
 

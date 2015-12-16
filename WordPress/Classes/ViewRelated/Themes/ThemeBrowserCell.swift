@@ -37,12 +37,14 @@ public enum ThemeAction
         switch self {
         case .Activate:
             presenter.activateTheme(theme)
-        case .Customize, .TryCustomize:
+        case .Customize:
             presenter.presentCustomizeForTheme(theme)
         case .Details:
             presenter.presentDetailsForTheme(theme)
         case .Support:
             presenter.presentSupportForTheme(theme)
+        case .TryCustomize:
+            presenter.presentPreviewForTheme(theme)
         case .View:
             presenter.presentViewForTheme(theme)
         }
