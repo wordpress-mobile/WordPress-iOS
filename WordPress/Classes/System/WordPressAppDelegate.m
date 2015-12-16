@@ -47,7 +47,6 @@
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
 #import "WPWhatsNew.h"
-#import "WPThemeSettings.h"
 
 // Networking
 #import "WPUserAgent.h"
@@ -271,16 +270,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
                     if ([debugType isEqualToString:@"crashlytics_crash"]) {
                         [[Crashlytics sharedInstance] crash];
                     }
-                }
-            }
-        } else if ([WPThemeSettings shouldHandleURL:url]) {
-            returnValue = [WPThemeSettings handleURL:url];
-            
-            if (returnValue) {
-                if ([WPThemeSettings isEnabled]) {
-                    [SVProgressHUD showSuccessWithStatus:@"Themes enabled."];
-                } else {
-                    [SVProgressHUD showSuccessWithStatus:@"Themes disabled."];
                 }
             }
         }
