@@ -12,7 +12,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 @interface MenuItemEditingViewController () <MenuItemEditingFooterViewDelegate>
 
-@property (nonatomic, strong) IBOutlet UIStackView *stackView;
+@property (nonatomic, strong) IBOutlet UIStackView *baseStackView;
+@property (nonatomic, strong) IBOutlet UIStackView *itemEditingStackView;
+@property (nonatomic, strong) IBOutlet UIScrollView *itemEditingScrollView;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *footerViewHeightConstraint;
@@ -49,7 +51,8 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     [super loadView];
     
     self.view.backgroundColor = [WPStyleGuide lightGrey];
-    self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.baseStackView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.itemEditingStackView.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.headerView.item = self.item;
     self.footerView.item = self.item;
@@ -65,6 +68,13 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
         self.view.superview.layer.cornerRadius = 0.0;
         self.headerView.shouldProvidePaddingForStatusBar = NO;
     }
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    self.itemEditingScrollView.contentSize = self.itemEditingStackView.frame.size;
 }
 
 - (void)viewWillAppear:(BOOL)animated
