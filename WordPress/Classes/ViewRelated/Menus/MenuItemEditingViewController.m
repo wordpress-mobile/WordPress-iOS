@@ -5,15 +5,23 @@
 #import "MenuItemEditingFooterView.h"
 #import "MenuItemSourceView.h"
 #import "MenuItemEditingTypeView.h"
+#import "MenuItemSourceTypeSelectionView.h"
+
+static CGFloat const MenuItemEditingFooterViewDefaultHeight = 60.0;
+static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 @interface MenuItemEditingViewController () <MenuItemEditingFooterViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
+
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *footerViewHeightConstraint;
+
 @property (nonatomic, strong) IBOutlet MenuItemEditingHeaderView *headerView;
 @property (nonatomic, strong) IBOutlet MenuItemEditingFooterView *footerView;
 @property (nonatomic, strong) IBOutlet MenuItemEditingTypeView *typeSelectionView;
 @property (nonatomic, strong) IBOutlet MenuItemSourceView *sourceView;
+@property (nonatomic, strong) IBOutlet MenuItemSourceTypeSelectionView *selectionButton;
 
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
 
@@ -64,7 +72,6 @@
     [super viewWillAppear:animated];
     
     if(self.modalPresentationStyle == UIModalPresentationFormSheet) {
-        
         self.view.superview.layer.cornerRadius = 0.0;
     }
     
@@ -95,10 +102,28 @@
 - (void)updateTypeSelectionViewDisplay
 {
     if(self.view.frame.size.width >= self.view.frame.size.height || IS_IPAD) {
-        self.typeSelectionView.hidden = NO;
+        [self setDisplayForRegularWidth];
     }else {
-        self.typeSelectionView.hidden = YES;
+        [self setDisplayForCompactWidth];
     }
+}
+
+- (void)setDisplayForRegularWidth
+{
+    self.typeSelectionView.hidden = NO;
+    self.selectionButton.hidden = YES;
+    
+    if(!IS_IPAD) {
+        // iPad has much more room to work with than iPhone
+        self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewCompactHeight;
+    }
+}
+
+- (void)setDisplayForCompactWidth
+{
+    self.typeSelectionView.hidden = YES;
+    self.selectionButton.hidden = NO;
+    self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewDefaultHeight;
 }
 
 #pragma mark - MenuItemEditingFooterViewDelegate
@@ -140,7 +165,6 @@
 - (void)keyboardWillHideNotification:(NSNotification *)notification
 {
     self.observesKeyboardChanges = NO;
-    
     self.stackViewBottomConstraint.constant = 0;
     [self.view layoutIfNeeded];
 }

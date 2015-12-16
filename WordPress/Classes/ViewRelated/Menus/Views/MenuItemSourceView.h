@@ -1,10 +1,10 @@
 #import <UIKit/UIKit.h>
 #import "MenuItemSourceResultCell.h"
+#import "MenuItemSourceSearchBar.h"
 
 @class MenuItem;
-@class MenuItemSourceSearchBar;
 
-@interface MenuItemSourceView : UIView <UITableViewDataSource, UITableViewDelegate>
+@interface MenuItemSourceView : UIView <UITableViewDataSource, UITableViewDelegate, MenuItemSourceSearchBarDelegate>
 
 @property (nonatomic, strong) MenuItem *item;
 @property (nonatomic, strong, readonly) UIStackView *stackView;
