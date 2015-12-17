@@ -14,6 +14,7 @@
 #import "LoginViewController.h"
 
 #import "MediaService.h"
+#import "MeHeaderView.h"
 
 #import "Notification.h"
 #import "Notification+Internals.h"
