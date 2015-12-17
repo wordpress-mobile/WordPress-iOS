@@ -20,7 +20,8 @@ class NewMeViewController: UITableViewController, UIViewControllerRestoration {
     required convenience init() {
         self.init(style: .Grouped)
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "accountDidChange:", name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+        notificationCenter.addObserver(self, selector: "refreshModelWithNotification:", name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+        notificationCenter.addObserver(self, selector: "refreshModelWithNotification:", name: HelpshiftUnreadCountUpdatedNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -48,6 +49,11 @@ class NewMeViewController: UITableViewController, UIViewControllerRestoration {
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        HelpshiftUtils.refreshUnreadNotificationCount()
     }
 
     func reloadViewModel() {
@@ -223,7 +229,7 @@ class NewMeViewController: UITableViewController, UIViewControllerRestoration {
 
     // MARK: - Notification observers
 
-    func accountDidChange(notification: NSNotification) {
+    func refreshModelWithNotification(notification: NSNotification) {
         reloadViewModel()
     }
 
