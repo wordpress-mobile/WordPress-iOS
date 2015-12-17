@@ -1,15 +1,30 @@
 import UIKit
 import WordPressShared
 
-class NewMeViewController: UITableViewController {
+class NewMeViewController: UITableViewController, UIViewControllerRestoration {
+    static let restorationIdentifier = "WPMeRestorationID"
     var handler: ImmuTableViewHandler!
 
+    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        return self.init()
+    }
+
     // MARK: - Table View Controller
+
+    override init(style: UITableViewStyle) {
+        super.init(style: style)
+        self.restorationIdentifier = self.dynamicType.restorationIdentifier
+        self.restorationClass = self.dynamicType
+    }
 
     required convenience init() {
         self.init(style: .Grouped)
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "accountDidChange:", name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     deinit {
