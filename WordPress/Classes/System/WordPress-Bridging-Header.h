@@ -11,6 +11,8 @@
 
 #import "DDLogSwift.h"
 
+#import "HelpshiftUtils.h"
+
 #import "LoginViewController.h"
 
 #import "MediaService.h"
