@@ -7,6 +7,7 @@ class WPReusableTableViewCell: WPTableViewCell {
         super.prepareForReuse()
 
         textLabel?.text = nil
+        textLabel?.textAlignment = .Left
         detailTextLabel?.text = nil
         imageView?.image = nil
         accessoryType = .None
