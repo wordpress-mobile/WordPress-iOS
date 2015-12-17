@@ -241,8 +241,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     // MARK: - Helpers
 
-    // FIXME: Not cool. Let's stop passing managed objects and initializing stuff
-    // with safer values like userID
+    // FIXME: (@koke 2015-12-17) Not cool. Let's stop passing managed objects
+    // and initializing stuff with safer values like userID
     func defaultAccount() -> WPAccount? {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
