@@ -38,6 +38,7 @@ class NewMeViewController: UITableViewController, UIViewControllerRestoration {
 
         ImmuTable.registerRows([
             NavigationItemRow.self,
+            BadgeNavigationItemRow.self,
             ButtonRow.self,
             DestructiveButtonRow.self
             ], tableView: self.tableView)
@@ -52,13 +53,15 @@ class NewMeViewController: UITableViewController, UIViewControllerRestoration {
     func reloadViewModel() {
         let account = defaultAccount()
         let loggedIn = account != nil
+        let badgeCount = HelpshiftUtils.isHelpshiftEnabled() ? HelpshiftUtils.unreadNotificationCount() : 0
+
         // Warning: If you set the header view after the table model, the
         // table's top margin will be wrong.
         //
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
         tableView.tableHeaderView = account.map(headerView)
-        handler.viewModel = tableViewModel(loggedIn)
+        handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
     }
 
     func headerView(account: WPAccount) -> MeHeaderView {
@@ -69,7 +72,7 @@ class NewMeViewController: UITableViewController, UIViewControllerRestoration {
         return header
     }
 
-    func tableViewModel(loggedIn: Bool) -> ImmuTable {
+    func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
 //            icon: UIImage(named: "icon-menu-people")!,
@@ -83,8 +86,9 @@ class NewMeViewController: UITableViewController, UIViewControllerRestoration {
             title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
             action: pushNotificationSettings())
 
-        let helpAndSupport = NavigationItemRow(
+        let helpAndSupport = BadgeNavigationItemRow(
             title: NSLocalizedString("Help & Support", comment: "Link to Help section"),
+            badgeCount: helpshiftBadgeCount,
             action: pushHelp())
 
         let about = NavigationItemRow(
