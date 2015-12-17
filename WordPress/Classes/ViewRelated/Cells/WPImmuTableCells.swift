@@ -55,15 +55,75 @@ class WPTableViewCellValue2: WPReusableTableViewCell {
     }
 }
 
+class WPTableViewCellBadge: WPTableViewCellDefault {
+    var badgeCount: Int = 0 {
+        didSet {
+            if badgeCount > 0 {
+                badgeLabel.text = String(badgeCount)
+                accessoryView = badgeLabel
+                accessoryType = .None
+            } else {
+                accessoryView = nil
+                accessoryType = .DisclosureIndicator
+            }
+        }
+    }
+
+    private lazy var badgeLabel: UILabel = {
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 30))
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 15
+        label.textAlignment = .Center
+        label.backgroundColor = WPStyleGuide.newKidOnTheBlockBlue()
+        label.textColor = UIColor.whiteColor()
+        return label
+    }()
+}
+
 struct NavigationItemRow : ImmuTableRow {
     static let cell = ImmuTableCell.Class(WPTableViewCellDefault)
 
     let title: String
+    let icon: UIImage?
     let action: ImmuTableActionType?
+
+    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, action: ImmuTableActionType) {
+        self.title = title
+        self.icon = icon
+        self.action = action
+    }
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.accessoryType = .DisclosureIndicator
+        cell.imageView?.image = icon
+
+        WPStyleGuide.configureTableViewCell(cell)
+    }
+}
+
+struct BadgeNavigationItemRow: ImmuTableRow {
+    static let cell = ImmuTableCell.Class(WPTableViewCellBadge)
+
+    let title: String
+    let icon: UIImage?
+    let action: ImmuTableActionType?
+    let badgeCount: Int
+
+    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, action: ImmuTableActionType) {
+        self.title = title
+        self.icon = icon
+        self.badgeCount = badgeCount
+        self.action = action
+    }
+
+    func configureCell(cell: UITableViewCell) {
+        let cell = cell as! WPTableViewCellBadge
+
+        cell.textLabel?.text = title
+        cell.accessoryType = .None
+        cell.imageView?.image = icon
+        cell.badgeCount = badgeCount
 
         WPStyleGuide.configureTableViewCell(cell)
     }
