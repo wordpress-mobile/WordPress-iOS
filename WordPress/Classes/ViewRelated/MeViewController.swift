@@ -16,14 +16,20 @@ class NewMeViewController: UITableViewController {
         self.title = NSLocalizedString("My Profile", comment: "My Profile view title")
 
         ImmuTable.registerRows([
-            NavigationItemRow.self
+            NavigationItemRow.self,
+            ButtonRow.self,
+            DestructiveButtonRow.self
             ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
-        handler.viewModel = buildViewModel()
+        reloadViewModel()
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+    }
+
+    func reloadViewModel() {
+        handler.viewModel = buildViewModel()
     }
 
     func buildViewModel() -> ImmuTable {
@@ -48,18 +54,51 @@ class NewMeViewController: UITableViewController {
             title: NSLocalizedString("About", comment: "Link to About section (contains info about the app)"),
             action: pushAbout())
 
-        return ImmuTable(
-            sections: [
-                ImmuTableSection(rows: [
-                    myProfile,
-                    accountSettings,
-                    notificationSettings
-                    ]),
-                ImmuTableSection(rows: [
-                    helpAndSupport,
-                    about
-                    ])
-            ])
+        let logIn = ButtonRow(
+            title: NSLocalizedString("Connect to WordPress.com", comment: "Label for connecting to WordPress.com account"),
+            action: presentLogin())
+
+        let logOut = DestructiveButtonRow(
+            title: NSLocalizedString("Disconnect from WordPress.com", comment: "Label for disconnecting from WordPress.com account"),
+            action: confirmLogout())
+
+        let wordPressComAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
+
+        if loggedIn() {
+            return ImmuTable(
+                sections: [
+                    ImmuTableSection(rows: [
+                        myProfile,
+                        accountSettings,
+                        notificationSettings
+                        ]),
+                    ImmuTableSection(rows: [
+                        helpAndSupport,
+                        about
+                        ]),
+                    ImmuTableSection(
+                        headerText: wordPressComAccount,
+                        rows: [
+                            logOut
+                        ])
+                ])
+        } else { // Logged out
+            return ImmuTable(
+                sections: [
+                    ImmuTableSection(rows: [
+                        accountSettings,
+                        ]),
+                    ImmuTableSection(rows: [
+                        helpAndSupport,
+                        about
+                        ]),
+                    ImmuTableSection(
+                        headerText: wordPressComAccount,
+                        rows: [
+                            logIn
+                        ])
+                ])
+        }
     }
 
     // MARK: - Actions
@@ -102,15 +141,64 @@ class NewMeViewController: UITableViewController {
         }
     }
 
+    func presentLogin() -> ImmuTableActionType {
+        return { [unowned self] row in
+            let controller = LoginViewController()
+            controller.onlyDotComAllowed = true
+            controller.cancellable = true
+            controller.dismissBlock = { [unowned self] _ in
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+
+            let navigation = UINavigationController(rootViewController: controller)
+            self.presentViewController(navigation, animated: true, completion: nil)
+        }
+    }
+
+    func confirmLogout() -> ImmuTableActionType {
+        return { [unowned self] row in
+            let format = NSLocalizedString("Disconnecting your account will remove all of @%@’s WordPress.com data from this device.", comment: "Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.")
+            let title = String(format: format, self.defaultAccount()!.username)
+            let alert = UIAlertController(title: title, message: nil, preferredStyle: .ActionSheet)
+
+            let cancel = UIAlertAction(
+                title: NSLocalizedString("Cancel", comment: ""),
+                style: .Cancel,
+                handler: nil)
+            let disconnect = UIAlertAction(
+                title: NSLocalizedString("Disconnect", comment: "Button for confirming disconnecting WordPress.com account"),
+                style: .Destructive,
+                handler: { [unowned self] _ in
+                self.logOut()
+            })
+
+            alert.addAction(cancel)
+            alert.addAction(disconnect)
+
+            self.presentViewController(alert, animated: true, completion: nil)
+            self.tableView.deselectSelectedRowWithAnimation(true)
+        }
+    }
+
     // MARK: - Helpers
     // FIXME: Not cool. Let's stop passing managed objects and initializing stuff
     // with safer values like userID
-    func defaultAccount() -> WPAccount {
+    func defaultAccount() -> WPAccount? {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         let account = service.defaultWordPressComAccount()
         // Again, ! isn't cool, but let's keep it for now until we refactor the VC
         // initialization parameters.
-        return account!
+        return account
+    }
+
+    func loggedIn() -> Bool {
+        return defaultAccount() != nil
+    }
+
+    func logOut() {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        service.removeDefaultWordPressComAccount()
     }
 }
