@@ -41,8 +41,10 @@
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingsTextViewController.h"
+#import "SettingsViewController.h"
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"
+#import "SupportViewController.h"
 
 #import "Theme.h"
 #import "ThemeService.h"
