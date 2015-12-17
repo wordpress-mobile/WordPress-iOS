@@ -35,10 +35,26 @@ class NewMeViewController: UITableViewController {
     }
 
     func reloadViewModel() {
-        handler.viewModel = buildViewModel()
+        let account = defaultAccount()
+        let loggedIn = account != nil
+        // Warning: If you set the header view after the table model, the
+        // table's top margin will be wrong.
+        //
+        // My guess is the table view adjusts the height of the first section
+        // based on if there's a header or not.
+        tableView.tableHeaderView = account.map(headerView)
+        handler.viewModel = tableViewModel(loggedIn)
     }
 
-    func buildViewModel() -> ImmuTable {
+    func headerView(account: WPAccount) -> MeHeaderView {
+        let header = cachedHeaderView
+        header.setDisplayName(account.displayName)
+        header.setUsername(account.username)
+        header.setGravatarEmail(account.email)
+        return header
+    }
+
+    func tableViewModel(loggedIn: Bool) -> ImmuTable {
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
 //            icon: UIImage(named: "icon-menu-people")!,
@@ -70,7 +86,7 @@ class NewMeViewController: UITableViewController {
 
         let wordPressComAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
 
-        if loggedIn() {
+        if loggedIn {
             return ImmuTable(
                 sections: [
                     ImmuTableSection(rows: [
@@ -205,13 +221,11 @@ class NewMeViewController: UITableViewController {
         return account
     }
 
-    func loggedIn() -> Bool {
-        return defaultAccount() != nil
-    }
-
     func logOut() {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         service.removeDefaultWordPressComAccount()
     }
+
+    lazy var cachedHeaderView = MeHeaderView()
 }
