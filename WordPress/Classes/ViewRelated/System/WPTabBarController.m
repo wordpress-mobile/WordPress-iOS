@@ -21,6 +21,7 @@
 #import "HelpshiftUtils.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
+#import "WordPress-Swift.h"
 
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
