@@ -63,7 +63,7 @@ final public class ReaderDetailViewController : UIViewController
     public var shouldHideComments = false
     private var didBumpStats = false
     private var didBumpPageViews = false
-    private var footerViewHeightConstraintConstant: CGFloat = 0.0
+    private var footerViewHeightConstraintConstant = CGFloat(0.0)
 
     public var post: ReaderPost? {
         didSet {
@@ -77,7 +77,7 @@ final public class ReaderDetailViewController : UIViewController
     }
 
 
-    var isLoaded : Bool {
+    private var isLoaded : Bool {
         return post != nil
     }
 
@@ -162,7 +162,9 @@ final public class ReaderDetailViewController : UIViewController
         // This is something we do to help with the resizing that can occur with 
         // split screen multitasking on the iPad.
         view.layoutIfNeeded()
-        richTextView.refreshMediaLayout()
+
+        richTextView.refreshLayout()
+
     }
 
 
@@ -173,7 +175,7 @@ final public class ReaderDetailViewController : UIViewController
         // resizing after an orientation change. Use the completion block to 
         // refresh media layout.
         coordinator.animateAlongsideTransition(nil) { (_) in
-            self.richTextView.refreshMediaLayout()
+            self.richTextView.refreshLayout()
         }
     }
 
@@ -195,7 +197,7 @@ final public class ReaderDetailViewController : UIViewController
 
         // Refresh media layout as our sizing may have changed if the user expanded
         // or shrank the split screen handle.
-        richTextView.refreshMediaLayout()
+        richTextView.refreshLayout()
     }
 
 
@@ -274,11 +276,8 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func configureNavTitle() {
-        if let postTitle = post?.postTitle {
-            self.title = postTitle
-        } else {
-            self.title = NSLocalizedString("Post", comment:"Placeholder title for ReaderPostDetails.")
-        }
+        let placeholder = NSLocalizedString("Post", comment:"Placeholder title for ReaderPostDetails.")
+        self.title = post?.postTitle ?? placeholder
     }
 
 
@@ -608,8 +607,11 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func configureFooterIfNeeded() {
-        footerViewHeightConstraintConstant = footerViewHeightConstraint.constant
         self.footerView.hidden = tagButton.hidden && likeButton.hidden && commentButton.hidden
+        if self.footerView.hidden {
+            footerViewHeightConstraint.constant = 0
+        }
+        footerViewHeightConstraintConstant = footerViewHeightConstraint.constant
     }
 
 
@@ -849,8 +851,7 @@ final public class ReaderDetailViewController : UIViewController
 
 extension ReaderDetailViewController : WPRichTextViewDelegate
 {
-
-    public func richTextView(richTextView: WPRichTextView!, didReceiveImageLinkAction imageControl: WPRichTextImage!) {
+    public func richTextView(richTextView: WPRichTextView, didReceiveImageLinkAction imageControl: WPRichTextImage) {
         var controller: WPImageViewController
 
         if WPImageViewController.isUrlSupported(imageControl.linkURL) {
@@ -871,11 +872,11 @@ extension ReaderDetailViewController : WPRichTextViewDelegate
     }
 
 
-    public func richTextView(richTextView: WPRichTextView!, didReceiveLinkAction linkURL: NSURL!) {
+    public func richTextView(richTextView: WPRichTextView, didReceiveLinkAction linkURL: NSURL) {
         var url = linkURL
         if url.host != nil {
             let postURL = NSURL(string: post!.permaLink)
-            url = NSURL(string: linkURL.absoluteString, relativeToURL: postURL)
+            url = NSURL(string: linkURL.absoluteString, relativeToURL: postURL)!
         }
         presentWebViewControllerWithURL(url)
     }
