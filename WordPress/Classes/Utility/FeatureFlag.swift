@@ -43,6 +43,10 @@ enum Build: Int {
 
     /// Returns the current build type
     static var current: Build {
+        if let override = _overrideCurrent {
+            return override
+        }
+
         #if DEBUG
             return .Debug
         #elseif ALPHA_BUILD
@@ -53,6 +57,9 @@ enum Build: Int {
             return .AppStore
         #endif
     }
+
+    /// For testing purposes only
+    static var _overrideCurrent: Build? = nil
 }
 
 /// Returns true if any of the given build types matches the current build
