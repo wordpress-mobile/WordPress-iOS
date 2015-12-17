@@ -68,7 +68,15 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  @param username the account's username
  @return a `WPAccount` object if there's one for the specified username. Otherwise it returns nil
  */
-- (WPAccount *)findAccountWithUsername:(NSString *)username;
+- (nullable WPAccount *)findAccountWithUsername:(NSString *)username;
+
+/**
+ Returns a WordPress.com account with the specified user ID, if it exists
+
+ @param userID the account's user ID
+ @return a `WPAccount` object if there's one for the specified username. Otherwise it returns nil
+ */
+- (nullable WPAccount *)findAccountWithUserID:(NSNumber *)userID;
 
 /**
  Updates user details including username, email, userID, avatarURL, and default blog.

@@ -1,6 +1,3 @@
-import Foundation
-import UIKit
-
 /**
  ImmuTable represents the view model for a static UITableView.
 

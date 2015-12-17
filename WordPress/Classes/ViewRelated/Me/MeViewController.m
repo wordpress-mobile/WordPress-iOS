@@ -31,7 +31,8 @@ typedef NS_ENUM(NSInteger, MeSectionSections)
 };
 
 typedef NS_ENUM(NSInteger, MeSectionAccount) {
-    MeSectionAccountSettings = 0,
+    MeSectionAccountMyProfile = 0,
+    MeSectionAccountSettings,
     MeSectionAccountNotifications,
     MeSectionAccountCount
 };
@@ -242,16 +243,19 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
     if (indexPath.section == MeSectionsAccount) {
         switch (indexPath.row) {
+            case MeSectionAccountMyProfile:
+                cell.textLabel.text = NSLocalizedString(@"My Profile", @"Link to My Profile section");
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                break;
             case MeSectionAccountSettings:
                 cell.textLabel.text = NSLocalizedString(@"Account Settings", @"");
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessibilityLabel = @"Account Settings";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case MeSectionAccountNotifications:
                 cell.textLabel.text = NSLocalizedString(@"Notification Settings", @"");
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessibilityLabel = @"Notification Settings";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
         }
@@ -260,7 +264,6 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
             case MeSectionExtraHelp:
                 cell.textLabel.text = NSLocalizedString(@"Help & Support", @"");
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessibilityLabel = @"Help & Support";
 
                 NSInteger unreadNotificationCount = [HelpshiftUtils unreadNotificationCount];
                 if ([HelpshiftUtils isHelpshiftEnabled] && unreadNotificationCount > 0) {
@@ -276,7 +279,6 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
             case MeSectionExtraAbout:
                 cell.textLabel.text = NSLocalizedString(@"About", @"");
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessibilityLabel = @"About";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
         }
@@ -289,17 +291,13 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
             cell.accessoryType = UITableViewCellAccessoryNone;
 
             if (defaultAccount) {
-                NSString *signOutString = NSLocalizedString(@"Disconnect from WordPress.com",
-                                                            @"Label for disconnecting from WordPress.com account");
-                cell.textLabel.text = signOutString;
-                cell.accessibilityIdentifier = signOutString;
+                cell.textLabel.text = NSLocalizedString(@"Disconnect from WordPress.com",
+                                                        @"Label for disconnecting from WordPress.com account");
                 [WPStyleGuide configureTableViewDestructiveActionCell:cell];
             }
             else {
-                NSString *signInString = NSLocalizedString(@"Connect to WordPress.com",
-                                                           @"Label for connecting to WordPress.com account");
-                cell.textLabel.text = signInString;
-                cell.accessibilityIdentifier = signInString;
+                cell.textLabel.text = NSLocalizedString(@"Connect to WordPress.com",
+                                                        @"Label for connecting to WordPress.com account");
                 [WPStyleGuide configureTableViewActionCell:cell];
                 cell.textLabel.textAlignment = NSTextAlignmentCenter;
             }
@@ -341,6 +339,9 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
     if (indexPath.section == MeSectionsAccount) {
         switch (indexPath.row) {
+            case MeSectionAccountMyProfile:
+                [self navigateToMyProfile];
+                break;
             case MeSectionAccountSettings:
                 [self navigateToAccountSettings];
                 break;
@@ -400,9 +401,17 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
 #pragma mark - Actions
 
+- (void)navigateToMyProfile
+{
+    [WPAppAnalytics track:WPAnalyticsStatOpenedMyProfile];
+    MyProfileViewController *controller = [MyProfileViewController new];
+    controller.account = [self defaultAccount];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (void)navigateToAccountSettings
 {
-    [WPAnalytics track:WPAnalyticsStatOpenedAccountSettings];
+    [WPAppAnalytics track:WPAnalyticsStatOpenedAccountSettings];
 
     SettingsViewController *settingsViewController = [[SettingsViewController alloc] init];
     [self.navigationController pushViewController:settingsViewController animated:YES];
