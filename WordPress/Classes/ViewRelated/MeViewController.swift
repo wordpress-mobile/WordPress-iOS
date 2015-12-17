@@ -46,6 +46,12 @@ class NewMeViewController: UITableViewController, UIViewControllerRestoration {
 
         handler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
+        // FIXME: @koke 2015-12-17
+        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4416
+        // The view controller should observe changes to account details
+        // regardless of who asked for them.
+        // For now I'm just porting this to Swift as it is.
+        refreshAccountDetails()
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
@@ -244,6 +250,15 @@ class NewMeViewController: UITableViewController, UIViewControllerRestoration {
         // Again, ! isn't cool, but let's keep it for now until we refactor the VC
         // initialization parameters.
         return account
+    }
+
+    func refreshAccountDetails() {
+        guard let account = defaultAccount() else { return }
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        service.updateUserDetailsForAccount(account, success: { [weak self] in
+            self?.reloadViewModel()
+            }, failure: { _ in })
     }
 
     func logOut() {
