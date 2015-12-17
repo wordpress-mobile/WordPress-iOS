@@ -128,6 +128,33 @@ struct LinkWithValueRow : ImmuTableRow {
     }
 }
 
+struct ButtonRow: ImmuTableRow {
+    static let cell = ImmuTableCell.Class(WPTableViewCellDefault)
+
+    let title: String
+    let action: ImmuTableActionType?
+
+    func configureCell(cell: UITableViewCell) {
+        cell.textLabel?.text = title
+
+        WPStyleGuide.configureTableViewActionCell(cell)
+        cell.textLabel?.textAlignment = .Center
+    }
+}
+
+struct DestructiveButtonRow: ImmuTableRow {
+    static let cell = ImmuTableCell.Class(WPTableViewCellDefault)
+
+    let title: String
+    let action: ImmuTableActionType?
+
+    func configureCell(cell: UITableViewCell) {
+        cell.textLabel?.text = title
+
+        WPStyleGuide.configureTableViewDestructiveActionCell(cell)
+    }
+}
+
 struct SwitchRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(SwitchTableViewCell)
 
