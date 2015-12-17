@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-class NewMeViewController: UITableViewController, UIViewControllerRestoration {
+class MeViewController: UITableViewController, UIViewControllerRestoration {
     static let restorationIdentifier = "WPMeRestorationID"
     var handler: ImmuTableViewHandler!
 
