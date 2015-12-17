@@ -8,6 +8,12 @@ class NewMeViewController: UITableViewController {
 
     required convenience init() {
         self.init(style: .Grouped)
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: "accountDidChange:", name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     override func viewDidLoad() {
@@ -180,7 +186,14 @@ class NewMeViewController: UITableViewController {
         }
     }
 
+    // MARK: - Notification observers
+
+    func accountDidChange(notification: NSNotification) {
+        reloadViewModel()
+    }
+
     // MARK: - Helpers
+
     // FIXME: Not cool. Let's stop passing managed objects and initializing stuff
     // with safer values like userID
     func defaultAccount() -> WPAccount? {
