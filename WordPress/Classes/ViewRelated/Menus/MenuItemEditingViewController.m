@@ -4,7 +4,7 @@
 #import "MenuItemEditingHeaderView.h"
 #import "MenuItemEditingFooterView.h"
 #import "MenuItemSourceView.h"
-#import "MenuItemEditingTypeView.h"
+#import "MenuItemTypeSelectionView.h"
 #import "MenuItemTypeView.h"
 
 static CGFloat const MenuItemEditingFooterViewDefaultHeight = 60.0;
@@ -21,9 +21,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 @property (nonatomic, strong) IBOutlet MenuItemEditingHeaderView *headerView;
 @property (nonatomic, strong) IBOutlet MenuItemEditingFooterView *footerView;
-@property (nonatomic, strong) IBOutlet MenuItemEditingTypeView *typeSelectionView;
-@property (nonatomic, strong) IBOutlet MenuItemSourceView *sourceView;
+@property (nonatomic, strong) IBOutlet MenuItemTypeSelectionView *itemTypeSelectionView;
 @property (nonatomic, strong) IBOutlet MenuItemTypeView *itemTypeView;
+@property (nonatomic, strong) IBOutlet MenuItemSourceView *sourceView;
 
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
 @property (nonatomic, assign) BOOL sourceViewIsTyping;
@@ -165,9 +165,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
         self.itemTypeView.alpha = 1.0;
     }
     
-    if(!self.typeSelectionView.hidden) {
-        self.typeSelectionView.hidden = YES;
-        self.typeSelectionView.alpha = 0.0;
+    if(!self.itemTypeSelectionView.hidden) {
+        self.itemTypeSelectionView.hidden = YES;
+        self.itemTypeSelectionView.alpha = 0.0;
     }
     
     if(IS_IPHONE) {
@@ -184,9 +184,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
             self.headerView.alpha = 0.0;
         }
         
-        if(!self.typeSelectionView.hidden) {
-            self.typeSelectionView.hidden = YES;
-            self.typeSelectionView.alpha = 0.0;
+        if(!self.itemTypeSelectionView.hidden) {
+            self.itemTypeSelectionView.hidden = YES;
+            self.itemTypeSelectionView.alpha = 0.0;
         }
         
     }else {
@@ -197,9 +197,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
             [self.headerView setNeedsDisplay];
         }
         
-        if(self.typeSelectionView.hidden) {
-            self.typeSelectionView.hidden = NO;
-            self.typeSelectionView.alpha = 1.0;
+        if(self.itemTypeSelectionView.hidden) {
+            self.itemTypeSelectionView.hidden = NO;
+            self.itemTypeSelectionView.alpha = 1.0;
         }
     }
     

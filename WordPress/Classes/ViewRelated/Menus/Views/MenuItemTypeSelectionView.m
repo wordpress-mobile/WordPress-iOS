@@ -1,6 +1,6 @@
-#import "MenuItemEditingTypeView.h"
+#import "MenuItemTypeSelectionView.h"
 
-@implementation MenuItemEditingTypeView
+@implementation MenuItemTypeSelectionView
 
 - (void)awakeFromNib
 {
