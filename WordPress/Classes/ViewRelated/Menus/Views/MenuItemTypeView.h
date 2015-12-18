@@ -10,4 +10,6 @@
 
 @protocol MenuItemTypeViewDelegate <NSObject>
 
+- (void)itemTypeViewSelected:(MenuItemTypeView *)typeView;
+
 @end

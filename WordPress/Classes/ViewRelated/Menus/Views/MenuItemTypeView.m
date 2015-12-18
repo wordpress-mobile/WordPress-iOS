@@ -58,6 +58,14 @@
                                                   ]];
         self.label = label;
     }
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+    [self addGestureRecognizer:tap];
+}
+
+- (void)tapGesture:(UITapGestureRecognizer *)tapGesture
+{
+    [self.delegate itemTypeViewSelected:self];
 }
 
 - (void)drawRect:(CGRect)rect
