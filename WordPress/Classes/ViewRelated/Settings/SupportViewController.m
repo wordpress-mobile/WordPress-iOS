@@ -4,7 +4,6 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
 #import <CocoaLumberjack/DDFileLogger.h>
-#import "WPTableViewSectionHeaderFooterView.h"
 #import <Helpshift/Helpshift.h>
 #import "WPAnalytics.h"
 #import <WordPressShared/WPStyleGuide.h>
@@ -406,30 +405,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     return CGFLOAT_MIN;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    NSString *title = [self titleForFooterInSection:section];
-    if (!title) {
-        return nil;
-    }
-    
-    WPTableViewSectionHeaderFooterView *footer = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    footer.title = title;
-    return footer;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    NSString *title = [self titleForFooterInSection:section];
-    if (!title) {
-        // Fix: Prevents extra spacing when dealing with empty footers
-        return CGFLOAT_MIN;
-    }
-    
-    return [WPTableViewSectionHeaderFooterView heightForFooter:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (NSString *)titleForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     if (section == SettingsSectionFAQForums) {
         return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or visit the Forums to ask new ones.", @"");
@@ -437,6 +413,11 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         return NSLocalizedString(@"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", @"");
     }
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 #pragma mark - Table view delegate
