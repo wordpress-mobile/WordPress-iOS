@@ -35,7 +35,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = NSLocalizedString("Me", comment: "Me page title")
+        title = NSLocalizedString("Me", comment: "Me page title")
 
         ImmuTable.registerRows([
             NavigationItemRow.self,
