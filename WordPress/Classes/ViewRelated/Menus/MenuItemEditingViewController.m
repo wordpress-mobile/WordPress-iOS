@@ -19,6 +19,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *footerViewHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *itemTypeSelectionViewWidthConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *scrollingStackViewTrailingConstraint;
 
 @property (nonatomic, strong) IBOutlet MenuItemEditingHeaderView *headerView;
 @property (nonatomic, strong) IBOutlet MenuItemEditingFooterView *footerView;
@@ -59,6 +60,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     
     self.headerView.item = self.item;
     self.typeHeaderView.delegate = self;
+    self.itemTypeSelectionView.delegate = self;
     self.sourceView.item = self.item;
     self.sourceView.delegate = self;
     self.footerView.item = self.item;
@@ -102,7 +104,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 - (BOOL)prefersStatusBarHidden
 {
-    [self.headerView setNeedsTopConstraintsUpdateForStatusBarAppearence];
+    [self.headerView setNeedsTopConstraintsUpdateForStatusBarAppearence:self.headerView.hidden];
     return self.headerView.hidden;
 }
 
@@ -141,8 +143,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
         [self updateForExtendedWidthLayout];
     }
     
-    [self setNeedsStatusBarAppearanceUpdate];
     [self.stackView layoutIfNeeded];
+    [self setNeedsStatusBarAppearanceUpdate];
+    [self.headerView setNeedsTopConstraintsUpdateForStatusBarAppearence:self.headerView.hidden];
 }
 
 - (void)updateForCompactWidthLayout
@@ -235,18 +238,30 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 {
     if(self.itemTypeSelectionView.hidden) {
         
-        [UIView animateWithDuration:0.10 animations:^{
-            self.typeHeaderView.alpha = 0.0;
-            self.typeHeaderView.hidden = YES;
-        }];
+        self.typeHeaderView.alpha = 0.0;
+        self.typeHeaderView.hidden = YES;
         
-        [UIView animateWithDuration:0.30 animations:^{
+        if(self.itemTypeSelectionView.hidden) {
+            self.itemTypeSelectionView.hidden = NO;
+            self.itemTypeSelectionView.alpha = 1.0;
+        }
+    }
+}
+
+- (void)updateForHidingTypeSelection
+{
+    if(!self.itemTypeSelectionView.hidden) {
+        
+        self.typeHeaderView.alpha = 1.0;
+        self.typeHeaderView.hidden = NO;
+        
+        if([self shouldDisplayForCompactWidth]) {
             
-            if(self.itemTypeSelectionView.hidden) {
-                self.itemTypeSelectionView.hidden = NO;
-                self.itemTypeSelectionView.alpha = 1.0;
+            if(!self.itemTypeSelectionView.hidden) {
+                self.itemTypeSelectionView.hidden = YES;
+                self.itemTypeSelectionView.alpha = 0.0;
             }
-        }];
+        }
     }
 }
 
@@ -282,7 +297,10 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 #pragma mark - MenuItemTypeSelectionViewDelegate
 
-
+- (void)typeSelectionView:(MenuItemTypeSelectionView *)selectionView selectedType:(MenuItemType)type
+{
+    [self updateForHidingTypeSelection];
+}
 
 #pragma mark - notifications
 
