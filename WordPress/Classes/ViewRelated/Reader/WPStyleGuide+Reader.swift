@@ -160,6 +160,23 @@ extension WPStyleGuide
         ]
     }
 
+    // MARK: - Detail styles
+
+    public class func readerDetailTitleAttributes() -> [NSObject: AnyObject] {
+        let fontSize = Detail.titleFontSize
+        let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
+
+        let lineHeight = Detail.titleLineHeight
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = lineHeight
+        paragraphStyle.maximumLineHeight = lineHeight
+
+        return [
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName: font
+        ]
+    }
+
 
     // MARK: - Stream Header Attributed Text Attributes
 
@@ -305,6 +322,13 @@ extension WPStyleGuide
         public static let crossPostTitleFontSize:CGFloat = 16.0
         public static let crossPostSubtitleFontSize:CGFloat = 13.0
         public static let crossPostLineHeight:CGFloat = 20.0
+    }
+
+    public struct Detail
+    {
+        public static let titleFontSize:CGFloat = UIDevice.isPad() ? 32.0 : 18.0
+        public static let titleLineHeight:CGFloat = UIDevice.isPad() ? 40.0 : 24.0
+        public static let contentFontSize:CGFloat = UIDevice.isPad() ? 16.0 : 14.0
     }
 
 }
