@@ -16,7 +16,6 @@
 #import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPTableViewActivityCell.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPTableImageSource.h"
 #import "ContextManager.h"
 #import "MediaService.h"
@@ -331,7 +330,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     return 0;
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSInteger sec = [[self.sections objectAtIndex:section] integerValue];
     if (sec == PostSettingsSectionTaxonomy) {
@@ -350,30 +349,12 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         return NSLocalizedString(@"Geolocation", @"Label for the geolocation feature (tagging posts by their physical location).");
 
     }
-    return @"";
+    return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = [self titleForHeaderInSection:section];
-    return header;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (IS_IPAD && section == 0) {
-        return WPTableViewTopMargin;
-    }
-
-    NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    // Remove extra padding caused by section footers in grouped table views
-    return 1.0f;
+    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
