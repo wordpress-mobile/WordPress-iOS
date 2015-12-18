@@ -25,7 +25,7 @@
                         <outlet property="ratingsView" destination="ZnY-3K-upT" id="lUG-fd-Stc"/>
                         <outlet property="tableHeaderView" destination="Uvo-9e-l6I" id="dxx-mK-msp"/>
                         <segue destination="veA-Pg-QAw" kind="show" identifier="NotificationDetailsViewController" id="7uj-uJ-yZ8"/>
-                        <segue destination="xj3-6N-2Jy" kind="show" identifier="ReaderDetailViewController" id="2du-eK-Xkt"/>
+                        <segue destination="kcO-Az-Wxu" kind="show" identifier="ReaderDetailViewController" id="bEO-Oa-Auc"/>
                     </connections>
                 </tableViewController>
                 <view contentMode="scaleToFill" id="Uvo-9e-l6I" userLabel="Header View">
@@ -111,15 +111,13 @@
             </objects>
             <point key="canvasLocation" x="2949.375" y="-1982.7464788732393"/>
         </scene>
-        <!--Reader Post Details-->
-        <scene sceneID="ET8-9p-ZLz">
+        <!--Reader Detail View Controller-->
+        <scene sceneID="vTb-vW-OFD">
             <objects>
-                <tableViewController id="xj3-6N-2Jy" userLabel="Reader Post Details" customClass="ReadertDetailViewController" customModule="WordPress" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="sWj-Rg-m3q"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="h51-jr-fqU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="kcO-Az-Wxu" customClass="ReaderDetailViewController" customModule="WordPress" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DSY-1w-dw1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2949.375" y="-1270.7746478873239"/>
+            <point key="canvasLocation" x="2949" y="-1286"/>
         </scene>
         <!--WebView-->
         <scene sceneID="1zS-D4-F1Z">
@@ -169,8 +167,8 @@
                         <outlet property="tableView" destination="Dcn-Il-AtN" id="Mjf-q7-Lkn"/>
                         <segue destination="8p8-88-FGK" kind="show" identifier="StatsViewController" id="EAn-K1-ofm"/>
                         <segue destination="Bbj-DX-KQ7" kind="show" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
-                        <segue destination="xj3-6N-2Jy" kind="show" identifier="ReaderDetailViewController" id="ODX-zz-S1G"/>
                         <segue destination="kOE-dH-qnb" kind="show" identifier="ReaderCommentsViewController" id="Puk-pn-rGi"/>
+                        <segue destination="kcO-Az-Wxu" kind="show" identifier="ReaderDetailViewController" id="4z4-sX-qfi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -195,6 +193,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="2du-eK-Xkt"/>
+        <segue reference="4z4-sX-qfi"/>
     </inferredMetricsTieBreakers>
 </document>
