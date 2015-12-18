@@ -210,7 +210,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return { [unowned self] row in
             let format = NSLocalizedString("Disconnecting your account will remove all of @%@’s WordPress.com data from this device.", comment: "Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.")
             let title = String(format: format, self.defaultAccount()!.username)
-            let alert = UIAlertController(title: title, message: nil, preferredStyle: .ActionSheet)
+            let alert = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
 
             let cancel = UIAlertAction(
                 title: NSLocalizedString("Cancel", comment: ""),
