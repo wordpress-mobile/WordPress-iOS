@@ -10,6 +10,7 @@
                 <outlet property="footerViewHeightConstraint" destination="E2v-oz-4Rk" id="dpp-uK-5uM"/>
                 <outlet property="headerView" destination="5rT-g7-Unk" id="LnY-fU-93W"/>
                 <outlet property="itemTypeSelectionView" destination="3ST-Kk-VgV" id="2ht-8Z-mfK"/>
+                <outlet property="itemTypeSelectionViewWidthConstraint" destination="z8c-Ul-Z8h" id="emL-db-CLy"/>
                 <outlet property="scrollView" destination="I6Y-Wo-WOk" id="AlJ-Fh-Z7j"/>
                 <outlet property="scrollingStackView" destination="73c-Qn-y4X" id="gTj-xt-daf"/>
                 <outlet property="sourceView" destination="r1R-uA-XmG" id="m1W-Oe-MhN"/>
@@ -47,19 +48,23 @@
                                                 <constraint firstAttribute="height" priority="750" constant="48" id="Ce3-xv-vR0"/>
                                             </constraints>
                                         </view>
-                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1jw-S1-BbA">
+                                        <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="1jw-S1-BbA">
                                             <rect key="frame" x="0.0" y="48" width="600" height="417"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ST-Kk-VgV" customClass="MenuItemTypeSelectionView">
-                                                    <rect key="frame" x="0.0" y="0.0" width="240" height="417"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="160" height="300"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" priority="750" constant="240" id="z8c-Ul-Z8h"/>
+                                                        <constraint firstAttribute="height" constant="300" placeholder="YES" id="UYA-nZ-zgC"/>
+                                                        <constraint firstAttribute="width" priority="750" constant="160" id="z8c-Ul-Z8h"/>
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r1R-uA-XmG" customClass="MenuItemSourceView">
-                                                    <rect key="frame" x="240" y="0.0" width="360" height="417"/>
+                                                    <rect key="frame" x="160" y="0.0" width="440" height="300"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="300" placeholder="YES" id="VDD-53-ZqD"/>
+                                                    </constraints>
                                                 </view>
                                             </subviews>
                                         </stackView>
