@@ -18,6 +18,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *footerViewHeightConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *itemTypeSelectionViewWidthConstraint;
 
 @property (nonatomic, strong) IBOutlet MenuItemEditingHeaderView *headerView;
 @property (nonatomic, strong) IBOutlet MenuItemEditingFooterView *footerView;
@@ -101,6 +102,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 - (BOOL)prefersStatusBarHidden
 {
+    [self.headerView setNeedsTopConstraintsUpdateForStatusBarAppearence];
     return self.headerView.hidden;
 }
 
@@ -235,6 +237,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
         
         [UIView animateWithDuration:0.10 animations:^{
             self.typeHeaderView.alpha = 0.0;
+            self.typeHeaderView.hidden = YES;
         }];
         
         [UIView animateWithDuration:0.30 animations:^{
@@ -242,11 +245,6 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
             if(self.itemTypeSelectionView.hidden) {
                 self.itemTypeSelectionView.hidden = NO;
                 self.itemTypeSelectionView.alpha = 1.0;
-            }
-            
-            if(!self.sourceView.hidden) {
-                self.sourceView.hidden = YES;
-                self.sourceView.alpha = 0.0;
             }
         }];
     }

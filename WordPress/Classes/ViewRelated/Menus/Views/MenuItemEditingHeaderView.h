@@ -6,4 +6,6 @@
 
 @property (nonatomic, strong) MenuItem *item;
 
+- (void)setNeedsTopConstraintsUpdateForStatusBarAppearence;
+
 @end
