@@ -13,8 +13,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     override init(style: UITableViewStyle) {
         super.init(style: style)
-        self.restorationIdentifier = self.dynamicType.restorationIdentifier
-        self.restorationClass = self.dynamicType
+        title = NSLocalizedString("Me", comment: "Me page title")
+        restorationIdentifier = self.dynamicType.restorationIdentifier
+        restorationClass = self.dynamicType
     }
 
     required convenience init() {
@@ -34,8 +35,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        title = NSLocalizedString("Me", comment: "Me page title")
 
         ImmuTable.registerRows([
             NavigationItemRow.self,
