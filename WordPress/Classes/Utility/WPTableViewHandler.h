@@ -59,7 +59,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section;
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section;
 
 #pragma mark - Inserting or deleting table rows
 
@@ -91,7 +91,6 @@
 @property (nonatomic) UITableViewRowAnimation sectionRowAnimation;
 
 - (instancetype)initWithTableView:(UITableView *)tableView;
-- (void)updateTitleForSection:(NSUInteger)section;
 - (void)clearCachedRowHeights;
 - (void)refreshCachedRowHeightsForWidth:(CGFloat)width;
 - (void)invalidateCachedRowHeightAtIndexPath:(NSIndexPath *)indexPath;
