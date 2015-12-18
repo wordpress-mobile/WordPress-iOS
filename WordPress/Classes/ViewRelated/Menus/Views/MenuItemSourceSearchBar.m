@@ -19,6 +19,8 @@
         
         self.backgroundColor = [UIColor whiteColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
+        self.layer.borderWidth = 1.0;
         
         self.layoutMargins = UIEdgeInsetsZero;
         UILayoutGuide *marginsGuide = self.layoutMarginsGuide;
@@ -71,16 +73,6 @@
     }
     
     return self;
-}
-
-- (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 1.0);
-    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
-    CGContextStrokeRect(context, CGRectInset(rect, 1.0, 1.0));
 }
 
 #pragma mark - UITextFieldDelegate

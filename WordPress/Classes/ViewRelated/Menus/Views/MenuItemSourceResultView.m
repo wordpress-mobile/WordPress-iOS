@@ -1,4 +1,4 @@
-#import "MenuItemSourceResultCell.h"
+#import "MenuItemSourceResultView.h"
 #import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
@@ -36,7 +36,7 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
 
 #pragma mark - MenuItemSourceResultCell
 
-@interface MenuItemSourceResultCell ()
+@interface MenuItemSourceResultView ()
 
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UILabel *resultLabel;
@@ -45,21 +45,19 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
 
 @end
 
-@implementation MenuItemSourceResultCell
+@implementation MenuItemSourceResultView
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)init
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super init];
     if(self) {
-        
         {
             self.translatesAutoresizingMaskIntoConstraints = NO;
-            self.selectionStyle = UITableViewCellSelectionStyleNone;
             
             UIStackView *stackView = [[UIStackView alloc] init];
             stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -69,19 +67,17 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
             
             const CGFloat spacing = MenusDesignDefaultContentSpacing / 2.0;
             UIEdgeInsets margins = UIEdgeInsetsZero;
-            margins.top = spacing;
             margins.right = spacing;
-            margins.bottom = spacing;
             stackView.layoutMargins = margins;
             stackView.layoutMarginsRelativeArrangement = YES;
             stackView.spacing = spacing;
             
-            [self.contentView addSubview:stackView];
+            [self addSubview:stackView];
             
             [NSLayoutConstraint activateConstraints:@[
-                                                      [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
-                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
-                                                      [stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
+                                                      [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                                      [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
                                                       ]];
             
             self.stackView = stackView;
@@ -129,6 +125,12 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
     }
     
     [self updateResultDrawing];
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self setNeedsDisplay];
 }
 
 - (void)updateResultDrawing

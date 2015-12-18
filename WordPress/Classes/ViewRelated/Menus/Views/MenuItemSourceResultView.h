@@ -11,7 +11,7 @@ extern NSString * const MenuItemSourceResultSelectionDidChangeNotification;
 
 @end
 
-@interface MenuItemSourceResultCell : UITableViewCell
+@interface MenuItemSourceResultView : UIView
 
 @property (nonatomic, strong) MenuItemSourceResult *result;
 
