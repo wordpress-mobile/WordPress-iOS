@@ -106,6 +106,7 @@ public class AboutViewController : UITableViewController
     }
 
     public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        guard let view = view as? UITableViewHeaderFooterView else { return }
         WPStyleGuide.configureTableViewSectionFooter(view)
         view.textLabel?.textAlignment = .Center
     }
