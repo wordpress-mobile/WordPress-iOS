@@ -2066,14 +2066,14 @@
 				081D84071C1A1F0F00C7BF40 /* MenuItemEditingFooterView.m */,
 				08E7440C1C1F50FB00815DB9 /* MenuItemTypeSelectionView.h */,
 				08E7440D1C1F50FB00815DB9 /* MenuItemTypeSelectionView.m */,
+				08B8BC321C21FC6200C3B670 /* MenuItemTypeView.h */,
+				08B8BC331C21FC6200C3B670 /* MenuItemTypeView.m */,
 				08823B1A1C1B7756000581E8 /* MenuItemSourceView.h */,
 				08823B1B1C1B7756000581E8 /* MenuItemSourceView.m */,
 				08EEA0B71C20C013001346B9 /* MenuItemSourceResultView.h */,
 				08EEA0B81C20C013001346B9 /* MenuItemSourceResultView.m */,
 				08B0566E1C1BCEE500256F77 /* MenuItemSourceSearchBar.h */,
 				08B0566F1C1BCEE500256F77 /* MenuItemSourceSearchBar.m */,
-				08B8BC321C21FC6200C3B670 /* MenuItemTypeView.h */,
-				08B8BC331C21FC6200C3B670 /* MenuItemTypeView.m */,
 			);
 			name = "MenuItem Editing";
 			sourceTree = "<group>";
