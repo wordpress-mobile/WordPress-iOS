@@ -5,7 +5,7 @@
 #import "MenuItemEditingFooterView.h"
 #import "MenuItemSourceView.h"
 #import "MenuItemEditingTypeView.h"
-#import "MenuItemSourceTypeSelectionView.h"
+#import "MenuItemTypeView.h"
 
 static CGFloat const MenuItemEditingFooterViewDefaultHeight = 60.0;
 static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
@@ -23,7 +23,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 @property (nonatomic, strong) IBOutlet MenuItemEditingFooterView *footerView;
 @property (nonatomic, strong) IBOutlet MenuItemEditingTypeView *typeSelectionView;
 @property (nonatomic, strong) IBOutlet MenuItemSourceView *sourceView;
-@property (nonatomic, strong) IBOutlet MenuItemSourceTypeSelectionView *selectionButton;
+@property (nonatomic, strong) IBOutlet MenuItemTypeView *itemTypeView;
 
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
 @property (nonatomic, assign) BOOL sourceViewIsTyping;
@@ -160,9 +160,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
         }
     }
     
-    if(self.selectionButton.hidden) {
-        self.selectionButton.hidden = NO;
-        self.selectionButton.alpha = 1.0;
+    if(self.itemTypeView.hidden) {
+        self.itemTypeView.hidden = NO;
+        self.itemTypeView.alpha = 1.0;
     }
     
     if(!self.typeSelectionView.hidden) {
@@ -203,9 +203,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
         }
     }
     
-    if(!self.selectionButton.hidden) {
-        self.selectionButton.hidden = YES;
-        self.selectionButton.alpha = 0.0;
+    if(!self.itemTypeView.hidden) {
+        self.itemTypeView.hidden = YES;
+        self.itemTypeView.alpha = 0.0;
     }
     
     if(IS_IPHONE) {
