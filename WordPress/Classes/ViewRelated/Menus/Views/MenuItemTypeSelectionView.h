@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "MenusDesign.h"
 
 @protocol MenuItemTypeSelectionViewDelegate;
 
@@ -9,5 +10,7 @@
 @end
 
 @protocol MenuItemTypeSelectionViewDelegate <NSObject>
+
+- (void)typeSelectionView:(MenuItemTypeSelectionView *)selectionView selectedType:(MenuItemType)type;
 
 @end

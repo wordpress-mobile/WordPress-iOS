@@ -2,7 +2,7 @@
 #import "MenusDesign.h"
 #import "MenuItemTypeView.h"
 
-@interface MenuItemTypeSelectionView ()
+@interface MenuItemTypeSelectionView () <MenuItemTypeViewDelegate>
 
 @property (nonatomic, strong) UIStackView *stackView;
 
@@ -63,7 +63,10 @@
 {
     MenuItemTypeView *typeView = [[MenuItemTypeView alloc] init];
     typeView.translatesAutoresizingMaskIntoConstraints = NO;
+    typeView.itemType = type;
+    typeView.delegate = self;
     [typeView setTypeTitle:[self titleForType:type]];
+    
     [self.stackView addArrangedSubview:typeView];
     [typeView.heightAnchor constraintEqualToConstant:48.0].active = YES;
     
@@ -94,6 +97,13 @@
     }
     
     return title;
+}
+
+#pragma mark - MenuItemTypeViewDelegate
+
+- (void)itemTypeViewSelected:(MenuItemTypeView *)typeView
+{
+    [self.delegate typeSelectionView:self selectedType:typeView.itemType];
 }
 
 @end
