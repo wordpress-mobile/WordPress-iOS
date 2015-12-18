@@ -206,16 +206,18 @@ static CGFloat const FollowSitesRowHeight = 54.0;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if ([[self.tableViewHandler.resultsController fetchedObjects] count] > 0) {
-        return NSLocalizedString(@"Sites", @"Section title for sites the user has followed.");
-    }
-    // Return an space instead of empty string or nil to preserve the section
-    // header's height if all items are removed and then one added back.
-    return @" ";
+    return NSLocalizedString(@"Sites", @"Section title for sites the user has followed.");
 }
 
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
+    // Since we're not managing sections using the results controller, it will
+    // not call the delegate methods to notify that the sections changed.
+    // This causes a glitch where the section header would still be visible with
+    // an empty table until the user scrolls or reloads the view.
+    if ([self.tableView numberOfRowsInSection:0] == 0) {
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+    }
     [self configureNoResultsView];
 }
 
