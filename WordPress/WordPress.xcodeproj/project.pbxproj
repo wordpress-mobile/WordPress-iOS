@@ -60,7 +60,7 @@
 		08906CF41BDED5D8003A7AA4 /* MenusSelectionDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08906CF31BDED5D8003A7AA4 /* MenusSelectionDetailView.m */; };
 		08B056701C1BCEE500256F77 /* MenuItemSourceSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B0566F1C1BCEE500256F77 /* MenuItemSourceSearchBar.m */; };
 		08B195421BE409260082E71C /* MenusHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B195411BE409260082E71C /* MenusHeaderView.m */; };
-		08B8BC341C21FC6200C3B670 /* MenuItemSourceTypeSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B8BC331C21FC6200C3B670 /* MenuItemSourceTypeSelectionView.m */; };
+		08B8BC341C21FC6200C3B670 /* MenuItemTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B8BC331C21FC6200C3B670 /* MenuItemTypeView.m */; };
 		08D6B2841BC6F4EE00BD022D /* MenusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */; };
 		08E7440E1C1F50FB00815DB9 /* MenuItemEditingTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E7440D1C1F50FB00815DB9 /* MenuItemEditingTypeView.m */; };
 		08EEA0B91C20C013001346B9 /* MenuItemSourceResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EEA0B81C20C013001346B9 /* MenuItemSourceResultView.m */; };
@@ -802,8 +802,8 @@
 		08B0566F1C1BCEE500256F77 /* MenuItemSourceSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceSearchBar.m; sourceTree = "<group>"; };
 		08B195401BE409260082E71C /* MenusHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusHeaderView.h; sourceTree = "<group>"; };
 		08B195411BE409260082E71C /* MenusHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusHeaderView.m; sourceTree = "<group>"; };
-		08B8BC321C21FC6200C3B670 /* MenuItemSourceTypeSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceTypeSelectionView.h; sourceTree = "<group>"; };
-		08B8BC331C21FC6200C3B670 /* MenuItemSourceTypeSelectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceTypeSelectionView.m; sourceTree = "<group>"; };
+		08B8BC321C21FC6200C3B670 /* MenuItemTypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemTypeView.h; sourceTree = "<group>"; };
+		08B8BC331C21FC6200C3B670 /* MenuItemTypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemTypeView.m; sourceTree = "<group>"; };
 		08BB107D1BB5D82100DE699D /* MenusService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusService.h; sourceTree = "<group>"; };
 		08BB107E1BB5D82100DE699D /* MenusService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusService.m; sourceTree = "<group>"; };
 		08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenusViewController.xib; sourceTree = "<group>"; };
@@ -2072,8 +2072,8 @@
 				08EEA0B81C20C013001346B9 /* MenuItemSourceResultView.m */,
 				08B0566E1C1BCEE500256F77 /* MenuItemSourceSearchBar.h */,
 				08B0566F1C1BCEE500256F77 /* MenuItemSourceSearchBar.m */,
-				08B8BC321C21FC6200C3B670 /* MenuItemSourceTypeSelectionView.h */,
-				08B8BC331C21FC6200C3B670 /* MenuItemSourceTypeSelectionView.m */,
+				08B8BC321C21FC6200C3B670 /* MenuItemTypeView.h */,
+				08B8BC331C21FC6200C3B670 /* MenuItemTypeView.m */,
 			);
 			name = "MenuItem Editing";
 			sourceTree = "<group>";
@@ -5068,7 +5068,7 @@
 				5D1181E71B4D6DEB003F3084 /* WPStyleGuide+Reader.swift in Sources */,
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
 				85CE4C201A703CF200780DFE /* NSBundle+VersionNumberHelper.m in Sources */,
-				08B8BC341C21FC6200C3B670 /* MenuItemSourceTypeSelectionView.m in Sources */,
+				08B8BC341C21FC6200C3B670 /* MenuItemTypeView.m in Sources */,
 				E6A338501BB0A70F00371587 /* ReaderGapMarkerCell.swift in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
 				08E7440E1C1F50FB00815DB9 /* MenuItemEditingTypeView.m in Sources */,

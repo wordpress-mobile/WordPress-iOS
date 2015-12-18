@@ -1,16 +1,16 @@
-#import "MenuItemSourceTypeSelectionView.h"
+#import "MenuItemTypeView.h"
 #import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
-@interface MenuItemSourceTypeSelectionView ()
+@interface MenuItemTypeView ()
 
 @property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *label;
 
 @end
 
-@implementation MenuItemSourceTypeSelectionView
+@implementation MenuItemTypeView
 
 - (void)awakeFromNib
 {
