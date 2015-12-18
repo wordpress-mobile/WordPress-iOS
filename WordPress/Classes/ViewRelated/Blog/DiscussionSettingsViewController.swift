@@ -361,7 +361,7 @@ public class DiscussionSettingsViewController : UITableViewController
     
     private var postsSection : Section {
         let headerText = NSLocalizedString("Defaults for New Posts", comment: "Discussion Settings: Posts Section")
-        let footerText = NSLocalizedString("You can override these settings for individual posts. Learn more...", comment: "Discussion Settings: Footer Text")
+        let footerText = NSLocalizedString("You can override these settings for individual posts.", comment: "Discussion Settings: Footer Text")
         let rows = [
             Row(style:      .Switch,
                 title:      NSLocalizedString("Allow Comments", comment: "Settings: Comments Enabled"),
