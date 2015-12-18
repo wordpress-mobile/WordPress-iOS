@@ -13,7 +13,6 @@
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPPostViewController.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
 #import "NotificationsManager.h"
@@ -160,39 +159,7 @@ static NSInteger const MediaSizeSliderStep = 50;
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
-        return nil;
-    }
-
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = [self titleForHeaderInSection:section];
-    return header;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
-        return 1;
-    }
-
-    NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    static const CGFloat kDefaultFooterHeight = 16.0f;
-
-    if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
-        return 1;
-    } else {
-        return kDefaultFooterHeight;
-    }
-}
-
-- (NSString *)titleForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
@@ -203,12 +170,15 @@ static NSInteger const MediaSizeSliderStep = 50;
     } else if (section == SettingsSectionInternalBeta) {
         if (self.showInternalBetaSection) {
             return NSLocalizedString(@"Internal Beta", @"");
-        } else {
-            return @"";
         }
     }
 
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
