@@ -12,7 +12,6 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostHeaderView.h"
-#import "ReaderPostDetailViewController.h"
 #import "UIView+Subviews.h"
 #import "WPAvatarSource.h"
 #import "WPNoResultsView.h"
@@ -1220,9 +1219,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
     
     // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
-    ReaderPostDetailViewController *detailsViewController = [ReaderPostDetailViewController detailControllerWithPost:self.post];
-    [detailsViewController setShouldHideComments:YES];
-    [self.navigationController pushViewController:detailsViewController animated:YES];
+    ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPost:self.post];
+    controller.shouldHideComments = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 
