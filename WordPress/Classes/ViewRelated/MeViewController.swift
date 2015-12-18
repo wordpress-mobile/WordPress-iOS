@@ -87,7 +87,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
-//            icon: UIImage(named: "icon-menu-people")!,
             action: pushMyProfile())
 
         let accountSettings = NavigationItemRow(
