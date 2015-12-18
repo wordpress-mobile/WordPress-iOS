@@ -1,7 +1,6 @@
 #import "SettingsMultiTextViewController.h"
 #import "WPStyleGuide.h"
 #import "WPTableViewCell.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 
 static CGFloat const HorizontalMargin = 10.0f;
 
@@ -9,7 +8,6 @@ static CGFloat const HorizontalMargin = 10.0f;
 
 @property (nonatomic, strong) UITableViewCell *textViewCell;
 @property (nonatomic, strong) UITextView *textView;
-@property (nonatomic, strong) UIView *hintView;
 @property (nonatomic, strong) NSString *hint;
 @property (nonatomic, assign) BOOL isPassword;
 @property (nonatomic, strong) NSString *placeholder;
@@ -80,17 +78,6 @@ static CGFloat const HorizontalMargin = 10.0f;
     return _textViewCell;
 }
 
-- (UIView *)hintView
-{
-    if (_hintView) {
-        return _hintView;
-    }
-    WPTableViewSectionHeaderFooterView *footerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    [footerView setTitle:_hint];
-    _hintView = footerView;
-    return _hintView;
-}
-
 - (void)viewDidDisappear:(BOOL)animated
 {
     if (self.onValueChanged) {
@@ -118,9 +105,14 @@ static CGFloat const HorizontalMargin = 10.0f;
     return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return self.hintView;
+    return self.hint;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 - (void)textViewDidChange:(UITextView *)textView

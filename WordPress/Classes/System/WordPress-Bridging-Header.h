@@ -71,6 +71,5 @@
 #import <WordPressShared/WPTableViewCell.h>
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPTableViewHandler.h"
-#import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"

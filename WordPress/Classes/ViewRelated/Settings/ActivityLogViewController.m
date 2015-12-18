@@ -2,7 +2,6 @@
 #import "WordPressAppDelegate.h"
 #import "ActivityLogDetailViewController.h"
 #import <CocoaLumberjack/DDFileLogger.h>
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "WordPress-Swift.h"
 #import "WPLogger.h"
 #import "WPGUIConstants.h"
@@ -109,30 +108,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
     return cell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self titleForHeaderInSection:section];
-    if (!title) {
-        return nil;
-    }
-    
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = title;
-    return header;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self titleForHeaderInSection:section];
-    if (!title) {
-        // Fix: Prevents extra spacing when dealing with empty footers
-        return CGFLOAT_MIN;
-    }
-    
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (NSString *)titleForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
         return NSLocalizedString(@"Log Files By Created Date", @"");
@@ -140,25 +116,22 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
     return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    header.title = [self titleForFooterInSection:section];
-    return header;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    NSString *title = [self titleForFooterInSection:section];
-    return [WPTableViewSectionHeaderFooterView heightForFooter:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (NSString *)titleForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
         return NSLocalizedString(@"Seven days worth of log files are kept on file.", @"");
     }
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionHeader:view];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 #pragma mark - Table view delegate

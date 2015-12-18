@@ -163,26 +163,15 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         return cell!
     }
-    
-    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if let footerText = sections[section].footerText {
-            return WPTableViewSectionHeaderFooterView.heightForFooter(footerText, width: view.bounds.width)
-        }
 
-        return CGFloat.min
+    public override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return sections[section].footerText
     }
-    
-    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if let footerText = sections[section].footerText {
-            let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-            footerView.title    = footerText
-            return footerView
-        }
 
-        return nil
+    public override func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
     }
-    
-    
+
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
         

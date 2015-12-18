@@ -10,7 +10,7 @@ import WordPressComAnalytics
 *                   push the Details View itself, which is in charge of rendering the actual available settings.
 */
 
-public class NotificationSettingsViewController : UIViewController
+public class NotificationSettingsViewController : UIViewController, UITableViewDataSource, UITableViewDelegate
 {
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
@@ -162,56 +162,34 @@ public class NotificationSettingsViewController : UIViewController
         
         return isBlogSection && isNotPagination ? blogRowHeight : WPTableViewDefaultRowHeight
     }
-    
-    public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        // Hide when the section is empty!
-        if isSectionEmpty(section) {
-            return nil
-        }
-        
-        let theSection      = Section(rawValue: section)!
-        let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-        footerView.title    = theSection.headerText()
-        return footerView
-    }
-    
-    public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        // Hide when the section is empty!
-        if isSectionEmpty(section) {
-            return CGFloat.min
-        }
-        
-        let theSection      = Section(rawValue: section)!
-        let width           = view.frame.width
-        return WPTableViewSectionHeaderFooterView.heightForHeader(theSection.headerText(), width: width)
-    }
-    
-    public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        // Hide when the section is empty!
-        if isSectionEmpty(section) {
-            return nil
-        }
-        
-        let theSection      = Section(rawValue: section)!
-        let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title    = theSection.footerText()
-        
-        return footerView
-    }
-    
-    public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        // Hide when the section is empty!
-        if isSectionEmpty(section) {
-            return CGFloat.min
-        }
-        
-        let section         = Section(rawValue: section)!
-        let padding         = section.footerPadding()
-        let height          = WPTableViewSectionHeaderFooterView.heightForFooter(section.footerText(), width: view.frame.width)
 
-        return height + padding
+    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        // Hide when the section is empty!
+        if isSectionEmpty(section) {
+            return nil
+        }
+        
+        let theSection = Section(rawValue: section)!
+        return theSection.headerText()
     }
-    
+
+    public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        // Hide when the section is empty!
+        if isSectionEmpty(section) {
+            return nil
+        }
+        
+        let theSection = Section(rawValue: section)!
+        return theSection.footerText()
+    }
+
+    public func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionHeader(view)
+    }
+
+    public func tableView(tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        WPStyleGuide.configureTableViewSectionFooter(view)
+    }
 
     
     // MARK: - UITableView Delegate Methods

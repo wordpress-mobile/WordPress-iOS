@@ -3,7 +3,6 @@
 #import "NSDictionary+SafeExpectations.h"
 #import "NSString+XMLExtensions.h"
 #import "WPTableViewCell.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 
 NSString * const SettingsSelectionTitleKey = @"Title";
 NSString * const SettingsSelectionTitlesKey = @"Titles";
@@ -11,10 +10,6 @@ NSString * const SettingsSelectionValuesKey = @"Values";
 NSString * const SettingsSelectionHintsKey = @"Hints";
 NSString * const SettingsSelectionDefaultValueKey = @"DefaultValue";
 NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
-
-@interface SettingsSelectionViewController ()
-@property (nonatomic, strong) WPTableViewSectionHeaderFooterView *hintView;
-@end
 
 @implementation SettingsSelectionViewController
 
@@ -82,20 +77,14 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
     }
 }
 
-- (UIView *)hintView
+- (NSString *)currentHint
 {
     if (!self.hints) {
         return nil;
     }
     
-    if (!_hintView) {
-        _hintView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
-    }
-    
     NSUInteger position = [self.values indexOfObject:self.currentValue];
-    _hintView.title = (position != NSNotFound) ? self.hints[position] : [NSString string];
-
-    return _hintView;
+    return (position != NSNotFound) ? self.hints[position] : nil;
 }
 
 #pragma mark - Table view data source
@@ -144,9 +133,14 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-    return self.hintView;
+    return [self currentHint];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
 }
 
 - (void)dismiss

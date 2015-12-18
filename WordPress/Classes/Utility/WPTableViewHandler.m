@@ -1,5 +1,4 @@
 #import "WPTableViewHandler.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPTableViewCell.h"
 #import "WordPress-Swift.h"
 
@@ -56,12 +55,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 
 #pragma mark - Public Methods
-
-- (void)updateTitleForSection:(NSUInteger)section
-{
-    WPTableViewSectionHeaderFooterView *sectionHeaderView = (WPTableViewSectionHeaderFooterView *)[self tableView:self.tableView viewForHeaderInSection:section];
-    sectionHeaderView.title = [self titleForHeaderInSection:section];
-}
 
 - (void)clearCachedRowHeights
 {
@@ -281,14 +274,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     return nil;
 }
 
-- (NSString *)titleForHeaderInSection:(NSInteger)section
-{
-    if ([self.delegate respondsToSelector:@selector(titleForHeaderInSection:)]) {
-        return [self.delegate titleForHeaderInSection:section];
-    }
-    return nil;
-}
-
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.delegate respondsToSelector:@selector(tableView:canEditRowAtIndexPath:)]) {
@@ -420,22 +405,23 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionHeader:view];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionFooter:view];
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     if ([self.delegate respondsToSelector:@selector(tableView:viewForHeaderInSection:)]) {
         return [self.delegate tableView:tableView viewForHeaderInSection:section];
     }
 
-    WPTableViewSectionHeaderFooterView *header;
-    if ([self.sectionHeaders count] > section) {
-        header = [self.sectionHeaders objectAtIndex:section];
-    } else {
-        header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-        [self.sectionHeaders addObject:header];
-    }
-
-    header.title = [self titleForHeaderInSection:section];
-    return header;
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -444,8 +430,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         return [self.delegate tableView:tableView heightForHeaderInSection:section];
     }
 
-    NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.tableView.bounds)];
+    return UITableViewAutomaticDimension;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -454,8 +439,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         return [self.delegate tableView:tableView heightForFooterInSection:section];
     }
 
-    // Remove footer height for all but last section
-    return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
+    return UITableViewAutomaticDimension;
 }
 
 
@@ -497,6 +481,12 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    if ([sectionInfo numberOfObjects] == 0) {
+        return nil;
+    }
+    if ([self.delegate respondsToSelector:@selector(tableView:titleForHeaderInSection:)]) {
+        return [self.delegate tableView:tableView titleForHeaderInSection:section];
+    }
     return [sectionInfo name];
 }
 
