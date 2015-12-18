@@ -1,16 +1,16 @@
-#import "MenuItemTypeView.h"
+#import "MenuItemTypeHeaderView.h"
 #import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
-@interface MenuItemTypeView ()
+@interface MenuItemTypeHeaderView ()
 
 @property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *label;
 
 @end
 
-@implementation MenuItemTypeView
+@implementation MenuItemTypeHeaderView
 
 - (void)awakeFromNib
 {
