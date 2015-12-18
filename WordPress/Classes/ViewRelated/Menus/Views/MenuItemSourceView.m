@@ -3,6 +3,8 @@
 
 @interface MenuItemSourceView ()
 
+@property (nonatomic, strong) NSMutableArray *resultViews;
+
 @end
 
 @implementation MenuItemSourceView
@@ -60,11 +62,13 @@
         stackView.axis = UILayoutConstraintAxisVertical;
         stackView.distribution = UIStackViewDistributionFill;
         stackView.alignment = UIStackViewAlignmentFill;
+        stackView.spacing = MenusDesignDefaultContentSpacing;
 
         UIEdgeInsets margins = UIEdgeInsetsZero;
         margins.top = MenusDesignDefaultContentSpacing;
         margins.left = MenusDesignDefaultContentSpacing;
         margins.right = MenusDesignDefaultContentSpacing;
+        margins.bottom = MenusDesignDefaultContentSpacing;
         stackView.layoutMargins = margins;
         stackView.layoutMarginsRelativeArrangement = YES;
         
@@ -83,70 +87,36 @@
         searchBar.translatesAutoresizingMaskIntoConstraints = NO;
         searchBar.delegate = self;
         [self.stackView addArrangedSubview:searchBar];
-        [searchBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-        [searchBar setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         
         NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:44.0];
         heightConstraint.priority = UILayoutPriorityDefaultHigh;
         heightConstraint.active = YES;
         
+        [searchBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        
         _searchBar = searchBar;
     }
-    {
-        UITableView *tableView = [[UITableView alloc] init];
-        tableView.delegate = self;
-        tableView.dataSource = self;
-        tableView.contentInset = UIEdgeInsetsMake(MenusDesignDefaultContentSpacing / 2.0, 0, MenusDesignDefaultContentSpacing / 2.0, 0);
-        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        tableView.estimatedRowHeight = 50.0;
-        tableView.rowHeight = UITableViewAutomaticDimension;
-        [tableView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-        [tableView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-        [self.stackView addArrangedSubview:tableView];
-        
-        _tableView = tableView;
+    
+    [self reloadResults];
+}
+
+- (void)reloadResults
+{
+    for(UIView *view in self.resultViews) {
+        [self.stackView removeArrangedSubview:view];
+        [view removeFromSuperview];
     }
     
-    [self.tableView reloadData];
-}
-
-#pragma mark - UITableView
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.results.count;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    MenuItemSourceResultCell *resultCell = (MenuItemSourceResultCell *)cell;
-    resultCell.result = [self.results objectAtIndex:indexPath.row];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *identifier = @"MenuItemSourceResultCell";
-    MenuItemSourceResultCell *cell = (MenuItemSourceResultCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
-    if(!cell) {
-        cell = [[MenuItemSourceResultCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-    }
-    
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+    self.resultViews = [NSMutableArray arrayWithCapacity:self.results.count];
     for(MenuItemSourceResult *result in self.results) {
-        result.selected = NO;
+        
+        MenuItemSourceResultView *view = [[MenuItemSourceResultView alloc] init];
+        view.result = result;
+        [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        
+        [self.stackView addArrangedSubview:view];
+        [self.resultViews addObject:view];
     }
-    
-    MenuItemSourceResult *result = [self.results objectAtIndex:indexPath.row];
-    result.selected = YES;
 }
 
 #pragma mark - MenuItemSourceSearchBarDelegate
