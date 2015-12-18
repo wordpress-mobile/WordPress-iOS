@@ -8,6 +8,17 @@ typedef NS_ENUM(NSUInteger) {
     MenuItemIconAdd,
 }MenuItemIconType;
 
+typedef NS_ENUM(NSUInteger) {
+    
+    MenuItemTypePage,
+    MenuItemTypeLink,
+    MenuItemTypeCategory,
+    MenuItemTypeTag,
+    MenuItemTypePost,
+    MenuItemTypeCustom
+    
+}MenuItemType;
+
 static CGFloat const MenusDesignDefaultCornerRadius = 4.0;
 static CGFloat const MenusDesignDefaultContentSpacing = 18.0;
 static CGFloat const MenusDesignItemIconSize = 10.0;

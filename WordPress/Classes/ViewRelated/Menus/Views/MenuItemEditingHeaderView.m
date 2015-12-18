@@ -6,6 +6,7 @@
 @interface MenuItemEditingHeaderView () <UITextFieldDelegate>
 
 @property (nonatomic, strong) UIStackView *stackView;
+@property (nonatomic, strong) NSLayoutConstraint *stackViewTopConstraint;
 @property (nonatomic, strong) UIView *textFieldContainerView;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UIImageView *iconView;
@@ -34,13 +35,8 @@
         const CGFloat margin = MenusDesignDefaultContentSpacing / 2.0;
         margins.left = MenusDesignDefaultContentSpacing;
         margins.right = margin;
-        
         margins.top = margin;
         margins.bottom = margin;
-        
-        if(![[UIApplication sharedApplication] isStatusBarHidden]) {
-            margins.top += [[UIApplication sharedApplication] statusBarFrame].size.height;
-        }
         
         UIStackView *stackView = [[UIStackView alloc] init];
         stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -52,6 +48,7 @@
         
         NSLayoutConstraint *topConstraint = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:margins.top];
         topConstraint.priority = UILayoutPriorityDefaultHigh;
+        self.stackViewTopConstraint  = topConstraint;
         
         NSLayoutConstraint *bottomConstraint = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-margins.bottom];
         bottomConstraint.priority = UILayoutPriorityDefaultHigh;
@@ -87,10 +84,10 @@
         self.textFieldContainerView = textFieldContainerView;
 
         UIEdgeInsets margins = UIEdgeInsetsZero;
-        margins.top = MenusDesignDefaultContentSpacing / 2.0;
+        margins.top = [self defaultStackDesignMargin];
         margins.left = MenusDesignDefaultContentSpacing;
         margins.right = MenusDesignDefaultContentSpacing;
-        margins.bottom = MenusDesignDefaultContentSpacing / 2.0;
+        margins.bottom = margins.top;
         textFieldContainerView.layoutMargins = margins;
         
         UILayoutGuide *marginGuide = textFieldContainerView.layoutMarginsGuide;
@@ -119,8 +116,24 @@
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
-    
     [self setNeedsDisplay];
+}
+
+- (CGFloat)defaultStackDesignMargin
+{
+    return ceilf(MenusDesignDefaultContentSpacing / 2.0);
+}
+
+- (void)setNeedsTopConstraintsUpdateForStatusBarAppearence
+{
+    if([[UIApplication sharedApplication] isStatusBarHidden]) {
+        
+        self.stackViewTopConstraint.constant = [self defaultStackDesignMargin];
+        
+    }else {
+        
+        self.stackViewTopConstraint.constant = [self defaultStackDesignMargin] + [[UIApplication sharedApplication] statusBarFrame].size.height;
+    }
 }
 
 - (void)setIconType:(MenuItemIconType)iconType

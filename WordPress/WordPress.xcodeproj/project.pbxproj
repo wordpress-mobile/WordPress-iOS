@@ -49,6 +49,7 @@
 		082E73B41BB341B900DA77AE /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73AA1BB341B900DA77AE /* Menu.m */; };
 		082E73B61BB341B900DA77AE /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73AE1BB341B900DA77AE /* MenuItem.m */; };
 		082E73B81BB341B900DA77AE /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73B21BB341B900DA77AE /* MenuLocation.m */; };
+		08327A451C23B3B3001303C8 /* MenuItemTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08327A441C23B3B3001303C8 /* MenuItemTypeView.m */; };
 		085548751BE15B9B004A1CBD /* MenuDetailsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 085548741BE15B9B004A1CBD /* MenuDetailsView.m */; };
 		0855487B1BE163B4004A1CBD /* MenusSelectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0855487A1BE163B4004A1CBD /* MenusSelectionView.m */; };
 		086E1FE01BBB35D2002D86CA /* MenusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 086E1FDF1BBB35D2002D86CA /* MenusViewController.m */; };
@@ -780,6 +781,8 @@
 		082E73AE1BB341B900DA77AE /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItem.m; sourceTree = "<group>"; };
 		082E73B11BB341B900DA77AE /* MenuLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLocation.h; sourceTree = "<group>"; };
 		082E73B21BB341B900DA77AE /* MenuLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuLocation.m; sourceTree = "<group>"; };
+		08327A431C23B3B3001303C8 /* MenuItemTypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemTypeView.h; sourceTree = "<group>"; };
+		08327A441C23B3B3001303C8 /* MenuItemTypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemTypeView.m; sourceTree = "<group>"; };
 		085548731BE15B9B004A1CBD /* MenuDetailsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDetailsView.h; sourceTree = "<group>"; };
 		085548741BE15B9B004A1CBD /* MenuDetailsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDetailsView.m; sourceTree = "<group>"; };
 		085548791BE163B4004A1CBD /* MenusSelectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionView.h; sourceTree = "<group>"; };
@@ -2066,6 +2069,8 @@
 				081D84071C1A1F0F00C7BF40 /* MenuItemEditingFooterView.m */,
 				08E7440C1C1F50FB00815DB9 /* MenuItemTypeSelectionView.h */,
 				08E7440D1C1F50FB00815DB9 /* MenuItemTypeSelectionView.m */,
+				08327A431C23B3B3001303C8 /* MenuItemTypeView.h */,
+				08327A441C23B3B3001303C8 /* MenuItemTypeView.m */,
 				08B8BC321C21FC6200C3B670 /* MenuItemTypeHeaderView.h */,
 				08B8BC331C21FC6200C3B670 /* MenuItemTypeHeaderView.m */,
 				08823B1A1C1B7756000581E8 /* MenuItemSourceView.h */,
@@ -4680,6 +4685,7 @@
 				319D6E7B19E447500013871C /* Suggestion.m in Sources */,
 				594399931B45091000539E21 /* WPAuthTokenIssueSolver.m in Sources */,
 				B555E1151C04A68D00CEC81B /* WordPress-41-42.xcmappingmodel in Sources */,
+				08327A451C23B3B3001303C8 /* MenuItemTypeView.m in Sources */,
 				B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */,
 				B535209F1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift in Sources */,
 				30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */,
