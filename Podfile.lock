@@ -214,7 +214,8 @@ DEPENDENCIES:
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
   - WordPress-iOS-Editor (= 1.1.1)
-  - WordPress-iOS-Shared (from `../libs/WordPress-iOS-Shared`)
+  - WordPress-iOS-Shared (from `https://github.com/wordpress-mobile/WordPress-Shared-iOS.git`,
+    branch `issue/no-more-WPTableViewSectionHeaderFooterView`)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
   - WordPressCom-Analytics-iOS (= 0.1.3)
   - WordPressCom-Stats-iOS/Services (= 0.6.0)
@@ -235,7 +236,8 @@ EXTERNAL SOURCES:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Shared:
-    :path: "../libs/WordPress-iOS-Shared"
+    :branch: issue/no-more-WPTableViewSectionHeaderFooterView
+    :git: https://github.com/wordpress-mobile/WordPress-Shared-iOS.git
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
 
@@ -249,6 +251,9 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-iOS-Shared:
+    :commit: 9882a89e3549f5be42361de4e3eddaaf750523d1
+    :git: https://github.com/wordpress-mobile/WordPress-Shared-iOS.git
   WordPressApi:
     :commit: a7dc27935fb30b1978942cb1c791d4040fe65395
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
