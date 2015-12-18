@@ -480,10 +480,13 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    if ([sectionInfo numberOfObjects] == 0) {
+        return nil;
+    }
     if ([self.delegate respondsToSelector:@selector(tableView:titleForHeaderInSection:)]) {
         return [self.delegate tableView:tableView titleForHeaderInSection:section];
     }
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo name];
 }
 
