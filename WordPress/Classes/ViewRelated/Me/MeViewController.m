@@ -17,7 +17,6 @@
 #import "WPAccount.h"
 #import "LoginViewController.h"
 #import <WordPressShared/WPTableViewCell.h>
-#import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
 #import "HelpshiftUtils.h"
 #import "WordPress-Swift.h"
 
@@ -306,29 +305,17 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
     return cell;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = [self titleForHeaderInSection:section];
-    return header;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self titleForHeaderInSection:section];
-    if (!title) {
-        return CGFLOAT_MIN;
-    }
-    
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (NSString *)titleForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == MeSectionsWpCom) {
         return NSLocalizedString(@"WordPress.com Account", @"WordPress.com sign-in/sign-out section header title");
     }
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 #pragma mark - UITableViewDelegate methods
