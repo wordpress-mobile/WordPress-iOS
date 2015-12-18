@@ -276,6 +276,14 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
         return cell
     }
 
+    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.sections[section].headerText
+    }
+
+    public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return viewModel.sections[section].footerText
+    }
+
     // MARK: Table View Delegate
 
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
