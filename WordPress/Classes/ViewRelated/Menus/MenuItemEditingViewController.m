@@ -12,9 +12,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 @interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate>
 
-@property (nonatomic, strong) IBOutlet UIStackView *baseStackView;
-@property (nonatomic, strong) IBOutlet UIStackView *itemEditingStackView;
-@property (nonatomic, strong) IBOutlet UIScrollView *itemEditingScrollView;
+@property (nonatomic, strong) IBOutlet UIStackView *stackView;
+@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet UIStackView *scrollingStackView;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *footerViewHeightConstraint;
@@ -26,6 +26,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 @property (nonatomic, strong) IBOutlet MenuItemSourceTypeSelectionView *selectionButton;
 
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
+@property (nonatomic, assign) BOOL sourceViewIsTyping;
 
 @end
 
@@ -50,33 +51,26 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 {
     [super loadView];
     
-    self.view.backgroundColor = [WPStyleGuide lightGrey];
-    self.baseStackView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.itemEditingStackView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.scrollView.backgroundColor = self.view.backgroundColor;
+    self.scrollView.clipsToBounds = NO;
     
     self.headerView.item = self.item;
     self.sourceView.item = self.item;
     self.sourceView.delegate = self;
     self.footerView.item = self.item;
     self.footerView.delegate = self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
     
-    if(self.modalPresentationStyle == UIModalPresentationFormSheet) {
-        
-        self.view.superview.layer.cornerRadius = 0.0;
-        self.headerView.shouldProvidePaddingForStatusBar = NO;
-    }
+    [self.stackView bringSubviewToFront:self.headerView];
+    [self updateSourceAndEditingViewsAvailability:NO];
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     
-    self.itemEditingScrollView.contentSize = self.itemEditingStackView.frame.size;
+    self.scrollView.contentSize = self.scrollingStackView.frame.size;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -104,20 +98,16 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     return UIStatusBarStyleLightContent;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+    return self.headerView.hidden;
+}
+
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
     
-    [self updateTypeSelectionViewDisplay];
-}
-
-- (void)updateTypeSelectionViewDisplay
-{
-    if([self shouldDisplayForCompactWidth]) {
-        [self setDisplayForCompactWidth];
-    }else {
-        [self setDisplayForRegularWidth];
-    }
+    [self updateForLayoutChange];
 }
 
 - (BOOL)shouldDisplayForCompactWidth
@@ -125,37 +115,131 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     if(IS_IPAD) {
         return NO;
     }
-    return (self.view.frame.size.width <= self.view.frame.size.height);
+    
+    BOOL horizontallyCompact = [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassCompact]];
+    
+    if(horizontallyCompact) {
+        
+        if([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithVerticalSizeClass:UIUserInterfaceSizeClassCompact]]) {
+            horizontallyCompact = NO;
+        }
+    }
+    
+    return horizontallyCompact;
 }
 
-- (void)setDisplayForRegularWidth
+#pragma mark - arrangedSubViews
+
+- (void)updateForLayoutChange
 {
-    self.typeSelectionView.hidden = NO;
-    self.selectionButton.hidden = YES;
+    if([self shouldDisplayForCompactWidth]) {
+        [self updateForCompactWidthLayout];
+    }else {
+        [self updateForExtendedWidthLayout];
+    }
+    
+    [self setNeedsStatusBarAppearanceUpdate];
+    [self.stackView layoutIfNeeded];
+}
+
+- (void)updateForCompactWidthLayout
+{
+    if(self.sourceViewIsTyping) {
+        
+        if(!self.headerView.hidden) {
+            self.headerView.hidden = YES;
+            self.headerView.alpha = 0.0;
+        }
+        
+    }else {
+        
+        if(self.headerView.hidden) {
+            self.headerView.hidden = NO;
+            self.headerView.alpha = 1.0;
+            [self.headerView setNeedsDisplay];
+        }
+    }
+    
+    if(self.selectionButton.hidden) {
+        self.selectionButton.hidden = NO;
+        self.selectionButton.alpha = 1.0;
+    }
+    
+    if(!self.typeSelectionView.hidden) {
+        self.typeSelectionView.hidden = YES;
+        self.typeSelectionView.alpha = 0.0;
+    }
     
     if(IS_IPHONE) {
-        // iPad has much more room to work with than iPhone
+        self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewDefaultHeight;
+    }
+}
+
+- (void)updateForExtendedWidthLayout
+{
+    if(self.sourceViewIsTyping) {
+        
+        if(!self.headerView.hidden) {
+            self.headerView.hidden = YES;
+            self.headerView.alpha = 0.0;
+        }
+        
+        if(!self.typeSelectionView.hidden) {
+            self.typeSelectionView.hidden = YES;
+            self.typeSelectionView.alpha = 0.0;
+        }
+        
+    }else {
+        
+        if(self.headerView.hidden) {
+            self.headerView.hidden = NO;
+            self.headerView.alpha = 1.0;
+            [self.headerView setNeedsDisplay];
+        }
+        
+        if(self.typeSelectionView.hidden) {
+            self.typeSelectionView.hidden = NO;
+            self.typeSelectionView.alpha = 1.0;
+        }
+    }
+    
+    if(!self.selectionButton.hidden) {
+        self.selectionButton.hidden = YES;
+        self.selectionButton.alpha = 0.0;
+    }
+    
+    if(IS_IPHONE) {
         self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewCompactHeight;
     }
 }
 
-- (void)setDisplayForCompactWidth
+- (void)updateSourceAndEditingViewsAvailability:(BOOL)animated
 {
-    self.typeSelectionView.hidden = YES;
-    self.selectionButton.hidden = NO;
-    self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewDefaultHeight;
+    if(animated) {
+        
+        [self.stackView layoutIfNeeded];
+        [UIView animateWithDuration:0.20 animations:^{
+            
+            [self updateForLayoutChange];
+        }];
+        
+    }else {
+        [self updateForLayoutChange];
+    }
 }
 
 #pragma mark - MenuItemSourceViewDelegate
 
 - (void)sourceViewDidBeginTyping:(MenuItemSourceView *)sourceView
 {
-
+    self.sourceViewIsTyping = YES;
+    [self updateSourceAndEditingViewsAvailability:YES];
 }
 
 - (void)sourceViewDidEndTyping:(MenuItemSourceView *)sourceView
 {
-
+    self.sourceViewIsTyping = NO;
+    [self updateSourceAndEditingViewsAvailability:YES];
 }
 
 #pragma mark - MenuItemEditingFooterViewDelegate
@@ -163,8 +247,6 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 - (void)editingFooterViewDidSelectCancel:(MenuItemEditingFooterView *)footerView
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-    
-    
 }
 
 #pragma mark - notifications
