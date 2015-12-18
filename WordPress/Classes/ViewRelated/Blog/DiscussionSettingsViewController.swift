@@ -10,19 +10,24 @@ import WordPressShared
 
 public class DiscussionSettingsViewController : UITableViewController
 {
-    // MARK: - Initializers
+    // MARK: - Initializers / Deinitializers
     public convenience init(blog: Blog) {
         self.init(style: .Grouped)
         self.settings = blog.settings
     }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     
-    
+
     
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
         setupTableView()
+        setupNotificationListeners()
     }
     
     public override func viewWillAppear(animated: Bool) {
@@ -52,6 +57,15 @@ public class DiscussionSettingsViewController : UITableViewController
         clearsSelectionOnViewWillAppear = false
     }
 
+    private func setupNotificationListeners() {
+        assert(settings != nil)
+        
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: "handleContextDidChange:",
+            name: NSManagedObjectContextObjectsDidChangeNotification,
+            object: settings.managedObjectContext)
+    }
+    
     
 
     // MARK: - Persistance!
@@ -66,6 +80,18 @@ public class DiscussionSettingsViewController : UITableViewController
             failure: { (error: NSError!) -> Void in
                 DDLogSwift.logError("Error while persisting settings: \(error)")
         })
+    }
+    
+    public func handleContextDidChange(note: NSNotification) {
+        guard let context = note.object as? NSManagedObjectContext else {
+            return
+        }
+        
+        if !context.updatedObjects.contains(settings) {
+            return
+        }
+        
+        saveSettingsIfNeeded()
     }
     
     
