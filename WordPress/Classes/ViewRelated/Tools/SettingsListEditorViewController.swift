@@ -16,7 +16,7 @@ public class SettingsListEditorViewController : UITableViewController
     public var emptyText    : String?
     public var insertTitle  : String?
     public var editTitle    : String?
-    public var onCompletion : ((Set<String>) -> Void)?
+    public var onChange     : ((Set<String>) -> Void)?
     
     
     // MARK: - Initialiers
@@ -39,12 +39,12 @@ public class SettingsListEditorViewController : UITableViewController
         setupTableView()
     }
     
-    public override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Send back the collection!
+    
+    
+    // MARK: - Helpers
+    private func notifyDidChange() {
         let orderedRows = Set<String>(rows.array as! [String])
-        onCompletion?(orderedRows)
+        onChange?(orderedRows)
     }
     
     
@@ -70,6 +70,7 @@ public class SettingsListEditorViewController : UITableViewController
         settingsViewController.title = insertTitle
         settingsViewController.onValueChanged = { (updatedValue : String!) in
             self.insertString(updatedValue)
+            self.notifyDidChange()
             self.tableView.reloadData()
         }
         
@@ -137,6 +138,7 @@ public class SettingsListEditorViewController : UITableViewController
         settingsViewController.title = editTitle
         settingsViewController.onValueChanged = { (newText : String!) in
             self.replaceString(oldText, newText: newText)
+            self.notifyDidChange()
             self.tableView.reloadData()
         }
      
@@ -154,6 +156,7 @@ public class SettingsListEditorViewController : UITableViewController
     public override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         // Nuke it from the collection
         removeAtIndexPath(indexPath)
+        notifyDidChange()
         
         // Empty State: We'll always render a single row, indicating that there are no items
         if isEmpty() {
