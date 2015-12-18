@@ -10,12 +10,12 @@
                 <outlet property="footerViewHeightConstraint" destination="E2v-oz-4Rk" id="dpp-uK-5uM"/>
                 <outlet property="headerView" destination="5rT-g7-Unk" id="LnY-fU-93W"/>
                 <outlet property="itemTypeSelectionView" destination="3ST-Kk-VgV" id="2ht-8Z-mfK"/>
-                <outlet property="itemTypeView" destination="Ehk-yL-Bgu" id="IoU-Ht-nqD"/>
                 <outlet property="scrollView" destination="I6Y-Wo-WOk" id="AlJ-Fh-Z7j"/>
                 <outlet property="scrollingStackView" destination="73c-Qn-y4X" id="gTj-xt-daf"/>
                 <outlet property="sourceView" destination="r1R-uA-XmG" id="m1W-Oe-MhN"/>
                 <outlet property="stackView" destination="2sf-be-1pU" id="Ryz-Xc-WMb"/>
                 <outlet property="stackViewBottomConstraint" destination="dyQ-eH-Hs7" id="v76-G9-bJH"/>
+                <outlet property="typeHeaderView" destination="Ehk-yL-Bgu" id="oSt-tq-seJ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -40,7 +40,7 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="73c-Qn-y4X">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ehk-yL-Bgu" customClass="MenuItemTypeView">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ehk-yL-Bgu" customClass="MenuItemTypeHeaderView">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="48"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
