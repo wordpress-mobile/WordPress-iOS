@@ -10,7 +10,7 @@
 static CGFloat const MenuItemEditingFooterViewDefaultHeight = 60.0;
 static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
-@interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate>
+@interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeViewDelegate, MenuItemTypeSelectionViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
@@ -57,6 +57,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     self.scrollView.clipsToBounds = NO;
     
     self.headerView.item = self.item;
+    self.itemTypeView.delegate = self;
     self.sourceView.item = self.item;
     self.sourceView.delegate = self;
     self.footerView.item = self.item;
@@ -228,6 +229,29 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     }
 }
 
+- (void)updateForShowingTypeSelectionCompact
+{
+    if(self.itemTypeSelectionView.hidden) {
+        
+        [UIView animateWithDuration:0.10 animations:^{
+            self.itemTypeView.alpha = 0.0;
+        }];
+        
+        [UIView animateWithDuration:0.30 animations:^{
+            
+            if(self.itemTypeSelectionView.hidden) {
+                self.itemTypeSelectionView.hidden = NO;
+                self.itemTypeSelectionView.alpha = 1.0;
+            }
+            
+            if(!self.sourceView.hidden) {
+                self.sourceView.hidden = YES;
+                self.sourceView.alpha = 0.0;
+            }
+        }];
+    }
+}
+
 #pragma mark - MenuItemSourceViewDelegate
 
 - (void)sourceViewDidBeginTyping:(MenuItemSourceView *)sourceView
@@ -248,6 +272,19 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark - MenuItemTypeViewDelegate
+
+- (void)itemTypeViewSelected:(MenuItemTypeView *)typeView
+{
+    if([self shouldDisplayForCompactWidth]) {
+        [self updateForShowingTypeSelectionCompact];
+    }
+}
+
+#pragma mark - MenuItemTypeSelectionViewDelegate
+
+
 
 #pragma mark - notifications
 
