@@ -171,7 +171,17 @@ final public class ReaderDetailViewController : UIViewController
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
 
-        // The image frames in the RichTextView are a little bit dumb about their
+        // Make sure that the bars are visible after switching from landscape
+        // to portrait orientation.  The content might have been scrollable in landscape
+        // orientation, but it might not be in portrait orientation. We'll assume the bars
+        // should be visible for safety sake and for performance since WPRichTextView updates
+        // its intrinsicContentSize too late for get an accurate scrollWiew.contentSize
+        // in the completion handler below.
+        if size.height > size.width {
+            self.setBarsHidden(false)
+        }
+
+        // The image frames in the WPRichTextView are a little bit dumb about their
         // resizing after an orientation change. Use the completion block to 
         // refresh media layout.
         coordinator.animateAlongsideTransition(nil) { (_) in
@@ -891,10 +901,17 @@ extension ReaderDetailViewController : UIScrollViewDelegate
             return
         }
 
-        let y = targetContentOffset.memory.y
-        let topThreshold: CGFloat = 50.0 // Arbitrary upper padding before letting the content hide.
+        // The threshold for hiding the bars is twice the height of the hidden bars. 
+        // This ensures that once the bars are hidden the view can still be scrolled 
+        // and thus can unhide the bars.
+        var threshold = footerViewHeightConstraintConstant
+        if let navHeight = navigationController?.navigationBar.frame.height {
+            threshold += navHeight
+        }
+        threshold *= 2.0
 
-        if y > scrollView.contentOffset.y && y > topThreshold {
+        let y = targetContentOffset.memory.y
+        if y > scrollView.contentOffset.y && y > threshold {
             setBarsHidden(true)
         } else {
             setBarsHidden(false)
