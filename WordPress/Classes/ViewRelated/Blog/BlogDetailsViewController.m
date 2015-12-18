@@ -7,7 +7,6 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "BlogDetailHeaderView.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
@@ -384,24 +383,6 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     return WPTableViewDefaultRowHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (title.length == 0) {
-        return nil;
-    }
-    
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = title;
-    return header;
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *headingTitle = nil;
@@ -423,6 +404,11 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
         break;
     }
     return headingTitle;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 #pragma mark - Private methods
