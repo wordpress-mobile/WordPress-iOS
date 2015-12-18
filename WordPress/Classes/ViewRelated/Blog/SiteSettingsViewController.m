@@ -5,7 +5,6 @@
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import "WPTableViewSectionHeaderFooterView.h"
 #import "SettingTableViewCell.h"
 #import "NotificationsManager.h"
 #import <SVProgressHUD/SVProgressHUD.h>
@@ -418,33 +417,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 #pragma mark - UITableViewDelegate
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    NSInteger settingsSection = [self.tableSections[section] intValue];
-    NSString *title = [self titleForHeaderInSection:settingsSection];
-    if (title.length == 0) {
-        return [UIView new];
-    }
-    
-    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
-    header.title = title;
-    return header;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return WPTableViewDefaultRowHeight;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSInteger settingsSection = [self.tableSections[section] intValue];
-    NSString *title = [self titleForHeaderInSection:settingsSection];
-    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
-}
-
-- (NSString *)titleForHeaderInSection:(NSInteger)section
-{
+    section = [self.tableSections[section] intValue];
     NSString *headingTitle = nil;
     switch (section) {
         case SiteSettingsSectionGeneral:
@@ -458,6 +433,11 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             break;
     }
     return headingTitle;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    [WPStyleGuide configureTableViewSectionHeader:view];
 }
 
 - (void)showPrivacySelector
