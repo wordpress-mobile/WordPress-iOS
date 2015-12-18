@@ -192,7 +192,7 @@ final public class ReaderDetailViewController : UIViewController
 
     // MARK: - Multitasking Splitview Support
 
-    private func handleApplicationDidBecomeActive(notification: NSNotification) {
+    func handleApplicationDidBecomeActive(notification: NSNotification) {
         view.layoutIfNeeded()
 
         // Refresh media layout as our sizing may have changed if the user expanded
