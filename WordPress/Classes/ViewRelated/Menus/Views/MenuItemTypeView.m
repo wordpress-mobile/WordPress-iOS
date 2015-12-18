@@ -44,7 +44,6 @@
             self.iconView = iconView;
             [self setTypeIconImageName:@"icon-menus-document"];
         }
-        
         {
             UILabel *label = [[UILabel alloc] init];
             label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -68,6 +67,9 @@
             
             self.label = label;
         }
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+        [self addGestureRecognizer:tap];
     }
     
     return self;
@@ -116,6 +118,13 @@
     }
     
     CGContextStrokePath(context);
+}
+
+#pragma mark - gestures
+
+- (void)tapGesture:(UITapGestureRecognizer *)tapGesture
+{
+    [self.delegate itemTypeViewSelected:self];
 }
 
 @end

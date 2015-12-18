@@ -124,9 +124,9 @@
     return ceilf(MenusDesignDefaultContentSpacing / 2.0);
 }
 
-- (void)setNeedsTopConstraintsUpdateForStatusBarAppearence
+- (void)setNeedsTopConstraintsUpdateForStatusBarAppearence:(BOOL)hidden
 {
-    if([[UIApplication sharedApplication] isStatusBarHidden]) {
+    if(hidden) {
         
         self.stackViewTopConstraint.constant = [self defaultStackDesignMargin];
         
