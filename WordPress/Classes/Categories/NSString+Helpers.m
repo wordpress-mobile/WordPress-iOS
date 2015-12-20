@@ -113,10 +113,8 @@ static NSString *const Ellipsis =  @"\u2026";
 // Taken from AFNetworking's AFPercentEscapedQueryStringPairMemberFromStringWithEncoding
 - (NSString *)stringByUrlEncoding
 {
-    static NSString * const kAFCharactersToBeEscaped = @":/?&=;+!@#$()~',*";
-    static NSString * const kAFCharactersToLeaveUnescaped = @"[].";
-
-    return (__bridge_transfer  NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)self, (__bridge CFStringRef)kAFCharactersToLeaveUnescaped, (__bridge CFStringRef)kAFCharactersToBeEscaped, kCFStringEncodingUTF8);
+    NSCharacterSet *charactersToLeaveUnescaped = [NSCharacterSet characterSetWithCharactersInString:@"[]."];
+    return [self stringByAddingPercentEncodingWithAllowedCharacters:charactersToLeaveUnescaped];
 }
 
 - (NSString *)md5
@@ -147,13 +145,13 @@ static NSString *const Ellipsis =  @"\u2026";
         NSString *key, *value;
         if (separator.location != NSNotFound) {
             key = [pair substringToIndex:separator.location];
-            value = [[pair substringFromIndex:separator.location + 1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            value = [[pair substringFromIndex:separator.location + 1] stringByRemovingPercentEncoding];
         } else {
             key = pair;
             value = @"";
         }
 
-        key = [key stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        key = [key stringByRemovingPercentEncoding];
         [result setObject:value forKey:key];
     }
 
