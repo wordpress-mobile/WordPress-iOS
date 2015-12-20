@@ -56,23 +56,15 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 #if TARGET_IPHONE_SIMULATOR || ALPHA_BUILD
     return;
 #endif
+    // iOS 8 or higher notifications registration
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
 
-    BOOL canRegisterUserNotifications = [[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)];
-    if (!canRegisterUserNotifications) {
-        // iOS 7 notifications registration
-        UIRemoteNotificationType types = (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert);
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
-    } else {
-        // iOS 8 or higher notifications registration
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    // Add the categories to UIUserNotificationSettings
+    UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+    UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:[self buildNotificationCategories]];
 
-        // Add the categories to UIUserNotificationSettings
-        UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:[self buildNotificationCategories]];
-
-        // Finally, register the notification settings
-        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
-    }
+    // Finally, register the notification settings
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 }
 
 
@@ -148,14 +140,7 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 {
     // TODO: I must insist. Let's refactor this entire class please, in another issue!. JLP. Jul.15.2015
     UIApplication *application = [UIApplication sharedApplication];
-    
-    // iOS 8+
-    if ([application respondsToSelector:@selector(currentUserNotificationSettings)]) {
-        return application.currentUserNotificationSettings.types != UIUserNotificationTypeNone;
-    }
-    
-    // iOS 7
-    return application.enabledRemoteNotificationTypes != UIRemoteNotificationTypeNone;
+    return application.currentUserNotificationSettings.types != UIUserNotificationTypeNone;
 }
 
 + (NSString *)registeredPushNotificationsToken
