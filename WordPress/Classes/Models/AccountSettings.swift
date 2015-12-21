@@ -24,7 +24,7 @@ extension AccountSettings {
 
         username = managed.username
         email = managed.email
-        primarySiteID = managed.primarySiteID
+        primarySiteID = managed.primarySiteID.integerValue
         webAddress = managed.webAddress
         language = managed.language
     }
