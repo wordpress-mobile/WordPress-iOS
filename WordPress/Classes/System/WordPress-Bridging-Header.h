@@ -12,7 +12,12 @@
 
 #import "DDLogSwift.h"
 
+#import "HelpshiftUtils.h"
+
+#import "LoginViewController.h"
+
 #import "MediaService.h"
+#import "MeHeaderView.h"
 
 #import "Notification.h"
 #import "Notification+Internals.h"
@@ -42,8 +47,10 @@
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingsTextViewController.h"
+#import "SettingsViewController.h"
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"
+#import "SupportViewController.h"
 
 #import "Theme.h"
 #import "ThemeService.h"
