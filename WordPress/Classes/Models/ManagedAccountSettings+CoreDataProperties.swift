@@ -9,7 +9,7 @@ extension ManagedAccountSettings {
 
     @NSManaged var username: String
     @NSManaged var email: String
-    @NSManaged var primarySiteID: Int
+    @NSManaged var primarySiteID: NSNumber
     @NSManaged var webAddress: String
     @NSManaged var language: String
 
