@@ -113,8 +113,10 @@ static NSString *const Ellipsis =  @"\u2026";
 // Taken from AFNetworking's AFPercentEscapedQueryStringPairMemberFromStringWithEncoding
 - (NSString *)stringByUrlEncoding
 {
-    NSCharacterSet *charactersToLeaveUnescaped = [NSCharacterSet characterSetWithCharactersInString:@"[]."];
-    return [self stringByAddingPercentEncodingWithAllowedCharacters:charactersToLeaveUnescaped];
+    NSMutableCharacterSet * allowedCharacterSet = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+    NSString *charactersToLeaveUnescaped = @"[].";
+    [allowedCharacterSet addCharactersInString:charactersToLeaveUnescaped];
+    return [self stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacterSet];
 }
 
 - (NSString *)md5
