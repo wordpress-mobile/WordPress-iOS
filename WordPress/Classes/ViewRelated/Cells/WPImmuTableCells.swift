@@ -70,14 +70,19 @@ class WPTableViewCellBadge: WPTableViewCellDefault {
     }
 
     private lazy var badgeLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 30))
+        let label = UILabel(frame: CGRect(origin: CGPointZero, size: WPTableViewCellBadge.badgeSize))
         label.layer.masksToBounds = true
-        label.layer.cornerRadius = 15
+        label.layer.cornerRadius = WPTableViewCellBadge.badgeCornerRadius
         label.textAlignment = .Center
         label.backgroundColor = WPStyleGuide.newKidOnTheBlockBlue()
         label.textColor = UIColor.whiteColor()
         return label
     }()
+
+    private static let badgeSize = CGSize(width: 50, height: 30)
+    private static var badgeCornerRadius: CGFloat {
+        return badgeSize.height / 2
+    }
 }
 
 struct NavigationItemRow : ImmuTableRow {
