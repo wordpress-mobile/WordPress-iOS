@@ -16,6 +16,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         title = NSLocalizedString("Me", comment: "Me page title")
         restorationIdentifier = self.dynamicType.restorationIdentifier
         restorationClass = self.dynamicType
+        clearsSelectionOnViewWillAppear = false
     }
 
     required convenience init() {
@@ -59,6 +60,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         HelpshiftUtils.refreshUnreadNotificationCount()
+        animateDeselectionInteractively()
     }
 
     func reloadViewModel() {
