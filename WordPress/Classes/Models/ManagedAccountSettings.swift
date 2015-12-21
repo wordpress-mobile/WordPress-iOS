@@ -63,7 +63,7 @@ class ManagedAccountSettings: NSManagedObject {
         case .Email(_):
             return .Email(self.email)
         case .PrimarySite(_):
-            return .PrimarySite(self.primarySiteID)
+            return .PrimarySite(self.primarySiteID.integerValue)
         case .WebAddress(_):
             return .WebAddress(self.webAddress)
         case .Language(_):
