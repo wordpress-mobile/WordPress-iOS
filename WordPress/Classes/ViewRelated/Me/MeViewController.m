@@ -52,7 +52,7 @@ typedef NS_ENUM(NSInteger, MeSectionWpCom) {
 static NSString *const WPMeRestorationID = @"WPMeRestorationID";
 static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
-@interface MeViewController () <UIViewControllerRestoration, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
+@interface MeViewController () <UIViewControllerRestoration, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView   *tableView;
 @property (nonatomic, strong) MeHeaderView  *headerView;
@@ -370,20 +370,21 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
                 NSString *signOutTitle = NSLocalizedString(@"Disconnecting your account will remove all of @%@’s WordPress.com data from this device.",
                                                            @"Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.");
                 signOutTitle = [NSString stringWithFormat:signOutTitle, [defaultAccount username]];
-                UIActionSheet *actionSheet;
-                actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                            destructiveButtonTitle:NSLocalizedString(@"Disconnect", @"Button for confirming disconnecting WordPress.com account")
-                                                 otherButtonTitles:nil];
-                actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-
-                if (IS_IPAD) {
-                    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                    [actionSheet showFromRect:[cell bounds] inView:cell animated:YES];
-                } else {
-                    [actionSheet showInView:self.view];
-                }
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:signOutTitle
+                                                                                         message:nil
+                                                                                  preferredStyle:UIAlertControllerStyleActionSheet];
+                [alertController addActionWithTitle:NSLocalizedString(@"Cancel", "Cancel a prompt")
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil];
+                [alertController addActionWithTitle:NSLocalizedString(@"Disconnect", @"Button for confirming disconnecting WordPress.com account")
+                                              style:UIAlertActionStyleDestructive
+                                            handler:^(UIAlertAction *alertAction) {
+                                                [self signoutFromWordPressAccount];
+                                            }];
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                alertController.popoverPresentationController.sourceRect = [cell bounds];
+                alertController.popoverPresentationController.sourceView = cell;
+                [self presentViewController:alertController animated:YES completion:nil];
             } else {
                 LoginViewController *loginViewController = [[LoginViewController alloc] init];
                 loginViewController.onlyDotComAllowed = YES;
@@ -447,24 +448,19 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
     [self refreshTableView];
 }
 
-
-#pragma mark - Action Sheet Delegate Methods
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)signoutFromWordPressAccount
 {
-    if (buttonIndex == 0) {
-        // Sign out asynchronously so the popover animation can finish on iPad #3667
-        dispatch_async(dispatch_get_main_queue(), ^{
-            // Sign out
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    // Sign out asynchronously so the popover animation can finish on iPad #3667
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // Sign out
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-            [accountService removeDefaultWordPressComAccount];
+        [accountService removeDefaultWordPressComAccount];
 
-            // reload all table view to update the header as well
-            [self refreshTableView];
-        });
-    }
+        // reload all table view to update the header as well
+        [self refreshTableView];
+    });
 }
 
 #pragma mark - Helpshift Notifications
