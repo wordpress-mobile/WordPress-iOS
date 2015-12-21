@@ -768,7 +768,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
                                 message:message
                       withSupportButton:YES
-                         okPressedBlock:^(UIAlertView *alertView) {
+                         okPressedBlock:^(UIAlertController *alertView) {
                 [self openSiteAdminFromAlert:alertView];
             }];
 
@@ -778,7 +778,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
 }
 
-- (void)openSiteAdminFromAlert:(UIAlertView *)alertView
+- (void)openSiteAdminFromAlert:(UIAlertController *)alertView
 {
     NSString *path = nil;
     NSError *error = nil;
