@@ -1,4 +1,5 @@
 import Foundation
+import SVProgressHUD
 import WordPressComAnalytics
 
 public class ReaderHelpers {
@@ -37,6 +38,31 @@ public class ReaderHelpers {
 
         return controller
     }
+
+
+    public class func sharePost(post:ReaderPost, fromView anchorView:UIView, inViewController viewController:UIViewController) {
+        let controller = ReaderHelpers.shareController(
+            post.titleForDisplay(),
+            summary: post.contentPreviewForDisplay(),
+            tags: post.tags,
+            link: post.permaLink
+        )
+
+        if !UIDevice.isPad() {
+            viewController.presentViewController(controller, animated: true, completion: nil)
+            return
+        }
+
+        // Silly iPad popover rules.
+        controller.modalPresentationStyle = .Popover
+        viewController.presentViewController(controller, animated: true, completion: nil)
+        if let presentationController = controller.popoverPresentationController {
+            presentationController.permittedArrowDirections = .Unknown
+            presentationController.sourceView = anchorView
+            presentationController.sourceRect = anchorView.bounds
+        }
+    }
+
 
 
     // MARK: - Topic Helpers
@@ -148,6 +174,34 @@ public class ReaderHelpers {
         if (stat != nil) {
             WPAnalytics.track(stat!, withProperties: properties)
         }
+    }
+
+
+    public class func statsPropertiesForPost(post:ReaderPost, andValue value:AnyObject?, forKey key:String?) -> [NSObject: AnyObject] {
+        var properties = [NSObject: AnyObject]();
+        properties[WPAppAnalyticsKeyBlogID] = post.siteID
+        properties[WPAppAnalyticsKeyPostID] = post.postID
+        properties[WPAppAnalyticsKeyIsJetpack] = post.isJetpack
+        if let feedID = post.feedID, feedItemID = post.feedItemID {
+            properties[WPAppAnalyticsKeyFeedID] = feedID
+            properties[WPAppAnalyticsKeyFeedItemID] = feedItemID
+        }
+
+        if let value = value, key = key {
+            properties[key] = value
+        }
+
+        return properties
+    }
+
+
+    // MARK: Logged in helper
+
+    public class func isLoggedIn() -> Bool {
+        // Is Logged In
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let account = service.defaultWordPressComAccount()
+        return account != nil
     }
 
 }

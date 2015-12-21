@@ -18,6 +18,12 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
 
 @implementation MeHeaderView
 
+- (instancetype)init
+{
+    CGRect frame = CGRectMake(0, 0, 0, MeHeaderViewHeight);
+    return [self initWithFrame:frame];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
