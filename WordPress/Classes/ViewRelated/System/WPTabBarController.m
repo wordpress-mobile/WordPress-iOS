@@ -10,7 +10,6 @@
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
-#import "MeViewController.h"
 #import "NotificationsViewController.h"
 #import "PostListViewController.h"
 #import "ReaderViewController.h"
@@ -21,6 +20,7 @@
 #import "HelpshiftUtils.h"
 #import <WordPressShared/WPDeviceIdentification.h>
 #import "WPAppAnalytics.h"
+#import "WordPress-Swift.h"
 
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
