@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="doV-5W-Rtg">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="doV-5W-Rtg">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <scenes>
         <!--Notifications View Controller-->
@@ -26,7 +25,7 @@
                         <outlet property="ratingsView" destination="ZnY-3K-upT" id="lUG-fd-Stc"/>
                         <outlet property="tableHeaderView" destination="Uvo-9e-l6I" id="dxx-mK-msp"/>
                         <segue destination="veA-Pg-QAw" kind="show" identifier="NotificationDetailsViewController" id="7uj-uJ-yZ8"/>
-                        <segue destination="xj3-6N-2Jy" kind="show" identifier="ReaderPostDetailViewController" id="2du-eK-Xkt"/>
+                        <segue destination="6Ef-w3-Us2" kind="show" identifier="ReaderDetailViewController" id="zp4-jZ-apm"/>
                     </connections>
                 </tableViewController>
                 <view contentMode="scaleToFill" id="Uvo-9e-l6I" userLabel="Header View">
@@ -102,6 +101,14 @@
             </objects>
             <point key="canvasLocation" x="700" y="-1061"/>
         </scene>
+        <!--ReaderDetailViewController-->
+        <scene sceneID="7zN-ZI-iQe">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Reader" bundleIdentifier="WordPress" referencedIdentifier="ReaderDetailViewController" id="6Ef-w3-Us2" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bfo-xf-Dnl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2749.5" y="-1817"/>
+        </scene>
         <!--Reader Comments View Controller-->
         <scene sceneID="RLS-eH-qVH">
             <objects>
@@ -110,17 +117,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="59U-6R-KoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2949.375" y="-1982.7464788732393"/>
-        </scene>
-        <!--Reader Post Details-->
-        <scene sceneID="ET8-9p-ZLz">
-            <objects>
-                <tableViewController id="xj3-6N-2Jy" userLabel="Reader Post Details" customClass="ReaderPostDetailViewController" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="sWj-Rg-m3q"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="h51-jr-fqU" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2949.375" y="-1270.7746478873239"/>
+            <point key="canvasLocation" x="2949" y="-1279"/>
         </scene>
         <!--WebView-->
         <scene sceneID="1zS-D4-F1Z">
@@ -170,8 +167,8 @@
                         <outlet property="tableView" destination="Dcn-Il-AtN" id="Mjf-q7-Lkn"/>
                         <segue destination="8p8-88-FGK" kind="show" identifier="StatsViewController" id="EAn-K1-ofm"/>
                         <segue destination="Bbj-DX-KQ7" kind="show" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
-                        <segue destination="xj3-6N-2Jy" kind="show" identifier="ReaderPostDetailViewController" id="ODX-zz-S1G"/>
                         <segue destination="kOE-dH-qnb" kind="show" identifier="ReaderCommentsViewController" id="Puk-pn-rGi"/>
+                        <segue destination="6Ef-w3-Us2" kind="show" identifier="ReaderDetailViewController" id="WHD-nZ-mNK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -196,6 +193,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="2du-eK-Xkt"/>
+        <segue reference="zp4-jZ-apm"/>
     </inferredMetricsTieBreakers>
 </document>

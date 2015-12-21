@@ -6,7 +6,6 @@
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
 #import "ReaderPostService.h"
-#import "ReaderPostDetailViewController.h"
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderTopicService.h"
 #import "WordPressAppDelegate.h"
@@ -61,9 +60,9 @@
 
 #pragma mark - Public methods
 
-- (void)openPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
+- (void)openPost:(NSNumber *)postID onBlog:(NSNumber *)blogID
 {
-    ReaderPostDetailViewController *controller = [ReaderPostDetailViewController detailControllerWithPostID:postId siteID:blogId];
+    ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPostID:postID siteID:blogID];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

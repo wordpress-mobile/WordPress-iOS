@@ -95,6 +95,22 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
     return self;
 }
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        _mediaArray = [NSMutableArray array];
+        _mediaIndexPathsNeedingLayout = [NSMutableArray array];
+        _mediaIndexPathsPendingDownload = [NSMutableArray array];
+        _textOptions = [[self class] defaultDTCoreTextOptions];
+        _textContentView = [self buildTextContentView];
+        [self addSubview:self.textContentView];
+        [self configureConstraints];
+    }
+    return self;
+}
+
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -263,6 +279,17 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
     });
 }
 
+- (void)refreshLayout
+{
+    // If image frames need to be updated `relayoutTextContentView` will be
+    // called automatically.
+    if ([self refreshLayoutForMediaInArray:self.mediaArray]) {
+        return;
+    }
+
+    [self relayoutTextContentView];
+}
+
 - (void)refreshMediaLayout
 {
     [self refreshLayoutForMediaInArray:self.mediaArray];
@@ -347,7 +374,7 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
     [self refreshLayoutForMediaInArray:arr];
 }
 
-- (void)refreshLayoutForMediaInArray:(NSArray *)media
+- (BOOL)refreshLayoutForMediaInArray:(NSArray *)media
 {
     BOOL frameChanged = NO;
 
@@ -360,6 +387,8 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
     if (frameChanged) {
         [self relayoutTextContentView];
     }
+
+    return frameChanged;
 }
 
 - (BOOL)updateLayoutForMediaItem:(id<WPRichTextMediaAttachment>)media

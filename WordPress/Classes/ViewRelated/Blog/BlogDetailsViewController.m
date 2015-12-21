@@ -414,12 +414,12 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
             headingTitle = NSLocalizedString(@"Publish", @"Section title for the publish table section in the blog details screen");
         break;
         case TableViewSectionAppearance:
-            headingTitle = NSLocalizedString(@"Appearance",
-                                             @"Section title for the appearance table section in the" \
+            headingTitle = NSLocalizedString(@"Personalize",
+                                             @"Section title for the personalize table section in the" \
                                              " blog details screen.");
         break;
         case TableViewSectionConfigurationType:
-            headingTitle = NSLocalizedString(@"Configuration", @"Section title for the configuration table section in the blog details screen");
+            headingTitle = NSLocalizedString(@"Configure", @"Section title for the configure table section in the blog details screen");
         break;
     }
     return headingTitle;
