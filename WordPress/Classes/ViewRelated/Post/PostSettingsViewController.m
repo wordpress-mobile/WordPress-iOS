@@ -61,7 +61,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) PublishDatePickerView *datePicker;
 @property (assign) BOOL *textFieldDidHaveFocusBeforeOrientationChange;
-@property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, assign) BOOL *shouldHideStatusBar;
 @property (nonatomic, assign) BOOL *isUploadingMedia;
 @property (nonatomic, strong) NSProgress *featuredImageProgress;
@@ -896,14 +895,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     picker.delegate = self;
     picker.allowMultipleSelection = NO;
     picker.showMostRecentFirst = YES;
-    if (IS_IPAD) {
-        self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
-        CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
-        self.popover.delegate = self;
-        [self.popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    } else {
-        [self presentViewController:picker animated:YES completion:nil];
-    }
+    [self presentViewController:picker animated:YES completion:nil];
 }
 
 - (void)showCategoriesSelection
@@ -1114,11 +1106,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         }
     }
     
-    if (IS_IPAD) {
-        [self.popover dismissPopoverAnimated:YES];
-    } else {
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    }
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+
     // Reload the featured image row so that way the activity indicator will be displayed.
     NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
     [self.tableView reloadRowsAtIndexPaths:@[featureImageCellPath]
@@ -1126,24 +1115,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 }
 
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker {
-    if (IS_IPAD) {
-        [self.popover dismissPopoverAnimated:YES];
-    } else {
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    }
-}
-
-#pragma mark - UIPopoverControllerDelegate methods
-- (void)popoverController:(UIPopoverController *)popoverController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView *__autoreleasing *)view
-{
-    *rect = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
-}
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    // Reset delegate and nil popover property
-    self.popover.delegate = nil;
-    self.popover = nil;
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Status bar management
