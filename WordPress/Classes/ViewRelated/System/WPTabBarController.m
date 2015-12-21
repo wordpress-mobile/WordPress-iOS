@@ -172,7 +172,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     _blogListNavigationController.tabBarItem.image = [mySitesTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    self.blogListViewController.title = NSLocalizedString(@"My Sites", @"");
     [_blogListNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
     _blogListNavigationController.tabBarItem.accessibilityIdentifier = NSLocalizedString(@"My Sites", @"");
 
@@ -202,7 +201,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
     _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     [_readerNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
-    _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
 
     return _readerNavigationController;
 }
@@ -263,7 +261,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     _notificationsNavigationController.tabBarItem.image = [notificationsTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.selectedImage = notificationsTabBarImage;
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
-    self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
     [_notificationsNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
 
     return _notificationsNavigationController;

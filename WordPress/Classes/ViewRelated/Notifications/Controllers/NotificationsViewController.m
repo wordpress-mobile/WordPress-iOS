@@ -94,7 +94,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
+        self.navigationItem.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
 
         // Listen to Logout Notifications
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
