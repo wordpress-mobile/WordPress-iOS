@@ -9,7 +9,6 @@
 #import "SVProgressHUD.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
-#import "ReaderPostDetailViewController.h"
 #import "PostService.h"
 #import "Post.h"
 #import "BlogService.h"
@@ -283,7 +282,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
             return;
         }
 
-        ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID];
+        ReaderDetailViewController *vc = [ReaderDetailViewController controllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
