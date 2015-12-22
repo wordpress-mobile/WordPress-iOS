@@ -330,7 +330,6 @@
 		B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */; };
 		B54106901B6FE38400C880D0 /* WPWebViewController+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541068F1B6FE38400C880D0 /* WPWebViewController+Auth.swift */; };
 		B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B541276A1C0F7D610015CA80 /* SettingsMultiTextViewController.m */; };
-		B548458219A258890077E7A5 /* UIActionSheet+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */; };
 		B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */; };
 		B54E1DF01A0A7BAA00807537 /* ReplyBezierView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E1DED1A0A7BAA00807537 /* ReplyBezierView.swift */; };
 		B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E1DEE1A0A7BAA00807537 /* ReplyTextView.swift */; };
@@ -1252,8 +1251,6 @@
 		B54127691C0F7D610015CA80 /* SettingsMultiTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMultiTextViewController.h; sourceTree = "<group>"; };
 		B541276A1C0F7D610015CA80 /* SettingsMultiTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsMultiTextViewController.m; sourceTree = "<group>"; };
 		B54810F61AA656B40081B54D /* WordPress 28.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 28.xcdatamodel"; sourceTree = "<group>"; };
-		B548458019A258890077E7A5 /* UIActionSheet+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Helpers.h"; sourceTree = "<group>"; };
-		B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIActionSheet+Helpers.m"; sourceTree = "<group>"; };
 		B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Helpers.swift"; sourceTree = "<group>"; };
 		B54E1DED1A0A7BAA00807537 /* ReplyBezierView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyBezierView.swift; sourceTree = "<group>"; };
 		B54E1DEE1A0A7BAA00807537 /* ReplyTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyTextView.swift; sourceTree = "<group>"; };
@@ -3310,8 +3307,6 @@
 				46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */,
 				E2AA87A318523E5300886693 /* UIView+Subviews.h */,
 				E2AA87A418523E5300886693 /* UIView+Subviews.m */,
-				B548458019A258890077E7A5 /* UIActionSheet+Helpers.h */,
-				B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */,
 				B57B99DC19A2DBF200506504 /* NSObject+Helpers.h */,
 				B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */,
 				E69BA1961BB5D7D300078740 /* WPStyleGuide+ReadableMargins.h */,
@@ -4482,7 +4477,6 @@
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */,
 				BE87E1A21BD405790075D45B /* WP3DTouchShortcutHandler.swift in Sources */,
-				B548458219A258890077E7A5 /* UIActionSheet+Helpers.m in Sources */,
 				FFA9148F1BA6E5170068F8BF /* RotationAwareNavigationViewController.m in Sources */,
 				5D4E30D11AA4B41A000D9904 /* WPStyleGuide+Posts.m in Sources */,
 				5D17530F1A97D2CA0031A082 /* PostCardTableViewCell.m in Sources */,
@@ -4944,7 +4938,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
@@ -5005,7 +4999,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
@@ -5089,7 +5083,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
@@ -5174,7 +5168,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				INFOPLIST_FILE = "WordPress-Alpha-Info.plist";
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
@@ -5316,7 +5310,7 @@
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -5439,7 +5433,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				INFOPLIST_FILE = "WordPress-Internal-Info.plist";
 				INFOPLIST_PREFIX_HEADER = InfoPlist.h;
 				INFOPLIST_PREPROCESS = YES;
@@ -5575,7 +5569,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -5627,7 +5621,7 @@
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -5679,7 +5673,7 @@
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
@@ -5730,7 +5724,7 @@
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = NO;
+				GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
