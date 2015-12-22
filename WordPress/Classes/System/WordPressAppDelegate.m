@@ -6,7 +6,6 @@
 // Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
-#import <GooglePlus/GooglePlus.h>
 #import <HockeySDK/HockeySDK.h>
 #import <Reachability/Reachability.h>
 #import <Simperium/Simperium.h>
@@ -15,9 +14,6 @@
 #import <WordPressApi/WordPressApi.h>
 #import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
-
-// Other third party libs
-#import "PocketAPI.h"
 
 // Analytics & crash logging
 #import "WPAppAnalytics.h"
@@ -186,14 +182,6 @@ int ddLogLevel                                                  = DDLogLevelInfo
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
                                                           sourceApplication:sourceApplication
                                                                  annotation:annotation]) {
-        returnValue = YES;
-    }
-
-    if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
-        returnValue = YES;
-    }
-
-    if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
         returnValue = YES;
     }
 
@@ -377,8 +365,6 @@ int ddLogLevel                                                  = DDLogLevelInfo
     
     [HelpshiftUtils setup];
     
-    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
-    
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     self.userAgent = [[WPUserAgent alloc] init];
@@ -399,7 +385,6 @@ int ddLogLevel                                                  = DDLogLevelInfo
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [MediaService cleanUnusedMediaFileFromTmpDir];
-        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
     });
     
     // Configure Today Widget
