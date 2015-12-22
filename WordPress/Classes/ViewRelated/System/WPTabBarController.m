@@ -176,7 +176,7 @@ static NSInteger const WPTabBarIconOffset = 5;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     [_blogListNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
     _blogListNavigationController.tabBarItem.imageInsets = UIEdgeInsetsMake(WPTabBarIconOffset, 0, -1 * WPTabBarIconOffset, 0);
-    _blogListNavigationController.tabBarItem.accessibilityIdentifier = NSLocalizedString(@"My Sites", @"");
+    _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.");
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -205,6 +205,7 @@ static NSInteger const WPTabBarIconOffset = 5;
     _readerNavigationController.tabBarItem.imageInsets = UIEdgeInsetsMake(WPTabBarIconOffset, -1 * WPTabBarIconOffset, -1 * WPTabBarIconOffset, WPTabBarIconOffset);
     _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     [_readerNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
+    _readerNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Reader", @"The accessibility value of the reader tab.");
 
     return _readerNavigationController;
 }
@@ -220,16 +221,7 @@ static NSInteger const WPTabBarIconOffset = 5;
     _newPostViewController = [[UIViewController alloc] init];
     _newPostViewController.tabBarItem.image = newPostImage;
     _newPostViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(WPTabBarIconOffset, 0, -1 * WPTabBarIconOffset, 0);
-
-    /*
-     If title is used, the title will be visible. See #1158
-     If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
-
-     The only apparent solution is to have an actual title, and then move it out of view
-     non-VoiceOver users.
-     */
-    _newPostViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    _newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
+    _newPostViewController.tabBarItem.accessibilityLabel = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
 
     return _newPostViewController;
 }
@@ -248,6 +240,7 @@ static NSInteger const WPTabBarIconOffset = 5;
     _meNavigationController.tabBarItem.imageInsets = UIEdgeInsetsMake(WPTabBarIconOffset, WPTabBarIconOffset, -1 * WPTabBarIconOffset, -1 * WPTabBarIconOffset);
     _meNavigationController.tabBarItem.titlePositionAdjustment = self.tabBarTitleOffset;
     _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
+    _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
 
     return _meNavigationController;
 }
@@ -268,6 +261,7 @@ static NSInteger const WPTabBarIconOffset = 5;
     _notificationsNavigationController.tabBarItem.imageInsets = UIEdgeInsetsMake(WPTabBarIconOffset, 0, -1 * WPTabBarIconOffset, 0);
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     [_notificationsNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
+    _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
 
     return _notificationsNavigationController;
 }
