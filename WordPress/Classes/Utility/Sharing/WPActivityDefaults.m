@@ -33,10 +33,10 @@
         stat = WPAnalyticsStatSentItemToGooglePlus;
     } else if ([activityType isEqualToString:NSStringFromClass([WordPressActivity class])]) {
         stat = WPAnalyticsStatSentItemToWordPress;
-    } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard] || [activityType isEqualToString:UIActivityTypeAddToReadingList] || [activityType isEqualToString:NSStringFromClass([SafariActivity class])]) {
+    } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard]) {
         return;
     } else {
-        [WPAnalytics track:WPAnalyticsStatSharedItem];
+        [WPAnalytics track:WPAnalyticsStatSharedItem withProperties:@{@"activity_type":activityType}];
         return;
     }
 
