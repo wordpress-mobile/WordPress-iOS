@@ -3,7 +3,13 @@ import WordPressShared
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
     static let restorationIdentifier = "WPMeRestorationID"
-    var handler: ImmuTableViewHandler!
+    var tableViewModel = ImmuTable(sections: []) {
+        didSet {
+            if isViewLoaded() {
+                tableView.reloadData()
+            }
+        }
+    }
 
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         return self.init()
@@ -44,7 +50,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             DestructiveButtonRow.self
             ], tableView: self.tableView)
 
-        handler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
         // FIXME: @koke 2015-12-17
         // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4416
@@ -74,7 +79,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
         tableView.tableHeaderView = account.map(headerView)
-        handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
+        tableViewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
     }
 
     func headerView(account: WPAccount) -> MeHeaderView {
@@ -152,6 +157,46 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                         ])
                 ])
         }
+    }
+    // MARK: Table View Data Source
+
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return tableViewModel.sections.count
+    }
+
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tableViewModel.sections[section].rows.count
+    }
+
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let row = tableViewModel.rowAtIndexPath(indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
+
+        row.configureCell(cell)
+
+        return cell
+    }
+
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return tableViewModel.sections[section].headerText
+    }
+
+    // MARK: Table View Delegate
+
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let row = tableViewModel.rowAtIndexPath(indexPath)
+        row.action?(row)
+    }
+
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil)
+        view.title = self.tableView(tableView, titleForHeaderInSection: section)
+        return view
+    }
+
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let title = self.tableView(tableView, titleForHeaderInSection: section)
+        return WPTableViewSectionHeaderFooterView.heightForHeader(title, width: tableView.frame.width)
     }
 
     // MARK: - Actions
