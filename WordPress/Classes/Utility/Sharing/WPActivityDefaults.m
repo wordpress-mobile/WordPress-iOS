@@ -2,7 +2,6 @@
 
 #import "SafariActivity.h"
 #import "InstapaperActivity.h"
-#import "GooglePlusActivity.h"
 #import "WordPressActivity.h"
 
 @implementation WPActivityDefaults
@@ -11,10 +10,9 @@
 {
     SafariActivity *safariActivity = [[SafariActivity alloc] init];
     InstapaperActivity *instapaperActivity = [[InstapaperActivity alloc] init];
-    GooglePlusActivity *googlePlusActivity = [[GooglePlusActivity alloc] init];
     WordPressActivity *wordPressActivity = [[WordPressActivity alloc] init];
 
-    return @[safariActivity, wordPressActivity, instapaperActivity, googlePlusActivity];
+    return @[safariActivity, wordPressActivity, instapaperActivity];
 }
 
 + (void)trackActivityType:(NSString *)activityType
@@ -32,7 +30,7 @@
         stat = WPAnalyticsStatSharedItemViaWeibo;
     } else if ([activityType isEqualToString:NSStringFromClass([InstapaperActivity class])]) {
         stat = WPAnalyticsStatSentItemToInstapaper;
-    } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
+    } else if ([activityType isEqualToString:@"com.google.GooglePlus.ShareExtension"]) {
         stat = WPAnalyticsStatSentItemToGooglePlus;
     } else if ([activityType isEqualToString:NSStringFromClass([WordPressActivity class])]) {
         stat = WPAnalyticsStatSentItemToWordPress;
