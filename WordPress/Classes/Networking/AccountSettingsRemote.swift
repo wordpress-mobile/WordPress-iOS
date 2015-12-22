@@ -3,10 +3,11 @@ import Foundation
 class AccountSettingsRemote: ServiceRemoteREST {
     func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) {
         let endpoint = "me/settings"
+        let parameters = ["context": "edit"]
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
         api.GET(path,
-            parameters: nil,
+            parameters: parameters,
             success: {
                 operation, responseObject in
 
@@ -55,7 +56,9 @@ class AccountSettingsRemote: ServiceRemoteREST {
                 throw Error.DecodeError
         }
 
-        return AccountSettings(firstName: firstName, lastName: lastName, displayName: displayName, aboutMe: aboutMe, username: username, email: email, primarySiteID: primarySiteID, webAddress: webAddress, language: language)
+        let aboutMeText = aboutMe.stringByDecodingXMLCharacters()
+
+        return AccountSettings(firstName: firstName, lastName: lastName, displayName: displayName, aboutMe: aboutMeText, username: username, email: email, primarySiteID: primarySiteID, webAddress: webAddress, language: language)
     }
 
     private func fieldNameForChange(change: AccountSettingsChange) -> String {
