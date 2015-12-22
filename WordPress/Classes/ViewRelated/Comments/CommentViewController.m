@@ -3,7 +3,6 @@
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
-#import "UIActionSheet+Helpers.h"
 #import "Comment.h"
 #import "BasePost.h"
 #import "SVProgressHUD.h"
