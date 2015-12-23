@@ -4958,6 +4958,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
+				OTHER_SWIFT_FLAGS = "-D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE = "9da9c00f-12e2-4dc7-a862-03c008e8609e";
@@ -5187,6 +5188,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
+				OTHER_SWIFT_FLAGS = "-D ALPHA_BUILD -D INTERNAL_BUILD";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.alpha;
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE = "f277d7c2-eff6-46cd-aaa3-6784e2b4dcfc";
@@ -5452,6 +5454,7 @@
 					"-l\"sqlite3.0\"",
 					"-l\"z\"",
 				);
+				OTHER_SWIFT_FLAGS = "-D INTERNAL_BUILD";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.internal;
 				PRODUCT_NAME = WordPress;
 				PROVISIONING_PROFILE = "bd27f648-b38b-41f1-a48e-765fd10701cf";
