@@ -44,6 +44,8 @@ static NSInteger const WPNotificationBadgeIconSize = 10;
 static NSInteger const WPNotificationBadgeIconVerticalOffsetFromTop = 5;
 static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
 
+static NSInteger const WPTabBarIconOffset = 5;
+
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
@@ -172,9 +174,8 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     _blogListNavigationController.tabBarItem.image = [mySitesTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    self.blogListViewController.title = NSLocalizedString(@"My Sites", @"");
-    [_blogListNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
-    _blogListNavigationController.tabBarItem.accessibilityIdentifier = NSLocalizedString(@"My Sites", @"");
+    _blogListNavigationController.tabBarItem.imageInsets = UIEdgeInsetsMake(WPTabBarIconOffset, 0, -1 * WPTabBarIconOffset, 0);
+    _blogListNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"My Sites", @"The accessibility value of the my sites tab.");
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -200,9 +201,9 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
     _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
+    _readerNavigationController.tabBarItem.imageInsets = UIEdgeInsetsMake(WPTabBarIconOffset, -1 * WPTabBarIconOffset, -1 * WPTabBarIconOffset, WPTabBarIconOffset);
     _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
-    [_readerNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
-    _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
+    _readerNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Reader", @"The accessibility value of the reader tab.");
 
     return _readerNavigationController;
 }
@@ -217,17 +218,8 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     newPostImage = [newPostImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _newPostViewController = [[UIViewController alloc] init];
     _newPostViewController.tabBarItem.image = newPostImage;
-    _newPostViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5.0, 0, -5.0, 0);
-
-    /*
-     If title is used, the title will be visible. See #1158
-     If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
-
-     The only apparent solution is to have an actual title, and then move it out of view
-     non-VoiceOver users.
-     */
-    _newPostViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    _newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
+    _newPostViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(WPTabBarIconOffset, 0, -1 * WPTabBarIconOffset, 0);
+    _newPostViewController.tabBarItem.accessibilityLabel = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
 
     return _newPostViewController;
 }
@@ -243,8 +235,9 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
     _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
-    _meNavigationController.tabBarItem.titlePositionAdjustment = self.tabBarTitleOffset;
+    _meNavigationController.tabBarItem.imageInsets = UIEdgeInsetsMake(WPTabBarIconOffset, WPTabBarIconOffset, -1 * WPTabBarIconOffset, -1 * WPTabBarIconOffset);
     _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
+    _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
 
     return _meNavigationController;
 }
@@ -262,9 +255,9 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
     UIImage *notificationsTabBarImage = [UIImage imageNamed:@"icon-tab-notifications"];
     _notificationsNavigationController.tabBarItem.image = [notificationsTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.selectedImage = notificationsTabBarImage;
+    _notificationsNavigationController.tabBarItem.imageInsets = UIEdgeInsetsMake(WPTabBarIconOffset, 0, -1 * WPTabBarIconOffset, 0);
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
-    self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
-    [_notificationsNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
+    _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
 
     return _notificationsNavigationController;
 }
@@ -478,12 +471,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
 - (BOOL)isNavigatingMySitesTab
 {
     return (self.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
-}
-
-#pragma mark - Helpers
-
-- (UIOffset)tabBarTitleOffset {
-    return IS_IPHONE ? UIOffsetMake(0, -2) : UIOffsetZero;
 }
 
 #pragma mark - Helpshift Notifications

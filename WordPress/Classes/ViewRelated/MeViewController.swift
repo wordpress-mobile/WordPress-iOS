@@ -19,7 +19,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     override init(style: UITableViewStyle) {
         super.init(style: style)
-        title = NSLocalizedString("Me", comment: "Me page title")
+        navigationItem.title = NSLocalizedString("Me", comment: "Me page title")
         restorationIdentifier = self.dynamicType.restorationIdentifier
         restorationClass = self.dynamicType
         clearsSelectionOnViewWillAppear = false
