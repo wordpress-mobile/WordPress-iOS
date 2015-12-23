@@ -60,7 +60,7 @@ public protocol ThemePresenter: class
     func presentViewForTheme(theme: Theme?)
 }
 
-@objc public class ThemeBrowserViewController : UICollectionViewController, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
+@objc public class ThemeBrowserViewController : UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate, UISearchControllerDelegate, UISearchResultsUpdating, ThemePresenter, WPContentSyncHelperDelegate
 {
     // MARK: - Properties: must be set by parent
     
@@ -72,6 +72,8 @@ public protocol ThemePresenter: class
     
     // MARK: - Properties
     
+    @IBOutlet weak var collectionView: UICollectionView!
+
     /**
      *  @brief      The FRC this VC will use to display filtered content.
      */
@@ -372,9 +374,9 @@ public protocol ThemePresenter: class
         collectionView?.collectionViewLayout.invalidateLayout()
     }
     
-    // MARK: - UICollectionViewController protocol UICollectionViewDataSource
+    // MARK: - UICollectionViewDataSource
     
-    public override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch sections[section] {
         case .Info:
             return 0
@@ -383,7 +385,7 @@ public protocol ThemePresenter: class
         }
     }
     
-    public override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> ThemeBrowserCell {
+    public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(ThemeBrowserCell.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserCell
         
@@ -395,7 +397,7 @@ public protocol ThemePresenter: class
         return cell
     }
     
-    public override func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         switch kind {
         case UICollectionElementKindSectionHeader:
             let header = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: ThemeBrowserHeaderView.reuseIdentifier, forIndexPath: indexPath) as! ThemeBrowserHeaderView
@@ -409,13 +411,13 @@ public protocol ThemePresenter: class
         }
     }
     
-    public override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return sections.count
     }
     
-    // MARK: - UICollectionViewController protocol UICollectionViewDelegate
+    // MARK: - UICollectionViewDelegate
 
-    public override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         if let theme = themeAtIndex(indexPath.row) {
             if theme.isCurrentTheme() {
                 presentCustomizeForTheme(theme)
