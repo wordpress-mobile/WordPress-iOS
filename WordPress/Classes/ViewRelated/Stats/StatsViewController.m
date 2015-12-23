@@ -16,7 +16,7 @@
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
-@interface StatsViewController () <UIActionSheetDelegate, WPStatsViewControllerDelegate>
+@interface StatsViewController () <WPStatsViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
 @property (nonatomic, strong) UINavigationController *statsNavVC;
@@ -163,16 +163,19 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (IBAction)makeSiteTodayWidgetSite:(id)sender
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You can display a single site's stats in the iOS Today/Notification Center view.", @"Action sheet title for setting Today Widget site to the current one")
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:NSLocalizedString(@"Use this site", @""), nil];
-    if (IS_IPAD) {
-        [actionSheet showFromBarButtonItem:sender animated:YES];
-    } else {
-        [actionSheet showFromTabBar:self.tabBarController.tabBar];
-    }
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"You can display a single site's stats in the iOS Today/Notification Center view.", @"Action sheet title for setting Today Widget site to the current one")
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addActionWithTitle:NSLocalizedString(@"Cancel", @"")
+                                  style:UIAlertActionStyleCancel
+                                handler:nil];
+    [alertController addActionWithTitle:NSLocalizedString(@"Use this site", @"")
+                                  style:UIAlertActionStyleDefault
+                                handler:^(UIAlertAction *alertAction) {
+                                   [self saveSiteDetailsForTodayWidget];
+                                  }];
+    alertController.popoverPresentationController.barButtonItem = sender;
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 
@@ -190,17 +193,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     WPNoResultsView *noResultsView = [WPNoResultsView noResultsViewWithTitle:title message:message accessoryView:nil buttonTitle:nil];
     self.noResultsView = noResultsView;
     [self.view addSubview:self.noResultsView];
-}
-
-
-#pragma mark - UIActionSheetDelegate methods
-
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        [self saveSiteDetailsForTodayWidget];
-    }
 }
 
 #pragma mark - Restoration

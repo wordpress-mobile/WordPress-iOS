@@ -30,7 +30,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
         self.title = NSLocalizedString(@"Activity Logs", @"");
 
         UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Logs", @"")
-                                                                       style:UIBarButtonItemStyleBordered
+                                                                       style:UIBarButtonItemStylePlain
                                                                       target:nil
                                                                       action:nil];
         [self.navigationItem setBackBarButtonItem:backButton];

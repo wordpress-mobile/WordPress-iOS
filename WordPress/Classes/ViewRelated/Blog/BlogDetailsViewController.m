@@ -58,8 +58,6 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
-@property (nonatomic, weak) UIActionSheet *removeSiteActionSheet;
-@property (nonatomic, weak) UIAlertView *removeSiteAlertView;
 @property (nonatomic, strong) NSArray *tableSections;
 
 @end
@@ -94,8 +92,6 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)dealloc
 {
-    self.removeSiteActionSheet.delegate = nil;
-    self.removeSiteAlertView.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
