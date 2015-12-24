@@ -73,6 +73,8 @@ public protocol ThemePresenter: class
     // MARK: - Properties
     
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var searchWrapperView: UIView!
+    @IBOutlet weak var searchWrapperViewHeightConstraint: NSLayoutConstraint!
 
     /**
      *  @brief      The FRC this VC will use to display filtered content.
