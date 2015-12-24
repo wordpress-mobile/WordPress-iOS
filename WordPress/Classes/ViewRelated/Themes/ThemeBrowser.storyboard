@@ -18,6 +18,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wnT-1U-1Wb">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="0.0"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" id="y46-UP-BeM"/>
+                                </constraints>
+                            </view>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="IO9-Kh-IaO">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="0.0" id="zdl-yg-1wZ">
@@ -373,14 +380,19 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="IO9-Kh-IaO" firstAttribute="top" secondItem="DIk-76-9Vi" secondAttribute="top" id="VXE-Dk-SCp"/>
+                            <constraint firstItem="wnT-1U-1Wb" firstAttribute="leading" secondItem="DIk-76-9Vi" secondAttribute="leading" id="7m9-Yb-mRC"/>
+                            <constraint firstItem="IO9-Kh-IaO" firstAttribute="top" secondItem="wnT-1U-1Wb" secondAttribute="bottom" id="Qzf-w8-WPY"/>
                             <constraint firstItem="IO9-Kh-IaO" firstAttribute="leading" secondItem="DIk-76-9Vi" secondAttribute="leading" id="fZJ-gM-mi4"/>
+                            <constraint firstAttribute="trailing" secondItem="wnT-1U-1Wb" secondAttribute="trailing" id="jVF-xt-BUG"/>
+                            <constraint firstItem="wnT-1U-1Wb" firstAttribute="top" secondItem="DIk-76-9Vi" secondAttribute="top" id="uNY-k5-auU"/>
                             <constraint firstItem="vre-ly-ogW" firstAttribute="top" secondItem="IO9-Kh-IaO" secondAttribute="bottom" id="zqA-Vo-evh"/>
                             <constraint firstAttribute="trailing" secondItem="IO9-Kh-IaO" secondAttribute="trailing" id="zxY-iH-zwf"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="IO9-Kh-IaO" id="OSc-f6-l2a"/>
+                        <outlet property="searchWrapperView" destination="wnT-1U-1Wb" id="mJT-qT-te8"/>
+                        <outlet property="searchWrapperViewHeightConstraint" destination="y46-UP-BeM" id="WNy-tt-n3y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bpk-Ud-H5k" userLabel="First Responder" sceneMemberID="firstResponder"/>
