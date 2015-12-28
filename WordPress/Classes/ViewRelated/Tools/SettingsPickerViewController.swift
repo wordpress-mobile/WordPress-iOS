@@ -2,73 +2,45 @@ import Foundation
 import WordPressShared
 
 
-/**
- *  @class          SettingsPickerViewController
- *  @details        Renders a table with the following structure:
- *
- *                  Section | Row   ContentView
- *                  0           1   [Text]  [Switch]    < Shows / Hides Section 1
- *                  1           0   [Text]  [Text]
- *                  1           1   [Picker]
- */
+/// Renders a table with the following structure:
+///     Section | Row   ContentView
+///     0           1   [Text]  [Switch]    < Shows / Hides Section 1
+///     1           0   [Text]  [Text]
+///     1           1   [Picker]
 
 public class SettingsPickerViewController : UITableViewController
 {
-    /**
-     *  @details    Indicates whether a Switch row should be rendered on top, allowing
-     *              the user to Enable / Disable the picker
-     */
+    /// Indicates whether a Switch row should be rendered on top, allowing the user to Enable / Disable the picker
     public var switchVisible = true
     
-    /**
-     *  @details    Specifies the Switch value, to be displayed on the first row
-     *              (granted that `switchVisible` is set to true)
-     */
+    /// Specifies the Switch value, to be displayed on the first row (granted that `switchVisible` is set to true)
     public var switchOn = false
     
-    /**
-     *  @details    Text to be displayed by the first row's Switch
-     */
+    /// Text to be displayed by the first row's Switch
     public var switchText : String!
     
-    /**
-     *  @details    Text to be displayed in the "Currently Selected value" row
-     */
+    /// Text to be displayed in the "Currently Selected value" row
     public var selectionText : String!
     
-    /**
-     *  @details    Indicates the format to be used in the "Currently Selected Value" row
-     */
+    /// Indicates the format to be used in the "Currently Selected Value" row
     public var selectionFormat : String?
 
-    /**
-     *  @details    Hint Text, to be displayed on top of the Picker
-     */
+    /// Hint Text, to be displayed on top of the Picker
     public var pickerHint : String?
     
-    /**
-     *  @details    String format, to be applied over the Picker Rows
-     */
+    /// String format, to be applied over the Picker Rows
     public var pickerFormat : String?
     
-    /**
-     *  @details    Currently selected value.
-     */
+    /// Currently selected value.
     public var pickerSelectedValue : Int!
     
-    /**
-     *  @details    Picker's minimum value.
-     */
+    /// Picker's minimum value.
     public var pickerMinimumValue : Int!
     
-    /**
-     *  @details    Picker's maximum value.
-     */
+    /// Picker's maximum value.
     public var pickerMaximumValue : Int!
 
-    /**
-     *  @details    Closure to be executed whenever the Switch / Picker is updated
-     */
+    /// Closure to be executed whenever the Switch / Picker is updated
     public var onChange : ((enabled : Bool, newValue: Int) -> ())?
     
     
