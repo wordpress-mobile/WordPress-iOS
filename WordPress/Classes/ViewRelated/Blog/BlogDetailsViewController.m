@@ -122,7 +122,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                           ];
     
     BOOL menusEnabled = YES;
-    if ([self.blog supports:BlogFeatureThemeBrowsing]) || menusEnabled) {
+    if ([self.blog supports:BlogFeatureThemeBrowsing] || menusEnabled) {
         self.tableSections = [self.tableSections arrayByAddingObject:@(TableViewSectionAppearance)];
     }
 
