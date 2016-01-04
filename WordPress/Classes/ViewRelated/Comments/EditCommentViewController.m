@@ -19,7 +19,7 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
 #pragma mark Private Methods
 #pragma mark ==========================================================================================
 
-@interface EditCommentViewController() <UIActionSheetDelegate>
+@interface EditCommentViewController()
 
 @property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView *textView;
 @property (nonatomic, strong) NSString *pristineText;
@@ -187,17 +187,6 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
     }
 }
 
-
-#pragma mark - UIActionSheet delegate methods
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        [self finishWithoutUpdates];
-    }
-}
-
-
 #pragma mark - Button Delegates
 
 - (void)btnCancelPressed
@@ -206,16 +195,21 @@ static UIEdgeInsets EditCommentInsetsPhone = {5, 10, 5, 11};
         [self finishWithoutUpdates];
         return;
     }
-
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"")
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                               destructiveButtonTitle:NSLocalizedString(@"Discard", @"")
-                                                    otherButtonTitles:nil];
     
-    actionSheet.delegate = self;
-    actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
-    [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:true];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Show when clicking cancel on a comment text box and you didn't save your changes.")
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addActionWithTitle:NSLocalizedString(@"Cancel", @"")
+                                  style:UIAlertActionStyleCancel
+                                handler:nil];
+    [alertController addActionWithTitle:NSLocalizedString(@"Discard", @"")
+                                  style:UIAlertActionStyleDestructive
+                                handler:^(UIAlertAction *alertAction) {
+                                    [self finishWithoutUpdates];
+                                }];
+    alertController.popoverPresentationController.barButtonItem = self.navigationItem.leftBarButtonItem;
+    [self presentViewController:alertController animated:YES completion:nil];
+
 }
 
 - (void)btnDonePressed

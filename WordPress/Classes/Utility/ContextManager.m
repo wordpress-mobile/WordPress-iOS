@@ -243,8 +243,9 @@ static ContextManager *_override;
     }
     
     NSDictionary *metadata = [NSPersistentStoreCoordinator metadataForPersistentStoreOfType:NSSQLiteStoreType
-                                                                                        URL:[self storeURL]
-                                                                                      error:nil];
+                                                               URL:[self storeURL]
+                                                           options:nil
+                                                             error:nil];
     BOOL migrationNeeded = ![self.managedObjectModel isConfiguration:nil compatibleWithStoreMetadata:metadata];
     
     if (migrationNeeded) {

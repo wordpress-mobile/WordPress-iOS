@@ -1,6 +1,3 @@
-import Foundation
-import UIKit
-
 /**
  ImmuTable represents the view model for a static UITableView.
 
@@ -91,15 +88,8 @@ public struct ImmuTableSection {
     let rows: [ImmuTableRow]
     let footerText: String?
 
-    /// Initializes a ImmuTableSection with the given rows and no header or footer text
-    public init(rows: [ImmuTableRow]) {
-        self.headerText = nil
-        self.rows = rows
-        self.footerText = nil
-    }
-
     /// Initializes a ImmuTableSection with the given rows and optionally header and footer text
-    public init(headerText: String?, rows: [ImmuTableRow], footerText: String?) {
+    public init(headerText: String? = nil, rows: [ImmuTableRow], footerText: String? = nil) {
         self.headerText = headerText
         self.rows = rows
         self.footerText = footerText
@@ -277,6 +267,14 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
         row.configureCell(cell)
 
         return cell
+    }
+
+    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.sections[section].headerText
+    }
+
+    public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return viewModel.sections[section].footerText
     }
 
     // MARK: Table View Delegate
