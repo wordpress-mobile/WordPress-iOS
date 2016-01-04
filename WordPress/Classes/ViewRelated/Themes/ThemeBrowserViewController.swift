@@ -244,6 +244,8 @@ public protocol ThemePresenter: class
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
+        collectionView?.collectionViewLayout.invalidateLayout()
+       
         if searchController.active {
             searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
         }
@@ -258,6 +260,8 @@ public protocol ThemePresenter: class
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        registerForKeyboardNotifications()
         
         if !suspendedSearch.isEmpty {
             beginSearchFor(suspendedSearch)
@@ -277,10 +281,38 @@ public protocol ThemePresenter: class
     public override func viewWillDisappear(animated: Bool) {
         searchController.active = false
         super.viewWillDisappear(animated)
+
+        unregisterForKeyboardNotifications()
     }
     
     public override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
+    }
+
+    private func registerForKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    private func unregisterForKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    public func keyboardDidShow(notification: NSNotification) {
+        guard let keyboardEnd = notification.userInfo![UIKeyboardFrameEndUserInfoKey]?
+            .CGRectValue, tabBarHeight = tabBarController?.tabBar.bounds.size.height else {
+                return
+        }
+    
+        let newInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardEnd.height - tabBarHeight, right: 0)
+        collectionView.contentInset = newInsets
+        collectionView.scrollIndicatorInsets = newInsets
+    }
+    
+    public func keyboardWillHide(notification: NSNotification) {
+        collectionView.contentInset = UIEdgeInsetsZero
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsZero
     }
 
     // MARK: - Syncing the list of themes
@@ -522,6 +554,7 @@ public protocol ThemePresenter: class
     public func willDismissSearchController(searchController: WPSearchController) {
         print("didDismissSearchController")
     
+        searchController.searchBar.text = ""
         searchController.searchBar.resignFirstResponder()
         
         navigationController?.setNavigationBarHidden(false, animated: true)
