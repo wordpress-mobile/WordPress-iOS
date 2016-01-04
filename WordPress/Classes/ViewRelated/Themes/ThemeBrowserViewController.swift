@@ -1,4 +1,5 @@
 import Foundation
+import WordPressComAnalytics
 import WordPressShared.WPStyleGuide
 import WordPressShared.WPNoResultsView
 
@@ -53,6 +54,7 @@ public protocol ThemePresenter: class
     func activateTheme(theme: Theme?)
 
     func presentCustomizeForTheme(theme: Theme?)
+    func presentPreviewForTheme(theme: Theme?)
     func presentDetailsForTheme(theme: Theme?)
     func presentSupportForTheme(theme: Theme?)
     func presentViewForTheme(theme: Theme?)
@@ -461,6 +463,7 @@ public protocol ThemePresenter: class
     // MARK: - Search support
     
     @IBAction func didTapSearchButton(sender: UIButton) {
+        WPAppAnalytics.track(.ThemesAccessedSearch, withBlog: self.blog)
         beginSearchFor("")
     }
     
@@ -546,6 +549,8 @@ public protocol ThemePresenter: class
         themeService.activateTheme(theme,
             forBlog: blog,
             success: { [weak self] (theme: Theme?) in
+                WPAppAnalytics.track(.ThemesChangedTheme, withProperties: ["themeId": theme?.themeId ?? ""], withBlog: self?.blog)
+
                 self?.collectionView?.reloadData()
                 
                 let successTitle = NSLocalizedString("Theme Activated", comment:"Title of alert when theme activation succeeds")
@@ -578,18 +583,27 @@ public protocol ThemePresenter: class
     }
 
     public func presentCustomizeForTheme(theme: Theme?) {
+        WPAppAnalytics.track(.ThemesCustomizeAccessed, withBlog: self.blog)
         presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
     }
 
+    public func presentPreviewForTheme(theme: Theme?) {
+        WPAppAnalytics.track(.ThemesPreviewedSite, withBlog: self.blog)
+        presentUrlForTheme(theme, url: theme?.customizeUrl())
+    }
+    
     public func presentDetailsForTheme(theme: Theme?) {
+        WPAppAnalytics.track(.ThemesDetailsAccessed, withBlog: self.blog)
         presentUrlForTheme(theme, url: theme?.detailsUrl())
     }
     
     public func presentSupportForTheme(theme: Theme?) {
+        WPAppAnalytics.track(.ThemesSupportAccessed, withBlog: self.blog)
         presentUrlForTheme(theme, url: theme?.supportUrl())
     }
     
     public func presentViewForTheme(theme: Theme?) {
+        WPAppAnalytics.track(.ThemesDemoAccessed, withBlog: self.blog)
         presentUrlForTheme(theme, url: theme?.viewUrl())
     }
     

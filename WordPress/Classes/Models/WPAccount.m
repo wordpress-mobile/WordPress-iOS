@@ -17,6 +17,7 @@
 @dynamic displayName;
 @dynamic userID;
 @dynamic avatarURL;
+@dynamic managedSettings;
 @synthesize restApi = _restApi;
 
 #pragma mark - NSManagedObject subclass methods
