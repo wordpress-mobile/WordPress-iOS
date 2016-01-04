@@ -651,8 +651,26 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatThemesAccessedThemeBrowser:
             eventName = @"themes_theme_browser_accessed";
             break;
+        case WPAnalyticsStatThemesAccessedSearch:
+            eventName = @"themes_search_accessed";
+            break;
         case WPAnalyticsStatThemesChangedTheme:
             eventName = @"themes_theme_changed";
+            break;
+        case WPAnalyticsStatThemesCustomizeAccessed:
+            eventName = @"themes_customize_accessed";
+            break;
+        case WPAnalyticsStatThemesDemoAccessed:
+            eventName = @"themes_demo_accessed";
+            break;
+        case WPAnalyticsStatThemesDetailsAccessed:
+            eventName = @"themes_details_accessed";
+            break;
+        case WPAnalyticsStatThemesPreviewedSite:
+            eventName = @"themes_theme_for_site_previewed";
+            break;
+        case WPAnalyticsStatThemesSupportAccessed:
+            eventName = @"themes_support_accessed";
             break;
         case WPAnalyticsStatTwoFactorCodeRequested:
             eventName = @"two_factor_code_requested";

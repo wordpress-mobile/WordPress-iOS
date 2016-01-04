@@ -6,7 +6,6 @@
 // Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
-#import <GooglePlus/GooglePlus.h>
 #import <HockeySDK/HockeySDK.h>
 #import <Reachability/Reachability.h>
 #import <Simperium/Simperium.h>
@@ -15,9 +14,6 @@
 #import <WordPressApi/WordPressApi.h>
 #import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
-
-// Other third party libs
-#import "PocketAPI.h"
 
 // Analytics & crash logging
 #import "WPAppAnalytics.h"
@@ -46,8 +42,6 @@
 #import "WPLookbackPresenter.h"
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
-#import "WPWhatsNew.h"
-#import "WPThemeSettings.h"
 
 // Networking
 #import "WPUserAgent.h"
@@ -70,7 +64,6 @@
 #import <WPMediaPicker/WPMediaPicker.h>
 
 int ddLogLevel                                                  = DDLogLevelInfo;
-static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -85,13 +78,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, strong, readwrite) WPUserAgent                    *userAgent;
 @property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 @property (nonatomic, assign) UIApplicationShortcutItem                 *launchedShortcutItem;
-
-/**
- *  @brief      Flag that signals wether Whats New is on screen or not.
- *  @details    Won't be necessary once WPWhatsNew is changed to inherit from UIViewController
- *              https://github.com/wordpress-mobile/WordPress-iOS/issues/3218
- */
-@property (nonatomic, assign, readwrite) BOOL                           wasWhatsNewShown;
 
 @end
 
@@ -199,14 +185,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         returnValue = YES;
     }
 
-    if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
-        returnValue = YES;
-    }
-
-    if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
-        returnValue = YES;
-    }
-
     if ([WordPressApi handleOpenURL:url]) {
         returnValue = YES;
     }
@@ -271,16 +249,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
                     if ([debugType isEqualToString:@"crashlytics_crash"]) {
                         [[Crashlytics sharedInstance] crash];
                     }
-                }
-            }
-        } else if ([WPThemeSettings shouldHandleURL:url]) {
-            returnValue = [WPThemeSettings handleURL:url];
-            
-            if (returnValue) {
-                if ([WPThemeSettings isEnabled]) {
-                    [SVProgressHUD showSuccessWithStatus:@"Themes enabled."];
-                } else {
-                    [SVProgressHUD showSuccessWithStatus:@"Themes disabled."];
                 }
             }
         }
@@ -352,8 +320,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         WP3DTouchShortcutHandler *shortcutHandler = [[WP3DTouchShortcutHandler alloc] init];
         [shortcutHandler handleShortcutItem:self.launchedShortcutItem];
         self.launchedShortcutItem = nil;
-    } else {
-        [self showWhatsNewIfNeeded];
     }
 }
 
@@ -399,8 +365,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     
     [HelpshiftUtils setup];
     
-    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
-    
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     self.userAgent = [[WPUserAgent alloc] init];
@@ -421,15 +385,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [MediaService cleanUnusedMediaFileFromTmpDir];
-        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
     });
     
     // Configure Today Widget
     [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
     
-    if ([WPPostViewController makeNewEditorAvailable]) {
-        [self setMustShowWhatsNewPopup:YES];
-    }
+    [WPPostViewController makeNewEditorAvailable];
     
     self.window.rootViewController = [WPTabBarController sharedInstance];
 }
@@ -570,7 +531,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         __strong __typeof(weakSelf) strongSelf = self;
         
         [strongSelf.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-        [strongSelf showWhatsNewIfNeeded];
     };
 
     UINavigationController *navigationController = [[RotationAwareNavigationViewController alloc] initWithRootViewController:loginViewController];
@@ -1043,53 +1003,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     SPBucket *notesBucket = [self.simperium bucketForName:NSStringFromClass([Notification class])];
     [notesBucket deleteAllObjects];
     [self.simperium saveWithoutSyncing];
-}
-
-#pragma mark - What's new
-
-/**
- *  @brief      Shows the What's New popup if needed.
- *  @details    Takes care of saving the user defaults that signal that What's New was already
- *              shown.  Also adds a slight delay before showing anything.  Also does nothing if
- *              the user is not logged in.
- */
-- (void)showWhatsNewIfNeeded
-{
-    if (!self.wasWhatsNewShown) {
-        if ([self isLoggedIn]) {
-            if ([self mustShowWhatsNewPopup]) {
-                
-                static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
-                static const CGFloat WhatsNewShowDelay = 1.0f;
-                
-                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-                
-                BOOL whatsNewAlreadyShown = [userDefaults boolForKey:WhatsNewUserDefaultsKey];
-                
-                if (!whatsNewAlreadyShown) {
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        self.wasWhatsNewShown = YES;
-                        
-                        WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
-                        
-                        [whatsNew showWithDismissBlock:^{
-                            [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
-                        }];
-                    });
-                }
-            }
-        }
-    }
-}
-
-- (BOOL)mustShowWhatsNewPopup
-{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:MustShowWhatsNewPopup];
-}
-
-- (void)setMustShowWhatsNewPopup:(BOOL)mustShow
-{
-    [[NSUserDefaults standardUserDefaults] setBool:mustShow forKey:MustShowWhatsNewPopup];
 }
 
 - (BOOL)testSuiteIsRunning

@@ -23,7 +23,6 @@
 
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
-#import "ReaderPostDetailViewController.h"
 
 #import "UIView+Subviews.h"
 
@@ -95,7 +94,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
+        self.navigationItem.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
 
         // Listen to Logout Notifications
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -644,7 +643,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     }
     
     if (note.isMatcher && note.metaPostID && note.metaSiteID) {
-        [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:note];
+        [self performSegueWithIdentifier:[ReaderDetailViewController classNameWithoutNamespaces] sender:note];
     } else {
         [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
     }
@@ -745,7 +744,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString *detailsSegueID        = NSStringFromClass([NotificationDetailsViewController class]);
-    NSString *readerSegueID         = NSStringFromClass([ReaderPostDetailViewController class]);
+    NSString *readerSegueID         = [ReaderDetailViewController classNameWithoutNamespaces];
     Notification *note              = sender;
     __weak __typeof(self) weakSelf  = self;
     
@@ -757,7 +756,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
         };
         
     } else if([segue.identifier isEqualToString:readerSegueID]) {
-        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
+        ReaderDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
 }

@@ -272,10 +272,30 @@ NSString *const SessionCount = @"session_count";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_theme_browser"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_theme_browser"];
             break;
+        case WPAnalyticsStatThemesAccessedSearch:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Accessed Search"];
+            break;
         case WPAnalyticsStatThemesChangedTheme:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Changed Theme"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_changed_theme"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_changed_theme"];
+            break;
+        case WPAnalyticsStatThemesCustomizeAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Customize Accessed"];
+            break;
+        case WPAnalyticsStatThemesDemoAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Demo Accessed"];
+            break;
+        case WPAnalyticsStatThemesDetailsAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Details Accessed"];
+            break;
+        case WPAnalyticsStatThemesPreviewedSite:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Previewed Theme for Site"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_previewed_a_theme"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_previewed_a_theme"];
+            break;
+        case WPAnalyticsStatThemesSupportAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Support Accessed"];
             break;
         case WPAnalyticsStatReaderAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Accessed"];
