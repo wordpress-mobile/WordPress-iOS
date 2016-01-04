@@ -181,11 +181,13 @@ import WordPressComAnalytics
 
             let width = view.frame.width
             tableViewHandler.refreshCachedRowHeightsForWidth(width)
-            tableView.reloadRowsAtIndexPaths(tableView.indexPathsForVisibleRows!, withRowAnimation: .None)
+
+            if let indexPaths = tableView.indexPathsForVisibleRows {
+                tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+            }
         }
     }
 
-    @available(iOS 8.0, *)
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         needsRefreshCachedCellHeightsBeforeLayout = true

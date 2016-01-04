@@ -5,7 +5,7 @@
 
 static CGFloat const HorizontalMargin = 15.0f;
 
-@interface SettingsTextViewController()
+@interface SettingsTextViewController() <UITextFieldDelegate>
 
 @property (nonatomic, strong) WPTableViewCell *textFieldCell;
 @property (nonatomic, strong) UITextField *textField;
@@ -18,6 +18,11 @@ static CGFloat const HorizontalMargin = 15.0f;
 @end
 
 @implementation SettingsTextViewController
+
+- (void)dealloc
+{
+    _textField.delegate = nil;
+}
 
 - (instancetype)initWithText:(NSString *)text
                  placeholder:(NSString *)placeholder
@@ -69,6 +74,7 @@ static CGFloat const HorizontalMargin = 15.0f;
     self.textField.keyboardType = UIKeyboardTypeDefault;
     self.textField.secureTextEntry = self.isPassword;
     self.textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.textField.delegate = self;
     
     [_textFieldCell.contentView addSubview:self.textField];
     
@@ -86,12 +92,13 @@ static CGFloat const HorizontalMargin = 15.0f;
     return _hintView;
 }
 
-- (void)viewDidDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     if (self.onValueChanged && ![self.textField.text isEqualToString:self.text]) {
         self.onValueChanged(self.textField.text);
     }
-    [super viewDidDisappear:animated];
+        
+    [super viewWillDisappear:animated];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -116,6 +123,19 @@ static CGFloat const HorizontalMargin = 15.0f;
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     return self.hintView;
+}
+
+
+#pragma mark - UITextFieldDelegate Methods
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSRange newLineRange = [string rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]];    
+    if (newLineRange.location != NSNotFound) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+
+    return YES;
 }
 
 @end
