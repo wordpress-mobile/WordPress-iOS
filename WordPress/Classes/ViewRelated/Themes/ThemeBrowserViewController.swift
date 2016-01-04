@@ -540,6 +540,7 @@ public protocol ThemePresenter: class
     private func beginSearchFor(pattern: String) {
         searchController.active = true
         searchController.searchBar.text = pattern
+        searchName = pattern
         if sections.first == .Info {
             collectionView?.collectionViewLayout.invalidateLayout()
             collectionView?.performBatchUpdates({
