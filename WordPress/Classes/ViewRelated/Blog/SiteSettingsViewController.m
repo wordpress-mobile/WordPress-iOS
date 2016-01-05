@@ -54,6 +54,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionGeneral = 0,
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
+    SiteSettingsSectionDiscussion,
     SiteSettingsSectionRemoveSite,
 };
 
@@ -74,6 +75,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
+#pragma mark - Discussion
+@property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
 #pragma mark - Removal Section
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 
@@ -109,16 +112,24 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     [super viewDidLoad];
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
     
-    if (self.blog.account) {
-        self.tableSections = @[@(SiteSettingsSectionGeneral)];
-    } else {
-        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount)];
+    NSMutableArray *sections = [NSMutableArray arrayWithObjects:@(SiteSettingsSectionGeneral), nil];
+    
+    if (!self.blog.account) {
+        [sections addObject:@(SiteSettingsSectionAccount)];
     }
-    self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionWriting)];
+    
+    [sections addObject:@(SiteSettingsSectionWriting)];
+    
+    if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
+        [sections addObject:@(SiteSettingsSectionDiscussion)];
+    }
+    
     if ([self.blog supports:BlogFeatureRemovable]) {
-        self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
+        [sections addObject:@(SiteSettingsSectionRemoveSite)];
     }
 
+    self.tableSections = sections;
+    
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -166,10 +177,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             }
             return SiteSettingsGeneralCount - rowsToHide;
         }
-        break;
-        case SiteSettingsSectionAccount:
+        case SiteSettingsSectionAccount: {
             return SiteSettingsAccountCount;
-        break;
+        }
         case SiteSettingsSectionWriting: {
             if (!self.blog.isAdmin) {
                 // If we're not admin, we just want to show the geotagging cell
@@ -183,10 +193,12 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             }
             return SiteSettingsWritingCount - rowsToHide;
         }
-        break;
-        case SiteSettingsSectionRemoveSite:
+        case SiteSettingsSectionDiscussion: {
             return 1;
-        break;
+        }
+        case SiteSettingsSectionRemoveSite: {
+            return 1;
+        }
     }
     return 0;
 }
@@ -286,6 +298,29 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return _relatedPostsCell;
 }
 
+- (SettingTableViewCell *)discussionSettingsCell
+{
+    if (_discussionSettingsCell) {
+        return _discussionSettingsCell;
+    }
+    
+    _discussionSettingsCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Discussion", @"Label for selecting the Blog Discussion Settings section")
+                                                                 editable:YES
+                                                          reuseIdentifier:nil];
+    return _discussionSettingsCell;
+}
+
+- (UITableViewCell *)removeSiteCell
+{
+    if (_removeSiteCell) {
+        return _removeSiteCell;
+    }
+    _removeSiteCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    [WPStyleGuide configureTableViewDestructiveActionCell:_removeSiteCell];
+    _removeSiteCell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
+    
+    return _removeSiteCell;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
@@ -392,28 +427,25 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
     switch (settingsSection) {
-        case SiteSettingsSectionGeneral:{
+        case SiteSettingsSectionGeneral: {
             return [self tableView:tableView cellForGeneralSettingsInRow:indexPath.row];
-        } break;
+        }
         case SiteSettingsSectionAccount: {
             return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
-        } break;
+        }
         case SiteSettingsSectionWriting: {
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
-        } break;
+        }
+        case SiteSettingsSectionDiscussion: {
+            return self.discussionSettingsCell;
+        }
         case SiteSettingsSectionRemoveSite: {
-            if (self.removeSiteCell) {
-                return self.removeSiteCell;
-            }
-            self.removeSiteCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-            [WPStyleGuide configureTableViewDestructiveActionCell:self.removeSiteCell];
-            self.removeSiteCell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
             return self.removeSiteCell;
-        } break;
+        }
     }
 
-    // We shouldn't reach this point, but return an empty cell just in case
-    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
+    NSAssert(false, @"Missing section handler");
+    return nil;
 }
 
 #pragma mark - UITableViewDelegate
@@ -651,19 +683,22 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
     switch (settingsSection) {
-        case SiteSettingsSectionGeneral:
+        case SiteSettingsSectionGeneral: {
             [self tableView:tableView didSelectInGeneralSectionRow:indexPath.row];
-            break;
-        case SiteSettingsSectionAccount:
+        } break;
+        case SiteSettingsSectionAccount: {
             [self tableView:tableView didSelectInAccountSectionRow:indexPath.row];
-            break;
-        case SiteSettingsSectionWriting:
+        } break;
+        case SiteSettingsSectionWriting: {
             [self tableView:tableView didSelectInWritingSectionRow:indexPath.row];
-            break;
+        } break;
+        case SiteSettingsSectionDiscussion: {
+            [self showDiscussionSettingsForBlog:self.blog];
+        } break;
         case SiteSettingsSectionRemoveSite:{
             [tableView deselectSelectedRowWithAnimation:YES];
             [self showRemoveSiteForBlog:self.blog];
-        }break;
+        } break;
     }
 }
 
@@ -676,21 +711,15 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)refreshData
 {
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     __weak __typeof__(self) weakSelf = self;
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:mainContext];
+
     [service syncSettingsForBlog:self.blog success:^{
-        __typeof__(self) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        [strongSelf.refreshControl endRefreshing];
-        [strongSelf.tableView reloadData];
+        [weakSelf.refreshControl endRefreshing];
+        [weakSelf.tableView reloadData];
     } failure:^(NSError *error) {
-        __typeof__(self) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        [strongSelf.refreshControl endRefreshing];
+        [weakSelf.refreshControl endRefreshing];
     }];
     
 }
@@ -768,7 +797,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
                                 message:message
                       withSupportButton:YES
-                         okPressedBlock:^(UIAlertView *alertView) {
+                         okPressedBlock:^(UIAlertController *alertView) {
                 [self openSiteAdminFromAlert:alertView];
             }];
 
@@ -778,7 +807,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
 }
 
-- (void)openSiteAdminFromAlert:(UIAlertView *)alertView
+- (void)openSiteAdminFromAlert:(UIAlertController *)alertView
 {
     NSString *path = nil;
     NSError *error = nil;
@@ -834,6 +863,18 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         BOOL wascancelled = (sender != nil);
         [self.delegate controllerDidDismiss:self cancelled:wascancelled];
     }
+}
+
+
+
+#pragma mark - Discussion
+
+- (void)showDiscussionSettingsForBlog:(Blog *)blog
+{
+    NSParameterAssert(blog);
+    
+    DiscussionSettingsViewController *settings = [[DiscussionSettingsViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:settings animated:YES];
 }
 
 
