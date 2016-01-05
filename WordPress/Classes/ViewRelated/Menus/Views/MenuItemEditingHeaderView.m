@@ -10,7 +10,7 @@
 @property (nonatomic, strong) UIView *textFieldContainerView;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UIImageView *iconView;
-@property (nonatomic, assign) MenuItemIconType iconType;
+@property (nonatomic, assign) MenuIconType iconType;
 
 @end
 
@@ -136,12 +136,12 @@
     }
 }
 
-- (void)setIconType:(MenuItemIconType)iconType
+- (void)setIconType:(MenuIconType)iconType
 {
     if(_iconType != iconType) {
         _iconType = iconType;
         
-        if(iconType == MenuItemIconNone) {
+        if(iconType == MenuIconTypeNone) {
             
             self.iconView.image = nil;
             self.iconView.hidden = YES;
@@ -160,7 +160,7 @@
         _item = item;
         
         self.textField.text = item.name;
-        self.iconType = MenuItemIconDefault;
+        self.iconType = MenuIconTypeDefault;
         [self setNeedsDisplay];
     }
 }
