@@ -209,10 +209,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventProperties = @{ @"via" : @"media_library" };
             break;
         case WPAnalyticsStatEditorAddedVideoViaLocalLibrary:
-            eventName = @"editor_added_video_via_local_library";
+            eventName = @"editor_video_added";
+            eventProperties = @{ @"via" : @"local_library" };
             break;
         case WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary:
-            eventName = @"editor_added_video_via_wp_media_library";
+            eventName = @"editor_video_added";
+            eventProperties = @{ @"via" : @"media_library" };
             break;
         case WPAnalyticsStatEditorClosed:
             eventName = @"editor_closed";
