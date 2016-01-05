@@ -79,7 +79,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
-        [[PushNotificationsManager sharedInstance] registerForPushNotifications];
+        [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
+        [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
     });
 }
 
