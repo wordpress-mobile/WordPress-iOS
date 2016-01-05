@@ -95,17 +95,10 @@ public protocol ThemePresenter: class
     /**
      *  @brief      Searching support
      */
-    private lazy var searchController: UISearchController = {
-        let searchController = UISearchController(searchResultsController: nil)
+    private lazy var searchController: StyledSearchController = {
+        let searchController = StyledSearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.delegate = self
-        searchController.dimsBackgroundDuringPresentation = false
-        searchController.hidesNavigationBarDuringPresentation = false
-        searchController.searchBar.autocapitalizationType = .None
-        searchController.searchBar.autocorrectionType = .No
-        searchController.searchBar.barTintColor = WPStyleGuide.wordPressBlue()
-        searchController.searchBar.layer.borderWidth = 1;
-        searchController.searchBar.layer.borderColor = WPStyleGuide.wordPressBlue().CGColor;
 
         return searchController
     }()
