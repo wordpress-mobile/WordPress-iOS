@@ -53,22 +53,14 @@ final public class PushNotificationsManager : NSObject
     // MARK: - Public Methods
     
     
-    /// Registers the device for Remote + User Notifications.
+    /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
-    /// - Note: We'll wire Badge + Sound + Alert notifications, along with support for iOS User Notifications Actions.
-    ///
-    func registerForPushNotifications() {
+    func registerForRemoteNotifications() {
         if sharedApplication.isRunningSimulator() || sharedApplication.isAlphaBuild() {
             return;
         }
         
-        // Remote Notifications Registration
         sharedApplication.registerForRemoteNotifications()
-
-        // User Notifications Registration
-        let categories  = interactiveHandler.supportedNotificationCategories()
-        let settings    = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: categories)
-        sharedApplication.registerUserNotificationSettings(settings)
     }
     
 
@@ -213,9 +205,6 @@ final public class PushNotificationsManager : NSObject
     }
     
     
-    
-    // MARK: - Private Properties
-    private let interactiveHandler = InteractiveNotificationsHandler()
     
     // MARK: - Private Constants
     private let deviceTokenKey  = "apnsDeviceToken"

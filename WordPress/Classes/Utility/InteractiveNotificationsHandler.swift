@@ -4,9 +4,37 @@ import Foundation
 /// In this class, we'll encapsulate all of the code related to UIUserNotificationCategory and
 /// UIUserNotificationAction instantiation, along with the required handlers.
 ///
-final public class InteractiveNotificationsHandler
+final public class InteractiveNotificationsHandler : NSObject
 {
+    // MARK: - Public Properties
+    
+    
+    /// Returns the shared PushNotificationsManager instance.
+    ///
+    static let sharedInstance = InteractiveNotificationsHandler()
+    
+    
+    
     // MARK: - Public Methods
+    
+    
+    /// Registers the device for User Notifications.
+    ///
+    func registerForUserNotifications() {
+        let sharedApplication = UIApplication.sharedApplication()
+        if sharedApplication.isRunningSimulator() || sharedApplication.isAlphaBuild() {
+            return
+        }
+        
+        // User Notifications Registration
+        let categories  = supportedNotificationCategories()
+        let settings    = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: categories)
+        sharedApplication.registerUserNotificationSettings(settings)
+    }
+    
+    
+    
+    // MARK: - Private Methods
     
     
     /// Returns a collection of *UIUserNotificationCategory* instances, for each one of the
@@ -14,13 +42,10 @@ final public class InteractiveNotificationsHandler
     ///
     /// - Returns: A set of *UIUserNotificationCategory* instances.
     ///
-    func supportedNotificationCategories() -> Set<UIUserNotificationCategory> {
+    private func supportedNotificationCategories() -> Set<UIUserNotificationCategory> {
         return notificationCategories(NoteCategoryDefinition.allDefinitions)
     }
     
-    
-    
-    // MARK: - Private Methods
     
     
     /// Parses a given array of NoteCategoryDefinition, and returns a collection of their
