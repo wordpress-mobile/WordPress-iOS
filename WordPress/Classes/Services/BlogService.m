@@ -875,7 +875,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     remoteSettings.commentsRequireManualModeration = @(settings.commentsRequireManualModeration);
     remoteSettings.commentsRequireNameAndEmail = @(settings.commentsRequireNameAndEmail);
     remoteSettings.commentsRequireRegistration = @(settings.commentsRequireRegistration);
-    
+
     remoteSettings.commentsSortOrderAscending = settings.commentsSortOrderAscending;
     
     remoteSettings.commentsThreadingDepth = settings.commentsThreadingDepth;

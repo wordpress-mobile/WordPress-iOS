@@ -43,13 +43,23 @@ import WordPressShared
         if contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.Post {
             configurePostAttribution(contentProvider!)
         } else if contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.Site {
-            configureSiteAttribution(contentProvider!)
+            configureSiteAttribution(contentProvider!, verboseAttribution: false)
         } else {
             reset()
         }
 
         invalidateIntrinsicContentSize()
     }
+
+
+    public func configureViewWithVerboseSiteAttribution(contentProvider: ReaderPostContentProvider?) {
+        if let contentProvider = contentProvider {
+            configureSiteAttribution(contentProvider, verboseAttribution: true)
+        } else {
+            reset()
+        }
+    }
+
 
     private func reset() {
         imageView.image = nil
@@ -89,14 +99,24 @@ import WordPressShared
         return str
     }
 
-    private func configureSiteAttribution(contentProvider: ReaderPostContentProvider) {
+    private func patternForSiteAttribution(verbose: Bool) -> String {
+        var pattern: String
+        if verbose {
+            pattern = NSLocalizedString("Visit %@ for more", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
+        } else {
+            pattern = NSLocalizedString("Visit %@", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
+        }
+        return pattern
+    }
+
+    private func configureSiteAttribution(contentProvider: ReaderPostContentProvider, verboseAttribution verbose:Bool) {
         let url = contentProvider.sourceAvatarURLForDisplay()
         let placeholder = UIImage(named: blavatarImageName)
         imageView.setImageWithURL(url, placeholderImage: placeholder)
         imageView.shouldRoundCorners = false
 
         let blogName = contentProvider.sourceBlogNameForDisplay()
-        let pattern = NSLocalizedString("Visit %@", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
+        let pattern = patternForSiteAttribution(verbose)
         let str = String(format: pattern, blogName)
 
         let range = (str as NSString).rangeOfString(blogName)

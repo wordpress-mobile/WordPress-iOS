@@ -16,7 +16,6 @@
 #import "WPWebViewController.h"
 #import "WPImageViewController.h"
 
-#import "ReaderPostDetailViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "StatsViewController.h"
 #import "StatsViewAllTableViewController.h"
@@ -32,7 +31,6 @@
 
 #import "NSURL+Util.h"
 #import "NSScanner+Helpers.h"
-#import "UIActionSheet+Helpers.h"
 #import "NSObject+Helpers.h"
 #import "NSDate+StringFormatting.h"
 #import "NSString+Helpers.h"
@@ -887,7 +885,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
             NotificationsPostIdKey      : postID
         };
         
-        [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:parameters];
+        [self performSegueWithIdentifier:[ReaderDetailViewController classNameWithoutNamespaces] sender:parameters];
     }
     return success;
 }
@@ -1337,14 +1335,14 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [commentsViewController setAllowsPushingPostDetails:YES];
         [commentsViewController setupWithPostID:postID siteID:siteID];        
         
-    } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderPostDetailViewController class])]) {
+    } else if([segue.identifier isEqualToString:[ReaderDetailViewController classNameWithoutNamespaces]]) {
         NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
         
         NSDictionary *parameters                        = (NSDictionary *)sender;
         NSNumber *siteID                                = parameters[NotificationsSiteIdKey];
         NSNumber *postID                                = parameters[NotificationsPostIdKey];
         
-        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
+        ReaderDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:postID siteID:siteID];
     }
 }

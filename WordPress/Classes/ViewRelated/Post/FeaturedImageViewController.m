@@ -2,8 +2,9 @@
 
 #import "Post.h"
 #import "Media.h"
+#import "WordPress-Swift.h"
 
-@interface FeaturedImageViewController () <UIActionSheetDelegate>
+@interface FeaturedImageViewController ()
 
 @property (nonatomic, strong) UIBarButtonItem *deleteButton;
 @property (nonatomic, strong) AbstractPost *post;
@@ -150,22 +151,21 @@
 
 - (void)removeFeaturedImage
 {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post")
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", "Cancel a prompt")
-                                               destructiveButtonTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc")
-                                                    otherButtonTitles:nil];
-    [actionSheet showFromBarButtonItem:self.deleteButton animated:YES];
-}
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Remove this Featured Image?", @"Prompt when removing a featured image from a post")
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addActionWithTitle:NSLocalizedString(@"Cancel", "Cancel a prompt")
+                                  style:UIAlertActionStyleCancel
+                                handler:nil];
+    [alertController addActionWithTitle:NSLocalizedString(@"Remove", @"Remove an image/posts/etc")
+                                  style:UIAlertActionStyleDestructive
+                                handler:^(UIAlertAction *alertAction) {
+                                    [self.post setFeaturedImage:nil];
+                                    [self.navigationController popViewControllerAnimated:YES];
+                                }];
+    alertController.popoverPresentationController.barButtonItem = self.deleteButton;
+    [self presentViewController:alertController animated:YES completion:nil];
 
-#pragma mark - UIActionSheetDelegate
-
-- (void)actionSheet:(UIActionSheet *)acSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        [self.post setFeaturedImage:nil];
-        [self.navigationController popViewControllerAnimated:YES];
-    }
 }
 
 @end

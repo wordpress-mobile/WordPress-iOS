@@ -87,6 +87,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
                                                                     target:self
                                                                     action:@selector(toggleSearch)];
     [self.navigationItem setRightBarButtonItems:@[self.addSiteButton, searchButton]];
+
+    self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view
@@ -152,6 +154,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
     [self updateEditButton];
+    [self updateSearchButton];
     [self maybeShowNUX];
     [self syncBlogs];
 }
@@ -223,6 +226,15 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
+- (void)updateSearchButton
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    if ([blogService blogCountForAllAccounts] <= 1) {
+        self.navigationItem.rightBarButtonItem = nil;
     }
 }
 

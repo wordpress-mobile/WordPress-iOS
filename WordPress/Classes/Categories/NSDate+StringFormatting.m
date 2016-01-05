@@ -7,7 +7,7 @@
 {
     NSString *shortString;
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *dateComponents = [calendar components:NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit
+    NSDateComponents *dateComponents = [calendar components:NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond
                                                    fromDate:self
                                                      toDate:[NSDate date]
                                                     options:0];
