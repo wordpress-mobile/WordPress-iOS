@@ -2005,10 +2005,10 @@
 				08823B1B1C1B7756000581E8 /* MenuItemSourceView.m */,
 				08B8BC321C21FC6200C3B670 /* MenuItemSourceHeaderView.h */,
 				08B8BC331C21FC6200C3B670 /* MenuItemSourceHeaderView.m */,
-				08EEA0B71C20C013001346B9 /* MenuItemSourceResultView.h */,
-				08EEA0B81C20C013001346B9 /* MenuItemSourceResultView.m */,
 				08B0566E1C1BCEE500256F77 /* MenuItemSourceSearchBar.h */,
 				08B0566F1C1BCEE500256F77 /* MenuItemSourceSearchBar.m */,
+				08EEA0B71C20C013001346B9 /* MenuItemSourceResultView.h */,
+				08EEA0B81C20C013001346B9 /* MenuItemSourceResultView.m */,
 			);
 			name = "Item Source";
 			sourceTree = "<group>";

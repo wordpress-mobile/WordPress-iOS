@@ -22,8 +22,10 @@
         self.contentMode = UIViewContentModeRedraw;
         
         UIEdgeInsets margin = UIEdgeInsetsZero;
+        margin.top = MenusDesignDefaultContentSpacing / 2.0;
         margin.left = MenusDesignDefaultContentSpacing;
         margin.right = MenusDesignDefaultContentSpacing;
+        margin.bottom = MenusDesignDefaultContentSpacing / 2.0;
         self.layoutMargins = margin;
         UILayoutGuide *marginsGuide = self.layoutMarginsGuide;
         const CGFloat spacing = ceilf(MenusDesignDefaultContentSpacing / 2.0);
@@ -91,7 +93,7 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
     CGContextSetLineWidth(context, 1.0);
-    CGContextStrokeRect(context, CGRectInset(rect, MenusDesignDefaultContentSpacing, 2.0));
+    CGContextStrokeRect(context, CGRectInset(rect, MenusDesignDefaultContentSpacing, MenusDesignDefaultContentSpacing));
 }
 
 #pragma mark - UITextFieldDelegate
