@@ -227,7 +227,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     
     // TableView
     self.tableView.separatorStyle           = UITableViewCellSeparatorStyleNone;
-    self.tableView.backgroundColor          = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.backgroundColor          = [WPStyleGuide greyLighten30];
     self.tableView.accessibilityIdentifier  = @"Notification Details Table";
     self.tableView.backgroundColor          = [WPStyleGuide itsEverywhereGrey];
     self.tableView.keyboardDismissMode      = UIScrollViewKeyboardDismissModeInteractive;
