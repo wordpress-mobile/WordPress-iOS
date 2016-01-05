@@ -31,7 +31,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="75" id="1YA-Ho-zu8"/>
+                                <constraint firstAttribute="height" priority="750" constant="75" id="1YA-Ho-zu8"/>
                             </constraints>
                         </view>
                         <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="240" verticalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="8VR-qv-fUP">

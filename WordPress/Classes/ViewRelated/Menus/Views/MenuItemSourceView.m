@@ -63,12 +63,7 @@
         stackView.translatesAutoresizingMaskIntoConstraints = NO;
         stackView.distribution = UIStackViewDistributionEqualSpacing;
         stackView.alignment = UIStackViewAlignmentFill;
-        stackView.spacing = MenusDesignDefaultContentSpacing;
-
-        UIEdgeInsets margins = UIEdgeInsetsZero;
-        margins.bottom = MenusDesignDefaultContentSpacing;
-        stackView.layoutMargins = margins;
-        stackView.layoutMarginsRelativeArrangement = YES;
+        stackView.spacing = 0;
     }
     {
         MenuItemSourceSearchBar *searchBar = [[MenuItemSourceSearchBar alloc] init];
@@ -76,12 +71,11 @@
         searchBar.delegate = self;
         [self.stackView addArrangedSubview:searchBar];
         
-        NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:44.0];
+        NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:78];
         heightConstraint.priority = UILayoutPriorityDefaultHigh;
         heightConstraint.active = YES;
         
         [searchBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-        
         _searchBar = searchBar;
     }
     
