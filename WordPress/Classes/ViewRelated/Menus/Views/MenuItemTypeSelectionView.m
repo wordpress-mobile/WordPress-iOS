@@ -2,26 +2,12 @@
 #import "MenusDesign.h"
 #import "MenuItemTypeCell.h"
 
-@interface MenuItemTypeSelectionView () <MenuItemTypeViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@implementation MenuItemSelectionType
 
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
-
-@end
-
-@implementation MenuItemTypeSelectionView
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    self.backgroundColor = [UIColor whiteColor];
-    self.translatesAutoresizingMaskIntoConstraints = NO;
-}
-
-- (NSString *)titleForType:(MenuItemType)type
+- (NSString *)title
 {
     NSString *title = nil;
-    switch (type) {
+    switch (self.itemType) {
         case MenuItemTypePage:
             title = NSLocalizedString(@"Page", @"");
             break;
@@ -43,27 +29,107 @@
     
     return title;
 }
- 
+
+- (NSString*)iconImageName
+{
+    NSString *icon = nil;
+    icon = @"icon-menus-document";
+    return icon;
+}
+
+@end
+
+@implementation MenuItemTypeSelectionTableView
+
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(context);
+    CGContextSetLineWidth(context, 2.0);
+    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
+    CGContextMoveToPoint(context, rect.size.width, 0);
+    CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+    CGContextStrokePath(context);
+    CGContextRestoreGState(context);
+}
+
+@end
+
+@interface MenuItemTypeSelectionView () <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) NSMutableArray *selectionTypes;
+
+@end
+
+@implementation MenuItemTypeSelectionView
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    self.backgroundColor = [UIColor whiteColor];
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.estimatedRowHeight = MenusDesignGeneralCellHeight;
+    self.tableView.rowHeight = MenusDesignGeneralCellHeight;
+    self.tableView.clipsToBounds = NO;
+    
+    MenuItemSelectionType *selection = [self addSelectionType:MenuItemTypePage];
+    selection.selected = YES;
+    [self addSelectionType:MenuItemTypeLink];
+    [self addSelectionType:MenuItemTypeCategory];
+    [self addSelectionType:MenuItemTypeTag];
+    [self addSelectionType:MenuItemTypePost];
+    
+    [self.tableView reloadData];
+}
+
+- (MenuItemSelectionType *)addSelectionType:(MenuItemType)type
+{
+    if(!self.selectionTypes) {
+        self.selectionTypes = [NSMutableArray array];
+    }
+    
+    MenuItemSelectionType *selection = [MenuItemSelectionType new];
+    selection.itemType = type;
+    [self.selectionTypes addObject:selection];
+    
+    return selection;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return self.selectionTypes.count;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MenuItemSelectionType *selection = [self.selectionTypes objectAtIndex:indexPath.row];
+    MenuItemTypeCell *typeCell = (MenuItemTypeCell *)cell;
+    typeCell.selectionType = selection;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    static NSString *identifier = @"MenuItemTypeCell";
+    MenuItemTypeCell *cell = (MenuItemTypeCell *)[tableView dequeueReusableCellWithIdentifier:identifier];
+    if(!cell) {
+        cell = [[MenuItemTypeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    return cell;
 }
 
-#pragma mark - MenuItemTypeViewDelegate
-
-- (void)itemTypeViewSelected:(MenuItemTypeCell *)typeView
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.delegate typeSelectionView:self selectedType:typeView.itemType];
+    MenuItemSelectionType *selection = [self.selectionTypes objectAtIndex:indexPath.row];
+    [self.delegate typeSelectionView:self selectedType:selection.itemType];
 }
 
 @end

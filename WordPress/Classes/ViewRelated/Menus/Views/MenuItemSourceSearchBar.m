@@ -93,7 +93,8 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
     CGContextSetLineWidth(context, 1.0);
-    CGContextStrokeRect(context, CGRectInset(rect, MenusDesignDefaultContentSpacing, MenusDesignDefaultContentSpacing));
+    UIEdgeInsets margins = self.layoutMargins;
+    CGContextStrokeRect(context, CGRectInset(rect, margins.left, margins.bottom));
 }
 
 #pragma mark - UITextFieldDelegate

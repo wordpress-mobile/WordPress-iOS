@@ -5,12 +5,11 @@
 #import "MenuItemEditingFooterView.h"
 #import "MenuItemSourceView.h"
 #import "MenuItemTypeSelectionView.h"
-#import "MenuItemSourceHeaderView.h"
 
 static CGFloat const MenuItemEditingFooterViewDefaultHeight = 60.0;
 static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
-@interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemSourceHeaderViewDelegate, MenuItemTypeSelectionViewDelegate>
+@interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
@@ -21,7 +20,6 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 @property (nonatomic, strong) IBOutlet MenuItemEditingFooterView *footerView;
 @property (nonatomic, strong) IBOutlet MenuItemTypeSelectionView *typeSelectionView;
 @property (nonatomic, strong) IBOutlet MenuItemSourceView *sourceView;
-@property (nonatomic, strong) IBOutlet MenuItemSourceHeaderView *sourceHeaderView;
 @property (nonatomic, weak) IBOutlet UIScrollView *sourceScrollView;
 
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
@@ -57,7 +55,6 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     self.sourceScrollView.clipsToBounds = NO;
     
     self.headerView.item = self.item;
-    self.sourceHeaderView.delegate = self;
     self.typeSelectionView.delegate = self;
     self.sourceView.item = self.item;
     self.sourceView.delegate = self;
@@ -163,10 +160,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
         }
     }
     
-    if(self.sourceHeaderView.hidden) {
-        self.sourceHeaderView.hidden = NO;
-        self.sourceHeaderView.alpha = 1.0;
-    }
+    [self.sourceView setHeaderViewsHidden:NO];
     
     if(!self.typeSelectionView.hidden) {
         self.typeSelectionView.hidden = YES;
@@ -206,10 +200,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
         }
     }
     
-    if(!self.sourceHeaderView.hidden) {
-        self.sourceHeaderView.hidden = YES;
-        self.sourceHeaderView.alpha = 0.0;
-    }
+    [self.sourceView setHeaderViewsHidden:YES];
     
     if(IS_IPHONE) {
         self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewCompactHeight;
@@ -235,8 +226,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 {
     if(self.typeSelectionView.hidden) {
         
-        self.sourceHeaderView.alpha = 0.0;
-        self.sourceHeaderView.hidden = YES;
+        [self.sourceView setHeaderViewsHidden:YES];
         
         if(self.typeSelectionView.hidden) {
             self.typeSelectionView.hidden = NO;
@@ -249,8 +239,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 {
     if(!self.typeSelectionView.hidden) {
         
-        self.sourceHeaderView.alpha = 1.0;
-        self.sourceHeaderView.hidden = NO;
+        [self.sourceView setHeaderViewsHidden:NO];
         
         if([self shouldDisplayForCompactWidth]) {
             
@@ -263,6 +252,13 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 }
 
 #pragma mark - MenuItemSourceViewDelegate
+
+- (void)sourceViewSelectedSourceTypeButton:(MenuItemSourceView *)sourceView
+{
+    if([self shouldDisplayForCompactWidth]) {
+        [self updateForShowingTypeSelectionCompact];
+    }
+}
 
 - (void)sourceViewDidBeginTyping:(MenuItemSourceView *)sourceView
 {
@@ -281,15 +277,6 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 - (void)editingFooterViewDidSelectCancel:(MenuItemEditingFooterView *)footerView
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - MenuItemSourceHeaderViewDelegate
-
-- (void)sourceHeaderViewSelected:(MenuItemSourceHeaderView *)headerView
-{
-    if([self shouldDisplayForCompactWidth]) {
-        [self updateForShowingTypeSelectionCompact];
-    }
 }
 
 #pragma mark - MenuItemTypeSelectionViewDelegate

@@ -140,12 +140,12 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
     }
 }
 
-- (void)setIconType:(MenuItemIconType)iconType
+- (void)setIconType:(MenuIconType)iconType
 {
     if(_iconType != iconType) {
         _iconType = iconType;
         
-        if(iconType == MenuItemIconNone) {
+        if(iconType == MenuIconTypeNone) {
             
             self.iconView.image = nil;
             self.iconView.hidden = YES;
@@ -183,14 +183,14 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
     [self.accessoryStackView setNeedsLayout];
 }
 
-- (UIButton *)addAccessoryButtonIconViewWithType:(MenuItemIconType)type
+- (UIButton *)addAccessoryButtonIconViewWithType:(MenuIconType)type
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.imageView.contentMode = UIViewContentModeScaleAspectFit;
     button.backgroundColor = [UIColor clearColor];
     
-    if(type != MenuItemIconNone) {
+    if(type != MenuIconTypeNone) {
         [button setImage:[[UIImage imageNamed:MenusDesignItemIconImageNameForType(type)] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     }
     

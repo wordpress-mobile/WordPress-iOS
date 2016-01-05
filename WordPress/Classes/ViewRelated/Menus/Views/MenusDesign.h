@@ -2,11 +2,11 @@
 #define MenusDesign_h
 
 typedef NS_ENUM(NSUInteger) {
-    MenuItemIconNone,
-    MenuItemIconDefault,
-    MenuItemIconEdit,
-    MenuItemIconAdd,
-}MenuItemIconType;
+    MenuIconTypeNone,
+    MenuIconTypeDefault,
+    MenuIconTypeEdit,
+    MenuIconTypeAdd,
+}MenuIconType;
 
 typedef NS_ENUM(NSUInteger) {
     
@@ -22,25 +22,26 @@ typedef NS_ENUM(NSUInteger) {
 static CGFloat const MenusDesignDefaultCornerRadius = 4.0;
 static CGFloat const MenusDesignDefaultContentSpacing = 18.0;
 static CGFloat const MenusDesignItemIconSize = 10.0;
+static CGFloat const MenusDesignGeneralCellHeight = 60.0;
 
 static inline UIEdgeInsets MenusDesignDefaultInsets() {
     return UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0);
 }
 
-static NSString * MenusDesignItemIconImageNameForType(MenuItemIconType type)
+static NSString * MenusDesignItemIconImageNameForType(MenuIconType type)
 {
     NSString *name;
     switch (type) {
-        case MenuItemIconNone:
+        case MenuIconTypeNone:
             name = nil;
             break;
-        case MenuItemIconDefault:
+        case MenuIconTypeDefault:
             name = @"icon-menus-document";
             break;
-        case MenuItemIconEdit:
+        case MenuIconTypeEdit:
             name = @"icon-menus-edit";
             break;
-        case MenuItemIconAdd:
+        case MenuIconTypeAdd:
             name = @"icon-menus-plus";
             break;
     }
