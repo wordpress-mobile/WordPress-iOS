@@ -67,12 +67,13 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
             
             const CGFloat spacing = MenusDesignDefaultContentSpacing / 2.0;
             UIEdgeInsets margins = UIEdgeInsetsZero;
+            margins.top = spacing;
             margins.left = MenusDesignDefaultContentSpacing;
             margins.right = MenusDesignDefaultContentSpacing;
+            margins.bottom = spacing;
             stackView.layoutMargins = margins;
             stackView.layoutMarginsRelativeArrangement = YES;
             stackView.spacing = spacing;
-            
             [self addSubview:stackView];
             
             [NSLayoutConstraint activateConstraints:@[
@@ -163,7 +164,7 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
         label.backgroundColor = [WPStyleGuide greyLighten10];
         label.layer.cornerRadius = 4.0;
         label.layer.masksToBounds = YES;
-        label.textAlignment = UITextAlignmentCenter;
+        label.textAlignment = NSTextAlignmentCenter;
         label.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
         
         [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];

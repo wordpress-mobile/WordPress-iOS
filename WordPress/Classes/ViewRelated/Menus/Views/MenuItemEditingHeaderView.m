@@ -172,6 +172,7 @@
     const CGRect iconRect = [self convertRect:self.iconView.frame fromView:self.iconView.superview];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(context);
     CGContextSetFillColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
     CGContextBeginPath(context);
     CGContextMoveToPoint(context, rect.size.width, 0);
@@ -183,6 +184,7 @@
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     CGContextClosePath(context);
     CGContextFillPath(context);
+    CGContextRestoreGState(context);
 }
 
 #pragma mark - UITextFieldDelegate
