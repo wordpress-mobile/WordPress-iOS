@@ -67,7 +67,8 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
             
             const CGFloat spacing = MenusDesignDefaultContentSpacing / 2.0;
             UIEdgeInsets margins = UIEdgeInsetsZero;
-            margins.right = spacing;
+            margins.left = MenusDesignDefaultContentSpacing;
+            margins.right = MenusDesignDefaultContentSpacing;
             stackView.layoutMargins = margins;
             stackView.layoutMarginsRelativeArrangement = YES;
             stackView.spacing = spacing;

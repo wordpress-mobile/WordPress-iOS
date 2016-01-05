@@ -19,10 +19,12 @@
         
         self.backgroundColor = [UIColor whiteColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
-        self.layer.borderWidth = 1.0;
+        self.contentMode = UIViewContentModeRedraw;
         
-        self.layoutMargins = UIEdgeInsetsZero;
+        UIEdgeInsets margin = UIEdgeInsetsZero;
+        margin.left = MenusDesignDefaultContentSpacing;
+        margin.right = MenusDesignDefaultContentSpacing;
+        self.layoutMargins = margin;
         UILayoutGuide *marginsGuide = self.layoutMarginsGuide;
         const CGFloat spacing = ceilf(MenusDesignDefaultContentSpacing / 2.0);
 
@@ -73,6 +75,23 @@
     }
     
     return self;
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    
+    [self setNeedsDisplay];
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
+    CGContextSetLineWidth(context, 1.0);
+    CGContextStrokeRect(context, CGRectInset(rect, MenusDesignDefaultContentSpacing, 2.0));
 }
 
 #pragma mark - UITextFieldDelegate
