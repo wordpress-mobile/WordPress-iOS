@@ -159,9 +159,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     // Hide the header, if needed
     NSMutableArray *blockGroups = [NSMutableArray array];
-    BOOL hasHeaderBlocks        = (_note.headerBlockGroup != nil);
     
-    if (hasHeaderBlocks) {
+    if (_note.headerBlockGroup) {
         [blockGroups addObject:_note.headerBlockGroup];
     }
     
@@ -274,13 +273,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (NSDictionary *)reuseIdentifierMap
 {
     return @{
-        @(NoteBlockGroupTypeHeader)         : NoteBlockHeaderTableViewCell.reuseIdentifier,
-        @(NoteBlockGroupTypeFooter)         : NoteBlockTextTableViewCell.reuseIdentifier,
-        @(NoteBlockGroupTypeText)           : NoteBlockTextTableViewCell.reuseIdentifier,
-        @(NoteBlockGroupTypeComment)        : NoteBlockCommentTableViewCell.reuseIdentifier,
-        @(NoteBlockGroupTypeActions)        : NoteBlockActionsTableViewCell.reuseIdentifier,
-        @(NoteBlockGroupTypeImage)          : NoteBlockImageTableViewCell.reuseIdentifier,
-        @(NoteBlockGroupTypeUser)           : NoteBlockUserTableViewCell.reuseIdentifier
+        @(NoteBlockGroupTypeHeader)     : NoteBlockHeaderTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypeFooter)     : NoteBlockTextTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypeText)       : NoteBlockTextTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypeComment)    : NoteBlockCommentTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypeActions)    : NoteBlockActionsTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypeImage)      : NoteBlockImageTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypeUser)       : NoteBlockUserTableViewCell.reuseIdentifier
     };
 }
 
