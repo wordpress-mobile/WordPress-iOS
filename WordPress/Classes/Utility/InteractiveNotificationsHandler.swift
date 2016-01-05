@@ -1,33 +1,36 @@
 import Foundation
 
 
-/**
- *  @extension      InteractiveNotificationsHandler
- *  @details        In this class, we'll encapsulate all of the code related to UIUserNotificationCategory and 
- *                  UIUserNotificationAction instantiation, along with the required handlers.
- */
-
+/// In this class, we'll encapsulate all of the code related to UIUserNotificationCategory and
+/// UIUserNotificationAction instantiation, along with the required handlers.
+///
 final public class InteractiveNotificationsHandler
 {
-    /**
-     *  @brief      Returns a collection of *UIUserNotificationCategory* instances, for each one of the
-     *              supported NoteCategoryDefinition enum case's.
-     *  @returns    A set of *UIUserNotificationCategory* instances.
-     */
+    // MARK: - Public Methods
     
+    
+    /// Returns a collection of *UIUserNotificationCategory* instances, for each one of the
+    /// supported NoteCategoryDefinition enum case's.
+    ///
+    /// - Returns: A set of *UIUserNotificationCategory* instances.
+    ///
     func supportedNotificationCategories() -> Set<UIUserNotificationCategory> {
         return notificationCategories(NoteCategoryDefinition.allDefinitions)
     }
     
     
     
-    /**
-     *  @brief      Parses a given array of NoteCategoryDefinition, and returns a collection of their
-     *              *UIUserNotificationCategory* counterparts.
-     *
-     *  @param      definitions     A collection of definitions to be instantiated.
-     *  @returns                    A collection of UIUserNotificationCategory instances
-     */
+    // MARK: - Private Methods
+    
+    
+    /// Parses a given array of NoteCategoryDefinition, and returns a collection of their
+    /// *UIUserNotificationCategory* counterparts.
+    ///
+    /// - Parameters:
+    ///     - definitions: A collection of definitions to be instantiated.
+    ///
+    /// - Returns: A collection of UIUserNotificationCategory instances
+    ///
     private func notificationCategories(definitions: [NoteCategoryDefinition]) -> Set<UIUserNotificationCategory> {
         var categories  = Set<UIUserNotificationCategory>()
         let rawActions  = definitions.flatMap { $0.actions }
@@ -48,13 +51,14 @@ final public class InteractiveNotificationsHandler
     
     
     
-    /**
-     *  @brief      Parses a given array of NoteActionDefinition, and returns a collection mapping them
-     *              with their *UIUserNotificationAction* counterparts.
-     *
-     *  @param      definitions     A collection of definitions to be instantiated.
-     *  @returns                    A map of Definition > NotificationAction instances
-     */
+    /// Parses a given array of NoteActionDefinition, and returns a collection mapping them with their
+    /// *UIUserNotificationAction* counterparts.
+    ///
+    /// - Parameters:
+    ///     - definitions: A collection of definitions to be instantiated.
+    ///
+    /// - Returns: A map of Definition > NotificationAction instances
+    ///
     private func notificationActionsMap(definitions: [NoteActionDefinition]) -> [NoteActionDefinition : UIUserNotificationAction] {
         var actionMap = [NoteActionDefinition : UIUserNotificationAction]()
         
@@ -74,11 +78,9 @@ final public class InteractiveNotificationsHandler
     
     
     
-    /**
-     *  @enum       NoteCategoryDefinition
-     *  @brief      Describes information about Custom Actions that WPiOS can perform, as a response to
-     *              a Push Notification event.
-     */
+    /// Describes information about Custom Actions that WPiOS can perform, as a response to
+    /// a Push Notification event.
+    ///
     private enum NoteCategoryDefinition : String {
         case CommentApprove         = "approve-comment"
         case CommentLike            = "like-comment"
@@ -105,10 +107,8 @@ final public class InteractiveNotificationsHandler
     
     
     
-    /**
-     *  @enum       NoteActionDefinition
-     *  @brief      Describes the custom actions that WPiOS can perform in response to a Push notification.
-     */
+    /// Describes the custom actions that WPiOS can perform in response to a Push notification.
+    ///
     private enum NoteActionDefinition : String {
         case CommentApprove = "COMMENT_MODERATE_APPROVE"
         case CommentLike    = "COMMENT_LIKE"
