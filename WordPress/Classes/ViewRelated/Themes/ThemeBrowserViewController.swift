@@ -553,10 +553,9 @@ public protocol ThemePresenter: class
     // MARK: - WPSearchControllerDelegate
 
     public func willDismissSearchController(searchController: WPSearchController) {
-        print("didDismissSearchController")
     
+        searchName = ""
         searchController.searchBar.text = ""
-        searchController.searchBar.resignFirstResponder()
         
         navigationController?.setNavigationBarHidden(false, animated: true)
         searchWrapperViewHeightConstraint.constant = 0
@@ -576,8 +575,6 @@ public protocol ThemePresenter: class
     }
 
     public func presentSearchController(searchController: WPSearchController) {
-        print("presentSearchController")
-        
         navigationController?.setNavigationBarHidden(true, animated: true)
         searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
 
