@@ -5,7 +5,6 @@
 @property (nonatomic, strong) NSString *logText;
 @property (nonatomic, strong) NSString *logDate;
 @property (nonatomic, strong) UITextView *textView;
-@property (nonatomic, strong) UIPopoverController *popover;
 
 @end
 
@@ -53,45 +52,14 @@
 {
     [super viewWillDisappear:animated];
 
-    if (self.popover) {
-        [self.popover dismissPopoverAnimated:animated];
-        self.popover = nil;
-    }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)showShareOptions:(id)sender
 {
-    if (NSClassFromString(@"UIActivityViewController") != nil) {
-        // If UIActivityViewController is available, use it (iOS 6+)
-        UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.logText]
-                                                                                             applicationActivities:nil];
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-            if (self.popover && self.popover.isPopoverVisible) {
-                [self.popover dismissPopoverAnimated:YES];
-                self.popover = nil;
-            } else {
-                self.popover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
-                [self.popover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            }
-        } else {
-            [self presentViewController:activityViewController animated:YES completion:nil];
-        }
-    } else {
-        // Otherwise, flip back to an action sheet for < iOS 6
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Share", @"")
-                                                                 delegate:self
-                                                        cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                                   destructiveButtonTitle:nil
-                                                        otherButtonTitles:NSLocalizedString(@"Mail", @""), nil];
-
-        [actionSheet showFromBarButtonItem:sender animated:YES];
-    }
-
+    UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:@[self.logText]
+                                                                                         applicationActivities:nil];
+    activityViewController.modalPresentationStyle = UIModalPresentationPopover;
+    activityViewController.popoverPresentationController.barButtonItem = sender;
+    [self presentViewController:activityViewController animated:YES completion:nil];
 }
 @end
