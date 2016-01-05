@@ -1,11 +1,15 @@
 #import "MenuItemSourceView.h"
 #import "MenusDesign.h"
+#import "MenuItemSourceHeaderView.h"
 
-@interface MenuItemSourceView ()
+@interface MenuItemSourceView () <MenuItemSourceHeaderViewDelegate>
 
+@property (nonatomic, strong) MenuItemSourceHeaderView *headerView;
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
+@property (nonatomic, strong) UIView *spacerView;
 @property (nonatomic, strong) NSMutableArray *resultViews;
+@property (nonatomic, assign) BOOL setContentSize;
 
 @end
 
@@ -66,12 +70,31 @@
         stackView.spacing = 0;
     }
     {
+        MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
+        headerView.delegate = self;
+        NSLayoutConstraint *heightConstraint = [headerView.heightAnchor constraintEqualToConstant:MenusDesignGeneralCellHeight];
+        heightConstraint.priority = UILayoutPriorityDefaultHigh;
+        heightConstraint.active = YES;
+        
+        [self.stackView addArrangedSubview:headerView];
+        self.headerView = headerView;
+    }
+    {
+        UIView *spacer = [[UIView alloc] init];
+        NSLayoutConstraint *heightConstraint = [spacer.heightAnchor constraintEqualToConstant:MenusDesignDefaultContentSpacing / 2.0];
+        heightConstraint.priority = UILayoutPriorityDefaultHigh;
+        heightConstraint.active = YES;
+        
+        [self.stackView addArrangedSubview:spacer];
+        self.spacerView = spacer;
+    }
+    {
         MenuItemSourceSearchBar *searchBar = [[MenuItemSourceSearchBar alloc] init];
         searchBar.translatesAutoresizingMaskIntoConstraints = NO;
         searchBar.delegate = self;
         [self.stackView addArrangedSubview:searchBar];
         
-        NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:78];
+        NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:MenusDesignGeneralCellHeight];
         heightConstraint.priority = UILayoutPriorityDefaultHigh;
         heightConstraint.active = YES;
         
@@ -82,11 +105,14 @@
     [self reloadResults];
 }
 
-- (void)layoutSubviews
+- (void)setHeaderViewsHidden:(BOOL)hidden
 {
-    [super layoutSubviews];
-    
-    self.scrollView.contentSize = self.stackView.frame.size;
+    if(self.headerView.hidden != hidden) {
+        self.headerView.hidden = hidden;
+    }
+    if(self.spacerView.hidden != hidden) {
+        self.spacerView.hidden = hidden;
+    }
 }
 
 - (void)reloadResults
@@ -106,6 +132,13 @@
         [self.stackView addArrangedSubview:view];
         [self.resultViews addObject:view];
     }
+}
+
+#pragma mark - MenuItemSourceHeaderViewDelegate
+
+- (void)sourceHeaderViewSelected:(MenuItemSourceHeaderView *)headerView
+{
+    [self.delegate sourceViewSelectedSourceTypeButton:self];
 }
 
 #pragma mark - MenuItemSourceSearchBarDelegate

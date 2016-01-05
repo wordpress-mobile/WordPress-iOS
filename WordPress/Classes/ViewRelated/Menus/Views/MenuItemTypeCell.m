@@ -17,8 +17,8 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self) {
         
-        self.translatesAutoresizingMaskIntoConstraints = NO;
-        self.backgroundColor = [UIColor whiteColor];
+        self.contentView.backgroundColor = [UIColor clearColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         
         {
             UIImageView *iconView = [[UIImageView alloc] init];
@@ -27,19 +27,23 @@
             iconView.backgroundColor = [UIColor clearColor];
             iconView.tintColor = [WPStyleGuide mediumBlue];
 
-            [self addSubview:iconView];
+            [self.contentView addSubview:iconView];
             
-            const CGFloat iconSize = 14.0;
-            NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:iconSize];
+            NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:10.0];
             widthConstraint.priority = UILayoutPriorityDefaultHigh;
             widthConstraint.active = YES;
-            [iconView.heightAnchor constraintEqualToConstant:iconSize].active = YES;
             
-            NSLayoutConstraint *leadingConstraint = [iconView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:MenusDesignDefaultContentSpacing];
+            NSLayoutConstraint *leadingConstraint = [iconView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor constant:MenusDesignDefaultContentSpacing];
             leadingConstraint.priority = UILayoutPriorityDefaultHigh;
             leadingConstraint.active = YES;
             
-            [iconView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor].active = YES;
+            [NSLayoutConstraint activateConstraints:@[
+                                                      [iconView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
+                                                      [iconView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
+                                                      ]];
+            
+            [iconView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [iconView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
             
             self.iconView = iconView;
             [self setTypeIconImageName:@"icon-menus-document"];
@@ -52,34 +56,35 @@
             label.font = [WPFontManager openSansRegularFontOfSize:16.0];
             label.backgroundColor = [UIColor clearColor];
             
-            [self addSubview:label];
+            [self.contentView addSubview:label];
             
             NSLayoutConstraint *leadingConstraint = [label.leadingAnchor constraintEqualToAnchor:self.iconView.trailingAnchor constant:ceilf(MenusDesignDefaultContentSpacing / 2.0)];
             leadingConstraint.priority = UILayoutPriorityDefaultHigh;
             leadingConstraint.active = YES;
             
-            [label.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
-            [label.centerYAnchor constraintEqualToAnchor:self.centerYAnchor].active = YES;
+            [label.centerYAnchor constraintEqualToAnchor:self.contentView.centerYAnchor].active = YES;
             
-            NSLayoutConstraint *trailingConstraint = [label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:MenusDesignDefaultContentSpacing];
+            NSLayoutConstraint *trailingConstraint = [label.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:MenusDesignDefaultContentSpacing];
             trailingConstraint.priority = MenusDesignDefaultContentSpacing;
             trailingConstraint.active = YES;
             
             self.label = label;
         }
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
-        [self addGestureRecognizer:tap];
     }
     
     return self;
 }
 
-- (void)setSelected:(BOOL)selected
+- (void)setSelectionType:(MenuItemSelectionType *)selectionType
 {
-    [super setSelected:selected];
+    if(_selectionType != selectionType) {
+        _selectionType = selectionType;
+        
+        [self setTypeTitle:[selectionType title]];
+        [self setTypeIconImageName:[selectionType iconImageName]];
+    }
     
-    if(selected) {
+    if(selectionType.selected) {
         self.label.textColor = [WPStyleGuide mediumBlue];
     }else {
         self.label.textColor = [WPStyleGuide greyDarken30];;
@@ -104,25 +109,18 @@
     [super drawRect:rect];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 1.0);
+    CGContextSetLineWidth(context, 2.0);
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
     
-    if(self.selected) {
+    if(self.selectionType.selected) {
         CGContextMoveToPoint(context, 0, rect.size.height);
         CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     }else {
-        CGContextMoveToPoint(context, rect.size.width, 0);
-        CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+        CGContextMoveToPoint(context, rect.size.width , 0);
+        CGContextAddLineToPoint(context, rect.size.width , rect.size.height);
     }
     
     CGContextStrokePath(context);
-}
-
-#pragma mark - gestures
-
-- (void)tapGesture:(UITapGestureRecognizer *)tapGesture
-{
-    [self.delegate itemTypeViewSelected:self];
 }
 
 @end
