@@ -3,10 +3,9 @@
 
 @protocol MenuItemTypeViewDelegate;
 
-@interface MenuItemTypeView : UIView
+@interface MenuItemTypeCell : UITableViewCell
 
 @property (nonatomic, weak) id <MenuItemTypeViewDelegate> delegate;
-@property (nonatomic, assign) BOOL selected;
 @property (nonatomic, assign) MenuItemType itemType;
 
 - (void)setTypeTitle:(NSString *)title;
@@ -16,6 +15,6 @@
 
 @protocol MenuItemTypeViewDelegate <NSObject>
 
-- (void)itemTypeViewSelected:(MenuItemTypeView *)typeView;
+- (void)itemTypeViewSelected:(MenuItemTypeCell *)typeView;
 
 @end

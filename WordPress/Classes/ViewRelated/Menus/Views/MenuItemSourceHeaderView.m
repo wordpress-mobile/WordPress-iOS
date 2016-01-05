@@ -1,16 +1,16 @@
-#import "MenuItemTypeHeaderView.h"
+#import "MenuItemSourceHeaderView.h"
 #import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
-@interface MenuItemTypeHeaderView ()
+@interface MenuItemSourceHeaderView ()
 
 @property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *label;
 
 @end
 
-@implementation MenuItemTypeHeaderView
+@implementation MenuItemSourceHeaderView
 
 - (void)awakeFromNib
 {
@@ -65,7 +65,7 @@
 
 - (void)tapGesture:(UITapGestureRecognizer *)tapGesture
 {
-    [self.delegate itemTypeViewSelected:self];
+    [self.delegate sourceHeaderViewSelected:self];
 }
 
 - (void)drawRect:(CGRect)rect
