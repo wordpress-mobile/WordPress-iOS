@@ -3,6 +3,8 @@
 
 @interface MenuItemSourceView ()
 
+@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) NSMutableArray *resultViews;
 
 @end
@@ -57,30 +59,16 @@
     self.translatesAutoresizingMaskIntoConstraints = NO;
     
     {
-        UIStackView *stackView = [[UIStackView alloc] init];
+        UIStackView *stackView = self.stackView;
         stackView.translatesAutoresizingMaskIntoConstraints = NO;
-        stackView.axis = UILayoutConstraintAxisVertical;
-        stackView.distribution = UIStackViewDistributionFill;
+        stackView.distribution = UIStackViewDistributionEqualSpacing;
         stackView.alignment = UIStackViewAlignmentFill;
         stackView.spacing = MenusDesignDefaultContentSpacing;
 
         UIEdgeInsets margins = UIEdgeInsetsZero;
-        margins.top = MenusDesignDefaultContentSpacing;
-        margins.left = MenusDesignDefaultContentSpacing;
-        margins.right = MenusDesignDefaultContentSpacing;
         margins.bottom = MenusDesignDefaultContentSpacing;
         stackView.layoutMargins = margins;
         stackView.layoutMarginsRelativeArrangement = YES;
-        
-        [self addSubview:stackView];
-        [NSLayoutConstraint activateConstraints:@[
-                                                  [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                                  [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                                  [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                                  [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
-                                                  ]];
-        
-        _stackView = stackView;
     }
     {
         MenuItemSourceSearchBar *searchBar = [[MenuItemSourceSearchBar alloc] init];
@@ -98,6 +86,13 @@
     }
     
     [self reloadResults];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    self.scrollView.contentSize = self.stackView.frame.size;
 }
 
 - (void)reloadResults

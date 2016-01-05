@@ -10,9 +10,8 @@
 
 @property (nonatomic, weak) id <MenuItemSourceViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
-@property (nonatomic, strong, readonly) UIStackView *stackView;
-@property (nonatomic, strong, readonly) MenuItemSourceSearchBar *searchBar;
 @property (nonatomic, strong) NSMutableArray *results;
+@property (nonatomic, strong, readonly) MenuItemSourceSearchBar *searchBar;
 
 - (void)reloadResults;
 

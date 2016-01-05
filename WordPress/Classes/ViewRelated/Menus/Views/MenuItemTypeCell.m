@@ -1,8 +1,8 @@
-#import "MenuItemTypeView.h"
+#import "MenuItemTypeCell.h"
 #import "MenusDesign.h"
 #import "WPFontManager.h"
 
-@interface MenuItemTypeView ()
+@interface MenuItemTypeCell ()
 
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIImageView *iconView;
@@ -10,11 +10,11 @@
 
 @end
 
-@implementation MenuItemTypeView
+@implementation MenuItemTypeCell
 
-- (id)init
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super init];
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self) {
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
@@ -77,17 +77,15 @@
 
 - (void)setSelected:(BOOL)selected
 {
-    if(_selected != selected) {
-        _selected = selected;
-        
-        if(selected) {
-            self.label.textColor = [WPStyleGuide mediumBlue];
-        }else {
-            self.label.textColor = [WPStyleGuide greyDarken30];;
-        }
-        
-        [self setNeedsDisplay];
+    [super setSelected:selected];
+    
+    if(selected) {
+        self.label.textColor = [WPStyleGuide mediumBlue];
+    }else {
+        self.label.textColor = [WPStyleGuide greyDarken30];;
     }
+    
+    [self setNeedsDisplay];
 }
 
 - (void)setTypeTitle:(NSString *)title
