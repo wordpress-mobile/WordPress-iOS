@@ -74,7 +74,7 @@
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.estimatedRowHeight = MenusDesignGeneralCellHeight;
-    self.tableView.rowHeight = MenusDesignGeneralCellHeight;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.clipsToBounds = NO;
     
     MenuItemSelectionType *selection = [self addSelectionType:MenuItemTypePage];

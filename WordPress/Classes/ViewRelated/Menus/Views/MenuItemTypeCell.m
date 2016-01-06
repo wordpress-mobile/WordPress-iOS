@@ -51,21 +51,25 @@
         {
             UILabel *label = [[UILabel alloc] init];
             label.translatesAutoresizingMaskIntoConstraints = NO;
-            label.numberOfLines = 0;
+            label.numberOfLines = 5;
+            label.lineBreakMode = NSLineBreakByTruncatingTail;
             label.textColor = [WPStyleGuide greyDarken30];
             label.font = [WPFontManager openSansRegularFontOfSize:16.0];
             label.backgroundColor = [UIColor clearColor];
             
             [self.contentView addSubview:label];
             
-            NSLayoutConstraint *leadingConstraint = [label.leadingAnchor constraintEqualToAnchor:self.iconView.trailingAnchor constant:ceilf(MenusDesignDefaultContentSpacing / 2.0)];
+            NSLayoutConstraint *leadingConstraint = [label.leadingAnchor constraintEqualToAnchor:self.iconView.trailingAnchor constant:MenusDesignDefaultContentSpacing];
             leadingConstraint.priority = UILayoutPriorityDefaultHigh;
             leadingConstraint.active = YES;
             
-            [label.centerYAnchor constraintEqualToAnchor:self.contentView.centerYAnchor].active = YES;
+            [NSLayoutConstraint activateConstraints:@[
+                                                      [label.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:MenusDesignDefaultContentSpacing],
+                                                      [label.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor constant:-MenusDesignDefaultContentSpacing],
+                                                      ]];
             
-            NSLayoutConstraint *trailingConstraint = [label.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:MenusDesignDefaultContentSpacing];
-            trailingConstraint.priority = MenusDesignDefaultContentSpacing;
+            NSLayoutConstraint *trailingConstraint = [label.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-MenusDesignDefaultContentSpacing];
+            trailingConstraint.priority = UILayoutPriorityDefaultHigh;
             trailingConstraint.active = YES;
             
             self.label = label;

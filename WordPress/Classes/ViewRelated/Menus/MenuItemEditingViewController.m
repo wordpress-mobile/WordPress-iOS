@@ -198,6 +198,11 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
             self.typeSelectionView.hidden = NO;
             self.typeSelectionView.alpha = 1.0;
         }
+        
+        if(self.sourceView.hidden) {
+            self.sourceView.hidden = NO;
+            self.sourceView.alpha = 0.0;
+        }
     }
     
     [self.sourceView setHeaderViewsHidden:YES];
@@ -213,7 +218,6 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
         
         [self.stackView layoutIfNeeded];
         [UIView animateWithDuration:0.20 animations:^{
-            
             [self updateForLayoutChange];
         }];
         
@@ -225,29 +229,29 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 - (void)updateForShowingTypeSelectionCompact
 {
     if(self.typeSelectionView.hidden) {
-        
-        [self.sourceView setHeaderViewsHidden:YES];
-        
-        if(self.typeSelectionView.hidden) {
-            self.typeSelectionView.hidden = NO;
-            self.typeSelectionView.alpha = 1.0;
-        }
+        self.typeSelectionView.hidden = NO;
+        self.typeSelectionView.alpha = 1.0;
+    }
+    
+    if(!self.sourceView.hidden) {
+        self.sourceView.hidden = YES;
+        self.sourceView.alpha = 0.0;
     }
 }
 
 - (void)updateForHidingTypeSelection
 {
     if(!self.typeSelectionView.hidden) {
-        
-        [self.sourceView setHeaderViewsHidden:NO];
-        
         if([self shouldDisplayForCompactWidth]) {
-            
-            if(!self.typeSelectionView.hidden) {
-                self.typeSelectionView.hidden = YES;
-                self.typeSelectionView.alpha = 0.0;
-            }
+            [self.sourceView setHeaderViewsHidden:NO];
+            self.typeSelectionView.hidden = YES;
+            self.typeSelectionView.alpha = 0.0;
         }
+    }
+    
+    if(self.sourceView.hidden) {
+        self.sourceView.hidden = NO;
+        self.sourceView.alpha = 1.0;
     }
 }
 
