@@ -143,6 +143,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [self configureTableView];
     [self configureHeaderView];
     [self configureSearchController];
+    
+    [self registerForAccountChangeNotification];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -182,35 +184,6 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
             self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
         }
     } completion:nil];
-}
-
-- (void)registerForKeyboardNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)unregisterForKeyboardNotifications
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
-}
-
-- (void)keyboardDidShow:(NSNotification *)notification
-{
-    NSDictionary *info = notification.userInfo;
-    CGFloat keyboardHeight = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-    CGFloat tabBarHeight = self.tabBarController.tabBar.bounds.size.height;
-    
-    UIEdgeInsets newInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight - tabBarHeight, 0.0);
-    self.tableView.contentInset = newInsets;
-    self.tableView.scrollIndicatorInsets = newInsets;
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification
-{
-    self.tableView.contentInset = UIEdgeInsetsZero;
-    self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
 }
 
 - (NSUInteger)numSites
@@ -293,6 +266,9 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar
 {
+    // Ensure our list of sites is up to date
+    [self.resultsController performFetch:nil];
+    
     return [self numSites] == 1;
 }
 
@@ -356,6 +332,50 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 #pragma mark - Notifications
 
+- (void)registerForAccountChangeNotification
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(wordPressComAccountChanged:)
+                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
+                                               object:nil];
+}
+
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidShow:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)unregisterForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification
+{
+    NSDictionary *info = notification.userInfo;
+    CGFloat keyboardHeight = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    CGFloat tabBarHeight = self.tabBarController.tabBar.bounds.size.height;
+    
+    UIEdgeInsets newInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight - tabBarHeight, 0.0);
+    self.tableView.contentInset = newInsets;
+    self.tableView.scrollIndicatorInsets = newInsets;
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    self.tableView.contentInset = UIEdgeInsetsZero;
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+}
+
 - (void)wordPressComApiDidLogin:(NSNotification *)notification
 {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -364,6 +384,11 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 - (void)wordPressComApiDidLogout:(NSNotification *)notification
 {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)wordPressComAccountChanged:(NSNotification *)notification
+{
+    [self setEditing:NO];
 }
 
 #pragma mark - Table view data source
@@ -716,6 +741,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
         _resultsController = nil;
     }
+    
     return _resultsController;
 }
 
