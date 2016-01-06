@@ -33,7 +33,7 @@ target 'WordPress', :exclusive => true do
   pod 'Simperium', '0.8.10'
   pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
   pod 'WordPress-iOS-Shared', '0.5.1'
-  pod 'WordPress-iOS-Editor', '1.1.1'
+  pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '944a4228faa0e66b33268f2c883348604e497498'
   pod 'WordPressCom-Stats-iOS/UI', '0.6.0'
   pod 'WordPressCom-Analytics-iOS', '0.1.3'
   pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
