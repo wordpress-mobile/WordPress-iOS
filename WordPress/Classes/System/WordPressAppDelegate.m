@@ -426,7 +426,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
                                         forRemoteNotification:(NSDictionary *)remoteNotification
                                             completionHandler:(void (^)())completionHandler
 {
-    [NotificationsManager handleActionWithIdentifier:identifier forRemoteNotification:remoteNotification];
+    [[InteractiveNotificationsHandler sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification];
     
     completionHandler();
 }
