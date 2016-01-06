@@ -75,7 +75,7 @@
     id mockManager = [OCMockObject partialMockForObject:[PushNotificationsManager sharedInstance]];
     [[[mockManager stub] andReturn:mockApplication] sharedApplication];
     
-    [mockManager registerForPushNotifications];
+    [mockManager registerForRemoteNotifications];
     [mockApplication verify];
 }
 
