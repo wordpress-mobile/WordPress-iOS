@@ -5608,7 +5608,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.internal;
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "bd27f648-b38b-41f1-a48e-765fd10701cf";
+				PROVISIONING_PROFILE = "036de270-0b4a-4a46-aa03-342d07937bba";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
