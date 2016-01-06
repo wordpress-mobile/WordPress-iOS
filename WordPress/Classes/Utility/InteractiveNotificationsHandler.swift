@@ -26,15 +26,13 @@ final public class InteractiveNotificationsHandler : NSObject
             return
         }
         
-        // User Notifications Registration
-        let categories  = supportedNotificationCategories()
-        let settings    = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: categories)
+        let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: supportedNotificationCategories())
         sharedApplication.registerUserNotificationSettings(settings)
     }
     
     
     
-    // MARK: - Private Methods
+    // MARK: - Private: UIUserNotification Helpers
     
     
     /// Returns a collection of *UIUserNotificationCategory* instances, for each one of the
@@ -43,7 +41,7 @@ final public class InteractiveNotificationsHandler : NSObject
     /// - Returns: A set of *UIUserNotificationCategory* instances.
     ///
     private func supportedNotificationCategories() -> Set<UIUserNotificationCategory> {
-        return notificationCategories(NoteCategoryDefinition.allDefinitions)
+        return notificationCategoriesWithDefinitions(NoteCategoryDefinition.allDefinitions)
     }
     
     
@@ -56,10 +54,10 @@ final public class InteractiveNotificationsHandler : NSObject
     ///
     /// - Returns: A collection of UIUserNotificationCategory instances
     ///
-    private func notificationCategories(definitions: [NoteCategoryDefinition]) -> Set<UIUserNotificationCategory> {
+    private func notificationCategoriesWithDefinitions(definitions: [NoteCategoryDefinition]) -> Set<UIUserNotificationCategory> {
         var categories  = Set<UIUserNotificationCategory>()
         let rawActions  = definitions.flatMap { $0.actions }
-        let actionsMap  = notificationActionsMap(rawActions)
+        let actionsMap  = notificationActionsMapWithDefinitions(rawActions)
         
         for definition in definitions {
             let category = UIMutableUserNotificationCategory()
@@ -84,7 +82,7 @@ final public class InteractiveNotificationsHandler : NSObject
     ///
     /// - Returns: A map of Definition > NotificationAction instances
     ///
-    private func notificationActionsMap(definitions: [NoteActionDefinition]) -> [NoteActionDefinition : UIUserNotificationAction] {
+    private func notificationActionsMapWithDefinitions(definitions: [NoteActionDefinition]) -> [NoteActionDefinition : UIUserNotificationAction] {
         var actionMap = [NoteActionDefinition : UIUserNotificationAction]()
         
         for definition in definitions {
