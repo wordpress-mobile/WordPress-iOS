@@ -109,10 +109,19 @@
     [super drawRect:rect];
     
     CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSaveGState(context);
     CGContextSetLineWidth(context, 2.0);
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
     
     if(self.selectionType.selected) {
+        
+        CGContextSaveGState(context);
+        CGContextMoveToPoint(context, 0, 0);
+        CGContextAddLineToPoint(context, rect.size.width, 0);
+        CGContextSetStrokeColorWithColor(context, [[UIColor colorWithWhite:0.97 alpha:1.0] CGColor]);
+        CGContextStrokePath(context);
+        
+        CGContextRestoreGState(context);
         CGContextMoveToPoint(context, 0, rect.size.height);
         CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     }else {
@@ -121,6 +130,7 @@
     }
     
     CGContextStrokePath(context);
+    CGContextRestoreGState(context);
 }
 
 @end
