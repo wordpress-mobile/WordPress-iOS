@@ -5,5 +5,6 @@
 @interface MenuItemTypeCell : UITableViewCell
 
 @property (nonatomic, strong) MenuItemSelectionType *selectionType;
+@property (nonatomic, assign) BOOL drawingShouldIgnoreTopBorder;
 
 @end
