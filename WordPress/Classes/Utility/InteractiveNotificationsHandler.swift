@@ -20,7 +20,7 @@ final public class InteractiveNotificationsHandler : NSObject
     
     /// Registers the device for User Notifications.
     ///
-    func registerForUserNotifications() {
+    public func registerForUserNotifications() {
         let sharedApplication = UIApplication.sharedApplication()
         if sharedApplication.isRunningSimulator() || sharedApplication.isAlphaBuild() {
             return
@@ -29,6 +29,106 @@ final public class InteractiveNotificationsHandler : NSObject
         let settings = UIUserNotificationSettings(forTypes: [.Badge, .Sound, .Alert], categories: supportedNotificationCategories())
         sharedApplication.registerUserNotificationSettings(settings)
     }
+    
+    
+    /// Handle an action taken from a remote notification
+    ///
+    /// - Parameters:
+    ///     - identifier: The identifier of the action
+    ///     - remoteNotification: the notification object
+    ///
+    public func handleActionWithIdentifier(identifier: String, remoteNotification: NSDictionary) {
+        guard defaultAccountAvailable() else {
+            return
+        }
+        
+        guard let action = NoteActionDefinition(rawValue: identifier) else {
+            return
+        }
+        
+        guard let noteId = remoteNotification.objectForKey("note_id") as? NSNumber else {
+            return
+        }
+
+        guard let siteID = remoteNotification.objectForKey("blog_id") as? NSNumber else {
+            return
+        }
+        
+        guard let commentID = remoteNotification.objectForKey("comment_id") as? NSNumber else {
+            return
+        }
+        
+        switch action {
+        case .CommentApprove:
+            approveCommentWithCommentID(commentID, siteID: siteID)
+        case .CommentLike:
+            likeCommentWithCommentID(commentID, siteID: siteID)
+        case .CommentReply:
+            showDetailsWithNoteID(noteId)
+        }
+    }
+    
+    
+
+    // MARK: - Private Helpers
+    
+    
+    /// Likes a comment
+    ///
+    /// - Parameters:
+    ///     - commentID: The comment identifier
+    ///     - siteID: The site identifier
+    ///
+    private func likeCommentWithCommentID(commentID: NSNumber, siteID: NSNumber) {
+        let context = ContextManager.sharedInstance().newDerivedContext()
+        let service = CommentService(managedObjectContext: context)
+        
+        service.likeCommentWithID(commentID, siteID: siteID, success: {
+                DDLogSwift.logInfo("Liked comment from push notification")
+            },
+            failure: { (error: NSError!) -> Void in
+                DDLogSwift.logInfo("Couldn't like comment from push notification")
+            })
+    }
+    
+    
+    /// Approves a comment
+    ///
+    /// - Parameters:
+    ///     - commentID: The comment identifier
+    ///     - siteID: The site identifier
+    ///
+    private func approveCommentWithCommentID(commentID: NSNumber, siteID: NSNumber) {
+        let context = ContextManager.sharedInstance().newDerivedContext()
+        let service = CommentService(managedObjectContext: context)
+        
+        service.approveCommentWithID(commentID, siteID: siteID, success: {
+                DDLogSwift.logInfo("Successfully moderated comment from push notification")
+            },
+            failure: { (error: NSError!) -> Void in
+                DDLogSwift.logInfo("Couldn't moderate comment from push notification")
+            })
+    }
+    
+    
+    /// Opens the details for a given notificationID
+    ///
+    /// - Parameters:
+    ///     - noteID: The Notification's Identifier
+    ///
+    private func showDetailsWithNoteID(noteId: NSNumber) {
+        WPTabBarController.sharedInstance().showNotificationsTabForNoteWithID(noteId.stringValue)
+    }
+
+
+    
+    /// Checks whether there is a default WordPress.com account available, or not
+    ///
+    private func defaultAccountAvailable() -> Bool {
+        let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        return service.defaultWordPressComAccount() != nil
+    }
+    
     
     
     
