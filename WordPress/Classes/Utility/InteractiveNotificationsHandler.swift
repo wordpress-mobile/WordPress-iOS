@@ -14,6 +14,13 @@ final public class InteractiveNotificationsHandler : NSObject
     static let sharedInstance = InteractiveNotificationsHandler()
     
     
+    /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
+    ///
+    var sharedApplication : UIApplication {
+        return UIApplication.sharedApplication()
+    }
+    
+    
     
     // MARK: - Public Methods
     
@@ -21,7 +28,6 @@ final public class InteractiveNotificationsHandler : NSObject
     /// Registers the device for User Notifications.
     ///
     public func registerForUserNotifications() {
-        let sharedApplication = UIApplication.sharedApplication()
         if sharedApplication.isRunningSimulator() || sharedApplication.isAlphaBuild() {
             return
         }
