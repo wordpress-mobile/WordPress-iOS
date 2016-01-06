@@ -115,13 +115,11 @@
     
     if(self.selectionType.selected) {
         
-        CGContextSaveGState(context);
-        CGContextMoveToPoint(context, 0, 0);
-        CGContextAddLineToPoint(context, rect.size.width, 0);
-        CGContextSetStrokeColorWithColor(context, [[UIColor colorWithWhite:0.97 alpha:1.0] CGColor]);
-        CGContextStrokePath(context);
+        if(!self.drawingShouldIgnoreTopBorder) {
+            CGContextMoveToPoint(context, 0, 0);
+            CGContextAddLineToPoint(context, rect.size.width, 0);
+        }
         
-        CGContextRestoreGState(context);
         CGContextMoveToPoint(context, 0, rect.size.height);
         CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     }else {
