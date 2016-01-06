@@ -188,21 +188,11 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
         NSMutableArray *constraints = [NSMutableArray new];
         
         CGFloat headerWidth = WPTableViewFixedWidth;
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:self.headerView
-                                                                  attribute:NSLayoutAttributeWidth
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:nil
-                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                 multiplier:1.0
-                                                                   constant:headerWidth]];
+        [constraints addObject:[self.headerView.widthAnchor constraintEqualToConstant:headerWidth]];
+         
         // Center the headerView inside the wrapper
-        [constraints addObject:[NSLayoutConstraint constraintWithItem:self.headerView
-                                                                  attribute:NSLayoutAttributeCenterX
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:headerWrapper
-                                                                  attribute:NSLayoutAttributeCenterX
-                                                                 multiplier:1.0
-                                                                   constant:0.0]];
+        [constraints addObject:[self.headerView.centerXAnchor constraintEqualToAnchor:headerWrapper.centerXAnchor]];
+         
         self.headerViewHorizontalConstraints = [constraints copy];
     }
 
