@@ -60,6 +60,7 @@
 @interface MenuItemTypeSelectionView () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *selectionTypes;
+@property (nonatomic, strong) MenuItemSelectionType *selectedType;
 
 @end
 
@@ -78,6 +79,7 @@
     
     MenuItemSelectionType *selection = [self addSelectionType:MenuItemTypePage];
     selection.selected = YES;
+    self.selectedType = selection;
     [self addSelectionType:MenuItemTypeLink];
     [self addSelectionType:MenuItemTypeCategory];
     [self addSelectionType:MenuItemTypeTag];
@@ -114,6 +116,7 @@
     MenuItemSelectionType *selection = [self.selectionTypes objectAtIndex:indexPath.row];
     MenuItemTypeCell *typeCell = (MenuItemTypeCell *)cell;
     typeCell.selectionType = selection;
+    typeCell.drawingShouldIgnoreTopBorder = indexPath.row == 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -129,6 +132,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MenuItemSelectionType *selection = [self.selectionTypes objectAtIndex:indexPath.row];
+    if(selection != self.selectedType) {
+        selection.selected = YES;
+        self.selectedType.selected = NO;
+        self.selectedType = selection;
+        [self.tableView reloadData];
+    }
+    
     [self.delegate typeSelectionView:self selectedType:selection.itemType];
 }
 
