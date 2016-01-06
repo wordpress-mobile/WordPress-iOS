@@ -380,7 +380,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
     [self customizeAppearance];
     
     // Push notifications
-    [NotificationsManager registerForPushNotifications];
+    [[PushNotificationsManager sharedInstance] registerForPushNotifications];
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -399,12 +399,12 @@ int ddLogLevel                                                  = DDLogLevelInfo
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [NotificationsManager registerDeviceToken:deviceToken];
+    [[PushNotificationsManager sharedInstance] registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    [NotificationsManager registrationDidFail:error];
+    [[PushNotificationsManager sharedInstance] registrationDidFail:error];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -727,6 +727,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
     self.connectionAvailable = [self.internetReachability isReachable];
 }
 
+
 #pragma mark - Simperium
 
 - (void)configureSimperiumWithLaunchOptions:(NSDictionary *)launchOptions
@@ -863,7 +864,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
     DDLogInfo(@"OS:        %@ %@", device.systemName, device.systemVersion);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
-    DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
+    DDLogInfo(@"APN token: %@", [[PushNotificationsManager sharedInstance] deviceToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
     
     if (blogs.count > 0) {
