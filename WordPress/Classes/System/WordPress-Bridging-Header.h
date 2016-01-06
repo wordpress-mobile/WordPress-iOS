@@ -1,4 +1,7 @@
+#import <Helpshift/Helpshift.h>
+#import <Mixpanel/Mixpanel.h>
 #import <SFHFKeychainUtils.h>
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
 
 #import "AccountService.h"
 #import "AppRatingUtility.h"
@@ -27,6 +30,7 @@
 #import "NSDate+StringFormatting.h"
 #import "NSObject+Helpers.h"
 #import "NSURL+Util.h"
+#import "UIApplication+Helpers.h"
 
 #import "PhotonImageURLHelper.h"
 #import "PostListFooterView.h"
@@ -56,7 +60,6 @@
 #import "ThemeService.h"
 
 #import "UIAlertControllerProxy.h"
-#import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "UIDevice+Helpers.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"
