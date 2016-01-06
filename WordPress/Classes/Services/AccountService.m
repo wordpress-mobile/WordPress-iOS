@@ -10,6 +10,7 @@
 
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
+#import "WordPress-Swift.h"
 
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
 static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcomAccountPasswordRemovedKey";
@@ -78,7 +79,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
-        [NotificationsManager registerForPushNotifications];
+        [[PushNotificationsManager sharedInstance] registerForPushNotifications];
     });
 }
 
@@ -91,8 +92,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (void)removeDefaultWordPressComAccount
 {
     NSAssert([NSThread isMainThread], @"This method should only be called from the main thread");
-    
-    [NotificationsManager unregisterDeviceToken];
+
+    [[PushNotificationsManager sharedInstance] unregisterDeviceToken];
 
     WPAccount *account = [self defaultWordPressComAccount];
     if (account) {
