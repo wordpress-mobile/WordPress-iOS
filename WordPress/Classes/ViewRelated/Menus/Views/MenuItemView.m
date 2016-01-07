@@ -36,7 +36,7 @@
         }
         {
             MenusActionButton *button = [[MenusActionButton alloc] init];
-            button.backgroundDrawColor = [UIColor whiteColor];
+            button.fillColor = [UIColor whiteColor];
             [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             [button setTitleColor:[WPStyleGuide darkGrey] forState:UIControlStateNormal];
             [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
