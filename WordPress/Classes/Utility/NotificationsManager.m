@@ -120,16 +120,6 @@ static NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
     }
 }
 
-+ (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions
-{
-    NSDictionary *remoteNotif = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-    if (remoteNotif) {
-        DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
-        [[WPTabBarController sharedInstance] showNotificationsTab];
-    }
-}
-
-
 
 #pragma mark - Mixpanel A/B Tests
 
