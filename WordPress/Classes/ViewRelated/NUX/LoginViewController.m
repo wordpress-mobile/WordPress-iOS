@@ -273,7 +273,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (IBAction)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    CGPoint location = [tapGestureRecognizer locationInView:self.onePasswordButton];
+    CGPoint location = [tapGestureRecognizer locationOfTouch:0 inView:self.onePasswordButton];
     if (CGRectContainsPoint(self.onePasswordButton.bounds, location)) {
         [self findLoginFromOnePassword:self];
     } else {
