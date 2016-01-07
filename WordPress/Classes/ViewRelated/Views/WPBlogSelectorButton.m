@@ -71,8 +71,12 @@
         UIImage *blankFillerImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         [self setImage:blankFillerImage forState:UIControlStateNormal];
+        
+        self.userInteractionEnabled = NO;
     } else {
         [self setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
+        
+        self.userInteractionEnabled = YES;
     }
 }
 
