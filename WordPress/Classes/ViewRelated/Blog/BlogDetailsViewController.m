@@ -58,6 +58,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
+@property (nonatomic, strong) NSArray *headerViewHorizontalConstraints;
 @property (nonatomic, strong) NSArray *tableSections;
 
 @end
@@ -158,48 +159,64 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     self.headerView.translatesAutoresizingMaskIntoConstraints = NO;
     [headerWrapper addSubview:self.headerView];
     
-    NSDictionary *views = NSDictionaryOfVariableBindings(_headerView, headerWrapper);
-    NSDictionary *metrics = @{@"horizontalMargin": @(BlogDetailHeaderViewHorizontalMarginiPhone),
-                              @"verticalMargin": @(BlogDetailHeaderViewVerticalMargin)};
-
-    if (IS_IPAD) {
-        // Set the header width
-        CGFloat headerWidth = WPTableViewFixedWidth;
-        [headerWrapper addConstraint:[NSLayoutConstraint constraintWithItem:self.headerView
-                                                                  attribute:NSLayoutAttributeWidth
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:nil
-                                                                  attribute:NSLayoutAttributeNotAnAttribute
-                                                                 multiplier:1.0
-                                                                   constant:headerWidth]];
-        // Center the headerView inside the wrapper
-        [headerWrapper addConstraint:[NSLayoutConstraint constraintWithItem:self.headerView
-                                                                  attribute:NSLayoutAttributeCenterX
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:headerWrapper
-                                                                  attribute:NSLayoutAttributeCenterX
-                                                                 multiplier:1.0
-                                                                   constant:0.0]];
-    } else {
-        // Pin the headerWrapper to its superview AND wrap the headerView in horizontal margins
-        [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(horizontalMargin)-[_headerView]-(horizontalMargin)-|"
-                                                                              options:0
-                                                                              metrics:metrics
-                                                                                views:views]];
-    }
-
-    // Constrain the headerWrapper and headerView vertically
+    NSDictionary *views = NSDictionaryOfVariableBindings(_headerView);
+    NSDictionary *metrics = @{@"verticalMargin": @(BlogDetailHeaderViewVerticalMargin)};
+    
+    // Constrain the headerView vertically
     [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(verticalMargin)-[_headerView]-(verticalMargin)-|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
 }
 
+- (void)updateHeaderViewConstraintsForTraitCollection:(UITraitCollection *)traitCollection
+{
+    UIView *headerWrapper = self.tableView.tableHeaderView;
+    
+    // We only remove the constraints we've added, not the view's autoresizing constraints
+    [headerWrapper removeConstraints:self.headerViewHorizontalConstraints];
+    
+    if (traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact || traitCollection.userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        NSDictionary *views = NSDictionaryOfVariableBindings(_headerView);
+        NSDictionary *metrics = @{@"horizontalMargin": @(BlogDetailHeaderViewHorizontalMarginiPhone)};
+        
+        self.headerViewHorizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-(horizontalMargin)-[_headerView]-(horizontalMargin)-|"
+                                                                                       options:0
+                                                                                       metrics:metrics
+                                                                                         views:views];
+    } else {
+        NSMutableArray *constraints = [NSMutableArray new];
+        
+        CGFloat headerWidth = WPTableViewFixedWidth;
+        [constraints addObject:[self.headerView.widthAnchor constraintEqualToConstant:headerWidth]];
+         
+        // Center the headerView inside the wrapper
+        [constraints addObject:[self.headerView.centerXAnchor constraintEqualToAnchor:headerWrapper.centerXAnchor]];
+         
+        self.headerViewHorizontalConstraints = [constraints copy];
+    }
+
+    [headerWrapper addConstraints:self.headerViewHorizontalConstraints];
+    [headerWrapper layoutIfNeeded];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     [self.headerView setBlog:self.blog];
+    [self updateHeaderViewConstraintsForTraitCollection:self.traitCollection];
+
     [self.tableView reloadData];
+}
+
+- (void)willTransitionToTraitCollection:(UITraitCollection *)newCollection withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super willTransitionToTraitCollection:newCollection withTransitionCoordinator:coordinator];
+    
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        [self updateHeaderViewConstraintsForTraitCollection:newCollection];
+    } completion:nil];
 }
 
 - (void)setBlog:(Blog *)blog
