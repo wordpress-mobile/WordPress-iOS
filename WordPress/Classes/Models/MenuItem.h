@@ -1,5 +1,16 @@
 #import <CoreData/CoreData.h>
 
+typedef NS_ENUM(NSUInteger) {
+    MenuItemTypeUnknown = 0,
+    MenuItemTypePage,
+    MenuItemTypeLink,
+    MenuItemTypeCategory,
+    MenuItemTypeTag,
+    MenuItemTypePost,
+    MenuItemTypeCustom
+    
+}MenuItemType;
+
 @class Menu;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -22,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSString *)entityName;
 - (BOOL)isDescendantOfItem:(MenuItem *)item;
+- (MenuItemType)itemType;
 
 @end
 

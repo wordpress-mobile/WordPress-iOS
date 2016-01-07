@@ -36,4 +36,9 @@
     return otherItemIsDescendant;
 }
 
+- (MenuItemType)itemType
+{
+    return MenuItemTypePage;
+}
+
 @end
