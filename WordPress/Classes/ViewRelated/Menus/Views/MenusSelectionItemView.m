@@ -107,8 +107,6 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [super drawRect:rect];
-    
     CGContextRef context = UIGraphicsGetCurrentContext();
     if(self.drawsHighlighted) {
         
