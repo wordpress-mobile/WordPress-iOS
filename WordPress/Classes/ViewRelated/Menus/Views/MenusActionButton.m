@@ -50,6 +50,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     // tintColor used for the fill color when drawing the UIImage with the template rendering mode
     self.tintColor = defaultContentColor;
+    self.fillColor = [UIColor whiteColor];
     
     self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
     [self setTitleColor:defaultContentColor forState:UIControlStateNormal];
@@ -73,14 +74,23 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
 {
     [super drawRect:rect];
     
-    UIColor *fillColor = self.backgroundDrawColor;
+    UIColor *fillColor = self.fillColor;
     
     const BOOL drawHighlighted = self.showsDesignHighlighted;
     const BOOL drawsDisabledHighlight = !self.enabled; // will overlay a transparent white layer to appear disabled
     
     UIBezierPath *basePath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:MenusDesignDefaultCornerRadius];
+    if(self.baseColor) {
+        if(drawHighlighted) {
+            [[self adjustedColorWithColor:self.baseColor delta:-0.25] set];
+        }else {
+            [self.baseColor set];
+        }
+    }else {
+        [[self adjustedColorWithColor:fillColor delta:drawHighlighted ? -0.25 : -0.16] set];
+    }
+    
     // draw the base layer based on a darker color of the draw color
-    [[self adjustedBaseColorWithColor:fillColor delta:drawHighlighted ? -0.25 : -0.16] set];
     [basePath fill];
     
     if(drawsDisabledHighlight) {
@@ -173,7 +183,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     return [UIColor colorWithRed:0.133 green:0.204 blue:0.259 alpha:1.000];
 }
 
-- (UIColor *)adjustedBaseColorWithColor:(UIColor *)color delta:(CGFloat)delta
+- (UIColor *)adjustedColorWithColor:(UIColor *)color delta:(CGFloat)delta
 {
     CGFloat r, g, b, a;
     [color getRed:&r green:&g blue:&b alpha:&a];

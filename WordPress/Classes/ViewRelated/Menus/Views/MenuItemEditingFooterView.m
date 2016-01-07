@@ -18,18 +18,17 @@
 
     {
         MenusActionButton *button = self.cancelButton;
-        [button setBackgroundDrawColor:[UIColor whiteColor]];
         [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
         [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     }
     {
         MenusActionButton *button = self.trashButton;
-        [button setBackgroundDrawColor:[UIColor whiteColor]];
+        button.tintColor = [WPStyleGuide errorRed];
         [button setImage:[button templatedIconImageNamed:@"icon-menus-trash"] forState:UIControlStateNormal];
     }
     {
         MenusActionButton *button = self.saveButton;
-        [button setBackgroundDrawColor:[WPStyleGuide mediumBlue]];
+        button.fillColor = [WPStyleGuide mediumBlue];
         [button setTitle:NSLocalizedString(@"OK", @"") forState:UIControlStateNormal];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }

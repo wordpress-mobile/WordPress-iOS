@@ -46,10 +46,10 @@
     self.textFieldDesignView.layer.cornerRadius = MenusDesignDefaultCornerRadius;
     self.textFieldDesignView.backgroundColor = [UIColor clearColor];
     
-    self.trashButton.backgroundDrawColor = [UIColor whiteColor];
+    self.trashButton.fillColor = [UIColor whiteColor];
     [self.trashButton setImage:[self.trashButton templatedIconImageNamed:@"icon-menus-trash"] forState:UIControlStateNormal];
     
-    self.saveButton.backgroundDrawColor = [WPStyleGuide mediumBlue];
+    self.saveButton.fillColor = [WPStyleGuide mediumBlue];
     [self.saveButton setTitle:NSLocalizedString(@"Save", @"Menus save button title") forState:UIControlStateNormal];
     [self.saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
