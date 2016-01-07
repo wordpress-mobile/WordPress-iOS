@@ -16,7 +16,7 @@
     // We'll override the check just for evil unit testing purposes.
     
     id mockApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-    [[mockApplication expect] registerForUserNotifications];
+    [[mockApplication expect] registerUserNotificationSettings:[OCMArg isNotNil]];
     
     [[[mockApplication stub] andReturnValue:OCMOCK_VALUE(false)] isRunningSimulator];
     
