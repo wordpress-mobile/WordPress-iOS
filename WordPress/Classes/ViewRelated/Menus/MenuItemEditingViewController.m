@@ -9,16 +9,15 @@
 static CGFloat const MenuItemEditingFooterViewDefaultHeight = 60.0;
 static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
-@interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
+@interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *footerViewHeightConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *itemTypeSelectionViewWidthConstraint;
 
 @property (nonatomic, strong) IBOutlet MenuItemEditingHeaderView *headerView;
 @property (nonatomic, strong) IBOutlet MenuItemEditingFooterView *footerView;
-@property (nonatomic, strong) IBOutlet MenuItemTypeSelectionView *typeSelectionView;
+@property (nonatomic, strong) IBOutlet MenuItemTypeSelectionView *typeView;
 @property (nonatomic, strong) IBOutlet MenuItemSourceView *sourceView;
 @property (nonatomic, weak) IBOutlet UIScrollView *sourceScrollView;
 
@@ -55,7 +54,6 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     self.sourceScrollView.clipsToBounds = NO;
     
     self.headerView.item = self.item;
-    self.typeSelectionView.delegate = self;
     self.sourceView.item = self.item;
     self.sourceView.delegate = self;
     self.footerView.item = self.item;
@@ -63,6 +61,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     
     [self.stackView bringSubviewToFront:self.headerView];
     [self updateSourceAndEditingViewsAvailability:NO];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(updateForHidingTypeSelection)];
+    [self.typeView addGestureRecognizer:tap];
 }
 
 - (void)viewDidLayoutSubviews
@@ -162,9 +163,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     
     [self.sourceView setHeaderViewsHidden:NO];
     
-    if(!self.typeSelectionView.hidden) {
-        self.typeSelectionView.hidden = YES;
-        self.typeSelectionView.alpha = 0.0;
+    if(!self.typeView.hidden) {
+        self.typeView.hidden = YES;
+        self.typeView.alpha = 0.0;
     }
     
     if(IS_IPHONE) {
@@ -181,9 +182,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
             self.headerView.alpha = 0.0;
         }
         
-        if(!self.typeSelectionView.hidden) {
-            self.typeSelectionView.hidden = YES;
-            self.typeSelectionView.alpha = 0.0;
+        if(!self.typeView.hidden) {
+            self.typeView.hidden = YES;
+            self.typeView.alpha = 0.0;
         }
         
     }else {
@@ -194,14 +195,14 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
             [self.headerView setNeedsDisplay];
         }
         
-        if(self.typeSelectionView.hidden) {
-            self.typeSelectionView.hidden = NO;
-            self.typeSelectionView.alpha = 1.0;
+        if(self.typeView.hidden) {
+            self.typeView.hidden = NO;
+            self.typeView.alpha = 1.0;
         }
         
         if(self.sourceView.hidden) {
             self.sourceView.hidden = NO;
-            self.sourceView.alpha = 0.0;
+            self.sourceView.alpha = 1.0;
         }
     }
     
@@ -228,9 +229,9 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 - (void)updateForShowingTypeSelectionCompact
 {
-    if(self.typeSelectionView.hidden) {
-        self.typeSelectionView.hidden = NO;
-        self.typeSelectionView.alpha = 1.0;
+    if(self.typeView.hidden) {
+        self.typeView.hidden = NO;
+        self.typeView.alpha = 1.0;
     }
     
     if(!self.sourceView.hidden) {
@@ -241,11 +242,11 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 - (void)updateForHidingTypeSelection
 {
-    if(!self.typeSelectionView.hidden) {
+    if(!self.typeView.hidden) {
         if([self shouldDisplayForCompactWidth]) {
             [self.sourceView setHeaderViewsHidden:NO];
-            self.typeSelectionView.hidden = YES;
-            self.typeSelectionView.alpha = 0.0;
+            self.typeView.hidden = YES;
+            self.typeView.alpha = 0.0;
         }
     }
     
@@ -281,13 +282,6 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 - (void)editingFooterViewDidSelectCancel:(MenuItemEditingFooterView *)footerView
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - MenuItemTypeSelectionViewDelegate
-
-- (void)typeSelectionView:(MenuItemTypeSelectionView *)selectionView selectedType:(MenuItemType)type
-{
-    [self updateForHidingTypeSelection];
 }
 
 #pragma mark - notifications
