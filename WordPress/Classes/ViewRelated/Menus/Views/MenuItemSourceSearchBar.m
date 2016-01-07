@@ -87,9 +87,7 @@
 }
 
 - (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
+{    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
     CGContextSetLineWidth(context, 1.0);

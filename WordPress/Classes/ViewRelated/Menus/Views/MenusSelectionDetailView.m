@@ -13,9 +13,7 @@
 @implementation MenusSelectionIconView
 
 - (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
+{    
     CGRect imageRect = CGRectZero;
     UIColor *drawColor = self.drawColor;
     UIImage *image = self.image;

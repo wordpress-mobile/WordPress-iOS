@@ -11,7 +11,6 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [super drawRect:rect];
     [self.drawDelegate drawingViewDrawRect:rect];
 }
 
@@ -285,9 +284,7 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 }
 
 - (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
+{    
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     CGRect dashRect = CGRectInset(self.contentView.frame, 8.0, 8.0);
