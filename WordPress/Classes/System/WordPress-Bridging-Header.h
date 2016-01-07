@@ -86,5 +86,7 @@
 #import "WPUserAgent.h"
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"
+#import "WPSearchController.h"
+#import "WPSearchControllerConfigurator.h"
 
 #import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
