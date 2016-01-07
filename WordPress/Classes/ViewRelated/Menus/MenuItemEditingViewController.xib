@@ -9,12 +9,11 @@
                 <outlet property="footerView" destination="TSX-DY-vhd" id="TyK-Fp-Txp"/>
                 <outlet property="footerViewHeightConstraint" destination="E2v-oz-4Rk" id="dpp-uK-5uM"/>
                 <outlet property="headerView" destination="5rT-g7-Unk" id="LnY-fU-93W"/>
-                <outlet property="itemTypeSelectionViewWidthConstraint" destination="z8c-Ul-Z8h" id="emL-db-CLy"/>
                 <outlet property="sourceScrollView" destination="f53-Fv-SVL" id="Cdd-YB-kXd"/>
                 <outlet property="sourceView" destination="wkF-V5-jxr" id="nhN-c2-uWo"/>
                 <outlet property="stackView" destination="2sf-be-1pU" id="Ryz-Xc-WMb"/>
                 <outlet property="stackViewBottomConstraint" destination="dyQ-eH-Hs7" id="v76-G9-bJH"/>
-                <outlet property="typeSelectionView" destination="3ST-Kk-VgV" id="dKw-mL-BE2"/>
+                <outlet property="typeView" destination="3ST-Kk-VgV" id="Upw-of-okU"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -30,37 +29,18 @@
                             <rect key="frame" x="0.0" y="0.0" width="600" height="75"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="height" priority="750" constant="75" id="1YA-Ho-zu8"/>
+                                <constraint firstAttribute="height" priority="999" constant="75" id="1YA-Ho-zu8"/>
                             </constraints>
                         </view>
-                        <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="240" verticalCompressionResistancePriority="740" translatesAutoresizingMaskIntoConstraints="NO" id="8VR-qv-fUP">
+                        <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="240" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="8VR-qv-fUP">
                             <rect key="frame" x="0.0" y="75" width="600" height="465"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ST-Kk-VgV" customClass="MenuItemTypeSelectionView">
                                     <rect key="frame" x="0.0" y="0.0" width="160" height="465"/>
-                                    <subviews>
-                                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nHl-0N-0WO" customClass="MenuItemTypeSelectionTableView">
-                                            <rect key="frame" x="0.0" y="0.0" width="160" height="465"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <connections>
-                                                <outlet property="dataSource" destination="3ST-Kk-VgV" id="Af0-ev-mHw"/>
-                                                <outlet property="delegate" destination="3ST-Kk-VgV" id="jhT-6N-XRZ"/>
-                                            </connections>
-                                        </tableView>
-                                    </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
-                                        <constraint firstItem="nHl-0N-0WO" firstAttribute="height" secondItem="3ST-Kk-VgV" secondAttribute="height" id="1UM-fP-536"/>
-                                        <constraint firstItem="nHl-0N-0WO" firstAttribute="top" secondItem="3ST-Kk-VgV" secondAttribute="top" id="Hd0-PV-S4R"/>
-                                        <constraint firstItem="nHl-0N-0WO" firstAttribute="leading" secondItem="3ST-Kk-VgV" secondAttribute="leading" id="LDc-IX-QSD"/>
-                                        <constraint firstAttribute="trailing" secondItem="nHl-0N-0WO" secondAttribute="trailing" id="Svf-Kr-YOc"/>
-                                        <constraint firstAttribute="bottom" secondItem="nHl-0N-0WO" secondAttribute="bottom" id="TQ9-6v-ZWW"/>
-                                        <constraint firstItem="nHl-0N-0WO" firstAttribute="width" secondItem="3ST-Kk-VgV" secondAttribute="width" id="Y2a-Xp-piy"/>
                                         <constraint firstAttribute="width" priority="750" constant="160" id="z8c-Ul-Z8h"/>
                                     </constraints>
-                                    <connections>
-                                        <outlet property="tableView" destination="nHl-0N-0WO" id="prg-pY-VRh"/>
-                                    </connections>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wkF-V5-jxr" customClass="MenuItemSourceView">
                                     <rect key="frame" x="160" y="0.0" width="440" height="465"/>

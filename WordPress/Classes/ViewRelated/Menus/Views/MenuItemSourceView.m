@@ -109,9 +109,7 @@
 {
     if(self.headerView.hidden != hidden) {
         self.headerView.hidden = hidden;
-    }
-    if(self.spacerView.hidden != hidden) {
-        self.spacerView.hidden = hidden;
+        self.headerView.alpha = hidden ? 0.0 : 1.0;
     }
 }
 
