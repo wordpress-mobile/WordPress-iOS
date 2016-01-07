@@ -273,8 +273,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (IBAction)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    [self.view endEditing:YES];
-    [self hideMultifactorTextfieldIfNeeded];
+    CGPoint location = [tapGestureRecognizer locationInView:self.onePasswordButton];
+    if (CGRectContainsPoint(self.onePasswordButton.bounds, location)) {
+        [self findLoginFromOnePassword:self];
+    } else {
+        [self.view endEditing:YES];
+        [self hideMultifactorTextfieldIfNeeded];
+    }
 }
 
 - (IBAction)signInButtonAction:(id)sender
