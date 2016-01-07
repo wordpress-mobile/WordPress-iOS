@@ -916,6 +916,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     self.multifactorText.enabled = enabled;
 }
 
+- (void)setMultifactorTextValue:(NSString *)multifactorText
+{
+    self.multifactorText.text = multifactorText;
+}
+
 - (void)setCancelButtonHidden:(BOOL)hidden
 {
     self.cancelButton.hidden = hidden;

@@ -633,13 +633,14 @@ describe(@"onePasswordButtonActionForViewController", ^{
     __block NSError *error;
     __block NSString *username;
     __block NSString *password;
+    __block NSString *oneTimePassword;
     
     void (^forceOnePasswordExtensionCallbackToExecute)() = ^{
         [OCMStub([mockOnePasswordFacade findLoginForURLString:OCMOCK_ANY viewController:OCMOCK_ANY sender:OCMOCK_ANY completion:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
-            void (^ __unsafe_unretained callback)(NSString *, NSString *, NSError *);
+            void (^ __unsafe_unretained callback)(NSString *, NSString *, NSString *, NSError *);
             [invocation getArgument:&callback atIndex:5];
             
-            callback(username, password, error);
+            callback(username, password, oneTimePassword, error);
         }];
     };
     
@@ -655,11 +656,13 @@ describe(@"onePasswordButtonActionForViewController", ^{
             beforeEach(^{
                 username = nil;
                 password = nil;
+                oneTimePassword = nil;
             });
             
-            it(@"shouldn't attempt to set the username/password", ^{
+            it(@"shouldn't attempt to set the username/password/multifactor code", ^{
                 [[mockViewModelPresenter reject] setUsernameTextValue:OCMOCK_ANY];
                 [[mockViewModelPresenter reject] setPasswordTextValue:OCMOCK_ANY];
+                [[mockViewModelPresenter reject] setMultifactorTextValue:OCMOCK_ANY];
                 
                 [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
                 
@@ -682,16 +685,17 @@ describe(@"onePasswordButtonActionForViewController", ^{
                 error = [NSError errorWithDomain:@"com.wordpress" code:-1 userInfo:@{}];
             });
             
-            it(@"shoudln't attempt to set username/password", ^{
+            it(@"shoudln't attempt to set username/password/multifactor code", ^{
                 [[mockViewModelPresenter reject] setUsernameTextValue:OCMOCK_ANY];
                 [[mockViewModelPresenter reject] setPasswordTextValue:OCMOCK_ANY];
-                
+                [[mockViewModelPresenter reject] setMultifactorTextValue:OCMOCK_ANY];
+
                 [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
                 
                 [mockViewModelPresenter verify];
             });
             
-            it(@"shoudln't attempt to sign in", ^{
+            it(@"shouldn't attempt to sign in", ^{
                 [OCMStub([viewModel signInButtonAction]) andDo:^(NSInvocation *invocation) {
                     XCTFail(@"Shouldn't get here");
                 }];
@@ -701,19 +705,53 @@ describe(@"onePasswordButtonActionForViewController", ^{
         });
     });
     
-    NSString *sharedExamplesForValidData = @"the extension returned valid data";
+    NSString *sharedExamplesForValidData = @"the extension returned a valid username and password";
     sharedExamplesFor(sharedExamplesForValidData, ^(NSDictionary *data) {
         
         beforeEach(^{
             forceOnePasswordExtensionCallbackToExecute();
             viewModel.username = username =  @"username";
             viewModel.password = password = @"password";
+            viewModel.multifactorCode = oneTimePassword = nil;
             error = nil;
         });
         
         it(@"should set the username/password", ^{
             [[mockViewModelPresenter expect] setUsernameTextValue:viewModel.username];
             [[mockViewModelPresenter expect] setPasswordTextValue:viewModel.password];
+            
+            [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
+            
+            [mockViewModelPresenter verify];
+        });
+        
+        it(@"should attempt to sign in", ^{
+            __block BOOL signInAttempted = NO;
+            [OCMStub([viewModel signInButtonAction]) andDo:^(NSInvocation *invocation) {
+                signInAttempted = YES;
+            }];
+            
+            [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
+            
+            expect(signInAttempted).to.beTruthy();
+        });
+    });
+    
+    NSString *sharedExamplesForValidDataWithMultifactor = @"the extension returned a valid username, password, and multifactor code";
+    sharedExamplesFor(sharedExamplesForValidDataWithMultifactor, ^(NSDictionary *data) {
+        
+        beforeEach(^{
+            forceOnePasswordExtensionCallbackToExecute();
+            viewModel.username = username =  @"username";
+            viewModel.password = password = @"password";
+            viewModel.multifactorCode = oneTimePassword = @"123456";
+            error = nil;
+        });
+        
+        it(@"should set the username/password and multifactor code", ^{
+            [[mockViewModelPresenter expect] setUsernameTextValue:viewModel.username];
+            [[mockViewModelPresenter expect] setPasswordTextValue:viewModel.password];
+            [[mockViewModelPresenter expect] setMultifactorTextValue:viewModel.multifactorCode];
             
             [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
             
@@ -782,6 +820,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
         
         itShouldBehaveLike(sharedExamplesForABlankResponseOrAnError, nil);
         itShouldBehaveLike(sharedExamplesForValidData, nil);
+        itShouldBehaveLike(sharedExamplesForValidDataWithMultifactor, nil);
         itShouldBehaveLike(sharedExamplesForBugWhereKeyboardWasntDismissedBeforeOpeningExtension, nil);
     });
     
@@ -801,6 +840,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
         
         itShouldBehaveLike(sharedExamplesForABlankResponseOrAnError, nil);
         itShouldBehaveLike(sharedExamplesForValidData, nil);
+        itShouldBehaveLike(sharedExamplesForValidDataWithMultifactor, nil);
         itShouldBehaveLike(sharedExamplesForBugWhereKeyboardWasntDismissedBeforeOpeningExtension, nil);
     });
 });

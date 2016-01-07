@@ -120,8 +120,17 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         
         self.username = username;
         self.password = password;
+        self.multifactorCode = oneTimePassword;
+        
         [self.presenter setUsernameTextValue:username];
         [self.presenter setPasswordTextValue:password];
+        [self.presenter setMultifactorTextValue:oneTimePassword];
+        
+        if (oneTimePassword) {
+            self.isMultifactorEnabled = YES;
+            
+            [self displayMultifactorTextField];
+        }
         
         [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
         [self signInButtonAction];
