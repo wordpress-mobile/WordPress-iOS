@@ -166,9 +166,7 @@
 }
 
 - (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
+{    
     const CGRect iconRect = [self convertRect:self.iconView.frame fromView:self.iconView.superview];
     
     CGContextRef context = UIGraphicsGetCurrentContext();

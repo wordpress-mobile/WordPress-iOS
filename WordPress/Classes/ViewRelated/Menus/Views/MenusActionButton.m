@@ -71,9 +71,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
 }
 
 - (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
+{    
     UIColor *fillColor = self.fillColor;
     
     const BOOL drawHighlighted = self.showsDesignHighlighted;

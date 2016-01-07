@@ -96,9 +96,7 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
 }
 
 - (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
+{    
     CGContextRef context = UIGraphicsGetCurrentContext();
     
     CGContextSetLineWidth(context, MenusHeaderViewDesignStrokeWidth);

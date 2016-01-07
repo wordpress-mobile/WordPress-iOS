@@ -236,9 +236,7 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
 }
 
 - (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    
+{    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 1.0);
     if(self.drawsSelected) {
