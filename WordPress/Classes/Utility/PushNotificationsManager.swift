@@ -1,5 +1,6 @@
 import Foundation
 import Mixpanel
+import WordPressComAnalytics
 
 
 
@@ -50,7 +51,7 @@ final public class PushNotificationsManager : NSObject
     
     
     
-    // MARK: - Public Methods
+    // MARK: - Public Methods: Registration
     
     
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
@@ -156,7 +157,44 @@ final public class PushNotificationsManager : NSObject
     
     
     
-
+    
+    // MARK: - Public Methods: Registration
+    
+    public func handleNotification(userInfo: NSDictionary, state: UIApplicationState, completionHandler: UIBackgroundFetchResult) {
+        DDLogSwift.logVerbose("Received push notification:\nPayload: \(userInfo)\nCurrent Application state: \(state)");
+        
+        // Badge Update
+        if let badgeCount = userInfo.numberForKeyPath("aps.badge") {
+            UIApplication.sharedApplication().applicationIconBadgeNumber = badgeCount.integerValue
+        }
+        
+        // Badge Reset
+        if userInfo.stringForKey("type") == "badge-reset" {
+            return
+        }
+        
+        // Helpshift
+        if userInfo.stringForKey("origin") == "helpshift" {
+            WPAnalytics.track(.SupportReceivedResponseFromSupport)
+            let rootViewController = UIApplication.sharedApplication().keyWindow?.rootViewController
+            Helpshift.sharedInstance()?.handleRemoteNotification(userInfo as [NSObject : AnyObject], withController: rootViewController)
+            return;
+        }
+        
+        
+        // WordPress.com Push Authentication Notification
+        // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
+        // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
+        // notifications when in BG mode.
+        //
+        let authenticationManager = PushAuthenticationManager()
+        if authenticationManager.isPushAuthenticationNotification(userInfo) && state == .Background {
+           authenticationManager.handlePushAuthenticationNotification(userInfo)
+        }
+    }
+    
+    
+    
     // MARK: - Private Methods
     
     
