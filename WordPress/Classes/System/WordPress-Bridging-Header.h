@@ -33,6 +33,8 @@
 #import "NSURL+Util.h"
 #import "UIApplication+Helpers.h"
 
+#import "NSDictionary+SafeExpectations.h"
+
 #import "PhotonImageURLHelper.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
@@ -76,12 +78,9 @@
 #import "WPBlogTableViewCell.h"
 #import "WPContentViewProvider.h"
 #import "WPGUIConstants.h"
-#import <WordPressShared/WPFontManager.h>
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPRichTextView.h"
-#import <WordPressShared/WPStyleGuide.h>
-#import <WordPressShared/WPTableViewCell.h>
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPTableViewHandler.h"
 #import "WPUserAgent.h"
@@ -90,4 +89,9 @@
 #import "WPSearchController.h"
 #import "WPSearchControllerConfigurator.h"
 
+#import <WordPressComAnalytics/WPAnalytics.h>
+
+#import <WordPressShared/WPFontManager.h>
+#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/WPTableViewCell.h>
 #import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
