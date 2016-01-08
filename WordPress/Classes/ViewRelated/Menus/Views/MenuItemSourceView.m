@@ -72,6 +72,7 @@
     {
         MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
         headerView.delegate = self;
+        headerView.itemType = MenuItemTypePage;
         [self.stackView addArrangedSubview:headerView];
         
         [headerView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
@@ -114,6 +115,14 @@
     if(self.headerView.hidden != hidden) {
         self.headerView.hidden = hidden;
         self.headerView.alpha = hidden ? 0.0 : 1.0;
+    }
+}
+
+- (void)setSelectedItemType:(MenuItemType)selectedItemType
+{
+    if(_selectedItemType != selectedItemType) {
+        _selectedItemType = selectedItemType;
+        self.headerView.itemType = selectedItemType;
     }
 }
 
