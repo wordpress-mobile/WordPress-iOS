@@ -27,11 +27,7 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSString *const NotificationsDeviceToken                     = @"apnsDeviceToken";
-
-static NSString *const NotificationActionCommentReply               = @"COMMENT_REPLY";
-static NSString *const NotificationActionCommentLike                = @"COMMENT_LIKE";
-static NSString *const NotificationActionCommentApprove             = @"COMMENT_MODERATE_APPROVE";
+static NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 
 #pragma mark ====================================================================================
@@ -133,51 +129,6 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     }
 }
 
-+ (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification
-{
-    // Ensure we have a WP.com account
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    
-    if (![[defaultAccount restApi] hasCredentials]) {
-        return;
-    }
-    
-    // Comment actions
-    if ([identifier isEqualToString:NotificationActionCommentLike] || [identifier isEqualToString:NotificationActionCommentApprove]) {
-        // Get the site and comment id
-        NSNumber *siteID = remoteNotification[@"blog_id"];
-        NSNumber *commentID = remoteNotification[@"comment_id"];
-        
-        if (siteID && commentID) {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-            CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-
-            if ([identifier isEqualToString:NotificationActionCommentLike]) {
-                [commentService likeCommentWithID:commentID siteID:siteID
-                                          success:^{
-                                              DDLogInfo(@"Liked comment from push notification");
-                                          }
-                                          failure:^(NSError *error) {
-                                              DDLogInfo(@"Couldn't like comment from push notification");
-                                          }];
-            } else {
-                [commentService approveCommentWithID:commentID siteID:siteID
-                                             success:^{
-                                                 DDLogInfo(@"Successfully moderated comment from push notification");
-                                             }
-                                             failure:^(NSError *error) {
-                                                 DDLogInfo(@"Couldn't moderate comment from push notification");
-                                             }];
-            }
-        }
-    } else if ([identifier isEqualToString:NotificationActionCommentReply]) {
-        // Load notifications detail view
-        NSString *notificationID = [[remoteNotification numberForKey:@"note_id"] stringValue];
-        [[WPTabBarController sharedInstance] showNotificationsTabForNoteWithID:notificationID];
-    }
-}
 
 
 #pragma mark - Mixpanel A/B Tests

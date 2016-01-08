@@ -8,6 +8,7 @@
 
 #import "Blog.h"
 #import "BlogService.h"
+#import "CommentService.h"
 
 #import "Constants.h"
 #import "ContextManager.h"

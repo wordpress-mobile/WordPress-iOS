@@ -60,7 +60,7 @@
     XCTAssertTrue([mockManager notificationsEnabledInDeviceSettings]);
 }
 
-- (void)testRegisterForPushNotificationsCallsSharedApplicationRegisterForRemoteAndUserNotifications
+- (void)testRegisterForPushNotificationsCallsSharedApplicationRegisterForRemoteNotifications
 {
     // Note:
     // PushNotifications registration methods don't crash the sim, anymore, as per iOS 9.
@@ -68,14 +68,13 @@
     
     id mockApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
     [[mockApplication expect] registerForRemoteNotifications];
-    [[mockApplication expect] registerUserNotificationSettings:[OCMArg isNotNil]];
     
     [[[mockApplication stub] andReturnValue:OCMOCK_VALUE(false)] isRunningSimulator];
     
     id mockManager = [OCMockObject partialMockForObject:[PushNotificationsManager sharedInstance]];
     [[[mockManager stub] andReturn:mockApplication] sharedApplication];
     
-    [mockManager registerForPushNotifications];
+    [mockManager registerForRemoteNotifications];
     [mockApplication verify];
 }
 
