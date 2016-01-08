@@ -200,11 +200,12 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 - (void)setPasswordTextValue:(NSString *)password;
 - (void)setPasswordSecureEntry:(BOOL)secureTextEntry;
 
-- (void)setSiteAlpha:(CGFloat)alpha;
 - (void)setMultiFactorAlpha:(CGFloat)alpha;
-
-- (void)setSiteUrlEnabled:(BOOL)enabled;
 - (void)setMultifactorEnabled:(BOOL)enabled;
+- (void)setMultifactorTextValue:(NSString *)multifactorText;
+
+- (void)setSiteAlpha:(CGFloat)alpha;
+- (void)setSiteUrlEnabled:(BOOL)enabled;
 - (void)setCancelButtonHidden:(BOOL)hidden;
 - (void)setForgotPasswordHidden:(BOOL)hidden;
 - (void)setSendVerificationCodeButtonHidden:(BOOL)hidden;
