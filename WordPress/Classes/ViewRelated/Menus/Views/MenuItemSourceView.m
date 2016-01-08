@@ -66,13 +66,16 @@
         UIStackView *stackView = self.stackView;
         stackView.translatesAutoresizingMaskIntoConstraints = NO;
         stackView.distribution = UIStackViewDistributionFill;
-        stackView.alignment = UIStackViewAlignmentFill;
+        stackView.alignment = UIStackViewAlignmentTop;
         stackView.spacing = 0;
     }
     {
         MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
         headerView.delegate = self;
         [self.stackView addArrangedSubview:headerView];
+        
+        [headerView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
+        
         self.headerView = headerView;
     }
     {
@@ -82,6 +85,9 @@
         heightConstraint.active = YES;
         
         [self.stackView addArrangedSubview:spacer];
+        
+        [spacer.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
+        
         self.spacerView = spacer;
     }
     {
@@ -89,6 +95,8 @@
         searchBar.translatesAutoresizingMaskIntoConstraints = NO;
         searchBar.delegate = self;
         [self.stackView addArrangedSubview:searchBar];
+        
+        [searchBar.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
         
         NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:MenusDesignGeneralCellHeight];
         heightConstraint.priority = UILayoutPriorityDefaultHigh;

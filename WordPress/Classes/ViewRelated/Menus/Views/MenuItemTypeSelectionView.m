@@ -1,11 +1,12 @@
 #import "MenuItemTypeSelectionView.h"
 #import "MenuItemTypeView.h"
 
-@interface MenuItemTypeSelectionView ()
+@interface MenuItemTypeSelectionView () <MenuItemTypeViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) NSMutableArray *typeViews;
+@property (nonatomic, strong) MenuItemTypeView *selectedTypeView;
 
 @end
 
@@ -40,7 +41,7 @@
         UIStackView *stackView = [[UIStackView alloc] init];
         stackView.translatesAutoresizingMaskIntoConstraints = NO;
         stackView.alignment = UIStackViewAlignmentTop;
-        stackView.distribution = UIStackViewDistributionFillProportionally;
+        stackView.distribution = UIStackViewDistributionFill;
         stackView.axis = UILayoutConstraintAxisVertical;
         [self.scrollView addSubview:stackView];
         
@@ -54,7 +55,9 @@
     }
     
     MenuItemTypeView *typeView = [self addTypeView:MenuItemTypePage];
-    typeView.selected = YES;
+    typeView.drawsSelected = YES;
+    typeView.designIgnoresDrawingTopBorder = YES;
+    self.selectedTypeView = typeView;
     [self addTypeView:MenuItemTypeLink];
     [self addTypeView:MenuItemTypeCategory];
     [self addTypeView:MenuItemTypeTag];
@@ -65,6 +68,7 @@
     
     MenuItemTypeView *typeView = [[MenuItemTypeView alloc] init];
     typeView.itemType = itemType;
+    typeView.delegate = self;
     [self.stackView addArrangedSubview:typeView];
     
     [typeView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
@@ -83,6 +87,29 @@
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     CGContextStrokePath(context);
     CGContextRestoreGState(context);
+}
+
+#pragma mark - delegate
+
+- (void)tellDelegateTypeChanged:(MenuItemType)itemType
+{
+    [self.delegate itemTypeSelectionViewChanged:self type:itemType];
+}
+
+#pragma mark - MenuItemTypeViewDelegate
+
+- (void)typeViewPressedForSelection:(MenuItemTypeView *)typeView
+{
+    self.selectedTypeView.drawsSelected = NO;
+    self.selectedTypeView = typeView;
+    typeView.drawsSelected = YES;
+    
+    [self tellDelegateTypeChanged:typeView.itemType];
+}
+
+- (BOOL)typeViewRequiresCompactLayout:(MenuItemTypeView *)typeView
+{
+    return [self.delegate itemTypeSelectionViewRequiresCompactLayout:self];
 }
 
 @end
