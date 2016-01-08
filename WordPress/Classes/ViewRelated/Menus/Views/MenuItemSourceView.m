@@ -65,17 +65,13 @@
     {
         UIStackView *stackView = self.stackView;
         stackView.translatesAutoresizingMaskIntoConstraints = NO;
-        stackView.distribution = UIStackViewDistributionEqualSpacing;
+        stackView.distribution = UIStackViewDistributionFill;
         stackView.alignment = UIStackViewAlignmentFill;
         stackView.spacing = 0;
     }
     {
         MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
         headerView.delegate = self;
-        NSLayoutConstraint *heightConstraint = [headerView.heightAnchor constraintEqualToConstant:MenusDesignGeneralCellHeight];
-        heightConstraint.priority = UILayoutPriorityDefaultHigh;
-        heightConstraint.active = YES;
-        
         [self.stackView addArrangedSubview:headerView];
         self.headerView = headerView;
     }
