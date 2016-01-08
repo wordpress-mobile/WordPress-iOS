@@ -5,6 +5,7 @@
 
 @interface MenuItemSourceHeaderView ()
 
+@property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *label;
 
@@ -19,44 +20,67 @@
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
-        const CGFloat spacing = MenusDesignDefaultContentSpacing;
+        self.contentMode = UIViewContentModeRedraw;
         
         {
-            UIImageView *imageView = [[UIImageView alloc] init];
-            imageView.translatesAutoresizingMaskIntoConstraints = NO;
-            imageView.contentMode = UIViewContentModeScaleAspectFit;
-            imageView.image = [[UIImage imageNamed:@"icon-menus-arrow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            imageView.tintColor = [WPStyleGuide mediumBlue];
-            imageView.backgroundColor = [UIColor whiteColor];
-            [self addSubview:imageView];
+            UIStackView *stackView = [[UIStackView alloc] init];
+            stackView.translatesAutoresizingMaskIntoConstraints = NO;
+            stackView.alignment = UIStackViewAlignmentFill;
+            stackView.distribution = UIStackViewDistributionFill;
+            stackView.axis = UILayoutConstraintAxisHorizontal;
+            stackView.spacing = MenusDesignDefaultContentSpacing;
+            
+            [self addSubview:stackView];
+            
+            NSLayoutConstraint *top = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:MenusDesignDefaultContentSpacing];
+            top.priority = UILayoutPriorityDefaultHigh;
+            
+            NSLayoutConstraint *bottom = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-MenusDesignDefaultContentSpacing];
+            bottom.priority = UILayoutPriorityDefaultHigh;
             
             [NSLayoutConstraint activateConstraints:@[
-                                                      [imageView.widthAnchor constraintEqualToConstant:14.0],
-                                                      [imageView.heightAnchor constraintEqualToConstant:14.0],
-                                                      [imageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:spacing],
-                                                      [imageView.centerYAnchor constraintEqualToAnchor:self.centerYAnchor]
+                                                      top,
+                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:MenusDesignDefaultContentSpacing],
+                                                      bottom,
+                                                      [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-MenusDesignDefaultContentSpacing]
                                                       ]];
+            self.stackView = stackView;
+        }
+        {
+            UIImageView *iconView = [[UIImageView alloc] init];
+            iconView.translatesAutoresizingMaskIntoConstraints = NO;
+            iconView.contentMode = UIViewContentModeScaleAspectFit;
+            iconView.backgroundColor = [UIColor clearColor];
+            iconView.tintColor = [WPStyleGuide mediumBlue];
+            iconView.image = [[UIImage imageNamed:@"icon-menus-arrow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             
-            self.iconView = imageView;
+            [self.stackView addArrangedSubview:iconView];
+            
+            NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:14.0];
+            widthConstraint.priority = UILayoutPriorityDefaultHigh;
+            widthConstraint.active = YES;
+            
+            [iconView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [iconView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+            
+            self.iconView = iconView;
         }
         {
             UILabel *label = [[UILabel alloc] init];
             label.translatesAutoresizingMaskIntoConstraints = NO;
+            label.numberOfLines = 5;
+            label.lineBreakMode = NSLineBreakByTruncatingTail;
             label.font = [WPFontManager openSansRegularFontOfSize:16.0];
-            label.textColor = [WPStyleGuide greyDarken30];
             label.backgroundColor = [UIColor whiteColor];
-            label.text = @"Page"; // sample
-            [self addSubview:label];
+            label.text = @"Page";
             
-            NSLayoutConstraint *heightConstraint = [label.heightAnchor constraintEqualToAnchor:self.heightAnchor constant:-2.0];
-            heightConstraint.priority = UILayoutPriorityDefaultHigh;
+            [self.stackView addArrangedSubview:label];
             
-            [NSLayoutConstraint activateConstraints:@[
-                                                      [label.leadingAnchor constraintEqualToAnchor:self.iconView.trailingAnchor constant:ceilf(spacing * 0.75)],
-                                                      [label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                                      heightConstraint,
-                                                      [label.centerYAnchor constraintEqualToAnchor:self.centerYAnchor]
-                                                      ]];
+            [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+            [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+            [label setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+            
             self.label = label;
         }
         
