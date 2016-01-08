@@ -243,10 +243,10 @@ public class DiscussionSettingsViewController : UITableViewController
         pickerViewController.switchVisible      = true
         pickerViewController.switchOn           = settings.commentsCloseAutomatically
         pickerViewController.switchText         = NSLocalizedString("Automatically Close", comment: "Discussion Settings")
-        pickerViewController.selectionText      = NSLocalizedString("Close after", comment: "")
-        pickerViewController.selectionFormat    = NSLocalizedString("%d days", comment: "")
-        pickerViewController.pickerHint         = NSLocalizedString("Automatically close comments on posts after a certain number of days.", comment: "")
-        pickerViewController.pickerFormat       = NSLocalizedString("%d days", comment: "")
+        pickerViewController.selectionText      = NSLocalizedString("Close after", comment: "Close comments after a given number of days")
+        pickerViewController.selectionFormat    = NSLocalizedString("%d days", comment: "Number of days")
+        pickerViewController.pickerHint         = NSLocalizedString("Automatically close comments on content after a certain number of days.", comment: "Discussion Settings: Comments Auto-close")
+        pickerViewController.pickerFormat       = NSLocalizedString("%d days", comment: "Number of days")
         pickerViewController.pickerMinimumValue = commentsAutocloseMinimumValue
         pickerViewController.pickerMaximumValue = commentsAutocloseMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsCloseAutomaticallyAfterDays as? Int
