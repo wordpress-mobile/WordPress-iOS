@@ -8,6 +8,7 @@
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong) UIImageView *arrowView;
 
 @end
 
@@ -21,7 +22,6 @@
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
         self.contentMode = UIViewContentModeRedraw;
-        
         {
             UIStackView *stackView = [[UIStackView alloc] init];
             stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -50,12 +50,13 @@
             UIImageView *iconView = [[UIImageView alloc] init];
             iconView.translatesAutoresizingMaskIntoConstraints = NO;
             iconView.contentMode = UIViewContentModeScaleAspectFit;
-            iconView.backgroundColor = [UIColor clearColor];
+            iconView.backgroundColor = [UIColor whiteColor];
             iconView.tintColor = [WPStyleGuide mediumBlue];
             
             [self.stackView addArrangedSubview:iconView];
             
             NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:14.0];
+            widthConstraint.priority = 999;
             widthConstraint.active = YES;
             
             self.iconView = iconView;
@@ -72,14 +73,38 @@
             
             [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-            [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-            [label setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
             
             self.label = label;
         }
+        {
+            UIImageView *iconView = [[UIImageView alloc] init];
+            iconView.translatesAutoresizingMaskIntoConstraints = NO;
+            iconView.contentMode = UIViewContentModeScaleAspectFit;
+            iconView.backgroundColor = [UIColor clearColor];
+            iconView.tintColor = [WPStyleGuide mediumBlue];
+            iconView.image = [[UIImage imageNamed:@"icon-menus-arrow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            iconView.transform = CGAffineTransformMakeRotation(M_PI);
+            
+            [self.stackView addArrangedSubview:iconView];
+            
+            NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:14.0];
+            widthConstraint.priority = 999;
+            widthConstraint.active = YES;
+            
+            self.arrowView = iconView;
+        }
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateTypeWasSelected)];
+        [self addGestureRecognizer:tap];
     }
     
     return self;
+}
+
+- (void)setHidden:(BOOL)hidden
+{
+    [super setHidden:hidden];
+    [self setNeedsDisplay];
 }
 
 - (void)setItemType:(MenuItemType)itemType
@@ -90,20 +115,32 @@
     }
 }
 
-- (void)setSelected:(BOOL)selected
+- (void)setDrawsSelected:(BOOL)drawsSelected
 {
-    if(_selected != selected) {
-        _selected = selected;
-        [self updatedItemType];
+    if(_drawsSelected != drawsSelected) {
+        _drawsSelected = drawsSelected;
+        [self updateSelection];
     }
 }
 
 - (void)updatedItemType
 {
     self.label.text = [self title];
-    self.label.textColor = self.selected ? [WPStyleGuide mediumBlue] : [WPStyleGuide greyDarken30];
-    
     self.iconView.image = [[UIImage imageNamed:[self iconImageName]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [self updateSelection];
+
+    [self setNeedsLayout];
+    [self setNeedsDisplay];
+}
+
+- (void)updateSelection
+{
+    self.label.textColor = self.drawsSelected ? [WPStyleGuide mediumBlue] : [WPStyleGuide greyDarken30];
+    if(self.drawsSelected && !(self.delegate && [self.delegate typeViewRequiresCompactLayout:self])) {
+        self.arrowView.hidden = NO;
+    }else {
+        self.arrowView.hidden = YES;
+    }
     
     [self setNeedsLayout];
     [self setNeedsDisplay];
@@ -142,6 +179,12 @@
     return icon;
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self updateSelection];
+    [self setNeedsDisplay];
+}
 
 - (void)drawRect:(CGRect)rect
 {
@@ -151,7 +194,12 @@
     CGContextSetLineWidth(context, 2.0);
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
     
-    if(self.selected) {
+    if(self.drawsSelected) {
+        
+        if(!self.designIgnoresDrawingTopBorder) {
+            CGContextMoveToPoint(context, 0, 0);
+            CGContextAddLineToPoint(context, rect.size.width, 0);
+        }
         
         CGContextMoveToPoint(context, 0, rect.size.height);
         CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
@@ -165,6 +213,13 @@
     }
     
     CGContextRestoreGState(context);
+}
+
+#pragma mark - delegate
+
+- (void)tellDelegateTypeWasSelected
+{
+    [self.delegate typeViewPressedForSelection:self];
 }
 
 @end

@@ -9,7 +9,7 @@
 static CGFloat const MenuItemEditingFooterViewDefaultHeight = 60.0;
 static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
-@interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate>
+@interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
@@ -54,6 +54,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     self.sourceScrollView.clipsToBounds = NO;
     
     self.headerView.item = self.item;
+    self.typeView.delegate = self;
     self.sourceView.item = self.item;
     self.sourceView.delegate = self;
     self.footerView.item = self.item;
@@ -61,9 +62,6 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     
     [self.stackView bringSubviewToFront:self.headerView];
     [self updateSourceAndEditingViewsAvailability:NO];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(updateForHidingTypeSelection)];
-    [self.typeView addGestureRecognizer:tap];
 }
 
 - (void)viewDidLayoutSubviews
@@ -229,31 +227,63 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 - (void)updateForShowingTypeSelectionCompact
 {
-    if(self.typeView.hidden) {
-        self.typeView.hidden = NO;
-        self.typeView.alpha = 1.0;
-    }
+    [self.typeView layoutIfNeeded];
+    [self.sourceView layoutIfNeeded];
     
-    if(!self.sourceView.hidden) {
-        self.sourceView.hidden = YES;
-        self.sourceView.alpha = 0.0;
-    }
+    [UIView animateWithDuration:0.20 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+       
+        if(self.typeView.hidden) {
+            self.typeView.hidden = NO;
+            self.typeView.alpha = 1.0;
+        }
+        
+        if(!self.sourceView.hidden) {
+            self.sourceView.hidden = YES;
+            self.sourceView.alpha = 0.0;
+        }
+        
+    } completion:^(BOOL finished) {
+        
+        
+    }];
 }
 
 - (void)updateForHidingTypeSelection
 {
-    if(!self.typeView.hidden) {
-        if([self shouldDisplayForCompactWidth]) {
-            [self.sourceView setHeaderViewsHidden:NO];
-            self.typeView.hidden = YES;
-            self.typeView.alpha = 0.0;
-        }
-    }
+    [self.typeView layoutIfNeeded];
+    [self.sourceView layoutIfNeeded];
     
-    if(self.sourceView.hidden) {
-        self.sourceView.hidden = NO;
-        self.sourceView.alpha = 1.0;
-    }
+    [UIView animateWithDuration:0.20 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    
+        if(!self.typeView.hidden) {
+            if([self shouldDisplayForCompactWidth]) {
+                [self.sourceView setHeaderViewsHidden:NO];
+                self.typeView.hidden = YES;
+                self.typeView.alpha = 0.0;
+            }
+        }
+        
+        if(self.sourceView.hidden) {
+            self.sourceView.hidden = NO;
+            self.sourceView.alpha = 1.0;
+        }
+        
+    } completion:^(BOOL finished) {
+        
+        
+    }];
+}
+
+#pragma mark - MenuItemTypeSelectionViewDelegate
+
+- (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(MenuItemType)itemType
+{
+    [self updateForHidingTypeSelection];
+}
+
+- (BOOL)itemTypeSelectionViewRequiresCompactLayout:(MenuItemTypeSelectionView *)typeSelectionView
+{
+    return ![self shouldDisplayForCompactWidth];
 }
 
 #pragma mark - MenuItemSourceViewDelegate

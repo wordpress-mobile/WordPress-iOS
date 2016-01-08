@@ -44,25 +44,22 @@
                                                       bottom,
                                                       [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-MenusDesignDefaultContentSpacing]
                                                       ]];
+            [stackView setContentCompressionResistancePriority:999 forAxis:UILayoutConstraintAxisVertical];
             self.stackView = stackView;
         }
         {
             UIImageView *iconView = [[UIImageView alloc] init];
             iconView.translatesAutoresizingMaskIntoConstraints = NO;
             iconView.contentMode = UIViewContentModeScaleAspectFit;
-            iconView.backgroundColor = [UIColor clearColor];
+            iconView.backgroundColor = [UIColor whiteColor];
             iconView.tintColor = [WPStyleGuide mediumBlue];
             iconView.image = [[UIImage imageNamed:@"icon-menus-arrow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             
             [self.stackView addArrangedSubview:iconView];
             
             NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:14.0];
-            widthConstraint.priority = UILayoutPriorityDefaultHigh;
             widthConstraint.active = YES;
-            
-            [iconView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-            [iconView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-            
+                        
             self.iconView = iconView;
         }
         {
@@ -78,8 +75,6 @@
             
             [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-            [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-            [label setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
             
             self.label = label;
         }
