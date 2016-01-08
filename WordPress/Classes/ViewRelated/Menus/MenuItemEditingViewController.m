@@ -185,6 +185,11 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
             self.typeView.alpha = 0.0;
         }
         
+        if(self.sourceView.hidden) {
+            self.sourceView.hidden = NO;
+            self.sourceView.alpha = 1.0;
+        }
+        
     }else {
         
         if(self.headerView.hidden) {
@@ -227,11 +232,8 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 - (void)updateForShowingTypeSelectionCompact
 {
-    [self.typeView layoutIfNeeded];
-    [self.sourceView layoutIfNeeded];
-    
-    [UIView animateWithDuration:0.20 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-       
+    [UIView animateWithDuration:0.20 animations:^{
+        
         if(self.typeView.hidden) {
             self.typeView.hidden = NO;
             self.typeView.alpha = 1.0;
@@ -241,20 +243,13 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
             self.sourceView.hidden = YES;
             self.sourceView.alpha = 0.0;
         }
-        
-    } completion:^(BOOL finished) {
-        
-        
     }];
 }
 
 - (void)updateForHidingTypeSelection
 {
-    [self.typeView layoutIfNeeded];
-    [self.sourceView layoutIfNeeded];
-    
-    [UIView animateWithDuration:0.20 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-    
+    [UIView animateWithDuration:0.20 animations:^{
+
         if(!self.typeView.hidden) {
             if([self shouldDisplayForCompactWidth]) {
                 [self.sourceView setHeaderViewsHidden:NO];
@@ -267,10 +262,6 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
             self.sourceView.hidden = NO;
             self.sourceView.alpha = 1.0;
         }
-        
-    } completion:^(BOOL finished) {
-        
-        
     }];
 }
 
@@ -278,7 +269,13 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
 - (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(MenuItemType)itemType
 {
-    [self updateForHidingTypeSelection];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // delays the layout update and upcoming animation
+        // also fixes a layout drawing glitch when label have their bounds zeroed out from stackViews
+        // Jan-8-2016 - Brent C.
+        self.sourceView.selectedItemType = itemType;
+        [self updateForHidingTypeSelection];
+    });
 }
 
 - (BOOL)itemTypeSelectionViewRequiresCompactLayout:(MenuItemTypeSelectionView *)typeSelectionView

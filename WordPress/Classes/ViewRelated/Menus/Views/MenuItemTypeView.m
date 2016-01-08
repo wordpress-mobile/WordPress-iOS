@@ -21,7 +21,7 @@
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
-        self.contentMode = UIViewContentModeRedraw;
+        
         {
             UIStackView *stackView = [[UIStackView alloc] init];
             stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -129,7 +129,6 @@
     self.iconView.image = [[UIImage imageNamed:[self iconImageName]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self updateSelection];
 
-    [self setNeedsLayout];
     [self setNeedsDisplay];
 }
 
@@ -142,7 +141,6 @@
         self.arrowView.hidden = YES;
     }
     
-    [self setNeedsLayout];
     [self setNeedsDisplay];
 }
 
@@ -182,6 +180,7 @@
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
+    
     [self updateSelection];
     [self setNeedsDisplay];
 }
