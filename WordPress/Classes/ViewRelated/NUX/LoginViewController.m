@@ -273,6 +273,9 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (IBAction)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
+    // When the verification code field is displayed, the username field is disabled which
+    // means that the 1Password button cannot be tapped directly (because it's the rightView of the username field).
+    // Instead, we can trigger 1Password if the background gesture recognizer detects a tap on the 1Password button.
     CGPoint location = [tapGestureRecognizer locationOfTouch:0 inView:self.onePasswordButton];
     if (CGRectContainsPoint(self.onePasswordButton.bounds, location)) {
         [self findLoginFromOnePassword:self];
