@@ -379,8 +379,9 @@ int ddLogLevel                                                  = DDLogLevelInfo
 
     [self customizeAppearance];
     
-    // Push notifications
-    [[PushNotificationsManager sharedInstance] registerForPushNotifications];
+    // Notifications
+    [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
+    [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -425,7 +426,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
                                         forRemoteNotification:(NSDictionary *)remoteNotification
                                             completionHandler:(void (^)())completionHandler
 {
-    [NotificationsManager handleActionWithIdentifier:identifier forRemoteNotification:remoteNotification];
+    [[InteractiveNotificationsHandler sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification];
     
     completionHandler();
 }
