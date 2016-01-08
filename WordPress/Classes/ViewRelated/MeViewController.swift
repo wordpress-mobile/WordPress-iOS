@@ -29,6 +29,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         self.init(style: .Grouped)
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "refreshModelWithNotification:", name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
+        notificationCenter.addObserver(self, selector: "refreshModelWithNotification:", name: WPAccountDefaultWordPressComAccountDetailsUpdatedNotification, object: nil)
         notificationCenter.addObserver(self, selector: "refreshModelWithNotification:", name: HelpshiftUnreadCountUpdatedNotification, object: nil)
     }
 
@@ -78,11 +79,13 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         //
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
-        tableView.tableHeaderView = account.map(headerView)
+        tableView.tableHeaderView = headerView(account)
         tableViewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
     }
 
-    func headerView(account: WPAccount) -> MeHeaderView {
+    func headerView(account: WPAccount?) -> MeHeaderView? {
+        guard let account = account else { return nil }
+
         let header = cachedHeaderView
         header.setDisplayName(account.displayName)
         header.setUsername(account.username)
@@ -300,6 +303,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     // MARK: - Notification observers
 
     func refreshModelWithNotification(notification: NSNotification) {
+        // Regenerate the header view if the account has changed
+        cachedHeaderView = MeHeaderView()
+
         reloadViewModel()
     }
 

@@ -16,7 +16,7 @@ static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcom
 
 static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
 NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
-NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";
+NSString * const WPAccountDefaultWordPressComAccountDetailsUpdatedNotification = @"WPAccountDefaultWordPressComAccountDetailsUpdatedNotification";
 
 @implementation AccountService
 
@@ -234,6 +234,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         [blogService flagBlogAsLastUsed:account.defaultBlog];
     }
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountDetailsUpdatedNotification object:nil];
 }
 
 - (void)purgeAccount:(WPAccount *)account
