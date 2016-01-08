@@ -273,8 +273,16 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (IBAction)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    [self.view endEditing:YES];
-    [self hideMultifactorTextfieldIfNeeded];
+    // When the verification code field is displayed, the username field is disabled which
+    // means that the 1Password button cannot be tapped directly (because it's the rightView of the username field).
+    // Instead, we can trigger 1Password if the background gesture recognizer detects a tap on the 1Password button.
+    CGPoint location = [tapGestureRecognizer locationOfTouch:0 inView:self.onePasswordButton];
+    if (CGRectContainsPoint(self.onePasswordButton.bounds, location)) {
+        [self findLoginFromOnePassword:self];
+    } else {
+        [self.view endEditing:YES];
+        [self hideMultifactorTextfieldIfNeeded];
+    }
 }
 
 - (IBAction)signInButtonAction:(id)sender
@@ -914,6 +922,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 - (void)setMultifactorEnabled:(BOOL)enabled
 {
     self.multifactorText.enabled = enabled;
+}
+
+- (void)setMultifactorTextValue:(NSString *)multifactorText
+{
+    self.multifactorText.text = multifactorText;
 }
 
 - (void)setCancelButtonHidden:(BOOL)hidden
