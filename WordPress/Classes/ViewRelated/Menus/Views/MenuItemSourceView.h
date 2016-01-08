@@ -1,8 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "MenuItemSourceResultView.h"
 #import "MenuItemSourceSearchBar.h"
-
-@class MenuItem;
+#import "MenuItem.h"
 
 @protocol MenuItemSourceViewDelegate;
 
@@ -10,6 +9,7 @@
 
 @property (nonatomic, weak) id <MenuItemSourceViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
+@property (nonatomic, assign) MenuItemType selectedItemType;
 @property (nonatomic, strong) NSMutableArray *results;
 @property (nonatomic, strong, readonly) MenuItemSourceSearchBar *searchBar;
 

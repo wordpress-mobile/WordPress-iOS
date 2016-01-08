@@ -20,7 +20,6 @@
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
-        self.contentMode = UIViewContentModeRedraw;
         
         {
             UIStackView *stackView = [[UIStackView alloc] init];
@@ -69,7 +68,6 @@
             label.lineBreakMode = NSLineBreakByTruncatingTail;
             label.font = [WPFontManager openSansRegularFontOfSize:16.0];
             label.backgroundColor = [UIColor whiteColor];
-            label.text = @"Page";
             
             [self.stackView addArrangedSubview:label];
             
@@ -86,6 +84,14 @@
     return self;
 }
 
+- (void)setItemType:(MenuItemType)itemType
+{
+    if(_itemType != itemType) {
+        _itemType = itemType;
+        self.label.text = [self title];
+    }
+}
+
 - (void)tapGesture:(UITapGestureRecognizer *)tapGesture
 {
     [self.delegate sourceHeaderViewSelected:self];
@@ -99,6 +105,32 @@
     CGContextMoveToPoint(context, 0, rect.size.height);
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     CGContextStrokePath(context);
+}
+
+- (NSString *)title
+{
+    NSString *title = nil;
+    switch (self.itemType) {
+        case MenuItemTypePage:
+            title = NSLocalizedString(@"Page", @"");
+            break;
+        case MenuItemTypeLink:
+            title = NSLocalizedString(@"Link", @"");
+            break;
+        case MenuItemTypeCategory:
+            title = NSLocalizedString(@"Category", @"");
+            break;
+        case MenuItemTypeTag:
+            title = NSLocalizedString(@"Tag", @"");
+            break;
+        case MenuItemTypePost:
+            title = NSLocalizedString(@"Post", @"");
+            break;
+        default:
+            break;
+    }
+    
+    return title;
 }
 
 @end
