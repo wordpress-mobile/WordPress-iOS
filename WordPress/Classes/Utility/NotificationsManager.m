@@ -39,38 +39,38 @@ static NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 + (void)handleNotification:(NSDictionary *)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    DDLogVerbose(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
-
-    // Try to pull the badge number from the notification object
-    // Badge count does not normally update when the app is active, and this forces KVO to be fired
-    NSNumber *badgeCount = [[userInfo dictionaryForKey:@"aps"] numberForKey:@"badge"];
-    if (badgeCount) {
-        [UIApplication sharedApplication].applicationIconBadgeNumber = badgeCount.intValue;
-    }
-
-    // Check if it is the badge reset PN
-    if ([[userInfo stringForKey:@"type"] isEqualToString:@"badge-reset"]) {
-        return;
-    }
-
-    if ([[userInfo stringForKey:@"origin"] isEqualToString:@"helpshift"]) {
-        [WPAnalytics track:WPAnalyticsStatSupportReceivedResponseFromSupport];
-        UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-        [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:rootViewController];
-        return;
-    }
-    
-    
-    // WordPress.com Push Authentication Notification
-    // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
-    // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
-    // notifications when in BG mode.
-    //
-    PushAuthenticationManager *authenticationManager = [PushAuthenticationManager new];
-    if ([authenticationManager isPushAuthenticationNotification:userInfo] && state != UIApplicationStateBackground) {
-        [authenticationManager handlePushAuthenticationNotification:userInfo];
-        return;
-    }
+//    DDLogVerbose(@"Received push notification:\nPayload: %@\nCurrent Application state: %d", userInfo, state);
+//
+//    // Try to pull the badge number from the notification object
+//    // Badge count does not normally update when the app is active, and this forces KVO to be fired
+//    NSNumber *badgeCount = [[userInfo dictionaryForKey:@"aps"] numberForKey:@"badge"];
+//    if (badgeCount) {
+//        [UIApplication sharedApplication].applicationIconBadgeNumber = badgeCount.intValue;
+//    }
+//
+//    // Check if it is the badge reset PN
+//    if ([[userInfo stringForKey:@"type"] isEqualToString:@"badge-reset"]) {
+//        return;
+//    }
+//
+//    if ([[userInfo stringForKey:@"origin"] isEqualToString:@"helpshift"]) {
+//        [WPAnalytics track:WPAnalyticsStatSupportReceivedResponseFromSupport];
+//        UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+//        [[Helpshift sharedInstance] handleRemoteNotification:userInfo withController:rootViewController];
+//        return;
+//    }
+//    
+//    
+//    // WordPress.com Push Authentication Notification
+//    // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
+//    // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
+//    // notifications when in BG mode.
+//    //
+//    PushAuthenticationManager *authenticationManager = [PushAuthenticationManager new];
+//    if ([authenticationManager isPushAuthenticationNotification:userInfo] && state != UIApplicationStateBackground) {
+//        [authenticationManager handlePushAuthenticationNotification:userInfo];
+//        return;
+//    }
     
     //Bump Analytics here
     NSMutableDictionary *mutablePushProperties = [NSMutableDictionary new];
