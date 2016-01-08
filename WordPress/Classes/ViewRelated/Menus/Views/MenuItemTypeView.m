@@ -56,11 +56,7 @@
             [self.stackView addArrangedSubview:iconView];
             
             NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:14.0];
-            widthConstraint.priority = UILayoutPriorityDefaultHigh;
             widthConstraint.active = YES;
-            
-            [iconView setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-            [iconView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
             
             self.iconView = iconView;
         }
