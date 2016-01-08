@@ -55,11 +55,15 @@ struct AccountSettingsService {
 
     private func applyChange(change: AccountSettingsChange) throws -> AccountSettingsChange {
         guard let settings = accountSettingsWithID(userID) else {
-            DDLogSwift.logError("Tried to apply a change to nonexistent settings (ID: \(userID)")
+            DDLogSwift.logError("Tried to apply a change to nonexistent settings (ID: \(userID))")
             throw Errors.NotFound
         }
-
+        
         let reverse = settings.applyChange(change)
+        
+        if let account = findAccountWithUserID(userID) {
+            account.applyChange(change)
+        }
 
         ContextManager.sharedInstance().saveContext(context)
 
@@ -85,8 +89,7 @@ struct AccountSettingsService {
     }
 
     private func createAccountSettings(userID: Int, settings: AccountSettings) {
-        let accountService = AccountService(managedObjectContext: context)
-        guard let account = accountService.findAccountWithUserID(userID) else {
+        guard let account = findAccountWithUserID(userID) else {
             DDLogSwift.logError("Tried to create settings for a missing account (ID: \(userID)): \(settings)")
             return
         }
@@ -94,6 +97,11 @@ struct AccountSettingsService {
         let managedSettings = NSEntityDescription.insertNewObjectForEntityForName(ManagedAccountSettings.entityName, inManagedObjectContext: context) as! ManagedAccountSettings
         managedSettings.updateWith(settings)
         managedSettings.account = account
+    }
+    
+    private func findAccountWithUserID(userID: Int) -> WPAccount? {
+        let accountService = AccountService(managedObjectContext: context)
+        return accountService.findAccountWithUserID(userID)
     }
 
     enum Errors: ErrorType {
