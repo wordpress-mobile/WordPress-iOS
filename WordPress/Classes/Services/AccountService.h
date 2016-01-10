@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class WPAccount, Blog;
 
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
-extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
+extern NSString *const WPAccountDefaultWordPressComAccountDetailsUpdatedNotification;
 
 @interface AccountService : LocalCoreDataService
 

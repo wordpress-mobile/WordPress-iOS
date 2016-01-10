@@ -46,7 +46,7 @@ class ManagedAccountSettings: NSManagedObject {
         case .Language(let value):
             self.language = value
         }
-
+        
         return reverse
     }
 
@@ -69,6 +69,19 @@ class ManagedAccountSettings: NSManagedObject {
         case .Language(_):
             return .Language(self.language)
         }
+    }
+}
+
+extension WPAccount {
+    /// Applies a change to the account. Currently only the DisplayName can be modified in-app.
+    func applyChange(change: AccountSettingsChange) {
+        switch change {
+        case .DisplayName(let value):
+            self.displayName = value
+        default: break
+        }
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(WPAccountDefaultWordPressComAccountDetailsUpdatedNotification, object: nil)
     }
 }
 
@@ -103,3 +116,4 @@ enum AccountSettingsChange {
         }
     }
 }
+
