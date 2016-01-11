@@ -4,11 +4,10 @@
 
 @implementation PostCategoryServiceRemoteREST
 
-- (void)getCategoriesForBlogID:(NSNumber *)blogID
-                       success:(void (^)(NSArray *))success
-                       failure:(void (^)(NSError *))failure
+- (void)getCategoriesWithSuccess:(void (^)(NSArray *))success
+                         failure:(void (^)(NSError *))failure
 {
-    NSString *path = [NSString stringWithFormat:@"sites/%@/categories?context=edit", blogID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/categories?context=edit", self.siteID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -26,12 +25,11 @@
 }
 
 - (void)createCategory:(RemotePostCategory *)category
-             forBlogID:(NSNumber *)blogID
                success:(void (^)(RemotePostCategory *))success
                failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(category.name.length > 0);
-    NSString *path = [NSString stringWithFormat:@"sites/%@/categories/new?context=edit", blogID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/categories/new?context=edit", self.siteID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
