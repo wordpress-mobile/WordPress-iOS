@@ -135,16 +135,20 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 
         // Define success block. Make sure work is performed on the main queue
+        NSNumber *postID = readerPost.postID;
+        NSNumber *siteID = readerPost.siteID;
         void (^successBlock)() = ^void() {
             dispatch_async(dispatch_get_main_queue(), ^{
-                NSDictionary *properties = @{
-                                              WPAppAnalyticsKeyPostID: readerPost.postID,
-                                              WPAppAnalyticsKeyBlogID: readerPost.siteID
-                                              };
-                if (like) {
-                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:properties];
-                } else {
-                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:properties];
+                if (postID && siteID) {
+                    NSDictionary *properties = @{
+                                                  WPAppAnalyticsKeyPostID: postID,
+                                                  WPAppAnalyticsKeyBlogID: siteID
+                                                  };
+                    if (like) {
+                        [WPAppAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:properties];
+                    } else {
+                        [WPAppAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:properties];
+                    }
                 }
                 if (success) {
                     success();
