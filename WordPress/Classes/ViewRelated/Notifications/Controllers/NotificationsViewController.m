@@ -14,7 +14,6 @@
 #import "Notification.h"
 #import "Meta.h"
 
-#import "NotificationsManager.h"
 #import "NotificationDetailsViewController.h"
 
 #import "WPAccount.h"

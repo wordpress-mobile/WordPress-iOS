@@ -47,9 +47,6 @@
 #import "WPUserAgent.h"
 #import "WordPressComApiCredentials.h"
 
-// Notifications
-#import "NotificationsManager.h"
-
 // Swift support
 #import "WordPress-Swift.h"
 
