@@ -24,7 +24,7 @@ static const NSInteger NumberOfCommentsToSync = 100;
     if (options) {
         [extraParameters addEntriesFromDictionary:options];
     }
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:extraParameters];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
     [self.api callMethod:@"wp.getComments"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -44,7 +44,7 @@ static const NSInteger NumberOfCommentsToSync = 100;
                  success:(void (^)(RemoteComment *comment))success
                  failure:(void (^)(NSError *))failure
 {
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:commentID];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:commentID];
     [self.api callMethod:@"wp.getComment"
               parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   if (success) {
@@ -71,7 +71,7 @@ static const NSInteger NumberOfCommentsToSync = 100;
                                  comment.postID,
                                  commentDictionary,
                                  ];
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:extraParameters];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
     [self.api callMethod:@"wp.newComment"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -99,7 +99,7 @@ static const NSInteger NumberOfCommentsToSync = 100;
                                  comment.commentID,
                                  @{@"content": comment.content},
                                  ];
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:extraParameters];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
     [self.api callMethod:@"wp.editComment"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -125,7 +125,7 @@ static const NSInteger NumberOfCommentsToSync = 100;
                                  comment.commentID,
                                  @{@"status": comment.status},
                                  ];
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:extraParameters];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
     [self.api callMethod:@"wp.editComment"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -148,7 +148,7 @@ static const NSInteger NumberOfCommentsToSync = 100;
              failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(comment.commentID != nil);
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:comment.commentID];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:comment.commentID];
     [self.api callMethod:@"wp.deleteComment"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
