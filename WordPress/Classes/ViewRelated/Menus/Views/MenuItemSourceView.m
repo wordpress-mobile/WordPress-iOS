@@ -66,7 +66,7 @@
         UIStackView *stackView = self.stackView;
         stackView.translatesAutoresizingMaskIntoConstraints = NO;
         stackView.distribution = UIStackViewDistributionFill;
-        stackView.alignment = UIStackViewAlignmentTop;
+        stackView.alignment = UIStackViewAlignmentFill;
         stackView.spacing = 0;
     }
     {
