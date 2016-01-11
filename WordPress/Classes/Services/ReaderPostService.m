@@ -138,22 +138,20 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         NSNumber *postID = readerPost.postID;
         NSNumber *siteID = readerPost.siteID;
         void (^successBlock)() = ^void() {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (postID && siteID) {
-                    NSDictionary *properties = @{
-                                                  WPAppAnalyticsKeyPostID: postID,
-                                                  WPAppAnalyticsKeyBlogID: siteID
-                                                  };
-                    if (like) {
-                        [WPAppAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:properties];
-                    } else {
-                        [WPAppAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:properties];
-                    }
+            if (postID && siteID) {
+                NSDictionary *properties = @{
+                                              WPAppAnalyticsKeyPostID: postID,
+                                              WPAppAnalyticsKeyBlogID: siteID
+                                              };
+                if (like) {
+                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:properties];
+                } else {
+                    [WPAppAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:properties];
                 }
-                if (success) {
-                    success();
-                }
-            });
+            }
+            if (success) {
+                success();
+            }
         };
 
         // Define failure block. Make sure rollback happens in the moc's queue,
@@ -164,13 +162,12 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
                 readerPost.isLiked = oldValue;
                 readerPost.likeCount = oldCount;
 
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    if (failure) {
+                        failure(error);
+                    }
+                }];
             }];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (failure) {
-                    failure(error);
-                }
-            });
         };
 
         // Call the remote service.
