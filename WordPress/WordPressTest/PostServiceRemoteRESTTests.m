@@ -23,7 +23,8 @@
 - (PostServiceRemoteREST*)service
 {
     WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:[NSURL URLWithString:@""]];
-    return [[PostServiceRemoteREST alloc] initWithApi:api];
+    NSNumber *siteID = @10;
+    return [[PostServiceRemoteREST alloc] initWithApi:api siteID:siteID];
 }
 
 #pragma mark - Getting posts by ID
@@ -45,35 +46,19 @@
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
     
     [service getPostWithID:postID
-                 forBlogID:[blog dotComID]
                    success:^(RemotePost *post) {}
                    failure:^(NSError *error) {}];
 }
 
 - (void)testThatGetPostWithIDThrowsExceptionWithoutPostID
 {
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service getPostWithID:nil
-                                 forBlogID:[blog dotComID]
-                                   success:^(RemotePost *post) {}
-                                   failure:^(NSError *error) {}]);
-}
-
-- (void)testThatGetPostWithIDThrowsExceptionWithoutBlog
-{
-    PostServiceRemoteREST *service = nil;
-    
-    XCTAssertNoThrow(service = [self service]);
-    XCTAssertThrows([service getPostWithID:@2
-                                 forBlogID:nil
                                    success:^(RemotePost *post) {}
                                    failure:^(NSError *error) {}]);
 }
@@ -103,23 +88,11 @@
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
     
     [service getPostsOfType:postType
-                  forBlogID:[blog dotComID]
                     success:^(NSArray *posts) {}
                     failure:^(NSError *error) {}];
-}
-
-- (void)testThatGetPostsOfTypeThrowsExceptionWithoutBlog
-{
-    PostServiceRemoteREST *service = nil;
-    
-    XCTAssertNoThrow(service = [self service]);
-    XCTAssertThrows([service getPostsOfType:@"SomeType"
-                                  forBlogID:nil
-                                    success:^(NSArray *posts) {}
-                                    failure:^(NSError *error) {}]);
 }
 
 - (void)testThatGetPostsOfTypeWithOptionsWorks
@@ -150,25 +123,12 @@
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
     
     [service getPostsOfType:postType
-                  forBlogID:[blog dotComID]
                     options:options
                     success:^(NSArray *posts) {}
                     failure:^(NSError *error) {}];
-}
-
-- (void)testThatGetPostsOfTypeWithOptionsThrowsExceptionWithoutBlog
-{
-    PostServiceRemoteREST *service = nil;
-    
-    XCTAssertNoThrow(service = [self service]);
-    XCTAssertThrows([service getPostsOfType:@"SomeType"
-                                  forBlogID:nil
-                                    options:@{}
-                                    success:^(NSArray *posts) {}
-                                    failure:^(NSError *error) {}]);
 }
 
 #pragma mark - Creating posts
@@ -196,37 +156,19 @@
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
     
     [service createPost:post
-              forBlogID:[blog dotComID]
                 success:^(RemotePost *posts) {}
                 failure:^(NSError *error) {}];
 }
 
 - (void)testThatCreatePostThrowsExceptionWithoutPost
 {
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service createPost:nil
-                              forBlogID:[blog dotComID]
-                                success:^(RemotePost *posts) {}
-                                failure:^(NSError *error) {}]);
-}
-
-- (void)testThatCreatePostThrowsExceptionWithoutBlog
-{
-    RemotePost *post = OCMClassMock([RemotePost class]);
-    
-    PostServiceRemoteREST *service = nil;
-    
-    XCTAssertNoThrow(service = [self service]);
-    XCTAssertThrows([service createPost:post
-                              forBlogID:nil
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -257,37 +199,19 @@
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
     
     [service updatePost:post
-              forBlogID:[blog dotComID]
                 success:^(RemotePost *posts) {}
                 failure:^(NSError *error) {}];
 }
 
 - (void)testThatUpdatePostThrowsExceptionWithoutPost
 {
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service updatePost:nil
-                              forBlogID:[blog dotComID]
-                                success:^(RemotePost *posts) {}
-                                failure:^(NSError *error) {}]);
-}
-
-- (void)testThatUpdatePostThrowsExceptionWithoutBlog
-{
-    RemotePost *post = OCMClassMock([RemotePost class]);
-    
-    PostServiceRemoteREST *service = nil;
-    
-    XCTAssertNoThrow(service = [self service]);
-    XCTAssertThrows([service updatePost:post
-                              forBlogID:nil
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -312,37 +236,19 @@
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
     
     [service deletePost:post
-              forBlogID:[blog dotComID]
                 success:^(RemotePost *posts) {}
                 failure:^(NSError *error) {}];
 }
 
 - (void)testThatDeletePostThrowsExceptionWithoutPost
 {
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service deletePost:nil
-                              forBlogID:[blog dotComID]
-                                success:^(RemotePost *posts) {}
-                                failure:^(NSError *error) {}]);
-}
-
-- (void)testThatDeletePostThrowsExceptionWithoutBlog
-{
-    RemotePost *post = OCMClassMock([RemotePost class]);
-    
-    PostServiceRemoteREST *service = nil;
-    
-    XCTAssertNoThrow(service = [self service]);
-    XCTAssertThrows([service deletePost:post
-                              forBlogID:nil
                                 success:^(RemotePost *posts) {}
                                 failure:^(NSError *error) {}]);
 }
@@ -367,37 +273,19 @@
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
     
     [service trashPost:post
-             forBlogID:[blog dotComID]
                success:^(RemotePost *posts) {}
                failure:^(NSError *error) {}];
 }
 
 - (void)testThatTashPostThrowsExceptionWithoutPost
 {
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service trashPost:nil
-                             forBlogID:[blog dotComID]
-                               success:^(RemotePost *posts) {}
-                               failure:^(NSError *error) {}]);
-}
-
-- (void)testThatTrashPostThrowsExceptionWithoutBlog
-{
-    RemotePost *post = OCMClassMock([RemotePost class]);
-    
-    PostServiceRemoteREST *service = nil;
-    
-    XCTAssertNoThrow(service = [self service]);
-    XCTAssertThrows([service trashPost:post
-                             forBlogID:nil
                                success:^(RemotePost *posts) {}
                                failure:^(NSError *error) {}]);
 }
@@ -422,37 +310,19 @@
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
     
     [service restorePost:post
-               forBlogID:[blog dotComID]
                  success:^(RemotePost *posts) {}
                  failure:^(NSError *error) {}];
 }
 
 - (void)testThatRestorePostThrowsExceptionWithoutPost
 {
-    Blog *blog = OCMStrictClassMock([Blog class]);
-    OCMStub([blog dotComID]).andReturn(@10);
-    
     PostServiceRemoteREST *service = nil;
     
     XCTAssertNoThrow(service = [self service]);
     XCTAssertThrows([service restorePost:nil
-                               forBlogID:[blog dotComID]
-                                 success:^(RemotePost *posts) {}
-                                 failure:^(NSError *error) {}]);
-}
-
-- (void)testThatRestorePostThrowsExceptionWithoutBlog
-{
-    RemotePost *post = OCMClassMock([RemotePost class]);
-    
-    PostServiceRemoteREST *service = nil;
-    
-    XCTAssertNoThrow(service = [self service]);
-    XCTAssertThrows([service restorePost:post
-                               forBlogID:nil
                                  success:^(RemotePost *posts) {}
                                  failure:^(NSError *error) {}]);
 }
