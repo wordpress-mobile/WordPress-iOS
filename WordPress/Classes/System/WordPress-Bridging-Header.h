@@ -2,6 +2,7 @@
 #import <Mixpanel/Mixpanel.h>
 #import <SFHFKeychainUtils.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
 
 #import "AccountService.h"
 #import "AppRatingUtility.h"
@@ -25,15 +26,12 @@
 
 #import "Notification.h"
 #import "Notification+Internals.h"
-#import "NotificationsManager.h"
 #import "NSAttributedString+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
 #import "NSDate+StringFormatting.h"
 #import "NSObject+Helpers.h"
 #import "NSURL+Util.h"
 #import "UIApplication+Helpers.h"
-
-#import "NSDictionary+SafeExpectations.h"
 
 #import "PhotonImageURLHelper.h"
 #import "PostListFooterView.h"
