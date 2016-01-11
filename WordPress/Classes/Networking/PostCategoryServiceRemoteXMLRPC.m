@@ -9,7 +9,7 @@
                        success:(void (^)(NSArray *categories))success
                        failure:(void (^)(NSError *error))failure
 {
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:@"category"];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:@"category"];
     [self.api callMethod:@"wp.getTerms"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -34,7 +34,7 @@
                                       @"parent_id" : category.parentID ?: @0,
                                       @"taxonomy" : @"category",
                                       };
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:extraParameters];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
 
 
     [self.api callMethod:@"wp.newTerm"

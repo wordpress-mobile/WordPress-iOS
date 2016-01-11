@@ -22,16 +22,12 @@
     return self;
 }
 
-- (NSArray *)getXMLRPCArgsForBlogWithID:(NSNumber *)blogID extra:(id)extra
-{
-    NSMutableArray *result = [NSMutableArray array];
-    NSString *password = self.password ?: [NSString string];
-    NSString *username = self.username ?: [NSString string];
-    
-    [result addObject:blogID];
-    [result addObject:username];
-    [result addObject:password];
-    
+- (NSArray *)defaultXMLRPCArguments {
+    return @[@0, self.username, self.password];
+}
+
+- (NSArray *)XMLRPCArgumentsWithExtra:(id)extra {
+    NSMutableArray *result = [[self defaultXMLRPCArguments] mutableCopy];
     if ([extra isKindOfClass:[NSArray class]]) {
         [result addObjectsFromArray:extra];
     } else if (extra != nil) {

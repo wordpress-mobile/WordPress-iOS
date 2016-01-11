@@ -10,7 +10,7 @@
 {
     NSParameterAssert(blogID != nil);
     NSDictionary *filter = @{@"who":@"authors"};
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:filter];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:filter];
     [self.api callMethod:@"wp.getUsers"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -42,7 +42,7 @@
                     success:(SettingsHandler)success
                     failure:(void (^)(NSError *error))failure
 {
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:nil];
+    NSArray *parameters = [self defaultXMLRPCArguments];
     [self.api callMethod:@"wp.getOptions" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (![responseObject isKindOfClass:[NSDictionary class]]) {
             if (failure) {
@@ -73,7 +73,7 @@
         @"blog_tagline" : remoteBlogSettings.tagline
     };
     
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:rawParameters];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:rawParameters];
     
     [self.api callMethod:@"wp.setOptions" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (![responseObject isKindOfClass:[NSDictionary class]]) {
@@ -101,7 +101,7 @@
                                                     success:(OptionsHandler)success
                                                     failure:(void (^)(NSError *error))failure
 {
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:nil];
+    NSArray *parameters = [self defaultXMLRPCArguments];
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getOptions" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
@@ -125,7 +125,7 @@
                                                         failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"show-supported": @"1"};
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:dict];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:dict];
 
     WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostFormats" parameters:parameters];
     WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
