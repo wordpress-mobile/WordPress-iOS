@@ -4,11 +4,9 @@
 
 @implementation BlogServiceRemoteXMLRPC
 
-- (void)checkMultiAuthorForBlogID:(NSNumber *)blogID
-                          success:(void(^)(BOOL isMultiAuthor))success
-                          failure:(void (^)(NSError *error))failure
+- (void)checkMultiAuthorWithSuccess:(void(^)(BOOL isMultiAuthor))success
+                            failure:(void (^)(NSError *error))failure
 {
-    NSParameterAssert(blogID != nil);
     NSDictionary *filter = @{@"who":@"authors"};
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:filter];
     [self.api callMethod:@"wp.getUsers"
@@ -26,20 +24,19 @@
                  }];
 }
 
-- (void)syncOptionsForBlogID:(NSNumber *)blogID success:(OptionsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncOptionsWithSuccess:(OptionsHandler)success failure:(void (^)(NSError *))failure
 {
-    WPXMLRPCRequestOperation *operation = [self operationForOptionsWithBlogID:blogID success:success failure:failure];
+    WPXMLRPCRequestOperation *operation = [self operationForOptionsWithSuccess:success failure:failure];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (void)syncPostFormatsForBlogID:(NSNumber *)blogID success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncPostFormatsWithSuccess:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
 {
-    WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithBlogID:blogID success:success failure:failure];
+    WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithSuccess:success failure:failure];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (void)syncSettingsForBlogID:(NSNumber *)blogID
-                    success:(SettingsHandler)success
+- (void)syncSettingsWithSuccess:(SettingsHandler)success
                     failure:(void (^)(NSError *error))failure
 {
     NSArray *parameters = [self defaultXMLRPCArguments];
@@ -64,7 +61,6 @@
 }
 
 - (void)updateBlogSettings:(RemoteBlogSettings *)remoteBlogSettings
-                 forBlogID:(NSNumber *)blogID
                    success:(SuccessHandler)success
                    failure:(void (^)(NSError *error))failure
 {
@@ -97,8 +93,7 @@
 
 
 
-- (WPXMLRPCRequestOperation *)operationForOptionsWithBlogID:(NSNumber *)blogID
-                                                    success:(OptionsHandler)success
+- (WPXMLRPCRequestOperation *)operationForOptionsWithSuccess:(OptionsHandler)success
                                                     failure:(void (^)(NSError *error))failure
 {
     NSArray *parameters = [self defaultXMLRPCArguments];
@@ -120,8 +115,7 @@
     return operation;
 }
 
-- (WPXMLRPCRequestOperation *)operationForPostFormatsWithBlogID:(NSNumber *)blogID
-                                                        success:(PostFormatsHandler)success
+- (WPXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(PostFormatsHandler)success
                                                         failure:(void (^)(NSError *error))failure
 {
     NSDictionary *dict = @{@"show-supported": @"1"};
