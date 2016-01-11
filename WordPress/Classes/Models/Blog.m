@@ -498,7 +498,7 @@ NSString * const PostFormatStandard = @"standard";
 {
     NSString *extra = @"";
     if (self.account) {
-        extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@", self.account ? self.account.username : @"NO", self.blogID];
+        extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@", self.account ? self.account.username : @"NO", self.dotComID];
     } else if (self.jetpackAccount) {
         extra = [NSString stringWithFormat:@" jetpack: 🚀🚀 Jetpack %@ fully connected as %@ with site ID %@", self.jetpack.version, self.jetpackAccount.username, self.jetpack.siteID];
     } else {
