@@ -7,9 +7,7 @@
 #import "Blog.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "SettingTableViewCell.h"
-#import "NotificationsManager.h"
 #import <SVProgressHUD/SVProgressHUD.h>
-#import "NotificationsManager.h"
 #import "AccountService.h"
 #import "ContextManager.h"
 #import <WPXMLRPC/WPXMLRPC.h>
