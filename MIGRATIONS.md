@@ -5,9 +5,9 @@ data model as well as any custom migrations.
 
 ## WordPress 44 (@aerych 2016-01-11)
 
-- Added new entity: `PublicizeService`, to describe publicize services.
-- Added new entity: `PublicizeConnection`, to describe a connection between a blog and a publicize service.
-- `Blog` has now a new one-to-many relationship mapping to  `PublicizeConnection`
+- Added `PublicizeService` entity. Represents third-party services available to Publicize
+- Added `PublicizeConnection` entity. Represents a connection between a blog and a third-party Publicize service.
+- `Blog` added a new relationship called `connections`. These are the PublicizeConnections for the blog.
 
 ## WordPress 43 (@aerych 2015-12-07)
 
