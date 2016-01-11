@@ -5,7 +5,6 @@
 @implementation MediaServiceRemoteXMLRPC
 
 - (void)getMediaWithID:(NSNumber *)mediaID
-             forBlogID:(NSNumber *)blogID
                success:(void (^)(RemoteMedia *remoteMedia))success
                failure:(void (^)(NSError *error))failure
 {
@@ -25,9 +24,8 @@
                  }];
 }
 
-- (void)getMediaLibraryForBlogID:(NSNumber *)blogID
-                         success:(void (^)(NSArray *))success
-                         failure:(void (^)(NSError *))failure
+- (void)getMediaLibraryWithSuccess:(void (^)(NSArray *))success
+                           failure:(void (^)(NSError *))failure
 {
     NSArray *parameters = [self defaultXMLRPCArguments];
     [self.api callMethod:@"wp.getMediaLibrary"
@@ -45,9 +43,8 @@
                  }];
 }
 
-- (void)getMediaLibraryCountForBlogID:(NSNumber *)blogID
-                            success:(void (^)(NSInteger))success
-                            failure:(void (^)(NSError *))failure
+- (void)getMediaLibraryCountWithSuccess:(void (^)(NSInteger))success
+                                failure:(void (^)(NSError *))failure
 {
     NSArray *parameters = [self defaultXMLRPCArguments];
     [self.api callMethod:@"wp.getMediaLibrary"
@@ -108,7 +105,6 @@
 }
 
 - (void)createMedia:(RemoteMedia *)media
-          forBlogID:(NSNumber *)blogID
            progress:(NSProgress **)progress
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
