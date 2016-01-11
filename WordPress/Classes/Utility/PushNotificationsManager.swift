@@ -160,12 +160,13 @@ final public class PushNotificationsManager : NSObject
     
     // MARK: - Public Methods: Registration
     
-    public func handleNotification(userInfo: NSDictionary, state: UIApplicationState, completionHandler: UIBackgroundFetchResult) {
+    public func handleNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) {
+        let state = sharedApplication.applicationState
         DDLogSwift.logVerbose("Received push notification:\nPayload: \(userInfo)\nCurrent Application state: \(state)");
         
         // Badge Update
         if let badgeCount = userInfo.numberForKeyPath("aps.badge") {
-            UIApplication.sharedApplication().applicationIconBadgeNumber = badgeCount.integerValue
+            sharedApplication.applicationIconBadgeNumber = badgeCount.integerValue
         }
         
         // Badge Reset
@@ -180,7 +181,6 @@ final public class PushNotificationsManager : NSObject
             Helpshift.sharedInstance()?.handleRemoteNotification(userInfo as [NSObject : AnyObject], withController: rootViewController)
             return;
         }
-        
         
         // WordPress.com Push Authentication Notification
         // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
