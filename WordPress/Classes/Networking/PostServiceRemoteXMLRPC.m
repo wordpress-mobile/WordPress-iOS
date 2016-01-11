@@ -12,7 +12,6 @@ const NSInteger HTTP404ErrorCode = 404;
 @implementation PostServiceRemoteXMLRPC
 
 - (void)getPostWithID:(NSNumber *)postID
-            forBlogID:(NSNumber *)blogID
               success:(void (^)(RemotePost *post))success
               failure:(void (^)(NSError *))failure
 {
@@ -31,14 +30,12 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)getPostsOfType:(NSString *)postType
-               forBlogID:(NSNumber *)blogID
                success:(void (^)(NSArray *))success
                failure:(void (^)(NSError *))failure {
-    [self getPostsOfType:postType forBlogID:blogID options:nil success:success failure:failure];
+    [self getPostsOfType:postType options:nil success:success failure:failure];
 }
 
 - (void)getPostsOfType:(NSString *)postType
-             forBlogID:(NSNumber *)blogID
                options:(NSDictionary *)options
                success:(void (^)(NSArray *posts))success
                failure:(void (^)(NSError *error))failure {
@@ -70,7 +67,6 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)createPost:(RemotePost *)post
-         forBlogID:(NSNumber *)blogID
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
@@ -102,7 +98,6 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)updatePost:(RemotePost *)post
-         forBlogID:(NSNumber *)blogID
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
@@ -137,7 +132,6 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)deletePost:(RemotePost *)post
-         forBlogID:(NSNumber *)blogID
            success:(void (^)())success
            failure:(void (^)(NSError *))failure
 {
@@ -156,7 +150,6 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)trashPost:(RemotePost *)post
-        forBlogID:(NSNumber *)blogID
           success:(void (^)(RemotePost *))success
           failure:(void (^)(NSError *))failure
 {
@@ -196,11 +189,10 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)restorePost:(RemotePost *)post
-          forBlogID:(NSNumber *)blogID
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *error))failure
 {
-    [self updatePost:post forBlogID:blogID success:success failure:failure];
+    [self updatePost:post success:success failure:failure];
 }
 
 #pragma mark - Private methods
