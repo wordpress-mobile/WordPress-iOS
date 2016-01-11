@@ -172,6 +172,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  @return a WordPressComApi object if available
  */
 - (WordPressComApi *)restApi;
-- (NSNumber *)dotComID;
+@property (readonly) NSNumber *dotComID;
 
 @end
