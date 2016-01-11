@@ -38,8 +38,10 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
 
 @interface MenuItemSourceResultView ()
 
+@property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) UILabel *resultLabel;
+@property (nonatomic, strong) UIStackView *labelsStackView;
+@property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) MenuItemSourceResultBadgeLabel *badgeLabel;
 @property (nonatomic, strong) MenuItemSourceResultCheckView *checkView;
 
@@ -58,11 +60,27 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
     if(self) {
         {
             self.translatesAutoresizingMaskIntoConstraints = NO;
+            self.backgroundColor = [UIColor whiteColor];
+            
+            UIView *contentView = [[UIView alloc] init];
+            contentView.translatesAutoresizingMaskIntoConstraints = NO;
+            contentView.backgroundColor = [UIColor whiteColor];
+            
+            [self addSubview:contentView];
+            
+            [NSLayoutConstraint activateConstraints:@[
+                                                      [contentView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                                      [contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                                      [contentView.trailingAnchor constraintLessThanOrEqualToAnchor:self.trailingAnchor],
+                                                      [contentView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                                      ]];
+            
+            self.contentView = contentView;
             
             UIStackView *stackView = [[UIStackView alloc] init];
             stackView.translatesAutoresizingMaskIntoConstraints = NO;
-            stackView.distribution = UIStackViewDistributionFillProportionally;
-            stackView.alignment = UIStackViewAlignmentCenter;
+            stackView.distribution = UIStackViewDistributionFill;
+            stackView.alignment = UIStackViewAlignmentLeading;
             stackView.axis = UILayoutConstraintAxisHorizontal;
             
             const CGFloat spacing = MenusDesignDefaultContentSpacing / 2.0;
@@ -74,16 +92,20 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
             stackView.layoutMargins = margins;
             stackView.layoutMarginsRelativeArrangement = YES;
             stackView.spacing = spacing;
-            [self addSubview:stackView];
+            [contentView addSubview:stackView];
             
             [NSLayoutConstraint activateConstraints:@[
-                                                      [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                                      [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                                      [stackView.topAnchor constraintEqualToAnchor:contentView.topAnchor],
+                                                      [stackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor],
+                                                      [stackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor],
+                                                      [stackView.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor]
                                                       ]];
             
             self.stackView = stackView;
         }
+        
+        UIFont *labelFont = [WPFontManager openSansRegularFontOfSize:16.0];
+        const CGFloat labelFontLineHeight = ceilf(labelFont.ascender + fabs(labelFont.descender));
         {
             MenuItemSourceResultCheckView *checkView = [[MenuItemSourceResultCheckView alloc] init];
             checkView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -93,7 +115,7 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
             [checkView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
             
             [self.stackView addArrangedSubview:checkView];
-            const CGSize size = CGSizeMake(20.0, 20.0);
+            const CGSize size = CGSizeMake(labelFontLineHeight, labelFontLineHeight);
             [NSLayoutConstraint activateConstraints:@[
                                                       [checkView.widthAnchor constraintEqualToConstant:size.width],
                                                       [checkView.heightAnchor constraintEqualToConstant:size.height]
@@ -101,17 +123,30 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
             self.checkView = checkView;
         }
         {
+            UIStackView *labelsStackView = [[UIStackView alloc] init];
+            labelsStackView.translatesAutoresizingMaskIntoConstraints = NO;
+            labelsStackView.distribution = UIStackViewDistributionFill;
+            labelsStackView.alignment = UIStackViewAlignmentTop;
+            labelsStackView.axis = UILayoutConstraintAxisHorizontal;
+            labelsStackView.spacing = self.stackView.spacing;
+            
+            [self.stackView addArrangedSubview:labelsStackView];
+            self.labelsStackView = labelsStackView;
+        }
+        {
             UILabel *label = [[UILabel alloc] init];
             label.translatesAutoresizingMaskIntoConstraints = NO;
-            label.font = [WPFontManager openSansRegularFontOfSize:16.0];
+            label.font = labelFont;
             label.textColor = [WPStyleGuide greyDarken30];
             label.backgroundColor = [UIColor whiteColor];
+            label.numberOfLines = 0;
+            label.lineBreakMode = NSLineBreakByTruncatingTail;
             
+            [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
             [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-            [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             
-            [self.stackView addArrangedSubview:label];
-            self.resultLabel = label;
+            [self.labelsStackView addArrangedSubview:label];
+            self.label = label;
         }
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resultSelectionUpdatedNotification:) name:MenuItemSourceResultSelectionDidChangeNotification object:nil];
@@ -148,7 +183,7 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
         self.badgeLabel.hidden = YES;
     }
     
-    self.resultLabel.text = self.result.title;
+    self.label.text = self.result.title;
     self.checkView.drawsChecked = self.result.selected;
     [self setNeedsDisplay];
 }
@@ -159,18 +194,18 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
         
         MenuItemSourceResultBadgeLabel *label = [[MenuItemSourceResultBadgeLabel alloc] init];
         label.translatesAutoresizingMaskIntoConstraints = NO;
-        label.font = [WPFontManager openSansLightFontOfSize:12.0];
+        label.font = [WPFontManager openSansLightFontOfSize:13.0];
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [WPStyleGuide greyLighten10];
-        label.layer.cornerRadius = 4.0;
+        label.layer.cornerRadius = 3.0;
         label.layer.masksToBounds = YES;
         label.textAlignment = NSTextAlignmentCenter;
         label.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
         
         [label setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         
-        [self.stackView addArrangedSubview:label];
+        [self.labelsStackView addArrangedSubview:label];
         self.badgeLabel = label;
     }
 }
@@ -263,8 +298,8 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
 - (CGSize)intrinsicContentSize
 {
     CGSize size = [super intrinsicContentSize];
-    size.width += 6.0;
-    size.height += 2.0;
+    size.width += 8.0;
+    size.height += 4.0;
     return size;
 }
 
