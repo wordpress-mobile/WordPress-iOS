@@ -2,18 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icon-post-status-pending.png",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "icon-post-status-pending.png"
     },
     {
       "idiom" : "universal",
-      "filename" : "icon-post-status-pending@2x.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "icon-post-status-pending@2x.png"
     },
     {
       "idiom" : "universal",
-      "filename" : "icon-post-status-pending@3x.png",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "icon-post-status-pending@3x.png"
     }
   ],
   "info" : {
