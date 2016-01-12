@@ -3,7 +3,7 @@
 #import "WPStyleGuide.h"
 #import "MenuItemEditingHeaderView.h"
 #import "MenuItemEditingFooterView.h"
-#import "MenuItemSourceView.h"
+#import "MenuItemSourceContainerView.h"
 #import "MenuItemTypeSelectionView.h"
 
 static CGFloat const MenuItemEditingFooterViewDefaultHeight = 60.0;
@@ -23,7 +23,7 @@ typedef NS_ENUM(NSUInteger) {
 @property (nonatomic, strong) IBOutlet MenuItemEditingHeaderView *headerView;
 @property (nonatomic, strong) IBOutlet MenuItemEditingFooterView *footerView;
 @property (nonatomic, strong) IBOutlet MenuItemTypeSelectionView *typeView;
-@property (nonatomic, strong) IBOutlet MenuItemSourceView *sourceView;
+@property (nonatomic, strong) IBOutlet MenuItemSourceContainerView *sourceView;
 @property (nonatomic, weak) IBOutlet UIScrollView *sourceScrollView;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
@@ -365,20 +365,20 @@ typedef NS_ENUM(NSUInteger) {
 
 #pragma mark - MenuItemSourceViewDelegate
 
-- (void)sourceViewSelectedSourceTypeButton:(MenuItemSourceView *)sourceView
+- (void)sourceViewSelectedSourceTypeButton:(MenuItemSourceContainerView *)sourceView
 {
     if([self shouldDisplayForCompactWidth]) {
         [self updateForShowingTypeSelectionCompact];
     }
 }
 
-- (void)sourceViewDidBeginTyping:(MenuItemSourceView *)sourceView
+- (void)sourceViewDidBeginTyping:(MenuItemSourceContainerView *)sourceView
 {
     self.sourceViewIsTyping = YES;
     [self updateSourceAndEditingViewsAvailability:YES];
 }
 
-- (void)sourceViewDidEndTyping:(MenuItemSourceView *)sourceView
+- (void)sourceViewDidEndTyping:(MenuItemSourceContainerView *)sourceView
 {
     self.sourceViewIsTyping = NO;
     [self updateSourceAndEditingViewsAvailability:YES];
