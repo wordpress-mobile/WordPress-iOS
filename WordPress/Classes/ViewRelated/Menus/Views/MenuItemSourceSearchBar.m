@@ -25,10 +25,10 @@
         self.translatesAutoresizingMaskIntoConstraints = NO;
         
         UIEdgeInsets margin = UIEdgeInsetsZero;
-        margin.top = MenusDesignDefaultContentSpacing / 2.0;
+        margin.top = floor(MenusDesignDefaultContentSpacing * 0.75);
         margin.left = MenusDesignDefaultContentSpacing;
         margin.right = MenusDesignDefaultContentSpacing;
-        margin.bottom = MenusDesignDefaultContentSpacing / 2.0;
+        margin.bottom = floor(MenusDesignDefaultContentSpacing * 0.75);
         self.layoutMargins = margin;
         UILayoutGuide *marginsGuide = self.layoutMarginsGuide;
         const CGFloat spacing = ceilf(MenusDesignDefaultContentSpacing / 2.0);

@@ -7,6 +7,8 @@
 
 @property (nonatomic, weak) id <MenuItemTypeSelectionViewDelegate> delegate;
 
+- (UIView *)firstArrangedSubViewInLayout;
+
 @end
 
 @protocol MenuItemTypeSelectionViewDelegate <NSObject>

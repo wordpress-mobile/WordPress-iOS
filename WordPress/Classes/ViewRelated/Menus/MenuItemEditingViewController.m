@@ -126,6 +126,12 @@ typedef NS_ENUM(NSUInteger) {
 - (void)loadContentLayoutConstraints
 {
     {
+        // synchronize the height of the sourceView's headerView to the height of the first item in the typeView stack
+        // this is a design detail and serves no other purpose
+        NSLayoutAnchor *anchor = [self.typeView firstArrangedSubViewInLayout].heightAnchor;
+        [self.sourceView activateHeightConstraintForHeaderViewWithHeightAnchor:anchor];
+    }
+    {
         self.layoutConstraintsForDisplayingTypeView = @[
                                                         [self.typeView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
                                                         [self.typeView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
@@ -202,7 +208,11 @@ typedef NS_ENUM(NSUInteger) {
         }
     }
     
-    [self.sourceView setHeaderViewsHidden:NO];
+    if(self.sourceView.headerView.hidden) {
+        self.sourceView.headerView.hidden = NO;
+        self.sourceView.headerView.alpha = 1.0;
+    }
+    
     [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
     
     if(IS_IPHONE) {
@@ -232,7 +242,10 @@ typedef NS_ENUM(NSUInteger) {
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
     }
     
-    [self.sourceView setHeaderViewsHidden:YES];
+    if(!self.sourceView.headerView.hidden) {
+        self.sourceView.headerView.hidden = YES;
+        self.sourceView.headerView.alpha = 0.0;
+    }
     
     if(IS_IPHONE) {
         self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewCompactHeight;
@@ -312,7 +325,10 @@ typedef NS_ENUM(NSUInteger) {
     BOOL hideTypeView = NO;
     
     if([self shouldDisplayForCompactWidth]) {
-        [self.sourceView setHeaderViewsHidden:NO];
+        if(self.sourceView.headerView.hidden) {
+            self.sourceView.headerView.hidden = NO;
+            self.sourceView.headerView.alpha = 1.0;
+        }
         hideTypeView = YES;
     }
     

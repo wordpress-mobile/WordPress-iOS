@@ -21,6 +21,7 @@
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
+        self.contentMode = UIViewContentModeRedraw;
         
         {
             UIStackView *stackView = [[UIStackView alloc] init];
@@ -99,12 +100,6 @@
     }
     
     return self;
-}
-
-- (void)setHidden:(BOOL)hidden
-{
-    [super setHidden:hidden];
-    [self setNeedsDisplay];
 }
 
 - (void)setItemType:(MenuItemType)itemType
