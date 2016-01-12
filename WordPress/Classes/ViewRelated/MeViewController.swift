@@ -274,9 +274,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         guard let account = defaultAccount() else { return }
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        service.updateUserDetailsForAccount(account, success: { [weak self] in
-            self?.reloadViewModel()
-            }, failure: { _ in })
+        service.updateUserDetailsForAccount(account, success: { _ in }, failure: { _ in })
     }
 
     func logOut() {
