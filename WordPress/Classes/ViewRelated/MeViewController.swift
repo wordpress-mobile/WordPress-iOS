@@ -22,7 +22,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     required convenience init() {
         self.init(style: .Grouped)
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "refreshModelWithNotification:", name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
         notificationCenter.addObserver(self, selector: "refreshModelWithNotification:", name: HelpshiftUnreadCountUpdatedNotification, object: nil)
     }
 
@@ -45,12 +44,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
-        reloadViewModel()
-        // FIXME: @koke 2015-12-17
-        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4416
-        // The view controller should observe changes to account details
-        // regardless of who asked for them.
-        // For now I'm just porting this to Swift as it is.
+        _ = AccountService.defaultAccountChanged
+            .takeUntil(rx_deallocated)
+            .subscribeNext({ [unowned self] _ in
+                self.reloadViewModel()
+                })
+
         refreshAccountDetails()
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
