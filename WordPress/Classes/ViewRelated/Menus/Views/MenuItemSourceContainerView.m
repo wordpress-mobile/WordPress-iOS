@@ -1,7 +1,7 @@
-#import "MenuItemSourceView.h"
+#import "MenuItemSourceContainerView.h"
 #import "MenusDesign.h"
 
-@interface MenuItemSourceView () <MenuItemSourceHeaderViewDelegate>
+@interface MenuItemSourceContainerView () <MenuItemSourceHeaderViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
@@ -10,7 +10,7 @@
 
 @end
 
-@implementation MenuItemSourceView
+@implementation MenuItemSourceContainerView
 
 - (void)awakeFromNib
 {
