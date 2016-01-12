@@ -349,8 +349,8 @@ public class DiscussionSettingsViewController : UITableViewController
         let moderationKeys                      = settings.commentsModerationKeys
         let settingsViewController              = SettingsListEditorViewController(collection: moderationKeys)
         settingsViewController.title            = NSLocalizedString("Hold for Moderation", comment: "Moderation Keys Title")
-        settingsViewController.insertTitle      = NSLocalizedString("New Moderation Key", comment: "Moderation Keyword Insertion Title")
-        settingsViewController.editTitle        = NSLocalizedString("Edit Moderation Key", comment: "Moderation Keyword Edition Title")
+        settingsViewController.insertTitle      = NSLocalizedString("New Moderation Word", comment: "Moderation Keyword Insertion Title")
+        settingsViewController.editTitle        = NSLocalizedString("Edit Moderation Word", comment: "Moderation Keyword Edition Title")
         settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\".",
                                                                     comment: "Text rendered at the bottom of the Discussion Moderation Keys editor")
         settingsViewController.onChange         = { [weak self] (updated: Set<String>) in
