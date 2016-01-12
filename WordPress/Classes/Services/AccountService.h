@@ -26,6 +26,13 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (nullable WPAccount *)defaultWordPressComAccount;
 
 /**
+ Helper class method to return the default WordPress.com account using the main context
+ 
+ @see defaultWordPressComAccount
+ */
++ (nullable WPAccount *)defaultWordPressComAccountInMainContext;
+
+/**
  Sets the default WordPress.com account
  
  @param account the account to set as default for WordPress.com
