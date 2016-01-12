@@ -18,11 +18,4 @@
 + (void)handleNotification:(NSDictionary *)userInfo forState:(UIApplicationState)state completionHandler:(void (^)(UIBackgroundFetchResult))completionHandler;
 
 
-/**
- Handle a potential remote notification from application launch
- 
- @param launchOptions The launch options dictionary passed
- */
-+ (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions;
-
 @end

@@ -39,6 +39,7 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic posts;
 @dynamic categories;
 @dynamic comments;
+@dynamic connections;
 @dynamic themes;
 @dynamic media;
 @dynamic currentThemeId;
