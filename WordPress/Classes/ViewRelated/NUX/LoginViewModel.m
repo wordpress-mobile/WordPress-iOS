@@ -500,29 +500,31 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 
 - (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken requiredMultifactorCode:(BOOL)requiredMultifactorCode
 {
+    id failureHandler = ^(NSError *error) {
+        [self dismissLoginMessage];
+        [self displayRemoteError:error];
+    };
+    
     [self displayLoginMessage:NSLocalizedString(@"Getting account information", nil)];
     
     WPAccount *account = [self.accountServiceFacade createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
     [self.blogSyncFacade syncBlogsForAccount:account success:^{
-        // Dismiss the UI
-        [self dismissLoginMessage];
-        [self finishedLogin];
-        
-        // Hit the Tracker
-        NSDictionary *properties = @{
-                                     @"multifactor" : @(requiredMultifactorCode),
-                                     @"dotcom_user" : @(YES)
-                                     };
-        
-        [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:properties];
-        [WPAnalytics refreshMetadata];
-        
         // once blogs for the accounts are synced, we want to update account details for it
-        [self.accountServiceFacade updateUserDetailsForAccount:account success:nil failure:nil];
-    } failure:^(NSError *error) {
-        [self dismissLoginMessage];
-        [self displayRemoteError:error];
-    }];
+        [self.accountServiceFacade updateUserDetailsForAccount:account success:^{
+            // Dismiss the UI
+            [self dismissLoginMessage];
+            [self finishedLogin];
+            
+            // Hit the Tracker
+            NSDictionary *properties = @{
+                                         @"multifactor" : @(requiredMultifactorCode),
+                                         @"dotcom_user" : @(YES)
+                                         };
+            
+            [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:properties];
+            [WPAnalytics refreshMetadata];
+        } failure:failureHandler];
+    } failure:failureHandler];
 }
 
 
