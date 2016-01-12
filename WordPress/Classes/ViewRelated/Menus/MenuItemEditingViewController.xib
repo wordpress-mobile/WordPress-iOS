@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MenuItemEditingViewController">
             <connections>
+                <outlet property="contentView" destination="a8K-OD-6Df" id="7TU-pa-0iN"/>
                 <outlet property="footerView" destination="TSX-DY-vhd" id="TyK-Fp-Txp"/>
                 <outlet property="footerViewHeightConstraint" destination="E2v-oz-4Rk" id="dpp-uK-5uM"/>
                 <outlet property="headerView" destination="5rT-g7-Unk" id="LnY-fU-93W"/>
@@ -32,24 +33,21 @@
                                 <constraint firstAttribute="height" priority="999" constant="75" id="1YA-Ho-zu8"/>
                             </constraints>
                         </view>
-                        <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="240" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="8VR-qv-fUP">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a8K-OD-6Df">
                             <rect key="frame" x="0.0" y="75" width="600" height="465"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ST-Kk-VgV" customClass="MenuItemTypeSelectionView">
-                                    <rect key="frame" x="0.0" y="0.0" width="160" height="465"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" priority="999" constant="160" id="z8c-Ul-Z8h"/>
-                                    </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wkF-V5-jxr" customClass="MenuItemSourceView">
-                                    <rect key="frame" x="160" y="0.0" width="440" height="465"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
                                     <subviews>
                                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f53-Fv-SVL">
-                                            <rect key="frame" x="0.0" y="0.0" width="440" height="465"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="88q-g5-yBM">
-                                                    <rect key="frame" x="0.0" y="0.0" width="440" height="465"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
@@ -77,7 +75,18 @@
                                     </connections>
                                 </view>
                             </subviews>
-                        </stackView>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="bottom" secondItem="3ST-Kk-VgV" secondAttribute="bottom" id="8u2-iI-Kxb"/>
+                                <constraint firstItem="3ST-Kk-VgV" firstAttribute="leading" secondItem="a8K-OD-6Df" secondAttribute="leading" placeholder="YES" id="LYC-Ft-A6p"/>
+                                <constraint firstAttribute="trailing" secondItem="wkF-V5-jxr" secondAttribute="trailing" placeholder="YES" id="V86-YM-XAV"/>
+                                <constraint firstItem="wkF-V5-jxr" firstAttribute="top" secondItem="a8K-OD-6Df" secondAttribute="top" id="cZV-YI-KoU"/>
+                                <constraint firstAttribute="trailing" secondItem="3ST-Kk-VgV" secondAttribute="trailing" placeholder="YES" id="d0U-JY-WzI"/>
+                                <constraint firstItem="wkF-V5-jxr" firstAttribute="leading" secondItem="a8K-OD-6Df" secondAttribute="leading" placeholder="YES" id="msx-Lj-dM4"/>
+                                <constraint firstItem="3ST-Kk-VgV" firstAttribute="top" secondItem="a8K-OD-6Df" secondAttribute="top" id="xsw-TP-fzh"/>
+                                <constraint firstAttribute="bottom" secondItem="wkF-V5-jxr" secondAttribute="bottom" id="zr6-cz-GIv"/>
+                            </constraints>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TSX-DY-vhd" customClass="MenuItemEditingFooterView">
                             <rect key="frame" x="0.0" y="540" width="600" height="60"/>
                             <subviews>
