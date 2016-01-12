@@ -6,7 +6,7 @@
 
 @protocol MenuItemSourceViewDelegate;
 
-@interface MenuItemSourceView : UIView <MenuItemSourceSearchBarDelegate>
+@interface MenuItemSourceContainerView : UIView <MenuItemSourceSearchBarDelegate>
 
 @property (nonatomic, weak) id <MenuItemSourceViewDelegate> delegate;
 @property (nonatomic, strong) MenuItemSourceHeaderView *headerView;
@@ -22,8 +22,8 @@
 
 @protocol MenuItemSourceViewDelegate <NSObject>
 
-- (void)sourceViewSelectedSourceTypeButton:(MenuItemSourceView *)sourceView;
-- (void)sourceViewDidBeginTyping:(MenuItemSourceView *)sourceView;
-- (void)sourceViewDidEndTyping:(MenuItemSourceView *)sourceView;
+- (void)sourceViewSelectedSourceTypeButton:(MenuItemSourceContainerView *)sourceView;
+- (void)sourceViewDidBeginTyping:(MenuItemSourceContainerView *)sourceView;
+- (void)sourceViewDidEndTyping:(MenuItemSourceContainerView *)sourceView;
 
 @end
