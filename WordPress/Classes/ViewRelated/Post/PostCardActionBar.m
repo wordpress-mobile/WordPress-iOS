@@ -8,7 +8,7 @@
 static NSInteger ActionBarMoreButtonIndex = 999;
 static CGFloat ActionBarMinButtonWidth = 100.0;
 
-static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
+static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
 @interface PostCardActionBar()
 @property (nonatomic, strong) UIView *contentView;
@@ -306,12 +306,11 @@ static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Back", @"")
                                               image:[UIImage imageNamed:@"icon-post-actionbar-back"]
                                    highlightedImage:nil];
-        item.imageInsets = ActionbarButtonImageInsets;
     } else {
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"More", @"")
                                               image:[UIImage imageNamed:@"icon-post-actionbar-more"]
                                    highlightedImage:nil];
-        item.imageInsets = ActionbarButtonImageInsets;
+        item.imageInsets = MoreButtonImageInsets;
     }
     return item;
 }
