@@ -373,16 +373,16 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     // Set the correct icon and text color
     if ([[self.contentProvider status] isEqualToString:PostStatusPending]) {
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
-        self.statusLabel.textColor = [WPStyleGuide validGreen];
+        self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
     } else if ([[self.contentProvider status] isEqualToString:PostStatusScheduled]) {
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-scheduled"];
-        self.statusLabel.textColor = [WPStyleGuide warningYellow];
+        self.statusLabel.textColor = [WPStyleGuide wordPressBlue];
     } else if ([[self.contentProvider status] isEqualToString:PostStatusTrash]) {
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-trashed"];
         self.statusLabel.textColor = [WPStyleGuide errorRed];
     } else if (!self.statusView.hidden) {
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
-        self.statusLabel.textColor = [WPStyleGuide validGreen];
+        self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
     } else {
         self.statusLabel.text = nil;
         self.statusImageView.image = nil;

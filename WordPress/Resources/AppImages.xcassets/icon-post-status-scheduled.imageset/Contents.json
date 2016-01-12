@@ -2,7 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icon-post-status-scheduled.pdf"
+      "filename" : "icon-post-status-scheduled.png",
+      "scale" : "1x"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "icon-post-status-scheduled@2x.png",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "icon-post-status-scheduled@3x.png",
+      "scale" : "3x"
     }
   ],
   "info" : {
