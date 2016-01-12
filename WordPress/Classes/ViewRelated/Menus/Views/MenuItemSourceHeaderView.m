@@ -20,6 +20,7 @@
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
+        self.contentMode = UIViewContentModeRedraw;
         
         {
             UIStackView *stackView = [[UIStackView alloc] init];
@@ -64,7 +65,7 @@
         {
             UILabel *label = [[UILabel alloc] init];
             label.translatesAutoresizingMaskIntoConstraints = NO;
-            label.numberOfLines = 5;
+            label.numberOfLines = 1;
             label.lineBreakMode = NSLineBreakByTruncatingTail;
             label.font = [WPFontManager openSansRegularFontOfSize:16.0];
             label.backgroundColor = [UIColor whiteColor];

@@ -20,6 +20,7 @@
     
     self.backgroundColor = [UIColor whiteColor];
     self.translatesAutoresizingMaskIntoConstraints = NO;
+    self.contentMode = UIViewContentModeRedraw;
 
     {
         UIScrollView *scrollView = [[UIScrollView alloc] init];
@@ -63,6 +64,11 @@
     [self addTypeView:MenuItemTypePost];
 }
 
+- (UIView *)firstArrangedSubViewInLayout
+{
+    return [self.stackView.arrangedSubviews firstObject];
+}
+
 - (MenuItemTypeView *)addTypeView:(MenuItemType)itemType {
     
     MenuItemTypeView *typeView = [[MenuItemTypeView alloc] init];
@@ -74,17 +80,6 @@
     
     [self.typeViews addObject:typeView];
     return typeView;
-}
-
-- (void)setHidden:(BOOL)hidden
-{
-    [super setHidden:hidden];
-    
-    if(!hidden) {
-        for(UIView *view in self.stackView.arrangedSubviews) {
-            [view setNeedsDisplay];
-        }
-    }
 }
 
 - (void)drawRect:(CGRect)rect

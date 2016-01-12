@@ -1,13 +1,10 @@
 #import "MenuItemSourceView.h"
 #import "MenusDesign.h"
-#import "MenuItemSourceHeaderView.h"
 
 @interface MenuItemSourceView () <MenuItemSourceHeaderViewDelegate>
 
-@property (nonatomic, strong) MenuItemSourceHeaderView *headerView;
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
-@property (nonatomic, strong) UIView *spacerView;
 @property (nonatomic, strong) NSMutableArray *resultViews;
 @property (nonatomic, assign) BOOL setContentSize;
 
@@ -76,20 +73,9 @@
         [self.stackView addArrangedSubview:headerView];
         
         [headerView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
+        [headerView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         
         self.headerView = headerView;
-    }
-    {
-        UIView *spacer = [[UIView alloc] init];
-        NSLayoutConstraint *heightConstraint = [spacer.heightAnchor constraintEqualToConstant:MenusDesignDefaultContentSpacing / 2.0];
-        heightConstraint.priority = UILayoutPriorityDefaultHigh;
-        heightConstraint.active = YES;
-        
-        [self.stackView addArrangedSubview:spacer];
-        
-        [spacer.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
-        
-        self.spacerView = spacer;
     }
     {
         MenuItemSourceSearchBar *searchBar = [[MenuItemSourceSearchBar alloc] init];
@@ -108,14 +94,6 @@
     }
     
     [self reloadResults];
-}
-
-- (void)setHeaderViewsHidden:(BOOL)hidden
-{
-    if(self.headerView.hidden != hidden) {
-        self.headerView.hidden = hidden;
-        self.headerView.alpha = hidden ? 0.0 : 1.0;
-    }
 }
 
 - (void)setSelectedItemType:(MenuItemType)selectedItemType
@@ -143,6 +121,13 @@
         [self.stackView addArrangedSubview:view];
         [self.resultViews addObject:view];
     }
+}
+
+- (void)activateHeightConstraintForHeaderViewWithHeightAnchor:(NSLayoutAnchor *)heightAnchor;
+{
+    NSLayoutConstraint *heightConstraint = [self.headerView.heightAnchor constraintEqualToAnchor:heightAnchor];
+    heightConstraint.priority = UILayoutPriorityDefaultHigh;
+    heightConstraint.active = YES;
 }
 
 #pragma mark - MenuItemSourceHeaderViewDelegate
