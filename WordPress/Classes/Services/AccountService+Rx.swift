@@ -32,6 +32,7 @@ extension AccountService {
                         })
                         // A nil value here means the change didn't affect the current account
                         .filter({ $0 != nil })
+                        .startWith(defaultWordPressComAccountInMainContext())
                 } else {
                     // If the default account was removed, just send a nil value
                     return Observable.just(nil)
