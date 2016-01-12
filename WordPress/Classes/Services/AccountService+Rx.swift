@@ -23,7 +23,7 @@ extension AccountService {
                         .observeOn(MainScheduler.instance)
                         // Transform the notifications into the changed account if it changed
                         .map({ (note) -> WPAccount? in
-                            guard let updatedObjects = note.userInfo?[NSUpdatedObjectsKey] as? [NSManagedObject] else {
+                            guard let updatedObjects = note.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> else {
                                 return nil
                             }
 
