@@ -301,6 +301,24 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [WPStyleGuide configureSegmentedControl:self.filtersSegmentedControl];
 }
 
+- (void)showFiltersSegmentedControlIfApplicable
+{
+    if (!self.showsJetpackMessage && self.tableHeaderView.alpha == WPAlphaZero) {
+        [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
+            self.tableHeaderView.alpha = WPAlphaFull;
+        } completion:nil];
+    }
+}
+
+- (void)hideFiltersSegmentedControlIfApplicable
+{
+    if (self.showsJetpackMessage && self.tableHeaderView.alpha == WPAlphaFull) {
+        [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
+            self.tableHeaderView.alpha  = WPAlphaZero;
+        } completion:nil];
+    }
+}
+
 - (void)setupNotificationsBucketDelegate
 {
     Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
@@ -878,6 +896,10 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     // Remove If Needed
     if (self.tableViewHandler.resultsController.fetchedObjects.count) {
         [self.noResultsView removeFromSuperview];
+        
+        // Show filters if we have results
+        [self showFiltersSegmentedControlIfApplicable];
+        
         return;
     }
     
@@ -886,6 +908,9 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     if (!noResultsView.superview) {
         [self.tableView addSubviewWithFadeAnimation:noResultsView];
     }
+    
+    // Hide the filter header if we're showing the Jetpack prompt
+    [self hideFiltersSegmentedControlIfApplicable];
     
     // Refresh its properties: The user may have signed into WordPress.com
     noResultsView.titleText         = self.noResultsTitleText;
