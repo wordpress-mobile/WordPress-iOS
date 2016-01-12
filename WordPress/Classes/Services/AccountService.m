@@ -121,6 +121,12 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 }
 
++ (WPAccount *)defaultWordPressComAccountInMainContext {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:context];
+    return [service defaultWordPressComAccount];
+}
+
 ///-----------------------
 /// @name Account creation
 ///-----------------------
