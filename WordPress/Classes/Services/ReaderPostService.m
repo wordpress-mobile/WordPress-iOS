@@ -134,7 +134,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
 
-        // Define success block. Make sure work is performed on the main queue
+        // Define success block.
         NSNumber *postID = readerPost.postID;
         NSNumber *siteID = readerPost.siteID;
         void (^successBlock)() = ^void() {
@@ -155,7 +155,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         };
 
         // Define failure block. Make sure rollback happens in the moc's queue,
-        // and failure is called on the main queue.
         void (^failureBlock)(NSError *error) = ^void(NSError *error) {
             [self.managedObjectContext performBlockAndWait:^{
                 // Revert changes on failure
