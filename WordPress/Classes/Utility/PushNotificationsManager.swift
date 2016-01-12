@@ -158,24 +158,35 @@ final public class PushNotificationsManager : NSObject
     
     
     
-    // MARK: - Public Methods: Registration
+    // MARK: - Public Methods: Notification Handling
     
-    public func handleNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) {
-        let state = sharedApplication.applicationState
-        DDLogSwift.logVerbose("Received push notification:\nPayload: \(userInfo)\nCurrent Application state: \(state)");
+    
+    /// Handles a Remote Notification
+    ///
+    /// - Parameters:
+    ///     - userInfo: The Notification's Payload
+    ///     - applicationState: The current App's Execution state
+    ///     - completionHandler: A callback, to be executed on completion
+    ///
+    public func handleNotification(userInfo: NSDictionary, applicationState: UIApplicationState, completionHandler: (UIBackgroundFetchResult -> Void)?) {
+        
+        DDLogSwift.logVerbose("Received push notification:\nPayload: \(userInfo)\nCurrent Application state: \(applicationState)");
         
         // Badge Update
-        if let badgeCount = userInfo.numberForKeyPath("aps.badge") {
-            sharedApplication.applicationIconBadgeNumber = badgeCount.integerValue
+        if let badgeCountNumber = userInfo.numberForKeyPath(notificationBadgePath)?.integerValue {
+            sharedApplication.applicationIconBadgeNumber = badgeCountNumber
         }
         
         // Badge Reset
-        if userInfo.stringForKey("type") == "badge-reset" {
+        if let type = userInfo.stringForKey(notificationTypeKey) where type == notificationBadgeResetValue {
             return
         }
         
+        // Analytics
+        trackNotificationWithInfo(userInfo)
+        
         // Helpshift
-        if userInfo.stringForKey("origin") == "helpshift" {
+        if let origin = userInfo.stringForKey(notificationOriginKey) where origin == helpshiftOriginValue {
             WPAnalytics.track(.SupportReceivedResponseFromSupport)
             let rootViewController = UIApplication.sharedApplication().keyWindow?.rootViewController
             Helpshift.sharedInstance()?.handleRemoteNotification(userInfo as [NSObject : AnyObject], withController: rootViewController)
@@ -188,12 +199,64 @@ final public class PushNotificationsManager : NSObject
         // notifications when in BG mode.
         //
         let authenticationManager = PushAuthenticationManager()
-        if authenticationManager.isPushAuthenticationNotification(userInfo) && state == .Background {
-           authenticationManager.handlePushAuthenticationNotification(userInfo)
+        if authenticationManager.isPushAuthenticationNotification(userInfo) && applicationState == .Background{
+            authenticationManager.handlePushAuthenticationNotification(userInfo)
+            return
+        }
+        
+        // Notification: Switch to Foreground
+        if applicationState == .Inactive {
+            if let notificationId = userInfo.numberForKey(notificationIdentifierKey)?.stringValue {
+                WPTabBarController.sharedInstance().showNotificationsTabForNoteWithID(notificationId)
+            }
+            return
+        }
+        
+        // Notifications: Background Fetch
+        if applicationState == .Background {
+            let simperium = WordPressAppDelegate.sharedInstance().simperium
+            simperium.backgroundFetchWithCompletion({ (result: UIBackgroundFetchResult) in
+                if result == .NewData {
+                    DDLogSwift.logVerbose("Background Fetch Completed with New Data!")
+                } else {
+                    DDLogSwift.logVerbose("Background Fetch Completed with No Data..")
+                }
+                completionHandler?(result)
+            })
         }
     }
+
     
     
+    // MARK: - Private Methods: Notification Handling
+    
+    
+    /// Tracks a Notification Event
+    ///
+    /// - Parameters:
+    ///     - userInfo: The Notification's Payload
+    ///
+    private func trackNotificationWithInfo(userInfo: NSDictionary) {
+        var properties = [String : String]()
+        
+        if let noteId = userInfo.numberForKey(notificationIdentifierKey) {
+            properties[trackingIdentifierKey] = noteId.stringValue
+        }
+        
+        if let type = userInfo.stringForKey(notificationTypeKey) {
+            properties[trackingTypeKey] = type
+        }
+        
+        if let theToken = deviceToken {
+            properties[trackingTokenKey] = theToken
+        }
+        
+        let isBackground = sharedApplication.applicationState == .Background
+        let eventName = isBackground ? WPAnalyticsStat.PushNotificationReceived : WPAnalyticsStat.PushNotificationAlertPressed
+        WPAnalytics.track(eventName, withProperties: properties)
+    }
+
+
     
     // MARK: - Private Methods
     
@@ -244,7 +307,22 @@ final public class PushNotificationsManager : NSObject
     
     
     
-    // MARK: - Private Constants
-    private let deviceTokenKey  = "apnsDeviceToken"
-    private let deviceIdKey     = "notification_device_id"
+    // MARK: - Private Constants: Device Keys
+    private let deviceTokenKey              = "apnsDeviceToken"
+    private let deviceIdKey                 = "notification_device_id"
+
+    // MARK: - Private Constants: Notification Keys
+    private let notificationBadgePath       = "aps.badge"
+    private let notificationIdentifierKey   = "note_id"
+    private let notificationTypeKey         = "type"
+    private let notificationOriginKey       = "origin"
+    private let notificationBadgeResetValue = "badge-reset"
+    
+    // MARK: - Private Constants: Helpshift
+    private let helpshiftOriginValue        = "helpshift"
+    
+    // MARK: - Private Constants: Tracking
+    private let trackingIdentifierKey       = "push_notification_note_id"
+    private let trackingTypeKey             = "push_notification_type"
+    private let trackingTokenKey            = "push_notification_token"
 }
