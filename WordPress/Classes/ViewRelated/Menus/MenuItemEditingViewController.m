@@ -9,17 +9,30 @@
 static CGFloat const MenuItemEditingFooterViewDefaultHeight = 60.0;
 static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
+typedef NS_ENUM(NSUInteger) {
+    MenuItemEditingViewControllerContentLayoutDisplaysTypeView = 1,
+    MenuItemEditingViewControllerContentLayoutDisplaysSourceView,
+    MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews,
+}MenuItemEditingViewControllerContentLayout;
+
 @interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *footerViewHeightConstraint;
+@property (nonatomic, strong) IBOutlet UIView *contentView;
 
 @property (nonatomic, strong) IBOutlet MenuItemEditingHeaderView *headerView;
 @property (nonatomic, strong) IBOutlet MenuItemEditingFooterView *footerView;
 @property (nonatomic, strong) IBOutlet MenuItemTypeSelectionView *typeView;
 @property (nonatomic, strong) IBOutlet MenuItemSourceView *sourceView;
 @property (nonatomic, weak) IBOutlet UIScrollView *sourceScrollView;
+
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *stackViewBottomConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *footerViewHeightConstraint;
+
+@property (nonatomic, assign) MenuItemEditingViewControllerContentLayout contentLayout;
+@property (nonatomic, strong) NSArray *layoutConstraintsForDisplayingTypeView;
+@property (nonatomic, strong) NSArray *layoutConstraintsForDisplayingSourceView;
+@property (nonatomic, strong) NSArray *layoutConstraintsForDisplayingSourceAndTypeViews;
 
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
 @property (nonatomic, assign) BOOL sourceViewIsTyping;
@@ -61,6 +74,8 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     self.footerView.delegate = self;
     
     [self.stackView bringSubviewToFront:self.headerView];
+    
+    [self loadContentLayoutConstraints];
     [self updateSourceAndEditingViewsAvailability:NO];
 }
 
@@ -106,6 +121,34 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     [super traitCollectionDidChange:previousTraitCollection];
     
     [self updateForLayoutChange];
+}
+
+- (void)loadContentLayoutConstraints
+{
+    {
+        self.layoutConstraintsForDisplayingTypeView = @[
+                                                        [self.typeView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
+                                                        [self.typeView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
+                                                        [self.sourceView.leadingAnchor constraintEqualToAnchor:self.typeView.trailingAnchor],
+                                                        [self.sourceView.widthAnchor constraintEqualToAnchor:self.contentView.widthAnchor]
+                                                        ];
+    }
+    {
+        self.layoutConstraintsForDisplayingSourceView = @[
+                                                          [self.typeView.trailingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
+                                                          [self.typeView.widthAnchor constraintEqualToAnchor:self.contentView.widthAnchor],
+                                                          [self.sourceView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
+                                                          [self.sourceView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor]
+                                                          ];
+    }
+    {
+        self.layoutConstraintsForDisplayingSourceAndTypeViews = @[
+                                                                  [self.typeView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
+                                                                  [self.typeView.widthAnchor constraintEqualToConstant:180.0],
+                                                                  [self.sourceView.leadingAnchor constraintEqualToAnchor:self.typeView.trailingAnchor],
+                                                                  [self.sourceView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor]
+                                                                  ];
+    }
 }
 
 - (BOOL)shouldDisplayForCompactWidth
@@ -160,11 +203,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     }
     
     [self.sourceView setHeaderViewsHidden:NO];
-    
-    if(!self.typeView.hidden) {
-        self.typeView.hidden = YES;
-        self.typeView.alpha = 0.0;
-    }
+    [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
     
     if(IS_IPHONE) {
         self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewDefaultHeight;
@@ -180,15 +219,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
             self.headerView.alpha = 0.0;
         }
         
-        if(!self.typeView.hidden) {
-            self.typeView.hidden = YES;
-            self.typeView.alpha = 0.0;
-        }
-        
-        if(self.sourceView.hidden) {
-            self.sourceView.hidden = NO;
-            self.sourceView.alpha = 1.0;
-        }
+        [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
         
     }else {
         
@@ -198,15 +229,7 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
             [self.headerView setNeedsDisplay];
         }
         
-        if(self.typeView.hidden) {
-            self.typeView.hidden = NO;
-            self.typeView.alpha = 1.0;
-        }
-        
-        if(self.sourceView.hidden) {
-            self.sourceView.hidden = NO;
-            self.sourceView.alpha = 1.0;
-        }
+        [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
     }
     
     [self.sourceView setHeaderViewsHidden:YES];
@@ -230,39 +253,80 @@ static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
     }
 }
 
+- (void)setContentLayout:(MenuItemEditingViewControllerContentLayout)contentLayout
+{
+    if(_contentLayout != contentLayout) {
+        
+        switch (_contentLayout) {
+            case MenuItemEditingViewControllerContentLayoutDisplaysTypeView:
+            {
+                [NSLayoutConstraint deactivateConstraints:self.layoutConstraintsForDisplayingTypeView];
+                break;
+            }
+            case MenuItemEditingViewControllerContentLayoutDisplaysSourceView:
+            {
+                [NSLayoutConstraint deactivateConstraints:self.layoutConstraintsForDisplayingSourceView];
+                break;
+            }
+            case MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews:
+            {
+                [NSLayoutConstraint deactivateConstraints:self.layoutConstraintsForDisplayingSourceAndTypeViews];
+                break;
+            }
+        }
+        
+        _contentLayout = contentLayout;
+        
+        switch (contentLayout) {
+            case MenuItemEditingViewControllerContentLayoutDisplaysTypeView:
+            {
+                [NSLayoutConstraint activateConstraints:self.layoutConstraintsForDisplayingTypeView];
+                break;
+            }
+            case MenuItemEditingViewControllerContentLayoutDisplaysSourceView:
+            {
+                [NSLayoutConstraint activateConstraints:self.layoutConstraintsForDisplayingSourceView];
+                break;
+            }
+            case MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews:
+            {
+                [NSLayoutConstraint activateConstraints:self.layoutConstraintsForDisplayingSourceAndTypeViews];
+                break;
+            }
+        }
+    }
+}
+
 - (void)updateForShowingTypeSelectionCompact
 {
-    [UIView animateWithDuration:0.20 animations:^{
+    [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeView];
+    [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         
-        if(self.typeView.hidden) {
-            self.typeView.hidden = NO;
-            self.typeView.alpha = 1.0;
-        }
+        [self.contentView layoutIfNeeded];
         
-        if(!self.sourceView.hidden) {
-            self.sourceView.hidden = YES;
-            self.sourceView.alpha = 0.0;
-        }
-    }];
+    } completion:nil];
 }
 
 - (void)updateForHidingTypeSelection
 {
-    [UIView animateWithDuration:0.20 animations:^{
-
-        if(!self.typeView.hidden) {
-            if([self shouldDisplayForCompactWidth]) {
-                [self.sourceView setHeaderViewsHidden:NO];
-                self.typeView.hidden = YES;
-                self.typeView.alpha = 0.0;
-            }
-        }
+    BOOL hideTypeView = NO;
+    
+    if([self shouldDisplayForCompactWidth]) {
+        [self.sourceView setHeaderViewsHidden:NO];
+        hideTypeView = YES;
+    }
+    
+    if(hideTypeView) {
+        [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
+    }else {
+        [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
+    }
+    
+    [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         
-        if(self.sourceView.hidden) {
-            self.sourceView.hidden = NO;
-            self.sourceView.alpha = 1.0;
-        }
-    }];
+        [self.contentView layoutIfNeeded];
+        
+    } completion:nil];
 }
 
 #pragma mark - MenuItemTypeSelectionViewDelegate
