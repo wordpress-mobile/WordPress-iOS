@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 44 (@aerych 2016-01-11)
+
+- Added `PublicizeService` entity. Represents third-party services available to Publicize
+- Added `PublicizeConnection` entity. Represents a connection between a blog and a third-party Publicize service.
+- `Blog` added a new relationship called `connections`. These are the PublicizeConnections for the blog.
+
 ## WordPress 43 (@aerych 2015-12-07)
 
 - `ReaderPost` added new integer64 called `feedID` to store a post's feed ID if it exists.

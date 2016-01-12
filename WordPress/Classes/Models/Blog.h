@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSSet *posts;
 @property (nonatomic, strong, readwrite) NSSet *categories;
 @property (nonatomic, strong, readwrite) NSSet *comments;
+@property (nonatomic, strong, readwrite) NSSet *connections;
 @property (nonatomic, strong, readwrite) NSSet *themes;
 @property (nonatomic, strong, readwrite) NSSet *media;
 @property (nonatomic, strong, readwrite) NSString *currentThemeId;
