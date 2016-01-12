@@ -94,9 +94,9 @@
     button.titleLabel.font = [WPStyleGuide subtitleFont];
     [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
     [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
-    button.imageEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 3.0);
+    
+    [self applyHorizontalSpacing:3.0 toButton:button];
 }
-
 
 #pragma mark - Attributed String Attributes
 
@@ -200,7 +200,21 @@
     button.titleLabel.font = [WPFontManager openSansSemiBoldFontOfSize:fontSize];
     [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
     [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
-    button.imageEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 3.0);
+
+    [self applyHorizontalSpacing:3.0 toButton:button];
+}
+
+#pragma mark - Helpers
+
++ (void)applyHorizontalSpacing:(CGFloat)spacing toButton:(UIButton *)button
+{
+    // Insets required to create specified spacing between image and text with no truncation
+    // as per http://stackoverflow.com/a/25559946
+    CGFloat insetAmount = spacing / 2.0;
+    
+    button.imageEdgeInsets = UIEdgeInsetsMake(0.0, -insetAmount, 0.0, insetAmount);
+    button.titleEdgeInsets = UIEdgeInsetsMake(0.0, insetAmount, 0.0, -insetAmount);
+    button.contentEdgeInsets = UIEdgeInsetsMake(0.0, insetAmount, 0.0, insetAmount);
 }
 
 @end
