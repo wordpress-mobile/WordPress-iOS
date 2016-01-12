@@ -128,11 +128,6 @@ int ddLogLevel                                                  = DDLogLevelInfo
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
-    // Launched by tapping a notification
-    if (application.applicationState == UIApplicationStateActive) {
-        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
-    }
-
     [self.window makeKeyAndVisible];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
@@ -378,7 +373,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
     [WPFontManager merriweatherRegularFontOfSize:16.0];
 
     [self customizeAppearance];
-    
+
     // Notifications
     [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
     [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];

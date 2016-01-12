@@ -15,7 +15,6 @@
 
 #import <Helpshift/Helpshift.h>
 #import <Simperium/Simperium.h>
-#import <Mixpanel/Mixpanel.h>
 #import "Blog.h"
 #import "WPAnalyticsTrackerWPCom.h"
 
@@ -61,10 +60,6 @@ static NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
         return;
     }
     
-    if ([[userInfo stringForKey:@"origin"] isEqualToString:@"mp"]) {
-        [self handleMixpanelPushNotification:userInfo];
-        return;
-    }
     
     // WordPress.com Push Authentication Notification
     // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
@@ -117,41 +112,6 @@ static NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
                 completionHandler(result);
             }];
         }
-    }
-}
-
-+ (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions
-{
-    NSDictionary *remoteNotif = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-    if (remoteNotif) {
-        DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
-        [[WPTabBarController sharedInstance] showNotificationsTab];
-    }
-}
-
-
-
-#pragma mark - Mixpanel A/B Tests
-
-+ (void)handleMixpanelPushNotification:(NSDictionary *)userInfo
-{
-    NSString *targetToOpen = [userInfo stringForKey:@"open"];
-    if ([targetToOpen isEqualToString:@"reader"]) {
-        [[WPTabBarController sharedInstance] showReaderTab];
-    } else if ([targetToOpen isEqualToString:@"notifications"]) {
-        [[WPTabBarController sharedInstance] showNotificationsTab];
-    } else if ([targetToOpen isEqualToString:@"stats"]) {
-        [self openStatsForLastUsedOrFirstWPComBlog];
-    }
-}
-
-+ (void)openStatsForLastUsedOrFirstWPComBlog
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog = [blogService lastUsedOrFirstBlogThatSupports:BlogFeatureStats];
-    if (blog != nil) {
-        [[WPTabBarController sharedInstance] switchMySitesTabToStatsViewForBlog:blog];
     }
 }
 
