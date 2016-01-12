@@ -41,6 +41,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
 @property (nonatomic, weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
+@property (nonatomic, strong) UIBarButtonItem *searchButton;
 
 @property (nonatomic) NSDate *firstHide;
 @property (nonatomic) NSInteger hideCount;
@@ -82,11 +83,15 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     self.addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                    target:self
                                                                                    action:@selector(addSite)];
-    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
-                                                                     style:UIBarButtonItemStylePlain
-                                                                    target:self
-                                                                    action:@selector(toggleSearch)];
-    [self.navigationItem setRightBarButtonItems:@[self.addSiteButton, searchButton]];
+    
+    self.searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(toggleSearch)];
+
+    self.navigationItem.rightBarButtonItems = @[ self.addSiteButton, self.searchButton ];
+
+    self.navigationItem.title = NSLocalizedString(@"My Sites", @"");
 }
 
 - (NSString *)modelIdentifierForElementAtIndexPath:(NSIndexPath *)indexPath inView:(UIView *)view
@@ -232,7 +237,10 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     if ([blogService blogCountForAllAccounts] <= 1) {
-        self.navigationItem.rightBarButtonItem = nil;
+        // Hide the search button if there's only one blog
+        self.navigationItem.rightBarButtonItems = @[ self.addSiteButton ];
+    } else {
+        self.navigationItem.rightBarButtonItems = @[ self.addSiteButton, self.searchButton ];
     }
 }
 
