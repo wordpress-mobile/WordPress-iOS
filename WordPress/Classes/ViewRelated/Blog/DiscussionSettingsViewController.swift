@@ -364,8 +364,8 @@ public class DiscussionSettingsViewController : UITableViewController
         let blacklistKeys                       = settings.commentsBlacklistKeys
         let settingsViewController              = SettingsListEditorViewController(collection: blacklistKeys)
         settingsViewController.title            = NSLocalizedString("Blacklist", comment: "Blacklist Title")
-        settingsViewController.insertTitle      = NSLocalizedString("New Blacklist Key", comment: "Blacklist Keyword Insertion Title")
-        settingsViewController.editTitle        = NSLocalizedString("Edit Blacklist Key", comment: "Blacklist Keyword Edition Title")
+        settingsViewController.insertTitle      = NSLocalizedString("New Blacklist Word", comment: "Blacklist Keyword Insertion Title")
+        settingsViewController.editTitle        = NSLocalizedString("Edit Blacklist Word", comment: "Blacklist Keyword Edition Title")
         settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".",
                                                                     comment: "Text rendered at the bottom of the Discussion Blacklist Keys editor")
         settingsViewController.onChange         = { [weak self] (updated: Set<String>) in
