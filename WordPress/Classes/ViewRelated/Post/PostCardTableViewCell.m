@@ -503,6 +503,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf trashPostAction];
     };
+    item.imageInsets = ActionbarButtonImageInsets;
     [items addObject:item];
 
     [self.actionBar setItems:items];
