@@ -184,10 +184,9 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 #pragma mark - Data Model setup
 
 
-- (NSArray *)configureTableViewData
+- (void)configureTableViewData
 {
     NSMutableArray *marr = [NSMutableArray array];
-
     [marr addObject:[self generalSectionViewModel]];
     [marr addObject:[self publishTypeSectionViewModel]];
     if ([self.blog supports:BlogFeatureThemeBrowsing]) {
@@ -195,7 +194,8 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     }
     [marr addObject:[self configurationSectionViewModel]];
 
-    return marr;
+    // Assign non mutable copy.
+    self.tableSections = [NSArray arrayWithArray:marr];
 }
 
 - (BlogDetailsSection *)generalSectionViewModel
