@@ -75,7 +75,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (instancetype)initWithBlog:(Blog *)blog
 {
-    self = [super initWithNibName:nil bundle:nil];
+    self = [self init];
     if (self) {
         _blog = blog;
         _showFullScreen = YES;
