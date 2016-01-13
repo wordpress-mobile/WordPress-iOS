@@ -5,11 +5,10 @@
 
 @implementation PostCategoryServiceRemoteXMLRPC
 
-- (void)getCategoriesForBlogID:(NSNumber *)blogID
-                       success:(void (^)(NSArray *categories))success
-                       failure:(void (^)(NSError *error))failure
+- (void)getCategoriesWithSuccess:(void (^)(NSArray *categories))success
+                         failure:(void (^)(NSError *error))failure
 {
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:@"category"];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:@"category"];
     [self.api callMethod:@"wp.getTerms"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -25,7 +24,6 @@
 }
 
 - (void)createCategory:(RemotePostCategory *)category
-             forBlogID:(NSNumber *)blogID
                success:(void (^)(RemotePostCategory *))success
                failure:(void (^)(NSError *))failure
 {
@@ -34,7 +32,7 @@
                                       @"parent_id" : category.parentID ?: @0,
                                       @"taxonomy" : @"category",
                                       };
-    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:extraParameters];
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:extraParameters];
 
 
     [self.api callMethod:@"wp.newTerm"
