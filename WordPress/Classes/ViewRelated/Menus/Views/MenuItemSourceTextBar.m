@@ -9,7 +9,6 @@
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIStackView *contentStackView;
 @property (nonatomic, strong) UITextField *textField;
-@property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, strong) UILabel *cancelLabel;
 
 @end
@@ -80,16 +79,16 @@
             UIImageView *iconView = [[UIImageView alloc] init];
             iconView.translatesAutoresizingMaskIntoConstraints = NO;
             iconView.tintColor = [WPStyleGuide greyDarken30];
-            iconView.image = [[UIImage imageNamed:@"icon-menus-search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             iconView.contentMode = UIViewContentModeScaleAspectFit;
             
             [self.contentStackView addArrangedSubview:iconView];
             
-            [NSLayoutConstraint activateConstraints:@[
-                                                      [iconView.widthAnchor constraintEqualToConstant:14.0],
-                                                      ]];
+            NSLayoutConstraint *width = [iconView.widthAnchor constraintEqualToConstant:14.0];
+            width.priority = 999;
+            width.active = YES;
             
-            self.iconView = iconView;
+            iconView.hidden = YES;
+            _iconView = iconView;
         }
         {
             UITextField *textField = [[UITextField alloc] init];
@@ -102,9 +101,6 @@
             [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventValueChanged];
             
             UIFont *font = [WPFontManager openSansRegularFontOfSize:16.0];
-            NSString *placeholder = NSLocalizedString(@"Search...", @"Menus search bar placeholder text.");
-            NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [WPStyleGuide greyLighten10]};
-            textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:attributes];
             textField.font = font;
             
             [self.contentStackView addArrangedSubview:textField];
@@ -115,7 +111,7 @@
         }
         {
             UILabel *label = [[UILabel alloc] init];
-            label.text = NSLocalizedString(@"Cancel", @"Menus cancel button for searching items.");
+            label.text = NSLocalizedString(@"Cancel", @"Menus cancel button within text bar while editing items.");
             label.textColor = [WPStyleGuide greyDarken20];
             label.font = [WPFontManager openSansRegularFontOfSize:14.0];
             label.userInteractionEnabled = YES;
@@ -134,9 +130,35 @@
     return self;
 }
 
+- (id)initAsSearchBar
+{
+    self = [self init];
+    if(self) {
+        
+        self.iconView.image = [[UIImage imageNamed:@"icon-menus-search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.iconView.hidden = NO;
+        
+        UIFont *font = [WPFontManager openSansRegularFontOfSize:16.0];
+        NSString *placeholder = NSLocalizedString(@"Search...", @"Menus search bar placeholder text.");
+        NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [WPStyleGuide greyLighten10]};
+        self.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:attributes];
+    }
+    
+    return self;
+}
+
+- (BOOL)isFirstResponder
+{
+    return [self.textField isFirstResponder];
+}
+
 - (BOOL)resignFirstResponder
 {
-    return [self.textField resignFirstResponder];
+    if([self.textField isFirstResponder]) {
+        return [self.textField resignFirstResponder];
+    }
+    
+    return [super resignFirstResponder];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection

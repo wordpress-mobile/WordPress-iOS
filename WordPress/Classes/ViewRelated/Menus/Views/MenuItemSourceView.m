@@ -46,7 +46,9 @@
 
 - (BOOL)resignFirstResponder
 {
-    [self.searchBar resignFirstResponder];
+    if([self.searchBar isFirstResponder]) {
+        return [self.searchBar resignFirstResponder];
+    }
     return [super resignFirstResponder];
 }
 
@@ -56,7 +58,7 @@
         return;
     }
     
-    MenuItemSourceTextBar *searchBar = [[MenuItemSourceTextBar alloc] init];
+    MenuItemSourceTextBar *searchBar = [[MenuItemSourceTextBar alloc] initAsSearchBar];
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     searchBar.delegate = self;
     [self.stackView addArrangedSubview:searchBar];
