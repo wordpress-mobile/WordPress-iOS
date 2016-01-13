@@ -7,11 +7,13 @@
 
 @property (nonatomic, weak) id <MenuItemTypeSelectionViewDelegate> delegate;
 
+- (void)updateDesignForLayoutChangeIfNeeded;
+
 @end
 
 @protocol MenuItemTypeSelectionViewDelegate <NSObject>
 
 - (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(MenuItemType)itemType;
-- (BOOL)itemTypeSelectionViewRequiresCompactLayout:(MenuItemTypeSelectionView *)typeSelectionView;
+- (BOOL)itemTypeSelectionViewRequiresFullSizedLayout:(MenuItemTypeSelectionView *)typeSelectionView;
 
 @end
