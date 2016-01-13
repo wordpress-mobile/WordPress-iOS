@@ -494,20 +494,11 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)showPrivacySelector
 {
-    NSArray *values = @[ @(SiteVisibilityPublic), @(SiteVisibilityHidden), @(SiteVisibilityPrivate)];
-    NSMutableArray *titles = [NSMutableArray array];
-    for (NSNumber * value in values) {
-        [titles addObject:[BlogSiteVisibilityHelper textForSiteVisibility:[value integerValue]]];
-    }
-    NSArray *hints = @[
-                       NSLocalizedString(@"Your site is visible to everyone, and it may be indexed by search engines.",
-                                         @"Hint for users when public privacy setting is set"),
-                       NSLocalizedString(@"Your site is visible to everyone, but asks search engines not to index your site.",
-                                         @"Hint for users when hidden privacy setting is set"),
-                       NSLocalizedString(@"Your site is only visible to you and users you approve.",
-                                         @"Hint for users when private privacy setting is set"),
-                       ];
 
+    NSArray *values = [BlogSiteVisibilityHelper siteVisibilityValuesForBlog:self.blog];
+    NSArray *titles = [BlogSiteVisibilityHelper titlesForSiteVisibilityValues:values];
+    NSArray *hints  = [BlogSiteVisibilityHelper hintsForSiteVisibilityValues:values];
+   
     NSNumber *currentPrivacy = @(self.blog.siteVisibility);
     if (!currentPrivacy) {
         currentPrivacy = [values firstObject];
