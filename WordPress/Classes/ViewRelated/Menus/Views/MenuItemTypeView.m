@@ -14,6 +14,11 @@
 
 @implementation MenuItemTypeView
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (id)init
 {
     self = [super init];
@@ -95,6 +100,8 @@
             self.arrowView = iconView;
         }
         
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChangeNotification:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tellDelegateTypeWasSelected)];
         [self addGestureRecognizer:tap];
     }
@@ -130,7 +137,7 @@
 - (void)updateSelection
 {
     self.label.textColor = self.drawsSelected ? [WPStyleGuide mediumBlue] : [WPStyleGuide greyDarken30];
-    if(self.drawsSelected) {
+    if(self.drawsSelected && ![self.delegate typeViewRequiresCompactLayout:self]) {
         [self showArrowView];
     }else {
         [self hideArrowView];
@@ -229,6 +236,13 @@
 - (void)tellDelegateTypeWasSelected
 {
     [self.delegate typeViewPressedForSelection:self];
+}
+
+#pragma mark - notifications
+
+- (void)deviceOrientationDidChangeNotification:(NSNotification *)notification
+{
+    [self updateSelection];
 }
 
 @end

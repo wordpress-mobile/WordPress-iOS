@@ -107,4 +107,9 @@
     [self tellDelegateTypeChanged:typeView.itemType];
 }
 
+- (BOOL)typeViewRequiresCompactLayout:(MenuItemTypeView *)typeView
+{
+    return [self.delegate itemTypeSelectionViewRequiresCompactLayout:self];
+}
+
 @end
