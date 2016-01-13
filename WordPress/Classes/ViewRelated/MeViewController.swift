@@ -44,7 +44,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
-        _ = AccountService.defaultAccountChanged
+
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        _ = service.defaultAccountChanged
             .takeUntil(rx_deallocated)
             .subscribeNext({ [unowned self] _ in
                 self.reloadViewModel()
