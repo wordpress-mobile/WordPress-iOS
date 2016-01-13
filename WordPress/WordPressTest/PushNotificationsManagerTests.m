@@ -33,30 +33,30 @@
 
 - (void)testPushNotificationsDisabledInSettingsWhenRegisteredTypeIsNone
 {
-    id mockSettings = [OCMockObject partialMockForObject:[[UIApplication sharedApplication] currentUserNotificationSettings]];
-    [[[mockSettings stub] andReturnValue:OCMOCK_VALUE(UIUserNotificationTypeNone)] types];
+    id mockSettings = OCMPartialMock([[UIApplication sharedApplication] currentUserNotificationSettings]);
+    [OCMStub([mockSettings types]) andReturnValue:OCMOCK_VALUE(UIUserNotificationTypeNone)];
     
-    id mockApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-    [[[mockApplication stub] andReturn:mockSettings] currentUserNotificationSettings];
+    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
+    [OCMStub([mockApplication currentUserNotificationSettings]) andReturn:mockSettings];
     
     PushNotificationsManager *manager = [PushNotificationsManager new];
-    id mockManager = [OCMockObject partialMockForObject:manager];
-    [[[mockManager stub] andReturn:mockApplication] sharedApplication];
+    id mockManager = OCMPartialMock(manager);
+    [OCMStub([mockManager sharedApplication]) andReturn:mockApplication];
 
     XCTAssertFalse([mockManager notificationsEnabledInDeviceSettings]);
 }
 
 - (void)testPushNotificationsEnabledInSettingsWhenRegisteredTypeIsAlert
 {
-    id mockSettings = [OCMockObject partialMockForObject:[[UIApplication sharedApplication] currentUserNotificationSettings]];
-    [[[mockSettings stub] andReturnValue:OCMOCK_VALUE(UIUserNotificationTypeAlert)] types];
+    id mockSettings = OCMPartialMock([[UIApplication sharedApplication] currentUserNotificationSettings]);
+    [OCMStub([mockSettings types]) andReturnValue:OCMOCK_VALUE(UIUserNotificationTypeAlert)];
     
-    id mockApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-    [[[mockApplication stub] andReturn:mockSettings] currentUserNotificationSettings];
+    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
+    [OCMStub([mockApplication currentUserNotificationSettings]) andReturn:mockSettings];
     
     PushNotificationsManager *manager = [PushNotificationsManager new];
-    id mockManager = [OCMockObject partialMockForObject:manager];
-    [[[mockManager stub] andReturn:mockApplication] sharedApplication];
+    id mockManager = OCMPartialMock(manager);
+    [OCMStub([mockManager sharedApplication]) andReturn:mockApplication];
     
     XCTAssertTrue([mockManager notificationsEnabledInDeviceSettings]);
 }
@@ -67,17 +67,17 @@
     // PushNotifications registration methods don't crash the sim, anymore, as per iOS 9.
     // We'll override the check just for evil unit testing purposes.
     
-    id mockApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-    [[mockApplication expect] registerForRemoteNotifications];
+    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
+    OCMExpect([mockApplication registerForRemoteNotifications]);
     
-    [[[mockApplication stub] andReturnValue:OCMOCK_VALUE(false)] isRunningSimulator];
+    [OCMStub([mockApplication isRunningSimulator]) andReturnValue:OCMOCK_VALUE(false)];
     
     PushNotificationsManager *manager = [PushNotificationsManager new];
-    id mockManager = [OCMockObject partialMockForObject:manager];
-    [[[mockManager stub] andReturn:mockApplication] sharedApplication];
+    id mockManager = OCMPartialMock(manager);
+    [OCMStub([mockManager sharedApplication]) andReturn:mockApplication];
     
     [mockManager registerForRemoteNotifications];
-    [mockApplication verify];
+    OCMVerify(mockApplication);
 }
 
 - (void)testHandleNotificationUpdatesApplicationBadgeNumber
@@ -85,23 +85,23 @@
     NSInteger badgeCount = 5;
     NSDictionary *userInfo = @{ @"aps" : @{ @"badge" : @(badgeCount) }};
     
-    id mockApplication = [OCMockObject partialMockForObject:[UIApplication sharedApplication]];
-    [[mockApplication expect] setApplicationIconBadgeNumber:5];
+    id mockApplication = OCMPartialMock([UIApplication sharedApplication]);
+    OCMExpect([mockApplication setApplicationIconBadgeNumber:5]);
     
     PushNotificationsManager *manager = [PushNotificationsManager new];
-    id mockManager = [OCMockObject partialMockForObject:manager];
-    [[[mockManager stub] andReturn:mockApplication] sharedApplication];
-    [[[mockManager stub] andReturn:@(UIApplicationStateActive)] applicationState];
+    id mockManager = OCMPartialMock(manager);
+    [OCMStub([mockManager sharedApplication]) andReturn:mockApplication];
+    [OCMStub([mockManager applicationState]) andReturnValue:OCMOCK_VALUE(UIApplicationStateActive)];
     
     [mockManager handleNotification:userInfo completionHandler:nil];
-    [mockApplication verify];
+    OCMVerify(mockManager);
 }
 
 - (void)testBadgeResetNotificationDoesntAttemptToHandleAnyNotificationKind
 {
     NSDictionary *userInfo = @{ @"type" : @"badge-reset"};
     PushNotificationsManager *manager = [PushNotificationsManager new];
-    id mockManager = [OCMockObject partialMockForObject:manager];
+    id mockManager = OCMPartialMock(manager);
     
     [[mockManager reject] handleAuthenticationNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
     [[mockManager reject] handleHelpshiftNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
@@ -109,14 +109,14 @@
     [[mockManager reject] handleBackgroundNotification:OCMOCK_ANY completionHandler:OCMOCK_ANY];
     
     [mockManager handleNotification:userInfo completionHandler:nil];
-    [mockManager verify];
+    OCMVerify(mockManager);
 }
 
 - (void)testHelpshiftNotificationIsProperlyHandled
 {
     NSDictionary *userInfo = @{ @"origin" : @"helpshift" };
     PushNotificationsManager *manager = [PushNotificationsManager new];
-    id mockManager = [OCMockObject partialMockForObject:manager];
+    id mockManager = OCMPartialMock(manager);
     
     XCTAssertTrue([mockManager handleHelpshiftNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
     XCTAssertFalse([mockManager handleAuthenticationNotification:userInfo completionHandler:nil], @"Error handling Helpshift");
@@ -125,14 +125,14 @@
     
     OCMExpect([manager handleHelpshiftNotification:userInfo completionHandler:nil]);
     [mockManager handleNotification:userInfo completionHandler:nil];
-    [mockManager verify];
+    OCMVerify(mockManager);
 }
 
 - (void)testPushAuthenticationNotificationIsHandledWhileInBackgroundMode
 {
     NSDictionary *userInfo = @{ @"type" : @"push_auth" };
     PushNotificationsManager *manager = [PushNotificationsManager new];
-    id mockManager = [OCMockObject partialMockForObject:manager];
+    id mockManager = OCMPartialMock(manager);
     
     XCTAssertTrue([mockManager handleAuthenticationNotification:userInfo completionHandler:nil], @"Error handling PushAuth");
     XCTAssertFalse([mockManager handleHelpshiftNotification:userInfo completionHandler:nil], @"Error handling PushAuth");
@@ -141,6 +141,6 @@
     
     OCMExpect([manager handleAuthenticationNotification:userInfo completionHandler:nil]);
     [mockManager handleNotification:userInfo completionHandler:nil];
-    [mockManager verify];
+    OCMVerify(mockManager);
 }
 @end
