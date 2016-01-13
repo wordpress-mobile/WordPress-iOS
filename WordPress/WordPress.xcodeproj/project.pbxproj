@@ -51,6 +51,7 @@
 		082E73B41BB341B900DA77AE /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73AA1BB341B900DA77AE /* Menu.m */; };
 		082E73B61BB341B900DA77AE /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73AE1BB341B900DA77AE /* MenuItem.m */; };
 		082E73B81BB341B900DA77AE /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 082E73B21BB341B900DA77AE /* MenuLocation.m */; };
+		0844F5581C46EB9E00E95433 /* MenuItemCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0844F5571C46EB9E00E95433 /* MenuItemCheckButtonView.m */; };
 		08537F741C45B44E006A7514 /* MenuItemSourceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08537F731C45B44E006A7514 /* MenuItemSourceView.m */; };
 		08537F771C45B80F006A7514 /* MenuItemSourcePageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08537F761C45B80F006A7514 /* MenuItemSourcePageView.m */; };
 		08537F7A1C45BC49006A7514 /* MenuItemSourceLinkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08537F791C45BC49006A7514 /* MenuItemSourceLinkView.m */; };
@@ -772,6 +773,8 @@
 		082E73AE1BB341B900DA77AE /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItem.m; sourceTree = "<group>"; };
 		082E73B11BB341B900DA77AE /* MenuLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLocation.h; sourceTree = "<group>"; };
 		082E73B21BB341B900DA77AE /* MenuLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuLocation.m; sourceTree = "<group>"; };
+		0844F5561C46EB9E00E95433 /* MenuItemCheckButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemCheckButtonView.h; sourceTree = "<group>"; };
+		0844F5571C46EB9E00E95433 /* MenuItemCheckButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemCheckButtonView.m; sourceTree = "<group>"; };
 		08537F721C45B44E006A7514 /* MenuItemSourceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceView.h; sourceTree = "<group>"; };
 		08537F731C45B44E006A7514 /* MenuItemSourceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceView.m; sourceTree = "<group>"; };
 		08537F751C45B80F006A7514 /* MenuItemSourcePageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourcePageView.h; sourceTree = "<group>"; };
@@ -2039,6 +2042,8 @@
 				08B0566F1C1BCEE500256F77 /* MenuItemSourceTextBar.m */,
 				08EEA0B71C20C013001346B9 /* MenuItemSourceResultView.h */,
 				08EEA0B81C20C013001346B9 /* MenuItemSourceResultView.m */,
+				0844F5561C46EB9E00E95433 /* MenuItemCheckButtonView.h */,
+				0844F5571C46EB9E00E95433 /* MenuItemCheckButtonView.m */,
 			);
 			name = "Item Source";
 			sourceTree = "<group>";
@@ -4865,6 +4870,7 @@
 				B580E4791AEA91000091A094 /* UIViewController+Helpers.swift in Sources */,
 				85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */,
 				937F3E321AD6FDA7006BA498 /* WPAnalyticsTrackerAutomatticTracks.m in Sources */,
+				0844F5581C46EB9E00E95433 /* MenuItemCheckButtonView.m in Sources */,
 				B54E1DF01A0A7BAA00807537 /* ReplyBezierView.swift in Sources */,
 				5DF738941965FAB900393584 /* SubscribedTopicsViewController.m in Sources */,
 				596C035E1B84F21D00899EEB /* ThemeBrowserViewController.swift in Sources */,

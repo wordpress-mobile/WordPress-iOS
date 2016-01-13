@@ -5,6 +5,9 @@
 @interface MenuItemSourceTextBar : UIView
 
 @property (nonatomic, weak) id <MenuItemSourceTextBarDelegate> delegate;
+@property (nonatomic, strong, readonly) UIImageView *iconView;
+
+- (id)initAsSearchBar;
 
 @end
 
