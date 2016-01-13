@@ -42,7 +42,8 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
 @interface Blog : NSManagedObject
 
-@property (nonatomic, strong, readwrite) NSNumber *blogID;
+@property (nonatomic, strong, readwrite) NSNumber *blogID __deprecated_msg("Use dotComID instead");
+@property (nonatomic, strong, readwrite) NSNumber *dotComID;
 @property (nonatomic, strong, readwrite) NSString *xmlrpc;
 @property (nonatomic, strong, readwrite) NSString *apiKey;
 @property (nonatomic, strong, readwrite) NSNumber *hasOlderPosts;
@@ -50,6 +51,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSSet *posts;
 @property (nonatomic, strong, readwrite) NSSet *categories;
 @property (nonatomic, strong, readwrite) NSSet *comments;
+@property (nonatomic, strong, readwrite) NSSet *connections;
 @property (nonatomic, strong, readwrite) NSSet *themes;
 @property (nonatomic, strong, readwrite) NSSet *media;
 @property (nonatomic, strong, readwrite) NSString *currentThemeId;
@@ -172,6 +174,5 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
  @return a WordPressComApi object if available
  */
 - (WordPressComApi *)restApi;
-- (NSNumber *)dotComID;
 
 @end

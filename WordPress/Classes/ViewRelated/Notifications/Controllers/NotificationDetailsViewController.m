@@ -989,7 +989,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     vc.selectedDate                = [NSDate date];
     vc.statsSection                = StatsSectionFollowers;
     vc.statsSubSection             = StatsSubSectionFollowersDotCom;
-    vc.statsService                = [[WPStatsService alloc] initWithSiteId:blog.blogID
+    vc.statsService                = [[WPStatsService alloc] initWithSiteId:blog.dotComID
                                                                siteTimeZone:[service timeZoneForBlog:blog]
                                                                 oauth2Token:blog.authToken
                                                  andCacheExpirationInterval:NotificationFiveMinutes];
