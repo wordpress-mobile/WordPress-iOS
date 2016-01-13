@@ -273,7 +273,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
-    if ([Feature enabled:FeatureFlagSharing]) {
+    if ([Feature enabled:FeatureFlagSharing] && [self.blog supports:BlogFeatureSharing]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
                                                         image:[UIImage imageNamed:@"icon-menu-sharing"]
                                                      callback:^{
