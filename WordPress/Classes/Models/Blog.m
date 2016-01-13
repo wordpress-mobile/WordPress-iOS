@@ -430,6 +430,9 @@ NSString * const PostFormatStandard = @"standard";
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
             return [self isHostedAtWPcom] && [self isAdmin];
+        case BlogFeaturePrivate:
+            // Private visibility is only supported by wpcom blogs
+            return [self isHostedAtWPcom];
     }
 }
 

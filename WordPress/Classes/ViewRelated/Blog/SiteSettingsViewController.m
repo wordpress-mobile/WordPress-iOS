@@ -494,7 +494,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)showPrivacySelector
 {
-
     NSArray *values = [BlogSiteVisibilityHelper siteVisibilityValuesForBlog:self.blog];
     NSArray *titles = [BlogSiteVisibilityHelper titlesForSiteVisibilityValues:values];
     NSArray *hints  = [BlogSiteVisibilityHelper hintsForSiteVisibilityValues:values];
