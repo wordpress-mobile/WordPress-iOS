@@ -31,6 +31,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePushNotifications,
     /// Does the blog support theme browsing?
     BlogFeatureThemeBrowsing,
+    /// Does the blog support private visibility?
+    BlogFeaturePrivate
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
