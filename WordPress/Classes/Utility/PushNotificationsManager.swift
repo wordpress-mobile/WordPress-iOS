@@ -240,13 +240,16 @@ final public class PushNotificationsManager : NSObject
     
     /// Handles a Helpshift Remote Notification
     ///
+    /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
+    ///         we'll temporarily keep it as public. Sorry.
+    ///
     /// - Parameters:
     ///     - userInfo: The Notification's Payload
     ///     - completionHandler: A callback, to be executed on completion
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    private func handleHelpshiftNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+    public func handleHelpshiftNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
         guard let origin = userInfo.stringForKey(notificationOriginKey) where origin == helpshiftOriginValue else {
             return false
         }
@@ -263,13 +266,16 @@ final public class PushNotificationsManager : NSObject
     
     /// Handles a WordPress.com Push Authentication Notification
     ///
+    /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
+    ///         we'll temporarily keep it as public. Sorry.
+    ///
     /// - Parameters:
     ///     - userInfo: The Notification's Payload
     ///     - completionHandler: A callback, to be executed on completion
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    private func handleAuthenticationNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+    public func handleAuthenticationNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
         // WordPress.com Push Authentication Notification
         // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
         // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
@@ -290,13 +296,16 @@ final public class PushNotificationsManager : NSObject
     
     /// Handles a Notification while in Inactive Mode
     ///
+    /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
+    ///         we'll temporarily keep it as public. Sorry.
+    ///
     /// - Parameters:
     ///     - userInfo: The Notification's Payload
     ///     - completionHandler: A callback, to be executed on completion
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    private func handleInactiveNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+    public func handleInactiveNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
         guard applicationState == .Inactive else {
             return false
         }
@@ -313,13 +322,16 @@ final public class PushNotificationsManager : NSObject
     
     /// Handles a Notification while in Background Mode
     ///
+    /// - Note: This should actually be *private*. BUT: for unit testing purposes (within ObjC code, because of OCMock),
+    ///         we'll temporarily keep it as public. Sorry.
+    ///
     /// - Parameters:
     ///     - userInfo: The Notification's Payload
     ///     - completionHandler: A callback, to be executed on completion
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    private func handleBackgroundNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+    public func handleBackgroundNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
         guard applicationState == .Background else {
             return false
         }
