@@ -8,19 +8,45 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     @IBOutlet var visitorsLabel: UILabel!
     @IBOutlet var viewsCountLabel: UILabel!
     @IBOutlet var viewsLabel: UILabel!
+    @IBOutlet var configureMeRightConstraint: NSLayoutConstraint!
+    @IBOutlet var configureMeStackView: UIStackView!
     
     var siteName: String = ""
     var visitorCount: String = ""
     var viewCount: String = ""
     var siteId: NSNumber?
+    var standardLeftMargin: CGFloat = 0.0
+    
+    var isConfigured: Bool {
+        get {
+            let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
+            let siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as! NSNumber?
+            let timeZoneName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey)
+            let oauth2Token = self.getOAuth2Token()
+            
+            return siteId != nil && timeZoneName != nil && oauth2Token != nil
+
+        }
+    }
+    
+    func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {
+        standardLeftMargin = defaultMarginInsets.left
+        configureMeRightConstraint.constant = standardLeftMargin
+        return defaultMarginInsets
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
         self.siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as! NSNumber?
 
-        visitorsLabel?.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
-        viewsLabel?.text = NSLocalizedString("Views", comment: "Stats Views Label")
+        siteNameLabel.text = ""
+        visitorsLabel.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
+        visitorsCountLabel.text = ""
+        viewsLabel.text = NSLocalizedString("Views", comment: "Stats Views Label")
+        viewsCountLabel.text = ""
+        
+        updateUIBasedOnWidgetConfiguration()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -35,6 +61,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        updateUIBasedOnWidgetConfiguration()
 
         // Manual state restoration
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
@@ -66,6 +94,8 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         let timeZoneName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey)
         let oauth2Token = self.getOAuth2Token()
         
+        updateUIBasedOnWidgetConfiguration()
+
         if siteId == nil || timeZoneName == nil || oauth2Token == nil {
             WPDDLogWrapper.logError("Missing site ID, timeZone or oauth2Token")
             
@@ -95,15 +125,17 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     func getOAuth2Token() -> String? {
-        var oauth2Token:NSString? = nil
-        
-        do {
-            try oauth2Token = SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetOAuth2TokenKeychainUsername, andServiceName: WPStatsTodayWidgetOAuth2TokenKeychainServiceName, accessGroup: WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup)
-        } catch {
-            WPDDLogWrapper.logError("No OAuth2 token available - error: \(error)")
-        }
-        
+        let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetOAuth2TokenKeychainUsername, andServiceName: WPStatsTodayWidgetOAuth2TokenKeychainServiceName, accessGroup: WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup)
+
         return oauth2Token as String?
     }
     
+    func updateUIBasedOnWidgetConfiguration() {
+        siteNameLabel.hidden = !isConfigured
+        visitorsCountLabel.hidden = !isConfigured
+        visitorsLabel.hidden = !isConfigured
+        viewsCountLabel.hidden = !isConfigured
+        viewsLabel.hidden = !isConfigured
+        configureMeStackView.hidden = isConfigured
+    }
 }
