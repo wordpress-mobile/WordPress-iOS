@@ -174,7 +174,16 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     [nc addObserver:self selector:@selector(helpshiftUnreadCountUpdated:) name:HelpshiftUnreadCountUpdatedNotification object:nil];
     
     [HelpshiftUtils refreshUnreadNotificationCount];
+}
 
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    // Previously we reloaded the interface in viewWillAppear:, however there were certain situations
+    // where the view's frame would be in the wrong orientation (e.g. after viewing the support view controller
+    // in landscape and then dismissing it) resulting in an incorrect layout.
+    // Fortunately, the frame is correct in viewWillLayoutSubviews.
     [self reloadInterface];
 }
 
@@ -189,13 +198,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                         duration:(NSTimeInterval)duration
-{
-    [self layoutControls];
-}
-
 
 #pragma mark - UITextField delegate methods
 
