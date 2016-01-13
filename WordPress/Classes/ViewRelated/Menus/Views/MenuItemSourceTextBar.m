@@ -1,9 +1,9 @@
-#import "MenuItemSourceSearchBar.h"
+#import "MenuItemSourceTextBar.h"
 #import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
-@interface MenuItemSourceSearchBar () <UITextFieldDelegate>
+@interface MenuItemSourceTextBar () <UITextFieldDelegate>
 
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIView *contentView;
@@ -14,7 +14,7 @@
 
 @end
 
-@implementation MenuItemSourceSearchBar
+@implementation MenuItemSourceTextBar
 
 - (id)init
 {
@@ -175,18 +175,18 @@
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     [self setCancelLabelHidden:NO animated:YES];
-    [self.delegate sourceSearchBarDidBeginSearching:self];
+    [self.delegate sourceTextBarDidBeginEditing:self];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [self setCancelLabelHidden:YES animated:YES];
-    [self.delegate sourceSearchBarDidEndSearching:self];
+    [self.delegate sourceTextBarDidEndEditing:self];
 }
 
 - (void)textFieldValueDidChange:(UITextField *)textField
 {
-    [self.delegate sourceSearchBar:self didUpdateSearchWithText:textField.text];
+    [self.delegate sourceTextBar:self didUpdateWithText:textField.text];
 }
 
 - (void)textFieldDidEndOnExit:(UITextField *)textField

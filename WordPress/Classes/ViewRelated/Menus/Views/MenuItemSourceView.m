@@ -1,8 +1,8 @@
 #import "MenuItemSourceView.h"
-#import "MenuItemSourceSearchBar.h"
+#import "MenuItemSourceTextBar.h"
 #import "MenusDesign.h"
 
-@interface MenuItemSourceView () <MenuItemSourceSearchBarDelegate>
+@interface MenuItemSourceView () <MenuItemSourceTextBarDelegate>
 
 @end
 
@@ -56,7 +56,7 @@
         return;
     }
     
-    MenuItemSourceSearchBar *searchBar = [[MenuItemSourceSearchBar alloc] init];
+    MenuItemSourceTextBar *searchBar = [[MenuItemSourceTextBar alloc] init];
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     searchBar.delegate = self;
     [self.stackView addArrangedSubview:searchBar];
@@ -102,19 +102,19 @@
     [self.delegate sourceViewDidEndEditingWithKeyboard:self];
 }
 
-#pragma mark - MenuItemSourceSearchBarDelegate
+#pragma mark - MenuItemSourceTextBarDelegate
 
-- (void)sourceSearchBarDidBeginSearching:(MenuItemSourceSearchBar *)searchBar
+- (void)sourceTextBarDidBeginEditing:(MenuItemSourceTextBar *)textBar
 {
     [self tellDelegateDidBeginEditingWithKeyBoard];
 }
 
-- (void)sourceSearchBarDidEndSearching:(MenuItemSourceSearchBar *)searchBar
+- (void)sourceTextBarDidEndEditing:(MenuItemSourceTextBar *)textBar
 {
     [self tellDelegateDidEndEditingWithKeyBoard];
 }
 
-- (void)sourceSearchBar:(MenuItemSourceSearchBar *)searchBar didUpdateSearchWithText:(NSString *)text
+- (void)sourceTextBar:(MenuItemSourceTextBar *)textBar didUpdateWithText:(NSString *)text
 {
     
 }

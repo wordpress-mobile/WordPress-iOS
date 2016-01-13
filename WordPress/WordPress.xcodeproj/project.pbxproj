@@ -66,7 +66,7 @@
 		0884D9931BB4760C001CDC7B /* RemoteMenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0884D9901BB4760C001CDC7B /* RemoteMenuLocation.m */; };
 		0884D9961BB47667001CDC7B /* MenusServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 0884D9951BB47667001CDC7B /* MenusServiceRemote.m */; };
 		08906CF41BDED5D8003A7AA4 /* MenusSelectionDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08906CF31BDED5D8003A7AA4 /* MenusSelectionDetailView.m */; };
-		08B056701C1BCEE500256F77 /* MenuItemSourceSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B0566F1C1BCEE500256F77 /* MenuItemSourceSearchBar.m */; };
+		08B056701C1BCEE500256F77 /* MenuItemSourceTextBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B0566F1C1BCEE500256F77 /* MenuItemSourceTextBar.m */; };
 		08B195421BE409260082E71C /* MenusHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B195411BE409260082E71C /* MenusHeaderView.m */; };
 		08B8BC341C21FC6200C3B670 /* MenuItemSourceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B8BC331C21FC6200C3B670 /* MenuItemSourceHeaderView.m */; };
 		08D6B2841BC6F4EE00BD022D /* MenusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */; };
@@ -802,8 +802,8 @@
 		0884D9951BB47667001CDC7B /* MenusServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemote.m; sourceTree = "<group>"; };
 		08906CF21BDED5D8003A7AA4 /* MenusSelectionDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusSelectionDetailView.h; sourceTree = "<group>"; };
 		08906CF31BDED5D8003A7AA4 /* MenusSelectionDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusSelectionDetailView.m; sourceTree = "<group>"; };
-		08B0566E1C1BCEE500256F77 /* MenuItemSourceSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceSearchBar.h; sourceTree = "<group>"; };
-		08B0566F1C1BCEE500256F77 /* MenuItemSourceSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceSearchBar.m; sourceTree = "<group>"; };
+		08B0566E1C1BCEE500256F77 /* MenuItemSourceTextBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceTextBar.h; sourceTree = "<group>"; };
+		08B0566F1C1BCEE500256F77 /* MenuItemSourceTextBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceTextBar.m; sourceTree = "<group>"; };
 		08B195401BE409260082E71C /* MenusHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusHeaderView.h; sourceTree = "<group>"; };
 		08B195411BE409260082E71C /* MenusHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusHeaderView.m; sourceTree = "<group>"; };
 		08B8BC321C21FC6200C3B670 /* MenuItemSourceHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceHeaderView.h; sourceTree = "<group>"; };
@@ -2035,8 +2035,8 @@
 				08537F821C45BC70006A7514 /* MenuItemSourcePostView.m */,
 				08B8BC321C21FC6200C3B670 /* MenuItemSourceHeaderView.h */,
 				08B8BC331C21FC6200C3B670 /* MenuItemSourceHeaderView.m */,
-				08B0566E1C1BCEE500256F77 /* MenuItemSourceSearchBar.h */,
-				08B0566F1C1BCEE500256F77 /* MenuItemSourceSearchBar.m */,
+				08B0566E1C1BCEE500256F77 /* MenuItemSourceTextBar.h */,
+				08B0566F1C1BCEE500256F77 /* MenuItemSourceTextBar.m */,
 				08EEA0B71C20C013001346B9 /* MenuItemSourceResultView.h */,
 				08EEA0B81C20C013001346B9 /* MenuItemSourceResultView.m */,
 			);
@@ -4881,7 +4881,7 @@
 				5D42A3E0175E7452005CFF05 /* BasePost.m in Sources */,
 				5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */,
 				E1249B4319408C910035E895 /* RemoteComment.m in Sources */,
-				08B056701C1BCEE500256F77 /* MenuItemSourceSearchBar.m in Sources */,
+				08B056701C1BCEE500256F77 /* MenuItemSourceTextBar.m in Sources */,
 				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
 				081D84081C1A1F0F00C7BF40 /* MenuItemEditingFooterView.m in Sources */,
 				5DE293C11AD8009E00825DE5 /* PostListFilter.m in Sources */,
