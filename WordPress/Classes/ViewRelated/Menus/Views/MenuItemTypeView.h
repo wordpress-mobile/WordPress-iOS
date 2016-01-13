@@ -15,6 +15,5 @@
 @protocol MenuItemTypeViewDelegate <NSObject>
 
 - (void)typeViewPressedForSelection:(MenuItemTypeView *)typeView;
-- (BOOL)typeViewRequiresCompactLayout:(MenuItemTypeView *)typeView;
 
 @end

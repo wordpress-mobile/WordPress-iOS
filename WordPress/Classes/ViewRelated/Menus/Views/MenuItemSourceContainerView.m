@@ -1,12 +1,18 @@
 #import "MenuItemSourceContainerView.h"
 #import "MenusDesign.h"
+#import "MenuItemSourceHeaderView.h"
+#import "MenuItemSourcePageView.h"
+#import "MenuItemSourceLinkView.h"
+#import "MenuItemSourceCategoryView.h"
+#import "MenuItemSourceTagView.h"
+#import "MenuItemSourcePostView.h"
 
-@interface MenuItemSourceContainerView () <MenuItemSourceHeaderViewDelegate>
+@interface MenuItemSourceContainerView () <MenuItemSourceHeaderViewDelegate, MenuItemSourceViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
-@property (nonatomic, strong) NSMutableArray *resultViews;
-@property (nonatomic, assign) BOOL setContentSize;
+@property (nonatomic, strong) MenuItemSourceHeaderView *headerView;
+@property (nonatomic, strong) MenuItemSourceView *sourceView;
 
 @end
 
@@ -15,46 +21,6 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    self.results = [NSMutableArray array];
-    
-    {
-        MenuItemSourceResult *result = [MenuItemSourceResult new];
-        result.title = @"Home";
-        result.badgeTitle = @"Site";
-        result.selected = YES;
-        [self.results addObject:result];
-    }
-    {
-        MenuItemSourceResult *result = [MenuItemSourceResult new];
-        result.title = @"About";
-        [self.results addObject:result];
-    }
-    {
-        MenuItemSourceResult *result = [MenuItemSourceResult new];
-        result.title = @"Work";
-        [self.results addObject:result];
-    }
-    {
-        MenuItemSourceResult *result = [MenuItemSourceResult new];
-        result.title = @"Contact";
-        [self.results addObject:result];
-    }
-    {
-        MenuItemSourceResult *result = [MenuItemSourceResult new];
-        result.title = @"About";
-        [self.results addObject:result];
-    }
-    {
-        MenuItemSourceResult *result = [MenuItemSourceResult new];
-        result.title = @"Work";
-        [self.results addObject:result];
-    }
-    {
-        MenuItemSourceResult *result = [MenuItemSourceResult new];
-        result.title = @"Contact";
-        [self.results addObject:result];
-    }
     
     self.backgroundColor = [UIColor whiteColor];
     self.translatesAutoresizingMaskIntoConstraints = NO;
@@ -72,28 +38,43 @@
         headerView.itemType = MenuItemTypePage;
         [self.stackView addArrangedSubview:headerView];
         
-        [headerView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
-        [headerView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        NSLayoutConstraint *height = [headerView.heightAnchor constraintEqualToConstant:60.0];
+        height.priority = 999;
+        height.active = YES;
+        
+        [headerView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         
         self.headerView = headerView;
     }
-    {
-        MenuItemSourceSearchBar *searchBar = [[MenuItemSourceSearchBar alloc] init];
-        searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-        searchBar.delegate = self;
-        [self.stackView addArrangedSubview:searchBar];
-        
-        [searchBar.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
-        
-        NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:MenusDesignGeneralCellHeight];
-        heightConstraint.priority = UILayoutPriorityDefaultHigh;
-        heightConstraint.active = YES;
-        
-        [searchBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-        _searchBar = searchBar;
-    }
     
-    [self reloadResults];
+    self.selectedItemType = MenuItemTypePage;
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    
+    if(self.frame.size.width > self.frame.size.height) {
+        [self setHeaderViewHidden:YES];
+    }else {
+        [self setHeaderViewHidden:NO];
+    }
+}
+
+- (void)setHeaderViewHidden:(BOOL)hidden
+{
+    if(self.headerView.hidden != hidden) {
+        self.headerView.hidden = hidden;
+        self.headerView.alpha = hidden ? 0.0 : 1.0;
+    }
+}
+
+- (void)setItem:(MenuItem *)item
+{
+    if(_item != item) {
+        _item = item;
+        self.sourceView.item = item;
+    }
 }
 
 - (void)setSelectedItemType:(MenuItemType)selectedItemType
@@ -101,57 +82,71 @@
     if(_selectedItemType != selectedItemType) {
         _selectedItemType = selectedItemType;
         self.headerView.itemType = selectedItemType;
+        [self showSourceViewForItemType:selectedItemType];
     }
 }
 
-- (void)reloadResults
+- (void)showSourceViewForItemType:(MenuItemType)itemType
 {
-    for(UIView *view in self.resultViews) {
-        [self.stackView removeArrangedSubview:view];
-        [view removeFromSuperview];
+    if(self.sourceView) {
+        [self.stackView removeArrangedSubview:self.sourceView];
+        [self.sourceView removeFromSuperview];
+        self.sourceView = nil;
     }
     
-    self.resultViews = [NSMutableArray arrayWithCapacity:self.results.count];
-    for(MenuItemSourceResult *result in self.results) {
-        
-        MenuItemSourceResultView *view = [[MenuItemSourceResultView alloc] init];
-        view.result = result;
-        [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-        
-        [self.stackView addArrangedSubview:view];
-        [self.resultViews addObject:view];
-    }
-}
+    MenuItemSourceView *sourceView = nil;
 
-- (void)activateHeightConstraintForHeaderViewWithHeightAnchor:(NSLayoutAnchor *)heightAnchor;
-{
-    NSLayoutConstraint *heightConstraint = [self.headerView.heightAnchor constraintEqualToAnchor:heightAnchor];
-    heightConstraint.priority = UILayoutPriorityDefaultHigh;
-    heightConstraint.active = YES;
+    switch (itemType) {
+        case MenuItemTypePage:
+            sourceView = [[MenuItemSourcePageView alloc] init];
+            break;
+        case MenuItemTypeLink:
+            sourceView = [[MenuItemSourceLinkView alloc] init];
+            break;
+        case MenuItemTypeCategory:
+            sourceView = [[MenuItemSourceCategoryView alloc] init];
+            break;
+        case MenuItemTypeTag:
+            sourceView = [[MenuItemSourceTagView alloc] init];
+            break;
+        case MenuItemTypePost:
+            sourceView = [[MenuItemSourcePostView alloc] init];
+            break;
+        case MenuItemTypeCustom:
+        case MenuItemTypeUnknown:
+            // TODO: support misc item sources
+            // Jan-12-2015 - Brent C.
+            break;
+    }
+    
+    if(sourceView) {
+    
+        sourceView.item = self.item;
+        sourceView.delegate = self;
+        
+        [self.stackView addArrangedSubview:sourceView];
+        self.sourceView = sourceView;
+    }
 }
 
 #pragma mark - MenuItemSourceHeaderViewDelegate
 
 - (void)sourceHeaderViewSelected:(MenuItemSourceHeaderView *)headerView
 {
-    [self.delegate sourceViewSelectedSourceTypeButton:self];
+    [self.sourceView resignFirstResponder];
+    [self.delegate sourceContainerViewSelectedSourceTypeToggle:self];
 }
 
-#pragma mark - MenuItemSourceSearchBarDelegate
+#pragma mark - MenuItemSourceViewDelegate
 
-- (void)sourceSearchBarDidBeginSearching:(MenuItemSourceSearchBar *)searchBar
+- (void)sourceViewDidBeginEditingWithKeyBoard:(MenuItemSourceView *)sourceView
 {
-    [self.delegate sourceViewDidBeginTyping:self];
+    [self.delegate sourceContainerViewDidBeginEditingWithKeyboard:self];
 }
 
-- (void)sourceSearchBar:(MenuItemSourceSearchBar *)searchBar didUpdateSearchWithText:(NSString *)text
+- (void)sourceViewDidEndEditingWithKeyboard:(MenuItemSourceView *)sourceView
 {
-    
-}
-
-- (void)sourceSearchBarDidEndSearching:(MenuItemSourceSearchBar *)searchBar
-{
-    [self.delegate sourceViewDidEndTyping:self];
+    [self.delegate sourceContainerViewDidEndEditingWithKeyboard:self];
 }
 
 @end
