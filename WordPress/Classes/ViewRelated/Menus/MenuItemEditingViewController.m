@@ -330,6 +330,11 @@ typedef NS_ENUM(NSUInteger) {
     });
 }
 
+- (BOOL)itemTypeSelectionViewRequiresCompactLayout:(MenuItemTypeSelectionView *)typeSelectionView
+{
+    return self.contentLayout == MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews;
+}
+
 #pragma mark - MenuItemSourceContainerViewDelegate
 
 - (void)sourceContainerViewSelectedSourceTypeToggle:(MenuItemSourceContainerView *)sourceView
