@@ -47,15 +47,12 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
 
 @implementation BlogServiceRemoteREST
 
-- (void)checkMultiAuthorForBlogID:(NSNumber *)blogID
-                          success:(void(^)(BOOL isMultiAuthor))success
-                          failure:(void (^)(NSError *error))failure
+- (void)checkMultiAuthorWithSuccess:(void(^)(BOOL isMultiAuthor))success
+                            failure:(void (^)(NSError *error))failure
 {
-    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    
     NSDictionary *parameters = @{@"authors_only":@(YES)};
     
-    NSString *path = [NSString stringWithFormat:@"sites/%@/users", blogID];
+    NSString *path = [self pathForUsers];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -74,13 +71,10 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
           }];
 }
 
-- (void)syncOptionsForBlogID:(NSNumber *)blogID
-                     success:(OptionsHandler)success
-                     failure:(void (^)(NSError *))failure
+- (void)syncOptionsWithSuccess:(OptionsHandler)success
+                       failure:(void (^)(NSError *))failure
 {
-    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    
-    NSString *path = [self pathForOptionsWithBlogID:blogID];
+    NSString *path = [self pathForOptions];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -99,13 +93,10 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
           }];
 }
 
-- (void)syncPostFormatsForBlogID:(NSNumber *)blogID
-                         success:(PostFormatsHandler)success
-                         failure:(void (^)(NSError *))failure
+- (void)syncPostFormatsWithSuccess:(PostFormatsHandler)success
+                           failure:(void (^)(NSError *))failure
 {
-    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    
-    NSString *path = [self pathForPostFormatsWithBlogID:blogID];
+    NSString *path = [self pathForPostFormats];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -123,13 +114,10 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
           }];
 }
 
-- (void)syncSettingsForBlogID:(NSNumber *)blogID
-                    success:(SettingsHandler)success
-                    failure:(void (^)(NSError *error))failure
+- (void)syncSettingsWithSuccess:(SettingsHandler)success
+                        failure:(void (^)(NSError *error))failure
 {
-    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    
-    NSString *path = [self pathForSettingsWithBlogID:blogID];
+    NSString *path = [self pathForSettings];
     NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api GET:requestUrl
@@ -153,15 +141,13 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
 }
 
 - (void)updateBlogSettings:(RemoteBlogSettings *)settings
-                 forBlogID:(NSNumber *)blogID
                    success:(SuccessHandler)success
                    failure:(void (^)(NSError *error))failure;
 {
     NSParameterAssert(settings);
-    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
-    
+
     NSDictionary *parameters = [self remoteSettingsToDictionary:settings];
-    NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blogID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", self.siteID];
     NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api POST:requestUrl
@@ -190,19 +176,24 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
 
 #pragma mark - API paths
 
-- (NSString *)pathForOptionsWithBlogID:(NSNumber *)blogID
+- (NSString *)pathForUsers
 {
-    return [NSString stringWithFormat:@"sites/%@", blogID];
+    return [NSString stringWithFormat:@"sites/%@/users", self.siteID];
 }
 
-- (NSString *)pathForPostFormatsWithBlogID:(NSNumber *)blogID
+- (NSString *)pathForOptions
 {
-    return [NSString stringWithFormat:@"sites/%@/post-formats", blogID];
+    return [NSString stringWithFormat:@"sites/%@", self.siteID];
 }
 
-- (NSString *)pathForSettingsWithBlogID:(NSNumber *)blogID
+- (NSString *)pathForPostFormats
 {
-    return [NSString stringWithFormat:@"sites/%@/settings", blogID];
+    return [NSString stringWithFormat:@"sites/%@/post-formats", self.siteID];
+}
+
+- (NSString *)pathForSettings
+{
+    return [NSString stringWithFormat:@"sites/%@/settings", self.siteID];
 }
 
 
