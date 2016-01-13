@@ -34,7 +34,7 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the notification should be handled by this class
     ///
-    public static func isPushAuthenticationNotification(userInfo: NSDictionary?) -> Bool {
+    public func isPushAuthenticationNotification(userInfo: NSDictionary?) -> Bool {
         if let unwrappedNoteType = userInfo?["type"] as? String {
             return unwrappedNoteType == pushAuthenticationNoteType
         }
@@ -160,7 +160,5 @@ import WordPressComAnalytics
     private let initialRetryCount                   = 0
     private let maximumRetryCount                   = 3
     private let minimumRemainingExpirationTime      = NSTimeInterval(5)
-    
-    // MARK: - Static Constants
-    private static let pushAuthenticationNoteType   = "push_auth"
+    private let pushAuthenticationNoteType   = "push_auth"
 }

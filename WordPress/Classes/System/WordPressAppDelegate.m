@@ -404,14 +404,14 @@ int ddLogLevel                                                  = DDLogLevelInfo
 {
     DDLogMethod();
 
-    [[PushNotificationsManager sharedInstance] handleNotification:userInfo applicationState:application.applicationState completionHandler:nil];
+    [[PushNotificationsManager sharedInstance] handleNotification:userInfo completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     DDLogMethod();
 
-    [[PushNotificationsManager sharedInstance] handleNotification:userInfo applicationState:application.applicationState completionHandler:completionHandler];
+    [[PushNotificationsManager sharedInstance] handleNotification:userInfo completionHandler:completionHandler];
 }
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier
