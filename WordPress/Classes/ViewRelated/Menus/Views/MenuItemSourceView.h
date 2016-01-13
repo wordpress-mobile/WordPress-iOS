@@ -1,16 +1,16 @@
 #import <UIKit/UIKit.h>
-#import "MenuItemSourceSearchBar.h"
+#import "MenuItemSourceTextBar.h"
 
 @class MenuItem;
 
 @protocol MenuItemSourceViewDelegate;
 
-@interface MenuItemSourceView : UIView <MenuItemSourceSearchBarDelegate>
+@interface MenuItemSourceView : UIView <MenuItemSourceTextBarDelegate>
 
 @property (nonatomic, weak) id <MenuItemSourceViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
 @property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) MenuItemSourceSearchBar *searchBar;
+@property (nonatomic, strong) MenuItemSourceTextBar *searchBar;
 
 - (void)insertSearchBarIfNeeded;
 
