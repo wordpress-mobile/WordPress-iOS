@@ -11,7 +11,6 @@ typedef NS_ENUM(NSUInteger) {
 static CGFloat const MenusDesignDefaultCornerRadius = 4.0;
 static CGFloat const MenusDesignDefaultContentSpacing = 18.0;
 static CGFloat const MenusDesignItemIconSize = 10.0;
-static CGFloat const MenusDesignGeneralCellHeight = 60.0;
 
 static inline UIEdgeInsets MenusDesignDefaultInsets() {
     return UIEdgeInsetsMake(10.0, 10.0, 10.0, 10.0);
