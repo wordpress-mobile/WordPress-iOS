@@ -205,19 +205,19 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
                                                     image:[UIImage imageNamed:@"icon-menu-viewsite"]
                                                  callback:^{
-                                                     [weakSelf showViewSiteForBlog];
+                                                     [weakSelf showViewSite];
                                                  }]];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.")
                                                     image:[UIImage imageNamed:@"icon-menu-viewadmin"]
                                                  callback:^{
-                                                     [weakSelf showViewAdminForBlog];
+                                                     [weakSelf showViewAdmin];
                                                  }]];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                                     image:[UIImage imageNamed:@"icon-menu-stats"]
                                                  callback:^{
-                                                     [weakSelf showStatsForBlog];
+                                                     [weakSelf showStats];
                                                  }]];
 
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
@@ -230,19 +230,19 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blog Posts", @"Noun. Title. Links to the blog's Posts screen.")
                                                     image:[UIImage imageNamed:@"icon-menu-posts"]
                                                  callback:^{
-                                                     [weakSelf showPostListForBlog];
+                                                     [weakSelf showPostList];
                                                  }]];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
                                                     image:[UIImage imageNamed:@"icon-menu-pages"]
                                                  callback:^{
-                                                     [weakSelf showPageListForBlog];
+                                                     [weakSelf showPageList];
                                                  }]];
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
                                                           image:[UIImage imageNamed:@"icon-menu-comments"]
                                                        callback:^{
-                                                           [weakSelf showCommentsForBlog];
+                                                           [weakSelf showComments];
                                                        }];
     NSUInteger numberOfPendingComments = [self.blog numberOfPendingComments];
     if (numberOfPendingComments > 0) {
@@ -261,7 +261,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
                                                     image:[UIImage imageNamed:@"icon-menu-theme"]
                                                  callback:^{
-                                                     [weakSelf showThemesForBlog];
+                                                     [weakSelf showThemes];
                                                  }]];
 
     NSString *title =NSLocalizedString(@"Personalize", @"Section title for the personalize table section in the blog details screen.");
@@ -273,17 +273,18 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
-#ifdef WP_PEOPLE_ENABLED
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
-                                                    image:[UIImage imageNamed:@"icon-menu-people"]
-                                                 callback:^{
-                                                     [weakSelf showPeopleForBlog];
-                                                 }]];
-#endif
+    if ([Feature enabled:FeatureFlagPeople]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
+                                                        image:[UIImage imageNamed:@"icon-menu-people"]
+                                                     callback:^{
+                                                         [weakSelf showPeople];
+                                                     }]];
+    }
+
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Settings", @"Noun. Title. Links to the blog's Settings screen.")
                                                     image:[UIImage imageNamed:@"icon-menu-settings"]
                                                  callback:^{
-                                                     [weakSelf showSettingsForBlog];
+                                                     [weakSelf showSettings];
                                                  }]];
 
     NSString *title = NSLocalizedString(@"Configure", @"Section title for the configure table section in the blog details screen");
@@ -419,7 +420,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
 #pragma mark - Private methods
 
-- (void)showCommentsForBlog
+- (void)showComments
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedComments withBlog:self.blog];
     CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -427,21 +428,21 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)showPostListForBlog
+- (void)showPostList
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPosts withBlog:self.blog];
     PostListViewController *controller = [PostListViewController controllerWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)showPageListForBlog
+- (void)showPageList
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedPages withBlog:self.blog];
     PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)showPeopleForBlog
+- (void)showPeople
 {
     // TODO(@koke, 2015-11-02): add analytics
     PeopleViewController *controller = [[UIStoryboard storyboardWithName:@"People" bundle:nil] instantiateInitialViewController];
@@ -449,14 +450,14 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)showSettingsForBlog
+- (void)showSettings
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedSiteSettings withBlog:self.blog];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)showStatsForBlog
+- (void)showStats
 {
     [WPAppAnalytics track:WPAnalyticsStatStatsAccessed withBlog:self.blog];
     StatsViewController *statsView = [StatsViewController new];
@@ -464,7 +465,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     [self.navigationController pushViewController:statsView animated:YES];
 }
 
-- (void)showThemesForBlog
+- (void)showThemes
 {
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
@@ -472,7 +473,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
                                          animated:YES];
 }
 
-- (void)showViewSiteForBlog
+- (void)showViewSite
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedViewSite withBlog:self.blog];
     NSURL *targetURL = [NSURL URLWithString:self.blog.homeURL];
@@ -486,7 +487,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)showViewAdminForBlog
+- (void)showViewAdmin
 {
     if (![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
