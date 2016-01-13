@@ -10,7 +10,6 @@
     button.titleLabel.textColor = [UIColor whiteColor];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
     [button setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
-    [button setImageEdgeInsets:UIEdgeInsetsMake(0, 4, 0, 0)];
     [button setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", @"This is the blog picker in the editor")];
     
     switch (button.buttonStyle) {
@@ -19,13 +18,14 @@
             button.titleLabel.textAlignment = NSTextAlignmentLeft;
             button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
             button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+            [button setImageEdgeInsets:UIEdgeInsetsMake(0, 4, 0, 0)];
             break;
         case WPBlogSelectorButtonTypeStacked:
         default:
             button.titleLabel.numberOfLines = 2;
             button.titleLabel.textAlignment = NSTextAlignmentCenter;
             button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-            [button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
+            [button setImageEdgeInsets:UIEdgeInsetsMake(0, 4, 0, 10)];
             [button setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
             break;
     }
