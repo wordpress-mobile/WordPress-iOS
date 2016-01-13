@@ -10,6 +10,7 @@
     button.titleLabel.textColor = [UIColor whiteColor];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
     [button setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
+    [button setImageEdgeInsets:UIEdgeInsetsMake(0, 4, 0, 0)];
     [button setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", @"This is the blog picker in the editor")];
     
     switch (button.buttonStyle) {
