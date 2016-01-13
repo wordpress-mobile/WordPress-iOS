@@ -577,7 +577,6 @@
 		E6374DC61C44550700F24720 /* RemotePublicizeConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6374DC41C44550700F24720 /* RemotePublicizeConnection.swift */; };
 		E6374DC71C44550700F24720 /* RemotePublicizeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6374DC51C44550700F24720 /* RemotePublicizeService.swift */; };
 		E6374DC91C445ABF00F24720 /* SharingServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6374DC81C445ABF00F24720 /* SharingServiceRemoteTests.m */; };
-		E6374DCB1C445FFE00F24720 /* SharingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6374DCA1C445FFE00F24720 /* SharingService.swift */; };
 		E6396E1F1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6396E1E1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift */; };
 		E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */; };
 		E65219FB1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */; };
@@ -610,6 +609,9 @@
 		E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */; };
 		E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */; };
 		E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */; };
+		E6DB30EA1C46CB2300BDB8A3 /* SharingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6DB30E71C46CB2300BDB8A3 /* SharingDetailViewController.m */; };
+		E6DB30EB1C46CB2300BDB8A3 /* SharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6DB30E91C46CB2300BDB8A3 /* SharingViewController.m */; };
+		E6DB30ED1C46CB6400BDB8A3 /* SharingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DB30EC1C46CB6400BDB8A3 /* SharingService.swift */; };
 		E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */; };
 		E6F058021C1A122B008000F9 /* ReaderPostMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */; };
 		F128C31C1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F128C31B1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.m */; };
@@ -1640,7 +1642,6 @@
 		E6374DC41C44550700F24720 /* RemotePublicizeConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemotePublicizeConnection.swift; path = "Remote Objects/RemotePublicizeConnection.swift"; sourceTree = "<group>"; };
 		E6374DC51C44550700F24720 /* RemotePublicizeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemotePublicizeService.swift; path = "Remote Objects/RemotePublicizeService.swift"; sourceTree = "<group>"; };
 		E6374DC81C445ABF00F24720 /* SharingServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingServiceRemoteTests.m; sourceTree = "<group>"; };
-		E6374DCA1C445FFE00F24720 /* SharingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingService.swift; sourceTree = "<group>"; };
 		E6396E1E1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteReaderCrossPostMeta.swift; path = "Remote Objects/RemoteReaderCrossPostMeta.swift"; sourceTree = "<group>"; };
 		E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderBlockedSiteCell.xib; sourceTree = "<group>"; };
 		E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderBlockedSiteCell.swift; sourceTree = "<group>"; };
@@ -1678,6 +1679,11 @@
 		E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderStreamHeader.swift; sourceTree = "<group>"; };
 		E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderCrossPostCell.swift; sourceTree = "<group>"; };
 		E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderCrossPostCell.xib; sourceTree = "<group>"; };
+		E6DB30E61C46CB2300BDB8A3 /* SharingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingDetailViewController.h; sourceTree = "<group>"; };
+		E6DB30E71C46CB2300BDB8A3 /* SharingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingDetailViewController.m; sourceTree = "<group>"; };
+		E6DB30E81C46CB2300BDB8A3 /* SharingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingViewController.h; sourceTree = "<group>"; };
+		E6DB30E91C46CB2300BDB8A3 /* SharingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingViewController.m; sourceTree = "<group>"; };
+		E6DB30EC1C46CB6400BDB8A3 /* SharingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingService.swift; sourceTree = "<group>"; };
 		E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderHelpers.swift; sourceTree = "<group>"; };
 		E6F058011C1A122B008000F9 /* ReaderPostMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostMenu.swift; sourceTree = "<group>"; };
 		F128C31A1AFCC95B008C2404 /* WPMediaPickerViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPMediaPickerViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
@@ -2849,7 +2855,7 @@
 				5D44EB371986D8BA008B7175 /* ReaderSiteService.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
 				5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */,
-				E6374DCA1C445FFE00F24720 /* SharingService.swift */,
+				E6DB30EC1C46CB6400BDB8A3 /* SharingService.swift */,
 				319D6E7C19E447C80013871C /* SuggestionService.h */,
 				319D6E7D19E447C80013871C /* SuggestionService.m */,
 				59A9AB331B4C33A500A433DC /* ThemeService.h */,
@@ -2918,6 +2924,10 @@
 				FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */,
 				E6A09BA41C4492DC008626FB /* SharingAuthorizationWebViewController.h */,
 				E6A09BA51C4492DC008626FB /* SharingAuthorizationWebViewController.m */,
+				E6DB30E61C46CB2300BDB8A3 /* SharingDetailViewController.h */,
+				E6DB30E71C46CB2300BDB8A3 /* SharingDetailViewController.m */,
+				E6DB30E81C46CB2300BDB8A3 /* SharingViewController.h */,
+				E6DB30E91C46CB2300BDB8A3 /* SharingViewController.m */,
 				83FEFC7311FF6C5A0078B462 /* SiteSettingsViewController.h */,
 				83FEFC7411FF6C5A0078B462 /* SiteSettingsViewController.m */,
 				B5AC00671BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift */,
@@ -4404,6 +4414,7 @@
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
 				5D2B30B91B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift in Sources */,
 				E1C265C91BECFCDD00DC4C6B /* WPCrashlyticsLogger.m in Sources */,
+				E6DB30EA1C46CB2300BDB8A3 /* SharingDetailViewController.m in Sources */,
 				319D6E7B19E447500013871C /* Suggestion.m in Sources */,
 				594399931B45091000539E21 /* WPAuthTokenIssueSolver.m in Sources */,
 				B555E1151C04A68D00CEC81B /* WordPress-41-42.xcmappingmodel in Sources */,
@@ -4485,6 +4496,7 @@
 				85D239B61AE5A6170074768D /* ReachabilityFacade.m in Sources */,
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */,
+				E6DB30ED1C46CB6400BDB8A3 /* SharingService.swift in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				B574CE111B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift in Sources */,
@@ -4639,6 +4651,7 @@
 				E1DF5DFD19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m in Sources */,
 				E6396E1F1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift in Sources */,
 				E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */,
+				E6DB30EB1C46CB2300BDB8A3 /* SharingViewController.m in Sources */,
 				E61084BE1B9B47BA008050C5 /* ReaderAbstractTopic.swift in Sources */,
 				E61084BF1B9B47BA008050C5 /* ReaderDefaultTopic.swift in Sources */,
 				5D7B414619E482C9007D9EC7 /* WPRichTextEmbed.swift in Sources */,
@@ -4844,7 +4857,6 @@
 				59B48B621B99E132008EBB84 /* JSONLoader.swift in Sources */,
 				9363113F19FA996700B0C739 /* AccountServiceTests.swift in Sources */,
 				591CFB061B28A960009E61B3 /* AccountServiceRemoteRESTTests.m in Sources */,
-				E6374DCB1C445FFE00F24720 /* SharingService.swift in Sources */,
 				F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */,
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				B5D689FD1A5EBC900063D9E5 /* NotificationsManager+TestHelper.m in Sources */,
