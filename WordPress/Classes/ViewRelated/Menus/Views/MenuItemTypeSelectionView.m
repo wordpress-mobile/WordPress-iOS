@@ -89,6 +89,13 @@
     CGContextRestoreGState(context);
 }
 
+- (void)updateDesignForLayoutChangeIfNeeded
+{
+    for(MenuItemTypeView *typeView in self.typeViews) {
+        [typeView updateDesignForLayoutChangeIfNeeded];
+    }
+}
+
 #pragma mark - delegate
 
 - (void)tellDelegateTypeChanged:(MenuItemType)itemType
@@ -109,7 +116,7 @@
 
 - (BOOL)typeViewRequiresCompactLayout:(MenuItemTypeView *)typeView
 {
-    return [self.delegate itemTypeSelectionViewRequiresCompactLayout:self];
+    return ![self.delegate itemTypeSelectionViewRequiresFullSizedLayout:self];
 }
 
 @end

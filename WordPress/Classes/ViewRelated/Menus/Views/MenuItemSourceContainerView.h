@@ -14,7 +14,7 @@
 
 @protocol MenuItemSourceContainerViewDelegate <NSObject>
 
-- (void)sourceContainerViewSelectedSourceTypeToggle:(MenuItemSourceContainerView *)sourceContainerView;
+- (void)sourceContainerViewSelectedTypeHeaderView:(MenuItemSourceContainerView *)sourceContainerView;
 - (void)sourceContainerViewDidBeginEditingWithKeyboard:(MenuItemSourceContainerView *)sourceContainerView;
 - (void)sourceContainerViewDidEndEditingWithKeyboard:(MenuItemSourceContainerView *)sourceContainerView;
 
