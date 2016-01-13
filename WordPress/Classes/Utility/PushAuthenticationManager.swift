@@ -160,5 +160,5 @@ import WordPressComAnalytics
     private let initialRetryCount                   = 0
     private let maximumRetryCount                   = 3
     private let minimumRemainingExpirationTime      = NSTimeInterval(5)
-    private let pushAuthenticationNoteType   = "push_auth"
+    private let pushAuthenticationNoteType          = "push_auth"
 }
