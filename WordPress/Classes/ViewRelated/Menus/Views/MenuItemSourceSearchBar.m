@@ -35,14 +35,15 @@
             
             [self addSubview:stackView];
             
-            NSLayoutConstraint *top = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:floor(MenusDesignDefaultContentSpacing * 0.70)];
+            const CGFloat padding = 2.0;
+            NSLayoutConstraint *top = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:padding];
             top.priority = 999;
-            NSLayoutConstraint *bottom = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-floor(MenusDesignDefaultContentSpacing * 0.70)];
+            NSLayoutConstraint *bottom = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-padding];
             bottom.priority = 999;
             [NSLayoutConstraint activateConstraints:@[
                                                       top,
-                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:MenusDesignDefaultContentSpacing ],
-                                                      [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-MenusDesignDefaultContentSpacing],
+                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                                      [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
                                                       bottom
                                                       ]];
             self.stackView = stackView;
