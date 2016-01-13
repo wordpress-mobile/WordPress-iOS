@@ -313,9 +313,9 @@ NSString * const PostFormatStandard = @"standard";
 - (NSString *)textForCurrentSiteVisibility
 {
     if (!self.settings.privacy) {
-        [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
+        [BlogSiteVisibilityHelper titleForSiteVisibility:SiteVisibilityUnknown];
     }
-    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.settings.privacy intValue]];
+    return [BlogSiteVisibilityHelper titleForSiteVisibility:[self.settings.privacy intValue]];
 }
 
 
