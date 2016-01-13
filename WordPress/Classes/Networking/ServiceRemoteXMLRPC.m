@@ -22,6 +22,16 @@
     return self;
 }
 
+/**
+ Common XML-RPC arguments to most calls
+
+ Most XML-RPC calls will take blog ID, username, and password as their first arguments.
+ Blog ID is unused since the blog is inferred from the XML-RPC endpoint. We send a value of 0
+ because the documentation expects an int value, and we have to send something.
+
+ See https://github.com/WordPress/WordPress/blob/master/wp-includes/class-wp-xmlrpc-server.php
+ for method documentation.
+ */
 - (NSArray *)defaultXMLRPCArguments {
     return @[@0, self.username, self.password];
 }
