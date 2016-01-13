@@ -4,23 +4,35 @@ import RxCocoa
 
 extension AccountService {
     /// Observable that emits new values when the default account is set
-    static var defaultAccountObjectID: Observable<NSManagedObjectID?> {
+    var defaultAccountObjectID: Observable<NSManagedObjectID?> {
         return NSNotificationCenter.defaultCenter()
             .rx_notification(WPAccountDefaultWordPressComAccountChangedNotification)
+            // FIXME: notification is posted on main thread regardless of context
+            // Figure out how to swith to the context thread, or fix the notification
+            // so it's posted in context
+            // @kokejb 2015-01-13
             .map({ ($0.object as! WPAccount?)?.objectID })
-            .startWith(defaultWordPressComAccountInMainContext()?.objectID)
+            .startWith(defaultWordPressComAccount()?.objectID)
     }
 
     /// Observable that emits values when there is a change in the default account.
     /// This can be that the default account is set or removed, or one of its properties changes.
-    static var defaultAccountChanged: Observable<WPAccount?> {
+    ///
+    /// - warning: This should only be observed from the main thread, otherwise behavior is undefined
+    var defaultAccountChanged: Observable<WPAccount?> {
+        // Keep a reference to the context to avoid having to reference self
+        // within the closure
+        let context = managedObjectContext
+
         return defaultAccountObjectID
             // When the default account is set return the values of this new signal
             .flatMapLatest({ (objectID) -> Observable<WPAccount?> in
                 if let objectID = objectID {
+                    let service = AccountService(managedObjectContext: context)
+                    let account = service.defaultWordPressComAccount()
+
                     return NSNotificationCenter.defaultCenter()
-                        .rx_notification(NSManagedObjectContextObjectsDidChangeNotification, object: ContextManager.sharedInstance().mainContext)
-                        .observeOn(MainScheduler.instance)
+                        .rx_notification(NSManagedObjectContextObjectsDidChangeNotification, object: context)
                         // Transform the notifications into the changed account if it changed
                         .map({ (note) -> WPAccount? in
                             guard let updatedObjects = note.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject> else {
@@ -32,7 +44,7 @@ extension AccountService {
                         })
                         // A nil value here means the change didn't affect the current account
                         .filter({ $0 != nil })
-                        .startWith(defaultWordPressComAccountInMainContext())
+                        .startWith(account)
                 } else {
                     // If the default account was removed, just send a nil value
                     return Observable.just(nil)
