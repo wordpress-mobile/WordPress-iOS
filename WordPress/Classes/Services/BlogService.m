@@ -188,7 +188,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 && !widgetIsConfigured
                 && defaultBlog != nil
                 && !defaultBlog.isDeleted) {
-                NSNumber *siteId = defaultBlog.blogID;
+                NSNumber *siteId = defaultBlog.dotComID;
                 NSString *blogName = defaultBlog.settings.name;
                 NSTimeZone *timeZone = [self timeZoneForBlog:defaultBlog];
                 NSString *oauth2Token = accountInContext.authToken;
@@ -216,10 +216,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                    failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlogID:blog.blogID
-                       success:[self optionsHandlerWithBlogObjectID:blog.objectID
+    [remote syncOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blog.objectID
                                                   completionHandler:success]
-                       failure:failure];
+                           failure:failure];
 }
 
 - (void)syncSettingsForBlog:(Blog *)blog
@@ -236,7 +235,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             return;
         }
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
-        [remote syncSettingsForBlogID:blog.blogID success:^(RemoteBlogSettings *settings) {
+        [remote syncSettingsWithSuccess:^(RemoteBlogSettings *settings) {
             [self.managedObjectContext performBlock:^{
                 [self updateSettings:blogInContext.settings withRemoteSettings:settings];
                 [self.managedObjectContext save:nil];
@@ -258,7 +257,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
         id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
         [remote updateBlogSettings:[self remoteSettingFromSettings:blogInContext.settings]
-                         forBlogID:blogInContext.blogID
                            success:^() {
                                [self.managedObjectContext performBlock:^{
                                    [self.managedObjectContext save:nil];
@@ -310,32 +308,29 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                        failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncPostFormatsForBlogID:blog.blogID
-                             success:[self postFormatsHandlerWithBlogObjectID:blog.objectID
+    [remote syncPostFormatsWithSuccess:[self postFormatsHandlerWithBlogObjectID:blog.objectID
                                                           completionHandler:success]
-                             failure:failure];
+                               failure:failure];
 }
 
 - (void)syncBlog:(Blog *)blog
 {
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlogID:blog.blogID success:[self optionsHandlerWithBlogObjectID:blogObjectID
+    [remote syncOptionsWithSuccess:[self optionsHandlerWithBlogObjectID:blogObjectID
                                                                completionHandler:nil]
-                       failure:^(NSError *error) { DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error); }];
+                           failure:^(NSError *error) { DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error); }];
 
-    [remote syncPostFormatsForBlogID:blog.blogID
-                           success:[self postFormatsHandlerWithBlogObjectID:blogObjectID
+    [remote syncPostFormatsWithSuccess:[self postFormatsHandlerWithBlogObjectID:blogObjectID
                                                           completionHandler:nil]
-                           failure:^(NSError *error) { DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error); }];
+                               failure:^(NSError *error) { DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error); }];
 
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
     [categoryService syncCategoriesForBlog:blog
                                    success:nil
                                    failure:^(NSError *error) { DDLogError(@"Failed syncing categories for blog %@: %@", blog.url, error); }];
 
-    [remote checkMultiAuthorForBlogID:blog.blogID
-                              success:^(BOOL isMultiAuthor) {
+    [remote checkMultiAuthorWithSuccess:^(BOOL isMultiAuthor) {
                                 [self updateMutliAuthor:isMultiAuthor forBlog:blogObjectID];
                               } failure:^(NSError *error) {
                                 DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
@@ -412,8 +407,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     NSArray *allBlogs = [self blogsWithPredicate:nil];
     
     for (Blog *blog in allBlogs) {
-        if (blog.blogID != nil) {
-            blogMap[blog.blogID] = blog;
+        if (blog.dotComID != nil) {
+            blogMap[blog.dotComID] = blog;
         }
     }
     
@@ -537,7 +532,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         }
         
         blog.url = remoteBlog.url;
-        blog.blogID = remoteBlog.blogID;
+        blog.dotComID = remoteBlog.blogID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
         blog.isAdmin = remoteBlog.isAdmin;
@@ -592,7 +587,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     id<BlogServiceRemote> remote;
     if (blog.restApi) {
-        remote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi];
+        remote = [[BlogServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
     } else {
         remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
