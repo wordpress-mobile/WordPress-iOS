@@ -80,9 +80,9 @@
     }
     
     self.resultViews = [NSMutableArray arrayWithCapacity:self.results.count];
-    for(MenuItemSourceResult *result in self.results) {
+    for(MenuItemSourceOption *result in self.results) {
         
-        MenuItemSourceResultView *view = [[MenuItemSourceResultView alloc] init];
+        MenuItemSourceOptionView *view = [[MenuItemSourceOptionView alloc] init];
         view.result = result;
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         

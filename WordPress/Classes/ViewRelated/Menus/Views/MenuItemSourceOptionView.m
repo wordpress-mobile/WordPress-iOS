@@ -1,53 +1,53 @@
-#import "MenuItemSourceResultView.h"
+#import "MenuItemSourceOptionView.h"
 #import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
-NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItemSourceResultSelectionDidChangeNotification";
+NSString * const MenuItemSourceOptionSelectionDidChangeNotification = @"MenuItemSourceOptionSelectionDidChangeNotification";
 
-#pragma mark - MenuItemSourceResult
+#pragma mark - MenuItemSourceOption
 
-@implementation MenuItemSourceResult
+@implementation MenuItemSourceOption
 
 - (void)setSelected:(BOOL)selected
 {
     if(_selected != selected) {
         _selected = selected;
-        [[NSNotificationCenter defaultCenter] postNotificationName:MenuItemSourceResultSelectionDidChangeNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:MenuItemSourceOptionSelectionDidChangeNotification object:self];
     }
 }
 
 @end
 
-#pragma mark - MenuItemSourceResultCheckView
+#pragma mark - MenuItemSourceOptionCheckView
 
-@interface MenuItemSourceResultCheckView : UIView
+@interface MenuItemSourceOptionCheckView : UIView
 
 @property (nonatomic, assign) BOOL drawsChecked;
 @property (nonatomic, assign) BOOL drawsSelected;
 
 @end
 
-#pragma mark - MenuItemSourceResultBadgeLabel
+#pragma mark - MenuItemSourceOptionBadgeLabel
 
-@interface MenuItemSourceResultBadgeLabel : UILabel
+@interface MenuItemSourceOptionBadgeLabel : UILabel
 
 @end
 
-#pragma mark - MenuItemSourceResultCell
+#pragma mark - MenuItemSourceOptionCell
 
-@interface MenuItemSourceResultView ()
+@interface MenuItemSourceOptionView ()
 
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *label;
-@property (nonatomic, strong) MenuItemSourceResultBadgeLabel *badgeLabel;
-@property (nonatomic, strong) MenuItemSourceResultCheckView *checkView;
+@property (nonatomic, strong) MenuItemSourceOptionBadgeLabel *badgeLabel;
+@property (nonatomic, strong) MenuItemSourceOptionCheckView *checkView;
 
 @end
 
-@implementation MenuItemSourceResultView
+@implementation MenuItemSourceOptionView
 
 - (void)dealloc
 {
@@ -107,7 +107,7 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
         UIFont *labelFont = [WPFontManager openSansRegularFontOfSize:16.0];
         const CGFloat labelFontLineHeight = ceilf(labelFont.ascender + fabs(labelFont.descender));
         {
-            MenuItemSourceResultCheckView *checkView = [[MenuItemSourceResultCheckView alloc] init];
+            MenuItemSourceOptionCheckView *checkView = [[MenuItemSourceOptionCheckView alloc] init];
             checkView.translatesAutoresizingMaskIntoConstraints = NO;
             checkView.drawsChecked = NO;
             
@@ -149,13 +149,13 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
             self.label = label;
         }
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resultSelectionUpdatedNotification:) name:MenuItemSourceResultSelectionDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resultSelectionUpdatedNotification:) name:MenuItemSourceOptionSelectionDidChangeNotification object:nil];
     }
     
     return self;
 }
 
-- (void)setResult:(MenuItemSourceResult *)result
+- (void)setResult:(MenuItemSourceOption *)result
 {
     if(_result != result) {
         _result = result;
@@ -192,7 +192,7 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
 {
     if(!self.badgeLabel) {
         
-        MenuItemSourceResultBadgeLabel *label = [[MenuItemSourceResultBadgeLabel alloc] init];
+        MenuItemSourceOptionBadgeLabel *label = [[MenuItemSourceOptionBadgeLabel alloc] init];
         label.translatesAutoresizingMaskIntoConstraints = NO;
         label.font = [WPFontManager openSansLightFontOfSize:13.0];
         label.textColor = [UIColor whiteColor];
@@ -242,7 +242,7 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
 
 @end
 
-@implementation MenuItemSourceResultCheckView
+@implementation MenuItemSourceOptionCheckView
 
 - (id)init
 {
@@ -291,9 +291,9 @@ NSString * const MenuItemSourceResultSelectionDidChangeNotification = @"MenuItem
 
 @end
 
-#pragma mark - MenuItemSourceResultBadgeLabel
+#pragma mark - MenuItemSourceOptionBadgeLabel
 
-@implementation MenuItemSourceResultBadgeLabel
+@implementation MenuItemSourceOptionBadgeLabel
 
 - (CGSize)intrinsicContentSize
 {
