@@ -64,11 +64,6 @@
     [self addTypeView:MenuItemTypePost];
 }
 
-- (UIView *)firstArrangedSubViewInLayout
-{
-    return [self.stackView.arrangedSubviews firstObject];
-}
-
 - (MenuItemTypeView *)addTypeView:(MenuItemType)itemType {
     
     MenuItemTypeView *typeView = [[MenuItemTypeView alloc] init];
@@ -110,11 +105,6 @@
     typeView.drawsSelected = YES;
     
     [self tellDelegateTypeChanged:typeView.itemType];
-}
-
-- (BOOL)typeViewRequiresCompactLayout:(MenuItemTypeView *)typeView
-{
-    return [self.delegate itemTypeSelectionViewRequiresCompactLayout:self];
 }
 
 @end

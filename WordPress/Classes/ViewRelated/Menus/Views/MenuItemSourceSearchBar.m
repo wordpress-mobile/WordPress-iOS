@@ -24,13 +24,6 @@
         self.backgroundColor = [UIColor whiteColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
         
-        UIEdgeInsets margin = UIEdgeInsetsZero;
-        margin.top = floor(MenusDesignDefaultContentSpacing * 0.75);
-        margin.left = MenusDesignDefaultContentSpacing;
-        margin.right = MenusDesignDefaultContentSpacing;
-        margin.bottom = floor(MenusDesignDefaultContentSpacing * 0.75);
-        self.layoutMargins = margin;
-        UILayoutGuide *marginsGuide = self.layoutMarginsGuide;
         const CGFloat spacing = ceilf(MenusDesignDefaultContentSpacing / 2.0);
         {
             UIStackView *stackView = [[UIStackView alloc] init];
@@ -42,11 +35,15 @@
             
             [self addSubview:stackView];
             
+            NSLayoutConstraint *top = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:floor(MenusDesignDefaultContentSpacing * 0.70)];
+            top.priority = 999;
+            NSLayoutConstraint *bottom = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-floor(MenusDesignDefaultContentSpacing * 0.70)];
+            bottom.priority = 999;
             [NSLayoutConstraint activateConstraints:@[
-                                                      [stackView.topAnchor constraintEqualToAnchor:marginsGuide.topAnchor],
-                                                      [stackView.leadingAnchor constraintEqualToAnchor:marginsGuide.leadingAnchor],
-                                                      [stackView.trailingAnchor constraintEqualToAnchor:marginsGuide.trailingAnchor],
-                                                      [stackView.bottomAnchor constraintEqualToAnchor:marginsGuide.bottomAnchor]
+                                                      top,
+                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:MenusDesignDefaultContentSpacing ],
+                                                      [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-MenusDesignDefaultContentSpacing],
+                                                      bottom
                                                       ]];
             self.stackView = stackView;
         }
@@ -134,6 +131,11 @@
     }
     
     return self;
+}
+
+- (BOOL)resignFirstResponder
+{
+    return [self.textField resignFirstResponder];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection

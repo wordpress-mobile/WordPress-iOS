@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger) {
     MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews,
 }MenuItemEditingViewControllerContentLayout;
 
-@interface MenuItemEditingViewController () <MenuItemSourceViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
+@interface MenuItemEditingViewController () <MenuItemSourceContainerViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) IBOutlet UIView *contentView;
@@ -126,12 +126,6 @@ typedef NS_ENUM(NSUInteger) {
 - (void)loadContentLayoutConstraints
 {
     {
-        // synchronize the height of the sourceView's headerView to the height of the first item in the typeView stack
-        // this is a design detail and serves no other purpose
-        NSLayoutAnchor *anchor = [self.typeView firstArrangedSubViewInLayout].heightAnchor;
-        [self.sourceView activateHeightConstraintForHeaderViewWithHeightAnchor:anchor];
-    }
-    {
         self.layoutConstraintsForDisplayingTypeView = @[
                                                         [self.typeView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor],
                                                         [self.typeView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor],
@@ -208,11 +202,6 @@ typedef NS_ENUM(NSUInteger) {
         }
     }
     
-    if(self.sourceView.headerView.hidden) {
-        self.sourceView.headerView.hidden = NO;
-        self.sourceView.headerView.alpha = 1.0;
-    }
-    
     [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
     
     if(IS_IPHONE) {
@@ -240,11 +229,6 @@ typedef NS_ENUM(NSUInteger) {
         }
         
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
-    }
-    
-    if(!self.sourceView.headerView.hidden) {
-        self.sourceView.headerView.hidden = YES;
-        self.sourceView.headerView.alpha = 0.0;
     }
     
     if(IS_IPHONE) {
@@ -322,17 +306,7 @@ typedef NS_ENUM(NSUInteger) {
 
 - (void)updateForHidingTypeSelection
 {
-    BOOL hideTypeView = NO;
-    
     if([self shouldDisplayForCompactWidth]) {
-        if(self.sourceView.headerView.hidden) {
-            self.sourceView.headerView.hidden = NO;
-            self.sourceView.headerView.alpha = 1.0;
-        }
-        hideTypeView = YES;
-    }
-    
-    if(hideTypeView) {
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
     }else {
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
@@ -349,36 +323,29 @@ typedef NS_ENUM(NSUInteger) {
 
 - (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(MenuItemType)itemType
 {
+    self.sourceView.selectedItemType = itemType;
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        // delays the layout update and upcoming animation
-        // also fixes a layout drawing glitch when label have their bounds zeroed out from stackViews
-        // Jan-8-2016 - Brent C.
-        self.sourceView.selectedItemType = itemType;
         [self updateForHidingTypeSelection];
     });
 }
 
-- (BOOL)itemTypeSelectionViewRequiresCompactLayout:(MenuItemTypeSelectionView *)typeSelectionView
-{
-    return ![self shouldDisplayForCompactWidth];
-}
+#pragma mark - MenuItemSourceContainerViewDelegate
 
-#pragma mark - MenuItemSourceViewDelegate
-
-- (void)sourceViewSelectedSourceTypeButton:(MenuItemSourceContainerView *)sourceView
+- (void)sourceContainerViewSelectedSourceTypeToggle:(MenuItemSourceContainerView *)sourceView
 {
     if([self shouldDisplayForCompactWidth]) {
         [self updateForShowingTypeSelectionCompact];
     }
 }
 
-- (void)sourceViewDidBeginTyping:(MenuItemSourceContainerView *)sourceView
+- (void)sourceContainerViewDidBeginEditingWithKeyboard:(MenuItemSourceContainerView *)sourceView
 {
     self.sourceViewIsTyping = YES;
     [self updateSourceAndEditingViewsAvailability:YES];
 }
 
-- (void)sourceViewDidEndTyping:(MenuItemSourceContainerView *)sourceView
+- (void)sourceContainerViewDidEndEditingWithKeyboard:(MenuItemSourceContainerView *)sourceView
 {
     self.sourceViewIsTyping = NO;
     [self updateSourceAndEditingViewsAvailability:YES];

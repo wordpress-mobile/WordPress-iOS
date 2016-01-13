@@ -33,10 +33,10 @@
             [self addSubview:stackView];
             
             NSLayoutConstraint *top = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:MenusDesignDefaultContentSpacing];
-            top.priority = UILayoutPriorityDefaultHigh;
+            top.priority = 999;
             
             NSLayoutConstraint *bottom = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-MenusDesignDefaultContentSpacing];
-            bottom.priority = UILayoutPriorityDefaultHigh;
+            bottom.priority = 999;
             
             [NSLayoutConstraint activateConstraints:@[
                                                       top,
@@ -90,6 +90,7 @@
     if(_itemType != itemType) {
         _itemType = itemType;
         self.label.text = [self title];
+        [self.stackView layoutIfNeeded];
     }
 }
 
