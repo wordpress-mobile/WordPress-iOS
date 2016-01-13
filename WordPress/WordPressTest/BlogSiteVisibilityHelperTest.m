@@ -140,24 +140,22 @@
 
 - (Blog *)newBlog
 {
-    return (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog"
-                                                 inManagedObjectContext:self.testContextManager.mainContext];
+    Blog *blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog"
+                                                       inManagedObjectContext:self.testContextManager.mainContext];
+    blog.isHostedAtWPcom = YES;
+    
+    return blog;
 }
 
 - (Blog *)newJetpackBlog
 {
     Blog *blog = [self newBlog];
-    blog.options = @{@"jetpack_version": @{
-                             @"value": @"3.7.2",
-                             @"desc": @"stub",
-                             @"readonly": @YES,
-                             },
-                     @"jetpack_client_id": @{
-                             @"value": @"1",
-                             @"desc": @"stub",
-                             @"readonly": @YES,
-                             },
-                     };
+    blog.isHostedAtWPcom = NO;
+    
+    // UI in the app hides visibility settings entirely for self-hosted non-Jetpack blogs
+    // so for the purposes of these tests we can assume that if a blog is self-hosted
+    // then it's also running Jetpack.
+    
     return blog;
 }
 
