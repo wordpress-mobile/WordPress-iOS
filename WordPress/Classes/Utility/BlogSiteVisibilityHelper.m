@@ -4,11 +4,7 @@
 
 + (NSArray *)siteVisibilityValuesForBlog:(Blog *)blog
 {
-    // Private visibility is only respected for wpcom hosted blogs,
-    // so don't add it if the blog is using Jetpack
-    BOOL includePrivateVisibility = !blog.jetpack.isConnected;
-    
-    if (includePrivateVisibility) {
+    if ([blog supports:BlogFeaturePrivate]) {
         return @[ @(SiteVisibilityPublic), @(SiteVisibilityHidden), @(SiteVisibilityPrivate) ];
     } else {
         return @[ @(SiteVisibilityPublic), @(SiteVisibilityHidden) ];
