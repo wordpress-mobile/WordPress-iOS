@@ -21,33 +21,68 @@ final public class PushNotificationsManager : NSObject
     
     /// Returns the shared PushNotificationsManager instance.
     ///
-    static let sharedInstance = PushNotificationsManager()
+    public static let sharedInstance = PushNotificationsManager()
     
     
-    /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
-    ///
-    var sharedApplication : UIApplication {
-        return UIApplication.sharedApplication()
-    }
-    
-
-
     /// Stores the Apple's Push Notifications Token
     ///
-    var deviceToken : String? {
-        didSet {
-            save()
+    public var deviceToken : String? {
+        get {
+            return NSUserDefaults.standardUserDefaults().stringForKey(deviceTokenKey) ?? String()
+        }
+        set {
+            standardUserDefaults.setObject(newValue, forKey: deviceTokenKey)
+            standardUserDefaults.synchronize()
         }
     }
 
     
     /// Stores the WordPress.com Device identifier
     ///
-    var deviceId : String? {
-        didSet {
-            save()
+    public var deviceId : String? {
+        get {
+            return standardUserDefaults.stringForKey(deviceIdKey) ?? String()
+        }
+        set {
+            standardUserDefaults.setObject(newValue, forKey: deviceIdKey)
+            standardUserDefaults.synchronize()
         }
     }
+    
+    
+    /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
+    ///
+    public var sharedApplication : UIApplication {
+        return UIApplication.sharedApplication()
+    }
+    
+    
+    /// Returns the Application Execution State. This is meant for Unit Testing purposes.
+    ///
+    public var applicationState : UIApplicationState {
+        return sharedApplication.applicationState
+    }
+    
+    
+    
+    
+    // MARK: - Private Properties
+    
+    
+    /// Returns the Standard User Defaults.
+    ///
+    private var standardUserDefaults : NSUserDefaults {
+        return NSUserDefaults.standardUserDefaults()
+    }
+    
+    
+    /// Indicates whether there is a default WordPress.com accounta available, or not
+    ///
+    private var wordPressDotComAvailable : Bool {
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        return accountService.defaultWordPressComAccount() != nil
+    }
+    
     
     
     
@@ -56,7 +91,7 @@ final public class PushNotificationsManager : NSObject
     
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
-    func registerForRemoteNotifications() {
+    public func registerForRemoteNotifications() {
         if sharedApplication.isRunningSimulator() || sharedApplication.isAlphaBuild() {
             return;
         }
@@ -64,10 +99,10 @@ final public class PushNotificationsManager : NSObject
         sharedApplication.registerForRemoteNotifications()
     }
     
-
+    
     
     /// Indicates whether Push Notifications are enabled in Settings.app, or not.
-    func notificationsEnabledInDeviceSettings() -> Bool {
+    public func notificationsEnabledInDeviceSettings() -> Bool {
         return (sharedApplication.currentUserNotificationSettings()?.types ?? .None) != .None
     }
     
@@ -77,14 +112,14 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Note: Both Helpshift and Mixpanel will also be initialized. The token will be persisted across App Sessions.
     ///
-    func registerDeviceToken(tokenData: NSData) {
+    public func registerDeviceToken(tokenData: NSData) {
         // We want to register Helpshift regardless so that way if a user isn't logged in
         // they can still get push notifications that we replied to their support ticket.
         Helpshift.sharedInstance()?.registerDeviceToken(tokenData)
         Mixpanel.sharedInstance()?.people?.addPushDeviceToken(tokenData)
 
         // Don't bother registering for WordPress anything if the user isn't logged in
-        if wordPressDotComAvailable() == false {
+        if !wordPressDotComAvailable {
             return
         }
 
@@ -123,7 +158,7 @@ final public class PushNotificationsManager : NSObject
     /// - Parameters:
     ///     - error: Details the reason of failure
     ///
-    func registrationDidFail(error: NSError) {
+    public func registrationDidFail(error: NSError) {
         DDLogSwift.logError("Failed to register for push notifications: \(error)")
         unregisterDeviceToken()
     }
@@ -132,7 +167,7 @@ final public class PushNotificationsManager : NSObject
     
     /// Unregister the device from WordPress.com notifications
     ///
-    func unregisterDeviceToken() {
+    public func unregisterDeviceToken() {
         guard let knownDeviceId = deviceId else {
             return
         }
@@ -158,77 +193,154 @@ final public class PushNotificationsManager : NSObject
     
     
     
-    // MARK: - Public Methods: Notification Handling
+    // MARK: - Public Methods: Handlers
     
     
     /// Handles a Remote Notification
     ///
     /// - Parameters:
     ///     - userInfo: The Notification's Payload
-    ///     - applicationState: The current App's Execution state
     ///     - completionHandler: A callback, to be executed on completion
     ///
-    public func handleNotification(userInfo: NSDictionary, applicationState: UIApplicationState, completionHandler: (UIBackgroundFetchResult -> Void)?) {
+    public func handleNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) {
+        DDLogSwift.logVerbose("Received push notification:\nPayload: \(userInfo)\n")
+        DDLogSwift.logVerbose("Current Application state: \(applicationState)");
         
-        DDLogSwift.logVerbose("Received push notification:\nPayload: \(userInfo)\nCurrent Application state: \(applicationState)");
-        
-        // Badge Update
+        // Badge: Update
         if let badgeCountNumber = userInfo.numberForKeyPath(notificationBadgePath)?.integerValue {
             sharedApplication.applicationIconBadgeNumber = badgeCountNumber
         }
         
-        // Badge Reset
+        // Badge: Reset
         if let type = userInfo.stringForKey(notificationTypeKey) where type == notificationBadgeResetValue {
             return
         }
         
         // Analytics
-        trackNotificationWithInfo(userInfo)
+        trackNotificationWithUserInfo(userInfo)
+
+        // Handling!
+        let handlers = [ handleHelpshiftNotification,
+                         handleAuthenticationNotification,
+                         handleInactiveNotification,
+                         handleBackgroundNotification ]
         
-        // Helpshift
-        if let origin = userInfo.stringForKey(notificationOriginKey) where origin == helpshiftOriginValue {
-            WPAnalytics.track(.SupportReceivedResponseFromSupport)
-            let rootViewController = UIApplication.sharedApplication().keyWindow?.rootViewController
-            Helpshift.sharedInstance()?.handleRemoteNotification(userInfo as [NSObject : AnyObject], withController: rootViewController)
-            return;
-        }
-        
-        // WordPress.com Push Authentication Notification
-        // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
-        // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
-        // notifications when in BG mode.
-        //
-        let authenticationManager = PushAuthenticationManager()
-        if authenticationManager.isPushAuthenticationNotification(userInfo) && applicationState == .Background{
-            authenticationManager.handlePushAuthenticationNotification(userInfo)
-            return
-        }
-        
-        // Notification: Switch to Foreground
-        if applicationState == .Inactive {
-            if let notificationId = userInfo.numberForKey(notificationIdentifierKey)?.stringValue {
-                WPTabBarController.sharedInstance().showNotificationsTabForNoteWithID(notificationId)
+        for handler in handlers {
+            if handler(userInfo, completionHandler: completionHandler) {
+                break
             }
-            return
-        }
-        
-        // Notifications: Background Fetch
-        if applicationState == .Background {
-            let simperium = WordPressAppDelegate.sharedInstance().simperium
-            simperium.backgroundFetchWithCompletion({ (result: UIBackgroundFetchResult) in
-                if result == .NewData {
-                    DDLogSwift.logVerbose("Background Fetch Completed with New Data!")
-                } else {
-                    DDLogSwift.logVerbose("Background Fetch Completed with No Data..")
-                }
-                completionHandler?(result)
-            })
         }
     }
 
     
+
     
-    // MARK: - Private Methods: Notification Handling
+    // MARK: - Private Methods: Handlers
+    
+    
+    /// Handles a Helpshift Remote Notification
+    ///
+    /// - Parameters:
+    ///     - userInfo: The Notification's Payload
+    ///     - completionHandler: A callback, to be executed on completion
+    ///
+    /// - Returns: True when handled. False otherwise
+    ///
+    private func handleHelpshiftNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+        guard let origin = userInfo.stringForKey(notificationOriginKey) where origin == helpshiftOriginValue else {
+            return false
+        }
+        
+        let rootViewController = sharedApplication.keyWindow?.rootViewController
+        let payload = userInfo as [NSObject : AnyObject]
+        
+        Helpshift.sharedInstance()?.handleRemoteNotification(payload, withController: rootViewController)
+        WPAnalytics.track(.SupportReceivedResponseFromSupport)
+        
+        return true
+    }
+    
+    
+    /// Handles a WordPress.com Push Authentication Notification
+    ///
+    /// - Parameters:
+    ///     - userInfo: The Notification's Payload
+    ///     - completionHandler: A callback, to be executed on completion
+    ///
+    /// - Returns: True when handled. False otherwise
+    ///
+    private func handleAuthenticationNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+        // WordPress.com Push Authentication Notification
+        // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
+        // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
+        // notifications when in BG mode. Still, we don't wanna relay that BG notification!
+        //
+        let authenticationManager = PushAuthenticationManager()
+        guard authenticationManager.isPushAuthenticationNotification(userInfo) else {
+            return false
+        }
+        
+        if applicationState != .Background {
+            authenticationManager.handlePushAuthenticationNotification(userInfo)
+        }
+        
+        return true
+    }
+    
+    
+    /// Handles a Notification while in Inactive Mode
+    ///
+    /// - Parameters:
+    ///     - userInfo: The Notification's Payload
+    ///     - completionHandler: A callback, to be executed on completion
+    ///
+    /// - Returns: True when handled. False otherwise
+    ///
+    private func handleInactiveNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+        guard applicationState == .Inactive else {
+            return false
+        }
+        
+        guard let notificationId = userInfo.numberForKey(notificationIdentifierKey)?.stringValue else {
+            return false
+        }
+
+        WPTabBarController.sharedInstance().showNotificationsTabForNoteWithID(notificationId)
+        
+        return true
+    }
+    
+    
+    /// Handles a Notification while in Background Mode
+    ///
+    /// - Parameters:
+    ///     - userInfo: The Notification's Payload
+    ///     - completionHandler: A callback, to be executed on completion
+    ///
+    /// - Returns: True when handled. False otherwise
+    ///
+    private func handleBackgroundNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+        guard applicationState == .Background else {
+            return false
+        }
+        
+        let simperium = WordPressAppDelegate.sharedInstance().simperium
+        simperium.backgroundFetchWithCompletion({ (result: UIBackgroundFetchResult) in
+            if result == .NewData {
+                DDLogSwift.logVerbose("Background Fetch Completed with New Data!")
+            } else {
+                DDLogSwift.logVerbose("Background Fetch Completed with No Data..")
+            }
+            completionHandler?(result)
+        })
+        
+        return true
+    }
+    
+    
+    
+    
+    // MARK: - Private Methods: Helpers
     
     
     /// Tracks a Notification Event
@@ -236,7 +348,7 @@ final public class PushNotificationsManager : NSObject
     /// - Parameters:
     ///     - userInfo: The Notification's Payload
     ///
-    private func trackNotificationWithInfo(userInfo: NSDictionary) {
+    private func trackNotificationWithUserInfo(userInfo: NSDictionary) {
         var properties = [String : String]()
         
         if let noteId = userInfo.numberForKey(notificationIdentifierKey) {
@@ -251,25 +363,10 @@ final public class PushNotificationsManager : NSObject
             properties[trackingTokenKey] = theToken
         }
         
-        let isBackground = sharedApplication.applicationState == .Background
-        let eventName = isBackground ? WPAnalyticsStat.PushNotificationReceived : WPAnalyticsStat.PushNotificationAlertPressed
-        WPAnalytics.track(eventName, withProperties: properties)
+        let event : WPAnalyticsStat = (applicationState == .Background) ? .PushNotificationReceived : .PushNotificationAlertPressed
+        WPAnalytics.track(event, withProperties: properties)
     }
-
-
     
-    // MARK: - Private Methods
-    
-    
-    /// Indicates whether there is a default WordPress.com accounta available, or not
-    ///
-    private func wordPressDotComAvailable() -> Bool {
-        let mainContext = ContextManager.sharedInstance().mainContext
-        let accountService = AccountService(managedObjectContext: mainContext)
-        
-        return accountService.defaultWordPressComAccount() != nil
-    }
-
     
     
     /// Parses the NSData sent by Apple's Push Service, and extracts the Device Token
@@ -282,28 +379,6 @@ final public class PushNotificationsManager : NSObject
         return newToken
     }
     
-    
-    
-    /// Persists the deviceToken + deviceId
-    ///
-    private func save() {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(deviceToken, forKey: deviceTokenKey)
-        defaults.setObject(deviceId, forKey: deviceIdKey)
-        defaults.synchronize()
-    }
-    
-    
-    
-    /// Default Initializer
-    ///
-    private override init() {
-        let defaults    = NSUserDefaults.standardUserDefaults()
-        deviceToken     = defaults.stringForKey(deviceTokenKey) ?? String()
-        deviceId        = defaults.stringForKey(deviceIdKey) ?? String()
-        
-        super.init()
-    }
     
     
     
