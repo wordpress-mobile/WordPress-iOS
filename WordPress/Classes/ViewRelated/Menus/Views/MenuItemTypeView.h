@@ -10,6 +10,8 @@
 @property (nonatomic, assign) BOOL designIgnoresDrawingTopBorder;
 @property (nonatomic, assign) MenuItemType itemType;
 
+- (void)updateDesignForLayoutChangeIfNeeded;
+
 @end
 
 @protocol MenuItemTypeViewDelegate <NSObject>

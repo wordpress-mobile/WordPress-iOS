@@ -125,6 +125,11 @@
     }
 }
 
+- (void)updateDesignForLayoutChangeIfNeeded
+{
+    [self updateSelection];
+}
+
 - (void)updatedItemType
 {
     self.label.text = [self title];

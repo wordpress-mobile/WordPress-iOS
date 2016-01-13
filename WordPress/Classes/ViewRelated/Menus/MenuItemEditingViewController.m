@@ -76,7 +76,7 @@ typedef NS_ENUM(NSUInteger) {
     [self.stackView bringSubviewToFront:self.headerView];
     
     [self loadContentLayoutConstraints];
-    [self updateSourceAndEditingViewsAvailability:NO];
+    [self updateLayoutIfNeeded];
 }
 
 - (void)viewDidLayoutSubviews
@@ -119,8 +119,7 @@ typedef NS_ENUM(NSUInteger) {
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
 {
     [super traitCollectionDidChange:previousTraitCollection];
-    
-    [self updateForLayoutChange];
+    [self updateLayoutIfNeeded];
 }
 
 - (void)loadContentLayoutConstraints
@@ -151,7 +150,7 @@ typedef NS_ENUM(NSUInteger) {
     }
 }
 
-- (BOOL)shouldDisplayForCompactWidth
+- (BOOL)shouldLayoutForCompactWidth
 {
     if(IS_IPAD) {
         return NO;
@@ -169,85 +168,89 @@ typedef NS_ENUM(NSUInteger) {
     return horizontallyCompact;
 }
 
-#pragma mark - arrangedSubViews
+#pragma mark - layout changes
 
-- (void)updateForLayoutChange
+- (void)setHeaderViewHidden:(BOOL)hidden
 {
-    if([self shouldDisplayForCompactWidth]) {
-        [self updateForCompactWidthLayout];
-    }else {
-        [self updateForExtendedWidthLayout];
-    }
-    
-    [self.stackView layoutIfNeeded];
-    [self setNeedsStatusBarAppearanceUpdate];
-    [self.headerView setNeedsTopConstraintsUpdateForStatusBarAppearence:self.headerView.hidden];
-}
-
-- (void)updateForCompactWidthLayout
-{
-    if(self.sourceViewIsTyping) {
-        
-        if(!self.headerView.hidden) {
-            self.headerView.hidden = YES;
-            self.headerView.alpha = 0.0;
-        }
-        
-    }else {
-        
-        if(self.headerView.hidden) {
-            self.headerView.hidden = NO;
-            self.headerView.alpha = 1.0;
+    if(self.headerView.hidden != hidden) {
+        self.headerView.hidden = hidden;
+        self.headerView.alpha = hidden ? 0.0 : 1.0;
+        if(!hidden) {
             [self.headerView setNeedsDisplay];
         }
     }
-    
-    [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
-    
-    if(IS_IPHONE) {
-        self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewDefaultHeight;
-    }
 }
 
-- (void)updateForExtendedWidthLayout
+- (void)updateLayoutIfNeeded
 {
-    if(self.sourceViewIsTyping) {
+    // compactWidthLayout is any screen size in which the width is less than the height (iPhone portrait)
+    BOOL compactWidthLayout = [self shouldLayoutForCompactWidth];
+    BOOL minimizeLayoutForSourceViewTypying = !IS_IPAD && self.sourceViewIsTyping;
+    
+    if(minimizeLayoutForSourceViewTypying) {
+        // headerView should be hidden while typing within the sourceView, to save screen space (iPhone)
+        [self setHeaderViewHidden:YES];
+    }else {
+        [self setHeaderViewHidden:NO];
+    }
+    
+    if(!IS_IPAD) {
         
-        if(!self.headerView.hidden) {
-            self.headerView.hidden = YES;
-            self.headerView.alpha = 0.0;
+        if(!compactWidthLayout) {
+            // on iPhone landscape we want to minimize the height of the footer to gain any vertical screen space we can
+            self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewCompactHeight;
+        }else {
+            // restore the height of the footer on portrait since we have more vertical screen space
+            self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewDefaultHeight;
         }
+    }
+    
+    if(compactWidthLayout || minimizeLayoutForSourceViewTypying) {
         
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
         
     }else {
         
-        if(self.headerView.hidden) {
-            self.headerView.hidden = NO;
-            self.headerView.alpha = 1.0;
-            [self.headerView setNeedsDisplay];
-        }
+        [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
+    }
+
+    [self.stackView layoutIfNeeded];
+    [self setNeedsStatusBarAppearanceUpdate];
+    [self.headerView setNeedsTopConstraintsUpdateForStatusBarAppearence:self.headerView.hidden];
+}
+
+- (void)updateLayoutIfNeededAnimated
+{
+    [self.stackView layoutIfNeeded];
+    [UIView animateWithDuration:0.20 animations:^{
+        [self updateLayoutIfNeeded];
+    }];
+}
+
+- (void)transitionLayoutToDisplayTypeView
+{
+    [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeView];
+    [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         
+        [self.typeView updateDesignForLayoutChangeIfNeeded];
+        [self.contentView layoutIfNeeded];
+        
+    } completion:nil];
+}
+
+- (void)transitionLayoutToDisplaySourceView
+{
+    if([self shouldLayoutForCompactWidth]) {
+        [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
+    }else {
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
     }
     
-    if(IS_IPHONE) {
-        self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewCompactHeight;
-    }
-}
-
-- (void)updateSourceAndEditingViewsAvailability:(BOOL)animated
-{
-    if(animated) {
+    [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         
-        [self.stackView layoutIfNeeded];
-        [UIView animateWithDuration:0.20 animations:^{
-            [self updateForLayoutChange];
-        }];
+        [self.contentView layoutIfNeeded];
         
-    }else {
-        [self updateForLayoutChange];
-    }
+    } completion:nil];
 }
 
 - (void)setContentLayout:(MenuItemEditingViewControllerContentLayout)contentLayout
@@ -294,31 +297,6 @@ typedef NS_ENUM(NSUInteger) {
     }
 }
 
-- (void)updateForShowingTypeSelectionCompact
-{
-    [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeView];
-    [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        
-        [self.contentView layoutIfNeeded];
-        
-    } completion:nil];
-}
-
-- (void)updateForHidingTypeSelection
-{
-    if([self shouldDisplayForCompactWidth]) {
-        [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
-    }else {
-        [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
-    }
-    
-    [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-        
-        [self.contentView layoutIfNeeded];
-        
-    } completion:nil];
-}
-
 #pragma mark - MenuItemTypeSelectionViewDelegate
 
 - (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(MenuItemType)itemType
@@ -326,34 +304,34 @@ typedef NS_ENUM(NSUInteger) {
     self.sourceView.selectedItemType = itemType;
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self updateForHidingTypeSelection];
+        [self transitionLayoutToDisplaySourceView];
     });
 }
 
-- (BOOL)itemTypeSelectionViewRequiresCompactLayout:(MenuItemTypeSelectionView *)typeSelectionView
+- (BOOL)itemTypeSelectionViewRequiresFullSizedLayout:(MenuItemTypeSelectionView *)typeSelectionView
 {
-    return self.contentLayout == MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews;
+    return self.contentLayout == MenuItemEditingViewControllerContentLayoutDisplaysTypeView;
 }
 
 #pragma mark - MenuItemSourceContainerViewDelegate
 
-- (void)sourceContainerViewSelectedSourceTypeToggle:(MenuItemSourceContainerView *)sourceView
+- (void)sourceContainerViewSelectedTypeHeaderView:(MenuItemSourceContainerView *)sourceView
 {
-    if([self shouldDisplayForCompactWidth]) {
-        [self updateForShowingTypeSelectionCompact];
+    if([self shouldLayoutForCompactWidth]) {
+        [self transitionLayoutToDisplayTypeView];
     }
 }
 
 - (void)sourceContainerViewDidBeginEditingWithKeyboard:(MenuItemSourceContainerView *)sourceView
 {
     self.sourceViewIsTyping = YES;
-    [self updateSourceAndEditingViewsAvailability:YES];
+    [self updateLayoutIfNeededAnimated];
 }
 
 - (void)sourceContainerViewDidEndEditingWithKeyboard:(MenuItemSourceContainerView *)sourceView
 {
     self.sourceViewIsTyping = NO;
-    [self updateSourceAndEditingViewsAvailability:YES];
+    [self updateLayoutIfNeededAnimated];
 }
 
 #pragma mark - MenuItemEditingFooterViewDelegate

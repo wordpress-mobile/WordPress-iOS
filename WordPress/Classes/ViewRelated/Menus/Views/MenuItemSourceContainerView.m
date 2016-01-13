@@ -134,7 +134,7 @@
 - (void)sourceHeaderViewSelected:(MenuItemSourceHeaderView *)headerView
 {
     [self.sourceView resignFirstResponder];
-    [self.delegate sourceContainerViewSelectedSourceTypeToggle:self];
+    [self.delegate sourceContainerViewSelectedTypeHeaderView:self];
 }
 
 #pragma mark - MenuItemSourceViewDelegate
