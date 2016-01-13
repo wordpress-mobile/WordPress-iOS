@@ -9,7 +9,7 @@
     button.frame = frame;
     button.titleLabel.textColor = [UIColor whiteColor];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
-    [button setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
     [button setAccessibilityHint:NSLocalizedString(@"Tap to select which blog to post to", @"This is the blog picker in the editor")];
     
     switch (button.buttonStyle) {
@@ -74,7 +74,7 @@
         
         self.userInteractionEnabled = NO;
     } else {
-        [self setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
+        [self setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
         
         self.userInteractionEnabled = YES;
     }
