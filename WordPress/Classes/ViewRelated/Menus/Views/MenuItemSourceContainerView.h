@@ -1,29 +1,21 @@
 #import <UIKit/UIKit.h>
-#import "MenuItemSourceHeaderView.h"
 #import "MenuItemSourceResultView.h"
-#import "MenuItemSourceSearchBar.h"
 #import "MenuItem.h"
 
-@protocol MenuItemSourceViewDelegate;
+@protocol MenuItemSourceContainerViewDelegate;
 
-@interface MenuItemSourceContainerView : UIView <MenuItemSourceSearchBarDelegate>
+@interface MenuItemSourceContainerView : UIView
 
-@property (nonatomic, weak) id <MenuItemSourceViewDelegate> delegate;
-@property (nonatomic, strong) MenuItemSourceHeaderView *headerView;
+@property (nonatomic, weak) id <MenuItemSourceContainerViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
 @property (nonatomic, assign) MenuItemType selectedItemType;
-@property (nonatomic, strong) NSMutableArray *results;
-@property (nonatomic, strong, readonly) MenuItemSourceSearchBar *searchBar;
-
-- (void)reloadResults;
-- (void)activateHeightConstraintForHeaderViewWithHeightAnchor:(NSLayoutAnchor *)heightAnchor;
 
 @end
 
-@protocol MenuItemSourceViewDelegate <NSObject>
+@protocol MenuItemSourceContainerViewDelegate <NSObject>
 
-- (void)sourceViewSelectedSourceTypeButton:(MenuItemSourceContainerView *)sourceView;
-- (void)sourceViewDidBeginTyping:(MenuItemSourceContainerView *)sourceView;
-- (void)sourceViewDidEndTyping:(MenuItemSourceContainerView *)sourceView;
+- (void)sourceContainerViewSelectedSourceTypeToggle:(MenuItemSourceContainerView *)sourceContainerView;
+- (void)sourceContainerViewDidBeginEditingWithKeyboard:(MenuItemSourceContainerView *)sourceContainerView;
+- (void)sourceContainerViewDidEndEditingWithKeyboard:(MenuItemSourceContainerView *)sourceContainerView;
 
 @end

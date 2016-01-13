@@ -81,7 +81,7 @@
             UIImageView *iconView = [[UIImageView alloc] init];
             iconView.translatesAutoresizingMaskIntoConstraints = NO;
             iconView.contentMode = UIViewContentModeScaleAspectFit;
-            iconView.backgroundColor = [UIColor clearColor];
+            iconView.backgroundColor = [UIColor whiteColor];
             iconView.tintColor = [WPStyleGuide mediumBlue];
             iconView.image = [[UIImage imageNamed:@"icon-menus-arrow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             iconView.transform = CGAffineTransformMakeRotation(M_PI);
@@ -130,13 +130,29 @@
 - (void)updateSelection
 {
     self.label.textColor = self.drawsSelected ? [WPStyleGuide mediumBlue] : [WPStyleGuide greyDarken30];
-    if(self.drawsSelected && !(self.delegate && [self.delegate typeViewRequiresCompactLayout:self])) {
-        self.arrowView.hidden = NO;
+    if(self.drawsSelected) {
+        [self showArrowView];
     }else {
-        self.arrowView.hidden = YES;
+        [self hideArrowView];
     }
     
     [self setNeedsDisplay];
+}
+
+- (void)showArrowView
+{
+    if(self.arrowView.hidden) {
+        self.arrowView.alpha = 1.0;
+        self.arrowView.hidden = NO;
+    }
+}
+
+- (void)hideArrowView
+{
+    if(!self.arrowView.hidden) {
+        self.arrowView.alpha = 0.0;
+        self.arrowView.hidden = YES;
+    }
 }
 
 - (NSString *)title
@@ -176,7 +192,6 @@
 {
     [super traitCollectionDidChange:previousTraitCollection];
     
-    [self updateSelection];
     [self setNeedsDisplay];
 }
 
