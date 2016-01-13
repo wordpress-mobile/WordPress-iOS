@@ -273,6 +273,14 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
+    if ([Feature enabled:FeatureFlagSharing]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
+                                                        image:[UIImage imageNamed:@"icon-menu-sharing"]
+                                                     callback:^{
+                                                         [weakSelf showSharing];
+                                                     }]];
+    }
+
     if ([Feature enabled:FeatureFlagPeople]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
                                                         image:[UIImage imageNamed:@"icon-menu-people"]
@@ -455,6 +463,11 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     [WPAppAnalytics track:WPAnalyticsStatOpenedSiteSettings withBlog:self.blog];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showSharing
+{
+    
 }
 
 - (void)showStats
