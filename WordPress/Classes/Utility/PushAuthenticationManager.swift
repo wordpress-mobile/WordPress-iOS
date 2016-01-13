@@ -24,7 +24,6 @@ import WordPressComAnalytics
         super.init()
     }
     
-    public func isPushAuthenticationNotification(userInfo: NSDictionary?) -> Bool {
     
     /// Checks if a given Push Notification is a Push Authentication.
     ///
@@ -35,6 +34,7 @@ import WordPressComAnalytics
     ///
     /// - Returns: True if the notification should be handled by this class
     ///
+    public static func isPushAuthenticationNotification(userInfo: NSDictionary?) -> Bool {
         if let unwrappedNoteType = userInfo?["type"] as? String {
             return unwrappedNoteType == pushAuthenticationNoteType
         }
