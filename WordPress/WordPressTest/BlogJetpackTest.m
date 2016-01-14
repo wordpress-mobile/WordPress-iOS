@@ -170,10 +170,9 @@
     Blog *dotcomBlog = [blogService createBlogWithAccount:wpComAccount];
     dotcomBlog.xmlrpc = @"http://dotcom1.wordpress.com/xmlrpc.php";
     dotcomBlog.url = @"http://dotcom1.wordpress.com/";
-    dotcomBlog.blogID = @1;
+    dotcomBlog.dotComID = @1;
 
     Blog *jetpackLegacyBlog = [blogService createBlogWithAccount:nil];
-    jetpackLegacyBlog.blogID = @0;
     jetpackLegacyBlog.username = @"jetpack";
     jetpackLegacyBlog.xmlrpc = @"http://jetpack.example.com/xmlrpc.php";
     jetpackLegacyBlog.url = @"http://jetpack.example.com/";
