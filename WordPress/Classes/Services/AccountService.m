@@ -74,14 +74,19 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     NSManagedObjectID *accountID = account.objectID;
-    dispatch_async(dispatch_get_main_queue(), ^{
+    void (^notifyAccountChange)() = ^{
         NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
         NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
         [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
         [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
-    });
+    };
+    if ([NSThread isMainThread]) {
+        notifyAccountChange();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), notifyAccountChange);
+    }
 }
 
 /**
