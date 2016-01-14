@@ -10,7 +10,6 @@ class TodayViewController: UIViewController {
     @IBOutlet var viewsCountLabel: UILabel!
     @IBOutlet var viewsLabel: UILabel!
     @IBOutlet var configureMeRightConstraint: NSLayoutConstraint!
-    @IBOutlet var configureMeStackView: UIStackView!
     @IBOutlet var configureMeLabel: UILabel!
     @IBOutlet var configureMeButton: UIButton!
     
@@ -63,12 +62,6 @@ class TodayViewController: UIViewController {
         self.visitorsCountLabel.text = self.visitorCount
         self.viewsCountLabel.text = self.viewCount
     }
-    
-//    override func viewDidAppear(animated: Bool) {
-//        super.viewDidAppear(animated)
-//        
-//        updateUIBasedOnWidgetConfiguration()
-//    }
     
     @IBAction func launchContainingApp() {
         if let unwrappedSiteID = siteID {
