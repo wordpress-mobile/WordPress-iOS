@@ -34,7 +34,7 @@
             
             [self addSubview:stackView];
             
-            const CGFloat padding = 2.0;
+            const CGFloat padding = 3.0;
             NSLayoutConstraint *top = [stackView.topAnchor constraintEqualToAnchor:self.topAnchor constant:padding];
             top.priority = 999;
             NSLayoutConstraint *bottom = [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-padding];

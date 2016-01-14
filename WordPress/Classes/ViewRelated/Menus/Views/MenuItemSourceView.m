@@ -12,6 +12,10 @@
 {
     self = [super init];
     if(self) {
+        
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.backgroundColor = [UIColor whiteColor];
+        _sourceOptions = [NSMutableArray array];
      
         {
             UIStackView *stackView = [[UIStackView alloc] init];
@@ -71,26 +75,15 @@
     _searchBar = searchBar;
 }
 
-/*
-- (void)reloadResults
+- (void)insertSourceOption:(MenuItemSourceOption *)option
 {
-    for(UIView *view in self.resultViews) {
-        [self.stackView removeArrangedSubview:view];
-        [view removeFromSuperview];
-    }
+    [self.sourceOptions addObject:option];
     
-    self.resultViews = [NSMutableArray arrayWithCapacity:self.results.count];
-    for(MenuItemSourceOption *result in self.results) {
-        
-        MenuItemSourceOptionView *view = [[MenuItemSourceOptionView alloc] init];
-        view.result = result;
-        [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-        
-        [self.stackView addArrangedSubview:view];
-        [self.resultViews addObject:view];
-    }
+    MenuItemSourceOptionView *optionView = [[MenuItemSourceOptionView alloc] init];
+    optionView.sourceOption = option;
+    [optionView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+    [self.stackView addArrangedSubview:optionView];
 }
-*/
 
 #pragma mark - delegate
 
