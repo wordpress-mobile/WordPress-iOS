@@ -27,9 +27,8 @@ extension AccountService {
         return defaultAccountObjectID
             // When the default account is set return the values of this new signal
             .flatMapLatest({ (objectID) -> Observable<WPAccount?> in
-                if let objectID = objectID {
-                    let service = AccountService(managedObjectContext: context)
-                    let account = service.defaultWordPressComAccount()
+                if let objectID = objectID,
+                    let account = try? context.existingObjectWithID(objectID) as? WPAccount {
 
                     return NSNotificationCenter.defaultCenter()
                         .rx_notification(NSManagedObjectContextObjectsDidChangeNotification, object: context)
