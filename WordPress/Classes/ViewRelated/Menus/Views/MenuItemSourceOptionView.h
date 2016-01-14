@@ -7,12 +7,12 @@ extern NSString * const MenuItemSourceOptionSelectionDidChangeNotification;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *badgeTitle;
 @property (nonatomic, assign) BOOL selected;
-@property (nonatomic, strong) id source;
+@property (nonatomic, assign) NSUInteger indentationLevel;
 
 @end
 
 @interface MenuItemSourceOptionView : UIView
 
-@property (nonatomic, strong) MenuItemSourceOption *result;
+@property (nonatomic, strong) MenuItemSourceOption *sourceOption;
 
 @end
