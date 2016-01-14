@@ -260,6 +260,8 @@ final public class PushNotificationsManager : NSObject
         Helpshift.sharedInstance()?.handleRemoteNotification(payload, withController: rootViewController)
         WPAnalytics.track(.SupportReceivedResponseFromSupport)
         
+        completionHandler?(.NewData)
+        
         return true
     }
     
@@ -290,6 +292,8 @@ final public class PushNotificationsManager : NSObject
             authenticationManager.handlePushAuthenticationNotification(userInfo)
         }
         
+        completionHandler?(.NewData)
+        
         return true
     }
     
@@ -315,6 +319,7 @@ final public class PushNotificationsManager : NSObject
         }
 
         WPTabBarController.sharedInstance().showNotificationsTabForNoteWithID(notificationId)
+        completionHandler?(.NewData)
         
         return true
     }
