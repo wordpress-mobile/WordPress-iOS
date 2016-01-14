@@ -48,6 +48,8 @@
 #import "ReaderTopicService.h"
 #import "RemoteReaderTopic.h"
 
+#import "RotationAwareNavigationViewController.h"
+
 #import "ServiceRemoteREST.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
