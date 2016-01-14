@@ -204,7 +204,7 @@ final public class PushNotificationsManager : NSObject
     ///
     public func handleNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) {
         DDLogSwift.logVerbose("Received push notification:\nPayload: \(userInfo)\n")
-        DDLogSwift.logVerbose("Current Application state: \(applicationState)");
+        DDLogSwift.logVerbose("Current Application state: \(applicationState.rawValue)");
         
         // Badge: Update
         if let badgeCountNumber = userInfo.numberForKeyPath(notificationBadgePath)?.integerValue {
