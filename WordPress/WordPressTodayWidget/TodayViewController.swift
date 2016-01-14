@@ -27,6 +27,8 @@ class TodayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configureMeLabel.text = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today.", comment: "Unconfigured stats today widget helper text")
+        configureMeButton.setTitle(NSLocalizedString("Launch WordPress", comment: "Today widget button to launch WP app"), forState: .Normal)
         siteNameLabel.text = "-"
         visitorsLabel.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         visitorsCountLabel.text = "-"
