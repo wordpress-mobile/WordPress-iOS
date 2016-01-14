@@ -79,7 +79,8 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
                                                                   action:nil];
     [self.navigationItem setBackBarButtonItem:backButton];
     
-    self.addSiteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+    self.addSiteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-add"]
+                                                                                    style:UIBarButtonItemStylePlain
                                                                                    target:self
                                                                                    action:@selector(addSite)];
     UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
