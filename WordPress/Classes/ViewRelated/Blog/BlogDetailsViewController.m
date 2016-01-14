@@ -9,6 +9,7 @@
 #import "PageListViewController.h"
 #import "ReachabilityUtils.h"
 #import "SiteSettingsViewController.h"
+#import "SharingViewController.h"
 #import "StatsViewController.h"
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
@@ -467,7 +468,9 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
 - (void)showSharing
 {
-    
+    //TODO: (@aerych, 2016-01-14) Add tracker for sharing feature
+    SharingViewController *controller = [[SharingViewController alloc] initWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showStats
