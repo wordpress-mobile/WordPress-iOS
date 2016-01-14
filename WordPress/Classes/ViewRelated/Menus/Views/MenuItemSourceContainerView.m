@@ -13,6 +13,7 @@
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) MenuItemSourceHeaderView *headerView;
 @property (nonatomic, strong) MenuItemSourceView *sourceView;
+@property (nonatomic, strong) NSCache *sourceViewCache;
 
 @end
 
@@ -24,6 +25,7 @@
     
     self.backgroundColor = [UIColor whiteColor];
     self.translatesAutoresizingMaskIntoConstraints = NO;
+    self.sourceViewCache = [[NSCache alloc] init];
     
     {
         UIStackView *stackView = self.stackView;
@@ -95,22 +97,68 @@
     }
     
     MenuItemSourceView *sourceView = nil;
+    NSString *cacheIdentifier = [self cacheIdentifierForSourceViewWithItemType:itemType];
+    if(cacheIdentifier) {
+        sourceView = [self.sourceViewCache objectForKey:cacheIdentifier];
+    }
+    if(!sourceView) {
+        switch (itemType) {
+            case MenuItemTypePage:
+                sourceView = [[MenuItemSourcePageView alloc] init];
+                break;
+            case MenuItemTypeLink:
+                sourceView = [[MenuItemSourceLinkView alloc] init];
+                break;
+            case MenuItemTypeCategory:
+                sourceView = [[MenuItemSourceCategoryView alloc] init];
+                break;
+            case MenuItemTypeTag:
+                sourceView = [[MenuItemSourceTagView alloc] init];
+                break;
+            case MenuItemTypePost:
+                sourceView = [[MenuItemSourcePostView alloc] init];
+                break;
+            case MenuItemTypeCustom:
+            case MenuItemTypeUnknown:
+                // TODO: support misc item sources
+                // Jan-12-2015 - Brent C.
+                break;
+        }
+        
+        sourceView.item = self.item;
+        sourceView.delegate = self;
+    }
+    
+    if(sourceView) {
+        
+        [self.stackView addArrangedSubview:sourceView];
+        self.sourceView = sourceView;
+        
+        if(cacheIdentifier) {
+            [self.sourceViewCache setObject:sourceView forKey:cacheIdentifier];
+        }
+    }
+}
 
+- (NSString *)cacheIdentifierForSourceViewWithItemType:(MenuItemType)itemType
+{
+    NSString *identifier = nil;
+    
     switch (itemType) {
         case MenuItemTypePage:
-            sourceView = [[MenuItemSourcePageView alloc] init];
+            identifier = NSStringFromClass([MenuItemSourcePageView class]);
             break;
         case MenuItemTypeLink:
-            sourceView = [[MenuItemSourceLinkView alloc] init];
+            identifier = NSStringFromClass([MenuItemSourceLinkView class]);
             break;
         case MenuItemTypeCategory:
-            sourceView = [[MenuItemSourceCategoryView alloc] init];
+            identifier = NSStringFromClass([MenuItemSourceCategoryView class]);
             break;
         case MenuItemTypeTag:
-            sourceView = [[MenuItemSourceTagView alloc] init];
+            identifier = NSStringFromClass([MenuItemSourceTagView class]);
             break;
         case MenuItemTypePost:
-            sourceView = [[MenuItemSourcePostView alloc] init];
+            identifier = NSStringFromClass([MenuItemSourcePostView class]);
             break;
         case MenuItemTypeCustom:
         case MenuItemTypeUnknown:
@@ -119,14 +167,7 @@
             break;
     }
     
-    if(sourceView) {
-    
-        sourceView.item = self.item;
-        sourceView.delegate = self;
-        
-        [self.stackView addArrangedSubview:sourceView];
-        self.sourceView = sourceView;
-    }
+    return identifier;
 }
 
 #pragma mark - MenuItemSourceHeaderViewDelegate

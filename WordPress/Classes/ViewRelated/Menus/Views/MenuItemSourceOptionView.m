@@ -34,7 +34,9 @@ NSString * const MenuItemSourceOptionSelectionDidChangeNotification = @"MenuItem
 
 @end
 
-#pragma mark - MenuItemSourceOptionCell
+#pragma mark - MenuItemSourceOptionView
+
+static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
 
 @interface MenuItemSourceOptionView ()
 
@@ -44,6 +46,7 @@ NSString * const MenuItemSourceOptionSelectionDidChangeNotification = @"MenuItem
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) MenuItemSourceOptionBadgeLabel *badgeLabel;
 @property (nonatomic, strong) MenuItemSourceOptionCheckView *checkView;
+@property (nonatomic, strong) NSLayoutConstraint *leadingLayoutConstraintForContentViewIndentation;
 
 @end
 
@@ -85,18 +88,18 @@ NSString * const MenuItemSourceOptionSelectionDidChangeNotification = @"MenuItem
             
             const CGFloat spacing = MenusDesignDefaultContentSpacing / 2.0;
             UIEdgeInsets margins = UIEdgeInsetsZero;
-            margins.top = spacing;
-            margins.left = MenusDesignDefaultContentSpacing;
-            margins.right = MenusDesignDefaultContentSpacing;
-            margins.bottom = spacing;
+            margins.top = 4.0;
+            margins.bottom = 4.0;
             stackView.layoutMargins = margins;
             stackView.layoutMarginsRelativeArrangement = YES;
             stackView.spacing = spacing;
             [contentView addSubview:stackView];
             
+            self.leadingLayoutConstraintForContentViewIndentation = [stackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor];
+            
             [NSLayoutConstraint activateConstraints:@[
                                                       [stackView.topAnchor constraintEqualToAnchor:contentView.topAnchor],
-                                                      [stackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor],
+                                                      self.leadingLayoutConstraintForContentViewIndentation,
                                                       [stackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor],
                                                       [stackView.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor]
                                                       ]];
@@ -149,19 +152,19 @@ NSString * const MenuItemSourceOptionSelectionDidChangeNotification = @"MenuItem
             self.label = label;
         }
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resultSelectionUpdatedNotification:) name:MenuItemSourceOptionSelectionDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sourceOptionSelectionUpdatedNotification:) name:MenuItemSourceOptionSelectionDidChangeNotification object:nil];
     }
     
     return self;
 }
 
-- (void)setResult:(MenuItemSourceOption *)result
+- (void)setSourceOption:(MenuItemSourceOption *)sourceOption
 {
-    if(_result != result) {
-        _result = result;
+    if(_sourceOption != sourceOption) {
+        _sourceOption = sourceOption;
+        
+        [self updatedSourceOption];
     }
-    
-    [self updateResultDrawing];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -170,21 +173,23 @@ NSString * const MenuItemSourceOptionSelectionDidChangeNotification = @"MenuItem
     [self setNeedsDisplay];
 }
 
-- (void)updateResultDrawing
+- (void)updatedSourceOption
 {
-    if(self.result.badgeTitle) {
+    if(self.sourceOption.badgeTitle) {
         
         [self insertBadgeLabelIfNeeded];
         
-        self.badgeLabel.text = [self.result.badgeTitle uppercaseString];
+        self.badgeLabel.text = [self.sourceOption.badgeTitle uppercaseString];
         self.badgeLabel.hidden = NO;
         
     }else {
         self.badgeLabel.hidden = YES;
     }
     
-    self.label.text = self.result.title;
-    self.checkView.drawsChecked = self.result.selected;
+    self.label.text = self.sourceOption.title;
+    self.checkView.drawsChecked = self.sourceOption.selected;
+    self.leadingLayoutConstraintForContentViewIndentation.constant = self.sourceOption.indentationLevel * MenuItemSourceOptionViewIdentationLength;
+    
     [self setNeedsDisplay];
 }
 
@@ -210,10 +215,10 @@ NSString * const MenuItemSourceOptionSelectionDidChangeNotification = @"MenuItem
     }
 }
 
-- (void)resultSelectionUpdatedNotification:(NSNotification *)notification
+- (void)sourceOptionSelectionUpdatedNotification:(NSNotification *)notification
 {
-    if(notification.object == self.result) {
-        [self updateResultDrawing];
+    if(notification.object == self.sourceOption) {
+        [self updatedSourceOption];
     }
 }
 
