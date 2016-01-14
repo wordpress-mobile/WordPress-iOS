@@ -14,7 +14,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     var siteName: String = ""
     var visitorCount: String = ""
     var viewCount: String = ""
-    var siteId: NSNumber?
+    var siteID: NSNumber?
     var standardLeftMargin: CGFloat = 0.0
     
     var isConfigured: Bool {
@@ -38,7 +38,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     override func viewDidLoad() {
         super.viewDidLoad()
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
-        self.siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as! NSNumber?
+        self.siteID = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as! NSNumber?
 
         siteNameLabel.text = ""
         visitorsLabel.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
@@ -78,7 +78,11 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     }
     
     @IBAction func launchContainingApp() {
-        self.extensionContext!.openURL(NSURL(string: "\(WPCOM_SCHEME)://viewstats?siteId=\(siteId!)")!, completionHandler: nil)
+        if let unwrappedSiteID = siteID {
+            self.extensionContext!.openURL(NSURL(string: "\(WPCOM_SCHEME)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
+        } else {
+            self.extensionContext!.openURL(NSURL(string: "\(WPCOM_SCHEME)://")!, completionHandler: nil)
+        }
     }
     
     func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)) {
