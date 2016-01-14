@@ -14,11 +14,11 @@
                         <viewControllerLayoutGuide type="bottom" id="FKl-LY-JtV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tNC-G8-2Qa">
-                                <rect key="frame" x="16" y="8" width="288" height="134"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tNC-G8-2Qa">
+                                <rect key="frame" x="16" y="8" width="288" height="284"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="56"/>
@@ -27,77 +27,59 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
-                                        <rect key="frame" x="0.0" y="56" width="288" height="78"/>
+                                        <rect key="frame" x="0.0" y="56" width="288" height="128"/>
                                         <state key="normal" title="Launch WordPress"/>
                                         <connections>
                                             <action selector="launchContainingApp" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="kC0-eZ-6h4"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
+                                        <rect key="frame" x="0.0" y="184" width="288" height="20"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k2f-Oz-8zX">
+                                        <rect key="frame" x="0.0" y="204" width="288" height="80"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Visitors" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ya5-b8-L12">
+                                                <rect key="frame" x="8" y="47" width="56" height="20"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="10,394" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyt-KX-qbk">
+                                                <rect key="frame" x="194" y="5" width="86" height="34"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="28"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="7,025" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-zT-oAD">
+                                                <rect key="frame" x="8" y="5" width="288" height="34"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="28"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Views" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d87-vS-4g1">
+                                                <rect key="frame" x="194" y="47" width="45" height="20"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" priority="750" constant="80" identifier="ViewsVistorsSectionHeight" id="Uwf-6d-J4e"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
-                                <rect key="frame" x="16" y="8" width="288" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="8Sh-yt-2W3"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7,025" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IOg-zT-oAD">
-                                <rect key="frame" x="16" y="37" width="71" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="34" id="a98-2f-m7a"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="28"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10,394" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pyt-KX-qbk">
-                                <rect key="frame" x="151" y="37" width="86" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="34" id="0FK-D7-cq1"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="28"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visitors" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ya5-b8-L12">
-                                <rect key="frame" x="16" y="72" width="56" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="Mtu-sJ-0n2"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Views" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d87-vS-4g1">
-                                <rect key="frame" x="151" y="72" width="45" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="20" id="2Ue-mA-3A5"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="pyt-KX-qbk" firstAttribute="leading" secondItem="d87-vS-4g1" secondAttribute="leading" id="3OW-rE-laZ"/>
-                            <constraint firstItem="Wcm-ss-zFo" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="BKO-pK-u0S"/>
-                            <constraint firstItem="tNC-G8-2Qa" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="8" id="Bdo-Mw-ag9"/>
-                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="tNC-G8-2Qa" secondAttribute="bottom" constant="8" id="FU4-xP-9co"/>
-                            <constraint firstItem="IOg-zT-oAD" firstAttribute="baseline" secondItem="pyt-KX-qbk" secondAttribute="baseline" id="Rwj-ZH-X82"/>
-                            <constraint firstItem="pyt-KX-qbk" firstAttribute="leading" secondItem="IOg-zT-oAD" secondAttribute="trailing" constant="64" id="V2d-td-NiN"/>
-                            <constraint firstItem="IOg-zT-oAD" firstAttribute="top" secondItem="Wcm-ss-zFo" secondAttribute="bottom" constant="9" id="VLf-Va-atw"/>
-                            <constraint firstItem="d87-vS-4g1" firstAttribute="baseline" secondItem="ya5-b8-L12" secondAttribute="baseline" id="abe-eG-JY0"/>
-                            <constraint firstItem="Wcm-ss-zFo" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="8" id="bVX-p3-JNI"/>
-                            <constraint firstItem="ya5-b8-L12" firstAttribute="top" secondItem="IOg-zT-oAD" secondAttribute="bottom" constant="1" id="ddP-Zk-Pvl"/>
-                            <constraint firstItem="ya5-b8-L12" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="e3i-Nn-Ax4"/>
-                            <constraint firstItem="IOg-zT-oAD" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="efL-lJ-Wdt"/>
+                            <constraint firstItem="tNC-G8-2Qa" firstAttribute="top" secondItem="Ft6-oW-KC0" secondAttribute="bottom" constant="8" identifier="Stack View top margin" id="Bdo-Mw-ag9"/>
+                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="tNC-G8-2Qa" secondAttribute="bottom" priority="750" constant="8" identifier="Stack View bottom margin" id="FU4-xP-9co"/>
                             <constraint firstItem="tNC-G8-2Qa" firstAttribute="leading" secondItem="S3S-Oj-5AN" secondAttribute="leadingMargin" id="guL-aS-phI"/>
-                            <constraint firstAttribute="trailing" secondItem="Wcm-ss-zFo" secondAttribute="trailing" constant="16" id="ndY-yf-y6u"/>
-                            <constraint firstItem="FKl-LY-JtV" firstAttribute="top" secondItem="ya5-b8-L12" secondAttribute="bottom" priority="250" constant="6" id="qAp-GP-g03"/>
                             <constraint firstAttribute="trailingMargin" secondItem="tNC-G8-2Qa" secondAttribute="trailing" id="wMo-N3-MGI"/>
                         </constraints>
                         <connections>
@@ -109,10 +91,13 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="150"/>
+                    <size key="freeformSize" width="320" height="300"/>
                     <connections>
+                        <outlet property="configureMeButton" destination="sB2-YC-Udf" id="mJp-wY-qyy"/>
+                        <outlet property="configureMeLabel" destination="p3Z-lC-Jtw" id="K82-QZ-pI7"/>
                         <outlet property="configureMeRightConstraint" destination="wMo-N3-MGI" id="7hk-ex-pvS"/>
                         <outlet property="configureMeStackView" destination="tNC-G8-2Qa" id="cZd-XZ-feK"/>
+                        <outlet property="countContainerView" destination="k2f-Oz-8zX" id="hHn-UU-Gpa"/>
                         <outlet property="siteNameLabel" destination="Wcm-ss-zFo" id="WsJ-6K-WZ5"/>
                         <outlet property="viewsCountLabel" destination="pyt-KX-qbk" id="fkK-Tp-fGM"/>
                         <outlet property="viewsLabel" destination="d87-vS-4g1" id="Ek2-Pv-AKA"/>
