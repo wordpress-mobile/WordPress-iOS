@@ -59,7 +59,7 @@ class AccountServiceRxTests: XCTestCase {
             subscription.dispose()
         }
 
-        // The observable should emit an initial value on subscription
+        // 1. The observable should emit an initial value on subscription
         XCTAssertEqual(eventCount, 1)
         XCTAssertNil(currentObjectID)
 
@@ -74,9 +74,11 @@ class AccountServiceRxTests: XCTestCase {
             return
         }
 
+        // 2. Emit value when account is set
         XCTAssertEqual(eventCount, 2)
         XCTAssertEqual(currentObjectID, account.objectID)
 
+        // 3. Emit value when account is removed
         accountService.removeDefaultWordPressComAccount()
         XCTAssertEqual(currentObjectID, nil)
         XCTAssertEqual(eventCount, 3)
