@@ -59,7 +59,7 @@ public class SharingService : LocalCoreDataService
     public func syncPublicizeConnectionsForBlog(blog:Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let blogObjectID = blog.objectID
         let remote = SharingServiceRemote(api: apiForRequest())
-        remote.getPublicizeConnections(blog.dotComID(), success: {(remoteConnections:[RemotePublicizeConnection]) -> Void in
+        remote.getPublicizeConnections(blog.dotComID, success: {(remoteConnections:[RemotePublicizeConnection]) -> Void in
             // Process the results
             self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections:remoteConnections, success: success)
         },
@@ -89,7 +89,7 @@ public class SharingService : LocalCoreDataService
             let blogObjectID = blog.objectID
             let remote = SharingServiceRemote(api: apiForRequest())
 
-            remote.createPublicizeConnection(blog.dotComID(),
+            remote.createPublicizeConnection(blog.dotComID,
                 keyringConnectionID: keyring.keyringID,
                 externalUserID: externalUserID,
                 success: {(remoteConnection:RemotePublicizeConnection) -> Void in

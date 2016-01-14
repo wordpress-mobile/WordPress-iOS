@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,6 +10,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" tableViewCell="cm8-te-h9Y" id="n47-YY-a6J">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gcy-ef-aVi">
@@ -23,8 +23,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XWn-76-OyW">
                                 <rect key="frame" x="6" y="10" width="308" height="44"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Post moved to trash." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tDg-aX-r9a">
-                                        <rect key="frame" x="13" y="0.0" width="135" height="44"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Post moved to trash." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tDg-aX-r9a">
+                                        <rect key="frame" x="13" y="0.0" width="134" height="44"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -36,7 +36,7 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <inset key="contentEdgeInsets" minX="3" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="3" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="-3" minY="0.0" maxX="3" maxY="0.0"/>
                                         <state key="normal" title="Undo" image="icon-post-undo">
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -57,6 +57,7 @@
                                     <constraint firstAttribute="bottom" secondItem="tDg-aX-r9a" secondAttribute="bottom" id="NVR-Tx-ea4"/>
                                     <constraint firstItem="tDg-aX-r9a" firstAttribute="top" secondItem="XWn-76-OyW" secondAttribute="top" id="ay6-0i-iUF"/>
                                     <constraint firstAttribute="bottom" secondItem="5bW-zk-smP" secondAttribute="bottom" id="fd1-Xw-yJ2"/>
+                                    <constraint firstItem="5bW-zk-smP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tDg-aX-r9a" secondAttribute="trailing" constant="3" id="iiX-Ba-qGN"/>
                                     <constraint firstItem="5bW-zk-smP" firstAttribute="top" secondItem="XWn-76-OyW" secondAttribute="top" id="lZy-0i-LeW"/>
                                     <constraint firstAttribute="width" constant="600" id="zH8-kM-TvE"/>
                                 </constraints>
