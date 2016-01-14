@@ -29,6 +29,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
                                         <rect key="frame" x="0.0" y="56" width="288" height="78"/>
                                         <state key="normal" title="Launch WordPress"/>
+                                        <connections>
+                                            <action selector="launchContainingApp" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="kC0-eZ-6h4"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
