@@ -4,13 +4,11 @@ import RxCocoa
 
 extension AccountService {
     /// Observable that emits new values when the default account is set
+    ///
+    /// - warning: This should only be observed from the main thread, otherwise behavior is undefined
     var defaultAccountObjectID: Observable<NSManagedObjectID?> {
         return NSNotificationCenter.defaultCenter()
             .rx_notification(WPAccountDefaultWordPressComAccountChangedNotification)
-            // FIXME: notification is posted on main thread regardless of context
-            // Figure out how to swith to the context thread, or fix the notification
-            // so it's posted in context
-            // @kokejb 2015-01-13
             .map({ ($0.object as! WPAccount?)?.objectID })
             .startWith(defaultWordPressComAccount()?.objectID)
     }
