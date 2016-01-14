@@ -119,7 +119,11 @@
     NSString *path = media.localURL;
     NSString *type = media.mimeType;
     NSString *filename = media.file;
-    
+    // Even though jpeg is a valid extension, use jpg instead for the widest possible
+    // support.  Some third-party image related plugins prefer the .jpg extension.
+    // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4663
+    filename = [filename stringByReplacingOccurrencesOfString:@".jpeg" withString:@".jpg"];
+
     NSDictionary *data = @{
                            @"name": filename,
                            @"type": type,
