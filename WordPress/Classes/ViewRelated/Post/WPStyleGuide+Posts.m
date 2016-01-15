@@ -94,7 +94,9 @@
     button.titleLabel.font = [WPStyleGuide subtitleFont];
     [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
     [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 3.0);
 }
+
 
 #pragma mark - Attributed String Attributes
 
@@ -198,6 +200,7 @@
     button.titleLabel.font = [WPFontManager openSansSemiBoldFontOfSize:fontSize];
     [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
     [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 3.0);
 }
 
 @end

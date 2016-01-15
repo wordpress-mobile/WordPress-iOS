@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "MediaServiceRemote.h"
-#import "SiteServiceRemoteREST.h"
+#import "ServiceRemoteREST.h"
 
-@interface MediaServiceRemoteREST : SiteServiceRemoteREST <MediaServiceRemote>
+@interface MediaServiceRemoteREST : ServiceRemoteREST <MediaServiceRemote>
 @end

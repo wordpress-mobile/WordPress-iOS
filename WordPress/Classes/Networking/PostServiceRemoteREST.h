@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "PostServiceRemote.h"
-#import "SiteServiceRemoteREST.h"
+#import "ServiceRemoteREST.h"
 
-@interface PostServiceRemoteREST : SiteServiceRemoteREST <PostServiceRemote>
+@interface PostServiceRemoteREST : ServiceRemoteREST <PostServiceRemote>
 
 @end

@@ -39,7 +39,6 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic posts;
 @dynamic categories;
 @dynamic comments;
-@dynamic connections;
 @dynamic themes;
 @dynamic media;
 @dynamic menus;
@@ -456,23 +455,21 @@ NSString * const PostFormatStandard = @"standard";
 
 - (NSNumber *)dotComID
 {
-    [self willAccessValueForKey:@"blogID"];
-    NSNumber *dotComID = [self primitiveValueForKey:@"blogID"];
-    if (dotComID.integerValue == 0) {
-        dotComID = self.jetpack.siteID;
-        if (dotComID.integerValue > 0) {
-            self.dotComID = dotComID;
-        }
+    /*
+     mergeBlogs isn't atomic so there might be a small window for Jetpack sites
+     where self.account is the WordPress.com account, but self.blogID still has
+     the self hosted ID.
+     
+     Even if the blog is using Jetpack REST, self.jetpack.siteID should still
+     have the correct wp.com blog ID, so let's try that one first
+     */
+    if (self.jetpack.siteID) {
+        return self.jetpack.siteID;
+    } else if (self.account) {
+        return self.blogID;
+    } else {
+        return nil;
     }
-    [self didAccessValueForKey:@"blogID"];
-    return dotComID;
-}
-
-- (void)setDotComID:(NSNumber *)dotComID
-{
-    [self willChangeValueForKey:@"blogID"];
-    [self setPrimitiveValue:dotComID forKey:@"blogID"];
-    [self didChangeValueForKey:@"blogID"];
 }
 
 - (NSSet *)allowedFileTypes
@@ -503,7 +500,7 @@ NSString * const PostFormatStandard = @"standard";
 {
     NSString *extra = @"";
     if (self.account) {
-        extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@", self.account ? self.account.username : @"NO", self.dotComID];
+        extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@", self.account ? self.account.username : @"NO", self.blogID];
     } else if (self.jetpackAccount) {
         extra = [NSString stringWithFormat:@" jetpack: 🚀🚀 Jetpack %@ fully connected as %@ with site ID %@", self.jetpack.version, self.jetpackAccount.username, self.jetpack.siteID];
     } else {

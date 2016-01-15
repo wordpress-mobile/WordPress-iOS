@@ -72,7 +72,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 - (void)refreshMediaLayout
 {
-    [self.textContentView refreshLayout];
+    [self.textContentView refreshMediaLayout];
 }
 
 - (void)preventPendingMediaLayout:(BOOL)prevent

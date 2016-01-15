@@ -11,13 +11,11 @@
     
     [[OnePasswordExtension sharedExtension] findLoginForURLString:loginUrl forViewController:viewController sender:sender completion:^(NSDictionary *loginDict, NSError *error) {
         if (error != nil && error.code != AppExtensionErrorCodeCancelledByUser) {
-            completion(nil, nil, nil, error);
+            completion(nil, nil, error);
         } else {
             NSString *username = loginDict[AppExtensionUsernameKey];
             NSString *password = loginDict[AppExtensionPasswordKey];
-            NSString *oneTimePassword = loginDict[AppExtensionTOTPKey];
-            
-            completion(username, password, oneTimePassword, error);
+            completion(username, password, error);
         }
     }];
 }
