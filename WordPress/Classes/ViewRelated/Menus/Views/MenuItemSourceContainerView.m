@@ -130,8 +130,7 @@
             case MenuItemTypePost:
                 sourceView = [[MenuItemSourcePostView alloc] init];
                 break;
-            case MenuItemTypeCustom:
-            case MenuItemTypeUnknown:
+            default:
                 // TODO: support misc item sources
                 // Jan-12-2015 - Brent C.
                 break;
@@ -173,8 +172,7 @@
         case MenuItemTypePost:
             identifier = NSStringFromClass([MenuItemSourcePostView class]);
             break;
-        case MenuItemTypeCustom:
-        case MenuItemTypeUnknown:
+        default:
             // TODO: support misc item sources
             // Jan-12-2015 - Brent C.
             break;
