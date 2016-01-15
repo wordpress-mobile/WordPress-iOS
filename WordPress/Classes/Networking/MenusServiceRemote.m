@@ -146,6 +146,8 @@
           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
               if(success) {
                   
+                  NSLog(@"response: %@", responseObject);
+                  
                   NSArray *menus = [self remoteMenusFromJSONArray:[responseObject arrayForKey:@"menus"]];
                   NSArray *locations = [self remoteMenuLocationsFromJSONArray:[responseObject arrayForKey:@"locations"]];
                   success(menus, locations);
