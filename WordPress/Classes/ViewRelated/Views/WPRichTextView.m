@@ -271,7 +271,7 @@ NSString * const WPRichTextDefaultFontName = @"Merriweather";
     // this point has no effect.  Dispatch async will let us refresh layout in a new loop
     // and correctly update.
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self refreshMediaLayout];
+        [self refreshLayout];
 
         if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadMediaBatch:)]) {
             [self.delegate richTextViewDidLoadMediaBatch:self]; // So the delegate can correct its size.

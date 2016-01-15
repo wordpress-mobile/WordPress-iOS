@@ -178,7 +178,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - Disabled Push Notifications Helpers
     private func isDisabledDeviceStream(stream: NotificationSettings.Stream) -> Bool {
-        return stream.kind == .Device && !NotificationsManager.pushNotificationsEnabledInDeviceSettings()
+        return stream.kind == .Device && !PushNotificationsManager.sharedInstance.notificationsEnabledInDeviceSettings()
     }
     
     private func displayPushNotificationsAlert() {

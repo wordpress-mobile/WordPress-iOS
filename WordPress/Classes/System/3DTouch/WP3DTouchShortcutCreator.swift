@@ -13,11 +13,11 @@ public class WP3DTouchShortcutCreator: NSObject
     var mainContext: NSManagedObjectContext!
     var blogService: BlogService!
     
-    private let logInShortcutIconImageName = "icon-tab-mysites"
-    private let notificationsShortcutIconImageName = "icon-tab-notifications"
-    private let statsShortcutIconImageName = "icon-menu-stats"
-    private let newPhotoPostShortcutIconImageName = "photos"
-    private let newPostShortcutIconImageName = "icon-new-post"
+    private let logInShortcutIconImageName = "icon-shortcut-signin"
+    private let notificationsShortcutIconImageName = "icon-shortcut-notifications"
+    private let statsShortcutIconImageName = "icon-shortcut-stats"
+    private let newPhotoPostShortcutIconImageName = "icon-shortcut-new-photo"
+    private let newPostShortcutIconImageName = "icon-shortcut-new-post"
     
     override public init() {
         super.init()
@@ -36,7 +36,7 @@ public class WP3DTouchShortcutCreator: NSObject
     
     public func loggedOutShortcutArray() -> [UIApplicationShortcutItem] {
         let logInShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.type,
-                                                   localizedTitle: NSLocalizedString("Log In", comment: "Log In 3D Touch Shortcut"),
+                                                   localizedTitle: NSLocalizedString("Sign In", comment: "Sign In 3D Touch Shortcut"),
                                                 localizedSubtitle: nil,
                                                              icon: UIApplicationShortcutIcon(templateImageName: logInShortcutIconImageName),
                                                          userInfo: [WP3DTouchShortcutHandler.applicationShortcutUserInfoIconKey: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.rawValue])
