@@ -10,7 +10,6 @@
                 <outlet property="footerView" destination="TSX-DY-vhd" id="TyK-Fp-Txp"/>
                 <outlet property="footerViewHeightConstraint" destination="E2v-oz-4Rk" id="dpp-uK-5uM"/>
                 <outlet property="headerView" destination="5rT-g7-Unk" id="LnY-fU-93W"/>
-                <outlet property="sourceScrollView" destination="f53-Fv-SVL" id="Cdd-YB-kXd"/>
                 <outlet property="sourceView" destination="wkF-V5-jxr" id="nhN-c2-uWo"/>
                 <outlet property="stackView" destination="2sf-be-1pU" id="Ryz-Xc-WMb"/>
                 <outlet property="stackViewBottomConstraint" destination="dyQ-eH-Hs7" id="v76-G9-bJH"/>
@@ -42,37 +41,7 @@
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wkF-V5-jxr" customClass="MenuItemSourceContainerView">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
-                                    <subviews>
-                                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f53-Fv-SVL">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="88q-g5-yBM">
-                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="465"/>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="88q-g5-yBM" secondAttribute="trailing" id="IdF-0c-32B"/>
-                                                <constraint firstItem="88q-g5-yBM" firstAttribute="top" secondItem="f53-Fv-SVL" secondAttribute="top" id="Ife-V8-tbO"/>
-                                                <constraint firstAttribute="bottom" secondItem="88q-g5-yBM" secondAttribute="bottom" id="NDF-1Z-ktn"/>
-                                                <constraint firstItem="88q-g5-yBM" firstAttribute="centerY" secondItem="f53-Fv-SVL" secondAttribute="centerY" placeholder="YES" id="eyv-jA-ika"/>
-                                                <constraint firstItem="88q-g5-yBM" firstAttribute="centerX" secondItem="f53-Fv-SVL" secondAttribute="centerX" id="fLA-mJ-Rc3"/>
-                                                <constraint firstItem="88q-g5-yBM" firstAttribute="leading" secondItem="f53-Fv-SVL" secondAttribute="leading" id="uqt-Ow-zaL"/>
-                                            </constraints>
-                                        </scrollView>
-                                    </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstItem="f53-Fv-SVL" firstAttribute="leading" secondItem="wkF-V5-jxr" secondAttribute="leading" id="5IM-3V-DgN"/>
-                                        <constraint firstItem="f53-Fv-SVL" firstAttribute="width" secondItem="wkF-V5-jxr" secondAttribute="width" id="Mw3-VF-w6u"/>
-                                        <constraint firstItem="f53-Fv-SVL" firstAttribute="top" secondItem="wkF-V5-jxr" secondAttribute="top" id="RU2-V7-vF8"/>
-                                        <constraint firstAttribute="trailing" secondItem="f53-Fv-SVL" secondAttribute="trailing" id="VuD-dp-dyF"/>
-                                        <constraint firstItem="f53-Fv-SVL" firstAttribute="height" secondItem="wkF-V5-jxr" secondAttribute="height" id="bSv-rF-yJC"/>
-                                        <constraint firstAttribute="bottom" secondItem="f53-Fv-SVL" secondAttribute="bottom" id="haj-Xr-T5l"/>
-                                    </constraints>
-                                    <connections>
-                                        <outlet property="scrollView" destination="f53-Fv-SVL" id="61z-tc-3IM"/>
-                                        <outlet property="stackView" destination="88q-g5-yBM" id="BgU-G8-dLb"/>
-                                    </connections>
                                 </view>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

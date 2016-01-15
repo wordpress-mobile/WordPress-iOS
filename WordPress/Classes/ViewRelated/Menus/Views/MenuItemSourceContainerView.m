@@ -9,8 +9,7 @@
 
 @interface MenuItemSourceContainerView () <MenuItemSourceHeaderViewDelegate, MenuItemSourceViewDelegate>
 
-@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
-@property (nonatomic, strong) IBOutlet UIStackView *stackView;
+@property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) MenuItemSourceHeaderView *headerView;
 @property (nonatomic, strong) MenuItemSourceView *sourceView;
 @property (nonatomic, strong) NSCache *sourceViewCache;
@@ -28,11 +27,23 @@
     self.sourceViewCache = [[NSCache alloc] init];
     
     {
-        UIStackView *stackView = self.stackView;
+        UIStackView *stackView = [[UIStackView alloc] init];
         stackView.translatesAutoresizingMaskIntoConstraints = NO;
         stackView.distribution = UIStackViewDistributionFill;
         stackView.alignment = UIStackViewAlignmentFill;
+        stackView.axis = UILayoutConstraintAxisVertical;
         stackView.spacing = 0;
+        [self addSubview:stackView];
+        
+        [NSLayoutConstraint activateConstraints:@[
+                                                  [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                                  [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                                  [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                                                  [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor],
+                                                  [stackView.centerXAnchor constraintEqualToAnchor:self.centerXAnchor]
+                                                  ]];
+        
+        self.stackView = stackView;
     }
     {
         MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
@@ -45,10 +56,11 @@
         height.active = YES;
         
         [headerView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        [headerView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         
         self.headerView = headerView;
     }
-    
+
     self.selectedItemType = MenuItemTypePage;
 }
 
@@ -131,6 +143,7 @@
     
     if(sourceView) {
         
+        [sourceView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
         [self.stackView addArrangedSubview:sourceView];
         self.sourceView = sourceView;
         
