@@ -1,80 +1,63 @@
 import UIKit
+import RxSwift
 import WordPressShared
 
-class MyProfileViewController: UITableViewController {
-    var account: WPAccount! {
-        didSet {
-            self.service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
+class MyProfileController: NSObject {
+    let title = NSLocalizedString("My Profile", comment: "My Profile view title")
+    let service: AccountSettingsService
+    let viewController = ImmuTableViewController()
+
+    init(service: AccountSettingsService) {
+        self.service = service
+        super.init()
+
+        viewController.title = title
+        viewController.registerRows(immutableRows)
+
+        _ = viewModel
+            .observeOn(MainScheduler.instance)
+            .takeUntil(viewController.rx_deallocated)
+            .subscribeNext(viewController.bindViewModel)
+        // Only refresh on first appearance
+        _ = viewController.willAppear.take(1).subscribeNext {
+            service.refreshSettings({ _ in })
         }
     }
 
-    var service: AccountSettingsService! {
-        didSet {
-            subscribeSettings()
-        }
+    convenience init(account: WPAccount) {
+        self.init(service: AccountSettingsService(userID: account.userID.integerValue, api: account.restApi))
     }
 
-    var settingsSubscription: AccountSettingsSubscription?
-
-    var handler: ImmuTableViewHandler!
-
-    // MARK: - Table View Controller
-
-    required convenience init() {
-        self.init(style: .Grouped)
+    var immutableRows: [ImmuTableRow.Type] {
+        return [EditableTextRow.self]
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        self.title = NSLocalizedString("My Profile", comment: "My Profile view title")
-
-        ImmuTable.registerRows([
-            EditableTextRow.self
-            ], tableView: self.tableView)
-
-        handler = ImmuTableViewHandler(takeOver: self)
-
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-
-        service.refreshSettings({ _ in })
+    var viewModel: Observable<ImmuTable> {
+        return service.settingsObserver.map(mapViewModel)
     }
 
-    override func viewWillAppear(animated: Bool) {
-        if settingsSubscription == nil {
-            subscribeSettings()
-        }
-    }
-
-    override func viewWillDisappear(animated: Bool) {
-        unsubscribeSettings()
-    }
-
-    // MARK: - View Model
-
-    func buildViewModel(settings: AccountSettings?) {
+    func mapViewModel(settings: AccountSettings?) -> ImmuTable {
         let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
             value: settings?.firstName ?? "",
-            action: editableTextRowAction(AccountSettingsChange.FirstName))
+            action: viewController.push(editText(AccountSettingsChange.FirstName)))
 
         let lastNameRow = EditableTextRow(
             title: NSLocalizedString("Last Name", comment: "My Profile last name label"),
             value: settings?.lastName ?? "",
-            action: editableTextRowAction(AccountSettingsChange.LastName))
+            action: viewController.push(editText(AccountSettingsChange.LastName)))
 
         let displayNameRow = EditableTextRow(
             title: NSLocalizedString("Display Name", comment: "My Profile display name label"),
             value: settings?.displayName ?? "",
-            action: editableTextRowAction(AccountSettingsChange.DisplayName))
+            action: viewController.push(editText(AccountSettingsChange.DisplayName)))
 
         let aboutMeRow = EditableTextRow(
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: settings?.aboutMe ?? "",
-            action: editableTextRowAction(AccountSettingsChange.AboutMe))
+            action: viewController.push(editText(AccountSettingsChange.AboutMe)))
 
-        handler.viewModel =  ImmuTable(sections: [
+        return ImmuTable(sections: [
             ImmuTableSection(rows: [
                 firstNameRow,
                 lastNameRow,
@@ -84,43 +67,22 @@ class MyProfileViewController: UITableViewController {
             ])
     }
 
-    func subscribeSettings() {
-        settingsSubscription = service.subscribeSettings({
-            [unowned self]
-            (settings) -> Void in
-
-            DDLogSwift.logDebug("Got settings \(settings)")
-            self.buildViewModel(settings)
-        })
-    }
-
-    func unsubscribeSettings() {
-        settingsSubscription = nil
-    }
-
-    // MARK: - Cell Actions
-
-    func editableTextRowAction(changeType: String -> AccountSettingsChange) -> (ImmuTableRow) -> Void {
-        return {
-            [unowned self]
-            row in
-
+    func editText(changeType: (AccountSettingsChangeWithString), hint: String? = nil) -> ImmuTableRowControllerGenerator {
+        return { [unowned self] row in
             let row = row as! EditableTextRow
-            let controller = self.controllerForEditableText(row, changeType: changeType)
-
-            self.navigationController?.pushViewController(controller, animated: true)
+            return self.controllerForEditableText(row, changeType: changeType, hint: hint)
         }
     }
 
-    func controllerForEditableText(row: EditableTextRow, changeType: String -> AccountSettingsChange) -> SettingsTextViewController {
+    func controllerForEditableText(row: EditableTextRow, changeType: (AccountSettingsChangeWithString), hint: String? = nil, isPassword: Bool = false) -> SettingsTextViewController {
         let title = row.title
         let value = row.value
 
         let controller = SettingsTextViewController(
             text: value,
             placeholder: "\(title)...",
-            hint: nil,
-            isPassword: false)
+            hint: hint,
+            isPassword: isPassword)
 
         controller.title = title
         controller.onValueChanged = {
