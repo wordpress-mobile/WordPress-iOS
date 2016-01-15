@@ -78,7 +78,6 @@ const NSInteger PostServiceNumberToFetch = 40;
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
     [remote getPostWithID:postID
-                forBlogID:blog.blogID
                   success:^(RemotePost *remotePost){
                       [self.managedObjectContext performBlock:^{
                           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
@@ -120,7 +119,6 @@ const NSInteger PostServiceNumberToFetch = 40;
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
     [remote getPostsOfType:postType
-                 forBlogID:blog.blogID
                    success:^(NSArray *posts) {
                        [self.managedObjectContext performBlock:^{
                            Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
@@ -174,7 +172,6 @@ const NSInteger PostServiceNumberToFetch = 40;
     }
     NSManagedObjectID *blogID = blog.objectID;
     [remote getPostsOfType:postType
-                 forBlogID:blog.blogID
                    options:options
                    success:^(NSArray *posts) {
         [self.managedObjectContext performBlock:^{
@@ -238,7 +235,6 @@ const NSInteger PostServiceNumberToFetch = 40;
     options[@"number"] = @(PostServiceNumberToFetch);
     NSManagedObjectID *blogID = blog.objectID;
     [remote getPostsOfType:postType
-                 forBlogID:blog.blogID
                    options:options
                    success:^(NSArray *posts) {
                        BOOL hasMore = ([posts count] < PostServiceNumberToFetch) ? NO : YES;
@@ -326,7 +322,6 @@ const NSInteger PostServiceNumberToFetch = 40;
     options[@"number"] = @(postCount);
     NSManagedObjectID *blogID = blog.objectID;
     [remote getPostsOfType:postType
-                 forBlogID:blog.blogID
                    options:options
                    success:^(NSArray *posts) {
                        Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
@@ -388,12 +383,10 @@ const NSInteger PostServiceNumberToFetch = 40;
 
     if ([post.postID longLongValue] > 0) {
         [remote updatePost:remotePost
-                 forBlogID:post.blog.blogID
                    success:successBlock
                    failure:failureBlock];
     } else {
         [remote createPost:remotePost
-                 forBlogID:post.blog.blogID
                    success:successBlock
                    failure:failureBlock];
     }
@@ -407,7 +400,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     if ([postID longLongValue] > 0) {
         RemotePost *remotePost = [self remotePostWithPost:post];
         id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
-        [remote deletePost:remotePost forBlogID:post.blog.blogID success:success failure:failure];
+        [remote deletePost:remotePost success:success failure:failure];
     }
     [self.managedObjectContext deleteObject:post];
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -461,7 +454,7 @@ const NSInteger PostServiceNumberToFetch = 40;
 
     RemotePost *remotePost = [self remotePostWithPost:post];
     id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
-    [remote trashPost:remotePost forBlogID:post.blog.blogID success:successBlock failure:failureBlock];
+    [remote trashPost:remotePost success:successBlock failure:failureBlock];
 }
 
 - (void)restorePost:(AbstractPost *)post
@@ -519,7 +512,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     }
 
     id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
-    [remote restorePost:remotePost forBlogID:post.blog.blogID success:successBlock failure:failureBlock];
+    [remote restorePost:remotePost success:successBlock failure:failureBlock];
 }
 
 #pragma mark -
@@ -789,7 +782,7 @@ const NSInteger PostServiceNumberToFetch = 40;
 - (id<PostServiceRemote>)remoteForBlog:(Blog *)blog {
     id<PostServiceRemote> remote;
     if (blog.restApi) {
-        remote = [[PostServiceRemoteREST alloc] initWithApi:blog.restApi];
+        remote = [[PostServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
     } else {
         remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }

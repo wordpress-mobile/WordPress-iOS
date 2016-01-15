@@ -77,7 +77,7 @@ public class NotificationSettingsViewController : UIViewController
         // Find the Default Blog ID
         let service         = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let defaultAccount  = service.defaultWordPressComAccount()
-        let primaryBlogId   = defaultAccount?.defaultBlog?.blogID as? Int
+        let primaryBlogId   = defaultAccount?.defaultBlog?.dotComID as? Int
         
         // Proceed Grouping
         var blogSettings    = [NotificationSettings]()

@@ -8,6 +8,7 @@
 
 @property (nonatomic, readonly) WPXMLRPCClient *api;
 
-- (NSArray *)getXMLRPCArgsForBlogWithID:(NSNumber *)blogID extra:(id)extra;
+- (NSArray *)defaultXMLRPCArguments;
+- (NSArray *)XMLRPCArgumentsWithExtra:(id)extra;
 
 @end
