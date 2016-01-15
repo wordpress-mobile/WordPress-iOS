@@ -128,6 +128,11 @@ int ddLogLevel                                                  = DDLogLevelInfo
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
+    // Launched by tapping a notification
+    if (application.applicationState == UIApplicationStateActive) {
+        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
+    }
+
     [self.window makeKeyAndVisible];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
@@ -373,10 +378,9 @@ int ddLogLevel                                                  = DDLogLevelInfo
     [WPFontManager merriweatherRegularFontOfSize:16.0];
 
     [self customizeAppearance];
-
-    // Notifications
-    [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
-    [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
+    
+    // Push notifications
+    [NotificationsManager registerForPushNotifications];
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -395,12 +399,12 @@ int ddLogLevel                                                  = DDLogLevelInfo
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [[PushNotificationsManager sharedInstance] registerDeviceToken:deviceToken];
+    [NotificationsManager registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    [[PushNotificationsManager sharedInstance] registrationDidFail:error];
+    [NotificationsManager registrationDidFail:error];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -421,7 +425,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
                                         forRemoteNotification:(NSDictionary *)remoteNotification
                                             completionHandler:(void (^)())completionHandler
 {
-    [[InteractiveNotificationsHandler sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification];
+    [NotificationsManager handleActionWithIdentifier:identifier forRemoteNotification:remoteNotification];
     
     completionHandler();
 }
@@ -723,7 +727,6 @@ int ddLogLevel                                                  = DDLogLevelInfo
     self.connectionAvailable = [self.internetReachability isReachable];
 }
 
-
 #pragma mark - Simperium
 
 - (void)configureSimperiumWithLaunchOptions:(NSDictionary *)launchOptions
@@ -860,7 +863,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
     DDLogInfo(@"OS:        %@ %@", device.systemName, device.systemVersion);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
-    DDLogInfo(@"APN token: %@", [[PushNotificationsManager sharedInstance] deviceToken]);
+    DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
     
     if (blogs.count > 0) {

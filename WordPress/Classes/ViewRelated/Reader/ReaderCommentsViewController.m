@@ -61,7 +61,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) ReaderPostHeaderView *postHeaderView;
 @property (nonatomic, strong) NSMutableDictionary *mediaCellCache;
 @property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
-@property (nonatomic, assign) CGSize previousViewGeometry;
+@property (nonatomic, assign) UIDeviceOrientation previousOrientation;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
 @property (nonatomic) BOOL isLoggedIn;
@@ -98,7 +98,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.previousViewGeometry = self.view.frame.size;
 
     self.mediaCellCache = [NSMutableDictionary dictionary];
     [self checkIfLoggedIn];
@@ -123,9 +122,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super viewWillAppear:animated];
 
-    if (!CGSizeEqualToSize(self.previousViewGeometry, CGSizeZero)) {
-        if (! CGSizeEqualToSize(self.previousViewGeometry, self.view.frame.size)) {
-            // Refresh cached row heights based on the new width
+    if (self.previousOrientation != UIInterfaceOrientationUnknown) {
+        if (UIInterfaceOrientationIsPortrait(self.previousOrientation) != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
             [self.tableView reloadData];
         }
@@ -150,7 +148,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super viewWillDisappear:animated];
 
-    self.previousViewGeometry = self.view.frame.size;
+    self.previousOrientation = self.interfaceOrientation;
 
     [self.replyTextView resignFirstResponder];
 
@@ -159,30 +157,48 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     // Remove the no results view or else the position will abruptly adjust after rotation
     // due to the table view sizing for image preloading
     [self refreshNoResultsView];
 
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
     // Avoid refreshing cells when there is no need.
-    if (![UIDevice isPad] && WPTableViewFixedWidth > CGRectGetWidth(self.tableView.frame)) {
-        // Refresh cached row heights based on the new width
-        [self updateCellsAndRefreshMediaForWidth:size.width];
+    if ([UIDevice isPad] && WPTableViewFixedWidth <= CGRectGetWidth(self.tableView.frame)) {
+        return;
+    }
+    // Refresh cached row heights based on the width for the orientation.
+    // If changing orientation, this must happen before the table view calculates
+    // its content size / offset for the new orientation.
+    CGFloat width = CGRectGetWidth(self.tableView.frame);
+    [self updateCellsAndRefreshMediaForWidth:width];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+
+    // Avoid refreshing cells when there is no need.
+    if (![UIDevice isPad] || WPTableViewFixedWidth > CGRectGetWidth(self.tableView.frame)) {
+        // DTCoreText can be cranky about refreshing its rendered text when its
+        // frame changes, even when setting its relayoutMask. Setting setNeedsLayout
+        // on the cell prior to reloading seems to force the cell's
+        // DTAttributedTextContentView to behave.
+        [[self.tableView visibleCells] makeObjectsPerformSelector:@selector(setNeedsLayout)];
+        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+    }
+    
+    // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
+    if (selectedIndexPath) {
+        [self.replyTextView becomeFirstResponder];
+        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
 
-    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-        NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-        // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
-        if (selectedIndexPath) {
-            [self.replyTextView becomeFirstResponder];
-            [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-        }
-        
-        [self refreshNoResultsView];
-    }];
+    [self refreshNoResultsView];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection

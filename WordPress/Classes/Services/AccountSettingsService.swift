@@ -60,7 +60,6 @@ struct AccountSettingsService {
         }
 
         let reverse = settings.applyChange(change)
-        settings.account.applyChange(change)
 
         ContextManager.sharedInstance().saveContext(context)
 

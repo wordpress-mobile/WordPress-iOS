@@ -5,10 +5,11 @@
 @implementation MediaServiceRemoteXMLRPC
 
 - (void)getMediaWithID:(NSNumber *)mediaID
+             forBlogID:(NSNumber *)blogID
                success:(void (^)(RemoteMedia *remoteMedia))success
                failure:(void (^)(NSError *error))failure
 {
-    NSArray *parameters = [self XMLRPCArgumentsWithExtra:mediaID];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:mediaID];
     [self.api callMethod:@"wp.getMediaItem"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -24,10 +25,11 @@
                  }];
 }
 
-- (void)getMediaLibraryWithSuccess:(void (^)(NSArray *))success
-                           failure:(void (^)(NSError *))failure
+- (void)getMediaLibraryForBlogID:(NSNumber *)blogID
+                         success:(void (^)(NSArray *))success
+                         failure:(void (^)(NSError *))failure
 {
-    NSArray *parameters = [self defaultXMLRPCArguments];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:nil];
     [self.api callMethod:@"wp.getMediaLibrary"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -43,10 +45,11 @@
                  }];
 }
 
-- (void)getMediaLibraryCountWithSuccess:(void (^)(NSInteger))success
-                                failure:(void (^)(NSError *))failure
+- (void)getMediaLibraryCountForBlogID:(NSNumber *)blogID
+                            success:(void (^)(NSInteger))success
+                            failure:(void (^)(NSError *))failure
 {
-    NSArray *parameters = [self defaultXMLRPCArguments];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:nil];
     [self.api callMethod:@"wp.getMediaLibrary"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -105,6 +108,7 @@
 }
 
 - (void)createMedia:(RemoteMedia *)media
+          forBlogID:(NSNumber *)blogID
            progress:(NSProgress **)progress
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
@@ -121,7 +125,7 @@
                            @"type": type,
                            @"bits": [NSInputStream inputStreamWithFileAtPath:path],
                            };
-    NSArray *parameters = [self XMLRPCArgumentsWithExtra:data];
+    NSArray *parameters = [self getXMLRPCArgsForBlogWithID:blogID extra:data];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *directory = [paths objectAtIndex:0];
     NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];

@@ -2,7 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icon-nav-chevron-highlight.pdf"
+      "scale" : "1x",
+      "filename" : "icon-nav-chevron-highlight.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x",
+      "filename" : "icon-nav-chevron-highlight@2x.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x",
+      "filename" : "icon-nav-chevron-highlight@3x.png"
     }
   ],
   "info" : {

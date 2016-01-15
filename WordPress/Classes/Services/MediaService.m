@@ -180,6 +180,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     };
     
     [remote createMedia:remoteMedia
+              forBlogID:media.blog.blogID
                progress:progress
                 success:successBlock
                 failure:failureBlock];
@@ -192,7 +193,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
     
-    [remote getMediaWithID:mediaID success:^(RemoteMedia *remoteMedia) {
+    [remote getMediaWithID:mediaID forBlogID:blog.blogID success:^(RemoteMedia *remoteMedia) {
        [self.managedObjectContext performBlock:^{
            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
            if (!blog) {
@@ -255,7 +256,8 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogObjectID = [blog objectID];
-    [remote getMediaLibraryWithSuccess:^(NSArray *media) {
+    [remote getMediaLibraryForBlogID:blog.blogID
+                           success:^(NSArray *media) {
                                [self.managedObjectContext performBlock:^{
                                    Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
                                    [self mergeMedia:media forBlog:blogInContext completionHandler:success];
@@ -357,7 +359,8 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                             failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getMediaLibraryCountWithSuccess:^(NSInteger count) {
+    [remote getMediaLibraryCountForBlogID:blog.blogID
+                           success:^(NSInteger count) {
                                if (success) {
                                    success(count);
                                }
@@ -471,7 +474,7 @@ static NSString * const MediaDirectory = @"Media";
 {
     id <MediaServiceRemote> remote;
     if (blog.restApi) {
-        remote = [[MediaServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        remote = [[MediaServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
         WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
         remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:client username:blog.username password:blog.password];
