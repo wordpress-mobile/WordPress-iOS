@@ -18,12 +18,16 @@ extension ImmuTablePresenter where Self: UIViewController {
     }
 }
 
+/// Generic view controller to present ImmuTable-based tables
+///
+/// Instead of subclassing the view controller, this is designed to be used from
+/// a "controller" class that handles all the logic, and updates the view
+/// controller, like you would update a view.
 final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     private lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    let willAppear: Observable<Void> = PublishSubject()
     private var willAppearSubject: PublishSubject<Void> {
         return willAppear as! PublishSubject<Void>
     }
@@ -52,11 +56,19 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - Inputs
 
+    /// Sets the view model for the view controller
     func bindViewModel(viewModel: ImmuTable) {
         handler.viewModel = viewModel
     }
 
+    /// Registers custom rows
+    /// - seealso: ImmuTable.registerRows(_:tableView)
     func registerRows(rows: [ImmuTableRow.Type]) {
         ImmuTable.registerRows(rows, tableView: tableView)
     }
+
+    // MARK: - Outputs
+
+    /// Emits a value every time viewWillAppear is called
+    let willAppear: Observable<Void> = PublishSubject()
 }
