@@ -1,6 +1,7 @@
 import UIKit
 import NotificationCenter
 import WordPressComStatsiOS
+import WordPressShared
 
 class TodayViewController: UIViewController {
     @IBOutlet var siteNameLabel: UILabel!
@@ -11,6 +12,7 @@ class TodayViewController: UIViewController {
     @IBOutlet var viewsLabel: UILabel!
     @IBOutlet var configureMeRightConstraint: NSLayoutConstraint!
     @IBOutlet var configureMeLabel: UILabel!
+    @IBOutlet var configureMeButtonContainerView: UIView!
     @IBOutlet var configureMeButton: UIButton!
     
     var siteID: NSNumber?
@@ -27,8 +29,14 @@ class TodayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let backgroundImage = UIImage(color: WPStyleGuide.wordPressBlue()).resizableImageWithCapInsets(UIEdgeInsetsZero)
+        
         configureMeLabel.text = NSLocalizedString("Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today.", comment: "Unconfigured stats today widget helper text")
         configureMeButton.setTitle(NSLocalizedString("Launch WordPress", comment: "Today widget button to launch WP app"), forState: .Normal)
+        configureMeButton.setBackgroundImage(backgroundImage, forState: .Normal)
+        configureMeButton.clipsToBounds = true
+        configureMeButton.layer.cornerRadius = 5.0
+        
         siteNameLabel.text = "-"
         visitorsLabel.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         visitorsCountLabel.text = "-"
@@ -83,7 +91,7 @@ class TodayViewController: UIViewController {
         siteNameLabel.hidden = !isConfigured
         countContainerView.hidden = !isConfigured
         configureMeLabel.hidden = isConfigured
-        configureMeButton.hidden = isConfigured
+        configureMeButtonContainerView.hidden = isConfigured
         configureMeRightConstraint.constant = isConfigured ? 0.0 : standardLeftMargin
     }
     
