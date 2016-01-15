@@ -13,26 +13,45 @@
                         <viewControllerLayoutGuide type="top" id="Ft6-oW-KC0"/>
                         <viewControllerLayoutGuide type="bottom" id="FKl-LY-JtV"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
+                    <view key="view" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" simulatedAppContext="notificationCenter" id="S3S-Oj-5AN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tNC-G8-2Qa">
                                 <rect key="frame" x="16" y="8" width="288" height="284"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Display your site stats for today here. Configure in the WordPress app under your Site, Stats, Today." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p3Z-lC-Jtw">
                                         <rect key="frame" x="0.0" y="0.0" width="288" height="56"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="OVa-bt-MTO">
                                         <rect key="frame" x="0.0" y="56" width="288" height="128"/>
-                                        <state key="normal" title="Launch WordPress"/>
-                                        <connections>
-                                            <action selector="launchContainingApp" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="kC0-eZ-6h4"/>
-                                        </connections>
-                                    </button>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sB2-YC-Udf">
+                                                <rect key="frame" x="16" y="47" width="256" height="35"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="4Bj-fd-zjx"/>
+                                                </constraints>
+                                                <state key="normal" title="Launch WordPress">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="launchContainingApp" destination="M4Y-Lb-cyx" eventType="touchUpInside" id="kC0-eZ-6h4"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="sB2-YC-Udf" secondAttribute="trailing" constant="16" id="TAq-gc-X3s"/>
+                                            <constraint firstItem="sB2-YC-Udf" firstAttribute="top" relation="greaterThanOrEqual" secondItem="OVa-bt-MTO" secondAttribute="top" constant="16" id="URX-Kp-sbO"/>
+                                            <constraint firstItem="sB2-YC-Udf" firstAttribute="leading" secondItem="OVa-bt-MTO" secondAttribute="leading" constant="16" id="W5S-am-e2I"/>
+                                            <constraint firstItem="sB2-YC-Udf" firstAttribute="centerX" secondItem="OVa-bt-MTO" secondAttribute="centerX" id="fB9-fZ-pfA"/>
+                                            <constraint firstItem="sB2-YC-Udf" firstAttribute="centerY" secondItem="OVa-bt-MTO" secondAttribute="centerY" id="hQM-ZB-dA3"/>
+                                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="sB2-YC-Udf" secondAttribute="bottom" id="mGa-TN-Rcm"/>
+                                        </constraints>
+                                    </view>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" restorationIdentifier="BlogName" text="Blogger's Digest" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wcm-ss-zFo">
                                         <rect key="frame" x="0.0" y="184" width="288" height="20"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
@@ -94,6 +113,7 @@
                     <size key="freeformSize" width="320" height="300"/>
                     <connections>
                         <outlet property="configureMeButton" destination="sB2-YC-Udf" id="mJp-wY-qyy"/>
+                        <outlet property="configureMeButtonContainerView" destination="OVa-bt-MTO" id="JgC-Dc-nzN"/>
                         <outlet property="configureMeLabel" destination="p3Z-lC-Jtw" id="K82-QZ-pI7"/>
                         <outlet property="configureMeRightConstraint" destination="wMo-N3-MGI" id="7hk-ex-pvS"/>
                         <outlet property="countContainerView" destination="k2f-Oz-8zX" id="hHn-UU-Gpa"/>
