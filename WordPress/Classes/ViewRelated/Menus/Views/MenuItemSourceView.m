@@ -4,6 +4,8 @@
 
 @interface MenuItemSourceView () <MenuItemSourceTextBarDelegate>
 
+@property (nonatomic, strong) UIScrollView *scrollView;
+
 @end
 
 @implementation MenuItemSourceView
@@ -16,6 +18,20 @@
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
         _sourceOptions = [NSMutableArray array];
+        {
+            UIScrollView *scrollView = [[UIScrollView alloc] init];
+            scrollView.translatesAutoresizingMaskIntoConstraints = NO;
+            scrollView.backgroundColor = [UIColor whiteColor];
+            [self addSubview:scrollView];
+            
+            [NSLayoutConstraint activateConstraints:@[
+                                                      [scrollView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                                      [scrollView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                                      [scrollView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                                                      [scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                                      ]];
+            self.scrollView = scrollView;
+        }
      
         {
             UIStackView *stackView = [[UIStackView alloc] init];
@@ -33,15 +49,33 @@
             stackView.layoutMargins = margins;
             stackView.layoutMarginsRelativeArrangement = YES;
             
-            [self addSubview:stackView];
+            [self.scrollView addSubview:stackView];
             
             [NSLayoutConstraint activateConstraints:@[
-                                                      [stackView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                                      [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                                      [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                                      [stackView.topAnchor constraintEqualToAnchor:self.scrollView.topAnchor],
+                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.scrollView.leadingAnchor],
+                                                      [stackView.trailingAnchor constraintEqualToAnchor:self.scrollView.trailingAnchor],
+                                                      [stackView.bottomAnchor constraintEqualToAnchor:self.scrollView.bottomAnchor],
+                                                      [stackView.centerXAnchor constraintEqualToAnchor:self.scrollView.centerXAnchor]
                                                       ]];
             self.stackView = stackView;
+        }
+        {
+            UITableView *tableView = [[UITableView alloc] init];
+            tableView.translatesAutoresizingMaskIntoConstraints = NO;
+            
+            [self addSubview:tableView];
+            
+            NSLayoutConstraint *top = [tableView.topAnchor constraintEqualToAnchor:self.stackView.bottomAnchor];
+            top.priority = UILayoutPriorityDefaultHigh;
+            [NSLayoutConstraint activateConstraints:@[
+                                                      top,
+                                                      [tableView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                                      [tableView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                                                      [tableView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                                      ]];
+            
+            self.tableView = tableView;
         }
     }
     

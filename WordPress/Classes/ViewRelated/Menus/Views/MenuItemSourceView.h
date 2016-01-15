@@ -11,6 +11,7 @@
 @property (nonatomic, weak) id <MenuItemSourceViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
 @property (nonatomic, strong) UIStackView *stackView;
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) MenuItemSourceTextBar *searchBar;
 @property (nonatomic, strong, readonly) NSMutableArray *sourceOptions;
 
