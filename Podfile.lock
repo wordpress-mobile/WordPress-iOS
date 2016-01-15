@@ -66,7 +66,7 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - FormatterKit/UnitOfInformationFormatter (1.8.0)
   - FormatterKit/URLRequestFormatter (1.8.0)
-  - Helpshift (4.10.2)
+  - Helpshift (4.15.0)
   - HockeySDK (3.8.5):
     - HockeySDK/AllFeaturesLib (= 3.8.5)
   - HockeySDK/AllFeaturesLib (3.8.5)
@@ -192,7 +192,7 @@ DEPENDENCIES:
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
   - FormatterKit (~> 1.8.0)
-  - Helpshift (~> 4.10.0)
+  - Helpshift (~> 4.15.0)
   - HockeySDK (~> 3.8.0)
   - KIF/IdentifierTests (~> 3.1)
   - Lookback (= 1.1.4)
@@ -265,7 +265,7 @@ SPEC CHECKSUMS:
   EmailChecker: 78dd8dfa9d004826c8b5889be6c380b72b837d44
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
-  Helpshift: 9c84a5e4ffd881c7e7eb395c2afc8d6a46eb2187
+  Helpshift: 8bbba1dad877dd7fb7f18915949e5816f6471e3b
   HockeySDK: dd11a2b9da3372fd025643bee5bc10c8c613d169
   KIF: 0a82046d06f3648799cac522d2d0f7934214caac
   Lookback: 9ab9027ff246d2dc5ce34be483f70e4a6718280b

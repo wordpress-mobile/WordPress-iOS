@@ -224,7 +224,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
 
-            let navigation = UINavigationController(rootViewController: controller)
+            let navigation = RotationAwareNavigationViewController(rootViewController: controller)
             self.presentViewController(navigation, animated: true, completion: nil)
         }
     }
