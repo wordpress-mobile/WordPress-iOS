@@ -1,14 +1,10 @@
-#import <Helpshift/Helpshift.h>
-#import <Mixpanel/Mixpanel.h>
 #import <SFHFKeychainUtils.h>
-#import <UIDeviceIdentifier/UIDeviceHardware.h>
 
 #import "AccountService.h"
 #import "AppRatingUtility.h"
 
 #import "Blog.h"
 #import "BlogService.h"
-#import "CommentService.h"
 
 #import "Constants.h"
 #import "ContextManager.h"
@@ -31,7 +27,6 @@
 #import "NSDate+StringFormatting.h"
 #import "NSObject+Helpers.h"
 #import "NSURL+Util.h"
-#import "UIApplication+Helpers.h"
 
 #import "PhotonImageURLHelper.h"
 #import "PostListFooterView.h"
@@ -48,8 +43,6 @@
 #import "ReaderTopicService.h"
 #import "RemoteReaderTopic.h"
 
-#import "RotationAwareNavigationViewController.h"
-
 #import "ServiceRemoteREST.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
@@ -63,6 +56,7 @@
 #import "ThemeService.h"
 
 #import "UIAlertControllerProxy.h"
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "UIDevice+Helpers.h"
 #import "UIImage+Resize.h"
 #import "UIImageView+Gravatar.h"
@@ -89,7 +83,5 @@
 #import "WPUserAgent.h"
 #import "WPWebViewController.h"
 #import "WPTabBarController.h"
-#import "WPSearchController.h"
-#import "WPSearchControllerConfigurator.h"
 
 #import <WordPressShared/WPTableViewSectionHeaderFooterView.h>

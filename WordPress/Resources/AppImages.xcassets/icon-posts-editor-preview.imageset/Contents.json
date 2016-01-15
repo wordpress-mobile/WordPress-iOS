@@ -2,7 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icon-posts-editor-preview.pdf"
+      "scale" : "1x",
+      "filename" : "icon-posts-editor-preview.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "2x",
+      "filename" : "icon-posts-editor-preview@2x.png"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
     }
   ],
   "info" : {

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-typedef void (^OnePasswordFacadeCallback)(NSString *username, NSString *password,  NSString *oneTimePassword, NSError *);
+typedef void (^OnePasswordFacadeCallback)(NSString *username, NSString *password, NSError *);
 
 /**
  *  This protocol is a Facade that hides some of the implementation details for interacting with 1Password.

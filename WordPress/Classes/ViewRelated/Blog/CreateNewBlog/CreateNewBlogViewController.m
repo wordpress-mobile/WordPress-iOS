@@ -507,7 +507,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
                 blog = [blogService createBlogWithAccount:defaultAccount];
                 blog.xmlrpc = blogOptions[@"xmlrpc"];
             }
-            blog.dotComID = [blogOptions numberForKey:@"blogid"];
+            blog.blogID = [blogOptions numberForKey:@"blogid"];
             blog.url = blogOptions[@"url"];
             blog.settings.name = [blogOptions[@"blogname"] stringByDecodingXMLCharacters];
             defaultAccount.defaultBlog = blog;

@@ -92,7 +92,8 @@
 {
     id<PostCategoryServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
-    [remote getCategoriesWithSuccess:^(NSArray *categories) {
+    [remote getCategoriesForBlogID:blog.blogID
+                           success:^(NSArray *categories) {
                                [self.managedObjectContext performBlock:^{
                                    Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
                                    if (!blog) {
@@ -120,6 +121,7 @@
 
     id<PostCategoryServiceRemote> remote = [self remoteForBlog:blog];
     [remote createCategory:remoteCategory
+                 forBlogID:blog.blogID
                    success:^(RemotePostCategory *receivedCategory) {
                        [self.managedObjectContext performBlock:^{
                            Blog *blog = [self blogWithObjectID:blogObjectID];
@@ -215,7 +217,7 @@
 
 - (id<PostCategoryServiceRemote>)remoteForBlog:(Blog *)blog {
     if (blog.restApi) {
-        return [[PostCategoryServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        return [[PostCategoryServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
         return [[PostCategoryServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }

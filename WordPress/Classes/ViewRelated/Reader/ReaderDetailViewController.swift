@@ -2,6 +2,8 @@ import Foundation
 import WordPressShared
 import WordPressComAnalytics
 
+// TODO: Share button?  Other feedback
+// TODO: Make sure that changes to analytics in the old VC are applied here
 
 final public class ReaderDetailViewController : UIViewController
 {

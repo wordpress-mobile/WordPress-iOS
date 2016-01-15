@@ -257,6 +257,6 @@ public class NotificationsService : LocalCoreDataService
     }
     
     private var deviceId : String {
-        return PushNotificationsManager.sharedInstance.deviceId ?? String()
+        return NotificationsManager.registeredPushNotificationsDeviceId() ?? String()
     }
 }

@@ -124,7 +124,8 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     }
     
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getCommentsWithSuccess:^(NSArray *comments) {
+    [remote getCommentsForBlogID:blog.blogID
+                         success:^(NSArray *comments) {
                              [self.managedObjectContext performBlock:^{
                                  Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
                                  if (blogInContext) {
@@ -187,32 +188,33 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
         NSUInteger commentCount = [blog.comments count];
         options[@"offset"] = @(commentCount);
     }
-    [remote getCommentsWithOptions:options
-                           success:^(NSArray *comments) {
-                               [self.managedObjectContext performBlock:^{
-                                   Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-                                   if (!blog) {
-                                       return;
-                                   }
-                                   [self mergeComments:comments
-                                               forBlog:blog
-                                         purgeExisting:NO
-                                     completionHandler:^{
-                                         [[self class] stopSyncingCommentsForBlog:blogID];
-                                         if (success) {
-                                             success(comments.count > 1);
-                                         }
-                                     }];
-                               }];
-                           }
-                           failure:^(NSError *error) {
-                               [[self class] stopSyncingCommentsForBlog:blogID];
-                               if (failure) {
-                                   [self.managedObjectContext performBlock:^{
-                                       failure(error);
-                                   }];
-                               }
-                           }];
+    [remote getCommentsForBlogID:blog.blogID
+        options:options
+        success:^(NSArray *comments) {
+           [self.managedObjectContext performBlock:^{
+               Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+               if (!blog) {
+                   return;
+               }
+               [self mergeComments:comments
+                           forBlog:blog
+                     purgeExisting:NO
+                 completionHandler:^{
+                      [[self class] stopSyncingCommentsForBlog:blogID];
+                     if (success) {
+                         success(comments.count > 1);
+                     }
+                 }];
+           }];
+        }
+        failure:^(NSError *error) {
+           [[self class] stopSyncingCommentsForBlog:blogID];
+           if (failure) {
+               [self.managedObjectContext performBlock:^{
+                   failure(error);
+               }];
+           }
+        }];
 }
 
 // Upload comment
@@ -239,10 +241,12 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
     if (comment.commentID) {
         [remote updateComment:remoteComment
+                    forBlogID:comment.blog.blogID
                       success:successBlock
                       failure:failure];
     } else {
         [remote createComment:remoteComment
+                    forBlogID:comment.blog.blogID
                       success:successBlock
                       failure:failure];
     }
@@ -297,7 +301,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     if (commentID) {
         RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
         id<CommentServiceRemote> remote = [self remoteForBlog:comment.blog];
-        [remote trashComment:remoteComment success:success failure:failure];
+        [remote trashComment:remoteComment forBlogID:comment.blog.blogID success:success failure:failure];
     }
     [self.managedObjectContext deleteObject:comment];
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -312,8 +316,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                 failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;
-    CommentServiceRemoteREST *service = [self restRemoteForSite:post.siteID];
+    CommentServiceRemoteREST *service = [self remoteForREST];
     [service syncHierarchicalCommentsForPost:post.postID
+                                    fromSite:post.siteID
                                         page:page
                                       number:WPTopLevelHierarchicalCommentsPerPage
                                      success:^(NSArray *comments) {
@@ -360,8 +365,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
+    CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote updateCommentWithID:commentID
+                         siteID:siteID
                         content:content
                         success:success
                         failure:failure];
@@ -406,8 +412,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
         }];
     };
 
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
+    CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote replyToPostWithID:postID
+                       siteID:siteID
                       content:content
                       success:successBlock
                       failure:failureBlock];
@@ -454,8 +461,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
         }];
     };
 
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
+    CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote replyToCommentWithID:commentID
+                          siteID:siteID
                          content:content
                          success:successBlock
                          failure:failureBlock];
@@ -467,8 +475,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure
 {
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
+    CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote replyToCommentWithID:commentID
+                          siteID:siteID
                          content:content
                          success:^(RemoteComment *comment){
                              if (success){
@@ -485,8 +494,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure
 {
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
+    CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote likeCommentWithID:commentID
+                       siteID:siteID
                       success:success
                       failure:failure];
 }
@@ -496,8 +506,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
+    CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote unlikeCommentWithID:commentID
+                         siteID:siteID
                         success:success
                         failure:failure];
 }
@@ -508,8 +519,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure
 {
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
+    CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote moderateCommentWithID:commentID
+                           siteID:siteID
                            status:@"approved"
                           success:success
                           failure:failure];
@@ -520,8 +532,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure
 {
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
+    CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote moderateCommentWithID:commentID
+                           siteID:siteID
                            status:@"unapproved"
                           success:success
                           failure:failure];
@@ -532,8 +545,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure
 {
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
+    CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote moderateCommentWithID:commentID
+                           siteID:siteID
                            status:@"spam"
                           success:success
                           failure:failure];
@@ -545,8 +559,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
-    CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
+    CommentServiceRemoteREST *remote = [self remoteForREST];
     [remote trashCommentWithID:commentID
+                        siteID:siteID
                        success:success
                        failure:failure];
 }
@@ -632,7 +647,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     RemoteComment *remoteComment = [self remoteCommentWithComment:comment];
     NSManagedObjectID *commentID = comment.objectID;
     [remote moderateComment:remoteComment
-                    success:^(RemoteComment *comment) {
+                  forBlogID:comment.blog.blogID success:^(RemoteComment *comment) {
                         if (success) {
                             success();
                         }
@@ -644,7 +659,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                 commentInContext.status = prevStatus;
                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                             }
-
+                            
                             if (failure) {
                                 dispatch_async(dispatch_get_main_queue(), ^{
                                     failure(error);
@@ -992,16 +1007,16 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     id<CommentServiceRemote>remote;
     // TODO: refactor API creation so it's not part of the model
     if (blog.restApi) {
-        remote = [[CommentServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        remote = [[CommentServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
         remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
     return remote;
 }
 
-- (CommentServiceRemoteREST *)restRemoteForSite:(NSNumber *)siteID
+- (CommentServiceRemoteREST *)remoteForREST
 {
-    return [[CommentServiceRemoteREST alloc] initWithApi:[self apiForRESTRequest] siteID:siteID];
+    return [[CommentServiceRemoteREST alloc] initWithApi:[self apiForRESTRequest]];
 }
 
 /**

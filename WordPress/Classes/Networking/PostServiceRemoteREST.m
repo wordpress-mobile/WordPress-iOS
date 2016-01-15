@@ -11,12 +11,14 @@ NSString * const PostRemoteStatusScheduled = @"future";
 @implementation PostServiceRemoteREST
 
 - (void)getPostWithID:(NSNumber *)postID
+            forBlogID:(NSNumber *)blogID
               success:(void (^)(RemotePost *post))success
               failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(postID);
-
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", self.siteID, postID];
+    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
+    
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", blogID, postID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -36,20 +38,23 @@ NSString * const PostRemoteStatusScheduled = @"future";
 }
 
 - (void)getPostsOfType:(NSString *)postType
+             forBlogID:(NSNumber *)blogID
                success:(void (^)(NSArray *))success
                failure:(void (^)(NSError *))failure
 {
-    [self getPostsOfType:postType options:nil success:success failure:failure];
+    [self getPostsOfType:postType forBlogID:blogID options:nil success:success failure:failure];
 }
 
 - (void)getPostsOfType:(NSString *)postType
+             forBlogID:(NSNumber *)blogID
                options:(NSDictionary *)options
                success:(void (^)(NSArray *))success
                failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([postType isKindOfClass:[NSString class]]);
-
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts", self.siteID];
+    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
+    
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blogID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -78,12 +83,14 @@ NSString * const PostRemoteStatusScheduled = @"future";
 }
 
 - (void)createPost:(RemotePost *)post
+         forBlogID:(NSNumber *)blogID
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([post isKindOfClass:[RemotePost class]]);
-
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", self.siteID];
+    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
+    
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", blogID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -104,12 +111,14 @@ NSString * const PostRemoteStatusScheduled = @"future";
 }
 
 - (void)updatePost:(RemotePost *)post
+         forBlogID:(NSNumber *)blogID
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([post isKindOfClass:[RemotePost class]]);
-
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", self.siteID, post.postID];
+    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
+    
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", blogID, post.postID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -130,12 +139,14 @@ NSString * const PostRemoteStatusScheduled = @"future";
 }
 
 - (void)deletePost:(RemotePost *)post
+         forBlogID:(NSNumber *)blogID
            success:(void (^)())success
            failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([post isKindOfClass:[RemotePost class]]);
-
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", self.siteID, post.postID];
+    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
+    
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blogID, post.postID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -153,12 +164,14 @@ NSString * const PostRemoteStatusScheduled = @"future";
 }
 
 - (void)trashPost:(RemotePost *)post
+        forBlogID:(NSNumber *)blogID
           success:(void (^)(RemotePost *))success
           failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([post isKindOfClass:[RemotePost class]]);
-
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", self.siteID, post.postID];
+    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
+    
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blogID, post.postID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -177,12 +190,14 @@ NSString * const PostRemoteStatusScheduled = @"future";
 }
 
 - (void)restorePost:(RemotePost *)post
+          forBlogID:(NSNumber *)blogID
             success:(void (^)(RemotePost *))success
             failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([post isKindOfClass:[RemotePost class]]);
-
-    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", self.siteID, post.postID];
+    NSParameterAssert([blogID isKindOfClass:[NSNumber class]]);
+    
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", blogID, post.postID];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     

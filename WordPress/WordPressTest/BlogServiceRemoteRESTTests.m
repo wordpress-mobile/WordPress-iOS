@@ -32,10 +32,23 @@ static NSTimeInterval const TestExpectationTimeout = 5;
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     
-    [service checkMultiAuthorWithSuccess:^(BOOL isMultiAuthor) {}
-                                 failure:^(NSError *error) {}];
+    [service checkMultiAuthorForBlogID:[blog dotComID]
+                             success:^(BOOL isMultiAuthor) {}
+                             failure:^(NSError *error) {}];
+}
+
+
+- (void)testThatCheckMultiAuthorForBlogThrowsExceptionWithoutBlog
+{
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    BlogServiceRemoteREST *service = nil;
+    
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertThrows([service checkMultiAuthorForBlogID:nil
+                                             success:^(BOOL isMultiAuthor) {}
+                                             failure:^(NSError *error) {}]);
 }
 
 
@@ -56,10 +69,22 @@ static NSTimeInterval const TestExpectationTimeout = 5;
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     
-    [service syncOptionsWithSuccess:^(NSDictionary *options) {}
-                            failure:^(NSError *error) {}];
+    [service syncOptionsForBlogID:[blog dotComID]
+                          success:^(NSDictionary *options) {}
+                          failure:^(NSError *error) {}];
+}
+
+- (void)testThatSyncOptionForBlogThrowsExceptionWithoutBlog
+{
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    BlogServiceRemoteREST *service = nil;
+    
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertThrows([service syncOptionsForBlogID:nil
+                                        success:^(NSDictionary *options) {}
+                                        failure:^(NSError *error) {}]);
 }
 
 
@@ -80,10 +105,22 @@ static NSTimeInterval const TestExpectationTimeout = 5;
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
-    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
     
-    [service syncPostFormatsWithSuccess:^(NSDictionary *options) {}
-                                failure:^(NSError *error) {}];
+    [service syncPostFormatsForBlogID:[blog dotComID]
+                              success:^(NSDictionary *options) {}
+                              failure:^(NSError *error) {}];
+}
+
+- (void)testThatSyncPostFormatsForBlogThrowsExceptionWithoutBlog
+{
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    BlogServiceRemoteREST *service = nil;
+    
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertThrows([service syncPostFormatsForBlogID:nil
+                                            success:^(NSDictionary *options) {}
+                                            failure:^(NSError *error) {}]);
 }
 
 
@@ -96,7 +133,7 @@ static NSTimeInterval const TestExpectationTimeout = 5;
     NSString *mockResponse          = @"rest-site-settings.json";
     
     WordPressComApi *api            = [WordPressComApi anonymousApi];
-    BlogServiceRemoteREST *service  = [[BlogServiceRemoteREST alloc] initWithApi:api siteID:blogID];
+    BlogServiceRemoteREST *service  = [[BlogServiceRemoteREST alloc] initWithApi:api];
     XCTAssertNotNil(service, @"Error while creating the new service");
     
     [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
@@ -109,7 +146,7 @@ static NSTimeInterval const TestExpectationTimeout = 5;
 
     XCTestExpectation *expectation = [self expectationWithDescription:@"Site Settings"];
     
-    [service syncSettingsWithSuccess:^(RemoteBlogSettings *settings) {
+    [service syncSettingsForBlogID:blogID success:^(RemoteBlogSettings *settings) {
         // General
         XCTAssertEqualObjects(settings.name, @"My Epic Blog", @"");
         XCTAssertEqualObjects(settings.tagline, @"Definitely, the best blog out there", @"");
