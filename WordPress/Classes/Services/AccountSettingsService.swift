@@ -1,4 +1,6 @@
 import Foundation
+import RxCocoa
+import RxSwift
 
 let AccountSettingsServiceChangeSaveFailedNotification = "AccountSettingsServiceChangeSaveFailed"
 
@@ -28,13 +30,6 @@ struct AccountSettingsService {
         })
     }
 
-    func subscribeSettings(next: AccountSettings? -> Void) -> AccountSettingsSubscription {
-        return AccountSettingsSubscription(userID: userID, context: context, changed: { (managedSettings) -> Void in
-            let settings = managedSettings.map({ AccountSettings(managed: $0) })
-            next(settings)
-        })
-    }
-
     func saveChange(change: AccountSettingsChange) {
         guard let reverse = try? applyChange(change) else {
             return
@@ -53,8 +48,18 @@ struct AccountSettingsService {
         }
     }
 
+    var settingsObserver: Observable<AccountSettings?> {
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        let notificationObserver = notificationCenter.rx_notification(NSManagedObjectContextDidSaveNotification, object: context)
+        return notificationObserver.map(getSettings).startWith(getSettings())
+    }
+
+    private func getSettings(_: Any? = nil) -> AccountSettings? {
+        return accountSettingsWithID(self.userID)
+    }
+
     private func applyChange(change: AccountSettingsChange) throws -> AccountSettingsChange {
-        guard let settings = accountSettingsWithID(userID) else {
+        guard let settings = managedAccountSettingsWithID(userID) else {
             DDLogSwift.logError("Tried to apply a change to nonexistent settings (ID: \(userID)")
             throw Errors.NotFound
         }
@@ -67,7 +72,7 @@ struct AccountSettingsService {
     }
 
     private func updateSettings(settings: AccountSettings) {
-        if let managedSettings = accountSettingsWithID(userID) {
+        if let managedSettings = managedAccountSettingsWithID(userID) {
             managedSettings.updateWith(settings)
         } else {
             createAccountSettings(userID, settings: settings)
@@ -76,7 +81,11 @@ struct AccountSettingsService {
         ContextManager.sharedInstance().saveContext(context)
     }
 
-    private func accountSettingsWithID(userID: Int) -> ManagedAccountSettings? {
+    private func accountSettingsWithID(userID: Int) -> AccountSettings? {
+        return managedAccountSettingsWithID(userID).map(AccountSettings.init)
+    }
+
+    private func managedAccountSettingsWithID(userID: Int) -> ManagedAccountSettings? {
         let request = NSFetchRequest(entityName: ManagedAccountSettings.entityName)
         request.predicate = NSPredicate(format: "account.userID = %d", userID)
         request.fetchLimit = 1
@@ -100,37 +109,3 @@ struct AccountSettingsService {
         case NotFound
     }
 }
-
-class AccountSettingsSubscription {
-    private var subscription: NSObjectProtocol? = nil
-
-    init(userID: Int, context: NSManagedObjectContext, changed: ManagedAccountSettings? -> Void) {
-        subscription = NSNotificationCenter.defaultCenter().addObserverForName(NSManagedObjectContextDidSaveNotification, object: context, queue: NSOperationQueue.mainQueue()) {
-            [unowned self]
-            notification in
-            // FIXME: Inspect changed objects in notification instead of fetching for performance (@koke 2015-11-23)
-            let account = self.fetchAccount(userID, context: context)
-            changed(account)
-        }
-
-        let initial = fetchAccount(userID, context: context)
-        dispatch_async(dispatch_get_main_queue()) {
-            changed(initial)
-        }
-    }
-
-    private func fetchAccount(userID: Int, context: NSManagedObjectContext) -> ManagedAccountSettings? {
-        let request = NSFetchRequest(entityName: ManagedAccountSettings.entityName)
-        request.predicate = NSPredicate(format: "account.userID = %d", userID)
-        request.fetchLimit = 1
-        let results = (try? context.executeFetchRequest(request) as! [ManagedAccountSettings]) ?? []
-        return results.first
-    }
-
-    deinit {
-        if let subscription = subscription {
-            NSNotificationCenter.defaultCenter().removeObserver(subscription)
-        }
-    }
-}
-
