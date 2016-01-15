@@ -452,6 +452,7 @@
 		E125451812BF68F900D87A0A /* Page.m in Sources */ = {isa = PBXBuildFile; fileRef = E125451712BF68F900D87A0A /* Page.m */; };
 		E1266D2D1BBE8B9A00FCB6B6 /* Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1266D2C1BBE8B9A00FCB6B6 /* Gravatar.swift */; };
 		E1266D2F1BBEC37B00FCB6B6 /* GravatarTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1266D2E1BBEC37B00FCB6B6 /* GravatarTest.swift */; };
+		E12DB07B1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12DB07A1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift */; };
 		E127A0F11C43B7CB00085129 /* SiteServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E127A0F01C43B7CB00085129 /* SiteServiceRemoteREST.m */; };
 		E12E6E331C21BA170033C5D0 /* FeatureFlag.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12E6E321C21BA170033C5D0 /* FeatureFlag.swift */; };
 		E12E6E381C21E75F0033C5D0 /* FeatureFlagTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12E6E371C21E75F0033C5D0 /* FeatureFlagTest.swift */; };
@@ -1453,6 +1454,7 @@
 		E127A0EF1C43B7CB00085129 /* SiteServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteServiceRemoteREST.h; sourceTree = "<group>"; };
 		E127A0F01C43B7CB00085129 /* SiteServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteServiceRemoteREST.m; sourceTree = "<group>"; };
 		E12963A8174654B2002E7744 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E12DB07A1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPAccount+AccountSettings.swift"; sourceTree = "<group>"; };
 		E12E6E321C21BA170033C5D0 /* FeatureFlag.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureFlag.swift; sourceTree = "<group>"; };
 		E12E6E371C21E75F0033C5D0 /* FeatureFlagTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatureFlagTest.swift; sourceTree = "<group>"; };
 		E12F95A51557C9C20067A653 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -2076,6 +2078,7 @@
 				5DA5BF3418E32DCF005F11F9 /* Theme.m */,
 				E105E9CD1726955600C0D9E7 /* WPAccount.h */,
 				E105E9CE1726955600C0D9E7 /* WPAccount.m */,
+				E12DB07A1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift */,
 				46F84612185A8B7E009D0DA5 /* WPContentViewProvider.h */,
 				5D35F7581A042255004E7B0D /* WPCommentContentViewProvider.h */,
 				5D333A561AA7A9E200DA295F /* WPPostContentViewProvider.h */,
@@ -4518,6 +4521,7 @@
 				B56F0F541C3337670076C48D /* AccountSettings.swift in Sources */,
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
 				E125445612BF5B3900D87A0A /* PostCategory.m in Sources */,
+				E12DB07B1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,
