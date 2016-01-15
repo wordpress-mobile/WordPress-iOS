@@ -9,7 +9,7 @@
 #import "WPStyleGuide+Posts.h"
 #import "Wordpress-Swift.h"
 
-static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
+static const UIEdgeInsets ActionbarButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
 
 typedef NS_ENUM(NSUInteger, ActionBarMode) {
     ActionBarModePublish = 1,
@@ -474,6 +474,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf editPostAction];
     };
+    item.imageInsets = ActionbarButtonImageInsets;
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"View", @"Label for the view post button. Tapping displays the post as it appears on the web.")
@@ -482,7 +483,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf viewPostAction];
     };
-    item.imageInsets = ViewButtonImageInsets;
+    item.imageInsets = ActionbarButtonImageInsets;
     [items addObject:item];
 
     if ([self.contentProvider supportsStats]) {
@@ -492,6 +493,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         item.callback = ^{
             [weakSelf statsPostAction];
         };
+        item.imageInsets = ActionbarButtonImageInsets;
         [items addObject:item];
     }
 
@@ -501,6 +503,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf trashPostAction];
     };
+    item.imageInsets = ActionbarButtonImageInsets;
     [items addObject:item];
 
     [self.actionBar setItems:items];
@@ -521,6 +524,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf editPostAction];
     };
+    item.imageInsets = ActionbarButtonImageInsets;
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Preview", @"Label for the preview post button. Tapping shows a preview of the post.")
@@ -529,6 +533,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf viewPostAction];
     };
+    item.imageInsets = ActionbarButtonImageInsets;
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Publish", @"Label for the publish button. Tapping publishes a draft post.")
@@ -537,6 +542,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf publishPostAction];
     };
+    item.imageInsets = ActionbarButtonImageInsets;
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Trash", @"Label for the trash post button. Tapping moves a post to the trash bin.")
@@ -545,6 +551,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf trashPostAction];
     };
+    item.imageInsets = ActionbarButtonImageInsets;
     [items addObject:item];
 
     [self.actionBar setItems:items];
@@ -565,6 +572,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf restorePostAction];
     };
+    item.imageInsets = ActionbarButtonImageInsets;
     [items addObject:item];
 
     item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Delete", @"Label for the delete post buton. Tapping permanently deletes a post.")
@@ -573,6 +581,7 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
     item.callback = ^{
         [weakSelf trashPostAction];
     };
+    item.imageInsets = ActionbarButtonImageInsets;
     [items addObject:item];
 
     [self.actionBar setItems:items];

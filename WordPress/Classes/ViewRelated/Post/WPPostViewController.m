@@ -636,11 +636,6 @@ EditImageDetailsViewControllerDelegate
  */
 - (void)showBlogSelectorPrompt:(WPBlogSelectorButton*)sender
 {
-    if (sender.buttonMode == WPBlogSelectorButtonSingleSite) {
-        [self cancelEditingOrDismiss];
-        return;
-    }
-    
     if (![self.post hasSiteSpecificChanges]) {
         [self showBlogSelector];
         return;
