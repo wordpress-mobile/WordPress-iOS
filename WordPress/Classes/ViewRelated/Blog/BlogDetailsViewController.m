@@ -18,7 +18,7 @@
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
 #import "Wordpress-Swift.h"
-#import "MenusViewController.h"
+
 
 #pragma mark - Helper Classes for Blog Details view model.
 
@@ -263,12 +263,6 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
                                                  callback:^{
                                                      [weakSelf showThemes];
                                                  }]];
-    
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Menus", @"Menus option in the blog details")
-                                                    image:[UIImage imageNamed:@"icon-menu-posts"]
-                                                 callback:^{
-                                                     [weakSelf showMenus];
-                                                 }]];
 
     NSString *title =NSLocalizedString(@"Personalize", @"Section title for the personalize table section in the blog details screen.");
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
@@ -475,13 +469,6 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 {
     [WPAppAnalytics track:WPAnalyticsStatThemesAccessedThemeBrowser withBlog:self.blog];
     ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:self.blog];
-    [self.navigationController pushViewController:viewController
-                                         animated:YES];
-}
-
-- (void)showMenus
-{
-    MenusViewController *viewController = [[MenusViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:viewController
                                          animated:YES];
 }
