@@ -127,7 +127,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     private func sectionsForDisabledDeviceStream() -> [Section] {
-        let description     = NSLocalizedString("Go to iPhone Settings", comment: "Opens WPiOS Settings.app Section")
+        let description     = NSLocalizedString("Go to iOS Settings", comment: "Opens WPiOS Settings.app Section")
         let row             = Row(kind: .Text, description: description, key: nil, value: nil)
         
         let footerText      = NSLocalizedString("Push Notifications have been turned off in iOS Settings App. " +
@@ -213,7 +213,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     // MARK: - Disabled Push Notifications Handling
     private func isDeviceStreamDisabled() -> Bool {
-        return stream?.kind == .Device && !NotificationsManager.pushNotificationsEnabledInDeviceSettings()
+        return stream?.kind == .Device && !PushNotificationsManager.sharedInstance.notificationsEnabledInDeviceSettings()
     }
     
     private func openApplicationSettings() {

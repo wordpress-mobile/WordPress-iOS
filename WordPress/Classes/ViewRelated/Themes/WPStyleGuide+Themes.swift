@@ -119,6 +119,9 @@ extension WPStyleGuide
 
         public static let themeMargins = UIEdgeInsets(top: rowMargin, left: columnMargin, bottom: rowMargin, right: columnMargin)
         public static let infoMargins = UIEdgeInsets()
+        
+        public static let minimumSearchHeight: CGFloat = 44
+        public static let searchAnimationDuration: NSTimeInterval = 0.2
     }
 
 }

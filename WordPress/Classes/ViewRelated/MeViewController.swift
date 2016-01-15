@@ -3,13 +3,7 @@ import WordPressShared
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
     static let restorationIdentifier = "WPMeRestorationID"
-    var tableViewModel = ImmuTable(sections: []) {
-        didSet {
-            if isViewLoaded() {
-                tableView.reloadData()
-            }
-        }
-    }
+    var handler: ImmuTableViewHandler!
 
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         return self.init()
@@ -50,6 +44,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             DestructiveButtonRow.self
             ], tableView: self.tableView)
 
+        handler = ImmuTableViewHandler(takeOver: self)
         reloadViewModel()
         // FIXME: @koke 2015-12-17
         // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4416
@@ -79,7 +74,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
         tableView.tableHeaderView = account.map(headerView)
-        tableViewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
+        handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
     }
 
     func headerView(account: WPAccount) -> MeHeaderView {
@@ -177,50 +172,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 ])
         }
     }
-    // MARK: Table View Data Source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return tableViewModel.sections.count
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableViewModel.sections[section].rows.count
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let row = tableViewModel.rowAtIndexPath(indexPath)
-        let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
-
-        row.configureCell(cell)
-
-        return cell
-    }
-
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return tableViewModel.sections[section].headerText
-    }
-
-    // MARK: Table View Delegate
-
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let row = tableViewModel.rowAtIndexPath(indexPath)
-        row.action?(row)
-    }
-
-    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil)
-        view.title = self.tableView(tableView, titleForHeaderInSection: section)
-        return view
-    }
-
-    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title = self.tableView(tableView, titleForHeaderInSection: section)
-        return WPTableViewSectionHeaderFooterView.heightForHeader(title, width: tableView.frame.width)
-    }
 
     // MARK: - Actions
 
-    func pushMyProfile() -> ImmuTableActionType {
+    func pushMyProfile() -> ImmuTableAction {
         return { [unowned self] row in
             WPAppAnalytics.track(.OpenedMyProfile)
             let controller = MyProfileViewController()
@@ -229,7 +184,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    func pushAccountSettings() -> ImmuTableActionType {
+    func pushAccountSettings() -> ImmuTableAction {
         return { [unowned self] row in
             WPAppAnalytics.track(.OpenedAccountSettings)
             let controller = SettingsViewController()
@@ -237,28 +192,28 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    func pushNotificationSettings() -> ImmuTableActionType {
+    func pushNotificationSettings() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = NotificationSettingsViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
-    func pushHelp() -> ImmuTableActionType {
+    func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = SupportViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
-    func pushAbout() -> ImmuTableActionType {
+    func pushAbout() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = AboutViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
-    func presentLogin() -> ImmuTableActionType {
+    func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = LoginViewController()
             controller.onlyDotComAllowed = true
@@ -267,12 +222,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
 
-            let navigation = UINavigationController(rootViewController: controller)
+            let navigation = RotationAwareNavigationViewController(rootViewController: controller)
             self.presentViewController(navigation, animated: true, completion: nil)
         }
     }
 
-    func confirmLogout() -> ImmuTableActionType {
+    func confirmLogout() -> ImmuTableAction {
         return { [unowned self] row in
             let format = NSLocalizedString("Disconnecting your account will remove all of @%@’s WordPress.com data from this device.", comment: "Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.")
             let title = String(format: format, self.defaultAccount()!.username)
