@@ -118,8 +118,8 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         for row in rows {
             let unwrappedKey    = row.key ?? String()
-            let details         = settings.localizedDetails(unwrappedKey)
-            let section         = Section(rows: [row], footerText: details)
+            let footerText      = settings.localizedDetails(unwrappedKey)
+            let section         = Section(rows: [row], footerText: footerText)
             sections.append(section)
         }
         
@@ -165,21 +165,21 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if let footerText = sections[section].footerText {
-            return WPTableViewSectionHeaderFooterView.heightForFooter(footerText, width: view.bounds.width)
+        guard let footerText = sections[section].footerText else {
+            return CGFloat.min
         }
 
-        return CGFloat.min
+        return WPTableViewSectionHeaderFooterView.heightForFooter(footerText, width: view.bounds.width)
     }
     
     public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if let footerText = sections[section].footerText {
-            let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-            footerView.title    = footerText
-            return footerView
+        guard let footerText = sections[section].footerText else {
+            return nil
         }
-
-        return nil
+        
+        let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
+        footerView.title    = footerText
+        return footerView
     }
     
     
