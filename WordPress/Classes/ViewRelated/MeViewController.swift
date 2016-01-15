@@ -175,7 +175,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     // MARK: - Actions
 
-    func pushMyProfile() -> ImmuTableActionType {
+    func pushMyProfile() -> ImmuTableAction {
         return { [unowned self] row in
             WPAppAnalytics.track(.OpenedMyProfile)
             let controller = MyProfileViewController()
@@ -184,7 +184,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    func pushAccountSettings() -> ImmuTableActionType {
+    func pushAccountSettings() -> ImmuTableAction {
         return { [unowned self] row in
             WPAppAnalytics.track(.OpenedAccountSettings)
             let controller = SettingsViewController()
@@ -192,28 +192,28 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    func pushNotificationSettings() -> ImmuTableActionType {
+    func pushNotificationSettings() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = NotificationSettingsViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
-    func pushHelp() -> ImmuTableActionType {
+    func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = SupportViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
-    func pushAbout() -> ImmuTableActionType {
+    func pushAbout() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = AboutViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
-    func presentLogin() -> ImmuTableActionType {
+    func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = LoginViewController()
             controller.onlyDotComAllowed = true
@@ -227,7 +227,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    func confirmLogout() -> ImmuTableActionType {
+    func confirmLogout() -> ImmuTableAction {
         return { [unowned self] row in
             let format = NSLocalizedString("Disconnecting your account will remove all of @%@’s WordPress.com data from this device.", comment: "Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.")
             let title = String(format: format, self.defaultAccount()!.username)
