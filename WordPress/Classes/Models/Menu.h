@@ -4,14 +4,26 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ *  @brief    An object encapsulating a Menu, the locations using it, and the items belonging to it.
+ */
 @interface Menu : NSManagedObject
 
 @property (nullable, nonatomic, retain) NSString *details;
 @property (nullable, nonatomic, retain) NSString *menuId;
 @property (nullable, nonatomic, retain) NSString *name;
+
+///---------------------
+/// @name Relationships
+///---------------------
+
 @property (nullable, nonatomic, retain) NSOrderedSet<MenuItem *> *items;
 @property (nullable, nonatomic, retain) NSSet<MenuLocation *> *locations;
 @property (nonatomic, strong, readwrite) Blog *blog;
+
+///---------------------
+/// @name Helper methods
+///---------------------
 
 + (NSString *)entityName;
 
