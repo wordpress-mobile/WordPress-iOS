@@ -3,6 +3,14 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 45 (@kurzee 2016-01-15)
+
+- Added `Menu` entity. Encapsulates the data and relationships for customizing a site menu.
+- Added `MenuItem` entity. Encapsulates the navigation item data belonging to a Menu.
+- Added `MenuLocation` entity. Encapsulates a site/theme location that a Menu can occupy.
+- `Blog` added new relationship called `menus`. Persisting associated Menus for a site.
+- `Blog` added new relationship called `menuLocations`. Persists associated MenuLocations available for a site.
+
 ## WordPress 44 (@aerych 2016-01-11)
 
 - Added `PublicizeService` entity. Represents third-party services available to Publicize
