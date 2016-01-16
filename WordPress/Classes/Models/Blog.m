@@ -42,6 +42,8 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic connections;
 @dynamic themes;
 @dynamic media;
+@dynamic menus;
+@dynamic menuLocations;
 @dynamic currentThemeId;
 @dynamic lastPostsSync;
 @dynamic lastStatsSync;
