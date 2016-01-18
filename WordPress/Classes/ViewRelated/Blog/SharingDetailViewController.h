@@ -2,6 +2,7 @@
 
 @class Blog;
 @class PublicizeService;
+@class PublicizeConnection;
 
 /**
  *	@brief	Controller to display Calypso sharing options
@@ -11,10 +12,14 @@
 /**
  *	@brief	Convenience initializer
  *
- *  @param  blog    the blog from where to read the information from
+ *  @param  blog        the blog from where to read the information from
+ *  @param  connection  the relevant publicize connection
+ *  @param  service     the relevant publicize service
  *
- *  @return New instance of SharingViewController
+ *  @return New instance of SharingDetailViewController
  */
-- (instancetype)initWithBlog:(Blog *)blog publicizeService:(PublicizeService *)publicizeService;
+- (instancetype)initWithBlog:(Blog *)blog
+         publicizeConnection:(PublicizeConnection *)connection
+            publicizeService:(PublicizeService *)publicizeService;
 
 @end
