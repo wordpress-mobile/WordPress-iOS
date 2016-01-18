@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, retain) NSOrderedSet<MenuItem *> *items;
 @property (nullable, nonatomic, retain) NSSet<MenuLocation *> *locations;
-@property (nonatomic, strong, readwrite) Blog *blog;
+@property (nullable, nonatomic, retain) Blog *blog;
 
 ///---------------------
 /// @name Helper methods
