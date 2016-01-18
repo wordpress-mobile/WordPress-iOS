@@ -67,6 +67,14 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows(rows, tableView: tableView)
     }
 
+    var errorMessage: String? = nil {
+        didSet {
+            // TODO: write the actuall error message UI
+            // @koke 2016-01-18
+            print("Error message changed: \(errorMessage)")
+        }
+    }
+
     // MARK: - Outputs
 
     /// Emits a value every time viewWillAppear is called

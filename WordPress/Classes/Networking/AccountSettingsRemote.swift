@@ -1,12 +1,38 @@
+import AFNetworking
 import Foundation
+import RxSwift
 
 class AccountSettingsRemote: ServiceRemoteREST {
-    func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) {
+    func settings() -> Observable<AccountSettings> {
+        let api = self.api
+
+        return Observable.create { observer in
+            let remote = AccountSettingsRemote(api: api)
+            let operation = remote.getSettings(
+                success: { settings in
+                    observer.onNext(settings)
+                    observer.onCompleted()
+                }, failure: { error in
+                    DDLogSwift.logError("Error refreshing settings: \(error)")
+                    observer.onError(error)
+            })
+            return AnonymousDisposable() {
+                if let operation = operation {
+                    if !operation.finished {
+                        DDLogSwift.logError("Canceled refreshing settings")
+                        operation.cancel()
+                    }
+                }
+            }
+        }
+    }
+
+    func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) -> AFHTTPRequestOperation? {
         let endpoint = "me/settings"
         let parameters = ["context": "edit"]
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
-        api.GET(path,
+        return api.GET(path,
             parameters: parameters,
             success: {
                 operation, responseObject in

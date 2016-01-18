@@ -15,6 +15,28 @@ struct AccountSettingsService {
         self.userID = userID
     }
 
+    var refresh: Observable<RefreshStatus> {
+        let remote = self.remote
+        let stalledTimeout = 4.0
+
+        let refresh: Observable<RefreshStatus> = remote.settings()
+            .map { settings in
+                self.updateSettings(settings)
+                return .Idle
+            }
+            .share()
+
+        let stalled: Observable<RefreshStatus> = Observable<Int>
+            .timer(stalledTimeout, scheduler: MainScheduler.instance)
+            .map({ _ in .Stalled })
+
+        return Observable.of(refresh, stalled)
+            .merge()
+            .startWith(.Refreshing)
+            .distinctUntilChanged()
+            .takeUntil(refresh)
+    }
+
     func refreshSettings(completion: (Bool) -> Void) {
         remote.getSettings(
             success: {
@@ -107,5 +129,26 @@ struct AccountSettingsService {
 
     enum Errors: ErrorType {
         case NotFound
+    }
+
+    enum RefreshStatus {
+        case Idle
+        case Refreshing
+        case Stalled
+        case Failed
+        case Offline
+
+        var errorMessage: String? {
+            switch self {
+            case Stalled:
+                return NSLocalizedString("We are having trouble loading data", comment: "Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed")
+            case Failed:
+                return NSLocalizedString("We had trouble loading data", comment: "Error message displayed when a refresh failed")
+            case Offline:
+                return NSLocalizedString("You are currently offline", comment: "Error message displayed when the app can't connect to the API servers")
+            case Idle, Refreshing:
+                return nil
+            }
+        }
     }
 }
