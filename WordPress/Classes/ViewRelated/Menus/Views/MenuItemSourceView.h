@@ -6,12 +6,19 @@
 
 @protocol MenuItemSourceViewDelegate;
 
-@interface MenuItemSourceView : UIView <MenuItemSourceTextBarDelegate>
+@interface MenuItemSourceView : UIView <MenuItemSourceTextBarDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) id <MenuItemSourceViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
-@property (nonatomic, strong) UIStackView *stackView;
-@property (nonatomic, strong) UITableView *tableView;
+
+/* A stackView for adding any views that aren't cells before the tableView, Ex. searchBar, label, design
+ */
+@property (nonatomic, strong, readonly) UIStackView *stackView;
+
+/* A tableView for inserting cells of data relating to the source
+ */
+@property (nonatomic, strong, readonly) UITableView *tableView;
+
 @property (nonatomic, strong) MenuItemSourceTextBar *searchBar;
 @property (nonatomic, strong, readonly) NSMutableArray *sourceOptions;
 
