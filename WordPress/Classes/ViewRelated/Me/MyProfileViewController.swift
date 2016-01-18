@@ -7,6 +7,8 @@ class MyProfileController: NSObject {
     let service: AccountSettingsService
     let viewController = ImmuTableViewController()
 
+    private let bag = DisposeBag()
+
     init(service: AccountSettingsService) {
         self.service = service
         super.init()
@@ -14,14 +16,34 @@ class MyProfileController: NSObject {
         viewController.title = title
         viewController.registerRows(immutableRows)
 
-        _ = viewModel
+        viewModel
             .observeOn(MainScheduler.instance)
-            .takeUntil(viewController.rx_deallocated)
             .subscribeNext(viewController.bindViewModel)
-        // Only refresh on first appearance
-        _ = viewController.willAppear.take(1).subscribeNext {
-            service.refreshSettings({ _ in })
-        }
+            .addDisposableTo(bag)
+
+        viewController.willAppear
+            // On first appearance
+            .take(1)
+            // request a refresh of account settings
+            .flatMap({ service.refresh })
+            // replace errors with .Failed status
+            .catchErrorJustReturn(.Failed)
+            // convert status to string
+            .map({ $0.errorMessage })
+            // and set the view controller error message
+            .subscribe { event in
+                switch event {
+                case .Next(let status):
+                    self.viewController.errorMessage = status
+                case .Completed:
+                    self.viewController.errorMessage = nil
+                case .Error(_):
+                    // We're replacing errors with .Failed, but let's handle it
+                    // just in case.
+                    self.viewController.errorMessage = nil
+                }
+            }
+            .addDisposableTo(bag)
     }
 
     convenience init(account: WPAccount) {
