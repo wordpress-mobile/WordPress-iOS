@@ -6,18 +6,24 @@ import WordPressShared
 class TodayViewController: UIViewController {
     @IBOutlet var siteNameLabel: UILabel!
     @IBOutlet var countContainerView: UIView!
+    @IBOutlet var countContainerViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet var visitorsCountLabel: UILabel!
     @IBOutlet var visitorsLabel: UILabel!
     @IBOutlet var viewsCountLabel: UILabel!
     @IBOutlet var viewsLabel: UILabel!
-    @IBOutlet var configureMeRightConstraint: NSLayoutConstraint!
     @IBOutlet var configureMeLabel: UILabel!
+    @IBOutlet var configureMeLabelRightConstraint: NSLayoutConstraint!
     @IBOutlet var configureMeButtonContainerView: UIView!
+    @IBOutlet var configureMeButtonContainerViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var configureMeButtonContainerViewRightConstraint: NSLayoutConstraint!
     @IBOutlet var configureMeButton: UIButton!
     
     var siteID: NSNumber?
     var timeZone: NSTimeZone?
     var oauthToken: String?
+    
+    var siteNameLabelHeightConstraint: NSLayoutConstraint!
+    var configureMeLabelHeightConstraint: NSLayoutConstraint!
     
     var siteName: String = ""
     var visitorCount: String = ""
@@ -43,18 +49,16 @@ class TodayViewController: UIViewController {
         viewsLabel.text = NSLocalizedString("Views", comment: "Stats Views Label")
         viewsCountLabel.text = "-"
         
+        siteNameLabelHeightConstraint = NSLayoutConstraint(item: siteNameLabel, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 0.0, constant: 0.0)
+        siteNameLabel.addConstraint(siteNameLabelHeightConstraint)
+        configureMeLabelHeightConstraint = NSLayoutConstraint(item: configureMeLabel, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 0.0, constant: 0.0)
+        configureMeLabel.addConstraint(configureMeLabelHeightConstraint)
+        
+        
+
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        // Manual state restoration
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setObject(self.siteName, forKey: WPStatsTodayWidgetUserDefaultsSiteNameKey)
-        userDefaults.setObject(self.visitorCount, forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey)
-        userDefaults.setObject(self.viewCount, forKey: WPStatsTodayWidgetUserDefaultsViewCountKey)
+        
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -73,6 +77,15 @@ class TodayViewController: UIViewController {
         self.viewsCountLabel.text = self.viewCount
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Manual state restoration
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setObject(self.visitorCount, forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey)
+        userDefaults.setObject(self.viewCount, forKey: WPStatsTodayWidgetUserDefaultsViewCountKey)
+    }
+    
     @IBAction func launchContainingApp() {
         if let unwrappedSiteID = siteID {
             self.extensionContext!.openURL(NSURL(string: "\(WPCOM_SCHEME)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
@@ -89,10 +102,15 @@ class TodayViewController: UIViewController {
     
     func updateUIBasedOnWidgetConfiguration() {
         siteNameLabel.hidden = !isConfigured
+        siteNameLabelHeightConstraint.active = !isConfigured
         countContainerView.hidden = !isConfigured
-        configureMeLabel.hidden = isConfigured
+        countContainerViewHeightConstraint.constant = isConfigured ? 80 : 8
         configureMeButtonContainerView.hidden = isConfigured
-        configureMeRightConstraint.constant = isConfigured ? 0.0 : standardLeftMargin
+        configureMeButtonContainerViewHeightConstraint.constant = isConfigured ? 0 : 51
+        configureMeLabel.hidden = isConfigured
+        configureMeLabelHeightConstraint.active = isConfigured
+        
+        self.view.setNeedsUpdateConstraints()
     }
     
     func retrieveSiteConfiguration() {
@@ -112,7 +130,9 @@ class TodayViewController: UIViewController {
 extension TodayViewController: NCWidgetProviding {
     func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {
         standardLeftMargin = defaultMarginInsets.left
-        configureMeRightConstraint.constant = standardLeftMargin
+        configureMeLabelRightConstraint.constant = standardLeftMargin
+        configureMeButtonContainerViewRightConstraint.constant = standardLeftMargin
+        
         return defaultMarginInsets
     }
     
