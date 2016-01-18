@@ -75,6 +75,9 @@ class TodayViewController: UIViewController {
         self.siteNameLabel.text = self.siteName
         self.visitorsCountLabel.text = self.visitorCount
         self.viewsCountLabel.text = self.viewCount
+        
+        retrieveSiteConfiguration()
+        updateUIBasedOnWidgetConfiguration()
     }
     
     override func viewWillDisappear(animated: Bool) {
