@@ -572,6 +572,9 @@
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="375"/>
+        <element name="Menu" positionX="63" positionY="198" width="128" height="135"/>
+        <element name="MenuItem" positionX="45" positionY="180" width="128" height="240"/>
+        <element name="MenuLocation" positionX="54" positionY="189" width="128" height="120"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
@@ -590,8 +593,5 @@
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="330"/>
-        <element name="MenuItem" positionX="18" positionY="153" width="128" height="240"/>
-        <element name="MenuLocation" positionX="27" positionY="162" width="128" height="120"/>
-        <element name="Menu" positionX="36" positionY="171" width="128" height="135"/>
     </elements>
 </model>

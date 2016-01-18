@@ -37,7 +37,7 @@ NSString * const MenuItemTypeIdentifierJetpackPortfolio = @"jetpack-portfolio";
     BOOL otherItemIsDescendant = NO;
     MenuItem *ancestor = self.parent;
     while (ancestor) {
-        if(ancestor == item) {
+        if (ancestor == item) {
             otherItemIsDescendant = YES;
             break;
         }
@@ -53,19 +53,19 @@ NSString * const MenuItemTypeIdentifierJetpackPortfolio = @"jetpack-portfolio";
     NSString *typeStr = self.type;
     MenuItemType itemType = MenuItemTypeUnknown;
     
-    if([typeStr isEqualToString:MenuItemTypeIdentifierPage]) {
+    if ([typeStr isEqualToString:MenuItemTypeIdentifierPage]) {
         itemType = MenuItemTypePage;
-    }else if([typeStr isEqualToString:MenuItemTypeIdentifierCustom]) {
+    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierCustom]) {
         itemType = MenuItemTypeCustom;
-    }else if([typeStr isEqualToString:MenuItemTypeIdentifierCategory]) {
+    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierCategory]) {
         itemType = MenuItemTypeCategory;
-    }else if([typeStr isEqualToString:MenuItemTypeIdentifierTag]) {
+    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierTag]) {
         itemType = MenuItemTypeTag;
-    }else if([typeStr isEqualToString:MenuItemTypeIdentifierPost]) {
+    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierPost]) {
         itemType = MenuItemTypePost;
-    }else if([typeStr isEqualToString:MenuItemTypeIdentifierJetpackTestimonial]) {
+    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierJetpackTestimonial]) {
         itemType = MenuItemTypeJetpackTestimonial;
-    }else if([typeStr isEqualToString:MenuItemTypeIdentifierJetpackPortfolio]) {
+    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierJetpackPortfolio]) {
         itemType = MenuItemTypeJetpackPortfolio;
     }
     
