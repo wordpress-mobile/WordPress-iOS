@@ -1,6 +1,6 @@
 #import <CoreData/CoreData.h>
 
-typedef NS_ENUM(NSUInteger) {
+typedef NS_ENUM(NSUInteger, MenuItemType) {
     MenuItemTypeUnknown = 0,
     
     /* The majority of MenuItems are set as pages.
@@ -27,8 +27,7 @@ typedef NS_ENUM(NSUInteger) {
      */
     MenuItemTypeJetpackTestimonial,
     MenuItemTypeJetpackPortfolio
-    
-}MenuItemType;
+};
 
 @class Menu;
 
