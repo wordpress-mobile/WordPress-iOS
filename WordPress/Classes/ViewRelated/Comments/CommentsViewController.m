@@ -264,6 +264,45 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 }
 
 
+#pragma mark - Comment Actions
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    __typeof(self) __weak weakSelf = self;
+    
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    
+    UITableViewRowAction *trash = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
+                                                                   title:NSLocalizedString(@"Trash", @"Trashes a comment")
+                                                                 handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                     [weakSelf deleteComment:comment];
+                                                                 }];
+    
+    return @[trash];
+}
+
+- (void)deleteComment:(Comment *)comment
+{
+    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    
+    [service deleteComment:comment success:nil failure:^(NSError *error) {
+        DDLogError(@"Error deleting comment: %@", error);
+    }];
+    
+    [self.tableView setEditing:NO animated:YES];
+}
+
+
 #pragma mark - WPTableViewHandlerDelegate Methods
 
 - (NSManagedObjectContext *)managedObjectContext
