@@ -4,7 +4,9 @@
 
 @interface MenuItemSourceView () <MenuItemSourceTextBarDelegate>
 
-@property (nonatomic, strong) UIScrollView *scrollView;
+/* View used as the tableView.tableHeaderView container view for self.stackView.
+ */
+@property (nonatomic, strong) UIView *stackedTableHeaderView;
 
 @end
 
@@ -19,20 +21,26 @@
         self.backgroundColor = [UIColor whiteColor];
         _sourceOptions = [NSMutableArray array];
         {
-            UIScrollView *scrollView = [[UIScrollView alloc] init];
-            scrollView.translatesAutoresizingMaskIntoConstraints = NO;
-            scrollView.backgroundColor = [UIColor whiteColor];
-            [self addSubview:scrollView];
+            UITableView *tableView = [[UITableView alloc] init];
+            tableView.translatesAutoresizingMaskIntoConstraints = NO;
+            tableView.dataSource = self;
+            tableView.delegate = self;
+            [self addSubview:tableView];
             
             [NSLayoutConstraint activateConstraints:@[
-                                                      [scrollView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                                      [scrollView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                                      [scrollView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                                      [scrollView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
+                                                      [tableView.topAnchor constraintEqualToAnchor:self.topAnchor],
+                                                      [tableView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
+                                                      [tableView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
+                                                      [tableView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
                                                       ]];
-            self.scrollView = scrollView;
+            _tableView = tableView;
         }
-     
+        {
+            // setup the tableHeaderView and keep translatesAutoresizingMaskIntoConstraints to default YES
+            // this allows the tableView to handle sizing the view as any other tableHeaderView
+            UIView *stackedTableHeaderView = [[UIView alloc] init];
+            self.stackedTableHeaderView = stackedTableHeaderView;
+        }
         {
             UIStackView *stackView = [[UIStackView alloc] init];
             stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -49,37 +57,36 @@
             stackView.layoutMargins = margins;
             stackView.layoutMarginsRelativeArrangement = YES;
             
-            [self.scrollView addSubview:stackView];
-            
+            [self.stackedTableHeaderView addSubview:stackView];
+            // setup the constraints for the stackView
+            // constrain the horiztonal edges to sync the width to the stackedTableHeaderView
+            // do not include a bottom constraint so the stackView can layout its intrinsic height
             [NSLayoutConstraint activateConstraints:@[
-                                                      [stackView.topAnchor constraintEqualToAnchor:self.scrollView.topAnchor],
-                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.scrollView.leadingAnchor],
-                                                      [stackView.trailingAnchor constraintEqualToAnchor:self.scrollView.trailingAnchor],
-                                                      [stackView.bottomAnchor constraintEqualToAnchor:self.scrollView.bottomAnchor],
-                                                      [stackView.centerXAnchor constraintEqualToAnchor:self.scrollView.centerXAnchor]
+                                                      [stackView.topAnchor constraintEqualToAnchor:self.stackedTableHeaderView.topAnchor],
+                                                      [stackView.leadingAnchor constraintEqualToAnchor:self.stackedTableHeaderView.leadingAnchor],
+                                                      [stackView.trailingAnchor constraintEqualToAnchor:self.stackedTableHeaderView.trailingAnchor]
                                                       ]];
-            self.stackView = stackView;
-        }
-        {
-            UITableView *tableView = [[UITableView alloc] init];
-            tableView.translatesAutoresizingMaskIntoConstraints = NO;
-            
-            [self addSubview:tableView];
-            
-            NSLayoutConstraint *top = [tableView.topAnchor constraintEqualToAnchor:self.stackView.bottomAnchor];
-            top.priority = UILayoutPriorityDefaultHigh;
-            [NSLayoutConstraint activateConstraints:@[
-                                                      top,
-                                                      [tableView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                                      [tableView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor],
-                                                      [tableView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
-                                                      ]];
-            
-            self.tableView = tableView;
+            _stackView = stackView;
         }
     }
     
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    if(!self.tableView.tableHeaderView) {
+        // set the tableHeaderView after we have called layoutSubviews the first time
+        self.tableView.tableHeaderView = self.stackedTableHeaderView;
+    }
+
+    // set the stackedTableHeaderView frame height to the intrinsic height of the stackView
+    CGRect frame = self.stackView.bounds;
+    self.stackedTableHeaderView.frame = frame;
+    // reset the tableHeaderView to update the size change
+    self.tableView.tableHeaderView = self.stackedTableHeaderView;
 }
 
 - (BOOL)resignFirstResponder
@@ -111,12 +118,31 @@
 
 - (void)insertSourceOption:(MenuItemSourceOption *)option
 {
+    /*
     [self.sourceOptions addObject:option];
     
     MenuItemSourceOptionView *optionView = [[MenuItemSourceOptionView alloc] init];
     optionView.sourceOption = option;
     [optionView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     [self.stackView addArrangedSubview:optionView];
+     */
+}
+
+#pragma mark - UITableView
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 0;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return nil;
 }
 
 #pragma mark - delegate
