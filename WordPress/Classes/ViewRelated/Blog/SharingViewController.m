@@ -53,6 +53,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self syncPublicizeServices];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView reloadData];
+}
+
 - (void)refreshPublicizers
 {
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
@@ -174,7 +181,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     // Check if any of the connections are broken.
     for (PublicizeConnection *pubConn in connections) {
-        if ([pubConn.status isEqualToString:@"broken"]) {
+        if ([pubConn isBroken]) {
             cell.accessoryView = [self warningAccessoryView];
             break;
         }

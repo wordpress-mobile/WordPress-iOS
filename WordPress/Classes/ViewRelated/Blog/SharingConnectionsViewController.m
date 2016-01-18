@@ -42,9 +42,14 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:CellIdentifier];
-
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView reloadData];
+}
 
 #pragma mark - Instance Methods
 
@@ -167,7 +172,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     PublicizeConnection *connection = [[self connectionsForService] objectAtIndex:indexPath.row];
     cell.textLabel.text = connection.externalDisplay;
 
-    if ([connection.status isEqualToString:@"broken"]) {
+    if ([connection isBroken]) {
         cell.accessoryView = [self warningAccessoryView];
     }
 }
