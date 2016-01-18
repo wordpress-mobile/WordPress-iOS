@@ -11,28 +11,30 @@
         
         // samples
         {
-            MenuItemSourceOption *option = [[MenuItemSourceOption alloc] init];
-            option.title = @"Home";
-            option.badgeTitle = @"SITE";
-            option.selected = YES;
+            MenuItemSource *source = [[MenuItemSource alloc] init];
+            source.title = @"Home";
+            source.badgeTitle = @"SITE";
+            source.selected = YES;
             
-            [self insertSourceOption:option];
+            [self insertSource:source];
         }
         {
-            MenuItemSourceOption *option = [[MenuItemSourceOption alloc] init];
-            option.title = @"About";
-            [self insertSourceOption:option];
+            MenuItemSource *source = [[MenuItemSource alloc] init];
+            source.title = @"About";
+            [self insertSource:source];
         }
         {
-            MenuItemSourceOption *option = [[MenuItemSourceOption alloc] init];
-            option.title = @"Contact";
-            [self insertSourceOption:option];
+            MenuItemSource *source = [[MenuItemSource alloc] init];
+            source.title = @"Contact";
+            [self insertSource:source];
         }
         {
-            MenuItemSourceOption *option = [[MenuItemSourceOption alloc] init];
-            option.title = @"Work";
-            [self insertSourceOption:option];
+            MenuItemSource *source = [[MenuItemSource alloc] init];
+            source.title = @"Work";
+            [self insertSource:source];
         }
+        
+        [self.tableView reloadData];
     }
     
     return self;

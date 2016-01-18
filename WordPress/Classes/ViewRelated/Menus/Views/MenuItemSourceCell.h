@@ -1,8 +1,8 @@
 #import <UIKit/UIKit.h>
 
-extern NSString * const MenuItemSourceOptionSelectionDidChangeNotification;
+extern NSString * const MenuItemSourceSelectionValueDidChangeNotification;
 
-@interface MenuItemSourceOption : NSObject
+@interface MenuItemSource : NSObject
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *badgeTitle;
@@ -11,8 +11,8 @@ extern NSString * const MenuItemSourceOptionSelectionDidChangeNotification;
 
 @end
 
-@interface MenuItemSourceOptionView : UIView
+@interface MenuItemSourceCell : UITableViewCell
 
-@property (nonatomic, strong) MenuItemSourceOption *sourceOption;
+@property (nonatomic, strong) MenuItemSource *source;
 
 @end

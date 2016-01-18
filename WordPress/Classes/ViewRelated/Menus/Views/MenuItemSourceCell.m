@@ -1,30 +1,30 @@
-#import "MenuItemSourceOptionView.h"
+#import "MenuItemSourceCell.h"
 #import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
-NSString * const MenuItemSourceOptionSelectionDidChangeNotification = @"MenuItemSourceOptionSelectionDidChangeNotification";
+NSString * const MenuItemSourceSelectionValueDidChangeNotification = @"MenuItemSourceSelectionValueDidChangeNotification";
 
 #pragma mark - MenuItemSourceOption
 
-@implementation MenuItemSourceOption
+@implementation MenuItemSource
 
 - (void)setSelected:(BOOL)selected
 {
     if(_selected != selected) {
         _selected = selected;
-        [[NSNotificationCenter defaultCenter] postNotificationName:MenuItemSourceOptionSelectionDidChangeNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:MenuItemSourceSelectionValueDidChangeNotification object:self];
     }
 }
 
 @end
 
-#pragma mark - MenuItemSourceOptionCheckView
+#pragma mark - MenuItemSourceRadioButton
 
-@interface MenuItemSourceOptionCheckView : UIView
+@interface MenuItemSourceRadioButton : UIView
 
-@property (nonatomic, assign) BOOL drawsChecked;
-@property (nonatomic, assign) BOOL drawsSelected;
+@property (nonatomic, assign) BOOL selected;
+@property (nonatomic, assign) BOOL drawsHighlighted;
 
 @end
 
@@ -38,47 +38,32 @@ NSString * const MenuItemSourceOptionSelectionDidChangeNotification = @"MenuItem
 
 static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
 
-@interface MenuItemSourceOptionView ()
+@interface MenuItemSourceCell ()
 
-@property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIStackView *labelsStackView;
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) MenuItemSourceOptionBadgeLabel *badgeLabel;
-@property (nonatomic, strong) MenuItemSourceOptionCheckView *checkView;
+@property (nonatomic, strong) MenuItemSourceRadioButton *radioButton;
 @property (nonatomic, strong) NSLayoutConstraint *leadingLayoutConstraintForContentViewIndentation;
 
 @end
 
-@implementation MenuItemSourceOptionView
+@implementation MenuItemSourceCell
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)init
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super init];
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self) {
         {
             self.translatesAutoresizingMaskIntoConstraints = NO;
             self.backgroundColor = [UIColor whiteColor];
-            
-            UIView *contentView = [[UIView alloc] init];
-            contentView.translatesAutoresizingMaskIntoConstraints = NO;
-            contentView.backgroundColor = [UIColor whiteColor];
-            
-            [self addSubview:contentView];
-            
-            [NSLayoutConstraint activateConstraints:@[
-                                                      [contentView.topAnchor constraintEqualToAnchor:self.topAnchor],
-                                                      [contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor],
-                                                      [contentView.trailingAnchor constraintLessThanOrEqualToAnchor:self.trailingAnchor],
-                                                      [contentView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor]
-                                                      ]];
-            
-            self.contentView = contentView;
+            self.selectionStyle = UITableViewCellSelectionStyleNone;
             
             UIStackView *stackView = [[UIStackView alloc] init];
             stackView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -86,22 +71,23 @@ static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
             stackView.alignment = UIStackViewAlignmentLeading;
             stackView.axis = UILayoutConstraintAxisHorizontal;
             
-            const CGFloat spacing = MenusDesignDefaultContentSpacing / 2.0;
             UIEdgeInsets margins = UIEdgeInsetsZero;
-            margins.top = 4.0;
-            margins.bottom = 4.0;
+            margins.top = MenusDesignDefaultContentSpacing / 2.0;
+            margins.left = MenusDesignDefaultContentSpacing;
+            margins.right = MenusDesignDefaultContentSpacing;
+            margins.bottom = MenusDesignDefaultContentSpacing / 2.0;
             stackView.layoutMargins = margins;
             stackView.layoutMarginsRelativeArrangement = YES;
-            stackView.spacing = spacing;
-            [contentView addSubview:stackView];
+            stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
+            [self.contentView addSubview:stackView];
             
-            self.leadingLayoutConstraintForContentViewIndentation = [stackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor];
+            self.leadingLayoutConstraintForContentViewIndentation = [stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor];
             
             [NSLayoutConstraint activateConstraints:@[
-                                                      [stackView.topAnchor constraintEqualToAnchor:contentView.topAnchor],
+                                                      [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
                                                       self.leadingLayoutConstraintForContentViewIndentation,
-                                                      [stackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor],
-                                                      [stackView.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor]
+                                                      [stackView.trailingAnchor constraintLessThanOrEqualToAnchor:self.contentView.trailingAnchor],
+                                                      [stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
                                                       ]];
             
             self.stackView = stackView;
@@ -110,20 +96,20 @@ static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
         UIFont *labelFont = [WPFontManager openSansRegularFontOfSize:16.0];
         const CGFloat labelFontLineHeight = ceilf(labelFont.ascender + fabs(labelFont.descender));
         {
-            MenuItemSourceOptionCheckView *checkView = [[MenuItemSourceOptionCheckView alloc] init];
-            checkView.translatesAutoresizingMaskIntoConstraints = NO;
-            checkView.drawsChecked = NO;
+            MenuItemSourceRadioButton *radioButton = [[MenuItemSourceRadioButton alloc] init];
+            radioButton.translatesAutoresizingMaskIntoConstraints = NO;
+            radioButton.selected = NO;
             
-            [checkView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-            [checkView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+            [radioButton setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+            [radioButton setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
             
-            [self.stackView addArrangedSubview:checkView];
+            [self.stackView addArrangedSubview:radioButton];
             const CGSize size = CGSizeMake(labelFontLineHeight, labelFontLineHeight);
             [NSLayoutConstraint activateConstraints:@[
-                                                      [checkView.widthAnchor constraintEqualToConstant:size.width],
-                                                      [checkView.heightAnchor constraintEqualToConstant:size.height]
+                                                      [radioButton.widthAnchor constraintEqualToConstant:size.width],
+                                                      [radioButton.heightAnchor constraintEqualToConstant:size.height]
                                                       ]];
-            self.checkView = checkView;
+            self.radioButton = radioButton;
         }
         {
             UIStackView *labelsStackView = [[UIStackView alloc] init];
@@ -152,18 +138,18 @@ static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
             self.label = label;
         }
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sourceOptionSelectionUpdatedNotification:) name:MenuItemSourceOptionSelectionDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sourceOptionSelectionUpdatedNotification:) name:MenuItemSourceSelectionValueDidChangeNotification object:nil];
     }
     
     return self;
 }
 
-- (void)setSourceOption:(MenuItemSourceOption *)sourceOption
+
+- (void)setSource:(MenuItemSource *)source
 {
-    if(_sourceOption != sourceOption) {
-        _sourceOption = sourceOption;
-        
-        [self updatedSourceOption];
+    if(_source != source) {
+        _source = source;
+        [self updatedSource];
     }
 }
 
@@ -173,22 +159,22 @@ static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
     [self setNeedsDisplay];
 }
 
-- (void)updatedSourceOption
+- (void)updatedSource
 {
-    if(self.sourceOption.badgeTitle) {
+    if(self.source.badgeTitle) {
         
         [self insertBadgeLabelIfNeeded];
         
-        self.badgeLabel.text = [self.sourceOption.badgeTitle uppercaseString];
+        self.badgeLabel.text = [self.source.badgeTitle uppercaseString];
         self.badgeLabel.hidden = NO;
         
     }else {
         self.badgeLabel.hidden = YES;
     }
     
-    self.label.text = self.sourceOption.title;
-    self.checkView.drawsChecked = self.sourceOption.selected;
-    self.leadingLayoutConstraintForContentViewIndentation.constant = self.sourceOption.indentationLevel * MenuItemSourceOptionViewIdentationLength;
+    self.label.text = self.source.title;
+    self.radioButton.selected = self.source.selected;
+    self.leadingLayoutConstraintForContentViewIndentation.constant = self.source.indentationLevel * MenuItemSourceOptionViewIdentationLength;
     
     [self setNeedsDisplay];
 }
@@ -217,8 +203,8 @@ static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
 
 - (void)sourceOptionSelectionUpdatedNotification:(NSNotification *)notification
 {
-    if(notification.object == self.sourceOption) {
-        [self updatedSourceOption];
+    if(notification.object == self.source) {
+        [self updatedSource];
     }
 }
 
@@ -228,26 +214,28 @@ static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
 {
     [super touchesBegan:touches withEvent:event];
     
-    self.checkView.drawsSelected = YES;
+    self.radioButton.drawsHighlighted = YES;
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesEnded:touches withEvent:event];
     
-    self.checkView.drawsSelected = NO;
+    self.radioButton.drawsHighlighted = NO;
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [super touchesCancelled:touches withEvent:event];
     
-    self.checkView.drawsSelected = NO;
+    self.radioButton.drawsHighlighted = NO;
 }
 
 @end
 
-@implementation MenuItemSourceOptionCheckView
+#pragma mark - MenuItemSourceRadioButton
+
+@implementation MenuItemSourceRadioButton
 
 - (id)init
 {
@@ -259,18 +247,18 @@ static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
     return self;
 }
 
-- (void)setDrawsChecked:(BOOL)drawsChecked
+- (void)setSelected:(BOOL)selected
 {
-    if(_drawsChecked != drawsChecked) {
-        _drawsChecked = drawsChecked;
+    if(_selected != selected) {
+        _selected = selected;
         [self setNeedsDisplay];
     }
 }
 
-- (void)setDrawsSelected:(BOOL)drawsSelected
+- (void)setDrawsHighlighted:(BOOL)drawsHighlighted
 {
-    if(_drawsSelected != drawsSelected) {
-        _drawsSelected = drawsSelected;
+    if(_drawsHighlighted != drawsHighlighted) {
+        _drawsHighlighted = drawsHighlighted;
         [self setNeedsDisplay];
     }
 }
@@ -279,7 +267,7 @@ static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
 {    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 1.0);
-    if(self.drawsSelected) {
+    if(self.drawsHighlighted) {
         CGContextSetStrokeColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
     }else {
         CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten10] CGColor]);
@@ -287,7 +275,7 @@ static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
     const CGRect strokeRect = CGRectInset(rect, 1, 1);
     CGContextStrokeEllipseInRect(context, strokeRect);
     
-    if(self.drawsChecked) {
+    if(self.selected) {
         const CGRect fillRect = CGRectInset(strokeRect, 4.0, 4.0);
         CGContextSetFillColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
         CGContextFillEllipseInRect(context, fillRect);
