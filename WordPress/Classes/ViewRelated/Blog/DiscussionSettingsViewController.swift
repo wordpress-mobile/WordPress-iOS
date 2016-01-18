@@ -10,7 +10,7 @@ public class DiscussionSettingsViewController : UITableViewController
     // MARK: - Initializers / Deinitializers
     public convenience init(blog: Blog) {
         self.init(style: .Grouped)
-        self.settings = blog.settings
+        self.blog = blog
     }
 
     deinit {
@@ -586,7 +586,12 @@ public class DiscussionSettingsViewController : UITableViewController
     
 
     // MARK: - Private Properties
-    private var settings : BlogSettings!
+    private var blog : Blog!
+    
+    // MARK: - Computed Properties
+    private var settings : BlogSettings {
+        return blog.settings
+    }
     
     // MARK: - Typealiases
     private typealias CommentsSorting           = BlogSettings.CommentsSorting
