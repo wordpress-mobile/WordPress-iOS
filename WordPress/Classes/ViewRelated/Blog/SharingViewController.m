@@ -209,8 +209,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (NSArray *)connectionsForService:(PublicizeService *)publicizeService
 {
     NSMutableArray *connections = [NSMutableArray array];
-    NSArray *existingConnections = [self.blog.connections allObjects];
-    for (PublicizeConnection *pubConn in existingConnections) {
+    for (PublicizeConnection *pubConn in self.blog.connections) {
         if ([pubConn.service isEqualToString:publicizeService.serviceID]) {
             [connections addObject:pubConn];
         }
