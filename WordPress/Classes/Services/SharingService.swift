@@ -85,28 +85,29 @@ public class SharingService : LocalCoreDataService
         success: (PublicizeConnection -> Void)?,
         failure: (NSError! -> Void)?)
     {
+        let blogObjectID = blog.objectID
+        let remote = SharingServiceRemote(api: apiForRequest())
 
-            let blogObjectID = blog.objectID
-            let remote = SharingServiceRemote(api: apiForRequest())
+        remote.createPublicizeConnection(blog.dotComID,
+            keyringConnectionID: keyring.keyringID,
+            externalUserID: externalUserID,
+            success: {(remoteConnection:RemotePublicizeConnection) -> Void in
+                do {
+                    let pubConn = try self.createPublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
 
-            remote.createPublicizeConnection(blog.dotComID,
-                keyringConnectionID: keyring.keyringID,
-                externalUserID: externalUserID,
-                success: {(remoteConnection:RemotePublicizeConnection) -> Void in
-                    do {
-                        let pubConn = try self.createPublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
+                    ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
                         success?(pubConn)
+                    })
 
-                    } catch let error as NSError {
-                        DDLogSwift.logError("Error creating publicize connection from remote: \(error)")
-                        failure?(error)
-                    }
-
-                },
-                failure: { (error: NSError!) -> Void in
+                } catch let error as NSError {
+                    DDLogSwift.logError("Error creating publicize connection from remote: \(error)")
                     failure?(error)
-                })
+                }
 
+            },
+            failure: { (error: NSError!) -> Void in
+                failure?(error)
+            })
     }
 
     /**
