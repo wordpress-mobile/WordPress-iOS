@@ -282,13 +282,30 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     
-    UITableViewRowAction *trash = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
-                                                                   title:NSLocalizedString(@"Trash", @"Trashes a comment")
+    UITableViewRowAction *spam = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                                   title:NSLocalizedString(@"Spam", @"Marks a comment as Spam")
                                                                  handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-                                                                     [weakSelf deleteComment:comment];
+                                                                     [weakSelf spamComment:comment];
                                                                  }];
     
-    return @[trash];
+    UITableViewRowAction *trash = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
+                                                                     title:NSLocalizedString(@"Trash", @"Trashes a comment")
+                                                                   handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                       [weakSelf deleteComment:comment];
+                                                                   }];
+    
+    return @[trash, spam];
+}
+
+- (void)spamComment:(Comment *)comment
+{
+    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    
+    [service spamComment:comment success:nil failure:^(NSError *error) {
+        DDLogError(@"Error deleting comment: %@", error);
+    }];
+    
+    [self.tableView setEditing:NO animated:YES];
 }
 
 - (void)deleteComment:(Comment *)comment
