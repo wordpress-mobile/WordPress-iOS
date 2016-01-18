@@ -8,6 +8,8 @@
  */
 @property (nonatomic, strong) UIView *stackedTableHeaderView;
 
+@property (nonatomic, strong) NSMutableArray *sources;
+
 @end
 
 @implementation MenuItemSourceView
@@ -19,12 +21,14 @@
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
-        _sourceOptions = [NSMutableArray array];
+        self.sources = [NSMutableArray array];
+        
         {
             UITableView *tableView = [[UITableView alloc] init];
             tableView.translatesAutoresizingMaskIntoConstraints = NO;
             tableView.dataSource = self;
             tableView.delegate = self;
+            tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             [self addSubview:tableView];
             
             [NSLayoutConstraint activateConstraints:@[
@@ -116,33 +120,54 @@
     _searchBar = searchBar;
 }
 
-- (void)insertSourceOption:(MenuItemSourceOption *)option
+- (void)insertSource:(MenuItemSource *)source;
 {
-    /*
-    [self.sourceOptions addObject:option];
-    
-    MenuItemSourceOptionView *optionView = [[MenuItemSourceOptionView alloc] init];
-    optionView.sourceOption = option;
-    [optionView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-    [self.stackView addArrangedSubview:optionView];
-     */
+    [self.sources addObject:source];
 }
 
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return self.sources.count;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 50;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewAutomaticDimension;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    MenuItemSource *source = [self.sources objectAtIndex:indexPath.row];
+    MenuItemSourceCell *sourceCell = (MenuItemSourceCell *)cell;
+    sourceCell.source = source;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    static NSString * const identifier = @"MenuItemSourceCell";
+    MenuItemSourceCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if(!cell) {
+        cell = [[MenuItemSourceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 #pragma mark - delegate

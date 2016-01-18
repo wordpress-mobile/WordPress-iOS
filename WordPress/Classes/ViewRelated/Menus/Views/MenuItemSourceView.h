@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "MenuItemSourceTextBar.h"
-#import "MenuItemSourceOptionView.h"
+#import "MenuItemSourceCell.h"
 
 @class MenuItem;
 
@@ -20,10 +20,9 @@
 @property (nonatomic, strong, readonly) UITableView *tableView;
 
 @property (nonatomic, strong) MenuItemSourceTextBar *searchBar;
-@property (nonatomic, strong, readonly) NSMutableArray *sourceOptions;
 
 - (void)insertSearchBarIfNeeded;
-- (void)insertSourceOption:(MenuItemSourceOption *)option;
+- (void)insertSource:(MenuItemSource *)source;
 
 @end
 
