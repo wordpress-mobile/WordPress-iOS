@@ -1,6 +1,6 @@
 #import "BlogServiceRemoteREST.h"
 #import "NSMutableDictionary+Helpers.h"
-#import <WordPressComApi.h>
+#import "WordPressComApi.h"
 #import "WordPress-Swift.h"
 
 
