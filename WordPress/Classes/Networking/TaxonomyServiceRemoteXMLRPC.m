@@ -1,9 +1,9 @@
-#import "PostCategoryServiceRemoteXMLRPC.h"
+#import "TaxonomyServiceRemoteXMLRPC.h"
 #import "RemotePostCategory.h"
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressApi/WordPressApi.h>
 
-@implementation PostCategoryServiceRemoteXMLRPC
+@implementation TaxonomyServiceRemoteXMLRPC
 
 - (void)getCategoriesWithSuccess:(void (^)(NSArray *categories))success
                          failure:(void (^)(NSError *error))failure

@@ -547,7 +547,7 @@
 		E1D91456134A853D0089019C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1D91454134A853D0089019C /* Localizable.strings */; };
 		E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */; };
 		E1DF5DFD19E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DF5DFA19E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.m */; };
-		E1DF5DFE19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DF5DFC19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m */; };
+		E1DF5DFE19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DF5DFC19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.m */; };
 		E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E1AA8C1B7DEDFC001C8645 /* WPMapFilterReduce.m */; };
 		E1E1AA8F1B7DF54B001C8645 /* WPMapFilterReduceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E1AA8E1B7DF54B001C8645 /* WPMapFilterReduceTest.m */; };
 		E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E1E4CE0517739FAB00430844 /* test-image.jpg */; };
@@ -1605,8 +1605,8 @@
 		E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPActivityDefaults.m; sourceTree = "<group>"; };
 		E1DF5DF919E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemoteREST.h; sourceTree = "<group>"; };
 		E1DF5DFA19E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaxonomyServiceRemoteREST.m; sourceTree = "<group>"; };
-		E1DF5DFB19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCategoryServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
-		E1DF5DFC19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PostCategoryServiceRemoteXMLRPC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		E1DF5DFB19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
+		E1DF5DFC19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TaxonomyServiceRemoteXMLRPC.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E1E1AA8B1B7DEDFC001C8645 /* WPMapFilterReduce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPMapFilterReduce.h; sourceTree = "<group>"; };
 		E1E1AA8C1B7DEDFC001C8645 /* WPMapFilterReduce.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMapFilterReduce.m; sourceTree = "<group>"; };
 		E1E1AA8E1B7DF54B001C8645 /* WPMapFilterReduceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPMapFilterReduceTest.m; sourceTree = "<group>"; };
@@ -2510,8 +2510,8 @@
 				93D6D6461924FDAD00A4F44A /* TaxonomyServiceRemote.h */,
 				E1DF5DF919E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.h */,
 				E1DF5DFA19E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.m */,
-				E1DF5DFB19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.h */,
-				E1DF5DFC19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m */,
+				E1DF5DFB19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.h */,
+				E1DF5DFC19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.m */,
 				E1A6DBDC19DC7D140071AC1E /* PostServiceRemote.h */,
 				E1A6DBDD19DC7D140071AC1E /* PostServiceRemoteREST.h */,
 				E1A6DBDE19DC7D140071AC1E /* PostServiceRemoteREST.m */,
@@ -4716,7 +4716,7 @@
 				5D0A20D41AF11A7300E5C6BC /* PhotonImageURLHelper.m in Sources */,
 				FF19340C1BB2F892006825B8 /* ServiceRemoteXMLRPC.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
-				E1DF5DFE19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m in Sources */,
+				E1DF5DFE19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.m in Sources */,
 				E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */,
 				E66969DA1B9E55AB00EC9C00 /* ReaderTopicToReaderTagTopic37to38.swift in Sources */,
 				85D239AD1AE5A5FC0074768D /* AccountServiceFacade.m in Sources */,
