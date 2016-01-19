@@ -523,7 +523,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     WPAvatarSourceType type = [source parseURL:url forAvatarHash:&hash];
 
     if (!hash) {
-        [cell setAvatarImage:[UIImage imageNamed:@"default-identicon"]];
+        [cell setAvatarImage:[UIImage imageNamed:@"gravatar"]];
         return;
     }
 
@@ -533,7 +533,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         return;
     }
 
-    [cell setAvatarImage:[UIImage imageNamed:@"default-identicon"]];
+    [cell setAvatarImage:[UIImage imageNamed:@"gravatar"]];
     [source fetchImageForAvatarHash:hash ofType:type withSize:size success:^(UIImage *image) {
         if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
             [cell setAvatarImage:image];
