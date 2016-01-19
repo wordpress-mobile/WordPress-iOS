@@ -2,17 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "theme-type-chevron.png",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "theme-type-chevron@2x.png",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "theme-type-chevron.pdf"
     }
   ],
   "info" : {

@@ -94,7 +94,6 @@ public class SharingService : LocalCoreDataService
             success: {(remoteConnection:RemotePublicizeConnection) -> Void in
                 do {
                     let pubConn = try self.createPublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
-
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
                         success?(pubConn)
                     })

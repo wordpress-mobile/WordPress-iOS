@@ -68,7 +68,7 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
         self.searchBar.returnKeyType = UIReturnKeyDone;
     }
     
-    [self.searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
+    [self.searchBar setImage:[UIImage imageNamed:@"icon-clear-searchfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
     [self.searchBar setImage:[UIImage imageNamed:@"icon-post-list-search"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     
     [self configureSearchBarForSearchView];
