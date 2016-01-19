@@ -206,7 +206,7 @@ NSString * const PostFormatStandard = @"standard";
         pendingComments = [self.managedObjectContext countForFetchRequest:request error:&error];
     } else {
         for (Comment *element in self.comments) {
-            if ( [@"hold" isEqualToString: element.status] ) {
+            if ( [CommentStatusPending isEqualToString:element.status] ) {
                 pendingComments++;
             }
         }

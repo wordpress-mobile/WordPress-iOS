@@ -254,7 +254,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                failure:(void (^)(NSError *error))failure
 {
     [self moderateComment:comment
-               withStatus:@"approve"
+               withStatus:CommentStatusApproved
                   success:success
                   failure:failure];
 }
@@ -265,7 +265,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                  failure:(void (^)(NSError *error))failure
 {
     [self moderateComment:comment
-               withStatus:@"hold"
+               withStatus:CommentStatusPending
                   success:success
                   failure:failure];
 }
@@ -277,7 +277,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 {
     NSManagedObjectID *commentID = comment.objectID;
     [self moderateComment:comment
-               withStatus:@"spam"
+               withStatus:CommentStatusSpam
                   success:^{
                       Comment *commentInContext = (Comment *)[self.managedObjectContext existingObjectWithID:commentID error:nil];
                       [self.managedObjectContext deleteObject:commentInContext];
@@ -534,7 +534,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 {
     CommentServiceRemoteREST *remote = [self restRemoteForSite:siteID];
     [remote moderateCommentWithID:commentID
-                           status:@"spam"
+                           status:CommentStatusSpam
                           success:success
                           failure:failure];
 }
