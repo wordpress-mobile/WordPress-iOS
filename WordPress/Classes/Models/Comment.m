@@ -138,8 +138,14 @@ NSString * const CommentStatusDraft = @"draft";
     return self.author_url.hostname;
 }
 
-- (BOOL)hasAuthorUrl {
+- (BOOL)hasAuthorUrl
+{
     return self.author_url && ![self.author_url isEqualToString:@""];
+}
+
+- (BOOL)isApproved
+{
+    return [self.status isEqualToString:@"approve"];
 }
 
 - (NSString *)contentForDisplay
