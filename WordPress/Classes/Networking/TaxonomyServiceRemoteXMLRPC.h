@@ -4,6 +4,6 @@
 
 @class RemoteCategory;
 
-@interface PostCategoryServiceRemoteXMLRPC : ServiceRemoteXMLRPC<TaxonomyServiceRemote>
+@interface TaxonomyServiceRemoteXMLRPC : ServiceRemoteXMLRPC<TaxonomyServiceRemote>
 
 @end
