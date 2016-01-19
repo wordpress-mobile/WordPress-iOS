@@ -32,6 +32,8 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         return willAppear as! PublishSubject<Void>
     }
 
+    private var errorAnimator: ErrorAnimator!
+
     // MARK: - Table View Controller
 
     init() {
@@ -45,8 +47,15 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        errorAnimator = ErrorAnimator(target: view)
+
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        errorAnimator.layout()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -69,9 +78,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     var errorMessage: String? = nil {
         didSet {
-            // TODO: write the actuall error message UI
-            // @koke 2016-01-18
-            print("Error message changed: \(errorMessage)")
+            errorAnimator.animateErrorMessage(errorMessage)
         }
     }
 
