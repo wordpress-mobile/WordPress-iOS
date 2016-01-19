@@ -2,18 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "theme-support.png",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "theme-support@2x.png",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "theme-support@3x.png",
-      "scale" : "3x"
+      "filename" : "theme-support.pdf"
     }
   ],
   "info" : {
