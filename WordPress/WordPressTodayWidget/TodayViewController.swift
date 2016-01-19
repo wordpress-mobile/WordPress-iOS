@@ -142,9 +142,10 @@ extension TodayViewController: NCWidgetProviding {
         return defaultMarginInsets
     }
     
+    
     func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)) {
         retrieveSiteConfiguration()
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+        dispatch_async(dispatch_get_main_queue()) {
             self.updateUIBasedOnWidgetConfiguration()
         }
         
@@ -156,10 +157,10 @@ extension TodayViewController: NCWidgetProviding {
         }
         
         let statsService: WPStatsService = WPStatsService(siteId: siteID, siteTimeZone: timeZone, oauth2Token: oauthToken, andCacheExpirationInterval:0)
-        statsService.retrieveTodayStatsWithCompletionHandler({ (wpStatsSummary: StatsSummary!, error: NSError!) -> Void in
+        statsService.retrieveTodayStatsWithCompletionHandler({ wpStatsSummary, error in
             WPDDLogWrapper.logInfo("Downloaded data in the Today widget")
             
-            dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            dispatch_async(dispatch_get_main_queue()) {
                 self.visitorCount = wpStatsSummary.visitors
                 self.viewCount = wpStatsSummary.views
                 
@@ -168,7 +169,7 @@ extension TodayViewController: NCWidgetProviding {
                 self.viewsCountLabel?.text = self.viewCount
             }
             completionHandler(NCUpdateResult.NewData)
-            }, failureHandler: { (error) -> Void in
+            }, failureHandler: { error in
                 WPDDLogWrapper.logError("\(error)")
                 
                 completionHandler(NCUpdateResult.Failed)
