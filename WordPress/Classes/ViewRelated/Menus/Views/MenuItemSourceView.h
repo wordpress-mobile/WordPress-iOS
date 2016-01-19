@@ -11,7 +11,11 @@
 @property (nonatomic, weak) id <MenuItemSourceViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
 
-/* A stackView for adding any views that aren't cells before the tableView, Ex. searchBar, label, design
+/* Sources resulting from a sourceView's data
+ */
+@property (nonatomic, strong) NSMutableArray <MenuItemSource *> *sources;
+
+/* A stackView for adding any views that aren't cells before the tableView, Ex. searchBar, label, design views
  */
 @property (nonatomic, strong, readonly) UIStackView *stackView;
 
@@ -19,10 +23,11 @@
  */
 @property (nonatomic, strong, readonly) UITableView *tableView;
 
+/* Searchbar created and implemented via insertSearchBarIfNeeded
+ */
 @property (nonatomic, strong) MenuItemSourceTextBar *searchBar;
 
 - (void)insertSearchBarIfNeeded;
-- (void)insertSource:(MenuItemSource *)source;
 
 @end
 

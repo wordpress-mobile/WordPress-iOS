@@ -8,8 +8,6 @@
  */
 @property (nonatomic, strong) UIView *stackedTableHeaderView;
 
-@property (nonatomic, strong) NSMutableArray *sources;
-
 @end
 
 @implementation MenuItemSourceView
@@ -118,11 +116,6 @@
     
     [searchBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     _searchBar = searchBar;
-}
-
-- (void)insertSource:(MenuItemSource *)source;
-{
-    [self.sources addObject:source];
 }
 
 #pragma mark - UITableView
