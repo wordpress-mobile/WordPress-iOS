@@ -3,7 +3,7 @@
 #import "Blog.h"
 #import "RemotePostCategory.h"
 #import "ContextManager.h"
-#import "PostCategoryServiceRemote.h"
+#import "TaxonomyServiceRemote.h"
 #import "PostCategoryServiceRemoteREST.h"
 #import "PostCategoryServiceRemoteXMLRPC.h"
 
@@ -90,7 +90,7 @@
                       success:(void (^)())success
                       failure:(void (^)(NSError *error))failure
 {
-    id<PostCategoryServiceRemote> remote = [self remoteForBlog:blog];
+    id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
     [remote getCategoriesWithSuccess:^(NSArray *categories) {
                                [self.managedObjectContext performBlock:^{
@@ -118,7 +118,7 @@
     remoteCategory.parentID = parent.categoryID;
     remoteCategory.name = name;
 
-    id<PostCategoryServiceRemote> remote = [self remoteForBlog:blog];
+    id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     [remote createCategory:remoteCategory
                    success:^(RemotePostCategory *receivedCategory) {
                        [self.managedObjectContext performBlock:^{
@@ -213,7 +213,7 @@
     return category;
 }
 
-- (id<PostCategoryServiceRemote>)remoteForBlog:(Blog *)blog {
+- (id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
     if (blog.restApi) {
         return [[PostCategoryServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
     } else {
