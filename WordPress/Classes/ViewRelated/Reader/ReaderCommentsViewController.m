@@ -523,7 +523,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     WPAvatarSourceType type = [source parseURL:url forAvatarHash:&hash];
 
     if (!hash) {
-        [cell setAvatarImage:[UIImage imageNamed:@"default-gravatar"]];
+        [cell setAvatarImage:[UIImage imageNamed:@"gravatar"]];
         return;
     }
 
