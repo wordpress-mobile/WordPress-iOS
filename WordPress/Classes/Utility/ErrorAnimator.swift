@@ -54,7 +54,7 @@ class ErrorAnimator: Animator {
             animateWithDuration(animationDuration, preamble: preamble, animations: animations, cleanup: cleanup)
         }
         if showingError {
-            errorLabel?.text = message
+            errorLabel?.label.text = message
         }
     }
 
@@ -62,7 +62,7 @@ class ErrorAnimator: Animator {
         errorLabel = createErrorLabel()
         targetView.addSubview(errorLabel!)
         errorLabel?.frame.size.height = 0
-        errorLabel?.textAlpha = 0
+        errorLabel?.label.alpha = 0
 
         UIView.performWithoutAnimation { [unowned self] in
             self.targetView.layoutIfNeeded()
@@ -72,7 +72,7 @@ class ErrorAnimator: Animator {
     private func animations() {
         if showingError {
             errorLabel?.frame.size.height = targetHeight
-            errorLabel?.textAlpha = 1
+            errorLabel?.label.alpha = 1
 
             targetTableView?.contentInset.top += targetHeight
             if targetTableView?.contentOffset.y == 0 {
@@ -80,7 +80,7 @@ class ErrorAnimator: Animator {
             }
         } else {
             errorLabel?.frame.size.height = 0
-            errorLabel?.textAlpha = 0
+            errorLabel?.label.alpha = 0
 
             targetTableView?.contentInset.top -= targetHeight
         }
@@ -95,11 +95,11 @@ class ErrorAnimator: Animator {
     }
 
     private func createErrorLabel() -> PaddedLabel {
-        let label = PaddedLabel()
-        label.padding.horizontal = 15
-        label.textColor = UIColor.whiteColor()
-        label.backgroundColor = WPStyleGuide.mediumBlue()
-        label.font = WPStyleGuide.regularTextFont()
-        return label
+        let paddedLabel = PaddedLabel()
+        paddedLabel.padding.horizontal = 15
+        paddedLabel.label.textColor = UIColor.whiteColor()
+        paddedLabel.backgroundColor = WPStyleGuide.mediumBlue()
+        paddedLabel.label.font = WPStyleGuide.regularTextFont()
+        return paddedLabel
     }
 }
