@@ -1,4 +1,5 @@
 import Foundation
+import Reachability
 import RxCocoa
 import RxSwift
 
@@ -19,6 +20,8 @@ struct AccountSettingsService {
         let remote = self.remote
         let stalledTimeout = 4.0
 
+        let reachability = Reachability.internetConnection
+
         let refresh: Observable<RefreshStatus> = remote.settings()
             .map { settings in
                 self.updateSettings(settings)
@@ -30,11 +33,19 @@ struct AccountSettingsService {
             .timer(stalledTimeout, scheduler: MainScheduler.instance)
             .map({ _ in .Stalled })
 
-        return Observable.of(refresh, stalled)
+        let request = Observable.of(refresh, stalled)
             .merge()
             .startWith(.Refreshing)
             .distinctUntilChanged()
             .takeUntil(refresh)
+
+        return reachability.flatMapLatest({ reachable -> Observable<RefreshStatus> in
+            if reachable {
+                return request
+            } else {
+                return Observable.just(.Offline)
+            }
+        })
     }
 
     func refreshSettings(completion: (Bool) -> Void) {
