@@ -29,6 +29,8 @@ class TodayViewController: UIViewController {
     var visitorCount: String = ""
     var viewCount: String = ""
     var standardLeftMargin: CGFloat = 0.0
+    var standardButtonContainerViewHeight: CGFloat = 0.0
+    var standardCountContainerViewHeight: CGFloat = 0.0
     
     var isConfigured = false
     
@@ -54,7 +56,8 @@ class TodayViewController: UIViewController {
         configureMeLabelHeightConstraint = NSLayoutConstraint(item: configureMeLabel, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute, multiplier: 0.0, constant: 0.0)
         configureMeLabel.addConstraint(configureMeLabelHeightConstraint)
         
-        
+        standardButtonContainerViewHeight = configureMeButtonContainerViewHeightConstraint.constant
+        standardCountContainerViewHeight = countContainerViewHeightConstraint.constant
 
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
@@ -107,9 +110,9 @@ class TodayViewController: UIViewController {
         siteNameLabel.hidden = !isConfigured
         siteNameLabelHeightConstraint.active = !isConfigured
         countContainerView.hidden = !isConfigured
-        countContainerViewHeightConstraint.constant = isConfigured ? 80 : 8
+        countContainerViewHeightConstraint.constant = isConfigured ? standardCountContainerViewHeight : 8
         configureMeButtonContainerView.hidden = isConfigured
-        configureMeButtonContainerViewHeightConstraint.constant = isConfigured ? 0 : 51
+        configureMeButtonContainerViewHeightConstraint.constant = isConfigured ? 0 : standardButtonContainerViewHeight
         configureMeLabel.hidden = isConfigured
         configureMeLabelHeightConstraint.active = isConfigured
         
