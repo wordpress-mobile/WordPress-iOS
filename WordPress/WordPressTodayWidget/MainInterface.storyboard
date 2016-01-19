@@ -31,7 +31,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" priority="750" constant="35" id="4Bj-fd-zjx"/>
                                         </constraints>
-                                        <state key="normal" title="Launch WordPress">
+                                        <state key="normal" title="Open WordPress">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
