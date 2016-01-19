@@ -2,6 +2,6 @@
 #import "TaxonomyServiceRemote.h"
 #import "SiteServiceRemoteREST.h"
 
-@interface PostCategoryServiceRemoteREST : SiteServiceRemoteREST <TaxonomyServiceRemote>
+@interface TaxonomyServiceRemoteREST : SiteServiceRemoteREST <TaxonomyServiceRemote>
 
 @end
