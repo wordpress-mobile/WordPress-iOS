@@ -1,8 +1,8 @@
-#import "PostCategoryServiceRemoteREST.h"
+#import "TaxonomyServiceRemoteREST.h"
 #import "WordPressComApi.h"
 #import "RemotePostCategory.h"
 
-@implementation PostCategoryServiceRemoteREST
+@implementation TaxonomyServiceRemoteREST
 
 - (void)getCategoriesWithSuccess:(void (^)(NSArray *))success
                          failure:(void (^)(NSError *))failure

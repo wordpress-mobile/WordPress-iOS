@@ -4,7 +4,7 @@
 #import "RemotePostCategory.h"
 #import "ContextManager.h"
 #import "TaxonomyServiceRemote.h"
-#import "PostCategoryServiceRemoteREST.h"
+#import "TaxonomyServiceRemoteREST.h"
 #import "PostCategoryServiceRemoteXMLRPC.h"
 
 @implementation PostCategoryService
@@ -215,7 +215,7 @@
 
 - (id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
     if (blog.restApi) {
-        return [[PostCategoryServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        return [[TaxonomyServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
     } else {
         return [[PostCategoryServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
