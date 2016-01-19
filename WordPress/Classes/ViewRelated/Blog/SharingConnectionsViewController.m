@@ -51,6 +51,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.tableView reloadData];
 }
 
+
 #pragma mark - Instance Methods
 
 - (NSArray *)connectionsForService
@@ -87,6 +88,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
 
     return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self tableView:tableView titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
