@@ -69,15 +69,15 @@ class TodayViewController: UIViewController {
         
         // Manual state restoration
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
-        self.siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
+        siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
 
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        self.visitorCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsVisitorCountKey) ?? "0"
-        self.viewCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsViewCountKey) ?? "0"
+        visitorCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsVisitorCountKey) ?? "0"
+        viewCount = userDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsViewCountKey) ?? "0"
         
-        self.siteNameLabel.text = self.siteName
-        self.visitorsCountLabel.text = self.visitorCount
-        self.viewsCountLabel.text = self.viewCount
+        siteNameLabel.text = siteName
+        visitorsCountLabel.text = visitorCount
+        viewsCountLabel.text = viewCount
         
         retrieveSiteConfiguration()
         updateUIBasedOnWidgetConfiguration()
@@ -88,22 +88,16 @@ class TodayViewController: UIViewController {
         
         // Manual state restoration
         let userDefaults = NSUserDefaults.standardUserDefaults()
-        userDefaults.setObject(self.visitorCount, forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey)
-        userDefaults.setObject(self.viewCount, forKey: WPStatsTodayWidgetUserDefaultsViewCountKey)
+        userDefaults.setObject(visitorCount, forKey: WPStatsTodayWidgetUserDefaultsVisitorCountKey)
+        userDefaults.setObject(viewCount, forKey: WPStatsTodayWidgetUserDefaultsViewCountKey)
     }
     
     @IBAction func launchContainingApp() {
         if let unwrappedSiteID = siteID {
-            self.extensionContext!.openURL(NSURL(string: "\(WPCOM_SCHEME)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
+            extensionContext!.openURL(NSURL(string: "\(WPCOM_SCHEME)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
         } else {
-            self.extensionContext!.openURL(NSURL(string: "\(WPCOM_SCHEME)://")!, completionHandler: nil)
+            extensionContext!.openURL(NSURL(string: "\(WPCOM_SCHEME)://")!, completionHandler: nil)
         }
-    }
-    
-    func getOAuth2Token() -> String? {
-        let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetOAuth2TokenKeychainUsername, andServiceName: WPStatsTodayWidgetOAuth2TokenKeychainServiceName, accessGroup: WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup)
-        
-        return oauth2Token as String?
     }
     
     func updateUIBasedOnWidgetConfiguration() {
@@ -116,20 +110,26 @@ class TodayViewController: UIViewController {
         configureMeLabel.hidden = isConfigured
         configureMeLabelHeightConstraint.active = isConfigured
         
-        self.view.setNeedsUpdateConstraints()
+        view.setNeedsUpdateConstraints()
     }
     
     func retrieveSiteConfiguration() {
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
         siteID = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
         siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
-        oauthToken = self.getOAuth2Token()
+        oauthToken = fetchOAuthBearerToken()
         
         if let timeZoneName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey) {
             timeZone = NSTimeZone(name: timeZoneName)
         }
         
         isConfigured = siteID != nil && timeZone != nil && oauthToken != nil
+    }
+
+    func fetchOAuthBearerToken() -> String? {
+        let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetOAuth2TokenKeychainUsername, andServiceName: WPStatsTodayWidgetOAuth2TokenKeychainServiceName, accessGroup: WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup)
+        
+        return oauth2Token as String?
     }
 }
 
