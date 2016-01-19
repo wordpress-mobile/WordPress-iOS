@@ -118,7 +118,7 @@ class TodayViewController: UIViewController {
     
     func retrieveSiteConfiguration() {
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
-        siteID = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as! NSNumber?
+        siteID = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
         siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
         oauthToken = self.getOAuth2Token()
         
