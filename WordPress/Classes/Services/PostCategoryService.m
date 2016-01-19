@@ -5,7 +5,7 @@
 #import "ContextManager.h"
 #import "TaxonomyServiceRemote.h"
 #import "TaxonomyServiceRemoteREST.h"
-#import "PostCategoryServiceRemoteXMLRPC.h"
+#import "TaxonomyServiceRemoteXMLRPC.h"
 
 @implementation PostCategoryService
 
@@ -128,7 +128,7 @@
                            }
                            PostCategory *newCategory = [self newCategoryForBlog:blog];
                            newCategory.categoryID = receivedCategory.categoryID;
-                           if ([remote isKindOfClass:[PostCategoryServiceRemoteXMLRPC class]]) {
+                           if ([remote isKindOfClass:[TaxonomyServiceRemoteXMLRPC class]]) {
                                // XML-RPC only returns ID, let's fetch the new category as
                                // filters might change the content
                                [self syncCategoriesForBlog:blog success:nil failure:nil];
@@ -217,7 +217,7 @@
     if (blog.restApi) {
         return [[TaxonomyServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
     } else {
-        return [[PostCategoryServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
+        return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
 }
 
