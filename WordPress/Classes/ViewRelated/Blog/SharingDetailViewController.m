@@ -151,7 +151,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     __weak __typeof(self) weakSelf = self;
     cell.onChange = ^(BOOL value) {
-        [weakSelf updatePublicizeConnection];
+        [weakSelf updateSharedGlobally:value];
     };
 
     return cell;
@@ -160,9 +160,19 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 #pragma mark - Publicize Connection Methods
 
-- (void)updatePublicizeConnection
+- (void)updateSharedGlobally:(BOOL)shared
 {
+    __weak __typeof(self) weakSelf = self;
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
 
+    [sharingService updateShared:shared
+          forPublicizeConnection:self.publicizeConnection
+                         success:nil
+                         failure:^(NSError *error) {
+                             DDLogError([error description]);
+                             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Change failed", @"Message to show when Publicize globally shared setting failed")];
+                             [weakSelf.tableView reloadData];
+                         }];
 }
 
 - (void)reconnectPublicizeConnection

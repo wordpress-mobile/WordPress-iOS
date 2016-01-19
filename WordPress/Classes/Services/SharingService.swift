@@ -110,6 +110,43 @@ public class SharingService : LocalCoreDataService
     }
 
 
+    /// Update the specified `PublicizeConnection`.  The update to core data is performed
+    /// optimistically. In case of failure the original value will be restored.
+    ///
+    /// - Parameters:
+    ///     - shared: Optional. True if the connection should be shared with all users of the blog.
+    ///     - pubConn: The `PublicizeConnection` to update
+    ///     - success: An optional success block accepting no parameters.
+    ///     - failure: An optional failure block accepting an NSError parameter.
+    ///
+    public func updateShared(shared:Bool,
+        forPublicizeConnection pubConn:PublicizeConnection,
+        success: (() -> Void)?,
+        failure: (NSError! -> Void)?) {
+            if pubConn.shared == shared {
+                success?()
+                return;
+            }
+
+            let oldValue = pubConn.shared
+            pubConn.shared = shared
+            ContextManager.sharedInstance().saveContext(managedObjectContext)
+
+            let siteID = pubConn.siteID;
+            let remote = SharingServiceRemote(api: apiForRequest())
+            remote.updateShared(shared,
+                forPublicizeConnectionWithID: pubConn.connectionID,
+                forSite: siteID,
+                success: success,
+                failure:  { (error:NSError!) in
+                    pubConn.shared = oldValue
+                    ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
+                        failure?(error)
+                    })
+            })
+    }
+
+
     /// Deletes the specified `PublicizeConnection`.  The delete from core data is performed
     /// optimistically.  The caller's `failure` block should be responsible for resyncing
     /// the deleted connection.
