@@ -45,9 +45,9 @@ NSString * const CommentStatusDraft = @"draft";
 
 + (NSString *)titleForStatus:(NSString *)status
 {
-    if ([status isEqualToString:@"hold"]) {
+    if ([status isEqualToString:CommentStatusPending]) {
         return NSLocalizedString(@"Pending moderation", @"");
-    } else if ([status isEqualToString:@"approve"]) {
+    } else if ([status isEqualToString:CommentStatusApproved]) {
         return NSLocalizedString(@"Comments", @"");
     }
 
@@ -145,7 +145,7 @@ NSString * const CommentStatusDraft = @"draft";
 
 - (BOOL)isApproved
 {
-    return [self.status isEqualToString:@"approve"];
+    return [self.status isEqualToString:CommentStatusApproved];
 }
 
 - (NSString *)contentForDisplay
