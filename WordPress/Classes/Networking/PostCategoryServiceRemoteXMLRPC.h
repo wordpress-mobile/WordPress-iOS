@@ -1,9 +1,9 @@
 #import <Foundation/Foundation.h>
-#import "PostCategoryServiceRemote.h"
+#import "TaxonomyServiceRemote.h"
 #import "ServiceRemoteXMLRPC.h"
 
 @class RemoteCategory;
 
-@interface PostCategoryServiceRemoteXMLRPC : ServiceRemoteXMLRPC<PostCategoryServiceRemote>
+@interface PostCategoryServiceRemoteXMLRPC : ServiceRemoteXMLRPC<TaxonomyServiceRemote>
 
 @end

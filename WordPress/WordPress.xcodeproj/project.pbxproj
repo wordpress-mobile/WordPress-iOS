@@ -1201,7 +1201,7 @@
 		93C1148318EDF6E100DAC95C /* BlogService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogService.h; sourceTree = "<group>"; };
 		93C1148418EDF6E100DAC95C /* BlogService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogService.m; sourceTree = "<group>"; };
 		93CD939219099BE70049096E /* authtoken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authtoken.json; sourceTree = "<group>"; };
-		93D6D6461924FDAD00A4F44A /* PostCategoryServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCategoryServiceRemote.h; sourceTree = "<group>"; };
+		93D6D6461924FDAD00A4F44A /* TaxonomyServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemote.h; sourceTree = "<group>"; };
 		93DEB88019E5BF7100F9546D /* TodayExtensionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayExtensionService.h; sourceTree = "<group>"; };
 		93DEB88119E5BF7100F9546D /* TodayExtensionService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayExtensionService.m; sourceTree = "<group>"; };
 		93E5283A19A7741A003A1A9C /* WordPressTodayWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressTodayWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2507,7 +2507,7 @@
 				E149D64D19349E69006A843D /* MediaServiceRemoteXMLRPC.m */,
 				B5EFB1C41B31BAA2007608A3 /* NotificationsServiceRemote.swift */,
 				E166FA211BB1359E00374B5B /* PeopleRemote.swift */,
-				93D6D6461924FDAD00A4F44A /* PostCategoryServiceRemote.h */,
+				93D6D6461924FDAD00A4F44A /* TaxonomyServiceRemote.h */,
 				E1DF5DF919E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.h */,
 				E1DF5DFA19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m */,
 				E1DF5DFB19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.h */,
