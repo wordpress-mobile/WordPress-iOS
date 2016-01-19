@@ -47,18 +47,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     // MARK: - Setup Helpers
     private func setupTitle() {
-        switch settings!.channel {
-        case .WordPressCom:
-            title = NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
-        case .Other:
-            let title = NSLocalizedString("Other Sites", comment: "Other Sites Notification Settings Title")
-            let subtitle = stream?.kind.description()
-            navigationItem.titleView = NavigationTitleView(title: title, subtitle: subtitle)
-        default:
-            let title = settings?.blog?.settings?.name
-            let subtitle = stream?.kind.description()
-            navigationItem.titleView = NavigationTitleView(title: title, subtitle: subtitle)
-        }
+        title = stream?.kind.description()
     }
     
     private func setupNotifications() {
@@ -118,8 +107,8 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         for row in rows {
             let unwrappedKey    = row.key ?? String()
-            let details         = settings.localizedDetails(unwrappedKey)
-            let section         = Section(rows: [row], footerText: details)
+            let footerText      = settings.localizedDetails(unwrappedKey)
+            let section         = Section(rows: [row], footerText: footerText)
             sections.append(section)
         }
         
@@ -163,23 +152,41 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         return cell!
     }
+
+    public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard section == firstSectionIndex else {
+            return 0
+        }
+        
+        return WPTableViewSectionHeaderFooterView.heightForHeader(siteName, width: view.bounds.width)
+    }
+    
+    public override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard section == firstSectionIndex else {
+            return nil
+        }
+        
+        let headerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
+        headerView.title    = siteName
+        return headerView
+    }
     
     public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if let footerText = sections[section].footerText {
-            return WPTableViewSectionHeaderFooterView.heightForFooter(footerText, width: view.bounds.width)
+        guard let footerText = sections[section].footerText else {
+            return CGFloat.min
         }
 
-        return CGFloat.min
+        return WPTableViewSectionHeaderFooterView.heightForFooter(footerText, width: view.bounds.width)
     }
     
     public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if let footerText = sections[section].footerText {
-            let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-            footerView.title    = footerText
-            return footerView
+        guard let footerText = sections[section].footerText else {
+            return nil
         }
-
-        return nil
+        
+        let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
+        footerView.title    = footerText
+        return footerView
     }
     
     
@@ -294,12 +301,27 @@ public class NotificationSettingDetailsViewController : UITableViewController
         }
     }
     
+
+    // MARK: - Computed Properties
+    private var siteName : String {
+        switch settings!.channel {
+        case .WordPressCom:
+            return NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
+        case .Other:
+            return NSLocalizedString("Other Sites", comment: "Other Sites Notification Settings Title")
+        default:
+            return settings?.blog?.settings?.name ?? NSLocalizedString("Unnamed Site", comment: "Displayed when a site has no name")
+        }
+    }
+
+    // MARK: - Private Constants
+    private let firstSectionIndex = 0
     
     // MARK: - Private Properties
-    private var settings        : NotificationSettings?
-    private var stream          : NotificationSettings.Stream?
+    private var settings : NotificationSettings?
+    private var stream : NotificationSettings.Stream?
     
     // MARK: - Helpers
-    private var sections        = [Section]()
-    private var newValues       = [String: Bool]()
+    private var sections = [Section]()
+    private var newValues = [String: Bool]()
 }
