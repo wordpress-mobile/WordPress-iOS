@@ -114,6 +114,7 @@
     RemotePostTag *tag = [RemotePostTag new];
     tag.tagID = [xmlrpcDictionary numberForKey:@"term_id"];
     tag.name = [xmlrpcDictionary stringForKey:@"name"];
+    tag.slug = [xmlrpcDictionary stringForKey:@"slug"];
     return tag;
 }
 
