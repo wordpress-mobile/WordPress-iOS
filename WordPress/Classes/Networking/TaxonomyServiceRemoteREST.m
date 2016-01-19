@@ -108,6 +108,7 @@
     RemotePostTag *tag = [RemotePostTag new];
     tag.tagID = jsonTag[@"ID"];
     tag.name = jsonTag[@"name"];
+    tag.slug = jsonTag[@"slug"];
     return tag;
 }
 
