@@ -9,7 +9,7 @@
 #import "Constants.h"
 #import "BlogSiteVisibilityHelper.h"
 #import "WordPress-Swift.h"
-#import <SFHFKeychainUtils.h>
+#import "SFHFKeychainUtils.h"
 #import <WordPressApi/WordPressApi.h>
 
 static NSInteger const ImageSizeSmallWidth = 240;
