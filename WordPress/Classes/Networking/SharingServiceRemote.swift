@@ -185,7 +185,36 @@ public class SharingServiceRemote : ServiceRemoteREST
     }
 
 
-    /// Disconnect's (deletes) the specified publicize connection
+    /// Update the shared status of the specified publicize connection
+    ///
+    /// - Parameters:
+    ///     - shared: True if the connection is shared with all users of the blog. False otherwise.
+    ///     - connectionID: The ID of the publicize connection.
+    ///     - siteID: The WordPress.com ID of the site.
+    ///      -success: An optional success block accepting no arguments.
+    ///     - failure: An optional failure block accepting an `NSError` argument.
+    ///
+    public func updateShared(shared:Bool,
+        forPublicizeConnectionWithID connectionID:NSNumber,
+        forSite  siteID:NSNumber,
+        success: (() -> Void)?,
+        failure: (NSError! -> Void)?) {
+            let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
+            let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+            let parameters = [ConnectionDictionaryKeys.shared : shared]
+
+            api.POST(path,
+                parameters: parameters,
+                success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+                    success?()
+                },
+                failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+                    failure?(error)
+            })
+    }
+
+
+    /// Disconnects (deletes) the specified publicize connection
     ///
     /// - Parameters:
     ///     - siteID: The WordPress.com ID of the site.
