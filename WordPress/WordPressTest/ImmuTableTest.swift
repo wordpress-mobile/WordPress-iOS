@@ -34,7 +34,7 @@ class ImmuTableTestViewCellWithNib: UITableViewCell {}
 struct BasicImmuTableRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(UITableViewCell)
     let title: String
-    var action: ImmuTableActionType? = nil
+    var action: ImmuTableAction? = nil
     func configureCell(cell: UITableViewCell) {
     }
 }
@@ -43,7 +43,7 @@ struct ImageImmuTableRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(UITableViewCell)
     let title: String
     let image: UIImage
-    var action: ImmuTableActionType? = nil
+    var action: ImmuTableAction? = nil
     func configureCell(cell: UITableViewCell) {
     }
 }
@@ -51,7 +51,7 @@ struct ImageImmuTableRow: ImmuTableRow {
 struct TestImmuTableRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(TestTableViewCell)
     let title: String
-    var action: ImmuTableActionType? = nil
+    var action: ImmuTableAction? = nil
     func configureCell(cell: UITableViewCell) {
     }
 }
@@ -62,7 +62,7 @@ struct TestWithNibImmuTableRow: ImmuTableRow {
         let nib = UINib(nibName: "ImmuTableTestViewCellWithNib", bundle: NSBundle(forClass: ImmuTableTestViewCellWithNib.self))
         return ImmuTableCell.Nib(nib, CellType.self)
     }()
-    var action: ImmuTableActionType? = nil
+    var action: ImmuTableAction? = nil
     func configureCell(cell: UITableViewCell) {
     }
 }
