@@ -9,7 +9,7 @@
 
 + (NSString *)entityName
 {
-    return @"Tag";
+    return @"PostTag";
 }
 
 @end
