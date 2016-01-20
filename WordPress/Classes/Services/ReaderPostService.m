@@ -134,39 +134,39 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
 
-        // Define success block. Make sure work is performed on the main queue
+        // Define success block.
+        NSNumber *postID = readerPost.postID;
+        NSNumber *siteID = readerPost.siteID;
         void (^successBlock)() = ^void() {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            if (postID && siteID) {
                 NSDictionary *properties = @{
-                                              WPAppAnalyticsKeyPostID: readerPost.postID,
-                                              WPAppAnalyticsKeyBlogID: readerPost.siteID
+                                              WPAppAnalyticsKeyPostID: postID,
+                                              WPAppAnalyticsKeyBlogID: siteID
                                               };
                 if (like) {
                     [WPAppAnalytics track:WPAnalyticsStatReaderArticleLiked withProperties:properties];
                 } else {
                     [WPAppAnalytics track:WPAnalyticsStatReaderArticleUnliked withProperties:properties];
                 }
-                if (success) {
-                    success();
-                }
-            });
+            }
+            if (success) {
+                success();
+            }
         };
 
         // Define failure block. Make sure rollback happens in the moc's queue,
-        // and failure is called on the main queue.
         void (^failureBlock)(NSError *error) = ^void(NSError *error) {
             [self.managedObjectContext performBlockAndWait:^{
                 // Revert changes on failure
                 readerPost.isLiked = oldValue;
                 readerPost.likeCount = oldCount;
 
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    if (failure) {
+                        failure(error);
+                    }
+                }];
             }];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (failure) {
-                    failure(error);
-                }
-            });
         };
 
         // Call the remote service.
