@@ -1651,20 +1651,21 @@ describe(@"LoginFacadeDelegate methods", ^{
                     [mockViewModelPresenter verify];
                 });
                 
-                it(@"should indicate dismiss the login view", ^{
-                    [[mockViewModelPresenter expect] dismissLoginView];
-                    
-                    [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
-                    
-                    [mockViewModelPresenter verify];
-                });
-                
                 it(@"should update the user details for the newly created account", ^{
                     [[mockAccountServiceFacade expect] updateUserDetailsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY];
                     
                     [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                     
                     [mockAccountServiceFacade verify];
+
+                    it(@"should indicate dismiss the login view", ^{
+                        [[mockViewModelPresenter expect] dismissLoginView];
+                        
+                        [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
+                        
+                        [mockViewModelPresenter verify];
+                    });
+                    
                 });
             });
             
