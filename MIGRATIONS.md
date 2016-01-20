@@ -3,6 +3,11 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 46 (@kurzee 2016-01-19)
+
+- Added `Tag` entity. Encapsulates a site's tag taxonomy.
+- `Blog` added new relationship called `tags`. Persisting associated Tags for a site.
+
 ## WordPress 45 (@kurzee 2016-01-15)
 
 - Added `Menu` entity. Encapsulates the data and relationships for customizing a site menu.
