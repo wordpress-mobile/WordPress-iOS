@@ -28,7 +28,7 @@
             
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             
-            if(success) {
+            if (success) {
                 success();
             }
         }];
@@ -48,7 +48,7 @@
 - (NSArray <PostTag *> *)tagsFromRemoteTags:(NSArray<RemotePostTag *> *)remoteTags
 {
     NSMutableArray *tags = [NSMutableArray arrayWithCapacity:remoteTags.count];
-    for(RemotePostTag *remoteTag in remoteTags) {
+    for (RemotePostTag *remoteTag in remoteTags) {
         [tags addObject:[self tagFromRemoteTag:remoteTag]];
     }
     
