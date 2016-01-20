@@ -105,7 +105,7 @@
 - (NSArray <RemotePostTag *> *)remoteTagsFromXMLRPCArray:(NSArray *)xmlrpcArray
 {
     return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcTag) {
-        return [self remoteCategoryFromXMLRPCDictionary:xmlrpcTag];
+        return [self remoteTagFromXMLRPCDictionary:xmlrpcTag];
     }];
 }
 
