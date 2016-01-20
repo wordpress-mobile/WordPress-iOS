@@ -18,7 +18,7 @@
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
-                  success([self remoteCategoriesWithJSONArray:responseObject[@"categories"]]);
+                  success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:@"categories"]]);
               }
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               if (failure) {
@@ -69,7 +69,7 @@
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
-                  success([self remoteTagsWithJSONArray:responseObject[@"tags"]]);
+                  success([self remoteTagsWithJSONArray:[responseObject arrayForKey:@"tags"]]);
               }
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               if (failure) {
@@ -90,9 +90,9 @@
 - (RemotePostCategory *)remoteCategoryWithJSONDictionary:(NSDictionary *)jsonCategory
 {
     RemotePostCategory *category = [RemotePostCategory new];
-    category.categoryID = jsonCategory[@"ID"];
-    category.name = jsonCategory[@"name"];
-    category.parentID = jsonCategory[@"parent"];
+    category.categoryID = [jsonCategory numberForKey:@"ID"];
+    category.name = [jsonCategory stringForKey:@"name"];
+    category.parentID = [jsonCategory numberForKey:@"parent"];
     return category;
 }
 
@@ -106,9 +106,9 @@
 - (RemotePostTag *)remoteTagWithJSONDictionary:(NSDictionary *)jsonTag
 {
     RemotePostTag *tag = [RemotePostTag new];
-    tag.tagID = jsonTag[@"ID"];
-    tag.name = jsonTag[@"name"];
-    tag.slug = jsonTag[@"slug"];
+    tag.tagID = [jsonTag numberForKey:@"ID"];
+    tag.name = [jsonTag stringForKey:@"name"];
+    tag.slug = [jsonTag stringForKey:@"slug"];
     return tag;
 }
 
