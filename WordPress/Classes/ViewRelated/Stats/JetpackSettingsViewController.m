@@ -75,7 +75,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (instancetype)initWithBlog:(Blog *)blog
 {
-    self = [super init];
+    self = [self init];
     if (self) {
         _blog = blog;
         _showFullScreen = YES;
@@ -95,6 +95,8 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
     [self layoutControls];
 }
 
@@ -104,9 +106,23 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     [self.navigationController setNavigationBarHidden:self.showFullScreen animated:animated];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
     [self reloadInterface];
     [self updateForm];
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
     [self checkForJetpack];
 }
 
@@ -128,13 +144,6 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [self addControls];
     [self addGesturesRecognizer];
     [self addSkipButtonIfNeeded];
-}
-
-// This resolves a crash due to JetpackSettingsViewController previously using a .xib.
-// Source: http://stackoverflow.com/questions/17708292/not-key-value-coding-compliant-error-from-deleted-xib
-- (void)loadView
-{
-    [super loadView];
 }
 
 - (void)addControls
