@@ -436,7 +436,7 @@ final public class ReaderDetailViewController : UIViewController
 
     private func configureByLine() {
         // Avatar
-        let placeholder = UIImage(named: "gravatar-reader")
+        let placeholder = UIImage(named: "gravatar")
         if let url = NSURL(string: post!.authorAvatarURL) {
             avatarImageView.setImageWithURL(url, placeholderImage: placeholder)
         }
