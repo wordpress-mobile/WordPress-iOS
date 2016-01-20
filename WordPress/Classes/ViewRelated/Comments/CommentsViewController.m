@@ -320,20 +320,32 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 {
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     
+DDLogVerbose(@"#### Approving Comment");
+    
     [self.tableView setEditing:NO animated:YES];
-    [service approveComment:comment success:nil failure:^(NSError *error) {
-        DDLogError(@"Error approving comment: %@", error);
-    }];
+    [service approveComment:comment
+                    success:^{
+                        DDLogVerbose(@"#### Successfully Approved Comment");
+                    }
+                    failure:^(NSError *error) {
+                        DDLogError(@"#### Error approving comment: %@", error);
+                    }];
 }
 
 - (void)unapproveComment:(Comment *)comment
 {
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     
+DDLogVerbose(@"#### Unapproving Comment");
+    
     [self.tableView setEditing:NO animated:YES];
-    [service unapproveComment:comment success:nil failure:^(NSError *error) {
-        DDLogError(@"Error unapproving comment: %@", error);
-    }];
+    [service unapproveComment:comment
+                      success:^{
+                          DDLogVerbose(@"#### Successfully Unapproved Comment");
+                      }
+                      failure:^(NSError *error) {
+                          DDLogError(@"#### Error unapproving comment: %@", error);
+                      }];
 }
 
 - (void)deleteComment:(Comment *)comment
