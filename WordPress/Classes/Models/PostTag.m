@@ -7,4 +7,9 @@
 @dynamic slug;
 @dynamic blog;
 
++ (NSString *)entityName
+{
+    return @"Tag";
+}
+
 @end

@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *slug;
 @property (nullable, nonatomic, retain) Blog *blog;
 
++ (NSString *)entityName;
+
 @end
 
 NS_ASSUME_NONNULL_END
