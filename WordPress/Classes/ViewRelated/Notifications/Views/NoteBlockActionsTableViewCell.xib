@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -18,7 +18,6 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DXE-y2-DWd" userLabel="Reply" customClass="VerticallyStackedButton">
                                 <rect key="frame" x="0.0" y="0.5" width="55" height="34"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="55" id="bGa-bG-COl"/>
                                     <constraint firstAttribute="height" priority="750" constant="34" id="pOv-Wo-AuU"/>
@@ -28,15 +27,14 @@
                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
-                                <state key="selected" image="notifications-reply-highlighted"/>
-                                <state key="highlighted" image="notifications-reply-highlighted"/>
+                                <state key="selected" image="notifications-reply"/>
+                                <state key="highlighted" image="notifications-reply"/>
                                 <connections>
                                     <action selector="replyWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="llo-Tq-bVM"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8r-Uo-uFk" customClass="VerticallyStackedButton">
                                 <rect key="frame" x="75" y="0.5" width="55" height="34"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="34" id="4s5-KZ-g7U"/>
                                     <constraint firstAttribute="width" constant="55" id="bXC-wE-QDO"/>
@@ -54,7 +52,6 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agc-K2-0vs" customClass="VerticallyStackedButton">
                                 <rect key="frame" x="150" y="0.5" width="55" height="34"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="55" id="2hn-PC-Yxs"/>
                                     <constraint firstAttribute="height" priority="750" constant="34" id="Tfs-lE-WZO"/>
@@ -72,7 +69,6 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYK-fl-vc7" customClass="VerticallyStackedButton">
                                 <rect key="frame" x="225" y="0.5" width="55" height="34"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="34" id="0ou-ht-WQC"/>
                                     <constraint firstAttribute="width" constant="55" id="Cvd-xS-e5I"/>
@@ -88,7 +84,6 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hU3-yd-ZtO" customClass="VerticallyStackedButton">
                                 <rect key="frame" x="300" y="0.5" width="55" height="34"/>
-                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="750" constant="34" id="OBj-Qu-Mty"/>
                                     <constraint firstAttribute="width" constant="55" id="Rq6-Ta-vBZ"/>
@@ -103,17 +98,14 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <animations/>
                     </stackView>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="V3D-QS-G4g" secondAttribute="bottom" constant="11" id="GLY-kj-VXh"/>
                     <constraint firstItem="V3D-QS-G4g" firstAttribute="centerX" secondItem="g83-Wv-yJ5" secondAttribute="centerX" id="aAu-xH-Q6m"/>
                     <constraint firstItem="V3D-QS-G4g" firstAttribute="top" secondItem="g83-Wv-yJ5" secondAttribute="top" constant="11" id="ftQ-8C-2wA"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <connections>
                 <outlet property="actionsView" destination="V3D-QS-G4g" id="JZg-7z-Y8g"/>
                 <outlet property="btnApprove" destination="Agc-K2-0vs" id="7mX-9C-ieh"/>
@@ -131,7 +123,6 @@
         <image name="notifications-like" width="21" height="21"/>
         <image name="notifications-liked" width="21" height="21"/>
         <image name="notifications-reply" width="21" height="21"/>
-        <image name="notifications-reply-highlighted" width="21" height="19"/>
         <image name="notifications-spam" width="21" height="21"/>
         <image name="notifications-trash" width="21" height="21"/>
     </resources>
