@@ -10,7 +10,7 @@
 
 static NSString *const CellIdentifier = @"CellIdentifier";
 
-@interface SharingConnectionsViewController () <SharingAuthorizationDelegate>
+@interface SharingConnectionsViewController () <SharingAuthorizationHelperDelegate>
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) PublicizeService *publicizeService;
