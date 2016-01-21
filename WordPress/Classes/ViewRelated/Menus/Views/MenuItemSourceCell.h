@@ -1,18 +1,11 @@
 #import <UIKit/UIKit.h>
 
-extern NSString * const MenuItemSourceSelectionValueDidChangeNotification;
-
-@interface MenuItemSource : NSObject
-
-@property (nonatomic, copy) NSString *title;
-@property (nonatomic, copy) NSString *badgeTitle;
-@property (nonatomic, assign) BOOL selected;
-@property (nonatomic, assign) NSUInteger indentationLevel;
-
-@end
+extern NSString * const MenuItemSourceCellSelectionValueDidChangeNotification;
 
 @interface MenuItemSourceCell : UITableViewCell
 
-@property (nonatomic, strong) MenuItemSource *source;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *badgeTitle;
+@property (nonatomic, assign) NSUInteger sourceHierarchyIndentation;
 
 @end
