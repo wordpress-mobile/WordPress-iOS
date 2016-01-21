@@ -1,12 +1,15 @@
-#import "PostCategoryServiceRemoteXMLRPC.h"
+#import "TaxonomyServiceRemoteXMLRPC.h"
 #import "RemotePostCategory.h"
+#import "RemotePostTag.h"
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressApi/WordPressApi.h>
 
-@implementation PostCategoryServiceRemoteXMLRPC
+@implementation TaxonomyServiceRemoteXMLRPC
 
-- (void)getCategoriesWithSuccess:(void (^)(NSArray *categories))success
-                         failure:(void (^)(NSError *error))failure
+#pragma mark - categories
+
+- (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *))success
+                         failure:(void (^)(NSError *))failure
 {
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:@"category"];
     [self.api callMethod:@"wp.getTerms"
@@ -62,7 +65,28 @@
                  }];
 }
 
-- (NSArray *)remoteCategoriesFromXMLRPCArray:(NSArray *)xmlrpcArray
+#pragma mark - tags
+
+- (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success failure:(void (^)(NSError *))failure
+{
+    NSArray *parameters = [self XMLRPCArgumentsWithExtra:@"post_tag"];
+    [self.api callMethod:@"wp.getTerms"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
+                     if (success) {
+                         success([self remoteTagsFromXMLRPCArray:responseObject]);
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
+#pragma mark - helpers
+
+- (NSArray <RemotePostCategory *> *)remoteCategoriesFromXMLRPCArray:(NSArray *)xmlrpcArray
 {
     return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcCategory) {
         return [self remoteCategoryFromXMLRPCDictionary:xmlrpcCategory];
@@ -76,6 +100,22 @@
     category.name = [xmlrpcDictionary stringForKey:@"name"];
     category.parentID = [xmlrpcDictionary numberForKey:@"parent"];
     return category;
+}
+
+- (NSArray <RemotePostTag *> *)remoteTagsFromXMLRPCArray:(NSArray *)xmlrpcArray
+{
+    return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcTag) {
+        return [self remoteTagFromXMLRPCDictionary:xmlrpcTag];
+    }];
+}
+
+- (RemotePostTag *)remoteTagFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary
+{
+    RemotePostTag *tag = [RemotePostTag new];
+    tag.tagID = [xmlrpcDictionary numberForKey:@"term_id"];
+    tag.name = [xmlrpcDictionary stringForKey:@"name"];
+    tag.slug = [xmlrpcDictionary stringForKey:@"slug"];
+    return tag;
 }
 
 @end
