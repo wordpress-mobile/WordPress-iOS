@@ -67,9 +67,9 @@ public class DiscussionSettingsViewController : UITableViewController
     // MARK: - Persistance!
     private func refreshSettings() {
         let service = BlogService(managedObjectContext: settings.managedObjectContext)
-        service.syncSettingsForBlog(settings.blog,
-            success: {
-                self.tableView.reloadData()
+        service.syncSettingsForBlog(blog,
+            success: { [weak self] in
+                self?.tableView.reloadData()
                 DDLogSwift.logInfo("Reloaded Settings")
             },
             failure: { (error: NSError!) in
