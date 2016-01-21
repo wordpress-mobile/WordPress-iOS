@@ -2,9 +2,8 @@
 
 #import "Blog.h"
 #import "BlogService.h"
-#import "SVProgressHUD.h"
 #import "SharingDetailViewController.h"
-#import "SharingAuthorizationWebViewController.h"
+#import "SharingAuthorizationHelper.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import "WPTableViewCell.h"
 #import "WordPress-Swift.h"
@@ -15,12 +14,18 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) PublicizeService *publicizeService;
+@property (nonatomic, strong) SharingAuthorizationHelper *helper;
 
 @end
 
 @implementation SharingConnectionsViewController
 
 #pragma mark - Life Cycle Methods
+
+- (void)dealloc
+{
+    self.helper.delegate = nil;
+}
 
 - (instancetype)initWithBlog:(Blog *)blog publicizeService:(PublicizeService *)publicizeService
 {
@@ -29,6 +34,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (self) {
         _blog = blog;
         _publicizeService = publicizeService;
+        _helper = [[SharingAuthorizationHelper alloc] initWithViewController:self blog:blog publicizeService:publicizeService];
+        _helper.delegate = self;
     }
     return self;
 }
@@ -214,118 +221,16 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)handleConnectTapped
 {
-    SharingAuthorizationWebViewController *webViewController = [SharingAuthorizationWebViewController controllerWithPublicizer:self.publicizeService
-                                                                                                                       forBlog:self.blog];
-    webViewController.delegate = self;
-
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:navController animated:YES completion:nil];
+    [self.helper connectPublicizeService];
 }
 
 
-#pragma mark - Authorization Delegate Methods
+#pragma mark - SharingAuthorizationHelper Delegate Methods
 
-- (void)authorizeDidSucceed:(PublicizeService *)publicizer
+- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper didConnectToService:(PublicizeService *)service withPublicizeConnection:(PublicizeConnection *)keyringConnection
 {
-    [self fetchKeyringConnectionsForService:publicizer];
-}
-
-- (void)authorize:(PublicizeService *)publicizer didFailWithError:(NSError *)error
-{
-    DDLogError([error description]);
-    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection failed", @"Message to show when Publicize authorization failed")];
-}
-
-- (void)authorizeDidCancel:(PublicizeService *)publicizer
-{
-    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection canceled", @"Message to show when Publicize authorization is canceled")];
-}
-
-
-#pragma mark - Keyring Wrangling
-
-- (void)fetchKeyringConnectionsForService:(PublicizeService *)pubServ
-{
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self.blog managedObjectContext]];
-    __weak __typeof__(self) weakSelf = self;
-    [sharingService fetchKeyringConnections:^(NSArray *keyringConnections) {
-        NSMutableArray *marr = [NSMutableArray array];
-        for (KeyringConnection *keyConn in keyringConnections) {
-            if ([keyConn.service isEqualToString:pubServ.serviceID]) {
-                [marr addObject:keyConn];
-            }
-        }
-        [weakSelf selectKeyring:marr];
-
-    } failure:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Keychain connection fetch failed", @"Message to show when Keyring connection synchronization failed")];
-    }];
-}
-
-- (void)selectKeyring:(NSArray *)keyringConnections
-{
-    NSParameterAssert([[keyringConnections firstObject] isKindOfClass:[KeyringConnection class]]);
-
-    __weak __typeof__(self) weakSelf = self;
-    NSMutableArray *accountNames = [NSMutableArray array];
-    for (KeyringConnection *keyConn in keyringConnections) {
-        [accountNames addObject:keyConn.externalDisplay];
-    }
-
-    NSString *title = NSLocalizedString(@"Connecting %@", @"Title of Publicize account selection");
-    title = [NSString stringWithFormat:title, self.publicizeService.label];
-
-    KeyringConnection *keyConn = [keyringConnections firstObject];
-    NSString *message;
-    if ([keyringConnections count] > 1 || [keyConn.additionalExternalUsers count] > 0) {
-        message = NSLocalizedString(@"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account.", @"");
-    } else {
-        message = NSLocalizedString(@"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account.", @"");
-    }
-
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                             message:message
-                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
-
-    for (KeyringConnection *keyConn in keyringConnections) {
-        [alertController addActionWithTitle:keyConn.externalDisplay style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-                                        [weakSelf connectToServiceWithKeyringConnection:keyConn andExternalUserID:nil];
-                                    }];
-
-        for (KeyringConnectionExternalUser *externalUser in keyConn.additionalExternalUsers) {
-            [alertController addActionWithTitle:externalUser.externalName style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction * action) {
-                                            [weakSelf connectToServiceWithKeyringConnection:keyConn andExternalUserID:externalUser.externalID];
-                                        }];
-        }
-    }
-
-    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                      handler:^(UIAlertAction *action) {
-                                          NSString *str = [NSString stringWithFormat:@"The %@ connection could not be made because no account was selected.", self.publicizeService.label];
-                                          NSLog(str);
-                                      }];
-
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (void)connectToServiceWithKeyringConnection:(KeyringConnection *)keyConn andExternalUserID:(NSString *)externalUserID
-{
-    __weak __typeof__(self) weakSelf = self;
-    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self.blog managedObjectContext]];
-    [sharingService createPublicizeConnectionForBlog:self.blog
-                                             keyring:keyConn
-                                      externalUserID:externalUserID
-                                             success:^(PublicizeConnection *pubConn) {
-                                                 [weakSelf.tableView reloadData];
-                                                 [weakSelf showDetailForConnection:pubConn];
-                                             }
-                                             failure:^(NSError *error) {
-                                                 DDLogError([error description]);
-                                                 [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection failed", @"Message to show when Publicize connect failed")];
-                                             }];
+    [self.tableView reloadData];
+    [self showDetailForConnection:keyringConnection];
 }
 
 @end
