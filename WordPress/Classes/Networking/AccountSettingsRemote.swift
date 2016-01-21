@@ -3,6 +3,21 @@ import Foundation
 import RxSwift
 
 class AccountSettingsRemote: ServiceRemoteREST {
+    static let remotes = NSMapTable(keyOptions: .StrongMemory, valueOptions: .WeakMemory)
+
+    static func remoteWithApi(api: WordPressComApi) -> AccountSettingsRemote {
+        let key = api.authToken.hashValue
+        // FIXME: not thread safe
+        // @koke 2016-01-21
+        if let remote = remotes.objectForKey(key) {
+            return remote as! AccountSettingsRemote
+        } else {
+            let remote = AccountSettingsRemote(api: api)
+            remotes.setObject(remote, forKey: key)
+            return remote
+        }
+    }
+
     func settings() -> Observable<AccountSettings> {
         let api = self.api
 
