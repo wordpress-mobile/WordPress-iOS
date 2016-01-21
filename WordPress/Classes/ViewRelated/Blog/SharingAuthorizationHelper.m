@@ -30,7 +30,7 @@
 
 #pragma mark - Actions
 
-- (void)connectPublicizeServiceToBlog
+- (void)connectPublicizeService
 {
     self.reconnecting = YES;
     [self authorizeWithConnectionURL:[NSURL URLWithString:self.publicizeService.connectURL]];
