@@ -422,10 +422,10 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         }
         
         [commentService syncCommentsForBlog:blogInContext
-                                    success:^{
+                                    success:^(BOOL hasMore) {
                                                 if (success) {
                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                        success(true);
+                                                        success(hasMore);
                                                     });
                                                 }
                                     }
