@@ -9,7 +9,7 @@
 #import "Constants.h"
 #import "BlogSiteVisibilityHelper.h"
 #import "WordPress-Swift.h"
-#import <SFHFKeychainUtils.h>
+#import "SFHFKeychainUtils.h"
 #import <WordPressApi/WordPressApi.h>
 
 static NSInteger const ImageSizeSmallWidth = 240;
@@ -38,10 +38,13 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic hasOlderPages;
 @dynamic posts;
 @dynamic categories;
+@dynamic tags;
 @dynamic comments;
 @dynamic connections;
 @dynamic themes;
 @dynamic media;
+@dynamic menus;
+@dynamic menuLocations;
 @dynamic currentThemeId;
 @dynamic lastPostsSync;
 @dynamic lastStatsSync;

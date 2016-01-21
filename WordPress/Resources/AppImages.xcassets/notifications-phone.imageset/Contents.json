@@ -2,16 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "notifications-phone.pdf",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "notifications-phone.pdf"
     }
   ],
   "info" : {
