@@ -18,10 +18,15 @@ class AccountSettingsRemote: ServiceRemoteREST {
         }
     }
 
-    func settings() -> Observable<AccountSettings> {
-        let api = self.api
+    let settings: Observable<AccountSettings>
 
-        return Observable.create { observer in
+    override init(api: WordPressComApi) {
+        settings = AccountSettingsRemote.settingsWithApi(api)
+        super.init(api: api)
+    }
+
+    private static func settingsWithApi(api: WordPressComApi) -> Observable<AccountSettings> {
+        let settings = Observable<AccountSettings>.create { observer in
             let remote = AccountSettingsRemote(api: api)
             let operation = remote.getSettings(
                 success: { settings in
@@ -46,6 +51,9 @@ class AccountSettingsRemote: ServiceRemoteREST {
                 }
             }
         }
+
+        return settings
+            .share()
     }
 
     func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) -> AFHTTPRequestOperation? {
