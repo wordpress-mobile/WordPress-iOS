@@ -14,6 +14,7 @@
 #import "NSDate+WordPressJSON.h"
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
+NSInteger const  WPNumberOfCommentsToSync = 100;
 
 @implementation CommentService
 
@@ -111,46 +112,47 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
 // Sync comments
 - (void)syncCommentsForBlog:(Blog *)blog
-                    success:(void (^)())success
+                    success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *blogID = blog.objectID;
     if (![[self class] startSyncingCommentsForBlog:blogID]){
         // We assume success because a sync is already running and it will change the comments
         if (success) {
-            success();
+            success(YES);
         }
         return;
     }
     
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
-    [remote getCommentsWithSuccess:^(NSArray *comments) {
-                             [self.managedObjectContext performBlock:^{
-                                 Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-                                 if (blogInContext) {
-                                     [self mergeComments:comments
-                                                 forBlog:blog
-                                           purgeExisting:YES
-                                       completionHandler:^{
-                                           [[self class] stopSyncingCommentsForBlog:blogID];
-                                           
-                                           blogInContext.lastCommentsSync = [NSDate date];
-                                           [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                                           
-                                           if (success) {
-                                               success();
-                                           }
-                                       }];
-                                 }
-                             }];
-                         } failure:^(NSError *error) {
-                             [[self class] stopSyncingCommentsForBlog:blogID];
-                             if (failure) {
-                                 [self.managedObjectContext performBlock:^{
-                                     failure(error);
-                                 }];
-                             }
-                         }];
+    [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync success:^(NSArray *comments) {
+         [self.managedObjectContext performBlock:^{
+             Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+             if (blogInContext) {
+                 [self mergeComments:comments
+                             forBlog:blog
+                       purgeExisting:YES
+                   completionHandler:^{
+                       [[self class] stopSyncingCommentsForBlog:blogID];
+                       
+                       blogInContext.lastCommentsSync = [NSDate date];
+                       [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                       
+                       if (success) {
+                           BOOL hasMore = comments.count >= WPNumberOfCommentsToSync;
+                           success(hasMore);
+                       }
+                   }];
+             }
+         }];
+     } failure:^(NSError *error) {
+         [[self class] stopSyncingCommentsForBlog:blogID];
+         if (failure) {
+             [self.managedObjectContext performBlock:^{
+                 failure(error);
+             }];
+         }
+     }];
 }
 
 - (Comment *)oldestCommentForBlog:(Blog *)blog {
