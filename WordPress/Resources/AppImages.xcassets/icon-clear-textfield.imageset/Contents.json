@@ -2,18 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "button-clear-textfield.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "button-clear-textfield@2x.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "button-clear-textfield@3x.png"
+      "filename" : "icon-clear-textfield.pdf"
     }
   ],
   "info" : {
