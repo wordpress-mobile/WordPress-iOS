@@ -2,18 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "icon-post-actionbar-back.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "icon-post-actionbar-back@2x.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "icon-post-actionbar-back@3x.png"
+      "filename" : "icon-post-actionbar-back.pdf"
     }
   ],
   "info" : {
