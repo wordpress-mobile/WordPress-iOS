@@ -19,7 +19,6 @@
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
-        self.sources = [NSMutableArray array];
         
         {
             UITableView *tableView = [[UITableView alloc] init];
@@ -118,16 +117,33 @@
     _searchBar = searchBar;
 }
 
+- (NSInteger)numberOfSourceTableSections
+{
+    // overrided in subclasses
+    return 0;
+}
+
+- (NSInteger)numberOfSourcesInTableSection:(NSInteger)section
+{
+    // overrided in subclasses
+    return 0;
+}
+
+- (void)willDisplaySourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
+{
+    // overrided in subclasses
+}
+
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return [self numberOfSourceTableSections];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.sources.count;
+    return [self numberOfSourcesInTableSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -142,9 +158,8 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    MenuItemSource *source = [self.sources objectAtIndex:indexPath.row];
     MenuItemSourceCell *sourceCell = (MenuItemSourceCell *)cell;
-    sourceCell.source = source;
+    [self willDisplaySourceCell:sourceCell forIndexPath:indexPath];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
