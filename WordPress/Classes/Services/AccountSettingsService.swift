@@ -5,10 +5,12 @@ import RxSwift
 
 let AccountSettingsServiceChangeSaveFailedNotification = "AccountSettingsServiceChangeSaveFailed"
 
-struct AccountSettingsService {
-    let stallTimeout = 4.0
-    let maxRetries = 3
-    let pollingInterval = 60.0
+class AccountSettingsService {
+    struct Defaults {
+        static let stallTimeout = 4.0
+        static let maxRetries = 3
+        static let pollingInterval = 60.0
+    }
 
     let remote: AccountSettingsRemote
     let userID: Int
@@ -20,12 +22,18 @@ struct AccountSettingsService {
         self.userID = userID
     }
 
-    var reachable: Observable<Bool> {
-        return Reachability.internetConnection
-    }
+    /// Emits a boolean value each time reachability changes for the internet connection.
+    private let reachable = Reachability.internetConnection
 
-    var remoteSettings: Observable<RefreshStatus> {
-        return remote.settings()
+    /// Performs a network refresh of settings and emits values with the refresh status.
+    ///
+    /// - When it's subscribed, it requests a refresh from the server and immediately emits a `.Refreshing` value.
+    /// - If a networking error happens it doesn't emit a new value and will retry the request.
+    /// - If it reaches the maximum permitted number of retries it will emit an Error.
+    /// - If an error not related to networking happens, it will emit an Error.
+    /// - When the data is refreshed, it will emit an `.Idle` value and complete.
+    lazy private var remoteSettings: Observable<RefreshStatus> = {
+        return self.remote.settings
             .map({ settings -> RefreshStatus in
                 self.updateSettings(settings)
                 return .Idle
@@ -42,48 +50,57 @@ struct AccountSettingsService {
                     return Observable.just(.Failed)
                 }
             })
-            .retry(maxRetries)
+            .retry(Defaults.maxRetries)
             .doOn(onError: { (error) -> Void in
                 DDLogSwift.logError("Error refreshing settings (maxRetries reached): \(error)")
             })
-            .share()
-    }
+    }()
 
-    var stalled: Observable<RefreshStatus> {
-        return Observable<RefreshStatus>
+    /// Emits one `.Stalled` value after a timeout and then completes
+    let stalled = Observable<RefreshStatus>
             .just(.Stalled)
-            .delaySubscription(stallTimeout, scheduler: MainScheduler.instance)
-    }
+            .delaySubscription(Defaults.stallTimeout, scheduler: MainScheduler.instance)
 
-    var request: Observable<RefreshStatus> {
+    /// Performs a network refresh, emitting a `.Stalled` value if it's taking too long
+    /// - seealso: remoteSettings
+    lazy private var request: Observable<RefreshStatus> = {
         let remoteSettings = self.remoteSettings
-        let stalledSettings = Observable.of(stalled, remoteSettings)
+        let stalledSettings = Observable.of(self.stalled, remoteSettings)
             .merge()
 
         return remoteSettings
             .amb(stalledSettings)
             .startWith(.Refreshing)
-    }
+    }()
 
-    var refresh: Observable<RefreshStatus> {
+    /// Emits values when the refresh status changes.
+    ///
+    /// On subscription, this will start refreshing settings, polling each minute, while there's an internet connection.
+    /// Possible values:
+    /// - `.Refreshing` when it starts getting remote data.
+    /// - `.Stalled` when it's getting remote data and hasn't succeeded before `stallTimeout`.
+    /// - `.Failed` when the request couldn't complete. It will retry after the polling interval.
+    /// - `.Offline` when there is no internet connection.
+    /// - `.Idle` when the request was successful and it's waiting for the polling interval.
+    lazy var refresh: Observable<RefreshStatus> = {
         // Copy request to avoid capture of self in closure
         let request = self.request
 
         // Convert to a polling request
         let polling = Observable<Int>
-            .interval(pollingInterval, scheduler: MainScheduler.instance)
+            .interval(Defaults.pollingInterval, scheduler: MainScheduler.instance)
             .startWith(0)
             .flatMapLatest({ _ in request })
 
         // Enable only when reachable, otherwise emit .Offline
-        return reachable.flatMapLatest({ reachable -> Observable<RefreshStatus> in
+        return self.reachable.flatMapLatest({ reachable -> Observable<RefreshStatus> in
             if reachable {
                 return polling
             } else {
                 return Observable.just(.Offline)
             }
         })
-    }
+    }()
 
     func refreshSettings(completion: (Bool) -> Void) {
         remote.getSettings(
