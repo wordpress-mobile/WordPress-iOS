@@ -21,11 +21,8 @@ class MyProfileController: NSObject {
             .subscribeNext(viewController.bindViewModel)
             .addDisposableTo(bag)
 
-        viewController.willAppear
-            // On first appearance
-            .take(1)
-            // request a refresh of account settings
-            .flatMapLatest({ service.refresh })
+        service.refresh
+            .forwardIf(viewController.visible)
             // replace errors with .Failed status
             .catchErrorJustReturn(.Failed)
             // convert status to string

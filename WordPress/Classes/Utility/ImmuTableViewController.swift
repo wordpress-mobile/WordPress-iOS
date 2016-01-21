@@ -28,9 +28,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
-    private var willAppearSubject: PublishSubject<Void> {
-        return willAppear as! PublishSubject<Void>
-    }
+    private var visibleSubject = PublishSubject<Bool>()
 
     private var errorAnimator: ErrorAnimator!
 
@@ -60,7 +58,12 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        willAppearSubject.onNext()
+        visibleSubject.on(.Next(true))
+    }
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        visibleSubject.on(.Next(false))
     }
 
     // MARK: - Inputs
@@ -84,6 +87,8 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     // MARK: - Outputs
 
-    /// Emits a value every time viewWillAppear is called
-    let willAppear: Observable<Void> = PublishSubject()
+    /// Emits a value when the view controller appears or disappears
+    var visible: Observable<Bool> {
+        return visibleSubject
+    }
 }
