@@ -3,9 +3,9 @@
 #import "Blog.h"
 #import "RemotePostCategory.h"
 #import "ContextManager.h"
-#import "PostCategoryServiceRemote.h"
-#import "PostCategoryServiceRemoteREST.h"
-#import "PostCategoryServiceRemoteXMLRPC.h"
+#import "TaxonomyServiceRemote.h"
+#import "TaxonomyServiceRemoteREST.h"
+#import "TaxonomyServiceRemoteXMLRPC.h"
 
 @implementation PostCategoryService
 
@@ -90,7 +90,7 @@
                       success:(void (^)())success
                       failure:(void (^)(NSError *error))failure
 {
-    id<PostCategoryServiceRemote> remote = [self remoteForBlog:blog];
+    id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
     [remote getCategoriesWithSuccess:^(NSArray *categories) {
                                [self.managedObjectContext performBlock:^{
@@ -118,7 +118,7 @@
     remoteCategory.parentID = parent.categoryID;
     remoteCategory.name = name;
 
-    id<PostCategoryServiceRemote> remote = [self remoteForBlog:blog];
+    id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     [remote createCategory:remoteCategory
                    success:^(RemotePostCategory *receivedCategory) {
                        [self.managedObjectContext performBlock:^{
@@ -128,7 +128,7 @@
                            }
                            PostCategory *newCategory = [self newCategoryForBlog:blog];
                            newCategory.categoryID = receivedCategory.categoryID;
-                           if ([remote isKindOfClass:[PostCategoryServiceRemoteXMLRPC class]]) {
+                           if ([remote isKindOfClass:[TaxonomyServiceRemoteXMLRPC class]]) {
                                // XML-RPC only returns ID, let's fetch the new category as
                                // filters might change the content
                                [self syncCategoriesForBlog:blog success:nil failure:nil];
@@ -213,11 +213,11 @@
     return category;
 }
 
-- (id<PostCategoryServiceRemote>)remoteForBlog:(Blog *)blog {
+- (id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
     if (blog.restApi) {
-        return [[PostCategoryServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
+        return [[TaxonomyServiceRemoteREST alloc] initWithApi:blog.restApi siteID:blog.dotComID];
     } else {
-        return [[PostCategoryServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
+        return [[TaxonomyServiceRemoteXMLRPC alloc] initWithApi:blog.api username:blog.username password:blog.password];
     }
 }
 
