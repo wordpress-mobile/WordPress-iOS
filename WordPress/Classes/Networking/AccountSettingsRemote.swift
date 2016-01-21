@@ -13,13 +13,19 @@ class AccountSettingsRemote: ServiceRemoteREST {
                     observer.onNext(settings)
                     observer.onCompleted()
                 }, failure: { error in
-                    DDLogSwift.logError("Error refreshing settings: \(error)")
-                    observer.onError(error)
+                    let nserror = error as NSError
+                    if nserror.domain == NSURLErrorDomain && nserror.code == NSURLErrorCancelled {
+                        // If we canceled the operation, don't propagate the error
+                        // This probably means the observable is being disposed
+                        DDLogSwift.logError("Canceled refreshing settings")
+                    } else {
+                        DDLogSwift.logError("Error refreshing settings: \(error)")
+                        observer.onError(error)
+                    }
             })
             return AnonymousDisposable() {
                 if let operation = operation {
                     if !operation.finished {
-                        DDLogSwift.logError("Canceled refreshing settings")
                         operation.cancel()
                     }
                 }
