@@ -582,6 +582,7 @@
 		E6374DC71C44550700F24720 /* RemotePublicizeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6374DC51C44550700F24720 /* RemotePublicizeService.swift */; };
 		E6374DC91C445ABF00F24720 /* SharingServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6374DC81C445ABF00F24720 /* SharingServiceRemoteTests.m */; };
 		E6396E1F1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6396E1E1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift */; };
+		E63BBC931C5161B800598BE8 /* KeyringConnectionExternalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63BBC921C5161B800598BE8 /* KeyringConnectionExternalUser.swift */; };
 		E6431DE51C4E892900FD8D90 /* SharingConnectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6431DE01C4E892900FD8D90 /* SharingConnectionsViewController.m */; };
 		E6431DE61C4E892900FD8D90 /* SharingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6431DE21C4E892900FD8D90 /* SharingDetailViewController.m */; };
 		E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6431DE41C4E892900FD8D90 /* SharingViewController.m */; };
@@ -1654,6 +1655,7 @@
 		E6374DC51C44550700F24720 /* RemotePublicizeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemotePublicizeService.swift; path = "Remote Objects/RemotePublicizeService.swift"; sourceTree = "<group>"; };
 		E6374DC81C445ABF00F24720 /* SharingServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingServiceRemoteTests.m; sourceTree = "<group>"; };
 		E6396E1E1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteReaderCrossPostMeta.swift; path = "Remote Objects/RemoteReaderCrossPostMeta.swift"; sourceTree = "<group>"; };
+		E63BBC921C5161B800598BE8 /* KeyringConnectionExternalUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyringConnectionExternalUser.swift; sourceTree = "<group>"; };
 		E6431DDF1C4E892900FD8D90 /* SharingConnectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingConnectionsViewController.h; sourceTree = "<group>"; };
 		E6431DE01C4E892900FD8D90 /* SharingConnectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingConnectionsViewController.m; sourceTree = "<group>"; };
 		E6431DE11C4E892900FD8D90 /* SharingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingDetailViewController.h; sourceTree = "<group>"; };
@@ -2065,6 +2067,7 @@
 				E14932B4130427B300154804 /* Coordinate.h */,
 				E14932B5130427B300154804 /* Coordinate.m */,
 				E6374DBC1C444D8B00F24720 /* KeyringConnection.swift */,
+				E63BBC921C5161B800598BE8 /* KeyringConnectionExternalUser.swift */,
 				E14200771C117A2E00B3B115 /* ManagedAccountSettings.swift */,
 				E14200791C117A3B00B3B115 /* ManagedAccountSettings+CoreDataProperties.swift */,
 				8350E49411D2C71E00A7B073 /* Media.h */,
@@ -4567,6 +4570,7 @@
 				BEC62E2C1BF2F58D007685B2 /* CreateNewBlogViewController.m in Sources */,
 				E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */,
 				B587798119B799D800E57C5A /* UITableViewCell+Helpers.swift in Sources */,
+				E63BBC931C5161B800598BE8 /* KeyringConnectionExternalUser.swift in Sources */,
 				B587798019B799D800E57C5A /* UITableView+Helpers.swift in Sources */,
 				B587797E19B799D800E57C5A /* UIImageView+Animations.swift in Sources */,
 				E1B9128B1BB0129C003C25B9 /* WPStyleGuide+People.swift in Sources */,

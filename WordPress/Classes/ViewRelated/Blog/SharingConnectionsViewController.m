@@ -276,7 +276,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     NSString *title = NSLocalizedString(@"Connecting %@", @"Title of Publicize account selection");
     title = [NSString stringWithFormat:title, self.publicizeService.label];
 
-    NSString *message = NSLocalizedString(@"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account.", @"");
+    KeyringConnection *keyConn = [keyringConnections firstObject];
+    NSString *message;
+    if ([keyringConnections count] > 1 || [keyConn.additionalExternalUsers count] > 0) {
+        message = NSLocalizedString(@"Select the account you would like to authorize. Note that your posts will be automatically shared to the selected account.", @"");
+    } else {
+        message = NSLocalizedString(@"Confirm this is the account you would like to authorize. Note that your posts will be automatically shared to this account.", @"");
+    }
 
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
                                                                              message:message
@@ -285,8 +291,15 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     for (KeyringConnection *keyConn in keyringConnections) {
         [alertController addActionWithTitle:keyConn.externalDisplay style:UIAlertActionStyleDefault
                                     handler:^(UIAlertAction * action) {
-                                        [weakSelf connectToServiceWithKeyringConnection:keyConn];
+                                        [weakSelf connectToServiceWithKeyringConnection:keyConn andExternalUserID:nil];
                                     }];
+
+        for (KeyringConnectionExternalUser *externalUser in keyConn.additionalExternalUsers) {
+            [alertController addActionWithTitle:externalUser.externalName style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action) {
+                                            [weakSelf connectToServiceWithKeyringConnection:keyConn andExternalUserID:externalUser.externalID];
+                                        }];
+        }
     }
 
     [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
@@ -298,13 +311,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-- (void)connectToServiceWithKeyringConnection:(KeyringConnection *)keyConn
+- (void)connectToServiceWithKeyringConnection:(KeyringConnection *)keyConn andExternalUserID:(NSString *)externalUserID
 {
     __weak __typeof__(self) weakSelf = self;
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self.blog managedObjectContext]];
     [sharingService createPublicizeConnectionForBlog:self.blog
                                              keyring:keyConn
-                                      externalUserID:nil
+                                      externalUserID:externalUserID
                                              success:^(PublicizeConnection *pubConn) {
                                                  [weakSelf.tableView reloadData];
                                                  [weakSelf showDetailForConnection:pubConn];
