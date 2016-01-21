@@ -1,19 +1,19 @@
 #import <Foundation/Foundation.h>
 
-@protocol SharingAuthorizationDelegate;
+@protocol SharingAuthorizationHelperDelegate;
 @class PublicizeService;
 @class KeyringConnection;
 @class PublicizeConnection;
 @class Blog;
 
 @interface SharingAuthorizationHelper : NSObject
-@property (nonatomic, weak) id<SharingAuthorizationDelegate>delegate;
+@property (nonatomic, weak) id<SharingAuthorizationHelperDelegate>delegate;
 - (instancetype)initWithViewController:(UIViewController *)viewController blog:(Blog *)blog publicizeService:(PublicizeService *)publicizeService;
 - (void)connectPublicizeService;
 - (void)reconnectPublicizeConnection:(PublicizeConnection *)publicizeConnection;
 @end
 
-@protocol SharingAuthorizationDelegate <NSObject>
+@protocol SharingAuthorizationHelperDelegate <NSObject>
 
 @optional
 
