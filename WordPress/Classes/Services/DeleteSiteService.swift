@@ -22,7 +22,7 @@ public class DeleteSiteService : LocalCoreDataService
      */
     public func deleteSiteForBlog(blog: Blog, success: (() -> ())?, failure: (NSError -> ())?) {
         let blogObjectID = blog.objectID
-        let remote = DeleteSiteServiceRemote(api: blog.restApi())
+        let remote = deleteSiteServiceRemoteForBlog(blog)
         remote.deleteSite(blog.dotComID,
             success: {
                 self.removeBlogWithObjectID(blogObjectID, success: success)
@@ -61,5 +61,10 @@ public class DeleteSiteService : LocalCoreDataService
                 success?()
             })
         }
+    }
+    
+    /// Only WordPress.com API supports delete site
+    func deleteSiteServiceRemoteForBlog(blog: Blog) -> DeleteSiteServiceRemote {
+        return DeleteSiteServiceRemote(api: blog.restApi())
     }
 }
