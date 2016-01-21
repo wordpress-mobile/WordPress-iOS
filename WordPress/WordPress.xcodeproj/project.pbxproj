@@ -623,6 +623,7 @@
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
 		FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
 		FA87F1AC1C4F2DEF004A92D1 /* DeleteSiteServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA87F1AB1C4F2DEF004A92D1 /* DeleteSiteServiceRemote.swift */; };
+		FA9E74481C50382D00C6B1D2 /* DeleteSiteServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E74471C50382D00C6B1D2 /* DeleteSiteServiceRemoteTests.swift */; };
 		FAFB84061BBF3638000BBA8E /* get-multiple-themes-v1.2.json in Resources */ = {isa = PBXBuildFile; fileRef = FAFB84051BBF3638000BBA8E /* get-multiple-themes-v1.2.json */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
@@ -1701,6 +1702,7 @@
 		FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
 		FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
 		FA87F1AB1C4F2DEF004A92D1 /* DeleteSiteServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteServiceRemote.swift; sourceTree = "<group>"; };
+		FA9E74471C50382D00C6B1D2 /* DeleteSiteServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteServiceRemoteTests.swift; sourceTree = "<group>"; };
 		FAFB84051BBF3638000BBA8E /* get-multiple-themes-v1.2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "get-multiple-themes-v1.2.json"; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
@@ -2180,6 +2182,7 @@
 			children = (
 				591CFB051B28A960009E61B3 /* AccountServiceRemoteRESTTests.m */,
 				591CFB081B28AC8C009E61B3 /* BlogServiceRemoteRESTTests.m */,
+				FA9E74471C50382D00C6B1D2 /* DeleteSiteServiceRemoteTests.swift */,
 				59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */,
 				59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */,
 				598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */,
@@ -4825,6 +4828,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA9E74481C50382D00C6B1D2 /* DeleteSiteServiceRemoteTests.swift in Sources */,
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
 				59E2AAE81B20E3EA0051DC06 /* ServiceRemoteRESTTests.m in Sources */,
 				E61084C41B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m in Sources */,
