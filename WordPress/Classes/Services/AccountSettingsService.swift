@@ -6,42 +6,79 @@ import RxSwift
 let AccountSettingsServiceChangeSaveFailedNotification = "AccountSettingsServiceChangeSaveFailed"
 
 struct AccountSettingsService {
+    let stallTimeout = 4.0
+    let maxRetries = 3
+    let pollingInterval = 60.0
+
     let remote: AccountSettingsRemote
     let userID: Int
 
     private let context = ContextManager.sharedInstance().mainContext
 
     init(userID: Int, api: WordPressComApi) {
-        self.remote = AccountSettingsRemote(api: api)
+        self.remote = AccountSettingsRemote.remoteWithApi(api)
         self.userID = userID
     }
 
-    var refresh: Observable<RefreshStatus> {
-        let remote = self.remote
-        let stalledTimeout = 4.0
+    var reachable: Observable<Bool> {
+        return Reachability.internetConnection
+    }
 
-        let reachability = Reachability.internetConnection
-
-        let refresh: Observable<RefreshStatus> = remote.settings()
-            .map { settings in
+    var remoteSettings: Observable<RefreshStatus> {
+        return remote.settings()
+            .map({ settings -> RefreshStatus in
                 self.updateSettings(settings)
                 return .Idle
-            }
+            })
+            .catchError({ error in
+                let error = error as NSError
+                // We want to retry only for networking errors, so we convert errors that aren't
+                // on NSURLErrorDomain to a .Failed status and log them.
+                if error.domain == NSURLErrorDomain {
+                    DDLogSwift.logError("Error refreshing settings (will retry): \(error)")
+                    throw error
+                } else {
+                    DDLogSwift.logError("Error refreshing settings (unrecoverable): \(error)")
+                    return Observable.just(.Failed)
+                }
+            })
+            .retry(maxRetries)
+            .doOn(onError: { (error) -> Void in
+                DDLogSwift.logError("Error refreshing settings (maxRetries reached): \(error)")
+            })
             .share()
+    }
 
-        let stalled: Observable<RefreshStatus> = Observable<Int>
-            .timer(stalledTimeout, scheduler: MainScheduler.instance)
-            .map({ _ in .Stalled })
+    var stalled: Observable<RefreshStatus> {
+        return Observable<RefreshStatus>
+            .just(.Stalled)
+            .delaySubscription(stallTimeout, scheduler: MainScheduler.instance)
+    }
 
-        let request = Observable.of(refresh, stalled)
+    var request: Observable<RefreshStatus> {
+        let remoteSettings = self.remoteSettings
+        let stalledSettings = Observable.of(stalled, remoteSettings)
             .merge()
-            .startWith(.Refreshing)
-            .distinctUntilChanged()
-            .takeUntil(refresh)
 
-        return reachability.flatMapLatest({ reachable -> Observable<RefreshStatus> in
+        return remoteSettings
+            .amb(stalledSettings)
+            .startWith(.Refreshing)
+    }
+
+    var refresh: Observable<RefreshStatus> {
+        // Copy request to avoid capture of self in closure
+        let request = self.request
+
+        // Convert to a polling request
+        let polling = Observable<Int>
+            .interval(pollingInterval, scheduler: MainScheduler.instance)
+            .startWith(0)
+            .flatMapLatest({ _ in request })
+
+        // Enable only when reachable, otherwise emit .Offline
+        return reachable.flatMapLatest({ reachable -> Observable<RefreshStatus> in
             if reachable {
-                return request
+                return polling
             } else {
                 return Observable.just(.Offline)
             }
