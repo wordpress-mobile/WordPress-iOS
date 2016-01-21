@@ -401,7 +401,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon-menu-ellipsis" width="15" height="15"/>
+        <image name="icon-menu-ellipsis" width="24" height="24"/>
         <image name="icon-post-search-highlight" width="22" height="22"/>
         <image name="theme-customize" width="18" height="18"/>
         <image name="theme-details" width="18" height="18"/>
