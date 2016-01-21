@@ -83,8 +83,8 @@ public class SharingServiceRemote : ServiceRemoteREST
                 let connections:Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
                 let keyringConnections:[KeyringConnection] = connections.map { (let dict) -> KeyringConnection in
                     let conn = KeyringConnection()
-                    // TODO: Need to see how this guy is formatted.
-                    // conn.additionalExternalUsers = dict.arrayForKey(ConnectionDictionaryKeys.additionalExternalUsers)
+                    let externalUsers = dict.arrayForKey(ConnectionDictionaryKeys.additionalExternalUsers) ?? []
+                    conn.additionalExternalUsers = self.externalUsersForKeyringConnection(externalUsers)
                     conn.dateExpires = DateUtils.dateFromISOString(dict.stringForKey(ConnectionDictionaryKeys.expires))
                     conn.dateIssued = DateUtils.dateFromISOString(dict.stringForKey(ConnectionDictionaryKeys.issued))
                     conn.externalDisplay = dict.stringForKey(ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
@@ -107,6 +107,28 @@ public class SharingServiceRemote : ServiceRemoteREST
             failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
                 failure?(error)
         })
+    }
+
+
+    /// Creates KeyringConnectionExternalUser instances from the past array of 
+    /// external user dictionaries.
+    ///
+    /// - Parameters:
+    ///     - externalUsers: An array of NSDictionaries where each NSDictionary represents a KeyringConnectionExternalUser
+    ///
+    /// - Returns: An array of KeyringConnectionExternalUser instances.
+    ///
+    private func externalUsersForKeyringConnection(externalUsers:NSArray) -> [KeyringConnectionExternalUser] {
+        let arr:[KeyringConnectionExternalUser] = externalUsers.map { (let dict) -> KeyringConnectionExternalUser in
+            let externalUser = KeyringConnectionExternalUser()
+            externalUser.externalID = dict.stringForKey(ConnectionDictionaryKeys.externalID) ?? externalUser.externalID
+            externalUser.externalName = dict.stringForKey(ConnectionDictionaryKeys.externalName) ?? externalUser.externalName
+            externalUser.externalProfilePicture = dict.stringForKey(ConnectionDictionaryKeys.externalProfilePicture) ?? externalUser.externalProfilePicture
+            externalUser.externalCategory = dict.stringForKey(ConnectionDictionaryKeys.externalCategory) ?? externalUser.externalCategory
+
+            return externalUser
+        }
+        return arr
     }
 
 
@@ -309,6 +331,7 @@ private struct ConnectionDictionaryKeys
     // only KeyringConnections
     static let additionalExternalUsers = "additional_external_users"
     static let type = "type"
+    static let externalCategory = "external_category"
 
     // only PublicizeConnections
     static let externalFollowerCount = "external_follower_count"
