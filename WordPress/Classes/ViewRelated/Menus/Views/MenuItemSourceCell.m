@@ -3,21 +3,7 @@
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
-NSString * const MenuItemSourceSelectionValueDidChangeNotification = @"MenuItemSourceSelectionValueDidChangeNotification";
-
-#pragma mark - MenuItemSourceOption
-
-@implementation MenuItemSource
-
-- (void)setSelected:(BOOL)selected
-{
-    if(_selected != selected) {
-        _selected = selected;
-        [[NSNotificationCenter defaultCenter] postNotificationName:MenuItemSourceSelectionValueDidChangeNotification object:self];
-    }
-}
-
-@end
+NSString * const MenuItemSourceCellSelectionValueDidChangeNotification = @"MenuItemSourceCellSelectionValueDidChangeNotification";
 
 #pragma mark - MenuItemSourceRadioButton
 
@@ -36,7 +22,7 @@ NSString * const MenuItemSourceSelectionValueDidChangeNotification = @"MenuItemS
 
 #pragma mark - MenuItemSourceOptionView
 
-static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
+static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 20.0;
 
 @interface MenuItemSourceCell ()
 
@@ -138,45 +124,45 @@ static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
             self.label = label;
         }
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sourceOptionSelectionUpdatedNotification:) name:MenuItemSourceSelectionValueDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sourceOptionSelectionUpdatedNotification:) name:MenuItemSourceCellSelectionValueDidChangeNotification object:nil];
     }
     
     return self;
 }
 
-
-- (void)setSource:(MenuItemSource *)source
+- (void)setTitle:(NSString *)title
 {
-    if(_source != source) {
-        _source = source;
-        [self updatedSource];
+    if (_title != title) {
+        _title = [title copy];
+        self.label.text = title;
     }
 }
 
-- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+- (void)setBadgeTitle:(NSString *)badgeTitle
 {
-    [super traitCollectionDidChange:previousTraitCollection];
-    [self setNeedsDisplay];
-}
-
-- (void)updatedSource
-{
-    if(self.source.badgeTitle) {
+    if (_badgeTitle != badgeTitle) {
+        _badgeTitle = [badgeTitle copy];
         
         [self insertBadgeLabelIfNeeded];
-        
-        self.badgeLabel.text = [self.source.badgeTitle uppercaseString];
-        self.badgeLabel.hidden = NO;
-        
-    }else {
-        self.badgeLabel.hidden = YES;
+        self.badgeLabel.text = [badgeTitle uppercaseString];
     }
     
-    self.label.text = self.source.title;
-    self.radioButton.selected = self.source.selected;
-    self.leadingLayoutConstraintForContentViewIndentation.constant = self.source.indentationLevel * MenuItemSourceOptionViewIdentationLength;
+    self.badgeLabel.hidden = _badgeTitle.length ? NO : YES;
+}
+
+- (void)setSourceHierarchyIndentation:(NSUInteger)sourceHierarchyIndentation
+{
+    if (_sourceHierarchyIndentation != sourceHierarchyIndentation) {
+        _sourceHierarchyIndentation = sourceHierarchyIndentation;
+        self.leadingLayoutConstraintForContentViewIndentation.constant = sourceHierarchyIndentation * MenuItemSourceCellHierarchyIdentationLength;
+    }
+}
+
+- (void)setSelected:(BOOL)selected
+{
+    [super setSelected:selected];
     
-    [self setNeedsDisplay];
+    self.radioButton.selected = selected;
 }
 
 - (void)insertBadgeLabelIfNeeded
@@ -203,8 +189,8 @@ static CGFloat const MenuItemSourceOptionViewIdentationLength = 20.0;
 
 - (void)sourceOptionSelectionUpdatedNotification:(NSNotification *)notification
 {
-    if(notification.object == self.source) {
-        [self updatedSource];
+    if(notification.object != self) {
+        self.selected = NO;
     }
 }
 
