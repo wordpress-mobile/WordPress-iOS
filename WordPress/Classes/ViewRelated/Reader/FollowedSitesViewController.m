@@ -143,7 +143,7 @@ static CGFloat const FollowSitesRowHeight = 54.0;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    UIImage *defaultImage = [UIImage imageNamed:@"icon-feed"];
+    UIImage *defaultImage = [UIImage imageNamed:@"post-blavatar-placeholder"];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.imageView.image = defaultImage;
