@@ -189,32 +189,28 @@ NSInteger const  WPNumberOfCommentsToSync = 100;
         NSUInteger commentCount = [blog.comments count];
         options[@"offset"] = @(commentCount);
     }
-    [remote getCommentsWithOptions:options
-                           success:^(NSArray *comments) {
-                               [self.managedObjectContext performBlock:^{
-                                   Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-                                   if (!blog) {
-                                       return;
-                                   }
-                                   [self mergeComments:comments
-                                               forBlog:blog
-                                         purgeExisting:NO
-                                     completionHandler:^{
-                                         [[self class] stopSyncingCommentsForBlog:blogID];
-                                         if (success) {
-                                             success(comments.count > 1);
-                                         }
-                                     }];
-                               }];
-                           }
-                           failure:^(NSError *error) {
-                               [[self class] stopSyncingCommentsForBlog:blogID];
-                               if (failure) {
-                                   [self.managedObjectContext performBlock:^{
-                                       failure(error);
-                                   }];
-                               }
-                           }];
+    [remote getCommentsWithMaximumCount:WPNumberOfCommentsToSync options:options success:^(NSArray *comments) {
+        [self.managedObjectContext performBlock:^{
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+            if (!blog) {
+                return;
+            }
+            [self mergeComments:comments forBlog:blog purgeExisting:NO completionHandler:^{
+                 [[self class] stopSyncingCommentsForBlog:blogID];
+                 if (success) {
+                     success(comments.count > 1);
+                 }
+             }];
+        }];
+        
+    } failure:^(NSError *error) {
+        [[self class] stopSyncingCommentsForBlog:blogID];
+        if (failure) {
+            [self.managedObjectContext performBlock:^{
+                failure(error);
+            }];
+        }
+    }];
 }
 
 // Upload comment
