@@ -16,6 +16,8 @@
         return;
     }
     
+    [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
+    
     // Save the token and site ID to shared user defaults for use in the today widget
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     [sharedDefaults setObject:timeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
@@ -32,9 +34,6 @@
                                error:&error];
     if (error) {
         DDLogError(@"Today Widget OAuth2Token error: %@", error);
-    } else {
-        // Turns the widget on for this site
-        [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
     }
 }
 
@@ -54,9 +53,6 @@
                               andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
                                  accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
                                        error:nil];
-    
-    // Turns the widget off for this site
-    [[NCWidgetController widgetController] setHasContent:NO forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
 }
 
 - (void)hideTodayWidgetIfNotConfigured
@@ -65,12 +61,7 @@
         return;
     }
     
-    BOOL widgetIsConfigured = [self widgetIsConfigured];
-    if (!widgetIsConfigured) {
-        [[NCWidgetController widgetController] setHasContent:NO forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
-    } else {
-        [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
-    }
+    [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
 }
 
 - (BOOL)widgetIsConfigured
