@@ -4,9 +4,13 @@
 @class PublicizeService;
 @class KeyringConnection;
 @class PublicizeConnection;
+@class Blog;
 
 @interface SharingAuthorizationHelper : NSObject
 @property (nonatomic, weak) id<SharingAuthorizationDelegate>delegate;
+- (instancetype)initWithViewController:(UIViewController *)viewController blog:(Blog *)blog publicizeService:(PublicizeService *)publicizeService;
+- (void)connectPublicizeService;
+- (void)reconnectPublicizeConnection:(PublicizeConnection *)publicizeConnection;
 @end
 
 @protocol SharingAuthorizationDelegate <NSObject>
