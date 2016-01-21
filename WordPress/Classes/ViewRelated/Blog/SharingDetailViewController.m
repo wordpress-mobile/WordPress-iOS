@@ -2,7 +2,7 @@
 #import "Blog.h"
 #import "BlogService.h"
 #import "SVProgressHUD.h"
-#import "SharingAuthorizationWebViewController.h"
+#import "SharingAuthorizationHelper.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import "WPTableViewCell.h"
 
@@ -10,15 +10,20 @@
 
 static NSString *const CellIdentifier = @"CellIdentifier";
 
-@interface SharingDetailViewController () <SharingAuthorizationDelegate>
+@interface SharingDetailViewController () <SharingAuthorizationHelperDelegate>
 
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) PublicizeConnection *publicizeConnection;
 @property (nonatomic, strong) PublicizeService *publicizeService;
-
+@property (nonatomic, strong) SharingAuthorizationHelper *helper;
 @end
 
 @implementation SharingDetailViewController
+
+- (void)dealloc
+{
+    self.helper.delegate = nil;
+}
 
 - (instancetype)initWithBlog:(Blog *)blog
          publicizeConnection:(PublicizeConnection *)connection
@@ -32,6 +37,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         _blog = blog;
         _publicizeConnection = connection;
         _publicizeService = service;
+        _helper = [[SharingAuthorizationHelper alloc] initWithViewController:self blog:blog publicizeService:service];
+        _helper.delegate = self;
     }
     return self;
 }
@@ -78,6 +85,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (section == 0) {
         return NSLocalizedString(@"Settings", @"Section title");
     }
+
     return nil;
 }
 
@@ -97,6 +105,10 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     if (section == 0) {
         return NSLocalizedString(@"Allow this connection to be used by all admins and users of your site.", @"");
+    }
+    if (section == 1 && [self.publicizeConnection isBroken]) {
+        NSString *title = NSLocalizedString(@"There is an issue connecting to %@. Reconnect to continue publicizing.", @"Informs the user about an issue connecting to the third-party sharing service. The `%@` is a placeholder for the service name.");
+        return [NSString stringWithFormat:title, self.publicizeService.label];
     }
     return nil;
 }
@@ -183,7 +195,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)reconnectPublicizeConnection
 {
-
+    [self.helper reconnectPublicizeConnection:self.publicizeConnection];
 }
 
 - (void)disconnectPublicizeConnection
@@ -216,5 +228,12 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self presentViewController:alert animated:YES completion:nil];
 }
 
+
+#pragma mark - SharingAuthenticationHelper Delegate Methods
+
+- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper didConnectToService:(PublicizeService *)service withPublicizeConnection:(PublicizeConnection *)keyringConnection
+{
+    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Reconnected", @"Message shwon to confirm a publicize connection has been successfully reconnected.")];
+}
 
 @end
