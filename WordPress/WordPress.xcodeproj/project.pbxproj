@@ -621,6 +621,7 @@
 		F1FA2C4E1AED07FC00255FCD /* MFMailComposeViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FA2C491AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.m */; };
 		F477725AA87B0B631A004DAF /* Pods_WordPress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC4C9905B8DB309BFF649BE9 /* Pods_WordPress.framework */; };
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
+		FA4ADAD81C50687400F858D7 /* DeleteSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* DeleteSiteService.swift */; };
 		FA77E02A1BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */; };
 		FA87F1AC1C4F2DEF004A92D1 /* DeleteSiteServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA87F1AB1C4F2DEF004A92D1 /* DeleteSiteServiceRemote.swift */; };
 		FA9E74481C50382D00C6B1D2 /* DeleteSiteServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9E74471C50382D00C6B1D2 /* DeleteSiteServiceRemoteTests.swift */; };
@@ -1700,6 +1701,7 @@
 		F1FA2C491AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MFMailComposeViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
 		FA2D12891BCED0AD006F2A15 /* WordPress 40.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 40.xcdatamodel"; sourceTree = "<group>"; };
+		FA4ADAD71C50687400F858D7 /* DeleteSiteService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteService.swift; sourceTree = "<group>"; };
 		FA77E0291BE17CFC006D45E0 /* ThemeBrowserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeBrowserHeaderView.swift; sourceTree = "<group>"; };
 		FA87F1AB1C4F2DEF004A92D1 /* DeleteSiteServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteServiceRemote.swift; sourceTree = "<group>"; };
 		FA9E74471C50382D00C6B1D2 /* DeleteSiteServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteSiteServiceRemoteTests.swift; sourceTree = "<group>"; };
@@ -2855,6 +2857,7 @@
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				E1556CF0193F6FE900FC52EA /* CommentService.h */,
 				E1556CF1193F6FE900FC52EA /* CommentService.m */,
+				FA4ADAD71C50687400F858D7 /* DeleteSiteService.swift */,
 				E1F8E1211B0B411E0073E628 /* JetpackService.h */,
 				E1F8E1221B0B411E0073E628 /* JetpackService.m */,
 				5DA3EE141925090A00294E0B /* MediaService.h */,
@@ -4678,6 +4681,7 @@
 				85B125461B0294F6008A3D95 /* UIAlertControllerProxy.m in Sources */,
 				B587797B19B799D800E57C5A /* NSIndexPath+Swift.swift in Sources */,
 				85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */,
+				FA4ADAD81C50687400F858D7 /* DeleteSiteService.swift in Sources */,
 				85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */,
 				E1A6DBDB19DC7D080071AC1E /* RemotePost.m in Sources */,
 				E1249B4619408D0F0035E895 /* CommentServiceRemoteXMLRPC.m in Sources */,
