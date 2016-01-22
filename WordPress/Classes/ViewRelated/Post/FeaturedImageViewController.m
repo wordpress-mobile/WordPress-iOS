@@ -90,7 +90,7 @@
         return;
     }
 
-    self.deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-comments-trash"] style:UIBarButtonItemStylePlain target:self action:@selector(removeFeaturedImage)];
+    self.deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gridicons-trash"] style:UIBarButtonItemStylePlain target:self action:@selector(removeFeaturedImage)];
 
     self.deleteButton.tintColor = [WPStyleGuide readGrey];
     self.deleteButton.accessibilityIdentifier = @"Remove Featured Image";
