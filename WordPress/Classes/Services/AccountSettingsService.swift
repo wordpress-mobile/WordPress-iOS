@@ -102,21 +102,6 @@ class AccountSettingsService {
         })
     }()
 
-    func refreshSettings(completion: (Bool) -> Void) {
-        remote.getSettings(
-            success: {
-                (settings) -> Void in
-
-                self.updateSettings(settings)
-                completion(true)
-            }, failure: {
-                (error) -> Void in
-
-                DDLogSwift.logError(String(error))
-                completion(false)
-        })
-    }
-
     func saveChange(change: AccountSettingsChange) {
         guard let reverse = try? applyChange(change) else {
             return
