@@ -40,7 +40,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
         var failureBlockCalled = false
         var failureError: NSError?
         let response = ["invalid", "response"]
-        let responseError = SiteManagementServiceRemote.ResultError.InvalidResponse
+        let responseError = SiteManagementServiceRemote.DeleteError.InvalidResponse
         
         siteManagementServiceRemote?.deleteSite(siteID,
             success: nil,
@@ -59,7 +59,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
         var failureBlockCalled = false
         var failureError: NSError?
         let response = ["key1": "value1", "key2": "value2"]
-        let responseError = DeleteSiteServiceRemote.ResultError.MissingStatus
+        let responseError = SiteManagementServiceRemote.DeleteError.MissingStatus
         
         siteManagementServiceRemote?.deleteSite(siteID,
             success: nil,
@@ -78,7 +78,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
         var failureBlockCalled = false
         var failureError: NSError?
         let response = ["status": "not-deleted"]
-        let responseError = DeleteSiteServiceRemote.ResultError.NotDeleted
+        let responseError = SiteManagementServiceRemote.DeleteError.NotDeleted
         
         siteManagementServiceRemote?.deleteSite(siteID,
             success: nil,
@@ -108,7 +108,7 @@ class SiteManagementServiceRemoteTests : XCTestCase
     }
     
     func testDeleteSiteResultErrorConversion() {
-        let errors: [DeleteSiteServiceRemote.ResultError] = [.InvalidResponse, .MissingStatus, .NotDeleted]
+        let errors: [SiteManagementServiceRemote.DeleteError] = [.InvalidResponse, .MissingStatus, .NotDeleted]
         for error in errors {
             XCTAssertEqual(error.toNSError().localizedDescription, error.description, "Incorrect description provided")
         }
