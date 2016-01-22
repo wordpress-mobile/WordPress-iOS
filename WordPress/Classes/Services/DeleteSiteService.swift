@@ -28,7 +28,7 @@ public class DeleteSiteService : LocalCoreDataService
         let remote = deleteSiteServiceRemoteForBlog(blog)
         remote.deleteSite(blog.dotComID,
             success: {
-                self.removeBlogWithObjectID(blogObjectID, success: success)
+                self.removeBlogWithObjectID(blogObjectID, success: success, failure: failure)
             },
             failure: { error in
                 failure?(error)
@@ -40,23 +40,26 @@ public class DeleteSiteService : LocalCoreDataService
     /// - Parameters:
     ///     - objectID: Core Data ID of the Blog to remove
     ///     - success:  Optional success block with no parameters
+    ///     - failure:  Optional failure block with NSError
     ///
-    public func removeBlogWithObjectID(objectID: NSManagedObjectID, success: (() -> Void)?) {
+    public func removeBlogWithObjectID(objectID: NSManagedObjectID, success: (() -> Void)?, failure: (NSError -> Void)?) {
         managedObjectContext.performBlock {
-            guard let blog = (try? self.managedObjectContext.existingObjectWithID(objectID)) as? Blog else {
-                DDLogSwift.logError("Error fetching Blog after site deletion")
-                success?()
+            do {
+                let blog = try self.managedObjectContext.existingObjectWithID(objectID) as! Blog
+                
+                let jetpackAccount = blog.jetpackAccount
+                
+                self.managedObjectContext.deleteObject(blog)
+                self.managedObjectContext.processPendingChanges()
+                
+                if let purgeableAccount = jetpackAccount {
+                    let accountService = AccountService(managedObjectContext: self.managedObjectContext)
+                    accountService.purgeAccount(purgeableAccount)
+                }
+            } catch let error as NSError {
+                DDLogSwift.logError(error.localizedDescription)
+                failure?(error)
                 return
-            }
-            
-            let jetpackAccount = blog.jetpackAccount
-            
-            self.managedObjectContext.deleteObject(blog)
-            self.managedObjectContext.processPendingChanges()
-            
-            if let purgeableAccount = jetpackAccount {
-                let accountService = AccountService(managedObjectContext: self.managedObjectContext)
-                accountService.purgeAccount(purgeableAccount)
             }
             
             ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
