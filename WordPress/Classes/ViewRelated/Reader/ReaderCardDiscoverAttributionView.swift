@@ -6,7 +6,7 @@ import WordPressShared
     @IBOutlet private weak var imageView: CircularImageView!
     @IBOutlet private(set) public weak var richTextView: RichTextView!
 
-    private let gravatarImageName = "gravatar-reader"
+    private let gravatarImageName = "gravatar"
     private let blavatarImageName = "post-blavatar-placeholder"
 
 
