@@ -61,7 +61,7 @@ public class SharingService : LocalCoreDataService
         let remote = SharingServiceRemote(api: apiForRequest())
         remote.getPublicizeConnections(blog.dotComID, success: {(remoteConnections:[RemotePublicizeConnection]) -> Void in
             // Process the results
-            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections:remoteConnections, success: success)
+            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections:remoteConnections, onComplete: success)
         },
         failure: { (error: NSError!) -> Void in
             failure?(error)
@@ -335,9 +335,9 @@ public class SharingService : LocalCoreDataService
     /// - Parameters:
     ///     - blogObjectID: the NSManagedObjectID of a `Blog`
     ///     - remoteConnections: An array of `RemotePublicizeConnection` objects to merge.
-    ///     - success: An optional callback block to be performed when core data has saved the changes.
+    ///     - onComplete: An optional callback block to be performed when core data has saved the changes.
     ///
-    private func mergePublicizeConnectionsForBlog(blogObjectID:NSManagedObjectID, remoteConnections:[RemotePublicizeConnection], success:(() -> Void)? ) {
+    private func mergePublicizeConnectionsForBlog(blogObjectID:NSManagedObjectID, remoteConnections:[RemotePublicizeConnection], onComplete:(() -> Void)? ) {
         managedObjectContext.performBlock { () -> Void in
             var blog:Blog
             do {
@@ -346,7 +346,7 @@ public class SharingService : LocalCoreDataService
                 DDLogSwift.logError("Error fetching Blog: \(error)")
                 // Because of the error we'll bail early, but we still need to call
                 // the success callback if one was passed.
-                success?()
+                onComplete?()
                 return
             }
 
@@ -368,7 +368,7 @@ public class SharingService : LocalCoreDataService
 
             // Save all the things.
             ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: { () -> Void in
-                success?()
+                onComplete?()
             })
         }
     }
