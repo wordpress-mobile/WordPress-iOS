@@ -74,14 +74,22 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     NSManagedObjectID *accountID = account.objectID;
-    dispatch_async(dispatch_get_main_queue(), ^{
+    void (^notifyAccountChange)() = ^{
         NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
         NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
         [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
         [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
-    });
+    };
+    if ([NSThread isMainThread]) {
+        // This is meant to help with testing account observers.
+        // Short version: dispatch_async and XCTest asynchronous helpers don't play nice with each other
+        // Long version: see the comment in https://github.com/wordpress-mobile/WordPress-iOS/blob/2f9a2100ca69d8f455acec47a1bbd6cbc5084546/WordPress/WordPressTest/AccountServiceRxTests.swift#L7
+        notifyAccountChange();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), notifyAccountChange);
+    }
 }
 
 /**
