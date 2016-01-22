@@ -66,16 +66,35 @@ class DeleteSiteServiceTests : XCTestCase
         XCTAssertFalse(blogObjectID.temporaryID, "Should be a permanent object")
         
         let expectation = expectationWithDescription(
-        "Remove Blog expectation")
-        deleteSiteService.removeBlogWithObjectID(blogObjectID, success: {
-            expectation.fulfill()
-        })
+        "Remove Blog success expectation")
+        deleteSiteService.removeBlogWithObjectID(blogObjectID,
+            success: {
+                expectation.fulfill()
+            }, failure: nil)
         waitForExpectationsWithTimeout(2, handler: nil)
         
         let shouldBeRemoved = try? context.existingObjectWithID(blogObjectID)
         XCTAssertNil(shouldBeRemoved, "Blog was not removed")
     }
 
+    func testRemoveBlogWithDeletedObjectIDFails() {
+        let context = contextManager.mainContext
+        let blog = insertBlog(context)
+        let blogObjectID = blog.objectID
+
+        context.deleteObject(blog)
+        try! context.save()
+
+        let expectation = expectationWithDescription(
+            "Remove Blog failure expectation")
+        deleteSiteService.removeBlogWithObjectID(blogObjectID,
+            success: nil,
+            failure: { error in
+                expectation.fulfill()
+            })
+        waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
     func testDeleteSiteCallsServiceRemoteDeleteSite() {
         let context = contextManager.mainContext
         let blog = insertBlog(context)
