@@ -38,6 +38,7 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic hasOlderPages;
 @dynamic posts;
 @dynamic categories;
+@dynamic tags;
 @dynamic comments;
 @dynamic connections;
 @dynamic themes;
