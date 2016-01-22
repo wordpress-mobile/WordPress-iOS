@@ -1,6 +1,8 @@
 #import "MenuItemSourceView.h"
 #import "MenuItemSourceTextBar.h"
 #import "MenusDesign.h"
+#import "MenuItem.h"
+#import "Menu.h"
 
 @interface MenuItemSourceView () <MenuItemSourceTextBarDelegate>
 
@@ -74,6 +76,8 @@
     return self;
 }
 
+#pragma mark - view configuration
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
@@ -117,19 +121,53 @@
     _searchBar = searchBar;
 }
 
-- (NSInteger)numberOfSourceTableSections
+#pragma mark - NSFetchedResultsController and subclass methods
+
+- (NSFetchedResultsController *)resultsController
 {
-    // overrided in subclasses
-    return 0;
+    NSFetchRequest *fetchRequest = nil;
+    if(!_resultsController && [self managedObjectContext] && (fetchRequest = [self fetchRequest])) {
+        
+        NSFetchedResultsController *resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[self managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+        resultsController.delegate = self;
+        _resultsController = resultsController;
+    }
+    
+    return _resultsController;
 }
 
-- (NSInteger)numberOfSourcesInTableSection:(NSInteger)section
+- (Blog *)blog
 {
-    // overrided in subclasses
-    return 0;
+    return self.item.menu.blog;
 }
 
-- (void)willDisplaySourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
+- (NSManagedObjectContext *)managedObjectContext
+{
+    return self.item.managedObjectContext;
+}
+
+- (NSFetchRequest *)fetchRequest
+{
+    // overrided in subclasses
+    return nil;
+}
+
+- (void)performResultsControllerFetchRequest
+{
+    if(!self.resultsController) {
+        return;
+    }
+    
+    NSError *error;
+    if(![self.resultsController performFetch:&error]) {
+        NSLog(@"an error ocurred: %@", error);
+        // TODO: handle errors
+    }
+}
+
+#pragma mark - subclass configuration
+
+- (void)configureSourceCellForDisplay:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     // overrided in subclasses
 }
@@ -138,12 +176,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [self numberOfSourceTableSections];
+    return self.resultsController.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self numberOfSourcesInTableSection:section];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    return [sectionInfo numberOfObjects];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -159,7 +198,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     MenuItemSourceCell *sourceCell = (MenuItemSourceCell *)cell;
-    [self willDisplaySourceCell:sourceCell forIndexPath:indexPath];
+    [self configureSourceCellForDisplay:sourceCell forIndexPath:indexPath];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -205,6 +244,62 @@
 - (void)sourceTextBar:(MenuItemSourceTextBar *)textBar didUpdateWithText:(NSString *)text
 {
     
+}
+
+#pragma mark - NSFetchedResultsControllerDelegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView beginUpdates];
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    UITableView *tableView = self.tableView;
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+        {
+            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+        case NSFetchedResultsChangeDelete:
+        {
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+        case NSFetchedResultsChangeUpdate:
+        {
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+        case NSFetchedResultsChangeMove:
+        {
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+  didChangeSection:(id )sectionInfo
+           atIndex:(NSUInteger)sectionIndex
+     forChangeType:(NSFetchedResultsChangeType)type
+{
+    if (type == NSFetchedResultsChangeInsert) {
+        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+    } else if (type == NSFetchedResultsChangeDelete) {
+        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView endUpdates];
 }
 
 @end
