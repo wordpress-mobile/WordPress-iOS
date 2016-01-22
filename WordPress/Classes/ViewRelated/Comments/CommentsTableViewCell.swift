@@ -91,6 +91,7 @@ public class CommentsTableViewCell : WPTableViewCell
     // MARK: - Private Helpers
     private func refreshDetailsLabel() {
         detailsLabel.attributedText = attributedDetailsText(approved)
+        layoutIfNeeded()
     }
     
     private func refreshTimestampLabel() {
