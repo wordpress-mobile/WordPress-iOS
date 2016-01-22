@@ -40,6 +40,8 @@
  */
 - (NSFetchRequest *)fetchRequest;
 
+- (NSString *)fetechedResultsControllerSectionNameKeyPath;
+
 /* Handles performing the fetchRequest on the resultsController and any errors that occur.
  */
 - (void)performResultsControllerFetchRequest;
