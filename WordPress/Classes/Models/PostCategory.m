@@ -10,4 +10,9 @@ const NSInteger PostCategoryUncategorized = 1;
 @dynamic posts;
 @dynamic blog;
 
++ (NSString *)entityName
+{
+    return @"Category";
+}
+
 @end
