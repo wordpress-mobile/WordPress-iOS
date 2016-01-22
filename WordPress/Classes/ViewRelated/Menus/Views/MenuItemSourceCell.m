@@ -3,8 +3,6 @@
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
-NSString * const MenuItemSourceCellSelectionValueDidChangeNotification = @"MenuItemSourceCellSelectionValueDidChangeNotification";
-
 #pragma mark - MenuItemSourceRadioButton
 
 @interface MenuItemSourceRadioButton : UIView
@@ -123,8 +121,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 20.0;
             [self.labelsStackView addArrangedSubview:label];
             self.label = label;
         }
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sourceOptionSelectionUpdatedNotification:) name:MenuItemSourceCellSelectionValueDidChangeNotification object:nil];
     }
     
     return self;
@@ -158,11 +154,13 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 20.0;
     }
 }
 
-- (void)setSelected:(BOOL)selected
+- (void)setSourceSelected:(BOOL)sourceSelected
 {
-    [super setSelected:selected];
-    
-    self.radioButton.selected = selected;
+    if (_sourceSelected != sourceSelected) {
+        _sourceSelected = sourceSelected;
+        
+        self.radioButton.selected = sourceSelected;
+    }
 }
 
 - (void)insertBadgeLabelIfNeeded
@@ -184,13 +182,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 20.0;
         
         [self.labelsStackView addArrangedSubview:label];
         self.badgeLabel = label;
-    }
-}
-
-- (void)sourceOptionSelectionUpdatedNotification:(NSNotification *)notification
-{
-    if(notification.object != self) {
-        self.selected = NO;
     }
 }
 

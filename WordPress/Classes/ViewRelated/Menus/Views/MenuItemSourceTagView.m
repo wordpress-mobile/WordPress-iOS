@@ -7,8 +7,6 @@
 
 @interface MenuItemSourceTagView ()
 
-@property (nonatomic, strong) NSMutableArray <PostTag *> *tags;
-
 @end
 
 @implementation MenuItemSourceTagView
@@ -18,7 +16,6 @@
     self = [super init];
     if(self) {
         
-        self.tags = [NSMutableArray array];
         [self insertSearchBarIfNeeded];
     }
     
@@ -28,42 +25,42 @@
 - (void)setItem:(MenuItem *)item
 {
     [super setItem:item];
-    
-    [self loadTags];
+    [self syncTags];
 }
 
-- (void)loadTags
+- (NSFetchRequest *)fetchRequest
 {
-    PostTagService *tagService = [[PostTagService alloc] initWithManagedObjectContext:self.item.managedObjectContext];
-    __weak Blog *blog = self.item.menu.blog;
-    __weak MenuItemSourceTagView *weakSelf = self;
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:[PostTag entityName] inManagedObjectContext:[self managedObjectContext]];
+    [fetchRequest setEntity:entity];
+    // Specify criteria for filtering which objects to fetch
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blog == %@", [self blog]];
+    [fetchRequest setPredicate:predicate];
+    // Specify how the fetched objects should be sorted
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name"
+                                                                   ascending:YES];
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
+    
+    return fetchRequest;
+}
+
+- (void)syncTags
+{
+    [self performResultsControllerFetchRequest];
+    
+    PostTagService *tagService = [[PostTagService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [tagService syncTagsForBlog:self.item.menu.blog success:^{
         
-        NSSet *tags = blog.tags;
-        if (tags.count) {
-            weakSelf.tags = [NSMutableArray arrayWithArray:[tags allObjects]];
-        }
-        [weakSelf.tableView reloadData];
+        // updated
         
     } failure:^(NSError *error) {
-        
         // TODO: show error message
     }];
 }
 
-- (NSInteger)numberOfSourceTableSections
+- (void)configureSourceCellForDisplay:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
-    return 1;
-}
-
-- (NSInteger)numberOfSourcesInTableSection:(NSInteger)section
-{
-    return self.tags.count;
-}
-
-- (void)willDisplaySourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
-{
-    PostTag *tag = [self.tags objectAtIndex:indexPath.row];
+    PostTag *tag = [self.resultsController objectAtIndexPath:indexPath];
     [cell setTitle:tag.name];
 }
 
