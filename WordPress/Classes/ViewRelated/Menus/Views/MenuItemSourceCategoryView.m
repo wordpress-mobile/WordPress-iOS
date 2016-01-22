@@ -7,7 +7,7 @@
 
 @interface MenuItemSourceCategoryView ()
 
-@property (nonatomic, strong) NSMutableArray *categories;
+@property (nonatomic, strong) NSMutableArray *orderedCategories;
 
 @end
 
@@ -27,41 +27,45 @@
 {
     [super setItem:item];
     
-    [self loadCategories];
+    [self syncCategories];
 }
 
-- (void)loadCategories
+- (NSFetchRequest *)fetchRequest
 {
-    __weak Blog *blog = self.item.menu.blog;
-    __weak MenuItemSourceCategoryView *weakSelf = self;
-    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.item.managedObjectContext];
-    [categoryService syncCategoriesForBlog:blog success:^{
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:[PostCategory entityName] inManagedObjectContext:[self managedObjectContext]];
+    [fetchRequest setEntity:entity];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blog == %@", [self blog]];
+    [fetchRequest setPredicate:predicate];
+    
+    NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName"
+                                                                       ascending:YES
+                                                                        selector:@selector(caseInsensitiveCompare:)];
+    
+    [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortNameDescriptor, nil]];
+    
+    return fetchRequest;
+}
+
+- (void)syncCategories
+{
+    self.orderedCategories = [NSMutableArray array];
+    [self performResultsControllerFetchRequest];
+    
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    [categoryService syncCategoriesForBlog:[self blog] success:^{
        
-        NSSet *categories = blog.categories;
-        if (categories.count) {
-            weakSelf.categories = [NSMutableArray arrayWithArray:[categories allObjects]];
-        }
-        [weakSelf.tableView reloadData];
+        // updated
         
     } failure:^(NSError *error) {
-        
-        
+        // TODO: show error message
     }];
 }
 
-- (NSInteger)numberOfSourceTableSections
+- (void)configureSourceCellForDisplay:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
-    return 1;
-}
-
-- (NSInteger)numberOfSourcesInTableSection:(NSInteger)section
-{
-    return self.categories.count;
-}
-
-- (void)willDisplaySourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
-{
-    PostCategory *category = [self.categories objectAtIndex:indexPath.row];
+    PostCategory *category = [self.resultsController objectAtIndexPath:indexPath];
     [cell setTitle:category.categoryName];
 }
 
