@@ -2,13 +2,13 @@ import Foundation
 import XCTest
 @testable import WordPress
 
-class DeleteSiteServiceTests : XCTestCase
+class SiteManagementServiceTests : XCTestCase
 {
     let contextManager = TestContextManager()
-    var mockRemoteService: MockDeleteSiteServiceRemote!
-    var deleteSiteService: DeleteSiteServiceTester!
+    var mockRemoteService: MockSiteManagementServiceRemote!
+    var siteManagementService: SiteManagementServiceTester!
     
-    class MockDeleteSiteServiceRemote : DeleteSiteServiceRemote
+    class MockSiteManagementServiceRemote : SiteManagementServiceRemote
     {
         var deleteSiteCalled = false
         var successBlockPassedIn:(() -> Void)?
@@ -27,14 +27,14 @@ class DeleteSiteServiceTests : XCTestCase
         }
     }
     
-    class DeleteSiteServiceTester : DeleteSiteService
+    class SiteManagementServiceTester : SiteManagementService
     {
         let mockRemoteApi = MockWordPressComApi()
-        lazy var mockRemoteService: MockDeleteSiteServiceRemote = {
-            return MockDeleteSiteServiceRemote(api: self.mockRemoteApi)
+        lazy var mockRemoteService: MockSiteManagementServiceRemote = {
+            return MockSiteManagementServiceRemote(api: self.mockRemoteApi)
         }()
         
-        override func deleteSiteServiceRemoteForBlog(blog: Blog) -> DeleteSiteServiceRemote {
+        override func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote {
             return mockRemoteService
         }
     }
@@ -42,8 +42,8 @@ class DeleteSiteServiceTests : XCTestCase
     override func setUp() {
         super.setUp()
   
-        deleteSiteService = DeleteSiteServiceTester(managedObjectContext: contextManager.mainContext)
-        mockRemoteService = deleteSiteService.mockRemoteService
+        siteManagementService = SiteManagementServiceTester(managedObjectContext: contextManager.mainContext)
+        mockRemoteService = siteManagementService.mockRemoteService
     }
     
     func insertBlog(context: NSManagedObjectContext) -> Blog {
@@ -67,7 +67,7 @@ class DeleteSiteServiceTests : XCTestCase
         
         let expectation = expectationWithDescription(
         "Remove Blog success expectation")
-        deleteSiteService.removeBlogWithObjectID(blogObjectID,
+        siteManagementService.removeBlogWithObjectID(blogObjectID,
             success: {
                 expectation.fulfill()
             }, failure: nil)
@@ -87,7 +87,7 @@ class DeleteSiteServiceTests : XCTestCase
 
         let expectation = expectationWithDescription(
             "Remove Blog failure expectation")
-        deleteSiteService.removeBlogWithObjectID(blogObjectID,
+        siteManagementService.removeBlogWithObjectID(blogObjectID,
             success: nil,
             failure: { error in
                 expectation.fulfill()
@@ -100,7 +100,7 @@ class DeleteSiteServiceTests : XCTestCase
         let blog = insertBlog(context)
         
         mockRemoteService.reset()
-        deleteSiteService.deleteSiteForBlog(blog, success: nil, failure: nil)
+        siteManagementService.deleteSiteForBlog(blog, success: nil, failure: nil)
         XCTAssertTrue(mockRemoteService.deleteSiteCalled, "Remote DeleteSite should have been called")
     }
     
@@ -110,7 +110,7 @@ class DeleteSiteServiceTests : XCTestCase
         
         let expectation = expectationWithDescription("Delete Site success expectation")
         mockRemoteService.reset()
-        deleteSiteService.deleteSiteForBlog(blog,
+        siteManagementService.deleteSiteForBlog(blog,
             success: {
                 expectation.fulfill()
             }, failure: nil)
@@ -125,7 +125,7 @@ class DeleteSiteServiceTests : XCTestCase
         let testError = NSError(domain:"UnitTest", code:0, userInfo:nil)
         let expectation = expectationWithDescription("Delete Site failure expectation")
         mockRemoteService.reset()
-        deleteSiteService.deleteSiteForBlog(blog,
+        siteManagementService.deleteSiteForBlog(blog,
             success: nil,
             failure: { error in
                 XCTAssertEqual(error, testError, "Error not propagated")

@@ -3,18 +3,18 @@ import WordPressComAnalytics
 
 public extension Blog
 {
-    /// Only WordPress.com hosted sites we administer may be deleted
+    /// Only WordPress.com hosted sites we administer may be managed
     ///
-    /// - Returns: Whether this blog may be deleted
+    /// - Returns: Whether site management is permitted
     ///
-    func supportsDeleteSiteServices() -> Bool {
+    func supportsSiteManagementServices() -> Bool {
         return isHostedAtWPcom && isAdmin
     }
 }
 
-/// DeleteSiteService handles deletion of a user's site.
+/// SiteManagementService handles deletion of a user's site.
 ///
-public class DeleteSiteService : LocalCoreDataService
+public class SiteManagementService : LocalCoreDataService
 {
     /// Deletes the specified WordPress.com site.
     ///
@@ -25,7 +25,7 @@ public class DeleteSiteService : LocalCoreDataService
     ///
     public func deleteSiteForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
         let blogObjectID = blog.objectID
-        let remote = deleteSiteServiceRemoteForBlog(blog)
+        let remote = siteManagementServiceRemoteForBlog(blog)
         remote.deleteSite(blog.dotComID,
             success: {
                 self.removeBlogWithObjectID(blogObjectID, success: success, failure: failure)
@@ -69,16 +69,16 @@ public class DeleteSiteService : LocalCoreDataService
         }
     }
     
-    /// Creates a remote service for site deletion
+    /// Creates a remote service for site management
     ///
-    /// - Note: Only WordPress.com API supports delete site
+    /// - Note: Only WordPress.com API supports site management
     ///
     /// - Parameters:
-    ///     - blog: The Blog whose site to delete
+    ///     - blog: The Blog currently at the site
     ///
-    /// - Returns: Remote service for site deletion
+    /// - Returns: Remote service for site management
     ///
-    func deleteSiteServiceRemoteForBlog(blog: Blog) -> DeleteSiteServiceRemote {
-        return DeleteSiteServiceRemote(api: blog.restApi())
+    func siteManagementServiceRemoteForBlog(blog: Blog) -> SiteManagementServiceRemote {
+        return SiteManagementServiceRemote(api: blog.restApi())
     }
 }
