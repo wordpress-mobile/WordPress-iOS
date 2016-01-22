@@ -56,6 +56,7 @@ target :WordPressTest, :exclusive => true do
   pod 'Expecta', '0.3.2'
   pod 'Nimble', '~> 3.0.0'
   pod 'RxSwift', '~> 2.1.0'
+  pod 'RxTests', '~> 2.1.0'
 end
 
 target 'UITests', :exclusive => true do

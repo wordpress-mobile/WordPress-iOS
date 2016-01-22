@@ -5,6 +5,13 @@ import RxSwift
 
 let AccountSettingsServiceChangeSaveFailedNotification = "AccountSettingsServiceChangeSaveFailed"
 
+protocol AccountSettingsRemoteInterface {
+    var settings: Observable<AccountSettings> { get }
+    func updateSetting(change: AccountSettingsChange, success: () -> Void, failure: ErrorType -> Void)
+}
+
+extension AccountSettingsRemote: AccountSettingsRemoteInterface {}
+
 class AccountSettingsService {
     struct Defaults {
         static let stallTimeout = 4.0
@@ -12,7 +19,7 @@ class AccountSettingsService {
         static let pollingInterval = 60.0
     }
 
-    let remote: AccountSettingsRemote
+    let remote: AccountSettingsRemoteInterface
     let userID: Int
 
     private let context = ContextManager.sharedInstance().mainContext
@@ -22,17 +29,22 @@ class AccountSettingsService {
         self.userID = userID
     }
 
+    init(userID: Int, remote: AccountSettingsRemoteInterface) {
+        self.userID = userID
+        self.remote = remote
+    }
+
     /// Emits a boolean value each time reachability changes for the internet connection.
     private let reachable = Reachability.internetConnection
 
     /// Performs a network refresh of settings and emits values with the refresh status.
     ///
-    /// - When it's subscribed, it requests a refresh from the server and immediately emits a `.Refreshing` value.
+    /// - When it's subscribed, it requests a refresh from the server
     /// - If a networking error happens it doesn't emit a new value and will retry the request.
     /// - If it reaches the maximum permitted number of retries it will emit an Error.
     /// - If an error not related to networking happens, it will emit an Error.
     /// - When the data is refreshed, it will emit an `.Idle` value and complete.
-    lazy private var remoteSettings: Observable<RefreshStatus> = {
+    lazy var remoteSettings: Observable<RefreshStatus> = {
         return self.remote.settings
             .map({ settings -> RefreshStatus in
                 self.updateSettings(settings)
@@ -54,6 +66,7 @@ class AccountSettingsService {
             .doOn(onError: { (error) -> Void in
                 DDLogSwift.logError("Error refreshing settings (maxRetries reached): \(error)")
             })
+            .catchErrorJustReturn(.Failed)
     }()
 
     /// Emits one `.Stalled` value after a timeout and then completes
@@ -61,7 +74,7 @@ class AccountSettingsService {
             .just(.Stalled)
             .delaySubscription(Defaults.stallTimeout, scheduler: MainScheduler.instance)
 
-    /// Performs a network refresh, emitting a `.Stalled` value if it's taking too long
+    /// Performs a network refresh, emitting a `.Stalled` value if it's taking too long. It initially emits a `.Refreshing` value.
     /// - seealso: remoteSettings
     lazy private var request: Observable<RefreshStatus> = {
         let remoteSettings = self.remoteSettings
