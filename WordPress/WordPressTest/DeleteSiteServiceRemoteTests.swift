@@ -3,20 +3,20 @@ import XCTest
 import AFNetworking
 @testable import WordPress
 
-class DeleteSiteServiceRemoteTests : XCTestCase
+class SiteManagementServiceRemoteTests : XCTestCase
 {
     let mockRemoteApi = MockWordPressComApi()
-    var deleteSiteServiceRemote: DeleteSiteServiceRemote?
+    var siteManagementServiceRemote: SiteManagementServiceRemote?
   
     let siteID = NSNumber(integer: 999999)
     
     override func setUp() {
         super.setUp()
-        deleteSiteServiceRemote = DeleteSiteServiceRemote(api: mockRemoteApi)
+        siteManagementServiceRemote = SiteManagementServiceRemote(api: mockRemoteApi)
     }
     
     func testDeleteSiteUsesTheCorrectPath() {
-        deleteSiteServiceRemote?.deleteSite(siteID, success: nil, failure: nil)
+        siteManagementServiceRemote?.deleteSite(siteID, success: nil, failure: nil)
         
         XCTAssertTrue(mockRemoteApi.postMethodCalled, "Method was not called")
         XCTAssertEqual(mockRemoteApi.URLStringPassedIn!, "v1.1/sites/\(siteID)/delete", "Incorrect URL passed in")
@@ -25,7 +25,7 @@ class DeleteSiteServiceRemoteTests : XCTestCase
     func testDeleteSiteCallsFailureBlockOnNetworkingFailure() {
         var failureBlockCalled = false
         
-        deleteSiteServiceRemote?.deleteSite(siteID,
+        siteManagementServiceRemote?.deleteSite(siteID,
             success: nil,
             failure: { error in
                 failureBlockCalled = true
@@ -40,9 +40,9 @@ class DeleteSiteServiceRemoteTests : XCTestCase
         var failureBlockCalled = false
         var failureError: NSError?
         let response = ["invalid", "response"]
-        let responseError = DeleteSiteServiceRemote.ResultError.InvalidResponse
+        let responseError = SiteManagementServiceRemote.ResultError.InvalidResponse
         
-        deleteSiteServiceRemote?.deleteSite(siteID,
+        siteManagementServiceRemote?.deleteSite(siteID,
             success: nil,
             failure: { error in
                 failureBlockCalled = true
@@ -61,7 +61,7 @@ class DeleteSiteServiceRemoteTests : XCTestCase
         let response = ["key1": "value1", "key2": "value2"]
         let responseError = DeleteSiteServiceRemote.ResultError.MissingStatus
         
-        deleteSiteServiceRemote?.deleteSite(siteID,
+        siteManagementServiceRemote?.deleteSite(siteID,
             success: nil,
             failure: { error in
                 failureBlockCalled = true
@@ -80,7 +80,7 @@ class DeleteSiteServiceRemoteTests : XCTestCase
         let response = ["status": "not-deleted"]
         let responseError = DeleteSiteServiceRemote.ResultError.NotDeleted
         
-        deleteSiteServiceRemote?.deleteSite(siteID,
+        siteManagementServiceRemote?.deleteSite(siteID,
             success: nil,
             failure: { error in
                 failureBlockCalled = true
@@ -97,7 +97,7 @@ class DeleteSiteServiceRemoteTests : XCTestCase
         let response = ["status": "deleted"]
         var successBlockCalled = false
         
-        deleteSiteServiceRemote?.deleteSite(siteID,
+        siteManagementServiceRemote?.deleteSite(siteID,
             success: { () -> Void in
                 successBlockCalled = true
             }, failure: nil)
