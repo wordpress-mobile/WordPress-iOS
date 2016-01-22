@@ -5,7 +5,18 @@ import RxSwift
 class AccountSettingsRemote: ServiceRemoteREST {
     static let remotes = NSMapTable(keyOptions: .StrongMemory, valueOptions: .WeakMemory)
 
+    /// Returns an AccountSettingsRemote with the given api, reusing a previous
+    /// remote if it exists.
     static func remoteWithApi(api: WordPressComApi) -> AccountSettingsRemote {
+        // We're hashing on the authToken because we don't want duplicate api
+        // objects for the same account.
+        //
+        // In theory this would be taken care of by the fact that the api comes
+        // from a WPAccount, and since WPAccount is a managed object Core Data
+        // guarantees there's only one of it.
+        // 
+        // However it might be possible that the account gets deallocated and
+        // when it's fetched again it would create a different api object.
         let key = api.authToken.hashValue
         // FIXME: not thread safe
         // @koke 2016-01-21
@@ -20,6 +31,8 @@ class AccountSettingsRemote: ServiceRemoteREST {
 
     let settings: Observable<AccountSettings>
 
+    /// Creates a new AccountSettingsRemote. It is recommended that you use AccountSettingsRemote.remoteWithApi(_)
+    /// instead.
     override init(api: WordPressComApi) {
         settings = AccountSettingsRemote.settingsWithApi(api)
         super.init(api: api)
