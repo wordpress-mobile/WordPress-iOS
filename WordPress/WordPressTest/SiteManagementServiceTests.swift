@@ -58,43 +58,6 @@ class SiteManagementServiceTests : XCTestCase
         return blog
     }
  
-    func testRemoveBlogWithObjectIDWorks() {
-        let context = contextManager.mainContext
-        let blog = insertBlog(context)
-        
-        let blogObjectID = blog.objectID
-        XCTAssertFalse(blogObjectID.temporaryID, "Should be a permanent object")
-        
-        let expectation = expectationWithDescription(
-        "Remove Blog success expectation")
-        siteManagementService.removeBlogWithObjectID(blogObjectID,
-            success: {
-                expectation.fulfill()
-            }, failure: nil)
-        waitForExpectationsWithTimeout(2, handler: nil)
-        
-        let shouldBeRemoved = try? context.existingObjectWithID(blogObjectID)
-        XCTAssertNil(shouldBeRemoved, "Blog was not removed")
-    }
-
-    func testRemoveBlogWithDeletedObjectIDFails() {
-        let context = contextManager.mainContext
-        let blog = insertBlog(context)
-        let blogObjectID = blog.objectID
-
-        context.deleteObject(blog)
-        try! context.save()
-
-        let expectation = expectationWithDescription(
-            "Remove Blog failure expectation")
-        siteManagementService.removeBlogWithObjectID(blogObjectID,
-            success: nil,
-            failure: { error in
-                expectation.fulfill()
-            })
-        waitForExpectationsWithTimeout(2, handler: nil)
-    }
-    
     func testDeleteSiteCallsServiceRemoteDeleteSite() {
         let context = contextManager.mainContext
         let blog = insertBlog(context)
@@ -118,6 +81,27 @@ class SiteManagementServiceTests : XCTestCase
         waitForExpectationsWithTimeout(2, handler: nil)
     }
     
+    func testDeleteSiteRemovesExistingBlogOnSuccess() {
+        let context = contextManager.mainContext
+        let blog = insertBlog(context)
+        let blogObjectID = blog.objectID
+        
+        XCTAssertFalse(blogObjectID.temporaryID, "Should be a permanent object")
+        
+        let expectation = expectationWithDescription(
+            "Remove Blog success expectation")
+        mockRemoteService.reset()
+        siteManagementService.deleteSiteForBlog(blog,
+            success: {
+                expectation.fulfill()
+            }, failure: nil)
+        mockRemoteService.successBlockPassedIn?()
+        waitForExpectationsWithTimeout(2, handler: nil)
+        
+        let shouldBeRemoved = try? context.existingObjectWithID(blogObjectID)
+        XCTAssertNil(shouldBeRemoved, "Blog was not removed")
+    }
+    
     func testDeleteSiteCallsFailureBlock() {
         let context = contextManager.mainContext
         let blog = insertBlog(context)
@@ -133,5 +117,29 @@ class SiteManagementServiceTests : XCTestCase
             })
         mockRemoteService.failureBlockPassedIn?(testError)
         waitForExpectationsWithTimeout(2, handler: nil)
+    }
+    
+    func testDeleteSiteDoesNotRemoveExistingBlogOnFailure() {
+        let context = contextManager.mainContext
+        let blog = insertBlog(context)
+        let blogObjectID = blog.objectID
+        
+        XCTAssertFalse(blogObjectID.temporaryID, "Should be a permanent object")
+        
+        let testError = NSError(domain:"UnitTest", code:0, userInfo:nil)
+        let expectation = expectationWithDescription(
+            "Remove Blog success expectation")
+        mockRemoteService.reset()
+        siteManagementService.deleteSiteForBlog(blog,
+            success: nil,
+            failure: { error in
+                XCTAssertEqual(error, testError, "Error not propagated")
+                expectation.fulfill()
+            })
+        mockRemoteService.failureBlockPassedIn?(testError)
+        waitForExpectationsWithTimeout(2, handler: nil)
+        
+        let shouldNotBeRemoved = try? context.existingObjectWithID(blogObjectID)
+        XCTAssertNotNil(shouldNotBeRemoved, "Blog was removed")
     }
 }
