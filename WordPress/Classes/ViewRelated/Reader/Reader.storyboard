@@ -151,7 +151,7 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JFE-Nr-imf">
                                                 <rect key="frame" x="16" y="154" width="568" height="20"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar-reader" translatesAutoresizingMaskIntoConstraints="NO" id="LYY-JU-FkT" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="LYY-JU-FkT" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="20" id="nxJ-6V-rPo"/>
@@ -417,7 +417,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="gravatar-reader" width="32" height="32"/>
+        <image name="gravatar" width="85" height="85"/>
         <image name="icon-menu-ellipsis" width="24" height="24"/>
         <image name="icon-reader-comment" width="24" height="24"/>
         <image name="icon-reader-like" width="24" height="24"/>
