@@ -11,10 +11,10 @@ class DeleteSiteServiceTests : XCTestCase
     class MockDeleteSiteServiceRemote : DeleteSiteServiceRemote
     {
         var deleteSiteCalled = false
-        var successBlockPassedIn:(() -> ())?
-        var failureBlockPassedIn:((NSError) -> ())?
+        var successBlockPassedIn:(() -> Void)?
+        var failureBlockPassedIn:((NSError) -> Void)?
         
-        override func deleteSite(siteID: NSNumber, success: (() -> ())?, failure: (NSError -> ())?) {
+        override func deleteSite(siteID: NSNumber, success: (() -> Void)?, failure: (NSError -> Void)?) {
             deleteSiteCalled = true
             successBlockPassedIn = success
             failureBlockPassedIn = failure

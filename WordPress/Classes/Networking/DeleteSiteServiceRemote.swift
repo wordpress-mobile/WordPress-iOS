@@ -12,7 +12,7 @@ public class DeleteSiteServiceRemote : ServiceRemoteREST
      - parameter success: Optional success block with no parameters
      - parameter failure: Optional failure block with NSError parameter
      */
-    public func deleteSite(siteID: NSNumber, success: (() -> ())?, failure: (NSError -> ())?) {
+    public func deleteSite(siteID: NSNumber, success: (() -> Void)?, failure: (NSError -> Void)?) {
         let endpoint = "sites/\(siteID)/delete"
         let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 

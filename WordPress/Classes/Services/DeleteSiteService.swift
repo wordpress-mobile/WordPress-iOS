@@ -20,7 +20,7 @@ public class DeleteSiteService : LocalCoreDataService
      - parameter success: Optional success block with no parameters
      - parameter failure: Optional failure block with NSError parameter
      */
-    public func deleteSiteForBlog(blog: Blog, success: (() -> ())?, failure: (NSError -> ())?) {
+    public func deleteSiteForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
         let blogObjectID = blog.objectID
         let remote = deleteSiteServiceRemoteForBlog(blog)
         remote.deleteSite(blog.dotComID,
@@ -38,7 +38,7 @@ public class DeleteSiteService : LocalCoreDataService
      - parameter objectID: Core Data ID of the Blog to remove
      - parameter success:  Optional success block with no parameters
      */
-    public func removeBlogWithObjectID(objectID: NSManagedObjectID, success: (() -> ())?) {
+    public func removeBlogWithObjectID(objectID: NSManagedObjectID, success: (() -> Void)?) {
         managedObjectContext.performBlock {
             guard let blog = (try? self.managedObjectContext.existingObjectWithID(objectID)) as? Blog else {
                 DDLogSwift.logError("Error fetching Blog after site deletion")

@@ -98,7 +98,7 @@ class DeleteSiteServiceRemoteTests : XCTestCase
         var successBlockCalled = false
         
         deleteSiteServiceRemote?.deleteSite(siteID,
-            success: { () -> () in
+            success: { () -> Void in
                 successBlockCalled = true
             }, failure: nil)
         mockRemoteApi.successBlockPassedIn?(AFHTTPRequestOperation(), response)
