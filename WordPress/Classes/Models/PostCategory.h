@@ -12,6 +12,8 @@ extern const NSInteger PostCategoryUncategorized;
 @property (nonatomic, strong) NSSet *posts;
 @property (nonatomic, strong) Blog *blog;
 
++ (NSString *)entityName;
+
 @end
 
 @class Post;
