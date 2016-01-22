@@ -60,8 +60,6 @@
         
         self.headerView = headerView;
     }
-
-    self.selectedItemType = MenuItemTypePage;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -87,7 +85,13 @@
 {
     if(_item != item) {
         _item = item;
-        self.sourceView.item = item;
+        
+        MenuItemType itemType = [item itemType];
+        if(itemType == MenuItemTypeUnknown) {
+            self.selectedItemType = MenuItemTypePage;
+        }else {
+            self.selectedItemType = itemType;
+        }
     }
 }
 

@@ -28,6 +28,9 @@
             tableView.dataSource = self;
             tableView.delegate = self;
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            UIEdgeInsets inset = tableView.contentInset;
+            inset.top = MenusDesignDefaultContentSpacing / 2.02;
+            tableView.contentInset = inset;
             [self addSubview:tableView];
             
             [NSLayoutConstraint activateConstraints:@[
@@ -53,10 +56,9 @@
             stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
             
             UIEdgeInsets margins = UIEdgeInsetsZero;
-            margins.top = stackView.spacing;
+            margins.bottom = stackView.spacing;
             margins.left = MenusDesignDefaultContentSpacing;
             margins.right = MenusDesignDefaultContentSpacing;
-            margins.bottom = stackView.spacing;
             stackView.layoutMargins = margins;
             stackView.layoutMarginsRelativeArrangement = YES;
             
@@ -128,7 +130,7 @@
     NSFetchRequest *fetchRequest = nil;
     if(!_resultsController && [self managedObjectContext] && (fetchRequest = [self fetchRequest])) {
         
-        NSFetchedResultsController *resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[self managedObjectContext] sectionNameKeyPath:nil cacheName:nil];
+        NSFetchedResultsController *resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[self managedObjectContext] sectionNameKeyPath:[self fetechedResultsControllerSectionNameKeyPath] cacheName:nil];
         resultsController.delegate = self;
         _resultsController = resultsController;
     }
@@ -147,6 +149,12 @@
 }
 
 - (NSFetchRequest *)fetchRequest
+{
+    // overrided in subclasses
+    return nil;
+}
+
+- (NSString *)fetechedResultsControllerSectionNameKeyPath
 {
     // overrided in subclasses
     return nil;
@@ -210,6 +218,12 @@
     }
     
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    return [sectionInfo name];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

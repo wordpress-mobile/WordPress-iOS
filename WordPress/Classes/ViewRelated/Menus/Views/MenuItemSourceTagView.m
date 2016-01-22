@@ -38,7 +38,9 @@
     [fetchRequest setPredicate:predicate];
     // Specify how the fetched objects should be sorted
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name"
-                                                                   ascending:YES];
+                                                                   ascending:YES
+                                                                    selector:@selector(caseInsensitiveCompare:)];
+    
     [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
     
     return fetchRequest;
