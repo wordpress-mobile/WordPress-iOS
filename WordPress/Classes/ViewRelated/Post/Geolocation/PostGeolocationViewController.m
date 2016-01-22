@@ -84,8 +84,8 @@
         return;
     }
 
-    self.deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-comments-trash"] style:UIBarButtonItemStylePlain target:self action:@selector(removeGeolocation)];
-    self.refreshButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"sync_lite"] style:UIBarButtonItemStylePlain target:self action:@selector(updateLocation)];
+    self.deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gridicons-trash"] style:UIBarButtonItemStylePlain target:self action:@selector(removeGeolocation)];
+    self.refreshButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gridicons-sync"] style:UIBarButtonItemStylePlain target:self action:@selector(updateLocation)];
 
     self.deleteButton.tintColor = [WPStyleGuide readGrey];
     self.refreshButton.tintColor = [WPStyleGuide readGrey];
