@@ -59,10 +59,12 @@ class ErrorAnimator: Animator {
     }
 
     private func preamble() {
-        errorLabel = createErrorLabel()
-        targetView.addSubview(errorLabel!)
-        errorLabel?.frame.size.height = 0
-        errorLabel?.label.alpha = 0
+        if showingError {
+            errorLabel = createErrorLabel()
+            targetView.addSubview(errorLabel!)
+            errorLabel?.frame.size.height = 0
+            errorLabel?.label.alpha = 0
+        }
 
         UIView.performWithoutAnimation { [unowned self] in
             self.targetView.layoutIfNeeded()
