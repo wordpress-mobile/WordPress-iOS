@@ -49,6 +49,7 @@ class AccountSettingsServiceTests: XCTestCase {
 
         XCTAssertEqual(requestCount, 1)
         XCTAssertEqual(res.events, [
+            next(200, .Refreshing),
             next(210, .Idle),
             completed(210)
             ])
@@ -80,6 +81,7 @@ class AccountSettingsServiceTests: XCTestCase {
 
         XCTAssertEqual(requestCount, 2)
         XCTAssertEqual(res.events, [
+            next(200, .Refreshing),
             next(220, .Idle),
             completed(220)
             ])
@@ -106,6 +108,7 @@ class AccountSettingsServiceTests: XCTestCase {
 
         XCTAssertEqual(requestCount, 3)
         XCTAssertEqual(res.events, [
+            next(200, .Refreshing),
             next(230, .Failed),
             completed(230)
             ])
@@ -132,6 +135,7 @@ class AccountSettingsServiceTests: XCTestCase {
 
         XCTAssertEqual(requestCount, 1)
         XCTAssertEqual(res.events, [
+            next(200, .Refreshing),
             next(210, .Failed),
             completed(210)
             ])
