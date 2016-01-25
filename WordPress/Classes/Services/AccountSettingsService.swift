@@ -63,6 +63,7 @@ class AccountSettingsService {
                 }
             })
             .retry(Defaults.maxRetries)
+            .startWith(.Refreshing)
             .doOn(onError: { (error) -> Void in
                 DDLogSwift.logError("Error refreshing settings (maxRetries reached): \(error)")
             })
@@ -83,7 +84,6 @@ class AccountSettingsService {
 
         return remoteSettings
             .amb(stalledSettings)
-            .startWith(.Refreshing)
     }()
 
     /// Emits values when the refresh status changes.
