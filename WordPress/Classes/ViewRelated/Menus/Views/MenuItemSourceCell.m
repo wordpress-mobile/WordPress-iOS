@@ -20,7 +20,7 @@
 
 #pragma mark - MenuItemSourceOptionView
 
-static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 20.0;
+static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
 
 @interface MenuItemSourceCell ()
 
@@ -30,6 +30,8 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 20.0;
 @property (nonatomic, strong) MenuItemSourceOptionBadgeLabel *badgeLabel;
 @property (nonatomic, strong) MenuItemSourceRadioButton *radioButton;
 @property (nonatomic, strong) NSLayoutConstraint *leadingLayoutConstraintForContentViewIndentation;
+@property (nonatomic, strong) NSLayoutConstraint *topLayoutConstraintForContentViewIndentation;
+@property (nonatomic, strong) NSLayoutConstraint *topLayoutDefaultConstraint;
 
 @end
 
@@ -66,9 +68,11 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 20.0;
             [self.contentView addSubview:stackView];
             
             self.leadingLayoutConstraintForContentViewIndentation = [stackView.leadingAnchor constraintEqualToAnchor:self.contentView.leadingAnchor];
+            self.topLayoutDefaultConstraint = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor];
+            self.topLayoutConstraintForContentViewIndentation = [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor constant:-(margins.top)];
             
             [NSLayoutConstraint activateConstraints:@[
-                                                      [stackView.topAnchor constraintEqualToAnchor:self.contentView.topAnchor],
+                                                      self.topLayoutDefaultConstraint,
                                                       self.leadingLayoutConstraintForContentViewIndentation,
                                                       [stackView.trailingAnchor constraintLessThanOrEqualToAnchor:self.contentView.trailingAnchor],
                                                       [stackView.bottomAnchor constraintEqualToAnchor:self.contentView.bottomAnchor]
@@ -151,6 +155,21 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 20.0;
     if (_sourceHierarchyIndentation != sourceHierarchyIndentation) {
         _sourceHierarchyIndentation = sourceHierarchyIndentation;
         self.leadingLayoutConstraintForContentViewIndentation.constant = sourceHierarchyIndentation * MenuItemSourceCellHierarchyIdentationLength;
+        
+        if(sourceHierarchyIndentation) {
+            
+            if(self.topLayoutDefaultConstraint.active) {
+                [NSLayoutConstraint deactivateConstraints:@[self.topLayoutDefaultConstraint]];
+                [NSLayoutConstraint activateConstraints:@[self.topLayoutConstraintForContentViewIndentation]];
+            }
+            
+        }else {
+            
+            if(self.topLayoutConstraintForContentViewIndentation.active) {
+                [NSLayoutConstraint deactivateConstraints:@[self.topLayoutConstraintForContentViewIndentation]];
+                [NSLayoutConstraint activateConstraints:@[self.topLayoutDefaultConstraint]];
+            }
+        }
     }
 }
 
