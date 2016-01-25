@@ -586,6 +586,11 @@
 		E6374DC71C44550700F24720 /* RemotePublicizeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6374DC51C44550700F24720 /* RemotePublicizeService.swift */; };
 		E6374DC91C445ABF00F24720 /* SharingServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E6374DC81C445ABF00F24720 /* SharingServiceRemoteTests.m */; };
 		E6396E1F1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6396E1E1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift */; };
+		E63BBC931C5161B800598BE8 /* KeyringConnectionExternalUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E63BBC921C5161B800598BE8 /* KeyringConnectionExternalUser.swift */; };
+		E63BBC961C5168BE00598BE8 /* SharingAuthorizationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E63BBC951C5168BE00598BE8 /* SharingAuthorizationHelper.m */; };
+		E6431DE51C4E892900FD8D90 /* SharingConnectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6431DE01C4E892900FD8D90 /* SharingConnectionsViewController.m */; };
+		E6431DE61C4E892900FD8D90 /* SharingDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6431DE21C4E892900FD8D90 /* SharingDetailViewController.m */; };
+		E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6431DE41C4E892900FD8D90 /* SharingViewController.m */; };
 		E65219F91B8D10C2000B1217 /* ReaderBlockedSiteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */; };
 		E65219FB1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */; };
 		E66969C81B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */; };
@@ -1666,6 +1671,15 @@
 		E6374DC51C44550700F24720 /* RemotePublicizeService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemotePublicizeService.swift; path = "Remote Objects/RemotePublicizeService.swift"; sourceTree = "<group>"; };
 		E6374DC81C445ABF00F24720 /* SharingServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingServiceRemoteTests.m; sourceTree = "<group>"; };
 		E6396E1E1BED91E00058B374 /* RemoteReaderCrossPostMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteReaderCrossPostMeta.swift; path = "Remote Objects/RemoteReaderCrossPostMeta.swift"; sourceTree = "<group>"; };
+		E63BBC921C5161B800598BE8 /* KeyringConnectionExternalUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyringConnectionExternalUser.swift; sourceTree = "<group>"; };
+		E63BBC941C5168BE00598BE8 /* SharingAuthorizationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingAuthorizationHelper.h; sourceTree = "<group>"; };
+		E63BBC951C5168BE00598BE8 /* SharingAuthorizationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingAuthorizationHelper.m; sourceTree = "<group>"; };
+		E6431DDF1C4E892900FD8D90 /* SharingConnectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingConnectionsViewController.h; sourceTree = "<group>"; };
+		E6431DE01C4E892900FD8D90 /* SharingConnectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingConnectionsViewController.m; sourceTree = "<group>"; };
+		E6431DE11C4E892900FD8D90 /* SharingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingDetailViewController.h; sourceTree = "<group>"; };
+		E6431DE21C4E892900FD8D90 /* SharingDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingDetailViewController.m; sourceTree = "<group>"; };
+		E6431DE31C4E892900FD8D90 /* SharingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingViewController.h; sourceTree = "<group>"; };
+		E6431DE41C4E892900FD8D90 /* SharingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingViewController.m; sourceTree = "<group>"; };
 		E65219F81B8D10C2000B1217 /* ReaderBlockedSiteCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderBlockedSiteCell.xib; sourceTree = "<group>"; };
 		E65219FA1B8D10DA000B1217 /* ReaderBlockedSiteCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderBlockedSiteCell.swift; sourceTree = "<group>"; };
 		E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTopicServiceTest.swift; sourceTree = "<group>"; };
@@ -2073,6 +2087,7 @@
 				E14932B4130427B300154804 /* Coordinate.h */,
 				E14932B5130427B300154804 /* Coordinate.m */,
 				E6374DBC1C444D8B00F24720 /* KeyringConnection.swift */,
+				E63BBC921C5161B800598BE8 /* KeyringConnectionExternalUser.swift */,
 				E14200771C117A2E00B3B115 /* ManagedAccountSettings.swift */,
 				E14200791C117A3B00B3B115 /* ManagedAccountSettings+CoreDataProperties.swift */,
 				8350E49411D2C71E00A7B073 /* Media.h */,
@@ -2945,6 +2960,7 @@
 			isa = PBXGroup;
 			children = (
 				BE8A267F1BEC1A3500C1D3D3 /* CreateNewBlog */,
+				E6431DDE1C4E890B00FD8D90 /* Sharing */,
 				BE6AB7FB1BC62E0B00D980FC /* Style */,
 				31C9F82C1A2368A2008BB945 /* BlogDetailHeaderView.h */,
 				31C9F82D1A2368A2008BB945 /* BlogDetailHeaderView.m */,
@@ -2959,8 +2975,6 @@
 				85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */,
 				FF8DDCDD1B5DB1C10098826F /* SettingTableViewCell.h */,
 				FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */,
-				E6A09BA41C4492DC008626FB /* SharingAuthorizationWebViewController.h */,
-				E6A09BA51C4492DC008626FB /* SharingAuthorizationWebViewController.m */,
 				83FEFC7311FF6C5A0078B462 /* SiteSettingsViewController.h */,
 				83FEFC7411FF6C5A0078B462 /* SiteSettingsViewController.m */,
 				B5AC00671BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift */,
@@ -3728,6 +3742,23 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		E6431DDE1C4E890B00FD8D90 /* Sharing */ = {
+			isa = PBXGroup;
+			children = (
+				E6431DE31C4E892900FD8D90 /* SharingViewController.h */,
+				E6431DE41C4E892900FD8D90 /* SharingViewController.m */,
+				E6431DDF1C4E892900FD8D90 /* SharingConnectionsViewController.h */,
+				E6431DE01C4E892900FD8D90 /* SharingConnectionsViewController.m */,
+				E6A09BA41C4492DC008626FB /* SharingAuthorizationWebViewController.h */,
+				E6A09BA51C4492DC008626FB /* SharingAuthorizationWebViewController.m */,
+				E6431DE11C4E892900FD8D90 /* SharingDetailViewController.h */,
+				E6431DE21C4E892900FD8D90 /* SharingDetailViewController.m */,
+				E63BBC941C5168BE00598BE8 /* SharingAuthorizationHelper.h */,
+				E63BBC951C5168BE00598BE8 /* SharingAuthorizationHelper.m */,
+			);
+			name = Sharing;
+			sourceTree = "<group>";
+		};
 		E66969D01B9E3D5000EC9C00 /* 37-38 */ = {
 			isa = PBXGroup;
 			children = (
@@ -4454,6 +4485,7 @@
 				ACC156CC0E10E67600D6E1A0 /* WPPostViewController.m in Sources */,
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
 				E69EF9D51BFA539F00ED0554 /* ReaderDetailViewController.swift in Sources */,
+				E63BBC961C5168BE00598BE8 /* SharingAuthorizationHelper.m in Sources */,
 				B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */,
@@ -4575,6 +4607,7 @@
 				BEC62E2C1BF2F58D007685B2 /* CreateNewBlogViewController.m in Sources */,
 				E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */,
 				B587798119B799D800E57C5A /* UITableViewCell+Helpers.swift in Sources */,
+				E63BBC931C5161B800598BE8 /* KeyringConnectionExternalUser.swift in Sources */,
 				B587798019B799D800E57C5A /* UITableView+Helpers.swift in Sources */,
 				B587797E19B799D800E57C5A /* UIImageView+Animations.swift in Sources */,
 				E1B9128B1BB0129C003C25B9 /* WPStyleGuide+People.swift in Sources */,
@@ -4640,6 +4673,7 @@
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				852416CF1A12EBDD0030700C /* AppRatingUtility.m in Sources */,
 				B5CC05F91962186D00975CAC /* Meta.m in Sources */,
+				E6431DE51C4E892900FD8D90 /* SharingConnectionsViewController.m in Sources */,
 				E1EBC3711C118EB200F638E0 /* WPImmuTableCells.swift in Sources */,
 				5D20A6531982D56600463A91 /* FollowedSitesViewController.m in Sources */,
 				5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */,
@@ -4793,6 +4827,7 @@
 				B54E1DF41A0A7BBF00807537 /* NotificationMediaDownloader.swift in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
+				E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
 				5D44EB381986D8BA008B7175 /* ReaderSiteService.m in Sources */,
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
@@ -4802,6 +4837,7 @@
 				082AB9DD1C4F035E000CA523 /* PostTag.m in Sources */,
 				5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */,
 				5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */,
+				E6431DE61C4E892900FD8D90 /* SharingDetailViewController.m in Sources */,
 				B50EED791C0E5B2400D278CA /* SettingsPickerViewController.swift in Sources */,
 				E1F5A1BC1771C90A00E0495F /* WPTableImageSource.m in Sources */,
 				5948AD0E1AB734F2006E8882 /* WPAppAnalytics.m in Sources */,
