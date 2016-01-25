@@ -82,7 +82,7 @@ class RxTests: XCTestCase {
         XCTAssertEqual(res.events, [
             next(310, 5),
             next(360, 6),
-            completed(300)
+            completed(390)
             ])
 
         XCTAssertEqual(xs.subscriptions, [
