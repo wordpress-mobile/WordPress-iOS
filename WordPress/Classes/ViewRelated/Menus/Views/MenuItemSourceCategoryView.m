@@ -63,7 +63,7 @@
     }];
 }
 
-- (void)configureSourceCellForDisplay:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
+- (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     PostCategory *category = [self.resultsController objectAtIndexPath:indexPath];
     [cell setTitle:category.categoryName];

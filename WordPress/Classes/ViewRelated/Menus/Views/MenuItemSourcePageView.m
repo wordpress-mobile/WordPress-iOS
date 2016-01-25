@@ -54,7 +54,7 @@
     }];
 }
 
-- (void)configureSourceCellForDisplay:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
+- (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     Page *page = [self.resultsController objectAtIndexPath:indexPath];
     [cell setTitle:page.titleForDisplay];
