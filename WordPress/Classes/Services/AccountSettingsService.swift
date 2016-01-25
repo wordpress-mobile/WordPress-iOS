@@ -39,8 +39,11 @@ class AccountSettingsService {
         self.remote = remote
     }
 
+    var testReachability: Observable<Bool>? = nil
     /// Emits a boolean value each time reachability changes for the internet connection.
-    private let reachable = Reachability.internetConnection
+    private lazy var reachable: Observable<Bool> = {
+        return self.testReachability ?? Reachability.internetConnection
+    }()
 
     /// Performs a network refresh of settings and emits values with the refresh status.
     ///
@@ -82,7 +85,7 @@ class AccountSettingsService {
     /// - If an error not related to networking happens, it will emit an Error.
     /// - When the data is refreshed, it will emit an `.Idle` value and complete.
     lazy private(set) var request: Observable<RefreshStatus> = {
-        let remoteSettings = self.remoteSettings.share()
+        let remoteSettings = self.remoteSettings.shareReplayLatestWhileConnected()
         let stalledSettings = Observable.of(self.stalled, remoteSettings)
             .merge()
 
@@ -97,16 +100,16 @@ class AccountSettingsService {
     /// Possible values:
     /// - `.Refreshing` when it starts getting remote data.
     /// - `.Stalled` when it's getting remote data and hasn't succeeded before `stallTimeout`.
-    /// - `.Failed` when the request couldn't complete. It will retry after the polling interval.
     /// - `.Offline` when there is no internet connection.
     /// - `.Idle` when the request was successful and it's waiting for the polling interval.
+    /// - An error when the request couldn't complete. It will stop retrying.
     lazy var refresh: Observable<RefreshStatus> = {
         // Copy request to avoid capture of self in closure
         let request = self.request
 
         // Convert to a polling request
         let polling = Observable<Int>
-            .interval(Defaults.pollingInterval, scheduler: MainScheduler.instance)
+            .interval(Defaults.pollingInterval, scheduler: self.scheduler)
             .startWith(0)
             .flatMapLatest({ _ in request })
 
