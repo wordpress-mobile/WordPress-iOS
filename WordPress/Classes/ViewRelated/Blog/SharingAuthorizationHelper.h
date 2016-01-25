@@ -8,6 +8,7 @@
 
 @interface SharingAuthorizationHelper : NSObject
 @property (nonatomic, weak) id<SharingAuthorizationHelperDelegate>delegate;
+@property (nonatomic, strong) UIView *popoverSourceView;
 - (instancetype)initWithViewController:(UIViewController *)viewController blog:(Blog *)blog publicizeService:(PublicizeService *)publicizeService;
 - (void)connectPublicizeService;
 - (void)reconnectPublicizeConnection:(PublicizeConnection *)publicizeConnection;
