@@ -19,11 +19,11 @@ public class SharingService : LocalCoreDataService
     public func syncPublicizeServices(success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let remote = SharingServiceRemote(api: apiForRequest())
 
-        remote.getPublicizeServices( {(remoteServices:[RemotePublicizeService]) -> Void in
+        remote.getPublicizeServices( {(remoteServices:[RemotePublicizeService]) in
             // Process the results
             self.mergePublicizeServices(remoteServices, success: success)
         },
-        failure: { (error: NSError!) -> Void in
+        failure: { (error: NSError!) in
             failure?(error)
         })
     }
@@ -39,11 +39,11 @@ public class SharingService : LocalCoreDataService
     public func fetchKeyringConnections(success: ([KeyringConnection] -> Void)?, failure: (NSError! -> Void)?) {
         let remote = SharingServiceRemote(api: apiForRequest())
 
-        remote.getKeyringConnections( {(keyringConnections:[KeyringConnection]) -> Void in
+        remote.getKeyringConnections( {(keyringConnections:[KeyringConnection]) in
             // Just return the result
             success?(keyringConnections)
         },
-        failure: { (error: NSError!) -> Void in
+        failure: { (error: NSError!) in
             failure?(error)
         })
     }
@@ -59,11 +59,11 @@ public class SharingService : LocalCoreDataService
     public func syncPublicizeConnectionsForBlog(blog:Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let blogObjectID = blog.objectID
         let remote = SharingServiceRemote(api: apiForRequest())
-        remote.getPublicizeConnections(blog.dotComID, success: {(remoteConnections:[RemotePublicizeConnection]) -> Void in
+        remote.getPublicizeConnections(blog.dotComID, success: {(remoteConnections:[RemotePublicizeConnection]) in
             // Process the results
             self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections:remoteConnections, onComplete: success)
         },
-        failure: { (error: NSError!) -> Void in
+        failure: { (error: NSError!) in
             failure?(error)
         })
     }
@@ -91,7 +91,7 @@ public class SharingService : LocalCoreDataService
         remote.createPublicizeConnection(blog.dotComID,
             keyringConnectionID: keyring.keyringID,
             externalUserID: externalUserID,
-            success: {(remoteConnection:RemotePublicizeConnection) -> Void in
+            success: {(remoteConnection:RemotePublicizeConnection) in
                 do {
                     let pubConn = try self.createPublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
@@ -104,7 +104,7 @@ public class SharingService : LocalCoreDataService
                 }
 
             },
-            failure: { (error: NSError!) -> Void in
+            failure: { (error: NSError!) in
                 failure?(error)
             })
     }
@@ -338,7 +338,7 @@ public class SharingService : LocalCoreDataService
     ///     - onComplete: An optional callback block to be performed when core data has saved the changes.
     ///
     private func mergePublicizeConnectionsForBlog(blogObjectID:NSManagedObjectID, remoteConnections:[RemotePublicizeConnection], onComplete:(() -> Void)? ) {
-        managedObjectContext.performBlock { () -> Void in
+        managedObjectContext.performBlock {
             var blog:Blog
             do {
                 blog = try self.managedObjectContext.existingObjectWithID(blogObjectID) as! Blog
@@ -367,7 +367,7 @@ public class SharingService : LocalCoreDataService
             }
 
             // Save all the things.
-            ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: { () -> Void in
+            ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
                 onComplete?()
             })
         }

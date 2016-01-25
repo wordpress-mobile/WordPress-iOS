@@ -22,7 +22,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
         api.GET(path,
             parameters: params,
-            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) in
                 guard let onSuccess = success else {
                     return
                 }
@@ -56,7 +56,7 @@ public class SharingServiceRemote : ServiceRemoteREST
                 onSuccess(publicizeServices)
 
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                 failure?(error)
             })
     }
@@ -74,7 +74,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
         api.GET(path,
             parameters: nil,
-            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) in
                 guard let onSuccess = success else {
                     return
                 }
@@ -104,7 +104,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
                 onSuccess(keyringConnections)
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                 failure?(error)
         })
     }
@@ -145,7 +145,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
         api.GET(path,
             parameters: nil,
-            success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+            success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) in
                 guard let onSuccess = success else {
                     return
                 }
@@ -159,7 +159,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
                 onSuccess(publicizeConnections)
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                 failure?(error)
         })
     }
@@ -191,7 +191,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
             api.POST(path,
                 parameters: NSDictionary(dictionary:parameters),
-                success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+                success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) in
                     guard let onSuccess = success else {
                         return
                     }
@@ -201,7 +201,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
                     onSuccess(conn)
                 },
-                failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+                failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                     failure?(error)
             })
     }
@@ -227,10 +227,10 @@ public class SharingServiceRemote : ServiceRemoteREST
 
             api.POST(path,
                 parameters: parameters,
-                success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+                success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) in
                     success?()
                 },
-                failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+                failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                     failure?(error)
             })
     }
@@ -250,10 +250,10 @@ public class SharingServiceRemote : ServiceRemoteREST
 
         api.POST(path,
             parameters: nil,
-            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) in
                 success?()
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                 failure?(error)
         })
     }
