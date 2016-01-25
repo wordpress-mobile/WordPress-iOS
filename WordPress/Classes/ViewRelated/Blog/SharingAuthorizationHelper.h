@@ -19,7 +19,7 @@
 
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper authorizationSucceededForService:(PublicizeService *)service;
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper authorizationFailedForService:(PublicizeService *)service;
-- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper authorizationCanceledForService:(PublicizeService *)service;
+- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper authorizationCancelledForService:(PublicizeService *)service;
 
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper willFetchKeyringsForService:(PublicizeService *)service;
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper didFetchKeyringsForService:(PublicizeService *)service;
@@ -29,6 +29,6 @@
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper didConnectToService:(PublicizeService *)service withPublicizeConnection:(PublicizeConnection *)keyringConnection;
 
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper connectionFailedForService:(PublicizeService *)service;
-- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper connectionCanceledForService:(PublicizeService *)service;
+- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper connectionCancelledForService:(PublicizeService *)service;
 
 @end
