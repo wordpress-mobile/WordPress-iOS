@@ -225,7 +225,20 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     [alert addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Verb. A button title.") handler:nil];
 
-    [self presentViewController:alert animated:YES completion:nil];
+
+    if ([UIDevice isPad]) {
+        alert.modalPresentationStyle = UIModalPresentationPopover;
+        [self presentViewController:alert animated:YES completion:nil];
+
+        NSUInteger section = [self.publicizeConnection isBroken] ? 2 : 1;
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
+        UIPopoverPresentationController *presentationController = alert.popoverPresentationController;
+        presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        presentationController.sourceView = cell.textLabel;
+        presentationController.sourceRect = cell.textLabel.bounds;
+    } else {
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 
