@@ -4,7 +4,7 @@ import OHHTTPStubs
 import RxSwift
 @testable import WordPress
 
-class AccountSettingsServiceRemoteTests: XCTestCase {
+class AccountSettingsRemoteTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
