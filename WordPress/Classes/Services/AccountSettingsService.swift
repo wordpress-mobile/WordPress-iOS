@@ -24,6 +24,11 @@ class AccountSettingsService {
 
     private let context = ContextManager.sharedInstance().mainContext
 
+    var testScheduler: SchedulerType? = nil
+    private var scheduler: SchedulerType {
+        return testScheduler ?? MainScheduler.instance
+    }
+
     init(userID: Int, api: WordPressComApi) {
         self.remote = AccountSettingsRemote.remoteWithApi(api)
         self.userID = userID
@@ -44,7 +49,7 @@ class AccountSettingsService {
     /// - If it reaches the maximum permitted number of retries it will emit an Error.
     /// - If an error not related to networking happens, it will emit an Error.
     /// - When the data is refreshed, it will emit an `.Idle` value and complete.
-    lazy var remoteSettings: Observable<RefreshStatus> = {
+    private lazy var remoteSettings: Observable<RefreshStatus> = {
         return self.remote.settings
             .map({ settings -> RefreshStatus in
                 self.updateSettings(settings)
@@ -59,23 +64,25 @@ class AccountSettingsService {
 
                 return error.domain == NSURLErrorDomain && count < Defaults.maxRetries
             })
-            .startWith(.Refreshing)
     }()
 
     /// Emits one `.Stalled` value after a timeout and then completes
-    let stalled = Observable<RefreshStatus>
+    private lazy var stalled: Observable<RefreshStatus> = {
+        return Observable<RefreshStatus>
             .just(.Stalled)
-            .delaySubscription(Defaults.stallTimeout, scheduler: MainScheduler.instance)
+            .delaySubscription(Defaults.stallTimeout, scheduler: self.scheduler)
+    }()
 
     /// Performs a network refresh, emitting a `.Stalled` value if it's taking too long. It initially emits a `.Refreshing` value.
     /// - seealso: remoteSettings
-    lazy private var request: Observable<RefreshStatus> = {
-        let remoteSettings = self.remoteSettings
+    lazy private(set) var request: Observable<RefreshStatus> = {
+        let remoteSettings = self.remoteSettings.share()
         let stalledSettings = Observable.of(self.stalled, remoteSettings)
             .merge()
 
         return remoteSettings
             .amb(stalledSettings)
+            .startWith(.Refreshing)
     }()
 
     /// Emits values when the refresh status changes.
