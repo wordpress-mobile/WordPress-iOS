@@ -32,16 +32,12 @@ class AccountSettingsServiceTests: XCTestCase {
 
     func testRequestSuccessful() {
         let scheduler = TestScheduler(initialClock: 0, resolution: 0.01)
+        let remoteSettings: TestableObservable<AccountSettings> = scheduler.createColdObservable([
+            next(10, TestData.sampleSettings),
+            completed(10)
+            ])
         let mockRemote = MockAccountSettingsRemote()
-        var requestCount = 0
-        mockRemote.settings = Observable<AccountSettings>.create { observer in
-            requestCount += 1
-            return scheduler.scheduleRelativeVirtual(requestCount, dueTime: 10, action: { _ in
-                observer.on(.Next(TestData.sampleSettings))
-                observer.on(.Completed)
-                return NopDisposable.instance
-            })
-        }
+        mockRemote.settings = remoteSettings.asObservable()
 
         let service = AccountSettingsService(userID: 123, remote: mockRemote)
         service.testScheduler = scheduler
@@ -50,7 +46,7 @@ class AccountSettingsServiceTests: XCTestCase {
             service.request
         }
 
-        XCTAssertEqual(requestCount, 1)
+        XCTAssertEqual(remoteSettings.subscriptions.count, 1)
         XCTAssertEqual(res.events, [
             next(200, .Refreshing),
             next(210, .Idle),
@@ -93,16 +89,12 @@ class AccountSettingsServiceTests: XCTestCase {
 
     func testRequestFourNetworkErrorsShouldFail() {
         let scheduler = TestScheduler(initialClock: 0, resolution: 0.01)
-        let mockRemote = MockAccountSettingsRemote()
-        var requestCount = 0
         let connectionLost = NSError(domain: NSURLErrorDomain, code: NSURLErrorNetworkConnectionLost, userInfo: nil)
-        mockRemote.settings = Observable<AccountSettings>.create { observer in
-            requestCount += 1
-            return scheduler.scheduleRelativeVirtual(requestCount, dueTime: 10, action: { _ in
-                observer.on(.Error(connectionLost))
-                return NopDisposable.instance
-            })
-        }
+        let remoteSettings: TestableObservable<AccountSettings> = scheduler.createColdObservable([
+            error(10, connectionLost)
+            ])
+        let mockRemote = MockAccountSettingsRemote()
+        mockRemote.settings = remoteSettings.asObservable()
 
         let service = AccountSettingsService(userID: 123, remote: mockRemote)
         service.testScheduler = scheduler
@@ -111,7 +103,7 @@ class AccountSettingsServiceTests: XCTestCase {
             service.request
         }
 
-        XCTAssertEqual(requestCount, 3)
+        XCTAssertEqual(remoteSettings.subscriptions.count, 3)
         XCTAssertEqual(res.events, [
             next(200, .Refreshing),
             error(230, connectionLost)
@@ -120,16 +112,12 @@ class AccountSettingsServiceTests: XCTestCase {
 
     func testRequestUnrecoverableErrorsShouldFailImmediately() {
         let scheduler = TestScheduler(initialClock: 0, resolution: 0.01)
-        let mockRemote = MockAccountSettingsRemote()
-        var requestCount = 0
         let unexpected = NSError(domain: "Unexpected", code: -999, userInfo: nil)
-        mockRemote.settings = Observable<AccountSettings>.create { observer in
-            requestCount += 1
-            return scheduler.scheduleRelativeVirtual(requestCount, dueTime: 10, action: { _ in
-                observer.on(.Error(unexpected))
-                return NopDisposable.instance
-            })
-        }
+        let remoteSettings: TestableObservable<AccountSettings> = scheduler.createColdObservable([
+            error(10, unexpected)
+            ])
+        let mockRemote = MockAccountSettingsRemote()
+        mockRemote.settings = remoteSettings.asObservable()
 
         let service = AccountSettingsService(userID: 123, remote: mockRemote)
         service.testScheduler = scheduler
@@ -138,7 +126,7 @@ class AccountSettingsServiceTests: XCTestCase {
             service.request
         }
 
-        XCTAssertEqual(requestCount, 1)
+        XCTAssertEqual(remoteSettings.subscriptions.count, 1)
         XCTAssertEqual(res.events, [
             next(200, .Refreshing),
             error(210, unexpected)
@@ -147,16 +135,12 @@ class AccountSettingsServiceTests: XCTestCase {
 
     func testRequestEmitsStalledValue() {
         let scheduler = TestScheduler(initialClock: 0, resolution: 0.01)
+        let remoteSettings: TestableObservable<AccountSettings> = scheduler.createColdObservable([
+            next(500, TestData.sampleSettings),
+            completed(500)
+            ])
         let mockRemote = MockAccountSettingsRemote()
-        var requestCount = 0
-        mockRemote.settings = Observable<AccountSettings>.create { observer in
-            requestCount += 1
-            return scheduler.scheduleRelativeVirtual(requestCount, dueTime: 500, action: { _ in
-                observer.on(.Next(TestData.sampleSettings))
-                observer.on(.Completed)
-                return NopDisposable.instance
-            })
-        }
+        mockRemote.settings = remoteSettings.asObservable()
 
         let service = AccountSettingsService(userID: 123, remote: mockRemote)
         service.testScheduler = scheduler
@@ -165,7 +149,7 @@ class AccountSettingsServiceTests: XCTestCase {
             service.request
         }
 
-        XCTAssertEqual(requestCount, 1)
+        XCTAssertEqual(remoteSettings.subscriptions.count, 1)
         XCTAssertEqual(res.events, [
             next(200, .Refreshing),
             next(600, .Stalled),
@@ -178,16 +162,12 @@ class AccountSettingsServiceTests: XCTestCase {
 
     func testRefreshRepeatsSuccessfulRequest() {
         let scheduler = TestScheduler(initialClock: 0, resolution: 0.1)
+        let remoteSettings: TestableObservable<AccountSettings> = scheduler.createColdObservable([
+            next(10, TestData.sampleSettings),
+            completed(10)
+            ])
         let mockRemote = MockAccountSettingsRemote()
-        var requestCount = 0
-        mockRemote.settings = Observable<AccountSettings>.create { observer in
-            requestCount += 1
-            return scheduler.scheduleRelativeVirtual(requestCount, dueTime: 10, action: { _ in
-                observer.on(.Next(TestData.sampleSettings))
-                observer.on(.Completed)
-                return NopDisposable.instance
-            })
-        }
+        mockRemote.settings = remoteSettings.asObservable()
 
         let service = AccountSettingsService(userID: 123, remote: mockRemote)
         service.testScheduler = scheduler
@@ -196,7 +176,7 @@ class AccountSettingsServiceTests: XCTestCase {
             service.refresh
         }
 
-        XCTAssertEqual(requestCount, 2)
+        XCTAssertEqual(remoteSettings.subscriptions.count, 2)
         XCTAssertEqual(res.events, [
             next(200, .Refreshing),
             next(210, .Idle),
@@ -207,16 +187,12 @@ class AccountSettingsServiceTests: XCTestCase {
 
     func testRefreshDoesntRepeatFailedRequest() {
         let scheduler = TestScheduler(initialClock: 0, resolution: 0.1)
-        let mockRemote = MockAccountSettingsRemote()
-        var requestCount = 0
         let unexpected = NSError(domain: "Unexpected", code: -999, userInfo: nil)
-        mockRemote.settings = Observable<AccountSettings>.create { observer in
-            requestCount += 1
-            return scheduler.scheduleRelativeVirtual(requestCount, dueTime: 10, action: { _ in
-                observer.on(.Error(unexpected))
-                return NopDisposable.instance
-            })
-        }
+        let remoteSettings: TestableObservable<AccountSettings> = scheduler.createColdObservable([
+            error(10, unexpected)
+            ])
+        let mockRemote = MockAccountSettingsRemote()
+        mockRemote.settings = remoteSettings.asObservable()
 
         let service = AccountSettingsService(userID: 123, remote: mockRemote)
         service.testScheduler = scheduler
@@ -225,7 +201,7 @@ class AccountSettingsServiceTests: XCTestCase {
             service.refresh
         }
 
-        XCTAssertEqual(requestCount, 1)
+        XCTAssertEqual(remoteSettings.subscriptions.count, 1)
         XCTAssertEqual(res.events, [
             next(200, .Refreshing),
             error(210, unexpected)
@@ -234,16 +210,12 @@ class AccountSettingsServiceTests: XCTestCase {
 
     func testRefreshDoesntRequestIfUnreachable() {
         let scheduler = TestScheduler(initialClock: 0, resolution: 0.1)
+        let remoteSettings: TestableObservable<AccountSettings> = scheduler.createColdObservable([
+            next(10, TestData.sampleSettings),
+            completed(10)
+            ])
         let mockRemote = MockAccountSettingsRemote()
-        var requestCount = 0
-        mockRemote.settings = Observable<AccountSettings>.create { observer in
-            requestCount += 1
-            return scheduler.scheduleRelativeVirtual(requestCount, dueTime: 10, action: { _ in
-                observer.on(.Next(TestData.sampleSettings))
-                observer.on(.Completed)
-                return NopDisposable.instance
-            })
-        }
+        mockRemote.settings = remoteSettings.asObservable()
 
         let service = AccountSettingsService(userID: 123, remote: mockRemote)
         service.testScheduler = scheduler
@@ -258,7 +230,7 @@ class AccountSettingsServiceTests: XCTestCase {
             service.refresh
         }
 
-        XCTAssertEqual(requestCount, 0)
+        XCTAssertEqual(remoteSettings.subscriptions.count, 0)
         XCTAssertEqual(res.events, [
             next(200, .Offline),
             ])
@@ -267,40 +239,26 @@ class AccountSettingsServiceTests: XCTestCase {
 
     func testRefreshRetriesWhenReachable() {
         let scheduler = TestScheduler(initialClock: 0, resolution: 0.1)
+        let remoteSettings: TestableObservable<AccountSettings> = scheduler.createColdObservable([
+            next(10, TestData.sampleSettings),
+            completed(10)
+            ])
         let mockRemote = MockAccountSettingsRemote()
-        var requestCount = 0
-        mockRemote.settings = Observable<AccountSettings>.create { observer in
-            requestCount += 1
-            return scheduler.scheduleRelativeVirtual(requestCount, dueTime: 10, action: { _ in
-                observer.on(.Next(TestData.sampleSettings))
-                observer.on(.Completed)
-                return NopDisposable.instance
-            })
-        }
+        mockRemote.settings = remoteSettings.asObservable()
 
         let service = AccountSettingsService(userID: 123, remote: mockRemote)
         service.testScheduler = scheduler
-        service.testReachability = Observable.create { observer in
-            scheduler.scheduleAbsoluteVirtual((), time: 200, action: { _ in
-                observer.on(.Next(false))
-                return NopDisposable.instance
-            })
-            scheduler.scheduleAbsoluteVirtual((), time: 500, action: { _ in
-                observer.on(.Next(true))
-                return NopDisposable.instance
-            })
-            scheduler.scheduleAbsoluteVirtual((), time: 800, action: { _ in
-                observer.on(.Next(false))
-                return NopDisposable.instance
-            })
-            return NopDisposable.instance
-        }
+        service.testReachability = scheduler.createColdObservable([
+            next(0, false),
+            next(300, true),
+            next(600, false)
+            ]).asObservable()
 
         let res = scheduler.start {
             service.refresh
         }
 
-        XCTAssertEqual(requestCount, 1)
+        XCTAssertEqual(remoteSettings.subscriptions.count, 1)
         XCTAssertEqual(res.events, [
             next(200, .Offline),
             next(500, .Refreshing),
@@ -311,40 +269,26 @@ class AccountSettingsServiceTests: XCTestCase {
 
     func testRefreshDoesntRepeatFailedRequestAfterReachable() {
         let scheduler = TestScheduler(initialClock: 0, resolution: 0.1)
-        let mockRemote = MockAccountSettingsRemote()
-        var requestCount = 0
         let unexpected = NSError(domain: "Unexpected", code: -999, userInfo: nil)
-        mockRemote.settings = Observable<AccountSettings>.create { observer in
-            requestCount += 1
-            return scheduler.scheduleRelativeVirtual(requestCount, dueTime: 10, action: { _ in
-                observer.on(.Error(unexpected))
-                return NopDisposable.instance
-            })
-        }
+        let remoteSettings: TestableObservable<AccountSettings> = scheduler.createColdObservable([
+            error(10, unexpected)
+            ])
+        let mockRemote = MockAccountSettingsRemote()
+        mockRemote.settings = remoteSettings.asObservable()
 
         let service = AccountSettingsService(userID: 123, remote: mockRemote)
         service.testScheduler = scheduler
-        service.testReachability = Observable.create { observer in
-            scheduler.scheduleAbsoluteVirtual((), time: 200, action: { _ in
-                observer.on(.Next(false))
-                return NopDisposable.instance
-            })
-            scheduler.scheduleAbsoluteVirtual((), time: 500, action: { _ in
-                observer.on(.Next(true))
-                return NopDisposable.instance
-            })
-            scheduler.scheduleAbsoluteVirtual((), time: 800, action: { _ in
-                observer.on(.Next(false))
-                return NopDisposable.instance
-            })
-            return NopDisposable.instance
-        }
+        service.testReachability = scheduler.createColdObservable([
+            next(0, false),
+            next(300, true),
+            next(600, false)
+            ]).asObservable()
 
         let res = scheduler.start {
             service.refresh
         }
 
-        XCTAssertEqual(requestCount, 1)
+        XCTAssertEqual(remoteSettings.subscriptions.count, 1)
         XCTAssertEqual(res.events, [
             next(200, .Offline),
             next(500, .Refreshing),
