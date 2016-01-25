@@ -29,12 +29,13 @@
  *	@brief	Convenience initializer
  *
  *  @param  publicizer  the service to connect to
+ *  @param  connectionURL the URL to use for the connection
  *  @param  blog        the blog to publicize
  *
  *  @returns New instance of SharingAuthorizationWebViewController
  */
 + (instancetype)controllerWithPublicizer:(PublicizeService *)publicizer
-                              andRefresh:(NSString *)refresh
+                           connectionURL:(NSURL *)connectionURL
                                  forBlog:(Blog *)blog;
 
 @end
