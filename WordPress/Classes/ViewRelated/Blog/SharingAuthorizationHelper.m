@@ -79,12 +79,12 @@
 
 - (void)authorizeDidCancel:(PublicizeService *)publicizer
 {
-    if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:authorizationCanceledForService:)]) {
-        [self.delegate sharingAuthorizationHelper:self authorizationCanceledForService:self.publicizeService];
+    if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:authorizationCancelledForService:)]) {
+        [self.delegate sharingAuthorizationHelper:self authorizationCancelledForService:self.publicizeService];
         return;
     }
 
-    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection canceled", @"Message to show when Publicize authorization is canceled")];
+    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection cancelled", @"Message to show when Publicize authorization is cancelled")];
 }
 
 
@@ -167,11 +167,11 @@
                                       handler:^(UIAlertAction *action) {
                                           NSString *str = [NSString stringWithFormat:@"The %@ connection could not be made because no account was selected.", serviceName];
                                           DDLogDebug(str);
-                                          if ([weakSelf.delegate respondsToSelector:@selector(sharingAuthorizationHelper:connectionCanceledForService:)]) {
-                                              [weakSelf.delegate sharingAuthorizationHelper:weakSelf connectionCanceledForService:weakSelf.publicizeService];
+                                          if ([weakSelf.delegate respondsToSelector:@selector(sharingAuthorizationHelper:connectionCancelledForService:)]) {
+                                              [weakSelf.delegate sharingAuthorizationHelper:weakSelf connectionCancelledForService:weakSelf.publicizeService];
                                               return;
                                           }
-                                          [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection canceled", @"Message to show when Publicize connection is canceled by the user.")];
+                                          [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection cancelled", @"Message to show when Publicize connection is cancelled by the user.")];
                                       }];
 
     [self.viewController presentViewController:alertController animated:YES completion:nil];
