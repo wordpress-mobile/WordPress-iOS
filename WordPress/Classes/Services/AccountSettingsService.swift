@@ -73,8 +73,14 @@ class AccountSettingsService {
             .delaySubscription(Defaults.stallTimeout, scheduler: self.scheduler)
     }()
 
-    /// Performs a network refresh, emitting a `.Stalled` value if it's taking too long. It initially emits a `.Refreshing` value.
-    /// - seealso: remoteSettings
+    /// Performs a network refresh of settings and emits values with the refresh status.
+    ///
+    /// - When it's subscribed, it requests a refresh from the server
+    /// - If it takes more than `stallTimeout` to complete, it will emit a `.Stalled` value and continue waiting for the request to finish.
+    /// - If a networking error happens it doesn't emit a new value and will retry the request.
+    /// - If it reaches the maximum permitted number of retries it will emit an Error.
+    /// - If an error not related to networking happens, it will emit an Error.
+    /// - When the data is refreshed, it will emit an `.Idle` value and complete.
     lazy private(set) var request: Observable<RefreshStatus> = {
         let remoteSettings = self.remoteSettings.share()
         let stalledSettings = Observable.of(self.stalled, remoteSettings)
