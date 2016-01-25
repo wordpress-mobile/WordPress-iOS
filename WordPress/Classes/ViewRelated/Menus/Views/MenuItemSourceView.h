@@ -40,6 +40,8 @@
  */
 - (NSFetchRequest *)fetchRequest;
 
+/* Configurable sectionName key within subclasses for the fetchRequest and resultsController to initialize with.
+ */
 - (NSString *)fetechedResultsControllerSectionNameKeyPath;
 
 /* Handles performing the fetchRequest on the resultsController and any errors that occur.
