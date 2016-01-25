@@ -99,6 +99,11 @@
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self.blog managedObjectContext]];
     __weak __typeof__(self) weakSelf = self;
     [sharingService fetchKeyringConnections:^(NSArray *keyringConnections) {
+        if ([weakSelf.delegate respondsToSelector:@selector(sharingAuthorizationHelper:didFetchKeyringsForService:)]) {
+            [weakSelf.delegate sharingAuthorizationHelper:weakSelf didFetchKeyringsForService:weakSelf.publicizeService];
+        }
+
+        // Fiter matches
         NSMutableArray *marr = [NSMutableArray array];
         for (KeyringConnection *keyConn in keyringConnections) {
             if ([keyConn.service isEqualToString:pubServ.serviceID]) {
@@ -106,8 +111,14 @@
             }
         }
 
-        if ([weakSelf.delegate respondsToSelector:@selector(sharingAuthorizationHelper:didFetchKeyringsForService:)]) {
-            [weakSelf.delegate sharingAuthorizationHelper:weakSelf didFetchKeyringsForService:weakSelf.publicizeService];
+        if ([marr count] == 0) {
+            DDLogDebug(@"No keyring connections matched serviceID: %@, Returned connections: %@", pubServ.serviceID, keyringConnections);
+            if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:keyringFetchFailedForService:)]) {
+                [self.delegate sharingAuthorizationHelper:self keyringFetchFailedForService:self.publicizeService];
+                return;
+            }
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"No keychain connections found", @"Message to show when Keyring connection synchronization succeeded but no matching connections were found.")];
+            return;
         }
 
         [weakSelf selectKeyring:marr];
