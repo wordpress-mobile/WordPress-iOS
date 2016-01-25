@@ -175,7 +175,7 @@
 
 #pragma mark - subclass configuration
 
-- (void)configureSourceCellForDisplay:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
+- (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     // overrided in subclasses
 }
@@ -203,12 +203,6 @@
     return UITableViewAutomaticDimension;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    MenuItemSourceCell *sourceCell = (MenuItemSourceCell *)cell;
-    [self configureSourceCellForDisplay:sourceCell forIndexPath:indexPath];
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * const identifier = @"MenuItemSourceCell";
@@ -216,6 +210,8 @@
     if(!cell) {
         cell = [[MenuItemSourceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+    
+    [self configureSourceCell:cell forIndexPath:indexPath];
     
     return cell;
 }

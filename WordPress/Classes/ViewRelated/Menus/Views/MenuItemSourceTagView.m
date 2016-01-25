@@ -60,7 +60,7 @@
     }];
 }
 
-- (void)configureSourceCellForDisplay:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
+- (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     PostTag *tag = [self.resultsController objectAtIndexPath:indexPath];
     [cell setTitle:tag.name];

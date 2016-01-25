@@ -52,7 +52,7 @@
     }];
 }
 
-- (void)configureSourceCellForDisplay:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
+- (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
     [cell setTitle:post.titleForDisplay];
