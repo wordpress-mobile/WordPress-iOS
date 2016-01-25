@@ -48,7 +48,7 @@
 
 /* Method for subclasses to handle the cell configuraton based on the data being used for that subclass.
  */
-- (void)configureSourceCellForDisplay:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath;
+- (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath;
 
 /* Adds the custom searchBar view to the stackView, if not already added.
  */
