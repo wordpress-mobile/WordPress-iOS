@@ -225,7 +225,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
     [alert addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Verb. A button title.") handler:nil];
 
-
     if ([UIDevice isPad]) {
         alert.modalPresentationStyle = UIModalPresentationPopover;
         [self presentViewController:alert animated:YES completion:nil];

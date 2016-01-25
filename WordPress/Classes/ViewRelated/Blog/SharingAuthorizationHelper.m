@@ -174,7 +174,28 @@
                                           [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection cancelled", @"Message to show when Publicize connection is cancelled by the user.")];
                                       }];
 
-    [self.viewController presentViewController:alertController animated:YES completion:nil];
+    if ([UIDevice isPad]) {
+        UIView *sourceView = self.popoverSourceView;
+        CGRect sourceBounds;
+        UIPopoverArrowDirection arrowDirection = UIPopoverArrowDirectionAny;
+        if (sourceView) {
+            sourceBounds = sourceView.bounds;
+        } else {
+            // Safety net.
+            sourceView = self.viewController.view;
+            sourceBounds = CGRectMake(sourceView.center.x, sourceView.center.y, 1.0, 1.0);
+            arrowDirection = UIPopoverArrowDirectionUp;
+        }
+        alertController.modalPresentationStyle = UIModalPresentationPopover;
+        [self.viewController presentViewController:alertController animated:YES completion:nil];
+
+        UIPopoverPresentationController *presentationController = alertController.popoverPresentationController;
+        presentationController.permittedArrowDirections = arrowDirection;
+        presentationController.sourceView = sourceView;
+        presentationController.sourceRect = sourceBounds;
+    } else {
+        [self.viewController presentViewController:alertController animated:YES completion:nil];
+    }
 }
 
 - (void)connectToServiceWithKeyringConnection:(KeyringConnection *)keyConn andExternalUserID:(NSString *)externalUserID
