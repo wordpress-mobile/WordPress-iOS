@@ -66,7 +66,6 @@ class AccountSettingsRemote: ServiceRemoteREST {
         }
 
         return settings
-            .share()
     }
 
     func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) -> AFHTTPRequestOperation? {
