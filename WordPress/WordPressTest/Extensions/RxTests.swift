@@ -133,4 +133,39 @@ class RxTests: XCTestCase {
         
     }
 
+    func testRetryIf() {
+        let scheduler = TestScheduler(initialClock: 0)
+
+        let xs = scheduler.createColdObservable([
+            next(10, 1),
+            next(20, 2),
+            error(30, testError)
+            ])
+
+        let res = scheduler.start {
+            xs.retryIf({ (count, lastError) -> Bool in
+                return count < 3
+            })
+        }
+
+        let correct = [
+            next(210, 1),
+            next(220, 2),
+            next(240, 1),
+            next(250, 2),
+            next(270, 1),
+            next(280, 2),
+            error(290, testError)
+        ]
+
+        XCTAssertEqual(res.events, correct)
+
+        XCTAssertEqual(xs.subscriptions, [
+            Subscription(200, 230),
+            Subscription(230, 260),
+            Subscription(260, 290)
+            ])
+    }
+    
+    let testError = NSError(domain: "dummyError", code: -232, userInfo: nil)
 }

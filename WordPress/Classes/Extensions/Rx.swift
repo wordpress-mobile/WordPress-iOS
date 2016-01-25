@@ -56,3 +56,28 @@ class Pausable<S: ObservableType>: ObservableType {
         return _group
     }
 }
+
+// MARK: - retryIf
+
+extension ObservableType {
+    /**
+     Repeats the source observable sequence on error if the given condition evaluates true.
+     
+     - parameter condition: A closure to be evaluated on error to decide if the source sequence should be retried. It takes two parameters: an incrementing `count` integer, and a `lastError` containing the latest error emitted.
+     - returns: An observable sequence producing the elements of the given sequence repeatedly until it terminates successfully or the condition evaluates false.
+     */
+    public func retryIf(condition: (count: Int, lastError: NSError) -> Bool) -> Observable<E> {
+        return retryWhen { (errors: Observable<NSError>) in
+            errors.scan((0, nil)) { (accumulator: (Int, NSError!), error) in
+                (accumulator.0 + 1, error)
+            }
+            .flatMap { (count, lastError) -> Observable<Int> in
+                if condition(count: count, lastError: lastError) {
+                    return Observable.just(count)
+                } else {
+                    return Observable.error(lastError)
+                }
+            }
+        }
+    }
+}
