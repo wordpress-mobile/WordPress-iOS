@@ -213,14 +213,18 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         return;
     }
 
-    [self handleConnectTapped];
+    [self handleConnectTapped:indexPath];
 }
 
 
 #pragma mark - Actions
 
-- (void)handleConnectTapped
+- (void)handleConnectTapped:(NSIndexPath *)indexPath
 {
+    if ([UIDevice isPad]) {
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        self.helper.popoverSourceView = cell.textLabel;
+    }
     [self.helper connectPublicizeService];
 }
 
