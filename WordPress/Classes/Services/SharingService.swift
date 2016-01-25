@@ -403,6 +403,7 @@ public class SharingService : LocalCoreDataService
         pubConnection?.label = remoteConnection.label
         pubConnection?.refreshURL = remoteConnection.refreshURL
         pubConnection?.service = remoteConnection.service
+        pubConnection?.shared = remoteConnection.shared
         pubConnection?.status = remoteConnection.status
         pubConnection?.siteID = remoteConnection.siteID
         pubConnection?.userID = remoteConnection.userID
