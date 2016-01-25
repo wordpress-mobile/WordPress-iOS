@@ -6,6 +6,7 @@ import Foundation
 ///
 public class SharingService : LocalCoreDataService
 {
+    let SharingAPIErrorNotFound = "not_found"
 
     // MARK: - Methods calling remote services
 
@@ -163,7 +164,23 @@ public class SharingService : LocalCoreDataService
         ContextManager.sharedInstance().saveContext(managedObjectContext)
 
         let remote = SharingServiceRemote(api: apiForRequest())
-        remote.deletePublicizeConnection(siteID, connectionID:pubConn.connectionID, success:success, failure:failure)
+        remote.deletePublicizeConnection(siteID,
+            connectionID: pubConn.connectionID,
+            success: {
+                success?()
+            },
+            failure: {(error:NSError!) in
+                if let errorCode = error.userInfo[WordPressComApiErrorCodeKey] as? String {
+                    if errorCode == self.SharingAPIErrorNotFound {
+                        // This is a special situation. If the call to disconnect the service returns not_found then the service
+                        // has probably already been disconnected and the call was made with stale data.
+                        // Assume this is the case and treat this error as a successful disconnect.
+                        success?()
+                        return
+                    }
+                }
+                failure?(error)
+            })
     }
 
 
