@@ -214,6 +214,17 @@
     if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:willConnectToService:usingKeyringConnection:)]) {
         [self.delegate sharingAuthorizationHelper:self willConnectToService:self.publicizeService usingKeyringConnection:keyConn];
     }
+
+    // Check to see if the user chose an existing connection.
+    PublicizeConnection *connection = [self existingPublicizeConnectionForKeyringConnection:keyConn withExternalUserID:externalUserID];
+    if (connection) {
+        // The user selected the existing connection. Treat this as success and bail.
+        if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:didConnectToService:withPublicizeConnection:)]) {
+            [self.delegate sharingAuthorizationHelper:self didConnectToService:self.publicizeService withPublicizeConnection:connection];
+        }
+        return;
+    }
+
     __weak __typeof__(self) weakSelf = self;
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self.blog managedObjectContext]];
     [sharingService createPublicizeConnectionForBlog:self.blog
@@ -234,5 +245,22 @@
                                              }];
 }
 
+
+- (PublicizeConnection *)existingPublicizeConnectionForKeyringConnection:(KeyringConnection *)keyringConnection withExternalUserID:(NSString *)externalUserID
+{
+    for (PublicizeConnection *connection in self.blog.connections) {
+        // If the publicize connection is using the keyring connection, and the publicize connection's externalID is either the
+        if ([connection.keyringConnectionID isEqualToNumber:keyringConnection.keyringID]) {
+            // if the specified externalUserID matches the connection's externalID,
+            // or if the externalUserID is nil, and the connection's externalID is equal to the keyring connections externalID
+            // then the user choose an already connected account.
+            if ([externalUserID isEqualToString:connection.externalID] ||
+                (externalUserID == nil && [connection.externalID isEqualToString:keyringConnection.externalID])) {
+                return connection;
+            }
+        }
+    }
+    return nil;
+}
 
 @end
