@@ -22,7 +22,7 @@ class MyProfileController: NSObject {
             .addDisposableTo(bag)
 
         service.refresh
-            .forwardIf(viewController.visible)
+            .pausable(viewController.visible)
             // replace errors with .Failed status
             .catchErrorJustReturn(.Failed)
             // convert status to string
