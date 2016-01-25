@@ -50,24 +50,16 @@ class AccountSettingsService {
                 self.updateSettings(settings)
                 return .Idle
             })
-            .catchError({ error in
-                let error = error as NSError
-                // We want to retry only for networking errors, so we convert errors that aren't
-                // on NSURLErrorDomain to a .Failed status and log them.
+            .retryIf({ (count, error) in
                 if error.domain == NSURLErrorDomain {
-                    DDLogSwift.logError("Error refreshing settings (will retry): \(error)")
-                    throw error
+                    DDLogSwift.logError("Error refreshing settings (attempt \(count)): \(error)")
                 } else {
                     DDLogSwift.logError("Error refreshing settings (unrecoverable): \(error)")
-                    return Observable.just(.Failed)
                 }
+
+                return error.domain == NSURLErrorDomain && count < Defaults.maxRetries
             })
-            .retry(Defaults.maxRetries)
             .startWith(.Refreshing)
-            .doOn(onError: { (error) -> Void in
-                DDLogSwift.logError("Error refreshing settings (maxRetries reached): \(error)")
-            })
-            .catchErrorJustReturn(.Failed)
     }()
 
     /// Emits one `.Stalled` value after a timeout and then completes

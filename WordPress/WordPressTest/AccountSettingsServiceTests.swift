@@ -109,8 +109,7 @@ class AccountSettingsServiceTests: XCTestCase {
         XCTAssertEqual(requestCount, 3)
         XCTAssertEqual(res.events, [
             next(200, .Refreshing),
-            next(230, .Failed),
-            completed(230)
+            error(230, connectionLost)
             ])
     }
 
@@ -136,8 +135,7 @@ class AccountSettingsServiceTests: XCTestCase {
         XCTAssertEqual(requestCount, 1)
         XCTAssertEqual(res.events, [
             next(200, .Refreshing),
-            next(210, .Failed),
-            completed(210)
+            error(210, unexpected)
             ])
     }
 
