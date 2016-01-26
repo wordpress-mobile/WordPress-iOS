@@ -48,9 +48,13 @@ struct AccountSettingsService {
         }
     }
 
-    var settingsObserver: Observable<AccountSettings?> {
+    /// Emits a value when the settings for the associated account change.
+    var settings: Observable<AccountSettings?> {
         let notificationCenter = NSNotificationCenter.defaultCenter()
         let notificationObserver = notificationCenter.rx_notification(NSManagedObjectContextDidSaveNotification, object: context)
+        // This was the simplest implementation. If performance is an issue, we could try
+        // adding `distinctUntilChanged` or `filter` on the notification userInfo and only
+        // emit if the changed objects include the observed account.
         return notificationObserver.map(getSettings).startWith(getSettings())
     }
 
