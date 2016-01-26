@@ -52,7 +52,6 @@ class AccountSettingsRemote: ServiceRemoteREST {
                         // This probably means the observable is being disposed
                         DDLogSwift.logError("Canceled refreshing settings")
                     } else {
-                        DDLogSwift.logError("Error refreshing settings: \(error)")
                         observer.onError(error)
                     }
             })
