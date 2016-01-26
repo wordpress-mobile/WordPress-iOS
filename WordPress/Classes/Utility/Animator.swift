@@ -16,15 +16,19 @@ import UIKit
 ///             didSet {
 ///                 animator.animateWithDuration(0.3,
 ///                     preamble: { [unowned self] in
-///                         let view = self.createErrorView()
-///                         self.view.addSubview(view)
-///                         self.errorView = view
-///                         self.errorView?.alpha = 0
+///                         if self.showError {
+///                             let view = self.createErrorView()
+///                             self.view.addSubview(view)
+///                             self.errorView = view
+///                             self.errorView?.alpha = 0
+///                         }
 ///                     }, animations: { [unowned self] in
 ///                         self.errorView?.alpha = 1
 ///                     }, cleanup: { [unowned self] in
-///                         self.errorView?.removeFromSuperview()
-///                         self.errorView = nil
+///                         if !self.showError {
+///                             self.errorView?.removeFromSuperview()
+///                             self.errorView = nil
+///                         }
 ///                     })
 ///             }
 ///         }
