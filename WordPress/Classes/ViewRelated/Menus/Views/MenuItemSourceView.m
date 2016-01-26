@@ -87,6 +87,7 @@
     if(!self.tableView.tableHeaderView) {
         // set the tableHeaderView after we have called layoutSubviews the first time
         self.tableView.tableHeaderView = self.stackedTableHeaderView;
+        [self.tableView layoutIfNeeded];
     }
 
     // set the stackedTableHeaderView frame height to the intrinsic height of the stackView
