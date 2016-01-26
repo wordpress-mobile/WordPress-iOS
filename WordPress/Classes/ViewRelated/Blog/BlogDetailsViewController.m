@@ -9,6 +9,7 @@
 #import "PageListViewController.h"
 #import "ReachabilityUtils.h"
 #import "SiteSettingsViewController.h"
+#import "SharingViewController.h"
 #import "StatsViewController.h"
 #import "WPAccount.h"
 #import "WPAppAnalytics.h"
@@ -273,6 +274,14 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
+    if ([Feature enabled:FeatureFlagSharing] && [self.blog supports:BlogFeatureSharing]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
+                                                        image:[UIImage imageNamed:@"icon-menu-sharing"]
+                                                     callback:^{
+                                                         [weakSelf showSharing];
+                                                     }]];
+    }
+
     if ([Feature enabled:FeatureFlagPeople]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
                                                         image:[UIImage imageNamed:@"icon-menu-people"]
@@ -454,6 +463,13 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 {
     [WPAppAnalytics track:WPAnalyticsStatOpenedSiteSettings withBlog:self.blog];
     SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showSharing
+{
+    //TODO: (@aerych, 2016-01-14) Add tracker for sharing feature
+    SharingViewController *controller = [[SharingViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
