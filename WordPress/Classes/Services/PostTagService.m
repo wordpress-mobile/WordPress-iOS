@@ -23,9 +23,7 @@
                 return;
             }
             
-            NSArray *tags = [self tagsFromRemoteTags:remoteTags];
-            blog.tags = [NSSet setWithArray:tags];
-            
+            [self mergeTagsWithRemoteTags:remoteTags blog:blog];
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             
             if (success) {
@@ -45,27 +43,45 @@
     }
 }
 
-- (NSArray <PostTag *> *)tagsFromRemoteTags:(NSArray<RemotePostTag *> *)remoteTags
+- (NSArray <PostTag *> *)mergeTagsWithRemoteTags:(NSArray<RemotePostTag *> *)remoteTags blog:(Blog *)blog
 {
     NSMutableArray *tags = [NSMutableArray arrayWithCapacity:remoteTags.count];
     for (RemotePostTag *remoteTag in remoteTags) {
-        [tags addObject:[self tagFromRemoteTag:remoteTag]];
+        [tags addObject:[self tagFromRemoteTag:remoteTag blog:blog]];
     }
     
     return [NSArray arrayWithArray:tags];
 }
 
-- (PostTag *)tagFromRemoteTag:(RemotePostTag *)remoteTag
+- (PostTag *)tagFromRemoteTag:(RemotePostTag *)remoteTag blog:(Blog *)blog
 {
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:[PostTag entityName]
-                                                         inManagedObjectContext:self.managedObjectContext];
+    PostTag *tag = [self existingTagForRemoteTag:remoteTag blog:blog];
+    if (!tag) {
+        NSEntityDescription *entityDescription = [NSEntityDescription entityForName:[PostTag entityName]
+                                                             inManagedObjectContext:self.managedObjectContext];
+        tag = [[PostTag alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:self.managedObjectContext];
+        tag.tagID = remoteTag.tagID;
+        tag.blog = blog;
+    }
     
-    PostTag *tag = [[PostTag alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:self.managedObjectContext];
-    tag.tagID = remoteTag.tagID;
     tag.name = remoteTag.name;
     tag.slug = remoteTag.slug;
     
     return tag;
+}
+
+- (PostTag *)existingTagForRemoteTag:(RemotePostTag *)remoteTag blog:(Blog *)blog
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:[PostTag entityName]];
+    request.predicate = [NSPredicate predicateWithFormat:@"blog = %@ AND tagID = %@", blog, remoteTag.tagID];
+    NSError *error;
+    NSArray *tags = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Error when retrieving PostTag by tagID: %@", error);
+        return nil;
+    }
+    
+    return [tags firstObject];
 }
 
 @end
