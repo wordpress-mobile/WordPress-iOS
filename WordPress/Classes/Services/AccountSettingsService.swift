@@ -29,9 +29,9 @@ class AccountSettingsService {
         return testScheduler ?? MainScheduler.instance
     }
 
-    init(userID: Int, api: WordPressComApi) {
-        self.remote = AccountSettingsRemote.remoteWithApi(api)
-        self.userID = userID
+    convenience init(userID: Int, api: WordPressComApi) {
+        let remote = AccountSettingsRemote.remoteWithApi(api)
+        self.init(userID: userID, remote: remote)
     }
 
     init(userID: Int, remote: AccountSettingsRemoteInterface) {
