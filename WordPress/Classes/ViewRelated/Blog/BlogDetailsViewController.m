@@ -282,7 +282,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
                                                      }]];
     }
 
-    if ([Feature enabled:FeatureFlagPeople]) {
+    if ([Feature enabled:FeatureFlagPeople] && [self.blog supports:BlogFeaturePeople]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
                                                         image:[UIImage imageNamed:@"icon-menu-people"]
                                                      callback:^{
