@@ -420,6 +420,7 @@ NSString * const PostFormatStandard = @"standard";
              If the logic for this changes that needs to be updated as well
              */
             return [self accountIsDefaultAccount];
+        case BlogFeaturePeople:
         case BlogFeatureWPComRESTAPI:
             return [self restApi] != nil;
         case BlogFeatureSharing:
