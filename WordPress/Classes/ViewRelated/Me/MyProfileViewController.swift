@@ -33,7 +33,7 @@ class MyProfileController: NSObject {
     }
 
     var viewModel: Observable<ImmuTable> {
-        return service.settingsObserver.map(mapViewModel)
+        return service.settings.map(mapViewModel)
     }
 
     func mapViewModel(settings: AccountSettings?) -> ImmuTable {
