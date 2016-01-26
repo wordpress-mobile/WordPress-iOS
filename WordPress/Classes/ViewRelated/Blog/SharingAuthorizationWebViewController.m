@@ -50,7 +50,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 @implementation SharingAuthorizationWebViewController
 
 + (instancetype)controllerWithPublicizer:(PublicizeService *)publicizer
-                              andRefresh:(NSString *)refresh
+                           connectionURL:(NSURL *)connectionURL
                                  forBlog:(Blog *)blog
 {
     NSParameterAssert(publicizer);
@@ -63,9 +63,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
     webViewController.publicizer = publicizer;
     webViewController.secureInteraction = YES;
-
-    NSURL *authorizeURL = [NSURL URLWithString:refresh.length ? refresh : publicizer.connectURL];
-    webViewController.url = authorizeURL;
+    webViewController.url = connectionURL;
     
     return webViewController;
 }
