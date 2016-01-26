@@ -4,7 +4,7 @@
 
 @interface PostTagService : LocalCoreDataService
 
-/* Fetches the associated tags for blog and replaces all currently persisted PostTag entities for blog.tags
+/* Fetches the associated tags for blog and merges all currently persisted PostTag entities for blog.tags
  */
 - (void)syncTagsForBlog:(Blog *)blog
                       success:(void (^)())success
