@@ -6,6 +6,28 @@ enum Plan: String {
     case Free = "free"
     case Premium = "premium"
     case Business = "business"
+
+    var title: String {
+        switch self {
+        case .Free:
+            return NSLocalizedString("Free", comment: "Free plan name. As in https://store.wordpress.com/plans/")
+        case .Premium:
+            return NSLocalizedString("Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/")
+        case .Business:
+            return NSLocalizedString("Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/")
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .Free:
+            return NSLocalizedString("Anyone creating a simple blog or site.", comment: "Description of the Free plan")
+        case .Premium:
+            return NSLocalizedString("Serious bloggers and creatives.", comment: "Description of the Premium plan")
+        case .Business:
+            return NSLocalizedString("Business websites and ecommerce.", comment: "Description of the Business plan")
+        }
+    }
 }
 
 // Icons
