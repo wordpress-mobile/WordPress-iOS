@@ -16,10 +16,12 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
                success:(void (^)(RemotePostCategory *))success
                failure:(void (^)(NSError *))failure
 {
-    NSDictionary *extraParameters = @{
-                                      @"name" : category.name ?: [NSNull null],
-                                      @"parent_id" : category.parentID ?: @0,
-                                      };
+    NSMutableDictionary *extraParameters = [NSMutableDictionary dictionaryWithCapacity:2];
+    [extraParameters setObject:category.name ?: [NSNull null] forKey:@"name"];
+    if ([category.parentID integerValue] > 0) {
+        [extraParameters setObject:category.parentID forKey:@"parent"];
+    }
+    
     [self createTaxonomyWithType:TaxonomyServiceRemoteXMLRPCCategoryTypeIdentifier
                       parameters:extraParameters
                          success:^(NSString *responseString) {
