@@ -2,71 +2,82 @@ import UIKit
 import RxSwift
 import WordPressShared
 
-class MyProfileController: NSObject {
+func MyProfileViewController(account account: WPAccount) -> ImmuTableViewController {
+    let service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
+    return MyProfileViewController(service: service)
+}
+
+func MyProfileViewController(service service: AccountSettingsService) -> ImmuTableViewController {
+    let controller = MyProfileController(service: service)
+    return ImmuTableViewController(controller: controller)
+}
+
+private struct MyProfileController: ImmuTableController {
+    // MARK: - ImmuTableController
+
+    weak var presenter: ImmuTablePresenter? = nil
+
     let title = NSLocalizedString("My Profile", comment: "My Profile view title")
-    let service: AccountSettingsService
-    let viewController = ImmuTableViewController()
 
-    private let bag = DisposeBag()
+    var immuTableRows: [ImmuTableRow.Type] {
+        return [EditableTextRow.self]
+    }
 
-    init(service: AccountSettingsService) {
-        self.service = service
-        super.init()
+    var immuTable: Observable<ImmuTable> {
+        return service.settings.map(mapViewModel)
+    }
 
-        viewController.title = title
-        viewController.registerRows(immutableRows)
-
-        viewModel
-            .observeOn(MainScheduler.instance)
-            .subscribeNext(viewController.bindViewModel)
-            .addDisposableTo(bag)
-
-        service.refresh
-            .pausable(viewController.visible)
+    var errorMessage: Observable<String?> {
+        precondition(presenter != nil)
+        guard let presenter = presenter else {
+            // This shouldn't happen, but if it does, disabling the error feels
+            // safer than having it running when the VC is not visible.
+            return Observable.just(nil)
+        }
+        return service.refresh
+            .pausable(presenter.visible)
             // replace errors with .Failed status
             .catchErrorJustReturn(.Failed)
             // convert status to string
             .map({ $0.errorMessage })
-            // and set the view controller error message
-            .observeOn(MainScheduler.instance)
-            .subscribeNext { [weak self] message in
-                self?.viewController.errorMessage = message
-            }
-            .addDisposableTo(bag)
     }
 
-    convenience init(account: WPAccount) {
-        self.init(service: AccountSettingsService(userID: account.userID.integerValue, api: account.restApi))
+    // MARK: - Initialization
+
+    let service: AccountSettingsService
+
+    init(service: AccountSettingsService) {
+        self.service = service
     }
 
-    var immutableRows: [ImmuTableRow.Type] {
-        return [EditableTextRow.self]
-    }
-
-    var viewModel: Observable<ImmuTable> {
-        return service.settings.map(mapViewModel)
-    }
+    // MARK: - Model mapping
 
     func mapViewModel(settings: AccountSettings?) -> ImmuTable {
+        precondition(presenter != nil)
+        guard let presenter = presenter else {
+            // This shouldn't happen. If there's no presenter we can't push the
+            // editText controllers.
+            return ImmuTable.Empty
+        }
         let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
             value: settings?.firstName ?? "",
-            action: viewController.push(editText(AccountSettingsChange.FirstName)))
+            action: presenter.push(editText(AccountSettingsChange.FirstName)))
 
         let lastNameRow = EditableTextRow(
             title: NSLocalizedString("Last Name", comment: "My Profile last name label"),
             value: settings?.lastName ?? "",
-            action: viewController.push(editText(AccountSettingsChange.LastName)))
+            action: presenter.push(editText(AccountSettingsChange.LastName)))
 
         let displayNameRow = EditableTextRow(
             title: NSLocalizedString("Display Name", comment: "My Profile display name label"),
             value: settings?.displayName ?? "",
-            action: viewController.push(editText(AccountSettingsChange.DisplayName)))
+            action: presenter.push(editText(AccountSettingsChange.DisplayName)))
 
         let aboutMeRow = EditableTextRow(
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: settings?.aboutMe ?? "",
-            action: viewController.push(editText(AccountSettingsChange.AboutMe)))
+            action: presenter.push(editText(AccountSettingsChange.AboutMe)))
 
         return ImmuTable(sections: [
             ImmuTableSection(rows: [
@@ -78,8 +89,10 @@ class MyProfileController: NSObject {
             ])
     }
 
+    // MARK: - Actions
+
     func editText(changeType: (AccountSettingsChangeWithString), hint: String? = nil) -> ImmuTableRowControllerGenerator {
-        return { [unowned self] row in
+        return { row in
             let row = row as! EditableTextRow
             return self.controllerForEditableText(row, changeType: changeType, hint: hint)
         }
@@ -97,7 +110,6 @@ class MyProfileController: NSObject {
 
         controller.title = title
         controller.onValueChanged = {
-            [unowned self]
             value in
 
             let change = changeType(value)

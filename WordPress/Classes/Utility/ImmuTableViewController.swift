@@ -4,7 +4,8 @@ import WordPressShared
 
 typealias ImmuTableRowControllerGenerator = ImmuTableRow -> UIViewController
 
-protocol ImmuTablePresenter: AnyObject {
+protocol ImmuTablePresenter: class {
+    var visible: Observable<Bool> { get }
     func push(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction
 }
 
@@ -16,6 +17,14 @@ extension ImmuTablePresenter where Self: UIViewController {
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
+}
+
+protocol ImmuTableController {
+    var presenter: ImmuTablePresenter? { get set }
+    var title: String { get }
+    var immuTableRows: [ImmuTableRow.Type] { get }
+    var immuTable: Observable<ImmuTable> { get }
+    var errorMessage: Observable<String?> { get }
 }
 
 /// Generic view controller to present ImmuTable-based tables
@@ -32,10 +41,32 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     private var errorAnimator: ErrorAnimator!
 
+    private let controller: ImmuTableController?
+
+    private let bag = DisposeBag()
+
     // MARK: - Table View Controller
 
-    init() {
+    init(controller: ImmuTableController? = nil) {
+        self.controller = controller
         super.init(style: .Grouped)
+        self.controller?.presenter = self
+        if let controller = self.controller {
+            title = controller.title
+            registerRows(controller.immuTableRows)
+            controller.immuTable
+                .observeOn(MainScheduler.instance)
+                .subscribeNext({ [weak self] in
+                    self?.handler.viewModel = $0
+                    })
+                .addDisposableTo(bag)
+            controller.errorMessage
+                .observeOn(MainScheduler.instance)
+                .subscribeNext({ [weak self] in
+                    self?.errorMessage = $0
+                    })
+                .addDisposableTo(bag)
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -67,11 +98,6 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     }
 
     // MARK: - Inputs
-
-    /// Sets the view model for the view controller
-    func bindViewModel(viewModel: ImmuTable) {
-        handler.viewModel = viewModel
-    }
 
     /// Registers custom rows
     /// - seealso: ImmuTable.registerRows(_:tableView)
