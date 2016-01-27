@@ -41,7 +41,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     private var errorAnimator: ErrorAnimator!
 
-    private let controller: ImmuTableController?
+    let controller: ImmuTableController?
 
     private let bag = DisposeBag()
 
