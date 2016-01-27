@@ -10,18 +10,6 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 
 #pragma mark - categories
 
-- (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *))success
-                         failure:(void (^)(NSError *))failure
-{
-    [self getTaxonomyWithType:TaxonomyServiceRemoteRESTCategoryTypeIdentifier
-                   parameters:nil
-                      success:^(id responseObject) {
-                          if (success) {
-                              success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:@"categories"]]);
-                          }
-                      } failure:failure];
-}
-
 - (void)createCategory:(RemotePostCategory *)category
                success:(void (^)(RemotePostCategory *))success
                failure:(void (^)(NSError *))failure
@@ -35,13 +23,25 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
     }
     
     [self createTaxonomyWithType:TaxonomyServiceRemoteRESTCategoryTypeIdentifier
-                            parameters:parameters
-                               success:^(id responseObject) {
-                                   RemotePostCategory *receivedCategory = [self remoteCategoryWithJSONDictionary:responseObject];
-                                   if (success) {
-                                       success(receivedCategory);
-                                   }
-                                } failure:failure];
+                      parameters:parameters
+                         success:^(id responseObject) {
+                             RemotePostCategory *receivedCategory = [self remoteCategoryWithJSONDictionary:responseObject];
+                             if (success) {
+                                 success(receivedCategory);
+                             }
+                         } failure:failure];
+}
+
+- (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *))success
+                         failure:(void (^)(NSError *))failure
+{
+    [self getTaxonomyWithType:TaxonomyServiceRemoteRESTCategoryTypeIdentifier
+                   parameters:nil
+                      success:^(id responseObject) {
+                          if (success) {
+                              success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:@"categories"]]);
+                          }
+                      } failure:failure];
 }
 
 #pragma mark - tags
@@ -59,6 +59,27 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 }
 
 #pragma mark - default methods
+
+- (void)createTaxonomyWithType:(NSString *)typeIdentifier
+                    parameters:(NSDictionary *)parameters
+                       success:(void (^)(id responseObject))success
+                       failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.siteID, typeIdentifier];
+    NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api POST:requestUrl
+        parameters:parameters
+           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+               if (success) {
+                   success(responseObject);
+               }
+           } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
 
 - (void)getTaxonomyWithType:(NSString *)typeIdentifier
                  parameters:(id)parameters
@@ -80,27 +101,6 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
                   failure(error);
               }
           }];
-}
-
-- (void)createTaxonomyWithType:(NSString *)typeIdentifier
-            parameters:(NSDictionary *)parameters
-               success:(void (^)(id responseObject))success
-               failure:(void (^)(NSError *error))failure
-{
-    NSString *path = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.siteID, typeIdentifier];
-    NSString *requestUrl = [self pathForEndpoint:path withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
-    [self.api POST:requestUrl
-        parameters:parameters
-           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-               if (success) {
-                   success(responseObject);
-               }
-           } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
 }
 
 #pragma mark - helpers

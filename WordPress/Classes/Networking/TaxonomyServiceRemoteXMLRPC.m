@@ -11,18 +11,6 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
 
 #pragma mark - categories
 
-- (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *))success
-                         failure:(void (^)(NSError *))failure
-{
-    [self getTaxonomiesWithType:TaxonomyServiceRemoteXMLRPCCategoryTypeIdentifier
-                     parameters:nil
-                        success:^(NSArray *responseArray) {
-                            if (success) {
-                                success([self remoteCategoriesFromXMLRPCArray:responseArray]);
-                            }
-                        } failure:failure];
-}
-
 - (void)createCategory:(RemotePostCategory *)category
                success:(void (^)(RemotePostCategory *))success
                failure:(void (^)(NSError *))failure
@@ -45,6 +33,18 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
                          } failure:failure];
 }
 
+- (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *))success
+                         failure:(void (^)(NSError *))failure
+{
+    [self getTaxonomiesWithType:TaxonomyServiceRemoteXMLRPCCategoryTypeIdentifier
+                     parameters:nil
+                        success:^(NSArray *responseArray) {
+                            if (success) {
+                                success([self remoteCategoriesFromXMLRPCArray:responseArray]);
+                            }
+                        } failure:failure];
+}
+
 #pragma mark - tags
 
 - (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
@@ -60,31 +60,6 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
 }
 
 #pragma mark - default methods
-
-- (void)getTaxonomiesWithType:(NSString *)typeIdentifier
-                 parameters:(NSDictionary *)parameters
-                    success:(void (^)(NSArray *responseArray))success
-                      failure:(void (^)(NSError *error))failure
-{
-    NSArray *xmlrpcParameters = nil;
-    if (parameters.count) {
-        xmlrpcParameters = [self XMLRPCArgumentsWithExtra:@[typeIdentifier, parameters]];
-    }else {
-        xmlrpcParameters = [self XMLRPCArgumentsWithExtra:typeIdentifier];
-    }
-    [self.api callMethod:@"wp.getTerms"
-              parameters:xmlrpcParameters
-                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
-                     if (success) {
-                         success(responseObject);
-                     }
-                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                     if (failure) {
-                         failure(error);
-                     }
-                 }];
-}
 
 - (void)createTaxonomyWithType:(NSString *)typeIdentifier
                     parameters:(NSDictionary *)parameters
@@ -118,6 +93,31 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
                          success(responseObject);
                      }
                      
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
+- (void)getTaxonomiesWithType:(NSString *)typeIdentifier
+                 parameters:(NSDictionary *)parameters
+                    success:(void (^)(NSArray *responseArray))success
+                      failure:(void (^)(NSError *error))failure
+{
+    NSArray *xmlrpcParameters = nil;
+    if (parameters.count) {
+        xmlrpcParameters = [self XMLRPCArgumentsWithExtra:@[typeIdentifier, parameters]];
+    }else {
+        xmlrpcParameters = [self XMLRPCArgumentsWithExtra:typeIdentifier];
+    }
+    [self.api callMethod:@"wp.getTerms"
+              parameters:xmlrpcParameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
+                     if (success) {
+                         success(responseObject);
+                     }
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                      if (failure) {
                          failure(error);
