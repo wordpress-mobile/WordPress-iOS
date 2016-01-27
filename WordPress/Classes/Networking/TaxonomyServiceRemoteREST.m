@@ -2,6 +2,7 @@
 #import "WordPressComApi.h"
 #import "RemotePostCategory.h"
 #import "RemotePostTag.h"
+#import "RemoteTaxonomyPaging.h"
 
 static NSString * const TaxonomyServiceRemoteRESTCategoryTypeIdentifier = @"categories";
 static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
@@ -35,8 +36,17 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 - (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *))success
                          failure:(void (^)(NSError *))failure
 {
+    [self getCategoriesWithSuccess:success
+                      paging:nil
+                     failure:failure];
+}
+
+- (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *categories))success
+                          paging:(RemoteTaxonomyPaging *)paging
+                         failure:(void (^)(NSError *error))failure
+{
     [self getTaxonomyWithType:TaxonomyServiceRemoteRESTCategoryTypeIdentifier
-                   parameters:nil
+                   parameters:[self parametersForPaging:paging]
                       success:^(id responseObject) {
                           if (success) {
                               success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:@"categories"]]);
@@ -49,8 +59,17 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 - (void)getTagsWithSuccess:(void (^)(NSArray <RemotePostTag *> *tags))success
                    failure:(void (^)(NSError *error))failure
 {
+    [self getTagsWithSuccess:success
+                      paging:nil
+                     failure:failure];
+}
+
+- (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
+                    paging:(RemoteTaxonomyPaging *)paging
+                   failure:(void (^)(NSError *))failure
+{
     [self getTaxonomyWithType:TaxonomyServiceRemoteRESTTagTypeIdentifier
-                   parameters:nil
+                   parameters:[self parametersForPaging:paging]
                       success:^(id responseObject) {
                           if (success) {
                               success([self remoteTagsWithJSONArray:[responseObject arrayForKey:@"tags"]]);
@@ -135,6 +154,41 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
     tag.name = [jsonTag stringForKey:@"name"];
     tag.slug = [jsonTag stringForKey:@"slug"];
     return tag;
+}
+
+- (NSDictionary *)parametersForPaging:(RemoteTaxonomyPaging *)paging
+{
+    if (!paging) {
+        return nil;
+    }
+    
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    
+    if (paging.number) {
+        [dictionary setObject:paging.number forKey:@"number"];
+    }
+    
+    if (paging.offset) {
+        [dictionary setObject:paging.offset forKey:@"offset"];
+    }
+    
+    if (paging.page) {
+        [dictionary setObject:paging.page forKey:@"page"];
+    }
+    
+    if (paging.order == RemoteTaxonomyPagingOrderAscending) {
+        [dictionary setObject:@"ASC" forKey:@"order"];
+    } else if (paging.order == RemoteTaxonomyPagingOrderDescending) {
+        [dictionary setObject:@"DESC" forKey:@"order"];
+    }
+    
+    if (paging.orderBy == RemoteTaxonomyPagingResultsOrderingByName) {
+        [dictionary setObject:@"name" forKey:@"order_by"];
+    } else if (paging.orderBy == RemoteTaxonomyPagingResultsOrderingByCount) {
+        [dictionary setObject:@"count" forKey:@"order_by"];
+    }
+    
+    return dictionary.count ? dictionary : nil;
 }
 
 @end
