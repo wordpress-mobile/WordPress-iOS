@@ -10,7 +10,7 @@ func MyProfileViewController(account account: WPAccount) -> ImmuTableViewControl
 func MyProfileViewController(service service: AccountSettingsService) -> ImmuTableViewController {
     let controller = MyProfileController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
-    assert(controller.presenter != nil, "ImmuTableViewController should have set the presenter for MyProfileController")
+    assert(viewController.controller?.presenter != nil, "ImmuTableViewController should have set the presenter for MyProfileController")
     return viewController
 }
 
