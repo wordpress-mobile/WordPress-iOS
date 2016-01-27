@@ -1,6 +1,7 @@
 #import "TaxonomyServiceRemoteXMLRPC.h"
 #import "RemotePostCategory.h"
 #import "RemotePostTag.h"
+#import "RemoteTaxonomyPaging.h"
 #import <WordPressShared/NSString+Util.h>
 #import <WordPressApi/WordPressApi.h>
 
@@ -36,8 +37,17 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
 - (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *))success
                          failure:(void (^)(NSError *))failure
 {
+    [self getCategoriesWithSuccess:success
+                            paging:nil
+                           failure:failure];
+}
+
+- (void)getCategoriesWithSuccess:(void (^)(NSArray<RemotePostCategory *> *))success
+                          paging:(RemoteTaxonomyPaging *)paging
+                         failure:(void (^)(NSError *))failure
+{
     [self getTaxonomiesWithType:TaxonomyServiceRemoteXMLRPCCategoryTypeIdentifier
-                     parameters:nil
+                     parameters:[self parametersForPaging:paging]
                         success:^(NSArray *responseArray) {
                             if (success) {
                                 success([self remoteCategoriesFromXMLRPCArray:responseArray]);
@@ -50,13 +60,22 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
 - (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
                    failure:(void (^)(NSError *))failure
 {
+    [self getTagsWithSuccess:success
+                      paging:nil
+                     failure:failure];
+}
+
+- (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
+                    paging:(RemoteTaxonomyPaging *)paging
+                   failure:(void (^)(NSError *))failure
+{
     [self getTaxonomiesWithType:TaxonomyServiceRemoteXMLRPCTagTypeIdentifier
-                   parameters:nil
-                      success:^(NSArray *responseArray) {
-                          if (success) {
-                              success([self remoteTagsFromXMLRPCArray:responseArray]);
-                          }
-                      } failure:failure];
+                     parameters:[self parametersForPaging:paging]
+                        success:^(NSArray *responseArray) {
+                            if (success) {
+                                success([self remoteTagsFromXMLRPCArray:responseArray]);
+                            }
+                        } failure:failure];
 }
 
 #pragma mark - default methods
@@ -157,6 +176,37 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
     tag.name = [xmlrpcDictionary stringForKey:@"name"];
     tag.slug = [xmlrpcDictionary stringForKey:@"slug"];
     return tag;
+}
+
+- (NSDictionary *)parametersForPaging:(RemoteTaxonomyPaging *)paging
+{
+    if (!paging) {
+        return nil;
+    }
+    
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+    
+    if (paging.number) {
+        [dictionary setObject:paging.number forKey:@"number"];
+    }
+    
+    if (paging.offset) {
+        [dictionary setObject:paging.offset forKey:@"offset"];
+    }
+    
+    if (paging.order == RemoteTaxonomyPagingOrderAscending) {
+        [dictionary setObject:@"ASC" forKey:@"order"];
+    } else if (paging.order == RemoteTaxonomyPagingOrderDescending) {
+        [dictionary setObject:@"DESC" forKey:@"order"];
+    }
+    
+    if (paging.orderBy == RemoteTaxonomyPagingResultsOrderingByName) {
+        [dictionary setObject:@"name" forKey:@"order_by"];
+    } else if (paging.orderBy == RemoteTaxonomyPagingResultsOrderingByCount) {
+        [dictionary setObject:@"count" forKey:@"order_by"];
+    }
+    
+    return dictionary.count ? dictionary : nil;
 }
 
 @end
