@@ -9,9 +9,14 @@ func MyProfileViewController(account account: WPAccount) -> ImmuTableViewControl
 
 func MyProfileViewController(service service: AccountSettingsService) -> ImmuTableViewController {
     let controller = MyProfileController(service: service)
-    return ImmuTableViewController(controller: controller)
+    let viewController = ImmuTableViewController(controller: controller)
+    assert(controller.presenter != nil, "ImmuTableViewController should have set the presenter for MyProfileController")
+    return viewController
 }
 
+/// MyProfileController requires the `presenter` to be set before using.
+/// To avoid problems, it's marked private and should only be initialized using the
+/// `MyProfileViewController` factory functions.
 private struct MyProfileController: ImmuTableController {
     // MARK: - ImmuTableController
 
@@ -24,11 +29,12 @@ private struct MyProfileController: ImmuTableController {
     }
 
     var immuTable: Observable<ImmuTable> {
+        precondition(presenter != nil, "presenter must be set before using")
         return service.settings.map(mapViewModel)
     }
 
     var errorMessage: Observable<String?> {
-        precondition(presenter != nil)
+        precondition(presenter != nil, "presenter must be set before using")
         guard let presenter = presenter else {
             // This shouldn't happen, but if it does, disabling the error feels
             // safer than having it running when the VC is not visible.
@@ -53,7 +59,7 @@ private struct MyProfileController: ImmuTableController {
     // MARK: - Model mapping
 
     func mapViewModel(settings: AccountSettings?) -> ImmuTable {
-        precondition(presenter != nil)
+        precondition(presenter != nil, "presenter must be set before using")
         guard let presenter = presenter else {
             // This shouldn't happen. If there's no presenter we can't push the
             // editText controllers.
