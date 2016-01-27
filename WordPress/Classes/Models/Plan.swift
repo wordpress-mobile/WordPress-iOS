@@ -7,6 +7,7 @@ enum Plan: String {
     case Premium = "premium"
     case Business = "business"
 
+    /// The localized name of the plan
     var title: String {
         switch self {
         case .Free:
@@ -18,6 +19,7 @@ enum Plan: String {
         }
     }
 
+    /// A description of the plan, explains who is the plan's target audience
     var description: String {
         switch self {
         case .Free:
