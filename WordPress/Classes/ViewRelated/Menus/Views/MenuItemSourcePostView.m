@@ -26,10 +26,10 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([Post class]) inManagedObjectContext:[self managedObjectContext]];
     [fetchRequest setEntity:entity];
-    NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog == %@ && original == nil", [self blog]];
-    NSPredicate *filteredPredicate = [NSPredicate predicateWithFormat:@"status IN %@", @[PostStatusPublish, PostStatusPrivate]];
+    NSPredicate *defaultPredicate = [self defaultFetchRequestPredicate];
+    NSPredicate *filteredPredicate = [NSPredicate predicateWithFormat:@"original == nil && status IN %@", @[PostStatusPublish, PostStatusPrivate]];
     
-    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[basePredicate, filteredPredicate]];
+    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[defaultPredicate, filteredPredicate]];
     fetchRequest.predicate = predicate;
     
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:NO];

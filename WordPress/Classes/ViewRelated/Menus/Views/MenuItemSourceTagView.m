@@ -34,8 +34,7 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:[PostTag entityName] inManagedObjectContext:[self managedObjectContext]];
     [fetchRequest setEntity:entity];
     // Specify criteria for filtering which objects to fetch
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blog == %@", [self blog]];
-    [fetchRequest setPredicate:predicate];
+    [fetchRequest setPredicate:[self defaultFetchRequestPredicate]];
     // Specify how the fetched objects should be sorted
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name"
                                                                    ascending:YES
