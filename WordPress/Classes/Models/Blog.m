@@ -20,6 +20,12 @@ static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 
 NSString * const PostFormatStandard = @"standard";
+NSString * const ActiveModulesKeyPublicize = @"publicize";
+NSString * const ActiveModulesKeySharingButtons = @"sharingdaddy";
+NSString * const ActiveModulesKeyJSONAPI = @"json-api";
+NSString * const OptionsKeyActiveModules = @"active_modules";
+NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled";
+
 
 @interface Blog ()
 
@@ -424,7 +430,7 @@ NSString * const PostFormatStandard = @"standard";
         case BlogFeatureWPComRESTAPI:
             return [self restApi] != nil;
         case BlogFeatureSharing:
-            return [self restApi] && self.usernameForSite && self.isAdmin;
+            return [self supportsPublicize] || [self supportsShareButtons];
         case BlogFeatureStats:
             return [self restApiForStats] != nil;
         case BlogFeatureCommentLikes:
@@ -437,6 +443,46 @@ NSString * const PostFormatStandard = @"standard";
         case BlogFeatureThemeBrowsing:
             return [self isHostedAtWPcom] && [self isAdmin];
     }
+}
+
+- (BOOL)supportsPublicize
+{
+    // wpcom blog and publicize has not been disabled
+    if (self.isHostedAtWPcom && ![[self getOptionValue:OptionsKeyPublicizeDisabled] boolValue]) {
+        return YES;
+    }
+
+    // self-hosted connected to jetpack via the wpcom acct signed into the app.
+    if (self.dotComID && [self jetpackPublicizeModuleEnabled]) {
+        return YES;
+    }
+
+    // self-hosted connected to jetpack via a jetpackAccount
+    if ([self jetpackRESTSupported] && [self jetpackPublicizeModuleEnabled]) {
+        return YES;
+    }
+
+    return NO;
+}
+
+- (BOOL)supportsShareButtons
+{
+    // wpcom blog
+    if (self.isHostedAtWPcom) {
+        return YES;
+    }
+
+    // self-hosted connected to jetpack via the wpcom acct signed into the app.
+    if (self.dotComID && [self jetpackSharingButtonsModuleEnabled]) {
+        return YES;
+    }
+
+    // self-hosted connected to jetpack via a jetpackAccount
+    if ([self jetpackRESTSupported] && [self jetpackSharingButtonsModuleEnabled]) {
+        return YES;
+    }
+
+    return NO;
 }
 
 - (BOOL)supportsPushNotifications
@@ -580,6 +626,22 @@ NSString * const PostFormatStandard = @"standard";
 - (BOOL)jetpackRESTSupported
 {
     return JetpackREST.enabled && self.jetpackAccount && self.dotComID;
+}
+
+- (BOOL)jetpackActiveModule:(NSString *)moduleName
+{
+    NSArray *activeModules = (NSArray *)[self getOptionValue:OptionsKeyActiveModules];
+    return [activeModules containsObject:moduleName] ?: NO;
+}
+
+- (BOOL)jetpackPublicizeModuleEnabled
+{
+    return [self jetpackActiveModule:ActiveModulesKeyPublicize] && [self jetpackActiveModule:ActiveModulesKeyJSONAPI];
+}
+
+- (BOOL)jetpackSharingButtonsModuleEnabled
+{
+    return [self jetpackActiveModule:ActiveModulesKeySharingButtons] && [self jetpackActiveModule:ActiveModulesKeyJSONAPI];
 }
 
 #pragma mark - Private Methods
