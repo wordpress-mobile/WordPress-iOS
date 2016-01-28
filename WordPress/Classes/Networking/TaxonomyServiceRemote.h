@@ -26,6 +26,12 @@
                           paging:(RemoteTaxonomyPaging *)paging
                          failure:(void (^)(NSError *error))failure;
 
+/* Fetch a list of categories whose names or slugs match the provided search query. Case-insensitive.
+ */
+- (void)searchCategoriesWithName:(NSString *)nameQuery
+                         success:(void (^)(NSArray <RemotePostCategory *> *categories))success
+                         failure:(void (^)(NSError *error))failure;
+
 /* Fetch a list of tags associated with the site.
  * Note: Requests no paging parameters via the API defaulting the response.
  */
@@ -37,5 +43,11 @@
 - (void)getTagsWithSuccess:(void (^)(NSArray <RemotePostTag *> *tags))success
                     paging:(RemoteTaxonomyPaging *)paging
                    failure:(void (^)(NSError *error))failure;
+
+/* Fetch a list of tags whose names or slugs match the provided search query. Case-insensitive.
+ */
+- (void)searchTagsWithName:(NSString *)nameQuery
+                 success:(void (^)(NSArray <RemotePostTag *> *tags))success
+                 failure:(void (^)(NSError *error))failure;
 
 @end
