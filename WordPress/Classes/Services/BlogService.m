@@ -566,7 +566,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         blog.icon = remoteBlog.icon;
         blog.isAdmin = remoteBlog.isAdmin;
         blog.visible = remoteBlog.visible;
-        
+        blog.options = remoteBlog.options;
+
         // Update 'Top Level' Settings
         BlogSettings *settings = blog.settings;
         settings.name = [remoteBlog.name stringByDecodingXMLCharacters];
@@ -738,14 +739,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 return;
             }
             blog.options = [NSDictionary dictionaryWithDictionary:options];
-            blog.siteVisibility = (SiteVisibility)([[blog getOptionValue:@"blog_public"] integerValue]);
-            //HACK:Sergio Estevao (2015-08-31): Because there is no direct way to
-            // know if a user has permissions to change the options we check if the blog title property is read only or not.
-            if ([blog.options numberForKeyPath:@"blog_title.readonly"]) {
-                blog.isAdmin = ![[blog.options numberForKeyPath:@"blog_title.readonly"] boolValue];
-            }
 
-            float version = [[blog version] floatValue];
+            CGFloat version = [[blog version] floatValue];
             if (version < [MinimumVersion floatValue]) {
                 if (blog.lastUpdateWarning == nil
                     || [blog.lastUpdateWarning floatValue] < [MinimumVersion floatValue])
