@@ -155,29 +155,6 @@
                    } failure:failure];
 }
 
-- (void)searchCategoriesWithName:(NSString *)nameQuery
-                            blog:(Blog *)blog
-                         success:(void (^)(NSArray <PostCategory *> *categories))success
-                         failure:(void (^)(NSError *error))failure
-{
-    id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
-    NSManagedObjectID *blogID = blog.objectID;
-    [remote searchCategoriesWithName:nameQuery
-                             success:^(NSArray<RemotePostCategory *> *categories) {
-                                 Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-                                 if (!blog) {
-                                     return;
-                                 }
-                                 [self mergeCategories:categories
-                                               forBlog:blog
-                                     completionHandler:^(NSArray <PostCategory *> *postCategories) {
-                                         if (success) {
-                                             success(postCategories);
-                                         }
-                                     }];
-                             } failure:failure];
-}
-
 - (void)mergeCategories:(NSArray <RemotePostCategory *> *)remoteCategories forBlog:(Blog *)blog completionHandler:(void (^)(NSArray <PostCategory *> *categories))completion
 {
     NSSet *remoteSet = [NSSet setWithArray:[remoteCategories valueForKey:@"categoryID"]];
