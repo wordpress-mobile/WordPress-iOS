@@ -21,7 +21,7 @@ public class DeleteSiteViewController : UITableViewController
     ///
     private struct Section
     {
-        let header: WPTableViewSectionHeaderFooterView
+        let header: TableViewHeaderDetailView
         let cell: UITableViewCell
         let action: (() -> Void)?
     }
@@ -66,9 +66,6 @@ public class DeleteSiteViewController : UITableViewController
         
         let domainDetail = NSLocalizedString("Be careful! Deleting your site will also remove your domain(s) listed below.", comment: "Detail for Domain Removal on Delete Site settings page")
 
-        let domainHeader = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil)
-        domainHeader.title = domainHeading
-
         let domainCell = WPTableViewCellDefault(style: .Value1, reuseIdentifier: nil)
         domainCell.textLabel?.text = primaryDomain
         WPStyleGuide.configureTableViewCell(domainCell)
@@ -76,7 +73,7 @@ public class DeleteSiteViewController : UITableViewController
         domainCell.textLabel?.textColor = WPStyleGuide.grey()
         
         return Section(
-            header: domainHeader,
+            header: TableViewHeaderDetailView(title: domainHeading, detail: domainDetail),
             cell: domainCell,
             action: nil)
     }
@@ -88,16 +85,13 @@ public class DeleteSiteViewController : UITableViewController
         
         let contentTitle = NSLocalizedString("Export Content", comment: "Button to export content on Start Over settings page")
 
-        let contentHeader = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil)
-        contentHeader.title = contentHeading
-        
         let contentCell = WPTableViewCellDefault(style: .Value1, reuseIdentifier: nil)
         contentCell.textLabel?.text = contentTitle
         WPStyleGuide.configureTableViewActionCell(contentCell)
         contentCell.textLabel?.textAlignment = .Center
 
         return Section(
-            header: contentHeader,
+            header: TableViewHeaderDetailView(title: contentHeading, detail: contentDetail),
             cell: contentCell,
             action: nil)
     }
@@ -109,15 +103,12 @@ public class DeleteSiteViewController : UITableViewController
         
         let deleteTitle = NSLocalizedString("Delete Site", comment: "Button to delete site on Start Over settings page")
 
-        let deleteHeader = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil)
-        deleteHeader.title = deleteHeading
-        
         let deleteCell = WPTableViewCellDefault(style: .Value1, reuseIdentifier: nil)
         deleteCell.textLabel?.text = deleteTitle
         WPStyleGuide.configureTableViewDestructiveActionCell(deleteCell)
 
         return Section(
-            header: deleteHeader,
+            header: TableViewHeaderDetailView(title: deleteHeading, detail: deleteDetail),
             cell: deleteCell,
             action: nil)
     }
@@ -167,8 +158,9 @@ public class DeleteSiteViewController : UITableViewController
             return CGFloat.min
         }
         
-        let title = sections[section].header.title
-        let headerHeight = WPTableViewSectionHeaderFooterView.heightForHeader(title, width: tableView.frame.width)
+        let headerView = sections[section].header
+        headerView.layoutWidth = tableView.frame.width
+        let headerHeight = headerView.intrinsicContentSize().height
         
         return headerHeight
     }
