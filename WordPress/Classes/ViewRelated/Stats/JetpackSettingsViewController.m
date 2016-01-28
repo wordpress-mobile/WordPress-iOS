@@ -458,7 +458,12 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
     void (^finishedBlock)() = ^() {
         [self setAuthenticating:NO];
-        
+
+        // Ensure options are up to date after connecting Jetpack as there may
+        // now be new info.
+        BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        [service syncOptionsForBlog:self.blog success:nil failure:nil];
+
         if (self.completionBlock) {
             self.completionBlock(YES);
         }
