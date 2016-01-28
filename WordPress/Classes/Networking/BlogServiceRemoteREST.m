@@ -211,6 +211,7 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     if ( response[@"options"] ) {
         options[@"post_thumbnail"] = [response valueForKeyPath:@"options.featured_images_enabled"];
         NSArray *optionsDirectMapKeys = @[
+                                    @"active_modules",
                                     @"admin_url",
                                     @"login_url",
                                     @"image_default_link_type",
