@@ -12,7 +12,7 @@ class PlanListViewController: UITableViewController {
 
     init() {
         super.init(style: .Grouped)
-        title = "Plans"
+        title = NSLocalizedString("Plans", comment: "Title for the plan selector")
     }
     
     required init?(coder aDecoder: NSCoder) {
