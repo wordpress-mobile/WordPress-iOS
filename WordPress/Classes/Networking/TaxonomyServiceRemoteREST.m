@@ -54,6 +54,20 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
                       } failure:failure];
 }
 
+- (void)searchCategoriesWithName:(NSString *)nameQuery
+                   success:(void (^)(NSArray <RemotePostCategory *> *tags))success
+                   failure:(void (^)(NSError *error))failure
+{
+    NSParameterAssert(nameQuery.length > 0);
+    [self getTaxonomyWithType:TaxonomyServiceRemoteRESTCategoryTypeIdentifier
+                   parameters:@{@"search": nameQuery}
+                      success:^(id responseObject) {
+                          if (success) {
+                              success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:@"categories"]]);
+                          }
+                      } failure:failure];
+}
+
 #pragma mark - tags
 
 - (void)getTagsWithSuccess:(void (^)(NSArray <RemotePostTag *> *tags))success
@@ -70,6 +84,20 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 {
     [self getTaxonomyWithType:TaxonomyServiceRemoteRESTTagTypeIdentifier
                    parameters:[self parametersForPaging:paging]
+                      success:^(id responseObject) {
+                          if (success) {
+                              success([self remoteTagsWithJSONArray:[responseObject arrayForKey:@"tags"]]);
+                          }
+                      } failure:failure];
+}
+
+- (void)searchTagsWithName:(NSString *)nameQuery
+                   success:(void (^)(NSArray <RemotePostTag *> *tags))success
+                   failure:(void (^)(NSError *error))failure
+{
+    NSParameterAssert(nameQuery.length > 0);
+    [self getTaxonomyWithType:TaxonomyServiceRemoteRESTTagTypeIdentifier
+                   parameters:@{@"search": nameQuery}
                       success:^(id responseObject) {
                           if (success) {
                               success([self remoteTagsWithJSONArray:[responseObject arrayForKey:@"tags"]]);

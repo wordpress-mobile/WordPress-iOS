@@ -57,6 +57,20 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
                         } failure:failure];
 }
 
+- (void)searchCategoriesWithName:(NSString *)nameQuery
+                         success:(void (^)(NSArray<RemotePostCategory *> *))success
+                         failure:(void (^)(NSError *))failure
+{
+    NSDictionary *searchParameters = @{@"search": nameQuery};
+    [self getTaxonomiesWithType:TaxonomyServiceRemoteXMLRPCCategoryTypeIdentifier
+                     parameters:searchParameters
+                        success:^(NSArray *responseArray) {
+                            if (success) {
+                                success([self remoteCategoriesFromXMLRPCArray:responseArray]);
+                            }
+                        } failure:failure];
+}
+
 #pragma mark - tags
 
 - (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
@@ -73,6 +87,20 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
 {
     [self getTaxonomiesWithType:TaxonomyServiceRemoteXMLRPCTagTypeIdentifier
                      parameters:[self parametersForPaging:paging]
+                        success:^(NSArray *responseArray) {
+                            if (success) {
+                                success([self remoteTagsFromXMLRPCArray:responseArray]);
+                            }
+                        } failure:failure];
+}
+
+- (void)searchTagsWithName:(NSString *)nameQuery
+                         success:(void (^)(NSArray<RemotePostTag *> *))success
+                         failure:(void (^)(NSError *))failure
+{
+    NSDictionary *searchParameters = @{@"search": nameQuery};
+    [self getTaxonomiesWithType:TaxonomyServiceRemoteXMLRPCTagTypeIdentifier
+                     parameters:searchParameters
                         success:^(NSArray *responseArray) {
                             if (success) {
                                 success([self remoteTagsFromXMLRPCArray:responseArray]);
