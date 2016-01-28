@@ -98,7 +98,7 @@
             textField.opaque = YES;
             
             [textField addTarget:self action:@selector(textFieldDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
-            [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventValueChanged];
+            [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventEditingChanged];
             
             UIFont *font = [WPFontManager openSansRegularFontOfSize:16.0];
             textField.font = font;
