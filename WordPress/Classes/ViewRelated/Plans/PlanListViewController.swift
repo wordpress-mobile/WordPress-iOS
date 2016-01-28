@@ -41,7 +41,7 @@ class PlanListViewController: UITableViewController {
         cell.textLabel?.text = plan.title
         cell.detailTextLabel?.text = plan.description
 
-        WPStyleGuide.configureTableViewCell(cell)
+        cell.selectionStyle = .None
 
         return cell
     }
