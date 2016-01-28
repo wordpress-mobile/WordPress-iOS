@@ -6,6 +6,13 @@
 #import "TaxonomyServiceRemote.h"
 #import "TaxonomyServiceRemoteREST.h"
 #import "TaxonomyServiceRemoteXMLRPC.h"
+#import "RemoteTaxonomyPaging.h"
+
+@interface PostTagService ()
+
+@property (nonatomic, strong) RemoteTaxonomyPaging *remotePaging;
+
+@end
 
 @implementation PostTagService
 
@@ -31,6 +38,41 @@
             }
         }];
     } failure:failure];
+}
+
+- (void)loadMoreTagsForBlog:(Blog *)blog
+                    success:(void (^)(NSArray <PostTag *> *tags))success
+                    failure:(void (^)(NSError *error))failure
+{
+    RemoteTaxonomyPaging *paging = self.remotePaging;
+    if (!paging) {
+        paging = [[RemoteTaxonomyPaging alloc] init];
+        paging.number = @(100);
+        // start the offset at 0
+        paging.offset = @(0);
+        self.remotePaging = paging;
+    }
+    
+    id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    NSManagedObjectID *blogID = blog.objectID;
+    [remote getTagsWithSuccess:^(NSArray<RemotePostTag *> *remoteTags) {
+    
+        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+        if (!blog) {
+            return;
+        }
+        
+        // increment the offset by the number of tags being requested for the next paging request
+        self.remotePaging.offset = @(self.remotePaging.offset.integerValue + self.remotePaging.number.integerValue);
+        
+        NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        
+        if (success) {
+            success(tags);
+        }
+        
+    } paging:paging failure:failure];
 }
 
 #pragma mark - helpers
