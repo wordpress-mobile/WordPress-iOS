@@ -19,13 +19,4 @@
                forBlogObjectID:(NSManagedObjectID *)blogObjectID
                        success:(void (^)(PostCategory *category))success
                        failure:(void (^)(NSError *error))failure;
-
-
-/* Search categories for blog matching a name or slug of the query. Case-insensitive search.
- */
-- (void)searchCategoriesWithName:(NSString *)nameQuery
-                      blog:(Blog *)blog
-                   success:(void (^)(NSArray <PostCategory *> *categories))success
-                   failure:(void (^)(NSError *error))failure;
-
 @end
