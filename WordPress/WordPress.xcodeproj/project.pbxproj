@@ -620,6 +620,7 @@
 		E6D2E1671B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E1661B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift */; };
 		E6D2E1691B8AAD9B0000ED14 /* ReaderListStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E1681B8AAD9B0000ED14 /* ReaderListStreamHeader.swift */; };
 		E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */; };
+		E6D35FFC1C5ABC2700A46303 /* RemoteBlogOptionsHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E6D35FFB1C5ABC2700A46303 /* RemoteBlogOptionsHelper.m */; };
 		E6D3E8491BEBD871002692E8 /* ReaderCrossPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */; };
 		E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */; };
 		E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */; };
@@ -1714,6 +1715,8 @@
 		E6D2E1661B8AAD8C0000ED14 /* ReaderTagStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderTagStreamHeader.swift; sourceTree = "<group>"; };
 		E6D2E1681B8AAD9B0000ED14 /* ReaderListStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderListStreamHeader.swift; sourceTree = "<group>"; };
 		E6D2E16B1B8B423B0000ED14 /* ReaderStreamHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderStreamHeader.swift; sourceTree = "<group>"; };
+		E6D35FFA1C5ABC2700A46303 /* RemoteBlogOptionsHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteBlogOptionsHelper.h; sourceTree = "<group>"; };
+		E6D35FFB1C5ABC2700A46303 /* RemoteBlogOptionsHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteBlogOptionsHelper.m; sourceTree = "<group>"; };
 		E6D3E8481BEBD871002692E8 /* ReaderCrossPostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderCrossPostCell.swift; sourceTree = "<group>"; };
 		E6D3E84A1BEBD888002692E8 /* ReaderCrossPostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderCrossPostCell.xib; sourceTree = "<group>"; };
 		E6DE44661B90D251000FA7EF /* ReaderHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderHelpers.swift; sourceTree = "<group>"; };
@@ -2521,6 +2524,8 @@
 		850BD4531922F95C0032F3AD /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				E6D35FFD1C5ABC3D00A46303 /* Remote Helpers */,
+				E1249B4019408C6F0035E895 /* Remote Objects */,
 				E18EE94919349EAE00B0A40C /* AccountServiceRemote.h */,
 				E149D64519349E69006A843D /* AccountServiceRemoteREST.h */,
 				E149D64619349E69006A843D /* AccountServiceRemoteREST.m */,
@@ -2562,7 +2567,6 @@
 				5D44EB341986D695008B7175 /* ReaderSiteServiceRemote.m */,
 				E18EE94F19349EC300B0A40C /* ReaderTopicServiceRemote.h */,
 				E18EE95019349EC300B0A40C /* ReaderTopicServiceRemote.m */,
-				E1249B4019408C6F0035E895 /* Remote Objects */,
 				E1249B481940AE610035E895 /* ServiceRemoteREST.h */,
 				59E2AAE21B2096BF0051DC06 /* ServiceRemoteREST.m */,
 				E127A0EF1C43B7CB00085129 /* SiteServiceRemoteREST.h */,
@@ -3794,6 +3798,15 @@
 			name = Headers;
 			sourceTree = "<group>";
 		};
+		E6D35FFD1C5ABC3D00A46303 /* Remote Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E6D35FFA1C5ABC2700A46303 /* RemoteBlogOptionsHelper.h */,
+				E6D35FFB1C5ABC2700A46303 /* RemoteBlogOptionsHelper.m */,
+			);
+			name = "Remote Helpers";
+			sourceTree = "<group>";
+		};
 		EC4696A80EA74DAC0040EE8E /* Pages */ = {
 			isa = PBXGroup;
 			children = (
@@ -4860,6 +4873,7 @@
 				B5416D011C17693B00006DD8 /* UIApplication+Helpers.m in Sources */,
 				5DBFC8A71A9BC34F00E00DE4 /* PostListViewController.m in Sources */,
 				5D08B90419648C3400D5B381 /* ReaderSubscriptionViewController.m in Sources */,
+				E6D35FFC1C5ABC2700A46303 /* RemoteBlogOptionsHelper.m in Sources */,
 				E1EBC36F1C118EA500F638E0 /* ImmuTable.swift in Sources */,
 				5DDC44671A72BB07007F538E /* ReaderViewController.m in Sources */,
 				E1D086E2194214C600F0CC19 /* NSDate+WordPressJSON.m in Sources */,
