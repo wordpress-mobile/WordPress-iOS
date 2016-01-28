@@ -7,7 +7,7 @@ enum Plan: String {
     case Premium = "premium"
     case Business = "business"
 
-    /// The localized name of the plan
+    /// The localized name of the plan (e.g. "Business").
     var title: String {
         switch self {
         case .Free:
@@ -16,6 +16,18 @@ enum Plan: String {
             return NSLocalizedString("Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/")
         case .Business:
             return NSLocalizedString("Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/")
+        }
+    }
+
+    /// The localized long name of the plan (e.g. "WordPress.com Business").
+    var fullTitle: String {
+        switch self {
+        case .Free:
+            return NSLocalizedString("WordPress.com Free", comment: "Free plan name. As in https://store.wordpress.com/plans/")
+        case .Premium:
+            return NSLocalizedString("WordPress.com Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/")
+        case .Business:
+            return NSLocalizedString("WordPress.com Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/")
         }
     }
 
