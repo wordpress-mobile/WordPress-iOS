@@ -40,6 +40,10 @@
  */
 - (NSFetchRequest *)fetchRequest;
 
+/* Configurable predicate for fetchRequest
+ */
+- (NSPredicate *)defaultFetchRequestPredicate;
+
 /* Configurable sectionName key within subclasses for the fetchRequest and resultsController to initialize with.
  */
 - (NSString *)fetechedResultsControllerSectionNameKeyPath;

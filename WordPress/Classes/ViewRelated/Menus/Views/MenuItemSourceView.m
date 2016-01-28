@@ -155,6 +155,13 @@
     return nil;
 }
 
+- (NSPredicate *)defaultFetchRequestPredicate
+{
+    // overrided in subclasses if needed
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blog == %@", [self blog]];
+    return predicate;
+}
+
 - (NSString *)fetechedResultsControllerSectionNameKeyPath
 {
     // overrided in subclasses
