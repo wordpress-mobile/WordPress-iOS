@@ -98,7 +98,13 @@
                                    if (!blog) {
                                        return;
                                    }
-                                   [self mergeCategories:categories forBlog:blog completionHandler:success];
+                                   [self mergeCategories:categories
+                                                 forBlog:blog
+                                       completionHandler:^(NSArray<PostCategory *> *postCategories) {
+                                           if (success) {
+                                               success();
+                                           }
+                                       }];
                                }];
                            } failure:failure];
 }
@@ -149,9 +155,32 @@
                    } failure:failure];
 }
 
-- (void)mergeCategories:(NSArray *)categories forBlog:(Blog *)blog completionHandler:(void (^)(void))completion
+- (void)searchCategoriesWithName:(NSString *)nameQuery
+                            blog:(Blog *)blog
+                         success:(void (^)(NSArray <PostCategory *> *categories))success
+                         failure:(void (^)(NSError *error))failure
 {
-    NSSet *remoteSet = [NSSet setWithArray:[categories valueForKey:@"categoryID"]];
+    id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    NSManagedObjectID *blogID = blog.objectID;
+    [remote searchCategoriesWithName:nameQuery
+                             success:^(NSArray<RemotePostCategory *> *categories) {
+                                 Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                                 if (!blog) {
+                                     return;
+                                 }
+                                 [self mergeCategories:categories
+                                               forBlog:blog
+                                     completionHandler:^(NSArray <PostCategory *> *postCategories) {
+                                         if (success) {
+                                             success(postCategories);
+                                         }
+                                     }];
+                             } failure:failure];
+}
+
+- (void)mergeCategories:(NSArray <RemotePostCategory *> *)remoteCategories forBlog:(Blog *)blog completionHandler:(void (^)(NSArray <PostCategory *> *categories))completion
+{
+    NSSet *remoteSet = [NSSet setWithArray:[remoteCategories valueForKey:@"categoryID"]];
     NSSet *localSet = [blog.categories valueForKey:@"categoryID"];
     NSMutableSet *toDelete = [localSet mutableCopy];
     [toDelete minusSet:remoteSet];
@@ -163,8 +192,10 @@
             }
         }
     }
-
-    for (RemotePostCategory *remoteCategory in categories) {
+    
+    NSMutableArray *categories = [NSMutableArray arrayWithCapacity:remoteCategories.count];
+    
+    for (RemotePostCategory *remoteCategory in remoteCategories) {
         PostCategory *category = [self findWithBlogObjectID:blog.objectID andCategoryID:remoteCategory.categoryID];
         if (!category) {
             category = [self newCategoryForBlog:blog];
@@ -172,12 +203,14 @@
         }
         category.categoryName = remoteCategory.name;
         category.parentID = remoteCategory.parentID;
+        
+        [categories addObject:category];
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     if (completion) {
-        completion();
+        completion(categories);
     }
 }
 

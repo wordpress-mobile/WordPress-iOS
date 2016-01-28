@@ -16,4 +16,12 @@
 - (void)loadMoreTagsForBlog:(Blog *)blog
                     success:(void (^)(NSArray <PostTag *> *tags))success
                     failure:(void (^)(NSError *error))failure;
+
+/* Search tags for blog matching a name or slug of the query. Case-insensitive search.
+ */
+- (void)searchTagsWithName:(NSString *)nameQuery
+                      blog:(Blog *)blog
+                   success:(void (^)(NSArray <PostTag *> *tags))success
+                   failure:(void (^)(NSError *error))failure;
+
 @end

@@ -75,6 +75,32 @@
     } paging:paging failure:failure];
 }
 
+- (void)searchTagsWithName:(NSString *)nameQuery
+                      blog:(Blog *)blog
+                   success:(void (^)(NSArray <PostTag *> *tags))success
+                   failure:(void (^)(NSError *error))failure
+{
+    NSParameterAssert(nameQuery.length > 0);
+    id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
+    NSManagedObjectID *blogID = blog.objectID;
+    [remote searchTagsWithName:nameQuery
+                       success:^(NSArray<RemotePostTag *> *remoteTags) {
+                           
+                           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                           if (!blog) {
+                               return;
+                           }
+                           
+                           NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
+                           [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                           
+                           if (success) {
+                               success(tags);
+                           }
+                           
+                       } failure:failure];
+}
+
 #pragma mark - helpers
 
 - (id<TaxonomyServiceRemote>)remoteForBlog:(Blog *)blog {
@@ -87,6 +113,10 @@
 
 - (NSArray <PostTag *> *)mergeTagsWithRemoteTags:(NSArray<RemotePostTag *> *)remoteTags blog:(Blog *)blog
 {
+    if (!remoteTags.count) {
+        return nil;
+    }
+    
     NSMutableArray *tags = [NSMutableArray arrayWithCapacity:remoteTags.count];
     for (RemotePostTag *remoteTag in remoteTags) {
         [tags addObject:[self tagFromRemoteTag:remoteTag blog:blog]];
