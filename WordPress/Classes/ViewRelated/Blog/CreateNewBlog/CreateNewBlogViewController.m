@@ -515,7 +515,7 @@ static UIEdgeInsets const CreateBlogCancelButtonPaddingPad  = {1.0, 13.0, 0.0, 0
             [[ContextManager sharedInstance] saveContext:context];
             
             [accountService updateUserDetailsForAccount:defaultAccount success:nil failure:nil];
-            [blogService syncBlog:blog];
+            [blogService syncBlog:blog completionHandler:nil];
             [WPAnalytics refreshMetadata];
             [self setAuthenticating:NO];
             [self dismissViewControllerAnimated:YES completion:nil];
