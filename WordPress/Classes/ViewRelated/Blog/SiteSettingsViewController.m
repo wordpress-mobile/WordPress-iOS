@@ -727,7 +727,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     NSParameterAssert([blog supportsSiteManagementServices]);
     
-    //TODO: Show Delete Site controller
+    DeleteSiteViewController *viewController = [[DeleteSiteViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectInAdvancedSectionRow:(NSInteger)row
