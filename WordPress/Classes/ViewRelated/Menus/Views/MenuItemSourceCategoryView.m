@@ -38,8 +38,7 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:[PostCategory entityName] inManagedObjectContext:[self managedObjectContext]];
     [fetchRequest setEntity:entity];
     
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blog == %@", [self blog]];
-    [fetchRequest setPredicate:predicate];
+    [fetchRequest setPredicate:[self defaultFetchRequestPredicate]];
     
     NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName"
                                                                        ascending:YES
