@@ -50,12 +50,19 @@ NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingCount,
 };
 
+NS_ENUM(NSInteger, SiteSettingsAdvanced) {
+    SiteSettingsAdvancedStartOver = 0,
+    SiteSettingsAdvancedDeleteSite,
+    SiteSettingsAdvancedCount,
+};
+
 NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionGeneral = 0,
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
     SiteSettingsSectionDiscussion,
     SiteSettingsSectionRemoveSite,
+    SiteSettingsSectionAdvanced,
 };
 
 
@@ -79,6 +86,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
 #pragma mark - Removal Section
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
+#pragma mark - Advanced Section
+@property (nonatomic, strong) SettingTableViewCell *startOverCell;
+@property (nonatomic, strong) SettingTableViewCell *deleteSiteCell;
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSString *url;
@@ -126,6 +136,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     
     if ([self.blog supports:BlogFeatureRemovable]) {
         [sections addObject:@(SiteSettingsSectionRemoveSite)];
+    }
+
+    if ([self.blog supports:BlogFeatureSiteManagement]) {
+        [sections addObject:@(SiteSettingsSectionAdvanced)];
     }
 
     self.tableSections = sections;
@@ -198,6 +212,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         }
         case SiteSettingsSectionRemoveSite: {
             return 1;
+        }
+        case SiteSettingsSectionAdvanced: {
+            return SiteSettingsAdvancedCount;
         }
     }
     return 0;
@@ -422,6 +439,44 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
 }
 
+- (SettingTableViewCell *)startOverCell
+{
+    if (_startOverCell) {
+        return _startOverCell;
+    }
+    
+    _startOverCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Start Over", @"Label for selecting the Start Over Settings item")
+                                                        editable:YES
+                                                 reuseIdentifier:nil];
+    return _startOverCell;
+}
+
+- (SettingTableViewCell *)deleteSiteCell
+{
+    if (_deleteSiteCell) {
+        return _deleteSiteCell;
+    }
+    
+    _deleteSiteCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Delete Site", @"Label for selecting the Delete Site Settings item")
+                                                         editable:YES
+                                                  reuseIdentifier:nil];
+    return _deleteSiteCell;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForAdvancedSettingsAtRow:(NSInteger)row
+{
+    switch (row) {
+        case SiteSettingsAdvancedStartOver: {
+            return self.startOverCell;
+        } break;
+        case SiteSettingsAdvancedDeleteSite: {
+            return self.deleteSiteCell;
+        } break;
+    }
+
+    NSAssert(false, @"Missing Advanced section cell");
+    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -441,6 +496,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         }
         case SiteSettingsSectionRemoveSite: {
             return self.removeSiteCell;
+        }
+        case SiteSettingsSectionAdvanced: {
+            return [self tableView:tableView cellForAdvancedSettingsAtRow:indexPath.row];
         }
     }
 
@@ -487,6 +545,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             break;
         case SiteSettingsSectionWriting:
             headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
+            break;
+        case SiteSettingsSectionAdvanced:
+            headingTitle = NSLocalizedString(@"Advanced", @"Title for the advanced section in site settings screen");
             break;
     }
     return headingTitle;
@@ -679,6 +740,34 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
 }
 
+- (void)showStartOverForBlog:(Blog *)blog
+{
+    NSParameterAssert([blog supportsSiteManagementServices]);
+
+    StartOverViewController *viewController = [[StartOverViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)showDeleteSiteForBlog:(Blog *)blog
+{
+    NSParameterAssert([blog supportsSiteManagementServices]);
+    
+    DeleteSiteViewController *viewController = [[DeleteSiteViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectInAdvancedSectionRow:(NSInteger)row
+{
+    switch (row) {
+        case SiteSettingsAdvancedStartOver: {
+            [self showStartOverForBlog:self.blog];
+        } break;
+        case SiteSettingsAdvancedDeleteSite: {
+            [self showDeleteSiteForBlog:self.blog];
+        } break;
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
@@ -698,6 +787,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionRemoveSite:{
             [tableView deselectSelectedRowWithAnimation:YES];
             [self showRemoveSiteForBlog:self.blog];
+        } break;
+        case SiteSettingsSectionAdvanced:{
+            [self tableView:tableView didSelectInAdvancedSectionRow:indexPath.row];
         } break;
     }
 }
