@@ -21,8 +21,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 NSString * const PostFormatStandard = @"standard";
 NSString * const ActiveModulesKeyPublicize = @"publicize";
-NSString * const ActiveModulesKeySharingButtons = @"sharingdaddy";
-NSString * const ActiveModulesKeyJSONAPI = @"json-api";
+NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
 NSString * const OptionsKeyActiveModules = @"active_modules";
 NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled";
 
@@ -644,12 +643,12 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled"
 
 - (BOOL)jetpackPublicizeModuleEnabled
 {
-    return [self jetpackActiveModule:ActiveModulesKeyPublicize] && [self jetpackActiveModule:ActiveModulesKeyJSONAPI];
+    return [self jetpackActiveModule:ActiveModulesKeyPublicize];
 }
 
 - (BOOL)jetpackSharingButtonsModuleEnabled
 {
-    return [self jetpackActiveModule:ActiveModulesKeySharingButtons] && [self jetpackActiveModule:ActiveModulesKeyJSONAPI];
+    return [self jetpackActiveModule:ActiveModulesKeySharingButtons];
 }
 
 #pragma mark - Private Methods
