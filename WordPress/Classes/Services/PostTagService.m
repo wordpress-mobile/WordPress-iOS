@@ -24,9 +24,10 @@
     NSManagedObjectID *blogID = blog.objectID;
     [remote getTagsWithSuccess:^(NSArray <RemotePostTag *> *remoteTags) {
         [self.managedObjectContext performBlock:^{
-            
-            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+            NSError *error;
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:&error];
             if (!blog) {
+                DDLogError(@"Error when retrieving Blog by blogID: %@", error);
                 return;
             }
             
@@ -57,8 +58,10 @@
     NSManagedObjectID *blogID = blog.objectID;
     [remote getTagsWithPaging:paging
                       success:^(NSArray<RemotePostTag *> *remoteTags) {
-                          Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                          NSError *error;
+                          Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:&error];
                           if (!blog) {
+                              DDLogError(@"Error when retrieving Blog by blogID: %@", error);
                               return;
                           }
                           
@@ -84,9 +87,10 @@
     NSManagedObjectID *blogID = blog.objectID;
     [remote searchTagsWithName:nameQuery
                        success:^(NSArray<RemotePostTag *> *remoteTags) {
-                           
-                           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                           NSError *error;
+                           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:&error];
                            if (!blog) {
+                               DDLogError(@"Error when retrieving Blog by blogID: %@", error);
                                return;
                            }
                            
