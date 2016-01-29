@@ -55,24 +55,23 @@
     
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogID = blog.objectID;
-    [remote getTagsWithSuccess:^(NSArray<RemotePostTag *> *remoteTags) {
-    
-        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-        if (!blog) {
-            return;
-        }
-        
-        // increment the offset by the number of tags being requested for the next paging request
-        self.remotePaging.offset = @(self.remotePaging.offset.integerValue + self.remotePaging.number.integerValue);
-        
-        NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        
-        if (success) {
-            success(tags);
-        }
-        
-    } paging:paging failure:failure];
+    [remote getTagsWithPaging:paging
+                      success:^(NSArray<RemotePostTag *> *remoteTags) {
+                          Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                          if (!blog) {
+                              return;
+                          }
+                          
+                          // increment the offset by the number of tags being requested for the next paging request
+                          self.remotePaging.offset = @(self.remotePaging.offset.integerValue + self.remotePaging.number.integerValue);
+                          
+                          NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
+                          [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                          
+                          if (success) {
+                              success(tags);
+                          }
+                      } failure:failure];
 }
 
 - (void)searchTagsWithName:(NSString *)nameQuery

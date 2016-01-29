@@ -39,14 +39,14 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
 - (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *))success
                          failure:(void (^)(NSError *))failure
 {
-    [self getCategoriesWithSuccess:success
-                            paging:nil
-                           failure:failure];
+    [self getCategoriesWithPaging:nil
+                          success:success
+                          failure:failure];
 }
 
-- (void)getCategoriesWithSuccess:(void (^)(NSArray<RemotePostCategory *> *))success
-                          paging:(RemoteTaxonomyPaging *)paging
-                         failure:(void (^)(NSError *))failure
+- (void)getCategoriesWithPaging:(RemoteTaxonomyPaging *)paging
+                        success:(void (^)(NSArray <RemotePostCategory *> *categories))success
+                        failure:(void (^)(NSError *error))failure
 {
     [self getTaxonomiesWithType:TaxonomyServiceRemoteXMLRPCCategoryTypeIdentifier
                      parameters:[self parametersForPaging:paging]
@@ -76,14 +76,14 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
 - (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
                    failure:(void (^)(NSError *))failure
 {
-    [self getTagsWithSuccess:success
-                      paging:nil
-                     failure:failure];
+    [self getTagsWithPaging:nil
+                    success:success
+                    failure:failure];
 }
 
-- (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
-                    paging:(RemoteTaxonomyPaging *)paging
-                   failure:(void (^)(NSError *))failure
+- (void)getTagsWithPaging:(RemoteTaxonomyPaging *)paging
+                  success:(void (^)(NSArray <RemotePostTag *> *tags))success
+                  failure:(void (^)(NSError *error))failure
 {
     [self getTaxonomiesWithType:TaxonomyServiceRemoteXMLRPCTagTypeIdentifier
                      parameters:[self parametersForPaging:paging]
