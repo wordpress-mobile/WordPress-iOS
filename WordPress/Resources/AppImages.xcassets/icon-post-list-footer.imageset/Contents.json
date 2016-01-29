@@ -2,18 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "icon-post-list-footer.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "icon-post-list-footer@2x.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "icon-post-list-footer@3x.png"
+      "filename" : "icon-post-list-footer.pdf"
     }
   ],
   "info" : {

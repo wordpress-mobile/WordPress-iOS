@@ -6,7 +6,6 @@
 // Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
-#import <GooglePlus/GooglePlus.h>
 #import <HockeySDK/HockeySDK.h>
 #import <Reachability/Reachability.h>
 #import <Simperium/Simperium.h>
@@ -15,9 +14,6 @@
 #import <WordPressApi/WordPressApi.h>
 #import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
-
-// Other third party libs
-#import "PocketAPI.h"
 
 // Analytics & crash logging
 #import "WPAppAnalytics.h"
@@ -132,11 +128,6 @@ int ddLogLevel                                                  = DDLogLevelInfo
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
-    // Launched by tapping a notification
-    if (application.applicationState == UIApplicationStateActive) {
-        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
-    }
-
     [self.window makeKeyAndVisible];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
@@ -186,14 +177,6 @@ int ddLogLevel                                                  = DDLogLevelInfo
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
                                                           sourceApplication:sourceApplication
                                                                  annotation:annotation]) {
-        returnValue = YES;
-    }
-
-    if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
-        returnValue = YES;
-    }
-
-    if ([[PocketAPI sharedAPI] handleOpenURL:url]) {
         returnValue = YES;
     }
 
@@ -377,8 +360,6 @@ int ddLogLevel                                                  = DDLogLevelInfo
     
     [HelpshiftUtils setup];
     
-    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
-    
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     self.userAgent = [[WPUserAgent alloc] init];
@@ -392,14 +373,14 @@ int ddLogLevel                                                  = DDLogLevelInfo
     [WPFontManager merriweatherRegularFontOfSize:16.0];
 
     [self customizeAppearance];
-    
-    // Push notifications
-    [NotificationsManager registerForPushNotifications];
+
+    // Notifications
+    [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
+    [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
     
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [MediaService cleanUnusedMediaFileFromTmpDir];
-        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
     });
     
     // Configure Today Widget
@@ -414,12 +395,12 @@ int ddLogLevel                                                  = DDLogLevelInfo
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [NotificationsManager registerDeviceToken:deviceToken];
+    [[PushNotificationsManager sharedInstance] registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    [NotificationsManager registrationDidFail:error];
+    [[PushNotificationsManager sharedInstance] registrationDidFail:error];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -440,7 +421,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
                                         forRemoteNotification:(NSDictionary *)remoteNotification
                                             completionHandler:(void (^)())completionHandler
 {
-    [NotificationsManager handleActionWithIdentifier:identifier forRemoteNotification:remoteNotification];
+    [[InteractiveNotificationsHandler sharedInstance] handleActionWithIdentifier:identifier remoteNotification:remoteNotification];
     
     completionHandler();
 }
@@ -742,6 +723,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
     self.connectionAvailable = [self.internetReachability isReachable];
 }
 
+
 #pragma mark - Simperium
 
 - (void)configureSimperiumWithLaunchOptions:(NSDictionary *)launchOptions
@@ -878,7 +860,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
     DDLogInfo(@"OS:        %@ %@", device.systemName, device.systemVersion);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
-    DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
+    DDLogInfo(@"APN token: %@", [[PushNotificationsManager sharedInstance] deviceToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
     
     if (blogs.count > 0) {

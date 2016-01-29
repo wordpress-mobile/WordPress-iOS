@@ -108,7 +108,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
  
     NSString *loginURL = self.userIsDotCom ? WPOnePasswordWordPressComURL : self.siteUrl;
     
-    [self.onePasswordFacade findLoginForURLString:loginURL viewController:viewController sender:sender completion:^(NSString *username, NSString *password, NSError *error) {
+    [self.onePasswordFacade findLoginForURLString:loginURL viewController:viewController sender:sender completion:^(NSString *username, NSString *password, NSString *oneTimePassword, NSError *error) {
         BOOL blankUsernameOrPassword = (username.length == 0) || (password.length == 0);
         if (blankUsernameOrPassword || (error != nil)) {
             if (error != nil) {
@@ -120,8 +120,15 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         
         self.username = username;
         self.password = password;
+        self.multifactorCode = oneTimePassword;
+        
         [self.presenter setUsernameTextValue:username];
         [self.presenter setPasswordTextValue:password];
+        [self.presenter setMultifactorTextValue:oneTimePassword];
+        
+        if (oneTimePassword) {
+            self.isMultifactorEnabled = YES;
+        }
         
         [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
         [self signInButtonAction];

@@ -174,7 +174,16 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     [nc addObserver:self selector:@selector(helpshiftUnreadCountUpdated:) name:HelpshiftUnreadCountUpdatedNotification object:nil];
     
     [HelpshiftUtils refreshUnreadNotificationCount];
+}
 
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    // Previously we reloaded the interface in viewWillAppear:, however there were certain situations
+    // where the view's frame would be in the wrong orientation (e.g. after viewing the support view controller
+    // in landscape and then dismissing it) resulting in an incorrect layout.
+    // Fortunately, the frame is correct in viewWillLayoutSubviews.
     [self reloadInterface];
 }
 
@@ -189,13 +198,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 {
     return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                         duration:(NSTimeInterval)duration
-{
-    [self layoutControls];
-}
-
 
 #pragma mark - UITextField delegate methods
 
@@ -273,8 +275,16 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (IBAction)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
-    [self.view endEditing:YES];
-    [self hideMultifactorTextfieldIfNeeded];
+    // When the verification code field is displayed, the username field is disabled which
+    // means that the 1Password button cannot be tapped directly (because it's the rightView of the username field).
+    // Instead, we can trigger 1Password if the background gesture recognizer detects a tap on the 1Password button.
+    CGPoint location = [tapGestureRecognizer locationOfTouch:0 inView:self.onePasswordButton];
+    if (CGRectContainsPoint(self.onePasswordButton.bounds, location)) {
+        [self findLoginFromOnePassword:self];
+    } else {
+        [self.view endEditing:YES];
+        [self hideMultifactorTextfieldIfNeeded];
+    }
 }
 
 - (IBAction)signInButtonAction:(id)sender
@@ -914,6 +924,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 - (void)setMultifactorEnabled:(BOOL)enabled
 {
     self.multifactorText.enabled = enabled;
+}
+
+- (void)setMultifactorTextValue:(NSString *)multifactorText
+{
+    self.multifactorText.text = multifactorText;
 }
 
 - (void)setCancelButtonHidden:(BOOL)hidden

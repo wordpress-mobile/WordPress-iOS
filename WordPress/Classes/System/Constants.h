@@ -36,7 +36,3 @@ extern NSString *const WPOnePasswordWordPressTitle;
 extern NSString *const WPOnePasswordWordPressComURL;
 extern NSInteger const WPOnePasswordGeneratedMinLength;
 extern NSInteger const WPOnePasswordGeneratedMaxLength;
-
-#ifdef DEBUG
-#define WP_PEOPLE_ENABLED
-#endif

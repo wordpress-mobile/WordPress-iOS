@@ -6,7 +6,6 @@
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
 #import "ReaderPostService.h"
-#import "ReaderPostDetailViewController.h"
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderTopicService.h"
 #import "WordPressAppDelegate.h"
@@ -61,9 +60,9 @@
 
 #pragma mark - Public methods
 
-- (void)openPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
+- (void)openPost:(NSNumber *)postID onBlog:(NSNumber *)blogID
 {
-    ReaderPostDetailViewController *controller = [ReaderPostDetailViewController detailControllerWithPostID:postId siteID:blogId];
+    ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPostID:postID siteID:blogID];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -147,13 +146,10 @@
 {
     // Update our title
     if (topic) {
-        self.title = topic.title;
+        self.navigationItem.title = topic.title;
     } else {
-        self.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
+        self.navigationItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
     }
-
-    // Make sure that the tab bar item does not change its title.
-    self.navigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
 
     // Don't recycle an existing controller.  Instead create a new one.
     // This resolves some layout issues swapping out tableHeaderViews on iOS 9

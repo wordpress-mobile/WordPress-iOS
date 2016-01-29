@@ -10,7 +10,7 @@ public class DiscussionSettingsViewController : UITableViewController
     // MARK: - Initializers / Deinitializers
     public convenience init(blog: Blog) {
         self.init(style: .Grouped)
-        self.settings = blog.settings
+        self.blog = blog
     }
 
     deinit {
@@ -31,6 +31,7 @@ public class DiscussionSettingsViewController : UITableViewController
         super.viewWillAppear(animated)
         tableView.reloadSelectedRow()
         tableView.deselectSelectedRowWithAnimation(true)
+        refreshSettings()
     }
     
     public override func viewWillDisappear(animated: Bool) {
@@ -55,8 +56,6 @@ public class DiscussionSettingsViewController : UITableViewController
     }
 
     private func setupNotificationListeners() {
-        assert(settings != nil)
-        
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "handleContextDidChange:",
             name: NSManagedObjectContextObjectsDidChangeNotification,
@@ -66,6 +65,18 @@ public class DiscussionSettingsViewController : UITableViewController
     
 
     // MARK: - Persistance!
+    private func refreshSettings() {
+        let service = BlogService(managedObjectContext: settings.managedObjectContext)
+        service.syncSettingsForBlog(blog,
+            success: { [weak self] in
+                self?.tableView.reloadData()
+                DDLogSwift.logInfo("Reloaded Settings")
+            },
+            failure: { (error: NSError!) in
+                DDLogSwift.logError("Error while sync'ing blog settings: \(error)")
+            })
+    }
+    
     private func saveSettingsIfNeeded() {
         if !settings.hasChanges {
             return
@@ -243,10 +254,10 @@ public class DiscussionSettingsViewController : UITableViewController
         pickerViewController.switchVisible      = true
         pickerViewController.switchOn           = settings.commentsCloseAutomatically
         pickerViewController.switchText         = NSLocalizedString("Automatically Close", comment: "Discussion Settings")
-        pickerViewController.selectionText      = NSLocalizedString("Close after", comment: "")
-        pickerViewController.selectionFormat    = NSLocalizedString("%d days", comment: "")
-        pickerViewController.pickerHint         = NSLocalizedString("Automatically close comments on articles.", comment: "")
-        pickerViewController.pickerFormat       = NSLocalizedString("%d days", comment: "")
+        pickerViewController.selectionText      = NSLocalizedString("Close after", comment: "Close comments after a given number of days")
+        pickerViewController.selectionFormat    = NSLocalizedString("%d days", comment: "Number of days")
+        pickerViewController.pickerHint         = NSLocalizedString("Automatically close comments on content after a certain number of days.", comment: "Discussion Settings: Comments Auto-close")
+        pickerViewController.pickerFormat       = NSLocalizedString("%d days", comment: "Number of days")
         pickerViewController.pickerMinimumValue = commentsAutocloseMinimumValue
         pickerViewController.pickerMaximumValue = commentsAutocloseMaximumValue
         pickerViewController.pickerSelectedValue = settings.commentsCloseAutomaticallyAfterDays as? Int
@@ -349,8 +360,8 @@ public class DiscussionSettingsViewController : UITableViewController
         let moderationKeys                      = settings.commentsModerationKeys
         let settingsViewController              = SettingsListEditorViewController(collection: moderationKeys)
         settingsViewController.title            = NSLocalizedString("Hold for Moderation", comment: "Moderation Keys Title")
-        settingsViewController.insertTitle      = NSLocalizedString("New Moderation Key", comment: "Moderation Keyword Insertion Title")
-        settingsViewController.editTitle        = NSLocalizedString("Edit Moderation Key", comment: "Moderation Keyword Edition Title")
+        settingsViewController.insertTitle      = NSLocalizedString("New Moderation Word", comment: "Moderation Keyword Insertion Title")
+        settingsViewController.editTitle        = NSLocalizedString("Edit Moderation Word", comment: "Moderation Keyword Edition Title")
         settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail or IP, it will be held in the moderation queue. You can enter partial words, so \"press\" will match \"WordPress\".",
                                                                     comment: "Text rendered at the bottom of the Discussion Moderation Keys editor")
         settingsViewController.onChange         = { [weak self] (updated: Set<String>) in
@@ -364,8 +375,8 @@ public class DiscussionSettingsViewController : UITableViewController
         let blacklistKeys                       = settings.commentsBlacklistKeys
         let settingsViewController              = SettingsListEditorViewController(collection: blacklistKeys)
         settingsViewController.title            = NSLocalizedString("Blacklist", comment: "Blacklist Title")
-        settingsViewController.insertTitle      = NSLocalizedString("New Blacklist Key", comment: "Blacklist Keyword Insertion Title")
-        settingsViewController.editTitle        = NSLocalizedString("Edit Blacklist Key", comment: "Blacklist Keyword Edition Title")
+        settingsViewController.insertTitle      = NSLocalizedString("New Blacklist Word", comment: "Blacklist Keyword Insertion Title")
+        settingsViewController.editTitle        = NSLocalizedString("Edit Blacklist Word", comment: "Blacklist Keyword Edition Title")
         settingsViewController.footerText       = NSLocalizedString("When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".",
                                                                     comment: "Text rendered at the bottom of the Discussion Blacklist Keys editor")
         settingsViewController.onChange         = { [weak self] (updated: Set<String>) in
@@ -586,7 +597,12 @@ public class DiscussionSettingsViewController : UITableViewController
     
 
     // MARK: - Private Properties
-    private var settings : BlogSettings!
+    private var blog : Blog!
+    
+    // MARK: - Computed Properties
+    private var settings : BlogSettings {
+        return blog.settings
+    }
     
     // MARK: - Typealiases
     private typealias CommentsSorting           = BlogSettings.CommentsSorting
