@@ -706,8 +706,8 @@ public protocol ThemePresenter: class
         suspendedSearch = searchName
         searchController.active = false
         presentingTheme = theme
-        let webViewController = WPWebViewController(URL: NSURL(string: url))
-        
+        let webViewController = ThemeWebViewController(url: url)
+
         webViewController.authToken = blog.authToken
         webViewController.username = blog.usernameForSite
         webViewController.password = blog.password
