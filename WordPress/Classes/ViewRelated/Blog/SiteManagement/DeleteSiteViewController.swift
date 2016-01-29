@@ -1,4 +1,5 @@
 import UIKit
+import SVProgressHUD
 import WordPressShared
 
 /// DeleteSiteViewController handles deletion of a user's site.
@@ -17,6 +18,10 @@ public class DeleteSiteViewController : UITableViewController
     ///
     private var primaryDomain: String!
     
+    /// Enabled by primaryDomain keyboard entry
+    ///
+    private weak var deleteAction: UIAlertAction?
+
     /// Table content structure
     ///
     private struct Section
@@ -110,7 +115,9 @@ public class DeleteSiteViewController : UITableViewController
         return Section(
             header: TableViewHeaderDetailView(title: deleteHeading, detail: deleteDetail),
             cell: deleteCell,
-            action: nil)
+            action: { [unowned self] in
+                self.confirmDeleteSite()
+            })
     }
     
     // MARK: Table View Data Source
@@ -163,5 +170,72 @@ public class DeleteSiteViewController : UITableViewController
         let headerHeight = headerView.intrinsicContentSize().height
         
         return headerHeight
+    }
+
+    // MARK: - Actions
+
+    private func confirmDeleteSite() {
+        tableView.deselectSelectedRowWithAnimation(true)
+        
+        presentViewController(confirmDeleteController(), animated: true, completion: nil)
+    }
+    
+    private func confirmDeleteController() -> UIAlertController {
+        let title = NSLocalizedString("Delete Site", comment: "Title of Delete Site confirmation alert")
+        let messageFormat = NSLocalizedString("Enter the primary domain to confirm\n“%@”", comment: "Message of Delete Site confirmation alert; substitution is site's primary domain")
+        let message = String(format: messageFormat, primaryDomain)
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+        alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+        
+        let deleteTitle = NSLocalizedString("Delete", comment: "Delete Site confirmation action title")
+        let deleteAction = UIAlertAction(title: deleteTitle, style: .Destructive, handler: { action in
+            self.deleteSiteConfirmed()
+        })
+        deleteAction.enabled = false
+        alertController.addAction(deleteAction)
+        self.deleteAction = deleteAction
+        
+        alertController.addTextFieldWithConfigurationHandler({ textField in
+            textField.addTarget(self, action: "alertTextFieldDidChange:", forControlEvents: .EditingChanged)
+        })
+        
+        return alertController
+    }
+
+    func alertTextFieldDidChange(sender: UITextField) {
+        deleteAction?.enabled = sender.text == primaryDomain
+    }
+    
+    private func deleteSiteConfirmed() {
+        SVProgressHUD.show()
+        
+        let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.deleteSiteForBlog(blog,
+            success: { [weak self] in
+                let status = NSLocalizedString("Site deleted!", comment: "Overlay message displayed when site successfully deleted")
+                SVProgressHUD.showSuccessWithStatus(status)
+                
+                if let navController = self?.navigationController {
+                    navController.popToRootViewControllerAnimated(true)
+                }
+            },
+            failure: { [weak self] error in
+                DDLogSwift.logError("Error deleting site \(self?.primaryDomain): \(error.localizedDescription)")
+                SVProgressHUD.dismiss()
+                
+                self?.showError(error)
+            })
+    }
+    
+    private func showError(error: NSError) {
+        let errorTitle = NSLocalizedString("Delete Site Error", comment:"Title of alert when site deletion fails")
+        let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .Alert)
+        
+        let okTitle = NSLocalizedString("OK", comment:"Alert dismissal title")
+        alertController.addDefaultActionWithTitle(okTitle, handler: nil)
+        
+        alertController.presentFromRootViewController()
     }
 }
