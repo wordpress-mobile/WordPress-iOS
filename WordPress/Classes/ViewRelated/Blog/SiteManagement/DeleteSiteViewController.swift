@@ -88,7 +88,7 @@ public class DeleteSiteViewController : UITableViewController
         
         let contentDetail = NSLocalizedString("If you are sure, please be sure to take the time and export your content now. It can not be recovered in the future.", comment: "Detail for Keep Your Content on Delete Site settings page")
         
-        let contentTitle = NSLocalizedString("Export Content", comment: "Button to export content on Start Over settings page")
+        let contentTitle = NSLocalizedString("Export Content", comment: "Button to export content on Delete Site settings page")
 
         let contentCell = WPTableViewCellDefault(style: .Value1, reuseIdentifier: nil)
         contentCell.textLabel?.text = contentTitle
@@ -98,15 +98,17 @@ public class DeleteSiteViewController : UITableViewController
         return Section(
             header: TableViewHeaderDetailView(title: contentHeading, detail: contentDetail),
             cell: contentCell,
-            action: nil)
+            action: { [unowned self] in
+                self.exportContent()
+            })
     }
 
     private func createDeleteSection() -> Section {
         let deleteHeading = NSLocalizedString("Are You Sure", comment: "Heading for Are You Sure on Delete Site settings page")
         
-        let deleteDetail = NSLocalizedString("This action can not be undone. Deleting your site will remove all content, contributors, and domains from the site.", comment: "Detail for Are You Sureon Delete Site settings page")
+        let deleteDetail = NSLocalizedString("This action can not be undone. Deleting your site will remove all content, contributors, and domains from the site.", comment: "Detail for Are You Sure on Delete Site settings page")
         
-        let deleteTitle = NSLocalizedString("Delete Site", comment: "Button to delete site on Start Over settings page")
+        let deleteTitle = NSLocalizedString("Delete Site", comment: "Button to delete site on Delete Site settings page")
 
         let deleteCell = WPTableViewCellDefault(style: .Value1, reuseIdentifier: nil)
         deleteCell.textLabel?.text = deleteTitle
@@ -174,6 +176,19 @@ public class DeleteSiteViewController : UITableViewController
 
     // MARK: - Actions
 
+    private func exportContent() {
+        tableView.deselectSelectedRowWithAnimation(true)
+        
+        let exportTitle = NSLocalizedString("Export Content", comment: "Title of alert when Export Content selected")
+        let exportMessage = NSLocalizedString("Currently exporting is only available through the web interface. Please go to WordPress.com in your browser to export content.", comment: "Message of alert when Export Content selected")
+        let alertController = UIAlertController(title: exportTitle, message: exportMessage, preferredStyle: .Alert)
+        
+        let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+        alertController.addDefaultActionWithTitle(okTitle, handler: nil)
+        
+        presentViewController(alertController, animated: true, completion: nil)
+    }
+
     private func confirmDeleteSite() {
         tableView.deselectSelectedRowWithAnimation(true)
         
@@ -230,10 +245,10 @@ public class DeleteSiteViewController : UITableViewController
     }
     
     private func showError(error: NSError) {
-        let errorTitle = NSLocalizedString("Delete Site Error", comment:"Title of alert when site deletion fails")
+        let errorTitle = NSLocalizedString("Delete Site Error", comment: "Title of alert when site deletion fails")
         let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .Alert)
         
-        let okTitle = NSLocalizedString("OK", comment:"Alert dismissal title")
+        let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
         alertController.addDefaultActionWithTitle(okTitle, handler: nil)
         
         alertController.presentFromRootViewController()
