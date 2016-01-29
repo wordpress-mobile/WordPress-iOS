@@ -164,6 +164,9 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
               parameters:xmlrpcParameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
                      NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
+                     if (![responseObject isKindOfClass:[NSArray class]]) {
+                         responseObject = nil;
+                     }
                      if (success) {
                          success(responseObject);
                      }
@@ -185,6 +188,10 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
 
 - (RemotePostCategory *)remoteCategoryFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary
 {
+    if (!xmlrpcDictionary) {
+        return nil;
+    }
+    
     RemotePostCategory *category = [RemotePostCategory new];
     category.categoryID = [xmlrpcDictionary numberForKey:@"term_id"];
     category.name = [xmlrpcDictionary stringForKey:@"name"];
@@ -201,6 +208,10 @@ static NSString * const TaxonomyServiceRemoteXMLRPCTagTypeIdentifier = @"post_ta
 
 - (RemotePostTag *)remoteTagFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary
 {
+    if (!xmlrpcDictionary) {
+        return nil;
+    }
+    
     RemotePostTag *tag = [RemotePostTag new];
     tag.tagID = [xmlrpcDictionary numberForKey:@"term_id"];
     tag.name = [xmlrpcDictionary stringForKey:@"name"];

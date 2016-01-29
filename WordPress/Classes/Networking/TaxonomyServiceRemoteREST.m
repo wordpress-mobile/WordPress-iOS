@@ -25,8 +25,8 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
     
     [self createTaxonomyWithType:TaxonomyServiceRemoteRESTCategoryTypeIdentifier
                       parameters:parameters
-                         success:^(id responseObject) {
-                             RemotePostCategory *receivedCategory = [self remoteCategoryWithJSONDictionary:responseObject];
+                         success:^(NSDictionary *taxonomyDictionary) {
+                             RemotePostCategory *receivedCategory = [self remoteCategoryWithJSONDictionary:taxonomyDictionary];
                              if (success) {
                                  success(receivedCategory);
                              }
@@ -47,7 +47,7 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 {
     [self getTaxonomyWithType:TaxonomyServiceRemoteRESTCategoryTypeIdentifier
                    parameters:[self parametersForPaging:paging]
-                      success:^(id responseObject) {
+                      success:^(NSDictionary *responseObject) {
                           if (success) {
                               success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:@"categories"]]);
                           }
@@ -61,7 +61,7 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
     NSParameterAssert(nameQuery.length > 0);
     [self getTaxonomyWithType:TaxonomyServiceRemoteRESTCategoryTypeIdentifier
                    parameters:@{@"search": nameQuery}
-                      success:^(id responseObject) {
+                      success:^(NSDictionary *responseObject) {
                           if (success) {
                               success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:@"categories"]]);
                           }
@@ -84,7 +84,7 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 {
     [self getTaxonomyWithType:TaxonomyServiceRemoteRESTTagTypeIdentifier
                    parameters:[self parametersForPaging:paging]
-                      success:^(id responseObject) {
+                      success:^(NSDictionary *responseObject) {
                           if (success) {
                               success([self remoteTagsWithJSONArray:[responseObject arrayForKey:@"tags"]]);
                           }
@@ -98,7 +98,7 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
     NSParameterAssert(nameQuery.length > 0);
     [self getTaxonomyWithType:TaxonomyServiceRemoteRESTTagTypeIdentifier
                    parameters:@{@"search": nameQuery}
-                      success:^(id responseObject) {
+                      success:^(NSDictionary *responseObject) {
                           if (success) {
                               success([self remoteTagsWithJSONArray:[responseObject arrayForKey:@"tags"]]);
                           }
@@ -109,7 +109,7 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 
 - (void)createTaxonomyWithType:(NSString *)typeIdentifier
                     parameters:(NSDictionary *)parameters
-                       success:(void (^)(id responseObject))success
+                       success:(void (^)(NSDictionary *taxonomyDictionary))success
                        failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.siteID, typeIdentifier];
@@ -118,6 +118,10 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
     [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+               NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"responseObject should be a dictionary");
+               if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                   responseObject = nil;
+               }
                if (success) {
                    success(responseObject);
                }
@@ -130,7 +134,7 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 
 - (void)getTaxonomyWithType:(NSString *)typeIdentifier
                  parameters:(id)parameters
-                    success:(void (^)(id responseObject))success
+                    success:(void (^)(NSDictionary *responseObject))success
                     failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/%@?context=edit", self.siteID, typeIdentifier];
@@ -140,6 +144,10 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
     [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+              NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"responseObject should be a dictionary");
+              if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                  responseObject = nil;
+              }
               if (success) {
                   success(responseObject);
               }
@@ -161,6 +169,10 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 
 - (RemotePostCategory *)remoteCategoryWithJSONDictionary:(NSDictionary *)jsonCategory
 {
+    if (!jsonCategory) {
+        return nil;
+    }
+    
     RemotePostCategory *category = [RemotePostCategory new];
     category.categoryID = [jsonCategory numberForKey:@"ID"];
     category.name = [jsonCategory stringForKey:@"name"];
@@ -177,6 +189,10 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 
 - (RemotePostTag *)remoteTagWithJSONDictionary:(NSDictionary *)jsonTag
 {
+    if (!jsonTag) {
+        return nil;
+    }
+    
     RemotePostTag *tag = [RemotePostTag new];
     tag.tagID = [jsonTag numberForKey:@"ID"];
     tag.name = [jsonTag stringForKey:@"name"];
