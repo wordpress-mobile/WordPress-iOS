@@ -3,13 +3,11 @@
 #import "CommentService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
-#import "UIActionSheet+Helpers.h"
 #import "Comment.h"
 #import "BasePost.h"
 #import "SVProgressHUD.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
-#import "ReaderPostDetailViewController.h"
 #import "PostService.h"
 #import "Post.h"
 #import "BlogService.h"
@@ -70,6 +68,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -107,7 +106,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         return;
     }
     
-    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.blogID];
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.dotComID];
     self.suggestionsTableView.suggestionsDelegate = self;
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.suggestionsTableView];
@@ -283,7 +282,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
             return;
         }
 
-        ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID];
+        ReaderDetailViewController *vc = [ReaderDetailViewController controllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -455,7 +454,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     [commentService toggleLikeStatusForComment:self.comment
-                                        siteID:self.comment.blog.blogID
+                                        siteID:self.comment.blog.dotComID
                                        success:nil
                                        failure:^(NSError *error) {
                                            [weakSelf reloadData];
@@ -636,7 +635,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     __typeof(self) __weak weakSelf = self;
     
-    EditReplyViewController *editViewController = [EditReplyViewController newReplyViewControllerForSiteID:self.comment.blog.blogID];
+    EditReplyViewController *editViewController = [EditReplyViewController newReplyViewControllerForSiteID:self.comment.blog.dotComID];
 
     editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
@@ -787,7 +786,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    BOOL shouldShowSuggestions = [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID];
+    BOOL shouldShowSuggestions = [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.dotComID];
     return self.shouldAttachReplyTextView && shouldShowSuggestions;
 }
 

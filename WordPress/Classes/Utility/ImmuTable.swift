@@ -1,6 +1,3 @@
-import Foundation
-import UIKit
-
 /**
  ImmuTable represents the view model for a static UITableView.
 
@@ -15,7 +12,7 @@ import UIKit
      struct DestructiveButtonRow: ImmuTableRow {
          static let cell = ImmuTableCell.Class(UITableViewCell.self)
          let title: String
-         let action: ImmuTableActionType?
+         let action: ImmuTableAction?
 
          func configureCell(cell: UITableViewCell) {
              cell.textLabel?.text = title
@@ -91,15 +88,8 @@ public struct ImmuTableSection {
     let rows: [ImmuTableRow]
     let footerText: String?
 
-    /// Initializes a ImmuTableSection with the given rows and no header or footer text
-    public init(rows: [ImmuTableRow]) {
-        self.headerText = nil
-        self.rows = rows
-        self.footerText = nil
-    }
-
     /// Initializes a ImmuTableSection with the given rows and optionally header and footer text
-    public init(headerText: String?, rows: [ImmuTableRow], footerText: String?) {
+    public init(headerText: String? = nil, rows: [ImmuTableRow], footerText: String? = nil) {
         self.headerText = headerText
         self.rows = rows
         self.footerText = footerText
@@ -147,7 +137,7 @@ public protocol ImmuTableRow {
          }
 
      */
-    var action: ImmuTableActionType? { get }
+    var action: ImmuTableAction? { get }
 
     /// This method is called when an associated cell needs to be configured.
     /// - precondition: You can assume that the passed cell is of the type defined
@@ -279,6 +269,14 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
         return cell
     }
 
+    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.sections[section].headerText
+    }
+
+    public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        return viewModel.sections[section].footerText
+    }
+
     // MARK: Table View Delegate
 
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -299,7 +297,7 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
 // MARK: - Type aliases
 
 
-public typealias ImmuTableActionType = (ImmuTableRow) -> Void
+public typealias ImmuTableAction = (ImmuTableRow) -> Void
 
 
 // MARK: - Internal testing helpers

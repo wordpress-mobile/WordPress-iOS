@@ -23,7 +23,6 @@
 
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
-#import "ReaderPostDetailViewController.h"
 
 #import "UIView+Subviews.h"
 
@@ -95,7 +94,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
+        self.navigationItem.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
 
         // Listen to Logout Notifications
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -301,6 +300,24 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     }
     
     [WPStyleGuide configureSegmentedControl:self.filtersSegmentedControl];
+}
+
+- (void)showFiltersSegmentedControlIfApplicable
+{
+    if (!self.showsJetpackMessage && self.tableHeaderView.alpha == WPAlphaZero) {
+        [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
+            self.tableHeaderView.alpha = WPAlphaFull;
+        } completion:nil];
+    }
+}
+
+- (void)hideFiltersSegmentedControlIfApplicable
+{
+    if (self.showsJetpackMessage && self.tableHeaderView.alpha == WPAlphaFull) {
+        [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
+            self.tableHeaderView.alpha  = WPAlphaZero;
+        } completion:nil];
+    }
 }
 
 - (void)setupNotificationsBucketDelegate
@@ -644,7 +661,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     }
     
     if (note.isMatcher && note.metaPostID && note.metaSiteID) {
-        [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:note];
+        [self performSegueWithIdentifier:[ReaderDetailViewController classNameWithoutNamespaces] sender:note];
     } else {
         [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
     }
@@ -745,7 +762,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString *detailsSegueID        = NSStringFromClass([NotificationDetailsViewController class]);
-    NSString *readerSegueID         = NSStringFromClass([ReaderPostDetailViewController class]);
+    NSString *readerSegueID         = [ReaderDetailViewController classNameWithoutNamespaces];
     Notification *note              = sender;
     __weak __typeof(self) weakSelf  = self;
     
@@ -757,7 +774,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
         };
         
     } else if([segue.identifier isEqualToString:readerSegueID]) {
-        ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
+        ReaderDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
 }
@@ -880,6 +897,10 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     // Remove If Needed
     if (self.tableViewHandler.resultsController.fetchedObjects.count) {
         [self.noResultsView removeFromSuperview];
+        
+        // Show filters if we have results
+        [self showFiltersSegmentedControlIfApplicable];
+        
         return;
     }
     
@@ -888,6 +909,9 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     if (!noResultsView.superview) {
         [self.tableView addSubviewWithFadeAnimation:noResultsView];
     }
+    
+    // Hide the filter header if we're showing the Jetpack prompt
+    [self hideFiltersSegmentedControlIfApplicable];
     
     // Refresh its properties: The user may have signed into WordPress.com
     noResultsView.titleText         = self.noResultsTitleText;
