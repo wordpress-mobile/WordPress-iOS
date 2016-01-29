@@ -51,7 +51,8 @@ NS_ENUM(NSInteger, SiteSettingsWriting) {
 };
 
 NS_ENUM(NSInteger, SiteSettingsAdvanced) {
-    SiteSettingsAdvancedDeleteSite = 0,
+    SiteSettingsAdvancedStartOver = 0,
+    SiteSettingsAdvancedDeleteSite,
     SiteSettingsAdvancedCount,
 };
 
@@ -86,6 +87,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 #pragma mark - Removal Section
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 #pragma mark - Advanced Section
+@property (nonatomic, strong) SettingTableViewCell *startOverCell;
 @property (nonatomic, strong) SettingTableViewCell *deleteSiteCell;
 
 @property (nonatomic, strong) Blog *blog;
@@ -437,6 +439,18 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
 }
 
+- (SettingTableViewCell *)startOverCell
+{
+    if (_startOverCell) {
+        return _startOverCell;
+    }
+    
+    _startOverCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Start Over", @"Label for selecting the Start Over Settings item")
+                                                        editable:YES
+                                                 reuseIdentifier:nil];
+    return _startOverCell;
+}
+
 - (SettingTableViewCell *)deleteSiteCell
 {
     if (_deleteSiteCell) {
@@ -452,6 +466,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForAdvancedSettingsAtRow:(NSInteger)row
 {
     switch (row) {
+        case SiteSettingsAdvancedStartOver: {
+            return self.startOverCell;
+        } break;
         case SiteSettingsAdvancedDeleteSite: {
             return self.deleteSiteCell;
         } break;
@@ -723,6 +740,14 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
 }
 
+- (void)showStartOverForBlog:(Blog *)blog
+{
+    NSParameterAssert([blog supportsSiteManagementServices]);
+
+    StartOverViewController *viewController = [[StartOverViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
 - (void)showDeleteSiteForBlog:(Blog *)blog
 {
     NSParameterAssert([blog supportsSiteManagementServices]);
@@ -734,6 +759,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 - (void)tableView:(UITableView *)tableView didSelectInAdvancedSectionRow:(NSInteger)row
 {
     switch (row) {
+        case SiteSettingsAdvancedStartOver: {
+            [self showStartOverForBlog:self.blog];
+        } break;
         case SiteSettingsAdvancedDeleteSite: {
             [self showDeleteSiteForBlog:self.blog];
         } break;
