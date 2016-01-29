@@ -10,6 +10,7 @@
 
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
+#import "WordPress-Swift.h"
 
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
 static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcomAccountPasswordRemovedKey";
@@ -73,13 +74,22 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[NSUserDefaults standardUserDefaults] synchronize];
 
     NSManagedObjectID *accountID = account.objectID;
-    dispatch_async(dispatch_get_main_queue(), ^{
+    void (^notifyAccountChange)() = ^{
         NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
         NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
-        [NotificationsManager registerForPushNotifications];
-    });
+        [[PushNotificationsManager sharedInstance] registerForRemoteNotifications];
+        [[InteractiveNotificationsHandler sharedInstance] registerForUserNotifications];
+    };
+    if ([NSThread isMainThread]) {
+        // This is meant to help with testing account observers.
+        // Short version: dispatch_async and XCTest asynchronous helpers don't play nice with each other
+        // Long version: see the comment in https://github.com/wordpress-mobile/WordPress-iOS/blob/2f9a2100ca69d8f455acec47a1bbd6cbc5084546/WordPress/WordPressTest/AccountServiceRxTests.swift#L7
+        notifyAccountChange();
+    } else {
+        dispatch_async(dispatch_get_main_queue(), notifyAccountChange);
+    }
 }
 
 /**
@@ -91,8 +101,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (void)removeDefaultWordPressComAccount
 {
     NSAssert([NSThread isMainThread], @"This method should only be called from the main thread");
-    
-    [NotificationsManager unregisterDeviceToken];
+
+    [[PushNotificationsManager sharedInstance] unregisterDeviceToken];
 
     WPAccount *account = [self defaultWordPressComAccount];
     if (account) {
@@ -173,6 +183,16 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
     [request setPredicate:[NSPredicate predicateWithFormat:@"username like %@", username]];
+    [request setIncludesPendingChanges:YES];
+
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
+    return [results firstObject];
+}
+
+- (WPAccount *)findAccountWithUserID:(NSNumber *)userID
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"userID = %@", userID]];
     [request setIncludesPendingChanges:YES];
 
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];

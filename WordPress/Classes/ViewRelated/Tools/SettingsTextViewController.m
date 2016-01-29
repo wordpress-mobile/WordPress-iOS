@@ -94,10 +94,11 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
-    if (self.onValueChanged) {
+    if (self.onValueChanged && ![self.textField.text isEqualToString:self.text]) {
         self.onValueChanged(self.textField.text);
     }
+        
+    [super viewWillDisappear:animated];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

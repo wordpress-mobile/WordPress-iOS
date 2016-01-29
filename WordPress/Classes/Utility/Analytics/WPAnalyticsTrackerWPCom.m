@@ -35,8 +35,9 @@
     
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]];
     [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
-    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:nil];
-    [conn start];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request];
+    [dataTask resume];
 }
 
 @end

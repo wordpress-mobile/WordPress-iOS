@@ -237,7 +237,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
         }
         return self.animatedBox;
     }
-    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"penandink"]];
+    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"illustration-posts"]];
 }
 
 - (NSString *)noResultsButtonText

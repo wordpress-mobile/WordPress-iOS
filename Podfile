@@ -20,9 +20,8 @@ target 'WordPress', :exclusive => true do
   pod 'wpxmlrpc', '~> 0.8'
   pod 'Mixpanel', '2.8.2'
   pod 'CocoaLumberjack', '~> 2.2.0'
-  pod 'google-plus-ios-sdk', '~>1.5'
   pod 'HockeySDK', '~>3.8.0'
-  pod 'Helpshift', '~>4.10.0'
+  pod 'Helpshift', '~>4.15.0'
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
 
@@ -40,6 +39,8 @@ target 'WordPress', :exclusive => true do
   pod 'WPMediaPicker', '~> 0.7.3'
   pod 'ReactiveCocoa', '~> 2.4.7'
   pod 'FormatterKit', '~> 1.8.0'
+  pod 'RxSwift', '~> 2.1.0'
+  pod 'RxCocoa', '~> 2.1.0'
 end
 
 target 'WordPressTodayWidget', :exclusive => true do
@@ -54,6 +55,7 @@ target :WordPressTest, :exclusive => true do
   pod 'Specta', '1.0.5'
   pod 'Expecta', '0.3.2'
   pod 'Nimble', '~> 3.0.0'
+  pod 'RxSwift', '~> 2.1.0'
 end
 
 target 'UITests', :exclusive => true do

@@ -12,7 +12,6 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostHeaderView.h"
-#import "ReaderPostDetailViewController.h"
 #import "UIView+Subviews.h"
 #import "WPAvatarSource.h"
 #import "WPNoResultsView.h"
@@ -62,7 +61,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) ReaderPostHeaderView *postHeaderView;
 @property (nonatomic, strong) NSMutableDictionary *mediaCellCache;
 @property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
-@property (nonatomic, assign) UIDeviceOrientation previousOrientation;
+@property (nonatomic, assign) CGSize previousViewGeometry;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
 @property (nonatomic) BOOL isLoggedIn;
@@ -99,6 +98,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.previousViewGeometry = self.view.frame.size;
 
     self.mediaCellCache = [NSMutableDictionary dictionary];
     [self checkIfLoggedIn];
@@ -123,8 +123,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super viewWillAppear:animated];
 
-    if (self.previousOrientation != UIInterfaceOrientationUnknown) {
-        if (UIInterfaceOrientationIsPortrait(self.previousOrientation) != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+    if (!CGSizeEqualToSize(self.previousViewGeometry, CGSizeZero)) {
+        if (! CGSizeEqualToSize(self.previousViewGeometry, self.view.frame.size)) {
+            // Refresh cached row heights based on the new width
             [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
             [self.tableView reloadData];
         }
@@ -149,7 +150,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super viewWillDisappear:animated];
 
-    self.previousOrientation = self.interfaceOrientation;
+    self.previousViewGeometry = self.view.frame.size;
 
     [self.replyTextView resignFirstResponder];
 
@@ -158,48 +159,30 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     // Remove the no results view or else the position will abruptly adjust after rotation
     // due to the table view sizing for image preloading
     [self refreshNoResultsView];
 
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 
     // Avoid refreshing cells when there is no need.
-    if ([UIDevice isPad] && WPTableViewFixedWidth <= CGRectGetWidth(self.tableView.frame)) {
-        return;
-    }
-    // Refresh cached row heights based on the width for the orientation.
-    // If changing orientation, this must happen before the table view calculates
-    // its content size / offset for the new orientation.
-    CGFloat width = CGRectGetWidth(self.tableView.frame);
-    [self updateCellsAndRefreshMediaForWidth:width];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-
-    NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
-
-    // Avoid refreshing cells when there is no need.
-    if (![UIDevice isPad] || WPTableViewFixedWidth > CGRectGetWidth(self.tableView.frame)) {
-        // DTCoreText can be cranky about refreshing its rendered text when its
-        // frame changes, even when setting its relayoutMask. Setting setNeedsLayout
-        // on the cell prior to reloading seems to force the cell's
-        // DTAttributedTextContentView to behave.
-        [[self.tableView visibleCells] makeObjectsPerformSelector:@selector(setNeedsLayout)];
-        [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
-    }
-    
-    // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
-    if (selectedIndexPath) {
-        [self.replyTextView becomeFirstResponder];
-        [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+    if (![UIDevice isPad] && WPTableViewFixedWidth > CGRectGetWidth(self.tableView.frame)) {
+        // Refresh cached row heights based on the new width
+        [self updateCellsAndRefreshMediaForWidth:size.width];
     }
 
-    [self refreshNoResultsView];
+    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        NSIndexPath *selectedIndexPath = [self.tableView indexPathForSelectedRow];
+        // Make sure a selected comment is visible after rotating, and that the replyTextView is still the first responder.
+        if (selectedIndexPath) {
+            [self.replyTextView becomeFirstResponder];
+            [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+        
+        [self refreshNoResultsView];
+    }];
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
@@ -540,7 +523,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     WPAvatarSourceType type = [source parseURL:url forAvatarHash:&hash];
 
     if (!hash) {
-        [cell setAvatarImage:[UIImage imageNamed:@"default-identicon"]];
+        [cell setAvatarImage:[UIImage imageNamed:@"gravatar"]];
         return;
     }
 
@@ -550,7 +533,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         return;
     }
 
-    [cell setAvatarImage:[UIImage imageNamed:@"default-identicon"]];
+    [cell setAvatarImage:[UIImage imageNamed:@"gravatar"]];
     [source fetchImageForAvatarHash:hash ofType:type withSize:size success:^(UIImage *image) {
         if (cell == [self.tableView cellForRowAtIndexPath:indexPath]) {
             [cell setAvatarImage:image];
@@ -1224,9 +1207,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
     
     // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
-    ReaderPostDetailViewController *detailsViewController = [ReaderPostDetailViewController detailControllerWithPost:self.post];
-    [detailsViewController setShouldHideComments:YES];
-    [self.navigationController pushViewController:detailsViewController animated:YES];
+    ReaderDetailViewController *controller = [ReaderDetailViewController controllerWithPost:self.post];
+    controller.shouldHideComments = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 

@@ -7,6 +7,7 @@ class WPReusableTableViewCell: WPTableViewCell {
         super.prepareForReuse()
 
         textLabel?.text = nil
+        textLabel?.textAlignment = .Left
         detailTextLabel?.text = nil
         imageView?.image = nil
         accessoryType = .None
@@ -54,15 +55,80 @@ class WPTableViewCellValue2: WPReusableTableViewCell {
     }
 }
 
+class WPTableViewCellBadge: WPTableViewCellDefault {
+    var badgeCount: Int = 0 {
+        didSet {
+            if badgeCount > 0 {
+                badgeLabel.text = String(badgeCount)
+                accessoryView = badgeLabel
+                accessoryType = .None
+            } else {
+                accessoryView = nil
+                accessoryType = .DisclosureIndicator
+            }
+        }
+    }
+
+    private lazy var badgeLabel: UILabel = {
+        let label = UILabel(frame: CGRect(origin: CGPointZero, size: WPTableViewCellBadge.badgeSize))
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = WPTableViewCellBadge.badgeCornerRadius
+        label.textAlignment = .Center
+        label.backgroundColor = WPStyleGuide.newKidOnTheBlockBlue()
+        label.textColor = UIColor.whiteColor()
+        return label
+    }()
+
+    private static let badgeSize = CGSize(width: 50, height: 30)
+    private static var badgeCornerRadius: CGFloat {
+        return badgeSize.height / 2
+    }
+}
+
 struct NavigationItemRow : ImmuTableRow {
     static let cell = ImmuTableCell.Class(WPTableViewCellDefault)
 
     let title: String
-    let action: ImmuTableActionType?
+    let icon: UIImage?
+    let action: ImmuTableAction?
+
+    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, action: ImmuTableAction) {
+        self.title = title
+        self.icon = icon
+        self.action = action
+    }
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
         cell.accessoryType = .DisclosureIndicator
+        cell.imageView?.image = icon
+
+        WPStyleGuide.configureTableViewCell(cell)
+    }
+}
+
+struct BadgeNavigationItemRow: ImmuTableRow {
+    static let cell = ImmuTableCell.Class(WPTableViewCellBadge)
+
+    let title: String
+    let icon: UIImage?
+    let action: ImmuTableAction?
+    let badgeCount: Int
+
+    init(title: String, icon: UIImage? = nil, badgeCount: Int = 0, action: ImmuTableAction) {
+        self.title = title
+        self.icon = icon
+        self.badgeCount = badgeCount
+        self.action = action
+    }
+
+    func configureCell(cell: UITableViewCell) {
+        let cell = cell as! WPTableViewCellBadge
+
+        cell.textLabel?.text = title
+        cell.accessoryType = .None
+        cell.imageView?.image = icon
+        cell.badgeCount = badgeCount
 
         WPStyleGuide.configureTableViewCell(cell)
     }
@@ -73,7 +139,7 @@ struct EditableTextRow : ImmuTableRow {
 
     let title: String
     let value: String
-    let action: ImmuTableActionType?
+    let action: ImmuTableAction?
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
@@ -89,7 +155,7 @@ struct TextRow : ImmuTableRow {
 
     let title: String
     let value: String
-    let action: ImmuTableActionType? = nil
+    let action: ImmuTableAction? = nil
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
@@ -104,7 +170,7 @@ struct LinkRow : ImmuTableRow {
     static let cell = ImmuTableCell.Class(WPTableViewCellValue1)
 
     let title: String
-    let action: ImmuTableActionType?
+    let action: ImmuTableAction?
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
@@ -118,7 +184,7 @@ struct LinkWithValueRow : ImmuTableRow {
 
     let title: String
     let value: String
-    let action: ImmuTableActionType?
+    let action: ImmuTableAction?
 
     func configureCell(cell: UITableViewCell) {
         cell.textLabel?.text = title
@@ -128,12 +194,39 @@ struct LinkWithValueRow : ImmuTableRow {
     }
 }
 
+struct ButtonRow: ImmuTableRow {
+    static let cell = ImmuTableCell.Class(WPTableViewCellDefault)
+
+    let title: String
+    let action: ImmuTableAction?
+
+    func configureCell(cell: UITableViewCell) {
+        cell.textLabel?.text = title
+
+        WPStyleGuide.configureTableViewActionCell(cell)
+        cell.textLabel?.textAlignment = .Center
+    }
+}
+
+struct DestructiveButtonRow: ImmuTableRow {
+    static let cell = ImmuTableCell.Class(WPTableViewCellDefault)
+
+    let title: String
+    let action: ImmuTableAction?
+
+    func configureCell(cell: UITableViewCell) {
+        cell.textLabel?.text = title
+
+        WPStyleGuide.configureTableViewDestructiveActionCell(cell)
+    }
+}
+
 struct SwitchRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(SwitchTableViewCell)
 
     let title: String
     let value: Bool
-    let action: ImmuTableActionType? = nil
+    let action: ImmuTableAction? = nil
     let onChange: Bool -> Void
 
     func configureCell(cell: UITableViewCell) {
@@ -159,7 +252,7 @@ struct MediaSizeRow: ImmuTableRow {
     let value: Int
     let onChange: Int -> Void
 
-    let action: ImmuTableActionType? = nil
+    let action: ImmuTableAction? = nil
 
     func configureCell(cell: UITableViewCell) {
         let cell = cell as! CellType
