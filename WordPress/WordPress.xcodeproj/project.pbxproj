@@ -1674,6 +1674,7 @@
 		E63BBC921C5161B800598BE8 /* KeyringConnectionExternalUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyringConnectionExternalUser.swift; sourceTree = "<group>"; };
 		E63BBC941C5168BE00598BE8 /* SharingAuthorizationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingAuthorizationHelper.h; sourceTree = "<group>"; };
 		E63BBC951C5168BE00598BE8 /* SharingAuthorizationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingAuthorizationHelper.m; sourceTree = "<group>"; };
+		E63FF0581C5C297500906C07 /* WordPress 46.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 46.xcdatamodel"; sourceTree = "<group>"; };
 		E6431DDF1C4E892900FD8D90 /* SharingConnectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingConnectionsViewController.h; sourceTree = "<group>"; };
 		E6431DE01C4E892900FD8D90 /* SharingConnectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingConnectionsViewController.m; sourceTree = "<group>"; };
 		E6431DE11C4E892900FD8D90 /* SharingDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingDetailViewController.h; sourceTree = "<group>"; };
@@ -6536,6 +6537,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				E63FF0581C5C297500906C07 /* WordPress 46.xcdatamodel */,
 				08CC67771C49B52E00153AD7 /* WordPress 45.xcdatamodel */,
 				E6B2101A1C444CB50063E271 /* WordPress 44.xcdatamodel */,
 				E1BCFBC51C0626C5004BDADF /* WordPress 43.xcdatamodel */,
@@ -6582,7 +6584,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = 08CC67771C49B52E00153AD7 /* WordPress 45.xcdatamodel */;
+			currentVersion = E63FF0581C5C297500906C07 /* WordPress 46.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

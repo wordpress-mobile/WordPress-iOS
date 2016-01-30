@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 46 (@aerych 2016-01-29)
+
+- Added attributes to `BlogSettings` for storing sharing related settings:
+- Strings: `sharingButtonStyle` `sharingLabel` `sharingTwitterName`
+- Bools: `sharingCommentLikesEnabled` `sharingDisabledLikes` `sharingDisabledReblogs` 
+
 ## WordPress 45 (@kurzee 2016-01-15)
 
 - Added `Menu` entity. Encapsulates the data and relationships for customizing a site menu.
