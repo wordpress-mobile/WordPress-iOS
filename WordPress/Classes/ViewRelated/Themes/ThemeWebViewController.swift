@@ -18,6 +18,16 @@ public class ThemeWebViewController: WPWebViewController
             }
         }
     }
+    
+    // MARK: - Navigation constants
+
+    /// All Customize links must have "hide_close" set
+    ///
+    private struct Customize
+    {
+        static let path = "/wp-admin/customize.php"
+        static let hideClose = (name: "hide_close", value: "true")
+    }
 
     // MARK: - Initializer
     
@@ -34,6 +44,27 @@ public class ThemeWebViewController: WPWebViewController
             self.theme = theme
             self.url = NSURL(string: url)
         }
+    }
+
+    // MARK: - UIWebViewDelegate
+
+    override public func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+        
+        if let url = request.URL, components = NSURLComponents(URL: url, resolvingAgainstBaseURL: false) {
+            
+            if components.path == Customize.path {
+                let hideCloseItem = NSURLQueryItem(name: Customize.hideClose.name, value: Customize.hideClose.value)
+                let queryItems = components.queryItems ?? []
+                if !queryItems.contains(hideCloseItem) {
+                    components.queryItems = queryItems + [hideCloseItem]
+                    self.url = components.URL
+                    
+                    return false
+                }
+            }
+        }
+
+        return super.webView(webView, shouldStartLoadWithRequest: request, navigationType: navigationType)
     }
 
 }
