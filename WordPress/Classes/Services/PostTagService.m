@@ -14,6 +14,15 @@
 
 @end
 
+static void logErrorForRetrievingBlog(Blog *blog, NSError *error)
+{
+    NSString *message = @"Could not retrieve blog from context";
+    if (error) {
+        message = [NSString stringWithFormat:@"%@ with error: %@", message, error];
+    }
+    DDLogError(message);
+};
+
 @implementation PostTagService
 
 - (void)syncTagsForBlog:(Blog *)blog
@@ -21,12 +30,13 @@
                 failure:(void (^)(NSError *error))failure
 {
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
-    NSManagedObjectID *blogID = blog.objectID;
+    NSManagedObjectID *blogObjectID = blog.objectID;
     [remote getTagsWithSuccess:^(NSArray <RemotePostTag *> *remoteTags) {
         [self.managedObjectContext performBlock:^{
-            
-            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-            if (!blog) {
+            NSError *error;
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
+            if (!blog || error) {
+                logErrorForRetrievingBlog(blog, error);
                 return;
             }
             
@@ -54,25 +64,26 @@
     }
     
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
-    NSManagedObjectID *blogID = blog.objectID;
-    [remote getTagsWithSuccess:^(NSArray<RemotePostTag *> *remoteTags) {
-    
-        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-        if (!blog) {
-            return;
-        }
-        
-        // increment the offset by the number of tags being requested for the next paging request
-        self.remotePaging.offset = @(self.remotePaging.offset.integerValue + self.remotePaging.number.integerValue);
-        
-        NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        
-        if (success) {
-            success(tags);
-        }
-        
-    } paging:paging failure:failure];
+    NSManagedObjectID *blogObjectID = blog.objectID;
+    [remote getTagsWithPaging:paging
+                      success:^(NSArray<RemotePostTag *> *remoteTags) {
+                          NSError *error;
+                          Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
+                          if (!blog || error) {
+                              logErrorForRetrievingBlog(blog, error);
+                              return;
+                          }
+                          
+                          // increment the offset by the number of tags being requested for the next paging request
+                          self.remotePaging.offset = @(self.remotePaging.offset.integerValue + self.remotePaging.number.integerValue);
+                          
+                          NSArray *tags = [self mergeTagsWithRemoteTags:remoteTags blog:blog];
+                          [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                          
+                          if (success) {
+                              success(tags);
+                          }
+                      } failure:failure];
 }
 
 - (void)searchTagsWithName:(NSString *)nameQuery
@@ -82,12 +93,14 @@
 {
     NSParameterAssert(nameQuery.length > 0);
     id<TaxonomyServiceRemote> remote = [self remoteForBlog:blog];
-    NSManagedObjectID *blogID = blog.objectID;
+    NSManagedObjectID *blogObjectID = blog.objectID;
     [remote searchTagsWithName:nameQuery
                        success:^(NSArray<RemotePostTag *> *remoteTags) {
                            
-                           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-                           if (!blog) {
+                           NSError *error;
+                           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
+                           if (!blog || error) {
+                               logErrorForRetrievingBlog(blog, error);
                                return;
                            }
                            
