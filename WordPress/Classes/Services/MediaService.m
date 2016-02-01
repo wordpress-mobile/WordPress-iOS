@@ -141,7 +141,12 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
-    
+
+    // Even though jpeg is a valid extension, use jpg instead for the widest possible
+    // support.  Some third-party image related plugins prefer the .jpg extension.
+    // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4663
+    remoteMedia.file = [remoteMedia.file stringByReplacingOccurrencesOfString:@".jpeg" withString:@".jpg"];
+
     media.remoteStatus = MediaRemoteStatusPushing;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     NSManagedObjectID *mediaObjectID = media.objectID;
