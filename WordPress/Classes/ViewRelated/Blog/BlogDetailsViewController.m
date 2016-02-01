@@ -221,6 +221,14 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
                                                      [weakSelf showStats];
                                                  }]];
 
+    if ([Feature enabled:FeatureFlagPlans] && [self.blog supports:BlogFeaturePlans]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
+                                                        image:[UIImage imageNamed:@"icon-menu-plans"]
+                                                     callback:^{
+                                                         [weakSelf showPlans];
+                                                     }]];
+    }
+    
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
 }
 
@@ -456,6 +464,13 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     // TODO(@koke, 2015-11-02): add analytics
     PeopleViewController *controller = [[UIStoryboard storyboardWithName:@"People" bundle:nil] instantiateInitialViewController];
     controller.blog = self.blog;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showPlans
+{
+    // TODO(@koke, 2016-01-28): add analytics
+    PlanListViewController *controller = [PlanListViewController new];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
