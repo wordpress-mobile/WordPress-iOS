@@ -1,12 +1,27 @@
 import Foundation
 
+typealias Plan = PlanEnum
+    
 /// Represents a WordPress.com free or paid plan.
 /// - seealso: [WordPress.com Store](https://store.wordpress.com/plans/)
-enum Plan: String {
-    case Free = "free"
-    case Premium = "premium"
-    case Business = "business"
-
+@objc
+enum PlanEnum: Int {
+    // Product IDs of the various plans (https://public-api.wordpress.com/rest/v1/plans/)
+    case Free = 1
+    case Premium = 1003
+    case Business = 1008
+    
+    var slug: String {
+        switch self {
+        case .Free:
+            return "free"
+        case .Premium:
+            return "premium"
+        case .Business:
+            return "business"
+        }
+    }
+    
     /// The localized name of the plan (e.g. "Business").
     var title: String {
         switch self {
@@ -44,16 +59,33 @@ enum Plan: String {
     }
 }
 
+// We currently need to access the title of a plan in BlogDetailsViewController, which is
+// written in Objective-C. This small wrapper lets us do that.
+@objc(Plan)
+class PlanObjc: NSObject {
+    @nonobjc
+    private let plan: Plan
+    
+    init(plan: Plan) {
+        self.plan = plan
+        super.init()
+    }
+    
+    var title: String {
+        return plan.title
+    }
+}
+
 // Icons
 extension Plan {
     /// The name of the image that represents the plan when it's not the current plan
     var imageName: String {
-        return "plan-\(rawValue)"
+        return "plan-\(slug)"
     }
 
     /// The name of the image that represents the plan when it's the current plan
     var activeImageName: String {
-        return "plan-\(rawValue)-active"
+        return "plan-\(slug)-active"
     }
 
     /// An image that represents the plan when it's not the current plan
