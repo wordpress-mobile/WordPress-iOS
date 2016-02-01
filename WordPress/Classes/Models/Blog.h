@@ -33,8 +33,12 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureThemeBrowsing,
     /// Does the blog support sharing?
     BlogFeatureSharing,
-    /// Does the blog support people management
+    /// Does the blog support people management?
     BlogFeaturePeople,
+    /// Can the blog's site be changed or deleted?
+    BlogFeatureSiteManagement,
+    /// Does the blog support different paid plans?
+    BlogFeaturePlans,
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {

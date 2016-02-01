@@ -22,9 +22,9 @@
 
 /* Fetch a list of categories associated with the site with paging.
  */
-- (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *categories))success
-                          paging:(RemoteTaxonomyPaging *)paging
-                         failure:(void (^)(NSError *error))failure;
+- (void)getCategoriesWithPaging:(RemoteTaxonomyPaging *)paging
+                        success:(void (^)(NSArray <RemotePostCategory *> *categories))success
+                        failure:(void (^)(NSError *error))failure;
 
 /* Fetch a list of categories whose names or slugs match the provided search query. Case-insensitive.
  */
@@ -40,9 +40,9 @@
 
 /* Fetch a list of tags associated with the site with paging.
  */
-- (void)getTagsWithSuccess:(void (^)(NSArray <RemotePostTag *> *tags))success
-                    paging:(RemoteTaxonomyPaging *)paging
-                   failure:(void (^)(NSError *error))failure;
+- (void)getTagsWithPaging:(RemoteTaxonomyPaging *)paging
+                  success:(void (^)(NSArray <RemotePostTag *> *tags))success
+                  failure:(void (^)(NSError *error))failure;
 
 /* Fetch a list of tags whose names or slugs match the provided search query. Case-insensitive.
  */

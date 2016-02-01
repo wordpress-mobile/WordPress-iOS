@@ -431,11 +431,14 @@ NSString * const PostFormatStandard = @"standard";
         case BlogFeatureReblog:
         case BlogFeatureMentions:
         case BlogFeatureOAuth2Login:
+        case BlogFeaturePlans:
             return [self isHostedAtWPcom];
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
             return [self isHostedAtWPcom] && [self isAdmin];
+        case BlogFeatureSiteManagement:
+            return [self supportsSiteManagementServices];
     }
 }
 

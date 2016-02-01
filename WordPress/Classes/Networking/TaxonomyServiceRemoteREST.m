@@ -4,8 +4,19 @@
 #import "RemotePostTag.h"
 #import "RemoteTaxonomyPaging.h"
 
-static NSString * const TaxonomyServiceRemoteRESTCategoryTypeIdentifier = @"categories";
-static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
+static NSString * const TaxonomyRESTCategoryIdentifier = @"categories";
+static NSString * const TaxonomyRESTTagIdentifier = @"tags";
+
+static NSString * const TaxonomyRESTIDParameter = @"ID";
+static NSString * const TaxonomyRESTNameParameter = @"name";
+static NSString * const TaxonomyRESTSlugParameter = @"slug";
+static NSString * const TaxonomyRESTParentParameter = @"parent";
+static NSString * const TaxonomyRESTSearchParameter = @"search";
+static NSString * const TaxonomyRESTOrderParameter = @"order";
+static NSString * const TaxonomyRESTOrderByParameter = @"order_by";
+static NSString * const TaxonomyRESTNumberParameter = @"number";
+static NSString * const TaxonomyRESTOffsetParameter = @"offset";
+static NSString * const TaxonomyRESTPageParameter = @"page";
 
 @implementation TaxonomyServiceRemoteREST
 
@@ -18,15 +29,15 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
     NSParameterAssert(category.name.length > 0);
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    parameters[@"name"] = category.name;
+    parameters[TaxonomyRESTNameParameter] = category.name;
     if (category.parentID) {
-        parameters[@"parent"] = category.parentID;
+        parameters[TaxonomyRESTParentParameter] = category.parentID;
     }
     
-    [self createTaxonomyWithType:TaxonomyServiceRemoteRESTCategoryTypeIdentifier
+    [self createTaxonomyWithType:TaxonomyRESTCategoryIdentifier
                       parameters:parameters
-                         success:^(id responseObject) {
-                             RemotePostCategory *receivedCategory = [self remoteCategoryWithJSONDictionary:responseObject];
+                         success:^(NSDictionary *taxonomyDictionary) {
+                             RemotePostCategory *receivedCategory = [self remoteCategoryWithJSONDictionary:taxonomyDictionary];
                              if (success) {
                                  success(receivedCategory);
                              }
@@ -36,20 +47,20 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 - (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *))success
                          failure:(void (^)(NSError *))failure
 {
-    [self getCategoriesWithSuccess:success
-                      paging:nil
-                     failure:failure];
+    [self getCategoriesWithPaging:nil
+                          success:success
+                          failure:failure];
 }
 
-- (void)getCategoriesWithSuccess:(void (^)(NSArray <RemotePostCategory *> *categories))success
-                          paging:(RemoteTaxonomyPaging *)paging
-                         failure:(void (^)(NSError *error))failure
+- (void)getCategoriesWithPaging:(RemoteTaxonomyPaging *)paging
+                        success:(void (^)(NSArray <RemotePostCategory *> *categories))success
+                        failure:(void (^)(NSError *error))failure
 {
-    [self getTaxonomyWithType:TaxonomyServiceRemoteRESTCategoryTypeIdentifier
+    [self getTaxonomyWithType:TaxonomyRESTCategoryIdentifier
                    parameters:[self parametersForPaging:paging]
-                      success:^(id responseObject) {
+                      success:^(NSDictionary *responseObject) {
                           if (success) {
-                              success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:@"categories"]]);
+                              success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:TaxonomyRESTCategoryIdentifier]]);
                           }
                       } failure:failure];
 }
@@ -59,11 +70,11 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
                    failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(nameQuery.length > 0);
-    [self getTaxonomyWithType:TaxonomyServiceRemoteRESTCategoryTypeIdentifier
-                   parameters:@{@"search": nameQuery}
-                      success:^(id responseObject) {
+    [self getTaxonomyWithType:TaxonomyRESTCategoryIdentifier
+                   parameters:@{TaxonomyRESTSearchParameter: nameQuery}
+                      success:^(NSDictionary *responseObject) {
                           if (success) {
-                              success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:@"categories"]]);
+                              success([self remoteCategoriesWithJSONArray:[responseObject arrayForKey:TaxonomyRESTCategoryIdentifier]]);
                           }
                       } failure:failure];
 }
@@ -73,20 +84,20 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 - (void)getTagsWithSuccess:(void (^)(NSArray <RemotePostTag *> *tags))success
                    failure:(void (^)(NSError *error))failure
 {
-    [self getTagsWithSuccess:success
-                      paging:nil
-                     failure:failure];
+    [self getTagsWithPaging:nil
+                    success:success
+                    failure:failure];
 }
 
-- (void)getTagsWithSuccess:(void (^)(NSArray<RemotePostTag *> *))success
-                    paging:(RemoteTaxonomyPaging *)paging
-                   failure:(void (^)(NSError *))failure
+- (void)getTagsWithPaging:(RemoteTaxonomyPaging *)paging
+                  success:(void (^)(NSArray <RemotePostTag *> *tags))success
+                  failure:(void (^)(NSError *error))failure
 {
-    [self getTaxonomyWithType:TaxonomyServiceRemoteRESTTagTypeIdentifier
+    [self getTaxonomyWithType:TaxonomyRESTTagIdentifier
                    parameters:[self parametersForPaging:paging]
-                      success:^(id responseObject) {
+                      success:^(NSDictionary *responseObject) {
                           if (success) {
-                              success([self remoteTagsWithJSONArray:[responseObject arrayForKey:@"tags"]]);
+                              success([self remoteTagsWithJSONArray:[responseObject arrayForKey:TaxonomyRESTTagIdentifier]]);
                           }
                       } failure:failure];
 }
@@ -96,11 +107,11 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
                    failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(nameQuery.length > 0);
-    [self getTaxonomyWithType:TaxonomyServiceRemoteRESTTagTypeIdentifier
-                   parameters:@{@"search": nameQuery}
-                      success:^(id responseObject) {
+    [self getTaxonomyWithType:TaxonomyRESTTagIdentifier
+                   parameters:@{TaxonomyRESTSearchParameter: nameQuery}
+                      success:^(NSDictionary *responseObject) {
                           if (success) {
-                              success([self remoteTagsWithJSONArray:[responseObject arrayForKey:@"tags"]]);
+                              success([self remoteTagsWithJSONArray:[responseObject arrayForKey:TaxonomyRESTTagIdentifier]]);
                           }
                       } failure:failure];
 }
@@ -109,7 +120,7 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 
 - (void)createTaxonomyWithType:(NSString *)typeIdentifier
                     parameters:(NSDictionary *)parameters
-                       success:(void (^)(id responseObject))success
+                       success:(void (^)(NSDictionary *taxonomyDictionary))success
                        failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/%@/new?context=edit", self.siteID, typeIdentifier];
@@ -118,6 +129,10 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
     [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+               NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"responseObject should be a dictionary");
+               if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                   responseObject = nil;
+               }
                if (success) {
                    success(responseObject);
                }
@@ -130,7 +145,7 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 
 - (void)getTaxonomyWithType:(NSString *)typeIdentifier
                  parameters:(id)parameters
-                    success:(void (^)(id responseObject))success
+                    success:(void (^)(NSDictionary *responseObject))success
                     failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/%@?context=edit", self.siteID, typeIdentifier];
@@ -140,6 +155,10 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
     [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+              NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"responseObject should be a dictionary");
+              if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                  responseObject = nil;
+              }
               if (success) {
                   success(responseObject);
               }
@@ -161,10 +180,14 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 
 - (RemotePostCategory *)remoteCategoryWithJSONDictionary:(NSDictionary *)jsonCategory
 {
+    if (!jsonCategory) {
+        return nil;
+    }
+    
     RemotePostCategory *category = [RemotePostCategory new];
-    category.categoryID = [jsonCategory numberForKey:@"ID"];
-    category.name = [jsonCategory stringForKey:@"name"];
-    category.parentID = [jsonCategory numberForKey:@"parent"];
+    category.categoryID = [jsonCategory numberForKey:TaxonomyRESTIDParameter];
+    category.name = [jsonCategory stringForKey:TaxonomyRESTNameParameter];
+    category.parentID = [jsonCategory numberForKey:TaxonomyRESTParentParameter];
     return category;
 }
 
@@ -177,10 +200,14 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
 
 - (RemotePostTag *)remoteTagWithJSONDictionary:(NSDictionary *)jsonTag
 {
+    if (!jsonTag) {
+        return nil;
+    }
+    
     RemotePostTag *tag = [RemotePostTag new];
-    tag.tagID = [jsonTag numberForKey:@"ID"];
-    tag.name = [jsonTag stringForKey:@"name"];
-    tag.slug = [jsonTag stringForKey:@"slug"];
+    tag.tagID = [jsonTag numberForKey:TaxonomyRESTIDParameter];
+    tag.name = [jsonTag stringForKey:TaxonomyRESTNameParameter];
+    tag.slug = [jsonTag stringForKey:TaxonomyRESTSlugParameter];
     return tag;
 }
 
@@ -193,27 +220,27 @@ static NSString * const TaxonomyServiceRemoteRESTTagTypeIdentifier = @"tags";
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     
     if (paging.number) {
-        [dictionary setObject:paging.number forKey:@"number"];
+        [dictionary setObject:paging.number forKey:TaxonomyRESTNumberParameter];
     }
     
     if (paging.offset) {
-        [dictionary setObject:paging.offset forKey:@"offset"];
+        [dictionary setObject:paging.offset forKey:TaxonomyRESTOffsetParameter];
     }
     
     if (paging.page) {
-        [dictionary setObject:paging.page forKey:@"page"];
+        [dictionary setObject:paging.page forKey:TaxonomyRESTPageParameter];
     }
     
     if (paging.order == RemoteTaxonomyPagingOrderAscending) {
-        [dictionary setObject:@"ASC" forKey:@"order"];
+        [dictionary setObject:@"ASC" forKey:TaxonomyRESTOrderParameter];
     } else if (paging.order == RemoteTaxonomyPagingOrderDescending) {
-        [dictionary setObject:@"DESC" forKey:@"order"];
+        [dictionary setObject:@"DESC" forKey:TaxonomyRESTOrderParameter];
     }
     
     if (paging.orderBy == RemoteTaxonomyPagingResultsOrderingByName) {
-        [dictionary setObject:@"name" forKey:@"order_by"];
+        [dictionary setObject:@"name" forKey:TaxonomyRESTOrderByParameter];
     } else if (paging.orderBy == RemoteTaxonomyPagingResultsOrderingByCount) {
-        [dictionary setObject:@"count" forKey:@"order_by"];
+        [dictionary setObject:@"count" forKey:TaxonomyRESTOrderByParameter];
     }
     
     return dictionary.count ? dictionary : nil;

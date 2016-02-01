@@ -22,17 +22,17 @@ public class SharingServiceRemote : ServiceRemoteREST
 
         api.GET(path,
             parameters: params,
-            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) in
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
                 guard let onSuccess = success else {
                     return
                 }
 
                 let responseString = operation.responseString! as NSString
                 let responseDict = response as! NSDictionary
-                let services:NSDictionary = responseDict.dictionaryForKey(ServiceDictionaryKeys.services)
+                let services: NSDictionary = responseDict.dictionaryForKey(ServiceDictionaryKeys.services)
 
-                let publicizeServices:[RemotePublicizeService] = services.allKeys.map { (key) -> RemotePublicizeService in
-                    let dict:NSDictionary = services.dictionaryForKey(key)
+                let publicizeServices: [RemotePublicizeService] = services.allKeys.map { (key) -> RemotePublicizeService in
+                    let dict: NSDictionary = services.dictionaryForKey(key)
                     let pub = RemotePublicizeService()
 
                     pub.connectURL = dict.stringForKey(ServiceDictionaryKeys.connectURL)
@@ -74,14 +74,14 @@ public class SharingServiceRemote : ServiceRemoteREST
 
         api.GET(path,
             parameters: nil,
-            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) in
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
                 guard let onSuccess = success else {
                     return
                 }
 
                 let responseDict = response as! NSDictionary
-                let connections:Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
-                let keyringConnections:[KeyringConnection] = connections.map { (let dict) -> KeyringConnection in
+                let connections: Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
+                let keyringConnections: [KeyringConnection] = connections.map { (let dict) -> KeyringConnection in
                     let conn = KeyringConnection()
                     let externalUsers = dict.arrayForKey(ConnectionDictionaryKeys.additionalExternalUsers) ?? []
                     conn.additionalExternalUsers = self.externalUsersForKeyringConnection(externalUsers)
@@ -118,8 +118,8 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///
     /// - Returns: An array of KeyringConnectionExternalUser instances.
     ///
-    private func externalUsersForKeyringConnection(externalUsers:NSArray) -> [KeyringConnectionExternalUser] {
-        let arr:[KeyringConnectionExternalUser] = externalUsers.map { (let dict) -> KeyringConnectionExternalUser in
+    private func externalUsersForKeyringConnection(externalUsers: NSArray) -> [KeyringConnectionExternalUser] {
+        let arr: [KeyringConnectionExternalUser] = externalUsers.map { (let dict) -> KeyringConnectionExternalUser in
             let externalUser = KeyringConnectionExternalUser()
             externalUser.externalID = dict.stringForKey(ConnectionDictionaryKeys.externalID) ?? externalUser.externalID
             externalUser.externalName = dict.stringForKey(ConnectionDictionaryKeys.externalName) ?? externalUser.externalName
@@ -139,20 +139,20 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///     - success: An optional success block accepting an array of `RemotePublicizeConnection` objects.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    public func getPublicizeConnections(siteID:NSNumber, success: ([RemotePublicizeConnection] -> Void)?, failure: (NSError! -> Void)?) {
+    public func getPublicizeConnections(siteID: NSNumber, success: ([RemotePublicizeConnection] -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/publicize-connections"
         let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
         api.GET(path,
             parameters: nil,
-            success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) in
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
                 guard let onSuccess = success else {
                     return
                 }
 
                 let responseDict = response as! NSDictionary
-                let connections:Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
-                let publicizeConnections:[RemotePublicizeConnection] = connections.map { (let dict) -> RemotePublicizeConnection in
+                let connections: Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
+                let publicizeConnections: [RemotePublicizeConnection] = connections.map { (let dict) -> RemotePublicizeConnection in
                     let conn = self.remotePublicizeConnectionFromDictionary(dict as! NSDictionary)
                     return conn
                 }
@@ -174,9 +174,9 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///     - success: An optional success block accepting a `RemotePublicizeConnection` object.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    public func createPublicizeConnection(siteID:NSNumber,
-        keyringConnectionID:NSNumber,
-        externalUserID:String?,
+    public func createPublicizeConnection(siteID: NSNumber,
+        keyringConnectionID: NSNumber,
+        externalUserID: String?,
         success: (RemotePublicizeConnection -> Void)?, failure: (NSError! -> Void)?)
     {
 
@@ -190,8 +190,8 @@ public class SharingServiceRemote : ServiceRemoteREST
             }
 
             api.POST(path,
-                parameters: NSDictionary(dictionary:parameters),
-                success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) in
+                parameters: NSDictionary(dictionary: parameters),
+                success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
                     guard let onSuccess = success else {
                         return
                     }
@@ -216,9 +216,9 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///      -success: An optional success block accepting no arguments.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    public func updateShared(shared:Bool,
-        forPublicizeConnectionWithID connectionID:NSNumber,
-        forSite  siteID:NSNumber,
+    public func updateShared(shared: Bool,
+        forPublicizeConnectionWithID connectionID: NSNumber,
+        forSite siteID: NSNumber,
         success: (() -> Void)?,
         failure: (NSError! -> Void)?) {
             let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
@@ -227,7 +227,7 @@ public class SharingServiceRemote : ServiceRemoteREST
 
             api.POST(path,
                 parameters: parameters,
-                success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) in
+                success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
                     success?()
                 },
                 failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
@@ -244,13 +244,13 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///      -success: An optional success block accepting no arguments.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    public func deletePublicizeConnection(siteID:NSNumber, connectionID:NSNumber, success: (() -> Void)?, failure: (NSError! -> Void)?) {
+    public func deletePublicizeConnection(siteID: NSNumber, connectionID: NSNumber, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)/delete"
         let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
         api.POST(path,
             parameters: nil,
-            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) in
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
                 success?()
             },
             failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
