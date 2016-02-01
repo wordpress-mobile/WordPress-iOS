@@ -249,7 +249,7 @@ const NSInteger PostServiceNumberToFetch = 40;
                                    byAuthor:authorID
                                     forBlog:blog
                               purgeExisting:YES
-                          completionHandler:^{
+                          completionHandler:^(NSArray<AbstractPost *> *posts) {
                               // Update the Last Sync Date, accordingly
                               Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
                               
@@ -330,11 +330,70 @@ const NSInteger PostServiceNumberToFetch = 40;
                        }
                        BOOL hasMore = ([posts count] < postCount) ? NO : YES;
                        [self.managedObjectContext performBlock:^{
-                           [self mergePosts:posts ofType:postType withStatuses:postStatus byAuthor:authorID forBlog:blog purgeExisting:NO completionHandler:^{
+                           [self mergePosts:posts ofType:postType withStatuses:postStatus byAuthor:authorID forBlog:blog purgeExisting:NO completionHandler:^(NSArray<AbstractPost *> *posts) {
                                if (success) {
                                    success(hasMore);
                                }
                            }];
+                       }];
+                   } failure:^(NSError *error) {
+                       if (failure) {
+                           [self.managedObjectContext performBlock:^{
+                               failure(error);
+                           }];
+                       }
+                   }];
+}
+
+- (void)searchPostsWithQuery:(NSString *)searchQuery
+                      ofType:(NSString *)postType
+                withStatuses:(NSArray *)postStatus
+                     forBlog:(Blog *)blog
+                     success:(void (^)(NSArray *posts))success
+                     failure:(void (^)(NSError *))failure
+{
+    NSAssert(searchQuery != nil, @"Param searchQuery is nil");
+    
+    id<PostServiceRemote> remote = [self remoteForBlog:blog];
+    BOOL blogRemoteIsXMLRPC = [remote isKindOfClass:[PostServiceRemoteXMLRPC class]];
+    if (blogRemoteIsXMLRPC) {
+        NSAssert(blogRemoteIsXMLRPC, @"Warning: Searching posts is only supported via REST remote API at this time. Search for synced posts via an NSFetchRequest instead.");
+        if (failure) {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : @"Could not search remote posts" };
+            failure([NSError errorWithDomain:PostServiceErrorDomain code:0 userInfo:userInfo]);
+        }
+        return;
+    }
+    
+    NSString *status = [postStatus componentsJoinedByString:@","];
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    if ([postStatus count] > 0) {
+        options[@"status"] = status;
+    }
+    options[@"search"] = searchQuery;
+    
+    NSManagedObjectID *blogObjectID = blog.objectID;
+    [remote getPostsOfType:postType
+                   options:options
+                   success:^(NSArray *remotePosts) {
+                       [self.managedObjectContext performBlock:^{
+                           NSError *error;
+                           Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:&error];
+                           if (!blogInContext || error) {
+                               DDLogError(@"Could not retrieve blog in context %@", (error ? [NSString stringWithFormat:@"with error: %@", error] : @""));
+                               return;
+                           }
+                           [self mergePosts:remotePosts
+                                     ofType:postType
+                               withStatuses:postStatus
+                                   byAuthor:nil
+                                    forBlog:blogInContext
+                              purgeExisting:NO
+                          completionHandler:^(NSArray<AbstractPost *> *posts) {
+                              if (success) {
+                                  success(posts);
+                              }
+                          }];
                        }];
                    } failure:^(NSError *error) {
                        if (failure) {
@@ -543,7 +602,7 @@ const NSInteger PostServiceNumberToFetch = 40;
           byAuthor:(NSNumber *)authorID
            forBlog:(Blog *)blog
      purgeExisting:(BOOL)purge
- completionHandler:(void (^)(void))completion
+ completionHandler:(void (^)(NSArray <AbstractPost *> *posts))completion
 {
     NSMutableSet *postsToKeep = [NSMutableSet setWithCapacity:posts.count];
     for (RemotePost *remotePost in posts) {
@@ -582,7 +641,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
 
     if (completion) {
-        completion();
+        completion([postsToKeep allObjects]);
     }
 }
 
