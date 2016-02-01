@@ -197,8 +197,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionWriting: {
             if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
                 if (!self.blog.isAdmin) {
-                    // If we're not admin, we just want to show the geotagging cell
-                    return 1;
+                    // NOTE: Brent Coursey (2016-02-01): Hides the related post for non-admin users as they cannot change this option.
+                    return SiteSettingsWritingCount - 1;
                 }
                 return SiteSettingsWritingCount;
             } else {
@@ -835,7 +835,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (BOOL)blogSupportsSavingWritingDefaults
 {
-    return [self.blog supports:BlogFeatureWPComRESTAPI];
+    return [self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin;
 }
 
 #pragma mark - Authentication methods
