@@ -545,7 +545,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             break;
         case SiteSettingsSectionWriting:
         {
-            if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
+            if ([self blogSupportsSavingWritingDefaults]) {
                 headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
             } else {
                 headingTitle = NSLocalizedString(@"Writing (App Defaults)", @"Title for the writing section in site settings screen when the settings are saved only within the app.");
