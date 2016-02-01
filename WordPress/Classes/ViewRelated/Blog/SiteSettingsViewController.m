@@ -195,17 +195,17 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return SiteSettingsAccountCount;
         }
         case SiteSettingsSectionWriting: {
-            if (!self.blog.isAdmin) {
-                // If we're not admin, we just want to show the geotagging cell
-                return 1;
-            }
-            NSInteger rowsToHide = 0;
-            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
+            if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
+                if (!self.blog.isAdmin) {
+                    // If we're not admin, we just want to show the geotagging cell
+                    return 1;
+                }
+                return SiteSettingsWritingCount;
+            } else {
                 //  NOTE: Sergio Estevao (2015-09-23): Hides the related post for self-hosted sites not in jetpack
                 // because this options is not available for them.
-                rowsToHide += 1;
+                return SiteSettingsWritingCount - 1;
             }
-            return SiteSettingsWritingCount - rowsToHide;
         }
         case SiteSettingsSectionDiscussion: {
             return 1;
