@@ -140,7 +140,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
+    [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -222,11 +222,16 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
                                                  }]];
 
     if ([Feature enabled:FeatureFlagPlans] && [self.blog supports:BlogFeaturePlans]) {
-        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
-                                                        image:[UIImage imageNamed:@"icon-menu-plans"]
-                                                     callback:^{
-                                                         [weakSelf showPlans];
-                                                     }]];
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
+                                                              image:[UIImage imageNamed:@"icon-menu-plans"]
+                                                           callback:^{
+                                                               [weakSelf showPlans];
+                                                           }];
+
+        Plan *plan = [[Plan alloc] initWithPlan:[self.blog.planID integerValue]];
+        row.detail = plan.title;
+
+        [rows addObject:row];
     }
     
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
@@ -255,7 +260,8 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
                                                        }];
     NSUInteger numberOfPendingComments = [self.blog numberOfPendingComments];
     if (numberOfPendingComments > 0) {
-        row.detail = [NSString stringWithFormat:@"%d", numberOfPendingComments];
+        // TODO (@frosty 2015-02-01) Needs review for correct functionality and whether we still desire this functionality.
+        // row.detail = [NSString stringWithFormat:@"%d", numberOfPendingComments];
     }
     [rows addObject:row];
 
