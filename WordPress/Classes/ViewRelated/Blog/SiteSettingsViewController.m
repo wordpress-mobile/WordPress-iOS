@@ -544,8 +544,14 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             headingTitle = NSLocalizedString(@"Account", @"Title for the account section in site settings screen");
             break;
         case SiteSettingsSectionWriting:
-            headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
+        {
+            if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
+                headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
+            } else {
+                headingTitle = NSLocalizedString(@"Writing (App Defaults)", @"Title for the writing section in site settings screen when the settings are saved only within the app.");
+            }
             break;
+        }
         case SiteSettingsSectionAdvanced:
             headingTitle = NSLocalizedString(@"Advanced", @"Title for the advanced section in site settings screen");
             break;
