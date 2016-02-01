@@ -146,6 +146,7 @@ extern NSString * const PostServiceTypeAny;
  NSManagedObjectContext supplied when the PostService was initialized, and may not
  run on the main thread.
  
+ @attention Not supported in XML-RPC.
  @param searchQuery The query used by the API for matching posts.
  @param postType The type (post or page) of post to sync
  @param postStatus An array of post status strings.
