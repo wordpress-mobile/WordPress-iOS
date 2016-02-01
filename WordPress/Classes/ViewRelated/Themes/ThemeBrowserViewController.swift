@@ -680,7 +680,7 @@ public protocol ThemePresenter: class
 
     public func presentPreviewForTheme(theme: Theme?) {
         WPAppAnalytics.track(.ThemesPreviewedSite, withBlog: self.blog)
-        presentUrlForTheme(theme, url: theme?.customizeUrl())
+        presentUrlForTheme(theme, url: theme?.customizeUrl(), activeButton: false)
     }
     
     public func presentDetailsForTheme(theme: Theme?) {
