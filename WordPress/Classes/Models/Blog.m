@@ -446,42 +446,34 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled"
 
 - (BOOL)supportsPublicize
 {
-    // wpcom blog and publicize has not been disabled
-    if (self.isHostedAtWPcom && ![[self getOptionValue:OptionsKeyPublicizeDisabled] boolValue]) {
-        return YES;
+    // Publicize is only supported via REST
+    if (![self supports:BlogFeatureWPComRESTAPI]) {
+        return NO;
     }
 
-    // self-hosted connected to jetpack via the wpcom acct signed into the app.
-    if (self.dotComID && [self jetpackPublicizeModuleEnabled]) {
-        return YES;
+    if (self.isHostedAtWPcom) {
+        // For WordPress.com YES unless it's disabled
+        return ![[self getOptionValue:OptionsKeyPublicizeDisabled] boolValue];
+    } else {
+        // For Jetpack, check if the module is enabled
+        return [self jetpackPublicizeModuleEnabled];
     }
-
-    // self-hosted connected to jetpack via a jetpackAccount
-    if ([self jetpackRESTSupported] && [self jetpackPublicizeModuleEnabled]) {
-        return YES;
-    }
-
-    return NO;
 }
 
 - (BOOL)supportsShareButtons
 {
-    // wpcom blog
+    // Publicize is only supported via REST
+    if (![self supports:BlogFeatureWPComRESTAPI]) {
+        return NO;
+    }
+
     if (self.isHostedAtWPcom) {
+        // For WordPress.com YES
         return YES;
+    } else {
+        // For Jetpack, check if the module is enabled
+        return [self jetpackSharingButtonsModuleEnabled];
     }
-
-    // self-hosted connected to jetpack via the wpcom acct signed into the app.
-    if (self.dotComID && [self jetpackSharingButtonsModuleEnabled]) {
-        return YES;
-    }
-
-    // self-hosted connected to jetpack via a jetpackAccount
-    if ([self jetpackRESTSupported] && [self jetpackSharingButtonsModuleEnabled]) {
-        return YES;
-    }
-
-    return NO;
 }
 
 - (BOOL)supportsPushNotifications
