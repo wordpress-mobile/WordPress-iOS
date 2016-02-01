@@ -141,6 +141,27 @@ extern NSString * const PostServiceTypeAny;
                     failure:(void (^)(NSError *))failure;
 
 /**
+ Search for posts matching a query and of the specific status types from the specified blog.
+ Please note that success and/or failure are called in the context of the
+ NSManagedObjectContext supplied when the PostService was initialized, and may not
+ run on the main thread.
+ 
+ @attention Not supported in XML-RPC.
+ @param searchQuery The query used by the API for matching posts.
+ @param postType The type (post or page) of post to sync
+ @param postStatus An array of post status strings.
+ @param blog The blog that has the posts.
+ @param success A success block
+ @param failure A failure block
+ */
+- (void)searchPostsWithQuery:(NSString *)searchQuery
+                      ofType:(NSString *)postType
+                withStatuses:(NSArray *)postStatus
+                     forBlog:(Blog *)blog
+                     success:(void (^)(NSArray *posts))success
+                     failure:(void (^)(NSError *))failure;
+
+/**
  Syncs local changes on a post back to the server.
 
  @param post The post or page to upload
