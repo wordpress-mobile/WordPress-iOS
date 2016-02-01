@@ -249,7 +249,7 @@ const NSInteger PostServiceNumberToFetch = 40;
                                    byAuthor:authorID
                                     forBlog:blog
                               purgeExisting:YES
-                          completionHandler:^{
+                          completionHandler:^(NSArray<AbstractPost *> *posts) {
                               // Update the Last Sync Date, accordingly
                               Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
                               
@@ -330,7 +330,7 @@ const NSInteger PostServiceNumberToFetch = 40;
                        }
                        BOOL hasMore = ([posts count] < postCount) ? NO : YES;
                        [self.managedObjectContext performBlock:^{
-                           [self mergePosts:posts ofType:postType withStatuses:postStatus byAuthor:authorID forBlog:blog purgeExisting:NO completionHandler:^{
+                           [self mergePosts:posts ofType:postType withStatuses:postStatus byAuthor:authorID forBlog:blog purgeExisting:NO completionHandler:^(NSArray<AbstractPost *> *posts) {
                                if (success) {
                                    success(hasMore);
                                }
@@ -543,7 +543,7 @@ const NSInteger PostServiceNumberToFetch = 40;
           byAuthor:(NSNumber *)authorID
            forBlog:(Blog *)blog
      purgeExisting:(BOOL)purge
- completionHandler:(void (^)(void))completion
+ completionHandler:(void (^)(NSArray <AbstractPost *> *posts))completion
 {
     NSMutableSet *postsToKeep = [NSMutableSet setWithCapacity:posts.count];
     for (RemotePost *remotePost in posts) {
@@ -582,7 +582,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
 
     if (completion) {
-        completion();
+        completion([postsToKeep allObjects]);
     }
 }
 
