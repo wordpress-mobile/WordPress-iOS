@@ -701,7 +701,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         if ([status isKindOfClass:[NSString class]]) {
             if (weakSelf.blog.settings.defaultPostFormat != status) {
                 weakSelf.blog.settings.defaultPostFormat = status;
-                [weakSelf saveSettings];
+                if ([weakSelf blogSupportsSavingWritingDefaults]) {
+                    [weakSelf saveSettings];
+                }
             }
         }
     };
@@ -831,6 +833,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
 }
 
+- (BOOL)blogSupportsSavingWritingDefaults
+{
+    return [self.blog supports:BlogFeatureWPComRESTAPI];
+}
 
 #pragma mark - Authentication methods
 
@@ -1018,7 +1024,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     self.blog.settings.defaultCategoryID = category.categoryID;
     self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
-    [self saveSettings];
+    
+    if ([self blogSupportsSavingWritingDefaults]) {
+        [self saveSettings];
+    }
 }
 
 @end
