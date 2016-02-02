@@ -187,8 +187,8 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             }
 
             WPAppAnalytics.track(.OpenedMyProfile)
-            let controller = MyProfileController(account: account)
-            self.navigationController?.pushViewController(controller.viewController, animated: true)
+            let controller = MyProfileViewController(account: account)
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
