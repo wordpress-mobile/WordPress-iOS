@@ -4,6 +4,9 @@
 #import "MenuItem.h"
 #import "Menu.h"
 
+static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;
+static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
+
 @interface MenuItemSourceView () <MenuItemSourceTextBarDelegate>
 
 /* View used as the tableView.tableHeaderView container view for self.stackView.
@@ -122,6 +125,34 @@
     
     [searchBar setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
     _searchBar = searchBar;
+    
+    __weak MenuItemSourceView *weakSelf = self;
+    {
+        MenuItemSourceTextBarFieldObserver *observer = [[MenuItemSourceTextBarFieldObserver alloc] init];
+        observer.interval = SearchBarFetchRequestUpdateDelay;
+        [observer setOnTextChange:^(NSString *text) {
+            [weakSelf searchBarInputChangeDetectedForLocalResultsUpdateWithText:text];
+        }];
+        [_searchBar addTextObserver:observer];
+    }
+    {
+        MenuItemSourceTextBarFieldObserver *observer = [[MenuItemSourceTextBarFieldObserver alloc] init];
+        observer.interval = SearchBarRemoteServiceUpdateDelay;
+        [observer setOnTextChange:^(NSString *text) {
+            [weakSelf searchBarInputChangeDetectedForRemoteResultsUpdateWithText:text];
+        }];
+        [_searchBar addTextObserver:observer];
+    }
+}
+
+- (void)searchBarInputChangeDetectedForLocalResultsUpdateWithText:(NSString *)searchText
+{
+    // overrided in subclasses
+}
+
+- (void)searchBarInputChangeDetectedForRemoteResultsUpdateWithText:(NSString *)searchText
+{
+    // overrided in subclasses
 }
 
 #pragma mark - NSFetchedResultsController and subclass methods
@@ -261,7 +292,7 @@
 
 - (void)sourceTextBar:(MenuItemSourceTextBar *)textBar didUpdateWithText:(NSString *)text
 {
-    
+    // overrided in sublcasses
 }
 
 #pragma mark - NSFetchedResultsControllerDelegate
