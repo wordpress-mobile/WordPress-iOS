@@ -63,7 +63,7 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic icon;
 @dynamic username;
 @dynamic settings;
-
+@dynamic planID;
 
 @synthesize api = _api;
 @synthesize isSyncingPosts;
