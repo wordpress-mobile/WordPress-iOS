@@ -146,6 +146,7 @@
             <userInfo/>
         </relationship>
         <relationship name="settings" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="BlogSettings" inverseName="blog" inverseEntity="BlogSettings" syncable="YES"/>
+        <relationship name="sharingButtons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SharingButton" inverseName="blog" inverseEntity="SharingButton" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PostTag" inverseName="blog" inverseEntity="PostTag">
             <userInfo/>
         </relationship>
@@ -548,6 +549,16 @@
         <attribute name="slug" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tagID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
     </entity>
+    <entity name="SharingButton" representedClassName="WordPress.SharingButton" syncable="YES">
+        <attribute name="buttonID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="custom" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="enabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="shortname" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="visibility" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="sharingButtons" inverseEntity="Blog" syncable="YES"/>
+    </entity>
     <entity name="SourcePostAttribution" representedClassName="SourcePostAttribution" syncable="YES">
         <attribute name="attributionType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorName" optional="YES" attributeType="String" syncable="YES"/>
@@ -588,7 +599,7 @@
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="570"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="585"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="555"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
@@ -615,5 +626,6 @@
         <element name="ReaderTagTopic" positionX="27" positionY="171" width="128" height="90"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="330"/>
+        <element name="SharingButton" positionX="27" positionY="153" width="128" height="165"/>
     </elements>
 </model>
