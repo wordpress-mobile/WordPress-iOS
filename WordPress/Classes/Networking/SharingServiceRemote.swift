@@ -309,21 +309,8 @@ public class SharingServiceRemote : ServiceRemoteREST
                 }
 
                 let responseDict = response as! NSDictionary
-                let buttons: Array = responseDict.arrayForKey("sharing_buttons")
-                var order = 0;
-                let sharingButtons: [RemoteSharingButton] = buttons.map { (let dict) -> RemoteSharingButton in
-                    let btn = RemoteSharingButton()
-                    btn.buttonID = dict.stringForKey("ID") ?? btn.buttonID
-                    btn.name = dict.stringForKey("name") ?? btn.name
-                    btn.shortname = dict.stringForKey("shortname") ?? btn.shortname
-                    btn.custom = dict.numberForKey("custom").boolValue ?? btn.custom
-                    btn.enabled = dict.numberForKey("enabled").boolValue ?? btn.enabled
-                    btn.visibility = dict.stringForKey("visibility") ?? btn.visibility
-                    btn.order = order
-                    order++
-
-                    return btn
-                }
+                let buttons = responseDict.arrayForKey(SharingButtonsKeys.sharingButtons)
+                let sharingButtons = self.remoteSharingButtonsFromDictionary(buttons)
 
                 onSuccess(sharingButtons)
             },
@@ -335,8 +322,49 @@ public class SharingServiceRemote : ServiceRemoteREST
 
     ///
     ///
-    public func updateSharingButtonsForSite(siteID: NSNumber, sharingButtons:NSArray, success: ((buttons: NSArray) -> Void)?, failure: (NSError! -> Void)?) {
+    public func updateSharingButtonsForSite(siteID: NSNumber, sharingButtons:[RemoteSharingButton], success: (([RemoteSharingButton]) -> Void)?, failure: (NSError! -> Void)?) {
+        let endpoint = "sites/\(siteID)/sharing-buttons"
+        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let parameters = [SharingButtonsKeys.sharingButtons : sharingButtons]
 
+        api.POST(path,
+            parameters: parameters,
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+                guard let onSuccess = success else {
+                    return
+                }
+
+                let responseDict = response as! NSDictionary
+                let buttons = responseDict.arrayForKey(SharingButtonsKeys.updated)
+                let sharingButtons = self.remoteSharingButtonsFromDictionary(buttons)
+
+                onSuccess(sharingButtons)
+            },
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+                failure?(error)
+        })
+    }
+
+
+    ///
+    ///
+    private func remoteSharingButtonsFromDictionary(buttons: NSArray) -> [RemoteSharingButton] {
+        var order = 0;
+        let sharingButtons: [RemoteSharingButton] = buttons.map { (let dict) -> RemoteSharingButton in
+            let btn = RemoteSharingButton()
+            btn.buttonID = dict.stringForKey(SharingButtonsKeys.buttonID) ?? btn.buttonID
+            btn.name = dict.stringForKey(SharingButtonsKeys.name) ?? btn.name
+            btn.shortname = dict.stringForKey(SharingButtonsKeys.shortname) ?? btn.shortname
+            btn.custom = dict.numberForKey(SharingButtonsKeys.custom).boolValue ?? btn.custom
+            btn.enabled = dict.numberForKey(SharingButtonsKeys.enabled).boolValue ?? btn.enabled
+            btn.visibility = dict.stringForKey(SharingButtonsKeys.visibility) ?? btn.visibility
+            btn.order = order
+            order++
+
+            return btn
+        }
+
+        return sharingButtons
     }
 
 }
@@ -399,3 +427,16 @@ private struct PublicizeConnectionParams
     static let externalUserID = "external_user_ID"
 }
 
+
+// Names of parameters used in SharingButton requests
+private struct SharingButtonsKeys
+{
+    static let sharingButtons = "sharing-buttons"
+    static let buttonID = "ID"
+    static let name = "name"
+    static let shortname = "shortname"
+    static let custom = "custom"
+    static let enabled = "enabled"
+    static let visibility = "visibility"
+    static let updated = "updated"
+}
