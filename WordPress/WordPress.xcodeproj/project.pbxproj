@@ -613,6 +613,7 @@
 		E6B9B8AD1B94EACA0001B92F /* ReaderHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B9B8AC1B94EACA0001B92F /* ReaderHelperTests.swift */; };
 		E6B9B8AF1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6B9B8AE1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift */; };
 		E6C09B3E1BF0FDEB003074CB /* ReaderCrossPostMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C09B3D1BF0FDEB003074CB /* ReaderCrossPostMeta.swift */; };
+		E6C892D61C601D55007AD612 /* SharingButtonsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6C892D51C601D55007AD612 /* SharingButtonsViewController.swift */; };
 		E6D2E15F1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */; };
 		E6D2E1611B8AA4410000ED14 /* ReaderTagStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */; };
 		E6D2E1631B8AAA340000ED14 /* ReaderListStreamHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */; };
@@ -1708,6 +1709,7 @@
 		E6B9B8AC1B94EACA0001B92F /* ReaderHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderHelperTests.swift; sourceTree = "<group>"; };
 		E6B9B8AE1B94FA1C0001B92F /* ReaderStreamViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderStreamViewControllerTests.swift; sourceTree = "<group>"; };
 		E6C09B3D1BF0FDEB003074CB /* ReaderCrossPostMeta.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReaderCrossPostMeta.swift; path = Classes/Models/ReaderCrossPostMeta.swift; sourceTree = SOURCE_ROOT; };
+		E6C892D51C601D55007AD612 /* SharingButtonsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingButtonsViewController.swift; sourceTree = "<group>"; };
 		E6D2E15E1B8A9C830000ED14 /* ReaderSiteStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderSiteStreamHeader.xib; sourceTree = "<group>"; };
 		E6D2E1601B8AA4410000ED14 /* ReaderTagStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderTagStreamHeader.xib; sourceTree = "<group>"; };
 		E6D2E1621B8AAA340000ED14 /* ReaderListStreamHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderListStreamHeader.xib; sourceTree = "<group>"; };
@@ -3746,6 +3748,7 @@
 		E6431DDE1C4E890B00FD8D90 /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
+				E6C892D51C601D55007AD612 /* SharingButtonsViewController.swift */,
 				E6431DE31C4E892900FD8D90 /* SharingViewController.h */,
 				E6431DE41C4E892900FD8D90 /* SharingViewController.m */,
 				E6431DDF1C4E892900FD8D90 /* SharingConnectionsViewController.h */,
@@ -4596,6 +4599,7 @@
 				08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */,
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
 				E125445612BF5B3900D87A0A /* PostCategory.m in Sources */,
+				E6C892D61C601D55007AD612 /* SharingButtonsViewController.swift in Sources */,
 				E12DB07B1C48D1C200A6C1D4 /* WPAccount+AccountSettings.swift in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
