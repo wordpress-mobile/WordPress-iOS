@@ -23,7 +23,7 @@ NSString * const PostFormatStandard = @"standard";
 NSString * const ActiveModulesKeyPublicize = @"publicize";
 NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
 NSString * const OptionsKeyActiveModules = @"active_modules";
-NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled";
+NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled";
 
 
 @interface Blog ()
