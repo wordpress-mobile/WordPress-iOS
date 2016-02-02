@@ -36,3 +36,5 @@ extern NSString *const WPOnePasswordWordPressTitle;
 extern NSString *const WPOnePasswordWordPressComURL;
 extern NSInteger const WPOnePasswordGeneratedMinLength;
 extern NSInteger const WPOnePasswordGeneratedMaxLength;
+
+extern NSString *const WPComScheme;
