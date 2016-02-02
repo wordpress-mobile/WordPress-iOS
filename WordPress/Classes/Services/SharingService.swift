@@ -453,10 +453,26 @@ public class SharingService : LocalCoreDataService
     ///
     ///
     public func syncSharingButtonsForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
-
         let blogObjectID = blog.objectID
         let remote = SharingServiceRemote(api: apiForRequest())
         remote.getSharingButtonsForSite(blog.dotComID,
+            success: { (remoteButtons:[RemoteSharingButton]) in
+                self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)
+            },
+            failure: { (error: NSError!) in
+                failure?(error)
+        })
+    }
+
+
+    ///
+    ///
+    public func updateSharingButtonsForBlog(blog: Blog, sharingButtons: [SharingButton], success: (() -> Void)?, failure: (NSError! -> Void)?) {
+
+        let blogObjectID = blog.objectID
+        let remote = SharingServiceRemote(api: apiForRequest())
+        remote.updateSharingButtonsForSite(blog.dotComID,
+            sharingButtons: remoteShareButtonsFromShareButtons(sharingButtons),
             success: { (remoteButtons:[RemoteSharingButton]) in
                 self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)
             },
@@ -552,6 +568,23 @@ public class SharingService : LocalCoreDataService
         shareButton?.blog = blog
 
         return shareButton!
+    }
+
+
+    ///
+    ///
+    private func remoteShareButtonsFromShareButtons(shareButtons: [SharingButton]) -> [RemoteSharingButton] {
+        return shareButtons.map { (let shareButton) -> RemoteSharingButton in
+            let btn = RemoteSharingButton()
+            btn.buttonID = shareButton.buttonID
+            btn.name = shareButton.name
+            btn.shortname = shareButton.shortname
+            btn.custom = shareButton.custom
+            btn.enabled = shareButton.enabled
+            btn.visibility = shareButton.visibility
+            btn.order = shareButton.order
+            return btn
+        }
     }
 
 
