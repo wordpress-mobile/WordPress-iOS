@@ -85,6 +85,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
 @property (nonatomic, strong, readwrite) NSString *icon;
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
+@property (nonatomic, strong, readwrite) NSNumber *planID;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
