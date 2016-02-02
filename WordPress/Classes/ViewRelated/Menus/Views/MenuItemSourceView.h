@@ -28,6 +28,18 @@
  */
 @property (nonatomic, strong) MenuItemSourceTextBar *searchBar;
 
+/* Adds the custom searchBar view to the stackView, if not already added.
+ */
+- (void)insertSearchBarIfNeeded;
+
+/* A searchBar text update has changed in a way that local results should be fetched to reflect the search.
+ */
+- (void)searchBarInputChangeDetectedForLocalResultsUpdateWithText:(NSString *)searchText;
+
+/* A searchBar text update has changed in a way that remote results should be fetched to reflect the search.
+ */
+- (void)searchBarInputChangeDetectedForRemoteResultsUpdateWithText:(NSString *)searchText;
+
 /* The blog the view is working with.
  */
 - (Blog *)blog;
@@ -55,10 +67,6 @@
 /* Method for subclasses to handle the cell configuraton based on the data being used for that subclass.
  */
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath;
-
-/* Adds the custom searchBar view to the stackView, if not already added.
- */
-- (void)insertSearchBarIfNeeded;
 
 @end
 

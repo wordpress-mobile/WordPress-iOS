@@ -3,13 +3,21 @@
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 
+@interface MenuItemSourceTextBarFieldObserver ()
+
+@property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, copy) NSString *lastTextObserved;
+@property (nonatomic, strong) NSTimer *timer;
+
+@end
+
 @interface MenuItemSourceTextBar () <UITextFieldDelegate>
 
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UIStackView *contentStackView;
-@property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UILabel *cancelLabel;
+@property (nonatomic, strong) NSMutableArray <MenuItemSourceTextBarFieldObserver *> *textObservers;
 
 @end
 
@@ -107,7 +115,7 @@
             
             [textField setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             
-            self.textField = textField;
+            _textField = textField;
         }
         {
             UILabel *label = [[UILabel alloc] init];
@@ -145,6 +153,16 @@
     }
     
     return self;
+}
+
+- (void)addTextObserver:(MenuItemSourceTextBarFieldObserver *)textObserver
+{
+    if (!self.textObservers) {
+        self.textObservers = [NSMutableArray array];
+    }
+    
+    textObserver.textField = self.textField;
+    [self.textObservers addObject:textObserver];
 }
 
 - (BOOL)isFirstResponder
@@ -208,12 +226,40 @@
 
 - (void)textFieldValueDidChange:(UITextField *)textField
 {
+    for (MenuItemSourceTextBarFieldObserver *textObserver in self.textObservers) {
+        
+        [textObserver.timer invalidate];
+        textObserver.timer = [NSTimer scheduledTimerWithTimeInterval:textObserver.interval target:textObserver selector:@selector(timerFired) userInfo:nil repeats:NO];
+    }
+    
     [self.delegate sourceTextBar:self didUpdateWithText:textField.text];
 }
 
 - (void)textFieldDidEndOnExit:(UITextField *)textField
 {
     [textField resignFirstResponder];
+}
+
+@end
+
+@implementation MenuItemSourceTextBarFieldObserver
+
+- (void)dealloc
+{
+    [self.timer invalidate];
+}
+
+- (void)timerFired
+{
+    if ([self.textField.text isEqualToString:self.lastTextObserved]) {
+        // text hasn't changed, no observation needed
+        return;
+    }
+    // text is different, change should be observed
+    self.lastTextObserved = self.textField.text;
+    if (self.onTextChange) {
+        self.onTextChange(self.textField.text);
+    }
 }
 
 @end
