@@ -20,12 +20,21 @@
 #import "WPWebViewController.h"
 #import "Wordpress-Swift.h"
 
+static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
+static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
+
+NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
+NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
+NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
+NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
+
 
 #pragma mark - Helper Classes for Blog Details view model.
 
 @interface BlogDetailsRow : NSObject
 
 @property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *identifier;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) NSString *detail;
 @property (nonatomic, copy) void (^callback)();
@@ -34,13 +43,27 @@
 
 @implementation BlogDetailsRow
 
-- (instancetype)initWithTitle:(NSString * __nonnull)title image:(UIImage * __nonnull)image callback:(void(^)())callback
+- (instancetype)initWithTitle:(NSString * __nonnull)title
+                        image:(UIImage * __nonnull)image
+                     callback:(void(^)())callback
+{
+    return [self initWithTitle:title
+                    identifier:BlogDetailsCellIdentifier
+                         image:image
+                      callback:callback];
+}
+
+- (instancetype)initWithTitle:(NSString * __nonnull)title
+                   identifier:(NSString * __nonnull)identifier 
+                        image:(UIImage * __nonnull)image
+                     callback:(void(^)())callback
 {
     self = [super init];
     if (self) {
         _title = title;
         _image = image;
         _callback = callback;
+        _identifier = identifier;
     }
     return self;
 }
@@ -65,13 +88,6 @@
     return self;
 }
 @end
-
-
-static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
-NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
-NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
-NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
-NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
 #pragma mark -
 
@@ -140,8 +156,10 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
-
+    [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncBlog:_blog];
@@ -221,6 +239,20 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
                                                      [weakSelf showStats];
                                                  }]];
 
+    if ([Feature enabled:FeatureFlagPlans] && [self.blog supports:BlogFeaturePlans]) {
+        BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
+                                                         identifier:BlogDetailsPlanCellIdentifier
+                                                              image:[UIImage imageNamed:@"icon-menu-plans"]
+                                                           callback:^{
+                                                               [weakSelf showPlans];
+                                                           }];
+
+        Plan *plan = [[Plan alloc] initWithPlanID:[self.blog.planID integerValue]];
+        row.detail = plan.title;
+
+        [rows addObject:row];
+    }
+    
     return [[BlogDetailsSection alloc] initWithTitle:nil andRows:rows];
 }
 
@@ -380,7 +412,9 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsCellIdentifier];
+    BlogDetailsSection *section = [self.tableSections objectAtIndex:indexPath.section];
+    BlogDetailsRow *row = [section.rows objectAtIndex:indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     [WPStyleGuide configureTableViewCell:cell];
@@ -456,6 +490,13 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     // TODO(@koke, 2015-11-02): add analytics
     PeopleViewController *controller = [[UIStoryboard storyboardWithName:@"People" bundle:nil] instantiateInitialViewController];
     controller.blog = self.blog;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showPlans
+{
+    // TODO(@koke, 2016-01-28): add analytics
+    PlanListViewController *controller = [PlanListViewController new];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
