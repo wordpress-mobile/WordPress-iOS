@@ -33,8 +33,12 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureThemeBrowsing,
     /// Does the blog support sharing?
     BlogFeatureSharing,
-    /// Does the blog support people management
+    /// Does the blog support people management?
     BlogFeaturePeople,
+    /// Can the blog's site be changed or deleted?
+    BlogFeatureSiteManagement,
+    /// Does the blog support different paid plans?
+    BlogFeaturePlans,
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -81,6 +85,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
 @property (nonatomic, strong, readwrite) NSString *icon;
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
+@property (nonatomic, strong, readwrite) NSNumber *planID;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
