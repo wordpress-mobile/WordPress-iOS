@@ -12,6 +12,7 @@ data model as well as any custom migrations.
 - `Blog` added new relationship called `menus`. Persisting associated Menus for a site.
 - `Blog` added new relationship called `menuLocations`. Persists associated MenuLocations available for a site.
 - `Blog` added new relationship called `tags`. Persisting associated PostTags for a site.
+- `Blog` added new integer64 attribute `planID` to store a blog's current plan's product ID.
 
 ## WordPress 44 (@aerych 2016-01-11)
 
