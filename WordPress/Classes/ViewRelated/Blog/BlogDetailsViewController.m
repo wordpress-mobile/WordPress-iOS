@@ -228,7 +228,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
                                                                [weakSelf showPlans];
                                                            }];
 
-        Plan *plan = [[Plan alloc] initWithPlan:[self.blog.planID integerValue]];
+        Plan *plan = [[Plan alloc] initWithPlanID:[self.blog.planID integerValue]];
         row.detail = plan.title;
 
         [rows addObject:row];

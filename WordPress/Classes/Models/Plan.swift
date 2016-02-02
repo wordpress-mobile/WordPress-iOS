@@ -65,8 +65,16 @@ enum PlanEnum: Int {
 class PlanObjc: NSObject {
     @nonobjc
     private let plan: Plan
-    
-    init(plan: Plan) {
+
+    init?(planID: Int) {
+        guard let plan = Plan(rawValue: planID) else {
+            // We need to initialize this to something before we can fail
+            // Should be fixed in Swift 2.2
+            self.plan = .Free
+            super.init()
+            return nil
+        }
+
         self.plan = plan
         super.init()
     }
