@@ -72,6 +72,13 @@ public struct ImmuTable {
     }
 }
 
+extension ImmuTable {
+    /// Alias for an ImmuTable with no sections
+    static var Empty: ImmuTable {
+        return ImmuTable(sections: [])
+    }
+}
+
 
 // MARK: -
 
@@ -242,7 +249,7 @@ public class ImmuTableViewHandler: NSObject, UITableViewDataSource, UITableViewD
     }
 
     /// An ImmuTable object representing the table structure.
-    public var viewModel = ImmuTable(sections: []) {
+    public var viewModel = ImmuTable.Empty {
         didSet {
             if target.isViewLoaded() {
                 target.tableView.reloadData()

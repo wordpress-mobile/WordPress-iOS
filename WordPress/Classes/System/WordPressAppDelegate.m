@@ -184,7 +184,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
         returnValue = YES;
     }
 
-    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPCOM_SCHEME]) {
+    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPComScheme]) {
         NSString *URLString = [url absoluteString];
 
         if ([URLString rangeOfString:@"newpost"].length) {
