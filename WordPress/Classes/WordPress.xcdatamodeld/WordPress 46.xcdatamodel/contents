@@ -113,6 +113,7 @@
         <attribute name="options" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
+        <attribute name="planID" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <attribute name="postFormats" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
@@ -587,7 +588,7 @@
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="555"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="570"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="555"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
