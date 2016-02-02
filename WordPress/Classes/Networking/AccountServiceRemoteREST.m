@@ -153,6 +153,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
     blog.isAdmin = [[jsonBlog numberForKeyPath:@"capabilities.manage_options"] boolValue];
     blog.visible = [[jsonBlog numberForKey:@"visible"] boolValue];
     blog.options = [RemoteBlogOptionsHelper mapOptionsFromResponse:jsonBlog];
+    blog.planID = [jsonBlog numberForKeyPath:@"plan.product_id"];
     return blog;
 }
 
