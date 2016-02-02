@@ -19,6 +19,4 @@
                forBlogObjectID:(NSManagedObjectID *)blogObjectID
                        success:(void (^)(PostCategory *category))success
                        failure:(void (^)(NSError *error))failure;
-
-
 @end
