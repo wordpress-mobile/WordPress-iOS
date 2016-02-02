@@ -8,5 +8,5 @@ public class RemoteSharingButton
     var custom = false
     var enabled = false
     var visibility: String?
-    var order = 0
+    var order: NSNumber = 0
 }
