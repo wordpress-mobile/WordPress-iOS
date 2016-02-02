@@ -8,10 +8,16 @@
 @interface MenuItemSourceTagView ()
 
 @property (nonatomic, strong) PostTagService *tagSearchService;
+@property (nonatomic, strong) NSTimer *searchRemoteServiceTimer;
 
 @end
 
 @implementation MenuItemSourceTagView
+
+- (void)dealloc
+{
+    [self.searchRemoteServiceTimer invalidate];
+}
 
 - (id)init
 {
@@ -69,46 +75,41 @@
 
 #pragma mark - searching
 
-- (void)sourceTextBar:(MenuItemSourceTextBar *)textBar didUpdateWithText:(NSString *)text
+- (void)searchBarInputChangeDetectedForLocalResultsUpdateWithText:(NSString *)searchText
 {
-    if (!self.tagSearchService) {
-        self.tagSearchService = [[PostTagService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    }
-    
-    NSLog(@"Searching: %@", text);
-    
-    //    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    // setup the resultsController to reflect the search
-    
     NSPredicate *defaultPredicate = [self defaultFetchRequestPredicate];
-    NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"name BEGINSWITH[c] %@", text];
+    NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"name BEGINSWITH[c] %@", searchText];
     NSPredicate *predicate = nil;
     
-    if (text.length) {
+    if (searchText.length) {
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[defaultPredicate, searchPredicate]];
     } else {
         predicate = defaultPredicate;
     }
     
-    self.resultsController.fetchRequest.predicate = predicate;
-    [self performResultsControllerFetchRequest];
-    [self.tableView reloadData];
-    
-    //    });
-    
-    if (!text.length) {
-        // don't search remotely
+    if ([self.resultsController.fetchRequest.predicate isEqual:predicate]) {
+        // same predicate, no update needed
         return;
     }
     
-    [self.tagSearchService searchTagsWithName:text blog:[self blog] success:^(NSArray<PostTag *> *tags) {
-        
-        NSLog(@"searched with: %i", tags.count);
-        
-    } failure:^(NSError *error) {
-        
-        NSLog(@"failure");
-    }];
+    DDLogDebug(@"MenuItemSourceTagView: Updating fetch request predicate");
+    self.resultsController.fetchRequest.predicate = predicate;
+    [self performResultsControllerFetchRequest];
+    [self.tableView reloadData];
+}
+
+- (void)searchBarInputChangeDetectedForRemoteResultsUpdateWithText:(NSString *)searchText
+{
+    if (!searchText.length) {
+        return;
+    }
+    
+    if (!self.tagSearchService) {
+        self.tagSearchService = [[PostTagService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    }
+    
+    DDLogDebug(@"MenuItemSourceTagView: Searching tags PostTagService");
+    [self.tagSearchService searchTagsWithName:searchText blog:[self blog] success:nil failure:nil];
 }
 
 @end
