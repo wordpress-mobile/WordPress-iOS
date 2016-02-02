@@ -45,4 +45,11 @@ class PlanListViewController: UITableViewController {
 
         return cell
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let planVC = PlanDetailViewController(plan: .Premium)
+        let navigationVC = UINavigationController(rootViewController: planVC)
+        
+        presentViewController(navigationVC, animated: true, completion: nil)
+    }
 }

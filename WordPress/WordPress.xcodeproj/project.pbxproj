@@ -44,6 +44,7 @@
 		08CC677F1C49B65A00153AD7 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677A1C49B65A00153AD7 /* Menu.m */; };
 		08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677D1C49B65A00153AD7 /* MenuLocation.m */; };
 		17AF92251C46634000A99CFB /* BlogSiteVisibilityHelperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 17AF92241C46634000A99CFB /* BlogSiteVisibilityHelperTest.m */; };
+		1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
 		1D51A69276C9D829E53B8779 /* Pods_WordPressTodayWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD8A4A8FA463E3CB668C322B /* Pods_WordPressTodayWidget.framework */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -776,6 +777,7 @@
 		0CE0577B6AC0CF064C42E6EA /* Pods-WordPress.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.release-internal.xcconfig"; sourceTree = "<group>"; };
 		0CF877DC71756EFA3346E26F /* Pods-WordPressTodayWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.debug.xcconfig"; sourceTree = "<group>"; };
 		17AF92241C46634000A99CFB /* BlogSiteVisibilityHelperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSiteVisibilityHelperTest.m; sourceTree = "<group>"; };
+		1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailViewController.swift; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* WordPressAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WordPressAppDelegate.m; sourceTree = "<group>"; usesTabs = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -3651,6 +3653,7 @@
 			isa = PBXGroup;
 			children = (
 				E1389ADA1C59F7C200FB2466 /* PlanListViewController.swift */,
+				1724DDC71C60F1200099D273 /* PlanDetailViewController.swift */,
 			);
 			path = Plans;
 			sourceTree = "<group>";
@@ -4663,6 +4666,7 @@
 				FFE3B2C71B2E651400E9F1E0 /* WPAndDeviceMediaLibraryDataSource.m in Sources */,
 				B59D994F1C0790CC0003D795 /* SettingsListEditorViewController.swift in Sources */,
 				F1FA2C4E1AED07FC00255FCD /* MFMailComposeViewController+StatusBarStyle.m in Sources */,
+				1724DDC81C60F1200099D273 /* PlanDetailViewController.swift in Sources */,
 				E6A09BA61C4492DC008626FB /* SharingAuthorizationWebViewController.m in Sources */,
 				E1F8E1261B0B422C0073E628 /* JetpackServiceRemote.m in Sources */,
 				5D6C4B091B603E03005E3C43 /* WPTableViewHandler.m in Sources */,
