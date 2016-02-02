@@ -42,3 +42,5 @@ NSString *const WPOnePasswordWordPressTitle                         = @"WordPres
 NSString *const WPOnePasswordWordPressComURL                        = @"wordpress.com";
 NSInteger const WPOnePasswordGeneratedMinLength                     = 7;
 NSInteger const WPOnePasswordGeneratedMaxLength                     = 50;
+
+NSString *const WPComScheme = WPCOM_SCHEME;
