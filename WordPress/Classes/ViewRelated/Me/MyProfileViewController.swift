@@ -2,60 +2,88 @@ import UIKit
 import RxSwift
 import WordPressShared
 
-class MyProfileController: NSObject {
+func MyProfileViewController(account account: WPAccount) -> ImmuTableViewController {
+    let service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
+    return MyProfileViewController(service: service)
+}
+
+func MyProfileViewController(service service: AccountSettingsService) -> ImmuTableViewController {
+    let controller = MyProfileController(service: service)
+    let viewController = ImmuTableViewController(controller: controller)
+    assert(viewController.controller?.presenter != nil, "ImmuTableViewController should have set the presenter for MyProfileController")
+    return viewController
+}
+
+/// MyProfileController requires the `presenter` to be set before using.
+/// To avoid problems, it's marked private and should only be initialized using the
+/// `MyProfileViewController` factory functions.
+private struct MyProfileController: ImmuTableController {
+    // MARK: - ImmuTableController
+
+    weak var presenter: ImmuTablePresenter? = nil
+
     let title = NSLocalizedString("My Profile", comment: "My Profile view title")
-    let service: AccountSettingsService
-    let viewController = ImmuTableViewController()
 
-    init(service: AccountSettingsService) {
-        self.service = service
-        super.init()
-
-        viewController.title = title
-        viewController.registerRows(immutableRows)
-
-        _ = viewModel
-            .observeOn(MainScheduler.instance)
-            .takeUntil(viewController.rx_deallocated)
-            .subscribeNext(viewController.bindViewModel)
-        // Only refresh on first appearance
-        _ = viewController.willAppear.take(1).subscribeNext {
-            service.refreshSettings({ _ in })
-        }
-    }
-
-    convenience init(account: WPAccount) {
-        self.init(service: AccountSettingsService(userID: account.userID.integerValue, api: account.restApi))
-    }
-
-    var immutableRows: [ImmuTableRow.Type] {
+    var immuTableRows: [ImmuTableRow.Type] {
         return [EditableTextRow.self]
     }
 
-    var viewModel: Observable<ImmuTable> {
+    var immuTable: Observable<ImmuTable> {
+        precondition(presenter != nil, "presenter must be set before using")
         return service.settings.map(mapViewModel)
     }
 
+    var errorMessage: Observable<String?> {
+        precondition(presenter != nil, "presenter must be set before using")
+        guard let presenter = presenter else {
+            // This shouldn't happen, but if it does, disabling the error feels
+            // safer than having it running when the VC is not visible.
+            return Observable.just(nil)
+        }
+        return service.refresh
+            .pausable(presenter.visible)
+            // replace errors with .Failed status
+            .catchErrorJustReturn(.Failed)
+            // convert status to string
+            .map({ $0.errorMessage })
+    }
+
+    // MARK: - Initialization
+
+    let service: AccountSettingsService
+
+    init(service: AccountSettingsService) {
+        self.service = service
+    }
+
+    // MARK: - Model mapping
+
     func mapViewModel(settings: AccountSettings?) -> ImmuTable {
+        precondition(presenter != nil, "presenter must be set before using")
+        guard let presenter = presenter else {
+            // This shouldn't happen. If there's no presenter we can't push the
+            // editText controllers.
+            return ImmuTable.Empty
+        }
         let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
             value: settings?.firstName ?? "",
-            action: viewController.push(editText(AccountSettingsChange.FirstName)))
+            action: presenter.push(editText(AccountSettingsChange.FirstName)))
 
         let lastNameRow = EditableTextRow(
             title: NSLocalizedString("Last Name", comment: "My Profile last name label"),
             value: settings?.lastName ?? "",
-            action: viewController.push(editText(AccountSettingsChange.LastName)))
+            action: presenter.push(editText(AccountSettingsChange.LastName)))
 
         let displayNameRow = EditableTextRow(
             title: NSLocalizedString("Display Name", comment: "My Profile display name label"),
             value: settings?.displayName ?? "",
-            action: viewController.push(editText(AccountSettingsChange.DisplayName)))
+            action: presenter.push(editText(AccountSettingsChange.DisplayName)))
 
         let aboutMeRow = EditableTextRow(
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: settings?.aboutMe ?? "",
-            action: viewController.push(editText(AccountSettingsChange.AboutMe)))
+            action: presenter.push(editText(AccountSettingsChange.AboutMe)))
 
         return ImmuTable(sections: [
             ImmuTableSection(rows: [
@@ -67,8 +95,10 @@ class MyProfileController: NSObject {
             ])
     }
 
+    // MARK: - Actions
+
     func editText(changeType: (AccountSettingsChangeWithString), hint: String? = nil) -> ImmuTableRowControllerGenerator {
-        return { [unowned self] row in
+        return { row in
             let row = row as! EditableTextRow
             return self.controllerForEditableText(row, changeType: changeType, hint: hint)
         }
@@ -86,7 +116,6 @@ class MyProfileController: NSObject {
 
         controller.title = title
         controller.onValueChanged = {
-            [unowned self]
             value in
 
             let change = changeType(value)
