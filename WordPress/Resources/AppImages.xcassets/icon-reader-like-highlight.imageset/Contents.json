@@ -2,18 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "icon-reader-like-highlight.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "icon-reader-like-highlight@2x.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "icon-reader-like-highlight@3x.png"
+      "filename" : "icon-reader-like-highlight.pdf"
     }
   ],
   "info" : {

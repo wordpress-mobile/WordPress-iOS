@@ -5,7 +5,7 @@
 #import "WPAccount.h"
 #import "WPStyleGuide.h"
 #import "WPTableViewHandler.h"
-#import "WordpRess-Swift.h"
+#import "WordPress-Swift.h"
 
 @interface SubscribedTopicsViewController ()<WPTableViewHandlerDelegate>
 
@@ -199,7 +199,8 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
+    ReaderAbstractTopic *topic = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if (![ReaderHelpers isTopicTag:topic]) {
         return NO;
     }
     return self.isEditing;

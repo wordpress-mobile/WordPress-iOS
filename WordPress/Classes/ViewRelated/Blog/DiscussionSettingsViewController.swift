@@ -10,7 +10,7 @@ public class DiscussionSettingsViewController : UITableViewController
     // MARK: - Initializers / Deinitializers
     public convenience init(blog: Blog) {
         self.init(style: .Grouped)
-        self.settings = blog.settings
+        self.blog = blog
     }
 
     deinit {
@@ -31,6 +31,7 @@ public class DiscussionSettingsViewController : UITableViewController
         super.viewWillAppear(animated)
         tableView.reloadSelectedRow()
         tableView.deselectSelectedRowWithAnimation(true)
+        refreshSettings()
     }
     
     public override func viewWillDisappear(animated: Bool) {
@@ -55,8 +56,6 @@ public class DiscussionSettingsViewController : UITableViewController
     }
 
     private func setupNotificationListeners() {
-        assert(settings != nil)
-        
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self, selector: "handleContextDidChange:",
             name: NSManagedObjectContextObjectsDidChangeNotification,
@@ -66,6 +65,18 @@ public class DiscussionSettingsViewController : UITableViewController
     
 
     // MARK: - Persistance!
+    private func refreshSettings() {
+        let service = BlogService(managedObjectContext: settings.managedObjectContext)
+        service.syncSettingsForBlog(blog,
+            success: { [weak self] in
+                self?.tableView.reloadData()
+                DDLogSwift.logInfo("Reloaded Settings")
+            },
+            failure: { (error: NSError!) in
+                DDLogSwift.logError("Error while sync'ing blog settings: \(error)")
+            })
+    }
+    
     private func saveSettingsIfNeeded() {
         if !settings.hasChanges {
             return
@@ -586,7 +597,12 @@ public class DiscussionSettingsViewController : UITableViewController
     
 
     // MARK: - Private Properties
-    private var settings : BlogSettings!
+    private var blog : Blog!
+    
+    // MARK: - Computed Properties
+    private var settings : BlogSettings {
+        return blog.settings
+    }
     
     // MARK: - Typealiases
     private typealias CommentsSorting           = BlogSettings.CommentsSorting

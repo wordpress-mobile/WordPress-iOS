@@ -8,7 +8,10 @@ enum FeatureFlag: Int {
     /// Me > My Profile
     /// Needs better UI for loading/failed states
     case MyProfile
-
+    /// My Sites > Site > Sharing
+    case Sharing
+    /// My Sites > Site > Plans
+    case Plans
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
         switch self {
@@ -16,6 +19,10 @@ enum FeatureFlag: Int {
             return build(.Debug)
         case .MyProfile:
             return build(.Debug, .Alpha, .Internal)
+        case .Sharing:
+            return build(.Debug)
+        case .Plans:
+            return build(.Debug)
         }
     }
 }

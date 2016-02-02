@@ -47,12 +47,18 @@
     
     // Method!
     [request setHTTPMethod:@"POST"];
-    
+
+    // redirect URL
+    // `stringByUrlEncoding` uses `URLQueryAllowedCharacterSet` and thus does not
+    // encode ampersands. Manually encode any ampersands that might be in the
+    // redirect string's own query string.
+    NSString *redirectTo = [[redirectURL.absoluteString stringByUrlEncoding] stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
+
     // Auth Body
     NSString *requestBody = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@",
                              @"log", [username stringByUrlEncoding],
                              @"pwd", encodedPassword,
-                             @"redirect_to", [redirectURL.absoluteString stringByUrlEncoding]];
+                             @"redirect_to", redirectTo];
     
     request.HTTPBody = [requestBody dataUsingEncoding:NSUTF8StringEncoding];
     

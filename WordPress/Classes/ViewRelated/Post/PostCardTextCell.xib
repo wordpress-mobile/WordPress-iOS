@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -80,14 +79,14 @@
                                         <rect key="frame" x="16" y="124" width="196" height="18"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-clock" translatesAutoresizingMaskIntoConstraints="NO" id="38V-Vw-GfJ">
-                                                <rect key="frame" x="0.0" y="1" width="16" height="16"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="16" id="5A1-u0-oUB"/>
-                                                    <constraint firstAttribute="height" constant="16" id="oYP-3y-IxP"/>
+                                                    <constraint firstAttribute="width" constant="18" id="5A1-u0-oUB"/>
+                                                    <constraint firstAttribute="height" constant="18" id="oYP-3y-IxP"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q5D-nc-yvr">
-                                                <rect key="frame" x="19" y="2" width="177" height="14.5"/>
+                                                <rect key="frame" x="21" y="2" width="175" height="14.5"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -110,14 +109,14 @@
                                         <rect key="frame" x="16" y="148" width="276" height="18"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-post-status-pending" translatesAutoresizingMaskIntoConstraints="NO" id="8Cs-fq-wSe">
-                                                <rect key="frame" x="0.0" y="1" width="16" height="16"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="18" height="18"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="16" id="hdA-We-Wej"/>
-                                                    <constraint firstAttribute="height" constant="16" id="tUS-Dc-Ofc"/>
+                                                    <constraint firstAttribute="width" constant="18" id="hdA-We-Wej"/>
+                                                    <constraint firstAttribute="height" constant="18" id="tUS-Dc-Ofc"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dbu-l3-L8G">
-                                                <rect key="frame" x="19" y="2" width="257" height="14.5"/>
+                                                <rect key="frame" x="21" y="2" width="255" height="14.5"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -318,8 +317,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="icon-clock" width="16" height="16"/>
-        <image name="icon-post-status-pending" width="16" height="16"/>
+        <image name="icon-clock" width="18" height="18"/>
+        <image name="icon-post-status-pending" width="18" height="18"/>
         <image name="icon-postmeta-comment" width="18" height="18"/>
         <image name="icon-postmeta-like" width="18" height="18"/>
         <image name="post-blavatar-placeholder" width="32" height="32"/>

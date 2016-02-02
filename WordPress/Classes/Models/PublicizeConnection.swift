@@ -25,4 +25,8 @@ public class PublicizeConnection : NSManagedObject
     @NSManaged public var status: String
     @NSManaged public var siteID: NSNumber
     @NSManaged public var userID: NSNumber
+
+    public func isBroken() -> Bool {
+        return status == "broken"
+    }
 }
