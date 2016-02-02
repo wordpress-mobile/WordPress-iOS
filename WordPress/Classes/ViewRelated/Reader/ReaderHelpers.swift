@@ -2,7 +2,7 @@ import Foundation
 import SVProgressHUD
 import WordPressComAnalytics
 
-public class ReaderHelpers {
+@objc public class ReaderHelpers : NSObject {
 
     public class func shareController(title:String?, summary:String?, tags:String?, link:String?) -> UIActivityViewController {
         var activityItems = [AnyObject]()
