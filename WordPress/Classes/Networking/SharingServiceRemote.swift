@@ -9,6 +9,8 @@ import NSObject_SafeExpectations
 public class SharingServiceRemote : ServiceRemoteREST
 {
 
+    // MARK: - Publicize Related Methods
+
     /// Fetches the list of Publicize services.
     ///
     /// - Parameters:
@@ -288,6 +290,53 @@ public class SharingServiceRemote : ServiceRemoteREST
         conn.userID = dict.numberForKey(ConnectionDictionaryKeys.userID) ?? conn.userID
 
         return conn
+    }
+
+
+    // MARK: - Sharing Button Related Methods
+
+    ///
+    ///
+    public func getSharingButtonsForSite(siteID: NSNumber, success: (([RemoteSharingButton]) -> Void)?, failure: (NSError! -> Void)?) {
+        let endpoint = "sites/\(siteID)/sharing-buttons"
+        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+
+        api.GET(path,
+            parameters: nil,
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+                guard let onSuccess = success else {
+                    return
+                }
+
+                let responseDict = response as! NSDictionary
+                let buttons: Array = responseDict.arrayForKey("sharing_buttons")
+                var order = 0;
+                let sharingButtons: [RemoteSharingButton] = buttons.map { (let dict) -> RemoteSharingButton in
+                    let btn = RemoteSharingButton()
+                    btn.buttonID = dict.stringForKey("ID") ?? btn.buttonID
+                    btn.name = dict.stringForKey("name") ?? btn.name
+                    btn.shortname = dict.stringForKey("shortname") ?? btn.shortname
+                    btn.custom = dict.numberForKey("custom").boolValue ?? btn.custom
+                    btn.enabled = dict.numberForKey("enabled").boolValue ?? btn.enabled
+                    btn.visibility = dict.stringForKey("visibility") ?? btn.visibility
+                    btn.order = order
+                    order++
+
+                    return btn
+                }
+
+                onSuccess(sharingButtons)
+            },
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+                failure?(error)
+        })
+    }
+
+
+    ///
+    ///
+    public func updateSharingButtonsForSite(siteID: NSNumber, sharingButtons:NSArray, success: ((buttons: NSArray) -> Void)?, failure: (NSError! -> Void)?) {
+
     }
 
 }
