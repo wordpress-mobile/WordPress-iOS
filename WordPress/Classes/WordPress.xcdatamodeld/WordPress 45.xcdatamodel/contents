@@ -113,7 +113,7 @@
         <attribute name="options" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
-        <attribute name="planID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="planID" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <attribute name="postFormats" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
