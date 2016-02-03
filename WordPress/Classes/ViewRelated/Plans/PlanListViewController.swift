@@ -46,7 +46,7 @@ class PlanListViewController: UITableViewController {
             cell.imageView?.image = plan.image
         }
         cell.textLabel?.attributedText = attributedTitleForPlan(plan, active: active)
-        cell.detailTextLabel?.text = plan.description
+        cell.textLabel?.adjustsFontSizeToFitWidth = true
 
         cell.selectionStyle = .None
 
