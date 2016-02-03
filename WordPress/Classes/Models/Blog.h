@@ -31,6 +31,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePushNotifications,
     /// Does the blog support theme browsing?
     BlogFeatureThemeBrowsing,
+    /// Does the blog support private visibility?
+    BlogFeaturePrivate,
     /// Does the blog support sharing?
     BlogFeatureSharing,
     /// Does the blog support people management?
@@ -38,7 +40,7 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Can the blog's site be changed or deleted?
     BlogFeatureSiteManagement,
     /// Does the blog support different paid plans?
-    BlogFeaturePlans,
+    BlogFeaturePlans
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -143,13 +145,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
 #pragma mark - Blog information
 - (BOOL)isPrivate;
-/**
- *  The text description for the current privacy settting set in the blog
- *
- *  @return the text description.
- */
-- (NSString *)textForCurrentSiteVisibility;
-
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;
 - (NSString *)loginUrl;
