@@ -12,7 +12,6 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "JetpackREST.h"
 #import "Blog.h"
 #import "NSBundle+VersionNumberHelper.h"
 #import "WordPress-Swift.h"
@@ -60,7 +59,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
 {
     SettingsSectionSettingsRowVersion,
     SettingsSectionSettingsRowExtraDebug,
-    SettingsSectionSettingsRowJetpackREST,
     SettingsSectionSettingsRowTracking,
     SettingsSectionSettingsRowActivityLogs,
     SettingsSectionSettingsRowCount
@@ -290,7 +288,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     WPTableViewCell *cell = nil;
     if (indexPath.section == SettingsSectionSettings
         && (indexPath.row == SettingsSectionSettingsRowExtraDebug
-            || indexPath.row == SettingsSectionSettingsRowJetpackREST
             || indexPath.row == SettingsSectionSettingsRowTracking)) {
         // Settings / Extra Debug
         static NSString *CellIdentifierSwitchAccessory = @"SupportViewSwitchAccessoryCell";
@@ -377,11 +374,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
             cell.textLabel.text = NSLocalizedString(@"Extra Debug", @"");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
             aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kExtraDebugDefaultsKey];
-        } else if (indexPath.row == SettingsSectionSettingsRowJetpackREST) {
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = NSLocalizedString(@"Jetpack REST", @"");
-            UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-            aSwitch.on = JetpackREST.enabled;
         } else if (indexPath.row == SettingsSectionSettingsRowTracking) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedString(@"Anonymous Usage Tracking", @"Setting for enabling anonymous usage tracking");
@@ -485,11 +477,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     if (aSwitch.tag == SettingsSectionSettingsRowExtraDebug) {
         [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:kExtraDebugDefaultsKey];
         [NSUserDefaults resetStandardUserDefaults];
-    } else if (aSwitch.tag == SettingsSectionSettingsRowJetpackREST) {
-        aSwitch.enabled = NO;
-        [JetpackREST setEnabled:aSwitch.on withCompletion:^{
-            aSwitch.enabled = YES;
-        }];
     } else {
         [[WordPressAppDelegate sharedInstance].analytics setTrackingUsage:aSwitch.on];
     }

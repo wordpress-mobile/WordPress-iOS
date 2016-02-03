@@ -554,7 +554,6 @@
 		E1C265C91BECFCDD00DC4C6B /* WPCrashlyticsLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C265C81BECFCDD00DC4C6B /* WPCrashlyticsLogger.m */; };
 		E1C9AA511C10419200732665 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA501C10419200732665 /* Math.swift */; };
 		E1C9AA561C10427100732665 /* MathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA551C10427100732665 /* MathTest.swift */; };
-		E1CC9B511B3006690051398F /* JetpackREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CC9B501B3006690051398F /* JetpackREST.m */; };
 		E1D04D7E19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */; };
 		E1D04D8419374F2C002FADD7 /* BlogServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D04D8319374F2C002FADD7 /* BlogServiceRemoteREST.m */; };
 		E1D086E2194214C600F0CC19 /* NSDate+WordPressJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D086E1194214C600F0CC19 /* NSDate+WordPressJSON.m */; };
@@ -1638,8 +1637,6 @@
 		E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 9.xcdatamodel"; sourceTree = "<group>"; };
 		E1C9AA501C10419200732665 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		E1C9AA551C10427100732665 /* MathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathTest.swift; sourceTree = "<group>"; };
-		E1CC9B4F1B3006690051398F /* JetpackREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackREST.h; sourceTree = "<group>"; };
-		E1CC9B501B3006690051398F /* JetpackREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackREST.m; sourceTree = "<group>"; };
 		E1D04D7C19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
 		E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
 		E1D04D8219374F2C002FADD7 /* BlogServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemoteREST.h; sourceTree = "<group>"; };
@@ -2778,8 +2775,6 @@
 				85B125441B02937E008A3D95 /* UIAlertControllerProxy.m */,
 				5D0A20D21AF11A7300E5C6BC /* PhotonImageURLHelper.h */,
 				5D0A20D31AF11A7300E5C6BC /* PhotonImageURLHelper.m */,
-				E1CC9B4F1B3006690051398F /* JetpackREST.h */,
-				E1CC9B501B3006690051398F /* JetpackREST.m */,
 				FFDA7E4E1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.h */,
 				FFDA7E4F1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m */,
 				E1E1AA8B1B7DEDFC001C8645 /* WPMapFilterReduce.h */,
@@ -4588,7 +4583,6 @@
 				B52F8CD81B43260C00D36025 /* NotificationSettingStreamsViewController.swift in Sources */,
 				B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */,
 				E6C09B3E1BF0FDEB003074CB /* ReaderCrossPostMeta.swift in Sources */,
-				E1CC9B511B3006690051398F /* JetpackREST.m in Sources */,
 				E149D65119349E69006A843D /* MediaServiceRemoteXMLRPC.m in Sources */,
 				E66969E41B9E68B200EC9C00 /* ReaderPostToReaderPost37to38.swift in Sources */,
 				5D3D559A18F88C5E00782892 /* ReaderPostServiceRemote.m in Sources */,
