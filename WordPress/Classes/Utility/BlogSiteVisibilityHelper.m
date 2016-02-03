@@ -1,4 +1,5 @@
 #import "BlogSiteVisibilityHelper.h"
+#import "WordPress-Swift.h"
 
 @implementation BlogSiteVisibilityHelper
 
@@ -60,6 +61,15 @@
         case SiteVisibilityUnknown:
             return NSLocalizedString(@"Unknown", @"Text for unknown privacy setting");
     }
+}
+
++ (NSString *)titleForCurrentSiteVisibilityOfBlog:(Blog *)blog
+{
+    if (!blog.settings.privacy) {
+        return [self titleForSiteVisibility:SiteVisibilityUnknown];
+    }
+    
+    return [self titleForSiteVisibility:[blog.settings.privacy intValue]];
 }
 
 @end

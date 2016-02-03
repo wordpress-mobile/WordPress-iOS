@@ -432,7 +432,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return self.addressTextCell;
         } break;
         case SiteSettingsGeneralPrivacy: {
-            [self.privacyTextCell setTextValue:[self.blog textForCurrentSiteVisibility]];
+            [self.privacyTextCell setTextValue:[BlogSiteVisibilityHelper titleForCurrentSiteVisibilityOfBlog:self.blog]];
             return self.privacyTextCell;
         } break;
     }
