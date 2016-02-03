@@ -457,18 +457,12 @@ public class SharingService : LocalCoreDataService
 
     /// Returns the API to use with the service. 
     ///
-    /// - Note:
-    ///     An anonymous API is returned for self-hosted blog not connected to Jetpack.
-    ///
     /// - Parameters:
     ///     - blog: The blog to use for the rest api.
     ///
     private func apiForBlog(blog: Blog) -> WordPressComApi {
-        if let api = blog.restApi() {
-            return api
-        }
-
-        DDLogSwift.logDebug("SharingService is using the REST API anonymously.")
-        return WordPressComApi.anonymousApi()
+        let api: WordPressComApi? =  blog.restApi()
+        assert(api != nil)
+        return api!
     }
 }
