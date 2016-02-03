@@ -27,6 +27,7 @@
         scrollView.translatesAutoresizingMaskIntoConstraints = NO;
         scrollView.backgroundColor = [UIColor clearColor];
         scrollView.clipsToBounds = NO;
+        scrollView.scrollsToTop = NO;
         [self addSubview:scrollView];
         
         [NSLayoutConstraint activateConstraints:@[
