@@ -78,6 +78,7 @@
 		08EEA0B91C20C013001346B9 /* MenuItemSourceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EEA0B81C20C013001346B9 /* MenuItemSourceCell.m */; };
 		08F10C2E1BF5286C00130AFF /* MenuItemsStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F10C2D1BF5286C00130AFF /* MenuItemsStackView.m */; };
 		08F10C311BF5377200130AFF /* MenuItemsStackableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F10C301BF5377200130AFF /* MenuItemsStackableView.m */; };
+		17AF92251C46634000A99CFB /* BlogSiteVisibilityHelperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 17AF92241C46634000A99CFB /* BlogSiteVisibilityHelperTest.m */; };
 		1D3623260D0F684500981E51 /* WordPressAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* WordPressAppDelegate.m */; };
 		1D51A69276C9D829E53B8779 /* Pods_WordPressTodayWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD8A4A8FA463E3CB668C322B /* Pods_WordPressTodayWidget.framework */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
@@ -589,7 +590,6 @@
 		E1C265C91BECFCDD00DC4C6B /* WPCrashlyticsLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C265C81BECFCDD00DC4C6B /* WPCrashlyticsLogger.m */; };
 		E1C9AA511C10419200732665 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA501C10419200732665 /* Math.swift */; };
 		E1C9AA561C10427100732665 /* MathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA551C10427100732665 /* MathTest.swift */; };
-		E1CC9B511B3006690051398F /* JetpackREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1CC9B501B3006690051398F /* JetpackREST.m */; };
 		E1D04D7E19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */; };
 		E1D04D8419374F2C002FADD7 /* BlogServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D04D8319374F2C002FADD7 /* BlogServiceRemoteREST.m */; };
 		E1D086E2194214C600F0CC19 /* NSDate+WordPressJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D086E1194214C600F0CC19 /* NSDate+WordPressJSON.m */; };
@@ -878,6 +878,7 @@
 		0B2A5E7CD1F8E32549F3DC7E /* Pods-WordPress.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.release.xcconfig"; sourceTree = "<group>"; };
 		0CE0577B6AC0CF064C42E6EA /* Pods-WordPress.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPress.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPress/Pods-WordPress.release-internal.xcconfig"; sourceTree = "<group>"; };
 		0CF877DC71756EFA3346E26F /* Pods-WordPressTodayWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.debug.xcconfig"; sourceTree = "<group>"; };
+		17AF92241C46634000A99CFB /* BlogSiteVisibilityHelperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSiteVisibilityHelperTest.m; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* WordPressAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* WordPressAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WordPressAppDelegate.m; sourceTree = "<group>"; usesTabs = 0; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1742,8 +1743,6 @@
 		E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 9.xcdatamodel"; sourceTree = "<group>"; };
 		E1C9AA501C10419200732665 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		E1C9AA551C10427100732665 /* MathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathTest.swift; sourceTree = "<group>"; };
-		E1CC9B4F1B3006690051398F /* JetpackREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackREST.h; sourceTree = "<group>"; };
-		E1CC9B501B3006690051398F /* JetpackREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackREST.m; sourceTree = "<group>"; };
 		E1D04D7C19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
 		E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
 		E1D04D8219374F2C002FADD7 /* BlogServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemoteREST.h; sourceTree = "<group>"; };
@@ -2885,6 +2884,7 @@
 				E19A10C91B010AA0006192B0 /* WPURLRequestTest.m */,
 				E1E1AA8E1B7DF54B001C8645 /* WPMapFilterReduceTest.m */,
 				E12E6E371C21E75F0033C5D0 /* FeatureFlagTest.swift */,
+				17AF92241C46634000A99CFB /* BlogSiteVisibilityHelperTest.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -2991,10 +2991,6 @@
 				85B125441B02937E008A3D95 /* UIAlertControllerProxy.m */,
 				5D0A20D21AF11A7300E5C6BC /* PhotonImageURLHelper.h */,
 				5D0A20D31AF11A7300E5C6BC /* PhotonImageURLHelper.m */,
-				E1CC9B4F1B3006690051398F /* JetpackREST.h */,
-				E1CC9B501B3006690051398F /* JetpackREST.m */,
-				FFDA7E4E1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.h */,
-				FFDA7E4F1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m */,
 				E1E1AA8B1B7DEDFC001C8645 /* WPMapFilterReduce.h */,
 				E1E1AA8C1B7DEDFC001C8645 /* WPMapFilterReduce.m */,
 				E12E6E321C21BA170033C5D0 /* FeatureFlag.swift */,
@@ -3237,6 +3233,8 @@
 				FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */,
 				83FEFC7311FF6C5A0078B462 /* SiteSettingsViewController.h */,
 				83FEFC7411FF6C5A0078B462 /* SiteSettingsViewController.m */,
+				FFDA7E4E1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.h */,
+				FFDA7E4F1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m */,
 				B5AC00671BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift */,
 				FF42584E1BA092EE00580C68 /* RelatedPostsSettingsViewController.h */,
 				FF42584F1BA092EE00580C68 /* RelatedPostsSettingsViewController.m */,
@@ -4819,7 +4817,6 @@
 				B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */,
 				081D84001C1A194500C7BF40 /* MenuItemEditingViewController.m in Sources */,
 				E6C09B3E1BF0FDEB003074CB /* ReaderCrossPostMeta.swift in Sources */,
-				E1CC9B511B3006690051398F /* JetpackREST.m in Sources */,
 				E149D65119349E69006A843D /* MediaServiceRemoteXMLRPC.m in Sources */,
 				E66969E41B9E68B200EC9C00 /* ReaderPostToReaderPost37to38.swift in Sources */,
 				5D3D559A18F88C5E00782892 /* ReaderPostServiceRemote.m in Sources */,
@@ -5235,6 +5232,7 @@
 				FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */,
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
 				59E2AAE81B20E3EA0051DC06 /* ServiceRemoteRESTTests.m in Sources */,
+				17AF92251C46634000A99CFB /* BlogSiteVisibilityHelperTest.m in Sources */,
 				E61084C41B9DC09C008050C5 /* ReaderPostServiceRemoteTests.m in Sources */,
 				BEC8A3FF1B4BAA2C001CB8C3 /* BlogListViewControllerTests.m in Sources */,
 				E12BE5F01C524FC9000FD5CA /* AccountSettingsServiceTests.swift in Sources */,
