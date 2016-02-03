@@ -431,7 +431,7 @@ private struct PublicizeConnectionParams
 // Names of parameters used in SharingButton requests
 private struct SharingButtonsKeys
 {
-    static let sharingButtons = "sharing-buttons"
+    static let sharingButtons = "sharing_buttons"
     static let buttonID = "ID"
     static let name = "name"
     static let shortname = "shortname"
