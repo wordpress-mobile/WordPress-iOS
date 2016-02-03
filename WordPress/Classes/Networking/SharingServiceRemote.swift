@@ -295,7 +295,12 @@ public class SharingServiceRemote : ServiceRemoteREST
 
     // MARK: - Sharing Button Related Methods
 
+    /// Fetches the list of sharing buttons for a blog.
     ///
+    /// - Parameters:
+    ///     - siteID: The WordPress.com ID of the site.
+    ///     - success: An optional success block accepting an array of `RemoteSharingButton` objects.
+    ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
     public func getSharingButtonsForSite(siteID: NSNumber, success: (([RemoteSharingButton]) -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
@@ -320,7 +325,13 @@ public class SharingServiceRemote : ServiceRemoteREST
     }
 
 
+    /// Updates the list of sharing buttons for a blog.
     ///
+    /// - Parameters:
+    ///     - siteID: The WordPress.com ID of the site.
+    ///     - sharingButtons: The list of sharing buttons to update. Should be the full list and in the desired order.
+    ///     - success: An optional success block accepting an array of `RemoteSharingButton` objects.
+    ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
     public func updateSharingButtonsForSite(siteID: NSNumber, sharingButtons:[RemoteSharingButton], success: (([RemoteSharingButton]) -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
