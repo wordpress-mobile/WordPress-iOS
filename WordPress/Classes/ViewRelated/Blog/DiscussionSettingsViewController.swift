@@ -601,7 +601,9 @@ public class DiscussionSettingsViewController : UITableViewController
     
     // MARK: - Computed Properties
     private var settings : BlogSettings {
-        return blog.settings
+        // FIXME: Settings is not guaranteed to be non-nil. This might crash
+        // @koke 2016-02-03
+        return blog.settings!
     }
     
     // MARK: - Typealiases

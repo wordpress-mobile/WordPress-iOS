@@ -30,41 +30,6 @@ NSString * const PostFormatStandard = @"standard";
 
 @implementation Blog
 
-@dynamic blogID;
-@dynamic url;
-@dynamic xmlrpc;
-@dynamic apiKey;
-@dynamic hasOlderPosts;
-@dynamic hasOlderPages;
-@dynamic posts;
-@dynamic categories;
-@dynamic tags;
-@dynamic comments;
-@dynamic connections;
-@dynamic themes;
-@dynamic media;
-@dynamic menus;
-@dynamic menuLocations;
-@dynamic currentThemeId;
-@dynamic lastPostsSync;
-@dynamic lastStatsSync;
-@dynamic lastPagesSync;
-@dynamic lastCommentsSync;
-@dynamic lastUpdateWarning;
-@dynamic options;
-@dynamic postFormats;
-@dynamic isActivated;
-@dynamic visible;
-@dynamic account;
-@dynamic jetpackAccount;
-@dynamic isAdmin;
-@dynamic isMultiAuthor;
-@dynamic isHostedAtWPcom;
-@dynamic icon;
-@dynamic username;
-@dynamic settings;
-@dynamic planID;
-
 @synthesize api = _api;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;

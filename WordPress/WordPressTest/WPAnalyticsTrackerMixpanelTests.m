@@ -10,6 +10,7 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
+#import "WordPress-Swift.h"
 
 SpecBegin(WPAnalyticsTrackerMixpanel)
 

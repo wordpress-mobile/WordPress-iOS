@@ -7,6 +7,7 @@
 #import "TaxonomyServiceRemoteREST.h"
 #import "TaxonomyServiceRemoteXMLRPC.h"
 #import "RemoteTaxonomyPaging.h"
+#import "WordPress-Swift.h"
 
 @interface PostTagService ()
 

@@ -10,6 +10,7 @@
 #import "JetpackService.h"
 #import "JetpackServiceRemote.h"
 #import "TestContextManager.h"
+#import "WordPress-Swift.h"
 
 @interface BlogJetpackTest : XCTestCase
 @end

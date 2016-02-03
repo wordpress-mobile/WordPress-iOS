@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import CoreData
+@testable import WordPress
 
 class ContextManagerTests: XCTestCase {
     var contextManager:TestContextManager!

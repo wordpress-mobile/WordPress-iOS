@@ -6,6 +6,7 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "TestContextManager.h"
+#import "WordPress-Swift.h"
 
 @interface BlogServiceTest : XCTestCase
 
