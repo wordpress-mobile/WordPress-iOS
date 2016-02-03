@@ -140,6 +140,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         cell.textLabel.text = NSLocalizedString(@"Reconnect", @"Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog.");
         [WPStyleGuide configureTableViewActionCell:cell];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        cell.textLabel.textColor = [WPStyleGuide jazzyOrange];
 
     } else {
         cell.textLabel.text = NSLocalizedString(@"Disconnect", @"Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.");
