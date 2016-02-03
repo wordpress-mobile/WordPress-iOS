@@ -7,7 +7,6 @@
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
-#import "BlogSiteVisibilityHelper.h"
 #import "WordPress-Swift.h"
 #import "SFHFKeychainUtils.h"
 #import <WordPressApi/WordPressApi.h>
@@ -312,15 +311,6 @@ NSString * const PostFormatStandard = @"standard";
             break;
     }
 }
-
-- (NSString *)textForCurrentSiteVisibility
-{
-    if (!self.settings.privacy) {
-        [BlogSiteVisibilityHelper titleForSiteVisibility:SiteVisibilityUnknown];
-    }
-    return [BlogSiteVisibilityHelper titleForSiteVisibility:[self.settings.privacy intValue]];
-}
-
 
 - (NSDictionary *)getImageResizeDimensions
 {
