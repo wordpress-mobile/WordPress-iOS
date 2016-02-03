@@ -195,17 +195,17 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return SiteSettingsAccountCount;
         }
         case SiteSettingsSectionWriting: {
-            if (!self.blog.isAdmin) {
-                // If we're not admin, we just want to show the geotagging cell
-                return 1;
-            }
-            NSInteger rowsToHide = 0;
-            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
+            if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
+                if (!self.blog.isAdmin) {
+                    // NOTE: Brent Coursey (2016-02-01): Hides the related post for non-admin users as they cannot change this option.
+                    return SiteSettingsWritingCount - 1;
+                }
+                return SiteSettingsWritingCount;
+            } else {
                 //  NOTE: Sergio Estevao (2015-09-23): Hides the related post for self-hosted sites not in jetpack
                 // because this options is not available for them.
-                rowsToHide += 1;
+                return SiteSettingsWritingCount - 1;
             }
-            return SiteSettingsWritingCount - rowsToHide;
         }
         case SiteSettingsSectionDiscussion: {
             return 1;
@@ -544,8 +544,14 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             headingTitle = NSLocalizedString(@"Account", @"Title for the account section in site settings screen");
             break;
         case SiteSettingsSectionWriting:
-            headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
+        {
+            if ([self blogSupportsSavingWritingDefaults]) {
+                headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
+            } else {
+                headingTitle = NSLocalizedString(@"Writing (App Defaults)", @"Title for the writing section in site settings screen when the settings are saved only within the app.");
+            }
             break;
+        }
         case SiteSettingsSectionAdvanced:
             headingTitle = NSLocalizedString(@"Advanced", @"Title for the advanced section in site settings screen");
             break;
@@ -685,7 +691,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         if ([status isKindOfClass:[NSString class]]) {
             if (weakSelf.blog.settings.defaultPostFormat != status) {
                 weakSelf.blog.settings.defaultPostFormat = status;
-                [weakSelf saveSettings];
+                if ([weakSelf blogSupportsSavingWritingDefaults]) {
+                    [weakSelf saveSettings];
+                }
             }
         }
     };
@@ -815,6 +823,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
 }
 
+- (BOOL)blogSupportsSavingWritingDefaults
+{
+    return [self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin;
+}
 
 #pragma mark - Authentication methods
 
@@ -1002,7 +1014,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     self.blog.settings.defaultCategoryID = category.categoryID;
     self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
-    [self saveSettings];
+    
+    if ([self blogSupportsSavingWritingDefaults]) {
+        [self saveSettings];
+    }
 }
 
 @end
