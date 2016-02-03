@@ -468,7 +468,7 @@ public class SharingService : LocalCoreDataService
             return api
         }
 
-        DDLogSwift.logError("SharingService is not using a real WordPress.com account.")
+        DDLogSwift.logDebug("SharingService is using the REST API anonymously.")
         return WordPressComApi.anonymousApi()
     }
 }
