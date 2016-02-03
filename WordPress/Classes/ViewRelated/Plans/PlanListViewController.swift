@@ -8,9 +8,14 @@ class PlanListViewController: UITableViewController {
         Plan.Premium,
         Plan.Business
     ]
-    let activePlan = Plan.Free
+    let activePlan: Plan?
 
-    init() {
+    convenience init(blog: Blog) {
+        self.init(activePlan: blog.plan)
+    }
+
+    init(activePlan: Plan?) {
+        self.activePlan = activePlan
         super.init(style: .Grouped)
         title = NSLocalizedString("Plans", comment: "Title for the plan selector")
     }
