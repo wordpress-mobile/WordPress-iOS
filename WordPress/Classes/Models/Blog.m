@@ -7,7 +7,6 @@
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
-#import "BlogSiteVisibilityHelper.h"
 #import "WordPress-Swift.h"
 #import "SFHFKeychainUtils.h"
 #import <WordPressApi/WordPressApi.h>
@@ -313,15 +312,6 @@ NSString * const PostFormatStandard = @"standard";
     }
 }
 
-- (NSString *)textForCurrentSiteVisibility
-{
-    if (!self.settings.privacy) {
-        [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
-    }
-    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.settings.privacy intValue]];
-}
-
-
 - (NSDictionary *)getImageResizeDimensions
 {
     CGSize smallSize, mediumSize, largeSize;
@@ -437,6 +427,9 @@ NSString * const PostFormatStandard = @"standard";
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
             return [self isHostedAtWPcom] && [self isAdmin];
+        case BlogFeaturePrivate:
+            // Private visibility is only supported by wpcom blogs
+            return [self isHostedAtWPcom];
         case BlogFeatureSiteManagement:
             return [self supportsSiteManagementServices];
     }
