@@ -3,7 +3,6 @@
 #import "Comment.h"
 #import "WPAccount.h"
 #import "AccountService.h"
-#import "JetpackREST.h"
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
@@ -575,7 +574,7 @@ NSString * const PostFormatStandard = @"standard";
 
 - (BOOL)jetpackRESTSupported
 {
-    return JetpackREST.enabled && self.jetpackAccount && self.dotComID;
+    return self.jetpackAccount && self.dotComID;
 }
 
 #pragma mark - Private Methods
