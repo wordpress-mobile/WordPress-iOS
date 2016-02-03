@@ -12,6 +12,6 @@ import CoreData
     @NSManaged public var shortname: String
     @NSManaged public var custom: Bool
     @NSManaged public var enabled: Bool
-    @NSManaged public var visibility: String
+    @NSManaged public var visibility: String?
     @NSManaged public var order: NSNumber
 }
