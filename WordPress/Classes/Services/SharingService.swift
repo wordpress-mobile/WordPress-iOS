@@ -563,7 +563,7 @@ public class SharingService : LocalCoreDataService
         shareButton?.shortname = remoteButton.shortname
         shareButton?.custom = remoteButton.custom
         shareButton?.enabled = remoteButton.enabled
-        shareButton?.visibility = remoteButton.visibility!
+        shareButton?.visibility = remoteButton.visibility
         shareButton?.order = remoteButton.order
         shareButton?.blog = blog
 
