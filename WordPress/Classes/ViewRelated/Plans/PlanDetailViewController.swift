@@ -5,10 +5,13 @@ class PlanDetailViewController: UITableViewController {
     var plan: Plan!
     
     private let cellIdentifier = "PlanFeatureListItem"
+    private var viewModel: ImmuTable! = nil
     
-    private lazy var handler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
-    }()
+    @IBOutlet weak var planImageView: UIImageView!
+    @IBOutlet weak var planTitleLabel: UILabel!
+    @IBOutlet weak var planDescriptionLabel: UILabel!
+    @IBOutlet weak var planPriceLabel: UILabel!
+    @IBOutlet weak var purchaseButton: UIButton!
     
     lazy private var cancelXButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(named: "gridicons-cross"), style: .Plain, target: self, action: "closeTapped")
@@ -36,11 +39,20 @@ class PlanDetailViewController: UITableViewController {
         title = plan.title
         navigationItem.leftBarButtonItem = cancelXButton
         
-        setupImmuTable()
+        configureAppearance()
+        configureImmuTable()
     }
     
-    private func setupImmuTable() {
-        handler.viewModel = ImmuTable(sections:
+    private func configureAppearance() {
+        planTitleLabel.textColor = WPStyleGuide.darkGrey()
+        planDescriptionLabel.textColor = WPStyleGuide.grey()
+        planPriceLabel.textColor = WPStyleGuide.grey()
+        
+        purchaseButton.tintColor = WPStyleGuide.wordPressBlue()
+    }
+    
+    private func configureImmuTable() {
+        viewModel = ImmuTable(sections:
             [ ImmuTableSection(rows: [
                 FeatureListItemRow(title: "WordPress.com Site"),
                 FeatureListItemRow(title: "Full Access to Web Version"),
@@ -63,6 +75,38 @@ class PlanDetailViewController: UITableViewController {
     
     @IBAction private func closeTapped() {
         dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBAction func purchaseTapped() {
+    }
+}
+
+// MARK: Table View Data Source
+extension PlanDetailViewController {
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return viewModel.sections.count
+    }
+
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.sections[section].rows.count
+    }
+
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let row = viewModel.rowAtIndexPath(indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
+        
+        row.configureCell(cell)
+        
+        return cell
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        // Rows have alternate colors
+        if indexPath.row % 2 == 0 {
+            cell.backgroundColor = WPStyleGuide.greyLighten30()
+        } else {
+            cell.backgroundColor = WPStyleGuide.lightGrey()
+        }
     }
 }
 
@@ -120,3 +164,51 @@ class PlanFeatureListCell: UITableViewCell {
         detailLabel.textColor = WPStyleGuide.grey()
     }
 }
+
+@IBDesignable
+class BorderedButton: UIButton {
+    @IBInspectable var cornerRadius: CGFloat = 3.0 {
+        didSet {
+            updateAppearance()
+        }
+    }
+    
+    @IBInspectable var borderWidth: CGFloat = 1.0 {
+        didSet {
+            updateAppearance()
+        }
+    }
+    
+    override func tintColorDidChange() {
+        super.tintColorDidChange()
+        
+        updateAppearance()
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        setTitleColor(UIColor.whiteColor(), forState: [.Highlighted])
+    }
+    
+    override func willMoveToSuperview(newSuperview: UIView?) {
+        super.willMoveToSuperview(newSuperview)
+
+        updateAppearance()
+    }
+    
+    private func updateAppearance() {
+        contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 19.0, bottom: 10.0, right: 19.0)
+        
+        layer.masksToBounds = true
+        layer.cornerRadius = cornerRadius
+        layer.borderWidth = borderWidth
+        layer.borderColor = tintColor.CGColor
+        layer.borderColor = tintColor.CGColor
+        
+        setTitleColor(tintColor, forState: .Normal)
+        
+        setBackgroundImage(UIImage(color: tintColor), forState: .Highlighted)
+    }
+}
+
