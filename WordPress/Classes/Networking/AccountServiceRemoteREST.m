@@ -3,7 +3,6 @@
 #import "RemoteBlog.h"
 #import "Constants.h"
 #import "WPAccount.h"
-#import "JetpackREST.h"
 
 static NSString * const UserDictionaryIDKey = @"ID";
 static NSString * const UserDictionaryUsernameKey = @"username";
@@ -128,12 +127,6 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 - (NSArray *)remoteBlogsFromJSONArray:(NSArray *)jsonBlogs
 {
     NSArray *blogs = jsonBlogs;
-    if (!JetpackREST.enabled) {
-        blogs = [blogs wp_filter:^BOOL(NSDictionary *jsonBlog) {
-            BOOL isJetpack = [jsonBlog[@"jetpack"] boolValue];
-            return !isJetpack;
-        }];
-    }
     return [blogs wp_map:^id(NSDictionary *jsonBlog) {
         return [self remoteBlogFromJSONDictionary:jsonBlog];
     }];
