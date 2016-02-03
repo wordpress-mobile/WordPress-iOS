@@ -6,6 +6,7 @@
 #import "WPError.h"
 #import "Comment.h"
 #import "Post.h"
+#import "PostCategory.h"
 #import "Page.h"
 #import "Media.h"
 #import "PostCategoryService.h"
@@ -802,8 +803,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.privacy = remoteSettings.privacy ?: settings.privacy;
     
     // Writing
-    settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: settings.defaultCategoryID;
-    settings.defaultPostFormat = remoteSettings.defaultPostFormat ?: settings.defaultPostFormat;
+    settings.defaultCategoryID = remoteSettings.defaultCategoryID ?: @(PostCategoryUncategorized);
+    settings.defaultPostFormat = remoteSettings.defaultPostFormat;
 
     // Discussion
     settings.commentsAllowed = [remoteSettings.commentsAllowed boolValue];
