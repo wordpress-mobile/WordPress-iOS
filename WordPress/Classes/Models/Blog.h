@@ -145,13 +145,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
 #pragma mark - Blog information
 - (BOOL)isPrivate;
-/**
- *  The text description for the current privacy settting set in the blog
- *
- *  @return the text description.
- */
-- (NSString *)textForCurrentSiteVisibility;
-
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;
 - (NSString *)loginUrl;
