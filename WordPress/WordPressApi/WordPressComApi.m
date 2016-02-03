@@ -115,6 +115,13 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                     errorCode = WordPressComApiErrorInvalidToken;
                 } else if ([errorType isEqualToString:@"authorization_required"]) {
                     errorCode = WordPressComApiErrorAuthorizationRequired;
+                } else if ([errorType isEqualToString:@"upload_error"]) {
+                    errorCode = WordPressComApiErrorUploadFailed;
+                    if (operation.response.statusCode == 400) {
+                        errorCode = WordPressComApiErrorUploadFailedInvalidFileType;
+                    } else if (operation.response.statusCode == 500) {
+                        errorCode = WordPressComApiErrorUploadFailedNotEnoughDiskQuota;
+                    }
                 }
                 newError = [NSError errorWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey: errorMessage, WordPressComApiErrorCodeKey: errorType}];
             }
