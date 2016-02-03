@@ -2,7 +2,7 @@ import UIKit
 import WordPressShared
 
 class PlanDetailViewController: UITableViewController {
-    var plan: Plan
+    var plan: Plan!
     
     private let cellIdentifier = "PlanFeatureListItem"
     
@@ -17,15 +17,15 @@ class PlanDetailViewController: UITableViewController {
         return button
     }()
     
-    init(plan: Plan) {
-        self.plan = plan
-        super.init(style: .Plain)
+    class func controllerWithPlan(plan: Plan) -> PlanDetailViewController {
+        let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
+        let controller = storyboard.instantiateViewControllerWithIdentifier("PlanDetailViewController") as! PlanDetailViewController
+        
+        controller.plan = plan
+        
+        return controller
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
@@ -40,8 +40,6 @@ class PlanDetailViewController: UITableViewController {
     }
     
     private func setupImmuTable() {
-        ImmuTable.registerRows([FeatureListItemRow.self], tableView: tableView)
-        
         handler.viewModel = ImmuTable(sections:
             [ ImmuTableSection(rows: [
                 FeatureListItemRow(title: "WordPress.com Site"),
@@ -69,7 +67,7 @@ class PlanDetailViewController: UITableViewController {
 }
 
 struct FeatureListItemRow : ImmuTableRow {
-    static let cell = ImmuTableCell.Class(WPTableViewCellValue1)
+    static let cell = ImmuTableCell.Class(PlanFeatureListCell)
     
     let title: String
     let webOnly: Bool
@@ -89,10 +87,24 @@ struct FeatureListItemRow : ImmuTableRow {
     }
     
     func configureCell(cell: UITableViewCell) {
-        cell.textLabel?.text = title
-        cell.detailTextLabel?.text = (webOnly) ? "WEB ONLY" : detailText
-        cell.accessoryType = (shouldShowCheckmark) ? .Checkmark : .None
+        let cell = cell as! PlanFeatureListCell
+        cell.titleLabel?.text = title
+        cell.webOnlyLabel.hidden = !webOnly
+        cell.checkmark.hidden = !shouldShowCheckmark
         
-        WPStyleGuide.configureTableViewCell(cell)
+        WPStyleGuide.configurePlanFeatureListTableViewCell(cell)
+    }
+}
+
+class PlanFeatureListCell: UITableViewCell {
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var webOnlyLabel: UILabel!
+    @IBOutlet weak var checkmark: UIImageView!
+}
+
+extension WPStyleGuide {
+    class func configurePlanFeatureListTableViewCell(cell: PlanFeatureListCell) {
+        cell.titleLabel.textColor = WPStyleGuide.darkGrey()
+        cell.webOnlyLabel.textColor = WPStyleGuide.grey()
     }
 }
