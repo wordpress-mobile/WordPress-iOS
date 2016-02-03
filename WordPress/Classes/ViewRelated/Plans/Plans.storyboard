@@ -2,12 +2,21 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Italic.ttf">
+            <string>OpenSans-Italic</string>
+        </mutableArray>
         <mutableArray key="OpenSans-Regular.ttf">
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
+        </mutableArray>
+        <mutableArray key="OpenSans-Semibold.ttf">
+            <string>OpenSans-Semibold</string>
+            <string>OpenSans-Semibold</string>
         </mutableArray>
     </customFonts>
     <scenes>
@@ -15,56 +24,74 @@
         <scene sceneID="cBa-7S-GLw">
             <objects>
                 <tableViewController storyboardIdentifier="PlanDetailViewController" id="hEP-FT-Gtb" customClass="PlanDetailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="fpc-kb-Zz0">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="46" sectionHeaderHeight="28" sectionFooterHeight="28" id="fpc-kb-Zz0">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="Wee-7g-KID">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="125"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="Wee-7g-KID" userLabel="Header View">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="220"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Perfect for bloggers, creatives, &amp; other professionals" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKo-6a-UCJ">
-                                    <rect key="frame" x="99" y="59" width="403" height="21"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$99.99 per year" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHA-mi-Lxg">
-                                    <rect key="frame" x="239" y="88" width="123" height="21"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="21" id="SMc-XO-kAh"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WordPress.com Premium" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mFu-ON-8ux">
-                                    <rect key="frame" x="204" y="30" width="193" height="21"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="21" id="Whl-LZ-05p"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ZNi-CA-axg">
+                                    <rect key="frame" x="8" y="26" width="584" height="168"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="252" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="plan-premium" translatesAutoresizingMaskIntoConstraints="NO" id="4kT-nN-MzS">
+                                            <rect key="frame" x="262" y="0.0" width="60" height="60"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="60" id="PZj-hT-fdR"/>
+                                                <constraint firstAttribute="height" constant="60" id="hDH-Ct-yXg"/>
+                                            </constraints>
+                                        </imageView>
+                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" distribution="fillEqually" alignment="center" spacing="22" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0fg-wD-1tI">
+                                            <rect key="frame" x="144" y="72" width="296" height="59"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="WordPress.com Premium" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mFu-ON-8ux">
+                                                    <rect key="frame" x="50" y="0.0" width="197" height="18"/>
+                                                    <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Perfect for bloggers, creatives, &amp; other professionals" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKo-6a-UCJ">
+                                                    <rect key="frame" x="0.0" y="21" width="296" height="18"/>
+                                                    <fontDescription key="fontDescription" name="OpenSans-Italic" family="Open Sans" pointSize="13"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="$99.99 per year" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHA-mi-Lxg">
+                                                    <rect key="frame" x="94" y="41" width="109" height="18"/>
+                                                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </stackView>
+                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dfn-sl-rVa" customClass="BorderedButton" customModule="WordPress" customModuleProvider="target">
+                                            <rect key="frame" x="264" y="143" width="57" height="25"/>
+                                            <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="11"/>
+                                            <state key="normal" title="PURCHASE">
+                                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="purchaseTapped" destination="hEP-FT-Gtb" eventType="touchUpInside" id="yla-Jb-pHn"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
-                                <constraint firstAttribute="bottom" secondItem="zHA-mi-Lxg" secondAttribute="bottom" constant="16" id="6Kg-QT-vNW"/>
-                                <constraint firstItem="OKo-6a-UCJ" firstAttribute="centerX" secondItem="Wee-7g-KID" secondAttribute="centerX" id="GyY-Kq-DMM"/>
-                                <constraint firstItem="OKo-6a-UCJ" firstAttribute="centerX" secondItem="mFu-ON-8ux" secondAttribute="centerX" id="I0Z-nK-ETp"/>
-                                <constraint firstItem="OKo-6a-UCJ" firstAttribute="top" secondItem="mFu-ON-8ux" secondAttribute="bottom" constant="8" symbolic="YES" id="TBJ-4W-bn2"/>
-                                <constraint firstItem="mFu-ON-8ux" firstAttribute="top" secondItem="Wee-7g-KID" secondAttribute="top" constant="30" id="tBX-yZ-kPw"/>
-                                <constraint firstItem="zHA-mi-Lxg" firstAttribute="top" secondItem="OKo-6a-UCJ" secondAttribute="bottom" constant="8" symbolic="YES" id="tiD-zB-pKV"/>
-                                <constraint firstItem="OKo-6a-UCJ" firstAttribute="centerX" secondItem="zHA-mi-Lxg" secondAttribute="centerX" id="uDj-1r-Qjz"/>
+                                <constraint firstItem="ZNi-CA-axg" firstAttribute="leading" secondItem="Wee-7g-KID" secondAttribute="leadingMargin" id="64O-Gd-7Fw"/>
+                                <constraint firstItem="ZNi-CA-axg" firstAttribute="top" secondItem="Wee-7g-KID" secondAttribute="top" constant="26" id="AN1-1O-PFE"/>
+                                <constraint firstAttribute="bottom" secondItem="ZNi-CA-axg" secondAttribute="bottom" constant="26" id="Xyt-dc-eJx"/>
+                                <constraint firstAttribute="trailingMargin" secondItem="ZNi-CA-axg" secondAttribute="trailing" id="nDp-N2-b6m"/>
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WordPress.PlanFeatureListCell" id="592-Ev-NuO" customClass="PlanFeatureListCell" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="153" width="600" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="WordPress.PlanFeatureListCell" rowHeight="46" id="592-Ev-NuO" customClass="PlanFeatureListCell" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="248" width="600" height="46"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="592-Ev-NuO" id="46t-nk-hbe">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="46"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Feature item" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Dd-Vj-VyH">
@@ -73,10 +100,10 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="gridicons-checkmark-circle" translatesAutoresizingMaskIntoConstraints="NO" id="yGk-Ic-HAk">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gridicons-checkmark-circle" translatesAutoresizingMaskIntoConstraints="NO" id="yGk-Ic-HAk">
                                             <rect key="frame" x="552" y="11" width="24" height="24"/>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="WEB ONLY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZgP-Gr-2rb">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WEB ONLY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZgP-Gr-2rb">
                                             <rect key="frame" x="470" y="14" width="65.5" height="18"/>
                                             <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -125,6 +152,13 @@
                             <outlet property="delegate" destination="hEP-FT-Gtb" id="q76-qY-OCb"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="planDescriptionLabel" destination="OKo-6a-UCJ" id="e6b-dd-8cX"/>
+                        <outlet property="planImageView" destination="4kT-nN-MzS" id="Q6Q-Ge-wF4"/>
+                        <outlet property="planPriceLabel" destination="zHA-mi-Lxg" id="gDT-EK-Q1L"/>
+                        <outlet property="planTitleLabel" destination="mFu-ON-8ux" id="XPM-2i-tIh"/>
+                        <outlet property="purchaseButton" destination="Dfn-sl-rVa" id="t36-tp-p92"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fNy-hP-3mS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -133,5 +167,6 @@
     </scenes>
     <resources>
         <image name="gridicons-checkmark-circle" width="24" height="24"/>
+        <image name="plan-premium" width="124" height="125"/>
     </resources>
 </document>
