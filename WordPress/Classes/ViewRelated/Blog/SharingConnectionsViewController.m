@@ -187,20 +187,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     cell.textLabel.text = connection.externalDisplay;
 
     if ([connection isBroken]) {
-        cell.accessoryView = [self warningAccessoryView];
+        cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
     }
-}
-
-- (UIImageView *)warningAccessoryView
-{
-    //TODO: Need actual exclaimation graphic.
-    CGFloat imageSize = 22.0;
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageSize, imageSize)];
-    imageView.image = [UIImage imageWithColor:[WPStyleGuide jazzyOrange]
-                                   havingSize:imageView.frame.size];
-    imageView.layer.cornerRadius = imageSize / 2.0;
-    imageView.layer.masksToBounds = YES;
-    return imageView;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
