@@ -242,7 +242,9 @@ public protocol ThemePresenter: class
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
-        collectionView?.collectionViewLayout.invalidateLayout()
+        coordinator.animateAlongsideTransition({ [weak self] context in
+            self?.collectionView?.collectionViewLayout.invalidateLayout()
+        }, completion: nil)
     }
 
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
