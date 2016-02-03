@@ -42,9 +42,13 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
     SiteSettingsAccountCount,
 };
 
+NS_ENUM(NSInteger, SiteSettingsDevice) {
+    SiteSettingsDeviceGeotagging = 0,
+    SiteSettingsDeviceCount
+};
+
 NS_ENUM(NSInteger, SiteSettingsWriting) {
-    SiteSettingsWritingGeotagging = 0,
-    SiteSettingsWritingDefaultCategory,
+    SiteSettingsWritingDefaultCategory= 0,
     SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingRelatedPosts,
     SiteSettingsWritingCount,
@@ -59,6 +63,7 @@ NS_ENUM(NSInteger, SiteSettingsAdvanced) {
 NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionGeneral = 0,
     SiteSettingsSectionAccount,
+    SiteSettingsSectionDevice,
     SiteSettingsSectionWriting,
     SiteSettingsSectionDiscussion,
     SiteSettingsSectionRemoveSite,
@@ -128,7 +133,12 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
     
-    [sections addObject:@(SiteSettingsSectionWriting)];
+    [sections addObject:@(SiteSettingsSectionDevice)];
+    
+    if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
+        // only REST API connections and admins can change Writing options
+        [sections addObject:@(SiteSettingsSectionWriting)];
+    }
     
     if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
         [sections addObject:@(SiteSettingsSectionDiscussion)];
@@ -194,18 +204,11 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionAccount: {
             return SiteSettingsAccountCount;
         }
+        case SiteSettingsSectionDevice: {
+            return SiteSettingsDeviceCount;
+        }
         case SiteSettingsSectionWriting: {
-            if (!self.blog.isAdmin) {
-                // If we're not admin, we just want to show the geotagging cell
-                return 1;
-            }
-            NSInteger rowsToHide = 0;
-            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
-                //  NOTE: Sergio Estevao (2015-09-23): Hides the related post for self-hosted sites not in jetpack
-                // because this options is not available for them.
-                rowsToHide += 1;
-            }
-            return SiteSettingsWritingCount - rowsToHide;
+            return SiteSettingsWritingCount;
         }
         case SiteSettingsSectionDiscussion: {
             return 1;
@@ -342,10 +345,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
     switch (row) {
-        case (SiteSettingsWritingGeotagging):{
-            return self.geotaggingCell;
-        }
-        break;
         case (SiteSettingsWritingDefaultCategory):{
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.settings.defaultCategoryID];
@@ -488,6 +487,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionAccount: {
             return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
         }
+        case SiteSettingsSectionDevice: {
+            return self.geotaggingCell;
+        }
         case SiteSettingsSectionWriting: {
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
         }
@@ -542,6 +544,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             break;
         case SiteSettingsSectionAccount:
             headingTitle = NSLocalizedString(@"Account", @"Title for the account section in site settings screen");
+            break;
+        case SiteSettingsSectionDevice:
+            headingTitle = NSLocalizedString(@"This Device", @"Title for the device section in site settings screen");
             break;
         case SiteSettingsSectionWriting:
             headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
