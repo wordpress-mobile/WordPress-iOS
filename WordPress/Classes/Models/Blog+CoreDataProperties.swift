@@ -99,19 +99,19 @@ extension Blog {
     @NSManaged var accountForDefaultBlog: WPAccount?
 
     /// Cached categories for this blog.
-    @NSManaged var categories: NSSet//<PostCategory>
+    @NSManaged var categories: Set<PostCategory>
 
     /// Cached comments for this blog.
-    @NSManaged var comments: NSSet//<Comment>
+    @NSManaged var comments: Set<Comment>
 
     /// Cached Publicize connections for this blog.
-    @NSManaged var connections: NSSet//<PublicizeConnection>
+    @NSManaged var connections: Set<PublicizeConnection>
 
     /// The connected WordPress.com account for a Jetpack site, if different from the default WordPress.com account.
     @NSManaged var jetpackAccount: WPAccount?
 
     /// Cached media items for this blog.
-    @NSManaged var media: NSSet//<Media>
+    @NSManaged var media: Set<Media>
 
     /// Cached menu locations for this blog.
     /// - seealso: MenuLocation
@@ -122,15 +122,15 @@ extension Blog {
     @NSManaged var menus: NSOrderedSet//<Menu>
 
     /// Cached posts for this blog. Includes both posts and pages.
-    @NSManaged var posts: NSSet//<AbstractPost>
+    @NSManaged var posts: Set<AbstractPost>
 
     /// Settings for this blog, encapsulated in a BlogSettings instance
     /// - seealso: BlogSettings
     @NSManaged var settings: BlogSettings?
 
     /// Cached tags for this blog.
-    @NSManaged var tags: NSSet//<PostTag>
+    @NSManaged var tags: Set<PostTag>
 
     /// Cached available themes for this blog.
-    @NSManaged var themes: NSSet//<Theme>
+    @NSManaged var themes: Set<Theme>
 }

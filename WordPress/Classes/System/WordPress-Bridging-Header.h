@@ -3,13 +3,15 @@
 #import "SFHFKeychainUtils.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 
+#import "AbstractPost.h"
 #import "AccountService.h"
 #import "AppRatingUtility.h"
 
 #import "Blog.h"
 #import "BlogService.h"
-#import "CommentService.h"
 
+#import "Comment.h"
+#import "CommentService.h"
 #import "Constants.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
@@ -20,6 +22,7 @@
 
 #import "LoginViewController.h"
 
+#import "Media.h"
 #import "MediaService.h"
 #import "MeHeaderView.h"
 
@@ -34,8 +37,10 @@
 #import "UIApplication+Helpers.h"
 
 #import "PhotonImageURLHelper.h"
+#import "PostCategory.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
+#import "PostTag.h"
 #import "WPPostViewController.h"
 
 #import "ReachabilityUtils.h"
