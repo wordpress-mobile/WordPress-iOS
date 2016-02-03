@@ -42,16 +42,16 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
     SiteSettingsAccountCount,
 };
 
-NS_ENUM(NSInteger, SiteSettingsDevice) {
-    SiteSettingsDeviceGeotagging = 0,
-    SiteSettingsDeviceCount
-};
-
 NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingDefaultCategory= 0,
     SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingRelatedPosts,
     SiteSettingsWritingCount,
+};
+
+NS_ENUM(NSInteger, SiteSettingsDevice) {
+    SiteSettingsDeviceGeotagging = 0,
+    SiteSettingsDeviceCount
 };
 
 NS_ENUM(NSInteger, SiteSettingsAdvanced) {
@@ -63,9 +63,9 @@ NS_ENUM(NSInteger, SiteSettingsAdvanced) {
 NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionGeneral = 0,
     SiteSettingsSectionAccount,
-    SiteSettingsSectionDevice,
     SiteSettingsSectionWriting,
     SiteSettingsSectionDiscussion,
+    SiteSettingsSectionDevice,
     SiteSettingsSectionRemoveSite,
     SiteSettingsSectionAdvanced,
 };
@@ -83,12 +83,13 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
-@property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
-#pragma mark - Discussion
+#pragma mark - Discussion Section
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
+#pragma mark - Device Section
+@property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 #pragma mark - Removal Section
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 #pragma mark - Advanced Section
@@ -133,8 +134,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
     
-    [sections addObject:@(SiteSettingsSectionDevice)];
-    
     if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
         // only REST API connections and admins can change Writing options
         [sections addObject:@(SiteSettingsSectionWriting)];
@@ -143,6 +142,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
         [sections addObject:@(SiteSettingsSectionDiscussion)];
     }
+    
+    [sections addObject:@(SiteSettingsSectionDevice)];
     
     if ([self.blog supports:BlogFeatureRemovable]) {
         [sections addObject:@(SiteSettingsSectionRemoveSite)];
@@ -204,14 +205,14 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionAccount: {
             return SiteSettingsAccountCount;
         }
-        case SiteSettingsSectionDevice: {
-            return SiteSettingsDeviceCount;
-        }
         case SiteSettingsSectionWriting: {
             return SiteSettingsWritingCount;
         }
         case SiteSettingsSectionDiscussion: {
             return 1;
+        }
+        case SiteSettingsSectionDevice: {
+            return SiteSettingsDeviceCount;
         }
         case SiteSettingsSectionRemoveSite: {
             return 1;
@@ -487,14 +488,14 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionAccount: {
             return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
         }
-        case SiteSettingsSectionDevice: {
-            return self.geotaggingCell;
-        }
         case SiteSettingsSectionWriting: {
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
         }
         case SiteSettingsSectionDiscussion: {
             return self.discussionSettingsCell;
+        }
+        case SiteSettingsSectionDevice: {
+            return self.geotaggingCell;
         }
         case SiteSettingsSectionRemoveSite: {
             return self.removeSiteCell;
