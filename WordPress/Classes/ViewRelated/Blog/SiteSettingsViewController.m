@@ -43,11 +43,15 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
 };
 
 NS_ENUM(NSInteger, SiteSettingsWriting) {
-    SiteSettingsWritingGeotagging = 0,
-    SiteSettingsWritingDefaultCategory,
+    SiteSettingsWritingDefaultCategory= 0,
     SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingRelatedPosts,
     SiteSettingsWritingCount,
+};
+
+NS_ENUM(NSInteger, SiteSettingsDevice) {
+    SiteSettingsDeviceGeotagging = 0,
+    SiteSettingsDeviceCount
 };
 
 NS_ENUM(NSInteger, SiteSettingsAdvanced) {
@@ -61,6 +65,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
     SiteSettingsSectionDiscussion,
+    SiteSettingsSectionDevice,
     SiteSettingsSectionRemoveSite,
     SiteSettingsSectionAdvanced,
 };
@@ -78,12 +83,13 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
-@property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
-#pragma mark - Discussion
+#pragma mark - Discussion Section
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
+#pragma mark - Device Section
+@property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 #pragma mark - Removal Section
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 #pragma mark - Advanced Section
@@ -128,11 +134,16 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
     
-    [sections addObject:@(SiteSettingsSectionWriting)];
+    if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
+        // only REST API connections and admins can change Writing options
+        [sections addObject:@(SiteSettingsSectionWriting)];
+    }
     
     if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
         [sections addObject:@(SiteSettingsSectionDiscussion)];
     }
+    
+    [sections addObject:@(SiteSettingsSectionDevice)];
     
     if ([self.blog supports:BlogFeatureRemovable]) {
         [sections addObject:@(SiteSettingsSectionRemoveSite)];
@@ -195,20 +206,13 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return SiteSettingsAccountCount;
         }
         case SiteSettingsSectionWriting: {
-            if (!self.blog.isAdmin) {
-                // If we're not admin, we just want to show the geotagging cell
-                return 1;
-            }
-            NSInteger rowsToHide = 0;
-            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
-                //  NOTE: Sergio Estevao (2015-09-23): Hides the related post for self-hosted sites not in jetpack
-                // because this options is not available for them.
-                rowsToHide += 1;
-            }
-            return SiteSettingsWritingCount - rowsToHide;
+            return SiteSettingsWritingCount;
         }
         case SiteSettingsSectionDiscussion: {
             return 1;
+        }
+        case SiteSettingsSectionDevice: {
+            return SiteSettingsDeviceCount;
         }
         case SiteSettingsSectionRemoveSite: {
             return 1;
@@ -342,10 +346,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
     switch (row) {
-        case (SiteSettingsWritingGeotagging):{
-            return self.geotaggingCell;
-        }
-        break;
         case (SiteSettingsWritingDefaultCategory):{
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.settings.defaultCategoryID];
@@ -494,6 +494,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionDiscussion: {
             return self.discussionSettingsCell;
         }
+        case SiteSettingsSectionDevice: {
+            return self.geotaggingCell;
+        }
         case SiteSettingsSectionRemoveSite: {
             return self.removeSiteCell;
         }
@@ -542,6 +545,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             break;
         case SiteSettingsSectionAccount:
             headingTitle = NSLocalizedString(@"Account", @"Title for the account section in site settings screen");
+            break;
+        case SiteSettingsSectionDevice:
+            headingTitle = NSLocalizedString(@"This Device", @"Title for the device section in site settings screen");
             break;
         case SiteSettingsSectionWriting:
             headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
