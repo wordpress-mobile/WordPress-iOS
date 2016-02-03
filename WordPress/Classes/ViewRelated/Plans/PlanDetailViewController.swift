@@ -88,23 +88,35 @@ struct FeatureListItemRow : ImmuTableRow {
     
     func configureCell(cell: UITableViewCell) {
         let cell = cell as! PlanFeatureListCell
-        cell.titleLabel?.text = title
+        cell.titleLabel.text = title
+        cell.detailLabel.text = detailText
         cell.webOnlyLabel.hidden = !webOnly
         cell.checkmark.hidden = !shouldShowCheckmark
         
-        WPStyleGuide.configurePlanFeatureListTableViewCell(cell)
+        cell.titleLabel.textColor = disabled ? WPStyleGuide.grey() : WPStyleGuide.darkGrey()
+        
+        if disabled {
+            cell.titleLabel.alpha = 0.5
+            cell.disabledMarker.hidden = false
+        } else {
+            cell.titleLabel.alpha = 1.0
+            cell.disabledMarker.hidden = true
+        }
     }
 }
 
 class PlanFeatureListCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var webOnlyLabel: UILabel!
     @IBOutlet weak var checkmark: UIImageView!
-}
-
-extension WPStyleGuide {
-    class func configurePlanFeatureListTableViewCell(cell: PlanFeatureListCell) {
-        cell.titleLabel.textColor = WPStyleGuide.darkGrey()
-        cell.webOnlyLabel.textColor = WPStyleGuide.grey()
+    @IBOutlet weak var disabledMarker: UIView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        disabledMarker.backgroundColor = WPStyleGuide.grey()
+        webOnlyLabel.textColor = WPStyleGuide.grey()
+        detailLabel.textColor = WPStyleGuide.grey()
     }
 }
