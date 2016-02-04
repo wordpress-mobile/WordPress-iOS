@@ -48,6 +48,8 @@ class PlanListViewController: UITableViewController {
         cell.textLabel?.attributedText = attributedTitleForPlan(plan, active: active)
         cell.textLabel?.adjustsFontSizeToFitWidth = true
 
+        cell.detailTextLabel?.text = plan.description
+
         cell.selectionStyle = .None
 
         return cell
