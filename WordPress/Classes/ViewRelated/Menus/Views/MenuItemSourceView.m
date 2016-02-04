@@ -32,7 +32,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
             tableView.delegate = self;
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             UIEdgeInsets inset = tableView.contentInset;
-            inset.top = MenusDesignDefaultContentSpacing / 2.02;
+            inset.top = MenusDesignDefaultContentSpacing / 2.0;
             tableView.contentInset = inset;
             [self addSubview:tableView];
             
@@ -86,11 +86,12 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+        
     if(!self.tableView.tableHeaderView) {
         // set the tableHeaderView after we have called layoutSubviews the first time
+        // this add the stackedTableHeaderView to view hierarchy
         self.tableView.tableHeaderView = self.stackedTableHeaderView;
-        [self.tableView layoutIfNeeded];
+        [self.stackedTableHeaderView layoutIfNeeded];
     }
 
     // set the stackedTableHeaderView frame height to the intrinsic height of the stackView
@@ -349,6 +350,18 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableView endUpdates];
+    
+    // NOTE: Brent Coursey (2016-2-4):
+    // A bug in UITableView sets the offset at {0,0} with the first load of data.
+    // This only seems to appear when the number of cells is beyond the bounds of the table.
+    // This is also only an issue if the contentInset is set, as it is in this view.
+    static BOOL needsOffsetUpdate = YES;
+    if (needsOffsetUpdate) {
+        needsOffsetUpdate = NO;
+        CGPoint offset = self.tableView.contentOffset;
+        offset.y = -self.tableView.contentInset.top;
+        self.tableView.contentOffset = offset;
+    }
 }
 
 @end
