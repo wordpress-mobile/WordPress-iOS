@@ -98,7 +98,7 @@
  Also checks if the blog is multi-author.
  Used for instances where the entire blog should be refreshed or initially downloaded.
  */
-- (void)syncBlog:(Blog *)blog;
+- (void)syncBlog:(Blog *)blog completionHandler:(void (^)())completionHandler;
 
 - (BOOL)hasVisibleWPComAccounts;
 

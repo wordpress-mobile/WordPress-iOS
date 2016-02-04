@@ -159,10 +159,14 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
     [self.tableView registerClass:[WPTableViewCellValue1 class] forCellReuseIdentifier:BlogDetailsPlanCellIdentifier];
-    
+
+    __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncBlog:_blog];
+    [blogService syncBlog:_blog completionHandler:^() {
+        [weakSelf configureTableViewData];
+        [weakSelf.tableView reloadData];
+    }];
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
