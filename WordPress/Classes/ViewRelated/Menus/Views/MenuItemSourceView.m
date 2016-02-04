@@ -331,7 +331,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
             break;
         case NSFetchedResultsChangeUpdate:
         {
-            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }
             break;
         case NSFetchedResultsChangeMove:
