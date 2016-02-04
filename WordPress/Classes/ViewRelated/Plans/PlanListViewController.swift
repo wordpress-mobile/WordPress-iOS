@@ -68,6 +68,7 @@ final class PlanListViewController: UITableViewController {
         return ImmuTableViewHandler(takeOver: self)
     }()
 
+    static let restorationIdentifier = "PlanList"
     let activePlan: Plan?
 
     convenience init(blog: Blog) {
@@ -78,6 +79,8 @@ final class PlanListViewController: UITableViewController {
         self.activePlan = activePlan
         super.init(style: .Grouped)
         title = NSLocalizedString("Plans", comment: "Title for the plan selector")
+        restorationIdentifier = PlanListViewController.restorationIdentifier
+        restorationClass = PlanListViewController.self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -127,6 +130,30 @@ final class PlanListViewController: UITableViewController {
             return "$99.99"
         case .Business:
             return "$299.99"
+        }
+    }
+}
+
+extension PlanListViewController: UIViewControllerRestoration {
+    private static let planRestorationKey = "planID"
+
+    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        guard let identifier = identifierComponents.last as? String where identifier == PlanListViewController.restorationIdentifier else {
+            return nil
+        }
+
+        var planID: Int? = nil
+        if coder.containsValueForKey(PlanListViewController.planRestorationKey) {
+            planID = coder.decodeIntegerForKey(PlanListViewController.planRestorationKey)
+        }
+        let plan = planID.flatMap({ Plan(rawValue: $0) })
+        return PlanListViewController(activePlan: plan)
+    }
+
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        super.encodeRestorableStateWithCoder(coder)
+        if let planID = activePlan?.rawValue {
+            coder.encodeInteger(planID, forKey: PlanListViewController.planRestorationKey)
         }
     }
 }
