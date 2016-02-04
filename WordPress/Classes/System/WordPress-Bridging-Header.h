@@ -2,6 +2,7 @@
 #import <Mixpanel/Mixpanel.h>
 #import "SFHFKeychainUtils.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
 
 #import "AccountService.h"
 #import "AppRatingUtility.h"
@@ -25,7 +26,6 @@
 
 #import "Notification.h"
 #import "Notification+Internals.h"
-#import "NotificationsManager.h"
 #import "NSAttributedString+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
 #import "NSDate+StringFormatting.h"
@@ -78,12 +78,9 @@
 #import "WPBlogTableViewCell.h"
 #import "WPContentViewProvider.h"
 #import "WPGUIConstants.h"
-#import <WordPressShared/WPFontManager.h>
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPRichTextView.h"
-#import <WordPressShared/WPStyleGuide.h>
-#import <WordPressShared/WPTableViewCell.h>
 #import "WPStyleGuide+ReadableMargins.h"
 #import "WPTableViewHandler.h"
 #import "WPUserAgent.h"
@@ -92,4 +89,9 @@
 #import "WPSearchController.h"
 #import "WPSearchControllerConfigurator.h"
 
+#import <WordPressComAnalytics/WPAnalytics.h>
+
+#import <WordPressShared/WPFontManager.h>
+#import <WordPressShared/WPStyleGuide.h>
+#import <WordPressShared/WPTableViewCell.h>
 #import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
