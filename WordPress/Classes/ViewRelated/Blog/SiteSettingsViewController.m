@@ -120,6 +120,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 - (void)dealloc
 {
     self.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
