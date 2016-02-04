@@ -159,10 +159,12 @@ extension PlanListViewModel/*: NSCoding */ {
     }
 
     init(coder aDecoder: NSCoder) {
-        var planID: Int? = nil
-        if aDecoder.containsValueForKey(EncodingKey.activePlan) {
-            planID = aDecoder.decodeIntegerForKey(EncodingKey.activePlan)
-        }
+        let planID: Int? = {
+            guard aDecoder.containsValueForKey(EncodingKey.activePlan) else {
+                return nil
+            }
+            return aDecoder.decodeIntegerForKey(EncodingKey.activePlan)
+        }()
 
         let plan = planID.flatMap({ Plan(rawValue: $0) })
         self.init(activePlan: plan)
