@@ -1,8 +1,7 @@
 #import <Foundation/Foundation.h>
-#import "NotificationsManager.h"
 
 
-@interface NotificationsManager (TestHelper)
+@interface PushNotificationsManagerTestHelper : NSObject 
 
 + (void)setDummyDeviceToken;
 + (void)removeDummyDeviceToken;
