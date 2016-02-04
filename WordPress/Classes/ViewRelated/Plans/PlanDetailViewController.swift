@@ -5,6 +5,7 @@ class PlanDetailViewController: UITableViewController {
     var plan: Plan!
     
     private let cellIdentifier = "PlanFeatureListItem"
+    
     private var viewModel: ImmuTable! = nil
     
     @IBOutlet weak var planImageView: UIImageView!
@@ -22,7 +23,7 @@ class PlanDetailViewController: UITableViewController {
     
     class func controllerWithPlan(plan: Plan) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier("PlanDetailViewController") as! PlanDetailViewController
+        let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
         
         controller.plan = plan
         
@@ -62,9 +63,9 @@ class PlanDetailViewController: UITableViewController {
                 FeatureListItemRow(title: "Custom Fonts & Colors"),
                 FeatureListItemRow(title: "CSS Editing"),
                 FeatureListItemRow(title: "Video Storage & Hosting"),
-                FeatureListItemRow(title: "eCommerce", disabled: true),
-                FeatureListItemRow(title: "Premium Themes", disabled: true),
-                FeatureListItemRow(title: "Google Analytics", disabled: true),
+                FeatureListItemRow(title: "eCommerce", available: false),
+                FeatureListItemRow(title: "Premium Themes", available: false),
+                FeatureListItemRow(title: "Google Analytics", available: false),
                 FeatureListItemRow(title: "Storage Space", detailText: "13GB"),
                 FeatureListItemRow(title: "Support", detailText: "In-App & Direct Email"),
                 ])
@@ -136,18 +137,14 @@ struct FeatureListItemRow : ImmuTableRow {
     
     let title: String
     let webOnly: Bool
-    let disabled: Bool
+    let available: Bool
     let detailText: String?
     let action: ImmuTableAction? = nil
     
-    private var shouldShowCheckmark: Bool {
-        return !disabled && detailText == nil
-    }
-    
-    init(title: String, webOnly: Bool = false, disabled: Bool = false, detailText: String? = nil) {
+    init(title: String, webOnly: Bool = false, available: Bool = true, detailText: String? = nil) {
         self.title = title
         self.webOnly = webOnly
-        self.disabled = disabled
+        self.available = available
         self.detailText = detailText
     }
     
@@ -155,18 +152,16 @@ struct FeatureListItemRow : ImmuTableRow {
         let cell = cell as! PlanFeatureListCell
         cell.titleLabel.text = title
         cell.detailLabel.text = detailText
+        
+        cell.titleLabel.textColor = available ? WPStyleGuide.darkGrey() : WPStyleGuide.grey()
+        cell.titleLabel.alpha = available ? 1.0 : 0.5
+        
         cell.webOnlyLabel.hidden = !webOnly
-        cell.checkmark.hidden = !shouldShowCheckmark
+        cell.unavailableFeatureMarker.hidden = available
         
-        cell.titleLabel.textColor = disabled ? WPStyleGuide.grey() : WPStyleGuide.darkGrey()
-        
-        if disabled {
-            cell.titleLabel.alpha = 0.5
-            cell.disabledMarker.hidden = false
-        } else {
-            cell.titleLabel.alpha = 1.0
-            cell.disabledMarker.hidden = true
-        }
+        let noDetailText = (detailText ?? "").isEmpty
+        cell.availableFeatureStackView.hidden = !available || !noDetailText
+        cell.detailLabel.hidden = noDetailText
     }
 }
 
@@ -174,15 +169,22 @@ class PlanFeatureListCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var webOnlyLabel: UILabel!
-    @IBOutlet weak var checkmark: UIImageView!
-    @IBOutlet weak var disabledMarker: UIView!
+    @IBOutlet weak var availableFeatureStackView: UIStackView!
+    @IBOutlet weak var unavailableFeatureMarker: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        disabledMarker.backgroundColor = WPStyleGuide.grey()
+        unavailableFeatureMarker.backgroundColor = WPStyleGuide.grey()
         webOnlyLabel.textColor = WPStyleGuide.grey()
         detailLabel.textColor = WPStyleGuide.grey()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        detailLabel.text = nil
+        titleLabel.text = nil
     }
 }
 
