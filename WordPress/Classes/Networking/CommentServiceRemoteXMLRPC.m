@@ -2,23 +2,25 @@
 #import "RemoteComment.h"
 #import <WordPressApi/WordPressApi.h>
 
-static const NSInteger NumberOfCommentsToSync = 100;
+
 
 @implementation CommentServiceRemoteXMLRPC
 
-- (void)getCommentsWithSuccess:(void (^)(NSArray *))success
-                       failure:(void (^)(NSError *))failure
+- (void)getCommentsWithMaximumCount:(NSInteger)maximumComments
+                            success:(void (^)(NSArray *comments))success
+                            failure:(void (^)(NSError *error))failure
 {
-    [self getCommentsWithOptions:nil success:success failure:failure];
+    [self getCommentsWithMaximumCount:maximumComments options:nil success:success failure:failure];
 }
 
-- (void)getCommentsWithOptions:(NSDictionary *)options
-                       success:(void (^)(NSArray *))success
-                       failure:(void (^)(NSError *))failure
+- (void)getCommentsWithMaximumCount:(NSInteger)maximumComments
+                            options:(NSDictionary *)options
+                            success:(void (^)(NSArray *posts))success
+                            failure:(void (^)(NSError *error))failure
 {
-    NSMutableDictionary *extraParameters = [NSMutableDictionary dictionaryWithDictionary:@{
-                                      @"number": @(NumberOfCommentsToSync)
-                                      }];
+    NSMutableDictionary *extraParameters = [@{
+                                                @"number": @(maximumComments)
+                                            } mutableCopy];
     if (options) {
         [extraParameters addEntriesFromDictionary:options];
     }
