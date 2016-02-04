@@ -187,7 +187,9 @@ public class SettingsPickerViewController : UITableViewController
         pickerSelectedValue = newValue
         
         // Refresh the 'Current Value' row
-        tableView.reloadRowsAtIndexPaths([pickerIndexPath], withRowAnimation: .None)
+        if let cell = tableView.cellForRowAtIndexPath(selectedValueIndexPath) as? WPTableViewCell {
+            configureTextCell(cell)
+        }
         
         // Hit the Callback
         onChange?(enabled: switchOn, newValue: pickerSelectedValue)
@@ -221,7 +223,7 @@ public class SettingsPickerViewController : UITableViewController
         return switchVisible ? 1 : 0
     }
     
-    private var pickerIndexPath : NSIndexPath {
+    private var selectedValueIndexPath : NSIndexPath {
         return NSIndexPath(forRow: 0, inSection: pickerSection)
     }
     
