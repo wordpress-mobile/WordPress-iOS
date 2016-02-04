@@ -51,6 +51,8 @@ NS_ENUM(NSInteger, SiteSettingsWriting) {
 
 NS_ENUM(NSInteger, SiteSettingsDevice) {
     SiteSettingsDeviceGeotagging = 0,
+    SiteSettingsDeviceDefaultCategory,
+    SiteSettingsDeviceDefaultPostFormat,
     SiteSettingsDeviceCount,
 };
 
@@ -134,7 +136,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
     
-    if (self.blog.isAdmin || ![self.blog supports:BlogFeatureWPComRESTAPI]) {
+    if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
         [sections addObject:@(SiteSettingsSectionWriting)];
     }
     
@@ -205,18 +207,17 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return SiteSettingsAccountCount;
         }
         case SiteSettingsSectionWriting: {
-            NSInteger rowsToHide = 0;
-            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
-                //  NOTE: Sergio Estevao (2015-09-23): Hides the related post for self-hosted sites not in jetpack
-                // because this options is not available for them.
-                rowsToHide += 1;
-            }
-            return SiteSettingsWritingCount - rowsToHide;
+            return SiteSettingsWritingCount;
         }
         case SiteSettingsSectionDiscussion: {
             return 1;
         }
         case SiteSettingsSectionDevice: {
+            if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
+                // NOTE: Brent Coursey (2016-02-03): Only show geotagging cell for user of the REST API (REST).
+                // Any post default options are available in the Writing section for REST users.
+                return 1;
+            }
             return SiteSettingsDeviceCount;
         }
         case SiteSettingsSectionRemoveSite: {
@@ -348,18 +349,28 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return _removeSiteCell;
 }
 
+- (void)configureDefaultCategoryCell
+{
+    PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.settings.defaultCategoryID];
+    [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
+}
+
+- (void)configureDefaultPostFormatCell
+{
+    [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
     switch (row) {
         case (SiteSettingsWritingDefaultCategory):{
-            PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.settings.defaultCategoryID];
-            [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
+            [self configureDefaultCategoryCell];
             return self.defaultCategoryCell;
         }
         break;
         case (SiteSettingsWritingDefaultPostFormat):{
-            [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
+            [self configureDefaultPostFormatCell];
             return self.defaultPostFormatCell;
         }
         case (SiteSettingsWritingRelatedPosts):{
@@ -367,6 +378,28 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         }
         break;
 
+    }
+    return nil;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForDeviceSettingsAtRow:(NSInteger)row
+{
+    switch (row) {
+        case (SiteSettingsDeviceGeotagging):{
+            return self.geotaggingCell;
+        }
+            break;
+        case (SiteSettingsDeviceDefaultCategory):{
+            [self configureDefaultCategoryCell];
+            return self.defaultCategoryCell;
+        }
+            break;
+        case (SiteSettingsDeviceDefaultPostFormat):{
+            [self configureDefaultPostFormatCell];
+            return self.defaultPostFormatCell;
+        }
+            break;
+            
     }
     return nil;
 }
@@ -500,7 +533,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return self.discussionSettingsCell;
         }
         case SiteSettingsSectionDevice: {
-            return self.geotaggingCell;
+            return [self tableView:tableView cellForDeviceSettingsAtRow:indexPath.row];
         }
         case SiteSettingsSectionRemoveSite: {
             return self.removeSiteCell;
@@ -670,6 +703,22 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
 }
 
+- (void)showDefaultCategorySelector
+{
+    PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSNumber *defaultCategoryID = self.blog.settings.defaultCategoryID ?: @(PostCategoryUncategorized);
+    PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
+    NSArray *currentSelection = @[];
+    if (postCategory){
+        currentSelection = @[postCategory];
+    }
+    PostCategoriesViewController *postCategoriesViewController = [[PostCategoriesViewController alloc] initWithBlog:self.blog
+                                                                                                   currentSelection:currentSelection
+                                                                                                      selectionMode:CategoriesSelectionModeBlogDefault];
+    postCategoriesViewController.delegate = self;
+    [self.navigationController pushViewController:postCategoriesViewController animated:YES];
+}
+
 - (void)showPostFormatSelector
 {
     NSArray *titles = self.blog.sortedPostFormatNames;
@@ -717,18 +766,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     switch (row) {
         case SiteSettingsWritingDefaultCategory:{
-            PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            NSNumber *defaultCategoryID = self.blog.settings.defaultCategoryID ?: @(PostCategoryUncategorized);
-            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
-            NSArray *currentSelection = @[];
-            if (postCategory){
-                currentSelection = @[postCategory];
-            }
-            PostCategoriesViewController *postCategoriesViewController = [[PostCategoriesViewController alloc] initWithBlog:self.blog
-                                                                                                           currentSelection:currentSelection
-                                                                                                              selectionMode:CategoriesSelectionModeBlogDefault];
-            postCategoriesViewController.delegate = self;
-            [self.navigationController pushViewController:postCategoriesViewController animated:YES];
+            [self showDefaultCategorySelector];
         }
         break;
         case SiteSettingsWritingDefaultPostFormat:{
@@ -739,7 +777,20 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             [self showRelatedPostsSettings];
         }
         break;
+    }
+}
 
+- (void)tableView:(UITableView *)tableView didSelectInDeviceSectionRow:(NSInteger)row
+{
+    switch (row) {
+        case SiteSettingsDeviceDefaultCategory:{
+            [self showDefaultCategorySelector];
+        }
+        break;
+        case SiteSettingsDeviceDefaultPostFormat:{
+            [self showPostFormatSelector];
+        }
+        break;
     }
 }
 
@@ -786,6 +837,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         } break;
         case SiteSettingsSectionDiscussion: {
             [self showDiscussionSettingsForBlog:self.blog];
+        } break;
+        case SiteSettingsSectionDevice: {
+            [self tableView:tableView didSelectInDeviceSectionRow:indexPath.row];
         } break;
         case SiteSettingsSectionRemoveSite:{
             [tableView deselectSelectedRowWithAnimation:YES];
