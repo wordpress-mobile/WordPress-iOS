@@ -454,7 +454,12 @@ public class SharingService : LocalCoreDataService
 
     // MARK: Sharing Button Related Methods
 
+    /// Syncs `SharingButton`s for the specified wpcom blog.
     ///
+    /// - Parameters:
+    ///     - blog: The `Blog` for which to sync sharing buttons
+    ///     - success: An optional success block accepting no parameters.
+    ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
     public func syncSharingButtonsForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let blogObjectID = blog.objectID
@@ -469,7 +474,13 @@ public class SharingService : LocalCoreDataService
     }
 
 
+    /// Pushes changes to the specified blog's `SharingButton`s back up to the blog.
     ///
+    /// - Parameters:
+    ///     - blog: The `Blog` for which to update sharing buttons
+    ///     - sharingButtons: An array of `SharingButton` entities with changes either to order, or properties to sync back to the blog.
+    ///     - success: An optional success block accepting no parameters.
+    ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
     public func updateSharingButtonsForBlog(blog: Blog, sharingButtons: [SharingButton], success: (() -> Void)?, failure: (NSError! -> Void)?) {
 
@@ -486,7 +497,13 @@ public class SharingService : LocalCoreDataService
     }
 
 
+    /// Called when syncing sharng buttons. Merges synced and cached data, removing
+    /// anything that does not exist on the server.  Saves the context.
     ///
+    /// - Parameters:
+    ///     - blogObjectID: the NSManagedObjectID of a `Blog`
+    ///     - remoteSharingButtons: An array of `RemoteSharingButton` objects to merge.
+    ///     - onComplete: An optional callback block to be performed when core data has saved the changes.
     ///
     private func mergeSharingButtonsForBlog(blogObjectID: NSManagedObjectID, remoteSharingButtons: [RemoteSharingButton], onComplete: (() -> Void)?) {
         managedObjectContext.performBlock {
@@ -575,7 +592,12 @@ public class SharingService : LocalCoreDataService
     }
 
 
+    /// Composes `RemoteSharingButton` objects from properties on an array of `SharingButton`s.
     ///
+    /// - Parameters:
+    ///     - shareButtons: An array of `SharingButton` entities.
+    ///
+    /// - Returns: An array of `RemoteSharingButton` objects.
     ///
     private func remoteShareButtonsFromShareButtons(shareButtons: [SharingButton]) -> [RemoteSharingButton] {
         return shareButtons.map { (let shareButton) -> RemoteSharingButton in
