@@ -118,6 +118,10 @@ public protocol ThemePresenter: class
     
     private var suspendedSearch = ""
     
+    func resumingSearch() -> Bool {
+        return !suspendedSearch.trim().isEmpty
+    }
+    
     public var searchType: ThemeType = ThemeType.mayPurchase ? .All : .Free {
         didSet {
             if searchType != oldValue {
@@ -238,7 +242,9 @@ public protocol ThemePresenter: class
     public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
-        collectionView?.collectionViewLayout.invalidateLayout()
+        coordinator.animateAlongsideTransition({ [weak self] context in
+            self?.collectionView?.collectionViewLayout.invalidateLayout()
+        }, completion: nil)
     }
 
     public override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
@@ -263,8 +269,8 @@ public protocol ThemePresenter: class
         
         registerForKeyboardNotifications()
         
-        if !suspendedSearch.isEmpty {
-            beginSearchFor(suspendedSearch)
+        if resumingSearch() {
+            beginSearchFor(suspendedSearch, animated: false)
             suspendedSearch = ""
         }
         
@@ -534,19 +540,25 @@ public protocol ThemePresenter: class
     
     @IBAction func didTapSearchButton(sender: UIButton) {
         WPAppAnalytics.track(.ThemesAccessedSearch, withBlog: self.blog)
-        beginSearchFor("")
+        beginSearchFor("", animated: true)
     }
     
-    private func beginSearchFor(pattern: String) {
+    private func beginSearchFor(pattern: String, animated: Bool) {
         searchController.active = true
         searchController.searchBar.text = pattern
         searchName = pattern
-        if sections.first == .Info {
-            collectionView?.collectionViewLayout.invalidateLayout()
-            collectionView?.performBatchUpdates({
-                self.collectionView?.deleteSections(NSIndexSet(index: 0))
-                self.sections = [.Themes]
-            }, completion: nil)
+        
+        if animated {
+            if sections.first == .Info {
+                collectionView?.collectionViewLayout.invalidateLayout()
+                collectionView?.performBatchUpdates({
+                        self.collectionView?.deleteSections(NSIndexSet(index: 0))
+                        self.sections = [.Themes]
+                    }, completion: nil)
+            }
+        } else {
+            self.sections = [.Themes]
+            self.collectionView?.reloadData()
         }
     }
 
@@ -575,15 +587,17 @@ public protocol ThemePresenter: class
     }
 
     public func presentSearchController(searchController: WPSearchController) {
-        navigationController?.setNavigationBarHidden(true, animated: true)
+        let animated = !resumingSearch()
+        navigationController?.setNavigationBarHidden(true, animated: animated)
         searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
+        searchController.searchBar.becomeFirstResponder()
 
-        UIView.animateWithDuration(Styles.searchAnimationDuration,
-            animations: { [weak self] in
-                self?.view.layoutIfNeeded()
-            }, completion: { [weak self] (finished: Bool) in
-                self?.searchController.searchBar.becomeFirstResponder()
-            })
+        if animated {
+            UIView.animateWithDuration(Styles.searchAnimationDuration,
+                animations: { [weak self] in
+                    self?.view.layoutIfNeeded()
+                })
+        }
     }
 
     // MARK: - WPSearchResultsUpdating
@@ -706,12 +720,7 @@ public protocol ThemePresenter: class
         suspendedSearch = searchName
         searchController.active = false
         presentingTheme = theme
-        let webViewController = WPWebViewController(URL: NSURL(string: url))
-        
-        webViewController.authToken = blog.authToken
-        webViewController.username = blog.usernameForSite
-        webViewController.password = blog.password
-        webViewController.wpLoginURL = NSURL(string: blog.loginUrl())
+        let webViewController = ThemeWebViewController(theme: theme, url: url)
 
         webViewController.loadViewIfNeeded()
         webViewController.navigationItem.titleView = nil
