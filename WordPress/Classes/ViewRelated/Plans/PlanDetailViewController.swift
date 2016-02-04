@@ -41,6 +41,7 @@ class PlanDetailViewController: UITableViewController {
         
         configureAppearance()
         configureImmuTable()
+        populateHeader()
     }
     
     private func configureAppearance() {
@@ -69,6 +70,26 @@ class PlanDetailViewController: UITableViewController {
                 ])
             ]
         )
+    }
+    
+    private func populateHeader() {
+        planImageView.image = plan.image
+        planTitleLabel.text = plan.fullTitle
+        planDescriptionLabel.text = plan.description
+        planPriceLabel.text = priceDescriptionForPlan(plan)
+    }
+    
+    // TODO: Prices should always come from StoreKit
+    // @frosty 2016-02-04
+    private func priceDescriptionForPlan(plan: Plan) -> String? {
+        switch plan {
+        case .Free:
+            return "Free!"
+        case .Premium:
+            return "$99.99 per year"
+        case .Business:
+            return "$299.99 per year"
+        }
     }
     
     //MARK: - IBActions
