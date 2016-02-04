@@ -117,6 +117,7 @@
     if(cacheIdentifier) {
         sourceView = [self.sourceViewCache objectForKey:cacheIdentifier];
     }
+    BOOL shouldSetItem = NO;
     if(!sourceView) {
         switch (itemType) {
             case MenuItemTypePage:
@@ -139,17 +140,17 @@
                 // Jan-12-2015 - Brent C.
                 break;
         }
-        
-        sourceView.item = self.item;
         sourceView.delegate = self;
+        shouldSetItem = YES;
     }
     
     if(sourceView) {
-        
         [sourceView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
         [self.stackView addArrangedSubview:sourceView];
         self.sourceView = sourceView;
-        
+        if (shouldSetItem) {
+            sourceView.item = self.item;
+        }
         if(cacheIdentifier) {
             [self.sourceViewCache setObject:sourceView forKey:cacheIdentifier];
         }
