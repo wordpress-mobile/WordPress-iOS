@@ -965,7 +965,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)appbotPromptForReview
 {
     [WPAnalytics track:WPAnalyticsStatAppReviewsRatedApp];
-    [ABXAppStore openAppStoreReviewForApp:WPiTunesAppId];
+    NSString *appReviewUrl = [NSString stringWithFormat:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%@&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8", WPiTunesAppId];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appReviewUrl]];
     [AppRatingUtility ratedCurrentVersion];
     [self hideRatingView];
 }
