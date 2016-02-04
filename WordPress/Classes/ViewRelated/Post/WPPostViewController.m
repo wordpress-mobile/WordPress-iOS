@@ -995,7 +995,7 @@ EditImageDetailsViewControllerDelegate
     if (blogChanged) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        [blogService syncBlog:blog];
+        [blogService syncBlog:blog completionHandler:nil];
     }
 }
 

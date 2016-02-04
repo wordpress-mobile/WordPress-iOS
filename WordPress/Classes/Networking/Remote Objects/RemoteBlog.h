@@ -58,4 +58,9 @@
  */
 @property (nonatomic, assign) BOOL visible;
 
+/**
+ *  @details Blog's options preferences.
+ */
+@property (nonatomic, strong) NSDictionary *options;
+
 @end
