@@ -139,6 +139,9 @@ NSInteger const  WPNumberOfCommentsToSync = 100;
                        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                        
                        if (success) {
+                           // Note:
+                           // We'll assume that if the requested page size couldn't be filled, there are no
+                           // more comments left to retrieve.
                            BOOL hasMore = comments.count >= WPNumberOfCommentsToSync;
                            success(hasMore);
                        }
