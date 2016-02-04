@@ -14,11 +14,12 @@ public class SharingService : LocalCoreDataService
     /// Syncs the list of Publicize services.  The list is expected to very rarely change.
     ///
     /// - Parameters: 
+    ///     - blog: The `Blog` for which to sync publicize services
     ///     - success: An optional success block accepting no parameters
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
-    public func syncPublicizeServices(success: (() -> Void)?, failure: (NSError! -> Void)?) {
-        let remote = SharingServiceRemote(api: apiForRequest())
+    public func syncPublicizeServicesForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
 
         remote.getPublicizeServices( {(remoteServices: [RemotePublicizeService]) in
             // Process the results
@@ -34,11 +35,12 @@ public class SharingService : LocalCoreDataService
     /// The success block should accept an array of `KeyringConnection` objects.
     ///
     /// - Parameters:
+    ///     - blog: The `Blog` for which to sync keyring connections
     ///     - success: An optional success block accepting an array of `KeyringConnection` objects
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
-    public func fetchKeyringConnections(success: ([KeyringConnection] -> Void)?, failure: (NSError! -> Void)?) {
-        let remote = SharingServiceRemote(api: apiForRequest())
+    public func fetchKeyringConnectionsForBlog(blog: Blog, success: ([KeyringConnection] -> Void)?, failure: (NSError! -> Void)?) {
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
 
         remote.getKeyringConnections( {(keyringConnections: [KeyringConnection]) in
             // Just return the result
@@ -59,8 +61,9 @@ public class SharingService : LocalCoreDataService
     ///
     public func syncPublicizeConnectionsForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let blogObjectID = blog.objectID
-        let remote = SharingServiceRemote(api: apiForRequest())
-        remote.getPublicizeConnections(blog.dotComID, success: {(remoteConnections: [RemotePublicizeConnection]) in
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
+        remote.getPublicizeConnections(blog.dotComID, success: {(remoteConnections:[RemotePublicizeConnection]) in
+
             // Process the results
             self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: success)
         },
@@ -87,7 +90,7 @@ public class SharingService : LocalCoreDataService
         failure: (NSError! -> Void)?)
     {
         let blogObjectID = blog.objectID
-        let remote = SharingServiceRemote(api: apiForRequest())
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
 
         remote.createPublicizeConnection(blog.dotComID,
             keyringConnectionID: keyring.keyringID,
@@ -120,7 +123,8 @@ public class SharingService : LocalCoreDataService
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    public func updateShared(shared: Bool,
+    public func updateSharedForBlog(blog: Blog,
+        shared: Bool,
         forPublicizeConnection pubConn: PublicizeConnection,
         success: (() -> Void)?,
         failure: (NSError! -> Void)?) {
@@ -134,7 +138,7 @@ public class SharingService : LocalCoreDataService
             ContextManager.sharedInstance().saveContext(managedObjectContext)
 
             let siteID = pubConn.siteID;
-            let remote = SharingServiceRemote(api: apiForRequest())
+            let remote = SharingServiceRemote(api: apiForBlog(blog))
             remote.updateShared(shared,
                 forPublicizeConnectionWithID: pubConn.connectionID,
                 forSite: siteID,
@@ -157,13 +161,13 @@ public class SharingService : LocalCoreDataService
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    public func deletePublicizeConnection(pubConn: PublicizeConnection, success: (() -> Void)?, failure: (NSError! -> Void)?) {
+    public func deletePublicizeConnectionForBlog(blog: Blog, pubConn: PublicizeConnection, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         // optimistically delete the connection locally.
         let siteID = pubConn.siteID;
         managedObjectContext.deleteObject(pubConn);
         ContextManager.sharedInstance().saveContext(managedObjectContext)
 
-        let remote = SharingServiceRemote(api: apiForRequest())
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
         remote.deletePublicizeConnection(siteID,
             connectionID: pubConn.connectionID,
             success: {
@@ -451,25 +455,14 @@ public class SharingService : LocalCoreDataService
     // MARK : Private Instance Methods
 
 
-    /// Returns the API to use with the service
+    /// Returns the API to use with the service. 
     ///
-    private func apiForRequest() -> WordPressComApi {
-        var api: WordPressComApi? = nil
-
-        if let restApi = AccountService(managedObjectContext: managedObjectContext).defaultWordPressComAccount()?.restApi {
-            api = restApi.hasCredentials() ? restApi : nil
-        }
-
-        if api == nil {
-            // In practice this should never happen, but if it does let's try to detect it. 
-            // Write to the error log if the api was nil, and trigger an assert to 
-            // catch this in development/QA.
-            api = WordPressComApi.anonymousApi()
-            let error = "SharingService is not using a real WordPress.com account."
-            DDLogSwift.logError(error)
-            assert(false, error)
-        }
-
+    /// - Parameters:
+    ///     - blog: The blog to use for the rest api.
+    ///
+    private func apiForBlog(blog: Blog) -> WordPressComApi {
+        let api: WordPressComApi? =  blog.restApi()
+        assert(api != nil)
         return api!
     }
 }
