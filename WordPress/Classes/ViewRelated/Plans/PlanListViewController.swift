@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-private struct PlanListRow: ImmuTableRow {
+struct PlanListRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(WPTableViewCellSubtitle)
     static let customHeight: Float? = 92
 
@@ -63,7 +63,7 @@ private struct PlanListRow: ImmuTableRow {
     }
 }
 
-private struct PlanListViewModel {
+struct PlanListViewModel {
     let activePlan: Plan?
 
     var tableViewModel: ImmuTable {
@@ -78,7 +78,7 @@ private struct PlanListViewModel {
             ])
     }
 
-    func rowForPlan(plan: Plan) -> PlanListRow {
+    private func rowForPlan(plan: Plan) -> PlanListRow {
         let active = (activePlan == plan)
         let icon = active ? plan.activeImage : plan.image
 
