@@ -13,6 +13,8 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
  */
 @property (nonatomic, strong) UIView *stackedTableHeaderView;
 
+@property (nonatomic, assign) BOOL animatedTableViewUpdates;
+
 @end
 
 @implementation MenuItemSourceView
@@ -300,7 +302,9 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    [self.tableView beginUpdates];
+    if (self.animatedTableViewUpdates) {
+        [self.tableView beginUpdates];
+    }
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -309,6 +313,10 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
+    if (!self.animatedTableViewUpdates) {
+        return;
+    }
+    
     UITableView *tableView = self.tableView;
     switch(type) {
         case NSFetchedResultsChangeInsert:
@@ -349,18 +357,11 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self.tableView endUpdates];
-    
-    // NOTE: Brent Coursey (2016-2-4):
-    // A bug in UITableView sets the offset at {0,0} with the first load of data.
-    // This only seems to appear when the number of cells is beyond the bounds of the table.
-    // This is also only an issue if the contentInset is set, as it is in this view.
-    static BOOL needsOffsetUpdate = YES;
-    if (needsOffsetUpdate) {
-        needsOffsetUpdate = NO;
-        CGPoint offset = self.tableView.contentOffset;
-        offset.y = -self.tableView.contentInset.top;
-        self.tableView.contentOffset = offset;
+    if (self.animatedTableViewUpdates) {
+        [self.tableView endUpdates];
+    } else {
+        [self.tableView reloadData];
+        self.animatedTableViewUpdates = YES;
     }
 }
 
