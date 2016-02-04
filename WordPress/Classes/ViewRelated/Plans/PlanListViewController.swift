@@ -34,6 +34,17 @@ class PlanListViewController: UITableViewController {
         return availablePlans.count
     }
 
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return WPTableViewSectionHeaderFooterView.heightForHeader(title, width: tableView.frame.width)
+    }
+
+    override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let title = NSLocalizedString("WordPress.com Plans", comment: "Title for the Plans list header")
+        let view = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
+        view.title = title
+        return view
+    }
+
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath)
         WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
