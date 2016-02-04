@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-struct PlanListRow: ImmuTableRow {
+private struct PlanListRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(WPTableViewCellSubtitle)
     static let customHeight: Float? = 92
 
@@ -63,40 +63,11 @@ struct PlanListRow: ImmuTableRow {
     }
 }
 
-final class PlanListViewController: UITableViewController {
-    private lazy var handler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
-    }()
-
-    static let restorationIdentifier = "PlanList"
+private struct PlanListViewModel {
     let activePlan: Plan?
 
-    convenience init(blog: Blog) {
-        self.init(activePlan: blog.plan)
-    }
-
-    init(activePlan: Plan?) {
-        self.activePlan = activePlan
-        super.init(style: .Grouped)
-        title = NSLocalizedString("Plans", comment: "Title for the plan selector")
-        restorationIdentifier = PlanListViewController.restorationIdentifier
-        restorationClass = PlanListViewController.self
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        WPStyleGuide.resetReadableMarginsForTableView(tableView)
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-        ImmuTable.registerRows([PlanListRow.self], tableView: tableView)
-        bindViewModel()
-    }
-
-    func bindViewModel() {
-        handler.viewModel = ImmuTable(sections: [
+    var tableViewModel: ImmuTable {
+        return ImmuTable(sections: [
             ImmuTableSection(
                 headerText: NSLocalizedString("WordPress.com Plans", comment: "Title for the Plans list header"),
                 rows: [
@@ -134,26 +105,82 @@ final class PlanListViewController: UITableViewController {
     }
 }
 
-extension PlanListViewController: UIViewControllerRestoration {
-    private static let planRestorationKey = "planID"
+final class PlanListViewController: UITableViewController {
+    private lazy var handler: ImmuTableViewHandler = {
+        return ImmuTableViewHandler(takeOver: self)
+    }()
+    private let viewModel: PlanListViewModel
 
+    static let restorationIdentifier = "PlanList"
+
+    convenience init(blog: Blog) {
+        self.init(activePlan: blog.plan)
+    }
+
+    convenience init(activePlan: Plan?) {
+        let viewModel = PlanListViewModel(activePlan: activePlan)
+        self.init(viewModel: viewModel)
+    }
+
+    private init(viewModel: PlanListViewModel) {
+        self.viewModel = viewModel
+        super.init(style: .Grouped)
+        title = NSLocalizedString("Plans", comment: "Title for the plan selector")
+        restorationIdentifier = PlanListViewController.restorationIdentifier
+        restorationClass = PlanListViewController.self
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        WPStyleGuide.resetReadableMarginsForTableView(tableView)
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        ImmuTable.registerRows([PlanListRow.self], tableView: tableView)
+        handler.viewModel = viewModel.tableViewModel
+    }
+}
+
+/*
+ Since PlanListViewModel is a struct, it can't conform to NSCoding.
+ We're just using the same naming for convenience.
+ */
+extension PlanListViewModel/*: NSCoding */ {
+    struct EncodingKey {
+        static let activePlan = "activePlan"
+
+    }
+    func encodeWithCoder(aCoder: NSCoder) {
+        if let plan = activePlan {
+            aCoder.encodeInteger(plan.rawValue, forKey: EncodingKey.activePlan)
+        }
+    }
+
+    init(coder aDecoder: NSCoder) {
+        var planID: Int? = nil
+        if aDecoder.containsValueForKey(EncodingKey.activePlan) {
+            planID = aDecoder.decodeIntegerForKey(EncodingKey.activePlan)
+        }
+
+        let plan = planID.flatMap({ Plan(rawValue: $0) })
+        self.init(activePlan: plan)
+    }
+}
+
+extension PlanListViewController: UIViewControllerRestoration {
     static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
         guard let identifier = identifierComponents.last as? String where identifier == PlanListViewController.restorationIdentifier else {
             return nil
         }
 
-        var planID: Int? = nil
-        if coder.containsValueForKey(PlanListViewController.planRestorationKey) {
-            planID = coder.decodeIntegerForKey(PlanListViewController.planRestorationKey)
-        }
-        let plan = planID.flatMap({ Plan(rawValue: $0) })
-        return PlanListViewController(activePlan: plan)
+        let viewModel = PlanListViewModel(coder: coder)
+        return PlanListViewController(viewModel: viewModel)
     }
 
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
         super.encodeRestorableStateWithCoder(coder)
-        if let planID = activePlan?.rawValue {
-            coder.encodeInteger(planID, forKey: PlanListViewController.planRestorationKey)
-        }
+        viewModel.encodeWithCoder(coder)
     }
 }
