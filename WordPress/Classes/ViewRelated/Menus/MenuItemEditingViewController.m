@@ -60,6 +60,7 @@ typedef NS_ENUM(NSUInteger) {
 {
     [super loadView];
     
+    self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     
