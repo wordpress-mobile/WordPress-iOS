@@ -13,19 +13,6 @@ struct PlanListRow: ImmuTableRow {
 
     let action: ImmuTableAction? = nil
     
-    let titleAttributes = [
-        NSFontAttributeName: WPStyleGuide.tableviewTextFont(),
-        NSForegroundColorAttributeName: WPStyleGuide.tableViewActionColor()
-    ]
-    let priceAttributes = [
-        NSFontAttributeName: WPFontManager.openSansRegularFontOfSize(14.0),
-        NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
-    ]
-    let pricePeriodAttributes = [
-        NSFontAttributeName: WPFontManager.openSansItalicFontOfSize(13.0),
-        NSForegroundColorAttributeName: WPStyleGuide.greyLighten20()
-    ]
-    
     func configureCell(cell: UITableViewCell) {
         WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
         cell.imageView?.image = icon
@@ -36,30 +23,49 @@ struct PlanListRow: ImmuTableRow {
         cell.selectionStyle = .None
     }
 
-    var attributedTitle: NSAttributedString {
-        let planTitle = NSAttributedString(string: title, attributes: titleAttributes)
+    private var attributedTitle: NSAttributedString {
+        return Formatter.attributedTitle(title, price: price, active: active)
+    }
 
-        let attributedTitle = NSMutableAttributedString(attributedString: planTitle)
+    struct Formatter {
+        static let titleAttributes = [
+            NSFontAttributeName: WPStyleGuide.tableviewTextFont(),
+            NSForegroundColorAttributeName: WPStyleGuide.tableViewActionColor()
+        ]
+        static let priceAttributes = [
+            NSFontAttributeName: WPFontManager.openSansRegularFontOfSize(14.0),
+            NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
+        ]
+        static let pricePeriodAttributes = [
+            NSFontAttributeName: WPFontManager.openSansItalicFontOfSize(13.0),
+            NSForegroundColorAttributeName: WPStyleGuide.greyLighten20()
+        ]
 
-        if active {
-            let currentPlanAttributes = [
-                NSFontAttributeName: WPFontManager.openSansSemiBoldFontOfSize(11.0),
-                NSForegroundColorAttributeName: WPStyleGuide.validGreen()
-            ]
-            let currentPlan = NSLocalizedString("Current Plan", comment: "").uppercaseStringWithLocale(NSLocale.currentLocale())
-            let attributedCurrentPlan = NSAttributedString(string: currentPlan, attributes: currentPlanAttributes)
-            attributedTitle.appendString(" ")
-            attributedTitle.appendAttributedString(attributedCurrentPlan)
-        } else if !price.isEmpty {
-            attributedTitle.appendString(" ")
-            let attributedPrice = NSAttributedString(string: price, attributes: priceAttributes)
-            attributedTitle.appendAttributedString(attributedPrice)
+        static func attributedTitle(title: String, price: String, active: Bool) -> NSAttributedString {
+            let planTitle = NSAttributedString(string: title, attributes: titleAttributes)
 
-            attributedTitle.appendString(" ")
-            let pricePeriod = NSAttributedString(string: NSLocalizedString("per year", comment: ""), attributes: pricePeriodAttributes)
-            attributedTitle.appendAttributedString(pricePeriod)
+            let attributedTitle = NSMutableAttributedString(attributedString: planTitle)
+
+            if active {
+                let currentPlanAttributes = [
+                    NSFontAttributeName: WPFontManager.openSansSemiBoldFontOfSize(11.0),
+                    NSForegroundColorAttributeName: WPStyleGuide.validGreen()
+                ]
+                let currentPlan = NSLocalizedString("Current Plan", comment: "").uppercaseStringWithLocale(NSLocale.currentLocale())
+                let attributedCurrentPlan = NSAttributedString(string: currentPlan, attributes: currentPlanAttributes)
+                attributedTitle.appendString(" ")
+                attributedTitle.appendAttributedString(attributedCurrentPlan)
+            } else if !price.isEmpty {
+                attributedTitle.appendString(" ")
+                let attributedPrice = NSAttributedString(string: price, attributes: priceAttributes)
+                attributedTitle.appendAttributedString(attributedPrice)
+
+                attributedTitle.appendString(" ")
+                let pricePeriod = NSAttributedString(string: NSLocalizedString("per year", comment: ""), attributes: pricePeriodAttributes)
+                attributedTitle.appendAttributedString(pricePeriod)
+            }
+            return attributedTitle
         }
-        return attributedTitle
     }
 }
 
