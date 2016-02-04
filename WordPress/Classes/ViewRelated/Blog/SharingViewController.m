@@ -239,7 +239,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     __weak __typeof__(self) weakSelf = self;
-    [sharingService syncPublicizeServices:^{
+    [sharingService syncPublicizeServicesForBlog:self.blog success:^{
         [weakSelf syncConnections];
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Publicize service synchronization failed", @"Message to show when Publicize service synchronization failed")];
