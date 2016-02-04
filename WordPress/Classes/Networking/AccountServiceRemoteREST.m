@@ -1,9 +1,9 @@
 #import "AccountServiceRemoteREST.h"
 #import "WordPressComApi.h"
 #import "RemoteBlog.h"
+#import "RemoteBlogOptionsHelper.h"
 #import "Constants.h"
 #import "WPAccount.h"
-#import "JetpackREST.h"
 
 static NSString * const UserDictionaryIDKey = @"ID";
 static NSString * const UserDictionaryUsernameKey = @"username";
@@ -128,12 +128,6 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 - (NSArray *)remoteBlogsFromJSONArray:(NSArray *)jsonBlogs
 {
     NSArray *blogs = jsonBlogs;
-    if (!JetpackREST.enabled) {
-        blogs = [blogs wp_filter:^BOOL(NSDictionary *jsonBlog) {
-            BOOL isJetpack = [jsonBlog[@"jetpack"] boolValue];
-            return !isJetpack;
-        }];
-    }
     return [blogs wp_map:^id(NSDictionary *jsonBlog) {
         return [self remoteBlogFromJSONDictionary:jsonBlog];
     }];
@@ -151,6 +145,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
     blog.icon = [jsonBlog stringForKeyPath:@"icon.img"];
     blog.isAdmin = [[jsonBlog numberForKeyPath:@"capabilities.manage_options"] boolValue];
     blog.visible = [[jsonBlog numberForKey:@"visible"] boolValue];
+    blog.options = [RemoteBlogOptionsHelper mapOptionsFromResponse:jsonBlog];
     blog.planID = [jsonBlog numberForKeyPath:@"plan.product_id"];
     return blog;
 }

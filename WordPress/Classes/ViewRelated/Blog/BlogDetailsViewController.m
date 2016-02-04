@@ -163,7 +163,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncBlog:_blog completionHandler:^(NSArray *failures) {
+    [blogService syncBlog:_blog completionHandler:^() {
         [weakSelf configureTableViewData];
         [weakSelf.tableView reloadData];
     }];
