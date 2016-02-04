@@ -3,11 +3,9 @@
 #import "Comment.h"
 #import "WPAccount.h"
 #import "AccountService.h"
-#import "JetpackREST.h"
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
-#import "BlogSiteVisibilityHelper.h"
 #import "WordPress-Swift.h"
 #import "SFHFKeychainUtils.h"
 #import <WordPressApi/WordPressApi.h>
@@ -21,10 +19,9 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 NSString * const PostFormatStandard = @"standard";
 NSString * const ActiveModulesKeyPublicize = @"publicize";
-NSString * const ActiveModulesKeySharingButtons = @"sharingdaddy";
-NSString * const ActiveModulesKeyJSONAPI = @"json-api";
+NSString * const ActiveModulesKeySharingButtons = @"sharedaddy";
 NSString * const OptionsKeyActiveModules = @"active_modules";
-NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled";
+NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled";
 
 
 @interface Blog ()
@@ -320,15 +317,6 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled"
     }
 }
 
-- (NSString *)textForCurrentSiteVisibility
-{
-    if (!self.settings.privacy) {
-        [BlogSiteVisibilityHelper textForSiteVisibility:SiteVisibilityUnknown];
-    }
-    return [BlogSiteVisibilityHelper textForSiteVisibility:[self.settings.privacy intValue]];
-}
-
-
 - (NSDictionary *)getImageResizeDimensions
 {
     CGSize smallSize, mediumSize, largeSize;
@@ -444,6 +432,9 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled"
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
             return [self isHostedAtWPcom] && [self isAdmin];
+        case BlogFeaturePrivate:
+            // Private visibility is only supported by wpcom blogs
+            return [self isHostedAtWPcom];
         case BlogFeatureSiteManagement:
             return [self supportsSiteManagementServices];
     }
@@ -451,42 +442,34 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled"
 
 - (BOOL)supportsPublicize
 {
-    // wpcom blog and publicize has not been disabled
-    if (self.isHostedAtWPcom && ![[self getOptionValue:OptionsKeyPublicizeDisabled] boolValue]) {
-        return YES;
+    // Publicize is only supported via REST
+    if (![self supports:BlogFeatureWPComRESTAPI]) {
+        return NO;
     }
 
-    // self-hosted connected to jetpack via the wpcom acct signed into the app.
-    if (self.dotComID && [self jetpackPublicizeModuleEnabled]) {
-        return YES;
+    if (self.isHostedAtWPcom) {
+        // For WordPress.com YES unless it's disabled
+        return ![[self getOptionValue:OptionsKeyPublicizeDisabled] boolValue];
+    } else {
+        // For Jetpack, check if the module is enabled
+        return [self jetpackPublicizeModuleEnabled];
     }
-
-    // self-hosted connected to jetpack via a jetpackAccount
-    if ([self jetpackRESTSupported] && [self jetpackPublicizeModuleEnabled]) {
-        return YES;
-    }
-
-    return NO;
 }
 
 - (BOOL)supportsShareButtons
 {
-    // wpcom blog
+    // Publicize is only supported via REST
+    if (![self supports:BlogFeatureWPComRESTAPI]) {
+        return NO;
+    }
+
     if (self.isHostedAtWPcom) {
+        // For WordPress.com YES
         return YES;
+    } else {
+        // For Jetpack, check if the module is enabled
+        return [self jetpackSharingButtonsModuleEnabled];
     }
-
-    // self-hosted connected to jetpack via the wpcom acct signed into the app.
-    if (self.dotComID && [self jetpackSharingButtonsModuleEnabled]) {
-        return YES;
-    }
-
-    // self-hosted connected to jetpack via a jetpackAccount
-    if ([self jetpackRESTSupported] && [self jetpackSharingButtonsModuleEnabled]) {
-        return YES;
-    }
-
-    return NO;
 }
 
 - (BOOL)supportsPushNotifications
@@ -546,6 +529,14 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled"
     // Invalidate the Jetpack state since it's constructed from options
     self.jetpack = nil;
     [self didChangeValueForKey:@"options"];
+
+    self.siteVisibility = (SiteVisibility)([[self getOptionValue:@"blog_public"] integerValue]);
+    // HACK:Sergio Estevao (2015-08-31): Because there is no direct way to
+    // know if a user has permissions to change the options we check if the blog title property is read only or not.
+    // (Moved from BlogService, 2016-01-28 by aerych)
+    if ([self.options numberForKeyPath:@"blog_title.readonly"]) {
+        self.isAdmin = ![[self.options numberForKeyPath:@"blog_title.readonly"] boolValue];
+    }
 }
 
 + (NSSet *)keyPathsForValuesAffectingJetpack
@@ -629,7 +620,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled"
 
 - (BOOL)jetpackRESTSupported
 {
-    return JetpackREST.enabled && self.jetpackAccount && self.dotComID;
+    return self.jetpackAccount && self.dotComID;
 }
 
 - (BOOL)jetpackActiveModule:(NSString *)moduleName
@@ -640,12 +631,12 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize-permanently-disabled"
 
 - (BOOL)jetpackPublicizeModuleEnabled
 {
-    return [self jetpackActiveModule:ActiveModulesKeyPublicize] && [self jetpackActiveModule:ActiveModulesKeyJSONAPI];
+    return [self jetpackActiveModule:ActiveModulesKeyPublicize];
 }
 
 - (BOOL)jetpackSharingButtonsModuleEnabled
 {
-    return [self jetpackActiveModule:ActiveModulesKeySharingButtons] && [self jetpackActiveModule:ActiveModulesKeyJSONAPI];
+    return [self jetpackActiveModule:ActiveModulesKeySharingButtons];
 }
 
 #pragma mark - Private Methods
