@@ -47,7 +47,7 @@ class PlanListViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let planVC = PlanDetailViewController.controllerWithPlan(.Premium)
+        let planVC = PlanDetailViewController.controllerWithPlan(availablePlans[indexPath.row])
         let navigationVC = UINavigationController(rootViewController: planVC)
         
         presentViewController(navigationVC, animated: true, completion: nil)
