@@ -143,6 +143,11 @@ final class PlanListViewController: UITableViewController {
     }
 }
 
+extension PlanListViewModel: Equatable {}
+func ==(lhs: PlanListViewModel, rhs: PlanListViewModel) -> Bool {
+    return lhs.activePlan == rhs.activePlan
+}
+
 /*
  Since PlanListViewModel is a struct, it can't conform to NSCoding.
  We're just using the same naming for convenience.

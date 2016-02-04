@@ -41,7 +41,7 @@ class PlanListViewControllerTest: XCTestCase {
     }
 
     func testPlanImageWhenActivePlanSet() {
-        let model = PlanListViewModel(activePlan: Plan.Premium)
+        let model = PlanListViewModel(activePlan: .Premium)
         let freeRow = model.tableViewModel.planRowAtIndex(0)
         let premiumRow = model.tableViewModel.planRowAtIndex(1)
         let businessRow = model.tableViewModel.planRowAtIndex(2)
@@ -60,6 +60,54 @@ class PlanListViewControllerTest: XCTestCase {
         expect(freeRow.icon).to(equal(Plan.Free.image))
         expect(premiumRow.icon).to(equal(Plan.Premium.image))
         expect(businessRow.icon).to(equal(Plan.Business.image))
+    }
+
+    func testPlanViewModelEquatable() {
+        let freeModel = PlanListViewModel(activePlan: .Free)
+        let secondFreeModel = PlanListViewModel(activePlan: .Free)
+        let premiumModel = PlanListViewModel(activePlan: .Premium)
+        let businessModel = PlanListViewModel(activePlan: .Business)
+        let nilModel = PlanListViewModel(activePlan: nil)
+
+        expect(freeModel).to(equal(secondFreeModel))
+
+        // Let's test all the combinations, for science!
+        expect(freeModel).toNot(equal(premiumModel))
+        expect(freeModel).toNot(equal(businessModel))
+        expect(freeModel).toNot(equal(nilModel))
+        expect(premiumModel).toNot(equal(freeModel))
+        expect(premiumModel).toNot(equal(businessModel))
+        expect(premiumModel).toNot(equal(nilModel))
+        expect(businessModel).toNot(equal(freeModel))
+        expect(businessModel).toNot(equal(premiumModel))
+        expect(businessModel).toNot(equal(nilModel))
+        expect(nilModel).toNot(equal(freeModel))
+        expect(nilModel).toNot(equal(premiumModel))
+        expect(nilModel).toNot(equal(businessModel))
+    }
+
+    func testPlanViewModelEncodingWithActivePlanSet() {
+        let model = PlanListViewModel(activePlan: .Business)
+        let data = NSMutableData()
+        let coder = NSKeyedArchiver(forWritingWithMutableData: data)
+        model.encodeWithCoder(coder)
+        coder.finishEncoding()
+
+        let decoder = NSKeyedUnarchiver(forReadingWithData: data)
+        let decodedModel = PlanListViewModel(coder: decoder)
+        expect(decodedModel).to(equal(model))
+    }
+
+    func testPlanViewModelEncodingWithActivePlanNotSet() {
+        let model = PlanListViewModel(activePlan: nil)
+        let data = NSMutableData()
+        let coder = NSKeyedArchiver(forWritingWithMutableData: data)
+        model.encodeWithCoder(coder)
+        coder.finishEncoding()
+
+        let decoder = NSKeyedUnarchiver(forReadingWithData: data)
+        let decodedModel = PlanListViewModel(coder: decoder)
+        expect(decodedModel).to(equal(model))
     }
 
     let testImage = Plan.Free.image
