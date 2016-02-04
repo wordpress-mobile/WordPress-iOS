@@ -22,7 +22,6 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     required convenience init() {
         self.init(style: .Grouped)
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "refreshModelWithNotification:", name: WPAccountDefaultWordPressComAccountChangedNotification, object: nil)
         notificationCenter.addObserver(self, selector: "refreshModelWithNotification:", name: HelpshiftUnreadCountUpdatedNotification, object: nil)
     }
 
@@ -45,12 +44,15 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
-        reloadViewModel()
-        // FIXME: @koke 2015-12-17
-        // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4416
-        // The view controller should observe changes to account details
-        // regardless of who asked for them.
-        // For now I'm just porting this to Swift as it is.
+
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        _ = service.defaultAccountChanged
+            .takeUntil(rx_deallocated)
+            .subscribeNext({ [unowned self] _ in
+                self.reloadViewModel()
+                })
+
         refreshAccountDetails()
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
@@ -177,9 +179,15 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func pushMyProfile() -> ImmuTableAction {
         return { [unowned self] row in
+            guard let account = self.defaultAccount() else {
+                let error = "Tried to push My Profile without a default account. This shouldn't happen"
+                assertionFailure(error)
+                DDLogSwift.logError(error)
+                return
+            }
+
             WPAppAnalytics.track(.OpenedMyProfile)
-            let controller = MyProfileViewController()
-            controller.account = self.defaultAccount()
+            let controller = MyProfileViewController(account: account)
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
@@ -275,9 +283,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         guard let account = defaultAccount() else { return }
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
-        service.updateUserDetailsForAccount(account, success: { [weak self] in
-            self?.reloadViewModel()
-            }, failure: { _ in })
+        service.updateUserDetailsForAccount(account, success: { _ in }, failure: { _ in })
     }
 
     func logOut() {

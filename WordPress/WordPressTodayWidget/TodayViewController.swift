@@ -94,9 +94,9 @@ class TodayViewController: UIViewController {
     
     @IBAction func launchContainingApp() {
         if let unwrappedSiteID = siteID {
-            extensionContext!.openURL(NSURL(string: "\(WPCOM_SCHEME)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
+            extensionContext!.openURL(NSURL(string: "\(WPComScheme)://viewstats?siteId=\(unwrappedSiteID)")!, completionHandler: nil)
         } else {
-            extensionContext!.openURL(NSURL(string: "\(WPCOM_SCHEME)://")!, completionHandler: nil)
+            extensionContext!.openURL(NSURL(string: "\(WPComScheme)://")!, completionHandler: nil)
         }
     }
     

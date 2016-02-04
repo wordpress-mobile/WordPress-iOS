@@ -1,12 +1,78 @@
+import AFNetworking
 import Foundation
+import RxSwift
 
 class AccountSettingsRemote: ServiceRemoteREST {
-    func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) {
+    static let remotes = NSMapTable(keyOptions: .StrongMemory, valueOptions: .WeakMemory)
+
+    /// Returns an AccountSettingsRemote with the given api, reusing a previous
+    /// remote if it exists.
+    static func remoteWithApi(api: WordPressComApi) -> AccountSettingsRemote {
+        // We're hashing on the authToken because we don't want duplicate api
+        // objects for the same account.
+        //
+        // In theory this would be taken care of by the fact that the api comes
+        // from a WPAccount, and since WPAccount is a managed object Core Data
+        // guarantees there's only one of it.
+        // 
+        // However it might be possible that the account gets deallocated and
+        // when it's fetched again it would create a different api object.
+        let key = api.authToken.hashValue
+        // FIXME: not thread safe
+        // @koke 2016-01-21
+        if let remote = remotes.objectForKey(key) {
+            return remote as! AccountSettingsRemote
+        } else {
+            let remote = AccountSettingsRemote(api: api)
+            remotes.setObject(remote, forKey: key)
+            return remote
+        }
+    }
+
+    let settings: Observable<AccountSettings>
+
+    /// Creates a new AccountSettingsRemote. It is recommended that you use AccountSettingsRemote.remoteWithApi(_)
+    /// instead.
+    override init(api: WordPressComApi) {
+        settings = AccountSettingsRemote.settingsWithApi(api)
+        super.init(api: api)
+    }
+
+    private static func settingsWithApi(api: WordPressComApi) -> Observable<AccountSettings> {
+        let settings = Observable<AccountSettings>.create { observer in
+            let remote = AccountSettingsRemote(api: api)
+            let operation = remote.getSettings(
+                success: { settings in
+                    observer.onNext(settings)
+                    observer.onCompleted()
+                }, failure: { error in
+                    let nserror = error as NSError
+                    if nserror.domain == NSURLErrorDomain && nserror.code == NSURLErrorCancelled {
+                        // If we canceled the operation, don't propagate the error
+                        // This probably means the observable is being disposed
+                        DDLogSwift.logError("Canceled refreshing settings")
+                    } else {
+                        observer.onError(error)
+                    }
+            })
+            return AnonymousDisposable() {
+                if let operation = operation {
+                    if !operation.finished {
+                        operation.cancel()
+                    }
+                }
+            }
+        }
+
+        return settings
+    }
+
+    func getSettings(success success: AccountSettings -> Void, failure: ErrorType -> Void) -> AFHTTPRequestOperation? {
         let endpoint = "me/settings"
         let parameters = ["context": "edit"]
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
-        api.GET(path,
+        return api.GET(path,
             parameters: parameters,
             success: {
                 operation, responseObject in
