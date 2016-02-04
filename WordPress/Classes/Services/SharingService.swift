@@ -458,7 +458,7 @@ public class SharingService : LocalCoreDataService
     ///
     public func syncSharingButtonsForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let blogObjectID = blog.objectID
-        let remote = SharingServiceRemote(api: apiForRequest())
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
         remote.getSharingButtonsForSite(blog.dotComID,
             success: { (remoteButtons:[RemoteSharingButton]) in
                 self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)
@@ -474,7 +474,7 @@ public class SharingService : LocalCoreDataService
     public func updateSharingButtonsForBlog(blog: Blog, sharingButtons: [SharingButton], success: (() -> Void)?, failure: (NSError! -> Void)?) {
 
         let blogObjectID = blog.objectID
-        let remote = SharingServiceRemote(api: apiForRequest())
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
         remote.updateSharingButtonsForSite(blog.dotComID,
             sharingButtons: remoteShareButtonsFromShareButtons(sharingButtons),
             success: { (remoteButtons:[RemoteSharingButton]) in
