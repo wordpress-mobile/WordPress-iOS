@@ -31,6 +31,16 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePushNotifications,
     /// Does the blog support theme browsing?
     BlogFeatureThemeBrowsing,
+    /// Does the blog support private visibility?
+    BlogFeaturePrivate,
+    /// Does the blog support sharing?
+    BlogFeatureSharing,
+    /// Does the blog support people management?
+    BlogFeaturePeople,
+    /// Can the blog's site be changed or deleted?
+    BlogFeatureSiteManagement,
+    /// Does the blog support different paid plans?
+    BlogFeaturePlans
 };
 
 typedef NS_ENUM(NSInteger, SiteVisibility) {
@@ -50,6 +60,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSNumber *hasOlderPages;
 @property (nonatomic, strong, readwrite) NSSet *posts;
 @property (nonatomic, strong, readwrite) NSSet *categories;
+@property (nonatomic, strong, readwrite) NSSet *tags;
 @property (nonatomic, strong, readwrite) NSSet *comments;
 @property (nonatomic, strong, readwrite) NSSet *connections;
 @property (nonatomic, strong, readwrite) NSSet *themes;
@@ -76,6 +87,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
 @property (nonatomic, strong, readwrite) NSString *icon;
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
+@property (nonatomic, strong, readwrite) NSNumber *planID;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
@@ -133,13 +145,6 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 
 #pragma mark - Blog information
 - (BOOL)isPrivate;
-/**
- *  The text description for the current privacy settting set in the blog
- *
- *  @return the text description.
- */
-- (NSString *)textForCurrentSiteVisibility;
-
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;
 - (NSString *)loginUrl;

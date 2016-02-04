@@ -39,6 +39,11 @@
 @property (nonatomic, copy) NSString *icon;
 
 /**
+ *  @details Product ID of the site's current plan, if it has one.
+ */
+@property (nonatomic, copy) NSNumber *planID;
+
+/**
  *  @details Indicates whether it's a jetpack site, or not.
  */
 @property (nonatomic, assign) BOOL jetpack;
@@ -52,5 +57,10 @@
  *  @details Blog's visibility preferences.
  */
 @property (nonatomic, assign) BOOL visible;
+
+/**
+ *  @details Blog's options preferences.
+ */
+@property (nonatomic, strong) NSDictionary *options;
 
 @end
