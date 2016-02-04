@@ -312,6 +312,15 @@ static CGFloat const DefaultCellHeight = 44.0;
     return UITableViewCellEditingStyleNone;
 }
 
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:editActionsForRowAtIndexPath:)]) {
+        return [self.delegate tableView:tableView editActionsForRowAtIndexPath:indexPath];
+    }
+    
+    return nil;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.delegate respondsToSelector:@selector(tableView:cellForRowAtIndexPath:)]) {

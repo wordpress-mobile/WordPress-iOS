@@ -68,6 +68,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
@@ -358,7 +359,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.timestamp = [self.comment.dateCreated shortString];
     cell.site = self.comment.authorUrlForDisplay;
     cell.commentText = [self.comment contentForDisplay];
-    cell.isApproved = [self.comment.status isEqualToString:@"approve"];
+    cell.isApproved = [self.comment.status isEqualToString:CommentStatusApproved];
     
     if (cell.isLayoutCell == NO) {
         if ([self.comment avatarURLForDisplay]) {
@@ -392,7 +393,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.isTrashEnabled = YES;
     cell.isSpamEnabled = YES;
 
-    cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
+    cell.isApproveOn = [self.comment.status isEqualToString:CommentStatusApproved];
     cell.isLikeOn = self.comment.isLiked;
 
     // Setup the Callbacks
