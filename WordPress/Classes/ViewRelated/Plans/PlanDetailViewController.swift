@@ -55,21 +55,20 @@ class PlanDetailViewController: UITableViewController {
     
     private func configureImmuTable() {
         viewModel = ImmuTable(sections:
-            [ ImmuTableSection(rows: [
-                FeatureListItemRow(title: "WordPress.com Site"),
-                FeatureListItemRow(title: "Full Access to Web Version"),
-                FeatureListItemRow(title: "A Custom Site Address", webOnly: true),
-                FeatureListItemRow(title: "No Ads"),
-                FeatureListItemRow(title: "Custom Fonts & Colors"),
-                FeatureListItemRow(title: "CSS Editing"),
-                FeatureListItemRow(title: "Video Storage & Hosting"),
-                FeatureListItemRow(title: "eCommerce", available: false),
-                FeatureListItemRow(title: "Premium Themes", available: false),
-                FeatureListItemRow(title: "Google Analytics", available: false),
-                FeatureListItemRow(title: "Storage Space", detailText: "13GB"),
-                FeatureListItemRow(title: "Support", detailText: "In-App & Direct Email"),
-                ])
-            ]
+            [ ImmuTableSection(rows: PlanFeature.allFeatures.map { feature in
+                let available = plan.features.contains(feature)
+                
+                if available {
+                    // If a feature is 'available', we have to find and use the feature instance
+                    // from the _plan's_ list of features, as it will have the correct associated values
+                    // for any enum case that has associated values.
+                    let index = plan.features.indexOf(feature)
+                    let planFeature = plan.features[index!]
+                    return FeatureListItemRow(feature: planFeature, available: available)
+                }
+                
+                return FeatureListItemRow(feature: feature, available: available)
+            } ) ]
         )
     }
     
@@ -85,7 +84,7 @@ class PlanDetailViewController: UITableViewController {
     private func priceDescriptionForPlan(plan: Plan) -> String? {
         switch plan {
         case .Free:
-            return "Free!"
+            return "$0 for life"
         case .Premium:
             return "$99.99 per year"
         case .Business:
@@ -135,31 +134,28 @@ extension PlanDetailViewController {
 struct FeatureListItemRow : ImmuTableRow {
     static let cell = ImmuTableCell.Class(PlanFeatureListCell)
     
-    let title: String
-    let webOnly: Bool
-    let available: Bool
-    let detailText: String?
     let action: ImmuTableAction? = nil
     
-    init(title: String, webOnly: Bool = false, available: Bool = true, detailText: String? = nil) {
-        self.title = title
-        self.webOnly = webOnly
+    let feature: PlanFeature
+    let available: Bool
+    
+    init(feature: PlanFeature, available: Bool) {
+        self.feature = feature
         self.available = available
-        self.detailText = detailText
     }
     
     func configureCell(cell: UITableViewCell) {
         let cell = cell as! PlanFeatureListCell
-        cell.titleLabel.text = title
-        cell.detailLabel.text = detailText
+        cell.titleLabel.text = feature.title
+        cell.detailLabel.text = feature.description
         
         cell.titleLabel.textColor = available ? WPStyleGuide.darkGrey() : WPStyleGuide.grey()
         cell.titleLabel.alpha = available ? 1.0 : 0.5
         
-        cell.webOnlyLabel.hidden = !webOnly
+        cell.webOnlyLabel.hidden = !feature.webOnly
         cell.unavailableFeatureMarker.hidden = available
         
-        let noDetailText = (detailText ?? "").isEmpty
+        let noDetailText = (feature.description ?? "").isEmpty
         cell.availableFeatureStackView.hidden = !available || !noDetailText
         cell.detailLabel.hidden = noDetailText
     }
@@ -174,6 +170,8 @@ class PlanFeatureListCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        webOnlyLabel.text = NSLocalizedString("WEB ONLY", comment: "Describes a feature of a WordPress.com plan that is only available to users via the web.")
         
         unavailableFeatureMarker.backgroundColor = WPStyleGuide.grey()
         webOnlyLabel.textColor = WPStyleGuide.grey()
