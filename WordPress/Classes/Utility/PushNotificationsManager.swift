@@ -21,12 +21,12 @@ final public class PushNotificationsManager : NSObject
     
     /// Returns the shared PushNotificationsManager instance.
     ///
-    public static let sharedInstance = PushNotificationsManager()
+    static let sharedInstance = PushNotificationsManager()
     
     
     /// Stores the Apple's Push Notifications Token
     ///
-    public var deviceToken : String? {
+    var deviceToken : String? {
         get {
             return NSUserDefaults.standardUserDefaults().stringForKey(deviceTokenKey) ?? String()
         }
@@ -39,7 +39,7 @@ final public class PushNotificationsManager : NSObject
     
     /// Stores the WordPress.com Device identifier
     ///
-    public var deviceId : String? {
+    var deviceId : String? {
         get {
             return standardUserDefaults.stringForKey(deviceIdKey) ?? String()
         }
@@ -52,14 +52,14 @@ final public class PushNotificationsManager : NSObject
     
     /// Returns the SharedApplication instance. This is meant for Unit Testing purposes.
     ///
-    public var sharedApplication : UIApplication {
+    var sharedApplication : UIApplication {
         return UIApplication.sharedApplication()
     }
     
     
     /// Returns the Application Execution State. This is meant for Unit Testing purposes.
     ///
-    public var applicationState : UIApplicationState {
+    var applicationState : UIApplicationState {
         return sharedApplication.applicationState
     }
     
@@ -91,7 +91,7 @@ final public class PushNotificationsManager : NSObject
     
     /// Registers the device for Remote Notifications: Badge + Sounds + Alerts
     ///
-    public func registerForRemoteNotifications() {
+    func registerForRemoteNotifications() {
         if sharedApplication.isRunningSimulator() || sharedApplication.isAlphaBuild() {
             return;
         }
@@ -102,7 +102,7 @@ final public class PushNotificationsManager : NSObject
     
     
     /// Indicates whether Push Notifications are enabled in Settings.app, or not.
-    public func notificationsEnabledInDeviceSettings() -> Bool {
+    func notificationsEnabledInDeviceSettings() -> Bool {
         return (sharedApplication.currentUserNotificationSettings()?.types ?? .None) != .None
     }
     
@@ -112,7 +112,7 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Note: Both Helpshift and Mixpanel will also be initialized. The token will be persisted across App Sessions.
     ///
-    public func registerDeviceToken(tokenData: NSData) {
+    func registerDeviceToken(tokenData: NSData) {
         // We want to register Helpshift regardless so that way if a user isn't logged in
         // they can still get push notifications that we replied to their support ticket.
         Helpshift.sharedInstance()?.registerDeviceToken(tokenData)
@@ -158,7 +158,7 @@ final public class PushNotificationsManager : NSObject
     /// - Parameters:
     ///     - error: Details the reason of failure
     ///
-    public func registrationDidFail(error: NSError) {
+    func registrationDidFail(error: NSError) {
         DDLogSwift.logError("Failed to register for push notifications: \(error)")
         unregisterDeviceToken()
     }
@@ -167,7 +167,7 @@ final public class PushNotificationsManager : NSObject
     
     /// Unregister the device from WordPress.com notifications
     ///
-    public func unregisterDeviceToken() {
+    func unregisterDeviceToken() {
         guard let knownDeviceId = deviceId else {
             return
         }
@@ -202,7 +202,7 @@ final public class PushNotificationsManager : NSObject
     ///     - userInfo: The Notification's Payload
     ///     - completionHandler: A callback, to be executed on completion
     ///
-    public func handleNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) {
+    func handleNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) {
         DDLogSwift.logVerbose("Received push notification:\nPayload: \(userInfo)\n")
         DDLogSwift.logVerbose("Current Application state: \(applicationState.rawValue)");
         
@@ -249,7 +249,7 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    public func handleHelpshiftNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+    func handleHelpshiftNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
         guard let origin = userInfo.stringForKey(notificationOriginKey) where origin == helpshiftOriginValue else {
             return false
         }
@@ -277,7 +277,7 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    public func handleAuthenticationNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+    func handleAuthenticationNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
         // WordPress.com Push Authentication Notification
         // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
         // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
@@ -309,7 +309,7 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    public func handleInactiveNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+    func handleInactiveNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
         guard applicationState == .Inactive else {
             return false
         }
@@ -336,7 +336,7 @@ final public class PushNotificationsManager : NSObject
     ///
     /// - Returns: True when handled. False otherwise
     ///
-    public func handleBackgroundNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
+    func handleBackgroundNotification(userInfo: NSDictionary, completionHandler: (UIBackgroundFetchResult -> Void)?) -> Bool {
         guard applicationState == .Background else {
             return false
         }
