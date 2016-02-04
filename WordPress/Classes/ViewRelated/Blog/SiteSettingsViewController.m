@@ -99,11 +99,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) SettingTableViewCell *deleteSiteCell;
 
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) NSString *url;
-@property (nonatomic, strong) NSString *authToken;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic, assign) BOOL geolocationEnabled;
 @end
 
 @implementation SiteSettingsViewController
@@ -161,13 +158,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshTriggered:) forControlEvents:UIControlEventValueChanged];
-    
-    self.url = self.blog.url;
-    self.authToken = self.blog.authToken;
+
     self.username = self.blog.usernameForSite;
     self.password = self.blog.password;
-    self.geolocationEnabled = self.blog.settings.geolocationEnabled;
-    
+
     [self refreshData];
 }
 
@@ -284,7 +278,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
     _geotaggingCell = [SwitchTableViewCell new];
     _geotaggingCell.name = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
-    _geotaggingCell.on = self.geolocationEnabled;
+    _geotaggingCell.on = self.blog.settings.geolocationEnabled;
     __weak SiteSettingsViewController *weakSelf = self;
     _geotaggingCell.onChange = ^(BOOL value){
         [weakSelf toggleGeolocation:value];
@@ -875,10 +869,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)toggleGeolocation:(BOOL)value
 {
-    self.geolocationEnabled = value;
-
     // Save the change
-    self.blog.settings.geolocationEnabled = self.geolocationEnabled;
+    self.blog.settings.geolocationEnabled = value;
     [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
 }
 
@@ -974,7 +966,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
     NSURL *targetURL = [NSURL URLWithString:path];
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    webViewController.authToken = self.authToken;
+    webViewController.authToken = self.blog.authToken;
     webViewController.username = self.username;
     webViewController.password = self.password;
     webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
