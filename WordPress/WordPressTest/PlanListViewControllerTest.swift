@@ -16,17 +16,13 @@ class PlanListViewControllerTest: XCTestCase {
 
     // MARK: - PlanListRow tests
 
-    func testPlanListRowTitleWhenCurrent() {
-        let row = PlanListRow(title: "Title", active: true, price: "$99", description: "description", icon: testImage)
-
-        let attributedTitle = row.attributedTitle
+    func testPlanListRowAttributedTitleWhenCurrent() {
+        let attributedTitle = PlanListRow.Formatter.attributedTitle("Title", price: "$99", active: true)
         expect(attributedTitle.string).to(equal("Title CURRENT PLAN"))
     }
 
-    func testPlanListRowTitleWhenNotCurrent() {
-        let row = PlanListRow(title: "Title", active: false, price: "$99", description: "description", icon: testImage)
-
-        let attributedTitle = row.attributedTitle
+    func testPlanListRowAttributedTitleWhenNotCurrent() {
+        let attributedTitle = PlanListRow.Formatter.attributedTitle("Title", price: "$99", active: false)
         expect(attributedTitle.string).to(equal("Title $99 per year"))
     }
 
