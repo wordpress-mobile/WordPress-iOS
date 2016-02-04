@@ -43,11 +43,23 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
 };
 
 NS_ENUM(NSInteger, SiteSettingsWriting) {
-    SiteSettingsWritingGeotagging = 0,
-    SiteSettingsWritingDefaultCategory,
+    SiteSettingsWritingDefaultCategory = 0,
     SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingRelatedPosts,
     SiteSettingsWritingCount,
+};
+
+NS_ENUM(NSInteger, SiteSettingsDevice) {
+    SiteSettingsDeviceGeotagging = 0,
+    SiteSettingsDeviceDefaultCategory,
+    SiteSettingsDeviceDefaultPostFormat,
+    SiteSettingsDeviceCount,
+};
+
+NS_ENUM(NSInteger, SiteSettingsAdvanced) {
+    SiteSettingsAdvancedStartOver = 0,
+    SiteSettingsAdvancedDeleteSite,
+    SiteSettingsAdvancedCount,
 };
 
 NS_ENUM(NSInteger, SiteSettingsSection) {
@@ -55,7 +67,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
     SiteSettingsSectionDiscussion,
+    SiteSettingsSectionDevice,
     SiteSettingsSectionRemoveSite,
+    SiteSettingsSectionAdvanced,
 };
 
 
@@ -71,14 +85,18 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
-@property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) SettingTableViewCell *relatedPostsCell;
-#pragma mark - Discussion
+#pragma mark - Discussion Section
 @property (nonatomic, strong) SettingTableViewCell *discussionSettingsCell;
+#pragma mark - Device Section
+@property (nonatomic, strong) SwitchTableViewCell *geotaggingCell;
 #pragma mark - Removal Section
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
+#pragma mark - Advanced Section
+@property (nonatomic, strong) SettingTableViewCell *startOverCell;
+@property (nonatomic, strong) SettingTableViewCell *deleteSiteCell;
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSString *url;
@@ -118,14 +136,22 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
     
-    [sections addObject:@(SiteSettingsSectionWriting)];
+    if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
+        [sections addObject:@(SiteSettingsSectionWriting)];
+    }
     
     if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
         [sections addObject:@(SiteSettingsSectionDiscussion)];
     }
     
+    [sections addObject:@(SiteSettingsSectionDevice)];
+    
     if ([self.blog supports:BlogFeatureRemovable]) {
         [sections addObject:@(SiteSettingsSectionRemoveSite)];
+    }
+
+    if ([self.blog supports:BlogFeatureSiteManagement]) {
+        [sections addObject:@(SiteSettingsSectionAdvanced)];
     }
 
     self.tableSections = sections;
@@ -181,23 +207,24 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return SiteSettingsAccountCount;
         }
         case SiteSettingsSectionWriting: {
-            if (!self.blog.isAdmin) {
-                // If we're not admin, we just want to show the geotagging cell
-                return 1;
-            }
-            NSInteger rowsToHide = 0;
-            if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
-                //  NOTE: Sergio Estevao (2015-09-23): Hides the related post for self-hosted sites not in jetpack
-                // because this options is not available for them.
-                rowsToHide += 1;
-            }
-            return SiteSettingsWritingCount - rowsToHide;
+            return SiteSettingsWritingCount;
         }
         case SiteSettingsSectionDiscussion: {
             return 1;
         }
+        case SiteSettingsSectionDevice: {
+            if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
+                // NOTE: Brent Coursey (2016-02-03): Only show geotagging cell for user of the REST API (REST).
+                // Any post default options are available in the Writing section for REST users.
+                return 1;
+            }
+            return SiteSettingsDeviceCount;
+        }
         case SiteSettingsSectionRemoveSite: {
             return 1;
+        }
+        case SiteSettingsSectionAdvanced: {
+            return SiteSettingsAdvancedCount;
         }
     }
     return 0;
@@ -322,22 +349,28 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return _removeSiteCell;
 }
 
+- (void)configureDefaultCategoryCell
+{
+    PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.settings.defaultCategoryID];
+    [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
+}
+
+- (void)configureDefaultPostFormatCell
+{
+    [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
     switch (row) {
-        case (SiteSettingsWritingGeotagging):{
-            return self.geotaggingCell;
-        }
-        break;
         case (SiteSettingsWritingDefaultCategory):{
-            PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.settings.defaultCategoryID];
-            [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
+            [self configureDefaultCategoryCell];
             return self.defaultCategoryCell;
         }
         break;
         case (SiteSettingsWritingDefaultPostFormat):{
-            [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
+            [self configureDefaultPostFormatCell];
             return self.defaultPostFormatCell;
         }
         case (SiteSettingsWritingRelatedPosts):{
@@ -345,6 +378,28 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         }
         break;
 
+    }
+    return nil;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForDeviceSettingsAtRow:(NSInteger)row
+{
+    switch (row) {
+        case (SiteSettingsDeviceGeotagging):{
+            return self.geotaggingCell;
+        }
+            break;
+        case (SiteSettingsDeviceDefaultCategory):{
+            [self configureDefaultCategoryCell];
+            return self.defaultCategoryCell;
+        }
+            break;
+        case (SiteSettingsDeviceDefaultPostFormat):{
+            [self configureDefaultPostFormatCell];
+            return self.defaultPostFormatCell;
+        }
+            break;
+            
     }
     return nil;
 }
@@ -415,13 +470,51 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return self.addressTextCell;
         } break;
         case SiteSettingsGeneralPrivacy: {
-            [self.privacyTextCell setTextValue:[self.blog textForCurrentSiteVisibility]];
+            [self.privacyTextCell setTextValue:[BlogSiteVisibilityHelper titleForCurrentSiteVisibilityOfBlog:self.blog]];
             return self.privacyTextCell;
         } break;
     }
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
 }
 
+- (SettingTableViewCell *)startOverCell
+{
+    if (_startOverCell) {
+        return _startOverCell;
+    }
+    
+    _startOverCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Start Over", @"Label for selecting the Start Over Settings item")
+                                                        editable:YES
+                                                 reuseIdentifier:nil];
+    return _startOverCell;
+}
+
+- (SettingTableViewCell *)deleteSiteCell
+{
+    if (_deleteSiteCell) {
+        return _deleteSiteCell;
+    }
+    
+    _deleteSiteCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Delete Site", @"Label for selecting the Delete Site Settings item")
+                                                         editable:YES
+                                                  reuseIdentifier:nil];
+    return _deleteSiteCell;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForAdvancedSettingsAtRow:(NSInteger)row
+{
+    switch (row) {
+        case SiteSettingsAdvancedStartOver: {
+            return self.startOverCell;
+        } break;
+        case SiteSettingsAdvancedDeleteSite: {
+            return self.deleteSiteCell;
+        } break;
+    }
+
+    NSAssert(false, @"Missing Advanced section cell");
+    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -439,8 +532,14 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionDiscussion: {
             return self.discussionSettingsCell;
         }
+        case SiteSettingsSectionDevice: {
+            return [self tableView:tableView cellForDeviceSettingsAtRow:indexPath.row];
+        }
         case SiteSettingsSectionRemoveSite: {
             return self.removeSiteCell;
+        }
+        case SiteSettingsSectionAdvanced: {
+            return [self tableView:tableView cellForAdvancedSettingsAtRow:indexPath.row];
         }
     }
 
@@ -488,26 +587,22 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionWriting:
             headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
             break;
+        case SiteSettingsSectionDevice:
+            headingTitle = NSLocalizedString(@"This Device", @"Title for the device section in site settings screen");
+            break;
+        case SiteSettingsSectionAdvanced:
+            headingTitle = NSLocalizedString(@"Advanced", @"Title for the advanced section in site settings screen");
+            break;
     }
     return headingTitle;
 }
 
 - (void)showPrivacySelector
 {
-    NSArray *values = @[ @(SiteVisibilityPublic), @(SiteVisibilityHidden), @(SiteVisibilityPrivate)];
-    NSMutableArray *titles = [NSMutableArray array];
-    for (NSNumber * value in values) {
-        [titles addObject:[BlogSiteVisibilityHelper textForSiteVisibility:[value integerValue]]];
-    }
-    NSArray *hints = @[
-                       NSLocalizedString(@"Your site is visible to everyone, and it may be indexed by search engines.",
-                                         @"Hint for users when public privacy setting is set"),
-                       NSLocalizedString(@"Your site is visible to everyone, but asks search engines not to index your site.",
-                                         @"Hint for users when hidden privacy setting is set"),
-                       NSLocalizedString(@"Your site is only visible to you and users you approve.",
-                                         @"Hint for users when private privacy setting is set"),
-                       ];
-
+    NSArray *values = [BlogSiteVisibilityHelper siteVisibilityValuesForBlog:self.blog];
+    NSArray *titles = [BlogSiteVisibilityHelper titlesForSiteVisibilityValues:values];
+    NSArray *hints  = [BlogSiteVisibilityHelper hintsForSiteVisibilityValues:values];
+   
     NSNumber *currentPrivacy = @(self.blog.siteVisibility);
     if (!currentPrivacy) {
         currentPrivacy = [values firstObject];
@@ -608,6 +703,22 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
 }
 
+- (void)showDefaultCategorySelector
+{
+    PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSNumber *defaultCategoryID = self.blog.settings.defaultCategoryID ?: @(PostCategoryUncategorized);
+    PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
+    NSArray *currentSelection = @[];
+    if (postCategory){
+        currentSelection = @[postCategory];
+    }
+    PostCategoriesViewController *postCategoriesViewController = [[PostCategoriesViewController alloc] initWithBlog:self.blog
+                                                                                                   currentSelection:currentSelection
+                                                                                                      selectionMode:CategoriesSelectionModeBlogDefault];
+    postCategoriesViewController.delegate = self;
+    [self.navigationController pushViewController:postCategoriesViewController animated:YES];
+}
+
 - (void)showPostFormatSelector
 {
     NSArray *titles = self.blog.sortedPostFormatNames;
@@ -634,7 +745,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         if ([status isKindOfClass:[NSString class]]) {
             if (weakSelf.blog.settings.defaultPostFormat != status) {
                 weakSelf.blog.settings.defaultPostFormat = status;
-                [weakSelf saveSettings];
+                if ([weakSelf savingWritingDefaultsIsAvailable]) {
+                    [weakSelf saveSettings];
+                }
             }
         }
     };
@@ -653,18 +766,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     switch (row) {
         case SiteSettingsWritingDefaultCategory:{
-            PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            NSNumber *defaultCategoryID = self.blog.settings.defaultCategoryID ?: @(PostCategoryUncategorized);
-            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
-            NSArray *currentSelection = @[];
-            if (postCategory){
-                currentSelection = @[postCategory];
-            }
-            PostCategoriesViewController *postCategoriesViewController = [[PostCategoriesViewController alloc] initWithBlog:self.blog
-                                                                                                           currentSelection:currentSelection
-                                                                                                              selectionMode:CategoriesSelectionModeBlogDefault];
-            postCategoriesViewController.delegate = self;
-            [self.navigationController pushViewController:postCategoriesViewController animated:YES];
+            [self showDefaultCategorySelector];
         }
         break;
         case SiteSettingsWritingDefaultPostFormat:{
@@ -675,7 +777,48 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             [self showRelatedPostsSettings];
         }
         break;
+    }
+}
 
+- (void)tableView:(UITableView *)tableView didSelectInDeviceSectionRow:(NSInteger)row
+{
+    switch (row) {
+        case SiteSettingsDeviceDefaultCategory:{
+            [self showDefaultCategorySelector];
+        }
+        break;
+        case SiteSettingsDeviceDefaultPostFormat:{
+            [self showPostFormatSelector];
+        }
+        break;
+    }
+}
+
+- (void)showStartOverForBlog:(Blog *)blog
+{
+    NSParameterAssert([blog supportsSiteManagementServices]);
+
+    StartOverViewController *viewController = [[StartOverViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)showDeleteSiteForBlog:(Blog *)blog
+{
+    NSParameterAssert([blog supportsSiteManagementServices]);
+    
+    DeleteSiteViewController *viewController = [[DeleteSiteViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectInAdvancedSectionRow:(NSInteger)row
+{
+    switch (row) {
+        case SiteSettingsAdvancedStartOver: {
+            [self showStartOverForBlog:self.blog];
+        } break;
+        case SiteSettingsAdvancedDeleteSite: {
+            [self showDeleteSiteForBlog:self.blog];
+        } break;
     }
 }
 
@@ -695,9 +838,15 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionDiscussion: {
             [self showDiscussionSettingsForBlog:self.blog];
         } break;
+        case SiteSettingsSectionDevice: {
+            [self tableView:tableView didSelectInDeviceSectionRow:indexPath.row];
+        } break;
         case SiteSettingsSectionRemoveSite:{
             [tableView deselectSelectedRowWithAnimation:YES];
             [self showRemoveSiteForBlog:self.blog];
+        } break;
+        case SiteSettingsSectionAdvanced:{
+            [self tableView:tableView didSelectInAdvancedSectionRow:indexPath.row];
         } break;
     }
 }
@@ -850,6 +999,11 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }];
 }
 
+- (BOOL)savingWritingDefaultsIsAvailable
+{
+    return [self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin;
+}
+
 - (IBAction)cancel:(id)sender
 {
     if (self.isCancellable) {
@@ -920,7 +1074,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     self.blog.settings.defaultCategoryID = category.categoryID;
     self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
-    [self saveSettings];
+    if ([self savingWritingDefaultsIsAvailable]) {
+        [self saveSettings];
+    }
 }
 
 @end

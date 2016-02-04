@@ -8,8 +8,11 @@ data model as well as any custom migrations.
 - Added `Menu` entity. Encapsulates the data and relationships for customizing a site menu.
 - Added `MenuItem` entity. Encapsulates the navigation item data belonging to a Menu.
 - Added `MenuLocation` entity. Encapsulates a site/theme location that a Menu can occupy.
+- Added `PostTag` entity. Encapsulates a site's tag taxonomy.
 - `Blog` added new relationship called `menus`. Persisting associated Menus for a site.
 - `Blog` added new relationship called `menuLocations`. Persists associated MenuLocations available for a site.
+- `Blog` added new relationship called `tags`. Persisting associated PostTags for a site.
+- `Blog` added new integer64 attribute `planID` to store a blog's current plan's product ID.
 
 ## WordPress 44 (@aerych 2016-01-11)
 

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -25,7 +24,7 @@
                                 <rect key="frame" x="0.0" y="8" width="320" height="428.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l8A-oh-TmY">
-                                        <rect key="frame" x="16" y="16" width="257" height="34"/>
+                                        <rect key="frame" x="16" y="16" width="254" height="34"/>
                                         <subviews>
                                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Xmp-D3-o2U">
                                                 <rect key="frame" x="0.0" y="1" width="32" height="32"/>
@@ -36,14 +35,14 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author - Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Tv-jX-0Xi">
-                                                <rect key="frame" x="42" y="18.5" width="215" height="14.5"/>
+                                                <rect key="frame" x="42" y="18.5" width="212" height="14.5"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lDA-jj-gT4">
-                                                <rect key="frame" x="42" y="0.0" width="215" height="32"/>
+                                                <rect key="frame" x="42" y="0.0" width="212" height="32"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="32" id="jLg-GN-bDS"/>
                                                 </constraints>
@@ -73,9 +72,9 @@
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZXc-ck-z8k">
-                                        <rect key="frame" x="283" y="16" width="21" height="32"/>
+                                        <rect key="frame" x="280" y="16" width="24" height="32"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="21" id="7Mu-sH-dk2"/>
+                                            <constraint firstAttribute="width" constant="24" id="7Mu-sH-dk2"/>
                                             <constraint firstAttribute="height" constant="32" id="SXS-7f-M1o"/>
                                         </constraints>
                                         <state key="normal" image="icon-menu-ellipsis">
@@ -321,7 +320,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="icon-menu-ellipsis" width="15" height="15"/>
+        <image name="icon-menu-ellipsis" width="24" height="24"/>
         <image name="icon-reader-comment" width="24" height="24"/>
         <image name="icon-reader-like" width="24" height="24"/>
         <image name="post-blavatar-placeholder" width="32" height="32"/>
