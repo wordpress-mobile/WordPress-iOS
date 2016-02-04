@@ -166,8 +166,8 @@
 {
     RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
     
-    remoteSettings.name = [json stringForKeyPath:@"blog_title.value"];
-    remoteSettings.tagline = [json stringForKeyPath:@"blog_tagline.value"];
+    remoteSettings.name = [[json stringForKeyPath:@"blog_title.value"] stringByDecodingXMLCharacters];
+    remoteSettings.tagline = [[json stringForKeyPath:@"blog_tagline.value"] stringByDecodingXMLCharacters];
     if (json[@"blog_public"]) {
         remoteSettings.privacy = [json numberForKeyPath:@"blog_public.value"];
     }
