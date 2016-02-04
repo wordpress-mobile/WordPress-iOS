@@ -98,7 +98,7 @@
 
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self.blog managedObjectContext]];
     __weak __typeof__(self) weakSelf = self;
-    [sharingService fetchKeyringConnections:^(NSArray *keyringConnections) {
+    [sharingService fetchKeyringConnectionsForBlog:self.blog success:^(NSArray *keyringConnections) {
         if ([weakSelf.delegate respondsToSelector:@selector(sharingAuthorizationHelper:didFetchKeyringsForService:)]) {
             [weakSelf.delegate sharingAuthorizationHelper:weakSelf didFetchKeyringsForService:weakSelf.publicizeService];
         }
