@@ -60,6 +60,7 @@ class PlanListViewController: UITableViewController {
         cell.textLabel?.adjustsFontSizeToFitWidth = true
 
         cell.detailTextLabel?.text = plan.description
+        cell.detailTextLabel?.textColor = WPStyleGuide.grey()
 
         cell.selectionStyle = .None
 
