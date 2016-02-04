@@ -134,7 +134,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [sections addObject:@(SiteSettingsSectionAccount)];
     }
     
-    if (self.blog.isAdmin) {
+    if (self.blog.isAdmin || ![self.blog supports:BlogFeatureWPComRESTAPI]) {
         [sections addObject:@(SiteSettingsSectionWriting)];
     }
     
@@ -696,7 +696,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         if ([status isKindOfClass:[NSString class]]) {
             if (weakSelf.blog.settings.defaultPostFormat != status) {
                 weakSelf.blog.settings.defaultPostFormat = status;
-                [weakSelf saveSettings];
+                if ([weakSelf savingWritingDefaultsIsAvailable]) {
+                    [weakSelf saveSettings];
+                }
             }
         }
     };
@@ -943,6 +945,11 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }];
 }
 
+- (BOOL)savingWritingDefaultsIsAvailable
+{
+    return [self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin;
+}
+
 - (IBAction)cancel:(id)sender
 {
     if (self.isCancellable) {
@@ -1013,7 +1020,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     self.blog.settings.defaultCategoryID = category.categoryID;
     self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
-    [self saveSettings];
+    if ([self savingWritingDefaultsIsAvailable]) {
+        [self saveSettings];
+    }
 }
 
 @end
