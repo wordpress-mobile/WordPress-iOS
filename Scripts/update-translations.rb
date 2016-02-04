@@ -10,6 +10,7 @@
 # * German
 # * Greek
 # * English
+# * English (Canada eh)
 # * English (UK)
 # * Spanish
 # * Finnish
@@ -69,6 +70,7 @@ LANGS={
   'zh-tw' => 'zh-Hant', # Chinese (Taiwan)
   'pt-br' => 'pt-BR',   # Portuguese (Brazil)
   'en-gb' => 'en-GB',   # English (UK)
+  'en-ca' => 'en-CA',   # English (Canada)
   'cy' => 'cy',         # Welsh
 }
 
