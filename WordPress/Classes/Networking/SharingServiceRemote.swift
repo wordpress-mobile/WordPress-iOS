@@ -357,7 +357,12 @@ public class SharingServiceRemote : ServiceRemoteREST
     }
 
 
+    /// Composees a `RemotePublicizeConnection` populated with values from the passed `NSDictionary`
     ///
+    /// - Parameters:
+    ///     - buttons: An `NSArray` of `NSDictionary`s representing `RemoteSharingButton` objects.
+    ///
+    /// - Returns: An array of `RemoteSharingButton` objects.
     ///
     private func remoteSharingButtonsFromDictionary(buttons: NSArray) -> [RemoteSharingButton] {
         var order = 0;
