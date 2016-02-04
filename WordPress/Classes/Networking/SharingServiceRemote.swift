@@ -3,20 +3,18 @@ import AFNetworking
 import NSObject_SafeExpectations
 
 
-/**
- SharingServiceRemote is responsible for wrangling the REST API calls related to 
- publiczice services, publicize connections, and keyring connections.
-*/
-
+/// SharingServiceRemote is responsible for wrangling the REST API calls related to
+/// publiczice services, publicize connections, and keyring connections.
+///
 public class SharingServiceRemote : ServiceRemoteREST
 {
 
-    /**
-    *  @brief      Fetches the list of Publicize services.
-    *
-    *  @param      success     An optional success block accepting an array of `RemotePublicizeService` objects.
-    *  @param      failure     An optional failure block accepting an `NSError` argument.
-    */
+    /// Fetches the list of Publicize services.
+    ///
+    /// - Parameters:
+    ///     - success: An optional success block accepting an array of `RemotePublicizeService` objects.
+    ///     - failure: An optional failure block accepting an `NSError` argument.
+    ///
     public func getPublicizeServices(success: ([RemotePublicizeService] -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "meta/external-services"
         let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
@@ -24,17 +22,17 @@ public class SharingServiceRemote : ServiceRemoteREST
 
         api.GET(path,
             parameters: params,
-            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
                 guard let onSuccess = success else {
                     return
                 }
 
                 let responseString = operation.responseString! as NSString
                 let responseDict = response as! NSDictionary
-                let services:NSDictionary = responseDict.dictionaryForKey(ServiceDictionaryKeys.services)
+                let services: NSDictionary = responseDict.dictionaryForKey(ServiceDictionaryKeys.services)
 
-                let publicizeServices:[RemotePublicizeService] = services.allKeys.map { (key) -> RemotePublicizeService in
-                    let dict:NSDictionary = services.dictionaryForKey(key)
+                let publicizeServices: [RemotePublicizeService] = services.allKeys.map { (key) -> RemotePublicizeService in
+                    let dict: NSDictionary = services.dictionaryForKey(key)
                     let pub = RemotePublicizeService()
 
                     pub.connectURL = dict.stringForKey(ServiceDictionaryKeys.connectURL)
@@ -58,35 +56,35 @@ public class SharingServiceRemote : ServiceRemoteREST
                 onSuccess(publicizeServices)
 
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                 failure?(error)
             })
     }
 
 
-    /**
-    *  @brief      Fetches the current user's list of keyring connections.
-    *
-    *  @param      success     An optional success block accepting an array of `KeyringConnection` objects.
-    *  @param      failure     An optional failure block accepting an `NSError` argument.
-    */
+    /// Fetches the current user's list of keyring connections.
+    ///
+    /// - Parameters:
+    ///     - success: An optional success block accepting an array of `KeyringConnection` objects.
+    ///     - failure: An optional failure block accepting an `NSError` argument.
+    ///
     public func getKeyringConnections(success: ([KeyringConnection] -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "me/keyring-connections"
         let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
         api.GET(path,
             parameters: nil,
-            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
                 guard let onSuccess = success else {
                     return
                 }
 
                 let responseDict = response as! NSDictionary
-                let connections:Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
-                let keyringConnections:[KeyringConnection] = connections.map { (let dict) -> KeyringConnection in
+                let connections: Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
+                let keyringConnections: [KeyringConnection] = connections.map { (let dict) -> KeyringConnection in
                     let conn = KeyringConnection()
-                    // TODO: Need to see how this guy is formatted.
-                    // conn.additionalExternalUsers = dict.arrayForKey(ConnectionDictionaryKeys.additionalExternalUsers)
+                    let externalUsers = dict.arrayForKey(ConnectionDictionaryKeys.additionalExternalUsers) ?? []
+                    conn.additionalExternalUsers = self.externalUsersForKeyringConnection(externalUsers)
                     conn.dateExpires = DateUtils.dateFromISOString(dict.stringForKey(ConnectionDictionaryKeys.expires))
                     conn.dateIssued = DateUtils.dateFromISOString(dict.stringForKey(ConnectionDictionaryKeys.issued))
                     conn.externalDisplay = dict.stringForKey(ConnectionDictionaryKeys.externalDisplay) ?? conn.externalDisplay
@@ -106,57 +104,79 @@ public class SharingServiceRemote : ServiceRemoteREST
 
                 onSuccess(keyringConnections)
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                 failure?(error)
         })
     }
 
 
-    /**
-     *  @brief      Fetches the current user's list of Publicize connections for the specified site's ID.
-     *
-     *  @param      siteID      The WordPress.com ID of the site.
-     *  @param      success     An optional success block accepting an array of `RemotePublicizeConnection` objects.
-     *  @param      failure     An optional failure block accepting an `NSError` argument.
-     */
-    public func getPublicizeConnections(siteID:NSNumber, success: ([RemotePublicizeConnection] -> Void)?, failure: (NSError! -> Void)?) {
+    /// Creates KeyringConnectionExternalUser instances from the past array of 
+    /// external user dictionaries.
+    ///
+    /// - Parameters:
+    ///     - externalUsers: An array of NSDictionaries where each NSDictionary represents a KeyringConnectionExternalUser
+    ///
+    /// - Returns: An array of KeyringConnectionExternalUser instances.
+    ///
+    private func externalUsersForKeyringConnection(externalUsers: NSArray) -> [KeyringConnectionExternalUser] {
+        let arr: [KeyringConnectionExternalUser] = externalUsers.map { (let dict) -> KeyringConnectionExternalUser in
+            let externalUser = KeyringConnectionExternalUser()
+            externalUser.externalID = dict.stringForKey(ConnectionDictionaryKeys.externalID) ?? externalUser.externalID
+            externalUser.externalName = dict.stringForKey(ConnectionDictionaryKeys.externalName) ?? externalUser.externalName
+            externalUser.externalProfilePicture = dict.stringForKey(ConnectionDictionaryKeys.externalProfilePicture) ?? externalUser.externalProfilePicture
+            externalUser.externalCategory = dict.stringForKey(ConnectionDictionaryKeys.externalCategory) ?? externalUser.externalCategory
+
+            return externalUser
+        }
+        return arr
+    }
+
+
+    /// Fetches the current user's list of Publicize connections for the specified site's ID.
+    ///
+    /// - Parameters:
+    ///     - siteID: The WordPress.com ID of the site.
+    ///     - success: An optional success block accepting an array of `RemotePublicizeConnection` objects.
+    ///     - failure: An optional failure block accepting an `NSError` argument.
+    ///
+    public func getPublicizeConnections(siteID: NSNumber, success: ([RemotePublicizeConnection] -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/publicize-connections"
         let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
         api.GET(path,
             parameters: nil,
-            success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
                 guard let onSuccess = success else {
                     return
                 }
 
                 let responseDict = response as! NSDictionary
-                let connections:Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
-                let publicizeConnections:[RemotePublicizeConnection] = connections.map { (let dict) -> RemotePublicizeConnection in
+                let connections: Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
+                let publicizeConnections: [RemotePublicizeConnection] = connections.map { (let dict) -> RemotePublicizeConnection in
                     let conn = self.remotePublicizeConnectionFromDictionary(dict as! NSDictionary)
                     return conn
                 }
 
                 onSuccess(publicizeConnections)
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                 failure?(error)
         })
     }
 
 
-    /**
-     *  @brief      Create a new Publicize connection bweteen the specified blog and
-     *              the third-pary service represented by the keyring.
-     *
-     *  @param      siteID                  The WordPress.com ID of the site.
-     *  @param      keyringConnectionID     The ID of the third-party site's keyring connection.
-     *  @param      success     An optional success block accepting a `RemotePublicizeConnection` object.
-     *  @param      failure     An optional failure block accepting an `NSError` argument.
-     */
-    public func createPublicizeConnection(siteID:NSNumber,
-        keyringConnectionID:NSNumber,
-        externalUserID:String?,
+    /// Create a new Publicize connection bweteen the specified blog and
+    /// the third-pary service represented by the keyring.
+    ///
+    /// - Parameters:
+    ///     - siteID: The WordPress.com ID of the site.
+    ///     - keyringConnectionID: The ID of the third-party site's keyring connection.
+    ///     - success: An optional success block accepting a `RemotePublicizeConnection` object.
+    ///     - failure: An optional failure block accepting an `NSError` argument.
+    ///
+    public func createPublicizeConnection(siteID: NSNumber,
+        keyringConnectionID: NSNumber,
+        externalUserID: String?,
         success: (RemotePublicizeConnection -> Void)?, failure: (NSError! -> Void)?)
     {
 
@@ -170,8 +190,8 @@ public class SharingServiceRemote : ServiceRemoteREST
             }
 
             api.POST(path,
-                parameters: NSDictionary(dictionary:parameters),
-                success: {(operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+                parameters: NSDictionary(dictionary: parameters),
+                success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
                     guard let onSuccess = success else {
                         return
                     }
@@ -181,41 +201,71 @@ public class SharingServiceRemote : ServiceRemoteREST
 
                     onSuccess(conn)
                 },
-                failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+                failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                     failure?(error)
             })
     }
 
 
-    /**
-     *  @brief      Disconnect's (deletes) the specified publicize connection
-     *
-     *  @param      siteID       The WordPress.com ID of the site.
-     *  @param      connectionID The ID of the publicize connection.
-     *  @param      success      An optional success block accepting no arguments.
-     *  @param      failure      An optional failure block accepting an `NSError` argument.
-     */
-    public func deletePublicizeConnection(siteID:NSNumber, connectionID:NSNumber, success: (() -> Void)?, failure: (NSError! -> Void)?) {
+    /// Update the shared status of the specified publicize connection
+    ///
+    /// - Parameters:
+    ///     - shared: True if the connection is shared with all users of the blog. False otherwise.
+    ///     - connectionID: The ID of the publicize connection.
+    ///     - siteID: The WordPress.com ID of the site.
+    ///      -success: An optional success block accepting no arguments.
+    ///     - failure: An optional failure block accepting an `NSError` argument.
+    ///
+    public func updateShared(shared: Bool,
+        forPublicizeConnectionWithID connectionID: NSNumber,
+        forSite siteID: NSNumber,
+        success: (() -> Void)?,
+        failure: (NSError! -> Void)?) {
+            let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
+            let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+            let parameters = [ConnectionDictionaryKeys.shared : shared]
+
+            api.POST(path,
+                parameters: parameters,
+                success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+                    success?()
+                },
+                failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+                    failure?(error)
+            })
+    }
+
+
+    /// Disconnects (deletes) the specified publicize connection
+    ///
+    /// - Parameters:
+    ///     - siteID: The WordPress.com ID of the site.
+    ///     - connectionID: The ID of the publicize connection.
+    ///      -success: An optional success block accepting no arguments.
+    ///     - failure: An optional failure block accepting an `NSError` argument.
+    ///
+    public func deletePublicizeConnection(siteID: NSNumber, connectionID: NSNumber, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)/delete"
         let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
         api.POST(path,
             parameters: nil,
-            success: { (operation:AFHTTPRequestOperation!, response:AnyObject!) -> Void in
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
                 success?()
             },
-            failure: { (operation: AFHTTPRequestOperation?, error: NSError) -> Void in
+            failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                 failure?(error)
         })
     }
 
-    /**
-     *  @brief      Composees a `RemotePublicizeConnection` populated with values from the passed `NSDictionary`
-     *
-     *  @param      dict    An `NSDictionary` representing a `RemotePublicizeConnection`.
-     *
-     *  @return     A `RemotePublicizeConnection` object.
-     */
+
+    /// Composees a `RemotePublicizeConnection` populated with values from the passed `NSDictionary`
+    ///
+    /// - Parameters:
+    ///     - dict: An `NSDictionary` representing a `RemotePublicizeConnection`.
+    ///
+    /// - Returns: A `RemotePublicizeConnection` object.
+    ///
     private func remotePublicizeConnectionFromDictionary(dict:NSDictionary) -> RemotePublicizeConnection {
         let conn = RemotePublicizeConnection()
 
@@ -281,6 +331,7 @@ private struct ConnectionDictionaryKeys
     // only KeyringConnections
     static let additionalExternalUsers = "additional_external_users"
     static let type = "type"
+    static let externalCategory = "external_category"
 
     // only PublicizeConnections
     static let externalFollowerCount = "external_follower_count"

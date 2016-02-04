@@ -17,6 +17,7 @@ typedef NS_ENUM(NSInteger, AuthorizeAction) {
     AuthorizeActionDeny,
 };
 
+static NSString * const SharingAuthorizationLoginURL = @"https://wordpress.com/wp-login.php";
 static NSString * const SharingAuthorizationPrefix = @"https://public-api.wordpress.com/connect/";
 static NSString * const SharingAuthorizationRequest = @"action=request";
 static NSString * const SharingAuthorizationVerify = @"action=verify";
@@ -50,7 +51,7 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 @implementation SharingAuthorizationWebViewController
 
 + (instancetype)controllerWithPublicizer:(PublicizeService *)publicizer
-                              andRefresh:(NSString *)refresh
+                           connectionURL:(NSURL *)connectionURL
                                  forBlog:(Blog *)blog
 {
     NSParameterAssert(publicizer);
@@ -59,13 +60,11 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     SharingAuthorizationWebViewController *webViewController = [[self alloc] initWithNibName:@"WPWebViewController" bundle:nil];
 
     webViewController.authToken = blog.authToken;
-    webViewController.username = blog.usernameForSite;
-    webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
+    webViewController.username = blog.jetpackAccount.username ?: blog.account.username;
+    webViewController.wpLoginURL = [NSURL URLWithString:SharingAuthorizationLoginURL];
     webViewController.publicizer = publicizer;
     webViewController.secureInteraction = YES;
-
-    NSURL *authorizeURL = [NSURL URLWithString:refresh.length ? refresh : publicizer.connectURL];
-    webViewController.url = authorizeURL;
+    webViewController.url = connectionURL;
     
     return webViewController;
 }
