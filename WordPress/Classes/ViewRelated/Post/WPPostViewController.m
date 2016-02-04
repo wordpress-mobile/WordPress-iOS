@@ -1729,10 +1729,10 @@ EditImageDetailsViewControllerDelegate
             [self dismissAssociatedAlertControllerIfVisible:mediaUniqueId];
             if (media.mediaType == MediaTypeImage) {
                 [self.editorView markImage:mediaUniqueId
-                   failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
+                   failedUploadWithMessage:[error localizedDescription]];
             } else if (media.mediaType == MediaTypeVideo) {
                 [self.editorView markVideo:mediaUniqueId
-                   failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
+                   failedUploadWithMessage:[error localizedDescription]];
             }
         }
     }];
