@@ -175,7 +175,7 @@ public class BlogSettings : NSManagedObject
 
     // MARK: - Sharing
 
-    /// Indicates the style to use for the sharing buttons on a particular blog..
+    /// Indicates the style to use for the sharing buttons on a particular blog
     ///
     @NSManaged var sharingButtonStyle : String
 
