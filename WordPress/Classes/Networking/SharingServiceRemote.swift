@@ -19,7 +19,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///
     public func getPublicizeServices(success: ([RemotePublicizeService] -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "meta/external-services"
-        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         let params = NSDictionary(object: "publicize", forKey: "type")
 
         api.GET(path,
@@ -72,7 +72,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///
     public func getKeyringConnections(success: ([KeyringConnection] -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "me/keyring-connections"
-        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
         api.GET(path,
             parameters: nil,
@@ -143,7 +143,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///
     public func getPublicizeConnections(siteID: NSNumber, success: ([RemotePublicizeConnection] -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/publicize-connections"
-        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
         api.GET(path,
             parameters: nil,
@@ -183,7 +183,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     {
 
             let endpoint = "sites/\(siteID)/publicize-connections/new"
-            let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+            let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
             let parameters = NSMutableDictionary()
             parameters.setObject(keyringConnectionID, forKey: PublicizeConnectionParams.keyringConnectionID)
@@ -248,7 +248,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///
     public func deletePublicizeConnection(siteID: NSNumber, connectionID: NSNumber, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)/delete"
-        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
         api.POST(path,
             parameters: nil,
@@ -304,7 +304,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///
     public func getSharingButtonsForSite(siteID: NSNumber, success: (([RemoteSharingButton]) -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
-        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
         api.GET(path,
             parameters: nil,
@@ -335,7 +335,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///
     public func updateSharingButtonsForSite(siteID: NSNumber, sharingButtons:[RemoteSharingButton], success: (([RemoteSharingButton]) -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
-        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
         let parameters = [SharingButtonsKeys.sharingButtons : sharingButtons]
 
         api.POST(path,
