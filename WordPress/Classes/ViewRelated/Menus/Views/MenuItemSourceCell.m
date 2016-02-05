@@ -130,6 +130,15 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
     return self;
 }
 
+- (void)setSourceSelected:(BOOL)sourceSelected
+{
+    if (_sourceSelected != sourceSelected) {
+        _sourceSelected = sourceSelected;
+        
+        self.radioButton.selected = sourceSelected;
+    }
+}
+
 - (void)setTitle:(NSString *)title
 {
     if (_title != title) {
@@ -173,13 +182,18 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
     }
 }
 
-- (void)setSourceSelected:(BOOL)sourceSelected
+- (CGRect)drawingRectForRadioButton
 {
-    if (_sourceSelected != sourceSelected) {
-        _sourceSelected = sourceSelected;
-        
-        self.radioButton.selected = sourceSelected;
-    }
+    return [self convertRect:self.radioButton.frame fromView:self.radioButton.superview];
+}
+
+- (CGRect)drawingRectForLabel
+{
+    CGRect rect = [self convertRect:self.label.frame fromView:self.label.superview];
+    rect.size.width = self.contentView.frame.size.width - (self.stackView.layoutMargins.right);
+    rect.size.width -= rect.origin.x;
+    
+    return rect;
 }
 
 - (void)insertBadgeLabelIfNeeded
