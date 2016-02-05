@@ -32,8 +32,9 @@
                             <rect key="frame" x="0.0" y="0.0" width="600" height="220"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cET-GR-Luh" userLabel="Dropshadow Image View">
-                                    <rect key="frame" x="269.5" y="26" width="60" height="60"/>
+                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cET-GR-Luh" userLabel="Dropshadow Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                    <rect key="frame" x="269" y="25" width="62" height="62"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </imageView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ZNi-CA-axg">
                                     <rect key="frame" x="8" y="26" width="584" height="168"/>
@@ -91,12 +92,12 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="ZNi-CA-axg" firstAttribute="leading" secondItem="Wee-7g-KID" secondAttribute="leadingMargin" id="64O-Gd-7Fw"/>
-                                <constraint firstItem="cET-GR-Luh" firstAttribute="trailing" secondItem="4kT-nN-MzS" secondAttribute="trailing" id="8Za-MU-n7P"/>
+                                <constraint firstItem="cET-GR-Luh" firstAttribute="trailing" secondItem="4kT-nN-MzS" secondAttribute="trailing" constant="1" id="8Za-MU-n7P"/>
                                 <constraint firstItem="ZNi-CA-axg" firstAttribute="top" secondItem="Wee-7g-KID" secondAttribute="top" constant="26" id="AN1-1O-PFE"/>
-                                <constraint firstItem="cET-GR-Luh" firstAttribute="top" secondItem="4kT-nN-MzS" secondAttribute="top" id="Q3B-k7-0YJ"/>
-                                <constraint firstItem="cET-GR-Luh" firstAttribute="leading" secondItem="4kT-nN-MzS" secondAttribute="leading" id="UJf-bG-8Vu"/>
+                                <constraint firstItem="cET-GR-Luh" firstAttribute="top" secondItem="4kT-nN-MzS" secondAttribute="top" constant="-1" id="Q3B-k7-0YJ"/>
+                                <constraint firstItem="cET-GR-Luh" firstAttribute="leading" secondItem="4kT-nN-MzS" secondAttribute="leading" constant="-1" id="UJf-bG-8Vu"/>
                                 <constraint firstAttribute="bottom" secondItem="ZNi-CA-axg" secondAttribute="bottom" constant="26" id="Xyt-dc-eJx"/>
-                                <constraint firstItem="cET-GR-Luh" firstAttribute="bottom" secondItem="4kT-nN-MzS" secondAttribute="bottom" id="aCv-tj-XXi"/>
+                                <constraint firstItem="cET-GR-Luh" firstAttribute="bottom" secondItem="4kT-nN-MzS" secondAttribute="bottom" constant="1" id="aCv-tj-XXi"/>
                                 <constraint firstAttribute="trailingMargin" secondItem="ZNi-CA-axg" secondAttribute="trailing" id="nDp-N2-b6m"/>
                             </constraints>
                         </view>

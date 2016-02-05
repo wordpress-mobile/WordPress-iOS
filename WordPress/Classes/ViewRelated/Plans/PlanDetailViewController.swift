@@ -6,6 +6,8 @@ class PlanDetailViewController: UITableViewController {
     
     private let cellIdentifier = "PlanFeatureListItem"
     
+    private let planImageDropshadowRadius: CGFloat = 3.0
+    
     private var viewModel: ImmuTable! = nil
     
     @IBOutlet weak var planImageView: UIImageView!
@@ -52,6 +54,18 @@ class PlanDetailViewController: UITableViewController {
         planPriceLabel.textColor = WPStyleGuide.grey()
         
         purchaseButton.tintColor = WPStyleGuide.wordPressBlue()
+        
+        dropshadowImageView.backgroundColor = UIColor.whiteColor()
+        configurePlanImageDropshadow()
+    }
+    
+    private func configurePlanImageDropshadow() {
+        dropshadowImageView.layer.masksToBounds = false
+        dropshadowImageView.layer.shadowColor = WPStyleGuide.greyLighten30().CGColor
+        dropshadowImageView.layer.shadowOpacity = 1.0
+        dropshadowImageView.layer.shadowRadius = planImageDropshadowRadius
+        dropshadowImageView.layer.shadowOffset = .zero
+        dropshadowImageView.layer.shadowPath = UIBezierPath(ovalInRect: dropshadowImageView.bounds).CGPath
     }
     
     private func configureImmuTable() {
@@ -78,37 +92,6 @@ class PlanDetailViewController: UITableViewController {
         planTitleLabel.text = plan.fullTitle
         planDescriptionLabel.text = plan.description
         planPriceLabel.text = priceDescriptionForPlan(plan)
-        
-        addPlanImageViewDropshadow()
-    }
-    
-    /// Draws a white circle with a grey dropshadow, to fit around the plan image view
-    private func addPlanImageViewDropshadow() {
-        let shadowBlur: CGFloat = 4.0
-        let strokeWidth: CGFloat = 2.0
-        let planImageSize: CGSize = planImageView.bounds.size
-        let imageSideLength: CGFloat = planImageSize.width + ((shadowBlur + strokeWidth) * 2)
-        
-        UIGraphicsBeginImageContextWithOptions(CGSize(width: imageSideLength, height: imageSideLength), false, 0)
-        
-        let ctx = UIGraphicsGetCurrentContext()
-        
-        CGContextSetLineWidth(ctx, 0.0)
-        CGContextSetFillColorWithColor(ctx, UIColor.whiteColor().CGColor)
-        CGContextSetShadowWithColor(ctx, .zero, shadowBlur, WPStyleGuide.greyLighten20().CGColor)
-        
-        // Translate to account for the shadow's blur
-        CGContextTranslateCTM(ctx, shadowBlur + strokeWidth, shadowBlur + strokeWidth)
-        // Inset the rect to account for strokes being drawn in the center of the border
-        let halfStroke = strokeWidth / 2
-        let ellipseRect = CGRect(origin: .zero, size: planImageSize).insetBy(dx: -halfStroke, dy: -halfStroke)
-        CGContextStrokeEllipseInRect(ctx, ellipseRect)
-        CGContextFillEllipseInRect(ctx, ellipseRect)
-        
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        dropshadowImageView.image = image
     }
     
     // TODO: Prices should always come from StoreKit
