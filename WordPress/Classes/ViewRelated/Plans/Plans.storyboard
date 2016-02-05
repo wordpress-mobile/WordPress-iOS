@@ -32,6 +32,9 @@
                             <rect key="frame" x="0.0" y="0.0" width="600" height="220"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cET-GR-Luh" userLabel="Dropshadow Image View">
+                                    <rect key="frame" x="269.5" y="26" width="60" height="60"/>
+                                </imageView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ZNi-CA-axg">
                                     <rect key="frame" x="8" y="26" width="584" height="168"/>
                                     <subviews>
@@ -46,7 +49,7 @@
                                             <rect key="frame" x="24" y="72" width="536" height="59"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WordPress.com Premium" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mFu-ON-8ux">
-                                                    <rect key="frame" x="170" y="0.0" width="196.5" height="18"/>
+                                                    <rect key="frame" x="170" y="0.0" width="197" height="18"/>
                                                     <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -58,7 +61,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$99.99 per year" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHA-mi-Lxg">
-                                                    <rect key="frame" x="213.5" y="41" width="109" height="18"/>
+                                                    <rect key="frame" x="214" y="41" width="109" height="18"/>
                                                     <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -66,7 +69,7 @@
                                             </subviews>
                                         </stackView>
                                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dfn-sl-rVa" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
-                                            <rect key="frame" x="244.5" y="143" width="95" height="25"/>
+                                            <rect key="frame" x="245" y="143" width="95" height="25"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="25" id="wyZ-YM-LLZ"/>
                                             </constraints>
@@ -88,8 +91,12 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstItem="ZNi-CA-axg" firstAttribute="leading" secondItem="Wee-7g-KID" secondAttribute="leadingMargin" id="64O-Gd-7Fw"/>
+                                <constraint firstItem="cET-GR-Luh" firstAttribute="trailing" secondItem="4kT-nN-MzS" secondAttribute="trailing" id="8Za-MU-n7P"/>
                                 <constraint firstItem="ZNi-CA-axg" firstAttribute="top" secondItem="Wee-7g-KID" secondAttribute="top" constant="26" id="AN1-1O-PFE"/>
+                                <constraint firstItem="cET-GR-Luh" firstAttribute="top" secondItem="4kT-nN-MzS" secondAttribute="top" id="Q3B-k7-0YJ"/>
+                                <constraint firstItem="cET-GR-Luh" firstAttribute="leading" secondItem="4kT-nN-MzS" secondAttribute="leading" id="UJf-bG-8Vu"/>
                                 <constraint firstAttribute="bottom" secondItem="ZNi-CA-axg" secondAttribute="bottom" constant="26" id="Xyt-dc-eJx"/>
+                                <constraint firstItem="cET-GR-Luh" firstAttribute="bottom" secondItem="4kT-nN-MzS" secondAttribute="bottom" id="aCv-tj-XXi"/>
                                 <constraint firstAttribute="trailingMargin" secondItem="ZNi-CA-axg" secondAttribute="trailing" id="nDp-N2-b6m"/>
                             </constraints>
                         </view>
@@ -167,6 +174,7 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="dropshadowImageView" destination="cET-GR-Luh" id="O6J-ef-2Ee"/>
                         <outlet property="planDescriptionLabel" destination="OKo-6a-UCJ" id="e6b-dd-8cX"/>
                         <outlet property="planImageView" destination="4kT-nN-MzS" id="Q6Q-Ge-wF4"/>
                         <outlet property="planPriceLabel" destination="zHA-mi-Lxg" id="gDT-EK-Q1L"/>
