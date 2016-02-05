@@ -1107,6 +1107,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     Comment *comment = (Comment *)contentProvider;
     NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
+    if (!indexPath) {
+        return;
+    }
+
     [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
 
     // HACK:

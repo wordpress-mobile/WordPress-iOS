@@ -1,7 +1,7 @@
 #import <XCTest/XCTest.h>
 #import "WPAccount.h"
 #import "Blog.h"
-#import "NotificationsManager+TestHelper.h"
+#import "PushNotificationsManagerTestHelper.h"
 #import "SettingsViewController.h"
 #import "ContextManager.h"
 #import "AccountService.h"
@@ -47,7 +47,7 @@
 
     XCTAssertNil(defaultAccount, @"There should be no default account");
     
-    [NotificationsManager removeDummyDeviceToken];
+    [PushNotificationsManagerTestHelper removeDummyDeviceToken];
     SettingsViewController *controller = [self settingsViewController];
     [self present:controller];
 
@@ -83,7 +83,7 @@
     cell = [self tableView:table cellForRow:1];
     XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 
-    [NotificationsManager setDummyDeviceToken];
+    [PushNotificationsManagerTestHelper setDummyDeviceToken];
     [table reloadData];
 
     /*
@@ -165,7 +165,7 @@
     cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 
-    [NotificationsManager removeDummyDeviceToken];
+    [PushNotificationsManagerTestHelper removeDummyDeviceToken];
     [table reloadData];
 
     /*

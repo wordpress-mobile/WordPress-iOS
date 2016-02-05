@@ -147,7 +147,7 @@ import AFNetworking
         let operation                   = AFHTTPRequestOperation(request: request)
         operation.responseSerializer    = responseSerializer
         operation.setCompletionBlockWithSuccess({
-            (AFHTTPRequestOperation operation, AnyObject responseObject) -> Void in
+            (operation, responseObject) -> Void in
             
             if let unwrappedImage = responseObject as? UIImage {
                 completion(nil, unwrappedImage)
@@ -158,7 +158,7 @@ import AFNetworking
             
             self.urlsBeingDownloaded.remove(url)
         }, failure: {
-            (AFHTTPRequestOperation operation, NSError error) -> Void in
+            (operation, error) -> Void in
             
             // If possible, retry
             if retryCount < self.maximumRetryCount {
