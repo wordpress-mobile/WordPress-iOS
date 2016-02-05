@@ -120,6 +120,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 - (void)dealloc
 {
     self.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -127,33 +128,13 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     DDLogMethod();
     [super viewDidLoad];
     self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
-    
-    NSMutableArray *sections = [NSMutableArray arrayWithObjects:@(SiteSettingsSectionGeneral), nil];
-    
-    if (!self.blog.account) {
-        [sections addObject:@(SiteSettingsSectionAccount)];
-    }
-    
-    if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
-        [sections addObject:@(SiteSettingsSectionWriting)];
-    }
-    
-    if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
-        [sections addObject:@(SiteSettingsSectionDiscussion)];
-    }
-    
-    [sections addObject:@(SiteSettingsSectionDevice)];
-    
-    if ([self.blog supports:BlogFeatureRemovable]) {
-        [sections addObject:@(SiteSettingsSectionRemoveSite)];
-    }
 
-    if ([self.blog supports:BlogFeatureSiteManagement]) {
-        [sections addObject:@(SiteSettingsSectionAdvanced)];
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDataModelChange:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:self.blog.managedObjectContext];
 
-    self.tableSections = sections;
-    
+
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -165,7 +146,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     self.username = self.blog.usernameForSite;
     self.password = self.blog.password;
     self.geolocationEnabled = self.blog.settings.geolocationEnabled;
-    
+
+    [self configureSections];
     [self refreshData];
 }
 
@@ -179,6 +161,35 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     [self.tableView reloadData];
     [super viewDidAppear:animated];
+}
+
+- (void)configureSections
+{
+    NSMutableArray *sections = [NSMutableArray arrayWithObjects:@(SiteSettingsSectionGeneral), nil];
+
+    if (!self.blog.account) {
+        [sections addObject:@(SiteSettingsSectionAccount)];
+    }
+
+    if ([self.blog supports:BlogFeatureWPComRESTAPI] && self.blog.isAdmin) {
+        [sections addObject:@(SiteSettingsSectionWriting)];
+    }
+
+    if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
+        [sections addObject:@(SiteSettingsSectionDiscussion)];
+    }
+
+    [sections addObject:@(SiteSettingsSectionDevice)];
+
+    if ([self.blog supports:BlogFeatureRemovable]) {
+        [sections addObject:@(SiteSettingsSectionRemoveSite)];
+    }
+
+    if ([self.blog supports:BlogFeatureSiteManagement]) {
+        [sections addObject:@(SiteSettingsSectionAdvanced)];
+    }
+
+    self.tableSections = sections;
 }
 
 #pragma mark - UITableViewDataSource
@@ -1074,6 +1085,17 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
     if ([self savingWritingDefaultsIsAvailable]) {
         [self saveSettings];
+    }
+}
+
+#pragma mark - Notification handlers
+
+- (void)handleDataModelChange:(NSNotification *)note
+{
+    NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
+    if ([updatedObjects containsObject:self.blog]) {
+        [self configureSections];
+        [self.tableView reloadData];
     }
 }
 
