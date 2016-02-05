@@ -34,7 +34,10 @@ class PurchaseButton: UIButton {
     }
     
     private func updateAppearance() {
-        contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 19.0, bottom: 10.0, right: 19.0)
+        let verticalInset: CGFloat = 10.0
+        let horizontalInset: CGFloat = 19.0
+        
+        contentEdgeInsets = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
         
         layer.masksToBounds = true
         layer.cornerRadius = cornerRadius

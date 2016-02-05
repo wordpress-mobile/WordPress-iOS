@@ -58,6 +58,7 @@ enum PlanEnum: Int {
         }
     }
     
+    /// An array of the features that this plan offers (e.g. No Ads, Premium Themes)
     var features: [PlanFeature] {
         switch self {
         case .Free:
