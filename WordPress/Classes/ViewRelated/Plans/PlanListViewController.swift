@@ -11,7 +11,7 @@ struct PlanListRow: ImmuTableRow {
     let description: String
     let icon: UIImage
 
-    let action: ImmuTableAction? = nil
+    let action: ImmuTableAction?
     
     func configureCell(cell: UITableViewCell) {
         WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
@@ -73,7 +73,8 @@ struct PlanListRow: ImmuTableRow {
 struct PlanListViewModel {
     let activePlan: Plan?
 
-    var tableViewModel: ImmuTable {
+    func tableViewModelWithPresenter(presenter: UIViewController) -> ImmuTable {
+        let rowForPlan = rowGenerator(presenter)
         return ImmuTable(sections: [
             ImmuTableSection(
                 headerText: NSLocalizedString("WordPress.com Plans", comment: "Title for the Plans list header"),
@@ -85,19 +86,30 @@ struct PlanListViewModel {
             ])
     }
 
-    private func rowForPlan(plan: Plan) -> PlanListRow {
-        let active = (activePlan == plan)
-        let icon = active ? plan.activeImage : plan.image
+    private func rowGenerator(presenter: UIViewController) -> Plan -> PlanListRow {
+        return { plan in
+            let active = (self.activePlan == plan)
+            let icon = active ? plan.activeImage : plan.image
 
-        return PlanListRow(
-            title: plan.title,
-            active: active,
-            price: priceForPlan(plan),
-            description: plan.description,
-            icon: icon
-        )
+            return PlanListRow(
+                title: plan.title,
+                active: active,
+                price: self.priceForPlan(plan),
+                description: plan.description,
+                icon: icon,
+                action: self.pushPlanDetails(plan, presenter: presenter)
+            )
+        }
     }
-    
+
+    func pushPlanDetails(plan: Plan, presenter: UIViewController) -> ImmuTableAction {
+        return { row in
+            let planVC = PlanDetailViewController.controllerWithPlan(plan)
+            let navigationVC = UINavigationController(rootViewController: planVC)
+            presenter.presentViewController(navigationVC, animated: true, completion: nil)
+        }
+    }
+
     // TODO: Prices should always come from StoreKit
     // @koke 2016-02-02
     private func priceForPlan(plan: Plan) -> String {
@@ -146,7 +158,7 @@ final class PlanListViewController: UITableViewController {
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
         ImmuTable.registerRows([PlanListRow.self], tableView: tableView)
-        handler.viewModel = viewModel.tableViewModel
+        handler.viewModel = viewModel.tableViewModelWithPresenter(self)
     }
 }
 
