@@ -1245,6 +1245,9 @@
 		93C1148418EDF6E100DAC95C /* BlogService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogService.m; sourceTree = "<group>"; };
 		93CD939219099BE70049096E /* authtoken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authtoken.json; sourceTree = "<group>"; };
 		93D6D6461924FDAD00A4F44A /* TaxonomyServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemote.h; sourceTree = "<group>"; };
+		93D86B931C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		93D86B941C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		93D86B951C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		93DEB88019E5BF7100F9546D /* TodayExtensionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TodayExtensionService.h; sourceTree = "<group>"; };
 		93DEB88119E5BF7100F9546D /* TodayExtensionService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TodayExtensionService.m; sourceTree = "<group>"; };
 		93E5283A19A7741A003A1A9C /* WordPressTodayWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = WordPressTodayWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -4106,6 +4109,7 @@
 				hr,
 				he,
 				cy,
+				"en-CA",
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -5145,6 +5149,7 @@
 				FFE69A2A1B1BFE200073C2EB /* da */,
 				FFE69A2B1B1BFE620073C2EB /* ko */,
 				8574469C1BF154E1007FDB5F /* cy */,
+				93D86B931C63EC31003D8E3E /* en-CA */,
 			);
 			name = InfoPlist.strings;
 			path = Resources;
@@ -5157,6 +5162,7 @@
 				A20971B619B0BC390058F395 /* en-GB */,
 				A20971B919B0BC580058F395 /* pt-BR */,
 				8574469E1BF154E3007FDB5F /* cy */,
+				93D86B951C63EC31003D8E3E /* en-CA */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -5190,6 +5196,7 @@
 				A20971B719B0BC570058F395 /* pt-BR */,
 				E16228C91B0C7A090048DA91 /* ar */,
 				8574469D1BF154E2007FDB5F /* cy */,
+				93D86B941C63EC31003D8E3E /* en-CA */,
 			);
 			name = Localizable.strings;
 			path = Resources;
