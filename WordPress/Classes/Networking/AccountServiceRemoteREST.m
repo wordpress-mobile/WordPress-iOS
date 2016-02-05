@@ -124,10 +124,9 @@ static NSString * const UserDictionaryDateKey = @"date";
     remoteUser.primaryBlogID = [dictionary numberForKey:UserDictionaryPrimaryBlogKey];
     remoteUser.avatarURL = [dictionary stringForKey:UserDictionaryAvatarURLKey];
     
-    NSString *dateString = [dictionary stringForKey:UserDictionaryDateKey];
-    
+    NSString *dateString = [[dictionary stringForKey:UserDictionaryDateKey] substringToIndex:10];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-LL-eTH:m:s"];
+    [dateFormatter setDateFormat:@"yyyy-MM-d"];
 
     remoteUser.date = [dateFormatter dateFromString:dateString];
     return remoteUser;
