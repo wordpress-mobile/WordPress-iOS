@@ -8,7 +8,7 @@ public class SharingService : LocalCoreDataService
 {
     let SharingAPIErrorNotFound = "not_found"
 
-    // MARK: - Methods calling remote services
+    // MARK: - Publicize Related Methods
 
 
     /// Syncs the list of Publicize services.  The list is expected to very rarely change.
@@ -452,7 +452,193 @@ public class SharingService : LocalCoreDataService
     }
 
 
-    // MARK : Private Instance Methods
+    // MARK: Sharing Button Related Methods
+
+    /// Syncs `SharingButton`s for the specified wpcom blog.
+    ///
+    /// - Parameters:
+    ///     - blog: The `Blog` for which to sync sharing buttons
+    ///     - success: An optional success block accepting no parameters.
+    ///     - failure: An optional failure block accepting an `NSError` parameter.
+    ///
+    public func syncSharingButtonsForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
+        let blogObjectID = blog.objectID
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
+        remote.getSharingButtonsForSite(blog.dotComID,
+            success: { (remoteButtons:[RemoteSharingButton]) in
+                self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)
+            },
+            failure: { (error: NSError!) in
+                failure?(error)
+        })
+    }
+
+
+    /// Pushes changes to the specified blog's `SharingButton`s back up to the blog.
+    ///
+    /// - Parameters:
+    ///     - blog: The `Blog` for which to update sharing buttons
+    ///     - sharingButtons: An array of `SharingButton` entities with changes either to order, or properties to sync back to the blog.
+    ///     - success: An optional success block accepting no parameters.
+    ///     - failure: An optional failure block accepting an `NSError` parameter.
+    ///
+    public func updateSharingButtonsForBlog(blog: Blog, sharingButtons: [SharingButton], success: (() -> Void)?, failure: (NSError! -> Void)?) {
+
+        let blogObjectID = blog.objectID
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
+        remote.updateSharingButtonsForSite(blog.dotComID,
+            sharingButtons: remoteShareButtonsFromShareButtons(sharingButtons),
+            success: { (remoteButtons:[RemoteSharingButton]) in
+                self.mergeSharingButtonsForBlog(blogObjectID, remoteSharingButtons: remoteButtons, onComplete: success)
+            },
+            failure: { (error: NSError!) in
+                failure?(error)
+        })
+    }
+
+
+    /// Called when syncing sharng buttons. Merges synced and cached data, removing
+    /// anything that does not exist on the server.  Saves the context.
+    ///
+    /// - Parameters:
+    ///     - blogObjectID: the NSManagedObjectID of a `Blog`
+    ///     - remoteSharingButtons: An array of `RemoteSharingButton` objects to merge.
+    ///     - onComplete: An optional callback block to be performed when core data has saved the changes.
+    ///
+    private func mergeSharingButtonsForBlog(blogObjectID: NSManagedObjectID, remoteSharingButtons: [RemoteSharingButton], onComplete: (() -> Void)?) {
+        managedObjectContext.performBlock {
+            var blog: Blog
+            do {
+                blog = try self.managedObjectContext.existingObjectWithID(blogObjectID) as! Blog
+            } catch let error as NSError {
+                DDLogSwift.logError("Error fetching Blog: \(error)")
+                // Because of the error we'll bail early, but we still need to call
+                // the success callback if one was passed.
+                onComplete?()
+                return
+            }
+
+            let currentSharingbuttons = self.allSharingButtonsForBlog(blog)
+
+            // Create or update based on the contents synced.
+            let buttonsToKeep = remoteSharingButtons.map { (let remoteButton) -> SharingButton in
+                return self.createOrReplaceFromRemoteSharingButton(remoteButton, blog: blog)
+            }
+
+            // Delete any cached PublicizeServices that were not synced.
+            for button in currentSharingbuttons {
+                if !buttonsToKeep.contains(button) {
+                    self.managedObjectContext.deleteObject(button)
+                }
+            }
+
+            // Save all the things.
+            ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
+                onComplete?()
+            })
+        }
+    }
+
+
+    /// Returns an array of all cached `SharingButtons` objects.
+    ///
+    /// - Parameters
+    ///     - blog: A `Blog` object
+    ///
+    /// - Returns: An array of `SharingButton`s.  The array is empty if no objects are cached.
+    ///
+    public func allSharingButtonsForBlog(blog: Blog) -> [SharingButton] {
+        let request = NSFetchRequest(entityName: SharingButton.classNameWithoutNamespaces())
+        request.predicate = NSPredicate(format: "blog = %@", blog)
+
+        var buttons: [SharingButton]
+        do {
+            buttons = try managedObjectContext.executeFetchRequest(request) as! [SharingButton]
+        } catch let error as NSError {
+            DDLogSwift.logError("Error fetching Publicize Connections: \(error.localizedDescription)")
+            buttons = []
+        }
+
+        return buttons
+    }
+
+
+    /// Composes a new `SharingButton`, or updates an existing one, with
+    /// data represented by the passed `RemoteSharingButton`.
+    ///
+    /// - Parameters:
+    ///     - remoteButton: The remote connection representing the publicize connection.
+    ///     - blog: The `Blog` that owns or will own the button.
+    ///
+    /// - Returns: A `SharingButton`.
+    ///
+    private func createOrReplaceFromRemoteSharingButton(remoteButton: RemoteSharingButton, blog: Blog) -> SharingButton {
+        var shareButton = findSharingButtonByID(remoteButton.buttonID, blog: blog)
+        if shareButton == nil {
+            shareButton = NSEntityDescription.insertNewObjectForEntityForName(SharingButton.classNameWithoutNamespaces(),
+                inManagedObjectContext: managedObjectContext) as? SharingButton
+        }
+
+        shareButton?.buttonID = remoteButton.buttonID
+        shareButton?.name = remoteButton.name
+        shareButton?.shortname = remoteButton.shortname
+        shareButton?.custom = remoteButton.custom
+        shareButton?.enabled = remoteButton.enabled
+        shareButton?.visibility = remoteButton.visibility
+        shareButton?.order = remoteButton.order
+        shareButton?.blog = blog
+
+        return shareButton!
+    }
+
+
+    /// Composes `RemoteSharingButton` objects from properties on an array of `SharingButton`s.
+    ///
+    /// - Parameters:
+    ///     - shareButtons: An array of `SharingButton` entities.
+    ///
+    /// - Returns: An array of `RemoteSharingButton` objects.
+    ///
+    private func remoteShareButtonsFromShareButtons(shareButtons: [SharingButton]) -> [RemoteSharingButton] {
+        return shareButtons.map { (let shareButton) -> RemoteSharingButton in
+            let btn = RemoteSharingButton()
+            btn.buttonID = shareButton.buttonID
+            btn.name = shareButton.name
+            btn.shortname = shareButton.shortname
+            btn.custom = shareButton.custom
+            btn.enabled = shareButton.enabled
+            btn.visibility = shareButton.visibility
+            btn.order = shareButton.order
+            return btn
+        }
+    }
+
+
+    /// Finds a cached `SharingButton` by its `buttonID` for the specified `Blog`
+    ///
+    /// - Parameters:
+    ///     - buttonID: The button ID of the `sharingButton`.
+    ///     - blog: The blog that owns the sharing button.
+    ///
+    /// - Returns: The requested `SharingButton` or nil.
+    ///
+    public func findSharingButtonByID(buttonID: String, blog: Blog) -> SharingButton? {
+        let request = NSFetchRequest(entityName: SharingButton.classNameWithoutNamespaces())
+        request.predicate = NSPredicate(format: "buttonID = %@ AND blog = %@", buttonID, blog)
+
+        var buttons: [SharingButton]
+        do {
+            buttons = try managedObjectContext.executeFetchRequest(request) as! [SharingButton]
+        } catch let error as NSError {
+            DDLogSwift.logError("Error fetching shareing button \(buttonID) : \(error.localizedDescription)")
+            buttons = []
+        }
+
+        return buttons.first
+    }
+
+
+    // MARK: Private Instance Methods
 
 
     /// Returns the API to use with the service. 

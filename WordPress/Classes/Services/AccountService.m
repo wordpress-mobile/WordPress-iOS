@@ -1,6 +1,5 @@
 #import "AccountService.h"
 #import "WPAccount.h"
-#import "NotificationsManager.h"
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAnalyticsTrackerMixpanel.h"
