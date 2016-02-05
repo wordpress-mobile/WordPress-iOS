@@ -57,13 +57,16 @@
 {
     [self performResultsControllerFetchRequest];
     
+    self.isLoadingSources = YES;
     PostTagService *tagService = [[PostTagService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [tagService syncTagsForBlog:self.item.menu.blog success:^{
         
         // updated
+        self.isLoadingSources = NO;
         
     } failure:^(NSError *error) {
         // TODO: show error message
+        self.isLoadingSources = NO;
     }];
 }
 
@@ -108,8 +111,17 @@
         self.tagSearchService = [[PostTagService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     }
     
+    self.isLoadingSources = YES;
+    
     DDLogDebug(@"MenuItemSourceTagView: Searching tags PostTagService");
-    [self.tagSearchService searchTagsWithName:searchText blog:[self blog] success:nil failure:nil];
+    [self.tagSearchService searchTagsWithName:searchText blog:[self blog] success:^(NSArray<PostTag *> *tags) {
+        
+        self.isLoadingSources = NO;
+        
+    } failure:^(NSError *error) {
+        
+        self.isLoadingSources = NO;
+    }];
 }
 
 @end

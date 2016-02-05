@@ -28,6 +28,8 @@
  */
 @property (nonatomic, strong) MenuItemSourceTextBar *searchBar;
 
+@property (nonatomic, assign) BOOL isLoadingSources;
+
 /* Adds the custom searchBar view to the stackView, if not already added.
  */
 - (void)insertSearchBarIfNeeded;
