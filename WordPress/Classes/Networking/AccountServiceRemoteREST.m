@@ -11,6 +11,7 @@ static NSString * const UserDictionaryEmailKey = @"email";
 static NSString * const UserDictionaryDisplaynameKey = @"display_name";
 static NSString * const UserDictionaryPrimaryBlogKey = @"primary_blog";
 static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
+static NSString * const UserDictionaryDateKey = @"date";
 
 @implementation AccountServiceRemoteREST
 
@@ -122,6 +123,13 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
     remoteUser.displayName = [dictionary stringForKey:UserDictionaryDisplaynameKey];
     remoteUser.primaryBlogID = [dictionary numberForKey:UserDictionaryPrimaryBlogKey];
     remoteUser.avatarURL = [dictionary stringForKey:UserDictionaryAvatarURLKey];
+    
+    NSString *dateString = [dictionary stringForKey:UserDictionaryDateKey];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-LL-eTH:m:s"];
+
+    remoteUser.date = [dateFormatter dateFromString:dateString];
     return remoteUser;
 }
 
