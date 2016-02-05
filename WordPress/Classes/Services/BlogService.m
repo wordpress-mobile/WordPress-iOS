@@ -865,6 +865,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     settings.relatedPostsEnabled = [remoteSettings.relatedPostsEnabled boolValue];
     settings.relatedPostsShowHeadline = [remoteSettings.relatedPostsShowHeadline boolValue];
     settings.relatedPostsShowThumbnails = [remoteSettings.relatedPostsShowThumbnails boolValue];
+
+    // Sharing
+    settings.sharingButtonStyle = remoteSettings.sharingButtonStyle;
+    settings.sharingLabel = remoteSettings.sharingLabel;
+    settings.sharingTwitterName = remoteSettings.sharingTwitterName;
+    settings.sharingCommentLikesEnabled = [remoteSettings.sharingCommentLikesEnabled boolValue];
+    settings.sharingDisabledLikes = [remoteSettings.sharingDisabledLikes boolValue];
+    settings.sharingDisabledReblogs = [remoteSettings.sharingDisabledReblogs boolValue];
 }
 
 - (RemoteBlogSettings *)remoteSettingFromSettings:(BlogSettings *)settings
@@ -915,6 +923,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     remoteSettings.relatedPostsEnabled = @(settings.relatedPostsEnabled);
     remoteSettings.relatedPostsShowHeadline = @(settings.relatedPostsShowHeadline);
     remoteSettings.relatedPostsShowThumbnails = @(settings.relatedPostsShowThumbnails);
+
+    // Sharing
+    remoteSettings.sharingButtonStyle = settings.sharingButtonStyle;
+    remoteSettings.sharingLabel =  settings.sharingLabel;
+    remoteSettings.sharingTwitterName = settings.sharingTwitterName;
+    remoteSettings.sharingCommentLikesEnabled = @(settings.sharingCommentLikesEnabled);
+    remoteSettings.sharingDisabledLikes = @(settings.sharingDisabledLikes);
+    remoteSettings.sharingDisabledReblogs = @(settings.sharingDisabledReblogs);
     
     return remoteSettings;
 }

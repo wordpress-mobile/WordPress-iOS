@@ -88,6 +88,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSString *icon;
 @property (nonatomic, assign, readwrite) SiteVisibility siteVisibility;
 @property (nonatomic, strong, readwrite) NSNumber *planID;
+@property (nonatomic, strong, readwrite) NSSet *sharingButtons;
 
 /**
  *  @details    Maps to a BlogSettings instance, which contains a collection of the available preferences, 
