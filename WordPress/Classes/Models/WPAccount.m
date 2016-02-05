@@ -13,6 +13,7 @@
 @dynamic jetpackBlogs;
 @dynamic defaultBlog;
 @dynamic uuid;
+@dynamic date;
 @dynamic email;
 @dynamic displayName;
 @dynamic userID;
