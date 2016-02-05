@@ -41,12 +41,12 @@ static ContextManager *_override;
 
 - (NSManagedObjectContext *const)newDerivedContext
 {
-    NSManagedObjectContext *derived = [[NSManagedObjectContext alloc]
-                                       initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    derived.parentContext = self.mainContext;
-    derived.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+    return [self newChildContextWithConcurrencyType:NSPrivateQueueConcurrencyType];
+}
 
-    return derived;
+- (NSManagedObjectContext *const)newMainContextChildContext
+{
+    return [self newChildContextWithConcurrencyType:NSMainQueueConcurrencyType];
 }
 
 - (NSManagedObjectContext *const)mainContext
@@ -58,6 +58,17 @@ static ContextManager *_override;
 
     return _mainContext;
 }
+
+- (NSManagedObjectContext *const)newChildContextWithConcurrencyType:(NSManagedObjectContextConcurrencyType)concurrencyType
+{
+    NSManagedObjectContext *childContext = [[NSManagedObjectContext alloc]
+                                            initWithConcurrencyType:concurrencyType];
+    childContext.parentContext = self.mainContext;
+    childContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy;
+
+    return childContext;
+}
+
 
 #pragma mark - Context Saving and Merging
 
