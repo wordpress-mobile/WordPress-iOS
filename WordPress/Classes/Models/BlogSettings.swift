@@ -170,4 +170,33 @@ public class BlogSettings : NSManagedObject
      *  @details Indicates whether related posts should show thumbnails.
      */
     @NSManaged var relatedPostsShowThumbnails : Bool
+
+
+
+    // MARK: - Sharing
+
+    /// Indicates the style to use for the sharing buttons on a particular blog
+    ///
+    @NSManaged var sharingButtonStyle : String
+
+    /// The title of the sharing label on the user's blog.
+    ///
+    @NSManaged var sharingLabel : String
+
+    /// Indicates the twitter username to use when sharing via Twitter
+    ///
+    @NSManaged var sharingTwitterName : String
+
+    /// Indicates whether related posts should show thumbnails.
+    ///
+    @NSManaged var sharingCommentLikesEnabled : Bool
+
+    /// Indicates whether sharing via post likes has been disabled
+    ///
+    @NSManaged var sharingDisabledLikes : Bool
+
+    /// Indicates whether sharing by reblogging has been disabled
+    ///
+    @NSManaged var sharingDisabledReblogs : Bool
+
 }

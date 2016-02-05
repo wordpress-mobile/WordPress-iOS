@@ -4,7 +4,7 @@
 #import "NSDate+WordPressJSON.h"
 #import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
 
-static const NSInteger NumberOfCommentsToSync = 100;
+
 
 @implementation CommentServiceRemoteREST
 
@@ -12,15 +12,17 @@ static const NSInteger NumberOfCommentsToSync = 100;
 
 #pragma mark - Blog-centric methods
 
-- (void)getCommentsWithSuccess:(void (^)(NSArray *))success
-                       failure:(void (^)(NSError *))failure
+- (void)getCommentsWithMaximumCount:(NSInteger)maximumComments
+                            success:(void (^)(NSArray *comments))success
+                            failure:(void (^)(NSError *error))failure
 {
-    [self getCommentsWithOptions:nil success:success failure:failure];
+    [self getCommentsWithMaximumCount:maximumComments options:nil success:success failure:failure];
 }
 
-- (void)getCommentsWithOptions:(NSDictionary *)options
-                       success:(void (^)(NSArray *posts))success
-                       failure:(void (^)(NSError *error))failure
+- (void)getCommentsWithMaximumCount:(NSInteger)maximumComments
+                            options:(NSDictionary *)options
+                            success:(void (^)(NSArray *posts))success
+                            failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments", self.siteID];
     NSString *requestUrl = [self pathForEndpoint:path
@@ -29,7 +31,7 @@ static const NSInteger NumberOfCommentsToSync = 100;
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{
                                  @"status": @"all",
                                  @"context": @"edit",
-                                 @"number": @(NumberOfCommentsToSync)
+                                 @"number": @(maximumComments)
                                  }];
     if (options) {
         [parameters addEntriesFromDictionary:options];

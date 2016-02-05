@@ -10,6 +10,7 @@
 #import "WPNoResultsView.h"
 #import "UIView+Subviews.h"
 #import "ContextManager.h"
+#import "WPStyleGuide.h"
 
 
 static CGRect const CommentsActivityFooterFrame                 = {0.0, 0.0, 30.0, 30.0};
@@ -264,6 +265,88 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 }
 
 
+#pragma mark - Comment Actions
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
+- (NSArray *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    NSMutableArray *actions = [NSMutableArray array];
+    __typeof(self) __weak weakSelf = self;
+    
+    NSParameterAssert(comment);
+    
+    UITableViewRowAction *trash = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDestructive
+                                                                     title:NSLocalizedString(@"Trash", @"Trashes a comment")
+                                                                   handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                       [weakSelf deleteComment:comment];
+                                                                   }];
+    trash.backgroundColor = [WPStyleGuide errorRed];
+    [actions addObject:trash];
+    
+    if (comment.isApproved) {
+        UITableViewRowAction *unapprove = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                                             title:NSLocalizedString(@"Unapprove", @"Unapproves a Comment")
+                                                                           handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                               [weakSelf unapproveComment:comment];
+                                                                           }];
+        
+        unapprove.backgroundColor = [WPStyleGuide grey];
+        [actions addObject:unapprove];
+    } else {
+        UITableViewRowAction *approve = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal
+                                                                           title:NSLocalizedString(@"Approve", @"Approves a Comment")
+                                                                         handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+                                                                             [weakSelf approveComment:comment];
+                                                                         }];
+        
+        approve.backgroundColor = [WPStyleGuide wordPressBlue];
+        [actions addObject:approve];
+    }
+    
+    return actions;
+}
+
+- (void)approveComment:(Comment *)comment
+{
+    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        
+    [self.tableView setEditing:NO animated:YES];
+    [service approveComment:comment success:nil failure:^(NSError *error) {
+        DDLogError(@"#### Error approving comment: %@", error);
+    }];
+}
+
+- (void)unapproveComment:(Comment *)comment
+{
+    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    
+    [self.tableView setEditing:NO animated:YES];
+    [service unapproveComment:comment success:nil failure:^(NSError *error) {
+        DDLogError(@"#### Error unapproving comment: %@", error);
+    }];
+}
+
+- (void)deleteComment:(Comment *)comment
+{
+    CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    
+    [self.tableView setEditing:NO animated:YES];
+    [service deleteComment:comment success:nil failure:^(NSError *error) {
+        DDLogError(@"Error deleting comment: %@", error);
+    }];
+}
+
+
 #pragma mark - WPTableViewHandlerDelegate Methods
 
 - (NSManagedObjectContext *)managedObjectContext
@@ -339,10 +422,10 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
         }
         
         [commentService syncCommentsForBlog:blogInContext
-                                    success:^{
+                                    success:^(BOOL hasMore) {
                                                 if (success) {
                                                     dispatch_async(dispatch_get_main_queue(), ^{
-                                                        success(true);
+                                                        success(hasMore);
                                                     });
                                                 }
                                     }

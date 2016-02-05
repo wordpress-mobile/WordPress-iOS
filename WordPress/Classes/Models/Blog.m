@@ -67,6 +67,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 @dynamic username;
 @dynamic settings;
 @dynamic planID;
+@dynamic sharingButtons;
 
 @synthesize api = _api;
 @synthesize isSyncingPosts;
@@ -210,7 +211,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         pendingComments = [self.managedObjectContext countForFetchRequest:request error:&error];
     } else {
         for (Comment *element in self.comments) {
-            if ( [@"hold" isEqualToString: element.status] ) {
+            if ( [CommentStatusPending isEqualToString:element.status] ) {
                 pendingComments++;
             }
         }

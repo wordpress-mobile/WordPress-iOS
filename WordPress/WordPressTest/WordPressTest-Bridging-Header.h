@@ -12,6 +12,7 @@
 #import "Page.h"
 #import "ReaderPost.h"
 #import "UIAlertControllerProxy.h"
+#import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
 #import <NSObject_SafeExpectations/NSObject+SafeExpectations.h>
 #import <WordPressComAnalytics/WPAnalytics.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
