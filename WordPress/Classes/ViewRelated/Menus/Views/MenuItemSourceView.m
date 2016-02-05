@@ -3,6 +3,7 @@
 #import "MenusDesign.h"
 #import "MenuItem.h"
 #import "Menu.h"
+#import "MenuItemSourceLoadingView.h"
 
 static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;
 static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
@@ -14,6 +15,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 @property (nonatomic, strong) UIView *stackedTableHeaderView;
 
 @property (nonatomic, assign) BOOL animatedTableViewUpdates;
+@property (nonatomic, strong) MenuItemSourceLoadingView *loadingView;
 
 @end
 
@@ -83,6 +85,14 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     return self;
 }
 
+- (BOOL)resignFirstResponder
+{
+    if([self.searchBar isFirstResponder]) {
+        return [self.searchBar resignFirstResponder];
+    }
+    return [super resignFirstResponder];
+}
+
 #pragma mark - view configuration
 
 - (void)layoutSubviews
@@ -103,12 +113,30 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     self.tableView.tableHeaderView = self.stackedTableHeaderView;
 }
 
-- (BOOL)resignFirstResponder
+- (void)setIsLoadingSources:(BOOL)isLoadingSources
 {
-    if([self.searchBar isFirstResponder]) {
-        return [self.searchBar resignFirstResponder];
+    if (_isLoadingSources != isLoadingSources) {
+        _isLoadingSources = isLoadingSources;
+        [self toggleLoadingViewIndicatorIfNeeded];
     }
-    return [super resignFirstResponder];
+}
+
+- (void)toggleLoadingViewIndicatorIfNeeded
+{
+    if(!self.loadingView) {
+        MenuItemSourceLoadingView *loadingView = [[MenuItemSourceLoadingView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50.0)];
+        self.tableView.tableFooterView = loadingView;
+        self.loadingView = loadingView;
+    }
+    
+    if (self.isLoadingSources && self.resultsController.sections.count) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] firstObject];
+        if ([sectionInfo numberOfObjects] == 0) {
+            [self.loadingView startAnimating];
+        }
+    } else {
+        [self.loadingView stopAnimating];
+    }
 }
 
 - (void)insertSearchBarIfNeeded
