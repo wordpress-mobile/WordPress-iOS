@@ -14,13 +14,14 @@ public class SharingService : LocalCoreDataService
     /// Syncs the list of Publicize services.  The list is expected to very rarely change.
     ///
     /// - Parameters: 
+    ///     - blog: The `Blog` for which to sync publicize services
     ///     - success: An optional success block accepting no parameters
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
-    public func syncPublicizeServices(success: (() -> Void)?, failure: (NSError! -> Void)?) {
-        let remote = SharingServiceRemote(api: apiForRequest())
+    public func syncPublicizeServicesForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
 
-        remote.getPublicizeServices( {(remoteServices:[RemotePublicizeService]) in
+        remote.getPublicizeServices( {(remoteServices: [RemotePublicizeService]) in
             // Process the results
             self.mergePublicizeServices(remoteServices, success: success)
         },
@@ -34,13 +35,14 @@ public class SharingService : LocalCoreDataService
     /// The success block should accept an array of `KeyringConnection` objects.
     ///
     /// - Parameters:
+    ///     - blog: The `Blog` for which to sync keyring connections
     ///     - success: An optional success block accepting an array of `KeyringConnection` objects
     ///     - failure: An optional failure block accepting an `NSError` parameter
     ///
-    public func fetchKeyringConnections(success: ([KeyringConnection] -> Void)?, failure: (NSError! -> Void)?) {
-        let remote = SharingServiceRemote(api: apiForRequest())
+    public func fetchKeyringConnectionsForBlog(blog: Blog, success: ([KeyringConnection] -> Void)?, failure: (NSError! -> Void)?) {
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
 
-        remote.getKeyringConnections( {(keyringConnections:[KeyringConnection]) in
+        remote.getKeyringConnections( {(keyringConnections: [KeyringConnection]) in
             // Just return the result
             success?(keyringConnections)
         },
@@ -57,12 +59,13 @@ public class SharingService : LocalCoreDataService
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an `NSError` parameter.
     ///
-    public func syncPublicizeConnectionsForBlog(blog:Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
+    public func syncPublicizeConnectionsForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         let blogObjectID = blog.objectID
-        let remote = SharingServiceRemote(api: apiForRequest())
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
         remote.getPublicizeConnections(blog.dotComID, success: {(remoteConnections:[RemotePublicizeConnection]) in
+
             // Process the results
-            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections:remoteConnections, onComplete: success)
+            self.mergePublicizeConnectionsForBlog(blogObjectID, remoteConnections: remoteConnections, onComplete: success)
         },
         failure: { (error: NSError!) in
             failure?(error)
@@ -80,19 +83,19 @@ public class SharingService : LocalCoreDataService
     ///     - success: An optional success block accepting a `PublicizeConnection` parameter.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    public func createPublicizeConnectionForBlog(blog:Blog,
-        keyring:KeyringConnection,
-        externalUserID:String?,
+    public func createPublicizeConnectionForBlog(blog: Blog,
+        keyring: KeyringConnection,
+        externalUserID: String?,
         success: (PublicizeConnection -> Void)?,
         failure: (NSError! -> Void)?)
     {
         let blogObjectID = blog.objectID
-        let remote = SharingServiceRemote(api: apiForRequest())
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
 
         remote.createPublicizeConnection(blog.dotComID,
             keyringConnectionID: keyring.keyringID,
             externalUserID: externalUserID,
-            success: {(remoteConnection:RemotePublicizeConnection) in
+            success: {(remoteConnection: RemotePublicizeConnection) in
                 do {
                     let pubConn = try self.createPublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
@@ -120,8 +123,9 @@ public class SharingService : LocalCoreDataService
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    public func updateShared(shared:Bool,
-        forPublicizeConnection pubConn:PublicizeConnection,
+    public func updateSharedForBlog(blog: Blog,
+        shared: Bool,
+        forPublicizeConnection pubConn: PublicizeConnection,
         success: (() -> Void)?,
         failure: (NSError! -> Void)?) {
             if pubConn.shared == shared {
@@ -134,12 +138,12 @@ public class SharingService : LocalCoreDataService
             ContextManager.sharedInstance().saveContext(managedObjectContext)
 
             let siteID = pubConn.siteID;
-            let remote = SharingServiceRemote(api: apiForRequest())
+            let remote = SharingServiceRemote(api: apiForBlog(blog))
             remote.updateShared(shared,
                 forPublicizeConnectionWithID: pubConn.connectionID,
                 forSite: siteID,
                 success: success,
-                failure:  { (error:NSError!) in
+                failure: { (error: NSError!) in
                     pubConn.shared = oldValue
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
                         failure?(error)
@@ -157,19 +161,19 @@ public class SharingService : LocalCoreDataService
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
     ///
-    public func deletePublicizeConnection(pubConn:PublicizeConnection, success: (() -> Void)?, failure: (NSError! -> Void)?) {
+    public func deletePublicizeConnectionForBlog(blog: Blog, pubConn: PublicizeConnection, success: (() -> Void)?, failure: (NSError! -> Void)?) {
         // optimistically delete the connection locally.
         let siteID = pubConn.siteID;
         managedObjectContext.deleteObject(pubConn);
         ContextManager.sharedInstance().saveContext(managedObjectContext)
 
-        let remote = SharingServiceRemote(api: apiForRequest())
+        let remote = SharingServiceRemote(api: apiForBlog(blog))
         remote.deletePublicizeConnection(siteID,
             connectionID: pubConn.connectionID,
             success: {
                 success?()
             },
-            failure: {(error:NSError!) in
+            failure: { (error:NSError!) in
                 if let errorCode = error.userInfo[WordPressComApiErrorCodeKey] as? String {
                     if errorCode == self.SharingAPIErrorNotFound {
                         // This is a special situation. If the call to disconnect the service returns not_found then the service
@@ -194,7 +198,7 @@ public class SharingService : LocalCoreDataService
     ///
     /// - Returns: The requested `PublicizeService` or nil.
     ///
-    public func findPublicizeServiceNamed(name:String) -> PublicizeService? {
+    public func findPublicizeServiceNamed(name: String) -> PublicizeService? {
         let request = NSFetchRequest(entityName: PublicizeService.classNameWithoutNamespaces())
         request.predicate = NSPredicate(format: "serviceID = %@", name)
 
@@ -241,7 +245,7 @@ public class SharingService : LocalCoreDataService
     ///     - remoteServices: An array of `RemotePublicizeService` objects to merge.
     ///     - success: An optional callback block to be performed when core data has saved the changes.
     ///
-    private func mergePublicizeServices(remoteServices:[RemotePublicizeService], success:(() -> Void)? ) {
+    private func mergePublicizeServices(remoteServices: [RemotePublicizeService], success: (() -> Void)? ) {
         managedObjectContext.performBlock {
             let currentPublicizeServices = self.allPublicizeServices()
 
@@ -273,7 +277,7 @@ public class SharingService : LocalCoreDataService
     ///
     /// - Returns: A `PublicizeService`.
     ///
-    private func createOrReplaceFromRemotePublicizeService(remoteService:RemotePublicizeService) -> PublicizeService {
+    private func createOrReplaceFromRemotePublicizeService(remoteService: RemotePublicizeService) -> PublicizeService {
         var pubService = findPublicizeServiceNamed(remoteService.serviceID)
         if pubService == nil {
             pubService = NSEntityDescription.insertNewObjectForEntityForName(PublicizeService.classNameWithoutNamespaces(),
@@ -304,7 +308,7 @@ public class SharingService : LocalCoreDataService
     ///
     /// - Returns: The requested `PublicizeConnection` or nil.
     ///
-    public func findPublicizeConnectionByID(connectionID:NSNumber) -> PublicizeConnection? {
+    public func findPublicizeConnectionByID(connectionID: NSNumber) -> PublicizeConnection? {
         let request = NSFetchRequest(entityName: PublicizeConnection.classNameWithoutNamespaces())
         request.predicate = NSPredicate(format: "connectionID = %@", connectionID)
 
@@ -327,7 +331,7 @@ public class SharingService : LocalCoreDataService
     ///
     /// - Returns: An array of `PublicizeConnection`.  The array is empty if no objects are cached.
     ///
-    public func allPublicizeConnectionsForBlog(blog:Blog) -> [PublicizeConnection] {
+    public func allPublicizeConnectionsForBlog(blog: Blog) -> [PublicizeConnection] {
         let request = NSFetchRequest(entityName: PublicizeConnection.classNameWithoutNamespaces())
         request.predicate = NSPredicate(format: "blog = %@", blog)
 
@@ -354,9 +358,9 @@ public class SharingService : LocalCoreDataService
     ///     - remoteConnections: An array of `RemotePublicizeConnection` objects to merge.
     ///     - onComplete: An optional callback block to be performed when core data has saved the changes.
     ///
-    private func mergePublicizeConnectionsForBlog(blogObjectID:NSManagedObjectID, remoteConnections:[RemotePublicizeConnection], onComplete:(() -> Void)? ) {
+    private func mergePublicizeConnectionsForBlog(blogObjectID: NSManagedObjectID, remoteConnections: [RemotePublicizeConnection], onComplete: (() -> Void)?) {
         managedObjectContext.performBlock {
-            var blog:Blog
+            var blog: Blog
             do {
                 blog = try self.managedObjectContext.existingObjectWithID(blogObjectID) as! Blog
             } catch let error as NSError {
@@ -399,7 +403,7 @@ public class SharingService : LocalCoreDataService
     ///
     /// - Returns: A `PublicizeConnection`.
     ///
-    private func createOrReplaceFromRemotePublicizeConnection(remoteConnection:RemotePublicizeConnection) -> PublicizeConnection {
+    private func createOrReplaceFromRemotePublicizeConnection(remoteConnection: RemotePublicizeConnection) -> PublicizeConnection {
         var pubConnection = findPublicizeConnectionByID(remoteConnection.connectionID)
         if pubConnection == nil {
             pubConnection = NSEntityDescription.insertNewObjectForEntityForName(PublicizeConnection.classNameWithoutNamespaces(),
@@ -437,8 +441,8 @@ public class SharingService : LocalCoreDataService
     ///
     /// - Returns: A `PublicizeConnection`.
     ///
-    private func createPublicizeConnectionForBlogWithObjectID(blogObjectID:NSManagedObjectID,
-        remoteConnection:RemotePublicizeConnection) throws -> PublicizeConnection {
+    private func createPublicizeConnectionForBlogWithObjectID(blogObjectID: NSManagedObjectID,
+        remoteConnection: RemotePublicizeConnection) throws -> PublicizeConnection {
 
             let blog = try managedObjectContext.existingObjectWithID(blogObjectID) as! Blog
             let pubConn = createOrReplaceFromRemotePublicizeConnection(remoteConnection)
@@ -451,25 +455,14 @@ public class SharingService : LocalCoreDataService
     // MARK : Private Instance Methods
 
 
-    /// Returns the API to use with the service
+    /// Returns the API to use with the service. 
     ///
-    private func apiForRequest() -> WordPressComApi {
-        var api : WordPressComApi? = nil
-
-        if let restApi = AccountService(managedObjectContext: managedObjectContext).defaultWordPressComAccount()?.restApi {
-            api = restApi.hasCredentials() ? restApi : nil
-        }
-
-        if api == nil {
-            // In practice this should never happen, but if it does let's try to detect it. 
-            // Write to the error log if the api was nil, and trigger an assert to 
-            // catch this in development/QA.
-            api = WordPressComApi.anonymousApi()
-            let error = "SharingService is not using a real WordPress.com account."
-            DDLogSwift.logError(error)
-            assert(false, error)
-        }
-
+    /// - Parameters:
+    ///     - blog: The blog to use for the rest api.
+    ///
+    private func apiForBlog(blog: Blog) -> WordPressComApi {
+        let api: WordPressComApi? =  blog.restApi()
+        assert(api != nil)
         return api!
     }
 }

@@ -47,9 +47,6 @@
 #import "WPUserAgent.h"
 #import "WordPressComApiCredentials.h"
 
-// Notifications
-#import "NotificationsManager.h"
-
 // Swift support
 #import "WordPress-Swift.h"
 
@@ -184,7 +181,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
         returnValue = YES;
     }
 
-    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPCOM_SCHEME]) {
+    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPComScheme]) {
         NSString *URLString = [url absoluteString];
 
         if ([URLString rangeOfString:@"newpost"].length) {
@@ -407,14 +404,14 @@ int ddLogLevel                                                  = DDLogLevelInfo
 {
     DDLogMethod();
 
-    [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
+    [[PushNotificationsManager sharedInstance] handleNotification:userInfo completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     DDLogMethod();
 
-    [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
+    [[PushNotificationsManager sharedInstance] handleNotification:userInfo completionHandler:completionHandler];
 }
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier
