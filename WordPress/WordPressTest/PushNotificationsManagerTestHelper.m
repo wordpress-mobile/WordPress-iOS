@@ -1,10 +1,10 @@
-#import "NotificationsManager+TestHelper.h"
+#import "PushNotificationsManagerTestHelper.h"
 
 
 static NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 
-@implementation NotificationsManager (TestHelper)
+@implementation PushNotificationsManagerTestHelper
 
 + (void)setDummyDeviceToken
 {
