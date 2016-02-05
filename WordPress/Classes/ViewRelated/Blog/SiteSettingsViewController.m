@@ -822,8 +822,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectSelectedRowWithAnimation:YES];
-
     NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:
@@ -848,6 +846,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
         case SiteSettingsSectionRemoveSite:
             [self showRemoveSiteForBlog:self.blog];
+            [tableView deselectSelectedRowWithAnimation:YES];
             break;
 
         case SiteSettingsSectionAdvanced:
