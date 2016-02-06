@@ -231,11 +231,13 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
                                                      [weakSelf showViewSite];
                                                  }]];
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.")
-                                                    image:[UIImage imageNamed:@"icon-menu-viewadmin"]
-                                                 callback:^{
-                                                     [weakSelf showViewAdmin];
-                                                 }]];
+    if ([self shouldShowWPAdminRow]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.")
+                                                        image:[UIImage imageNamed:@"icon-menu-viewadmin"]
+                                                     callback:^{
+                                                         [weakSelf showViewAdmin];
+                                                     }]];
+    }
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                                     image:[UIImage imageNamed:@"icon-menu-stats"]
@@ -559,6 +561,11 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
     NSString *dashboardUrl = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
+}
+
+- (BOOL)shouldShowWPAdminRow
+{
+    return !self.blog.isHostedAtWPcom || [self.blog.account wasCreatedBeforeHideViewAdminDate];
 }
 
 
