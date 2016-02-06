@@ -4,6 +4,7 @@
 #import "RemoteBlogOptionsHelper.h"
 #import "Constants.h"
 #import "WPAccount.h"
+#import "WordPress-Swift.h"
 
 static NSString * const UserDictionaryIDKey = @"ID";
 static NSString * const UserDictionaryUsernameKey = @"username";
@@ -123,12 +124,8 @@ static NSString * const UserDictionaryDateKey = @"date";
     remoteUser.displayName = [dictionary stringForKey:UserDictionaryDisplaynameKey];
     remoteUser.primaryBlogID = [dictionary numberForKey:UserDictionaryPrimaryBlogKey];
     remoteUser.avatarURL = [dictionary stringForKey:UserDictionaryAvatarURLKey];
+    remoteUser.date = [NSDate dateWithISO8601String:[dictionary stringForKey:UserDictionaryDateKey]];
     
-    NSString *dateString = [[dictionary stringForKey:UserDictionaryDateKey] substringToIndex:10];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-d"];
-
-    remoteUser.date = [dateFormatter dateFromString:dateString];
     return remoteUser;
 }
 
