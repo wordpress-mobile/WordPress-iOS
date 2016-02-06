@@ -1,35 +1,35 @@
-//
-//  WPAccountTests.swift
-//  WordPress
-//
-//  Created by Will Kwon on 2/6/16.
-//  Copyright © 2016 WordPress. All rights reserved.
-//
-
 import XCTest
 
 class WPAccountTests: XCTestCase {
+    private let accountEntityName = "Account"
+    private let oneHundredYearsInMilliseconds: NSTimeInterval = 1000 * 60 * 60 * 24 * 7 * 52 * 100
+
+    private var account: WPAccount!
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        let context = TestContextManager.sharedInstance().mainContext
+        account = NSEntityDescription.insertNewObjectForEntityForName(accountEntityName, inManagedObjectContext: context) as! WPAccount
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        account = nil
+        
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testWasCreatedBeforeHideViewAdminDateBeforeDate() {
+        let beforeDate = NSDate(timeIntervalSince1970: 0)
+        account.date = beforeDate
+        
+        XCTAssertTrue(account.wasCreatedBeforeHideViewAdminDate(), "Should return false as date is before 09-07-2015")
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
-        }
+    func testWasCreatedBeforeHideViewAdminDateAfterDate() {
+        let afterDate = NSDate(timeIntervalSince1970: oneHundredYearsInMilliseconds)
+        account.date = afterDate
+        
+        XCTAssertFalse(account.wasCreatedBeforeHideViewAdminDate(), "Should return false as date is after 09-07-2015")
     }
-    
 }
