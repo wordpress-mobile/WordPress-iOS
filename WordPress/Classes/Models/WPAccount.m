@@ -2,8 +2,15 @@
 #import "SFHFKeychainUtils.h"
 #import "WordPressComOAuthClient.h"
 
+NSString * const WPAccountHideViewAdminTimeZone = @"GMT";
+NSInteger const WPAccountHideViewAdminYear = 2015;
+NSInteger const WPAccountHideViewAdminMonth = 9;
+NSInteger const WPAccountHideViewAdminDay = 7;
+
 @interface WPAccount ()
+
 @property (nonatomic, strong, readwrite) WordPressComApi *restApi;
+
 @end
 
 @implementation WPAccount
@@ -131,6 +138,21 @@
 - (BOOL)isWPComAccount
 {
     return self.restApi != nil;
+}
+
+- (BOOL)wasCreatedBeforeHideViewAdminDate
+{
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    calendar.timeZone = [NSTimeZone timeZoneWithName:WPAccountHideViewAdminTimeZone];
+    
+    NSDateComponents *hideAdminDateComponents = [NSDateComponents new];
+    hideAdminDateComponents.year = WPAccountHideViewAdminYear;
+    hideAdminDateComponents.month = WPAccountHideViewAdminMonth;
+    hideAdminDateComponents.day = WPAccountHideViewAdminDay;
+    NSDate *hideAdminDate = [calendar dateFromComponents:hideAdminDateComponents];
+    
+    NSDate *date = self.date;
+    return [self.date compare:hideAdminDate] == NSOrderedAscending;
 }
 
 @end
