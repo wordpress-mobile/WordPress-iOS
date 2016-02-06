@@ -13,8 +13,26 @@
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 #import "WPWebViewController.h"
+#import <WordPressComStatsiOS/WPStatsServiceCache.h>
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
+
+@interface WPStatsServiceCache (Shared)
+@end
+
+@implementation WPStatsServiceCache (Shared)
+
++ (nonnull instancetype)sharedCache
+{
+    static WPStatsServiceCache *cache = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        cache = [[WPStatsServiceCache alloc] init];
+    });
+    return cache;
+}
+
+@end
 
 @interface StatsViewController () <WPStatsViewControllerDelegate>
 
@@ -22,6 +40,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 @property (nonatomic, strong) UINavigationController *statsNavVC;
 @property (nonatomic, strong) WPStatsViewController *statsVC;
 @property (nonatomic, weak) WPNoResultsView *noResultsView;
+
+@property (nonnull, nonatomic, strong) WPStatsServiceCache *statsServiceCache;
 
 @end
 
@@ -49,7 +69,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:bundle] instantiateInitialViewController];
     self.statsVC = self.statsNavVC.viewControllers.firstObject;
     self.statsVC.statsDelegate = self;
-    
+    self.statsVC.statsServiceCache = self.statsServiceCache;
+
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
 
     // Being shown in a modal window
@@ -222,6 +243,12 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     viewController.blog = blog;
 
     return viewController;
+}
+
+#pragma mark - Lazy Init
+- (nonnull WPStatsServiceCache *)statsServiceCache
+{
+    return [WPStatsServiceCache sharedCache];
 }
 
 @end
