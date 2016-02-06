@@ -23,13 +23,13 @@ class WPAccountTests: XCTestCase {
         let beforeDate = NSDate(timeIntervalSince1970: 0)
         account.date = beforeDate
         
-        XCTAssertTrue(account.wasCreatedBeforeHideViewAdminDate(), "Should return false as date is before 09-07-2015")
+        XCTAssertTrue(account.wasCreatedBeforeHideViewAdminDate(), "Should return false as date is before 2015-09-07")
     }
     
     func testWasCreatedBeforeHideViewAdminDateAfterDate() {
         let afterDate = NSDate(timeIntervalSince1970: oneHundredYearsInMilliseconds)
         account.date = afterDate
         
-        XCTAssertFalse(account.wasCreatedBeforeHideViewAdminDate(), "Should return false as date is after 09-07-2015")
+        XCTAssertFalse(account.wasCreatedBeforeHideViewAdminDate(), "Should return false as date is after 2015-09-07")
     }
 }
