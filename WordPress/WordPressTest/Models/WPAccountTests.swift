@@ -1,6 +1,7 @@
 import XCTest
 
-class WPAccountTests: XCTestCase {
+class WPAccountTests: XCTestCase
+{
     private let accountEntityName = "Account"
     private let oneHundredYearsInMilliseconds: NSTimeInterval = 1000 * 60 * 60 * 24 * 7 * 52 * 100
 
