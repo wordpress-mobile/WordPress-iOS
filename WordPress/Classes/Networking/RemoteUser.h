@@ -8,6 +8,6 @@
 @property (nonatomic, strong) NSString *displayName;
 @property (nonatomic, strong) NSNumber *primaryBlogID;
 @property (nonatomic, strong) NSString *avatarURL;
-@property (nonatomic, strong) NSDate *date;
+@property (nonatomic, strong) NSDate *dateCreated;
 
 @end
