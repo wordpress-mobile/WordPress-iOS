@@ -20,7 +20,7 @@ NSInteger const WPAccountHideViewAdminDay = 7;
 @dynamic jetpackBlogs;
 @dynamic defaultBlog;
 @dynamic uuid;
-@dynamic date;
+@dynamic dateCreated;
 @dynamic email;
 @dynamic displayName;
 @dynamic userID;
@@ -151,8 +151,7 @@ NSInteger const WPAccountHideViewAdminDay = 7;
     hideAdminDateComponents.day = WPAccountHideViewAdminDay;
     NSDate *hideAdminDate = [calendar dateFromComponents:hideAdminDateComponents];
     
-    NSDate *date = self.date;
-    return [self.date compare:hideAdminDate] == NSOrderedAscending;
+    return [self.dateCreated compare:hideAdminDate] == NSOrderedAscending;
 }
 
 @end
