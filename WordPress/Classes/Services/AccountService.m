@@ -235,7 +235,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     account.email = userDetails.email;
     account.avatarURL = userDetails.avatarURL;
     account.displayName = userDetails.displayName;
-    account.date = userDetails.date;
+    account.dateCreated = userDetails.dateCreated;
     if (userDetails.primaryBlogID) {
         account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", userDetails.primaryBlogID]] anyObject];
 
