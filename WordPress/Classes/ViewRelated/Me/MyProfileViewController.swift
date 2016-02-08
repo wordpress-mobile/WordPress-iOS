@@ -10,17 +10,11 @@ func MyProfileViewController(account account: WPAccount) -> ImmuTableViewControl
 func MyProfileViewController(service service: AccountSettingsService) -> ImmuTableViewController {
     let controller = MyProfileController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
-    assert(viewController.controller?.presenter != nil, "ImmuTableViewController should have set the presenter for MyProfileController")
     return viewController
 }
 
-/// MyProfileController requires the `presenter` to be set before using.
-/// To avoid problems, it's marked private and should only be initialized using the
-/// `MyProfileViewController` factory functions.
 private struct MyProfileController: ImmuTableController {
     // MARK: - ImmuTableController
-
-    weak var presenter: ImmuTablePresenter? = nil
 
     let title = NSLocalizedString("My Profile", comment: "My Profile view title")
 
@@ -28,20 +22,14 @@ private struct MyProfileController: ImmuTableController {
         return [EditableTextRow.self]
     }
 
-    var immuTable: Observable<ImmuTable> {
-        precondition(presenter != nil, "presenter must be set before using")
-        return service.settings.map(mapViewModel)
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable> {
+        return service.settings.map({ settings in
+            return self.mapViewModel(settings, presenter: presenter)
+        })
     }
 
     var errorMessage: Observable<String?> {
-        precondition(presenter != nil, "presenter must be set before using")
-        guard let presenter = presenter else {
-            // This shouldn't happen, but if it does, disabling the error feels
-            // safer than having it running when the VC is not visible.
-            return Observable.just(nil)
-        }
         return service.refresh
-            .pausable(presenter.visible)
             // replace errors with .Failed status
             .catchErrorJustReturn(.Failed)
             // convert status to string
@@ -58,13 +46,7 @@ private struct MyProfileController: ImmuTableController {
 
     // MARK: - Model mapping
 
-    func mapViewModel(settings: AccountSettings?) -> ImmuTable {
-        precondition(presenter != nil, "presenter must be set before using")
-        guard let presenter = presenter else {
-            // This shouldn't happen. If there's no presenter we can't push the
-            // editText controllers.
-            return ImmuTable.Empty
-        }
+    func mapViewModel(settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
         let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
             value: settings?.firstName ?? "",
