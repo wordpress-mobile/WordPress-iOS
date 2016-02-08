@@ -500,7 +500,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 - (void)showPlans
 {
     // TODO(@koke, 2016-01-28): add analytics
-    PlanListViewController *controller = [PlanListViewController new];
+    PlanListViewController *controller = [[PlanListViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
