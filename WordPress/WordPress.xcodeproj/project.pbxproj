@@ -2676,20 +2676,20 @@
 			children = (
 				93B853211B44165B0064FE72 /* Analytics */,
 				852416D11A12ED690030700C /* AppRatingUtilityTests.m */,
+				17AF92241C46634000A99CFB /* BlogSiteVisibilityHelperTest.m */,
 				5DA988051AEEA594002AFB12 /* DisplayableImageHelperTest.m */,
+				E12E6E371C21E75F0033C5D0 /* FeatureFlagTest.swift */,
 				E1266D2E1BBEC37B00FCB6B6 /* GravatarTest.swift */,
 				E1EBC3721C118ED200F638E0 /* ImmuTableTest.swift */,
 				93A379EB19FFBF7900415023 /* KeychainTest.m */,
+				85D790AB1AE5D95E0033AE83 /* MixpanelProxyTests.m */,
 				5D2BEB4819758102005425F7 /* PhotonImageURLHelperTest.m */,
+				8514B8D31AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m */,
 				5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */,
 				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
-				5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */,
-				85D790AB1AE5D95E0033AE83 /* MixpanelProxyTests.m */,
-				8514B8D31AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m */,
-				E19A10C91B010AA0006192B0 /* WPURLRequestTest.m */,
 				E1E1AA8E1B7DF54B001C8645 /* WPMapFilterReduceTest.m */,
-				E12E6E371C21E75F0033C5D0 /* FeatureFlagTest.swift */,
-				17AF92241C46634000A99CFB /* BlogSiteVisibilityHelperTest.m */,
+				E19A10C91B010AA0006192B0 /* WPURLRequestTest.m */,
+				5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
