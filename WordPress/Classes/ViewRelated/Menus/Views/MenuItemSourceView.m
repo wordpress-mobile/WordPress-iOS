@@ -80,6 +80,11 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
                                                       ]];
             _stackView = stackView;
         }
+        {
+            MenuItemSourceLoadingView *loadingView = [[MenuItemSourceLoadingView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50.0)];
+            self.tableView.tableFooterView = loadingView;
+            self.loadingView = loadingView;
+        }
     }
     
     return self;
@@ -111,32 +116,6 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     self.stackedTableHeaderView.frame = frame;
     // reset the tableHeaderView to update the size change
     self.tableView.tableHeaderView = self.stackedTableHeaderView;
-}
-
-- (void)setIsLoadingSources:(BOOL)isLoadingSources
-{
-    if (_isLoadingSources != isLoadingSources) {
-        _isLoadingSources = isLoadingSources;
-        [self toggleLoadingViewIndicatorIfNeeded];
-    }
-}
-
-- (void)toggleLoadingViewIndicatorIfNeeded
-{
-    if(!self.loadingView) {
-        MenuItemSourceLoadingView *loadingView = [[MenuItemSourceLoadingView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50.0)];
-        self.tableView.tableFooterView = loadingView;
-        self.loadingView = loadingView;
-    }
-    
-    if (self.isLoadingSources && self.resultsController.sections.count) {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] firstObject];
-        if ([sectionInfo numberOfObjects] == 0) {
-            [self.loadingView startAnimating];
-        }
-    } else {
-        [self.loadingView stopAnimating];
-    }
 }
 
 - (void)insertSearchBarIfNeeded
@@ -184,6 +163,28 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 - (void)searchBarInputChangeDetectedForRemoteResultsUpdateWithText:(NSString *)searchText
 {
     // overrided in subclasses
+}
+
+- (void)showLoadingSourcesIndicatorIfEmpty
+{
+    if (self.resultsController.sections.count) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] firstObject];
+        if ([sectionInfo numberOfObjects] == 0) {
+            [self showLoadingSourcesIndicator];
+        }
+    } else {
+        [self showLoadingSourcesIndicator];
+    }
+}
+
+- (void)showLoadingSourcesIndicator
+{
+    [self.loadingView startAnimating];
+}
+
+- (void)hideLoadingSourcesIndicator
+{
+    [self.loadingView stopAnimating];
 }
 
 #pragma mark - NSFetchedResultsController and subclass methods

@@ -52,15 +52,20 @@
 - (void)syncPages
 {
     [self performResultsControllerFetchRequest];
-    
+    [self showLoadingSourcesIndicatorIfEmpty];
+    void(^stopLoading)() = ^() {
+        [self hideLoadingSourcesIndicator];
+    };
     PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [service syncPostsOfType:PostServiceTypePage withStatuses:@[PostStatusPublish, PostStatusPrivate] forBlog:[self blog] success:^(BOOL hasMore) {
-        
-        // updated
-        
-    } failure:^(NSError *error) {
-        // TODO: show error message
-    }];
+    [service syncPostsOfType:PostServiceTypePage
+                withStatuses:@[PostStatusPublish, PostStatusPrivate]
+                     forBlog:[self blog]
+                     success:^(BOOL hasMore) {
+                         stopLoading();
+                     } failure:^(NSError *error) {
+                         // TODO: show error message
+                         stopLoading();
+                     }];
 }
 
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
@@ -99,13 +104,23 @@
     if (!searchText.length) {
         return;
     }
-    
     if (!self.pageSearchService) {
         self.pageSearchService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     }
-    
+    [self showLoadingSourcesIndicator];
+    void(^stopLoading)() = ^() {
+        [self hideLoadingSourcesIndicator];
+    };
     DDLogDebug(@"MenuItemSourcePageView: Searching posts via PostService");
-    [self.pageSearchService searchPostsWithQuery:searchText ofType:PostServiceTypePage withStatuses:@[PostStatusPrivate, PostStatusPublish] forBlog:[self blog] success:nil failure:nil];
+    [self.pageSearchService searchPostsWithQuery:searchText
+                                          ofType:PostServiceTypePage
+                                    withStatuses:@[PostStatusPrivate, PostStatusPublish]
+                                         forBlog:[self blog]
+                                         success:^(NSArray *posts) {
+                                             stopLoading();
+                                         } failure:^(NSError *error) {
+                                             stopLoading();
+                                         }];
 }
 
 @end
