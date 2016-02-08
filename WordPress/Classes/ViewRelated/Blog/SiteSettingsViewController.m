@@ -101,7 +101,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)dealloc
 {
-    self.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -1012,12 +1011,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [self dismissViewControllerAnimated:YES completion:nil];
     } else {
         [self.navigationController popToRootViewControllerAnimated:YES];
-    }
-
-    if (self.delegate) {
-        // If sender is not nil then the user tapped the cancel button.
-        BOOL wascancelled = (sender != nil);
-        [self.delegate controllerDidDismiss:self cancelled:wascancelled];
     }
 }
 
