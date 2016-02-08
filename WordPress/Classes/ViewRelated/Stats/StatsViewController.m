@@ -83,6 +83,11 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [self initStats];
 }
 
+- (nonnull WPStatsServiceCache *)statsServiceCache
+{
+    return [WPStatsServiceCache sharedCache];
+}
+
 - (void)setBlog:(Blog *)blog
 {
     _blog = blog;
@@ -243,12 +248,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     viewController.blog = blog;
 
     return viewController;
-}
-
-#pragma mark - Lazy Init
-- (nonnull WPStatsServiceCache *)statsServiceCache
-{
-    return [WPStatsServiceCache sharedCache];
 }
 
 @end
