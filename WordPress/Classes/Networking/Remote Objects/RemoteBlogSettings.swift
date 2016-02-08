@@ -155,7 +155,33 @@ public class RemoteBlogSettings : NSObject
      */
     var relatedPostsShowThumbnails : NSNumber?
     
-    
+
+    // MARK: - Sharing
+
+    /// Indicates the style to use for the sharing buttons on a particular blog..
+    ///
+    var sharingButtonStyle : String?
+
+    /// The title of the sharing label on the user's blog.
+    ///
+    var sharingLabel : String?
+
+    /// Indicates the twitter username to use when sharing via Twitter
+    ///
+    var sharingTwitterName : String?
+
+    /// Indicates whether related posts should show thumbnails.
+    ///
+    var sharingCommentLikesEnabled : NSNumber?
+
+    /// Indicates whether sharing via post likes has been disabled
+    ///
+    var sharingDisabledLikes : NSNumber?
+
+    /// Indicates whether sharing by reblogging has been disabled
+    ///
+    var sharingDisabledReblogs : NSNumber?
+
     
     
     // MARK: - Helpers

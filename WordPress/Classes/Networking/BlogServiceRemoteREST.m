@@ -34,6 +34,14 @@ static NSString * const RemoteBlogRelatedPostsEnabledKey                    = @"
 static NSString * const RemoteBlogRelatedPostsShowHeadlineKey               = @"jetpack_relatedposts_show_headline";
 static NSString * const RemoteBlogRelatedPostsShowThumbnailsKey             = @"jetpack_relatedposts_show_thumbnails";
 
+static NSString * const RemoteBlogSharingButtonStyle = @"sharing_button_style";
+static NSString * const RemoteBlogSharingLabel = @"sharing_label";
+static NSString * const RemoteBlogSharingTwitterName = @"twitter_via";
+static NSString * const RemoteBlogSharingCommentLikesEnabled = @"jetpack_comment_likes_enabled";
+static NSString * const RemoteBlogSharingDisabledLikes = @"disabled_likes";
+static NSString * const RemoteBlogSharingDisabledReblogs = @"disabled_reblogs";
+
+
 #pragma mark - Keys used for Update Calls
 // Note: Only god knows why these don't match the "Parsing Keys"
 static NSString * const RemoteBlogNameForUpdateKey                          = @"blogname";
@@ -250,14 +258,21 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     settings.commentsThreadingDepth = [rawSettings numberForKey:RemoteBlogCommentsThreadingDepthKey];
     settings.pingbackOutboundEnabled = [rawSettings numberForKey:RemoteBlogCommentsPingbackOutboundKey];
     settings.pingbackInboundEnabled = [rawSettings numberForKey:RemoteBlogCommentsPingbackInboundKey];
-    
-    
+
     // Related Posts
     settings.relatedPostsAllowed = [rawSettings numberForKey:RemoteBlogRelatedPostsAllowedKey];
     settings.relatedPostsEnabled = [rawSettings numberForKey:RemoteBlogRelatedPostsEnabledKey];
     settings.relatedPostsShowHeadline = [rawSettings numberForKey:RemoteBlogRelatedPostsShowHeadlineKey];
     settings.relatedPostsShowThumbnails = [rawSettings numberForKey:RemoteBlogRelatedPostsShowThumbnailsKey];
-    
+
+    // Sharing
+    settings.sharingButtonStyle = [rawSettings stringForKey:RemoteBlogSharingButtonStyle];
+    settings.sharingLabel = [rawSettings stringForKey:RemoteBlogSharingLabel];
+    settings.sharingTwitterName = [rawSettings stringForKey:RemoteBlogSharingTwitterName];
+    settings.sharingCommentLikesEnabled = [rawSettings numberForKey:RemoteBlogSharingCommentLikesEnabled];
+    settings.sharingDisabledLikes = [rawSettings numberForKey:RemoteBlogSharingDisabledLikes];
+    settings.sharingDisabledReblogs = [rawSettings numberForKey:RemoteBlogSharingDisabledReblogs];
+
     return settings;
 }
 
@@ -295,6 +310,14 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     [parameters setValueIfNotNil:settings.relatedPostsEnabled forKey:RemoteBlogRelatedPostsEnabledKey];
     [parameters setValueIfNotNil:settings.relatedPostsShowHeadline forKey:RemoteBlogRelatedPostsShowHeadlineKey];
     [parameters setValueIfNotNil:settings.relatedPostsShowThumbnails forKey:RemoteBlogRelatedPostsShowThumbnailsKey];
+
+    // Sharing
+    [parameters setValueIfNotNil:settings.sharingButtonStyle forKey:RemoteBlogSharingButtonStyle];
+    [parameters setValueIfNotNil:settings.sharingLabel forKey:RemoteBlogSharingLabel];
+    [parameters setValueIfNotNil:settings.sharingTwitterName forKey:RemoteBlogSharingTwitterName];
+    [parameters setValueIfNotNil:settings.sharingCommentLikesEnabled forKey:RemoteBlogSharingCommentLikesEnabled];
+    [parameters setValueIfNotNil:settings.sharingDisabledLikes forKey:RemoteBlogSharingDisabledLikes];
+    [parameters setValueIfNotNil:settings.sharingDisabledReblogs forKey:RemoteBlogSharingDisabledReblogs];
     
     return parameters;
 }
