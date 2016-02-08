@@ -99,19 +99,30 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [operation setCompletionBlockWithSuccess:success failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSError *newError = error;
         if (operation.response.statusCode >= 400) {
-            NSString *errorMessage = [operation.responseObject stringForKey:@"message"];
+            NSArray *errors = (NSArray *)[operation.responseObject objectForKey:@"errors"];
+            NSDictionary *errorDictionary = nil;
+            if (errors) {
+                errorDictionary = [errors firstObject];
+            } else {
+                errorDictionary = (NSDictionary *)operation.responseObject;
+            }
+            NSString *errorMessage = (NSString *)errorDictionary[@"message"];
+            NSString *errorType = (NSString *)errorDictionary[@"error"];
             NSUInteger errorCode = WordPressComApiErrorJSON;
-            if ([operation.responseObject objectForKey:@"error"] && errorMessage) {
-                NSString *errorString = [operation.responseObject stringForKey:@"error"];
-                if ([errorString isEqualToString:@"invalid_token"]) {
+            if (errorType && errorMessage) {
+                if ([errorType isEqualToString:@"invalid_token"]) {
                     errorCode = WordPressComApiErrorInvalidToken;
-                } else if ([errorString isEqualToString:@"authorization_required"]) {
+                } else if ([errorType isEqualToString:@"authorization_required"]) {
                     errorCode = WordPressComApiErrorAuthorizationRequired;
+                } else if ([errorType isEqualToString:@"upload_error"]) {
+                    errorCode = WordPressComApiErrorUploadFailed;
+                    if (operation.response.statusCode == 400) {
+                        errorCode = WordPressComApiErrorUploadFailedInvalidFileType;
+                    } else if (operation.response.statusCode == 500) {
+                        errorCode = WordPressComApiErrorUploadFailedNotEnoughDiskQuota;
+                    }
                 }
-                if (errorString) {
-                    errorMessage = [errorMessage stringByAppendingFormat:@" [%@]", errorString];
-                }
-                newError = [NSError errorWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey: errorMessage, WordPressComApiErrorCodeKey: errorString}];
+                newError = [NSError errorWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey: errorMessage, WordPressComApiErrorCodeKey: errorType}];
             }
         }
         
