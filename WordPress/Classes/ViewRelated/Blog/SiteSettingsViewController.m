@@ -69,7 +69,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, PostCategoriesViewControllerDelegate>
 
-@property (nonatomic, strong) NSArray *tableSections;
 #pragma mark - General Section
 @property (nonatomic, strong) SettingTableViewCell *siteTitleCell;
 @property (nonatomic, strong) SettingTableViewCell *siteTaglineCell;
@@ -135,7 +134,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshTriggered:) forControlEvents:UIControlEventValueChanged];
 
-    [self configureSections];
     [self refreshData];
 }
 
@@ -146,7 +144,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     [self.tableView reloadData];
 }
 
-- (void)configureSections
+- (NSArray *)tableSections
 {
     NSMutableArray *sections = [NSMutableArray arrayWithObjects:@(SiteSettingsSectionGeneral), nil];
 
@@ -172,8 +170,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [sections addObject:@(SiteSettingsSectionAdvanced)];
     }
 
-    self.tableSections = sections;
+    return sections;
 }
+
 
 #pragma mark - UITableViewDataSource
 
@@ -1080,7 +1079,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog]) {
-        [self configureSections];
         [self.tableView reloadData];
     }
 }
