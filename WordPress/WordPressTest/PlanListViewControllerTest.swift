@@ -30,17 +30,21 @@ class PlanListViewControllerTest: XCTestCase {
 
     func testPlanListViewModel() {
         let model = PlanListViewModel(activePlan: .Free)
+        let presenter = MockImmuTablePresenter()
+        let tableViewModel = model.tableViewModelWithPresenter(presenter)
         expect(model.activePlan).to(equal(Plan.Free))
-        expect(model.tableViewModel.sections.count).to(equal(1))
-        let section = model.tableViewModel.sections[0]
+        expect(tableViewModel.sections.count).to(equal(1))
+        let section = tableViewModel.sections[0]
         expect(section.rows.count).to(equal(3))
     }
 
     func testPlanImageWhenActivePlanSet() {
         let model = PlanListViewModel(activePlan: .Premium)
-        let freeRow = model.tableViewModel.planRowAtIndex(0)
-        let premiumRow = model.tableViewModel.planRowAtIndex(1)
-        let businessRow = model.tableViewModel.planRowAtIndex(2)
+        let presenter = MockImmuTablePresenter()
+        let tableViewModel = model.tableViewModelWithPresenter(presenter)
+        let freeRow = tableViewModel.planRowAtIndex(0)
+        let premiumRow = tableViewModel.planRowAtIndex(1)
+        let businessRow = tableViewModel.planRowAtIndex(2)
 
         expect(freeRow.icon).to(equal(Plan.Free.image))
         expect(premiumRow.icon).to(equal(Plan.Premium.activeImage))
@@ -49,9 +53,11 @@ class PlanListViewControllerTest: XCTestCase {
 
     func testPlanImageWhenActivePlanNotSet() {
         let model = PlanListViewModel(activePlan: nil)
-        let freeRow = model.tableViewModel.planRowAtIndex(0)
-        let premiumRow = model.tableViewModel.planRowAtIndex(1)
-        let businessRow = model.tableViewModel.planRowAtIndex(2)
+        let presenter = MockImmuTablePresenter()
+        let tableViewModel = model.tableViewModelWithPresenter(presenter)
+        let freeRow = tableViewModel.planRowAtIndex(0)
+        let premiumRow = tableViewModel.planRowAtIndex(1)
+        let businessRow = tableViewModel.planRowAtIndex(2)
 
         expect(freeRow.icon).to(equal(Plan.Free.image))
         expect(premiumRow.icon).to(equal(Plan.Premium.image))
