@@ -27,6 +27,7 @@ NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTagline,
     SiteSettingsGeneralURL,
     SiteSettingsGeneralPrivacy,
+    SiteSettingsGeneralLanguage,
     SiteSettingsGeneralCount,
 };
 
@@ -74,6 +75,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) SettingTableViewCell *siteTaglineCell;
 @property (nonatomic, strong) SettingTableViewCell *addressTextCell;
 @property (nonatomic, strong) SettingTableViewCell *privacyTextCell;
+@property (nonatomic, strong) SettingTableViewCell *languageTextCell;
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
@@ -187,9 +189,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:
             if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
-                //  NOTE: Sergio Estevao (2015-08-25): Hides the privacy setting for self-hosted sites not in jetpack
-                // because XML-RPC doens't support this setting to be read or changed.
-                return SiteSettingsGeneralCount - 1;
+                // NOTE: Sergio Estevao (2015.08.25) + JLP (2016.02.08):
+                // We'll hide Privacy + Language in XML-RPC sites because the dotorg API still don't support
+                // those fields.
+                return SiteSettingsGeneralCount - 2;
             }
             return SiteSettingsGeneralCount;
 
@@ -427,6 +430,17 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return _privacyTextCell;
 }
 
+- (SettingTableViewCell *)languageTextCell
+{
+    if (_languageTextCell) {
+        return _languageTextCell;
+    }
+    _languageTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Language", @"Label for the privacy setting")
+                                                           editable:self.blog.isAdmin
+                                                    reuseIdentifier:nil];
+    return _languageTextCell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForGeneralSettingsInRow:(NSInteger)row
 {
     switch (row) {
@@ -453,6 +467,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsGeneralPrivacy:
             [self.privacyTextCell setTextValue:[BlogSiteVisibilityHelper titleForCurrentSiteVisibilityOfBlog:self.blog]];
             return self.privacyTextCell;
+            
+        case SiteSettingsGeneralLanguage:
+            return self.languageTextCell;
     }
 
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
