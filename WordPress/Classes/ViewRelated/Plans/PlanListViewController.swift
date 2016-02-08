@@ -72,7 +72,7 @@ struct PlanListRow: ImmuTableRow {
 struct PlanListViewModel {
     let activePlan: Plan?
 
-    func tableViewModelWithPresenter(presenter: UIViewController) -> ImmuTable {
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> ImmuTable {
         let rowForPlan = rowGenerator(presenter)
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -85,7 +85,7 @@ struct PlanListViewModel {
             ])
     }
 
-    private func rowGenerator(presenter: UIViewController) -> Plan -> PlanListRow {
+    private func rowGenerator(presenter: ImmuTablePresenter) -> Plan -> PlanListRow {
         return { plan in
             let active = (self.activePlan == plan)
             let icon = active ? plan.activeImage : plan.image
@@ -96,16 +96,16 @@ struct PlanListViewModel {
                 price: self.priceForPlan(plan),
                 description: plan.description,
                 icon: icon,
-                action: self.pushPlanDetails(plan, presenter: presenter)
+                action: presenter.present(self.controllerForPlanDetails(plan))
             )
         }
     }
 
-    func pushPlanDetails(plan: Plan, presenter: UIViewController) -> ImmuTableAction {
+    func controllerForPlanDetails(plan: Plan) -> ImmuTableRowControllerGenerator {
         return { row in
             let planVC = PlanDetailViewController.controllerWithPlan(plan)
             let navigationVC = UINavigationController(rootViewController: planVC)
-            presenter.presentViewController(navigationVC, animated: true, completion: nil)
+            return navigationVC
         }
     }
 
@@ -123,7 +123,7 @@ struct PlanListViewModel {
     }
 }
 
-final class PlanListViewController: UITableViewController {
+final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     private lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
