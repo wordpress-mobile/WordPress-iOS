@@ -43,7 +43,6 @@ class PurchaseButton: UIButton {
         layer.cornerRadius = cornerRadius
         layer.borderWidth = borderWidth
         layer.borderColor = tintColor.CGColor
-        layer.borderColor = tintColor.CGColor
         
         setTitleColor(tintColor, forState: .Normal)
         
