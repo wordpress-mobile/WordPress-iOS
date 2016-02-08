@@ -54,13 +54,18 @@
     self.displayCategories = [NSMutableArray array];
     [self performResultsControllerFetchRequest];
     
+    [self showLoadingSourcesIndicatorIfEmpty];
+    void(^stopLoading)() = ^() {
+        [self hideLoadingSourcesIndicator];
+    };
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [categoryService syncCategoriesForBlog:[self blog] success:^{
        
-        // updated, do nothing
+        stopLoading();
         
     } failure:^(NSError *error) {
         // TODO: show error message
+        stopLoading();
     }];
 }
 
