@@ -1,12 +1,15 @@
 
 #import "AppRatingUtility.h"
 
+#import "Constants.h"
+
 @interface AppRatingUtility ()
 
 @property (nonatomic, assign) NSUInteger systemWideSignificantEventCountRequiredForPrompt;
 @property (nonatomic, strong) NSMutableDictionary *sections;
 @property (nonatomic, strong) NSMutableDictionary *disabledSections;
 @property (nonatomic, assign) BOOL allPromptingDisabled;
+@property (nonatomic, strong) NSString *appReviewUrl;
 
 @end
 
@@ -34,6 +37,7 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
     if (self) {
         _sections = [NSMutableDictionary dictionary];
         _disabledSections = [NSMutableDictionary dictionary];
+        _appReviewUrl = [NSString stringWithFormat:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%@&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8", WPiTunesAppId];
     }
     return self;
 }
@@ -74,6 +78,14 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
             BOOL disableSection = [responseDictionary[disabledKey] boolValue];
             appRatingUtility.disabledSections[key] = @(disableSection);
         }];
+        
+        if (responseDictionary[@"app-review-url"] != nil) {
+            NSString *appReviewUrl = responseDictionary[@"app-review-url"];
+            if (appReviewUrl.length > 0) {
+                AppRatingUtility *sharedInstance = [self sharedInstance];
+                sharedInstance.appReviewUrl = appReviewUrl;
+            }
+        }
         
         if (success) {
             success();
@@ -317,6 +329,12 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
 + (void)assertValidSection:(NSString *)section
 {
     NSAssert([[AppRatingUtility sharedInstance].sections.allKeys containsObject:section], @"Invalid section");
+}
+
++ (NSString *)appReviewUrl
+{
+    AppRatingUtility *sharedInstance = [AppRatingUtility sharedInstance];
+    return sharedInstance.appReviewUrl;
 }
 
 @end
