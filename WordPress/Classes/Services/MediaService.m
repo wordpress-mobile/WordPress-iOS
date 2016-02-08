@@ -91,15 +91,14 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     NSURL *mediaURL = [self urlForMediaWithFilename:[asset originalFilename] andExtension:extension];
     NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
                                                 andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
-    
-    [asset exportToURL:mediaURL
-             targetUTI:assetUTI
-     maximumResolution:maxImageSize
-      stripGeoLocation:!geoLocationEnabled
-        successHandler:^(CGSize resultingSize) {
-            [asset exportThumbnailToURL:mediaThumbnailURL
-                         targetSize:[UIScreen mainScreen].bounds.size
-                     successHandler:^(CGSize thumbnailSize) {
+    [asset exportThumbnailToURL:mediaThumbnailURL
+                     targetSize:[UIScreen mainScreen].bounds.size
+                 successHandler:^(CGSize thumbnailSize) {
+        [asset exportToURL:mediaURL
+                 targetUTI:assetUTI
+         maximumResolution:maxImageSize
+          stripGeoLocation:!geoLocationEnabled
+            successHandler:^(CGSize resultingSize) {
                          [self.managedObjectContext performBlock:^{
                              
                              AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
