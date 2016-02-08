@@ -86,7 +86,7 @@ struct PlanListViewModel {
     }
 
     private func rowGenerator(presenter: ImmuTablePresenter) -> Plan -> PlanListRow {
-        return { plan in
+        return { [unowned presenter] plan in
             let active = (self.activePlan == plan)
             let icon = active ? plan.activeImage : plan.image
 
