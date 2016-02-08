@@ -5,7 +5,6 @@ import WordPressShared
 typealias ImmuTableRowControllerGenerator = ImmuTableRow -> UIViewController
 
 protocol ImmuTablePresenter: class {
-    var visible: Observable<Bool> { get }
     func push(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction
 }
 
@@ -20,11 +19,10 @@ extension ImmuTablePresenter where Self: UIViewController {
 }
 
 protocol ImmuTableController {
-    var presenter: ImmuTablePresenter? { get set }
     var title: String { get }
     var immuTableRows: [ImmuTableRow.Type] { get }
-    var immuTable: Observable<ImmuTable> { get }
     var errorMessage: Observable<String?> { get }
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable>
 }
 
 /// Generic view controller to present ImmuTable-based tables
@@ -41,32 +39,31 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     private var errorAnimator: ErrorAnimator!
 
-    let controller: ImmuTableController?
+    let controller: ImmuTableController
 
     private let bag = DisposeBag()
 
     // MARK: - Table View Controller
 
-    init(controller: ImmuTableController? = nil) {
+    init(controller: ImmuTableController) {
         self.controller = controller
         super.init(style: .Grouped)
-        self.controller?.presenter = self
-        if let controller = self.controller {
-            title = controller.title
-            registerRows(controller.immuTableRows)
-            controller.immuTable
-                .observeOn(MainScheduler.instance)
-                .subscribeNext({ [weak self] in
-                    self?.handler.viewModel = $0
-                    })
-                .addDisposableTo(bag)
-            controller.errorMessage
-                .observeOn(MainScheduler.instance)
-                .subscribeNext({ [weak self] in
-                    self?.errorMessage = $0
-                    })
-                .addDisposableTo(bag)
-        }
+        title = controller.title
+        registerRows(controller.immuTableRows)
+        controller.tableViewModelWithPresenter(self)
+            .pausable(visible)
+            .observeOn(MainScheduler.instance)
+            .subscribeNext({ [weak self] in
+                self?.handler.viewModel = $0
+                })
+            .addDisposableTo(bag)
+        controller.errorMessage
+            .pausable(visible)
+            .observeOn(MainScheduler.instance)
+            .subscribeNext({ [weak self] in
+                self?.errorMessage = $0
+                })
+            .addDisposableTo(bag)
     }
 
     required init?(coder aDecoder: NSCoder) {

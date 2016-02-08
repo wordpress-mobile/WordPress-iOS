@@ -106,3 +106,17 @@ extension Plan {
         return UIImage(named: activeImageName)!
     }
 }
+
+// Blog extension
+extension Blog {
+    /// The blog's active plan, if any.
+    /// - note: If the stored planID doesn't match a known plan, it returns `nil`
+    var plan: Plan? {
+        // FIXME: Remove cast if/when we merge https://github.com/wordpress-mobile/WordPress-iOS/pull/4762
+        // @koke 2016-02-03
+        guard let planID = planID as Int? else {
+            return nil
+        }
+        return Plan(rawValue: planID)
+    }
+}
