@@ -93,6 +93,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                                                 andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
     [asset exportThumbnailToURL:mediaThumbnailURL
                      targetSize:[UIScreen mainScreen].bounds.size
+                    synchronous:YES
                  successHandler:^(CGSize thumbnailSize) {
         [asset exportToURL:mediaURL
                  targetUTI:assetUTI
