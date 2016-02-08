@@ -7,17 +7,19 @@
 /**
  Loads all of the comments associated with a blog
  */
-- (void)getCommentsWithSuccess:(void (^)(NSArray *comments))success
-                       failure:(void (^)(NSError *error))failure;
+- (void)getCommentsWithMaximumCount:(NSInteger)maximumComments
+                            success:(void (^)(NSArray *comments))success
+                            failure:(void (^)(NSError *error))failure;
 
 
 
 /**
  Loads all of the comments associated with a blog
  */
-- (void)getCommentsWithOptions:(NSDictionary *)options
-                       success:(void (^)(NSArray *posts))success
-                       failure:(void (^)(NSError *error))failure;
+- (void)getCommentsWithMaximumCount:(NSInteger)maximumComments
+                            options:(NSDictionary *)options
+                            success:(void (^)(NSArray *posts))success
+                            failure:(void (^)(NSError *error))failure;
 
 /**
  Publishes a new comment

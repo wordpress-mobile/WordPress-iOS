@@ -12,6 +12,8 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "WordPress-swift.h"
 #import <WordPressApi/WordPressApi.h>
+#import "WPXMLRPCDecoder.h"
+#import "WordPressComApi.h"
 
 NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
 CGSize const MediaMaxImageSize = {3000, 3000};
@@ -179,7 +181,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
-                failure(error);
+                failure([self translateMediaUploadError:error]);
             }
         }];
     };
@@ -188,6 +190,48 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                progress:progress
                 success:successBlock
                 failure:failureBlock];
+}
+
+- (NSError *)translateMediaUploadError:(NSError *)error {
+    NSError *newError = error;
+    if (error.domain == WordPressComApiErrorDomain) {
+        NSString *errorMessage = [error localizedDescription];
+        NSInteger errorCode = error.code;
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+        switch (error.code) {
+            case WordPressComApiErrorUploadFailed:
+                errorMessage = NSLocalizedString(@"The app couldn't upload this media.", @"Message to show to user when media upload failed by unknow server error");
+                errorCode = WordPressComApiErrorUploadFailed;
+                break;
+            case WordPressComApiErrorUploadFailedInvalidFileType:
+                errorMessage = NSLocalizedString(@"Your site does not support this media file format.", @"Message to show to user when media upload failed because server doesn't support media type");
+                errorCode = WordPressComApiErrorUploadFailedInvalidFileType;
+                break;
+            case WordPressComApiErrorUploadFailedNotEnoughDiskQuota:
+                errorMessage = NSLocalizedString(@"Your site is out of space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");
+                errorCode = WordPressComApiErrorUploadFailedNotEnoughDiskQuota;
+                break;
+        }
+        userInfo[NSLocalizedDescriptionKey] = errorMessage;
+        newError = [[NSError alloc] initWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:userInfo];
+    } else if (error.domain == WPXMLRPCFaultErrorDomain) {
+        NSString *errorMessage = [error localizedDescription];
+        NSInteger errorCode = error.code;
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:error.userInfo];
+        switch (error.code) {
+            case 500:{
+                errorMessage = NSLocalizedString(@"Your site does not support this media file format.", @"Message to show to user when media upload failed because server doesn't support media type");
+                errorCode = WordPressComApiErrorUploadFailedInvalidFileType;
+            } break;
+            case 401:{
+                errorMessage = NSLocalizedString(@"Your site is out of space for media uploads.", @"Message to show to user when media upload failed because user doesn't have enough space on quota/disk");
+                errorCode = WordPressComApiErrorUploadFailedNotEnoughDiskQuota;
+            } break;
+        }
+        userInfo[NSLocalizedDescriptionKey] = errorMessage;
+        newError = [[NSError alloc] initWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:userInfo];
+    }
+    return newError;
 }
 
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog
