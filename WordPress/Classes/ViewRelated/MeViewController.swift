@@ -194,8 +194,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func pushAccountSettings() -> ImmuTableAction {
         return { [unowned self] row in
+            guard let account = self.defaultAccount() else {
+                let error = "Tried to push Account Settings without a default account. This shouldn't happen"
+                assertionFailure(error)
+                DDLogSwift.logError(error)
+                return
+            }
             WPAppAnalytics.track(.OpenedAccountSettings)
-            let controller = SettingsViewController()
+            let controller = AccountSettingsViewController(account: account)
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
