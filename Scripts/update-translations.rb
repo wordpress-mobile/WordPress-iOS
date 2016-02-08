@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 # Supported languages:
-# ar,ca,cs,cy,da,de,el,en,en-GB,es,fi,fr,he,hr,hu,id,it,ja,ko,ms,nb,nl,pl,pt,pt-PT,ro,ru,sk,sv,th,tr,uk,vi,zh-Hans,zh-Hant
+# ar,ca,cs,cy,da,de,el,en,en-CA,en-GB,es,fi,fr,he,hr,hu,id,it,ja,ko,ms,nb,nl,pl,pt,pt-PT,ro,ru,sk,sv,th,tr,uk,vi,zh-Hans,zh-Hant
 # * Arabic
 # * Catalan
 # * Czech
@@ -10,6 +10,7 @@
 # * German
 # * Greek
 # * English
+# * English (Canada eh)
 # * English (UK)
 # * Spanish
 # * Finnish
@@ -69,6 +70,7 @@ LANGS={
   'zh-tw' => 'zh-Hant', # Chinese (Taiwan)
   'pt-br' => 'pt-BR',   # Portuguese (Brazil)
   'en-gb' => 'en-GB',   # English (UK)
+  'en-ca' => 'en-CA',   # English (Canada)
   'cy' => 'cy',         # Welsh
 }
 
