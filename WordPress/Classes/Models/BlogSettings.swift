@@ -27,7 +27,10 @@ public class BlogSettings : NSManagedObject
     /// Stores the Blog's Privacy Preferences Settings
     ///
     @NSManaged var privacy : NSNumber?
-
+    
+    /// Stores the Blog's Language ID Setting
+    ///
+    @NSManaged var languageID : NSNumber
     
     
     
