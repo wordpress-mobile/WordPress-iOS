@@ -21,6 +21,7 @@ struct PlanListRow: ImmuTableRow {
         cell.detailTextLabel?.text = description
         cell.detailTextLabel?.textColor = WPStyleGuide.grey()
         cell.selectionStyle = .None
+        cell.separatorInset = UIEdgeInsetsZero
     }
 
     private var attributedTitle: NSAttributedString {
