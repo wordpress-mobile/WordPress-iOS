@@ -10,7 +10,6 @@ func MyProfileViewController(account account: WPAccount) -> ImmuTableViewControl
 func MyProfileViewController(service service: AccountSettingsService) -> ImmuTableViewController {
     let controller = MyProfileController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
-    assert(viewController.controller?.presenter != nil, "ImmuTableViewController should have set the presenter for MyProfileController")
     return viewController
 }
 
@@ -19,8 +18,6 @@ func MyProfileViewController(service service: AccountSettingsService) -> ImmuTab
 /// `MyProfileViewController` factory functions.
 private struct MyProfileController: SettingsController {
     // MARK: - ImmuTableController
-
-    weak var presenter: ImmuTablePresenter? = nil
 
     let title = NSLocalizedString("My Profile", comment: "My Profile view title")
 
@@ -38,13 +35,7 @@ private struct MyProfileController: SettingsController {
 
     // MARK: - Model mapping
 
-    func mapViewModel(settings: AccountSettings?) -> ImmuTable {
-        precondition(presenter != nil, "presenter must be set before using")
-        guard let presenter = presenter else {
-            // This shouldn't happen. If there's no presenter we can't push the
-            // editText controllers.
-            return ImmuTable.Empty
-        }
+    func mapViewModel(settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
         let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
             value: settings?.firstName ?? "",
