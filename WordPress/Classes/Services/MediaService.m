@@ -91,33 +91,36 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     NSURL *mediaURL = [self urlForMediaWithFilename:[asset originalFilename] andExtension:extension];
     NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
                                                 andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
-    [asset exportThumbnailToURL:mediaThumbnailURL
-                     targetSize:[UIScreen mainScreen].bounds.size
-                    synchronous:YES
-                 successHandler:^(CGSize thumbnailSize) {
-        [asset exportToURL:mediaURL
-                 targetUTI:assetUTI
-         maximumResolution:maxImageSize
-          stripGeoLocation:!geoLocationEnabled
-            successHandler:^(CGSize resultingSize)
-            {
-                [self createMediaForPost:postObjectID
-                                mediaURL:mediaURL
-                       mediaThumbnailURL:mediaThumbnailURL
-                               mediaType:mediaType
-                               mediaSize:resultingSize
-                              completion:completion];
-            }
-            errorHandler:^(NSError *error) {
-               if (completion){
-                   completion(nil, error);
-               }
+    
+    [[self.class queueForResizeMediaOperations] addOperationWithBlock:^{
+        [asset exportThumbnailToURL:mediaThumbnailURL
+                         targetSize:[UIScreen mainScreen].bounds.size
+                        synchronous:YES
+                     successHandler:^(CGSize thumbnailSize) {
+            [asset exportToURL:mediaURL
+                     targetUTI:assetUTI
+             maximumResolution:maxImageSize
+              stripGeoLocation:!geoLocationEnabled
+                successHandler:^(CGSize resultingSize)
+                {
+                    [self createMediaForPost:postObjectID
+                                    mediaURL:mediaURL
+                           mediaThumbnailURL:mediaThumbnailURL
+                                   mediaType:mediaType
+                                   mediaSize:resultingSize
+                                  completion:completion];
+                }
+                errorHandler:^(NSError *error) {
+                   if (completion){
+                       completion(nil, error);
+                   }
+                }];
+            } errorHandler:^(NSError *error) {
+                if (completion){
+                    completion(nil, error);
+                }
             }];
-        } errorHandler:^(NSError *error) {
-            if (completion){
-                completion(nil, error);
-            }
-        }];
+    }];
 }
 
 - (void) createMediaForPost:(NSManagedObjectID *)postObjectID
@@ -341,6 +344,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     dispatch_once(&_onceToken, ^{
         _queueForResizeMediaOperations = [[NSOperationQueue alloc] init];
         _queueForResizeMediaOperations.name = @"MediaService-ResizeMediaOperation";
+        _queueForResizeMediaOperations.maxConcurrentOperationCount = 1;
     });
     
     return _queueForResizeMediaOperations;
