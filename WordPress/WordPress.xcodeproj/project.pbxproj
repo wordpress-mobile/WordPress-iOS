@@ -5315,6 +5315,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = (
 					"-Wno-incomplete-umbrella",
 					"-Wno-format-security",
@@ -5399,6 +5400,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = (
 					"-Wno-incomplete-umbrella",
 					"-Wno-format-security",
@@ -5666,6 +5668,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = (
 					"-Wno-incomplete-umbrella",
 					"-Wno-format-security",
@@ -6064,6 +6067,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Wno-incomplete-umbrella",
@@ -6088,6 +6092,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				OTHER_CFLAGS = (
 					"-Wno-incomplete-umbrella",
 					"-Wno-format-security",
