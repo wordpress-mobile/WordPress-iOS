@@ -2,8 +2,7 @@ import RxSwift
 
 protocol SettingsController: ImmuTableController {
     var service: AccountSettingsService { get }
-    var presenter: ImmuTablePresenter? { get }
-    func mapViewModel(settings: AccountSettings?) -> ImmuTable
+    func mapViewModel(settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable
 }
 
 // MARK: - Shared implementation
@@ -16,20 +15,14 @@ extension SettingsController {
             SwitchRow.self]
     }
 
-    var immuTable: Observable<ImmuTable> {
-        precondition(presenter != nil, "presenter must be set before using")
-        return service.settings.map(mapViewModel)
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable> {
+        return service.settings.map({ settings in
+            self.mapViewModel(settings, presenter: presenter)
+        })
     }
 
     var errorMessage: Observable<String?> {
-        precondition(presenter != nil, "presenter must be set before using")
-        guard let presenter = presenter else {
-            // This shouldn't happen, but if it does, disabling the error feels
-            // safer than having it running when the VC is not visible.
-            return Observable.just(nil)
-        }
         return service.refresh
-            .pausable(presenter.visible)
             // replace errors with .Failed status
             .catchErrorJustReturn(.Failed)
             // convert status to string

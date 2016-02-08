@@ -11,13 +11,10 @@ func AccountSettingsViewController(account account: WPAccount) -> ImmuTableViewC
 func AccountSettingsViewController(service service: AccountSettingsService) -> ImmuTableViewController {
     let controller = AccountSettingsController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
-    assert(viewController.controller?.presenter != nil, "ImmuTableViewController should have set the presenter for AccountSettingsController")
     return viewController
 }
 
 private struct AccountSettingsController: SettingsController {
-    weak var presenter: ImmuTablePresenter? = nil
-
     let title = NSLocalizedString("Account Settings", comment: "Account Settings Title");
 
     var immuTableRows: [ImmuTableRow.Type] {
@@ -38,13 +35,7 @@ private struct AccountSettingsController: SettingsController {
     
     // MARK: - Model mapping
 
-    func mapViewModel(settings: AccountSettings?) -> ImmuTable {
-        precondition(presenter != nil, "presenter must be set before using")
-        guard let presenter = presenter else {
-            // This shouldn't happen. If there's no presenter we can't push the
-            // editText controllers.
-            return ImmuTable.Empty
-        }
+    func mapViewModel(settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
         let username = TextRow(
             title: NSLocalizedString("Username", comment: "Account Settings Username label"),
             value: settings?.username ?? "")
