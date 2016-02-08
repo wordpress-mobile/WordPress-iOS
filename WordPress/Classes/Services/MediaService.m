@@ -47,6 +47,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 - (void)createMediaWithPHAsset:(PHAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
+           thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion
 {
     NSError *error = nil;
@@ -97,6 +98,10 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                          targetSize:[UIScreen mainScreen].bounds.size
                         synchronous:YES
                      successHandler:^(CGSize thumbnailSize) {
+            if (thumbnailCallback) {
+                thumbnailCallback(mediaThumbnailURL);
+            }
+
             [asset exportToURL:mediaURL
                      targetUTI:assetUTI
              maximumResolution:maxImageSize

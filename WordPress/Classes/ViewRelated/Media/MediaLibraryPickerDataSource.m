@@ -196,7 +196,7 @@
     PHFetchResult *result = [PHAsset fetchAssetsWithLocalIdentifiers:@[assetIdentifier] options:nil];
     PHAsset *asset = [result firstObject];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    [mediaService createMediaWithPHAsset:asset forPostObjectID:objectID completion:^(Media *media, NSError *error) {
+    [mediaService createMediaWithPHAsset:asset forPostObjectID:objectID thumbnailCallback:nil completion:^(Media *media, NSError *error) {
         [self loadDataWithSuccess:^{
             completionBlock(media, error);
         } failure:^(NSError *error) {

@@ -21,10 +21,12 @@ extern NSInteger const MediaMaxImageSizeDimension;
  
  @param asset
  @param postObjectID
+ @param thumbnailCallback a block that will be invoked when the thumbail for the media object is ready
  @completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
  */
 - (void)createMediaWithPHAsset:(PHAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
+           thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion;
 
 /**
