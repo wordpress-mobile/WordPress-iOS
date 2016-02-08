@@ -19,6 +19,9 @@ public class RemoteBlogSettings : NSObject
     ///
     var privacy : NSNumber?
     
+    /// Stores the Blog's Language ID Setting
+    ///
+    var languageID : NSNumber?
     
     
     // MARK: - Writing
