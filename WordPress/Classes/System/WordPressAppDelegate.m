@@ -739,10 +739,8 @@ int ddLogLevel                                                  = DDLogLevelInfo
     if (manager.didMigrationFail) {
         [self.simperium resetMetadata];
     }
-
-#ifdef DEBUG
-	self.simperium.verboseLoggingEnabled = false;
-#endif
+    
+    self.simperium.verboseLoggingEnabled = NO;
 }
 
 - (void)loginSimperium
