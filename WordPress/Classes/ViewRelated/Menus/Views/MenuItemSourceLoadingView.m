@@ -58,6 +58,10 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 
 - (void)startAnimating
 {
+    if (self.isAnimating) {
+        return;
+    }
+    
     [self.delayedStopTimer invalidate];
     self.isAnimating = YES;
     self.sourceCell.hidden = NO;
@@ -74,6 +78,10 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 
 - (void)stopAnimating
 {
+    if (!self.isAnimating) {
+        return;
+    }
+    
     self.isAnimating = NO;
     self.delayedStopTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(hideCellAndRemoveAnimation) userInfo:nil repeats:NO];
 }

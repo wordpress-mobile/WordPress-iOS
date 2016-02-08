@@ -28,8 +28,6 @@
  */
 @property (nonatomic, strong) MenuItemSourceTextBar *searchBar;
 
-@property (nonatomic, assign) BOOL isLoadingSources;
-
 /* Adds the custom searchBar view to the stackView, if not already added.
  */
 - (void)insertSearchBarIfNeeded;
@@ -41,6 +39,18 @@
 /* A searchBar text update has changed in a way that remote results should be fetched to reflect the search.
  */
 - (void)searchBarInputChangeDetectedForRemoteResultsUpdateWithText:(NSString *)searchText;
+
+/* Shows an animated loading indicator in the tableFooterView, if the data set is empty.
+ */
+- (void)showLoadingSourcesIndicatorIfEmpty;
+
+/* Shows an animated loading indicator in the tableFooterView.
+ */
+- (void)showLoadingSourcesIndicator;
+
+/* Hides the animated loading indicator shown via showLoadingSourcesIndicator.
+ */
+- (void)hideLoadingSourcesIndicator;
 
 /* The blog the view is working with.
  */
