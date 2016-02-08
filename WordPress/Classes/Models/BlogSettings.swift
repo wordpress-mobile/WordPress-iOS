@@ -7,9 +7,8 @@ public class BlogSettings : NSManagedObject
 {
     // MARK: - Relationships
     
-    /**
-    *  @details Maps to the related Blog.
-    */
+    /// Maps to the related Blog.
+    ///
     @NSManaged var blog : Blog?
     
 
