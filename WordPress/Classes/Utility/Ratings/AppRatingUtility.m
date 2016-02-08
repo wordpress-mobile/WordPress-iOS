@@ -9,7 +9,7 @@
 @property (nonatomic, strong) NSMutableDictionary *sections;
 @property (nonatomic, strong) NSMutableDictionary *disabledSections;
 @property (nonatomic, assign) BOOL allPromptingDisabled;
-@property (nonatomic, copy) NSString *appReviewUrl;
+@property (nonatomic, strong) NSString *appReviewUrl;
 
 @end
 
@@ -28,7 +28,6 @@ NSString *const AppRatingDislikedCurrentVersion = @"AppRatingDislikedCurrentVers
 NSString *const AppRatingLikedCurrentVersion = @"AppRatingLikedCurrentVersion";
 NSString *const AppRatingUserLikeCount = @"AppRatingUserLikeCount";
 NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
-NSString *const AppRatingDefaultAppReviewUrl = @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=335703880&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8";
 
 NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphoneapp/app-review-prompt-check/1.0/";
 
@@ -38,6 +37,7 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
     if (self) {
         _sections = [NSMutableDictionary dictionary];
         _disabledSections = [NSMutableDictionary dictionary];
+        _appReviewUrl = [NSString stringWithFormat:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%@&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8", WPiTunesAppId];
     }
     return self;
 }
@@ -79,10 +79,12 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
             appRatingUtility.disabledSections[key] = @(disableSection);
         }];
         
-        NSString *appReviewUrl = [responseDictionary stringForKey:@"app-review-url"];
-        if (appReviewUrl.length > 0) {
-            AppRatingUtility *sharedInstance = [self sharedInstance];
-            sharedInstance.appReviewUrl = appReviewUrl;
+        if (responseDictionary[@"app-review-url"] != nil) {
+            NSString *appReviewUrl = responseDictionary[@"app-review-url"];
+            if (appReviewUrl.length > 0) {
+                AppRatingUtility *sharedInstance = [self sharedInstance];
+                sharedInstance.appReviewUrl = appReviewUrl;
+            }
         }
         
         if (success) {
@@ -332,11 +334,7 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
 + (NSString *)appReviewUrl
 {
     AppRatingUtility *sharedInstance = [AppRatingUtility sharedInstance];
-    if (sharedInstance.appReviewUrl.length == 0) {
-        return AppRatingDefaultAppReviewUrl;
-    } else {
-        return sharedInstance.appReviewUrl;
-    }
+    return sharedInstance.appReviewUrl;
 }
 
 @end
