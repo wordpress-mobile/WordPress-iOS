@@ -6,6 +6,7 @@ class PlanDetailViewController: UITableViewController {
     
     private let cellIdentifier = "PlanFeatureListItem"
     
+    private let tableViewHorizontalMargin: CGFloat = 24.0
     private let planImageDropshadowRadius: CGFloat = 3.0
     
     private var viewModel: ImmuTable! = nil
@@ -69,6 +70,8 @@ class PlanDetailViewController: UITableViewController {
     }
     
     private func configureImmuTable() {
+        ImmuTable.registerRows([ FeatureListItemRow.self ], tableView: tableView)
+        
         viewModel = ImmuTable(sections:
             [ ImmuTableSection(rows: PlanFeature.allFeatures.map { feature in
                 let available = plan.features.contains(feature)
@@ -85,6 +88,8 @@ class PlanDetailViewController: UITableViewController {
                 return FeatureListItemRow(feature: feature, available: available)
             } ) ]
         )
+        
+        tableView.layoutMargins = UIEdgeInsetsMake(0, tableViewHorizontalMargin, 0, tableViewHorizontalMargin)
     }
     
     private func populateHeader() {
@@ -147,12 +152,15 @@ extension PlanDetailViewController {
 }
 
 struct FeatureListItemRow : ImmuTableRow {
-    static let cell = ImmuTableCell.Class(PlanFeatureListCell)
+    static let cell = ImmuTableCell.Class(WPTableViewCellValue1)
     
     let action: ImmuTableAction? = nil
     
     let feature: PlanFeature
     let available: Bool
+    
+    let checkmarkLeftPadding: CGFloat = 16.0
+    let webOnlyFontSize: CGFloat = 13.0
     
     init(feature: PlanFeature, available: Bool) {
         self.feature = feature
@@ -160,43 +168,51 @@ struct FeatureListItemRow : ImmuTableRow {
     }
     
     func configureCell(cell: UITableViewCell) {
-        let cell = cell as! PlanFeatureListCell
-        cell.titleLabel.text = feature.title
-        cell.detailLabel.text = feature.description
+        cell.textLabel?.font = WPStyleGuide.tableviewTextFont()
         
-        cell.titleLabel.textColor = available ? WPStyleGuide.darkGrey() : WPStyleGuide.grey()
-        cell.titleLabel.alpha = available ? 1.0 : 0.5
+        cell.textLabel?.textColor = available ? WPStyleGuide.darkGrey() : WPStyleGuide.grey()
+        cell.textLabel?.alpha = available ? 1.0 : 0.5
+        cell.detailTextLabel?.textColor = WPStyleGuide.grey()
         
-        cell.webOnlyLabel.hidden = !feature.webOnly
-        cell.unavailableFeatureMarker.hidden = available
+        cell.textLabel?.text = feature.title
         
-        let noDetailText = (feature.description ?? "").isEmpty
-        cell.availableFeatureStackView.hidden = !available || !noDetailText
-        cell.detailLabel.hidden = noDetailText
+        if available {
+            if feature.webOnly {
+                cell.detailTextLabel?.text = NSLocalizedString("WEB ONLY", comment: "Describes a feature of a WordPress.com plan that is only available to users via the web.")
+                cell.detailTextLabel?.font = WPFontManager.openSansRegularFontOfSize(webOnlyFontSize)
+            } else {
+                cell.detailTextLabel?.text = feature.description                
+                cell.detailTextLabel?.font = WPStyleGuide.tableviewTextFont()
+            }
+            
+            let noDetailText = (feature.description ?? "").isEmpty
+            if noDetailText {
+                cell.accessoryView = availableCheckmark
+            }
+        } else {
+            cell.accessoryView = unavailableMarker
+        }
     }
-}
+    
+    private var availableCheckmark: UIView {
+        let checkmark = UIImageView(image: UIImage(named: "gridicons-checkmark-circle"))
+        
+        // Wrap the checkmark in a view to add some padding between it and the detailTextLabel
+        let wrapper = UIView()
+        wrapper.addSubview(checkmark)
+        
+        // Can't use autolayout here, otherwise the tableview screws things up on rotation
+        wrapper.frame = CGRect(x: 0, y: 0, width: checkmarkLeftPadding + checkmark.frame.width, height: checkmark.frame.height)
+        checkmark.frame.origin.x = checkmarkLeftPadding
+        
+        return wrapper
+    }
+    
+    private var unavailableMarker: UIView {
+        let marker = UIView(frame: CGRect(x: 0, y: 0, width: 16.0, height: 2.0))
+        marker.backgroundColor = WPStyleGuide.grey()
+        marker.alpha = 0.5
 
-class PlanFeatureListCell: UITableViewCell {
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var detailLabel: UILabel!
-    @IBOutlet weak var webOnlyLabel: UILabel!
-    @IBOutlet weak var availableFeatureStackView: UIStackView!
-    @IBOutlet weak var unavailableFeatureMarker: UIView!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        webOnlyLabel.text = NSLocalizedString("WEB ONLY", comment: "Describes a feature of a WordPress.com plan that is only available to users via the web.")
-        
-        unavailableFeatureMarker.backgroundColor = WPStyleGuide.grey()
-        webOnlyLabel.textColor = WPStyleGuide.grey()
-        detailLabel.textColor = WPStyleGuide.grey()
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        detailLabel.text = nil
-        titleLabel.text = nil
+        return marker
     }
 }
