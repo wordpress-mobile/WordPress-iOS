@@ -20,7 +20,6 @@ struct PlanListRow: ImmuTableRow {
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.text = description
         cell.detailTextLabel?.textColor = WPStyleGuide.grey()
-        cell.selectionStyle = .None
         cell.separatorInset = UIEdgeInsetsZero
     }
 
