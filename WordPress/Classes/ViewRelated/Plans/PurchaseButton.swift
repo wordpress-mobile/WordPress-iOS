@@ -1,5 +1,4 @@
 import UIKit
-import MRProgress
 
 @IBDesignable
 class PurchaseButton: UIButton {
