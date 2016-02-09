@@ -160,7 +160,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 - (void)update3DTouchForLogIn
 {
     WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
-    [shortcutCreator createShortcuts:self.cancellable];
+    [shortcutCreator createShortcutsIf3DTouchAvailable:self.cancellable];
 }
 
 - (void)viewWillAppear:(BOOL)animated
