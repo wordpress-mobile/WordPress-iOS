@@ -13,6 +13,7 @@ class WPReusableTableViewCell: WPTableViewCell {
         detailTextLabel?.textColor = UIColor.blackColor()
         imageView?.image = nil
         accessoryType = .None
+        accessoryView = nil
         selectionStyle = .Default
     }
 }
