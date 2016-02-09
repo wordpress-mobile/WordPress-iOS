@@ -38,7 +38,7 @@ public class WP3DTouchShortcutCreator: NSObject
         }
     }
     
-    public func loggedOutShortcutArray() -> [UIApplicationShortcutItem] {
+    private func loggedOutShortcutArray() -> [UIApplicationShortcutItem] {
         let logInShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.type,
                                                    localizedTitle: NSLocalizedString("Sign In", comment: "Sign In 3D Touch Shortcut"),
                                                 localizedSubtitle: nil,
@@ -48,7 +48,7 @@ public class WP3DTouchShortcutCreator: NSObject
         return [logInShortcut]
     }
     
-    public func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
+    private func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
         var defaultBlogName: String?
         if blogService.blogCountForAllAccounts() > 1 {
             defaultBlogName = blogService.lastUsedOrFirstBlog()?.settings?.name
