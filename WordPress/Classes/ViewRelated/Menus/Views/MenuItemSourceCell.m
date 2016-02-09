@@ -47,7 +47,6 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if(self) {
         {
-            self.translatesAutoresizingMaskIntoConstraints = NO;
             self.backgroundColor = [UIColor whiteColor];
             self.selectionStyle = UITableViewCellSelectionStyleNone;
             
@@ -93,9 +92,12 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
             
             [self.stackView addArrangedSubview:radioButton];
             const CGSize size = CGSizeMake(labelFontLineHeight, labelFontLineHeight);
+            NSLayoutConstraint *heightConstraint = [radioButton.heightAnchor constraintEqualToConstant:size.height];
+            heightConstraint.priority = 999;
+            
             [NSLayoutConstraint activateConstraints:@[
                                                       [radioButton.widthAnchor constraintEqualToConstant:size.width],
-                                                      [radioButton.heightAnchor constraintEqualToConstant:size.height]
+                                                      heightConstraint
                                                       ]];
             self.radioButton = radioButton;
         }
