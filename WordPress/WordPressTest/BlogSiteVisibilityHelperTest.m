@@ -5,6 +5,7 @@
 #import "BlogSiteVisibilityHelper.h"
 #import "JetpackState.h"
 #import "TestContextManager.h"
+#import "WordPress-Swift.h"
 
 @interface BlogSiteVisibilityHelperTest : XCTestCase
 @end
