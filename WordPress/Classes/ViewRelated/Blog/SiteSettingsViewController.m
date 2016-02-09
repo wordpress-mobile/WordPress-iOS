@@ -129,7 +129,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:self.blog.managedObjectContext];
 
-
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -457,19 +456,27 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return self.siteTaglineCell;
         }
         case SiteSettingsGeneralURL:
+        {
             if (self.blog.url) {
                 [self.addressTextCell setTextValue:self.blog.url];
             } else {
                 [self.addressTextCell setTextValue:NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field")];
             }
             return self.addressTextCell;
-
+        }
         case SiteSettingsGeneralPrivacy:
+        {
             [self.privacyTextCell setTextValue:[BlogSiteVisibilityHelper titleForCurrentSiteVisibilityOfBlog:self.blog]];
             return self.privacyTextCell;
-            
+        }
         case SiteSettingsGeneralLanguage:
+        {
+            NSInteger languageId = self.blog.settings.languageID.integerValue;
+            NSString *name = [[Languages sharedInstance] nameForLanguageWithId:languageId];
+            
+            [self.languageTextCell setTextValue:name];
             return self.languageTextCell;
+        }
     }
 
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
