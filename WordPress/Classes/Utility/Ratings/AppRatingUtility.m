@@ -9,7 +9,7 @@
 @property (nonatomic, strong) NSMutableDictionary *sections;
 @property (nonatomic, strong) NSMutableDictionary *disabledSections;
 @property (nonatomic, assign) BOOL allPromptingDisabled;
-@property (nonatomic, strong) NSString *appReviewUrl;
+@property (nonatomic, copy) NSString *appReviewUrl;
 
 @end
 
@@ -37,7 +37,6 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
     if (self) {
         _sections = [NSMutableDictionary dictionary];
         _disabledSections = [NSMutableDictionary dictionary];
-        _appReviewUrl = [NSString stringWithFormat:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%@&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8", WPiTunesAppId];
     }
     return self;
 }
@@ -79,12 +78,10 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
             appRatingUtility.disabledSections[key] = @(disableSection);
         }];
         
-        if (responseDictionary[@"app-review-url"] != nil) {
-            NSString *appReviewUrl = responseDictionary[@"app-review-url"];
-            if (appReviewUrl.length > 0) {
-                AppRatingUtility *sharedInstance = [self sharedInstance];
-                sharedInstance.appReviewUrl = appReviewUrl;
-            }
+        NSString *appReviewUrl = [responseDictionary stringForKey:@"app-review-url"];
+        if (appReviewUrl.length > 0) {
+            AppRatingUtility *sharedInstance = [self sharedInstance];
+            sharedInstance.appReviewUrl = appReviewUrl;
         }
         
         if (success) {
@@ -334,7 +331,11 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
 + (NSString *)appReviewUrl
 {
     AppRatingUtility *sharedInstance = [AppRatingUtility sharedInstance];
-    return sharedInstance.appReviewUrl;
+    if (sharedInstance.appReviewUrl.length == 0) {
+        return [NSString stringWithFormat:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%@&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8", WPiTunesAppId];
+    } else {
+        return sharedInstance.appReviewUrl;
+    }
 }
 
 @end
