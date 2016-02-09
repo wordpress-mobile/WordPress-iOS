@@ -14,8 +14,8 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
  */
 @property (nonatomic, strong) UIView *stackedTableHeaderView;
 
-@property (nonatomic, assign) BOOL animatedTableViewUpdates;
 @property (nonatomic, strong) MenuItemSourceLoadingView *loadingView;
+@property (nonatomic, assign) BOOL observeUserScrollingForEndOfTableView;
 
 @end
 
@@ -251,6 +251,30 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     // overrided in subclasses
 }
 
+- (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView
+{
+    // overrided in subclasses
+}
+
+#pragma mark - UIScrollView
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    self.observeUserScrollingForEndOfTableView = YES;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate) {
+        self.observeUserScrollingForEndOfTableView = NO;
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    self.observeUserScrollingForEndOfTableView = NO;
+}
+
 #pragma mark - UITableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -272,6 +296,26 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewAutomaticDimension;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(nonnull UITableViewCell *)cell forRowAtIndexPath:(nonnull NSIndexPath *)indexPath
+{
+    NSInteger numSections = self.resultsController.sections.count;
+    if (indexPath.section == numSections - 1 && self.observeUserScrollingForEndOfTableView) {
+        NSInteger numRowsInSection = [tableView numberOfRowsInSection:indexPath.section];
+        if (indexPath.row == numRowsInSection - 1) {
+            if (cell.frame.origin.y > tableView.bounds.size.height) {
+                self.observeUserScrollingForEndOfTableView = NO;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    /*  Since we're firing a method as a cell is about to be displayed,
+                     we should dispatch this method async, as any implementation of
+                     the method may trigger additional table updates and on the same cell.
+                     */
+                    [self scrollingWillDisplayEndOfTableView:tableView];
+                });
+            }
+        }
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -329,69 +373,9 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 #pragma mark - NSFetchedResultsControllerDelegate
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    if (self.animatedTableViewUpdates) {
-        [self.tableView beginUpdates];
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath
-{
-    if (!self.animatedTableViewUpdates) {
-        return;
-    }
-    
-    UITableView *tableView = self.tableView;
-    switch(type) {
-        case NSFetchedResultsChangeInsert:
-        {
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-        case NSFetchedResultsChangeDelete:
-        {
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-        case NSFetchedResultsChangeUpdate:
-        {
-            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        }
-            break;
-        case NSFetchedResultsChangeMove:
-        {
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-    }
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-  didChangeSection:(id )sectionInfo
-           atIndex:(NSUInteger)sectionIndex
-     forChangeType:(NSFetchedResultsChangeType)type
-{
-    if (type == NSFetchedResultsChangeInsert) {
-        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (type == NSFetchedResultsChangeDelete) {
-        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
-
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    if (self.animatedTableViewUpdates) {
-        [self.tableView endUpdates];
-    } else {
-        [self.tableView reloadData];
-        self.animatedTableViewUpdates = YES;
-    }
+    [self.tableView reloadData];
 }
 
 @end

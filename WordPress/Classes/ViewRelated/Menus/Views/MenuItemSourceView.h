@@ -80,6 +80,10 @@
  */
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath;
 
+/* Scrolling behavior will display the end of the tableView.
+ */
+- (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView;
+
 @end
 
 @protocol MenuItemSourceViewDelegate <NSObject>
