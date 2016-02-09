@@ -26,11 +26,13 @@ public class WP3DTouchShortcutCreator: NSObject
         blogService = BlogService(managedObjectContext: mainContext)
     }
     
-    public func createShortcuts(loggedIn: Bool) {
-        if loggedIn {
-            createLoggedInShortcuts()
-        } else {
-            createLoggedOutShortcuts()
+    public func createShortcutsIf3DTouchAvailable(loggedIn: Bool) {
+        if is3DTouchAvailable() {
+            if loggedIn {
+                createLoggedInShortcuts()
+            } else {
+                createLoggedOutShortcuts()
+            }
         }
     }
     
@@ -97,6 +99,12 @@ public class WP3DTouchShortcutCreator: NSObject
     
     private func createLoggedOutShortcuts() {
         application.shortcutItems = loggedOutShortcutArray()
+    }
+    
+    private func is3DTouchAvailable() -> Bool {
+        let window = UIApplication.sharedApplication().keyWindow
+        
+        return window?.traitCollection.forceTouchCapability == .Available
     }
     
     private func hasWordPressComAccount() -> Bool {
