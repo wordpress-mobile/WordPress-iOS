@@ -119,4 +119,9 @@ typedef void (^AppRatingCompletionBlock)();
  */
 + (BOOL)hasUserEverDislikedApp;
 
+/**
+ *  The App Review URL that we send off to UIApplication to open up the app store review page.
+ */
++ (NSString *)appReviewUrl;
+
 @end
