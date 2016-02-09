@@ -348,6 +348,7 @@
 		B5416CF51C171D7100006DD8 /* PushNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5416CF41C171D7100006DD8 /* PushNotificationsManager.swift */; };
 		B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B5416CFD1C1756B900006DD8 /* PushNotificationsManagerTests.m */; };
 		B5416D011C17693B00006DD8 /* UIApplication+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B5416D001C17693B00006DD8 /* UIApplication+Helpers.m */; };
+		B54346961C6A707D0010B3AD /* LanguageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54346951C6A707D0010B3AD /* LanguageViewController.swift */; };
 		B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */; };
 		B54E1DF01A0A7BAA00807537 /* ReplyBezierView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E1DED1A0A7BAA00807537 /* ReplyBezierView.swift */; };
 		B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54E1DEE1A0A7BAA00807537 /* ReplyTextView.swift */; };
@@ -1346,6 +1347,7 @@
 		B5416CFD1C1756B900006DD8 /* PushNotificationsManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushNotificationsManagerTests.m; sourceTree = "<group>"; };
 		B5416CFF1C17693B00006DD8 /* UIApplication+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Helpers.h"; sourceTree = "<group>"; };
 		B5416D001C17693B00006DD8 /* UIApplication+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+Helpers.m"; sourceTree = "<group>"; };
+		B54346951C6A707D0010B3AD /* LanguageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageViewController.swift; sourceTree = "<group>"; };
 		B54810F61AA656B40081B54D /* WordPress 28.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 28.xcdatamodel"; sourceTree = "<group>"; };
 		B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Helpers.swift"; sourceTree = "<group>"; };
 		B54E1DED1A0A7BAA00807537 /* ReplyBezierView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyBezierView.swift; sourceTree = "<group>"; };
@@ -3055,6 +3057,7 @@
 				83FEFC7411FF6C5A0078B462 /* SiteSettingsViewController.m */,
 				FFDA7E4E1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.h */,
 				FFDA7E4F1B8DF6E500B83C56 /* BlogSiteVisibilityHelper.m */,
+				B54346951C6A707D0010B3AD /* LanguageViewController.swift */,
 				B5AC00671BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift */,
 				FF42584E1BA092EE00580C68 /* RelatedPostsSettingsViewController.h */,
 				FF42584F1BA092EE00580C68 /* RelatedPostsSettingsViewController.m */,
@@ -4663,6 +4666,7 @@
 				B56A70181B5040B9001D5815 /* SwitchTableViewCell.swift in Sources */,
 				E66969E21B9E67A000EC9C00 /* ReaderTopicToReaderSiteTopic37to38.swift in Sources */,
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
+				B54346961C6A707D0010B3AD /* LanguageViewController.swift in Sources */,
 				E6374DC31C4454EA00F24720 /* SharingServiceRemote.swift in Sources */,
 				B53AD9BC1BE95687009AB87E /* SettingsTextViewController.m in Sources */,
 				E1389ADB1C59F7C200FB2466 /* PlanListViewController.swift in Sources */,
