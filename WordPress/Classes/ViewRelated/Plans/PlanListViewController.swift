@@ -105,6 +105,7 @@ struct PlanListViewModel {
         return { row in
             let planVC = PlanDetailViewController.controllerWithPlan(plan)
             let navigationVC = UINavigationController(rootViewController: planVC)
+            navigationVC.modalPresentationStyle = .FormSheet
             return navigationVC
         }
     }
