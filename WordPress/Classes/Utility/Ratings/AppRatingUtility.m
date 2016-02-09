@@ -28,6 +28,7 @@ NSString *const AppRatingDislikedCurrentVersion = @"AppRatingDislikedCurrentVers
 NSString *const AppRatingLikedCurrentVersion = @"AppRatingLikedCurrentVersion";
 NSString *const AppRatingUserLikeCount = @"AppRatingUserLikeCount";
 NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
+NSString *const AppRatingDefaultAppReviewUrl = @"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=335703880&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8";
 
 NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphoneapp/app-review-prompt-check/1.0/";
 
@@ -332,7 +333,7 @@ NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphonea
 {
     AppRatingUtility *sharedInstance = [AppRatingUtility sharedInstance];
     if (sharedInstance.appReviewUrl.length == 0) {
-        return [NSString stringWithFormat:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=%@&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8", WPiTunesAppId];
+        return AppRatingDefaultAppReviewUrl;
     } else {
         return sharedInstance.appReviewUrl;
     }
