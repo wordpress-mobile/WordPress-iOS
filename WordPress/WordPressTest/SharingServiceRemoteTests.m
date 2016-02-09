@@ -31,9 +31,7 @@
 
     XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithApi:api]);
 
-    [service getPublicizeServices:^(NSArray *services) {
-    } failure:^(NSError *error) {
-    }];
+    [service getPublicizeServices:^(NSArray *services) {} failure:^(NSError *error) {}];
 }
 
 
@@ -51,9 +49,7 @@
 
     XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithApi:api]);
 
-    [service getKeyringConnections:^(NSArray *connections) {
-    } failure:^(NSError *error) {
-    }];
+    [service getKeyringConnections:^(NSArray *connections) {} failure:^(NSError *error) {}];
 }
 
 
@@ -74,9 +70,8 @@
     XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithApi:api]);
 
     [service getPublicizeConnections:mockID
-                             success:^(NSArray *connections) {
-                             } failure:^(NSError *error) {
-                             }];
+                             success:^(NSArray *connections) {}
+                             failure:^(NSError *error) {}];
 }
 
 
@@ -99,9 +94,8 @@
     [service createPublicizeConnection:mockID
                    keyringConnectionID:mockID
                         externalUserID:nil
-                               success:^(RemotePublicizeConnection *remotePubConn) {
-                               } failure:^(NSError *error) {
-                               }];
+                               success:^(RemotePublicizeConnection *remotePubConn) {}
+                               failure:^(NSError *error) {}];
 
 }
 
@@ -122,9 +116,54 @@
 
     XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithApi:api]);
 
-    [service deletePublicizeConnection:mockID connectionID:mockID success:^{
-    } failure:^(NSError *error) {
-    }];
+    [service deletePublicizeConnection:mockID connectionID:mockID success:^{} failure:^(NSError *error) {}];
+}
+
+
+
+- (void)testGetSharingButtonsForSite
+{
+    NSNumber *mockID = @10;
+
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    SharingServiceRemote *service = nil;
+
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/sharing-buttons", mockID];
+
+    OCMStub([api GET:[OCMArg isEqual:url]
+          parameters:[OCMArg isNil]
+             success:[OCMArg isNotNil]
+             failure:[OCMArg isNotNil]]);
+
+    XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithApi:api]);
+
+    [service getSharingButtonsForSite:mockID
+                             success:^(NSArray *buttons) {}
+                              failure:^(NSError *error) {}];
+}
+
+
+- (void)testUpdateSharingButtonsForSite
+{
+    NSNumber *mockID = @10;
+
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    SharingServiceRemote *service = nil;
+
+    NSString *url = [NSString stringWithFormat:@"v1.1/sites/%@/sharing-buttons", mockID];
+    NSArray *buttons = [NSArray array];
+
+    OCMStub([api POST:[OCMArg isEqual:url]
+           parameters:[OCMArg isNotNil]
+              success:[OCMArg isNotNil]
+              failure:[OCMArg isNotNil]]);
+
+    XCTAssertNoThrow(service = [[SharingServiceRemote alloc] initWithApi:api]);
+
+    [service updateSharingButtonsForSite:mockID
+                          sharingButtons:buttons
+                                 success:^(NSArray *buttons){}
+                                 failure:^(NSError *error) {}];
 }
 
 

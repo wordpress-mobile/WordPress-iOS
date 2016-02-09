@@ -133,4 +133,7 @@ extension Blog {
 
     /// Cached available themes for this blog.
     @NSManaged var themes: Set<Theme>
+
+    /// Cached buttons to share to a third-party service.
+    @NSManaged var sharingButtons: Set<SharingButton>
 }

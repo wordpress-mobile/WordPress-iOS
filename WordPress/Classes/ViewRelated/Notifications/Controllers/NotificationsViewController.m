@@ -14,7 +14,6 @@
 #import "Notification.h"
 #import "Meta.h"
 
-#import "NotificationsManager.h"
 #import "NotificationDetailsViewController.h"
 
 #import "WPAccount.h"
@@ -989,7 +988,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)appbotPromptForReview
 {
     [WPAnalytics track:WPAnalyticsStatAppReviewsRatedApp];
-    [ABXAppStore openAppStoreReviewForApp:WPiTunesAppId];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[AppRatingUtility appReviewUrl]]];
     [AppRatingUtility ratedCurrentVersion];
     [self hideRatingView];
 }
