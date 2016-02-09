@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-class PlanDetailViewController: UITableViewController {
+class PlanDetailViewController: UIViewController {
     var plan: Plan!
     
     private let cellIdentifier = "PlanFeatureListItem"
@@ -11,6 +11,7 @@ class PlanDetailViewController: UITableViewController {
     
     private var viewModel: ImmuTable! = nil
     
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var planImageView: UIImageView!
     @IBOutlet weak var dropshadowImageView: UIImageView!
     @IBOutlet weak var planTitleLabel: UILabel!
@@ -50,6 +51,8 @@ class PlanDetailViewController: UITableViewController {
     }
     
     private func configureAppearance() {
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+        
         planTitleLabel.textColor = WPStyleGuide.darkGrey()
         planDescriptionLabel.textColor = WPStyleGuide.grey()
         planPriceLabel.textColor = WPStyleGuide.grey()
@@ -123,16 +126,16 @@ class PlanDetailViewController: UITableViewController {
 }
 
 // MARK: Table View Data Source / Delegate
-extension PlanDetailViewController {
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return viewModel.sections.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel.sections[section].rows.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let row = viewModel.rowAtIndexPath(indexPath)
         let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
         
@@ -141,7 +144,7 @@ extension PlanDetailViewController {
         return cell
     }
     
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         // Rows have alternate colors
         if indexPath.row % 2 == 0 {
             cell.backgroundColor = WPStyleGuide.greyLighten30()
