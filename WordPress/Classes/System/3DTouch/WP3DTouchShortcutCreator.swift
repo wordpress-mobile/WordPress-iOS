@@ -26,7 +26,11 @@ public class WP3DTouchShortcutCreator: NSObject
         blogService = BlogService(managedObjectContext: mainContext)
     }
     
-    public func createShortcuts(loggedIn: Bool) {
+    public func createShortcutsIf3DTouchAvailable(loggedIn: Bool) {
+        if !is3DTouchAvailable() {
+            return
+        }
+        
         if loggedIn {
             createLoggedInShortcuts()
         } else {
@@ -34,7 +38,7 @@ public class WP3DTouchShortcutCreator: NSObject
         }
     }
     
-    public func loggedOutShortcutArray() -> [UIApplicationShortcutItem] {
+    private func loggedOutShortcutArray() -> [UIApplicationShortcutItem] {
         let logInShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.LogIn.type,
                                                    localizedTitle: NSLocalizedString("Log In", comment: "Log In 3D Touch Shortcut"),
                                                 localizedSubtitle: nil,
@@ -44,10 +48,10 @@ public class WP3DTouchShortcutCreator: NSObject
         return [logInShortcut]
     }
     
-    public func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
+    private func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
         var defaultBlogName: String?
         if blogService.blogCountForAllAccounts() > 1 {
-            defaultBlogName = blogService.lastUsedOrFirstBlog().settings.name
+            defaultBlogName = blogService.lastUsedOrFirstBlog()?.settings?.name
         }
         
         let notificationsShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.Notifications.type,
@@ -97,6 +101,12 @@ public class WP3DTouchShortcutCreator: NSObject
     
     private func createLoggedOutShortcuts() {
         application.shortcutItems = loggedOutShortcutArray()
+    }
+    
+    private func is3DTouchAvailable() -> Bool {
+        let window = UIApplication.sharedApplication().keyWindow
+        
+        return window?.traitCollection.forceTouchCapability == .Available
     }
     
     private func hasWordPressComAccount() -> Bool {

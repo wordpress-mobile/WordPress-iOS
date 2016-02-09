@@ -640,7 +640,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
 - (void)create3DTouchShortcutItems
 {
     WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
-    [shortcutCreator createShortcuts:[self isLoggedIn]];
+    [shortcutCreator createShortcutsIf3DTouchAvailable:[self isLoggedIn]];
 }
 
 #pragma mark - Analytics
