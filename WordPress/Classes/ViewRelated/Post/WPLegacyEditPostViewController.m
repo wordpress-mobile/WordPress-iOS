@@ -890,7 +890,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
         createMediaProgress.totalUnitCount = 2;
         [self trackMediaWithId:imageUniqueId usingProgress:createMediaProgress];
-        [mediaService createMediaWithPHAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+        [mediaService createMediaWithPHAsset:asset forPostObjectID:self.post.objectID thumbnailCallback:nil completion:^(Media *media, NSError * error) {
             if (error){
                 [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
                 [self stopTrackingProgressOfMediaWithId:imageUniqueId];
