@@ -8,6 +8,10 @@ class Languages : NSObject
 {
     // MARK: - Public Properties
     
+    /// Shared Languages Instance
+    ///
+    static let sharedInstance = Languages()
+    
     /// Languages considered 'popular'
     ///
     let popular : [Language]
@@ -38,6 +42,23 @@ class Languages : NSObject
         all = merged.sort { return $0.name < $1.name }
     }
     
+    
+    /// Returns the Human Readable name for a given Language Identifier
+    ///
+    /// - Parameters:
+    ///     - languageId: The Identifier of the language.
+    ///
+    /// - Returns: A string containing the language name, or an empty string, in case it wasn't found.
+    ///
+    func nameForLanguageWithId(languageId: Int) -> String {
+        for language in all {
+            if language.languageId == languageId {
+                return language.name
+            }
+        }
+        
+        return String()
+    }
     
     
     // MARK: - Public Nested Classes
