@@ -125,11 +125,4 @@
     return _restApi;
 }
 
-#pragma mark - WordPress.com support methods
-
-- (BOOL)isWPComAccount
-{
-    return self.restApi != nil;
-}
-
 @end

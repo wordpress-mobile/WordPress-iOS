@@ -14,16 +14,6 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
 #pragma mark - Themes availability
 
 /**
- *  @brief      Call this method to know if a certain account supports theme services.
- *  @details    Right now only WordPress.com accounts support theme services.
- *
- *  @param      account     The account to query for theme services support.  Cannot be nil.
- *
- *  @returns    YES if the account supports theme services, NO otherwise.
- */
-- (BOOL)accountSupportsThemeServices:(WPAccount *)account;
-
-/**
  *  @brief      Call this method to know if a certain blog supports theme services.
  *  @details    Right now only WordPress.com blogs support theme services.
  *
