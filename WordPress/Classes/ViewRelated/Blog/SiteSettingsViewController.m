@@ -640,6 +640,14 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)showLanguageSelectorForBlog:(Blog *)blog
+{
+    NSParameterAssert(blog);
+    
+    LanguageViewController *languageViewController = [[LanguageViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:languageViewController animated:YES];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectInGeneralSectionRow:(NSInteger)row
 {
     if (!self.blog.isAdmin) {
@@ -657,6 +665,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
         case SiteSettingsGeneralPrivacy:
             [self showPrivacySelector];
+            break;
+            
+        case SiteSettingsGeneralLanguage:
+            [self showLanguageSelectorForBlog:self.blog];
             break;
     }
 }
