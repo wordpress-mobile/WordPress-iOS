@@ -41,7 +41,7 @@ public class LanguageViewController : UITableViewController
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
         if cell == nil {
-            cell = WPTableViewCell(style: .Default, reuseIdentifier: reuseIdentifier)
+            cell = WPTableViewCell(style: .Value1, reuseIdentifier: reuseIdentifier)
             cell?.accessoryType = .DisclosureIndicator
             WPStyleGuide.configureTableViewCell(cell)
         }
