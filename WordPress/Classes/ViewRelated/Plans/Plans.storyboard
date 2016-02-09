@@ -18,103 +18,120 @@
     </customFonts>
     <scenes>
         <!--Plan Detail View Controller-->
-        <scene sceneID="cBa-7S-GLw">
+        <scene sceneID="9Cj-IU-3xt">
             <objects>
-                <tableViewController storyboardIdentifier="WordPress.PlanDetailViewController" id="hEP-FT-Gtb" customClass="PlanDetailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="46" sectionHeaderHeight="28" sectionFooterHeight="28" id="fpc-kb-Zz0">
+                <viewController storyboardIdentifier="WordPress.PlanDetailViewController" id="msO-08-fqQ" customClass="PlanDetailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ass-i7-57P"/>
+                        <viewControllerLayoutGuide type="bottom" id="pmz-SB-Zco"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fcR-is-wCN">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rNB-K6-2G7" userLabel="Header View">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="220"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nps-70-EDE" userLabel="Dropshadow Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="269" y="25" width="62" height="62"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="HN0-n6-ORp">
+                                        <rect key="frame" x="8" y="26" width="584" height="168"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="plan-premium" translatesAutoresizingMaskIntoConstraints="NO" id="f6b-b4-ZgP" userLabel="Plan Image View">
+                                                <rect key="frame" x="262" y="0.0" width="60" height="60"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="60" id="MsP-RS-pGE"/>
+                                                    <constraint firstAttribute="height" constant="60" id="pkL-hL-79c"/>
+                                                </constraints>
+                                            </imageView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="22" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAy-0N-D1K">
+                                                <rect key="frame" x="24" y="72" width="536" height="59"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WordPress.com Premium" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="isU-1g-ArF" userLabel="Plan Title Label">
+                                                        <rect key="frame" x="170" y="0.0" width="196.5" height="18"/>
+                                                        <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="16"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Perfect for bloggers, creatives, &amp; other professionals" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edq-hC-GnQ" userLabel="Plan Description Label">
+                                                        <rect key="frame" x="120" y="21" width="296" height="18"/>
+                                                        <fontDescription key="fontDescription" name="OpenSans-Italic" family="Open Sans" pointSize="13"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$99.99 per year" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fju-eH-OS6" userLabel="Plan Price Label">
+                                                        <rect key="frame" x="213" y="41" width="109" height="18"/>
+                                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJf-48-mlv" userLabel="Purchase Button" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="244" y="143" width="95" height="25"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="25" id="WX3-mf-WwP"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="11"/>
+                                                <state key="normal" title="PURCHASE">
+                                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="jAy-0N-D1K" firstAttribute="leading" secondItem="HN0-n6-ORp" secondAttribute="leading" constant="24" id="4mr-rU-aLN"/>
+                                            <constraint firstAttribute="trailing" secondItem="jAy-0N-D1K" secondAttribute="trailing" constant="24" id="oZ4-Ve-ine"/>
+                                        </constraints>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="HN0-n6-ORp" secondAttribute="bottom" constant="26" id="5eP-AO-KFL"/>
+                                    <constraint firstItem="HN0-n6-ORp" firstAttribute="top" secondItem="rNB-K6-2G7" secondAttribute="top" constant="26" id="776-sg-xlU"/>
+                                    <constraint firstItem="nps-70-EDE" firstAttribute="trailing" secondItem="f6b-b4-ZgP" secondAttribute="trailing" constant="1" id="EAa-eq-6bk"/>
+                                    <constraint firstItem="nps-70-EDE" firstAttribute="top" secondItem="f6b-b4-ZgP" secondAttribute="top" constant="-1" id="F1s-SM-4v2"/>
+                                    <constraint firstItem="nps-70-EDE" firstAttribute="bottom" secondItem="f6b-b4-ZgP" secondAttribute="bottom" constant="1" id="QCU-tk-yh6"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="HN0-n6-ORp" secondAttribute="trailing" id="Z7D-8c-oE8"/>
+                                    <constraint firstItem="nps-70-EDE" firstAttribute="leading" secondItem="f6b-b4-ZgP" secondAttribute="leading" constant="-1" id="a3m-ZB-Ixh"/>
+                                    <constraint firstItem="HN0-n6-ORp" firstAttribute="leading" secondItem="rNB-K6-2G7" secondAttribute="leadingMargin" id="j5R-Fl-do0"/>
+                                    <constraint firstAttribute="height" constant="220" id="sLG-6E-6KH"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DH7-9o-kVF">
+                                <rect key="frame" x="0.0" y="220" width="600" height="380"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="msO-08-fqQ" id="cbF-gf-JY2"/>
+                                    <outlet property="delegate" destination="msO-08-fqQ" id="2cJ-7W-6ja"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="Wee-7g-KID" userLabel="Header View">
-                            <rect key="frame" x="0.0" y="0.0" width="600" height="220"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cET-GR-Luh" userLabel="Dropshadow Image View" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                    <rect key="frame" x="269" y="25" width="62" height="62"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </imageView>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="ZNi-CA-axg">
-                                    <rect key="frame" x="8" y="26" width="584" height="168"/>
-                                    <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" image="plan-premium" translatesAutoresizingMaskIntoConstraints="NO" id="4kT-nN-MzS">
-                                            <rect key="frame" x="262" y="0.0" width="60" height="60"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="60" id="PZj-hT-fdR"/>
-                                                <constraint firstAttribute="height" constant="60" id="hDH-Ct-yXg"/>
-                                            </constraints>
-                                        </imageView>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="22" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0fg-wD-1tI">
-                                            <rect key="frame" x="24" y="72" width="536" height="59"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WordPress.com Premium" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mFu-ON-8ux">
-                                                    <rect key="frame" x="170" y="0.0" width="197" height="18"/>
-                                                    <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Perfect for bloggers, creatives, &amp; other professionals" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKo-6a-UCJ">
-                                                    <rect key="frame" x="120" y="21" width="296" height="18"/>
-                                                    <fontDescription key="fontDescription" name="OpenSans-Italic" family="Open Sans" pointSize="13"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$99.99 per year" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zHA-mi-Lxg">
-                                                    <rect key="frame" x="214" y="41" width="109" height="18"/>
-                                                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </stackView>
-                                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dfn-sl-rVa" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
-                                            <rect key="frame" x="245" y="143" width="95" height="25"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="25" id="wyZ-YM-LLZ"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="11"/>
-                                            <state key="normal" title="PURCHASE">
-                                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="purchaseTapped" destination="hEP-FT-Gtb" eventType="touchUpInside" id="yla-Jb-pHn"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="0fg-wD-1tI" firstAttribute="leading" secondItem="ZNi-CA-axg" secondAttribute="leading" constant="24" id="CSI-Vl-k6v"/>
-                                        <constraint firstAttribute="trailing" secondItem="0fg-wD-1tI" secondAttribute="trailing" constant="24" id="xP8-JS-3dg"/>
-                                    </constraints>
-                                </stackView>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstItem="ZNi-CA-axg" firstAttribute="leading" secondItem="Wee-7g-KID" secondAttribute="leadingMargin" id="64O-Gd-7Fw"/>
-                                <constraint firstItem="cET-GR-Luh" firstAttribute="trailing" secondItem="4kT-nN-MzS" secondAttribute="trailing" constant="1" id="8Za-MU-n7P"/>
-                                <constraint firstItem="ZNi-CA-axg" firstAttribute="top" secondItem="Wee-7g-KID" secondAttribute="top" constant="26" id="AN1-1O-PFE"/>
-                                <constraint firstItem="cET-GR-Luh" firstAttribute="top" secondItem="4kT-nN-MzS" secondAttribute="top" constant="-1" id="Q3B-k7-0YJ"/>
-                                <constraint firstItem="cET-GR-Luh" firstAttribute="leading" secondItem="4kT-nN-MzS" secondAttribute="leading" constant="-1" id="UJf-bG-8Vu"/>
-                                <constraint firstAttribute="bottom" secondItem="ZNi-CA-axg" secondAttribute="bottom" constant="26" id="Xyt-dc-eJx"/>
-                                <constraint firstItem="cET-GR-Luh" firstAttribute="bottom" secondItem="4kT-nN-MzS" secondAttribute="bottom" constant="1" id="aCv-tj-XXi"/>
-                                <constraint firstAttribute="trailingMargin" secondItem="ZNi-CA-axg" secondAttribute="trailing" id="nDp-N2-b6m"/>
-                            </constraints>
-                        </view>
-                        <connections>
-                            <outlet property="dataSource" destination="hEP-FT-Gtb" id="dve-rJ-yjP"/>
-                            <outlet property="delegate" destination="hEP-FT-Gtb" id="q76-qY-OCb"/>
-                        </connections>
-                    </tableView>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="DH7-9o-kVF" secondAttribute="trailing" id="OaT-lM-4xZ"/>
+                            <constraint firstItem="rNB-K6-2G7" firstAttribute="top" secondItem="fcR-is-wCN" secondAttribute="top" id="Ul2-UZ-024"/>
+                            <constraint firstItem="rNB-K6-2G7" firstAttribute="leading" secondItem="fcR-is-wCN" secondAttribute="leading" id="VlG-44-X0n"/>
+                            <constraint firstItem="DH7-9o-kVF" firstAttribute="top" secondItem="rNB-K6-2G7" secondAttribute="bottom" id="b5b-Vf-JcK"/>
+                            <constraint firstAttribute="trailing" secondItem="rNB-K6-2G7" secondAttribute="trailing" id="eMP-hP-ITW"/>
+                            <constraint firstItem="pmz-SB-Zco" firstAttribute="top" secondItem="DH7-9o-kVF" secondAttribute="bottom" id="fIy-oq-t4Y"/>
+                            <constraint firstItem="DH7-9o-kVF" firstAttribute="leading" secondItem="fcR-is-wCN" secondAttribute="leading" id="fKb-1A-xjy"/>
+                        </constraints>
+                    </view>
                     <connections>
-                        <outlet property="dropshadowImageView" destination="cET-GR-Luh" id="O6J-ef-2Ee"/>
-                        <outlet property="planDescriptionLabel" destination="OKo-6a-UCJ" id="e6b-dd-8cX"/>
-                        <outlet property="planImageView" destination="4kT-nN-MzS" id="Q6Q-Ge-wF4"/>
-                        <outlet property="planPriceLabel" destination="zHA-mi-Lxg" id="gDT-EK-Q1L"/>
-                        <outlet property="planTitleLabel" destination="mFu-ON-8ux" id="XPM-2i-tIh"/>
-                        <outlet property="purchaseButton" destination="Dfn-sl-rVa" id="t36-tp-p92"/>
+                        <outlet property="dropshadowImageView" destination="nps-70-EDE" id="fyT-av-Rh8"/>
+                        <outlet property="planDescriptionLabel" destination="edq-hC-GnQ" id="8Cy-Z5-E3i"/>
+                        <outlet property="planImageView" destination="f6b-b4-ZgP" id="6nb-u6-9DE"/>
+                        <outlet property="planPriceLabel" destination="Fju-eH-OS6" id="pPs-DS-Dzv"/>
+                        <outlet property="planTitleLabel" destination="isU-1g-ArF" id="7ON-Pb-HTu"/>
+                        <outlet property="purchaseButton" destination="WJf-48-mlv" id="MaJ-C0-mTb"/>
+                        <outlet property="tableView" destination="DH7-9o-kVF" id="rTb-5w-w0a"/>
                     </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fNy-hP-3mS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kob-RF-LBI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="207" y="341"/>
+            <point key="canvasLocation" x="853" y="366"/>
         </scene>
     </scenes>
     <resources>
