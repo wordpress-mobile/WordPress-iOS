@@ -6,6 +6,7 @@ typealias ImmuTableRowControllerGenerator = ImmuTableRow -> UIViewController
 
 protocol ImmuTablePresenter: class {
     func push(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction
+    func present(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction
 }
 
 extension ImmuTablePresenter where Self: UIViewController {
@@ -14,6 +15,14 @@ extension ImmuTablePresenter where Self: UIViewController {
             [unowned self] in
             let controller = controllerGenerator($0)
             self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
+    func present(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction {
+        return {
+            [unowned self] in
+            let controller = controllerGenerator($0)
+            self.presentViewController(controller, animated: true, completion: nil)
         }
     }
 }
