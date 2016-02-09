@@ -17,7 +17,7 @@
 {
     [super setUp];
 
-    _source = [WPAvatarSource sharedSource];
+    _source = [WPAvatarSource new];
     [OHHTTPStubs stubRequestsPassingTest:^BOOL(NSURLRequest *request) {
         return [[request.URL host] isEqualToString:@"gravatar.com"];
     } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
