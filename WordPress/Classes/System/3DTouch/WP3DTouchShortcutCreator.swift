@@ -27,12 +27,14 @@ public class WP3DTouchShortcutCreator: NSObject
     }
     
     public func createShortcutsIf3DTouchAvailable(loggedIn: Bool) {
-        if is3DTouchAvailable() {
-            if loggedIn {
-                createLoggedInShortcuts()
-            } else {
-                createLoggedOutShortcuts()
-            }
+        if !is3DTouchAvailable() {
+            return
+        }
+        
+        if loggedIn {
+            createLoggedInShortcuts()
+        } else {
+            createLoggedOutShortcuts()
         }
     }
     
