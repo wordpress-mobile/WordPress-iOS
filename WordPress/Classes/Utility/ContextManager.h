@@ -47,6 +47,18 @@
 - (NSManagedObjectContext *const)newDerivedContext;
 
 /**
+ For usage as a snapshot of the main context. This is useful when operations 
+ should happen on the main queue (fetches) but not immedately reflect changes to
+ the main context.
+
+ Make sure to save using saveContext:
+
+ @return a new MOC with NSMainQueueConcurrencyType,
+ with the parent context as the main context
+ */
+- (NSManagedObjectContext *const)newMainContextChildContext;
+
+/**
  Save a derived context created with `newDerivedContext` via this convenience method
  
  @param a derived NSManagedObjectContext constructed with `newDerivedContext` above

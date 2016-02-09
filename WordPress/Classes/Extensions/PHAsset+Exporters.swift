@@ -160,13 +160,14 @@ extension PHAsset {
      */
     func exportThumbnailToURL(url: NSURL,
         targetSize: CGSize,
+        synchronous: Bool,
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
             let options = PHImageRequestOptions()
             options.version = .Current
             options.deliveryMode = .HighQualityFormat
             options.resizeMode = .Fast
-            options.synchronous = false
+            options.synchronous = synchronous
             options.networkAccessAllowed = true
             var requestedSize = targetSize
             if (requestedSize == CGSize.zero) {
