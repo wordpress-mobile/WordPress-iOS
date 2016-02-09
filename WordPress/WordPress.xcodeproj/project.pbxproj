@@ -371,6 +371,7 @@
 		B574CE111B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B574CE101B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift */; };
 		B574CE151B5E8EA800A84FFD /* NSMutableAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B574CE141B5E8EA800A84FFD /* NSMutableAttributedString+Helpers.swift */; };
 		B576B4881C6A22FB0027C754 /* Languages.swift in Sources */ = {isa = PBXBuildFile; fileRef = B576B4871C6A22FB0027C754 /* Languages.swift */; };
+		B576B48A1C6A2EC10027C754 /* LanguagesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B576B4891C6A2EC10027C754 /* LanguagesTests.swift */; };
 		B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57AF5F91ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift */; };
 		B57B92BD1B73B08100DFF00B /* SeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B92BC1B73B08100DFF00B /* SeparatorsView.swift */; };
 		B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */; };
@@ -1377,6 +1378,7 @@
 		B574CE101B5D8F8600A84FFD /* WPStyleGuide+AlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+AlertView.swift"; sourceTree = "<group>"; };
 		B574CE141B5E8EA800A84FFD /* NSMutableAttributedString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Helpers.swift"; sourceTree = "<group>"; };
 		B576B4871C6A22FB0027C754 /* Languages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Languages.swift; sourceTree = "<group>"; };
+		B576B4891C6A2EC10027C754 /* LanguagesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguagesTests.swift; sourceTree = "<group>"; };
 		B57AF5F91ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockActionsTableViewCell.swift; sourceTree = "<group>"; };
 		B57B92BC1B73B08100DFF00B /* SeparatorsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeparatorsView.swift; sourceTree = "<group>"; };
 		B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteTableHeaderView.swift; sourceTree = "<group>"; };
@@ -2695,6 +2697,7 @@
 				E1266D2E1BBEC37B00FCB6B6 /* GravatarTest.swift */,
 				E1EBC3721C118ED200F638E0 /* ImmuTableTest.swift */,
 				93A379EB19FFBF7900415023 /* KeychainTest.m */,
+				B576B4891C6A2EC10027C754 /* LanguagesTests.swift */,
 				5D2BEB4819758102005425F7 /* PhotonImageURLHelperTest.m */,
 				5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */,
 				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
@@ -2761,6 +2764,7 @@
 				E1EBC36E1C118EA500F638E0 /* ImmuTable.swift */,
 				E1E49CE31C4902EE002393A4 /* ImmuTableViewController.swift */,
 				E13A8C9A1C3E6EF2005BB1C1 /* ImmuTable+WordPress.swift */,
+				B576B4871C6A22FB0027C754 /* Languages.swift */,
 				5DB4683918A2E718004A89A9 /* LocationService.h */,
 				5DB4683A18A2E718004A89A9 /* LocationService.m */,
 				E14B13C21C4E7675009DD68F /* Reachability+Rx.swift */,
@@ -2812,7 +2816,6 @@
 				E1E1AA8B1B7DEDFC001C8645 /* WPMapFilterReduce.h */,
 				E1E1AA8C1B7DEDFC001C8645 /* WPMapFilterReduce.m */,
 				E12E6E321C21BA170033C5D0 /* FeatureFlag.swift */,
-				B576B4871C6A22FB0027C754 /* Languages.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -5047,6 +5050,7 @@
 				E6B9B8AD1B94EACA0001B92F /* ReaderHelperTests.swift in Sources */,
 				E1418A101C59307A003214B7 /* PlanTests.swift in Sources */,
 				E66969CD1B9E2EBF00EC9C00 /* SafeReaderTopicToReaderTopic.m in Sources */,
+				B576B48A1C6A2EC10027C754 /* LanguagesTests.swift in Sources */,
 				E66969C81B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift in Sources */,
 				E12E6E381C21E75F0033C5D0 /* FeatureFlagTest.swift in Sources */,
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,

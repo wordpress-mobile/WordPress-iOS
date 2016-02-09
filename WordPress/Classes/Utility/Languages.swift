@@ -6,6 +6,8 @@ import Foundation
 ///
 class Languages : NSObject
 {
+    // MARK: - Public Properties
+    
     /// Languages considered 'popular'
     ///
     let popular : [Language]
@@ -16,10 +18,12 @@ class Languages : NSObject
     
     
     
+    // MARK: - Public Methods
+    
     /// Designated Initializer: will load the languages contained within the `Languages.json` file.
     ///
     override init() {
-        let path = NSBundle.mainBundle().pathForResource("Languages", ofType: "json")
+        let path = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
         let data = NSData(contentsOfFile: path!)!
         let options : NSJSONReadingOptions = [.MutableContainers, .MutableLeaves]
         let parsed = try! NSJSONSerialization.JSONObjectWithData(data, options: options) as? NSDictionary
@@ -29,6 +33,8 @@ class Languages : NSObject
     }
     
     
+    
+    // MARK: - Public Nested Classes
     
     /// Represents a Language, which allows us to deal with WordPress.com settings
     ///
@@ -71,6 +77,13 @@ class Languages : NSObject
     }
     
     
+    
+    // MARK: - Private Constants
+    private let filename = "Languages"
+    
+    
+    
+    // MARK: - Private Nested Structures
     
     /// Keys used to parse the raw languages.
     ///
