@@ -23,13 +23,19 @@ class Languages : NSObject
     /// Designated Initializer: will load the languages contained within the `Languages.json` file.
     ///
     override init() {
+        // Parse the json file
         let path = NSBundle.mainBundle().pathForResource(filename, ofType: "json")
-        let data = NSData(contentsOfFile: path!)!
-        let options : NSJSONReadingOptions = [.MutableContainers, .MutableLeaves]
-        let parsed = try! NSJSONSerialization.JSONObjectWithData(data, options: options) as? NSDictionary
+        let raw = NSData(contentsOfFile: path!)!
+        let parsed = try! NSJSONSerialization.JSONObjectWithData(raw, options: [.MutableContainers, .MutableLeaves]) as? NSDictionary
         
-        popular = Language.fromArray(parsed!.arrayForKey(Keys.all) as! [NSDictionary])
-        all = Language.fromArray(parsed!.arrayForKey(Keys.popular) as! [NSDictionary])
+        // Parse All + Popular: All doesn't contain Popular. Otherwise the json would have dupe data. Right?
+        let parsedAll = Language.fromArray(parsed!.arrayForKey(Keys.all) as! [NSDictionary])
+        let parsedPopular = Language.fromArray(parsed!.arrayForKey(Keys.popular) as! [NSDictionary])
+        let merged = parsedAll + parsedPopular
+        
+        // Done!
+        popular = parsedPopular
+        all = merged.sort { return $0.name < $1.name }
     }
     
     
@@ -40,6 +46,10 @@ class Languages : NSObject
     ///
     class Language
     {
+        /// Language Unique Identifier
+        ///
+        let languageId : Int!
+        
         /// Human readable Language name
         ///
         let name : String!
@@ -47,21 +57,17 @@ class Languages : NSObject
         /// Language's Slug String
         ///
         let slug : String!
-        
-        /// Language's numeric code
-        ///
-        let value : Int!
-        
+
         
         
         /// Designated initializer. Will fail if any of the required properties is missing
         ///
         init?(dict : NSDictionary) {
+            languageId = dict.numberForKey(Keys.identifier)?.integerValue
             slug = dict.stringForKey(Keys.slug)
             name = dict.stringForKey(Keys.name)
-            value = dict.numberForKey(Keys.value)?.integerValue
             
-            guard slug != nil && name != nil && value != nil else {
+            guard slug != nil && name != nil && languageId != nil else {
                 return nil
             }
         }
@@ -89,10 +95,10 @@ class Languages : NSObject
     ///
     private struct Keys
     {
-        static let popular  = "popular"
-        static let all      = "all"
-        static let slug     = "s"
-        static let name     = "n"
-        static let value    = "v"
+        static let popular      = "popular"
+        static let all          = "all"
+        static let identifier   = "i"
+        static let slug         = "s"
+        static let name         = "n"
     }
 }
