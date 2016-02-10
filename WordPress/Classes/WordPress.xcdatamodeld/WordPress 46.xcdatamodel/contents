@@ -175,6 +175,7 @@
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
+        <attribute name="languageID" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="pingbackInboundEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="pingbackOutboundEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -601,7 +602,7 @@
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="585"/>
-        <element name="BlogSettings" positionX="18" positionY="153" width="128" height="555"/>
+        <element name="BlogSettings" positionX="18" positionY="153" width="128" height="570"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="375"/>

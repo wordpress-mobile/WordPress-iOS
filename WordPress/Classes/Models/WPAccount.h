@@ -57,15 +57,6 @@
 #pragma mark - WordPress.com support methods
 
 /**
- *  @brief      Call this method to know if the account is a WordPress.com account.
- *  @details    This is the same as checking if restApi != nil, but it conveys its own meaning
- *              in a cleaner way to the reader.
- *
- *  @returns    YES if this account is a WordPress.com account, NO otherwise.
- */
-- (BOOL)isWPComAccount;
-
-/**
  *  @brief      Call this method to know if the account was created before the hide view admin date.
  *  @details    We removed showing the "WP Admin" option for accounts created after 2015-09-07+00:00
  *
