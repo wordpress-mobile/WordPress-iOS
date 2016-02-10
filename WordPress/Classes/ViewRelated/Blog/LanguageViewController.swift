@@ -7,6 +7,12 @@ import WordPressShared
 ///
 public class LanguageViewController : UITableViewController
 {
+    /// Callback to be executed whenever the Blog's selected language changes.
+    ///
+    var onChange : (NSNumber -> Void)?
+    
+    
+    
     /// Designated Initializer
     ///
     /// - Parameters
@@ -99,7 +105,7 @@ public class LanguageViewController : UITableViewController
                 return
             }
             
-            self?.blog?.settings?.languageID = newLanguageID
+            self?.onChange?(newLanguageID)
         }
         
         navigationController?.pushViewController(listViewController, animated: true)
