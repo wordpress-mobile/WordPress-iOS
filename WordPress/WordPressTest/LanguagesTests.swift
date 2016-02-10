@@ -19,7 +19,6 @@ class LanguagesTests: XCTestCase
         for language in sum {
             XCTAssert(language.slug.characters.count > 0)
             XCTAssert(language.name.characters.count > 0)
-            XCTAssert(language.languageId != nil)
         }
     }
     
