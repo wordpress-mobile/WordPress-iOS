@@ -149,6 +149,7 @@ extension PlanComparisonViewController: UIPageViewControllerDataSource, UIPageVi
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if let controller = pageViewController.viewControllers?.first as? PlanDetailViewController {
             currentPlan = allPlans[indexOfViewController(controller)]
+            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, currentPlan.title)
         }
     }
 
