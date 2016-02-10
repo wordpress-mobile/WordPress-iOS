@@ -5,7 +5,7 @@
 #import "MenuItem.h"
 #import "Blog.h"
 
-static NSUInteger const MenuItemSourceTagsSyncLimit = 100;
+static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 
 @interface MenuItemSourceTagView ()
 
@@ -52,7 +52,7 @@ static NSUInteger const MenuItemSourceTagsSyncLimit = 100;
                                                                     selector:@selector(caseInsensitiveCompare:)];
     
     [fetchRequest setSortDescriptors:[NSArray arrayWithObjects:sortDescriptor, nil]];
-    [fetchRequest setFetchLimit:100];
+    [fetchRequest setFetchLimit:MenuItemSourceTagSyncLimit];
     
     return fetchRequest;
 }
@@ -68,14 +68,15 @@ static NSUInteger const MenuItemSourceTagsSyncLimit = 100;
         [self hideLoadingSourcesIndicator];
     };
     
-    [tagService syncTagsForBlog:self.item.menu.blog success:^{
-        
-        stopLoading();
-        
-    } failure:^(NSError *error) {
-        // TODO: show error message
-        stopLoading();
-    }];
+    [tagService syncTagsForBlog:[self blog]
+                         number:@(MenuItemSourceTagSyncLimit)
+                         offset:@(0)
+                        success:^(NSArray<PostTag *> *tags) {
+                            stopLoading();
+                        } failure:^(NSError *error) {
+                            // TODO: show error message
+                            stopLoading();
+                        }];
 }
 
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
@@ -90,23 +91,28 @@ static NSUInteger const MenuItemSourceTagsSyncLimit = 100;
         return;
     }
     
+    // Check how many tags are currently loaded
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.resultsController.sections lastObject];
+    NSUInteger initialCount = [sectionInfo numberOfObjects];
+    if (initialCount < MenuItemSourceTagSyncLimit) {
+        // Additional tags not available, not limit or remote paging needed.
+        return;
+    }
+    
     // First try and increment the fetchLimit for local results.
     // This also allows the resultsController to load any additional tags synced afterwards.
-    id <NSFetchedResultsSectionInfo> sectionInfo = [self.resultsController.sections lastObject];
-    NSUInteger countBefore = [sectionInfo numberOfObjects];
-
-    self.resultsController.fetchRequest.fetchLimit = self.resultsController.fetchRequest.fetchLimit + MenuItemSourceTagsSyncLimit;
+    self.resultsController.fetchRequest.fetchLimit = self.resultsController.fetchRequest.fetchLimit + MenuItemSourceTagSyncLimit;
     [self performResultsControllerFetchRequest];
     
     sectionInfo = [self.resultsController.sections lastObject];
-    NSUInteger countAfter = [sectionInfo numberOfObjects];
-    if (countAfter > countBefore) {
+    NSUInteger countWithLimitIncrease = [sectionInfo numberOfObjects];
+    if (countWithLimitIncrease > initialCount) {
         // Additional local results are available for display in the tableView.
         [tableView reloadData];
     }
     
     // Check if any additional tags are available locally based on the fetchLimit increase
-    self.loadedAllAvailableTags = countAfter - countBefore < MenuItemSourceTagsSyncLimit;
+    self.loadedAllAvailableTags = countWithLimitIncrease - initialCount < MenuItemSourceTagSyncLimit;
     
     // Show the loading indicator
     [self showLoadingSourcesIndicator];
@@ -118,12 +124,12 @@ static NSUInteger const MenuItemSourceTagsSyncLimit = 100;
     // This will sync exsiting tags that may already be available locally, as well as loading additional tags.
     PostTagService *tagService = [[PostTagService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [tagService syncTagsForBlog:[self blog]
-                              number:@(MenuItemSourceTagsSyncLimit)
-                              offset:@(countBefore)
+                              number:@(MenuItemSourceTagSyncLimit)
+                              offset:@(initialCount)
                              success:^(NSArray<PostTag *> *tags) {
                                  
                                  // If the loaded tags count match the requested number, there is probably more tags available.
-                                 self.loadedAllAvailableTags = tags.count < MenuItemSourceTagsSyncLimit;
+                                 self.loadedAllAvailableTags = tags.count < MenuItemSourceTagSyncLimit;
                                  stopLoading();
                                  
                              } failure:^(NSError *error) {
