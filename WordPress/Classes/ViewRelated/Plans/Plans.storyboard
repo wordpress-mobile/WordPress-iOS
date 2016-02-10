@@ -17,6 +17,80 @@
         </mutableArray>
     </customFonts>
     <scenes>
+        <!--Plan Comparison View Controller-->
+        <scene sceneID="CYw-U0-oI7">
+            <objects>
+                <viewController storyboardIdentifier="WordPress.PlanComparisonViewController" id="s5h-iz-0HE" customClass="PlanComparisonViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="lq2-Q7-GhV"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ygn-aZ-YVi"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DDG-cG-6UG">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ZY0-qL-r53">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <subviews>
+                                    <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DDA-ao-02X">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="540"/>
+                                        <connections>
+                                            <segue destination="wPO-UE-j7U" kind="embed" identifier="PageViewControllerEmbedSegue" id="VoH-AU-fv7"/>
+                                        </connections>
+                                    </containerView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f0d-zt-grM">
+                                        <rect key="frame" x="0.0" y="540" width="600" height="1"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="Ar8-74-nXx"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8En-Ia-Wlh">
+                                        <rect key="frame" x="0.0" y="541" width="600" height="59"/>
+                                        <subviews>
+                                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="HLT-dO-RyH">
+                                                <rect key="frame" x="281" y="11" width="39" height="37"/>
+                                                <color key="pageIndicatorTintColor" red="0.72326811719999995" green="0.869224102" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="currentPageIndicatorTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </pageControl>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="59" id="9sq-hY-CdS"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HLT-dO-RyH" secondAttribute="trailing" constant="20" id="C8c-68-OYE"/>
+                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="centerX" secondItem="8En-Ia-Wlh" secondAttribute="centerX" id="adF-OC-swL"/>
+                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8En-Ia-Wlh" secondAttribute="leading" constant="20" id="gMX-M1-Fko"/>
+                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="centerY" secondItem="8En-Ia-Wlh" secondAttribute="centerY" id="v9R-u6-tJo"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ZY0-qL-r53" firstAttribute="top" secondItem="DDG-cG-6UG" secondAttribute="top" id="9aF-PV-qII"/>
+                            <constraint firstItem="Ygn-aZ-YVi" firstAttribute="top" secondItem="ZY0-qL-r53" secondAttribute="bottom" id="FF2-u9-9d4"/>
+                            <constraint firstAttribute="trailing" secondItem="ZY0-qL-r53" secondAttribute="trailing" id="eQp-nW-JVq"/>
+                            <constraint firstItem="ZY0-qL-r53" firstAttribute="leading" secondItem="DDG-cG-6UG" secondAttribute="leading" id="eUm-og-PEa"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="divider" destination="f0d-zt-grM" id="at9-Wz-9lj"/>
+                        <outlet property="pageControl" destination="HLT-dO-RyH" id="lQJ-N9-WAz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SjQ-fQ-CVI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="853" y="-327"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="PlE-hJ-uWS">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="wPO-UE-j7U" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FxE-Ed-OqA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1531" y="-327"/>
+        </scene>
         <!--Plan Detail View Controller-->
         <scene sceneID="9Cj-IU-3xt">
             <objects>
