@@ -15,35 +15,7 @@
 #import "WPXMLRPCDecoder.h"
 #import "WordPressComApi.h"
 
-NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
-CGSize const MediaMaxImageSize = {3000, 3000};
-NSInteger const MediaMinImageSizeDimension = 150;
-NSInteger const MediaMaxImageSizeDimension = 3000;
-
 @implementation MediaService
-
-+ (CGSize)maxImageSizeSetting
-{
-    NSString *savedSize = [[NSUserDefaults standardUserDefaults] stringForKey:SavedMaxImageSizeSetting];
-    CGSize maxSize = MediaMaxImageSize;
-    if (savedSize) {
-        maxSize = CGSizeFromString(savedSize);
-    }
-    return maxSize;
-}
-
-+ (void)setMaxImageSizeSetting:(CGSize)imageSize
-{
-    // Constraint to max width and height.
-    CGFloat width = imageSize.width;
-    CGFloat height = imageSize.height;
-    width = MAX(MIN(width, MediaMaxImageSizeDimension), MediaMinImageSizeDimension);
-    height = MAX(MIN(height, MediaMaxImageSizeDimension), MediaMinImageSizeDimension);
-
-    NSString *strSize = NSStringFromCGSize(CGSizeMake(width, height));
-    [[NSUserDefaults standardUserDefaults] setObject:strSize forKey:SavedMaxImageSizeSetting];
-    [NSUserDefaults resetStandardUserDefaults];
-}
 
 - (void)createMediaWithPHAsset:(PHAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
@@ -84,11 +56,8 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     
     BOOL geoLocationEnabled = post.blog.settings.geolocationEnabled;
     
-    CGSize maxImageSize = [MediaService maxImageSizeSetting];
-    if (maxImageSize.width == MediaMaxImageSize.width && maxImageSize.height == MediaMaxImageSize.height) {
-        maxImageSize = CGSizeZero;
-    }
-    
+    CGSize maxImageSize = [AppSettings imageSizeForUpload];
+
     NSURL *mediaURL = [self urlForMediaWithFilename:[asset originalFilename] andExtension:extension];
     NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
                                                 andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
