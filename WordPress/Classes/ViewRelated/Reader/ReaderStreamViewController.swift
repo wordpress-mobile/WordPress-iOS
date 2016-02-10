@@ -1005,8 +1005,15 @@ import WordPressComAnalytics
     // MARK: - Helpers for TableViewHandler
 
     func predicateForFetchRequest() -> NSPredicate {
+
+        // If readerTopic is nil return a predicate that is valid, but still
+        // avoids returning readerPosts that do not belong to a topic (e.g. those
+        // loaded from a notification). We can do this by specifying that self 
+        // has to exist within an empty set.
+        let predicateForNilTopic = NSPredicate(format: "topic = NULL AND SELF in %@", [])
+
         if readerTopic == nil {
-            return NSPredicate(format: "topic = NULL")
+            return predicateForNilTopic
         }
 
         var topic: ReaderAbstractTopic!
@@ -1014,7 +1021,7 @@ import WordPressComAnalytics
             topic = try managedObjectContext().existingObjectWithID(readerTopic!.objectID) as! ReaderAbstractTopic
         } catch let error as NSError {
             DDLogSwift.logError(error.description)
-            return NSPredicate(format: "topic = NULL")
+            return predicateForNilTopic
         }
 
         if recentlyBlockedSitePostObjectIDs.count > 0 {
@@ -1077,10 +1084,6 @@ import WordPressComAnalytics
     }
 
     public func fetchRequest() -> NSFetchRequest? {
-        if readerTopic == nil {
-            return nil
-        }
-
         let fetchRequest = NSFetchRequest(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
