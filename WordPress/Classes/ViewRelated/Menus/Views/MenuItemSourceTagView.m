@@ -87,7 +87,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 
 - (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView
 {
-    if (self.loadedAllAvailableTags) {
+    if (self.loadedAllAvailableTags || [self searchBarInputIsActive]) {
         return;
     }
     
