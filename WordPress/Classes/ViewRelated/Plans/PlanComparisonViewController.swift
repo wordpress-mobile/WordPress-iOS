@@ -140,12 +140,6 @@ extension PlanComparisonViewController: UIPageViewControllerDataSource, UIPageVi
         return viewControllerAtIndex(index + 1)
     }
     
-    func pageViewController(pageViewController: UIPageViewController, willTransitionToViewControllers pendingViewControllers: [UIViewController]) {
-        if let controller = pendingViewControllers.first as? PlanDetailViewController {
-            currentPlan = allPlans[indexOfViewController(controller)]
-        }
-    }
-    
     func pageViewController(pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if let controller = pageViewController.viewControllers?.first as? PlanDetailViewController {
             currentPlan = allPlans[indexOfViewController(controller)]
@@ -172,6 +166,6 @@ extension PlanComparisonViewController: UIPageViewControllerDataSource, UIPageVi
         }
         
         pageViewController.setViewControllers([previousViewController], direction: .Reverse, animated: true, completion: nil)
-        completion?(success: false)
+        completion?(success: true)
     }
 }
