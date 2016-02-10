@@ -22,7 +22,7 @@ target 'WordPress', :exclusive => true do
   pod 'CocoaLumberjack', '~> 2.2.0'
   pod 'google-plus-ios-sdk', '~>1.5'
   pod 'HockeySDK', '~>3.8.0'
-  pod 'Helpshift', '~>4.10.0'
+  pod 'Helpshift', '~> 5.3.0-support'
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
 
