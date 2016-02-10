@@ -29,7 +29,7 @@ public class LanguageViewController : UITableViewController
     
     
     
-    // MARK: - UITableViewDataSoutce Methods
+    // MARK: - UITableViewDataSource Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -63,11 +63,46 @@ public class LanguageViewController : UITableViewController
 
     
     
+    // MARK: - UITableViewDelegate Methods
+    public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        pressedLanguageRow()
+    }
+    
+    
+    
     // MARK: - Private Methods
     private func configureTableViewCell(cell: UITableViewCell) {
         let languageId = blog.settings.languageID.integerValue
         cell.textLabel?.text = NSLocalizedString("Language", comment: "Language of the current blog")
         cell.detailTextLabel?.text = Languages.sharedInstance.nameForLanguageWithId(languageId)
+    }
+    
+    private func pressedLanguageRow() {
+        // Setup Properties
+        let headers = [
+            NSLocalizedString("Popular languages", comment: "Section title for Popular Languages"),
+            NSLocalizedString("All languages", comment: "Section title for All Languages")
+        ]
+
+        let titles = Languages.sharedInstance.grouped.map { $0.map { $0.name } }
+        let values = Languages.sharedInstance.grouped.map { $0.map { $0.languageId } } as [[NSObject]]
+        
+        // Setup ListPickerViewController
+        let listViewController = SettingsListPickerViewController(style: .Grouped)
+        listViewController.title = NSLocalizedString("Site Language", comment: "Title for the Language Picker View")
+        listViewController.selectedValue = blog.settings.languageID
+        listViewController.titles = titles
+        listViewController.values = values
+        listViewController.headers = headers
+        listViewController.onChange = { [weak self] (selected: AnyObject) in
+            guard let newLanguageID = selected as? NSNumber else {
+                return
+            }
+            
+            self?.blog?.settings?.languageID = newLanguageID
+        }
+        
+        navigationController?.pushViewController(listViewController, animated: true)
     }
     
     
