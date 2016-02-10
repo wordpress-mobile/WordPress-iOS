@@ -37,34 +37,6 @@
 
 #pragma mark - Themes availability
 
-- (void)testThatWordPressAccountSupportsThemeServices
-{
-    WPAccount *account = OCMStrictClassMock([WPAccount class]);
-    OCMStub([account isWPComAccount]).andReturn(YES);
-    
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    
-    ThemeService *service = [[ThemeService alloc] initWithManagedObjectContext:context];
-    BOOL result = NO;
-    
-    XCTAssertNoThrow(result = [service accountSupportsThemeServices:account]);
-    XCTAssertTrue(result);
-}
-
-- (void)testThatSelfHostedAccountDoesNotSupportThemeServices
-{
-    WPAccount *account = OCMStrictClassMock([WPAccount class]);
-    OCMStub([account isWPComAccount]).andReturn(NO);
-    
-    NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
-    
-    ThemeService *service = [[ThemeService alloc] initWithManagedObjectContext:context];
-    BOOL result = NO;
-    
-    XCTAssertNoThrow(result = [service accountSupportsThemeServices:account]);
-    XCTAssertTrue(!result);
-}
-
 - (void)testThatWordPressBlogSupportsThemeServices
 {
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
@@ -176,7 +148,6 @@
     NSString *themeId = @"SomeTheme";
     NSString *url = [NSString stringWithFormat:@"v1.1/themes/%@", themeId];
     
-    OCMStub([account isWPComAccount]).andReturn(YES);
     OCMStub([account restApi]).andReturn(api);
     
     OCMStub([api GET:[OCMArg isEqual:url]
@@ -198,7 +169,6 @@
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     ThemeService *service = nil;
     
-    OCMStub([account isWPComAccount]).andReturn(YES);
     OCMStub([account restApi]).andReturn(api);
     
     XCTAssertNoThrow(service = [[ThemeService alloc] initWithManagedObjectContext:context]);
@@ -229,7 +199,6 @@
     ThemeService *service = nil;
     NSString *url = @"v1.2/themes";
     
-    OCMStub([account isWPComAccount]).andReturn(YES);
     OCMStub([account restApi]).andReturn(api);
     
     OCMStub([api GET:[OCMArg isEqual:url]
