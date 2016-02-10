@@ -39,7 +39,7 @@ class Languages : NSObject
         
         // Done!
         popular = parsedPopular
-        all = merged.sort { return $0.name < $1.name }
+        all = merged.sort { $0.name < $1.name }
     }
     
     
@@ -69,28 +69,34 @@ class Languages : NSObject
     {
         /// Language Unique Identifier
         ///
-        let languageId : Int!
+        let languageId : NSNumber
         
         /// Human readable Language name
         ///
-        let name : String!
+        let name : String
         
         /// Language's Slug String
         ///
-        let slug : String!
+        let slug : String
 
         
         
         /// Designated initializer. Will fail if any of the required properties is missing
         ///
         init?(dict : NSDictionary) {
-            languageId = dict.numberForKey(Keys.identifier)?.integerValue
-            slug = dict.stringForKey(Keys.slug)
-            name = dict.stringForKey(Keys.name)
-            
-            guard slug != nil && name != nil && languageId != nil else {
+            guard let unwrappedLanguageId = dict.numberForKey(Keys.identifier)?.integerValue,
+                        unwrappedSlug = dict.stringForKey(Keys.slug),
+                        unwrappedName = dict.stringForKey(Keys.name) else
+            {
+                languageId = Int.min
+                name = String()
+                slug = String()
                 return nil
             }
+            
+            languageId = unwrappedLanguageId
+            name = unwrappedName
+            slug = unwrappedSlug
         }
         
         
