@@ -20,6 +20,9 @@ class Languages : NSObject
     ///
     let all : [Language]
     
+    /// Returns both, Popular and All languages, grouped
+    ///
+    let grouped : [[Language]]
     
     
     // MARK: - Public Methods
@@ -40,6 +43,7 @@ class Languages : NSObject
         // Done!
         popular = parsedPopular
         all = merged.sort { $0.name < $1.name }
+        grouped = [popular] + [all]
     }
     
     
