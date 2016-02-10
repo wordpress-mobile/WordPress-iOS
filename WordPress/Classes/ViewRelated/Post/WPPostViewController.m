@@ -1803,28 +1803,36 @@ EditImageDetailsViewControllerDelegate
     NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
     createMediaProgress.totalUnitCount = 2;
     [self trackMediaWithId:mediaUniqueID usingProgress:createMediaProgress];
-    [mediaService createMediaWithPHAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
-        __typeof__(self) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        createMediaProgress.completedUnitCount++;
-        if (error || !media || !media.absoluteLocalURL) {
-            [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
-            [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
-                                                          @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
-                                message:error.localizedDescription];
-            return;
-        }
-        NSString* thumbnailURL = media.absoluteThumbnailLocalURL;
-        if (media.mediaType == MediaTypeImage) {
-            [strongSelf.editorView insertLocalImage:thumbnailURL uniqueId:mediaUniqueID];
-        } else if (media.mediaType == MediaTypeVideo) {
-            [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:thumbnailURL];
-        }
-        
-        [strongSelf uploadMedia:media trackingId:mediaUniqueID];
-    }];
+    [mediaService createMediaWithPHAsset:asset
+                         forPostObjectID:self.post.objectID
+                       thumbnailCallback:^(NSURL *thumbnailURL) {
+                           __typeof__(self) strongSelf = weakSelf;
+                           if (!strongSelf) {
+                               return;
+                           }
+                           [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                               if (asset.mediaType == PHAssetMediaTypeImage) {
+                                   [strongSelf.editorView insertLocalImage:thumbnailURL.path uniqueId:mediaUniqueID];
+                               } else if (asset.mediaType == PHAssetMediaTypeVideo) {
+                                   [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:thumbnailURL.path];
+                               }
+                           }];
+                       }
+                              completion:^(Media *media, NSError *error){
+                                  __typeof__(self) strongSelf = weakSelf;
+                                  if (!strongSelf) {
+                                      return;
+                                  }
+                                  createMediaProgress.completedUnitCount++;
+                                  if (error || !media || !media.absoluteLocalURL) {
+                                      [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
+                                      [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
+                                                                                    @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
+                                                          message:error.localizedDescription];
+                                      return;
+                                  }
+                                  [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+                              }];
 }
 
 - (void)addSiteMediaAsset:(Media *)media

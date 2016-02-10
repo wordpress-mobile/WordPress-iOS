@@ -187,17 +187,54 @@ struct FeatureListItemRow : ImmuTableRow {
                 cell.detailTextLabel?.text = feature.description                
                 cell.detailTextLabel?.font = WPStyleGuide.tableviewTextFont()
             }
-            
-            let noDetailText = (feature.description ?? "").isEmpty
-            if noDetailText {
-                cell.accessoryView = availableCheckmark
-            }
-        } else {
-            cell.accessoryView = unavailableMarker
+        }
+        cell.accessoryView = accessoryView
+        cell.accessibilityLabel = accessibilityLabel
+    }
+
+    var accessibilityLabel: String? {
+        guard let availableAccessibilityLabel = self.availableAccessibilityLabel else {
+            return nil
+        }
+        return String(format: "%@. %@", feature.title, availableAccessibilityLabel)
+    }
+
+    var availableAccessibilityLabel: String? {
+        switch (availableIndicator, feature.webOnly) {
+        case (.Some(false), _):
+            return NSLocalizedString("Not included", comment: "Spoken text. A feature is not included in the plan")
+        case (.Some(true), true):
+            return NSLocalizedString("Included in web version", comment: "Spoken text. A feature is included in the plan")
+        case (.Some(true), false):
+            return NSLocalizedString("Included", comment: "Spoken text. A feature is included in the plan")
+        case (.None, _):
+            return nil
         }
     }
+
+    // And indicator of a feature being available. It can be nil for features that have a description.
+    var availableIndicator: Bool? {
+        switch (available, feature.description) {
+        case (false, _):
+            return false
+        case (true, nil), (true, .Some("")):
+            return true
+        default:
+            return nil
+        }
+    }
+
+    var accessoryView: UIView? {
+        return availableIndicator.map({ available in
+            if available {
+                return availableMarker
+            } else {
+                return unavailableMarker
+            }
+        })
+    }
     
-    private var availableCheckmark: UIView {
+    private var availableMarker: UIView {
         let checkmark = UIImageView(image: UIImage(named: "gridicons-checkmark-circle"))
         
         // Wrap the checkmark in a view to add some padding between it and the detailTextLabel
@@ -207,7 +244,7 @@ struct FeatureListItemRow : ImmuTableRow {
         // Can't use autolayout here, otherwise the tableview screws things up on rotation
         wrapper.frame = CGRect(x: 0, y: 0, width: checkmarkLeftPadding + checkmark.frame.width, height: checkmark.frame.height)
         checkmark.frame.origin.x = checkmarkLeftPadding
-        
+
         return wrapper
     }
     
