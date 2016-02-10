@@ -15,15 +15,6 @@ class PlanDetailViewControllerTest: XCTestCase {
         expect(row.availableIndicator).to(beTrue())
     }
     
-    func testFeatureListItemRowAvailableFeatureWithDetail() {
-        let feature = PlanFeature.StorageSpace("10GB")
-        let row = FeatureListItemRow(feature: feature, available: true)
-
-        expect(row.text).notTo(beEmpty())
-        expect(row.detailText).to(contain("10GB"))
-        expect(row.availableIndicator).to(beNil())
-    }
-    
     func testFeatureListItemRowAvailableFeatureWebOnlyNoDetail() {
         let feature = PlanFeature.CustomDomain
         let row = FeatureListItemRow(feature: feature, available: true)
@@ -40,15 +31,6 @@ class PlanDetailViewControllerTest: XCTestCase {
         expect(row.text).notTo(beEmpty())
         expect(row.detailText).to(beNil())
         expect(row.availableIndicator).to(beFalse())
-    }
-    
-    func testFeatureListItemRowUnavailableFeatureWithDetail() {
-        let feature = PlanFeature.StorageSpace("10GB")
-        let row = FeatureListItemRow(feature: feature, available: false)
-        
-        expect(row.text).notTo(beEmpty())
-        expect(row.detailText).to(equal("10GB"))
-        expect(row.availableIndicator).to(beNil())
     }
     
     func testFeatureListItemRowUnavailableFeatureWebOnly() {

@@ -78,14 +78,18 @@ class PlanDetailViewController: UIViewController {
         viewModel = ImmuTable(sections:
             [ ImmuTableSection(rows: PlanFeature.allFeatures.map { feature in
                 let available = plan.features.contains(feature)
-                
+
                 if available {
                     // If a feature is 'available', we have to find and use the feature instance
                     // from the _plan's_ list of features, as it will have the correct associated values
                     // for any enum case that has associated values.
                     let index = plan.features.indexOf(feature)
                     let planFeature = plan.features[index!]
-                    return FeatureListItemRow(feature: planFeature, available: available)
+                    if let description = planFeature.description {
+                        return TextRow(title: planFeature.title, value: description)
+                    } else {
+                        return FeatureListItemRow(feature: planFeature, available: available)
+                    }
                 }
                 
                 return FeatureListItemRow(feature: feature, available: available)
@@ -160,7 +164,6 @@ struct FeatureListItemRow : ImmuTableRow {
     let action: ImmuTableAction? = nil
     
     let title: String
-    let description: String?
     let webOnly: Bool
     let available: Bool
     
@@ -168,8 +171,9 @@ struct FeatureListItemRow : ImmuTableRow {
     let webOnlyFontSize: CGFloat = 13.0
     
     init(feature: PlanFeature, available: Bool) {
+        precondition(feature.description == nil, "Features with a description should use TextRow instead")
+
         self.title = feature.title
-        self.description = feature.description
         self.webOnly = feature.webOnly
         self.available = available
     }
@@ -203,7 +207,7 @@ struct FeatureListItemRow : ImmuTableRow {
         if available && webOnly {
             return NSLocalizedString("WEB ONLY", comment: "Describes a feature of a WordPress.com plan that is only available to users via the web.")
         } else {
-            return description
+            return nil
         }
     }
 
@@ -235,17 +239,8 @@ struct FeatureListItemRow : ImmuTableRow {
         }
     }
 
-    // And indicator of a feature being available. It can be nil for features that have a description.
     var availableIndicator: Bool? {
-        switch (available, description) {
-        case (_, let description?) where !description.isEmpty:
-            // Never show an indicator if there's a description
-            return nil
-        case (false, _):
-            return false
-        default:
-            return true
-        }
+        return available
     }
 
     var accessoryView: UIView? {
