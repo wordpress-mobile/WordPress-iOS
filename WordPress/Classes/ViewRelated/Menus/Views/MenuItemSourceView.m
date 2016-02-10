@@ -155,6 +155,11 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     }
 }
 
+- (BOOL)searchBarInputIsActive
+{
+    return [self.searchBar isFirstResponder] || self.searchBar.textField.text.length > 0;
+}
+
 - (void)searchBarInputChangeDetectedForLocalResultsUpdateWithText:(NSString *)searchText
 {
     // overrided in subclasses

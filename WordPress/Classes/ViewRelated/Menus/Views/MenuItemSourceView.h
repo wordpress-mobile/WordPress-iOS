@@ -32,6 +32,10 @@
  */
 - (void)insertSearchBarIfNeeded;
 
+/* The searchBar is active as a firstResponder or the user has text input within the the searchBar.
+ */
+- (BOOL)searchBarInputIsActive;
+
 /* A searchBar text update has changed in a way that local results should be fetched to reflect the search.
  */
 - (void)searchBarInputChangeDetectedForLocalResultsUpdateWithText:(NSString *)searchText;

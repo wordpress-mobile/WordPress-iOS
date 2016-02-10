@@ -78,7 +78,7 @@
 
 - (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView
 {
-    if (!self.additionalPostsAvailableForSync) {
+    if (!self.additionalPostsAvailableForSync || [self searchBarInputIsActive]) {
         return;
     }
     [self showLoadingSourcesIndicator];
