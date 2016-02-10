@@ -27,6 +27,10 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
+NSString * const BlogDetailAccountHideViewAdminTimeZone = @"GMT";
+NSInteger const BlogDetailAccountHideViewAdminYear = 2015;
+NSInteger const BlogDetailAccountHideViewAdminMonth = 9;
+NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
 
 #pragma mark - Helper Classes for Blog Details view model.
@@ -565,7 +569,28 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
 - (BOOL)shouldShowWPAdminRow
 {
-    return !self.blog.isHostedAtWPcom || [self.blog.account wasCreatedBeforeHideViewAdminDate];
+    return !self.blog.isHostedAtWPcom || [self wasAccountCreateBeforeHideViewAdminDate];
+}
+
+- (BOOL)wasAccountCreateBeforeHideViewAdminDate
+{
+    NSDate *hideViewAdminDate = [self hideViewAdminDate];
+    WPAccount *account = self.blog.account;
+    
+    return [account.dateCreated compare:hideAdminDate] == NSOrderedAscending;
+}
+
+- (NSDate *)hideViewAdminDate
+{
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    calendar.timeZone = [NSTimeZone timeZoneWithName:BlogDetailAccountHideViewAdminTimeZone];
+    
+    NSDateComponents *hideAdminDateComponents = [NSDateComponents new];
+    hideAdminDateComponents.year = BlogDetailAccountHideViewAdminYear;
+    hideAdminDateComponents.month = BlogDetailAccountHideViewAdminMonth;
+    hideAdminDateComponents.day = BlogDetailAccountHideViewAdminDay;
+    
+    return [calendar dateFromComponents:hideAdminDateComponents];
 }
 
 
