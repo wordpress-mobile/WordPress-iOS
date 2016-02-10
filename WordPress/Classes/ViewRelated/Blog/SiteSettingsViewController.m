@@ -196,7 +196,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             }
             
             // NOTE: Jorge Leandro Perez (2016.02.10): .org Language Settings is inconsistent with .com!
-            if (!self.blog.isHostedAtWPcom) {
+            if (!self.blog.supportsSiteManagementServices) {
                 --rowCount;
             }
             
