@@ -5,6 +5,7 @@ class PlanDetailViewController: UIViewController {
     var plan: Plan!
 
     static let navigationRestorationIdentifier = "PlanDetailNavigation"
+    static var restorationIdentifier: String { return NSStringFromClass(self) }
     private let cellIdentifier = "PlanFeatureListItem"
     
     private let tableViewHorizontalMargin: CGFloat = 24.0
@@ -182,8 +183,7 @@ extension PlanDetailViewController: UIViewControllerRestoration {
         }
 
         switch identifier {
-        case NSStringFromClass(self):
-            //
+        case PlanDetailViewController.restorationIdentifier:
             let planID = coder.decodeIntegerForKey(EncodingKey.plan)
             guard let plan = Plan(rawValue: planID) else {
                 return nil
