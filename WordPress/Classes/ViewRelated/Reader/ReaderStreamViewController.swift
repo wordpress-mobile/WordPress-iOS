@@ -1074,10 +1074,9 @@ import WordPressComAnalytics
             return context
         }
 
-        let mainContext = ContextManager.sharedInstance().mainContext
-        displayContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        displayContext!.parentContext = mainContext
+        displayContext = ContextManager.sharedInstance().newMainContextChildContext()
 
+        let mainContext = ContextManager.sharedInstance().mainContext
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleContextDidSaveNotification:", name: NSManagedObjectContextDidSaveNotification, object: mainContext)
 
         return displayContext!

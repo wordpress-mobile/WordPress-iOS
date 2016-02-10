@@ -135,11 +135,6 @@ NSInteger const WPAccountHideViewAdminDay = 7;
 
 #pragma mark - WordPress.com support methods
 
-- (BOOL)isWPComAccount
-{
-    return self.restApi != nil;
-}
-
 - (BOOL)wasCreatedBeforeHideViewAdminDate
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];

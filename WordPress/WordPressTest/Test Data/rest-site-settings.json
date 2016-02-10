@@ -54,7 +54,7 @@
         "comment_max_links"                     : 42,
         "moderation_keys"                       : "moderation keys",
         "blacklist_keys"                        : "some evil keywords",
-        "lang_id"                               : false,
+        "lang_id"                               : 31337,
         "wga"                                   : false,
         "disabled_likes"                        : false,
         "disabled_reblogs"                      : false,
