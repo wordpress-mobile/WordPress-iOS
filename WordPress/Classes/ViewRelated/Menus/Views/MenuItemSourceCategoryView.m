@@ -6,6 +6,8 @@
 #import "Blog.h"
 #import "WPCategoryTree.h"
 
+static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
+
 @interface MenuItemSourceCategoryView ()
 
 @property (nonatomic, strong) NSArray *displayCategories;
@@ -37,8 +39,8 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:[PostCategory entityName] inManagedObjectContext:[self managedObjectContext]];
     [fetchRequest setEntity:entity];
-    
     [fetchRequest setPredicate:[self defaultFetchRequestPredicate]];
+    [fetchRequest setFetchLimit:MenuItemSourceCategorySyncLimit];
     
     NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName"
                                                                        ascending:YES
@@ -59,14 +61,15 @@
         [self hideLoadingSourcesIndicator];
     };
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [categoryService syncCategoriesForBlog:[self blog] success:^{
-       
-        stopLoading();
-        
-    } failure:^(NSError *error) {
-        // TODO: show error message
-        stopLoading();
-    }];
+    [categoryService syncCategoriesForBlog:[self blog]
+                                    number:@(MenuItemSourceCategorySyncLimit)
+                                    offset:@(0)
+                                   success:^(NSArray<PostCategory *> *categories) {
+                                       stopLoading();
+                                   } failure:^(NSError *error) {
+                                       // TODO: show error message
+                                       stopLoading();
+                                   }];
 }
 
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
