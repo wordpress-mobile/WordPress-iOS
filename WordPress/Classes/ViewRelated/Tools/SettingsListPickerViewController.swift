@@ -91,7 +91,7 @@ class SettingsListPickerViewController : UITableViewController
     
     override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         guard let text = headers?[section] else {
-            return CGFloat.min
+            return 0
         }
         
         return WPTableViewSectionHeaderFooterView.heightForHeader(text, width: view.frame.width)
@@ -110,7 +110,7 @@ class SettingsListPickerViewController : UITableViewController
     
     override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         guard let text = footers?[section] else {
-            return CGFloat.min
+            return 0
         }
         
         return WPTableViewSectionHeaderFooterView.heightForFooter(text, width: view.frame.width)
