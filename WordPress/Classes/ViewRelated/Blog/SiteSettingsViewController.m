@@ -187,36 +187,50 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     NSInteger settingsSection = [self.tableSections[section] integerValue];
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:
+        {
+            NSInteger rowCount = SiteSettingsGeneralCount;
+            
+            // NOTE: Sergio Estevao (2015.08.25): Hide Privacy because of lack of support in .org
             if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
-                // NOTE: Sergio Estevao (2015.08.25) + JLP (2016.02.08):
-                // We'll hide Privacy + Language in XML-RPC sites because the dotorg API still don't support
-                // those fields.
-                return SiteSettingsGeneralCount - 2;
+                --rowCount;
             }
-            return SiteSettingsGeneralCount;
-
+            
+            // NOTE: Jorge Leandro Perez (2016.02.10): .org Language Settings is inconsistent with .com!
+            if (!self.blog.isHostedAtWPcom) {
+                --rowCount;
+            }
+            
+            return rowCount;
+        }
         case SiteSettingsSectionAccount:
+        {
             return SiteSettingsAccountCount;
-
+        }
         case SiteSettingsSectionWriting:
+        {
             return SiteSettingsWritingCount;
-
+        }
         case SiteSettingsSectionDiscussion:
+        {
             return 1;
-
+        }
         case SiteSettingsSectionDevice:
+        {
             if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
                 // NOTE: Brent Coursey (2016-02-03): Only show geotagging cell for user of the REST API (REST).
                 // Any post default options are available in the Writing section for REST users.
                 return 1;
             }
             return SiteSettingsDeviceCount;
-
+        }
         case SiteSettingsSectionRemoveSite:
+        {
             return 1;
-
+        }
         case SiteSettingsSectionAdvanced:
+        {
             return SiteSettingsAdvancedCount;
+        }
     }
 
     return 0;
