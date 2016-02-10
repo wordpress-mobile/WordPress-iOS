@@ -171,25 +171,47 @@ struct FeatureListItemRow : ImmuTableRow {
     }
     
     func configureCell(cell: UITableViewCell) {
+        cell.textLabel?.text = text
         cell.textLabel?.font = WPStyleGuide.tableviewTextFont()
-        
-        cell.textLabel?.textColor = available ? WPStyleGuide.darkGrey() : WPStyleGuide.grey()
-        cell.textLabel?.alpha = available ? 1.0 : 0.5
+        cell.textLabel?.textColor = textColor
+
+        cell.detailTextLabel?.text = detailText
+        cell.detailTextLabel?.font = detailTextFont
         cell.detailTextLabel?.textColor = WPStyleGuide.grey()
-        
-        cell.textLabel?.text = feature.title
-        
-        if available {
-            if feature.webOnly {
-                cell.detailTextLabel?.text = NSLocalizedString("WEB ONLY", comment: "Describes a feature of a WordPress.com plan that is only available to users via the web.")
-                cell.detailTextLabel?.font = WPFontManager.openSansRegularFontOfSize(webOnlyFontSize)
-            } else {
-                cell.detailTextLabel?.text = feature.description                
-                cell.detailTextLabel?.font = WPStyleGuide.tableviewTextFont()
-            }
-        }
+
         cell.accessoryView = accessoryView
         cell.accessibilityLabel = accessibilityLabel
+    }
+
+    var text: String? {
+        return feature.title
+    }
+
+    var textColor: UIColor {
+        if available {
+            return WPStyleGuide.darkGrey()
+        } else {
+            return WPStyleGuide.grey().colorWithAlphaComponent(0.5)
+        }
+    }
+
+    var detailText: String? {
+        switch (available, feature.webOnly) {
+        case (true, true):
+                return NSLocalizedString("WEB ONLY", comment: "Describes a feature of a WordPress.com plan that is only available to users via the web.")
+        case (true, false):
+            return feature.description
+        default:
+            return nil
+        }
+    }
+
+    var detailTextFont: UIFont {
+        if available && feature.webOnly {
+            return WPFontManager.openSansRegularFontOfSize(webOnlyFontSize)
+        } else {
+            return WPStyleGuide.tableviewTextFont()
+        }
     }
 
     var accessibilityLabel: String? {
