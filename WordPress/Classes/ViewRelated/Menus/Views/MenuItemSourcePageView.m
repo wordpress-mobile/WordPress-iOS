@@ -79,7 +79,7 @@
 
 - (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView
 {
-    if (!self.additionalPagesAvailableForSync) {
+    if (!self.additionalPagesAvailableForSync || [self searchBarInputIsActive]) {
         return;
     }
     [self showLoadingSourcesIndicator];
