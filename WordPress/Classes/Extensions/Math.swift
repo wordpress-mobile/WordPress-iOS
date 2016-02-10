@@ -47,4 +47,8 @@ extension CGSize {
         let maxSize = CGSize(width: maxValue, height: maxValue)
         return clamp(min: minSize, max: maxSize)
     }
+
+    func clamp(min minValue: Int, max maxValue: Int) -> CGSize {
+        return clamp(min: CGFloat(minValue), max: CGFloat(maxValue))
+    }
 }
