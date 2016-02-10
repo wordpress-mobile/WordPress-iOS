@@ -5,6 +5,7 @@
 @interface MenuItemSourcePageView ()
 
 @property (nonatomic, strong) PostService *pageSearchService;
+@property (nonatomic, assign) BOOL additionalPagesAvailableForSync;
 
 @end
 
@@ -72,6 +73,32 @@
 {
     Page *page = [self.resultsController objectAtIndexPath:indexPath];
     [cell setTitle:page.titleForDisplay];
+}
+
+#pragma mark - paging
+
+- (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView
+{
+    if (!self.additionalPagesAvailableForSync) {
+        return;
+    }
+    [self showLoadingSourcesIndicator];
+    void(^stopLoading)() = ^() {
+        [self hideLoadingSourcesIndicator];
+    };
+    PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    [service loadMorePostsOfType:PostServiceTypePage
+                    withStatuses:@[PostStatusPrivate, PostStatusPublish]
+                         forBlog:[self blog]
+                         success:^(BOOL hasMore) {
+                             
+                             self.additionalPagesAvailableForSync = hasMore;
+                             stopLoading();
+                             
+                         } failure:^(NSError *error) {
+                             // TODO: show error message
+                             stopLoading();
+                         }];
 }
 
 #pragma mark - searching
