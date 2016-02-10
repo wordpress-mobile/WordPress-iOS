@@ -52,6 +52,9 @@
                                                 <rect key="frame" x="281" y="11" width="39" height="37"/>
                                                 <color key="pageIndicatorTintColor" red="0.72326811719999995" green="0.869224102" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="currentPageIndicatorTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <connections>
+                                                    <action selector="pageControlChanged" destination="s5h-iz-0HE" eventType="valueChanged" id="I3s-63-M21"/>
+                                                </connections>
                                             </pageControl>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
