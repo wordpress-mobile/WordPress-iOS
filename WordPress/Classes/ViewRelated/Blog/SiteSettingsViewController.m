@@ -658,7 +658,14 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     NSParameterAssert(blog);
     
+    __weak __typeof__(self) weakSelf = self;
+    
     LanguageViewController *languageViewController = [[LanguageViewController alloc] initWithBlog:blog];
+    languageViewController.onChange = ^(NSNumber *newLanguageID){
+        weakSelf.blog.settings.languageID = newLanguageID;
+        [weakSelf saveSettings];
+    };
+    
     [self.navigationController pushViewController:languageViewController animated:YES];
 }
 
