@@ -15,7 +15,7 @@ class PlanDetailViewControllerTest: XCTestCase {
         expect(row.availableIndicator).to(beTrue())
     }
     
-    func testFeatureListItemRowAvailableFeatureWebOnlyNoDetail() {
+    func testFeatureListItemRowAvailableFeatureWebOnly() {
         let feature = PlanFeature.CustomDomain
         let row = FeatureListItemRow(feature: feature, available: true)
         
@@ -24,7 +24,7 @@ class PlanDetailViewControllerTest: XCTestCase {
         expect(row.availableIndicator).to(beTrue())
     }
     
-    func testFeatureListItemRowUnavailableFeatureNoDetail() {
+    func testFeatureListItemRowUnavailableFeature() {
         let feature = PlanFeature.NoAds
         let row = FeatureListItemRow(feature: feature, available: false)
         
