@@ -17,13 +17,6 @@ const NSInteger ThemeOrderTrailing = 9999;
 
 #pragma mark - Themes availability
 
-- (BOOL)accountSupportsThemeServices:(WPAccount *)account
-{
-    NSParameterAssert([account isKindOfClass:[WPAccount class]]);
-    
-    return [account isWPComAccount];
-}
-
 - (BOOL)blogSupportsThemeServices:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
@@ -193,9 +186,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                     failure:(ThemeServiceFailureBlock)failure
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
-    NSAssert([self accountSupportsThemeServices:account],
-             @"Do not call this method on unsupported accounts, check with blogSupportsThemeServices first.");
-    
+
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:account.restApi];
     
     NSOperation *operation = [remote getThemeId:themeId
@@ -219,9 +210,7 @@ const NSInteger ThemeOrderTrailing = 9999;
                              failure:(ThemeServiceFailureBlock)failure
 {
     NSParameterAssert([account isKindOfClass:[WPAccount class]]);
-    NSAssert([self accountSupportsThemeServices:account],
-             @"Do not call this method on unsupported accounts, check with blogSupportsThemeServices first.");
-    
+
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:account.restApi];
     
     NSOperation *operation = [remote getThemesPage:page

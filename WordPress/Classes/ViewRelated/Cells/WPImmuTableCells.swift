@@ -15,6 +15,7 @@ class WPReusableTableViewCell: WPTableViewCell {
         accessoryType = .None
         accessoryView = nil
         selectionStyle = .Default
+        accessibilityLabel = nil
     }
 }
 
