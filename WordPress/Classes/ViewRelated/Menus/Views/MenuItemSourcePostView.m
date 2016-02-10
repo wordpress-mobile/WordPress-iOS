@@ -5,6 +5,7 @@
 @interface MenuItemSourcePostView ()
 
 @property (nonatomic, strong) PostService *postSearchService;
+@property (nonatomic, assign) BOOL additionalPostsAvailableForSync;
 
 @end
 
@@ -59,6 +60,7 @@
                 withStatuses:@[PostStatusPublish, PostStatusPrivate]
                      forBlog:[self blog]
                      success:^(BOOL hasMore) {
+                         self.additionalPostsAvailableForSync = hasMore;
                          stopLoading();
                      } failure:^(NSError *error) {
                          // TODO: show error message
@@ -70,6 +72,32 @@
 {
     Post *post = [self.resultsController objectAtIndexPath:indexPath];
     [cell setTitle:post.titleForDisplay];
+}
+
+#pragma mark - paging
+
+- (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView
+{
+    if (!self.additionalPostsAvailableForSync) {
+        return;
+    }
+    [self showLoadingSourcesIndicator];
+    void(^stopLoading)() = ^() {
+        [self hideLoadingSourcesIndicator];
+    };
+    PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    [service loadMorePostsOfType:PostServiceTypePost
+                    withStatuses:@[PostStatusPrivate, PostStatusPublish]
+                         forBlog:[self blog]
+                         success:^(BOOL hasMore) {
+                             
+                             self.additionalPostsAvailableForSync = hasMore;
+                             stopLoading();
+                             
+                         } failure:^(NSError *error) {
+                             // TODO: show error message
+                             stopLoading();
+                         }];
 }
 
 #pragma mark - searching
