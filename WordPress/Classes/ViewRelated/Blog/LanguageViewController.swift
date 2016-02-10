@@ -25,12 +25,25 @@ public class LanguageViewController : UITableViewController
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
+        // Setup tableViewController
         title = NSLocalizedString("Language", comment: "Title for the Language Picker Screen")
-        
+        clearsSelectionOnViewWillAppear = false
+    
         // Setup tableView
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
+    }
+    
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Reload + Clear selection. Let's avoid flickers by dispatching the deselect call asynchronously
+        tableView.reloadDataPreservingSelection()
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tableView.deselectSelectedRowWithAnimation(true)
+        }
     }
     
     
