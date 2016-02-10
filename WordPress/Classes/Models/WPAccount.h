@@ -54,14 +54,4 @@
 - (void)addJetpackBlogs:(NSSet *)values;
 - (void)removeJetpackBlogs:(NSSet *)values;
 
-#pragma mark - WordPress.com support methods
-
-/**
- *  @brief      Call this method to know if the account was created before the hide view admin date.
- *  @details    We removed showing the "WP Admin" option for accounts created after 2015-09-07+00:00
- *
- *  @returns    YES if this account was created before 2015-09-07+00:00, NO otherwise.
- */
-- (BOOL)wasCreatedBeforeHideViewAdminDate;
-
 @end
