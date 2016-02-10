@@ -27,7 +27,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     static WPStatsServiceCache *cache = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        cache = [[WPStatsServiceCache alloc] init];
+        cache = [WPStatsServiceCache new];
     });
     return cache;
 }
