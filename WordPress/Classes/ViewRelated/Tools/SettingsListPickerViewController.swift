@@ -120,14 +120,21 @@ class SettingsListPickerViewController : UITableViewController
     
     // MARK: - UITableViewDelegate Methods
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectSelectedRowWithAnimation(true)
-        
         guard let newValue = values?[indexPath.section][indexPath.row] else {
             return
         }
         
+        selectedValue = newValue
+        tableView.reloadDataPreservingSelection()
+        
+        // Note: due to a weird UITableView interaction between reloadData and deselectSelectedRow,
+        // we'll introduce a slight delay before deselecting, to avoid getting the highlighted row flickering.
+        dispatch_async(dispatch_get_main_queue()) {
+            tableView.deselectSelectedRowWithAnimation(true)
+        }
+        
+        // Callback!
         onChange?(newValue)
-        // TODO: Update selection
     }
     
     
