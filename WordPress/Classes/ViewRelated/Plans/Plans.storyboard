@@ -49,7 +49,7 @@
                                         <rect key="frame" x="0.0" y="541" width="600" height="59"/>
                                         <subviews>
                                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="HLT-dO-RyH">
-                                                <rect key="frame" x="281" y="11" width="39" height="37"/>
+                                                <rect key="frame" x="8" y="8" width="584" height="43"/>
                                                 <color key="pageIndicatorTintColor" red="0.72326811719999995" green="0.869224102" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="currentPageIndicatorTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <connections>
@@ -59,14 +59,20 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
+                                            <constraint firstAttribute="bottomMargin" secondItem="HLT-dO-RyH" secondAttribute="bottom" id="81N-Sg-1d8"/>
                                             <constraint firstAttribute="height" constant="59" id="9sq-hY-CdS"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="HLT-dO-RyH" secondAttribute="trailing" constant="20" id="C8c-68-OYE"/>
-                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="centerX" secondItem="8En-Ia-Wlh" secondAttribute="centerX" id="adF-OC-swL"/>
-                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8En-Ia-Wlh" secondAttribute="leading" constant="20" id="gMX-M1-Fko"/>
-                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="centerY" secondItem="8En-Ia-Wlh" secondAttribute="centerY" id="v9R-u6-tJo"/>
+                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="trailing" secondItem="8En-Ia-Wlh" secondAttribute="trailingMargin" id="OiO-eD-sc9"/>
+                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="leading" secondItem="8En-Ia-Wlh" secondAttribute="leadingMargin" id="dei-oZ-v5R"/>
+                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="top" secondItem="8En-Ia-Wlh" secondAttribute="topMargin" id="mHh-yT-0WZ"/>
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="8En-Ia-Wlh" secondAttribute="bottom" id="1ES-Qt-Inb"/>
+                                    <constraint firstAttribute="trailing" secondItem="8En-Ia-Wlh" secondAttribute="trailing" id="JEQ-Xp-Co1"/>
+                                    <constraint firstItem="8En-Ia-Wlh" firstAttribute="top" secondItem="f0d-zt-grM" secondAttribute="bottom" id="WGN-iv-Hcv"/>
+                                    <constraint firstItem="8En-Ia-Wlh" firstAttribute="leading" secondItem="ZY0-qL-r53" secondAttribute="leading" id="oZE-0i-nLg"/>
+                                </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
