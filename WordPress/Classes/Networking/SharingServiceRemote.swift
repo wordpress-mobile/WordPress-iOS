@@ -212,20 +212,26 @@ public class SharingServiceRemote : ServiceRemoteREST
     /// Update the shared status of the specified publicize connection
     ///
     /// - Parameters:
-    ///     - shared: True if the connection is shared with all users of the blog. False otherwise.
     ///     - connectionID: The ID of the publicize connection.
+    ///     - shared: True if the connection is shared with all users of the blog. False otherwise.
+    ///     - externalID: The connection's externalID. This can be the externalID of the corresponding 
+    /// keyring connection, or one of its additional external accounts.
     ///     - siteID: The WordPress.com ID of the site.
     ///      -success: An optional success block accepting no arguments.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    public func updateShared(shared: Bool,
-        forPublicizeConnectionWithID connectionID: NSNumber,
+    public func updatePublicizeConnectionWithID(connectionID: NSNumber,
+        shared: Bool,
+        externalID: String,
         forSite siteID: NSNumber,
         success: (() -> Void)?,
         failure: (NSError! -> Void)?) {
             let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
             let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
-            let parameters = [ConnectionDictionaryKeys.shared : shared]
+            let parameters = [
+                ConnectionDictionaryKeys.shared : shared,
+                ConnectionDictionaryKeys.externalID : externalID
+            ]
 
             api.POST(path,
                 parameters: parameters,
