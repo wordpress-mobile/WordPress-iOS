@@ -3,7 +3,6 @@
 #import "Post.h"
 #import "Media.h"
 #import "WordPress-Swift.h"
-#import <WordPressShared/WPStyleGuide.h>
 
 @interface FeaturedImageViewController ()
 
@@ -38,7 +37,10 @@
     [super viewDidLoad];
 
     self.view.backgroundColor = [UIColor whiteColor];
-    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.deleteButton forNavigationItem:self.navigationItem];
+
+    UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    rightFixedSpacer.width = -5.0f;
+    self.navigationItem.rightBarButtonItems = @[rightFixedSpacer, self.deleteButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
