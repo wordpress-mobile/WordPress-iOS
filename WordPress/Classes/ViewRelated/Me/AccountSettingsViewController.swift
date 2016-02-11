@@ -43,6 +43,10 @@ private struct AccountSettingsController: SettingsController {
         let email = TextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.email ?? "")
+        
+        let primarySite = TextRow(
+            title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
+            value: displayNameForBlog(settings?.primarySiteID))
 
         let webAddress = EditableTextRow(
             title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
@@ -66,6 +70,7 @@ private struct AccountSettingsController: SettingsController {
                 rows: [
                     username,
                     email,
+                    primarySite,
                     webAddress
                 ]),
             ImmuTableSection(
@@ -83,6 +88,17 @@ private struct AccountSettingsController: SettingsController {
             ])
     }
 
+    
+    // MARK: - Helpers
+    func displayNameForBlog(blogId: Int?) -> String {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = BlogService(managedObjectContext: context)
+        let blog = service.blogByBlogId(blogId)
+        
+        return blog?.settings?.name ?? String()
+    }
+    
+    
     // MARK: - Actions
 
     func editWebAddress() -> ImmuTableRowControllerGenerator {
