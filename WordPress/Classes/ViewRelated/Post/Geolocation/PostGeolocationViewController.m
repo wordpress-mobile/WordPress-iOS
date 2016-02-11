@@ -34,7 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    self.view.backgroundColor = [WPStyleGuide greyLighten30];
     self.title = NSLocalizedString(@"Location", @"Title for screen to select post location");
     [self.view addSubview:self.geoView];
 }
