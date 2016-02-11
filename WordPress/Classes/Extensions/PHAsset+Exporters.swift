@@ -10,8 +10,10 @@ extension PHAsset {
 
     /**
      Exports an asset to a file URL with the desired targetSize and removing geolocation if requested. 
-     The targetSize is the maximum resolution permited, the resultSize will normally be a lower value that maitains the aspect ratio of the asset
+     The targetSize is the maximum resolution permited, the resultSize will normally be a lower value that maitains the aspect ratio of the asset.
      
+     - Note: Images aren't scaled up, so if you pass a `maximumResolution` that's larger than the original image, it will not resize.
+
      - Parameters:
         - url: file url to where the asset should be exported, this must be writable location
         - targetUTI: the UTI format to use when exporting the asset
