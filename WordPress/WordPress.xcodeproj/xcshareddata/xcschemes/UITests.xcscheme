@@ -62,6 +62,16 @@
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8511CFB51C607A7000B7CEED"
+               BuildableName = "WordPressScreenshotGeneration.xctest"
+               BlueprintName = "WordPressScreenshotGeneration"
+               ReferencedContainer = "container:WordPress.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
