@@ -48,6 +48,13 @@ class SettingsListPickerViewController : UITableViewController
         assert(titles!.count == values!.count)
         assert(values?.count == subtitles?.count || subtitles == nil)
     }
+
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        
+        // Note: This fixes an extra padding glitch upon rotation
+        view.setNeedsLayout()
+    }
     
     
     
