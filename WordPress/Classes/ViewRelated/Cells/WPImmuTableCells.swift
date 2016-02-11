@@ -265,7 +265,6 @@ struct MediaSizeRow: ImmuTableRow {
         cell.value = value
         cell.onChange = onChange
 
-        cell.minValue = MediaMinImageSizeDimension
-        cell.maxValue = MediaMaxImageSizeDimension
+        (cell.minValue, cell.maxValue) = MediaSettings().allowedImageSizeRange
     }
 }

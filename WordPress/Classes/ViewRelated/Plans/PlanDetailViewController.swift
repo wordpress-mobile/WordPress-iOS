@@ -78,14 +78,18 @@ class PlanDetailViewController: UIViewController {
         viewModel = ImmuTable(sections:
             [ ImmuTableSection(rows: PlanFeature.allFeatures.map { feature in
                 let available = plan.features.contains(feature)
-                
+
                 if available {
                     // If a feature is 'available', we have to find and use the feature instance
                     // from the _plan's_ list of features, as it will have the correct associated values
                     // for any enum case that has associated values.
                     let index = plan.features.indexOf(feature)
                     let planFeature = plan.features[index!]
-                    return FeatureListItemRow(feature: planFeature, available: available)
+                    if let description = planFeature.description {
+                        return TextRow(title: planFeature.title, value: description)
+                    } else {
+                        return FeatureListItemRow(feature: planFeature, available: available)
+                    }
                 }
                 
                 return FeatureListItemRow(feature: feature, available: available)
@@ -159,48 +163,71 @@ struct FeatureListItemRow : ImmuTableRow {
     
     let action: ImmuTableAction? = nil
     
-    let feature: PlanFeature
+    let title: String
+    let webOnly: Bool
     let available: Bool
     
     let checkmarkLeftPadding: CGFloat = 16.0
     let webOnlyFontSize: CGFloat = 13.0
     
     init(feature: PlanFeature, available: Bool) {
-        self.feature = feature
+        precondition(feature.description == nil, "Features with a description should use TextRow instead")
+
+        self.title = feature.title
+        self.webOnly = feature.webOnly
         self.available = available
     }
     
     func configureCell(cell: UITableViewCell) {
+        cell.textLabel?.text = text
         cell.textLabel?.font = WPStyleGuide.tableviewTextFont()
-        
-        cell.textLabel?.textColor = available ? WPStyleGuide.darkGrey() : WPStyleGuide.grey()
-        cell.textLabel?.alpha = available ? 1.0 : 0.5
+        cell.textLabel?.textColor = textColor
+
+        cell.detailTextLabel?.text = detailText
+        cell.detailTextLabel?.font = detailTextFont
         cell.detailTextLabel?.textColor = WPStyleGuide.grey()
-        
-        cell.textLabel?.text = feature.title
-        
-        if available {
-            if feature.webOnly {
-                cell.detailTextLabel?.text = NSLocalizedString("WEB ONLY", comment: "Describes a feature of a WordPress.com plan that is only available to users via the web.")
-                cell.detailTextLabel?.font = WPFontManager.openSansRegularFontOfSize(webOnlyFontSize)
-            } else {
-                cell.detailTextLabel?.text = feature.description                
-                cell.detailTextLabel?.font = WPStyleGuide.tableviewTextFont()
-            }
-        }
+
         cell.accessoryView = accessoryView
         cell.accessibilityLabel = accessibilityLabel
+    }
+
+    var text: String? {
+        return title
+    }
+
+    var textColor: UIColor {
+        if available {
+            return WPStyleGuide.darkGrey()
+        } else {
+            return WPStyleGuide.grey().colorWithAlphaComponent(0.5)
+        }
+    }
+
+    var detailText: String? {
+        if available && webOnly {
+            return NSLocalizedString("WEB ONLY", comment: "Describes a feature of a WordPress.com plan that is only available to users via the web.")
+        } else {
+            return nil
+        }
+    }
+
+    var detailTextFont: UIFont {
+        if available && webOnly {
+            return WPFontManager.openSansRegularFontOfSize(webOnlyFontSize)
+        } else {
+            return WPStyleGuide.tableviewTextFont()
+        }
     }
 
     var accessibilityLabel: String? {
         guard let availableAccessibilityLabel = self.availableAccessibilityLabel else {
             return nil
         }
-        return String(format: "%@. %@", feature.title, availableAccessibilityLabel)
+        return String(format: "%@. %@", title, availableAccessibilityLabel)
     }
 
     var availableAccessibilityLabel: String? {
-        switch (availableIndicator, feature.webOnly) {
+        switch (availableIndicator, webOnly) {
         case (.Some(false), _):
             return NSLocalizedString("Not included", comment: "Spoken text. A feature is not included in the plan")
         case (.Some(true), true):
@@ -212,16 +239,8 @@ struct FeatureListItemRow : ImmuTableRow {
         }
     }
 
-    // And indicator of a feature being available. It can be nil for features that have a description.
     var availableIndicator: Bool? {
-        switch (available, feature.description) {
-        case (false, _):
-            return false
-        case (true, nil), (true, .Some("")):
-            return true
-        default:
-            return nil
-        }
+        return available
     }
 
     var accessoryView: UIView? {
