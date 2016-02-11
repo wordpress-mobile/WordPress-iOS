@@ -17,7 +17,7 @@ class MediaSettingsTests: XCTestCase {
     func testDefaultMaxImageSize() {
         let settings = MediaSettings(storage: MediaSettings.EphemeralStorage())
         let maxImageSize = settings.maxImageSizeSetting
-        expect(maxImageSize).to(equal(settings.maxImageDimension))
+        expect(maxImageSize).to(equal(settings.allowedImageSizeRange.max))
     }
 
     func testMaxImageSizeMigratesCGSizeToInt() {
@@ -34,18 +34,18 @@ class MediaSettingsTests: XCTestCase {
 
     func testMaxImageSizeClampsValues() {
         let settings = MediaSettings(storage: MediaSettings.EphemeralStorage())
-        let lowValue = settings.minImageDimension - 1
-        let highValue = settings.maxImageDimension + 1
+        let lowValue = settings.allowedImageSizeRange.min - 1
+        let highValue = settings.allowedImageSizeRange.max + 1
 
         settings.maxImageSizeSetting = lowValue
-        expect(settings.maxImageSizeSetting).to(equal(settings.minImageDimension))
+        expect(settings.maxImageSizeSetting).to(equal(settings.allowedImageSizeRange.min))
         settings.maxImageSizeSetting = highValue
-        expect(settings.maxImageSizeSetting).to(equal(settings.maxImageDimension))
+        expect(settings.maxImageSizeSetting).to(equal(settings.allowedImageSizeRange.max))
     }
 
     func testImageSizeForUploadReturnsIntMax() {
         let settings = MediaSettings(storage: MediaSettings.EphemeralStorage())
-        let highValue = settings.maxImageDimension + 1
+        let highValue = settings.allowedImageSizeRange.max + 1
 
         settings.maxImageSizeSetting = highValue
         expect(settings.imageSizeForUpload).to(equal(Int.max))
