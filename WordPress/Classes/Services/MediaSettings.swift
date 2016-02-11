@@ -35,7 +35,7 @@ class MediaSettings: NSObject {
     /// The stored value for the maximum size images can have before uploading.
     /// If you set this to `maxImageDimension` or higher, it means images won't
     /// be resized on upload.
-    ///
+    /// If you set this to `minImageDimension` or lower, it will be set to `minImageDimension`.
     /// - important: don't access this propery directly to check what size to resize an image, use `imageSizeForUpload` instead.
     var maxImageSizeSetting: Int {
         get {
