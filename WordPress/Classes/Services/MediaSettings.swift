@@ -29,7 +29,7 @@ class MediaSettings: NSObject {
     /// The minimum and maximum allowed sizes for `maxImageSizeSetting`.
     /// The UI to configure this setting should not allow values outside this limits.
     /// - seealso: maxImageSizeSetting
-    var allowedImageSizeRange: (Int, Int) {
+    var allowedImageSizeRange: (min: Int, max: Int) {
         return (minImageDimension, maxImageDimension)
     }
 
