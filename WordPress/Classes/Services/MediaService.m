@@ -56,7 +56,8 @@
     
     BOOL geoLocationEnabled = post.blog.settings.geolocationEnabled;
     
-    CGSize maxImageSize = [MediaSettings imageSizeForUpload];
+    NSInteger maxImageSize = [[MediaSettings new] imageSizeForUpload];
+    CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
 
     NSURL *mediaURL = [self urlForMediaWithFilename:[asset originalFilename] andExtension:extension];
     NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
@@ -73,7 +74,7 @@
 
             [asset exportToURL:mediaURL
                      targetUTI:assetUTI
-             maximumResolution:maxImageSize
+             maximumResolution:maximumResolution
               stripGeoLocation:!geoLocationEnabled
                 successHandler:^(CGSize resultingSize)
                 {
