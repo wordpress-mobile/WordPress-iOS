@@ -85,8 +85,6 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     // Note: There are situations where this can be called in error due to how
     // individual services choose to reply to an authorization request.
     // Delegates should expect to handle a false positive.
-    [super dismiss];
-
     if ([self.delegate respondsToSelector:@selector(authorizeDidSucceed:)]) {
         [self.delegate authorizeDidSucceed:self.publicizer];
     }
