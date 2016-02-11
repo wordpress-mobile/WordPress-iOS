@@ -10,12 +10,14 @@ extension PHAsset {
 
     /**
      Exports an asset to a file URL with the desired targetSize and removing geolocation if requested. 
-     The targetSize is the maximum resolution permited, the resultSize will normally be a lower value that maitains the aspect ratio of the asset
+     The targetSize is the maximum resolution permited, the resultSize will normally be a lower value that maitains the aspect ratio of the asset.
      
+     - Note: Images aren't scaled up, so if you pass a `maximumResolution` that's larger than the original image, it will not resize.
+
      - Parameters:
         - url: file url to where the asset should be exported, this must be writable location
         - targetUTI: the UTI format to use when exporting the asset
-        - maximumResolution:  the maximum pixel resolution that the asset can have after exporting. If CGSizeZero is provided the original size of image is returned.
+        - maximumResolution:  the maximum pixel resolution that the asset can have after exporting.
         - stripGeoLocation: if true any geographic location existent on the metadata of the asset will be stripped
         - successHandler:  a handler that will be invoked on success with the resulting resolution of the asset exported
         - errorHandler: a handler that will be invoked when some error occurs when generating the exported file for the asset
@@ -62,11 +64,11 @@ extension PHAsset {
         options.resizeMode = .Exact
         options.synchronous = false
         options.networkAccessAllowed = true
-        var requestedSize = maximumResolution
-        if (requestedSize == CGSize.zero) {
-            requestedSize = CGSize(width: pixelWidth, height: pixelHeight)
-        }
-        PHImageManager.defaultManager().requestImageForAsset(self, targetSize: requestedSize, contentMode: .AspectFit, options: options) { (image, info) -> Void in
+
+        let pixelSize = CGSize(width: pixelWidth, height: pixelHeight)
+        let requestedSize = maximumResolution.clamp(min: CGSizeZero, max: pixelSize)
+
+            PHImageManager.defaultManager().requestImageForAsset(self, targetSize: requestedSize, contentMode: .AspectFit, options: options) { (image, info) -> Void in
             guard let image = image else {
                 if let error = info?[PHImageErrorKey] as? NSError {
                     errorHandler(error: error)
