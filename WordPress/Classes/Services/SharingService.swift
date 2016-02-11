@@ -118,7 +118,7 @@ public class SharingService : LocalCoreDataService
     /// optimistically. In case of failure the original value will be restored.
     ///
     /// - Parameters:
-    ///     - shared: Optional. True if the connection should be shared with all users of the blog.
+    ///     - shared: True if the connection should be shared with all users of the blog.
     ///     - pubConn: The `PublicizeConnection` to update
     ///     - success: An optional success block accepting no parameters.
     ///     - failure: An optional failure block accepting an NSError parameter.
@@ -139,12 +139,52 @@ public class SharingService : LocalCoreDataService
 
             let siteID = pubConn.siteID;
             let remote = SharingServiceRemote(api: apiForBlog(blog))
-            remote.updateShared(shared,
-                forPublicizeConnectionWithID: pubConn.connectionID,
+            remote.updatePublicizeConnectionWithID(pubConn.connectionID,
+                shared: shared,
+                externalID: pubConn.externalID,
                 forSite: siteID,
                 success: success,
                 failure: { (error: NSError!) in
                     pubConn.shared = oldValue
+                    ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
+                        failure?(error)
+                    })
+            })
+    }
+
+
+    /// Update the specified `PublicizeConnection`.  The update to core data is performed
+    /// optimistically. In case of failure the original value will be restored.
+    ///
+    /// - Parameters:
+    ///     - externalID: True if the connection should be shared with all users of the blog.
+    ///     - pubConn: The `PublicizeConnection` to update
+    ///     - success: An optional success block accepting no parameters.
+    ///     - failure: An optional failure block accepting an NSError parameter.
+    ///
+    public func updateExternalID(externalID: String,
+        forBlog blog: Blog,
+        forPublicizeConnection pubConn: PublicizeConnection,
+        success: (() -> Void)?,
+        failure: (NSError! -> Void)?) {
+            if pubConn.externalID == externalID {
+                success?()
+                return;
+            }
+
+            let oldValue = pubConn.externalID
+            pubConn.externalID = externalID
+            ContextManager.sharedInstance().saveContext(managedObjectContext)
+
+            let siteID = pubConn.siteID;
+            let remote = SharingServiceRemote(api: apiForBlog(blog))
+            remote.updatePublicizeConnectionWithID(pubConn.connectionID,
+                shared: pubConn.shared,
+                externalID: externalID,
+                forSite: siteID,
+                success: success,
+                failure: { (error: NSError!) in
+                    pubConn.externalID = oldValue
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
                         failure?(error)
                     })
