@@ -56,7 +56,7 @@
     
     BOOL geoLocationEnabled = post.blog.settings.geolocationEnabled;
     
-    CGSize maxImageSize = [AppSettings imageSizeForUpload];
+    CGSize maxImageSize = [MediaSettings imageSizeForUpload];
 
     NSURL *mediaURL = [self urlForMediaWithFilename:[asset originalFilename] andExtension:extension];
     NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
