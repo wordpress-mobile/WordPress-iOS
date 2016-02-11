@@ -3,18 +3,10 @@
 #import <Photos/Photos.h>
 #import "LocalCoreDataService.h"
 
-extern CGSize const MediaMaxImageSize;
-extern NSInteger const MediaMinImageSizeDimension;
-extern NSInteger const MediaMaxImageSizeDimension;
-
 @class Media;
 @class Blog;
 
 @interface MediaService : LocalCoreDataService
-
-+ (CGSize)maxImageSizeSetting;
-
-+ (void)setMaxImageSizeSetting:(CGSize)imageSize;
 
 /**
  Create a Media object using the asset as the source and making it a child of the post with postObjectId.
