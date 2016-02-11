@@ -14,9 +14,9 @@
 
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) PostGeolocationView *geoView;
-@property (nonatomic, strong) UIBarButtonItem *deleteButton;
 @property (nonatomic, strong) UIBarButtonItem *refreshButton;
 @property (nonatomic, strong) UIBarButtonItem *activityItem;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -36,8 +36,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
-    [self setupToolbar];
-
     CGRect frame = self.view.bounds;
     UIViewAutoresizing mask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     if (IS_IPAD) {
@@ -56,14 +54,6 @@
 {
     [super viewWillAppear:animated];
 
-    if (self.navigationController.toolbarHidden) {
-        [self.navigationController setToolbarHidden:NO animated:YES];
-    }
-
-    for (UIView *view in self.navigationController.toolbar.subviews) {
-        [view setExclusiveTouch:YES];
-    }
-
     if (self.post.geolocation) {
         [self refreshView];
     } else {
@@ -73,29 +63,23 @@
 
 #pragma mark - Appearance Related Methods
 
-- (void)setupToolbar
-{
-    UIToolbar *toolbar = self.navigationController.toolbar;
-    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    toolbar.translucent = NO;
-    toolbar.barStyle = UIBarStyleDefault;
-
-    if ([self.toolbarItems count] > 0) {
-        return;
+- (UIBarButtonItem *)refreshButton {
+    if (!_refreshButton) {
+        UIImage *image = [[UIImage imageNamed:@"gridicons-sync"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        _refreshButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(updateLocation)];
     }
-
-    self.deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gridicons-trash"] style:UIBarButtonItemStylePlain target:self action:@selector(removeGeolocation)];
-    self.refreshButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gridicons-sync"] style:UIBarButtonItemStylePlain target:self action:@selector(updateLocation)];
-
-    self.deleteButton.tintColor = [WPStyleGuide readGrey];
-    self.refreshButton.tintColor = [WPStyleGuide readGrey];
-
-    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    [activityView startAnimating];
-    self.activityItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];
+    return _refreshButton;
 }
 
-- (void)removeGeolocation
+- (UIBarButtonItem *)activityItem {
+    if (!_activityItem) {
+        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        _activityItem = [[UIBarButtonItem alloc] initWithCustomView:_activityIndicator];
+    }
+    return _activityItem;
+}
+
+;- (void)removeGeolocation
 {
     self.post.geolocation = nil;
     [self.navigationController popViewControllerAnimated:YES];
@@ -137,7 +121,7 @@
 
 - (void)refreshView
 {
-    [self refreshToolbar];
+    [self refreshNavigationBar];
 
     if ([[LocationService sharedService] locationServiceRunning]) {
         self.geoView.coordinate = nil;
@@ -153,19 +137,19 @@
     }
 }
 
-- (void)refreshToolbar
+- (void)refreshNavigationBar
 {
     UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    UIBarButtonItem *centerFlexSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
     leftFixedSpacer.width = -2.0f;
     rightFixedSpacer.width = -5.0f;
 
     if ([[LocationService sharedService] locationServiceRunning]) {
-        self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.activityItem, rightFixedSpacer];
+        self.navigationItem.rightBarButtonItems = @[leftFixedSpacer, self.activityItem, rightFixedSpacer];
+        [self.activityIndicator startAnimating];
     } else {
-        self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.refreshButton, rightFixedSpacer];
+        self.navigationItem.rightBarButtonItems = @[leftFixedSpacer, self.refreshButton, rightFixedSpacer];
     }
 }
 
