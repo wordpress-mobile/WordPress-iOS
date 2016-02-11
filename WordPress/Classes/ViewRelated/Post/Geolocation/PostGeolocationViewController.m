@@ -36,6 +36,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
+    self.title = NSLocalizedString(@"Location", @"Title for screen to select post location");
     CGRect frame = self.view.bounds;
     UIViewAutoresizing mask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     if (IS_IPAD) {
