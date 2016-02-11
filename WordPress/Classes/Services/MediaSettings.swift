@@ -15,9 +15,13 @@ class MediaSettings: NSObject {
     private let storage: MediaSettingsStorage
 
     // MARK: - Initialization
-    init(storage: MediaSettingsStorage = DefaultsStorage()) {
+    init(storage: MediaSettingsStorage) {
         self.storage = storage
         super.init()
+    }
+
+    convenience override init() {
+        self.init(storage: DefaultsStorage())
     }
 
     // MARK: Public accessors
