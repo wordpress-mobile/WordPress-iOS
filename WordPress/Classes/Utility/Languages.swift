@@ -83,6 +83,12 @@ class Languages : NSObject
         ///
         let slug : String
 
+        /// Localized description for the current language
+        ///
+        var description : String {
+            return NSLocale.currentLocale().displayNameForKey(NSLocaleIdentifier, value: slug) ?? name
+        }
+        
         
         
         /// Designated initializer. Will fail if any of the required properties is missing
