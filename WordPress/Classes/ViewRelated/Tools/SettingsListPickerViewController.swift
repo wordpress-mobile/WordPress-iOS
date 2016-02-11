@@ -18,6 +18,10 @@ class SettingsListPickerViewController : UITableViewController
     /// Titles to be rendered
     ///
     var titles : [[String]]?
+
+    /// Row Subtitles. Should contain the exact same number as titles
+    ///
+    var subtitles : [[String]]?
     
     /// Row Values. Should contain the exact same number as titles
     ///
@@ -42,13 +46,13 @@ class SettingsListPickerViewController : UITableViewController
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         assert(titles!.count == values!.count)
+        assert(values?.count == subtitles?.count || subtitles == nil)
     }
     
     
     
     // MARK: - Setup Helpers
     private func setupTableView() {
-        tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.cellLayoutMarginsFollowReadableWidth = false
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
@@ -65,17 +69,22 @@ class SettingsListPickerViewController : UITableViewController
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)!
-        
-        WPStyleGuide.configureTableViewCell(cell)
+        var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
+        if cell == nil {
+            cell = WPTableViewCell(style: .Subtitle, reuseIdentifier: reuseIdentifier)
+            WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
+        }
+
         
         let title = titles?[indexPath.section][indexPath.row] ?? String()
+        let subtitle = subtitles?[indexPath.section][indexPath.row] ?? String()
         let selected = values?[indexPath.section][indexPath.row] == selectedValue
         
-        cell.textLabel?.text = title
-        cell.accessoryType = selected ? .Checkmark : .None
+        cell?.textLabel?.text = title
+        cell?.detailTextLabel?.text = subtitle
+        cell?.accessoryType = selected ? .Checkmark : .None
         
-        return cell
+        return cell!
     }
 
     override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
