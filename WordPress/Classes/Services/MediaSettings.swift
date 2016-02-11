@@ -6,18 +6,25 @@ protocol MediaSettingsStorage {
 }
 
 class MediaSettings: NSObject {
+    // MARK: - Constants
     private let maxImageSizeKey = "SavedMaxImageSizeSetting"
-    
-    let minImageDimension = 150
-    let maxImageDimension = 3000
+    private let minImageDimension = 150
+    private let maxImageDimension = 3000
 
-    let storage: MediaSettingsStorage
+    // MARK: - Internal variables
+    private let storage: MediaSettingsStorage
 
+    // MARK: - Initialization
     init(storage: MediaSettingsStorage = DefaultsStorage()) {
         self.storage = storage
         super.init()
     }
 
+    // MARK: Public accessors
+
+    /// The minimum and maximum allowed sizes for `maxImageSizeSetting`.
+    /// The UI to configure this setting should not allow values outside this limits.
+    /// - seealso: maxImageSizeSetting
     var allowedImageSizeRange: (Int, Int) {
         return (minImageDimension, maxImageDimension)
     }
@@ -54,6 +61,8 @@ class MediaSettings: NSObject {
             storage.setValue(size, forKey: maxImageSizeKey)
         }
     }
+
+    // MARK: - Storage implementations
 
     struct DefaultsStorage: MediaSettingsStorage {
         func setValue(value: AnyObject, forKey key: String) {
