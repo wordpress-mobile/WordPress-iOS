@@ -103,14 +103,17 @@ public class LanguageViewController : UITableViewController
             NSLocalizedString("All languages", comment: "Section title for All Languages")
         ]
 
-        let titles = Languages.sharedInstance.grouped.map { $0.map { $0.name } }
-        let values = Languages.sharedInstance.grouped.map { $0.map { $0.languageId } } as [[NSObject]]
+        let languages   = Languages.sharedInstance.grouped
+        let titles      = languages.map { $0.map { $0.name } }
+        let subtitles   = languages.map { $0.map { $0.description } }
+        let values      = languages.map { $0.map { $0.languageId } } as [[NSObject]]
         
         // Setup ListPickerViewController
         let listViewController = SettingsListPickerViewController(style: .Grouped)
         listViewController.title = NSLocalizedString("Site Language", comment: "Title for the Language Picker View")
         listViewController.selectedValue = blog.settings.languageID
         listViewController.titles = titles
+        listViewController.subtitles = subtitles
         listViewController.values = values
         listViewController.headers = headers
         listViewController.onChange = { [weak self] (selected: AnyObject) in
