@@ -1,16 +1,18 @@
 import Foundation
 
-class AppSettings: NSObject {
+class MediaSettings: NSObject {
     private static let maxImageSizeKey = "SavedMaxImageSizeSetting"
     
     static let minImageDimension = 150
     static let maxImageDimension = 3000
 
-    /// The absolute maximum size that the app can use as a setting. If `maxImageSizeSetting` matches this value, images won't be resized.
+    /// The absolute maximum size that the app can use as a setting. If
+    /// `maxImageSizeSetting` matches this value, images won't be resized.
     private static var absoluteMaxImageSize: CGSize {
         return CGSize(width: maxImageDimension, height: maxImageDimension)
     }
 
+    /// The size that an image should be resized to before uploading.
     static var maxImageSizeSetting: CGSize {
         get {
             if let savedSize = NSUserDefaults.standardUserDefaults().stringForKey(maxImageSizeKey) {
@@ -27,7 +29,8 @@ class AppSettings: NSObject {
         }
     }
 
-    /// The size that an image needs to be resized to before uploading, or CGSizeZero if it shouldn't be resized.
+    /// The size that an image needs to be resized to before uploading, or
+    /// CGSizeZero if it shouldn't be resized.
     static var imageSizeForUpload: CGSize {
         if maxImageSizeSetting == absoluteMaxImageSize {
             return CGSizeZero
