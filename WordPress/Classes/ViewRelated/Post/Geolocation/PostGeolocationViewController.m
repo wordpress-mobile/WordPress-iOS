@@ -35,14 +35,7 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
-
     self.title = NSLocalizedString(@"Location", @"Title for screen to select post location");
-    CGRect frame = self.view.bounds;
-    UIViewAutoresizing mask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.geoView = [[PostGeolocationView alloc] initWithFrame:frame];
-    self.geoView.autoresizingMask = mask;
-    self.geoView.backgroundColor = [UIColor whiteColor];
-
     [self.view addSubview:self.geoView];
 }
 
@@ -75,7 +68,18 @@
     return _activityItem;
 }
 
-;- (void)removeGeolocation
+- (PostGeolocationView *)geoView {
+    if (!_geoView) {
+        CGRect frame = self.view.bounds;
+        UIViewAutoresizing mask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        _geoView = [[PostGeolocationView alloc] initWithFrame:frame];
+        _geoView.autoresizingMask = mask;
+        _geoView.backgroundColor = [UIColor whiteColor];
+    }
+    return _geoView;
+}
+
+- (void)removeGeolocation
 {
     self.post.geolocation = nil;
     [self.navigationController popViewControllerAnimated:YES];
