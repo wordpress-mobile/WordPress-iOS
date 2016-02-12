@@ -141,7 +141,6 @@ public class SharingService : LocalCoreDataService
             let remote = SharingServiceRemote(api: apiForBlog(blog))
             remote.updatePublicizeConnectionWithID(pubConn.connectionID,
                 shared: shared,
-                externalID: pubConn.externalID,
                 forSite: siteID,
                 success: success,
                 failure: { (error: NSError!) in
@@ -179,7 +178,6 @@ public class SharingService : LocalCoreDataService
             let siteID = pubConn.siteID;
             let remote = SharingServiceRemote(api: apiForBlog(blog))
             remote.updatePublicizeConnectionWithID(pubConn.connectionID,
-                shared: pubConn.shared,
                 externalID: externalID,
                 forSite: siteID,
                 success: success,
