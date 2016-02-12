@@ -68,7 +68,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 @property (nonatomic, strong) SwitchTableViewCell *geoLocationSwitchCell;
 @property (nonatomic, strong) PostGeolocationCell *postGeoLocationCell;
-@property (nonatomic, strong) WPTableViewActivityCell *geoLocationActivityCell;
+@property (nonatomic, strong) WPTableViewCell *geoLocationActivityCell;
 
 @property (nonatomic, strong) LocationService *locationService;
 
@@ -630,9 +630,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     }
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:cancelText style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        
-    }];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:cancelText style:UIAlertActionStyleCancel handler:nil];
     [alertController addAction:okAction];
     
     if (otherButtonTitle) {
@@ -701,10 +699,14 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     return _postGeoLocationCell;
 }
 
-- (WPTableViewActivityCell *)geoLocationActivityCell {
+- (WPTableViewCell *)geoLocationActivityCell {
     if (!_geoLocationActivityCell) {
-        _geoLocationActivityCell = [self getWPActivityTableViewCell];
-        [_geoLocationActivityCell.spinner startAnimating];
+        _geoLocationActivityCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        _geoLocationActivityCell.accessoryType = UITableViewCellAccessoryNone;
+        [WPStyleGuide configureTableViewCell:_geoLocationActivityCell];
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        _geoLocationActivityCell.accessoryView = spinner;
+        [spinner startAnimating];
         _geoLocationActivityCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
     }
     return _geoLocationActivityCell;
