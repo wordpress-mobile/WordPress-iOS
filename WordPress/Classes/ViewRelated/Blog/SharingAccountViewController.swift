@@ -172,18 +172,22 @@ import WordPressShared
     }
 
 
+    /// Normalizes available accounts for a KeyringConnection and its `additionalExternalUsers`
     ///
+    /// - Parameters:
+    ///     - connections: An array of `KeyringConnection` instances to normalize.
     ///
+    /// - Returns: An array of `KeyringAccount` objects.
     ///
     private func keyringAccountsFromKeyringConnections(connections: [KeyringConnection]) -> [KeyringAccount] {
         var accounts = [KeyringAccount]()
 
         for connection in connections {
-            let acct = KeyringAccount(name: connection.externalDisplay, externalID: nil, keyringConnection: connection)
+            let acct = KeyringAccount(name: connection.externalDisplay, externalID: nil, externalIDForConnection: connection.externalID, keyringConnection: connection)
             accounts.append(acct)
 
             for externalUser in connection.additionalExternalUsers {
-                let acct = KeyringAccount(name: externalUser.externalName, externalID: externalUser.externalID, keyringConnection: connection)
+                let acct = KeyringAccount(name: externalUser.externalName, externalID: externalUser.externalID, externalIDForConnection: externalUser.externalID, keyringConnection: connection)
                 accounts.append(acct)
             }
         }
@@ -204,7 +208,7 @@ import WordPressShared
         for existingConnection in existingConnections {
             if existingConnection.keyringConnectionID == keyringConnection.keyringID &&
                 existingConnection.keyringConnectionUserID == keyringConnection.userID &&
-                existingConnection.externalID == keyringAccount.externalID {
+                existingConnection.externalID == keyringAccount.externalIDForConnection {
                     return true
             }
         }
@@ -234,6 +238,7 @@ import WordPressShared
     struct KeyringAccount {
         var name: String
         var externalID: String?
+        var externalIDForConnection: String
         var keyringConnection: KeyringConnection
     }
 
