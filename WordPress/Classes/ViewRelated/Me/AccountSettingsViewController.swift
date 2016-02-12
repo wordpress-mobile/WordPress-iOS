@@ -52,7 +52,7 @@ private struct AccountSettingsController: SettingsController {
 
         let uploadSize = MediaSizeRow(
             title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
-            value: Int(MediaService.maxImageSizeSetting().width),
+            value: Int(MediaSettings().maxImageSizeSetting),
             onChange: mediaSizeChanged())
 
         let visualEditor = SwitchRow(
@@ -92,8 +92,7 @@ private struct AccountSettingsController: SettingsController {
     func mediaSizeChanged() -> Int -> Void {
         return {
             value in
-            let size = CGSize(width: value, height: value)
-            MediaService.setMaxImageSizeSetting(size)
+            MediaSettings().maxImageSizeSetting = value
         }
     }
 

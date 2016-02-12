@@ -8,7 +8,6 @@
 
 @property (nonatomic, strong) UIBarButtonItem *deleteButton;
 @property (nonatomic, strong) AbstractPost *post;
-@property (nonatomic, strong) UIBarButtonItem *activityItem;
 
 @end
 
@@ -39,20 +38,14 @@
 
     self.view.backgroundColor = [UIColor whiteColor];
 
-    [self setupToolbar];
+    UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    rightFixedSpacer.width = -5.0f;
+    self.navigationItem.rightBarButtonItems = @[rightFixedSpacer, self.deleteButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    if (self.navigationController.toolbarHidden) {
-        [self.navigationController setToolbarHidden:NO animated:YES];
-    }
-
-    for (UIView *view in self.navigationController.toolbar.subviews) {
-        [view setExclusiveTouch:YES];
-    }
 
     // Super class will hide the status bar by default
     [self hideBars:NO animated:NO];
@@ -79,29 +72,20 @@
 
 #pragma mark - Appearance Related Methods
 
-- (void)setupToolbar
+- (UIBarButtonItem *)deleteButton
 {
-    UIToolbar *toolbar = self.navigationController.toolbar;
-    toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    toolbar.translucent = NO;
-    toolbar.barStyle = UIBarStyleDefault;
-
-    if ([self.toolbarItems count] > 0) {
-        return;
+    if (!_deleteButton) {
+        UIImage* image = [[UIImage imageNamed:@"gridicons-trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(removeFeaturedImage)];
+        NSString *title = NSLocalizedString(@"Remove Featured Image", @"Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.");
+        button.accessibilityLabel = title;
+        button.accessibilityIdentifier = @"Remove Featured Image";
+        _deleteButton = button;
     }
-
-    self.deleteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gridicons-trash"] style:UIBarButtonItemStylePlain target:self action:@selector(removeFeaturedImage)];
-
-    self.deleteButton.tintColor = [WPStyleGuide readGrey];
-    self.deleteButton.accessibilityIdentifier = @"Remove Featured Image";
-    self.deleteButton.accessibilityLabel = NSLocalizedString(@"Remove Featured Image", @"Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.");
     
-    UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    [activityView startAnimating];
-    self.activityItem = [[UIBarButtonItem alloc] initWithCustomView:activityView];
-
-    [self showActivityView:NO];
+    return _deleteButton;
 }
+
 
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated
 {
@@ -109,10 +93,6 @@
 
     if (self.navigationController.navigationBarHidden != hide) {
         [self.navigationController setNavigationBarHidden:hide animated:animated];
-    }
-
-    if (self.navigationController.toolbarHidden != hide) {
-        [self.navigationController setToolbarHidden:hide animated:animated];
     }
 
     [self centerImage];
@@ -123,22 +103,6 @@
             self.view.backgroundColor = [UIColor whiteColor];
         }
     }];
-}
-
-- (void)showActivityView:(BOOL)show
-{
-    UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    UIBarButtonItem *centerFlexSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-
-    leftFixedSpacer.width = -2.0f;
-    rightFixedSpacer.width = -5.0f;
-
-    if (show) {
-        self.toolbarItems = @[leftFixedSpacer, self.deleteButton, centerFlexSpacer, self.activityItem, rightFixedSpacer];
-    } else {
-        self.toolbarItems = @[leftFixedSpacer, self.deleteButton];
-    }
 }
 
 #pragma mark - Action Methods
