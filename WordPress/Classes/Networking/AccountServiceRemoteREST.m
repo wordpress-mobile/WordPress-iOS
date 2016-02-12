@@ -4,6 +4,7 @@
 #import "RemoteBlogOptionsHelper.h"
 #import "Constants.h"
 #import "WPAccount.h"
+#import "WordPress-Swift.h"
 
 static NSString * const UserDictionaryIDKey = @"ID";
 static NSString * const UserDictionaryUsernameKey = @"username";
@@ -11,6 +12,7 @@ static NSString * const UserDictionaryEmailKey = @"email";
 static NSString * const UserDictionaryDisplaynameKey = @"display_name";
 static NSString * const UserDictionaryPrimaryBlogKey = @"primary_blog";
 static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
+static NSString * const UserDictionaryDateKey = @"date";
 
 @implementation AccountServiceRemoteREST
 
@@ -122,6 +124,8 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
     remoteUser.displayName = [dictionary stringForKey:UserDictionaryDisplaynameKey];
     remoteUser.primaryBlogID = [dictionary numberForKey:UserDictionaryPrimaryBlogKey];
     remoteUser.avatarURL = [dictionary stringForKey:UserDictionaryAvatarURLKey];
+    remoteUser.dateCreated = [NSDate dateWithISO8601String:[dictionary stringForKey:UserDictionaryDateKey]];
+    
     return remoteUser;
 }
 
