@@ -29,7 +29,7 @@ target 'WordPress', :exclusive => true do
   pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
   pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
   pod 'NSObject-SafeExpectations', '0.0.2'
-  pod 'Simperium', '0.8.10'
+  pod 'Simperium', '0.8.12'
   pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
   pod 'WordPress-iOS-Shared', '0.5.1'
   pod 'WordPress-iOS-Editor', '1.1.2'

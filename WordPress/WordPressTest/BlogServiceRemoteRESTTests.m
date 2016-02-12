@@ -113,7 +113,8 @@ static NSTimeInterval const TestExpectationTimeout = 5;
         // General
         XCTAssertEqualObjects(settings.name, @"My Epic Blog", @"");
         XCTAssertEqualObjects(settings.tagline, @"Definitely, the best blog out there", @"");
-        XCTAssertEqualObjects(settings.privacy, @(1), @"");
+        XCTAssertEqualObjects(settings.privacy, @(1), @"Invalid Privacy Value");
+        XCTAssertEqualObjects(settings.languageID, @(31337), @"Invalid Language ID");
         
         // Writing
         XCTAssertEqualObjects(settings.defaultCategoryID, @(8), @"");

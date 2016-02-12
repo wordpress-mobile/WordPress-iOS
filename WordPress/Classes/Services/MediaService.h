@@ -3,28 +3,22 @@
 #import <Photos/Photos.h>
 #import "LocalCoreDataService.h"
 
-extern CGSize const MediaMaxImageSize;
-extern NSInteger const MediaMinImageSizeDimension;
-extern NSInteger const MediaMaxImageSizeDimension;
-
 @class Media;
 @class Blog;
 
 @interface MediaService : LocalCoreDataService
-
-+ (CGSize)maxImageSizeSetting;
-
-+ (void)setMaxImageSizeSetting:(CGSize)imageSize;
 
 /**
  Create a Media object using the asset as the source and making it a child of the post with postObjectId.
  
  @param asset
  @param postObjectID
+ @param thumbnailCallback a block that will be invoked when the thumbail for the media object is ready
  @completion a block that will be invoked when the media is created, on success it will return a valid Media object, on failure it will return a nil Media and an error object with the details.
  */
 - (void)createMediaWithPHAsset:(PHAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
+           thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion;
 
 /**

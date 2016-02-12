@@ -10,6 +10,9 @@ typedef NS_ENUM(NSUInteger, WordPressComApiError) {
     WordPressComApiErrorLoginFailed,
     WordPressComApiErrorInvalidToken,
     WordPressComApiErrorAuthorizationRequired,
+    WordPressComApiErrorUploadFailed,
+    WordPressComApiErrorUploadFailedInvalidFileType,
+    WordPressComApiErrorUploadFailedNotEnoughDiskQuota
 };
 
 extern NSString *const WordPressComApiErrorDomain;

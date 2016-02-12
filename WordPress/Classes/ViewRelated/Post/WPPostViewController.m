@@ -49,6 +49,7 @@ static NSString* const WPPostViewControllerOwnsPostRestorationKey = @"WPPostView
 static NSString* const WPPostViewControllerPostRestorationKey = @"WPPostViewControllerPostRestorationKey";
 static NSString* const WPProgressMediaID = @"WPProgressMediaID";
 static NSString* const WPProgressMedia = @"WPProgressMedia";
+static NSString* const WPProgressMediaError = @"WPProgressMediaError";
 
 NSString* const WPPostViewControllerOptionOpenMediaPicker = @"WPPostViewControllerMediaPicker";
 NSString* const WPPostViewControllerOptionNotAnimated = @"WPPostViewControllerNotAnimated";
@@ -1659,6 +1660,18 @@ EditImageDetailsViewControllerDelegate
     [self dismissAssociatedAlertControllerIfVisible:uniqueMediaId];
 }
 
+- (void)setError:(NSError *)error inProgressOfMediaWithId:(NSString *)uniqueMediaId
+{
+    NSParameterAssert(uniqueMediaId != nil);
+    if (!uniqueMediaId) {
+        return;
+    }
+    NSProgress *mediaProgress = self.mediaInProgress[uniqueMediaId];
+    if (mediaProgress) {
+        [mediaProgress setUserInfoObject:error forKey:WPProgressMediaError];
+    }
+}
+
 - (void)dismissAssociatedAlertControllerIfVisible:(NSString *)uniqueMediaId {
     // let's see if we where displaying an action sheet for this image
     if (self.currentAlertController && [uniqueMediaId isEqualToString:self.selectedMediaID]){
@@ -1729,11 +1742,12 @@ EditImageDetailsViewControllerDelegate
             [self dismissAssociatedAlertControllerIfVisible:mediaUniqueId];
             if (media.mediaType == MediaTypeImage) {
                 [self.editorView markImage:mediaUniqueId
-                   failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
+                   failedUploadWithMessage:[error localizedDescription]];
             } else if (media.mediaType == MediaTypeVideo) {
                 [self.editorView markVideo:mediaUniqueId
-                   failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
+                   failedUploadWithMessage:[error localizedDescription]];
             }
+            [self setError:error inProgressOfMediaWithId:mediaUniqueId];
         }
     }];
     [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
@@ -1789,28 +1803,36 @@ EditImageDetailsViewControllerDelegate
     NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
     createMediaProgress.totalUnitCount = 2;
     [self trackMediaWithId:mediaUniqueID usingProgress:createMediaProgress];
-    [mediaService createMediaWithPHAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
-        __typeof__(self) strongSelf = weakSelf;
-        if (!strongSelf) {
-            return;
-        }
-        createMediaProgress.completedUnitCount++;
-        if (error || !media || !media.absoluteLocalURL) {
-            [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
-            [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
-                                                          @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
-                                message:error.localizedDescription];
-            return;
-        }
-        NSString* thumbnailURL = media.absoluteThumbnailLocalURL;
-        if (media.mediaType == MediaTypeImage) {
-            [strongSelf.editorView insertLocalImage:thumbnailURL uniqueId:mediaUniqueID];
-        } else if (media.mediaType == MediaTypeVideo) {
-            [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:thumbnailURL];
-        }
-        
-        [strongSelf uploadMedia:media trackingId:mediaUniqueID];
-    }];
+    [mediaService createMediaWithPHAsset:asset
+                         forPostObjectID:self.post.objectID
+                       thumbnailCallback:^(NSURL *thumbnailURL) {
+                           __typeof__(self) strongSelf = weakSelf;
+                           if (!strongSelf) {
+                               return;
+                           }
+                           [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                               if (asset.mediaType == PHAssetMediaTypeImage) {
+                                   [strongSelf.editorView insertLocalImage:thumbnailURL.path uniqueId:mediaUniqueID];
+                               } else if (asset.mediaType == PHAssetMediaTypeVideo) {
+                                   [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:thumbnailURL.path];
+                               }
+                           }];
+                       }
+                              completion:^(Media *media, NSError *error){
+                                  __typeof__(self) strongSelf = weakSelf;
+                                  if (!strongSelf) {
+                                      return;
+                                  }
+                                  createMediaProgress.completedUnitCount++;
+                                  if (error || !media || !media.absoluteLocalURL) {
+                                      [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
+                                      [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
+                                                                                    @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
+                                                          message:error.localizedDescription];
+                                      return;
+                                  }
+                                  [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+                              }];
 }
 
 - (void)addSiteMediaAsset:(Media *)media
@@ -2020,9 +2042,10 @@ EditImageDetailsViewControllerDelegate
     if (self.currentAlertController != nil){
         return;
     }
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:nil
+    NSString *title = nil;
+    NSString *message = nil;
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
                                                                       preferredStyle:UIAlertControllerStyleActionSheet];
     // Is upload still going?
     if (mediaProgress.completedUnitCount < mediaProgress.totalUnitCount) {
@@ -2040,6 +2063,11 @@ EditImageDetailsViewControllerDelegate
                                         self.currentAlertController = nil;
                                     }];
     } else {
+        NSError *errorDetails = mediaProgress.userInfo[WPProgressMediaError];
+        if (errorDetails) {
+            title = NSLocalizedString(@"Media upload failed", @"Title for action sheet for failed media");
+            message = errorDetails.localizedDescription;
+        }
         [alertController addActionWithTitle:NSLocalizedString(@"Cancel", @"User action to dismiss retry upload question")
                                       style:UIAlertActionStyleCancel
                                     handler:^(UIAlertAction *action) {
@@ -2068,6 +2096,8 @@ EditImageDetailsViewControllerDelegate
                                     }];
     }
     self.currentAlertController = alertController;
+    alertController.title = title;
+    alertController.message = message;
     alertController.popoverPresentationController.sourceView = self.editorView;
     alertController.popoverPresentationController.sourceRect = CGRectMake(self.editorView.center.x, self.editorView.center.y, 1, 1);
     alertController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;

@@ -93,7 +93,8 @@ static NSInteger const WPTabBarIconOffset = 5;
         [self setRestorationIdentifier:WPTabBarRestorationID];
         [self setRestorationClass:[WPTabBarController class]];
         [[self tabBar] setTranslucent:NO];
-        [[self tabBar] setAccessibilityIdentifier:NSLocalizedString(@"Main Navigation", @"")];
+        [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
+        [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         // Create a background
         // (not strictly needed when white, but left here for possible customization)
         [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
@@ -203,6 +204,7 @@ static NSInteger const WPTabBarIconOffset = 5;
     _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
     _readerNavigationController.tabBarItem.imageInsets = UIEdgeInsetsMake(WPTabBarIconOffset, -1 * WPTabBarIconOffset, -1 * WPTabBarIconOffset, WPTabBarIconOffset);
     _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
+    _readerNavigationController.tabBarItem.accessibilityIdentifier = @"Reader";
     _readerNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Reader", @"The accessibility value of the reader tab.");
 
     return _readerNavigationController;
