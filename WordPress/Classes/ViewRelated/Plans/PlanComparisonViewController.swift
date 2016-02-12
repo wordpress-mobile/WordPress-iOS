@@ -79,6 +79,7 @@ class PlanComparisonViewController: UIViewController {
             controller.view.translatesAutoresizingMaskIntoConstraints = false
             planStackView.addArrangedSubview(controller.view)
             
+            controller.view.shouldGroupAccessibilityChildren = true
             controller.view.widthAnchor.constraintEqualToAnchor(view.widthAnchor, multiplier: 1.0).active = true
             controller.view.topAnchor.constraintEqualToAnchor(view.topAnchor).active = true
             controller.view.bottomAnchor.constraintEqualToAnchor(divider.topAnchor).active = true
@@ -91,6 +92,10 @@ class PlanComparisonViewController: UIViewController {
         title = currentPlan.title
         
         updatePageControl()
+        
+        for (index, viewController) in viewControllers.enumerate() {
+            viewController.view.accessibilityElementsHidden = index != currentIndex
+        }
     }
     
     // MARK: - IBActions
@@ -116,10 +121,7 @@ class PlanComparisonViewController: UIViewController {
             targetPage -= 1
         }
         
-        if allPlans.indices.contains(targetPage) {
-            scrollToPage(targetPage, animated: true)
-            currentPlan = allPlans[targetPage]
-        }
+        scrollToPage(targetPage, animated: true)
     }
     
     private func updatePageControl() {
@@ -135,10 +137,32 @@ extension PlanComparisonViewController: UIScrollViewDelegate {
         }
     }
     
+    override func accessibilityScroll(direction: UIAccessibilityScrollDirection) -> Bool {
+        var targetPage = currentIndex
+        
+        switch direction {
+        case .Right: targetPage -= 1
+        case .Left: targetPage += 1
+        default: break
+        }
+        
+        let success = scrollToPage(targetPage, animated: false)
+        if success {
+            accessibilityAnnounceCurrentPlan()
+        }
+        
+        return success
+    }
+    
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         scrollView.userInteractionEnabled = true
         
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, currentPlan.title)
+        accessibilityAnnounceCurrentPlan()
+    }
+    
+    private func accessibilityAnnounceCurrentPlan() {
+        let currentViewController = viewControllers[currentIndex]
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, currentViewController.planTitleLabel)
     }
     
     private func currentScrollViewPage() -> Int {
@@ -150,10 +174,16 @@ extension PlanComparisonViewController: UIScrollViewDelegate {
         // Keep it within bounds
         return max(min(currentPage, allPlans.count - 1), 0)
     }
-    
-    private func scrollToPage(page: Int, animated: Bool) {
-        let pageWidth = view.bounds.width
+
+    /// @return True if there was valid page to scroll to, false if we've reached the beginning / end
+    private func scrollToPage(page: Int, animated: Bool) -> Bool {
+        guard allPlans.indices.contains(page) else { return false }
         
+        let pageWidth = view.bounds.width
         scrollView.setContentOffset(CGPoint(x: CGFloat(page) * pageWidth, y: 0), animated: animated)
+    
+        currentPlan = allPlans[page]
+        
+        return true
     }
 }
