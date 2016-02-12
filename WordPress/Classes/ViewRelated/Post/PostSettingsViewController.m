@@ -670,7 +670,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             [weakSelf.tableView reloadData];
         }];
     }
-    _geoLocationSwitchCell.on = self.post.geolocation != nil;
+    _geoLocationSwitchCell.on = self.post.geolocation != nil || [self.locationService locationServiceRunning];
     return _geoLocationSwitchCell;
 }
 
