@@ -10,6 +10,7 @@
 #import "WordPress-Swift.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
+static CGFloat BlogCellRowHeight = 54.0;
 
 @interface BlogSelectorViewController () <NSFetchedResultsControllerDelegate>
 
@@ -34,6 +35,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
         _selectedObjectID = objectID;
         _selectedCompletionHandler = selected;
         _cancelCompletionHandler = cancel;
+        _displaysCancelButton = YES;
     }
 
     return self;
@@ -53,8 +55,8 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
                                                  name:WPAccountDefaultWordPressComAccountChangedNotification
                                                object:nil];
 
-    if (IS_IPHONE) {
-        // Cancel button
+    // Cancel button
+    if ([UIDevice isPhone] && self.displaysCancelButton) {
         UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                           target:self
                                                                                           action:@selector(cancelButtonTapped:)];
@@ -206,7 +208,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 54;
+    return BlogCellRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -227,11 +229,10 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"settings.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
     [fetchRequest setPredicate:[self fetchRequestPredicate]];
 
-    _resultsController = [[NSFetchedResultsController alloc]
-                          initWithFetchRequest:fetchRequest
-                          managedObjectContext:moc
-                          sectionNameKeyPath:nil
-                          cacheName:nil];
+    _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                             managedObjectContext:moc
+                                                               sectionNameKeyPath:nil
+                                                                        cacheName:nil];
     _resultsController.delegate = self;
 
     NSError *error = nil;
