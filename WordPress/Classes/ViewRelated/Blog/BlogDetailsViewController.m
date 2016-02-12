@@ -577,7 +577,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     NSDate *hideViewAdminDate = [self hideViewAdminDate];
     WPAccount *account = self.blog.account;
     
-    return [account.dateCreated compare:hideAdminDate] == NSOrderedAscending;
+    return [account.dateCreated compare:hideViewAdminDate] == NSOrderedAscending;
 }
 
 - (NSDate *)hideViewAdminDate
