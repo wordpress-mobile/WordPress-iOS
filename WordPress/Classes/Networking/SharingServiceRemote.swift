@@ -213,24 +213,55 @@ public class SharingServiceRemote : ServiceRemoteREST
     ///
     /// - Parameters:
     ///     - connectionID: The ID of the publicize connection.
+    ///     - externalID: The connection's externalID. Pass `nil` if the keyring
+    /// connection's default external ID should be used.  Otherwise pass the external
+    /// ID of one if the keyring connection's `additionalExternalUsers`.
+    ///     - siteID: The WordPress.com ID of the site.
+    ///      -success: An optional success block accepting no arguments.
+    ///     - failure: An optional failure block accepting an `NSError` argument.
+    ///
+    public func updatePublicizeConnectionWithID(connectionID: NSNumber,
+        externalID: String?,
+        forSite siteID: NSNumber,
+        success: (() -> Void)?,
+        failure: (NSError! -> Void)?) {
+            let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
+            let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+            let externalUserID = (externalID == nil) ? "false" : externalID!
+
+            let parameters = [
+                PublicizeConnectionParams.externalUserID : externalUserID
+            ]
+
+            api.POST(path,
+                parameters: parameters,
+                success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+                    success?()
+                },
+                failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+                    failure?(error)
+            })
+    }
+
+
+    /// Update the shared status of the specified publicize connection
+    ///
+    /// - Parameters:
+    ///     - connectionID: The ID of the publicize connection.
     ///     - shared: True if the connection is shared with all users of the blog. False otherwise.
-    ///     - externalID: The connection's externalID. This can be the externalID of the corresponding 
-    /// keyring connection, or one of its additional external accounts.
     ///     - siteID: The WordPress.com ID of the site.
     ///      -success: An optional success block accepting no arguments.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
     public func updatePublicizeConnectionWithID(connectionID: NSNumber,
         shared: Bool,
-        externalID: String,
         forSite siteID: NSNumber,
         success: (() -> Void)?,
         failure: (NSError! -> Void)?) {
             let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
             let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
             let parameters = [
-                ConnectionDictionaryKeys.shared : shared,
-                ConnectionDictionaryKeys.externalID : externalID
+                PublicizeConnectionParams.shared : shared
             ]
 
             api.POST(path,
@@ -442,11 +473,12 @@ private struct ConnectionDictionaryKeys
 }
 
 
-// Names of parameters passed when creating a new publicize connection
+// Names of parameters passed when creating or updating a publicize connection
 private struct PublicizeConnectionParams
 {
     static let keyringConnectionID = "keyring_connection_ID"
     static let externalUserID = "external_user_ID"
+    static let shared = "shared"
 }
 
 
