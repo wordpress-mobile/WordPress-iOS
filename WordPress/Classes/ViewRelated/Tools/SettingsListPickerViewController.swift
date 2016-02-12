@@ -7,26 +7,6 @@ import WordPressShared
 ///
 class SettingsListPickerViewController : UITableViewController
 {
-    /// Header Strings to be applied over the diferent sections
-    ///
-    var headers : [String]?
-
-    /// Footer Strings to be applied over the diferent sections
-    ///
-    var footers : [String]?
-    
-    /// Titles to be rendered
-    ///
-    var titles : [[String]]?
-
-    /// Row Subtitles. Should contain the exact same number as titles
-    ///
-    var subtitles : [[String]]?
-    
-    /// Row Values. Should contain the exact same number as titles
-    ///
-    var values : [[NSObject]]?
-    
     /// Current selected value, if any
     ///
     var selectedValue : NSObject?
@@ -37,18 +17,44 @@ class SettingsListPickerViewController : UITableViewController
     
     
     
+    // MARK: - Initializers
+    init(headers: [String]? = nil, footers: [String]? = nil, titles: [[String]],
+         subtitles: [[String]]? = nil, values: [[NSObject]])
+    {
+        self.headers = headers
+        self.footers = footers
+        self.titles = titles
+        self.subtitles = subtitles
+        self.values = values
+        
+        super.init(style: .Grouped)
+        
+        assert(titles.count == values.count)
+        assert(titles.count == subtitles?.count || subtitles == nil)
+        assert(headers?.count == titles.count || headers == nil)
+        assert(footers?.count == titles.count || footers == nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.headers = nil
+        self.footers = nil
+        self.titles = nil
+        self.subtitles = nil
+        self.values = nil
+        self.selectedValue = nil
+        self.onChange = nil
+        
+        super.init(coder: aDecoder)
+        
+        return nil
+    }
+    
+    
+    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        assert(titles!.count == values!.count)
-        assert(titles?.count == subtitles?.count || subtitles == nil)
-        assert(headers?.count == titles?.count || headers == nil)
-        assert(footers?.count == titles?.count || footers == nil)
     }
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -158,5 +164,31 @@ class SettingsListPickerViewController : UITableViewController
     
     
     // MARK: - Constants
+    
     private let reuseIdentifier = "WPTableViewCell"
+    
+    
+    
+    
+    // MARK: - Private Properties
+    
+    /// Header Strings to be applied over the diferent sections
+    ///
+    private let headers : [String]?
+    
+    /// Footer Strings to be applied over the diferent sections
+    ///
+    private let footers : [String]?
+    
+    /// Titles to be rendered
+    ///
+    private let titles : [[String]]?
+    
+    /// Row Subtitles. Should contain the exact same number as titles
+    ///
+    private let subtitles : [[String]]?
+    
+    /// Row Values. Should contain the exact same number as titles
+    ///
+    private let values : [[NSObject]]?
 }

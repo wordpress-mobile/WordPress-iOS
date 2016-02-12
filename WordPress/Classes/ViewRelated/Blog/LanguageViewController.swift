@@ -109,13 +109,9 @@ public class LanguageViewController : UITableViewController
         let values      = languages.map { $0.map { $0.languageId } } as [[NSObject]]
         
         // Setup ListPickerViewController
-        let listViewController = SettingsListPickerViewController(style: .Grouped)
+        let listViewController = SettingsListPickerViewController(headers: headers, titles: titles, subtitles: subtitles, values: values)
         listViewController.title = NSLocalizedString("Site Language", comment: "Title for the Language Picker View")
         listViewController.selectedValue = blog.settings.languageID
-        listViewController.titles = titles
-        listViewController.subtitles = subtitles
-        listViewController.values = values
-        listViewController.headers = headers
         listViewController.onChange = { [weak self] (selected: AnyObject) in
             guard let newLanguageID = selected as? NSNumber else {
                 return
