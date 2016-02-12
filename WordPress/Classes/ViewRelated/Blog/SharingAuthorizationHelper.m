@@ -285,14 +285,23 @@
  */
 - (void)confirmNewConnection:(KeyringConnection *)keyringConnection withExternalID:(NSString *)externalID disconnectsCurrentConnection:(PublicizeConnection *)currentPublicizeConnection
 {
-    NSString *accountName = externalID ?: keyringConnection.externalID;
+    NSString *accountName = keyringConnection.externalDisplay;
+    if (![keyringConnection.externalID isEqualToString:externalID]) {
+        for (KeyringConnectionExternalUser *externalUser in keyringConnection.additionalExternalUsers) {
+            if ([externalUser.externalID isEqualToString:externalID]) {
+                accountName = externalUser.externalName;
+                break;
+            }
+        }
+    }
+
     NSString *title = NSLocalizedString(@"Connecting %@", @"Connecting is a verb. Title of Publicize account selection. The %@ is a placeholder for the service's name.");
     NSString *message = NSLocalizedString(@"Connecting %@ will replace the existing connection to %@.", @"Informs the user of consequences of chooseing a new account to connect to publicize.  The %@ characters are placeholders for account names.");
     NSString *cancel = NSLocalizedString(@"Cancel", @"Verb. Tapping cancels the publicize account selection.");
     NSString *connect = NSLocalizedString(@"Connect", @"Verb. Tapping connects an account to Publicize.");
 
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:title, self.publicizeService.label]
-                                                                             message:[NSString stringWithFormat:message, accountName, currentPublicizeConnection.externalID]
+                                                                             message:[NSString stringWithFormat:message, accountName, currentPublicizeConnection.externalDisplay]
                                                                       preferredStyle:UIAlertControllerStyleAlert];
 
     [alertController addCancelActionWithTitle:cancel handler:nil];
