@@ -36,6 +36,8 @@ private struct AccountSettingsController: SettingsController {
     // MARK: - Model mapping
 
     func mapViewModel(settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
+        let mainBlog = blogWithBlogId(settings?.primarySiteID)
+        
         let username = TextRow(
             title: NSLocalizedString("Username", comment: "Account Settings Username label"),
             value: settings?.username ?? "")
@@ -44,9 +46,10 @@ private struct AccountSettingsController: SettingsController {
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.email ?? "")
         
-        let primarySite = TextRow(
+        let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
-            value: displayNameForBlog(settings?.primarySiteID))
+            value: mainBlog?.settings?.name ?? String(),
+        )
 
         let webAddress = EditableTextRow(
             title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
@@ -90,12 +93,10 @@ private struct AccountSettingsController: SettingsController {
 
     
     // MARK: - Helpers
-    func displayNameForBlog(blogId: Int?) -> String {
+    func blogWithBlogId(blogId: Int?) -> Blog? {
         let context = ContextManager.sharedInstance().mainContext
         let service = BlogService(managedObjectContext: context)
-        let blog = service.blogByBlogId(blogId)
-        
-        return blog?.settings?.name ?? String()
+        return service.blogByBlogId(blogId)
     }
     
     
