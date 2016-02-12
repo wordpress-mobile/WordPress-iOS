@@ -6,7 +6,6 @@
 #import "SharingAuthorizationWebViewController.h"
 #import "WordPress-Swift.h"
 
-
 @interface SharingAuthorizationHelper() <SharingAuthorizationDelegate, SharingAccountSelectionDelegate>
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) PublicizeService *publicizeService;
@@ -46,6 +45,9 @@
     return [NSArray arrayWithArray:connections];
 }
 
+/**
+ Dismisses the curently presented modal view controller.
+ */
 - (void)dismissNavViewController
 {
     [self.navController dismissViewControllerAnimated:YES completion:nil];
@@ -66,6 +68,12 @@
     [self authorizeWithConnectionURL:[NSURL URLWithString:publicizeConnection.refreshURL]];
 }
 
+/**
+ A helper method for presenting an instance of the `SharingAuthorizationWebViewController`
+ 
+ @param connectionURL: The URL to pass to the SharingAuthorizationWebViewController's constructor. 
+ It should be the REST API URL to either connect or refresh a publicize service connection.
+ */
 - (void)authorizeWithConnectionURL:(NSURL *)connectionURL
 {
     SharingAuthorizationWebViewController *webViewController = [SharingAuthorizationWebViewController controllerWithPublicizer:self.publicizeService
@@ -90,9 +98,17 @@
     [self fetchKeyringConnectionsForService:publicizer];
 }
 
+/**
+ Dismisses the modal view controller prompting the user the connection failed.
+ 
+ @param publicizer: The publicize service that failed to connect.
+ @param error: An error with details regarding the connection failure.
+ */
 - (void)authorize:(PublicizeService *)publicizer didFailWithError:(NSError *)error
 {
     DDLogError([error description]);
+    [self dismissNavViewController];
+
     if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:authorizationFailedForService:)]) {
         [self.delegate sharingAuthorizationHelper:self authorizationFailedForService:self.publicizeService];
         return;
@@ -101,8 +117,15 @@
     [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connection failed", @"Message to show when Publicize authorization failed")];
 }
 
+/**
+ Dismisses the modal view controller prompting the user the connection was cancelled.
+
+ @param publicizer: The publicize service that failed to connect.
+ */
 - (void)authorizeDidCancel:(PublicizeService *)publicizer
 {
+    [self dismissNavViewController];
+
     if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:authorizationCancelledForService:)]) {
         [self.delegate sharingAuthorizationHelper:self authorizationCancelledForService:self.publicizeService];
         return;
@@ -114,6 +137,12 @@
 
 #pragma mark - Keyring Account Selection Methods
 
+/**
+ Fetches keyring connections for the specified service. Once keyring connections have been
+ fetched `showAccountSelectorForKeyrings:` is called.
+ 
+ @param pubServ: The publicize service for the fetched keyring connections.
+ */
 - (void)fetchKeyringConnectionsForService:(PublicizeService *)pubServ
 {
     if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:willFetchKeyringsForService:)]) {
@@ -157,6 +186,12 @@
     }];
 }
 
+/**
+ Presents a modal `SharingAccountViewController` to let the user confirm the third party 
+ account to use for the publicize connection.
+ 
+ @param keyringConnections: An array of `KeyringConnection` instances.
+ */
 - (void)showAccountSelectorForKeyrings:(NSArray *)keyringConnections
 {
     NSParameterAssert([[keyringConnections firstObject] isKindOfClass:[KeyringConnection class]]);
@@ -165,12 +200,21 @@
                                                                            connections:keyringConnections
                                                                    existingConnections:[self connectionsForService]];
     controller.delegate = self;
+
+    // Set the view controller stack vs push so there is no back button to contend with.
+    // There should be no reason for the user to click back to the authorization vc.
     [self.navController setViewControllers:@[controller] animated:YES];
 }
 
 
 #pragma mark - SharingAccountSelection Methods
 
+/**
+ Returns one or more existing `PublicizeConnections` derived from the specified 
+ keyringConnection.
+
+ @param keyringConnections: An array of `KeyringConnection` instances.
+ */
 - (PublicizeConnection *)publicizeConnectionUsingKeyringConnection:(KeyringConnection *)keyringConnection
 {
     for (PublicizeConnection *connection in self.blog.connections) {
@@ -182,6 +226,15 @@
     return nil;
 }
 
+/**
+ Checks if the specified publicize connection is derived form the specified 
+ keyring connection, and uses the supplied external ID. Returns true if there
+ is a match.
+
+ @param connection: A `PublicizeConnection` instance.
+ @param keyringConnections: An array of `KeyringConnection` instances.
+ @param externalID: The external id of keyring connection, or one of its additional external accounts.
+ */
 - (BOOL)publicizeConnection:(PublicizeConnection *)connection usesKeyringConnection:(KeyringConnection *)keyringConnection withExternalID:(NSString *)externalID
 {
     // if the specified externalUserID matches the connection's externalID,
@@ -194,6 +247,17 @@
     return NO;
 }
 
+/**
+ Some KeyringConnections that have addtional external accounts. PublicizeConnections 
+ derived from such a keyring connection can be connected to only one of the keyring
+ connection's accounts at a time (either the main one or one of the additional ones).
+ Before updating the external ID of such a PublicizeConnection, prompt the user and 
+ inform them the connection to their curret account will be replaced by their selection.
+ 
+ @param keyringConnection: The keyring connection in question
+ @param externalID: The external ID on the keyring connection or one of its additional accounts. 
+ @param currentPublicizeConnection: The existing publicize connection derived from the keyring connection.
+ */
 - (void)confirmNewConnection:(KeyringConnection *)keyringConnection withExternalID:(NSString *)externalID disconnectsCurrentConnection:(PublicizeConnection *)currentPublicizeConnection
 {
     NSString *accountName = externalID ?: keyringConnection.externalID;
@@ -215,6 +279,13 @@
     [alertController presentFromRootViewController];
 }
 
+/**
+ Updates an existing publicize connection to use the specified external ID. 
+ 
+ @param publicizeConnection: The publicize connection to be modified. 
+ @param keyringConnection: The keyring connection from which the publicize connection is derived
+ @param externalID: The external id of the keyring connection or one of its additional external accounts.
+ */
 - (void)updateConnection:(PublicizeConnection *)publicizeConnection forKeyringConnection:(KeyringConnection *)keyringConnection withExternalID:(NSString *)externalID
 {
     if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:willConnectToService:usingKeyringConnection:)]) {
@@ -234,6 +305,14 @@
     }];
 }
 
+/**
+ Forges a publicize connection between the blog and publicize servcie with which
+ the `SharingAuthorizationHelper` was initialized.
+ 
+ @param keyConn: The keyring connection from which to create a publicize connection
+ @param externalUserID: The external ID of one of the keyring connection's additional external accounts. 
+ Should be nil if not connecting to one of the additional external accounts.
+ */
 - (void)connectToServiceWithKeyringConnection:(KeyringConnection *)keyConn andExternalUserID:(NSString *)externalUserID
 {
     if ([self.delegate respondsToSelector:@selector(sharingAuthorizationHelper:willConnectToService:usingKeyringConnection:)]) {
@@ -256,6 +335,11 @@
                                              }];
 }
 
+/**
+ A convenience method for handling an error when making a publicize connection.
+ 
+ @param error: The error that occurred.
+ */
 - (void)connectionFailedWithError:(NSError *)error
 {
     DDLogError([error description]);
