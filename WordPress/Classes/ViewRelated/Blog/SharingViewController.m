@@ -164,11 +164,15 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)configurePublicizeCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     PublicizeService *publicizer = self.publicizeServices[indexPath.row];
-    cell.textLabel.text = publicizer.label;
-    NSURL *url = [NSURL URLWithString:publicizer.icon];
-    [cell.imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"post-blavatar-placeholder"]];
-
     NSArray *connections = [self connectionsForService:publicizer];
+
+    // Configure the image
+    UIImage *image = [WPStyleGuide iconForService: publicizer.serviceID];
+    [cell.imageView setImage:image];
+    cell.imageView.tintColor = ([connections count] > 0) ? [WPStyleGuide tintColorForConnectedService: publicizer.serviceID] : [WPStyleGuide greyLighten20];
+
+    // Configure the text
+    cell.textLabel.text = publicizer.label;
 
     // Show the name(s) or number of connections.
     NSString *str = @"";
