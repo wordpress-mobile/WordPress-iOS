@@ -217,8 +217,14 @@ static CGFloat BlogCellRowHeight = 54.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    // In iPad devices + Non Modal Presentation, we actually do want the standard UITableView's top padding
+    if ([UIDevice isPad] && !self.presentingViewController) {
+        return 0;
+    }
+    
     return CGFLOAT_MIN;
 }
+
 
 #pragma mark - NSFetchedResultsController
 
