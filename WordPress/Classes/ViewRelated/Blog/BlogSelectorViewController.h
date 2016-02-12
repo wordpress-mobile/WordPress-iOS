@@ -1,9 +1,9 @@
 #import <UIKit/UIKit.h>
 
-@interface BlogSelectorViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface BlogSelectorViewController : UITableViewController
 
-- (id)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
-                selectedCompletion:(void (^)(NSManagedObjectID *selectedObjectID))selected
-                  cancelCompletion:(void (^)())cancel;
+- (instancetype)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
+                          selectedCompletion:(void (^)(NSManagedObjectID *selectedObjectID))selected
+                            cancelCompletion:(void (^)())cancel;
 
 @end
