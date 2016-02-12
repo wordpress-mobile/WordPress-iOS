@@ -46,7 +46,9 @@ class SettingsListPickerViewController : UITableViewController
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         assert(titles!.count == values!.count)
-        assert(values?.count == subtitles?.count || subtitles == nil)
+        assert(titles?.count == subtitles?.count || subtitles == nil)
+        assert(headers?.count == titles?.count || headers == nil)
+        assert(footers?.count == titles?.count || footers == nil)
     }
 
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
