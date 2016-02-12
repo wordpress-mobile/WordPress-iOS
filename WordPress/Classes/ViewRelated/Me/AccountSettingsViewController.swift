@@ -29,8 +29,12 @@ private struct AccountSettingsController: SettingsController {
 
     let service: AccountSettingsService
 
+    let context: NSManagedObjectContext
+    
+    
     init(service: AccountSettingsService) {
         self.service = service
+        self.context = ContextManager.sharedInstance().mainContext
     }
     
     // MARK: - Model mapping
@@ -49,6 +53,7 @@ private struct AccountSettingsController: SettingsController {
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
             value: mainBlog?.settings?.name ?? String(),
+            action: presenter.push(editPrimarySite(mainBlog))
         )
 
         let webAddress = EditableTextRow(
@@ -93,10 +98,18 @@ private struct AccountSettingsController: SettingsController {
 
     
     // MARK: - Helpers
+    
     func blogWithBlogId(blogId: Int?) -> Blog? {
-        let context = ContextManager.sharedInstance().mainContext
         let service = BlogService(managedObjectContext: context)
         return service.blogByBlogId(blogId)
+    }
+    
+    func updatePrimarySite(primarySiteObjectId: NSManagedObjectID) {
+        guard let newPrimarySite = try! context.existingObjectWithID(primarySiteObjectId) as? Blog else {
+            return
+        }
+        let change = AccountSettingsChange.PrimarySite(newPrimarySite.dotComID as Int)
+        self.service.saveChange(change)
     }
     
     
@@ -104,6 +117,22 @@ private struct AccountSettingsController: SettingsController {
 
     func editWebAddress() -> ImmuTableRowControllerGenerator {
         return editText(AccountSettingsChange.WebAddress, hint: NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address"))
+    }
+    
+    func editPrimarySite(primarySite: Blog?) -> ImmuTableRowControllerGenerator {
+        return {
+            row in
+
+            let selectorViewController = BlogSelectorViewController(selectedBlogObjectID: primarySite?.objectID,
+                selectedCompletion: { self.updatePrimarySite($0) },
+                cancelCompletion: nil)
+
+            selectorViewController.title = NSLocalizedString("Primary Site", comment: "Primary Site Picker's Title");
+            selectorViewController.displaysCancelButton = false
+            selectorViewController.dismissOnCompletion = true
+            
+            return selectorViewController
+        }
     }
 
     func mediaSizeChanged() -> Int -> Void {
