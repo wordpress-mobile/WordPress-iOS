@@ -11,7 +11,7 @@
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
 
-@interface BlogSelectorViewController ()
+@interface BlogSelectorViewController () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic) BOOL sectionDeletedByController;
@@ -24,9 +24,9 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 
 @implementation BlogSelectorViewController
 
-- (id)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
-                selectedCompletion:(void (^)(NSManagedObjectID *))selected
-                  cancelCompletion:(void (^)())cancel
+- (instancetype)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
+                          selectedCompletion:(void (^)(NSManagedObjectID *))selected
+                            cancelCompletion:(void (^)())cancel
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
 
