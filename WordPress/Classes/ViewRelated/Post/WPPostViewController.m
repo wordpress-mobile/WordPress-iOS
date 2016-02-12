@@ -286,7 +286,6 @@ EditImageDetailsViewControllerDelegate
     
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
-    [self geotagNewPost];
     self.delegate = self;
     [self configureMediaUpload];
     if (self.isOpenedDirectlyForPhotoPost) {
@@ -964,25 +963,6 @@ EditImageDetailsViewControllerDelegate
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
     return [PostService createDraftPostInMainContextForBlog:blog];
-}
-
-- (void)geotagNewPost {
-    if (![self isPostLocal]) {
-        return;
-    }
-    
-    if (self.post.blog.settings.geolocationEnabled && ![LocationService sharedService].locationServicesDisabled) {
-        [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
-            if (location) {
-                if(self.post.isDeleted) {
-                    return;
-                }
-                Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
-                Post *post = (Post *)self.post;
-                post.geolocation = coord;
-            }
-        }];
-    }
 }
 
 /*
