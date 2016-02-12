@@ -74,7 +74,6 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
 - (IBAction)dismiss
 {
-    [super dismiss];
     if ([self.delegate respondsToSelector:@selector(authorizeDidCancel:)]) {
         [self.delegate authorizeDidCancel:self.publicizer];
     }
@@ -92,7 +91,6 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
 - (void)displayLoadError:(NSError *)error
 {
-    [super dismiss];
     if ([self.delegate respondsToSelector:@selector(authorize:didFailWithError:)]) {
         [self.delegate authorize:self.publicizer didFailWithError:error];
     }
