@@ -185,10 +185,6 @@ public class SharingService : LocalCoreDataService
                 return;
             }
 
-            let oldValue = pubConn.externalID
-            pubConn.externalID = externalID
-            ContextManager.sharedInstance().saveContext(managedObjectContext)
-
             let blogObjectID = blog.objectID
             let siteID = pubConn.siteID;
             let remote = SharingServiceRemote(api: apiForBlog(blog))
@@ -209,10 +205,8 @@ public class SharingService : LocalCoreDataService
 
                 },
                 failure: { (error: NSError!) in
-                    pubConn.externalID = oldValue
-                    ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
-                        failure?(error)
-                    })
+                    failure?(error)
+
             })
     }
 
