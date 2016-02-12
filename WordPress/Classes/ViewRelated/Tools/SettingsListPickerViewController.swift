@@ -5,21 +5,20 @@ import WordPressShared
 
 /// SettingsListPicker will render a list of options, and will allow the user to select one from the list.
 ///
-class SettingsListPickerViewController : UITableViewController
+class SettingsListPickerViewController<T:Equatable> : UITableViewController
 {
     /// Current selected value, if any
     ///
-    var selectedValue : NSObject?
+    var selectedValue : T?
     
     /// Callback to be executed whenever the selectedValue changes
     ///
-    var onChange : (AnyObject -> Void)?
+    var onChange : (T -> Void)?
     
     
     
     // MARK: - Initializers
-    init(headers: [String]? = nil, footers: [String]? = nil, titles: [[String]],
-         subtitles: [[String]]? = nil, values: [[NSObject]])
+    init(headers: [String]? = nil, footers: [String]? = nil, titles: [[String]], subtitles: [[String]]? = nil, values: [[T]])
     {
         self.headers = headers
         self.footers = footers
@@ -190,5 +189,5 @@ class SettingsListPickerViewController : UITableViewController
     
     /// Row Values. Should contain the exact same number as titles
     ///
-    private let values : [[NSObject]]?
+    private let values : [[T]]?
 }
