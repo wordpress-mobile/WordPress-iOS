@@ -11,6 +11,7 @@ data model as well as any custom migrations.
 - `BlogSettings` added bool `sharingCommentLikesEnabled`. Whether comments display a like button.
 - `BlogSettings` added bool `sharingDisabledLikes`.  Whether posts display a like button. 
 - `BlogSettings` added bool `sharingDisabledReblogs`. Whether posts display a reblog button. 
+- `BlogSettings` added integer `languageID`. Stores the Blog's Language ID.
 - Added `SharingButton` entity. Represents a buton for sharing content to a third-party service.
 - `Blog` added new relationship `sharingButtons`. An unordered set of `ShareButton`s for the blog.
 
