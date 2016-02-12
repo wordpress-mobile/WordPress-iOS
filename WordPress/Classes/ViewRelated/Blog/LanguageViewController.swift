@@ -131,8 +131,7 @@ public class LanguageViewController : UITableViewController
 
     // MARK: - Private Constants
     private let reuseIdentifier = "reuseIdentifier"
-    private let footerText = NSLocalizedString("The language in which this site is primarily written. " +
-                                                "You can modify the interface language in your Account Settings.",
+    private let footerText = NSLocalizedString("The language in which this site is primarily written.",
                                                 comment: "Footer Text displayed in Blog Language Settings View")
     
     // MARK: - Private Properties
