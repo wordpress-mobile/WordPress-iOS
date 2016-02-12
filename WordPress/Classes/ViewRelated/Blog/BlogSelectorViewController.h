@@ -6,4 +6,6 @@
                           selectedCompletion:(void (^)(NSManagedObjectID *selectedObjectID))selected
                             cancelCompletion:(void (^)())cancel;
 
+@property (nonatomic, assign) BOOL displaysCancelButton;
+
 @end
