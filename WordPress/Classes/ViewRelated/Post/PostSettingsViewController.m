@@ -70,6 +70,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, strong) PostGeolocationCell *postGeoLocationCell;
 @property (nonatomic, strong) WPTableViewActivityCell *geoLocationActivityCell;
 
+@property (nonatomic, strong) LocationService *locationService;
 
 @end
 
@@ -123,9 +124,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0, 0, 0);
     self.tableView.accessibilityIdentifier = @"SettingsTable";
     self.isUploadingMedia = NO;
-    
-    // setup geolocation cells
-    self.geoLocationSwitchCell.on = self.post.geolocation != nil;
+
+    self.locationService = [LocationService sharedService];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -332,7 +332,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         return 1;
 
     } else if (sec == PostSettingsSectionGeolocation) {
-        if (self.post.geolocation != nil || [[LocationService sharedService] locationServiceRunning]) {
+        if (self.post.geolocation != nil || [self.locationService locationServiceRunning]) {
             return 2;
         } else {
             return 1;
@@ -392,7 +392,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.frame);
     NSInteger sectionId = [[self.sections objectAtIndex:indexPath.section] integerValue];
 
-    if (sectionId == PostSettingsSectionGeolocation && indexPath.row == 1 && ![[LocationService sharedService] locationServiceRunning]) {
+    if (sectionId == PostSettingsSectionGeolocation && indexPath.row == 1 && ![self.locationService locationServiceRunning]) {
         return ceilf(width * 0.75f);
     }
 
@@ -626,7 +626,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         __weak __typeof__(self) weakSelf = self;
         [_geoLocationSwitchCell setOnChange:^(BOOL geoLocationOn) {
             if (geoLocationOn) {
-                [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
+                [self.locationService getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
                     if ( error) {
                         weakSelf.geoLocationSwitchCell.on = NO;
                     } else  {
@@ -653,12 +653,12 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     NSString *address = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
     if (coordinate) {
         CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-        if ([[LocationService sharedService] hasAddressForLocation:postLocation]) {
-            address = [LocationService sharedService].lastGeocodedAddress;
+        if ([self.locationService hasAddressForLocation:postLocation]) {
+            address = self.locationService.lastGeocodedAddress;
         } else {
             address = NSLocalizedString(@"Looking up address...", @"Used with posts that are geo-tagged. Let's the user know the the app is looking up the address for the coordinates tagging the post.");
             __weak __typeof__(self) weakSelf = self;
-            [[LocationService sharedService] getAddressForLocation:postLocation
+            [self.locationService getAddressForLocation:postLocation
                                                         completion:^(CLLocation *location, NSString *address, NSError *error) {
                                                             [weakSelf.tableView reloadData];
                                                         }];
@@ -687,7 +687,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         }
         break;
         case(1): {
-            if ([[LocationService sharedService] locationServiceRunning]) {
+            if ([self.locationService locationServiceRunning]) {
                 return self.geoLocationActivityCell;
             } else {
                 return self.postGeoLocationCell;
