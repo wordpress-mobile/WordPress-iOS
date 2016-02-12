@@ -84,7 +84,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     // Scroll the currently selected object into view.
     NSManagedObject *obj = [self.resultsController.managedObjectContext objectWithID:self.selectedObjectID];
     NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
-    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionNone animated:NO];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
