@@ -97,7 +97,7 @@ public class SharingService : LocalCoreDataService
             externalUserID: externalUserID,
             success: {(remoteConnection: RemotePublicizeConnection) in
                 do {
-                    let pubConn = try self.createPublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
+                    let pubConn = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
                         success?(pubConn)
                     })
@@ -128,6 +128,7 @@ public class SharingService : LocalCoreDataService
         forPublicizeConnection pubConn: PublicizeConnection,
         success: (() -> Void)?,
         failure: (NSError! -> Void)?) {
+
             if pubConn.shared == shared {
                 success?()
                 return;
@@ -137,12 +138,25 @@ public class SharingService : LocalCoreDataService
             pubConn.shared = shared
             ContextManager.sharedInstance().saveContext(managedObjectContext)
 
+            let blogObjectID = blog.objectID
             let siteID = pubConn.siteID;
             let remote = SharingServiceRemote(api: apiForBlog(blog))
             remote.updatePublicizeConnectionWithID(pubConn.connectionID,
                 shared: shared,
                 forSite: siteID,
-                success: success,
+                success: {(remoteConnection: RemotePublicizeConnection) in
+                    do {
+                        _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
+                        ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
+                            success?()
+                        })
+
+                    } catch let error as NSError {
+                        DDLogSwift.logError("Error creating publicize connection from remote: \(error)")
+                        failure?(error)
+                    }
+
+                },
                 failure: { (error: NSError!) in
                     pubConn.shared = oldValue
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
@@ -175,12 +189,25 @@ public class SharingService : LocalCoreDataService
             pubConn.externalID = externalID
             ContextManager.sharedInstance().saveContext(managedObjectContext)
 
+            let blogObjectID = blog.objectID
             let siteID = pubConn.siteID;
             let remote = SharingServiceRemote(api: apiForBlog(blog))
             remote.updatePublicizeConnectionWithID(pubConn.connectionID,
                 externalID: externalID,
                 forSite: siteID,
-                success: success,
+                success: {(remoteConnection: RemotePublicizeConnection) in
+                    do {
+                        _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
+                        ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
+                            success?()
+                        })
+
+                    } catch let error as NSError {
+                        DDLogSwift.logError("Error creating publicize connection from remote: \(error)")
+                        failure?(error)
+                    }
+
+                },
                 failure: { (error: NSError!) in
                     pubConn.externalID = oldValue
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
@@ -479,7 +506,7 @@ public class SharingService : LocalCoreDataService
     ///
     /// - Returns: A `PublicizeConnection`.
     ///
-    private func createPublicizeConnectionForBlogWithObjectID(blogObjectID: NSManagedObjectID,
+    private func createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID: NSManagedObjectID,
         remoteConnection: RemotePublicizeConnection) throws -> PublicizeConnection {
 
             let blog = try managedObjectContext.existingObjectWithID(blogObjectID) as! Blog
