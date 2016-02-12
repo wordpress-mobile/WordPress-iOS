@@ -3,7 +3,9 @@
 #import "WordPressComOAuthClient.h"
 
 @interface WPAccount ()
+
 @property (nonatomic, strong, readwrite) WordPressComApi *restApi;
+
 @end
 
 @implementation WPAccount
@@ -13,6 +15,7 @@
 @dynamic jetpackBlogs;
 @dynamic defaultBlog;
 @dynamic uuid;
+@dynamic dateCreated;
 @dynamic email;
 @dynamic displayName;
 @dynamic userID;
