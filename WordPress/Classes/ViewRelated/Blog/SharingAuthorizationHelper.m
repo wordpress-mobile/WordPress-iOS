@@ -53,6 +53,17 @@
     [self.navController dismissViewControllerAnimated:YES completion:nil];
 }
 
+/**
+ Dismisses the modal and informs the user that a reconnect attempt was successful.
+ */
+- (void)handleReconnectSucceeded
+{
+    [self dismissNavViewController];
+    NSString *message = NSLocalizedString(@"The %@ account was successfully reconnected.", @"Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service naem.");
+    message = [NSString stringWithFormat:message, self.publicizeService.label];
+    [SVProgressHUD showSuccessWithStatus:message];
+}
+
 
 #pragma mark - Authorization Methods
 
@@ -95,7 +106,21 @@
         [self.delegate sharingAuthorizationHelper:self authorizationSucceededForService:self.publicizeService];
     }
 
-    [self fetchKeyringConnectionsForService:publicizer];
+    if (self.reconnecting) {
+        // Resync publicize connections.
+        SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self.blog managedObjectContext]];
+        [sharingService syncPublicizeConnectionsForBlog:self.blog success:^{
+            [self handleReconnectSucceeded];
+        } failure:^(NSError *error) {
+            DDLogError([error description]);
+            // Even if there is an error syncing the reconnect attempt still succeeded.
+            [self handleReconnectSucceeded];
+        }];
+
+    } else {
+        [self fetchKeyringConnectionsForService:publicizer];
+    }
+
 }
 
 /**
