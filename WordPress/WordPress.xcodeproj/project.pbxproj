@@ -229,6 +229,8 @@
 		83F3E26011275E07004CD686 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E25F11275E07004CD686 /* MapKit.framework */; };
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
 		83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* SiteSettingsViewController.m */; };
+		8511CFC51C60884400B7CEED /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511CFC41C60884400B7CEED /* SnapshotHelper.swift */; };
+		8511CFC71C60894200B7CEED /* WordPressScreenshotGeneration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511CFC61C60894200B7CEED /* WordPressScreenshotGeneration.swift */; };
 		85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */; };
 		8514B8D41AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8514B8D31AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m */; };
 		851734431798C64700A30E27 /* NSURL+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 851734421798C64700A30E27 /* NSURL+Util.m */; };
@@ -566,6 +568,8 @@
 		E1BEEC631C4E35A8000B4FA0 /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BEEC621C4E35A8000B4FA0 /* Animator.swift */; };
 		E1BEEC651C4E3978000B4FA0 /* PaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1BEEC641C4E3978000B4FA0 /* PaddedLabel.swift */; };
 		E1C265C91BECFCDD00DC4C6B /* WPCrashlyticsLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E1C265C81BECFCDD00DC4C6B /* WPCrashlyticsLogger.m */; };
+		E1C5457E1C6B962D001CEB0E /* MediaSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C5457D1C6B962D001CEB0E /* MediaSettings.swift */; };
+		E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C5457F1C6C79BB001CEB0E /* MediaSettingsTests.swift */; };
 		E1C9AA511C10419200732665 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA501C10419200732665 /* Math.swift */; };
 		E1C9AA561C10427100732665 /* MathTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9AA551C10427100732665 /* MathTest.swift */; };
 		E1D04D7E19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */; };
@@ -711,6 +715,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		8511CFBB1C607A7000B7CEED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
+			remoteInfo = WordPress;
+		};
 		93E5284419A7741A003A1A9C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -1130,6 +1141,11 @@
 		83FB4D3E122C38F700DB9506 /* MediaPlayer.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		83FEFC7311FF6C5A0078B462 /* SiteSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteSettingsViewController.h; sourceTree = "<group>"; };
 		83FEFC7411FF6C5A0078B462 /* SiteSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteSettingsViewController.m; sourceTree = "<group>"; };
+		8511CFB61C607A7000B7CEED /* WordPressScreenshotGeneration.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WordPressScreenshotGeneration.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8511CFBA1C607A7000B7CEED /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8511CFC31C60884300B7CEED /* WordPressScreenshotGeneration-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPressScreenshotGeneration-Bridging-Header.h"; sourceTree = "<group>"; };
+		8511CFC41C60884400B7CEED /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
+		8511CFC61C60894200B7CEED /* WordPressScreenshotGeneration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WordPressScreenshotGeneration.swift; sourceTree = "<group>"; };
 		8514973F171E13DF00B87F3F /* WPAsyncBlockOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAsyncBlockOperation.h; sourceTree = "<group>"; };
 		85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAsyncBlockOperation.m; sourceTree = "<group>"; };
 		8514B8D31AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerMixpanelTests.m; sourceTree = "<group>"; };
@@ -1662,6 +1678,8 @@
 		E1BEEC641C4E3978000B4FA0 /* PaddedLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaddedLabel.swift; sourceTree = "<group>"; };
 		E1C265C71BECFCDD00DC4C6B /* WPCrashlyticsLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCrashlyticsLogger.h; sourceTree = "<group>"; };
 		E1C265C81BECFCDD00DC4C6B /* WPCrashlyticsLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCrashlyticsLogger.m; sourceTree = "<group>"; };
+		E1C5457D1C6B962D001CEB0E /* MediaSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSettings.swift; sourceTree = "<group>"; };
+		E1C5457F1C6C79BB001CEB0E /* MediaSettingsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaSettingsTests.swift; sourceTree = "<group>"; };
 		E1C807471696F72E00E545A6 /* WordPress 9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 9.xcdatamodel"; sourceTree = "<group>"; };
 		E1C9AA501C10419200732665 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 		E1C9AA551C10427100732665 /* MathTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MathTest.swift; sourceTree = "<group>"; };
@@ -1920,6 +1938,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8511CFB31C607A7000B7CEED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		93E5283719A7741A003A1A9C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -2023,6 +2048,7 @@
 				E16AB92A14D978240047A2E5 /* WordPressTest.xctest */,
 				93E5283A19A7741A003A1A9C /* WordPressTodayWidget.appex */,
 				FFF96F8219EBE7FB00DFC821 /* UITests.xctest */,
+				8511CFB61C607A7000B7CEED /* WordPressScreenshotGeneration.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2040,6 +2066,7 @@
 				E16AB92F14D978240047A2E5 /* WordPressTest */,
 				93E5283D19A7741A003A1A9C /* WordPressTodayWidget */,
 				FFF96F8319EBE7FB00DFC821 /* UITests */,
+				8511CFB71C607A7000B7CEED /* WordPressScreenshotGeneration */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				A28F6FD119B61ACA00AADE55 /* SwiftPlayground.playground */,
@@ -2683,6 +2710,17 @@
 			path = NUX;
 			sourceTree = "<group>";
 		};
+		8511CFB71C607A7000B7CEED /* WordPressScreenshotGeneration */ = {
+			isa = PBXGroup;
+			children = (
+				8511CFBA1C607A7000B7CEED /* Info.plist */,
+				8511CFC41C60884400B7CEED /* SnapshotHelper.swift */,
+				8511CFC31C60884300B7CEED /* WordPressScreenshotGeneration-Bridging-Header.h */,
+				8511CFC61C60894200B7CEED /* WordPressScreenshotGeneration.swift */,
+			);
+			path = WordPressScreenshotGeneration;
+			sourceTree = "<group>";
+		};
 		852416CC1A12EAF70030700C /* Ratings */ = {
 			isa = PBXGroup;
 			children = (
@@ -2972,6 +3010,7 @@
 				E1F8E1221B0B411E0073E628 /* JetpackService.m */,
 				5DA3EE141925090A00294E0B /* MediaService.h */,
 				5DA3EE151925090A00294E0B /* MediaService.m */,
+				E1C5457D1C6B962D001CEB0E /* MediaSettings.swift */,
 				B5EFB1C11B31B98E007608A3 /* NotificationsService.swift */,
 				93FA59DB18D88C1C001446BC /* PostCategoryService.h */,
 				93FA59DC18D88C1C001446BC /* PostCategoryService.m */,
@@ -3244,6 +3283,7 @@
 				930FD0A519882742000CC81D /* BlogServiceTest.m */,
 				FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */,
 				59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */,
+				E1C5457F1C6C79BB001CEB0E /* MediaSettingsTests.swift */,
 				B5EFB1C81B333C5A007608A3 /* NotificationsServiceTests.swift */,
 				5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */,
 				E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */,
@@ -4001,6 +4041,24 @@
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
 			productType = "com.apple.product-type.application";
 		};
+		8511CFB51C607A7000B7CEED /* WordPressScreenshotGeneration */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8511CFC21C607A7000B7CEED /* Build configuration list for PBXNativeTarget "WordPressScreenshotGeneration" */;
+			buildPhases = (
+				8511CFB21C607A7000B7CEED /* Sources */,
+				8511CFB31C607A7000B7CEED /* Frameworks */,
+				8511CFB41C607A7000B7CEED /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8511CFBC1C607A7000B7CEED /* PBXTargetDependency */,
+			);
+			name = WordPressScreenshotGeneration;
+			productName = WordPressScreenshotGeneration;
+			productReference = 8511CFB61C607A7000B7CEED /* WordPressScreenshotGeneration.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		93E5283919A7741A003A1A9C /* WordPressTodayWidget */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 93E5284D19A7741A003A1A9C /* Build configuration list for PBXNativeTarget "WordPressTodayWidget" */;
@@ -4070,7 +4128,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = WordPress;
 				TargetAttributes = {
@@ -4084,6 +4142,10 @@
 								enabled = 1;
 							};
 						};
+					};
+					8511CFB51C607A7000B7CEED = {
+						CreatedOnToolsVersion = 7.2;
+						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
 					93E5283919A7741A003A1A9C = {
 						CreatedOnToolsVersion = 6.0;
@@ -4156,6 +4218,7 @@
 				93E5283919A7741A003A1A9C /* WordPressTodayWidget */,
 				FFF96F8119EBE7FB00DFC821 /* UITests */,
 				FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */,
+				8511CFB51C607A7000B7CEED /* WordPressScreenshotGeneration */,
 			);
 		};
 /* End PBXProject section */
@@ -4224,6 +4287,13 @@
 				E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */,
 				5DFA7EC31AF7CB910072023B /* Pages.storyboard in Resources */,
 				596C03601B84F24000899EEB /* ThemeBrowser.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8511CFB41C607A7000B7CEED /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4800,6 +4870,7 @@
 				E10B5ACF1C4518E100F6A390 /* AccountService+Rx.swift in Sources */,
 				93FA59DD18D88C1C001446BC /* PostCategoryService.m in Sources */,
 				E1BEEC631C4E35A8000B4FA0 /* Animator.swift in Sources */,
+				E1C5457E1C6B962D001CEB0E /* MediaSettings.swift in Sources */,
 				5DCC4CD819A50CC0003E548C /* ReaderSite.m in Sources */,
 				93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */,
 				859F761D18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m in Sources */,
@@ -5004,6 +5075,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8511CFB21C607A7000B7CEED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8511CFC71C60894200B7CEED /* WordPressScreenshotGeneration.swift in Sources */,
+				8511CFC51C60884400B7CEED /* SnapshotHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		93E5283619A7741A003A1A9C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -5067,6 +5147,7 @@
 				BEA0E4851BD83565000AEE81 /* WP3DTouchShortcutCreatorTests.swift in Sources */,
 				85F8E19B1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift in Sources */,
 				E13BF2CA1C522A1300275BE9 /* AccountSettingsRemoteTests.swift in Sources */,
+				E1C545801C6C79BB001CEB0E /* MediaSettingsTests.swift in Sources */,
 				59FBD5621B5684F300734466 /* ThemeServiceTests.m in Sources */,
 				85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
@@ -5115,6 +5196,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		8511CFBC1C607A7000B7CEED /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
+			targetProxy = 8511CFBB1C607A7000B7CEED /* PBXContainerItemProxy */;
+		};
 		93E5284519A7741A003A1A9C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 93E5283919A7741A003A1A9C /* WordPressTodayWidget */;
@@ -5437,6 +5523,222 @@
 			};
 			name = Distribution;
 		};
+		8511CFBD1C607A7000B7CEED /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = WordPressScreenshotGeneration/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TEST_TARGET_NAME = WordPress;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		8511CFBE1C607A7000B7CEED /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = WordPressScreenshotGeneration/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
+				TEST_TARGET_NAME = WordPress;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+		8511CFBF1C607A7000B7CEED /* Release-Internal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = WordPressScreenshotGeneration/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
+				TEST_TARGET_NAME = WordPress;
+				USES_XCTRUNNER = YES;
+			};
+			name = "Release-Internal";
+		};
+		8511CFC01C607A7000B7CEED /* Release-Alpha */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = WordPressScreenshotGeneration/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
+				TEST_TARGET_NAME = WordPress;
+				USES_XCTRUNNER = YES;
+			};
+			name = "Release-Alpha";
+		};
+		8511CFC11C607A7000B7CEED /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = WordPressScreenshotGeneration/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressScreenshotGeneration;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "e2604f41-a7ef-448b-8fd9-5c48031085b8";
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressScreenshotGeneration/WordPressScreenshotGeneration-Bridging-Header.h";
+				TEST_TARGET_NAME = WordPress;
+				USES_XCTRUNNER = YES;
+			};
+			name = Distribution;
+		};
 		8546B4431BEAD39700193C07 /* Release-Alpha */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5588,7 +5890,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -5856,7 +6157,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -6226,7 +6526,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TEST_HOST = "$(BUNDLE_LOADER)";
@@ -6299,7 +6598,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -6371,7 +6669,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
@@ -6598,6 +6895,18 @@
 				93DEAA9E182D567A004E34D1 /* Release-Internal */,
 				8546B4441BEAD39700193C07 /* Release-Alpha */,
 				2F30B4C20E342FDF00211B15 /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8511CFC21C607A7000B7CEED /* Build configuration list for PBXNativeTarget "WordPressScreenshotGeneration" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8511CFBD1C607A7000B7CEED /* Debug */,
+				8511CFBE1C607A7000B7CEED /* Release */,
+				8511CFBF1C607A7000B7CEED /* Release-Internal */,
+				8511CFC01C607A7000B7CEED /* Release-Alpha */,
+				8511CFC11C607A7000B7CEED /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
