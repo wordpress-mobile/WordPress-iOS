@@ -179,8 +179,8 @@ public class SharingServiceRemote : ServiceRemoteREST
     public func createPublicizeConnection(siteID: NSNumber,
         keyringConnectionID: NSNumber,
         externalUserID: String?,
-        success: (RemotePublicizeConnection -> Void)?, failure: (NSError! -> Void)?)
-    {
+        success: (RemotePublicizeConnection -> Void)?,
+        failure: (NSError! -> Void)?) {
 
             let endpoint = "sites/\(siteID)/publicize-connections/new"
             let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
@@ -223,7 +223,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     public func updatePublicizeConnectionWithID(connectionID: NSNumber,
         externalID: String?,
         forSite siteID: NSNumber,
-        success: (() -> Void)?,
+        success: (RemotePublicizeConnection -> Void)?,
         failure: (NSError! -> Void)?) {
             let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
             let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
@@ -236,7 +236,14 @@ public class SharingServiceRemote : ServiceRemoteREST
             api.POST(path,
                 parameters: parameters,
                 success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
-                    success?()
+                    guard let onSuccess = success else {
+                        return
+                    }
+
+                    let dict = response as! NSDictionary
+                    let conn = self.remotePublicizeConnectionFromDictionary(dict)
+
+                    onSuccess(conn)
                 },
                 failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                     failure?(error)
@@ -256,7 +263,7 @@ public class SharingServiceRemote : ServiceRemoteREST
     public func updatePublicizeConnectionWithID(connectionID: NSNumber,
         shared: Bool,
         forSite siteID: NSNumber,
-        success: (() -> Void)?,
+        success: (RemotePublicizeConnection -> Void)?,
         failure: (NSError! -> Void)?) {
             let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
             let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
@@ -267,7 +274,14 @@ public class SharingServiceRemote : ServiceRemoteREST
             api.POST(path,
                 parameters: parameters,
                 success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
-                    success?()
+                    guard let onSuccess = success else {
+                        return
+                    }
+
+                    let dict = response as! NSDictionary
+                    let conn = self.remotePublicizeConnectionFromDictionary(dict)
+
+                    onSuccess(conn)
                 },
                 failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                     failure?(error)
