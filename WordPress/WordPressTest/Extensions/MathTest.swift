@@ -30,4 +30,33 @@ class MathTest: XCTestCase {
         expect(30.clamp(min: 10, max: 20)).to(equal(20))
     }
 
+    func testClampCGSizeWithSize() {
+        let maxSize = CGSize(width: 4000, height: 3000)
+        let minSize = CGSize(width: 400, height: 300)
+
+        do {
+            let clamped = CGSize(width: 3000, height: 4000).clamp(min: minSize, max: maxSize)
+            let expected = CGSize(width: 3000, height: 3000)
+            expect(clamped).to(equal(expected))
+        }
+
+        do {
+            let clamped = CGSize(width: 6000, height: 4000).clamp(min: minSize, max: maxSize)
+            let expected = CGSize(width: 4000, height: 3000)
+            expect(clamped).to(equal(expected))
+        }
+
+        do {
+            let clamped = CGSize(width: 100, height: 400).clamp(min: minSize, max: maxSize)
+            let expected = CGSize(width: 400, height: 400)
+            expect(clamped).to(equal(expected))
+        }
+
+        do {
+            let clamped = CGSize(width: 100, height: 100).clamp(min: minSize, max: maxSize)
+            let expected = CGSize(width: 400, height: 300)
+            expect(clamped).to(equal(expected))
+        }
+    }
+
 }

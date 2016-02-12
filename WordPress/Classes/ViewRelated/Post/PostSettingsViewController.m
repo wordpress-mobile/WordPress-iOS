@@ -970,7 +970,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     self.featuredImageProgress = convertingProgress;
     __weak __typeof(self) weakSelf = self;
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [mediaService createMediaWithPHAsset:asset forPostObjectID:self.apost.objectID completion:^(Media *media, NSError * error) {
+    [mediaService createMediaWithPHAsset:asset
+                         forPostObjectID:self.apost.objectID
+                       thumbnailCallback:nil
+                              completion:^(Media *media, NSError * error) {
         if (!weakSelf) {
             return;
         }
