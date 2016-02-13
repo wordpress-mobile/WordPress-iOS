@@ -37,7 +37,7 @@ const CGFloat GeoViewMinHeight = 130.0f;
     self.addressLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, 130.0f, w, 60.0)];
     self.addressLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     self.addressLabel.font = [WPStyleGuide regularTextFont];
-    self.addressLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+    self.addressLabel.textColor = [WPStyleGuide darkGrey];
     self.addressLabel.numberOfLines = 0;
     self.addressLabel.lineBreakMode = NSLineBreakByWordWrapping;
     
