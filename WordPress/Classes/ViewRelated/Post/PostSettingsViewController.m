@@ -643,6 +643,28 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+- (void)updatePostLocationState:(BOOL)geoLocationOn {
+    if (geoLocationOn && !self.locationService.locationServicesDisabled) {
+        __weak __typeof__(self) weakSelf = self;
+        [self.locationService getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
+            __typeof__(self) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            if ( error) {
+                [strongSelf showLocationError:error];
+                strongSelf.geoLocationSwitchCell.on = NO;
+            } else  {
+                strongSelf.post.geolocation = [[Coordinate alloc] initWithCoordinate:location.coordinate];
+            }
+            [strongSelf.tableView reloadData];
+        }];
+    } else {
+        self.post.geolocation = nil;
+    }
+    [self.tableView reloadData];
+}
+
 - (SwitchTableViewCell *)geoLocationSwitchCell {
     if (!_geoLocationSwitchCell) {
         _geoLocationSwitchCell = [[SwitchTableViewCell alloc] init];
@@ -650,24 +672,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         _geoLocationSwitchCell.textLabel.text = NSLocalizedString(@"Use Location", @"Label for switch in Post settings to enable geo location of a post");
         __weak __typeof__(self) weakSelf = self;
         [_geoLocationSwitchCell setOnChange:^(BOOL geoLocationOn) {
-            if (geoLocationOn) {
-                [weakSelf.locationService getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
-                    __typeof__(self) strongSelf = weakSelf;
-                    if (!strongSelf) {
-                        return;
-                    }
-                    if ( error) {
-                        [strongSelf showLocationError:error];
-                        strongSelf.geoLocationSwitchCell.on = NO;
-                    } else  {
-                        strongSelf.post.geolocation = [[Coordinate alloc] initWithCoordinate:location.coordinate];
-                    }
-                    [strongSelf.tableView reloadData];
-                }];
-            } else {
-                weakSelf.post.geolocation = nil;
-            }
-            [weakSelf.tableView reloadData];
+            [weakSelf updatePostLocationState:geoLocationOn];
         }];
     }
     _geoLocationSwitchCell.on = self.post.geolocation != nil || [self.locationService locationServiceRunning];
