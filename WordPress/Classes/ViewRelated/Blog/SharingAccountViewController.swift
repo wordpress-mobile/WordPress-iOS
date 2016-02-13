@@ -1,6 +1,9 @@
 import UIKit
 import WordPressShared
 
+/// Displays a list of available keyring connection accounts that can be used to
+/// forge a publicize connection.
+///
 @objc public class SharingAccountViewController : UITableViewController
 {
     var publicizeService: PublicizeService
@@ -13,9 +16,6 @@ import WordPressShared
     //MARK: - Lifecycle Methods
 
 
-    ///
-    ///
-    ///
     init(service: PublicizeService, connections: [KeyringConnection], existingConnections: [PublicizeConnection]?) {
         publicizeService = service
         keyringConnections = connections
@@ -44,8 +44,7 @@ import WordPressShared
     // MARK: - Configuration
 
 
-    ///
-    ///
+    /// Configures the appearance of the nav bar.
     ///
     private func configureNavbar() {
         let image = UIImage(named: "gridicons-cross")
@@ -53,6 +52,7 @@ import WordPressShared
         closeButton.tintColor = UIColor.whiteColor()
         navigationItem.leftBarButtonItem = closeButton
 
+        // The preceding WPWebViewController changes the default navbar appearnce. Restore it.
         if let navBar = navigationController?.navigationBar {
             navBar.shadowImage = UIImage(color: UIColor(fromHex: 0x007eb1))
             navBar.setBackgroundImage(UIImage(color: WPStyleGuide.wordPressBlue()), forBarMetrics: .Default)
@@ -61,8 +61,7 @@ import WordPressShared
     }
 
 
-    ///
-    ///
+    /// Configures the `UITableView`
     ///
     private func configureTableView() {
         ImmuTable.registerRows([TextRow.self], tableView: tableView)
@@ -75,8 +74,9 @@ import WordPressShared
     // MARK: - View Model Wrangling
 
 
+    /// Builds and returns the ImmuTable view model.
     ///
-    ///
+    /// - Returns: An ImmuTable instance.
     ///
     private func tableViewModel() -> ImmuTable {
         var sections = [ImmuTableSection]()
@@ -110,8 +110,12 @@ import WordPressShared
     }
 
 
+    /// Builds the ImmuTableSection that displays unconnected keyring accounts. 
     ///
+    /// - Parameters: 
+    ///     - rows: An array of ImmuTableRow objects appearing in the section.
     ///
+    /// - Returns: An ImmuTableSection or `nil` if there were no rows.
     ///
     private func sectionForUnconnectedKeyringAccountRows(rows: [ImmuTableRow]) -> ImmuTableSection? {
         if rows.count == 0 {
@@ -129,8 +133,12 @@ import WordPressShared
     }
 
 
+    /// Builds the ImmuTableSection that displays connected keyring accounts.
     ///
+    /// - Parameters:
+    ///     - rows: An array of ImmuTableRow objects appearing in the section.
     ///
+    /// - Returns: An ImmuTableSection or `nil` if there were no rows.
     ///
     private func rowsForUnconnectedKeyringAccounts(accounts: [KeyringAccount]) -> [ImmuTableRow] {
         var rows = [ImmuTableRow]()
@@ -144,8 +152,12 @@ import WordPressShared
     }
 
 
+    /// Builds an ImmuTableAction that should be performed when a specific row is selected.
     ///
+    /// - Parameters:
+    ///     - The keyring account for the row.
     ///
+    /// - Returns: An ImmuTableAction instance.
     ///
     private func actionForRow(keyringAccount: KeyringAccount) -> ImmuTableAction {
         return { [unowned self] row in
@@ -158,8 +170,12 @@ import WordPressShared
     }
 
 
+    /// Builds ImmuTableRows for the specified keyring accounts.
     ///
+    /// - Parameters:
+    ///     - accounts: An array of KeyringAccount objects.
     ///
+    /// - Returns: An array of ImmuTableRows representing the keyring accounts.
     ///
     private func rowsForConnectedKeyringAccounts(accounts: [KeyringAccount]) -> [ImmuTableRow] {
         var rows = [ImmuTableRow]()
@@ -196,8 +212,12 @@ import WordPressShared
     }
 
 
+    /// Checks if the specified keyring account is connected.
     ///
+    /// - Parameters:
+    ///     - keyringAccount: The keyring account to check. 
     ///
+    /// - Returns: true if the keyring account is being used by an existing publicize connection. False otherwise.
     ///
     private func accountIsConnected(keyringAccount: KeyringAccount) -> Bool {
         guard let existingConnections = existingPublicizeConnections else {
@@ -220,11 +240,12 @@ import WordPressShared
     //MARK: - Actions
 
 
+    /// Notifies the delegate that the user has clicked the close button to dismiss the controller.
     ///
-    ///
+    /// - Parameters:
+    ///     - sender: The close button that was tapped.
     ///
     func handleCloseTapped(sender: UIBarButtonItem) {
-        dismissViewControllerAnimated(true, completion: nil)
         delegate?.didDismissSharingAccountViewController(self)
     }
 
@@ -232,19 +253,18 @@ import WordPressShared
     //MARK: - Structs
 
 
-    ///
-    ///
+    /// KeyringAccount is used to normalize the list of avaiable accounts while
+    /// preserving the owning keyring connection.
     ///
     struct KeyringAccount {
-        var name: String
-        var externalID: String?
-        var externalIDForConnection: String
+        var name: String // The account name
+        var externalID: String? // The actual externalID value that should be passed when creating/updating a publicize connection.
+        var externalIDForConnection: String // The effective external ID that should be used for comparing a keyring account with a PublicizeConnection.
         var keyringConnection: KeyringConnection
     }
 
 
-    ///
-    ///
+    /// An ImmuTableRow class.
     ///
     struct KeyringRow : ImmuTableRow {
         static let cell = ImmuTableCell.Class(WPTableViewCellValue1)
@@ -263,8 +283,7 @@ import WordPressShared
 }
 
 
-///
-///
+/// Delegate protocol.
 ///
 @objc protocol SharingAccountSelectionDelegate : NSObjectProtocol
 {
