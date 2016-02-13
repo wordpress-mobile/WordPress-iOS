@@ -203,14 +203,13 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)disconnectPublicizeConnection
 {
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [sharingService deletePublicizeConnectionForBlog:self.blog pubConn:self.publicizeConnection success:^{
-        if (self.navigationController.topViewController == self) {
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-
-    } failure:^(NSError *error) {
+    [sharingService deletePublicizeConnectionForBlog:self.blog pubConn:self.publicizeConnection success:nil failure:^(NSError *error) {
+        DDLogError([error description]);
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
     }];
+
+    // Since the service optimistically deletes the connection, go ahead and pop.
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)promptToConfirmDisconnect
