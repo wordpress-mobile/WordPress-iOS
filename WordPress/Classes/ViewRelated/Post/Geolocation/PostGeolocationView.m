@@ -9,6 +9,7 @@ const CGFloat GeoViewMinHeight = 130.0f;
 @property (nonatomic, strong) MKMapView *mapView;
 @property (nonatomic, strong) UILabel *addressLabel;
 @property (nonatomic, strong) PostAnnotation *annotation;
+@property (nonatomic, strong) UIImageView *chevron;
 
 @end
 
@@ -39,7 +40,12 @@ const CGFloat GeoViewMinHeight = 130.0f;
     self.addressLabel.textColor = [WPStyleGuide allTAllShadeGrey];
     self.addressLabel.numberOfLines = 0;
     self.addressLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    
     [self addSubview:self.addressLabel];
+    
+    self.chevron = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"disclosure-chevron"]];
+    self.chevron.hidden = YES;
+    [self addSubview:self.chevron];
 }
 
 - (void)layoutSubviews
@@ -56,6 +62,8 @@ const CGFloat GeoViewMinHeight = 130.0f;
 
     self.mapView.frame = CGRectMake(0.0, 0.0, width, mapHeight);
     self.addressLabel.frame = CGRectMake(labelX, mapHeight, labelWidth, addressLabelHeight);
+    CGSize chevronSize = self.chevron.frame.size;
+    self.chevron.frame = CGRectMake(labelWidth-chevronSize.width, mapHeight+((addressLabelHeight-chevronSize.height)/2), chevronSize.width, chevronSize.height);
 }
 
 - (void)setAddress:(NSString *)address
@@ -119,5 +127,16 @@ const CGFloat GeoViewMinHeight = 130.0f;
 {
     self.mapView.scrollEnabled = scrollEnabled;
 }
+
+- (BOOL)chevronHidden
+{
+    return self.chevron.hidden;
+}
+
+- (void)setChevronHidden:(BOOL)hidden
+{
+    self.chevron.hidden = hidden;
+}
+
 
 @end
