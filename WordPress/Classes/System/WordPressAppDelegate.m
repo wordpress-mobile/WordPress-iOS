@@ -6,7 +6,6 @@
 // Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
-#import <GooglePlus/GooglePlus.h>
 #import <HockeySDK/HockeySDK.h>
 #import <Reachability/Reachability.h>
 #import <Simperium/Simperium.h>
@@ -186,10 +185,6 @@ int ddLogLevel                                                  = DDLogLevelInfo
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
                                                           sourceApplication:sourceApplication
                                                                  annotation:annotation]) {
-        returnValue = YES;
-    }
-
-    if ([[GPPShare sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
         returnValue = YES;
     }
 
@@ -376,8 +371,6 @@ int ddLogLevel                                                  = DDLogLevelInfo
     [SupportViewController checkIfFeedbackShouldBeEnabled];
     
     [HelpshiftUtils setup];
-    
-    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
     
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];

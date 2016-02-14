@@ -66,7 +66,6 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - FormatterKit/UnitOfInformationFormatter (1.8.0)
   - FormatterKit/URLRequestFormatter (1.8.0)
-  - google-plus-ios-sdk (1.7.1)
   - Helpshift (5.3.0-supportXcode6)
   - HockeySDK (3.8.5):
     - HockeySDK/AllFeaturesLib (= 3.8.5)
@@ -190,7 +189,6 @@ DEPENDENCIES:
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
   - FormatterKit (~> 1.8.0)
-  - google-plus-ios-sdk (~> 1.7)
   - Helpshift (~> 5.3.0-support)
   - HockeySDK (~> 3.8.0)
   - KIF/IdentifierTests (~> 3.1)
@@ -262,7 +260,6 @@ SPEC CHECKSUMS:
   EmailChecker: 78dd8dfa9d004826c8b5889be6c380b72b837d44
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
-  google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
   Helpshift: af8567ca7991c6d2c1aa76e10ee6e6893409c0a1
   HockeySDK: dd11a2b9da3372fd025643bee5bc10c8c613d169
   KIF: 0a82046d06f3648799cac522d2d0f7934214caac

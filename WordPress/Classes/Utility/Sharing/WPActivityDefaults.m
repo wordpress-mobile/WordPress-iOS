@@ -3,7 +3,6 @@
 #import "SafariActivity.h"
 #import "InstapaperActivity.h"
 #import "PocketActivity.h"
-#import "GooglePlusActivity.h"
 #import "WordPressActivity.h"
 
 @implementation WPActivityDefaults
@@ -13,10 +12,9 @@
     SafariActivity *safariActivity = [[SafariActivity alloc] init];
     InstapaperActivity *instapaperActivity = [[InstapaperActivity alloc] init];
     PocketActivity *pocketActivity = [[PocketActivity alloc] init];
-    GooglePlusActivity *googlePlusActivity = [[GooglePlusActivity alloc] init];
     WordPressActivity *wordPressActivity = [[WordPressActivity alloc] init];
 
-    return @[safariActivity, wordPressActivity, instapaperActivity, pocketActivity, googlePlusActivity];
+    return @[safariActivity, wordPressActivity, instapaperActivity, pocketActivity];
 }
 
 + (void)trackActivityType:(NSString *)activityType
@@ -36,8 +34,6 @@
         stat = WPAnalyticsStatSentItemToInstapaper;
     } else if ([activityType isEqualToString:NSStringFromClass([PocketActivity class])]) {
         stat = WPAnalyticsStatSentItemToPocket;
-    } else if ([activityType isEqualToString:NSStringFromClass([GooglePlusActivity class])]) {
-        stat = WPAnalyticsStatSentItemToGooglePlus;
     } else if ([activityType isEqualToString:NSStringFromClass([WordPressActivity class])]) {
         stat = WPAnalyticsStatSentItemToWordPress;
     } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard] || [activityType isEqualToString:UIActivityTypeAddToReadingList] || [activityType isEqualToString:NSStringFromClass([SafariActivity class])]) {
