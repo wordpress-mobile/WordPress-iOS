@@ -3,7 +3,9 @@ import WordPressShared
 
 class PlanDetailViewController: UIViewController {
     var plan: Plan!
-    
+
+    static let navigationRestorationIdentifier = "PlanDetailNavigation"
+    static var restorationIdentifier: String { return NSStringFromClass(self) }
     private let cellIdentifier = "PlanFeatureListItem"
     
     private let tableViewHorizontalMargin: CGFloat = 24.0
@@ -31,8 +33,23 @@ class PlanDetailViewController: UIViewController {
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
         
         controller.plan = plan
-        
+
         return controller
+    }
+
+    class func navigationControllerWithPlan(plan: Plan) -> UINavigationController {
+        let controller = controllerWithPlan(plan)
+        let navigationController = self.navigationController()
+        navigationController.setViewControllers([controller], animated: false)
+        return navigationController
+    }
+
+    private class func navigationController() -> UINavigationController {
+        let navigationController = UINavigationController()
+        navigationController.modalPresentationStyle = .FormSheet
+        navigationController.restorationClass = PlanDetailViewController.self
+        navigationController.restorationIdentifier = PlanDetailViewController.navigationRestorationIdentifier
+        return navigationController
     }
 
     override func prefersStatusBarHidden() -> Bool {
@@ -44,6 +61,7 @@ class PlanDetailViewController: UIViewController {
         
         title = plan.title
         navigationItem.leftBarButtonItem = cancelXButton
+        restorationClass = PlanDetailViewController.self
         
         configureAppearance()
         configureImmuTable()
@@ -155,6 +173,37 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
         } else {
             cell.backgroundColor = WPStyleGuide.lightGrey()
         }
+    }
+}
+
+extension PlanDetailViewController: UIViewControllerRestoration {
+    struct EncodingKey {
+        static let plan = "plan"
+    }
+
+    static func viewControllerWithRestorationIdentifierPath(identifierComponents: [AnyObject], coder: NSCoder) -> UIViewController? {
+        guard let identifier = identifierComponents.last as? String else {
+            return nil
+        }
+
+        switch identifier {
+        case PlanDetailViewController.restorationIdentifier:
+            let planID = coder.decodeIntegerForKey(EncodingKey.plan)
+            guard let plan = Plan(rawValue: planID) else {
+                return nil
+            }
+            return PlanDetailViewController.controllerWithPlan(plan)
+        case PlanDetailViewController.navigationRestorationIdentifier:
+            return navigationController()
+        default:
+            return nil
+        }
+        
+    }
+
+    override func encodeRestorableStateWithCoder(coder: NSCoder) {
+        super.encodeRestorableStateWithCoder(coder)
+        coder.encodeInteger(plan.rawValue, forKey: EncodingKey.plan)
     }
 }
 

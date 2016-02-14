@@ -103,10 +103,7 @@ struct PlanListViewModel {
 
     func controllerForPlanDetails(plan: Plan) -> ImmuTableRowControllerGenerator {
         return { row in
-            let planVC = PlanDetailViewController.controllerWithPlan(plan)
-            let navigationVC = UINavigationController(rootViewController: planVC)
-            navigationVC.modalPresentationStyle = .FormSheet
-            return navigationVC
+            return PlanDetailViewController.navigationControllerWithPlan(plan)
         }
     }
 
