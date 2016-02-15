@@ -1177,21 +1177,9 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [WPAppAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam withBlogID:block.metaSiteID];
     };
     
-    // Confirmation AlertView
-    NSString *message = NSLocalizedString(@"Are you sure you want to mark this comment as Spam?",
-                                          @"Message asking for confirmation before marking a comment as spam");
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
-                                                                             message:message
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-    
-    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") handler:nil];
-    [alertController addDestructiveActionWithTitle:NSLocalizedString(@"Spam", @"Spam") handler:^(UIAlertAction *action) {
-        self.onDeletionRequestCallback(spamAction);    
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
+    // Hit the DeletionRequest Callback
+    self.onDeletionRequestCallback(spamAction);    
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)trashCommentWithBlock:(NotificationBlock *)block
@@ -1215,21 +1203,9 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [WPAppAnalytics track:WPAnalyticsStatNotificationsCommentTrashed withBlogID:block.metaSiteID];
     };
     
-    // Confirmation AlertView
-    NSString *message = NSLocalizedString(@"Are you sure you want to delete this comment?",
-                                          @"Message asking for confirmation on comment deletion");
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"Confirm", @"Confirm")
-                                                                             message:message
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-    
-    [alertController addCancelActionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") handler:nil];
-    [alertController addDestructiveActionWithTitle:NSLocalizedString(@"Delete", @"Delete") handler:^(UIAlertAction *action) {
-        self.onDeletionRequestCallback(deletionAction);
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    }];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
+    // Hit the DeletionRequest Callback
+    self.onDeletionRequestCallback(deletionAction);
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 
