@@ -54,7 +54,8 @@
 
 #pragma mark - Appearance Related Methods
 
-- (UIBarButtonItem *)refreshButton {
+- (UIBarButtonItem *)refreshButton
+{
     if (!_refreshButton) {
         UIImage *image = [[UIImage imageNamed:@"gridicons-sync"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         _refreshButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(updateLocation)];
@@ -62,7 +63,8 @@
     return _refreshButton;
 }
 
-- (UIBarButtonItem *)activityItem {
+- (UIBarButtonItem *)activityItem
+{
     if (!_activityItem) {
         _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
         _activityItem = [[UIBarButtonItem alloc] initWithCustomView:_activityIndicator];
@@ -70,7 +72,8 @@
     return _activityItem;
 }
 
-- (PostGeolocationView *)geoView {
+- (PostGeolocationView *)geoView
+{
     if (!_geoView) {
         CGRect frame = self.view.bounds;
         UIViewAutoresizing mask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -119,11 +122,13 @@
     [self refreshView];
 }
 
-- (void)showLocationPermissionDisabled {
+- (void)showLocationPermissionDisabled
+{
     [self showLocationError:[NSError errorWithDomain:kCLErrorDomain code:kCLErrorDenied userInfo:nil]];
 }
 
-- (void)showLocationError:(NSError *)error {
+- (void)showLocationError:(NSError *)error
+{
     NSString *title = NSLocalizedString(@"Location", @"Title for alert when a generic error happened when trying to find the location of the device");
     NSString *message = NSLocalizedString(@"There was a problem when trying to access your location. Please try again later.",  @"Explaining to the user there was an error trying to obtain the current location of the user.");
     NSString *cancelText = NSLocalizedString(@"OK", "");
