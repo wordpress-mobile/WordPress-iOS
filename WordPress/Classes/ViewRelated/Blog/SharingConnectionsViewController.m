@@ -15,6 +15,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 @property (nonatomic, strong, readonly) Blog *blog;
 @property (nonatomic, strong) PublicizeService *publicizeService;
 @property (nonatomic, strong) SharingAuthorizationHelper *helper;
+@property (nonatomic, assign) BOOL connecting;
 
 @end
 
@@ -172,12 +173,27 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         [self configurePublicizeCell:cell atIndexPath:indexPath];
 
     } else {
-        [WPStyleGuide configureTableViewActionCell:cell];
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.textLabel.text = NSLocalizedString(@"Connect", @"Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter.");
+        [self configureConnectionCell:cell atIndexPath:indexPath];
     }
 
     return cell;
+}
+
+- (void)configureConnectionCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    [WPStyleGuide configureTableViewActionCell:cell];
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    if (self.connecting) {
+        cell.textLabel.text = NSLocalizedString(@"Connecting...", @"Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter.");
+        UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        cell.accessoryView = activityView;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [activityView startAnimating];
+    } else {
+        cell.textLabel.text = NSLocalizedString(@"Connect", @"Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter.");
+        cell.accessoryView = nil;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    }
 }
 
 - (void)configurePublicizeCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
@@ -201,6 +217,10 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         return;
     }
 
+    if (self.connecting) {
+        return;
+    }
+
     [self handleConnectTapped:indexPath];
 }
 
@@ -219,8 +239,21 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 #pragma mark - SharingAuthorizationHelper Delegate Methods
 
+- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper connectionFailedForService:(PublicizeService *)service
+{
+    self.connecting = NO;
+    [self.tableView reloadData];
+}
+
+- (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper willConnectToService:(PublicizeService *)service usingKeyringConnection:(KeyringConnection *)keyringConnection
+{
+    self.connecting = YES;
+    [self.tableView reloadData];
+}
+
 - (void)sharingAuthorizationHelper:(SharingAuthorizationHelper *)helper didConnectToService:(PublicizeService *)service withPublicizeConnection:(PublicizeConnection *)keyringConnection
 {
+    self.connecting = NO;
     [self.tableView reloadData];
     [self showDetailForConnection:keyringConnection];
 }
