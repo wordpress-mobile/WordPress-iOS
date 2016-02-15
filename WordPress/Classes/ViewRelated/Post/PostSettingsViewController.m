@@ -618,35 +618,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     return cell;
 }
 
-- (void)showLocationError:(NSError *)error {
-    NSString *title = NSLocalizedString(@"Location", @"Title for alert when a generic error happened when trying to find the location of the device");
-    NSString *message = NSLocalizedString(@"There was a problem when trying to access your location. Please try again later.",  @"Explaining to the user there was an error trying to obtain the current location of the user.");
-    NSString *cancelText = NSLocalizedString(@"OK", "");
-    NSString *otherButtonTitle = nil;
-    if (error.domain == kCLErrorDomain && error.code == kCLErrorDenied) {
-        otherButtonTitle = NSLocalizedString(@"Open Settings", @"Go to the settings app");
-        title = NSLocalizedString(@"Location", @"Title for alert when access to the media library is not granted by the user");
-        message = NSLocalizedString(@"WordPress needs permission to access your device's location in order to add it to your post. Please change the privacy settings if you wish to allow this.",  @"Explaining to the user why the app needs access to the device location.");
-    }
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:cancelText style:UIAlertActionStyleCancel handler:nil];
-    [alertController addAction:okAction];
-    
-    if (otherButtonTitle) {
-        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:otherButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
-            [[UIApplication sharedApplication] openURL:settingsURL];
-        }];
-        [alertController addAction:otherAction];
-    }
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
 - (void)updatePostLocationState:(BOOL)geoLocationOn {
-    if (geoLocationOn && self.locationService.locationServicesDisabled) {
-        [self showLocationError:[NSError errorWithDomain:kCLErrorDomain code:kCLErrorDenied userInfo:nil]];
-    } else if (geoLocationOn && !self.locationService.locationServicesDisabled) {
+    if (geoLocationOn) {
         __weak __typeof__(self) weakSelf = self;
         [self.locationService getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
             __typeof__(weakSelf) strongSelf = weakSelf;
@@ -654,7 +627,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
                 return;
             }
             if (error) {
-                [strongSelf showLocationError:error];
+                [strongSelf.locationService showAlertForLocationError:error];
                 strongSelf.geoLocationSwitchCell.on = NO;
             } else  {
                 strongSelf.post.geolocation = [[Coordinate alloc] initWithCoordinate:location.coordinate];
