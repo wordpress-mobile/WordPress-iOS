@@ -107,7 +107,6 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 - (NotificationBlock *)snippetBlock;
 
 - (BOOL)isUnapprovedComment;
-- (void)didChangeOverrides;
 
 @end
 
