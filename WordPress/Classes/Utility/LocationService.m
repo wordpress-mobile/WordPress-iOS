@@ -33,12 +33,12 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 {
     self = [super init];
     if (self) {
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.delegate = self;
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-        self.locationManager.distanceFilter = 0;
-        self.geocoder = [[CLGeocoder alloc] init];
-        self.completionBlocks = [NSMutableArray array];
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+        _locationManager.distanceFilter = 0;
+        _geocoder = [[CLGeocoder alloc] init];
+        _completionBlocks = [NSMutableArray array];
     }
 
     return self;
