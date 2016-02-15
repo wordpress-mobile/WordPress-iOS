@@ -98,10 +98,9 @@ const CGFloat GeoViewMinHeight = 130.0f;
 - (void)updateAddressLabel
 {
     NSString *coordText = @"";
-    CLLocationDegrees latitude = self.coordinate.latitude;
-    CLLocationDegrees longitude = self.coordinate.longitude;
-
-    if (latitude != 0 && longitude !=0 ) {
+    if (self.coordinate != nil) {
+        CLLocationDegrees latitude = self.coordinate.latitude;
+        CLLocationDegrees longitude = self.coordinate.longitude;
         NSInteger latD = trunc(fabs(latitude));
         NSInteger latM = trunc((fabs(latitude) - latD) * 60);
         NSInteger lonD = trunc(fabs(longitude));
