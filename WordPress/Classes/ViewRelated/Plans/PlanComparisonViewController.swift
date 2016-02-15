@@ -172,7 +172,7 @@ extension PlanComparisonViewController: UIScrollViewDelegate {
         let currentPage = Int(floor(centerX / pageWidth))
 
         // Keep it within bounds
-        return max(min(currentPage, allPlans.count - 1), 0)
+        return currentPage.clamp(min: 0, max: allPlans.count - 1)
     }
 
     /// @return True if there was valid page to scroll to, false if we've reached the beginning / end
