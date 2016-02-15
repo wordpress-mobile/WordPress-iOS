@@ -183,7 +183,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     __weak __typeof(self) weakSelf = self;
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-
     [sharingService updateSharedForBlog:self.blog
                                  shared:shared
                  forPublicizeConnection:self.publicizeConnection

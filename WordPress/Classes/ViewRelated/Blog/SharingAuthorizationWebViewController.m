@@ -81,6 +81,8 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
 - (void)handleAuthorizationAllowed
 {
+
+
     // Note: There are situations where this can be called in error due to how
     // individual services choose to reply to an authorization request.
     // Delegates should expect to handle a false positive.
@@ -154,6 +156,11 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     shouldStartLoadWithRequest:(NSURLRequest *)request
                 navigationType:(UIWebViewNavigationType)navigationType
 {
+    // Prevent a second verify load by someone happy clicking.
+    if (self.loadingVerify) {
+        return NO;
+    }
+
     AuthorizeAction action = [self requestedAuthorizeAction:request];
     switch (action) {
         case AuthorizeActionNone:
