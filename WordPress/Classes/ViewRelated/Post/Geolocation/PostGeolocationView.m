@@ -115,7 +115,15 @@ const CGFloat GeoViewMinHeight = 130.0f;
                      latD, latM, latDir,
                      lonD, lonM, lonDir];
     }
-    self.addressLabel.text = [NSString stringWithFormat:@"%@\n%@", self.address, coordText];
+    NSString *address = self.address ? [self.address stringByAppendingString:@"\n"] : @"";
+    
+    NSDictionary *addressStyle = @{NSFontAttributeName:[WPStyleGuide regularTextFont], NSForegroundColorAttributeName:[WPStyleGuide darkGrey]};
+    NSDictionary *coordinateStyle = @{NSFontAttributeName:[WPStyleGuide regularTextFont], NSForegroundColorAttributeName:[WPStyleGuide grey]};
+
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:address attributes:addressStyle];
+    NSAttributedString *coordinates = [[NSMutableAttributedString alloc] initWithString:coordText attributes:coordinateStyle];
+    [attributedString appendAttributedString:coordinates];
+    self.addressLabel.attributedText = attributedString;
 }
 
 - (BOOL)scrollEnabled
