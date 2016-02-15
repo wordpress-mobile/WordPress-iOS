@@ -1,4 +1,4 @@
-#import "NotificationsViewController.h"
+#import "NotificationsViewController+Internal.h"
 
 #import <Simperium/Simperium.h>
 #import "WordPressAppDelegate.h"
@@ -34,6 +34,14 @@
 #import "WordPress-Swift.h"
 
 
+@interface NotificationsViewController (Protocols) <SPBucketDelegate,
+                                                    WPNoResultsViewDelegate,
+                                                    WPTableViewHandlerDelegate,
+                                                    ABXPromptViewDelegate,
+                                                    ABXFeedbackViewControllerDelegate>
+
+@end
+
 
 #pragma mark ====================================================================================
 #pragma mark Constants
@@ -55,27 +63,6 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     NotificationFilterFollow,
     NotificationFilterLike
 };
-
-
-#pragma mark ====================================================================================
-#pragma mark Private Properties
-#pragma mark ====================================================================================
-
-@interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate,
-                                            ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
-@property (nonatomic, strong) IBOutlet UIView               *tableHeaderView;
-@property (nonatomic, strong) IBOutlet UISegmentedControl   *filtersSegmentedControl;
-@property (nonatomic, strong) IBOutlet ABXPromptView        *ratingsView;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *ratingsTopConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *ratingsHeightConstraint;
-@property (nonatomic, strong) WPTableViewHandler            *tableViewHandler;
-@property (nonatomic, strong) WPNoResultsView               *noResultsView;
-@property (nonatomic, strong) NSString                      *pushNotificationID;
-@property (nonatomic, strong) NSDate                        *pushNotificationDate;
-@property (nonatomic, strong) NSDate                        *lastReloadDate;
-@property (nonatomic, strong) NSMutableSet                  *notificationIdsMarkedForDeletion;
-@property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
-@end
 
 
 #pragma mark ====================================================================================
