@@ -4,7 +4,6 @@
 
 static LocationService *instance;
 static NSInteger const LocationHorizontalAccuracyThreshold = 100; // Meters
-static NSInteger const LocationServiceTimeoutDuration = 10; // Seconds
 NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 @interface LocationService()<CLLocationManagerDelegate>
@@ -12,7 +11,6 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *geocoder;
 @property (nonatomic, strong) NSMutableArray *completionBlocks;
-@property (nonatomic, strong) NSTimer *timeoutClock;
 @property (nonatomic, readwrite) BOOL locationServiceRunning;
 @property (nonatomic, strong) CLLocation *lastUpdatedLocation;
 @property (nonatomic, strong, readwrite) CLLocation *lastGeocodedLocation;
@@ -37,7 +35,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     if (self) {
         self.locationManager = [[CLLocationManager alloc] init];
         self.locationManager.delegate = self;
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
         self.locationManager.distanceFilter = 0;
         self.geocoder = [[CLGeocoder alloc] init];
         self.completionBlocks = [NSMutableArray array];
@@ -152,38 +150,14 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 {
     [self stopUpdatingLocation];
     self.locationServiceRunning = YES;
-    [self.locationManager startUpdatingLocation];
-    self.timeoutClock = [NSTimer scheduledTimerWithTimeInterval:LocationServiceTimeoutDuration
-                                                         target:self
-                                                       selector:@selector(timeoutUpdatingLocation)
-                                                       userInfo:nil
-                                                        repeats:NO];
+    [self.locationManager requestLocation];
 }
 
 - (void)stopUpdatingLocation
 {
     [self.locationManager stopUpdatingLocation];
-    [self.timeoutClock invalidate];
-    self.timeoutClock = nil;
+    self.locationServiceRunning = YES;
     self.lastUpdatedLocation = nil;
-}
-
-- (void)timeoutUpdatingLocation
-{
-    CLLocation *lastLocation;
-    [self stopUpdatingLocation];
-#if TARGET_IPHONE_SIMULATOR
-    lastLocation = self.locationManager.location;
-#endif
-    if (lastLocation) {
-        [self getAddressForLocation:lastLocation];
-    } else {
-        NSString *description = NSLocalizedString(@"Unable to find the current location in a reasonable amount of time.", @"Error message that is displayed when the user's current location could not be found after a few seconds.");
-        NSError *error = [NSError errorWithDomain:LocationServiceErrorDomain
-                                             code:LocationServiceErrorLocationServiceTimedOut
-                                         userInfo:@{NSLocalizedDescriptionKey:description}];
-        [self serviceFailed:error];
-    }
 }
 
 #pragma mark - CLLocationManager Delegate Methods
