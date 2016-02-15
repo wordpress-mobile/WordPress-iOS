@@ -649,7 +649,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     } else if (geoLocationOn && !self.locationService.locationServicesDisabled) {
         __weak __typeof__(self) weakSelf = self;
         [self.locationService getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
-            __typeof__(self) strongSelf = weakSelf;
+            __typeof__(weakSelf) strongSelf = weakSelf;
             if (!strongSelf) {
                 return;
             }
