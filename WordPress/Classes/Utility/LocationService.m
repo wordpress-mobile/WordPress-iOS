@@ -86,7 +86,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
         NSString *address;
         if (placemarks) {
-            CLPlacemark *placemark = [placemarks objectAtIndex:0];
+            CLPlacemark *placemark = [placemarks firstObject];
             if (placemark.addressDictionary) {
                 address = [[placemark.addressDictionary arrayForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
             } else {
@@ -126,8 +126,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     self.lastGeocodedAddress = address;
     self.lastGeocodedLocation = location;
 
-    for (NSInteger i = 0; i < [self.completionBlocks count]; i++) {
-        LocationServiceCompletionBlock block = [self.completionBlocks objectAtIndex:i];
+    for (LocationServiceCompletionBlock block in self.completionBlocks) {
         block(location, address, error);
     }
 
@@ -139,8 +138,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     DDLogError(@"Error finding location: %@", error);
     [self stopUpdatingLocation];
     self.locationServiceRunning = NO;
-    for (NSInteger i = 0; i < [self.completionBlocks count]; i++) {
-        LocationServiceCompletionBlock block = [self.completionBlocks objectAtIndex:i];
+    for (LocationServiceCompletionBlock block in self.completionBlocks) {
         block(nil, nil, error);
     }
     [self.completionBlocks removeAllObjects];
