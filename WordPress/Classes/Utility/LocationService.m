@@ -12,7 +12,6 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 @property (nonatomic, strong) CLGeocoder *geocoder;
 @property (nonatomic, strong) NSMutableArray *completionBlocks;
 @property (nonatomic, readwrite) BOOL locationServiceRunning;
-@property (nonatomic, strong) CLLocation *lastUpdatedLocation;
 @property (nonatomic, strong, readwrite) CLLocation *lastGeocodedLocation;
 @property (nonatomic, strong, readwrite) NSString *lastGeocodedAddress;
 
@@ -154,8 +153,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 - (void)stopUpdatingLocation
 {
     [self.locationManager stopUpdatingLocation];
-    self.locationServiceRunning = YES;
-    self.lastUpdatedLocation = nil;
+    self.locationServiceRunning = NO;
 }
 
 #pragma mark - CLLocationManager Delegate Methods
@@ -168,18 +166,8 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *location = [locations lastObject]; // The last item is the most recent.
-
-#if TARGET_IPHONE_SIMULATOR
     [self stopUpdatingLocation];
     [self getAddressForLocation:location];
-#else
-    if (location.horizontalAccuracy > 0 && location.horizontalAccuracy < LocationHorizontalAccuracyThreshold) {
-        [self stopUpdatingLocation];
-        [self getAddressForLocation:location];
-    } else {
-        self.lastUpdatedLocation = location;
-    }
-#endif
 }
 
 @end
