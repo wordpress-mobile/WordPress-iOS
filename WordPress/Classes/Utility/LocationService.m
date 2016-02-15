@@ -50,9 +50,6 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
         return YES;
     }
-    if (status == kCLAuthorizationStatusNotDetermined) {
-        [self.locationManager requestWhenInUseAuthorization];
-    }
     return NO;
 }
 
@@ -63,6 +60,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     }
     self.lastGeocodedAddress = nil;
     self.lastGeocodedLocation = nil;
+    [self.locationManager requestWhenInUseAuthorization];
     [self startUpdatingLocation];
 }
 
@@ -175,6 +173,13 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     CLLocation *location = [locations lastObject]; // The last item is the most recent.
     [self stopUpdatingLocation];
     [self getAddressForLocation:location];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
+        [self serviceFailed:[NSError errorWithDomain:kCLErrorDomain code:kCLErrorDenied userInfo:nil]];
+    }
 }
 
 @end
