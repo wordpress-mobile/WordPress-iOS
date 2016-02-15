@@ -90,9 +90,7 @@
 - (void)updateLocation
 {
     if ([self.locationService locationServicesDisabled]) {
-        [WPError showAlertWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
-                            message:NSLocalizedString(@"Location Services are turned off. \nTo add or update this post's location, please enable Location Services in the Settings app.", @"Message of an alert explaining that location services need to be enabled.")
-                  withSupportButton:NO];
+        [self showLocationPermissionDisabled];
         return;
     }
 
@@ -119,6 +117,35 @@
     }];
 
     [self refreshView];
+}
+
+- (void)showLocationPermissionDisabled {
+    [self showLocationError:[NSError errorWithDomain:kCLErrorDomain code:kCLErrorDenied userInfo:nil]];
+}
+
+- (void)showLocationError:(NSError *)error {
+    NSString *title = NSLocalizedString(@"Location", @"Title for alert when a generic error happened when trying to find the location of the device");
+    NSString *message = NSLocalizedString(@"There was a problem when trying to access your location. Please try again later.",  @"Explaining to the user there was an error trying to obtain the current location of the user.");
+    NSString *cancelText = NSLocalizedString(@"OK", "");
+    NSString *otherButtonTitle = nil;
+    if (error.domain == kCLErrorDomain && error.code == kCLErrorDenied) {
+        otherButtonTitle = NSLocalizedString(@"Open Settings", @"Go to the settings app");
+        title = NSLocalizedString(@"Location", @"Title for alert when access to the media library is not granted by the user");
+        message = NSLocalizedString(@"WordPress needs permission to access your device location in order to geotag your post. Please change the privacy settings if you wish to allow this.",  @"Explaining to the user why the app needs access to the device location.");
+    }
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:cancelText style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:okAction];
+    
+    if (otherButtonTitle) {
+        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:otherButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            [[UIApplication sharedApplication] openURL:settingsURL];
+        }];
+        [alertController addAction:otherAction];
+    }
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)refreshView

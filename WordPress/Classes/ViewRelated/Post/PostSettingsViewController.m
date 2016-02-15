@@ -644,7 +644,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 }
 
 - (void)updatePostLocationState:(BOOL)geoLocationOn {
-    if (geoLocationOn && !self.locationService.locationServicesDisabled) {
+    if (geoLocationOn && self.locationService.locationServicesDisabled) {
+        [self showLocationError:[NSError errorWithDomain:kCLErrorDomain code:kCLErrorDenied userInfo:nil]];
+    } else if (geoLocationOn && !self.locationService.locationServicesDisabled) {
         __weak __typeof__(self) weakSelf = self;
         [self.locationService getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
             __typeof__(self) strongSelf = weakSelf;
