@@ -952,7 +952,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)showPostGeolocationSelector
 {
-    PostGeolocationViewController *controller = [[PostGeolocationViewController alloc] initWithPost:self.post];
+    PostGeolocationViewController *controller = [[PostGeolocationViewController alloc] initWithPost:self.post locationService:self.locationService];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

@@ -17,16 +17,18 @@
 @property (nonatomic, strong) UIBarButtonItem *refreshButton;
 @property (nonatomic, strong) UIBarButtonItem *activityItem;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) LocationService *locationService;
 
 @end
 
 @implementation PostGeolocationViewController
 
-- (id)initWithPost:(Post *)post
+- (id)initWithPost:(Post *)post locationService:(LocationService *)locationService
 {
     self = [super init];
     if (self) {
-        self.post = post;
+        _post = post;
+        _locationService = locationService;
     }
     return self;
 }
@@ -87,7 +89,7 @@
 
 - (void)updateLocation
 {
-    if ([[LocationService sharedService] locationServicesDisabled]) {
+    if ([self.locationService locationServicesDisabled]) {
         [WPError showAlertWithTitle:NSLocalizedString(@"Location Unavailable", @"Title of an alert view stating that the user's location is unavailable.")
                             message:NSLocalizedString(@"Location Services are turned off. \nTo add or update this post's location, please enable Location Services in the Settings app.", @"Message of an alert explaining that location services need to be enabled.")
                   withSupportButton:NO];
@@ -101,7 +103,7 @@
         return;
     }
 
-    [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
+    [self.locationService getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
         if (location) {
             Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
             self.post.geolocation = coord;
@@ -123,17 +125,17 @@
 {
     [self refreshNavigationBar];
 
-    if ([[LocationService sharedService] locationServiceRunning]) {
+    if ([self.locationService locationServiceRunning]) {
         self.geoView.coordinate = nil;
         self.geoView.address = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
 
     } else if (self.post.geolocation) {
         self.geoView.coordinate = self.post.geolocation;
-        self.geoView.address = [[LocationService sharedService] lastGeocodedAddress];
+        self.geoView.address = [self.locationService lastGeocodedAddress];
 
     } else {
         self.geoView.coordinate = nil;
-        self.geoView.address = [[LocationService sharedService] lastGeocodedAddress];
+        self.geoView.address = [self.locationService lastGeocodedAddress];
     }
 }
 
@@ -145,7 +147,7 @@
     leftFixedSpacer.width = -2.0f;
     rightFixedSpacer.width = -5.0f;
 
-    if ([[LocationService sharedService] locationServiceRunning]) {
+    if ([self.locationService locationServiceRunning]) {
         self.navigationItem.rightBarButtonItems = @[leftFixedSpacer, self.activityItem, rightFixedSpacer];
         [self.activityIndicator startAnimating];
     } else {
