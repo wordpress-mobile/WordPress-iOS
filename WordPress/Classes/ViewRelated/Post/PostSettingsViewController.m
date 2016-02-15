@@ -723,17 +723,15 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     WPTableViewCell *cell;
     switch (indexPath.row) {
-        case (0): {
+        case 0:
             return self.geoLocationSwitchCell;
-        }
         break;
-        case(1): {
+        case 1:
             if ([self.locationService locationServiceRunning]) {
                 return self.geoLocationActivityCell;
             } else {
                 return self.postGeoLocationCell;
             }
-        }
         break;
     }
     return cell;
