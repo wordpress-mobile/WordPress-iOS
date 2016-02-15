@@ -3,7 +3,6 @@
 #import <CoreLocation/CoreLocation.h>
 
 static LocationService *instance;
-static NSInteger const LocationHorizontalAccuracyThreshold = 100; // Meters
 NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 @interface LocationService()<CLLocationManagerDelegate>
@@ -106,7 +105,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 - (BOOL)hasAddressForLocation:(CLLocation *)location
 {
-    if (self.lastGeocodedAddress != nil && [self.lastGeocodedLocation distanceFromLocation:location] <= LocationHorizontalAccuracyThreshold) {
+    if (self.lastGeocodedAddress != nil && [self.lastGeocodedLocation distanceFromLocation:location] <= kCLLocationAccuracyHundredMeters) {
         return YES;
     }
     return NO;
