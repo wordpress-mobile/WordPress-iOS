@@ -821,7 +821,7 @@ EditImageDetailsViewControllerDelegate
     [self.editorView saveSelection];
     [self.editorView.focusedField blur];
 	
-    if ([self.post hasLocalChanges]) {
+    if ([self.post canSave] && [self.post hasUnsavedChanges]) {
         [self showPostHasChangesAlert];
     } else {
         [self stopEditing];
