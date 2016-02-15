@@ -653,7 +653,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
             if (!strongSelf) {
                 return;
             }
-            if ( error) {
+            if (error) {
                 [strongSelf showLocationError:error];
                 strongSelf.geoLocationSwitchCell.on = NO;
             } else  {
