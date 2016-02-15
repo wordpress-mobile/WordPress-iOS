@@ -681,13 +681,18 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     return _geoLocationSwitchCell;
 }
 
+- (NSString *)findingLocationText
+{
+    return NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
+}
+
 - (PostGeolocationCell *)postGeoLocationCell {
     if (!_postGeoLocationCell) {
         _postGeoLocationCell = [[PostGeolocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         _postGeoLocationCell.tag = PostSettingsRowGeolocationMap;
     }
     Coordinate *coordinate = self.post.geolocation;
-    NSString *address = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
+    NSString *address = [self findingLocationText];
     if (coordinate) {
         CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
         if ([self.locationService hasAddressForLocation:postLocation]) {
@@ -714,7 +719,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         _geoLocationActivityCell.accessoryView = spinner;
         [spinner startAnimating];
-        _geoLocationActivityCell.textLabel.text = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
+        _geoLocationActivityCell.textLabel.text = [self findingLocationText];
     }
     return _geoLocationActivityCell;
 }
