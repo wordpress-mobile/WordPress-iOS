@@ -34,14 +34,6 @@
 #import "WordPress-Swift.h"
 
 
-@interface NotificationsViewController (Protocols) <SPBucketDelegate,
-                                                    WPNoResultsViewDelegate,
-                                                    WPTableViewHandlerDelegate,
-                                                    ABXPromptViewDelegate,
-                                                    ABXFeedbackViewControllerDelegate>
-
-@end
-
 
 #pragma mark ====================================================================================
 #pragma mark Constants
@@ -63,6 +55,20 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     NotificationFilterFollow,
     NotificationFilterLike
 };
+
+
+#pragma mark ====================================================================================
+#pragma mark Protocols
+#pragma mark ====================================================================================
+
+@interface NotificationsViewController (Protocols) <SPBucketDelegate,
+                                                    WPNoResultsViewDelegate,
+                                                    WPTableViewHandlerDelegate,
+                                                    ABXPromptViewDelegate,
+                                                    ABXFeedbackViewControllerDelegate>
+
+@end
+
 
 
 #pragma mark ====================================================================================
