@@ -196,6 +196,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)reconnectPublicizeConnection
 {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+
     [self.helper reconnectPublicizeConnection:self.publicizeConnection];
 }
 
@@ -213,6 +218,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)promptToConfirmDisconnect
 {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+
     NSString *message = NSLocalizedString(@"Disconnecting this account means published posts will no longer be automatically shared to %@", @"Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service.");
     message = [NSString stringWithFormat:message, self.publicizeService.label];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
