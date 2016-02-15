@@ -626,7 +626,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     if (error.domain == kCLErrorDomain && error.code == kCLErrorDenied) {
         otherButtonTitle = NSLocalizedString(@"Open Settings", @"Go to the settings app");
         title = NSLocalizedString(@"Location", @"Title for alert when access to the media library is not granted by the user");
-        message = NSLocalizedString(@"WordPress needs permission to access your device location in order to geotag your post. Please change the privacy settings if you wish to allow this.",  @"Explaining to the user why the app needs access to the device location.");
+        message = NSLocalizedString(@"WordPress needs permission to access your device's location in order to add it to your post. Please change the privacy settings if you wish to allow this.",  @"Explaining to the user why the app needs access to the device location.");
     }
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
