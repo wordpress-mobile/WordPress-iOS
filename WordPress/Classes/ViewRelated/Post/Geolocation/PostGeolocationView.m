@@ -63,7 +63,9 @@ const CGFloat GeoViewMinHeight = 130.0f;
     self.mapView.frame = CGRectMake(0.0, 0.0, width, mapHeight);
     self.addressLabel.frame = CGRectMake(labelX, mapHeight, labelWidth, addressLabelHeight);
     CGSize chevronSize = self.chevron.frame.size;
-    self.chevron.frame = CGRectMake(labelWidth-chevronSize.width, mapHeight+((addressLabelHeight-chevronSize.height)/2), chevronSize.width, chevronSize.height);
+    CGFloat chevronX= labelWidth-chevronSize.width;
+    CGFloat chevronY= mapHeight+((addressLabelHeight - chevronSize.height) / 2.0);
+    self.chevron.frame = CGRectMake(chevronX, chevronY, chevronSize.width, chevronSize.height);
 }
 
 - (void)setAddress:(NSString *)address
