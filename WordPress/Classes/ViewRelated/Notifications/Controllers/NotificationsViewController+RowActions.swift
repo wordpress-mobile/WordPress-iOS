@@ -2,8 +2,14 @@ import Foundation
 import WordPressShared
 
 
+/// In this Extension, we'll enhance NotificationsViewController, so that it supports *Swipeable* rows.
+/// On the first iteration, we'll only support Comment Actions (matching the Push Interactive Notifications
+/// actionable items).
+///
 extension NotificationsViewController
 {
+    // MARK: - UITableViewDelegate Methods
+    
     public override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         guard let note = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Notification else {
             return false
@@ -72,10 +78,24 @@ extension NotificationsViewController
     }
     
     
+    
+    // MARK: - Private Helpers
+    
+    /// Trashes a comment referenced by a given NotificationBlock.
+    ///
+    /// - Parameters:
+    ///     - block: The Notification's Comment Block
+    ///
     private func trashCommentWithBlock(block: NotificationBlock) {
 // TODO: Implement Me
     }
     
+    
+    /// Approves a comment referenced by a given NotificationBlock.
+    ///
+    /// - Parameters:
+    ///     - block: The Notification's Comment Block
+    ///
     private func approveCommentWithBlock(block: NotificationBlock) {
         let context = ContextManager.sharedInstance().mainContext
         let service = CommentService(managedObjectContext: context)
@@ -91,6 +111,12 @@ extension NotificationsViewController
         block.setActionOverrideValue(true, forKey: NoteActionApproveKey)
     }
     
+    
+    /// Unapproves a comment referenced by a given NotificationBlock.
+    ///
+    /// - Parameters:
+    ///     - block: The Notification's Comment Block
+    ///
     private func unapproveCommentWithBlock(block: NotificationBlock) {
         let context = ContextManager.sharedInstance().mainContext
         let service = CommentService(managedObjectContext: context)
