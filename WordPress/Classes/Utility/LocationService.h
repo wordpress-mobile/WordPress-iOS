@@ -72,4 +72,11 @@ extern NSString *const LocationServiceErrorDomain;
  */
 - (BOOL)hasAddressForLocation:(CLLocation *)location;
 
+/**
+ *  Shows an alert for an error resulting from a location request
+ *
+ *  @param error the error message to use for creating the alert
+ */
+- (void)showAlertForLocationError:(NSError *)error;
+
 @end
