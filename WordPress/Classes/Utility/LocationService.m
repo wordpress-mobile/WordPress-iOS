@@ -85,8 +85,16 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
         NSString *address;
         if (placemarks) {
             CLPlacemark *placemark = [placemarks firstObject];
-            if (placemark.addressDictionary) {
-                address = [[placemark.addressDictionary arrayForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
+            if (placemark.addressDictionary && placemark.addressDictionary[@"FormattedAddressLines"]) {
+                NSArray *formattedAddressLines = [placemark.addressDictionary arrayForKey:@"FormattedAddressLines"];
+                if (formattedAddressLines.count > 1) {
+                    address = [formattedAddressLines firstObject];
+                    formattedAddressLines = [formattedAddressLines subarrayWithRange:NSMakeRange(1, formattedAddressLines.count-1)];
+                    address = [address stringByAppendingString:@"\n"];
+                    address = [address stringByAppendingString:[formattedAddressLines componentsJoinedByString:@", "]];
+                } else {
+                    address = [formattedAddressLines componentsJoinedByString:@", "];
+                }
             } else {
                 // Fallback, just in case.
                 address = placemark.name;
