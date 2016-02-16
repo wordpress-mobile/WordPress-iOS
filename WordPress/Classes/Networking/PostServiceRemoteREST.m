@@ -36,7 +36,7 @@ NSString * const PostRemoteStatusScheduled = @"future";
 }
 
 - (void)getPostsOfType:(NSString *)postType
-               success:(void (^)(NSArray *))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *))failure
 {
     [self getPostsOfType:postType options:nil success:success failure:failure];
@@ -44,7 +44,7 @@ NSString * const PostRemoteStatusScheduled = @"future";
 
 - (void)getPostsOfType:(NSString *)postType
                options:(NSDictionary *)options
-               success:(void (^)(NSArray *))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([postType isKindOfClass:[NSString class]]);

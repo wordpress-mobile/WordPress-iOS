@@ -23,7 +23,7 @@
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)getPostsOfType:(NSString *)postType
-               success:(void (^)(NSArray *posts))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *error))failure;
 
 /**
@@ -36,7 +36,7 @@
  */
 - (void)getPostsOfType:(NSString *)postType
                options:(NSDictionary *)options
-               success:(void (^)(NSArray *posts))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *error))failure;
 
 /**

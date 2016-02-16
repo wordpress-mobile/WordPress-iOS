@@ -30,14 +30,14 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)getPostsOfType:(NSString *)postType
-               success:(void (^)(NSArray *))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *))failure {
     [self getPostsOfType:postType options:nil success:success failure:failure];
 }
 
 - (void)getPostsOfType:(NSString *)postType
                options:(NSDictionary *)options
-               success:(void (^)(NSArray *posts))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *error))failure {
     NSArray *statuses = @[PostStatusDraft, PostStatusPending, PostStatusPrivate, PostStatusPublish, PostStatusScheduled, PostStatusTrash];
     NSString *postStatus = [statuses componentsJoinedByString:@","];
@@ -197,7 +197,7 @@ const NSInteger HTTP404ErrorCode = 404;
 
 #pragma mark - Private methods
 
-- (NSArray *)remotePostsFromXMLRPCArray:(NSArray *)xmlrpcArray {
+- (NSArray <RemotePost *> *)remotePostsFromXMLRPCArray:(NSArray *)xmlrpcArray {
     return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcPost) {
         return [self remotePostFromXMLRPCDictionary:xmlrpcPost];
     }];

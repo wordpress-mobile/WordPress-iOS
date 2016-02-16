@@ -14,6 +14,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSArray *statuses;
 @property (nonatomic, strong) NSPredicate *predicateForFetchRequest;
+@property (nonatomic, assign) NSUInteger fetchLimit;
 
 + (NSArray *)newPostListFilters;
 
