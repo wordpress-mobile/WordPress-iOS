@@ -1,5 +1,6 @@
 #import "PostGeolocationView.h"
 #import "PostAnnotation.h"
+#import "WPFontManager.h"
 
 const CGFloat DefaultLabelMargin = 20.0f;
 const CGFloat GeoViewMinHeight = 130.0f;
@@ -109,6 +110,8 @@ const CGFloat GeoViewMinHeight = 130.0f;
         NSInteger lonM = trunc((fabs(longitude) - lonD) * 60);
         NSString *latDir = (latitude > 0) ? NSLocalizedString(@"North", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"South", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
         NSString *lonDir = (longitude > 0) ? NSLocalizedString(@"East", @"Used for Geo-tagging posts by latitude and longitude. Basic form.") : NSLocalizedString(@"West", @"Used for Geo-tagging posts by latitude and longitude. Basic form.");
+        latDir = [latDir uppercaseString];
+        lonDir = [lonDir uppercaseString];
         if (latitude == 0.0) latDir = @"";
         if (longitude == 0.0) lonDir = @"";
 
@@ -119,7 +122,7 @@ const CGFloat GeoViewMinHeight = 130.0f;
     NSString *address = self.address ? [self.address stringByAppendingString:@"\n"] : @"";
     
     NSDictionary *addressStyle = @{NSFontAttributeName:[WPStyleGuide regularTextFont], NSForegroundColorAttributeName:[WPStyleGuide darkGrey]};
-    NSDictionary *coordinateStyle = @{NSFontAttributeName:[WPStyleGuide regularTextFont], NSForegroundColorAttributeName:[WPStyleGuide grey]};
+    NSDictionary *coordinateStyle = @{NSFontAttributeName:[WPFontManager openSansSemiBoldFontOfSize:11.0], NSForegroundColorAttributeName:[WPStyleGuide grey]};
 
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:address attributes:addressStyle];
     NSAttributedString *coordinates = [[NSMutableAttributedString alloc] initWithString:coordText attributes:coordinateStyle];
