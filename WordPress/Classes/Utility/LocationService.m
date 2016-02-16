@@ -185,6 +185,11 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 #pragma mark - Show alert for location errors
 
+- (void)showAlertForLocationServicesDisabled
+{
+    [self showAlertForLocationError:[NSError errorWithDomain:kCLErrorDomain code:kCLErrorDenied userInfo:nil]];
+}
+
 - (void)showAlertForLocationError:(NSError *)error
 {
     NSString *title = NSLocalizedString(@"Location", @"Title for alert when a generic error happened when trying to find the location of the device");
