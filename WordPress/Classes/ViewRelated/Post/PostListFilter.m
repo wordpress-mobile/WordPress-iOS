@@ -72,11 +72,6 @@
 
 - (NSPredicate *)predicateForFetchRequest
 {
-    if (self.oldestPostDate) {
-        NSPredicate *datePredicate = [NSPredicate predicateWithFormat:@"date_created_gmt >= %@", self.oldestPostDate];
-        return [NSCompoundPredicate andPredicateWithSubpredicates:@[self.basePredicateForFetchRequest, datePredicate]];
-    }
-    
     return self.basePredicateForFetchRequest;
 }
 
