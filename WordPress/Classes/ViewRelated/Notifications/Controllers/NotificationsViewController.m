@@ -586,7 +586,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 #pragma mark - Undelete Mechanism
 
-- (void)showUndeleteForNotificationWithID:(NSManagedObjectID *)noteObjectID onTimeout:(NotificationDetailsDeletionActionBlock)onTimeout
+- (void)showUndeleteForNoteWithID:(NSManagedObjectID *)noteObjectID onTimeout:(NotificationDeletionActionBlock)onTimeout
 {
     // Mark this note as Pending Deletion and Reload
     [self.notificationIdsMarkedForDeletion addObject:noteObjectID];
@@ -599,7 +599,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     });
 }
 
-- (void)performDeletionActionForNotificationWithID:(NSManagedObjectID *)noteObjectID deletionBlock:(NotificationDetailsDeletionActionBlock)deletionBlock
+- (void)performDeletionActionForNotificationWithID:(NSManagedObjectID *)noteObjectID deletionBlock:(NotificationDeletionActionBlock)deletionBlock
 {
     // Was the Deletion Cancelled?
     if ([self isNoteMarkedForDeletion:noteObjectID] == false) {
@@ -761,8 +761,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     if([segue.identifier isEqualToString:detailsSegueID]) {
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
         [detailsViewController setupWithNotification:note];
-        detailsViewController.onDeletionRequestCallback = ^(NotificationDetailsDeletionActionBlock onUndoTimeout){
-            [weakSelf showUndeleteForNotificationWithID:note.objectID onTimeout:onUndoTimeout];
+        detailsViewController.onDeletionRequestCallback = ^(NotificationDeletionActionBlock onUndoTimeout){
+            [weakSelf showUndeleteForNoteWithID:note.objectID onTimeout:onUndoTimeout];
         };
         
     } else if([segue.identifier isEqualToString:readerSegueID]) {
