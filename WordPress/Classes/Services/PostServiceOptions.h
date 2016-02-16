@@ -46,7 +46,7 @@ typedef NS_ENUM(NSUInteger, PostServiceResultsOrdering) {
 @property (nonatomic, strong) NSArray *statuses;
 
 /**
- The max number of posts to return.
+ The number of posts to return. Limit: 100.
  */
 @property (nonatomic, strong) NSNumber *number;
 
