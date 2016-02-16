@@ -57,7 +57,7 @@
 - (UIBarButtonItem *)refreshButton
 {
     if (!_refreshButton) {
-        UIImage *image = [[UIImage imageNamed:@"gridicons-sync"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImage *image = [[UIImage imageNamed:@"gridicons-location"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         _refreshButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(updateLocation)];
     }
     return _refreshButton;
