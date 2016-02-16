@@ -196,15 +196,15 @@ public class DeleteSiteViewController : UITableViewController
     }
     
     private func confirmDeleteController() -> UIAlertController {
-        let title = NSLocalizedString("Delete Site", comment: "Title of Delete Site confirmation alert")
-        let messageFormat = NSLocalizedString("Enter the primary domain to confirm\n“%@”", comment: "Message of Delete Site confirmation alert; substitution is site's primary domain")
+        let title = NSLocalizedString("Confirm Delete Site", comment: "Title of Delete Site confirmation alert")
+        let messageFormat = NSLocalizedString("Please type in \n\n%@\n\n in the field below to confirm. Your site will then be gone forever.", comment: "Message of Delete Site confirmation alert; substitution is site's primary domain")
         let message = String(format: messageFormat, primaryDomain)
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         
         let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
         alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
         
-        let deleteTitle = NSLocalizedString("Delete", comment: "Delete Site confirmation action title")
+        let deleteTitle = NSLocalizedString("Delete this site", comment: "Delete Site confirmation action title")
         let deleteAction = UIAlertAction(title: deleteTitle, style: .Destructive, handler: { action in
             self.deleteSiteConfirmed()
         })
