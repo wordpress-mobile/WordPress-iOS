@@ -93,7 +93,7 @@
 - (void)updateLocation
 {
     if ([self.locationService locationServicesDisabled]) {
-        [self showLocationPermissionDisabled];
+        [self.locationService showAlertForLocationServicesDisabled];
         return;
     }
 
@@ -112,12 +112,6 @@
 
     [self refreshView];
 }
-
-- (void)showLocationPermissionDisabled
-{
-    [self.locationService showAlertForLocationError:[NSError errorWithDomain:kCLErrorDomain code:kCLErrorDenied userInfo:nil]];
-}
-
 
 - (void)refreshView
 {

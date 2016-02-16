@@ -79,4 +79,9 @@ extern NSString *const LocationServiceErrorDomain;
  */
 - (void)showAlertForLocationError:(NSError *)error;
 
+/**
+ *  Show an alert for when location services are disabled
+ */
+- (void)showAlertForLocationServicesDisabled;
+
 @end
