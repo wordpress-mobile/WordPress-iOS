@@ -15,38 +15,11 @@
 #import "WPXMLRPCDecoder.h"
 #import "WordPressComApi.h"
 
-NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
-CGSize const MediaMaxImageSize = {3000, 3000};
-NSInteger const MediaMinImageSizeDimension = 150;
-NSInteger const MediaMaxImageSizeDimension = 3000;
-
 @implementation MediaService
-
-+ (CGSize)maxImageSizeSetting
-{
-    NSString *savedSize = [[NSUserDefaults standardUserDefaults] stringForKey:SavedMaxImageSizeSetting];
-    CGSize maxSize = MediaMaxImageSize;
-    if (savedSize) {
-        maxSize = CGSizeFromString(savedSize);
-    }
-    return maxSize;
-}
-
-+ (void)setMaxImageSizeSetting:(CGSize)imageSize
-{
-    // Constraint to max width and height.
-    CGFloat width = imageSize.width;
-    CGFloat height = imageSize.height;
-    width = MAX(MIN(width, MediaMaxImageSizeDimension), MediaMinImageSizeDimension);
-    height = MAX(MIN(height, MediaMaxImageSizeDimension), MediaMinImageSizeDimension);
-
-    NSString *strSize = NSStringFromCGSize(CGSizeMake(width, height));
-    [[NSUserDefaults standardUserDefaults] setObject:strSize forKey:SavedMaxImageSizeSetting];
-    [NSUserDefaults resetStandardUserDefaults];
-}
 
 - (void)createMediaWithPHAsset:(PHAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
+           thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion
 {
     NSError *error = nil;
@@ -83,57 +56,78 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     
     BOOL geoLocationEnabled = post.blog.settings.geolocationEnabled;
     
-    CGSize maxImageSize = [MediaService maxImageSizeSetting];
-    if (maxImageSize.width == MediaMaxImageSize.width && maxImageSize.height == MediaMaxImageSize.height) {
-        maxImageSize = CGSizeZero;
-    }
-    
+    NSInteger maxImageSize = [[MediaSettings new] imageSizeForUpload];
+    CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
+
     NSURL *mediaURL = [self urlForMediaWithFilename:[asset originalFilename] andExtension:extension];
     NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
                                                 andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
     
-    [asset exportToURL:mediaURL
-             targetUTI:assetUTI
-     maximumResolution:maxImageSize
-      stripGeoLocation:!geoLocationEnabled
-        successHandler:^(CGSize resultingSize) {
-            [asset exportThumbnailToURL:mediaThumbnailURL
+    [[self.class queueForResizeMediaOperations] addOperationWithBlock:^{
+        [asset exportThumbnailToURL:mediaThumbnailURL
                          targetSize:[UIScreen mainScreen].bounds.size
+                        synchronous:YES
                      successHandler:^(CGSize thumbnailSize) {
-                         [self.managedObjectContext performBlock:^{
-                             
-                             AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
-                             Media *media = [self newMediaForPost:post];
-                             media.filename = [mediaURL lastPathComponent];
-                             media.absoluteLocalURL = [mediaURL path];
-                             media.absoluteThumbnailLocalURL = [mediaThumbnailURL path];
-                             NSNumber * fileSize;
-                             if ([mediaURL getResourceValue:&fileSize forKey:NSURLFileSizeKey error:nil]) {
-                                 media.filesize = @([fileSize longLongValue] / 1024);
-                             } else {
-                                 media.filesize = 0;
-                             }
-                             media.width = @(resultingSize.width);
-                             media.height = @(resultingSize.height);
-                             media.mediaType = mediaType;
-                             //make sure that we only return when object is properly created and saved
-                             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                 if (completion) {
-                                     completion(media, nil);
-                                 }
-                             }];
-                         }];
-                     }
-                       errorHandler:^(NSError *error) {
-                           if (completion){
-                               completion(nil, error);
-                           }
-                       }];
-        } errorHandler:^(NSError *error) {
-            if (completion){
-                completion(nil, error);
+            if (thumbnailCallback) {
+                thumbnailCallback(mediaThumbnailURL);
+            }
+
+            [asset exportToURL:mediaURL
+                     targetUTI:assetUTI
+             maximumResolution:maximumResolution
+              stripGeoLocation:!geoLocationEnabled
+                successHandler:^(CGSize resultingSize)
+                {
+                    [self createMediaForPost:postObjectID
+                                    mediaURL:mediaURL
+                           mediaThumbnailURL:mediaThumbnailURL
+                                   mediaType:mediaType
+                                   mediaSize:resultingSize
+                                  completion:completion];
+                }
+                errorHandler:^(NSError *error) {
+                   if (completion){
+                       completion(nil, error);
+                   }
+                }];
+            } errorHandler:^(NSError *error) {
+                if (completion){
+                    completion(nil, error);
+                }
+            }];
+    }];
+}
+
+- (void) createMediaForPost:(NSManagedObjectID *)postObjectID
+                   mediaURL:(NSURL *)mediaURL
+          mediaThumbnailURL:(NSURL *)mediaThumbnailURL
+                  mediaType:(MediaType)mediaType
+                  mediaSize:(CGSize)mediaSize
+                 completion:(void (^)(Media *media, NSError *error))completion
+{
+ 
+    [self.managedObjectContext performBlock:^{
+        AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
+        Media *media = [self newMediaForPost:post];
+        media.filename = [mediaURL lastPathComponent];
+        media.absoluteLocalURL = [mediaURL path];
+        media.absoluteThumbnailLocalURL = [mediaThumbnailURL path];
+        NSNumber * fileSize;
+        if ([mediaURL getResourceValue:&fileSize forKey:NSURLFileSizeKey error:nil]) {
+            media.filesize = @([fileSize longLongValue] / 1024);
+        } else {
+            media.filesize = 0;
+        }
+        media.width = @(mediaSize.width);
+        media.height = @(mediaSize.height);
+        media.mediaType = mediaType;
+        //make sure that we only return when object is properly created and saved
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+            if (completion) {
+                completion(media, nil);
             }
         }];
+    }];
 }
 
 - (void)uploadMedia:(Media *)media
@@ -325,6 +319,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     dispatch_once(&_onceToken, ^{
         _queueForResizeMediaOperations = [[NSOperationQueue alloc] init];
         _queueForResizeMediaOperations.name = @"MediaService-ResizeMediaOperation";
+        _queueForResizeMediaOperations.maxConcurrentOperationCount = 1;
     });
     
     return _queueForResizeMediaOperations;

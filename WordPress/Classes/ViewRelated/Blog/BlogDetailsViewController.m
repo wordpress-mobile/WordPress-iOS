@@ -27,6 +27,10 @@ NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
+NSString * const BlogDetailAccountHideViewAdminTimeZone = @"GMT";
+NSInteger const BlogDetailAccountHideViewAdminYear = 2015;
+NSInteger const BlogDetailAccountHideViewAdminMonth = 9;
+NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
 
 #pragma mark - Helper Classes for Blog Details view model.
@@ -231,11 +235,13 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
                                                      [weakSelf showViewSite];
                                                  }]];
 
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.")
-                                                    image:[UIImage imageNamed:@"icon-menu-viewadmin"]
-                                                 callback:^{
-                                                     [weakSelf showViewAdmin];
-                                                 }]];
+    if ([self shouldShowWPAdminRow]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.")
+                                                        image:[UIImage imageNamed:@"icon-menu-viewadmin"]
+                                                     callback:^{
+                                                         [weakSelf showViewAdmin];
+                                                     }]];
+    }
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
                                                     image:[UIImage imageNamed:@"icon-menu-stats"]
@@ -559,6 +565,32 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
     NSString *dashboardUrl = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
+}
+
+- (BOOL)shouldShowWPAdminRow
+{
+    return !self.blog.isHostedAtWPcom || [self wasAccountCreateBeforeHideViewAdminDate];
+}
+
+- (BOOL)wasAccountCreateBeforeHideViewAdminDate
+{
+    NSDate *hideViewAdminDate = [self hideViewAdminDate];
+    WPAccount *account = self.blog.account;
+    
+    return [account.dateCreated compare:hideViewAdminDate] == NSOrderedAscending;
+}
+
+- (NSDate *)hideViewAdminDate
+{
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    calendar.timeZone = [NSTimeZone timeZoneWithName:BlogDetailAccountHideViewAdminTimeZone];
+    
+    NSDateComponents *hideAdminDateComponents = [NSDateComponents new];
+    hideAdminDateComponents.year = BlogDetailAccountHideViewAdminYear;
+    hideAdminDateComponents.month = BlogDetailAccountHideViewAdminMonth;
+    hideAdminDateComponents.day = BlogDetailAccountHideViewAdminDay;
+    
+    return [calendar dateFromComponents:hideAdminDateComponents];
 }
 
 

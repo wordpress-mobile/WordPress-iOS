@@ -13,7 +13,9 @@ class WPReusableTableViewCell: WPTableViewCell {
         detailTextLabel?.textColor = UIColor.blackColor()
         imageView?.image = nil
         accessoryType = .None
+        accessoryView = nil
         selectionStyle = .Default
+        accessibilityLabel = nil
     }
 }
 
@@ -263,7 +265,6 @@ struct MediaSizeRow: ImmuTableRow {
         cell.value = value
         cell.onChange = onChange
 
-        cell.minValue = MediaMinImageSizeDimension
-        cell.maxValue = MediaMaxImageSizeDimension
+        (cell.minValue, cell.maxValue) = MediaSettings().allowedImageSizeRange
     }
 }
