@@ -359,8 +359,18 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)updateFilter:(PostListFilter *)filter withSyncedPosts:(NSArray <AbstractPost *> *)posts syncOptions:(PostServiceSyncOptions *)options
 {
+    AbstractPost *oldestPost = [posts lastObject];
+    filter.oldestPostDate = oldestPost.date_created_gmt;
     filter.hasMore = posts.count >= options.number.unsignedIntegerValue;
-    filter.fetchLimit = posts.count + options.offset.unsignedIntegerValue;
+    filter.fetchLimit = options.offset.unsignedIntegerValue + posts.count;
+
+    [self updateAndPerformFetchRequest];
+    [self.tableView reloadData];
+}
+
+- (NSUInteger)numberOfPostsPerSync
+{
+    return PostServiceDefaultNumberToSync;
 }
 
 #pragma mark - Sync Helper Delegate Methods
@@ -391,7 +401,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
     options.statuses = filter.statuses;
     options.authorID = author;
-    options.number = @(PostServiceDefaultNumberToSync);
+    options.number = @([self numberOfPostsPerSync]);
     
     [postService syncPostsOfType:[self postTypeToSync]
                      withOptions:options
@@ -427,7 +437,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
     options.statuses = filter.statuses;
     options.authorID = author;
-    options.number = @(PostServiceDefaultNumberToSync);
+    options.number = @([self numberOfPostsPerSync]);
     options.offset = @([self.tableViewHandler.resultsController.fetchedObjects count]);
     
     [postService syncPostsOfType:[self postTypeToSync]
@@ -514,7 +524,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     fetchRequest.predicate = [self predicateForFetchRequest];
     fetchRequest.sortDescriptors = [self sortDescriptorsForFetchRequest];
     fetchRequest.fetchBatchSize = PostsFetchRequestBatchSize;
-    fetchRequest.fetchLimit = PostServiceDefaultNumberToSync;
+    fetchRequest.fetchLimit = [self numberOfPostsPerSync];
     return fetchRequest;
 }
 
@@ -537,6 +547,13 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     NSFetchRequest *fetchRequest = self.tableViewHandler.resultsController.fetchRequest;
     [fetchRequest setPredicate:predicate];
     [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    PostListFilter *filter = [self currentPostListFilter];
+    if (filter.fetchLimit) {
+        fetchRequest.fetchLimit = filter.fetchLimit;
+    } else {
+        fetchRequest.fetchLimit = [self numberOfPostsPerSync];
+    }
     
     [self.tableViewHandler.resultsController performFetch:&error];
     if (error) {
