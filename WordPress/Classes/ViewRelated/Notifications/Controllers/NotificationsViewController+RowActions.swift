@@ -11,11 +11,7 @@ extension NotificationsViewController
     // MARK: - UITableViewDelegate Methods
     
     public override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        guard let note = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Notification else {
-            return false
-        }
-        
-        return note.isComment
+        return true
     }
     
     public override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
@@ -25,8 +21,20 @@ extension NotificationsViewController
     public override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         guard let note = tableViewHandler.resultsController.objectAtIndexPath(indexPath) as? Notification,
                     group = note.blockGroupOfType(NoteBlockGroupType.Comment),
-                    block = group.blockOfType(.Comment) else {
-            return nil
+                    block = group.blockOfType(.Comment) else
+        {
+            // HACK: (JLP 02.16.2016)
+            //
+            // Not every single row will have actions. For this reason, we'll introduce a slight hack
+            // so that the UX isn't terrible.
+            // We'll (A) return an Empty UITableViewRowAction, and (B) will hide it after a few seconds.
+            //
+            stopEditingTableViewAfterDelay()
+            
+            // Finally: Return a No-OP Row
+            let noop = UITableViewRowAction(style: .Normal, title: title, handler: { action, path in })
+            noop.backgroundColor = UIColor.clearColor()
+            return [noop]
         }
         
         // Helpers
@@ -85,6 +93,16 @@ extension NotificationsViewController
     
     
     // MARK: - Private Helpers
+    
+    private func stopEditingTableViewAfterDelay() {
+        let delay = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
+        dispatch_after(delay, dispatch_get_main_queue()) { [weak self] in
+            if self?.tableView.editing == true {
+                self?.tableView.setEditing(false, animated: true)
+            }
+        }
+    }
+    
     
     /// Trashes a comment referenced by a given NotificationBlock.
     ///
