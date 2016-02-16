@@ -563,6 +563,11 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
 {
+    // Reset the tableView contentOffset to the top before we make any dataSource changes.
+    CGPoint tableOffset = self.tableView.contentOffset;
+    tableOffset.y = -self.tableView.contentInset.top;
+    self.tableView.contentOffset = tableOffset;
+    
     [self updateAndPerformFetchRequest];
 
     CGFloat width = CGRectGetWidth(self.tableView.bounds);
