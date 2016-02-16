@@ -361,8 +361,17 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 - (void)updateFilter:(PostListFilter *)filter withSyncedPosts:(NSArray <AbstractPost *> *)posts syncOptions:(PostServiceSyncOptions *)options
 {
     AbstractPost *oldestPost = [posts lastObject];
-    filter.oldestPostDate = oldestPost.date_created_gmt;
+    NSDate *oldestPostDate = oldestPost.date_created_gmt;
+    if (filter.oldestPostDate) {
+        // If we already set an oldestPostDate on the filter, see if this sync has an older post date.
+        if ([filter.oldestPostDate compare:oldestPostDate] == NSOrderedDescending) {
+            filter.oldestPostDate = oldestPostDate;
+        }
+    } else {
+        filter.oldestPostDate = oldestPostDate;
+    }
     filter.hasMore = posts.count >= options.number.unsignedIntegerValue;
+    
     [self updateAndPerformFetchRequest];
     [self.tableView reloadData];
 }
@@ -523,6 +532,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     fetchRequest.predicate = [self predicateForFetchRequest];
     fetchRequest.sortDescriptors = [self sortDescriptorsForFetchRequest];
     fetchRequest.fetchBatchSize = PostsFetchRequestBatchSize;
+    fetchRequest.fetchLimit = [self numberOfPostsPerSync];
     return fetchRequest;
 }
 
