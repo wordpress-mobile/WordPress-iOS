@@ -118,6 +118,20 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     return NO;
 }
 
+- (void)searchPlacemarksWithQuery:(NSString *)query completion:(LocationServicePlacemarksCompletionBlock)completionBlock
+{
+    NSParameterAssert(query);
+    NSParameterAssert(completionBlock);
+    [self.geocoder geocodeAddressString:query completionHandler:^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
+        if (placemarks == nil) {
+            completionBlock(nil, error);
+            return;
+        }
+        
+        completionBlock(placemarks, nil);
+    }];
+}
+
 #pragma mark - Private Methods
 
 - (void)getAddressForLocation:(CLLocation *)location
