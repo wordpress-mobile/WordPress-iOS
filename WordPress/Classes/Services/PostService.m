@@ -134,7 +134,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
 
     NSDictionary *remoteOptions = options ? [self remoteSyncParametersDictionaryForRemote:remote withOptions:options] : nil;
-    NSLog(@"remote otions: %@", remoteOptions);
     [remote getPostsOfType:postType
                    options:remoteOptions
                    success:^(NSArray <RemotePost *> *remotePosts) {
