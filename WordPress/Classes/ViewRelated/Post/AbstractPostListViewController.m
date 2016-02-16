@@ -131,7 +131,8 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)configureFilters
 {
-    self.postListFilters = [PostListFilter newPostListFilters];
+    // PostFilters are created as needed, see method 'availablePostListFilters'.
+    self.allPostListFilters = [NSMutableDictionary dictionaryWithCapacity:2];
 }
 
 - (void)configureNavbar
@@ -774,25 +775,37 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     // Subclasses may override the getter and setter for their own filter storage.
 }
 
+- (NSArray *)availablePostListFilters
+{
+    PostAuthorFilter currentAuthorFilter = [self currentPostAuthorFilter];
+    NSString *authorFilterKey = [NSString stringWithFormat:@"filter_key_%@", [[NSNumber numberWithUnsignedInteger:currentAuthorFilter] stringValue]];
+
+    if (![self.allPostListFilters objectForKey:authorFilterKey]) {
+        [self.allPostListFilters setObject:[PostListFilter newPostListFilters] forKey:authorFilterKey];
+    }
+    
+    return [self.allPostListFilters objectForKey:authorFilterKey];
+}
+
 - (PostListFilter *)currentPostListFilter
 {
-    return self.postListFilters[[self currentFilterIndex]];
+    return self.availablePostListFilters[[self currentFilterIndex]];
 }
 
 - (PostListFilter *)filterThatDisplaysPostsWithStatus:(NSString *)postStatus
 {
-    for (PostListFilter *filter in self.postListFilters) {
+    for (PostListFilter *filter in self.availablePostListFilters) {
         if ([filter.statuses containsObject:postStatus]) {
             return filter;
         }
     }
     // The draft filter is the catch all by convention.
-    return [self.postListFilters objectAtIndex:[self indexForFilterWithType:PostListStatusFilterDraft]];
+    return [self.availablePostListFilters objectAtIndex:[self indexForFilterWithType:PostListStatusFilterDraft]];
 }
 
 - (NSInteger)indexForFilterWithType:(PostListStatusFilter)filterType
 {
-    NSInteger index = [self.postListFilters indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+    NSInteger index = [self.availablePostListFilters indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         PostListFilter *filter = (PostListFilter *)obj;
         return filter.filterType == filterType;
     }];
@@ -808,7 +821,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 - (NSInteger)currentFilterIndex
 {
     NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:[self keyForCurrentListStatusFilter]];
-    if (!filter || [filter integerValue] >= [self.postListFilters count]) {
+    if (!filter || [filter integerValue] >= [self.availablePostListFilters count]) {
         return 0; // first item is the default
     }
     return [filter integerValue];
@@ -836,20 +849,20 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)displayFilters
 {
-    NSArray *titles = [self.postListFilters wp_map:^id(PostListFilter *filter) {
+    NSArray *titles = [self.availablePostListFilters wp_map:^id(PostListFilter *filter) {
         return filter.title;
     }];
     NSDictionary *dict = @{
-                           SettingsSelectionDefaultValueKey   : [self.postListFilters firstObject],
+                           SettingsSelectionDefaultValueKey   : [self.availablePostListFilters firstObject],
                            SettingsSelectionTitleKey          : NSLocalizedString(@"Filters", @"Title of the list of post status filters."),
                            SettingsSelectionTitlesKey         : titles,
-                           SettingsSelectionValuesKey         : self.postListFilters,
+                           SettingsSelectionValuesKey         : self.availablePostListFilters,
                            SettingsSelectionCurrentValueKey   : [self currentPostListFilter]
                            };
 
     SettingsSelectionViewController *controller = [[SettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
     controller.onItemSelected = ^(NSDictionary *selectedValue) {
-        [self setCurrentFilterIndex:[self.postListFilters indexOfObject:selectedValue]];
+        [self setCurrentFilterIndex:[self.availablePostListFilters indexOfObject:selectedValue]];
         [self dismissViewControllerAnimated:YES completion:nil];
     };
 
