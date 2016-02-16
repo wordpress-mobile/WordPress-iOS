@@ -10,7 +10,7 @@
 #import "WPTableViewCell.h"
 #import "WordPress-Swift.h"
 
-@interface PostGeolocationViewController () <MKMapViewDelegate>
+@interface PostGeolocationViewController () <MKMapViewDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) PostGeolocationView *geoView;
@@ -18,6 +18,7 @@
 @property (nonatomic, strong) UIBarButtonItem *activityItem;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong) LocationService *locationService;
+@property (nonatomic, strong) UISearchBar *searchBar;
 
 @end
 
@@ -39,6 +40,17 @@
     self.view.backgroundColor = [WPStyleGuide greyLighten30];
     self.title = NSLocalizedString(@"Location", @"Title for screen to select post location");
     [self.view addSubview:self.geoView];
+    
+    self.searchBar = [[UISearchBar alloc] init];
+    self.searchBar.placeholder = NSLocalizedString(@"Search", @"Prompt in the location search bar.");
+    self.searchBar.delegate = self;
+    [self.view addSubview:self.searchBar];
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    self.searchBar.frame = CGRectMake(0, [self.topLayoutGuide length], self.view.frame.size.width, 44);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -145,6 +157,29 @@
     } else {
         self.navigationItem.rightBarButtonItems = @[leftFixedSpacer, self.refreshButton, rightFixedSpacer];
     }
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    NSLog(@"%@", searchText);
+    NSString *query = searchText;
+    if (query.length < 5) {
+        return;
+    }
+    [self.locationService searchPlacemarksWithQuery:query completion:^(NSArray *placemarks, NSError *error) {
+        if (error) {
+            return;
+        }
+        [self showSearchResults:placemarks];
+    }];
+}
+
+- (void)showSearchResults:(NSArray<CLPlacemark *> *)placemarks
+{
+    CLPlacemark *placemark = [placemarks firstObject];
+    self.geoView.coordinate = [[Coordinate alloc] initWithCoordinate:placemark.location.coordinate];
+    self.geoView.address = placemark.name;
+    self.post.geolocation = self.geoView.coordinate;
 }
 
 @end
