@@ -1155,7 +1155,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSParameterAssert(self.onDeletionRequestCallback);
     
     // Spam Action
-    NotificationDetailsDeletionActionBlock spamAction = ^(NotificationDetailsDeletionCompletionBlock onCompletion) {
+    NotificationDeletionActionBlock spamAction = ^(NotificationDeletionCompletionBlock onCompletion) {
         NSParameterAssert(onCompletion);
         
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -1181,7 +1181,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSParameterAssert(self.onDeletionRequestCallback);
     
     // Trash Action
-    NotificationDetailsDeletionActionBlock deletionAction =  ^(NotificationDetailsDeletionCompletionBlock onCompletion) {
+    NotificationDeletionActionBlock deletionAction =  ^(NotificationDeletionCompletionBlock onCompletion) {
         NSParameterAssert(onCompletion);
         
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
