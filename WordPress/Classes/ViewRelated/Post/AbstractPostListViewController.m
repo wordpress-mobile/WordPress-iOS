@@ -357,11 +357,11 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [self configureNoResultsView];
 }
 
-- (void)setHasMore:(BOOL)hasMore forFilter:(PostListFilter *)filter
+- (void)updateFilter:(PostListFilter *)filter withSyncedPosts:(NSArray <AbstractPost *> *)posts syncOptions:(PostServiceSyncOptions *)options
 {
-    filter.hasMore = hasMore;
+    filter.hasMore = posts.count >= options.number.unsignedIntegerValue;
+    filter.fetchLimit = posts.count + options.offset.unsignedIntegerValue;
 }
-
 
 #pragma mark - Sync Helper Delegate Methods
 
@@ -382,47 +382,70 @@ const CGFloat DefaultHeightForFooterView = 44.0;
         [self.recentlyTrashedPostObjectIDs removeAllObjects];
         [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
     }
-
     PostListFilter *filter = [self currentPostListFilter];
-    NSArray *postStatus = filter.statuses;
     NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
     __weak __typeof(self) weakSelf = self;
+    
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [postService syncPostsOfType:[self postTypeToSync] withStatuses:postStatus byAuthor:author forBlog:self.blog success:^(BOOL hasMore){
-        if  (success) {
-            [weakSelf setHasMore:hasMore forFilter:filter];
-            success(hasMore);
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-        if (userInteraction) {
-            [self handleSyncFailure:error];
-        }
-    }];
+    
+    PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
+    options.statuses = filter.statuses;
+    options.authorID = author;
+    options.number = @(PostServiceDefaultNumberToSync);
+    
+    [postService syncPostsOfType:[self postTypeToSync]
+                     withOptions:options
+                         forBlog:self.blog
+                         success:^(NSArray *posts) {
+                             if  (success) {
+                                 [weakSelf updateFilter:filter
+                                        withSyncedPosts:posts
+                                            syncOptions:options];
+                                 success(filter.hasMore);
+                             }
+                         } failure:^(NSError *error) {
+                             if (failure) {
+                                 failure(error);
+                             }
+                             if (userInteraction) {
+                                 [self handleSyncFailure:error];
+                             }
+                         }];
 }
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     [WPAnalytics track:WPAnalyticsStatPostListLoadedMore withProperties:[self propertiesForAnalytics]];
     [self.postListFooterView showSpinner:YES];
+    
     PostListFilter *filter = [self currentPostListFilter];
-    NSArray *postStatus = filter.statuses;
     NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
     __weak __typeof(self) weakSelf = self;
+
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [postService loadMorePostsOfType:[self postTypeToSync] withStatuses:postStatus byAuthor:author forBlog:self.blog success:^(BOOL hasMore){
-        if (success) {
-            [weakSelf setHasMore:hasMore forFilter:filter];
-            success(hasMore);
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-        [self handleSyncFailure:error];
-    }];
+    
+    PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
+    options.statuses = filter.statuses;
+    options.authorID = author;
+    options.number = @(PostServiceDefaultNumberToSync);
+    options.offset = @([self.tableViewHandler.resultsController.fetchedObjects count]);
+    
+    [postService syncPostsOfType:[self postTypeToSync]
+                     withOptions:options
+                         forBlog:self.blog
+                         success:^(NSArray *posts) {
+                             if (success) {
+                                 [weakSelf updateFilter:filter
+                                        withSyncedPosts:posts
+                                            syncOptions:options];
+                                 success(filter.hasMore);
+                             }
+                         } failure:^(NSError *error) {
+                             if (failure) {
+                                 failure(error);
+                             }
+                             [self handleSyncFailure:error];
+                         }];
 }
 
 - (void)syncContentEnded
@@ -491,6 +514,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     fetchRequest.predicate = [self predicateForFetchRequest];
     fetchRequest.sortDescriptors = [self sortDescriptorsForFetchRequest];
     fetchRequest.fetchBatchSize = PostsFetchRequestBatchSize;
+    fetchRequest.fetchLimit = PostServiceDefaultNumberToSync;
     return fetchRequest;
 }
 
@@ -510,8 +534,10 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     NSPredicate *predicate = [self predicateForFetchRequest];
     NSArray *sortDescriptors = [self sortDescriptorsForFetchRequest];
     NSError *error = nil;
-    [self.tableViewHandler.resultsController.fetchRequest setPredicate:predicate];
-    [self.tableViewHandler.resultsController.fetchRequest setSortDescriptors:sortDescriptors];
+    NSFetchRequest *fetchRequest = self.tableViewHandler.resultsController.fetchRequest;
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
     [self.tableViewHandler.resultsController performFetch:&error];
     if (error) {
         DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
