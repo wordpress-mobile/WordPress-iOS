@@ -553,17 +553,26 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     NSArray *sortDescriptors = [self sortDescriptorsForFetchRequest];
     NSError *error = nil;
     NSFetchRequest *fetchRequest = self.tableViewHandler.resultsController.fetchRequest;
-    [fetchRequest setPredicate:predicate];
-    [fetchRequest setSortDescriptors:sortDescriptors];
     
+    // Set the predicate based on filtering by the oldestPostDate and not searching.
     PostListFilter *filter = [self currentPostListFilter];
-    if (filter.oldestPostDate) {
-        // If filtering by the oldestPostDate the fetchLimit should be disabled.
+    if (filter.oldestPostDate && !self.isSearching) {
+        // Filter posts by any posts newer than the filter's oldestPostDate.
+        NSPredicate *datePredicate = [NSPredicate predicateWithFormat:@"date_created_gmt >= %@", filter.oldestPostDate];
+        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, datePredicate]];
+    }
+    
+    // Set up the fetchLimit based on filtering or searching
+    if (filter.oldestPostDate || self.isSearching) {
+        // If filtering by the oldestPostDate or searching, the fetchLimit should be disabled.
         fetchRequest.fetchLimit = 0;
     } else {
-        // If not filtering by the oldestPostDate, set the fetchLimit to the default number of posts.
+        // If not filtering by the oldestPostDate or searching, set the fetchLimit to the default number of posts.
         fetchRequest.fetchLimit = [self numberOfPostsPerSync];
     }
+    
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setSortDescriptors:sortDescriptors];
     
     [self.tableViewHandler.resultsController performFetch:&error];
     if (error) {
@@ -610,6 +619,10 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // If searching, don't try and sync additional posts.
+    if (self.isSearching) {
+        return;
+    }
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == self.tableView.numberOfSections) &&
         (indexPath.row + PostsLoadMoreThreshold >= [self.tableView numberOfRowsInSection:indexPath.section])) {
