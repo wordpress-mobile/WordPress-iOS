@@ -28,7 +28,6 @@
 
 - (void)showDetailsForNoteWithID:(NSString *)notificationID;
 
-
 /**
  *  @brief      Will display an Undelete button on top of a given notification.
  *  @details    On timeout, the destructive action (received via parameter) will be exeuted, and the notification
