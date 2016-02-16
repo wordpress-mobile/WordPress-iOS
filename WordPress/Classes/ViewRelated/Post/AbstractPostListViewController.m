@@ -363,8 +363,6 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     AbstractPost *oldestPost = [posts lastObject];
     filter.oldestPostDate = oldestPost.date_created_gmt;
     filter.hasMore = posts.count >= options.number.unsignedIntegerValue;
-    filter.fetchLimit = options.offset.unsignedIntegerValue + posts.count;
-
     [self updateAndPerformFetchRequest];
     [self.tableView reloadData];
 }
@@ -525,7 +523,6 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     fetchRequest.predicate = [self predicateForFetchRequest];
     fetchRequest.sortDescriptors = [self sortDescriptorsForFetchRequest];
     fetchRequest.fetchBatchSize = PostsFetchRequestBatchSize;
-    fetchRequest.fetchLimit = [self numberOfPostsPerSync];
     return fetchRequest;
 }
 
@@ -550,9 +547,11 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [fetchRequest setSortDescriptors:sortDescriptors];
     
     PostListFilter *filter = [self currentPostListFilter];
-    if (filter.fetchLimit) {
-        fetchRequest.fetchLimit = filter.fetchLimit;
+    if (filter.oldestPostDate) {
+        // If filtering by the oldestPostDate the fetchLimit should be disabled.
+        fetchRequest.fetchLimit = 0;
     } else {
+        // If not filtering by the oldestPostDate, set the fetchLimit to the default number of posts.
         fetchRequest.fetchLimit = [self numberOfPostsPerSync];
     }
     
