@@ -553,6 +553,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [NSUserDefaults resetStandardUserDefaults];
 
     [self.recentlyTrashedPostObjectIDs removeAllObjects];
+    [self resetTableViewContentOffset];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
     [self syncItemsWithUserInteraction:NO];
 }

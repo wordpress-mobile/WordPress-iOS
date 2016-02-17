@@ -372,8 +372,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     }
     filter.hasMore = posts.count >= options.number.unsignedIntegerValue;
     
-    [self updateAndPerformFetchRequest];
-    [self.tableView reloadData];
+    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
 - (NSUInteger)numberOfPostsPerSync
@@ -582,11 +581,6 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
 {
-    // Reset the tableView contentOffset to the top before we make any dataSource changes.
-    CGPoint tableOffset = self.tableView.contentOffset;
-    tableOffset.y = -self.tableView.contentInset.top;
-    self.tableView.contentOffset = tableOffset;
-    
     [self updateAndPerformFetchRequest];
 
     CGFloat width = CGRectGetWidth(self.tableView.bounds);
@@ -594,6 +588,14 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
     [self.tableView reloadData];
     [self configureNoResultsView];
+}
+
+- (void)resetTableViewContentOffset
+{
+    // Reset the tableView contentOffset to the top before we make any dataSource changes.
+    CGPoint tableOffset = self.tableView.contentOffset;
+    tableOffset.y = -self.tableView.contentInset.top;
+    self.tableView.contentOffset = tableOffset;
 }
 
 - (NSPredicate *)predicateForFetchRequest
@@ -866,6 +868,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
     [self.recentlyTrashedPostObjectIDs removeAllObjects];
     [self updateFilterTitle];
+    [self resetTableViewContentOffset];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
@@ -952,11 +955,13 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     }];
 
     self.searchController.searchBar.text = nil;
+    [self resetTableViewContentOffset];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
 - (void)updateSearchResultsForSearchController:(WPSearchController *)searchController
 {
+    [self resetTableViewContentOffset];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
