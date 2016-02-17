@@ -620,7 +620,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)updatePostLocationState:(BOOL)geoLocationOn {
     if (geoLocationOn) {
-        if (![self.locationService locationServicesDisabled] && [self.locationService locationServicesDenied]) {
+        if ([self.locationService locationServicesDisabled] || [self.locationService locationServicesDenied]) {
             [self.locationService showAlertForLocationServicesDisabled];
             self.geoLocationSwitchCell.on = NO;
             return;
