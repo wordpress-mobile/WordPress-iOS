@@ -220,8 +220,11 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CLPlacemarkTableViewCellIdentifier forIndexPath:indexPath];
     CLPlacemark *placemark = self.placemarks[indexPath.row];
-    cell.textLabel.text = placemark.name;
-    cell.detailTextLabel.text = placemark.country;
+    cell.textLabel.text = placemark.formattedAddress;
+    cell.textLabel.numberOfLines = 0;
+    cell.textLabel.font = [WPStyleGuide regularTextFont];
+    cell.textLabel.textColor = [WPStyleGuide darkGrey];
+    cell.backgroundColor = [UIColor clearColor];
     return cell;
 }
 
