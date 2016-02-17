@@ -1,10 +1,9 @@
 #import "LocationService.h"
 
 #import <CoreLocation/CoreLocation.h>
+#import "WordPress-Swift.h"
 
 static LocationService *instance;
-static NSInteger const LocationHorizontalAccuracyThreshold = 100; // Meters
-static NSInteger const LocationServiceTimeoutDuration = 10; // Seconds
 NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 @interface LocationService()<CLLocationManagerDelegate>
@@ -12,9 +11,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLGeocoder *geocoder;
 @property (nonatomic, strong) NSMutableArray *completionBlocks;
-@property (nonatomic, strong) NSTimer *timeoutClock;
 @property (nonatomic, readwrite) BOOL locationServiceRunning;
-@property (nonatomic, strong) CLLocation *lastUpdatedLocation;
 @property (nonatomic, strong, readwrite) CLLocation *lastGeocodedLocation;
 @property (nonatomic, strong, readwrite) NSString *lastGeocodedAddress;
 
@@ -35,12 +32,12 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 {
     self = [super init];
     if (self) {
-        self.locationManager = [[CLLocationManager alloc] init];
-        self.locationManager.delegate = self;
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
-        self.locationManager.distanceFilter = 0;
-        self.geocoder = [[CLGeocoder alloc] init];
-        self.completionBlocks = [NSMutableArray array];
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
+        _locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+        _locationManager.distanceFilter = 0;
+        _geocoder = [[CLGeocoder alloc] init];
+        _completionBlocks = [NSMutableArray array];
     }
 
     return self;
@@ -50,12 +47,14 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 - (BOOL)locationServicesDisabled
 {
+    return ![CLLocationManager locationServicesEnabled];
+}
+
+- (BOOL)locationServicesDenied
+{
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
         return YES;
-    }
-    if (status == kCLAuthorizationStatusNotDetermined && [self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
-        [self.locationManager requestWhenInUseAuthorization];
     }
     return NO;
 }
@@ -67,6 +66,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     }
     self.lastGeocodedAddress = nil;
     self.lastGeocodedLocation = nil;
+    [self.locationManager requestWhenInUseAuthorization];
     [self startUpdatingLocation];
 }
 
@@ -88,9 +88,17 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     [self.geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
         NSString *address;
         if (placemarks) {
-            CLPlacemark *placemark = [placemarks objectAtIndex:0];
-            if (placemark.addressDictionary) {
-                address = [[placemark.addressDictionary arrayForKey:@"FormattedAddressLines"] componentsJoinedByString:@", "];
+            CLPlacemark *placemark = [placemarks firstObject];
+            if (placemark.addressDictionary && placemark.addressDictionary[@"FormattedAddressLines"]) {
+                NSArray *formattedAddressLines = [placemark.addressDictionary arrayForKey:@"FormattedAddressLines"];
+                if (formattedAddressLines.count > 1) {
+                    address = [formattedAddressLines firstObject];
+                    formattedAddressLines = [formattedAddressLines subarrayWithRange:NSMakeRange(1, formattedAddressLines.count-1)];
+                    address = [address stringByAppendingString:@"\n"];
+                    address = [address stringByAppendingString:[formattedAddressLines componentsJoinedByString:@", "]];
+                } else {
+                    address = [formattedAddressLines componentsJoinedByString:@", "];
+                }
             } else {
                 // Fallback, just in case.
                 address = placemark.name;
@@ -109,7 +117,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 - (BOOL)hasAddressForLocation:(CLLocation *)location
 {
-    if (self.lastGeocodedAddress != nil && [self.lastGeocodedLocation distanceFromLocation:location] <= LocationHorizontalAccuracyThreshold) {
+    if (self.lastGeocodedAddress != nil && [self.lastGeocodedLocation distanceFromLocation:location] <= kCLLocationAccuracyHundredMeters) {
         return YES;
     }
     return NO;
@@ -128,8 +136,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     self.lastGeocodedAddress = address;
     self.lastGeocodedLocation = location;
 
-    for (NSInteger i = 0; i < [self.completionBlocks count]; i++) {
-        LocationServiceCompletionBlock block = [self.completionBlocks objectAtIndex:i];
+    for (LocationServiceCompletionBlock block in self.completionBlocks) {
         block(location, address, error);
     }
 
@@ -141,8 +148,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     DDLogError(@"Error finding location: %@", error);
     [self stopUpdatingLocation];
     self.locationServiceRunning = NO;
-    for (NSInteger i = 0; i < [self.completionBlocks count]; i++) {
-        LocationServiceCompletionBlock block = [self.completionBlocks objectAtIndex:i];
+    for (LocationServiceCompletionBlock block in self.completionBlocks) {
         block(nil, nil, error);
     }
     [self.completionBlocks removeAllObjects];
@@ -152,38 +158,13 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 {
     [self stopUpdatingLocation];
     self.locationServiceRunning = YES;
-    [self.locationManager startUpdatingLocation];
-    self.timeoutClock = [NSTimer scheduledTimerWithTimeInterval:LocationServiceTimeoutDuration
-                                                         target:self
-                                                       selector:@selector(timeoutUpdatingLocation)
-                                                       userInfo:nil
-                                                        repeats:NO];
+    [self.locationManager requestLocation];
 }
 
 - (void)stopUpdatingLocation
 {
     [self.locationManager stopUpdatingLocation];
-    [self.timeoutClock invalidate];
-    self.timeoutClock = nil;
-    self.lastUpdatedLocation = nil;
-}
-
-- (void)timeoutUpdatingLocation
-{
-    CLLocation *lastLocation;
-    [self stopUpdatingLocation];
-#if TARGET_IPHONE_SIMULATOR
-    lastLocation = self.locationManager.location;
-#endif
-    if (lastLocation) {
-        [self getAddressForLocation:lastLocation];
-    } else {
-        NSString *description = NSLocalizedString(@"Unable to find the current location in a reasonable amount of time.", @"Error message that is displayed when the user's current location could not be found after a few seconds.");
-        NSError *error = [NSError errorWithDomain:LocationServiceErrorDomain
-                                             code:LocationServiceErrorLocationServiceTimedOut
-                                         userInfo:@{NSLocalizedDescriptionKey:description}];
-        [self serviceFailed:error];
-    }
+    self.locationServiceRunning = NO;
 }
 
 #pragma mark - CLLocationManager Delegate Methods
@@ -196,18 +177,56 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *location = [locations lastObject]; // The last item is the most recent.
-
-#if TARGET_IPHONE_SIMULATOR
     [self stopUpdatingLocation];
     [self getAddressForLocation:location];
-#else
-    if (location.horizontalAccuracy > 0 && location.horizontalAccuracy < LocationHorizontalAccuracyThreshold) {
-        [self stopUpdatingLocation];
-        [self getAddressForLocation:location];
-    } else {
-        self.lastUpdatedLocation = location;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
+        [self serviceFailed:[NSError errorWithDomain:LocationServiceErrorDomain code:LocationServiceErrorPermissionDenied userInfo:nil]];
     }
-#endif
+}
+
+#pragma mark - Show alert for location errors
+
+- (void)showAlertForLocationServicesDisabled
+{
+    [self showAlertForLocationError:[NSError errorWithDomain:kCLErrorDomain code:kCLErrorDenied userInfo:nil]];
+}
+
+- (void)showAlertForLocationError:(NSError *)error
+{
+    NSString *title = NSLocalizedString(@"Location", @"Title for alert when a generic error happened when trying to find the location of the device");
+    NSString *message = NSLocalizedString(@"There was a problem when trying to access your location. Please try again later.",  @"Explaining to the user there was an error trying to obtain the current location of the user.");
+    NSString *cancelText = NSLocalizedString(@"OK", "");
+    NSString *otherButtonTitle = nil;
+    if (error.domain == kCLErrorDomain && error.code == kCLErrorDenied) {
+        if ([CLLocationManager locationServicesEnabled]) {
+            otherButtonTitle = NSLocalizedString(@"Open Settings", @"Go to the settings app");
+            message = NSLocalizedString(@"WordPress needs permission to access your device's location in order to add it to your post. Please update your privacy settings.",  @"Explaining to the user why the app needs access to the device location.");
+            cancelText = NSLocalizedString(@"Cancel", "");
+        } else {
+            message = NSLocalizedString(@"In order for WordPress to add location to your posts location services must be enabled. Please turn then on using the Setting app.",  @"Explaining to the user that location services need to be enable in order to geotag a post.");
+        }
+    }
+    if (error.domain == LocationServiceErrorDomain && error.code == LocationServiceErrorPermissionDenied) {
+        // The user explicitily denied a permission request so not worth to show an alert
+        return;
+    }
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:cancelText style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:okAction];
+    
+    if (otherButtonTitle) {
+        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:otherButtonTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSURL *settingsURL = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+            [[UIApplication sharedApplication] openURL:settingsURL];
+        }];
+        [alertController addAction:otherAction];
+    }
+    [alertController presentFromRootViewController];
 }
 
 @end
