@@ -303,7 +303,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)showFiltersSegmentedControlIfApplicable
 {
-    if (!self.showsJetpackMessage && self.tableHeaderView.alpha == WPAlphaZero) {
+    if (self.tableHeaderView.alpha == WPAlphaZero && self.shouldDisplayFilters) {
         [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
             self.tableHeaderView.alpha = WPAlphaFull;
         } completion:nil];
@@ -312,10 +312,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)hideFiltersSegmentedControlIfApplicable
 {
-    if (self.showsJetpackMessage && self.tableHeaderView.alpha == WPAlphaFull) {
-        [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
-            self.tableHeaderView.alpha  = WPAlphaZero;
-        } completion:nil];
+    if (self.tableHeaderView.alpha == WPAlphaFull && !self.shouldDisplayFilters) {
+        self.tableHeaderView.alpha  = WPAlphaZero;
     }
 }
 
@@ -325,6 +323,11 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
     notesBucket.delegate            = self;
     notesBucket.notifyWhileIndexing = YES;
+}
+
+- (BOOL)shouldDisplayFilters
+{
+    return !self.showsJetpackMessage && !self.showsEmptyStateLegend;
 }
 
 
@@ -894,7 +897,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)showNoResultsViewIfNeeded
 {
     // Remove If Needed
-    if (self.tableViewHandler.resultsController.fetchedObjects.count) {
+    if (!self.showsEmptyStateLegend) {
         [self.noResultsView removeFromSuperview];
         
         // Show filters if we have results
@@ -968,6 +971,11 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     BOOL showsJetpackMessage        = ![accountService defaultWordPressComAccount];
     
     return showsJetpackMessage;
+}
+
+- (BOOL)showsEmptyStateLegend
+{
+    return (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
 }
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
