@@ -67,6 +67,7 @@ extern const CGSize PreferredFiltersPopoverContentSize;
 - (void)deletePost:(AbstractPost *)apost;
 - (void)restorePost:(AbstractPost *)apost;
 - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights;
+- (void)resetTableViewContentOffset;
 - (BOOL)isSearching;
 - (NSString *)currentSearchTerm;
 - (NSDictionary *)propertiesForAnalytics;
