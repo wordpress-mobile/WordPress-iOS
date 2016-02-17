@@ -361,15 +361,8 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 - (void)updateFilter:(PostListFilter *)filter withSyncedPosts:(NSArray <AbstractPost *> *)posts syncOptions:(PostServiceSyncOptions *)options
 {
     AbstractPost *oldestPost = [posts lastObject];
-    NSDate *oldestPostDate = oldestPost.dateCreated;
-    if (filter.oldestPostDate) {
-        // If we already set an oldestPostDate on the filter, see if this sync has an older post date.
-        if ([filter.oldestPostDate compare:oldestPostDate] == NSOrderedDescending) {
-            filter.oldestPostDate = oldestPostDate;
-        }
-    } else {
-        filter.oldestPostDate = oldestPostDate;
-    }
+    // Reset the filter to only show the latest sync point.
+    filter.oldestPostDate = oldestPost.dateCreated;
     filter.hasMore = posts.count >= options.number.unsignedIntegerValue;
     
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
