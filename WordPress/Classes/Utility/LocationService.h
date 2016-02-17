@@ -43,11 +43,18 @@ extern NSString *const LocationServiceErrorDomain;
 @property (nonatomic, strong, readonly) NSString *lastGeocodedAddress;
 
 /**
- Check if location services are disabled.
-
- @return YES if services are disabled or restricted, or NO if the user has give permission, or has never been prompted for permission.
+ Check if location services are disabled system wide
+ 
+ @return YES if location services are disable system wide
  */
 - (BOOL)locationServicesDisabled;
+
+/**
+ Check if location services are denied or restricted.
+
+ @return YES if services are denied or restricted, or NO if the user has give permission, or has never been prompted for permission.
+ */
+- (BOOL)locationServicesDenied;
 
 /**
  Fetch the user's current location and do a reverse geolookup of its coordinates
