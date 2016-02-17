@@ -47,6 +47,11 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 
 - (BOOL)locationServicesDisabled
 {
+    return ![CLLocationManager locationServicesEnabled];
+}
+
+- (BOOL)locationServicesDenied
+{
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
         return YES;
@@ -197,9 +202,15 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     NSString *cancelText = NSLocalizedString(@"OK", "");
     NSString *otherButtonTitle = nil;
     if (error.domain == kCLErrorDomain && error.code == kCLErrorDenied) {
-        otherButtonTitle = NSLocalizedString(@"Open Settings", @"Go to the settings app");
-        title = NSLocalizedString(@"Location", @"Title for alert when access to the media library is not granted by the user");
-        message = NSLocalizedString(@"WordPress needs permission to access your device's location in order to add it to your post. Please change the privacy settings if you wish to allow this.",  @"Explaining to the user why the app needs access to the device location.");
+        if ([CLLocationManager locationServicesEnabled]) {
+            otherButtonTitle = NSLocalizedString(@"Open Settings", @"Go to the settings app");
+            title = NSLocalizedString(@"Location", @"Title for alert when access to the media library is not granted by the user");
+            message = NSLocalizedString(@"WordPress needs permission to access your device's location in order to add it to your post. Please update your privacy settings.",  @"Explaining to the user why the app needs access to the device location.");
+            cancelText = NSLocalizedString(@"Cancel", "");
+        } else {
+            title = NSLocalizedString(@"Location", @"Title for alert when access to the media library is not granted by the user");
+            message = NSLocalizedString(@"In order for WordPress to add location to your posts location services must be enabled. Please turn then on using the Setting app.",  @"Explaining to the user that location services need to be enable in order to geotag a post.");
+        }
     }
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
