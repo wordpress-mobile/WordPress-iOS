@@ -897,7 +897,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)showNoResultsViewIfNeeded
 {
     // Remove If Needed
-    if (self.tableViewHandler.resultsController.fetchedObjects.count) {
+    if (!self.showsEmptyStateLegend) {
         [self.noResultsView removeFromSuperview];
         
         // Show filters if we have results
