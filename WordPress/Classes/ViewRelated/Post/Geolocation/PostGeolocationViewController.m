@@ -10,7 +10,9 @@
 #import "WPTableViewCell.h"
 #import "WordPress-Swift.h"
 
-@interface PostGeolocationViewController () <MKMapViewDelegate, UISearchBarDelegate>
+static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCellIdentifier";
+
+@interface PostGeolocationViewController () <MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) PostGeolocationView *geoView;
@@ -19,6 +21,8 @@
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong) LocationService *locationService;
 @property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSArray<CLPlacemark *> *placemarks;
 
 @end
 
@@ -45,12 +49,20 @@
     self.searchBar.placeholder = NSLocalizedString(@"Search", @"Prompt in the location search bar.");
     self.searchBar.delegate = self;
     [self.view addSubview:self.searchBar];
+    
+    self.tableView = [[UITableView alloc] initWithFrame:self.geoView.frame style:UITableViewStylePlain];
+    self.tableView.hidden = YES;
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CLPlacemarkTableViewCellIdentifier];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.view addSubview:self.tableView];
 }
 
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
     self.searchBar.frame = CGRectMake(0, [self.topLayoutGuide length], self.view.frame.size.width, 44);
+    self.tableView.frame = CGRectMake(0, CGRectGetMaxY(self.searchBar.frame), self.view.frame.size.width, self.view.frame.size.height-CGRectGetMaxY(self.searchBar.frame));
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -160,6 +172,8 @@
     }
 }
 
+#pragma mark - UISearchBarDelegate
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     NSLog(@"%@", searchText);
@@ -167,17 +181,57 @@
     if (query.length < 5) {
         return;
     }
+    self.searchBar.showsCancelButton = YES;
+    self.tableView.hidden = NO;
+    __weak __typeof__(self) weakSelf = self;
     [self.locationService searchPlacemarksWithQuery:query completion:^(NSArray *placemarks, NSError *error) {
         if (error) {
             return;
         }
-        [self showSearchResults:placemarks];
+        [weakSelf showSearchResults:placemarks];
     }];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    self.tableView.hidden = YES;
+    self.searchBar.showsCancelButton = NO;
+    [self.searchBar resignFirstResponder];
 }
 
 - (void)showSearchResults:(NSArray<CLPlacemark *> *)placemarks
 {
-    CLPlacemark *placemark = [placemarks firstObject];
+    self.placemarks = placemarks;
+    [self.tableView reloadData];
+}
+
+#pragma mark - UITableViewDelegate
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.placemarks.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CLPlacemarkTableViewCellIdentifier forIndexPath:indexPath];
+    CLPlacemark *placemark = self.placemarks[indexPath.row];
+    cell.textLabel.text = placemark.name;
+    cell.detailTextLabel.text = placemark.country;
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CLPlacemark *placemark = self.placemarks[indexPath.row];
+
+    self.tableView.hidden = YES;
+    self.searchBar.showsCancelButton = NO;
     self.geoView.coordinate = [[Coordinate alloc] initWithCoordinate:placemark.location.coordinate];
     self.geoView.address = placemark.name;
     self.post.geolocation = self.geoView.coordinate;
