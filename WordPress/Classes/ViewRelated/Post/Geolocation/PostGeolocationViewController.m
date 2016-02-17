@@ -105,7 +105,7 @@
 - (void)updateLocation
 {
     
-    if (![self.locationService locationServicesDisabled] && [self.locationService locationServicesDenied]) {
+    if ([self.locationService locationServicesDisabled] || [self.locationService locationServicesDenied]) {
         [self.locationService showAlertForLocationServicesDisabled];
         return;
     }
