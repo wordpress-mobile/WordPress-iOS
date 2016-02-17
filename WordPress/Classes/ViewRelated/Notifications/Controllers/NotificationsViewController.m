@@ -312,10 +312,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)hideFiltersSegmentedControlIfApplicable
 {
-        [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
-            self.tableHeaderView.alpha  = WPAlphaZero;
-        } completion:nil];
     if (self.tableHeaderView.alpha == WPAlphaFull && !self.shouldDisplayFilters) {
+        self.tableHeaderView.alpha  = WPAlphaZero;
     }
 }
 
