@@ -3,8 +3,6 @@
 
 @interface PostListFilter ()
 
-@property (nonatomic, strong) NSPredicate *basePredicateForFetchRequest;
-
 @end
 
 @implementation PostListFilter
@@ -25,7 +23,7 @@
     filter.title = NSLocalizedString(@"Published", @"Title of the published filter. This filter shows a list of posts that the user has published.");
     filter.statuses = @[PostStatusPublish, PostStatusPrivate];
     filter.filterType = PostListStatusFilterPublished;
-    filter.basePredicateForFetchRequest = [NSPredicate predicateWithFormat:@"status IN %@", filter.statuses];
+    filter.predicateForFetchRequest = [NSPredicate predicateWithFormat:@"status IN %@", filter.statuses];
     return filter;
 }
 
@@ -37,7 +35,7 @@
     filter.filterType = PostListStatusFilterDraft;
     // Exclude known status values. This allows for pending and custom post status to be treated as draft.
     NSArray *excludeStatuses = @[PostStatusPublish, PostStatusPrivate, PostStatusScheduled, PostStatusTrash];
-    filter.basePredicateForFetchRequest = [NSPredicate predicateWithFormat:@"NOT status IN %@", excludeStatuses];
+    filter.predicateForFetchRequest = [NSPredicate predicateWithFormat:@"NOT status IN %@", excludeStatuses];
     return filter;
 }
 
@@ -47,7 +45,7 @@
     filter.title = NSLocalizedString(@"Scheduled", @"Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date.");
     filter.statuses = @[PostStatusScheduled];
     filter.filterType = PostListStatusFilterScheduled;
-    filter.basePredicateForFetchRequest = [NSPredicate predicateWithFormat:@"status = %@", PostStatusScheduled];
+    filter.predicateForFetchRequest = [NSPredicate predicateWithFormat:@"status = %@", PostStatusScheduled];
     return filter;
 }
 
@@ -57,7 +55,7 @@
     filter.title = NSLocalizedString(@"Trashed", @"Title of the trashed filter. This filter shows posts that have been moved to the trash bin.");
     filter.statuses = @[PostStatusTrash];
     filter.filterType = PostListStatusFilterTrashed;
-    filter.basePredicateForFetchRequest = [NSPredicate predicateWithFormat:@"status = %@", PostStatusTrash];
+    filter.predicateForFetchRequest = [NSPredicate predicateWithFormat:@"status = %@", PostStatusTrash];
     return filter;
 }
 
@@ -68,11 +66,6 @@
         self.hasMore = YES;
     }
     return self;
-}
-
-- (NSPredicate *)predicateForFetchRequest
-{
-    return self.basePredicateForFetchRequest;
 }
 
 @end
