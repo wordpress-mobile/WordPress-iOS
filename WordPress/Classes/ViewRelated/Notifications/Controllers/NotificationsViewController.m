@@ -327,6 +327,11 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     notesBucket.notifyWhileIndexing = YES;
 }
 
+- (BOOL)shouldDisplayFilters
+{
+    return !self.showsJetpackMessage && !self.showsEmptyStateLegend;
+}
+
 
 #pragma mark - AppBotX Helpers
 
@@ -968,6 +973,11 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     BOOL showsJetpackMessage        = ![accountService defaultWordPressComAccount];
     
     return showsJetpackMessage;
+}
+
+- (BOOL)showsEmptyStateLegend
+{
+    return (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
 }
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
