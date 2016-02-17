@@ -10,8 +10,7 @@ typedef void(^LocationServicePlacemarksCompletionBlock)(NSArray<CLPlacemark *> *
  LocationServiceSource Error Codes
  */
 typedef NS_ENUM(NSUInteger, LocationServiceError) {
-    LocationServiceErrorLocationsUnavailable,
-    LocationServiceErrorLocationServiceTimedOut
+    LocationServiceErrorPermissionDenied
 };
 
 extern NSString *const LocationServiceErrorDomain;
