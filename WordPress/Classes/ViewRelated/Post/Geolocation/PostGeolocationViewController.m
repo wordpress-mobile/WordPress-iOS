@@ -176,7 +176,6 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    NSLog(@"%@", searchText);
     NSString *query = searchText;
     if (query.length < 5) {
         return;
@@ -232,7 +231,15 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
 
     self.tableView.hidden = YES;
     self.searchBar.showsCancelButton = NO;
-    self.geoView.coordinate = [[Coordinate alloc] initWithCoordinate:placemark.location.coordinate];
+    Coordinate *coordinate = [[Coordinate alloc] initWithCoordinate:placemark.location.coordinate];
+    CLRegion *placemarkRegion = placemark.region;
+    if ([placemarkRegion isKindOfClass:[CLCircularRegion class]]) {
+        CLCircularRegion *circularRegion = (CLCircularRegion *)placemarkRegion;
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(circularRegion.center, circularRegion.radius, circularRegion.radius);
+        [self.geoView setCoordinate:coordinate region:region];
+    } else {
+        [self.geoView setCoordinate:coordinate];
+    }
     self.geoView.address = placemark.name;
     self.post.geolocation = self.geoView.coordinate;
 }
