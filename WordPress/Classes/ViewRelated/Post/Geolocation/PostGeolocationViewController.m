@@ -125,18 +125,23 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
         [self.locationService showAlertForLocationServicesDisabled];
         return;
     }
-
+    __weak __typeof__(self) weakSelf = self;
     [self.locationService getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
-        if (error) {
-            [self refreshView];
-            [self.locationService showAlertForLocationError:error];
-            return;
-        }
-        if (location) {
-            Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
-            self.post.geolocation = coord;
-            [self refreshView];
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            __typeof__(weakSelf) strongSelf = weakSelf;
+            if (error) {
+                [strongSelf refreshView];
+                [strongSelf.locationService showAlertForLocationError:error];
+                return;
+            }
+            if (location) {
+                Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
+
+                    strongSelf.post.geolocation = coord;
+                    [strongSelf refreshView];
+
+            }
+        });
     }];
 
     [self refreshView];
@@ -191,7 +196,10 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
         if (error) {
             return;
         }
-        [weakSelf showSearchResults:placemarks];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf showSearchResults:placemarks];
+        });
+        
     }];
 }
 
@@ -238,6 +246,8 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
 
     self.tableView.hidden = YES;
     self.searchBar.showsCancelButton = NO;
+    [self.searchBar resignFirstResponder];
+    
     Coordinate *coordinate = [[Coordinate alloc] initWithCoordinate:placemark.location.coordinate];
     CLRegion *placemarkRegion = placemark.region;
     if ([placemarkRegion isKindOfClass:[CLCircularRegion class]]) {
