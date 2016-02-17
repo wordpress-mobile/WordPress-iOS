@@ -303,7 +303,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)showFiltersSegmentedControlIfApplicable
 {
-    if (!self.showsJetpackMessage && self.tableHeaderView.alpha == WPAlphaZero) {
+    if (self.tableHeaderView.alpha == WPAlphaZero && self.shouldDisplayFilters) {
         [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
             self.tableHeaderView.alpha = WPAlphaFull;
         } completion:nil];
@@ -312,10 +312,10 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (void)hideFiltersSegmentedControlIfApplicable
 {
-    if (self.showsJetpackMessage && self.tableHeaderView.alpha == WPAlphaFull) {
         [UIView animateWithDuration:WPAnimationDurationDefault delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
             self.tableHeaderView.alpha  = WPAlphaZero;
         } completion:nil];
+    if (self.tableHeaderView.alpha == WPAlphaFull && !self.shouldDisplayFilters) {
     }
 }
 
