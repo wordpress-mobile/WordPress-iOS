@@ -146,7 +146,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                            }
                            [self mergePosts:remotePosts
                                      ofType:postType
-                                    forBlog:blog
+                                    forBlog:blogInContext
                           completionHandler:^(NSArray<AbstractPost *> *posts) {
                               if (success) {
                                   success(posts);
