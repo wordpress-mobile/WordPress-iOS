@@ -54,6 +54,10 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
     self.tableView.hidden = YES;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CLPlacemarkTableViewCellIdentifier];
     self.tableView.delegate = self;
+    self.tableView.rowHeight = 60.0;
+    UIVisualEffectView *visualEffect = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    self.tableView.backgroundView = visualEffect;
+    self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
 }
