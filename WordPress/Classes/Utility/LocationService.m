@@ -184,7 +184,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
     if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
-        [self serviceFailed:[NSError errorWithDomain:kCLErrorDomain code:kCLErrorDenied userInfo:nil]];
+        [self serviceFailed:[NSError errorWithDomain:LocationServiceErrorDomain code:LocationServiceErrorPermissionDenied userInfo:nil]];
     }
 }
 
@@ -204,13 +204,15 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     if (error.domain == kCLErrorDomain && error.code == kCLErrorDenied) {
         if ([CLLocationManager locationServicesEnabled]) {
             otherButtonTitle = NSLocalizedString(@"Open Settings", @"Go to the settings app");
-            title = NSLocalizedString(@"Location", @"Title for alert when access to the media library is not granted by the user");
             message = NSLocalizedString(@"WordPress needs permission to access your device's location in order to add it to your post. Please update your privacy settings.",  @"Explaining to the user why the app needs access to the device location.");
             cancelText = NSLocalizedString(@"Cancel", "");
         } else {
-            title = NSLocalizedString(@"Location", @"Title for alert when access to the media library is not granted by the user");
             message = NSLocalizedString(@"In order for WordPress to add location to your posts location services must be enabled. Please turn then on using the Setting app.",  @"Explaining to the user that location services need to be enable in order to geotag a post.");
         }
+    }
+    if (error.domain == LocationServiceErrorDomain && error.code == LocationServiceErrorPermissionDenied) {
+        // The user explicitily denied a permission request so not worth to show an alert
+        return;
     }
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
