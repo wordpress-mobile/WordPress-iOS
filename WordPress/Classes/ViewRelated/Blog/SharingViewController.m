@@ -164,11 +164,15 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)configurePublicizeCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     PublicizeService *publicizer = self.publicizeServices[indexPath.row];
-    cell.textLabel.text = publicizer.label;
-    NSURL *url = [NSURL URLWithString:publicizer.icon];
-    [cell.imageView setImageWithURL:url placeholderImage:[UIImage imageNamed:@"post-blavatar-placeholder"]];
-
     NSArray *connections = [self connectionsForService:publicizer];
+
+    // Configure the image
+    UIImage *image = [WPStyleGuide iconForService: publicizer.serviceID];
+    [cell.imageView setImage:image];
+    cell.imageView.tintColor = ([connections count] > 0) ? [WPStyleGuide tintColorForConnectedService: publicizer.serviceID] : [WPStyleGuide greyLighten20];
+
+    // Configure the text
+    cell.textLabel.text = publicizer.label;
 
     // Show the name(s) or number of connections.
     NSString *str = @"";
@@ -188,22 +192,10 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     // Check if any of the connections are broken.
     for (PublicizeConnection *pubConn in connections) {
         if ([pubConn isBroken]) {
-            cell.accessoryView = [self warningAccessoryView];
+            cell.accessoryView = [WPStyleGuide sharingCellWarningAccessoryImageView];
             break;
         }
     }
-}
-
-- (UIImageView *)warningAccessoryView
-{
-    //TODO: Need actual exclaimation graphic.
-    CGFloat imageSize = 22.0;
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, imageSize, imageSize)];
-    imageView.image = [UIImage imageWithColor:[WPStyleGuide jazzyOrange]
-                                                        havingSize:imageView.frame.size];
-    imageView.layer.cornerRadius = imageSize / 2.0;
-    imageView.layer.masksToBounds = YES;
-    return imageView;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

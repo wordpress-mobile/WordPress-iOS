@@ -1,5 +1,10 @@
 #import "PostListFilter.h"
 #import "BasePost.h"
+
+@interface PostListFilter ()
+
+@end
+
 @implementation PostListFilter
 
 + (NSArray *)newPostListFilters

@@ -74,7 +74,6 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
 - (IBAction)dismiss
 {
-    [super dismiss];
     if ([self.delegate respondsToSelector:@selector(authorizeDidCancel:)]) {
         [self.delegate authorizeDidCancel:self.publicizer];
     }
@@ -85,8 +84,6 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     // Note: There are situations where this can be called in error due to how
     // individual services choose to reply to an authorization request.
     // Delegates should expect to handle a false positive.
-    [super dismiss];
-
     if ([self.delegate respondsToSelector:@selector(authorizeDidSucceed:)]) {
         [self.delegate authorizeDidSucceed:self.publicizer];
     }
@@ -94,7 +91,6 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
 - (void)displayLoadError:(NSError *)error
 {
-    [super dismiss];
     if ([self.delegate respondsToSelector:@selector(authorize:didFailWithError:)]) {
         [self.delegate authorize:self.publicizer didFailWithError:error];
     }
@@ -158,6 +154,11 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     shouldStartLoadWithRequest:(NSURLRequest *)request
                 navigationType:(UIWebViewNavigationType)navigationType
 {
+    // Prevent a second verify load by someone happy clicking.
+    if (self.loadingVerify) {
+        return NO;
+    }
+
     AuthorizeAction action = [self requestedAuthorizeAction:request];
     switch (action) {
         case AuthorizeActionNone:

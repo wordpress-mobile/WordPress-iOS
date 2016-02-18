@@ -149,7 +149,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    [self geotagNewPost];
     self.mediaInProgress = [NSMutableDictionary dictionary];
     self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
     self.delegate = self;
@@ -413,26 +412,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
     return [PostService createDraftPostInMainContextForBlog:blog];
-}
-
-- (void)geotagNewPost
-{
-    if (EditPostViewControllerModeNewPost != self.editMode) {
-        return;
-    }
-
-    if (self.post.blog.settings.geolocationEnabled && ![LocationService sharedService].locationServicesDisabled) {
-        [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
-            if (location) {
-                if (self.post.isDeleted) {
-                    return;
-                }
-                Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
-                Post *post = (Post *)self.post;
-                post.geolocation = coord;
-            }
-        }];
-    }
 }
 
 /*
