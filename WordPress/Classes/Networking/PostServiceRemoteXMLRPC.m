@@ -9,6 +9,20 @@
 
 const NSInteger HTTP404ErrorCode = 404;
 
+static NSString * const RemoteOptionKeyNumber = @"number";
+static NSString * const RemoteOptionKeyOffset = @"offset";
+static NSString * const RemoteOptionKeyOrder = @"order";
+static NSString * const RemoteOptionKeyOrderBy = @"orderby";
+static NSString * const RemoteOptionKeyStatus = @"post_status";
+
+static NSString * const RemoteOptionValueOrderAscending = @"ASC";
+static NSString * const RemoteOptionValueOrderDescending = @"DESC";
+static NSString * const RemoteOptionValueOrderByDate = @"date";
+static NSString * const RemoteOptionValueOrderByModified = @"modified";
+static NSString * const RemoteOptionValueOrderByTitle = @"title";
+static NSString * const RemoteOptionValueOrderByCommentCount = @"comment_count";
+static NSString * const RemoteOptionValueOrderByPostID = @"ID";
+
 @implementation PostServiceRemoteXMLRPC
 
 - (void)getPostWithID:(NSNumber *)postID
@@ -30,14 +44,14 @@ const NSInteger HTTP404ErrorCode = 404;
 }
 
 - (void)getPostsOfType:(NSString *)postType
-               success:(void (^)(NSArray *))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *))failure {
     [self getPostsOfType:postType options:nil success:success failure:failure];
 }
 
 - (void)getPostsOfType:(NSString *)postType
                options:(NSDictionary *)options
-               success:(void (^)(NSArray *posts))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *error))failure {
     NSArray *statuses = @[PostStatusDraft, PostStatusPending, PostStatusPrivate, PostStatusPublish, PostStatusScheduled, PostStatusTrash];
     NSString *postStatus = [statuses componentsJoinedByString:@","];
@@ -195,9 +209,67 @@ const NSInteger HTTP404ErrorCode = 404;
     [self updatePost:post success:success failure:failure];
 }
 
+- (NSDictionary *)dictionaryWithRemoteOptions:(id <PostServiceRemoteOptions>)options
+{
+    NSMutableDictionary *remoteParams = [NSMutableDictionary dictionary];
+    if (options.number) {
+        [remoteParams setObject:options.number forKey:RemoteOptionKeyNumber];
+    }
+    if (options.offset) {
+        [remoteParams setObject:options.offset forKey:RemoteOptionKeyOffset];
+    }
+    
+    NSString *statusesStr = nil;
+    if (options.statuses.count) {
+        statusesStr = [options.statuses componentsJoinedByString:@","];
+    }
+    if (options.order) {
+        NSString *orderStr = nil;
+        switch (options.order) {
+            case PostServiceResultsOrderDescending:
+                orderStr = RemoteOptionValueOrderDescending;
+                break;
+            case PostServiceResultsOrderAscending:
+                orderStr = RemoteOptionValueOrderAscending;
+                break;
+        }
+        [remoteParams setObject:orderStr forKey:RemoteOptionKeyOrder];
+    }
+    
+    NSString *orderByStr = nil;
+    if (options.orderBy) {
+        switch (options.orderBy) {
+            case PostServiceResultsOrderingByDate:
+                orderByStr = RemoteOptionValueOrderByDate;
+                break;
+            case PostServiceResultsOrderingByModified:
+                orderByStr = RemoteOptionValueOrderByModified;
+                break;
+            case PostServiceResultsOrderingByTitle:
+                orderByStr = RemoteOptionValueOrderByTitle;
+                break;
+            case PostServiceResultsOrderingByCommentCount:
+                orderByStr = RemoteOptionValueOrderByCommentCount;
+                break;
+            case PostServiceResultsOrderingByPostID:
+                orderByStr = RemoteOptionValueOrderByPostID;
+                break;
+        }
+    }
+    
+    if (statusesStr.length) {
+        [remoteParams setObject:statusesStr forKey:RemoteOptionKeyStatus];
+    }
+    if (orderByStr.length) {
+        [remoteParams setObject:orderByStr forKey:RemoteOptionKeyOrderBy];
+    }
+    
+    return remoteParams.count ? [NSDictionary dictionaryWithDictionary:remoteParams] : nil;
+}
+
 #pragma mark - Private methods
 
-- (NSArray *)remotePostsFromXMLRPCArray:(NSArray *)xmlrpcArray {
+- (NSArray <RemotePost *> *)remotePostsFromXMLRPCArray:(NSArray *)xmlrpcArray {
     return [xmlrpcArray wp_map:^id(NSDictionary *xmlrpcPost) {
         return [self remotePostFromXMLRPCDictionary:xmlrpcPost];
     }];
