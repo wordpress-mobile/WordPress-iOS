@@ -1,5 +1,5 @@
-#import "MenuItemSourceView.h"
+#import "MenuItemSourcePostAbstractView.h"
 
-@interface MenuItemSourcePostView : MenuItemSourceView
+@interface MenuItemSourcePostView : MenuItemSourcePostAbstractView
 
 @end
