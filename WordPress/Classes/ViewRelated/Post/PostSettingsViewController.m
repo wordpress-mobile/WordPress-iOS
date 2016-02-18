@@ -292,12 +292,13 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)configureSections
 {
-    self.sections = [NSMutableArray array];
-    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionTaxonomy]];
-    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
-    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFormat]];
-    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
-    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionGeolocation]];    
+    self.sections = @[
+                      @(PostSettingsSectionTaxonomy),
+                      @(PostSettingsSectionMeta),
+                      @(PostSettingsSectionFormat),
+                      @(PostSettingsSectionFeaturedImage),
+                      @(PostSettingsSectionGeolocation)
+                      ];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
