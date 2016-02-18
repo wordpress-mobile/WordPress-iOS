@@ -483,7 +483,12 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost mode:mode];
         
+        __weak __typeof(self) weakSelf = self;
+        
         postViewController.onClose = ^void(WPPostViewController* viewController) {
+            
+            [weakSelf setFilterWithPostStatus:viewController.post.status];
+            
             [viewController.navigationController popViewControllerAnimated:YES];
         };
         
