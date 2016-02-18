@@ -421,20 +421,47 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     UINavigationController *navController;
 
     if ([WPPostViewController isNewEditorEnabled]) {
-        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithDraftForBlog:self.blog];
-        navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        navController.restorationClass = [WPPostViewController class];
+        [self createPostInNewEditor];
     } else {
-        WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPostViewController class];
+        [self createPostInOldEditor];
     }
+}
 
+- (void)createPostInNewEditor
+{
+    WPPostViewController *postViewController = [[WPPostViewController alloc] initWithDraftForBlog:self.blog];
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    postViewController.onClose = ^void(WPPostViewController *viewController) {
+        
+        [weakSelf setFilterWithPostStatus:viewController.post.status];
+        
+        [viewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    
+    UINavigationController* __nonnull navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
+    navController.restorationIdentifier = WPEditorNavigationRestorationID;
+    navController.restorationClass = [WPPostViewController class];
+    
     [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    [self presentViewController:navController animated:YES completion:nil];
+    
+    [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{@"tap_source": @"posts_view"} withBlog:self.blog];
+}
 
+- (void)createPostInOldEditor
+{
+    WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
+    UINavigationController* __nonnull navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+    navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+    navController.restorationClass = [WPLegacyEditPostViewController class];
+    
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
     [self presentViewController:navController animated:YES completion:nil];
     
     [WPAppAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{@"tap_source": @"posts_view"} withBlog:self.blog];
@@ -455,6 +482,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [WPAnalytics track:WPAnalyticsStatPostListEditAction withProperties:[self propertiesForAnalytics]];
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost mode:mode];
+        
+        postViewController.onClose = ^void(WPPostViewController* viewController) {
+            [viewController.navigationController popViewControllerAnimated:YES];
+        };
+        
         postViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:postViewController animated:YES];
     } else {
