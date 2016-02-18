@@ -817,13 +817,31 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (PostListFilter *)filterThatDisplaysPostsWithStatus:(NSString *)postStatus
 {
-    for (PostListFilter *filter in self.availablePostListFilters) {
+    NSUInteger index = [self indexOfFilterThatDisplaysPostsWithStatus:postStatus];
+    
+    return self.availablePostListFilters[index];
+}
+
+
+- (NSUInteger)indexOfFilterThatDisplaysPostsWithStatus:(NSString *)postStatus
+{
+    __block NSUInteger index = 0;
+    __block BOOL found = NO;
+    
+    [self.availablePostListFilters enumerateObjectsUsingBlock:^(PostListFilter* _Nonnull filter, NSUInteger idx, BOOL* _Nonnull stop) {
         if ([filter.statuses containsObject:postStatus]) {
-            return filter;
+            index = idx;
+            found = YES;
+            *stop = YES;
         }
+    }];
+    
+    if (!found) {
+        // The draft filter is the catch all by convention.
+        index = [self indexForFilterWithType:PostListStatusFilterDraft];
     }
-    // The draft filter is the catch all by convention.
-    return [self.availablePostListFilters objectAtIndex:[self indexForFilterWithType:PostListStatusFilterDraft]];
+    
+    return index;
 }
 
 - (NSInteger)indexForFilterWithType:(PostListStatusFilter)filterType
@@ -919,6 +937,14 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     controller.modalPresentationStyle = UIModalPresentationPageSheet;
     controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:controller animated:YES completion:nil];
+}
+
+
+- (void)setFilterWithPostStatus:(NSString* __nonnull)status
+{
+    NSUInteger index = [self indexOfFilterThatDisplaysPostsWithStatus:status];
+    
+    [self setCurrentFilterIndex:index];
 }
 
 
