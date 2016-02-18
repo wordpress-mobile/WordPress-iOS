@@ -1054,7 +1054,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     NSDictionary *metaData = @{@"Source": @"Failed login",
                                @"Username": self.viewModel.username,
                                @"SiteURL": self.viewModel.siteUrl};
-    
+
     [HelpshiftSupport showConversation:self withOptions:@{HelpshiftSupportCustomMetadataKey: metaData}];
     [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
 }
