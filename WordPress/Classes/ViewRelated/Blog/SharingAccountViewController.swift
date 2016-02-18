@@ -52,11 +52,11 @@ import WordPressShared
         closeButton.tintColor = UIColor.whiteColor()
         navigationItem.leftBarButtonItem = closeButton
 
-        // The preceding WPWebViewController changes the default navbar appearnce. Restore it.
+        // The preceding WPWebViewController changes the default navbar appearance. Restore it.
         if let navBar = navigationController?.navigationBar {
-            navBar.shadowImage = UIImage(color: UIColor(fromHex: 0x007eb1))
-            navBar.setBackgroundImage(UIImage(color: WPStyleGuide.wordPressBlue()), forBarMetrics: .Default)
-            navBar.barStyle = .Black
+            navBar.shadowImage = WPStyleGuide.navigationBarShadowImage()
+            navBar.setBackgroundImage(WPStyleGuide.navigationBarBackgroundImage(), forBarMetrics: .Default)
+            navBar.barStyle = WPStyleGuide.navigationBarBarStyle()
         }
     }
 
