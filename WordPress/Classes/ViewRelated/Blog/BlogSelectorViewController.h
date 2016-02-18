@@ -7,6 +7,7 @@
                             cancelCompletion:(void (^)())cancel;
 
 @property (nonatomic, assign) BOOL displaysCancelButton;
+@property (nonatomic, assign) BOOL dismissOnCancellation;
 @property (nonatomic, assign) BOOL dismissOnCompletion;
 
 @end

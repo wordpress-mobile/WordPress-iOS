@@ -115,6 +115,10 @@ static CGFloat BlogCellRowHeight = 54.0;
     if (self.cancelCompletionHandler) {
         self.cancelCompletionHandler();
     }
+    
+    if (self.dismissOnCancellation) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - Table view data source
