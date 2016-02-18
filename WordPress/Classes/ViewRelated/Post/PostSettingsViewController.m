@@ -297,10 +297,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFormat]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
-
-    if (self.post.blog.settings.geolocationEnabled || self.post.geolocation) {
-        [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionGeolocation]];
-    }
+    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionGeolocation]];    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
