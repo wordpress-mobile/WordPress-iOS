@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
+#import "ContextManager-Internals.h"
 #import "TestContextManager.h"
 #import "Notification.h"
 
@@ -19,7 +20,10 @@
 - (void)tearDown
 {
     [super tearDown];
-    self.contextManager = nil;
+    
+    // Note: We'll force TestContextManager override reset, since, for (unknown reasons) the TestContextManager
+    // might be retained more than expected, and it may break other core data based tests.
+    [ContextManager overrideSharedInstance:nil];
 }
 
 - (void)testBadgeNotificationHasBadgeFlagSetToTrue
