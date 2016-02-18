@@ -89,9 +89,9 @@
              failure:[OCMArg isNotNil]]);
     
     XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
-    
+
     [service getPostsOfType:postType
-                    success:^(NSArray *posts) {}
+                    success:^(NSArray<RemotePost *> *remotePosts) {}
                     failure:^(NSError *error) {}];
 }
 
@@ -127,7 +127,7 @@
     
     [service getPostsOfType:postType
                     options:options
-                    success:^(NSArray *posts) {}
+                    success:^(NSArray<RemotePost *> *remotePosts) {}
                     failure:^(NSError *error) {}];
 }
 
