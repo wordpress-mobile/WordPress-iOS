@@ -64,6 +64,7 @@ import WordPressShared
     /// Configures the `UITableView`
     ///
     private func configureTableView() {
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
         ImmuTable.registerRows([TextRow.self], tableView: tableView)
 
         immutableHandler = ImmuTableViewHandler(takeOver: self)
