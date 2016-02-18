@@ -19,24 +19,6 @@ NSString * const PostServiceTypePage = @"page";
 NSString * const PostServiceTypeAny = @"any";
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
-static NSString * const RemoteOptionKeyNumber = @"number";
-static NSString * const RemoteOptionKeyOffset = @"offset";
-static NSString * const RemoteOptionKeyOrder = @"order";
-static NSString * const RemoteOptionKeyOrderByREST = @"order_by";
-static NSString * const RemoteOptionKeyOrderByXMLRPC = @"orderby";
-static NSString * const RemoteOptionKeyStatusREST = @"status";
-static NSString * const RemoteOptionKeyStatusXMLRPC = @"post_status";
-static NSString * const RemoteOptionKeySearchREST = @"search";
-static NSString * const RemoteOptionKeyAuthorREST = @"author";
-
-static NSString * const RemoteOptionValueOrderAscending = @"ASC";
-static NSString * const RemoteOptionValueOrderDescending = @"DESC";
-static NSString * const RemoteOptionValueOrderByDate = @"date";
-static NSString * const RemoteOptionValueOrderByModified = @"modified";
-static NSString * const RemoteOptionValueOrderByTitle = @"title";
-static NSString * const RemoteOptionValueOrderByCommentCount = @"comment_count";
-static NSString * const RemoteOptionValueOrderByPostID = @"ID";
-
 const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 @implementation PostService
@@ -434,81 +416,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 - (NSDictionary *)remoteSyncParametersDictionaryForRemote:(nonnull id <PostServiceRemote>)remote
                                               withOptions:(nonnull PostServiceSyncOptions *)options
 {
-    NSMutableDictionary *remoteParams = [NSMutableDictionary dictionary];
-    // setup default parameters support by both REST and XMLRPC
-    if (options.number) {
-        [remoteParams setObject:options.number forKey:RemoteOptionKeyNumber];
-    } else {
-        [remoteParams setObject:@(PostServiceDefaultNumberToSync) forKey:RemoteOptionKeyNumber];
-    }
-    if (options.offset) {
-        [remoteParams setObject:options.offset forKey:RemoteOptionKeyOffset];
-    }
-    
-    NSString *statusesStr = nil;
-    if (options.statuses.count) {
-        statusesStr = [options.statuses componentsJoinedByString:@","];
-    }
-    if (options.order) {
-        NSString *orderStr = nil;
-        switch (options.order) {
-            case PostServiceResultsOrderDescending:
-                orderStr = RemoteOptionValueOrderDescending;
-                break;
-            case PostServiceResultsOrderAscending:
-                orderStr = RemoteOptionValueOrderAscending;
-                break;
-        }
-        [remoteParams setObject:orderStr forKey:RemoteOptionKeyOrder];
-    }
-    
-    NSString *orderByStr = nil;
-    if (options.orderBy) {
-        switch (options.orderBy) {
-            case PostServiceResultsOrderingByDate:
-                orderByStr = RemoteOptionValueOrderByDate;
-                break;
-            case PostServiceResultsOrderingByModified:
-                orderByStr = RemoteOptionValueOrderByModified;
-                break;
-            case PostServiceResultsOrderingByTitle:
-                orderByStr = RemoteOptionValueOrderByTitle;
-                break;
-            case PostServiceResultsOrderingByCommentCount:
-                orderByStr = RemoteOptionValueOrderByCommentCount;
-                break;
-            case PostServiceResultsOrderingByPostID:
-                orderByStr = RemoteOptionValueOrderByPostID;
-                break;
-        }
-    }
-    
-    // setup parameters unique to either REST or XML-RPC
-    if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
-        // setup REST unique params
-        if (statusesStr.length) {
-            [remoteParams setObject:statusesStr forKey:RemoteOptionKeyStatusREST];
-        }
-        if (orderByStr.length) {
-            [remoteParams setObject:orderByStr forKey:RemoteOptionKeyOrderByREST];
-        }
-        if (options.authorID) {
-            [remoteParams setObject:options.authorID forKey:RemoteOptionKeyAuthorREST];
-        }
-        if (options.search.length > 0) {
-            [remoteParams setObject:options.search forKey:RemoteOptionKeySearchREST];
-        }
-    } else if ([remote isKindOfClass:[PostServiceRemoteXMLRPC class]]) {
-        // setup XML-RPC unique params
-        if (statusesStr.length) {
-            [remoteParams setObject:statusesStr forKey:RemoteOptionKeyStatusXMLRPC];
-        }
-        if (orderByStr.length) {
-            [remoteParams setObject:orderByStr forKey:RemoteOptionKeyOrderByXMLRPC];
-        }
-    }
-    
-    return remoteParams.count ? [NSDictionary dictionaryWithDictionary:remoteParams] : nil;
+    return [remote dictionaryWithRemoteOptions:options];
 }
 
 - (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost {

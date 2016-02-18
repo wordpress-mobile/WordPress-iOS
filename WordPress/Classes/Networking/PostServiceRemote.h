@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "PostServiceRemoteOptions.h"
 
 @class RemotePost;
 
@@ -93,5 +94,12 @@
 - (void)restorePost:(RemotePost *)post
             success:(void (^)(RemotePost *))success
             failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief      Returns a dictionary set with option parameters of the PostServiceRemoteOptions protocol.
+ *
+ *  @param      options  The object with set remote options.  Cannot be nil.
+ */
+- (NSDictionary *)dictionaryWithRemoteOptions:(id <PostServiceRemoteOptions>)options;
 
 @end
