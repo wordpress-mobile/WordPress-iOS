@@ -1,4 +1,5 @@
-#import <Helpshift/Helpshift.h>
+#import <Helpshift/HelpshiftCore.h>
+#import <Helpshift/HelpshiftSupport.h>
 #import <Mixpanel/Mixpanel.h>
 #import "SFHFKeychainUtils.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
