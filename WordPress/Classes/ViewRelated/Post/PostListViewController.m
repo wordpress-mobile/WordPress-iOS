@@ -418,8 +418,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 - (void)createPost
 {
-    UINavigationController *navController;
-
     if ([WPPostViewController isNewEditorEnabled]) {
         [self createPostInNewEditor];
     } else {
