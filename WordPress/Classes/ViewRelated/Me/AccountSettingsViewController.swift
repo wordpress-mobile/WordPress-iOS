@@ -130,6 +130,7 @@ private struct AccountSettingsController: SettingsController {
             selectorViewController.title = NSLocalizedString("Primary Site", comment: "Primary Site Picker's Title");
             selectorViewController.displaysCancelButton = false
             selectorViewController.dismissOnCompletion = true
+            selectorViewController.dismissOnCancellation = true
             
             return selectorViewController
         }
