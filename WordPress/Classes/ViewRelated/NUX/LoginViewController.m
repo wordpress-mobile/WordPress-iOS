@@ -1,5 +1,5 @@
 #import <WPXMLRPC/WPXMLRPC.h>
-#import <Helpshift/Helpshift.h>
+#import <Helpshift/HelpshiftSupport.h>
 #import <WordPressShared/WPFontManager.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 

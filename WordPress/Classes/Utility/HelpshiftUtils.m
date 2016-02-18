@@ -1,7 +1,8 @@
 #import "HelpShiftUtils.h"
 #import <Mixpanel/MPTweakInline.h>
 #import "WordPressComApiCredentials.h"
-#import <Helpshift/Helpshift.h>
+#import <Helpshift/HelpshiftCore.h>
+#import <Helpshift/HelpshiftSupport.h>
 
 NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
 NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
