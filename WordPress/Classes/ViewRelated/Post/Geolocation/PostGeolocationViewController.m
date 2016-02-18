@@ -55,16 +55,6 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     self.searchBar.placeholder = NSLocalizedString(@"Search", @"Prompt in the location search bar.");
     self.searchBar.delegate = self;
     [self.view addSubview:self.searchBar];
-    
-    self.tableView = [[UITableView alloc] initWithFrame:self.geoView.frame style:UITableViewStylePlain];
-    self.tableView.hidden = YES;
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CLPlacemarkTableViewCellIdentifier];
-    self.tableView.delegate = self;
-    self.tableView.rowHeight = 60.0;
-    UIVisualEffectView *visualEffect = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-    self.tableView.backgroundView = visualEffect;
-    self.tableView.backgroundColor = [UIColor clearColor];
-    self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
 }
 
@@ -87,6 +77,23 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 }
 
 #pragma mark - Appearance Related Methods
+
+- (UITableView*) tableView
+{
+    if (_tableView == nil) {
+        _tableView = [[UITableView alloc] initWithFrame:self.geoView.frame style:UITableViewStylePlain];
+        _tableView.hidden = YES;
+        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CLPlacemarkTableViewCellIdentifier];
+        _tableView.delegate = self;
+        _tableView.rowHeight = 60.0;
+        UIVisualEffectView *visualEffect = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+        _tableView.backgroundView = visualEffect;
+        _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+        _tableView.dataSource = self;
+    }
+    return _tableView;
+}
 
 - (UIBarButtonItem *)removeButton
 {
