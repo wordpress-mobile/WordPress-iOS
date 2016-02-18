@@ -144,29 +144,58 @@ static const CGFloat CategoryCellIndentation = 16.0;
 
 - (NSInteger)tableView:(UITableView *)aTableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.categories count];
+    NSInteger result = [self.categories count];
+    
+    if (self.selectionMode == CategoriesSelectionModeParent) {
+        result += 1;
+    }
+    
+    return result;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CategoryCellIdentifier forIndexPath:indexPath];
-    PostCategory *category = self.categories[indexPath.row];
-    // Cell indentation
-    NSInteger indentationLevel = [[self.categoryIndentationDict objectForKey:[category.categoryID stringValue]] integerValue];
+    
     // HACK: We use zero here, because the the separator inset will do the work we want
     cell.indentationLevel = 0;
     cell.indentationWidth = CategoryCellIndentation;
+    
+    NSInteger row = indexPath.row; // Use this index for the remainder for this method.
+    
+    // When showing this VC in mode CategoriesSelectionModeParent, we want the first item to be
+    // "No Category" and come up in red, to allow the user to select no category at all.
+    //
+    if (self.selectionMode == CategoriesSelectionModeParent) {
+        if (row == 0) {
+            [WPStyleGuide configureTableViewDestructiveActionCell:cell];
+            cell.textLabel.textAlignment = NSTextAlignmentLeft;
+            
+            cell.textLabel.text = NSLocalizedString(@"No Category",
+                                                    @"Text shown (to select no-category) in the parent-category-selection screen when creating a new category.");
+            
+            if (self.selectedCategories == nil) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            } else {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+            
+            return cell;
+        } else {
+            row -= 1;
+        }
+    }
+    
+    PostCategory* category = self.categories[row];
+    NSInteger indentationLevel = [[self.categoryIndentationDict objectForKey:[category.categoryID stringValue]] integerValue];
     cell.separatorInset = UIEdgeInsetsMake(0, (indentationLevel+1) * cell.indentationWidth, 0, 0);
     cell.textLabel.text = [category.categoryName stringByDecodingXMLCharacters];
     [WPStyleGuide configureTableViewCell:cell];
 
-    // Only show checkmarks if we're selecting for a post.
-    if (self.selectionMode == CategoriesSelectionModePost || self.selectionMode == CategoriesSelectionModeBlogDefault) {
-        if ([self.selectedCategories containsObject:category]) {
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        } else {
-            cell.accessoryType = UITableViewCellAccessoryNone;
-        }
+    if ([self.selectedCategories containsObject:category]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
     return cell;
@@ -178,8 +207,17 @@ static const CGFloat CategoryCellIndentation = 16.0;
     NSIndexPath *currentSelectedIndexPath = [tableView indexPathForSelectedRow];
 
     [tableView deselectRowAtIndexPath:currentSelectedIndexPath animated:YES];
-
-    PostCategory *category = self.categories[indexPath.row];
+    
+    PostCategory *category = nil;
+    
+    if (self.selectionMode == CategoriesSelectionModeParent) {
+        if (indexPath.row > 0) {
+            category = self.categories[indexPath.row - 1];
+        }
+    } else {
+        category = self.categories[indexPath.row];
+    }
+    
     switch (self.selectionMode) {
         case (CategoriesSelectionModeParent): {
             // If we're choosing a parent category then we're done.
