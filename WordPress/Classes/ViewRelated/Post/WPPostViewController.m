@@ -286,7 +286,6 @@ EditImageDetailsViewControllerDelegate
     
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
-    [self geotagNewPost];
     self.delegate = self;
     [self configureMediaUpload];
     if (self.isOpenedDirectlyForPhotoPost) {
@@ -821,7 +820,7 @@ EditImageDetailsViewControllerDelegate
     [self.editorView saveSelection];
     [self.editorView.focusedField blur];
 	
-    if ([self.post hasLocalChanges]) {
+    if ([self.post canSave] && [self.post hasUnsavedChanges]) {
         [self showPostHasChangesAlert];
     } else {
         [self stopEditing];
@@ -964,25 +963,6 @@ EditImageDetailsViewControllerDelegate
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
     return [PostService createDraftPostInMainContextForBlog:blog];
-}
-
-- (void)geotagNewPost {
-    if (![self isPostLocal]) {
-        return;
-    }
-    
-    if (self.post.blog.settings.geolocationEnabled && ![LocationService sharedService].locationServicesDisabled) {
-        [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
-            if (location) {
-                if(self.post.isDeleted) {
-                    return;
-                }
-                Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
-                Post *post = (Post *)self.post;
-                post.geolocation = coord;
-            }
-        }];
-    }
 }
 
 /*
@@ -1415,7 +1395,7 @@ EditImageDetailsViewControllerDelegate
     [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
     
     if (self.onClose) {
-        self.onClose();
+        self.onClose(self);
         self.onClose = nil;
     } else if (self.presentingViewController) {
         [self.presentingViewController dismissViewControllerAnimated:animated completion:nil];
