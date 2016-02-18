@@ -33,7 +33,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 @property (nonatomic, strong) PostCardTableViewCell *textCellForLayout;
 @property (nonatomic, strong) PostCardTableViewCell *imageCellForLayout;
-@property (nonatomic, weak) IBOutlet UISegmentedControl *authorsFilter;
+@property (nonatomic, weak) IBOutlet UISegmentedControl *authorFilterSegmentedControl;
 
 @end
 
@@ -236,20 +236,20 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 {
     NSString *onlyMe = NSLocalizedString(@"Only Me", @"Label for the post author filter. This fliter shows posts only authored by the current user.");
     NSString *everyone = NSLocalizedString(@"Everyone", @"Label for the post author filter. This filter shows posts for all users on the blog.");
-    [WPStyleGuide applyPostAuthorFilterStyle:self.authorsFilter];
-    [self.authorsFilter setTitle:onlyMe forSegmentAtIndex:0];
-    [self.authorsFilter setTitle:everyone forSegmentAtIndex:1];
+    [WPStyleGuide applyPostAuthorFilterStyle:self.authorFilterSegmentedControl];
+    [self.authorFilterSegmentedControl setTitle:onlyMe forSegmentAtIndex:0];
+    [self.authorFilterSegmentedControl setTitle:everyone forSegmentAtIndex:1];
     self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
 
     if (![self canFilterByAuthor]) {
         self.authorsFilterViewHeightConstraint.constant = 0.0;
-        self.authorsFilter.hidden = YES;
+        self.authorFilterSegmentedControl.hidden = YES;
     }
 
     if ([self currentPostAuthorFilter] == PostAuthorFilterMine) {
-        self.authorsFilter.selectedSegmentIndex = 0;
+        self.authorFilterSegmentedControl.selectedSegmentIndex = 0;
     } else {
-        self.authorsFilter.selectedSegmentIndex = 1;
+        self.authorFilterSegmentedControl.selectedSegmentIndex = 1;
     }
 }
 
@@ -271,7 +271,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 - (IBAction)handleAuthorFilterChanged:(id)sender
 {
-    if (self.authorsFilter.selectedSegmentIndex == PostAuthorFilterMine) {
+    if (self.authorFilterSegmentedControl.selectedSegmentIndex == PostAuthorFilterMine) {
         [self setCurrentPostAuthorFilter:PostAuthorFilterMine];
     } else {
         [self setCurrentPostAuthorFilter:PostAuthorFilterEveryone];
@@ -553,6 +553,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [NSUserDefaults resetStandardUserDefaults];
 
     [self.recentlyTrashedPostObjectIDs removeAllObjects];
+    [self resetTableViewContentOffset];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
     [self syncItemsWithUserInteraction:NO];
 }
