@@ -11,6 +11,7 @@
     </entity>
     <entity name="Account" representedClassName="WPAccount" syncable="YES">
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateCreated" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -597,7 +598,7 @@
     </entity>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="225"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="585"/>

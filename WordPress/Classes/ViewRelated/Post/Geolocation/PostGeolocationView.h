@@ -8,5 +8,6 @@
 @property (nonatomic, strong) NSString *address;
 @property (nonatomic) CGFloat labelMargin;
 @property (nonatomic) BOOL scrollEnabled;
+@property (nonatomic) BOOL chevronHidden;
 
 @end

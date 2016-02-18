@@ -19,13 +19,6 @@ class PlanDetailViewController: UIViewController {
     @IBOutlet weak var planPriceLabel: UILabel!
     @IBOutlet weak var purchaseButton: UIButton!
     
-    lazy private var cancelXButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(named: "gridicons-cross"), style: .Plain, target: self, action: "closeTapped")
-        button.accessibilityLabel = NSLocalizedString("Close", comment: "Dismiss the current view")
-        
-        return button
-    }()
-    
     class func controllerWithPlan(plan: Plan) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
@@ -43,7 +36,6 @@ class PlanDetailViewController: UIViewController {
         super.viewDidLoad()
         
         title = plan.title
-        navigationItem.leftBarButtonItem = cancelXButton
         
         configureAppearance()
         configureImmuTable()
@@ -120,10 +112,6 @@ class PlanDetailViewController: UIViewController {
     }
     
     //MARK: - IBActions
-    
-    @IBAction private func closeTapped() {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
     
     @IBAction private func purchaseTapped() {
     }
