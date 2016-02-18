@@ -817,13 +817,9 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (PostListFilter *)filterThatDisplaysPostsWithStatus:(NSString *)postStatus
 {
-    for (PostListFilter *filter in self.availablePostListFilters) {
-        if ([filter.statuses containsObject:postStatus]) {
-            return filter;
-        }
-    }
-    // The draft filter is the catch all by convention.
-    return [self.availablePostListFilters objectAtIndex:[self indexForFilterWithType:PostListStatusFilterDraft]];
+    NSUInteger index = [self indexOfFilterThatDisplaysPostsWithStatus:postStatus];
+    
+    return self.availablePostListFilters[index];
 }
 
 
@@ -832,7 +828,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     __block NSUInteger index = 0;
     __block BOOL found = NO;
     
-    [self.postListFilters enumerateObjectsUsingBlock:^(PostListFilter* _Nonnull filter, NSUInteger idx, BOOL * _Nonnull stop) {
+    [self.availablePostListFilters enumerateObjectsUsingBlock:^(PostListFilter* _Nonnull filter, NSUInteger idx, BOOL* _Nonnull stop) {
         if ([filter.statuses containsObject:postStatus]) {
             index = idx;
             found = YES;
