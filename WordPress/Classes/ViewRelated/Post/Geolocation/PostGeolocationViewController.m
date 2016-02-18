@@ -16,9 +16,7 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
 
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) PostGeolocationView *geoView;
-@property (nonatomic, strong) UIBarButtonItem *refreshButton;
-@property (nonatomic, strong) UIBarButtonItem *activityItem;
-@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) UIBarButtonItem *removeButton;
 @property (nonatomic, strong) LocationService *locationService;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UITableView *tableView;
@@ -44,6 +42,8 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
     self.view.backgroundColor = [WPStyleGuide greyLighten30];
     self.title = NSLocalizedString(@"Location", @"Title for screen to select post location");
     [self.view addSubview:self.geoView];
+    
+    self.navigationItem.rightBarButtonItems = @[self.removeButton];
     
     self.searchBar = [[UISearchBar alloc] init];
     self.searchBar.placeholder = NSLocalizedString(@"Search", @"Prompt in the location search bar.");
@@ -82,22 +82,15 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
 
 #pragma mark - Appearance Related Methods
 
-- (UIBarButtonItem *)refreshButton
+- (UIBarButtonItem *)removeButton
 {
-    if (!_refreshButton) {
-        UIImage *image = [[UIImage imageNamed:@"gridicons-location"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        _refreshButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(updateLocation)];
+    if (!_removeButton) {
+        _removeButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Remove", @"Label for remove location button")
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(removeGeolocation)];
     }
-    return _refreshButton;
-}
-
-- (UIBarButtonItem *)activityItem
-{
-    if (!_activityItem) {
-        _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        _activityItem = [[UIBarButtonItem alloc] initWithCustomView:_activityIndicator];
-    }
-    return _activityItem;
+    return _removeButton;
 }
 
 - (PostGeolocationView *)geoView
@@ -149,8 +142,6 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
 
 - (void)refreshView
 {
-    [self refreshNavigationBar];
-
     if ([self.locationService locationServiceRunning]) {
         self.geoView.coordinate = nil;
         self.geoView.address = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
@@ -162,22 +153,6 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
     } else {
         self.geoView.coordinate = nil;
         self.geoView.address = [self.locationService lastGeocodedAddress];
-    }
-}
-
-- (void)refreshNavigationBar
-{
-    UIBarButtonItem *leftFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-
-    leftFixedSpacer.width = -2.0f;
-    rightFixedSpacer.width = -5.0f;
-
-    if ([self.locationService locationServiceRunning]) {
-        self.navigationItem.rightBarButtonItems = @[leftFixedSpacer, self.activityItem, rightFixedSpacer];
-        [self.activityIndicator startAnimating];
-    } else {
-        self.navigationItem.rightBarButtonItems = @[leftFixedSpacer, self.refreshButton, rightFixedSpacer];
     }
 }
 
