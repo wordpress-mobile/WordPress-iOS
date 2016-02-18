@@ -145,7 +145,11 @@ static const CGFloat HorizontalMargin = 15.0f;
 
 - (void)showParentCategorySelector
 {
-    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.blog currentSelection:nil selectionMode:CategoriesSelectionModeParent];
+    NSArray<PostCategory*>* currentSelection = self.parentCategory ? @[self.parentCategory] : nil;
+    
+    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.blog
+                                                                                 currentSelection:currentSelection
+                                                                                    selectionMode:CategoriesSelectionModeParent];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
