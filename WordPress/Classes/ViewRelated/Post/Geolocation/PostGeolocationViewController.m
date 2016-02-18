@@ -12,10 +12,16 @@
 
 static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCellIdentifier";
 
+typedef NS_ENUM(NSInteger, SearchResultsSection) {
+    SearchResultsSectionCurrentLocation = 0,
+    SearchResultsSectionSearchResults = 1
+};
+
 @interface PostGeolocationViewController () <MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) PostGeolocationView *geoView;
+@property (nonatomic, strong) UITableViewCell *currentLocationCell;
 @property (nonatomic, strong) UIBarButtonItem *removeButton;
 @property (nonatomic, strong) LocationService *locationService;
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -158,14 +164,19 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
 
 #pragma mark - UISearchBarDelegate
 
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    NSString *query = searchText;
-    if (query.length < 5) {
-        return;
-    }
     self.searchBar.showsCancelButton = YES;
     self.tableView.hidden = NO;
+
+}
+
+- (void)searchBar:(UISearchBar *)searchBar  textDidChange:(NSString *)searchText
+{
+    NSString *query = searchText;
+    if (query.length < 3) {
+        return;
+    }
     __weak __typeof__(self) weakSelf = self;
     [self.locationService searchPlacemarksWithQuery:query completion:^(NSArray *placemarks, NSError *error) {
         if (error) {
@@ -195,45 +206,87 @@ static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCell
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.placemarks.count;
+    switch (section) {
+        case SearchResultsSectionCurrentLocation:
+            return 1;
+            break;
+        case SearchResultsSectionSearchResults:
+            return self.placemarks.count;
+            break;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CLPlacemarkTableViewCellIdentifier forIndexPath:indexPath];
-    CLPlacemark *placemark = self.placemarks[indexPath.row];
-    cell.textLabel.text = placemark.formattedAddress;
-    cell.textLabel.numberOfLines = 0;
-    cell.textLabel.font = [WPStyleGuide regularTextFont];
-    cell.textLabel.textColor = [WPStyleGuide darkGrey];
-    cell.backgroundColor = [UIColor clearColor];
-    return cell;
+    switch (indexPath.section) {
+        case SearchResultsSectionCurrentLocation:{
+            return self.currentLocationCell;
+        }
+            break;
+        case SearchResultsSectionSearchResults: {
+            UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CLPlacemarkTableViewCellIdentifier forIndexPath:indexPath];
+            CLPlacemark *placemark = self.placemarks[indexPath.row];
+            cell.textLabel.text = placemark.formattedAddress;
+            cell.textLabel.numberOfLines = 0;
+            cell.textLabel.font = [WPStyleGuide regularTextFont];
+            cell.textLabel.textColor = [WPStyleGuide darkGrey];
+            cell.backgroundColor = [UIColor clearColor];
+            return cell;
+        }
+            break;
+    }
+    
+    
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CLPlacemark *placemark = self.placemarks[indexPath.row];
-
     self.tableView.hidden = YES;
     self.searchBar.showsCancelButton = NO;
     [self.searchBar resignFirstResponder];
-    
-    Coordinate *coordinate = [[Coordinate alloc] initWithCoordinate:placemark.location.coordinate];
-    CLRegion *placemarkRegion = placemark.region;
-    if ([placemarkRegion isKindOfClass:[CLCircularRegion class]]) {
-        CLCircularRegion *circularRegion = (CLCircularRegion *)placemarkRegion;
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(circularRegion.center, circularRegion.radius, circularRegion.radius);
-        [self.geoView setCoordinate:coordinate region:region];
-    } else {
-        [self.geoView setCoordinate:coordinate];
+
+    switch (indexPath.section) {
+        case SearchResultsSectionCurrentLocation:{
+            [self updateLocation];
+        }
+            break;
+        case SearchResultsSectionSearchResults: {
+            CLPlacemark *placemark = self.placemarks[indexPath.row];
+            Coordinate *coordinate = [[Coordinate alloc] initWithCoordinate:placemark.location.coordinate];
+            CLRegion *placemarkRegion = placemark.region;
+            if ([placemarkRegion isKindOfClass:[CLCircularRegion class]]) {
+                CLCircularRegion *circularRegion = (CLCircularRegion *)placemarkRegion;
+                MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(circularRegion.center, circularRegion.radius, circularRegion.radius);
+                [self.geoView setCoordinate:coordinate region:region];
+            } else {
+                [self.geoView setCoordinate:coordinate];
+            }
+            self.geoView.address = placemark.name;
+            self.post.geolocation = self.geoView.coordinate;
+        } break;
     }
-    self.geoView.address = placemark.name;
-    self.post.geolocation = self.geoView.coordinate;
+}
+
+- (UITableViewCell *)currentLocationCell {
+    if (_currentLocationCell == nil) {
+        UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        UIImage *image = [[UIImage imageNamed:@"gridicons-location"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        cell.textLabel.text = NSLocalizedString(@"Use Current Location", @"Label for cell that sets the location of a post to the current location");
+        cell.imageView.image = image;
+        cell.imageView.tintColor = [WPStyleGuide lightBlue];
+        cell.textLabel.font = [WPStyleGuide regularTextFont];
+        cell.textLabel.textColor = [WPStyleGuide darkGrey];
+        cell.backgroundColor = [UIColor clearColor];
+        _currentLocationCell = cell;
+    }
+    return _currentLocationCell;
 }
 
 @end
