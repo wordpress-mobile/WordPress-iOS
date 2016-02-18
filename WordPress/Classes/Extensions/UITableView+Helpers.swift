@@ -9,6 +9,13 @@ extension UITableView
             selectRowAtIndexPath(selectedRowIndexPath, animated: false, scrollPosition: .None)
         }
     }
+    
+    public func reloadDataPreservingSelection() {
+        if let selectedRowIndexPath = indexPathForSelectedRow {
+            reloadData()
+            selectRowAtIndexPath(selectedRowIndexPath, animated: false, scrollPosition: .None)
+        }
+    }
 
     public func deselectSelectedRowWithAnimation(animated: Bool) {
         if let selectedRowIndexPath = indexPathForSelectedRow {

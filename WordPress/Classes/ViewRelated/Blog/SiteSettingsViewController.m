@@ -27,6 +27,7 @@ NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTagline,
     SiteSettingsGeneralURL,
     SiteSettingsGeneralPrivacy,
+    SiteSettingsGeneralLanguage,
     SiteSettingsGeneralCount,
 };
 
@@ -69,12 +70,12 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, PostCategoriesViewControllerDelegate>
 
-@property (nonatomic, strong) NSArray *tableSections;
 #pragma mark - General Section
 @property (nonatomic, strong) SettingTableViewCell *siteTitleCell;
 @property (nonatomic, strong) SettingTableViewCell *siteTaglineCell;
 @property (nonatomic, strong) SettingTableViewCell *addressTextCell;
 @property (nonatomic, strong) SettingTableViewCell *privacyTextCell;
+@property (nonatomic, strong) SettingTableViewCell *languageTextCell;
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
@@ -101,7 +102,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)dealloc
 {
-    self.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -129,14 +129,12 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:self.blog.managedObjectContext];
 
-
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(refreshTriggered:) forControlEvents:UIControlEventValueChanged];
 
-    [self configureSections];
     [self refreshData];
 }
 
@@ -147,7 +145,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     [self.tableView reloadData];
 }
 
-- (void)configureSections
+- (NSArray *)tableSections
 {
     NSMutableArray *sections = [NSMutableArray arrayWithObjects:@(SiteSettingsSectionGeneral), nil];
 
@@ -173,8 +171,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [sections addObject:@(SiteSettingsSectionAdvanced)];
     }
 
-    self.tableSections = sections;
+    return sections;
 }
+
 
 #pragma mark - UITableViewDataSource
 
@@ -188,35 +187,50 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     NSInteger settingsSection = [self.tableSections[section] integerValue];
     switch (settingsSection) {
         case SiteSettingsSectionGeneral:
+        {
+            NSInteger rowCount = SiteSettingsGeneralCount;
+            
+            // NOTE: Sergio Estevao (2015.08.25): Hide Privacy because of lack of support in .org
             if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
-                //  NOTE: Sergio Estevao (2015-08-25): Hides the privacy setting for self-hosted sites not in jetpack
-                // because XML-RPC doens't support this setting to be read or changed.
-                return SiteSettingsGeneralCount - 1;
+                --rowCount;
             }
-            return SiteSettingsGeneralCount;
-
+            
+            // NOTE: Jorge Leandro Perez (2016.02.10): .org Language Settings is inconsistent with .com!
+            if (!self.blog.supportsSiteManagementServices) {
+                --rowCount;
+            }
+            
+            return rowCount;
+        }
         case SiteSettingsSectionAccount:
+        {
             return SiteSettingsAccountCount;
-
+        }
         case SiteSettingsSectionWriting:
+        {
             return SiteSettingsWritingCount;
-
+        }
         case SiteSettingsSectionDiscussion:
+        {
             return 1;
-
+        }
         case SiteSettingsSectionDevice:
+        {
             if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
                 // NOTE: Brent Coursey (2016-02-03): Only show geotagging cell for user of the REST API (REST).
                 // Any post default options are available in the Writing section for REST users.
                 return 1;
             }
             return SiteSettingsDeviceCount;
-
+        }
         case SiteSettingsSectionRemoveSite:
+        {
             return 1;
-
+        }
         case SiteSettingsSectionAdvanced:
+        {
             return SiteSettingsAdvancedCount;
+        }
     }
 
     return 0;
@@ -429,6 +443,17 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return _privacyTextCell;
 }
 
+- (SettingTableViewCell *)languageTextCell
+{
+    if (_languageTextCell) {
+        return _languageTextCell;
+    }
+    _languageTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Language", @"Label for the privacy setting")
+                                                           editable:self.blog.isAdmin
+                                                    reuseIdentifier:nil];
+    return _languageTextCell;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForGeneralSettingsInRow:(NSInteger)row
 {
     switch (row) {
@@ -445,16 +470,27 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             return self.siteTaglineCell;
         }
         case SiteSettingsGeneralURL:
+        {
             if (self.blog.url) {
                 [self.addressTextCell setTextValue:self.blog.url];
             } else {
                 [self.addressTextCell setTextValue:NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field")];
             }
             return self.addressTextCell;
-
+        }
         case SiteSettingsGeneralPrivacy:
+        {
             [self.privacyTextCell setTextValue:[BlogSiteVisibilityHelper titleForCurrentSiteVisibilityOfBlog:self.blog]];
             return self.privacyTextCell;
+        }
+        case SiteSettingsGeneralLanguage:
+        {
+            NSInteger languageId = self.blog.settings.languageID.integerValue;
+            NSString *name = [[Languages sharedInstance] nameForLanguageWithId:languageId];
+            
+            [self.languageTextCell setTextValue:name];
+            return self.languageTextCell;
+        }
     }
 
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
@@ -618,6 +654,21 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)showLanguageSelectorForBlog:(Blog *)blog
+{
+    NSParameterAssert(blog);
+    
+    __weak __typeof__(self) weakSelf = self;
+    
+    LanguageViewController *languageViewController = [[LanguageViewController alloc] initWithBlog:blog];
+    languageViewController.onChange = ^(NSNumber *newLanguageID){
+        weakSelf.blog.settings.languageID = newLanguageID;
+        [weakSelf saveSettings];
+    };
+    
+    [self.navigationController pushViewController:languageViewController animated:YES];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectInGeneralSectionRow:(NSInteger)row
 {
     if (!self.blog.isAdmin) {
@@ -635,6 +686,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
         case SiteSettingsGeneralPrivacy:
             [self showPrivacySelector];
+            break;
+            
+        case SiteSettingsGeneralLanguage:
+            [self showLanguageSelectorForBlog:self.blog];
             break;
     }
 }
@@ -1013,12 +1068,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     } else {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
-
-    if (self.delegate) {
-        // If sender is not nil then the user tapped the cancel button.
-        BOOL wascancelled = (sender != nil);
-        [self.delegate controllerDidDismiss:self cancelled:wascancelled];
-    }
 }
 
 
@@ -1087,7 +1136,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog]) {
-        [self configureSections];
         [self.tableView reloadData];
     }
 }
