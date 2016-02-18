@@ -9,7 +9,6 @@
  *	@brief	Results of attempted authorization
  */
 @protocol SharingAuthorizationDelegate <NSObject>
-@optional
 - (void)authorizeDidSucceed:(PublicizeService *)publicizer;
 - (void)authorize:(PublicizeService *)publicizer didFailWithError:(NSError *)error;
 - (void)authorizeDidCancel:(PublicizeService *)publicizer;
