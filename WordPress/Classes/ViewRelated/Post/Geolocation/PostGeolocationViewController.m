@@ -48,12 +48,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     self.view.backgroundColor = [WPStyleGuide greyLighten30];
     self.title = NSLocalizedString(@"Location", @"Title for screen to select post location");
     [self.view addSubview:self.geoView];
-    
     self.navigationItem.rightBarButtonItems = @[self.removeButton];
-    
-    self.searchBar = [[UISearchBar alloc] init];
-    self.searchBar.placeholder = NSLocalizedString(@"Search", @"Prompt in the location search bar.");
-    self.searchBar.delegate = self;
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
 }
@@ -76,9 +71,19 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     }
 }
 
-#pragma mark - Appearance Related Methods
+#pragma mark - View Properties
 
-- (UITableView*) tableView
+- (UISearchBar *)searchBar
+{
+    if (_searchBar == nil) {
+        _searchBar = [[UISearchBar alloc] init];
+        _searchBar.placeholder = NSLocalizedString(@"Search", @"Prompt in the location search bar.");
+        _searchBar.delegate = self;
+    }
+    return _searchBar;
+}
+
+- (UITableView *)tableView
 {
     if (_tableView == nil) {
         _tableView = [[UITableView alloc] initWithFrame:self.geoView.frame style:UITableViewStylePlain];
