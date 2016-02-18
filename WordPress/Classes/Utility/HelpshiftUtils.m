@@ -32,6 +32,7 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
 + (void)setup
 {
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
     [[HelpshiftSupport sharedInstance] setDelegate:[HelpshiftUtils sharedInstance]];
     [HelpshiftCore installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
 
