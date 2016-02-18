@@ -9,7 +9,7 @@
 #import <WordPressShared/UIImage+Util.h>
 #import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
 
-typedef NS_ENUM(NSInteger, SharingSection){
+typedef NS_ENUM(NSInteger, SharingSectionIdentifier){
     SharingPublicizeServices = 0,
     SharingButtons,
     SharingSectionCount,
@@ -210,8 +210,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    PublicizeService *publicizer = self.publicizeServices[indexPath.row];
-    SharingConnectionsViewController *controller = [[SharingConnectionsViewController alloc] initWithBlog:self.blog publicizeService:publicizer];
+    SharingButtonsViewController *controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
