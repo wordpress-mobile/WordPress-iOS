@@ -164,7 +164,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                            }
                            [self mergePosts:remotePosts
                                      ofType:postType
+                               withStatuses:options.statuses
+                                   byAuthor:options.authorID
                                     forBlog:blogInContext
+                              purgeExisting:options.purgesLocalSync
                           completionHandler:^(NSArray<AbstractPost *> *posts) {
                               if (success) {
                                   success(posts);
@@ -374,7 +377,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 
 - (void)mergePosts:(NSArray <RemotePost *> *)remotePosts
             ofType:(NSString *)postType
+      withStatuses:(NSArray *)statuses
+          byAuthor:(NSNumber *)authorID
            forBlog:(Blog *)blog
+     purgeExisting:(BOOL)purge
  completionHandler:(void (^)(NSArray <AbstractPost *> *posts))completion
 {
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
@@ -392,6 +398,24 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         }
         [self updatePost:post withRemotePost:remotePost];
         [posts addObject:post];
+    }
+    
+    if (purge && ! [postType isEqualToString:PostServiceTypeAny]) {
+        NSSet *postsToKeep = [NSSet setWithArray:posts];
+        NSFetchRequest *request;
+        if ([postType isEqualToString:PostServiceTypePage]) {
+            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Page class])];
+        } else {
+            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
+        }
+        request.predicate = [self predicateForPostsWithStatuses:statuses byAuthor:authorID forBlog:blog];
+        NSArray *existingPosts = [self.managedObjectContext executeFetchRequest:request error:nil];
+        NSMutableSet *postsToDelete = [NSMutableSet setWithArray:existingPosts];
+        [postsToDelete minusSet:postsToKeep];
+        for (AbstractPost *post in postsToDelete) {
+            DDLogInfo(@"Deleting Post: %@", post);
+            [self.managedObjectContext deleteObject:post];
+        }
     }
     
     [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
