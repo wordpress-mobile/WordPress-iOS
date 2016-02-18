@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 #import "MenuItemSourceTextBar.h"
 #import "MenuItemSourceCell.h"
+#import "MenuItem.h"
 
 @class Blog;
 @class MenuItem;

@@ -1,7 +1,6 @@
 #import "MenuItemSourceView.h"
 #import "MenuItemSourceTextBar.h"
 #import "MenusDesign.h"
-#import "MenuItem.h"
 #import "Menu.h"
 #import "MenuItemSourceLoadingView.h"
 
