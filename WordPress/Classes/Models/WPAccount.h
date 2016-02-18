@@ -16,6 +16,7 @@
 @property (nonatomic, strong)   NSString    *avatarURL;
 @property (nonatomic, copy)     NSString    *username;
 @property (nonatomic, copy)     NSString    *uuid;
+@property (nonatomic, strong)   NSDate      *dateCreated;
 @property (nonatomic, strong)   NSString    *email;
 @property (nonatomic, strong)   NSString    *displayName;
 @property (nonatomic, strong)   NSSet       *blogs;
