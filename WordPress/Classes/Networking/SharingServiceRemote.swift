@@ -9,6 +9,28 @@ import NSObject_SafeExpectations
 public class SharingServiceRemote : ServiceRemoteREST
 {
 
+    // MARK: - Helper methods
+
+    /// Returns an error message to use is the API returns an unexpected result.
+    ///
+    /// - Parameters: 
+    ///     - operation: The AFHTTPRequestOperation that returned the unexpected result.
+    ///
+    /// - Returns: An `NSError` object.
+    ///
+    func errorForUnexpectedResponse(operation: AFHTTPRequestOperation) -> NSError {
+        let failureReason = "The request returned an unexpected type."
+        let domain = "org.wordpress.sharing-management"
+        let code = 0
+        let userInfo = [
+            "requestURL": operation.request.URL!.absoluteString,
+            NSLocalizedDescriptionKey: failureReason,
+            NSLocalizedFailureReasonErrorKey: failureReason
+        ]
+        return NSError(domain: domain, code: code, userInfo: userInfo)
+    }
+
+
     // MARK: - Publicize Related Methods
 
     /// Fetches the list of Publicize services.
@@ -29,8 +51,13 @@ public class SharingServiceRemote : ServiceRemoteREST
                     return
                 }
 
+                // For paranioa, make sure the response is the correct type.
+                guard let responseDict = response as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(operation))
+                    return
+                }
+
                 let responseString = operation.responseString! as NSString
-                let responseDict = response as! NSDictionary
                 let services: NSDictionary = responseDict.dictionaryForKey(ServiceDictionaryKeys.services)
 
                 let publicizeServices: [RemotePublicizeService] = services.allKeys.map { (key) -> RemotePublicizeService in
@@ -81,7 +108,12 @@ public class SharingServiceRemote : ServiceRemoteREST
                     return
                 }
 
-                let responseDict = response as! NSDictionary
+                // For paranioa, make sure the response is the correct type.
+                guard let responseDict = response as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(operation))
+                    return
+                }
+
                 let connections: Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
                 let keyringConnections: [KeyringConnection] = connections.map { (let dict) -> KeyringConnection in
                     let conn = KeyringConnection()
@@ -152,7 +184,12 @@ public class SharingServiceRemote : ServiceRemoteREST
                     return
                 }
 
-                let responseDict = response as! NSDictionary
+                // For paranioa, make sure the response is the correct type.
+                guard let responseDict = response as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(operation))
+                    return
+                }
+
                 let connections: Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
                 let publicizeConnections: [RemotePublicizeConnection] = connections.map { (let dict) -> RemotePublicizeConnection in
                     let conn = self.remotePublicizeConnectionFromDictionary(dict as! NSDictionary)
@@ -198,8 +235,13 @@ public class SharingServiceRemote : ServiceRemoteREST
                         return
                     }
 
-                    let dict = response as! NSDictionary
-                    let conn = self.remotePublicizeConnectionFromDictionary(dict)
+                    // For paranioa, make sure the response is the correct type.
+                    guard let responseDict = response as? NSDictionary else {
+                        failure?(self.errorForUnexpectedResponse(operation))
+                        return
+                    }
+
+                    let conn = self.remotePublicizeConnectionFromDictionary(responseDict)
 
                     onSuccess(conn)
                 },
@@ -240,8 +282,13 @@ public class SharingServiceRemote : ServiceRemoteREST
                         return
                     }
 
-                    let dict = response as! NSDictionary
-                    let conn = self.remotePublicizeConnectionFromDictionary(dict)
+                    // For paranioa, make sure the response is the correct type.
+                    guard let responseDict = response as? NSDictionary else {
+                        failure?(self.errorForUnexpectedResponse(operation))
+                        return
+                    }
+
+                    let conn = self.remotePublicizeConnectionFromDictionary(responseDict)
 
                     onSuccess(conn)
                 },
@@ -278,8 +325,13 @@ public class SharingServiceRemote : ServiceRemoteREST
                         return
                     }
 
-                    let dict = response as! NSDictionary
-                    let conn = self.remotePublicizeConnectionFromDictionary(dict)
+                    // For paranioa, make sure the response is the correct type.
+                    guard let responseDict = response as? NSDictionary else {
+                        failure?(self.errorForUnexpectedResponse(operation))
+                        return
+                    }
+
+                    let conn = self.remotePublicizeConnectionFromDictionary(responseDict)
 
                     onSuccess(conn)
                 },
@@ -364,7 +416,12 @@ public class SharingServiceRemote : ServiceRemoteREST
                     return
                 }
 
-                let responseDict = response as! NSDictionary
+                // For paranioa, make sure the response is the correct type.
+                guard let responseDict = response as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(operation))
+                    return
+                }
+
                 let buttons = responseDict.arrayForKey(SharingButtonsKeys.sharingButtons)
                 let sharingButtons = self.remoteSharingButtonsFromDictionary(buttons)
 
@@ -396,7 +453,12 @@ public class SharingServiceRemote : ServiceRemoteREST
                     return
                 }
 
-                let responseDict = response as! NSDictionary
+                // For paranioa, make sure the response is the correct type.
+                guard let responseDict = response as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(operation))
+                    return
+                }
+
                 let buttons = responseDict.arrayForKey(SharingButtonsKeys.updated)
                 let sharingButtons = self.remoteSharingButtonsFromDictionary(buttons)
 
