@@ -77,7 +77,7 @@ const CGFloat GeoViewMinHeight = 130.0f;
 
 - (void)setCoordinate:(Coordinate *)coordinate
 {
-    MKCoordinateRegion defaultRegion = MKCoordinateRegionMakeWithDistance(coordinate.coordinate, 200, 100);
+    MKCoordinateRegion defaultRegion = MKCoordinateRegionMakeWithDistance(coordinate.coordinate, 200.0, 100.0);
     [self setCoordinate:coordinate region:defaultRegion];
 }
 
