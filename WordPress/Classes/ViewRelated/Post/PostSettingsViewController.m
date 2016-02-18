@@ -615,7 +615,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (PostGeolocationCell *)postGeoLocationCell {
     if (!_postGeoLocationCell) {
         _postGeoLocationCell = [[PostGeolocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        _postGeoLocationCell.tag = PostSettingsRowGeolocation;
+            _postGeoLocationCell.tag = PostSettingsRowGeolocation;
     }
     Coordinate *coordinate = self.post.geolocation;
     NSString *address = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
@@ -643,6 +643,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         _setGeoLocationCell.accessoryType = UITableViewCellAccessoryNone;
         _setGeoLocationCell.textLabel.text = NSLocalizedString(@"Set Location", @"Label for cell that allow users to set the location of a post");
         _setGeoLocationCell.tag = PostSettingsRowGeolocation;
+        _setGeoLocationCell.textLabel.textAlignment = NSTextAlignmentCenter;
         [WPStyleGuide configureTableViewActionCell:_setGeoLocationCell];
     }
     return _setGeoLocationCell;
