@@ -251,6 +251,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
             cell.textLabel.font = [WPStyleGuide regularTextFont];
             cell.textLabel.textColor = [WPStyleGuide darkGrey];
             cell.backgroundColor = [UIColor clearColor];
+            cell.selected = NO;
             return cell;
         }
     }
@@ -263,7 +264,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     self.tableView.hidden = YES;
     self.searchBar.showsCancelButton = NO;
     [self.searchBar resignFirstResponder];
-
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.section) {
         case SearchResultsSectionCurrentLocation:
             [self searchCurrentLocationFromUserRequest:YES];
@@ -284,6 +285,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
         }
             break;
     }
+    
 }
 
 - (UITableViewCell *)currentLocationCell {
@@ -298,6 +300,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
         cell.backgroundColor = [UIColor clearColor];
         _currentLocationCell = cell;
     }
+    _currentLocationCell.selected = NO;
     return _currentLocationCell;
 }
 
