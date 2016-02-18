@@ -402,6 +402,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     options.statuses = filter.statuses;
     options.authorID = author;
     options.number = @([self numberOfPostsPerSync]);
+    options.purgesLocalSync = YES;
     
     [postService syncPostsOfType:[self postTypeToSync]
                      withOptions:options
