@@ -1395,7 +1395,7 @@ EditImageDetailsViewControllerDelegate
     [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
     
     if (self.onClose) {
-        self.onClose();
+        self.onClose(self);
         self.onClose = nil;
     } else if (self.presentingViewController) {
         [self.presentingViewController dismissViewControllerAnimated:animated completion:nil];
