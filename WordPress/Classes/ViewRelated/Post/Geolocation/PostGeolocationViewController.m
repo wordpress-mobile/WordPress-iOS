@@ -67,7 +67,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     if (self.post.geolocation) {
         [self refreshView];
     } else {
-        [self updateLocation];
+        [self searchCurrentLocationFromUserRequest:NO];
     }
 }
 
@@ -133,11 +133,13 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)updateLocation
+- (void)searchCurrentLocationFromUserRequest:(BOOL)userRequest
 {
     
     if ([self.locationService locationServicesDisabled] || [self.locationService locationServicesDenied]) {
-        [self.locationService showAlertForLocationServicesDisabled];
+        if (userRequest) {
+            [self.locationService showAlertForLocationServicesDisabled];
+        }
         return;
     }
     __weak __typeof__(self) weakSelf = self;
@@ -146,7 +148,9 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
             __typeof__(weakSelf) strongSelf = weakSelf;
             if (error) {
                 [strongSelf refreshView];
-                [strongSelf.locationService showAlertForLocationError:error];
+                if (userRequest) {
+                    [strongSelf.locationService showAlertForLocationError:error];
+                }
                 return;
             }
             if (location) {
@@ -262,7 +266,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 
     switch (indexPath.section) {
         case SearchResultsSectionCurrentLocation:
-            [self updateLocation];
+            [self searchCurrentLocationFromUserRequest:YES];
             break;
         case SearchResultsSectionSearchResults: {
             CLPlacemark *placemark = self.placemarks[indexPath.row];
