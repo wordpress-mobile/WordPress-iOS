@@ -81,8 +81,6 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
 - (void)handleAuthorizationAllowed
 {
-
-
     // Note: There are situations where this can be called in error due to how
     // individual services choose to reply to an authorization request.
     // Delegates should expect to handle a false positive.
