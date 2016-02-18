@@ -50,7 +50,7 @@ extern const CGSize PreferredFiltersPopoverContentSize;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *authorsFilterViewHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
 @property (nonatomic, strong) WPSearchController *searchController; // Stand-in for UISearchController
-@property (nonatomic, strong) NSArray *postListFilters;
+@property (nonatomic, strong) NSMutableDictionary <NSString *, NSArray *> *allPostListFilters;
 @property (nonatomic, strong) NSMutableArray *recentlyTrashedPostObjectIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
 
 - (NSString *)postTypeToSync;
@@ -67,6 +67,7 @@ extern const CGSize PreferredFiltersPopoverContentSize;
 - (void)deletePost:(AbstractPost *)apost;
 - (void)restorePost:(AbstractPost *)apost;
 - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights;
+- (void)resetTableViewContentOffset;
 - (BOOL)isSearching;
 - (NSString *)currentSearchTerm;
 - (NSDictionary *)propertiesForAnalytics;
