@@ -79,6 +79,10 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
         _searchBar = [[UISearchBar alloc] init];
         _searchBar.placeholder = NSLocalizedString(@"Search", @"Prompt in the location search bar.");
         _searchBar.delegate = self;
+        _searchBar.barTintColor = [WPStyleGuide greyLighten10];
+        [_searchBar setImage:[UIImage imageNamed:@"icon-clear-searchfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
+        [_searchBar setImage:[UIImage imageNamed:@"icon-post-list-search"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+        _searchBar.accessibilityIdentifier = @"Search";
     }
     return _searchBar;
 }
