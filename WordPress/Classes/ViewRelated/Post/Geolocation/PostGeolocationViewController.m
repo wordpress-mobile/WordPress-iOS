@@ -71,8 +71,8 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    self.searchBar.frame = CGRectMake(0, [self.topLayoutGuide length], self.view.frame.size.width, 44);
-    self.tableView.frame = CGRectMake(0, CGRectGetMaxY(self.searchBar.frame), self.view.frame.size.width, self.view.frame.size.height-CGRectGetMaxY(self.searchBar.frame));
+    self.searchBar.frame = CGRectMake(0.0, [self.topLayoutGuide length], self.view.frame.size.width, 44.0);
+    self.tableView.frame = CGRectMake(0.0, CGRectGetMaxY(self.searchBar.frame), self.view.frame.size.width, self.view.frame.size.height-CGRectGetMaxY(self.searchBar.frame));
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -135,10 +135,8 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
             }
             if (location) {
                 Coordinate *coord = [[Coordinate alloc] initWithCoordinate:location.coordinate];
-
-                    strongSelf.post.geolocation = coord;
-                    [strongSelf refreshView];
-
+                strongSelf.post.geolocation = coord;
+                [strongSelf refreshView];
             }
         });
     }];
@@ -214,10 +212,8 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     switch (section) {
         case SearchResultsSectionCurrentLocation:
             return 1;
-            break;
         case SearchResultsSectionSearchResults:
             return self.placemarks.count;
-            break;
     }
     return 0;
 }
@@ -225,10 +221,8 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.section) {
-        case SearchResultsSectionCurrentLocation:{
+        case SearchResultsSectionCurrentLocation:
             return self.currentLocationCell;
-        }
-            break;
         case SearchResultsSectionSearchResults: {
             UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:CLPlacemarkTableViewCellIdentifier forIndexPath:indexPath];
             CLPlacemark *placemark = self.placemarks[indexPath.row];
@@ -239,9 +233,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
             cell.backgroundColor = [UIColor clearColor];
             return cell;
         }
-            break;
     }
-    
     
     return nil;
 }
@@ -253,9 +245,8 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     [self.searchBar resignFirstResponder];
 
     switch (indexPath.section) {
-        case SearchResultsSectionCurrentLocation:{
+        case SearchResultsSectionCurrentLocation:
             [self updateLocation];
-        }
             break;
         case SearchResultsSectionSearchResults: {
             CLPlacemark *placemark = self.placemarks[indexPath.row];
@@ -270,7 +261,8 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
             }
             self.geoView.address = placemark.name;
             self.post.geolocation = self.geoView.coordinate;
-        } break;
+        }
+            break;
     }
 }
 
