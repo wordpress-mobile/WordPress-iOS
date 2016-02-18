@@ -5,7 +5,7 @@
 #import "WordPressAppDelegate.h"
 #import <CocoaLumberjack/DDFileLogger.h>
 #import "WPTableViewSectionHeaderFooterView.h"
-#import <Helpshift/Helpshift.h>
+#import <Helpshift/HelpshiftSupport.h>
 #import "WPAnalytics.h"
 #import <WordPressShared/WPStyleGuide.h>
 #import "ContextManager.h"
@@ -234,7 +234,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
                                 NSString *emailAddress = ([responseObject valueForKey:@"email"]) ? [responseObject objectForKey:@"email"] : nil;
                                 NSString *userID = ([responseObject valueForKey:@"ID"]) ? [[responseObject objectForKey:@"ID"] stringValue] : nil;
 
-                                [Helpshift setUserIdentifier:userID];
+                                [HelpshiftSupport setUserIdentifier:userID];
                                 [self displayHelpshiftWindowOfType:helpshiftType withUsername:displayName andEmail:emailAddress andMetadata:metaData];
                             } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                                 [self hideLoadingSpinner];
@@ -250,12 +250,12 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
                             andEmail:(NSString*)email
                          andMetadata:(NSDictionary*)metaData
 {
-    [Helpshift setName:username andEmail:email];
+    [HelpshiftCore setName:username andEmail:email];
 
     if (helpshiftType == kHelpshiftWindowTypeFAQs) {
-        [[Helpshift sharedInstance] showFAQs:self withOptions:@{HSCustomMetadataKey: metaData}];
+        [HelpshiftSupport showFAQs:self withOptions:@{HelpshiftSupportCustomMetadataKey: metaData}];
     } else if (helpshiftType == kHelpshiftWindowTypeConversation) {
-        [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
+        [HelpshiftSupport showConversation:self withOptions:@{HelpshiftSupportCustomMetadataKey: metaData}];
     }
 }
 
