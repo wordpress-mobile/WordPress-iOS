@@ -96,6 +96,8 @@ class PlanDetailViewController: UIViewController {
         planTitleLabel.text = plan.fullTitle
         planDescriptionLabel.text = plan.description
         planPriceLabel.text = priceDescriptionForPlan(plan)
+
+        purchaseButton.alpha = (plan == .Free) ? 0 : 1
     }
     
     // TODO: Prices should always come from StoreKit
@@ -103,7 +105,7 @@ class PlanDetailViewController: UIViewController {
     private func priceDescriptionForPlan(plan: Plan) -> String? {
         switch plan {
         case .Free:
-            return "$0 for life"
+            return "Free for life"
         case .Premium:
             return "$99.99 per year"
         case .Business:
