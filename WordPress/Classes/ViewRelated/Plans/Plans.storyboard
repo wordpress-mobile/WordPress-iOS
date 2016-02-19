@@ -44,8 +44,8 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plan-premium-active" translatesAutoresizingMaskIntoConstraints="NO" id="VMO-qT-QAn">
                                 <rect key="frame" x="270" y="150" width="60" height="60"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kpj-Yk-lXp" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="255.5" y="387.5" width="90" height="35"/>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kpj-Yk-lXp" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="255.5" y="387" width="90" height="35"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="15"/>
                                 <state key="normal" title="Button"/>
@@ -64,8 +64,8 @@
                                     <action selector="actionButtonTapped" destination="vJO-em-60i" eventType="touchUpInside" id="Ecq-jN-Ujz"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heading" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kgW-JO-m1p">
-                                <rect key="frame" x="40" y="285" width="520" height="29"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heading" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kgW-JO-m1p">
+                                <rect key="frame" x="20" y="285" width="560" height="29"/>
                                 <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="21"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -73,7 +73,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.58997290120000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="kgW-JO-m1p" firstAttribute="trailing" secondItem="osn-W0-3cA" secondAttribute="trailingMargin" constant="-20" id="1VX-MR-Ugw"/>
+                            <constraint firstItem="kgW-JO-m1p" firstAttribute="trailing" secondItem="osn-W0-3cA" secondAttribute="trailingMargin" id="1VX-MR-Ugw"/>
                             <constraint firstItem="kpj-Yk-lXp" firstAttribute="top" secondItem="gUU-2m-nwk" secondAttribute="baseline" constant="44" id="Cla-Ed-0As"/>
                             <constraint firstItem="VMO-qT-QAn" firstAttribute="centerX" secondItem="osn-W0-3cA" secondAttribute="centerX" id="MAU-tX-lWj"/>
                             <constraint firstItem="VMO-qT-QAn" firstAttribute="centerY" secondItem="osn-W0-3cA" secondAttribute="bottom" multiplier="0.3" id="XlD-NV-Y5G"/>
@@ -82,7 +82,7 @@
                             <constraint firstItem="gUU-2m-nwk" firstAttribute="trailing" secondItem="osn-W0-3cA" secondAttribute="trailingMargin" constant="-40" id="nik-K3-ma9"/>
                             <constraint firstItem="gUU-2m-nwk" firstAttribute="firstBaseline" secondItem="kgW-JO-m1p" secondAttribute="firstBaseline" constant="37" id="qT7-wt-QtS"/>
                             <constraint firstItem="gUU-2m-nwk" firstAttribute="leading" secondItem="osn-W0-3cA" secondAttribute="leadingMargin" constant="40" id="xXs-Cg-mi9"/>
-                            <constraint firstItem="kgW-JO-m1p" firstAttribute="leading" secondItem="osn-W0-3cA" secondAttribute="leadingMargin" constant="20" id="ytW-bO-Nm9"/>
+                            <constraint firstItem="kgW-JO-m1p" firstAttribute="leading" secondItem="osn-W0-3cA" secondAttribute="leadingMargin" id="ytW-bO-Nm9"/>
                         </constraints>
                     </view>
                     <connections>
