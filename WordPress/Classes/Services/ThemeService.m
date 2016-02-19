@@ -6,6 +6,7 @@
 #import "ThemeServiceRemote.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
+#import "WordPress-Swift.h"
 
 /**
  *  @brief      Place unordered themes after loaded pages

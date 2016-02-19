@@ -6,6 +6,7 @@
 #import "TaxonomyServiceRemote.h"
 #import "TaxonomyServiceRemoteREST.h"
 #import "TaxonomyServiceRemoteXMLRPC.h"
+#import "WordPress-Swift.h"
 
 @implementation PostCategoryService
 

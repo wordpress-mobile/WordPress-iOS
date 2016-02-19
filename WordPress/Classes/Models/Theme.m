@@ -4,6 +4,7 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "NSString+Helpers.h"
+#import "WordPress-Swift.h"
 
 static NSString* const ThemeAdminUrlCustomize = @"customize.php?theme=%@&hide_close=true";
 static NSString* const ThemeUrlDemoParameters = @"?demo=true&iframe=true&theme_preview=true";

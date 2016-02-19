@@ -6,6 +6,7 @@
 #import "NSMutableDictionary+Helpers.h"
 #import "NSString+Helpers.h"
 #import "ContextManager.h"
+#import "WordPress-Swift.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 
 @interface Post()

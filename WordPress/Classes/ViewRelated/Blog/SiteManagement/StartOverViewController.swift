@@ -91,8 +91,10 @@ public class StartOverViewController: UITableViewController
         tableView.deselectSelectedRowWithAnimation(true)
 
         if HelpshiftUtils.isHelpshiftEnabled() {
-            setupHelpshift(blog.account)
-            
+            if let account = blog.account {
+                setupHelpshift(account)
+            }
+
             let metadata = helpshiftMetadata(blog)
             Helpshift.sharedInstance().showConversation(self, withOptions: metadata)
         } else {

@@ -378,7 +378,7 @@ public protocol ThemePresenter: class
             return nil
         }
         
-        for theme in blog.themes as! Set<Theme> {
+        for theme in blog.themes {
             if theme.themeId == themeId {
                 return theme
             }
