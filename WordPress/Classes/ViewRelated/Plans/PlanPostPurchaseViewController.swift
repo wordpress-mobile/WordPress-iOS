@@ -11,6 +11,7 @@ class PlanPostPurchaseViewController: UIViewController {
     private weak var pageControl: UIPageControl!
     private weak var scrollView: UIScrollView!
     
+    var pageTypes: [PlanPostPurchasePageType]!
     var pages = [PlanPostPurchasePageViewController]() {
         didSet {
             pageControl.numberOfPages = pages.count
@@ -23,6 +24,16 @@ class PlanPostPurchaseViewController: UIViewController {
         
         return button
     }()
+    
+    init(plan: Plan) {
+        pageTypes = PlanPostPurchasePageType.pageTypesForPlan(plan)
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,22 +100,22 @@ class PlanPostPurchaseViewController: UIViewController {
         container.bottomAnchor.constraintEqualToAnchor(scrollView.bottomAnchor).active = true
         container.topAnchor.constraintEqualToAnchor(scrollView.topAnchor, constant: contentTopInset).active = true
         
-        for page in PlanPostPurchasePage.allPages {
-            let pageVC = PlanPostPurchasePageViewController.controller()
-            addChildViewController(pageVC)
+        for pageType in pageTypes {
+            let page = PlanPostPurchasePageViewController.controller()
+            addChildViewController(page)
             
-            pageVC.view.translatesAutoresizingMaskIntoConstraints = false
-            container.addArrangedSubview(pageVC.view)
+            page.view.translatesAutoresizingMaskIntoConstraints = false
+            container.addArrangedSubview(page.view)
 
-            pageVC.view.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
-            pageVC.view.topAnchor.constraintEqualToAnchor(view.topAnchor, constant: contentTopInset).active = true
-            pageVC.view.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor).active = true
+            page.view.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
+            page.view.topAnchor.constraintEqualToAnchor(view.topAnchor, constant: contentTopInset).active = true
+            page.view.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor).active = true
             
-            pageVC.didMoveToParentViewController(self)
+            page.didMoveToParentViewController(self)
             
-            pageVC.configureForPage(page)
+            page.pageType = pageType
             
-            pages.append(pageVC)
+            pages.append(page)
         }
         
         container.widthAnchor.constraintEqualToAnchor(view.widthAnchor, multiplier: CGFloat(pages.count))
@@ -152,6 +163,12 @@ class PlanPostPurchasePageViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     
+    var pageType: PlanPostPurchasePageType? = nil {
+        didSet {
+            populateViews()
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -180,32 +197,69 @@ class PlanPostPurchasePageViewController: UIViewController {
         descriptionLabel.attributedText = attributedText
     }
     
-    func configureForPage(page: PlanPostPurchasePage) {
-        switch page {
+    func populateViews() {
+        guard let pageType = pageType else { return }
+        
+        switch pageType {
         case .PurchaseComplete:
-            headingLabel.text = "It’s all yours! Way to go!"
-            setDescriptionText("Your site is doing somersaults in excitement! Now explore your site’s new features and choose where you’d like to begin.")
+            headingLabel.text = NSLocalizedString("It’s all yours! Way to go!", comment: "Heading displayed after successful purchase of a plan")
+            setDescriptionText(NSLocalizedString("Your site is doing somersaults in excitement! Now explore your site’s new features and choose where you’d like to begin.", comment: "Subtitle displayed after successful purchase of a plan"))
             actionButton.hidden = true
         case .Customize:
             imageView.image = UIImage(named: "plans-post-purchase-customize")
-            headingLabel.text = "Customize Fonts & Colors"
-            setDescriptionText("You now have access to custom fonts, custom colors, and custom CSS editing capabilities.")
-            actionButton.setTitle("Customize My Site", forState: .Normal)
+            headingLabel.text = NSLocalizedString("Customize Fonts & Colors", comment: "Heading for customization feature, displayed after plan purchase")
+            setDescriptionText(NSLocalizedString("You now have access to custom fonts, custom colors, and custom CSS editing capabilities.", comment: "Descriptive text for customization feature, displayed after plan purchase"))
+            actionButton.setTitle(NSLocalizedString("Customize My Site", comment: "Title of button displayed after plan purchase, prompting user to start customizing their site"), forState: .Normal)
         case .VideoPress:
             imageView.image = UIImage(named: "plans-post-purchase-video")
-            headingLabel.text = "Bring posts to life with video"
-            setDescriptionText("You can upload and host videos on your site with VideoPress and your expanded media storage.")
-            actionButton.setTitle("Start New Post", forState: .Normal)
+            headingLabel.text = NSLocalizedString("Bring posts to life with video", comment: "Heading for video upload feature, displayed after plan purchase")
+            setDescriptionText(NSLocalizedString("You can upload and host videos on your site with VideoPress and your expanded media storage.", comment: "Descriptive text for video upload feature, displayed after plan purchase"))
+            actionButton.setTitle(NSLocalizedString("Start New Post", comment: "Title of button displayed after plan purchase, prompting user to start a new post"), forState: .Normal)
+        case .Themes:
+            imageView.image = UIImage(named: "plans-post-purchase-themes")
+            headingLabel.text = NSLocalizedString("Find a perfect, Premium theme", comment: "Title promoting premium themes, displayed after business plan purchase")
+            setDescriptionText(NSLocalizedString("You now have unlimited access to Premium themes. Preview any theme on your site to get started.", comment: "Descriptive text promoting premium themes, displayed after business plan purchase"))
+            actionButton.setTitle(NSLocalizedString("Browse Themes", comment: "Title of button displayed after business plan purchase"), forState: .Normal)
+        }
+    }
+    
+    @IBAction private func actionButtonTapped() {
+        guard let pageType = pageType else { return }
+        
+        // TODO (@frosty, 2016-02-19) These navigation implementations are currently using the primary blog as
+        // a temporary placeholder. Once we integrate payments through StoreKit, we should keep a record of the blog
+        // that is linked to the current in-flight purchase. That blog can then be handed to this VC when it's presented.
+        switch pageType {
+        case .Customize:
+            let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            WPTabBarController.sharedInstance().switchMySitesTabToCustomizeViewForBlog(service.primaryBlog())
+            
+            WPTabBarController.sharedInstance().dismissViewControllerAnimated(true, completion: nil)
+        case .VideoPress:
+            WPTabBarController.sharedInstance().dismissViewControllerAnimated(true) {
+                WPTabBarController.sharedInstance().showPostTab()
+            }
+        case .Themes:
+            let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+            WPTabBarController.sharedInstance().switchMySitesTabToThemesViewForBlog(service.primaryBlog())
+            
+            WPTabBarController.sharedInstance().dismissViewControllerAnimated(true, completion: nil)
+        default: break
         }
     }
 }
 
-enum PlanPostPurchasePage: Int {
+enum PlanPostPurchasePageType: Int {
     case PurchaseComplete
     case Customize
     case VideoPress
+    case Themes
     
-    static var allPages: [PlanPostPurchasePage] {
-        return [.PurchaseComplete, .Customize, .VideoPress]
+    static func pageTypesForPlan(plan: Plan) -> [PlanPostPurchasePageType] {
+        switch plan {
+        case .Premium: return [.PurchaseComplete, .Customize, .VideoPress]
+        case .Business: return [.PurchaseComplete, .Customize, .VideoPress, .Themes]
+        default: return []
+        }
     }
 }
