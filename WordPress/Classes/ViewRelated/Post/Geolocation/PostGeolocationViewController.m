@@ -91,8 +91,10 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 - (UISearchBar *)searchBar
 {
     if (_searchBar == nil) {
+        NSAttributedString *placeholderString = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Search Locations", @"Prompt in the location search bar.") attributes:@{NSForegroundColorAttributeName:[WPStyleGuide grey]}];
+        [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [PostGeolocationViewController class]]] setDefaultTextAttributes:@{NSForegroundColorAttributeName:[WPStyleGuide darkGrey]}];
+        [[UITextField appearanceWhenContainedInInstancesOfClasses:@[[UISearchBar class], [PostGeolocationViewController class]]] setAttributedPlaceholder:placeholderString];
         _searchBar = [[UISearchBar alloc] init];
-        _searchBar.placeholder = NSLocalizedString(@"Search Locations", @"Prompt in the location search bar.");
         _searchBar.delegate = self;
         _searchBar.barTintColor = [WPStyleGuide greyLighten30];
         _searchBar.tintColor = [WPStyleGuide grey];
