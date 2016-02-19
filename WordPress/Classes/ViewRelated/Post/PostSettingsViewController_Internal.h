@@ -11,6 +11,6 @@ typedef enum {
 
 @interface PostSettingsViewController ()
 
-@property (nonatomic, strong) NSMutableArray *sections;
+@property (nonatomic, strong) NSArray *sections;
 
 @end
