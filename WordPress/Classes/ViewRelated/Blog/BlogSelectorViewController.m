@@ -39,6 +39,26 @@ static CGFloat BlogCellRowHeight = 54.0;
     return self;
 }
 
+- (instancetype)initWithSelectedBlogDotComID:(NSNumber *)dotComID
+                              successHandler:(BlogSelectorSuccessDotComHandler)successHandler
+                              dismissHandler:(BlogSelectorDismissHandler)dismissHandler
+{
+    // Retrieve the Blog NSManagedObjectInstance
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:context];
+    NSManagedObjectID *blogObjectID = [[service blogByBlogId:dotComID] objectID];
+    
+    // Wrap up the main callback into something useful to us
+    BlogSelectorSuccessHandler wrappedSuccessHandler = ^(NSManagedObjectID *selectedObjectID) {
+        Blog *blog = [context existingObjectWithID:selectedObjectID error:nil];
+        successHandler(blog.dotComID);
+    };
+    
+    return [self initWithSelectedBlogObjectID:blogObjectID
+                               successHandler:wrappedSuccessHandler
+                               dismissHandler:dismissHandler];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
