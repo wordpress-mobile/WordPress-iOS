@@ -24,6 +24,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 @property (nonatomic, strong) UITableViewCell *currentLocationCell;
 @property (nonatomic, strong) UIBarButtonItem *removeButton;
 @property (nonatomic, strong) LocationService *locationService;
+@property (nonatomic, strong) UIView *searchBarTop;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray<CLPlacemark *> *placemarks;
@@ -51,12 +52,15 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     self.navigationItem.rightBarButtonItems = @[self.removeButton];
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
+    [self.view addSubview:self.searchBarTop];
 }
 
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    self.searchBar.frame = CGRectMake(0.0, [self.topLayoutGuide length], self.view.frame.size.width, 44.0);
+    self.searchBarTop.hidden = !self.navigationController.navigationBarHidden;
+    self.searchBarTop.frame = [[UIApplication sharedApplication] statusBarFrame];
+    self.searchBar.frame = CGRectMake(0.0, [self.topLayoutGuide length]-1, self.view.frame.size.width, 44.0);
     self.tableView.frame = CGRectMake(0.0, CGRectGetMaxY(self.searchBar.frame), self.view.frame.size.width, self.view.frame.size.height-CGRectGetMaxY(self.searchBar.frame));
 }
 
@@ -71,17 +75,29 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     }
 }
 
+- (UIView *)searchBarTop
+{
+    if (_searchBarTop == nil) {
+        _searchBarTop = [[UIView alloc] init];
+        _searchBarTop.backgroundColor = [WPStyleGuide wordPressBlue];
+    }
+    return _searchBarTop;
+}
+
 #pragma mark - View Properties
 
 - (UISearchBar *)searchBar
 {
     if (_searchBar == nil) {
         _searchBar = [[UISearchBar alloc] init];
-        _searchBar.placeholder = NSLocalizedString(@"Search", @"Prompt in the location search bar.");
+        _searchBar.placeholder = NSLocalizedString(@"Search Locations", @"Prompt in the location search bar.");
         _searchBar.delegate = self;
-        _searchBar.barTintColor = [WPStyleGuide greyLighten10];
-        [_searchBar setImage:[UIImage imageNamed:@"icon-clear-searchfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
-        [_searchBar setImage:[UIImage imageNamed:@"icon-post-list-search"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
+        _searchBar.barTintColor = [WPStyleGuide greyLighten30];
+        _searchBar.tintColor = [WPStyleGuide grey];
+        UIImage *clearImage = [[UIImage imageNamed:@"icon-clear-searchfield"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [_searchBar setImage:clearImage forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
+        UIImage *searchImage = [[UIImage imageNamed:@"icon-post-list-search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [_searchBar setImage:searchImage forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
         _searchBar.accessibilityIdentifier = @"Search";
     }
     return _searchBar;
@@ -135,7 +151,6 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 
 - (void)searchCurrentLocationFromUserRequest:(BOOL)userRequest
 {
-    
     if ([self.locationService locationServicesDisabled] || [self.locationService locationServicesDenied]) {
         if (userRequest) {
             [self.locationService showAlertForLocationServicesDisabled];
@@ -180,16 +195,23 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     }
 }
 
+- (void)enableSearch:(BOOL)searchOn
+{
+    self.searchBar.showsCancelButton = searchOn;
+    [self.navigationController setNavigationBarHidden:searchOn animated:YES];
+    self.searchBar.translucent = NO;
+    self.tableView.hidden = !searchOn;
+    _searchBar.barTintColor = searchOn ? [WPStyleGuide wordPressBlue]:[WPStyleGuide greyLighten30];
+}
+
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    self.searchBar.showsCancelButton = YES;
-    self.tableView.hidden = NO;
-
+    [self enableSearch:YES];
 }
 
-- (void)searchBar:(UISearchBar *)searchBar  textDidChange:(NSString *)searchText
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     NSString *query = searchText;
     if (query.length < 3) {
@@ -209,8 +231,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    self.tableView.hidden = YES;
-    self.searchBar.showsCancelButton = NO;
+    [self enableSearch:NO];
     [self.searchBar resignFirstResponder];
 }
 
@@ -261,8 +282,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.tableView.hidden = YES;
-    self.searchBar.showsCancelButton = NO;
+    [self enableSearch:NO];
     [self.searchBar resignFirstResponder];
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.section) {
@@ -294,7 +314,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
         UIImage *image = [[UIImage imageNamed:@"gridicons-location"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         cell.textLabel.text = NSLocalizedString(@"Use Current Location", @"Label for cell that sets the location of a post to the current location");
         cell.imageView.image = image;
-        cell.imageView.tintColor = [WPStyleGuide lightBlue];
+        cell.imageView.tintColor = [WPStyleGuide mediumBlue];
         cell.textLabel.font = [WPStyleGuide regularTextFont];
         cell.textLabel.textColor = [WPStyleGuide darkGrey];
         cell.backgroundColor = [UIColor clearColor];
@@ -302,6 +322,18 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     }
     _currentLocationCell.selected = NO;
     return _currentLocationCell;
+}
+
+#pragma mark - Status bar management
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+- (UIViewController *)childViewControllerForStatusBarStyle
+{
+    return nil;
 }
 
 @end
