@@ -114,6 +114,13 @@ class PlanDetailViewController: UIViewController {
     //MARK: - IBActions
     
     @IBAction private func purchaseTapped() {
+        let postPurchase = PlanPostPurchaseViewController()
+        
+        let navigationController = RotationAwareNavigationViewController(rootViewController: postPurchase)
+        navigationController.modalTransitionStyle = .CrossDissolve
+        navigationController.modalPresentationStyle = .FormSheet
+        navigationController.navigationBar.shadowImage = UIImage(color: UIColor.clearColor(), havingSize: CGSize(width: 1, height: 1))
+        presentViewController(navigationController, animated: true, completion: nil)
     }
 }
 
