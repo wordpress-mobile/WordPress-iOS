@@ -89,20 +89,7 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
         NSString *address;
         if (placemarks) {
             CLPlacemark *placemark = [placemarks firstObject];
-            if (placemark.addressDictionary && placemark.addressDictionary[@"FormattedAddressLines"]) {
-                NSArray *formattedAddressLines = [placemark.addressDictionary arrayForKey:@"FormattedAddressLines"];
-                if (formattedAddressLines.count > 1) {
-                    address = [formattedAddressLines firstObject];
-                    formattedAddressLines = [formattedAddressLines subarrayWithRange:NSMakeRange(1, formattedAddressLines.count-1)];
-                    address = [address stringByAppendingString:@"\n"];
-                    address = [address stringByAppendingString:[formattedAddressLines componentsJoinedByString:@", "]];
-                } else {
-                    address = [formattedAddressLines componentsJoinedByString:@", "];
-                }
-            } else {
-                // Fallback, just in case.
-                address = placemark.name;
-            }
+            address = [placemark formattedAddress];
         } else {
             DDLogError(@"Reverse geocoder failed for coordinate (%.6f, %.6f): %@",
                        location.coordinate.latitude,
@@ -121,6 +108,20 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
         return YES;
     }
     return NO;
+}
+
+- (void)searchPlacemarksWithQuery:(NSString *)query completion:(LocationServicePlacemarksCompletionBlock)completionBlock
+{
+    NSParameterAssert(query);
+    NSParameterAssert(completionBlock);
+    [self.geocoder geocodeAddressString:query completionHandler:^(NSArray<CLPlacemark *> *placemarks, NSError *error) {
+        if (placemarks == nil) {
+            completionBlock(nil, error);
+            return;
+        }
+        
+        completionBlock(placemarks, nil);
+    }];
 }
 
 #pragma mark - Private Methods
@@ -204,10 +205,10 @@ NSString *const LocationServiceErrorDomain = @"LocationServiceErrorDomain";
     if (error.domain == kCLErrorDomain && error.code == kCLErrorDenied) {
         if ([CLLocationManager locationServicesEnabled]) {
             otherButtonTitle = NSLocalizedString(@"Open Settings", @"Go to the settings app");
-            message = NSLocalizedString(@"WordPress needs permission to access your device's location in order to add it to your post. Please update your privacy settings.",  @"Explaining to the user why the app needs access to the device location.");
+            message = NSLocalizedString(@"WordPress needs permission to access your device's current location in order to add it to your post. Please update your privacy settings.",  @"Explaining to the user why the app needs access to the device location.");
             cancelText = NSLocalizedString(@"Cancel", "");
         } else {
-            message = NSLocalizedString(@"In order for WordPress to add location to your posts location services must be enabled. Please turn then on using the Setting app.",  @"Explaining to the user that location services need to be enable in order to geotag a post.");
+            message = NSLocalizedString(@"Location Services must be enabled before WordPress can add your current location. Please enable Location Services from the Settings app.",  @"Explaining to the user that location services need to be enable in order to geotag a post.");
         }
     }
     if (error.domain == LocationServiceErrorDomain && error.code == LocationServiceErrorPermissionDenied) {

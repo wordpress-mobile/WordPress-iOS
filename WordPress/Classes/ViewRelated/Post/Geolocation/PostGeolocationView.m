@@ -77,25 +77,31 @@ const CGFloat GeoViewMinHeight = 130.0f;
 
 - (void)setCoordinate:(Coordinate *)coordinate
 {
+    MKCoordinateRegion defaultRegion = MKCoordinateRegionMakeWithDistance(coordinate.coordinate, 200.0, 100.0);
+    [self setCoordinate:coordinate region:defaultRegion];
+}
+
+- (void)setCoordinate:(Coordinate *)coordinate region:(MKCoordinateRegion)region
+{
     if ([coordinate isEqual:_coordinate]) {
         return;
     }
-
+    
     _coordinate = coordinate;
-
+    
     [self.mapView removeAnnotation:self.annotation];
-
+    
     if (coordinate.latitude == 0 && coordinate.longitude == 0) {
         [self.mapView setRegion:MKCoordinateRegionForMapRect(MKMapRectWorld) animated:NO];
     } else {
         self.annotation = [[PostAnnotation alloc] initWithCoordinate:self.coordinate.coordinate];
         [self.mapView addAnnotation:self.annotation];
-
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coordinate.coordinate, 200, 100);
+        
         [self.mapView setRegion:region animated:YES];
     }
-
+    
     [self updateAddressLabel];
+
 }
 
 - (void)updateAddressLabel
