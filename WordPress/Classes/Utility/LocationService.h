@@ -5,6 +5,7 @@
  */
 typedef void(^LocationServiceCompletionBlock)(CLLocation *location, NSString *address, NSError *error);
 
+typedef void(^LocationServicePlacemarksCompletionBlock)(NSArray<CLPlacemark *> *placemarks, NSError *error);
 /**
  LocationServiceSource Error Codes
  */
@@ -77,6 +78,14 @@ extern NSString *const LocationServiceErrorDomain;
  @param location The location whose address needs to be found.
  */
 - (BOOL)hasAddressForLocation:(CLLocation *)location;
+
+/**
+ *  Search for placemarks that match the query for their name
+ *
+ *  @param query           the query string to use for search
+ *  @param completionBlock a block to be invoked when results are found or an error occurs.
+ */
+- (void)searchPlacemarksWithQuery:(NSString *)query completion:(LocationServicePlacemarksCompletionBlock)completionBlock;
 
 /**
  *  Shows an alert for an error resulting from a location request

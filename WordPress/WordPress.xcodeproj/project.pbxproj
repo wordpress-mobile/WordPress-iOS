@@ -692,6 +692,7 @@
 		FF3BD2EB1B061B9C0042E989 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF3BD2E91B061B9A0042E989 /* Crashlytics.framework */; };
 		FF3DD6BE19F2B6B3003A52CB /* RemoteMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3DD6BD19F2B6B3003A52CB /* RemoteMedia.m */; };
 		FF4258501BA092EE00580C68 /* RelatedPostsSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF42584F1BA092EE00580C68 /* RelatedPostsSettingsViewController.m */; };
+		FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */; };
 		FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF75933A1BE2423800814D3B /* Photos.framework */; };
 		FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */; };
 		FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FF945F6F1B28242300FB8AC4 /* MediaLibraryPickerDataSource.m */; };
@@ -1858,6 +1859,7 @@
 		FF3DD6BF19F2B77A003A52CB /* RemoteMedia.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RemoteMedia.h; path = "Remote Objects/RemoteMedia.h"; sourceTree = "<group>"; };
 		FF42584E1BA092EE00580C68 /* RelatedPostsSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RelatedPostsSettingsViewController.h; sourceTree = "<group>"; };
 		FF42584F1BA092EE00580C68 /* RelatedPostsSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RelatedPostsSettingsViewController.m; sourceTree = "<group>"; };
+		FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CLPlacemark+Formatting.swift"; sourceTree = "<group>"; };
 		FF695E151B87662500CD6EAA /* WordPress 38.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 38.xcdatamodel"; sourceTree = "<group>"; };
 		FF75933A1BE2423800814D3B /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		FF7EACDD1B6CE6E100AB6AB9 /* WordPress 37.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 37.xcdatamodel"; sourceTree = "<group>"; };
@@ -3257,6 +3259,7 @@
 		B587796C19B799D800E57C5A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */,
 				B587798319B799EB00E57C5A /* Notifications */,
 				B5E167F319C08D18009535AA /* NSCalendar+Helpers.swift */,
 				B587796F19B799D800E57C5A /* NSDate+Helpers.swift */,
@@ -5060,6 +5063,7 @@
 				74D5FFD619ACDF6700389E8F /* WPLegacyEditPostViewController.m in Sources */,
 				B54E1DF41A0A7BBF00807537 /* NotificationMediaDownloader.swift in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
+				FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */,
 				E11450DF1C4E47E600A6BD0F /* ErrorAnimator.swift in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
 				E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */,
