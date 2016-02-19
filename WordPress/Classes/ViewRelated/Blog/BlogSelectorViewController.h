@@ -1,5 +1,10 @@
 #import <UIKit/UIKit.h>
 
+
+typedef void (^BlogSelectorSuccessHandler)(NSManagedObjectID *selectedObjectID);
+typedef void (^BlogSelectorSuccessDotComHandler)(NSNumber *dotComId);
+typedef void (^BlogSelectorDismissHandler)();
+
 @interface BlogSelectorViewController : UITableViewController
 
 - (instancetype)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
