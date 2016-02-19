@@ -52,8 +52,8 @@ private struct AccountSettingsController: SettingsController {
         
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
-            value: mainBlog?.settings?.name ?? String(),
             action: presenter.push(editPrimarySite(mainBlog))
+            value: service.primarySiteNameForSettings(settings),
         )
 
         let webAddress = EditableTextRow(
