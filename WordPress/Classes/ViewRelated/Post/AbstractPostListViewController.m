@@ -131,7 +131,8 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)configureFilters
 {
-    self.postListFilters = [PostListFilter newPostListFilters];
+    // PostFilters are created as needed, see method 'availablePostListFilters'.
+    self.allPostListFilters = [NSMutableDictionary dictionaryWithCapacity:2];
 }
 
 - (void)configureNavbar
@@ -357,11 +358,20 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [self configureNoResultsView];
 }
 
-- (void)setHasMore:(BOOL)hasMore forFilter:(PostListFilter *)filter
+- (void)updateFilter:(PostListFilter *)filter withSyncedPosts:(NSArray <AbstractPost *> *)posts syncOptions:(PostServiceSyncOptions *)options
 {
-    filter.hasMore = hasMore;
+    AbstractPost *oldestPost = [posts lastObject];
+    // Reset the filter to only show the latest sync point.
+    filter.oldestPostDate = oldestPost.dateCreated;
+    filter.hasMore = posts.count >= options.number.unsignedIntegerValue;
+    
+    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
+- (NSUInteger)numberOfPostsPerSync
+{
+    return PostServiceDefaultNumberToSync;
+}
 
 #pragma mark - Sync Helper Delegate Methods
 
@@ -382,47 +392,71 @@ const CGFloat DefaultHeightForFooterView = 44.0;
         [self.recentlyTrashedPostObjectIDs removeAllObjects];
         [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
     }
-
     PostListFilter *filter = [self currentPostListFilter];
-    NSArray *postStatus = filter.statuses;
     NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
     __weak __typeof(self) weakSelf = self;
+    
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [postService syncPostsOfType:[self postTypeToSync] withStatuses:postStatus byAuthor:author forBlog:self.blog success:^(BOOL hasMore){
-        if  (success) {
-            [weakSelf setHasMore:hasMore forFilter:filter];
-            success(hasMore);
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-        if (userInteraction) {
-            [self handleSyncFailure:error];
-        }
-    }];
+    
+    PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
+    options.statuses = filter.statuses;
+    options.authorID = author;
+    options.number = @([self numberOfPostsPerSync]);
+    options.purgesLocalSync = YES;
+    
+    [postService syncPostsOfType:[self postTypeToSync]
+                     withOptions:options
+                         forBlog:self.blog
+                         success:^(NSArray *posts) {
+                             if  (success) {
+                                 [weakSelf updateFilter:filter
+                                        withSyncedPosts:posts
+                                            syncOptions:options];
+                                 success(filter.hasMore);
+                             }
+                         } failure:^(NSError *error) {
+                             if (failure) {
+                                 failure(error);
+                             }
+                             if (userInteraction) {
+                                 [self handleSyncFailure:error];
+                             }
+                         }];
 }
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     [WPAnalytics track:WPAnalyticsStatPostListLoadedMore withProperties:[self propertiesForAnalytics]];
     [self.postListFooterView showSpinner:YES];
+    
     PostListFilter *filter = [self currentPostListFilter];
-    NSArray *postStatus = filter.statuses;
     NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
     __weak __typeof(self) weakSelf = self;
+
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [postService loadMorePostsOfType:[self postTypeToSync] withStatuses:postStatus byAuthor:author forBlog:self.blog success:^(BOOL hasMore){
-        if (success) {
-            [weakSelf setHasMore:hasMore forFilter:filter];
-            success(hasMore);
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-        [self handleSyncFailure:error];
-    }];
+    
+    PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
+    options.statuses = filter.statuses;
+    options.authorID = author;
+    options.number = @([self numberOfPostsPerSync]);
+    options.offset = @([self.tableViewHandler.resultsController.fetchedObjects count]);
+    
+    [postService syncPostsOfType:[self postTypeToSync]
+                     withOptions:options
+                         forBlog:self.blog
+                         success:^(NSArray *posts) {
+                             if (success) {
+                                 [weakSelf updateFilter:filter
+                                        withSyncedPosts:posts
+                                            syncOptions:options];
+                                 success(filter.hasMore);
+                             }
+                         } failure:^(NSError *error) {
+                             if (failure) {
+                                 failure(error);
+                             }
+                             [self handleSyncFailure:error];
+                         }];
 }
 
 - (void)syncContentEnded
@@ -491,6 +525,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     fetchRequest.predicate = [self predicateForFetchRequest];
     fetchRequest.sortDescriptors = [self sortDescriptorsForFetchRequest];
     fetchRequest.fetchBatchSize = PostsFetchRequestBatchSize;
+    fetchRequest.fetchLimit = [self numberOfPostsPerSync];
     return fetchRequest;
 }
 
@@ -510,8 +545,28 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     NSPredicate *predicate = [self predicateForFetchRequest];
     NSArray *sortDescriptors = [self sortDescriptorsForFetchRequest];
     NSError *error = nil;
-    [self.tableViewHandler.resultsController.fetchRequest setPredicate:predicate];
-    [self.tableViewHandler.resultsController.fetchRequest setSortDescriptors:sortDescriptors];
+    NSFetchRequest *fetchRequest = self.tableViewHandler.resultsController.fetchRequest;
+    
+    // Set the predicate based on filtering by the oldestPostDate and not searching.
+    PostListFilter *filter = [self currentPostListFilter];
+    if (filter.oldestPostDate && !self.isSearching) {
+        // Filter posts by any posts newer than the filter's oldestPostDate.
+        NSPredicate *datePredicate = [NSPredicate predicateWithFormat:@"date_created_gmt >= %@", filter.oldestPostDate];
+        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, datePredicate]];
+    }
+    
+    // Set up the fetchLimit based on filtering or searching
+    if (filter.oldestPostDate || self.isSearching) {
+        // If filtering by the oldestPostDate or searching, the fetchLimit should be disabled.
+        fetchRequest.fetchLimit = 0;
+    } else {
+        // If not filtering by the oldestPostDate or searching, set the fetchLimit to the default number of posts.
+        fetchRequest.fetchLimit = [self numberOfPostsPerSync];
+    }
+    
+    [fetchRequest setPredicate:predicate];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
     [self.tableViewHandler.resultsController performFetch:&error];
     if (error) {
         DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
@@ -527,6 +582,14 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
     [self.tableView reloadData];
     [self configureNoResultsView];
+}
+
+- (void)resetTableViewContentOffset
+{
+    // Reset the tableView contentOffset to the top before we make any dataSource changes.
+    CGPoint tableOffset = self.tableView.contentOffset;
+    tableOffset.y = -self.tableView.contentInset.top;
+    self.tableView.contentOffset = tableOffset;
 }
 
 - (NSPredicate *)predicateForFetchRequest
@@ -552,6 +615,10 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    // If searching, don't try and sync additional posts.
+    if (self.isSearching) {
+        return;
+    }
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == self.tableView.numberOfSections) &&
         (indexPath.row + PostsLoadMoreThreshold >= [self.tableView numberOfRowsInSection:indexPath.section])) {
@@ -731,25 +798,55 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     // Subclasses may override the getter and setter for their own filter storage.
 }
 
+- (NSArray *)availablePostListFilters
+{
+    PostAuthorFilter currentAuthorFilter = [self currentPostAuthorFilter];
+    NSString *authorFilterKey = [NSString stringWithFormat:@"filter_key_%@", [[NSNumber numberWithUnsignedInteger:currentAuthorFilter] stringValue]];
+
+    if (![self.allPostListFilters objectForKey:authorFilterKey]) {
+        [self.allPostListFilters setObject:[PostListFilter newPostListFilters] forKey:authorFilterKey];
+    }
+    
+    return [self.allPostListFilters objectForKey:authorFilterKey];
+}
+
 - (PostListFilter *)currentPostListFilter
 {
-    return self.postListFilters[[self currentFilterIndex]];
+    return self.availablePostListFilters[[self currentFilterIndex]];
 }
 
 - (PostListFilter *)filterThatDisplaysPostsWithStatus:(NSString *)postStatus
 {
-    for (PostListFilter *filter in self.postListFilters) {
+    NSUInteger index = [self indexOfFilterThatDisplaysPostsWithStatus:postStatus];
+    
+    return self.availablePostListFilters[index];
+}
+
+
+- (NSUInteger)indexOfFilterThatDisplaysPostsWithStatus:(NSString *)postStatus
+{
+    __block NSUInteger index = 0;
+    __block BOOL found = NO;
+    
+    [self.availablePostListFilters enumerateObjectsUsingBlock:^(PostListFilter* _Nonnull filter, NSUInteger idx, BOOL* _Nonnull stop) {
         if ([filter.statuses containsObject:postStatus]) {
-            return filter;
+            index = idx;
+            found = YES;
+            *stop = YES;
         }
+    }];
+    
+    if (!found) {
+        // The draft filter is the catch all by convention.
+        index = [self indexForFilterWithType:PostListStatusFilterDraft];
     }
-    // The draft filter is the catch all by convention.
-    return [self.postListFilters objectAtIndex:[self indexForFilterWithType:PostListStatusFilterDraft]];
+    
+    return index;
 }
 
 - (NSInteger)indexForFilterWithType:(PostListStatusFilter)filterType
 {
-    NSInteger index = [self.postListFilters indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+    NSInteger index = [self.availablePostListFilters indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         PostListFilter *filter = (PostListFilter *)obj;
         return filter.filterType == filterType;
     }];
@@ -765,7 +862,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 - (NSInteger)currentFilterIndex
 {
     NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:[self keyForCurrentListStatusFilter]];
-    if (!filter || [filter integerValue] >= [self.postListFilters count]) {
+    if (!filter || [filter integerValue] >= [self.availablePostListFilters count]) {
         return 0; // first item is the default
     }
     return [filter integerValue];
@@ -783,6 +880,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
     [self.recentlyTrashedPostObjectIDs removeAllObjects];
     [self updateFilterTitle];
+    [self resetTableViewContentOffset];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
@@ -793,20 +891,20 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)displayFilters
 {
-    NSArray *titles = [self.postListFilters wp_map:^id(PostListFilter *filter) {
+    NSArray *titles = [self.availablePostListFilters wp_map:^id(PostListFilter *filter) {
         return filter.title;
     }];
     NSDictionary *dict = @{
-                           SettingsSelectionDefaultValueKey   : [self.postListFilters firstObject],
+                           SettingsSelectionDefaultValueKey   : [self.availablePostListFilters firstObject],
                            SettingsSelectionTitleKey          : NSLocalizedString(@"Filters", @"Title of the list of post status filters."),
                            SettingsSelectionTitlesKey         : titles,
-                           SettingsSelectionValuesKey         : self.postListFilters,
+                           SettingsSelectionValuesKey         : self.availablePostListFilters,
                            SettingsSelectionCurrentValueKey   : [self currentPostListFilter]
                            };
 
     SettingsSelectionViewController *controller = [[SettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
     controller.onItemSelected = ^(NSDictionary *selectedValue) {
-        [self setCurrentFilterIndex:[self.postListFilters indexOfObject:selectedValue]];
+        [self setCurrentFilterIndex:[self.availablePostListFilters indexOfObject:selectedValue]];
         [self dismissViewControllerAnimated:YES completion:nil];
     };
 
@@ -842,6 +940,14 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 }
 
 
+- (void)setFilterWithPostStatus:(NSString* __nonnull)status
+{
+    NSUInteger index = [self indexOfFilterThatDisplaysPostsWithStatus:status];
+    
+    [self setCurrentFilterIndex:index];
+}
+
+
 #pragma mark - Search Controller Delegate Methods
 
 - (void)presentSearchController:(WPSearchController *)searchController
@@ -869,11 +975,13 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     }];
 
     self.searchController.searchBar.text = nil;
+    [self resetTableViewContentOffset];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
 - (void)updateSearchResultsForSearchController:(WPSearchController *)searchController
 {
+    [self resetTableViewContentOffset];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
