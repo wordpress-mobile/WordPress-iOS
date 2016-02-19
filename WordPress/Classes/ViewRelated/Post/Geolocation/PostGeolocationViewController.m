@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 @property (nonatomic, strong) PostGeolocationView *geoView;
 @property (nonatomic, strong) UITableViewCell *currentLocationCell;
 @property (nonatomic, strong) UIBarButtonItem *removeButton;
+@property (nonatomic, strong) UIBarButtonItem *doneButton;
 @property (nonatomic, strong) LocationService *locationService;
 @property (nonatomic, strong) UIView *searchBarTop;
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -49,6 +50,7 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     self.view.backgroundColor = [WPStyleGuide greyLighten30];
     self.title = NSLocalizedString(@"Location", @"Title for screen to select post location");
     [self.view addSubview:self.geoView];
+    self.navigationItem.leftBarButtonItems = @[self.doneButton];
     self.navigationItem.rightBarButtonItems = @[self.removeButton];
     [self.view addSubview:self.searchBar];
     [self.view addSubview:self.tableView];
@@ -120,6 +122,18 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
     return _tableView;
 }
 
+- (UIBarButtonItem *)doneButton
+{
+    if (!_doneButton) {
+        _doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Label for confirm location of a post")
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(confirmGeolocation)];
+    }
+    return _doneButton;
+}
+
+
 - (UIBarButtonItem *)removeButton
 {
     if (!_removeButton) {
@@ -146,7 +160,13 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 - (void)removeGeolocation
 {
     self.post.geolocation = nil;
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)confirmGeolocation
+{
+    self.post.geolocation = self.geoView.coordinate;
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)searchCurrentLocationFromUserRequest:(BOOL)userRequest
