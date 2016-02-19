@@ -8,8 +8,12 @@ typedef void (^BlogSelectorDismissHandler)();
 @interface BlogSelectorViewController : UITableViewController
 
 - (instancetype)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
-                          selectedCompletion:(void (^)(NSManagedObjectID *selectedObjectID))selected
-                            cancelCompletion:(void (^)())cancel;
+                              successHandler:(BlogSelectorSuccessHandler)successHandler
+                              dismissHandler:(BlogSelectorDismissHandler)dismissHandler;
+
+- (instancetype)initWithSelectedBlogDotComID:(NSNumber *)dotComID
+                              successHandler:(BlogSelectorSuccessDotComHandler)successHandler
+                              dismissHandler:(BlogSelectorDismissHandler)dismissHandler;
 
 @property (nonatomic, assign) BOOL displaysCancelButton;
 @property (nonatomic, assign) BOOL dismissOnCancellation;
