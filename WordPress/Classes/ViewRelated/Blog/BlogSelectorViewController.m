@@ -15,11 +15,9 @@ static CGFloat BlogCellRowHeight = 54.0;
 @interface BlogSelectorViewController () <NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic) BOOL sectionDeletedByController;
-
 @property (nonatomic, strong) NSManagedObjectID *selectedObjectID;
-@property (nonatomic, copy) void (^selectedCompletionHandler)(NSManagedObjectID *selectedObjectID);
-@property (nonatomic, copy) void (^cancelCompletionHandler)(void);
+@property (nonatomic,   copy) void (^selectedCompletionHandler)(NSManagedObjectID *selectedObjectID);
+@property (nonatomic,   copy) void (^cancelCompletionHandler)(void);
 
 @end
 
