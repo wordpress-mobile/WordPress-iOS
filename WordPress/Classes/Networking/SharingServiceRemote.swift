@@ -9,6 +9,28 @@ import NSObject_SafeExpectations
 public class SharingServiceRemote : ServiceRemoteREST
 {
 
+    // MARK: - Helper methods
+
+    /// Returns an error message to use is the API returns an unexpected result.
+    ///
+    /// - Parameters: 
+    ///     - operation: The AFHTTPRequestOperation that returned the unexpected result.
+    ///
+    /// - Returns: An `NSError` object.
+    ///
+    func errorForUnexpectedResponse(operation: AFHTTPRequestOperation) -> NSError {
+        let failureReason = "The request returned an unexpected type."
+        let domain = "org.wordpress.sharing-management"
+        let code = 0
+        let userInfo = [
+            "requestURL": operation.request.URL!.absoluteString,
+            NSLocalizedDescriptionKey: failureReason,
+            NSLocalizedFailureReasonErrorKey: failureReason
+        ]
+        return NSError(domain: domain, code: code, userInfo: userInfo)
+    }
+
+
     // MARK: - Publicize Related Methods
 
     /// Fetches the list of Publicize services.
@@ -29,8 +51,13 @@ public class SharingServiceRemote : ServiceRemoteREST
                     return
                 }
 
+                // For paranioa, make sure the response is the correct type.
+                guard let responseDict = response as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(operation))
+                    return
+                }
+
                 let responseString = operation.responseString! as NSString
-                let responseDict = response as! NSDictionary
                 let services: NSDictionary = responseDict.dictionaryForKey(ServiceDictionaryKeys.services)
 
                 let publicizeServices: [RemotePublicizeService] = services.allKeys.map { (key) -> RemotePublicizeService in
@@ -81,7 +108,12 @@ public class SharingServiceRemote : ServiceRemoteREST
                     return
                 }
 
-                let responseDict = response as! NSDictionary
+                // For paranioa, make sure the response is the correct type.
+                guard let responseDict = response as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(operation))
+                    return
+                }
+
                 let connections: Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
                 let keyringConnections: [KeyringConnection] = connections.map { (let dict) -> KeyringConnection in
                     let conn = KeyringConnection()
@@ -152,7 +184,12 @@ public class SharingServiceRemote : ServiceRemoteREST
                     return
                 }
 
-                let responseDict = response as! NSDictionary
+                // For paranioa, make sure the response is the correct type.
+                guard let responseDict = response as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(operation))
+                    return
+                }
+
                 let connections: Array = responseDict.arrayForKey(ConnectionDictionaryKeys.connections)
                 let publicizeConnections: [RemotePublicizeConnection] = connections.map { (let dict) -> RemotePublicizeConnection in
                     let conn = self.remotePublicizeConnectionFromDictionary(dict as! NSDictionary)
@@ -179,8 +216,8 @@ public class SharingServiceRemote : ServiceRemoteREST
     public func createPublicizeConnection(siteID: NSNumber,
         keyringConnectionID: NSNumber,
         externalUserID: String?,
-        success: (RemotePublicizeConnection -> Void)?, failure: (NSError! -> Void)?)
-    {
+        success: (RemotePublicizeConnection -> Void)?,
+        failure: (NSError! -> Void)?) {
 
             let endpoint = "sites/\(siteID)/publicize-connections/new"
             let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
@@ -198,8 +235,13 @@ public class SharingServiceRemote : ServiceRemoteREST
                         return
                     }
 
-                    let dict = response as! NSDictionary
-                    let conn = self.remotePublicizeConnectionFromDictionary(dict)
+                    // For paranioa, make sure the response is the correct type.
+                    guard let responseDict = response as? NSDictionary else {
+                        failure?(self.errorForUnexpectedResponse(operation))
+                        return
+                    }
+
+                    let conn = self.remotePublicizeConnectionFromDictionary(responseDict)
 
                     onSuccess(conn)
                 },
@@ -212,25 +254,86 @@ public class SharingServiceRemote : ServiceRemoteREST
     /// Update the shared status of the specified publicize connection
     ///
     /// - Parameters:
-    ///     - shared: True if the connection is shared with all users of the blog. False otherwise.
     ///     - connectionID: The ID of the publicize connection.
+    ///     - externalID: The connection's externalID. Pass `nil` if the keyring
+    /// connection's default external ID should be used.  Otherwise pass the external
+    /// ID of one if the keyring connection's `additionalExternalUsers`.
     ///     - siteID: The WordPress.com ID of the site.
     ///      -success: An optional success block accepting no arguments.
     ///     - failure: An optional failure block accepting an `NSError` argument.
     ///
-    public func updateShared(shared: Bool,
-        forPublicizeConnectionWithID connectionID: NSNumber,
+    public func updatePublicizeConnectionWithID(connectionID: NSNumber,
+        externalID: String?,
         forSite siteID: NSNumber,
-        success: (() -> Void)?,
+        success: (RemotePublicizeConnection -> Void)?,
         failure: (NSError! -> Void)?) {
             let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
             let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
-            let parameters = [ConnectionDictionaryKeys.shared : shared]
+            let externalUserID = (externalID == nil) ? "false" : externalID!
+
+            let parameters = [
+                PublicizeConnectionParams.externalUserID : externalUserID
+            ]
 
             api.POST(path,
                 parameters: parameters,
                 success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
-                    success?()
+                    guard let onSuccess = success else {
+                        return
+                    }
+
+                    // For paranioa, make sure the response is the correct type.
+                    guard let responseDict = response as? NSDictionary else {
+                        failure?(self.errorForUnexpectedResponse(operation))
+                        return
+                    }
+
+                    let conn = self.remotePublicizeConnectionFromDictionary(responseDict)
+
+                    onSuccess(conn)
+                },
+                failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
+                    failure?(error)
+            })
+    }
+
+
+    /// Update the shared status of the specified publicize connection
+    ///
+    /// - Parameters:
+    ///     - connectionID: The ID of the publicize connection.
+    ///     - shared: True if the connection is shared with all users of the blog. False otherwise.
+    ///     - siteID: The WordPress.com ID of the site.
+    ///      -success: An optional success block accepting no arguments.
+    ///     - failure: An optional failure block accepting an `NSError` argument.
+    ///
+    public func updatePublicizeConnectionWithID(connectionID: NSNumber,
+        shared: Bool,
+        forSite siteID: NSNumber,
+        success: (RemotePublicizeConnection -> Void)?,
+        failure: (NSError! -> Void)?) {
+            let endpoint = "sites/\(siteID)/publicize-connections/\(connectionID)"
+            let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+            let parameters = [
+                PublicizeConnectionParams.shared : shared
+            ]
+
+            api.POST(path,
+                parameters: parameters,
+                success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) in
+                    guard let onSuccess = success else {
+                        return
+                    }
+
+                    // For paranioa, make sure the response is the correct type.
+                    guard let responseDict = response as? NSDictionary else {
+                        failure?(self.errorForUnexpectedResponse(operation))
+                        return
+                    }
+
+                    let conn = self.remotePublicizeConnectionFromDictionary(responseDict)
+
+                    onSuccess(conn)
                 },
                 failure: { (operation: AFHTTPRequestOperation?, error: NSError) in
                     failure?(error)
@@ -313,7 +416,12 @@ public class SharingServiceRemote : ServiceRemoteREST
                     return
                 }
 
-                let responseDict = response as! NSDictionary
+                // For paranioa, make sure the response is the correct type.
+                guard let responseDict = response as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(operation))
+                    return
+                }
+
                 let buttons = responseDict.arrayForKey(SharingButtonsKeys.sharingButtons)
                 let sharingButtons = self.remoteSharingButtonsFromDictionary(buttons)
 
@@ -345,7 +453,12 @@ public class SharingServiceRemote : ServiceRemoteREST
                     return
                 }
 
-                let responseDict = response as! NSDictionary
+                // For paranioa, make sure the response is the correct type.
+                guard let responseDict = response as? NSDictionary else {
+                    failure?(self.errorForUnexpectedResponse(operation))
+                    return
+                }
+
                 let buttons = responseDict.arrayForKey(SharingButtonsKeys.updated)
                 let sharingButtons = self.remoteSharingButtonsFromDictionary(buttons)
 
@@ -436,11 +549,12 @@ private struct ConnectionDictionaryKeys
 }
 
 
-// Names of parameters passed when creating a new publicize connection
+// Names of parameters passed when creating or updating a publicize connection
 private struct PublicizeConnectionParams
 {
     static let keyringConnectionID = "keyring_connection_ID"
     static let externalUserID = "external_user_ID"
+    static let shared = "shared"
 }
 
 
