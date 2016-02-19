@@ -114,7 +114,7 @@ class PlanDetailViewController: UIViewController {
     //MARK: - IBActions
     
     @IBAction private func purchaseTapped() {
-        let postPurchase = PlanPostPurchaseViewController()
+        let postPurchase = PlanPostPurchaseViewController(plan: plan)
         
         let navigationController = RotationAwareNavigationViewController(rootViewController: postPurchase)
         navigationController.modalTransitionStyle = .CrossDissolve
