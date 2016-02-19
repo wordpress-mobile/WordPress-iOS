@@ -254,7 +254,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self dismissViewControllerAnimated:YES completion:nil];
         self.dismissingBlogPicker = NO;
     };
-    void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
+    void (^successHandler)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
 
@@ -299,8 +299,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     };
 
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.post.blog.objectID
-                                                                                   selectedCompletion:selectedCompletion
-                                                                                     cancelCompletion:dismissHandler];
+                                                                                       successHandler:successHandler
+                                                                                       dismissHandler:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
