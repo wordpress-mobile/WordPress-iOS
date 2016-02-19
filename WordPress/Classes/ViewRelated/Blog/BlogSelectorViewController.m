@@ -16,23 +16,23 @@ static CGFloat BlogCellRowHeight = 54.0;
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) NSManagedObjectID *selectedObjectID;
-@property (nonatomic,   copy) void (^selectedCompletionHandler)(NSManagedObjectID *selectedObjectID);
-@property (nonatomic,   copy) void (^cancelCompletionHandler)(void);
+@property (nonatomic,   copy) BlogSelectorSuccessHandler successHandler;
+@property (nonatomic,   copy) BlogSelectorDismissHandler dismissHandler;
 
 @end
 
 @implementation BlogSelectorViewController
 
 - (instancetype)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
-                          selectedCompletion:(void (^)(NSManagedObjectID *))selected
-                            cancelCompletion:(void (^)())cancel
+                              successHandler:(BlogSelectorSuccessHandler)successHandler
+                              dismissHandler:(BlogSelectorDismissHandler)dismissHandler
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
 
     if (self) {
         _selectedObjectID = objectID;
-        _selectedCompletionHandler = selected;
-        _cancelCompletionHandler = cancel;
+        _successHandler = successHandler;
+        _dismissHandler = dismissHandler;
         _displaysCancelButton = YES;
     }
 
@@ -110,8 +110,8 @@ static CGFloat BlogCellRowHeight = 54.0;
 
 - (IBAction)cancelButtonTapped:(id)sender
 {
-    if (self.cancelCompletionHandler) {
-        self.cancelCompletionHandler();
+    if (self.dismissHandler) {
+        self.dismissHandler();
     }
     
     if (self.dismissOnCancellation) {
@@ -200,11 +200,11 @@ static CGFloat BlogCellRowHeight = 54.0;
     }
 
     // Fire off the selection after a short delay to let animations complete for selection/deselection
-    if (self.selectedCompletionHandler) {
+    if (self.successHandler) {
         double delayInSeconds = 0.2;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            self.selectedCompletionHandler(self.selectedObjectID);
+            self.successHandler(self.selectedObjectID);
             
             if (self.dismissOnCompletion) {
                 [self.navigationController popViewControllerAnimated:YES];
