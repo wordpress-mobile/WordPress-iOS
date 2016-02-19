@@ -26,6 +26,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 @dynamic date_created_gmt;
 @dynamic postID;
 @dynamic postTitle;
+@dynamic postType;
 @dynamic status;
 @dynamic password;
 @dynamic remoteStatusNumber;
