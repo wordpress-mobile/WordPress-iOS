@@ -14,16 +14,28 @@ class PurchaseButton: UIButton {
         }
     }
     
+    @IBInspectable var horizontalEdgeInset: CGFloat = 19.0 {
+        didSet {
+            updateAppearance()
+        }
+    }
+    
+    @IBInspectable var verticalEdgeInset: CGFloat = 10.0 {
+        didSet {
+            updateAppearance()
+        }
+    }
+    
+    override var reversesTitleShadowWhenHighlighted: Bool {
+        didSet {
+            updateAppearance()
+        }
+    }
+    
     override func tintColorDidChange() {
         super.tintColorDidChange()
         
         updateAppearance()
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        setTitleColor(UIColor.whiteColor(), forState: [.Highlighted])
     }
     
     override func willMoveToSuperview(newSuperview: UIView?) {
@@ -33,10 +45,7 @@ class PurchaseButton: UIButton {
     }
     
     private func updateAppearance() {
-        let verticalInset: CGFloat = 10.0
-        let horizontalInset: CGFloat = 19.0
-        
-        contentEdgeInsets = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
+        contentEdgeInsets = UIEdgeInsets(top: verticalEdgeInset, left: horizontalEdgeInset, bottom: verticalEdgeInset, right: horizontalEdgeInset)
         
         layer.masksToBounds = true
         layer.cornerRadius = cornerRadius
@@ -45,6 +54,11 @@ class PurchaseButton: UIButton {
         
         setTitleColor(tintColor, forState: .Normal)
         
-        setBackgroundImage(UIImage(color: tintColor), forState: .Highlighted)
+        if reversesTitleShadowWhenHighlighted {
+            setTitleColor(backgroundColor, forState: [.Highlighted])
+            setBackgroundImage(UIImage(color: tintColor), forState: .Highlighted)
+        } else {
+            setTitleColor(tintColor.colorWithAlphaComponent(0.3), forState: .Highlighted)
+        }
     }
 }
