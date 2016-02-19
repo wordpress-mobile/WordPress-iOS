@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 47 (@kurzee 2016-02-19)
+
+- `BasePost` added new string attribute `postType` to store the associated type of a post.
+
 ## WordPress 46 (@aerych 2016-01-29)
 
 - `BlogSettings` added string `sharingButtonStyle`. Stores style to use for sharing buttons.
