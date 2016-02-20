@@ -14,4 +14,8 @@ import CoreData
     @NSManaged public var enabled: Bool
     @NSManaged public var visibility: String?
     @NSManaged public var order: NSNumber
+
+    var visible: Bool {
+        return visibility == "visible"
+    }
 }
