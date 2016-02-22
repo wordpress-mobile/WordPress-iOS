@@ -62,6 +62,8 @@ import WordPressShared
         buttons = service.allSharingButtonsForBlog(self.blog)
         configureTableView()
         setupSections()
+
+        syncSharingButtons()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -516,6 +518,21 @@ import WordPressShared
         service.updateSettingsForBlog(self.blog, success: nil, failure: { [weak self] (error: NSError!) in
             DDLogSwift.logError(error.description)
             self?.showErrorSyncingMessage(error)
+        })
+    }
+
+
+    /// Syncs sharing buttons from the user's blog and reloads the button sections
+    /// when finished.  Fails silently if there is an error.
+    ///
+    func syncSharingButtons() {
+        let service = SharingService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.syncSharingButtonsForBlog(self.blog,
+            success: { [weak self] in
+                self?.reloadButtons()
+            },
+            failure: { (error: NSError!) in
+                DDLogSwift.logError(error.description)
         })
     }
 
