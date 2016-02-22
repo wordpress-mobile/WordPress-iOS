@@ -46,6 +46,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
+    // Optimiistically sync the sharing buttons.
+    [self syncSharingButtonsIfNeeded];
+
     // Refreshes the tableview.
     [self refreshPublicizers];
 
@@ -247,6 +250,20 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Publicize connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
         [weakSelf refreshPublicizers];
+    }];
+}
+
+- (void)syncSharingButtonsIfNeeded
+{
+    // Sync sharing buttons if they have never been synced. Otherwise, the
+    // management vc can worry about fetching the latest sharing buttons.
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    NSArray *buttons = [sharingService allSharingButtonsForBlog:self.blog];
+    if ([buttons count] > 0) {
+        return;
+    }
+    [sharingService syncSharingButtonsForBlog:self.blog success:nil failure:^(NSError *error) {
+        DDLogError([error description]);
     }];
 }
 
