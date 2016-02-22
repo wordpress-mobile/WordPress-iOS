@@ -12,11 +12,7 @@ class PlanPostPurchaseViewController: UIViewController {
     private weak var scrollView: UIScrollView!
     
     var pageTypes: [PlanPostPurchasePageType]!
-    var pages = [PlanPostPurchasePageViewController]() {
-        didSet {
-            pageControl.numberOfPages = pages.count
-        }
-    }
+    var pages = [PlanPostPurchasePageViewController]()
     
     lazy private var cancelXButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(named: "gridicons-cross"), style: .Plain, target: self, action: "closeTapped")
@@ -39,8 +35,6 @@ class PlanPostPurchaseViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = WPStyleGuide.wordPressBlue()
-        edgesForExtendedLayout = .All
-        extendedLayoutIncludesOpaqueBars = true
 
         navigationItem.leftBarButtonItem = cancelXButton
 
@@ -89,16 +83,17 @@ class PlanPostPurchaseViewController: UIViewController {
         
         view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToAllEdges(scrollView)
+
+        scrollView.leadingAnchor.constraintEqualToAnchor(view.leadingAnchor).active = true
+        scrollView.trailingAnchor.constraintEqualToAnchor(view.trailingAnchor).active = true
+        scrollView.topAnchor.constraintEqualToAnchor(view.topAnchor).active = true
+        scrollView.bottomAnchor.constraintEqualToAnchor(pageControl.topAnchor).active = true
         
         let container = UIStackView()
         container.axis = .Horizontal
         scrollView.addSubview(container)
         container.translatesAutoresizingMaskIntoConstraints = false
-        container.leadingAnchor.constraintEqualToAnchor(scrollView.leadingAnchor).active = true
-        container.trailingAnchor.constraintEqualToAnchor(scrollView.trailingAnchor).active = true
-        container.bottomAnchor.constraintEqualToAnchor(scrollView.bottomAnchor).active = true
-        container.topAnchor.constraintEqualToAnchor(scrollView.topAnchor, constant: contentTopInset).active = true
+        scrollView.pinSubviewToAllEdges(container)
         
         for pageType in pageTypes {
             let page = PlanPostPurchasePageViewController.controller()
@@ -106,10 +101,9 @@ class PlanPostPurchaseViewController: UIViewController {
             
             page.view.translatesAutoresizingMaskIntoConstraints = false
             container.addArrangedSubview(page.view)
-
+            
             page.view.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
-            page.view.topAnchor.constraintEqualToAnchor(view.topAnchor, constant: contentTopInset).active = true
-            page.view.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor).active = true
+            page.view.bottomAnchor.constraintEqualToAnchor(pageControl.topAnchor).active = true
             
             page.didMoveToParentViewController(self)
             
@@ -117,6 +111,8 @@ class PlanPostPurchaseViewController: UIViewController {
             
             pages.append(page)
         }
+        
+        pageControl.numberOfPages = pages.count
         
         container.widthAnchor.constraintEqualToAnchor(view.widthAnchor, multiplier: CGFloat(pages.count))
         
@@ -134,8 +130,12 @@ class PlanPostPurchaseViewController: UIViewController {
 extension PlanPostPurchaseViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let pageWidth = scrollView.bounds.width
+        
+        guard pageWidth > 0 else { return }
+        
         let centerX = scrollView.contentOffset.x + (pageWidth / 2)
         let currentPageFraction = (centerX / pageWidth)
+        let currentPageIndex = Int(floor(currentPageFraction))
         
         for (index, page) in pages.enumerate() {
             let pageCenter = CGFloat(index) + 0.5
