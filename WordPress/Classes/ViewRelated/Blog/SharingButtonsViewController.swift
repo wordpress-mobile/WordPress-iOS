@@ -508,14 +508,15 @@ import WordPressShared
     ///     - refresh: True if the tableview should be reloaded.
     ///
     func saveBlogSettingsChanges(refresh: Bool) {
-        let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.updateSettingsForBlog(self.blog, success: nil, failure: { (error: NSError!) in
-            DDLogSwift.logError(error.description)
-        })
-
         if refresh {
             tableView.reloadData()
         }
+
+        let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.updateSettingsForBlog(self.blog, success: nil, failure: { [weak self] (error: NSError!) in
+            DDLogSwift.logError(error.description)
+            self?.showErrorSyncingMessage(error)
+        })
     }
 
 
@@ -553,7 +554,11 @@ import WordPressShared
     }
 
 
+    /// Saves changes to sharing buttons to core data, reloads the buttons, then
+    /// pushes the changes up to the blog, optionally refreshing when done.
     ///
+    /// - Parameters:
+    ///     - refreshAfterSync: If true buttons are reloaded when the sync completes.
     ///
     func saveButtonChanges(refreshAfterSync: Bool) {
         let context = ContextManager.sharedInstance().mainContext
@@ -564,7 +569,8 @@ import WordPressShared
     }
 
 
-    ///
+    /// Retrives a fresh copy of the SharingButtons from core data, updating the
+    /// `buttons` property and refreshes the button section and the more section.
     ///
     func reloadButtons() {
         let context = ContextManager.sharedInstance().mainContext
@@ -592,9 +598,26 @@ import WordPressShared
                     self?.reloadButtons()
                 }
             },
-            failure: { (error: NSError!) in
+            failure: { [weak self] (error: NSError!) in
                 DDLogSwift.logError(error.description)
+                self?.showErrorSyncingMessage(error)
         })
+    }
+
+
+    /// Shows an alert. The localized description of the specified NSError is 
+    /// included in the alert.
+    ///
+    /// - Parameters: 
+    ///     - error: An NSError object.
+    ///
+    func showErrorSyncingMessage(error: NSError) {
+        let title = NSLocalizedString("Could Not Save Changes", comment: "Title of an prompt letting the user know there was a problem saving.")
+        let message = NSLocalizedString("There was a problem saving changes to sharing management.", comment: "A short error message shown in a prompt.")
+        let controller = UIAlertController(title: title, message: "\(message) \(error.localizedDescription)", preferredStyle: .Alert)
+        controller.addCancelActionWithTitle(NSLocalizedString("OK", comment: "A button title."), handler: nil)
+
+        controller.presentFromRootViewController()
     }
 
 
