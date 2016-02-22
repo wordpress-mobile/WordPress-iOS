@@ -267,7 +267,95 @@ import WordPressShared
     }
 
 
-    /// Configures the rows for the button section. When the section is editing, 
+    /// Creates a sortable row for the specified button.
+    /// 
+    /// - Parameters:
+    ///     - button: The sharing button that the row will represent.
+    ///
+    /// - Returns: A SortableSharingSwitchRow.
+    ///
+    func sortableRowForButton(button: SharingButton) -> SortableSharingSwitchRow {
+        let row = SortableSharingSwitchRow(buttonID: button.buttonID)
+        row.configureCell = {[unowned self] (cell: UITableViewCell) in
+            cell.imageView?.image = self.iconForSharingButton(button)
+            cell.imageView?.tintColor = WPStyleGuide.greyLighten20()
+
+            cell.editingAccessoryView = nil
+            cell.editingAccessoryType = .None
+            cell.textLabel?.text = button.name
+        }
+        return row
+    }
+
+
+    /// Creates a switch row for the specified button in the sharing buttons section.
+    ///
+    /// - Parameters:
+    ///     - button: The sharing button that the row will represent.
+    ///
+    /// - Returns: A SortableSharingSwitchRow.
+    ///
+    func switchRowForButtonSectionButton(button: SharingButton) -> SortableSharingSwitchRow {
+        let row = SortableSharingSwitchRow(buttonID: button.buttonID)
+        row.configureCell = {[unowned self] (cell: UITableViewCell) in
+            if let switchCell = cell as? SwitchTableViewCell {
+                self.configureSortableSwitchCellAppearance(switchCell, button: button)
+                switchCell.on = button.enabled && button.visible
+                switchCell.onChange = { newValue in
+                    button.enabled = newValue
+                    if button.enabled {
+                        button.visibility = button.enabled ? SharingButton.visible : nil
+                    }
+                    self.refreshMoreSection()
+                }
+            }
+        }
+        return row
+    }
+
+
+    /// Creates a switch row for the specified button in the more buttons section.
+    ///
+    /// - Parameters:
+    ///     - button: The sharing button that the row will represent.
+    ///
+    /// - Returns: A SortableSharingSwitchRow.
+    ///
+    func switchRowForMoreSectionButton(button: SharingButton) -> SortableSharingSwitchRow {
+        let row = SortableSharingSwitchRow(buttonID: button.buttonID)
+        row.configureCell = {[unowned self] (cell: UITableViewCell) in
+            if let switchCell = cell as? SwitchTableViewCell {
+                self.configureSortableSwitchCellAppearance(switchCell, button: button)
+                switchCell.on = button.enabled && !button.visible
+                switchCell.onChange = { newValue in
+                    button.enabled = newValue
+                    if button.enabled {
+                        button.visibility = button.enabled ? SharingButton.hidden : nil
+                    }
+                    self.refreshButtonsSection()
+                }
+            }
+        }
+        return row
+    }
+
+
+    /// Configures common appearance properties for the button switch cells.
+    ///
+    /// - Parameters:
+    ///     - cell: The SwitchTableViewCell cell to configure
+    ///     - button: The sharing button that the row will represent.
+    ///
+    func configureSortableSwitchCellAppearance(cell: SwitchTableViewCell, button: SharingButton) {
+        cell.editingAccessoryView = cell.accessoryView
+        cell.editingAccessoryType = cell.accessoryType
+        cell.imageView?.image = self.iconForSharingButton(button)
+        cell.imageView?.tintColor = WPStyleGuide.greyLighten20()
+        cell.textLabel?.text = button.name
+    }
+
+
+    /// Configures the rows for the button section. When the section is editing,
     /// all buttons are shown with switch cells. When the section is not editing, 
     /// only enabled and visible buttons are shown and the rows are sortable.
     ///
@@ -276,15 +364,14 @@ import WordPressShared
 
         let row = SharingSwitchRow()
         row.configureCell = {[unowned self] (cell: UITableViewCell) in
-            cell.editingAccessoryView = cell.accessoryView
-            cell.editingAccessoryType = cell.accessoryType
-
             if let switchCell = cell as? SwitchTableViewCell {
+                cell.editingAccessoryView = cell.accessoryView
+                cell.editingAccessoryType = cell.accessoryType
                 switchCell.textLabel?.text = NSLocalizedString("Edit sharing buttons", comment: "Title for the edit sharing buttons section")
                 switchCell.on = self.buttonsSection.editing
                 switchCell.onChange = { newValue in
-                    self.updateButtonOrderAfterEditing()
                     self.buttonsSection.editing = !self.buttonsSection.editing
+                    self.updateButtonOrderAfterEditing()
                     self.saveButtonChanges(true)
                 }
             }
@@ -295,43 +382,15 @@ import WordPressShared
             let buttonsToShow = buttons.filter { (button) -> Bool in
                 return button.enabled && button.visible
             }
-            for button in buttonsToShow {
-                let row = SortableSharingSwitchRow(buttonID: button.buttonID)
-                row.configureCell = {[unowned self] (cell: UITableViewCell) in
-                    cell.imageView?.image = self.iconForSharingButton(button)
-                    cell.imageView?.tintColor = WPStyleGuide.greyLighten20()
 
-                    cell.editingAccessoryView = nil
-                    cell.editingAccessoryType = .None
-                    cell.textLabel?.text = button.name
-                }
-                rows.append(row)
+            for button in buttonsToShow {
+                rows.append(sortableRowForButton(button))
             }
 
         } else {
 
             for button in buttons {
-                let row = SortableSharingSwitchRow(buttonID: button.buttonID)
-                row.configureCell = {[unowned self] (cell: UITableViewCell) in
-                    cell.imageView?.image = self.iconForSharingButton(button)
-                    cell.imageView?.tintColor = WPStyleGuide.greyLighten20()
-
-                    if let switchCell = cell as? SwitchTableViewCell {
-                        cell.editingAccessoryView = cell.accessoryView
-                        cell.editingAccessoryType = cell.accessoryType
-
-                        switchCell.textLabel?.text = button.name
-                        switchCell.on = button.enabled && button.visible
-                        switchCell.onChange = { newValue in
-                            button.enabled = newValue
-                            if button.enabled {
-                                button.visibility = button.enabled ? SharingButton.visible : nil
-                            }
-                            self.refreshMoreSection()
-                        }
-                    }
-                }
-                rows.append(row)
+                rows.append(switchRowForButtonSectionButton(button))
             }
         }
 
@@ -348,10 +407,9 @@ import WordPressShared
 
         let row = SharingSwitchRow()
         row.configureCell = {[unowned self] (cell: UITableViewCell) in
-            cell.editingAccessoryView = cell.accessoryView
-            cell.editingAccessoryType = cell.accessoryType
-
             if let switchCell = cell as? SwitchTableViewCell {
+                cell.editingAccessoryView = cell.accessoryView
+                cell.editingAccessoryType = cell.accessoryType
                 switchCell.textLabel?.text = NSLocalizedString("Edit \"More\" button", comment: "Title for the edit more button section")
                 switchCell.on = self.moreSection.editing
                 switchCell.onChange = { newValue in
@@ -367,42 +425,15 @@ import WordPressShared
             let buttonsToShow = buttons.filter { (button) -> Bool in
                 return button.enabled && !button.visible
             }
-            for button in buttonsToShow {
-                let row = SortableSharingSwitchRow(buttonID: button.buttonID)
-                row.configureCell = {[unowned self] (cell: UITableViewCell) in
-                    cell.imageView?.image = self.iconForSharingButton(button)
-                    cell.imageView?.tintColor = WPStyleGuide.greyLighten20()
 
-                    cell.editingAccessoryView = nil
-                    cell.editingAccessoryType = .None
-                    cell.textLabel?.text = button.name
-                }
-                rows.append(row)
+            for button in buttonsToShow {
+                rows.append(sortableRowForButton(button))
             }
 
         } else {
 
             for button in buttons {
-                let row = SortableSharingSwitchRow(buttonID: button.buttonID)
-                row.configureCell = {[unowned self] (cell: UITableViewCell) in
-                    cell.imageView?.image = self.iconForSharingButton(button)
-                    cell.imageView?.tintColor = WPStyleGuide.greyLighten20()
-
-                    if let switchCell = cell as? SwitchTableViewCell {
-                        cell.editingAccessoryView = cell.accessoryView
-                        cell.editingAccessoryType = cell.accessoryType
-                        switchCell.textLabel?.text = button.name
-                        switchCell.on = button.enabled && !button.visible
-                        switchCell.onChange = { newValue in
-                            button.enabled = newValue
-                            if button.enabled {
-                                button.visibility = button.enabled ? SharingButton.hidden : nil
-                            }
-                            self.refreshButtonsSection()
-                        }
-                    }
-                }
-                rows.append(row)
+                rows.append(switchRowForMoreSectionButton(button))
             }
         }
 
@@ -410,7 +441,7 @@ import WordPressShared
     }
 
 
-    /// Refreshes the rows for but button section (also the twitter section if 
+    /// Refreshes the rows for but button section (also the twitter section if
     /// needed) and reloads the section.
     ///
     func refreshButtonsSection() {
