@@ -451,7 +451,7 @@ import WordPressShared
         configureButtonRows()
         configureTwitterNameSection()
 
-        let indexSet = NSMutableIndexSet(index: 0)
+        let indexSet = NSMutableIndexSet(index: buttonSectionIndex)
         indexSet.addIndex(sections.count - 1)
 
         tableView.reloadSections(indexSet, withRowAnimation: .Automatic)
@@ -465,7 +465,7 @@ import WordPressShared
         configureMoreRows()
         configureTwitterNameSection()
 
-        let indexSet = NSMutableIndexSet(index: 1)
+        let indexSet = NSMutableIndexSet(index: moreSectionIndex)
         indexSet.addIndex(sections.count - 1)
 
         tableView.reloadSections(indexSet, withRowAnimation: .Automatic)
