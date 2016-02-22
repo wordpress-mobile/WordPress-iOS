@@ -6,15 +6,18 @@ import WordPressShared
 ///
 @objc class SharingButtonsViewController : UITableViewController
 {
+    let buttonSectionIndex = 0
+    let moreSectionIndex = 1
+
     var blog: Blog
     var buttons = [SharingButton]()
     var sections = [SharingButtonsSection]()
     var buttonsSection: SharingButtonsSection {
-        return sections[0]
+        return sections[buttonSectionIndex]
     }
 
     var moreSection: SharingButtonsSection {
-        return sections[1]
+        return sections[moreSectionIndex]
     }
 
     var twitterSection: SharingButtonsSection {
@@ -87,8 +90,8 @@ import WordPressShared
     /// Sets up the sections for the table view and configures their starting state.
     ///
     func setupSections() {
-        sections.append(setupButtonSection())
-        sections.append(setupMoreSection())
+        sections.append(setupButtonSection()) // buttons section should be section idx 0
+        sections.append(setupMoreSection()) // more section should be section idx 1
         sections.append(setupShareLabelSection())
         sections.append(setupButtonStyleSection())
         sections.append(setupReblogAndLikeSection())
