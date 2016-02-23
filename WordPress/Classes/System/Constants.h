@@ -25,6 +25,9 @@ extern NSString *const WPAppOAuth2TokenKeychainAccessGroup;
 extern NSString *const WPAppOAuth2TokenKeychainUsername;
 extern NSString *const WPAppOAuth2TokenKeychainServiceName;
 
+extern NSString *const WPShareUserDefaultsPrimarySiteName;
+extern NSString *const WPShareUserDefaultsPrimarySiteID;
+
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;

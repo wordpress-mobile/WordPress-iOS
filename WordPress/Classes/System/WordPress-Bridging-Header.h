@@ -57,6 +57,7 @@
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "SettingsTextViewController.h"
+#import "SFHFKeychainUtils.h"
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"
 #import "SupportViewController.h"
