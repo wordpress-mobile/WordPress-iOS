@@ -43,6 +43,11 @@ target 'WordPress', :exclusive => true do
   pod 'RxCocoa', '~> 2.1.0'
 end
 
+target 'WordPressShare', :exclusive => true do
+  pod 'CocoaLumberjack', '~> 2.2.0'
+  pod 'WordPress-iOS-Shared', '0.5.1'
+end
+
 target 'WordPressTodayWidget', :exclusive => true do
   pod 'WordPress-iOS-Shared', '0.5.1'
   pod 'WordPressCom-Stats-iOS/Services', '0.6.2'
