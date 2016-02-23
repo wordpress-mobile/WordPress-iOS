@@ -24,8 +24,19 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     override func configurationItems() -> [AnyObject]! {
-        // To add configuration options via table cells at the bottom of the sheet, return an array of SLComposeSheetConfigurationItem here.
-        return []
+        let blogPickerItem = SLComposeSheetConfigurationItem()
+        blogPickerItem.title = NSLocalizedString("Post to:", comment: "Upload post to the selected Site")
+        blogPickerItem.value = "Primary Site"
+        blogPickerItem.tapHandler = { [weak self] in
+            self?.displayBlogPicker()
+        }
+        
+        return [blogPickerItem]
     }
 
+    
+    private func displayBlogPicker() {
+        let pickerViewController = BlogPickerViewController()
+        pushConfigurationViewController(pickerViewController)
+    }
 }
