@@ -279,6 +279,7 @@
 		85F8E19B1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F8E19A1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift */; };
 		85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */; };
 		85F8E19F1B0186D0000859BB /* MockWordPressComApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F8E19E1B0186D0000859BB /* MockWordPressComApi.swift */; };
+		930F09171C7D110E00995926 /* ShareExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F09161C7D110E00995926 /* ShareExtensionService.swift */; };
 		931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
 		931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 930FD0A519882742000CC81D /* BlogServiceTest.m */; };
 		931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */; };
@@ -1273,6 +1274,7 @@
 		93069F571762410B000C966D /* ActivityLogDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityLogDetailViewController.h; sourceTree = "<group>"; };
 		93069F581762410B000C966D /* ActivityLogDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityLogDetailViewController.m; sourceTree = "<group>"; };
 		930C6374182BD86400976C21 /* WordPress-Internal-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "WordPress-Internal-Info.plist"; sourceTree = "<group>"; };
+		930F09161C7D110E00995926 /* ShareExtensionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareExtensionService.swift; sourceTree = "<group>"; };
 		930FD0A519882742000CC81D /* BlogServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceTest.m; sourceTree = "<group>"; };
 		931D26FC19EDA10D00114F17 /* ALIterativeMigrator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALIterativeMigrator.h; sourceTree = "<group>"; };
 		931D26FD19EDA10D00114F17 /* ALIterativeMigrator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALIterativeMigrator.m; sourceTree = "<group>"; };
@@ -3061,9 +3063,6 @@
 			isa = PBXGroup;
 			children = (
 				B5EFB1C31B31B99D007608A3 /* Facades */,
-				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
-				FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */,
-				E1209FA31BB4978B00D69778 /* PeopleService.swift */,
 				93C1147D18EC5DD500DAC95C /* AccountService.h */,
 				93C1147E18EC5DD500DAC95C /* AccountService.m */,
 				E10B5ACE1C4518E100F6A390 /* AccountService+Rx.swift */,
@@ -3072,21 +3071,23 @@
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				E1556CF0193F6FE900FC52EA /* CommentService.h */,
 				E1556CF1193F6FE900FC52EA /* CommentService.m */,
-				FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */,
 				E1F8E1211B0B411E0073E628 /* JetpackService.h */,
 				E1F8E1221B0B411E0073E628 /* JetpackService.m */,
+				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
+				FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */,
 				5DA3EE141925090A00294E0B /* MediaService.h */,
 				5DA3EE151925090A00294E0B /* MediaService.m */,
 				E1C5457D1C6B962D001CEB0E /* MediaSettings.swift */,
 				B5EFB1C11B31B98E007608A3 /* NotificationsService.swift */,
+				E1209FA31BB4978B00D69778 /* PeopleService.swift */,
 				93FA59DB18D88C1C001446BC /* PostCategoryService.h */,
 				93FA59DC18D88C1C001446BC /* PostCategoryService.m */,
-				082AB9D71C4EEEF4000CA523 /* PostTagService.h */,
-				082AB9D81C4EEEF4000CA523 /* PostTagService.m */,
-				08472A1E1C7273FA0040769D /* PostServiceOptions.h */,
-				08472A1F1C727E020040769D /* PostServiceOptions.m */,
 				E1A6DBE319DC7D230071AC1E /* PostService.h */,
 				E1A6DBE419DC7D230071AC1E /* PostService.m */,
+				08472A1E1C7273FA0040769D /* PostServiceOptions.h */,
+				08472A1F1C727E020040769D /* PostServiceOptions.m */,
+				082AB9D71C4EEEF4000CA523 /* PostTagService.h */,
+				082AB9D81C4EEEF4000CA523 /* PostTagService.m */,
 				B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */,
 				5D3D559518F88C3500782892 /* ReaderPostService.h */,
 				5D3D559618F88C3500782892 /* ReaderPostService.m */,
@@ -3094,7 +3095,9 @@
 				5D44EB371986D8BA008B7175 /* ReaderSiteService.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
 				5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */,
+				930F09161C7D110E00995926 /* ShareExtensionService.swift */,
 				E616E4B21C480896002C024E /* SharingService.swift */,
+				FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */,
 				319D6E7C19E447C80013871C /* SuggestionService.h */,
 				319D6E7D19E447C80013871C /* SuggestionService.m */,
 				59A9AB331B4C33A500A433DC /* ThemeService.h */,
@@ -5085,6 +5088,7 @@
 				176579F71C63A40F0000978E /* PurchaseButton.swift in Sources */,
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
 				E6A3384C1BB08E3F00371587 /* ReaderGapMarker.m in Sources */,
+				930F09171C7D110E00995926 /* ShareExtensionService.swift in Sources */,
 				E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */,
@@ -5539,7 +5543,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
@@ -5604,7 +5608,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
@@ -5689,7 +5693,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
@@ -5991,7 +5995,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
@@ -6481,7 +6485,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
