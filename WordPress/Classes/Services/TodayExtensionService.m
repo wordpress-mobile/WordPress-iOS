@@ -26,10 +26,10 @@
     [sharedDefaults synchronize];
     
     NSError *error;
-    [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
+    [SFHFKeychainUtils storeUsername:WPAppOAuth2TokenKeychainUsername
                          andPassword:oauth2Token
-                      forServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
-                         accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
+                      forServiceName:WPAppOAuth2TokenKeychainServiceName
+                         accessGroup:WPAppOAuth2TokenKeychainAccessGroup
                       updateExisting:YES
                                error:&error];
     if (error) {
@@ -49,9 +49,9 @@
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
     [sharedDefaults synchronize];
     
-    [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
-                              andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
-                                 accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
+    [SFHFKeychainUtils deleteItemForUsername:WPAppOAuth2TokenKeychainUsername
+                              andServiceName:WPAppOAuth2TokenKeychainServiceName
+                                 accessGroup:WPAppOAuth2TokenKeychainAccessGroup
                                        error:nil];
 }
 
@@ -68,9 +68,9 @@
 {
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
-                                                       andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
-                                                          accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
+    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPAppOAuth2TokenKeychainUsername
+                                                       andServiceName:WPAppOAuth2TokenKeychainServiceName
+                                                          accessGroup:WPAppOAuth2TokenKeychainAccessGroup
                                                                 error:nil];
     
     if (siteId.length == 0 || oauth2Token.length == 0) {

@@ -21,9 +21,10 @@ extern NSString *const WPGravatarBaseURL;
 extern NSString *const WPNotificationsBucketName;
 
 extern NSString *const WPAppGroupName;
-extern NSString *const WPStatsTodayWidgetOAuth2TokenKeychainUsername;
-extern NSString *const WPStatsTodayWidgetOAuth2TokenKeychainServiceName;
-extern NSString *const WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup;
+extern NSString *const WPAppOAuth2TokenKeychainAccessGroup;
+extern NSString *const WPAppOAuth2TokenKeychainUsername;
+extern NSString *const WPAppOAuth2TokenKeychainServiceName;
+
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;

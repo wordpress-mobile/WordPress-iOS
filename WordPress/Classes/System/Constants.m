@@ -22,14 +22,16 @@ NSString *const WPNotificationsBucketName                           = @"note20";
 
 #ifdef INTERNAL_BUILD
 NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
-NSString *const WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup    = @"99KV9Z6BKV.org.wordpress.internal";
+NSString *const WPAppOAuth2TokenKeychainAccessGroup                 = @"99KV9Z6BKV.org.wordpress.internal";
 #else
 NSString *const WPAppGroupName                                      = @"group.org.wordpress";
-NSString *const WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup    = @"3TMU3BH3NK.org.wordpress";
+NSString *const WPAppOAuth2TokenKeychainAccessGroup                 = @"3TMU3BH3NK.org.wordpress";
 #endif
 
-NSString *const WPStatsTodayWidgetOAuth2TokenKeychainUsername       = @"OAuth2Token";
-NSString *const WPStatsTodayWidgetOAuth2TokenKeychainServiceName    = @"TodayWidget";
+// Note: Since we're adding a new Sharing Extension (Feb.23.2016), the former Today Widget constants are being reused.
+NSString *const WPAppOAuth2TokenKeychainUsername                    = @"OAuth2Token";
+NSString *const WPAppOAuth2TokenKeychainServiceName                 = @"TodayWidget";
+
 NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey             = @"WordPressTodayWidgetSiteId";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey           = @"WordPressTodayWidgetSiteName";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPressTodayWidgetTimeZone";
