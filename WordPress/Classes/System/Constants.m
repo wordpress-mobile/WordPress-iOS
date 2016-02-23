@@ -32,6 +32,9 @@ NSString *const WPAppOAuth2TokenKeychainAccessGroup                 = @"3TMU3BH3
 NSString *const WPAppOAuth2TokenKeychainUsername                    = @"OAuth2Token";
 NSString *const WPAppOAuth2TokenKeychainServiceName                 = @"TodayWidget";
 
+NSString *const WPShareUserDefaultsPrimarySiteName                  = @"WPShareUserDefaultsPrimarySiteName";
+NSString *const WPShareUserDefaultsPrimarySiteID                    = @"WPShareUserDefaultsPrimarySiteID";
+
 NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey             = @"WordPressTodayWidgetSiteId";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey           = @"WordPressTodayWidgetSiteName";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPressTodayWidgetTimeZone";
