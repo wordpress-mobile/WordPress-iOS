@@ -3010,7 +3010,6 @@
 				B5BEA5661C7CEB4400C8035B /* Supporting Files */,
 				932225A91C7CE50300443B02 /* ShareViewController.swift */,
 				932225AB1C7CE50300443B02 /* MainInterface.storyboard */,
-				932225AE1C7CE50300443B02 /* Info.plist */,
 			);
 			path = WordPressShare;
 			sourceTree = "<group>";
@@ -3405,6 +3404,7 @@
 		B5BEA5661C7CEB4400C8035B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				932225AE1C7CE50300443B02 /* Info.plist */,
 				B5BEA5641C7CE7E800C8035B /* WordPressSharePrefix.pch */,
 			);
 			name = "Supporting Files";
