@@ -60,7 +60,7 @@
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 
-int ddLogLevel                                                  = DDLogLevelInfo;
+int ddLogLevel = DDLogLevelInfo;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
