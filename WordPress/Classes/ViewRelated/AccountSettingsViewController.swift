@@ -75,7 +75,7 @@ private struct AccountSettingsController: SettingsController {
             onChange: visualEditorChanged()
         )
 
-        if let service = service {
+        if Feature.enabled(.AccountSettings), let service = service {
             let username = TextRow(
                 title: NSLocalizedString("Username", comment: "Account Settings Username label"),
                 value: settings?.username ?? "")
