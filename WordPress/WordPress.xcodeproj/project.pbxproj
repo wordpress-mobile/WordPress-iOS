@@ -340,6 +340,8 @@
 		B51DAEFF1C7E1EFB007F474C /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51DAEFE1C7E1EFB007F474C /* UIImageView+Extensions.swift */; };
 		B51DAF001C7E2332007F474C /* NSString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A9B7C21BFA6F3100FC30A5 /* NSString+Helpers.swift */; };
 		B51DAF031C7E2C64007F474C /* WordPressShare-Lumberjack.m in Sources */ = {isa = PBXBuildFile; fileRef = B51DAF021C7E2C64007F474C /* WordPressShare-Lumberjack.m */; };
+		B51DAF041C7E4F0B007F474C /* AppImages.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4645AFC41961E1FB005F7509 /* AppImages.xcassets */; };
+		B51DAF061C7E544E007F474C /* WPStyleGuide+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51DAF051C7E544E007F474C /* WPStyleGuide+Share.swift */; };
 		B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */; };
 		B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = B526DC281B1E47FC002A8C5F /* WPStyleGuide+WebView.m */; };
 		B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */; };
@@ -1389,6 +1391,7 @@
 		B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		B51DAEFE1C7E1EFB007F474C /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
 		B51DAF021C7E2C64007F474C /* WordPressShare-Lumberjack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WordPressShare-Lumberjack.m"; sourceTree = "<group>"; };
+		B51DAF051C7E544E007F474C /* WPStyleGuide+Share.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Share.swift"; sourceTree = "<group>"; };
 		B5227E8E1C7375B400F04020 /* Notifications+Definitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Notifications+Definitions.h"; sourceTree = "<group>"; };
 		B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		B526DC271B1E47FC002A8C5F /* WPStyleGuide+WebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+WebView.h"; sourceTree = "<group>"; };
@@ -3033,6 +3036,7 @@
 				932225AB1C7CE50300443B02 /* MainInterface.storyboard */,
 				B5623E911C7D15E400CC29EA /* WordPressShare-Bridging-Header.h */,
 				B51DAEFE1C7E1EFB007F474C /* UIImageView+Extensions.swift */,
+				B51DAF051C7E544E007F474C /* WPStyleGuide+Share.swift */,
 			);
 			path = WordPressShare;
 			sourceTree = "<group>";
@@ -4464,6 +4468,7 @@
 				B5623E901C7D060100CC29EA /* Images.xcassets in Resources */,
 				930F091F1C7E269E00995926 /* WordPressShare-Alpha.entitlements in Resources */,
 				930F091D1C7E268200995926 /* WordPressShare-Internal.entitlements in Resources */,
+				B51DAF041C7E4F0B007F474C /* AppImages.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5317,6 +5322,7 @@
 				B5BEA5651C7CE7E800C8035B /* WordPressSharePrefix.pch in Sources */,
 				B51DAF031C7E2C64007F474C /* WordPressShare-Lumberjack.m in Sources */,
 				B5623E8E1C7CFFDF00CC29EA /* BlogPickerViewController.swift in Sources */,
+				B51DAF061C7E544E007F474C /* WPStyleGuide+Share.swift in Sources */,
 				B5BEA5621C7CE71D00C8035B /* WPDDLogWrapper.m in Sources */,
 				B5BEA55F1C7CE6D100C8035B /* Constants.m in Sources */,
 				B5BEA5601C7CE6D700C8035B /* SFHFKeychainUtils.m in Sources */,
