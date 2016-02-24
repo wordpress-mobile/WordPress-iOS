@@ -10,7 +10,7 @@ public class ShareExtensionService: NSObject {
                 accessGroup: WPAppGroupName,
                 updateExisting: true)
         } catch {
-            DDLogSwift.logError("Error while saving Share Extension OAuth bearer token: \(error)")
+            print("Error while saving Share Extension OAuth bearer token: \(error)")
         }
         
         if let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) {
