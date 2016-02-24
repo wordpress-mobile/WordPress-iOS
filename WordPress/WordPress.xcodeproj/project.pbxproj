@@ -337,7 +337,9 @@
 		B50EED791C0E5B2400D278CA /* SettingsPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50EED781C0E5B2400D278CA /* SettingsPickerViewController.swift */; };
 		B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */; };
 		B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */; };
+		B51DAEFF1C7E1EFB007F474C /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51DAEFE1C7E1EFB007F474C /* UIImageView+Extensions.swift */; };
 		B51DAF001C7E2332007F474C /* NSString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A9B7C21BFA6F3100FC30A5 /* NSString+Helpers.swift */; };
+		B51DAF031C7E2C64007F474C /* WordPressShare-Lumberjack.m in Sources */ = {isa = PBXBuildFile; fileRef = B51DAF021C7E2C64007F474C /* WordPressShare-Lumberjack.m */; };
 		B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */; };
 		B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = B526DC281B1E47FC002A8C5F /* WPStyleGuide+WebView.m */; };
 		B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */; };
@@ -1385,6 +1387,8 @@
 		B5066D021BEBFAA900355819 /* RemoteBlogSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteBlogSettings.swift; path = "Remote Objects/RemoteBlogSettings.swift"; sourceTree = "<group>"; };
 		B50EED781C0E5B2400D278CA /* SettingsPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPickerViewController.swift; sourceTree = "<group>"; };
 		B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		B51DAEFE1C7E1EFB007F474C /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
+		B51DAF021C7E2C64007F474C /* WordPressShare-Lumberjack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WordPressShare-Lumberjack.m"; sourceTree = "<group>"; };
 		B5227E8E1C7375B400F04020 /* Notifications+Definitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Notifications+Definitions.h"; sourceTree = "<group>"; };
 		B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		B526DC271B1E47FC002A8C5F /* WPStyleGuide+WebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+WebView.h"; sourceTree = "<group>"; };
@@ -3028,6 +3032,7 @@
 				932225A91C7CE50300443B02 /* ShareViewController.swift */,
 				932225AB1C7CE50300443B02 /* MainInterface.storyboard */,
 				B5623E911C7D15E400CC29EA /* WordPressShare-Bridging-Header.h */,
+				B51DAEFE1C7E1EFB007F474C /* UIImageView+Extensions.swift */,
 			);
 			path = WordPressShare;
 			sourceTree = "<group>";
@@ -3425,6 +3430,7 @@
 			children = (
 				932225AE1C7CE50300443B02 /* Info.plist */,
 				B5BEA5641C7CE7E800C8035B /* WordPressSharePrefix.pch */,
+				B51DAF021C7E2C64007F474C /* WordPressShare-Lumberjack.m */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -5307,7 +5313,9 @@
 			files = (
 				932225AA1C7CE50300443B02 /* ShareViewController.swift in Sources */,
 				930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */,
+				B51DAEFF1C7E1EFB007F474C /* UIImageView+Extensions.swift in Sources */,
 				B5BEA5651C7CE7E800C8035B /* WordPressSharePrefix.pch in Sources */,
+				B51DAF031C7E2C64007F474C /* WordPressShare-Lumberjack.m in Sources */,
 				B5623E8E1C7CFFDF00CC29EA /* BlogPickerViewController.swift in Sources */,
 				B5BEA5621C7CE71D00C8035B /* WPDDLogWrapper.m in Sources */,
 				B5BEA55F1C7CE6D100C8035B /* Constants.m in Sources */,
