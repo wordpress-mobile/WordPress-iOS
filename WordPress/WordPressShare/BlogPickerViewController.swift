@@ -61,7 +61,8 @@ class BlogPickerViewController : UITableViewController
     
     // MARK: Remote Helpers
     private func loadSites() {
-        let token = ""
+        let authDetails = ShareExtensionService.retrieveShareExtensionConfiguration()
+        let token = authDetails!.oauth2Token
         let service = SiteService(bearerToken: token, urlSession: NSURLSession.sharedSession())
         
         service.fetchSites { sites, error in
