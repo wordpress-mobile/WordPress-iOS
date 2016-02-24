@@ -284,11 +284,6 @@ static NSString *const Ellipsis =  @"\u2026";
     return self;
 }
 
-- (NSString *)hostname
-{
-    return [[[NSURLComponents alloc] initWithString:self] host];
-}
-
 - (NSArray *)tokenize
 {
     CFLocaleRef locale = CFLocaleCopyCurrent();
