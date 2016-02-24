@@ -238,10 +238,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         [remote syncSettingsWithSuccess:^(RemoteBlogSettings *settings) {
             [self.managedObjectContext performBlock:^{
                 [self updateSettings:blogInContext.settings withRemoteSettings:settings];
-                [self.managedObjectContext save:nil];
-                if (success) {
-                    success();
-                }
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                    if (success) {
+                        success();
+                    }
+                }];
             }];
         }
         failure:failure];
@@ -259,10 +260,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         [remote updateBlogSettings:[self remoteSettingFromSettings:blogInContext.settings]
                            success:^() {
                                [self.managedObjectContext performBlock:^{
-                                   [self.managedObjectContext save:nil];
-                                   if (success) {
-                                       success();
-                                   }
+                                   [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                                       if (success) {
+                                           success();
+                                       }
+                                   }];
                                }];
                            }
                            failure:failure];
