@@ -1,5 +1,6 @@
 #import "NSString+Helpers.h"
 #import <CommonCrypto/CommonDigest.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
 #import <WordPressShared/NSString+XMLExtensions.h>
 
 static NSString *const Ellipsis =  @"\u2026";
