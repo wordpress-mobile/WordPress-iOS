@@ -9,7 +9,6 @@ class BlogPickerViewController : UITableViewController
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupView()
         setupTableView()
         loadSites()
@@ -33,24 +32,17 @@ class BlogPickerViewController : UITableViewController
         var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
         if cell == nil {
             cell = WPTableViewCell(style: .Subtitle, reuseIdentifier: reuseIdentifier)
-            WPStyleGuide.configureTableViewCell(cell)
+            WPStyleGuide.Share.configureBlogTableViewCell(cell!)
         }
         
         let site = sites?[indexPath.row]
-
-        if let siteIcon = site?.icon {
-            cell?.imageView?.downloadImage(NSURL(string: siteIcon), placeholderImage: nil)
-        }
-        
-        cell?.textLabel?.text = site?.name
-        cell?.detailTextLabel?.text = site?.URL.absoluteString.hostname()
-        cell?.backgroundColor = UIColor.clearColor()
+        configureCell(cell!, site: site!)
         
         return cell!
     }
     
     
-    // MARK: Private Methods
+    // MARK: - Setup Helpers
     private func setupView() {
         title = NSLocalizedString("Site Picker", comment: "Title for the Site Picker")
         preferredContentSize = UIScreen.mainScreen().bounds.size
@@ -64,7 +56,7 @@ class BlogPickerViewController : UITableViewController
     }
     
     
-    // MARK: Remote Helpers
+    // MARK: - Private Helpers
     private func loadSites() {
         let authDetails = ShareExtensionService.retrieveShareExtensionConfiguration()
         let token = authDetails!.oauth2Token
@@ -75,6 +67,21 @@ class BlogPickerViewController : UITableViewController
                 self.sites = sites
                 self.tableView.reloadData()
             }
+        }
+    }
+    
+    private func configureCell(cell: UITableViewCell, site: Site) {
+        // Site's Details
+        cell.textLabel?.text = site.name
+        cell.detailTextLabel?.text = site.URL.absoluteString.hostname()
+        
+        // Site's Blavatar
+        let placeholderImage = WPStyleGuide.Share.blavatarPlaceholderImage
+        
+        if let siteIconPath = site.icon, siteIconUrl = NSURL(string: siteIconPath) {
+            cell.imageView?.downloadImage(siteIconUrl, placeholderImage: placeholderImage)
+        } else {
+            cell.imageView?.image = placeholderImage
         }
     }
     
