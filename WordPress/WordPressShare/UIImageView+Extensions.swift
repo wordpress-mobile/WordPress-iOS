@@ -18,7 +18,7 @@ extension UIImageView
         }
         
         // Hit the cache
-        if let cachedImage = Downloader.downloadedImagesCache[unwrappedUrl] {
+        if let cachedImage = Downloader.imagesCache[unwrappedUrl] {
             self.image = cachedImage
             return
         }
@@ -34,15 +34,16 @@ extension UIImageView
         request.HTTPShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
         
+        let scale = mainScreenScale
         let session = NSURLSession.sharedSession()
         let task = session.dataTaskWithRequest(request) { [weak self] data, response, error in
-            guard let data = data, let image = UIImage(data: data) else {
+            guard let data = data, let image = UIImage(data: data, scale: scale) else {
                 return
             }
             
             dispatch_async(dispatch_get_main_queue()) {
                 // Update the Cache
-                Downloader.downloadedImagesCache[unwrappedUrl] = image
+                Downloader.imagesCache[unwrappedUrl] = image
                 
                 // Refresh!
                 self?.image = image
@@ -54,14 +55,51 @@ extension UIImageView
     }
     
     
+    /// Downloads a resized Blavatar, meant to perfectly fit the UIImageView's Dimensions
+    ///
+    /// - Parameters:
+    ///     - url: The URL of the target blavatar
+    ///     - placeholderImage: Image to be displayed, temporarily, while the Download OP is executed
+    ///
+    public func downloadBlavatar(url: NSURL?, placeholderImage: UIImage?) {
+        guard let unwrappedURL = url else {
+            image = placeholderImage
+            return
+        }
+        
+        let components = NSURLComponents(URL: unwrappedURL, resolvingAgainstBaseURL: true)
+        components?.query = String(format: Downloader.blavatarResizeFormat, blavatarSize())
+        downloadImage(components?.URL, placeholderImage: placeholderImage)
+    }
+    
+    
+    /// Returns the desired Blavatar Side-Size
+    private func blavatarSize() -> Int {
+        var size = Downloader.defaultImageSize
+        
+        if !CGSizeEqualToSize(bounds.size, CGSizeZero) {
+            size = max(bounds.width, bounds.height);
+        }
+
+        size *= mainScreenScale
+    
+        return Int(size)
+    }
+    
+    /// Returns the Main Screen Scale
+    private var mainScreenScale : CGFloat {
+        return UIScreen.mainScreen().scale
+    }
+    
+    
     /// Stores the current DataTask, in charge of downloading the remote Image
     private var downloadTask : NSURLSessionDataTask? {
         get {
-            return objc_getAssociatedObject(self, Downloader.downloadTaskKey) as? NSURLSessionDataTask
+            return objc_getAssociatedObject(self, Downloader.taskKey) as? NSURLSessionDataTask
         }
         set {
             let policy = objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC
-            objc_setAssociatedObject(self, Downloader.downloadTaskKey, newValue, policy)
+            objc_setAssociatedObject(self, Downloader.taskKey, newValue, policy)
         }
     }
     
@@ -69,10 +107,16 @@ extension UIImageView
     /// Private helper structure
     private struct Downloader
     {
+        /// Default Blavatar Image Size
+        static let defaultImageSize = CGFloat(40)
+        
+        /// Blavatar Resize Query FormatString
+        static let blavatarResizeFormat = "d=404&s=%d"
+        
         /// Stores all of the previously downloaded images
-        static var downloadedImagesCache = [NSURL : UIImage]()
+        static var imagesCache = [NSURL : UIImage]()
         
         /// Key used to associate a Download task to the current instance
-        static let downloadTaskKey = "downloadTaskKey"
+        static let taskKey = "downloadTaskKey"
     }
 }
