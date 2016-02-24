@@ -24,9 +24,10 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     override func configurationItems() -> [AnyObject]! {
+        let authDetails = ShareExtensionService.retrieveShareExtensionConfiguration()
         let blogPickerItem = SLComposeSheetConfigurationItem()
         blogPickerItem.title = NSLocalizedString("Post to:", comment: "Upload post to the selected Site")
-        blogPickerItem.value = "Primary Site"
+        blogPickerItem.value = authDetails?.defaultSiteName ?? NSLocalizedString("Select a site", comment: "Select a site in the share extension")
         blogPickerItem.tapHandler = { [weak self] in
             self?.displayBlogPicker()
         }
