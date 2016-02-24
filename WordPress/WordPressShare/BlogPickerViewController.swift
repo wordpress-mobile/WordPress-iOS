@@ -37,8 +37,13 @@ class BlogPickerViewController : UITableViewController
         }
         
         let site = sites?[indexPath.row]
+
+        if let siteIcon = site?.icon {
+            cell?.imageView?.downloadImage(NSURL(string: siteIcon), placeholderImage: nil)
+        }
+        
         cell?.textLabel?.text = site?.name
-        cell?.detailTextLabel?.text = NSURLComponents(URL: site!.URL, resolvingAgainstBaseURL: true)!.host
+        cell?.detailTextLabel?.text = site?.URL.absoluteString.hostname()
         cell?.backgroundColor = UIColor.clearColor()
         
         return cell!
