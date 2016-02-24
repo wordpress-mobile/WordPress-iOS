@@ -1,9 +1,10 @@
 import Foundation
 import WordPressShared
 
-
 extension WPStyleGuide
 {
+    // MARK: - Styles Used by the WordPress Share Extension
+    //
     class Share
     {
         static let blavatarPlaceholderImage = UIImage(named: "blavatar-default")
