@@ -229,7 +229,7 @@ DEPENDENCIES:
   - WordPressCom-Stats-iOS/Services (= 0.6.2)
   - WordPressCom-Stats-iOS/UI (= 0.6.2)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, commit
-    `6b3c056e07e1486eab002e1f7ab1b1d7a2811e23`)
+    `139a76103e6e5dd844fa90f6d783a41bfc2d1d43`)
   - WPMediaPicker (~> 0.8.1)
   - wpxmlrpc (~> 0.8)
 
@@ -248,7 +248,7 @@ EXTERNAL SOURCES:
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressComKit:
-    :commit: 6b3c056e07e1486eab002e1f7ab1b1d7a2811e23
+    :commit: 139a76103e6e5dd844fa90f6d783a41bfc2d1d43
     :git: https://github.com/Automattic/WordPressComKit.git
 
 CHECKOUT OPTIONS:
@@ -265,7 +265,7 @@ CHECKOUT OPTIONS:
     :commit: a7dc27935fb30b1978942cb1c791d4040fe65395
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressComKit:
-    :commit: 6b3c056e07e1486eab002e1f7ab1b1d7a2811e23
+    :commit: 139a76103e6e5dd844fa90f6d783a41bfc2d1d43
     :git: https://github.com/Automattic/WordPressComKit.git
 
 SPEC CHECKSUMS:
