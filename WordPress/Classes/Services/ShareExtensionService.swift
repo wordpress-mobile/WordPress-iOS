@@ -20,6 +20,22 @@ public class ShareExtensionService: NSObject {
         }
     }
     
+    class func removeShareExtensionConfiguration() {
+        do {
+            try SFHFKeychainUtils.deleteItemForUsername(WPAppOAuth2TokenKeychainUsername,
+                andServiceName: WPAppOAuth2TokenKeychainServiceName,
+                accessGroup: WPAppGroupName)
+        } catch {
+            print("Error while saving Share Extension OAuth bearer token: \(error)")
+        }
+        
+        if let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) {
+            userDefaults.removeObjectForKey(WPShareUserDefaultsPrimarySiteID)
+            userDefaults.removeObjectForKey(WPShareUserDefaultsPrimarySiteName)
+            userDefaults.synchronize()
+        }
+    }
+    
     class func retrieveShareExtensionConfiguration() -> (oauth2Token: String, defaultSiteID: Int, defaultSiteName: String)? {
         guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPAppOAuth2TokenKeychainUsername, andServiceName: WPAppOAuth2TokenKeychainServiceName, accessGroup: WPAppGroupName),
             let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
