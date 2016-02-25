@@ -849,6 +849,9 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatSafariCredentialsLoginFilled:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Safari Credentials - Login Filled"];
             break;
+        case WPAnalyticsStatSafariCredentialsLoginUpdated:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Safari Credentials - Login Updated"];
+            break;
         case WPAnalyticsStatShortcutLogIn:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Log In"];
             break;
