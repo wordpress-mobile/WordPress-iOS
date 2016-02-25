@@ -67,6 +67,9 @@
 // Measurements
 @property (nonatomic, assign) CGFloat                   keyboardOffset;
 
+// SharedCredentials
+@property (nonatomic, assign) BOOL shouldAvoidRequestingSharedCredentials;
+
 @end
 
 
@@ -176,6 +179,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     [HelpshiftUtils refreshUnreadNotificationCount];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self autoFillLoginWithSharedWebCredentialsIfAvailable];
+}
+
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
@@ -238,6 +248,75 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
         [overlayView dismiss];
     };
     return overlayView;
+}
+
+#pragma mark - AutoFill Authentication
+
+
+- (void)autoFillLoginWithSharedWebCredentialsIfAvailable
+{
+    __weak __typeof(self)weakSelf = self;
+    [self requestSharedWebCredentials:^(NSString *username, NSString *password) {
+        
+        if (!username.length || !password.length) {
+            return;
+        }
+        if (!weakSelf.viewModel.userIsDotCom) {
+            // If the user has swtiched away from dotcom sign-in, swith back before autofilling
+            [weakSelf.viewModel toggleSignInFormAction];
+        }
+        
+        // Update the model
+        weakSelf.viewModel.username = username;
+        weakSelf.viewModel.password = password;
+        // Update the fields for display
+        [weakSelf setUsernameTextValue:username];
+        [weakSelf setPasswordTextValue:password];
+    }];
+}
+
+- (void)requestSharedWebCredentials:(void(^)(NSString *username, NSString *password))completion
+{
+    if (self.shouldAvoidRequestingSharedCredentials) {
+        return;
+    }
+    
+    // Disable repeat calls for shared credentials.
+    self.shouldAvoidRequestingSharedCredentials = YES;
+    
+    SecRequestSharedWebCredential(NULL, NULL, ^(CFArrayRef credentials, CFErrorRef error) {
+        
+        if (error != NULL) {
+            DDLogError(@"Error occurred while requesting shared web credentials: %@", error);
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(nil, nil);
+                });
+            }
+            return;
+        }
+        
+        // Check if any credential values are available
+        if (CFArrayGetCount(credentials) > 0) {
+            
+            // There will only ever be one credential dictionary since the selection is automatically handled
+            CFDictionaryRef credentialDict =CFArrayGetValueAtIndex(credentials, 0);
+            CFStringRef userNameStr = CFDictionaryGetValue(credentialDict, kSecAttrAccount);
+            CFStringRef passwordStr = CFDictionaryGetValue(credentialDict, kSecSharedPassword);
+            if (userNameStr == NULL || passwordStr == NULL) {
+                // No complete shared credentials found, or credentials were saved as NULL values
+                return;
+            }
+            
+            NSString *userName = (__bridge NSString *)userNameStr;
+            NSString *password = (__bridge NSString *)passwordStr;
+            if (completion) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    completion(userName, password);
+                });
+            }
+        }
+    });
 }
 
 #pragma mark - 1Password Related
