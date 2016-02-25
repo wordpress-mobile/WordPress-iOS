@@ -44,7 +44,7 @@ class BlogPickerViewController : UITableViewController
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let site = sites![indexPath.row]
-        onChange?(siteId: site.ID, description: site.name?.characters.count > 0 ? site.name : String(site.URL))
+        onChange?(siteId: site.ID, description: site.name?.characters.count > 0 ? site.name : site.URL.absoluteString.hostname())
         navigationController?.popViewControllerAnimated(true)
     }
     
