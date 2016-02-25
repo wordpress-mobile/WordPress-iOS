@@ -952,6 +952,7 @@ int ddLogLevel = DDLogLevelInfo;
         }
         
         [self removeTodayWidgetConfiguration];
+        [self removeShareExtensionConfiguration];
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
     
@@ -980,6 +981,13 @@ int ddLogLevel = DDLogLevelInfo;
 {
     TodayExtensionService *service = [TodayExtensionService new];
     [service removeTodayWidgetConfiguration];
+}
+
+#pragma mark - Share Extension
+
+- (void)removeShareExtensionConfiguration
+{
+    [ShareExtensionService removeShareExtensionConfiguration];
 }
 
 #pragma mark - Simperium helpers
