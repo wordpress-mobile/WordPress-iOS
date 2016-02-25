@@ -706,7 +706,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     siteTitleViewController.title = NSLocalizedString(@"Password", @"Title for screen that shows self hosted password editor.");
     siteTitleViewController.onValueChanged = ^(id value) {
         if (![value isEqualToString:self.blog.password]) {
-            [self.navigationItem setHidesBackButton:YES animated:YES];
             self.password = value;
             [self validateLoginCredentials];
         }
@@ -980,7 +979,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         }
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:strongSelf.blog.managedObjectContext];
         [blogService updatePassword:strongSelf.password forBlog:strongSelf.blog];
-        [strongSelf.navigationItem setHidesBackButton:NO animated:NO];
     } failure:^(NSError *error){
         [SVProgressHUD dismiss];
         [weakSelf loginValidationFailedWithError:error];
@@ -990,7 +988,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
 - (void)loginValidationFailedWithError:(NSError *)error
 {
-    [self.navigationItem setHidesBackButton:NO animated:NO];
     self.password = self.blog.password;    
     if (error) {
         NSString *message;
