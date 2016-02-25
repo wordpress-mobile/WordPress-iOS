@@ -10,6 +10,41 @@ import UIKit
 import Social
 
 class ShareViewController: SLComposeServiceViewController {
+    private var oauth2Token: NSString?
+    private var defaultSiteID: Int?
+    private var defaultSiteName: String?
+    
+    override func viewDidLoad() {
+        let authDetails = ShareExtensionService.retrieveShareExtensionConfiguration()
+        oauth2Token = authDetails?.oauth2Token
+        defaultSiteID = authDetails?.defaultSiteID
+        defaultSiteName = authDetails?.defaultSiteName
+    }
+    
+    // MARK: - UIViewController Methods
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        dismissIfNeeded()
+    }
+    
+    // MARK: - Private Helpers
+    private func dismissIfNeeded() {
+        guard oauth2Token == nil else {
+            return
+        }
+        
+        let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
+        let message = NSLocalizedString("Launch the WordPress app and sign into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
+        let accept = NSLocalizedString("Cancel Share", comment: "")
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let alertAction = UIAlertAction(title: accept, style: .Default) { (action: UIAlertAction) -> Void in
+            self.cancel()
+        }
+        
+        alertController.addAction(alertAction)
+        presentViewController(alertController, animated: true, completion: nil)
+    }
 
     override func isContentValid() -> Bool {
         // Do validation of contentText and/or NSExtensionContext attachments here
@@ -24,10 +59,9 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     override func configurationItems() -> [AnyObject]! {
-        let authDetails = ShareExtensionService.retrieveShareExtensionConfiguration()
         let blogPickerItem = SLComposeSheetConfigurationItem()
         blogPickerItem.title = NSLocalizedString("Post to:", comment: "Upload post to the selected Site")
-        blogPickerItem.value = authDetails?.defaultSiteName ?? NSLocalizedString("Select a site", comment: "Select a site in the share extension")
+        blogPickerItem.value = defaultSiteName ?? NSLocalizedString("Select a site", comment: "Select a site in the share extension")
         blogPickerItem.tapHandler = { [weak self] in
             self?.displayBlogPicker()
         }
