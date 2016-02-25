@@ -308,7 +308,11 @@ static NSString * const LoginSharedWebCredentialFQDN = @"wordpress.com";
     SecAddSharedWebCredential(fqdnStr, usernameStr, passwordStr, ^(CFErrorRef  _Nullable error) {
         if (error) {
             DDLogError(@"Error occurred updating shared web credential: %@", error);
+            return;
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [WPAnalytics track:WPAnalyticsStatSafariCredentialsLoginUpdated];
+        })
     });
 }
 
