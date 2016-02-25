@@ -1,10 +1,8 @@
 import Foundation
 import UIKit
 import WordPressShared
-import WordPressComKit
 
-
-class BlogPickerViewController : UITableViewController
+class PostStatsPickerViewController : UITableViewController
 {
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -12,7 +10,7 @@ class BlogPickerViewController : UITableViewController
         setupView()
         setupTableView()
         setupNoResultsView()
-        loadSites()
+        loadStatuses()
     }
     
     
@@ -22,7 +20,7 @@ class BlogPickerViewController : UITableViewController
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sites?.count ?? 0
+        return statuses.count
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -36,22 +34,23 @@ class BlogPickerViewController : UITableViewController
             WPStyleGuide.Share.configureBlogTableViewCell(cell!)
         }
         
-        let site = sites?[indexPath.row]
-        configureCell(cell!, site: site!)
+        let status = sortedStatuses[indexPath.row].0
+        configureCell(cell!, status: status)
         
         return cell!
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let site = sites![indexPath.row]
-        onChange?(siteId: site.ID, description: site.name?.characters.count > 0 ? site.name : String(site.URL))
+        let status = sortedStatuses[indexPath.row].0
+        let description = statuses[status]!
+        onChange?(postStatus: status, description: description)
         navigationController?.popViewControllerAnimated(true)
     }
     
     
     // MARK: - Setup Helpers
     private func setupView() {
-        title = NSLocalizedString("Site Picker", comment: "Title for the Site Picker")
+        title = NSLocalizedString("Post Status", comment: "Title for the Post Status Picker")
         preferredContentSize = UIScreen.mainScreen().bounds.size
     }
     
@@ -73,59 +72,28 @@ class BlogPickerViewController : UITableViewController
     
     
     // MARK: - Private Helpers
-    private func loadSites() {
-        let authDetails = ShareExtensionService.retrieveShareExtensionConfiguration()
-        let token = authDetails!.oauth2Token
-        let service = SiteService(bearerToken: token, urlSession: NSURLSession.sharedSession())
-        
-        showLoadingView()
-        
-        service.fetchSites { sites, error in
-            dispatch_async(dispatch_get_main_queue()) {
-                self.sites = sites
-                self.tableView.reloadData()
-                self.showEmptySitesIfNeeded()
-            }
-        }
+    private func configureCell(cell: UITableViewCell, status: String) {
+        // Status' Details
+        let statusDescription = statuses[status]
+        cell.textLabel?.text = statusDescription
     }
     
-    private func configureCell(cell: UITableViewCell, site: Site) {
-        // Site's Details
-        cell.textLabel?.text = site.name
-        cell.detailTextLabel?.text = site.URL.absoluteString.hostname()
-        
-        // Site's Blavatar
-        let placeholderImage = WPStyleGuide.Share.blavatarPlaceholderImage
-        
-        if let siteIconPath = site.icon, siteIconUrl = NSURL(string: siteIconPath) {
-            cell.imageView?.downloadBlavatar(siteIconUrl, placeholderImage: placeholderImage)
-        } else {
-            cell.imageView?.image = placeholderImage
-        }
+    private func loadStatuses() {
+        let statuses = [
+            "draft" : NSLocalizedString("Draft", comment: "Draft post status"),
+            "publish" : NSLocalizedString("Publish", comment: "Publish post status")]
+        sortedStatuses = statuses.sort({ $0.1 < $1.1 })
     }
     
-    
-    // MARK: - No Results Helpers
-    private func showLoadingView() {
-        noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Legend displayed when loading Sites")
-        noResultsView.hidden = false
-    }
-    
-    private func showEmptySitesIfNeeded() {
-        let hasSites = (sites?.isEmpty == false) ?? false
-        noResultsView.titleText = NSLocalizedString("No Sites", comment: "Legend displayed when the user has no sites")
-        noResultsView.hidden = hasSites
-    }
-    
-
     // MARK: Typealiases
-    typealias PickerHandler = (siteId: Int, description: String?) -> Void
+    typealias PickerHandler = (postStatus: String, description: String) -> Void
     
     // MARK: - Public Properties
     var onChange                : PickerHandler?
     
     // MARK: - Private Properties
-    private var sites           : [Site]?
+    private var statuses: [String: String]!
+    private var sortedStatuses: [(String, String)]!
     private var noResultsView   : WPNoResultsView!
     
     // MARK: - Private Constants
