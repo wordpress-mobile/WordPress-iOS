@@ -541,6 +541,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatSafariCredentialsLoginFilled:
             eventName = @"safari_credentials_login_filled";
             break;
+        case WPAnalyticsStatSafariCredentialsLoginUpdated:
+            eventName = @"safari_credentials_login_updated";
+            break;
         case WPAnalyticsStatSelectedInstallJetpack:
             eventName = @"stats_install_jetpack_selected";
             break;
