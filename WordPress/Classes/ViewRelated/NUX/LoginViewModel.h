@@ -220,6 +220,8 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 - (void)setFocusToMultifactorText;
 
 - (void)autoFillLoginWithSharedWebCredentialsIfAvailable;
+- (void)updateAutoFillLoginCredentialsIfNeeded:(NSString *)username password:(NSString *)password;
+
 - (void)displayErrorMessageForInvalidOrMissingFields;
 - (void)displayReservedNameErrorMessage;
 - (void)reloadInterfaceWithAnimation:(BOOL)animated;

@@ -69,6 +69,8 @@
 
 // SharedCredentials
 @property (nonatomic, assign) BOOL shouldAvoidRequestingSharedCredentials;
+@property (nonatomic, assign) NSUInteger autofilledUsernameCredentialHash;
+@property (nonatomic, assign) NSUInteger autofilledPasswordCredentialHash;
 
 @end
 
@@ -100,6 +102,8 @@ static UIEdgeInsets const LoginHelpButtonPaddingPad             = {1.0, 0.0, 0.0
 
 static UIOffset const LoginOnePasswordPadding                   = {9.0, 0.0f};
 static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
+
+static NSString * const LoginSharedWebCredentialFQDN = @"wordpress.com";
 
 - (void)dealloc
 {
@@ -252,7 +256,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 #pragma mark - AutoFill Authentication
 
-
 - (void)autoFillLoginWithSharedWebCredentialsIfAvailable
 {
     __weak __typeof(self)weakSelf = self;
@@ -273,8 +276,40 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
         [weakSelf setUsernameTextValue:username];
         [weakSelf setPasswordTextValue:password];
         
+        weakSelf.autofilledUsernameCredentialHash = [username hash];
+        weakSelf.autofilledPasswordCredentialHash = [password hash];
+        
         [WPAnalytics track:WPAnalyticsStatSafariCredentialsLoginFilled];
     }];
+}
+
+- (void)updateAutoFillLoginCredentialsIfNeeded:(NSString *)username password:(NSString *)password
+{
+    // Don't try and update credentials for self-hosted.
+    if (!self.viewModel.userIsDotCom) {
+        return;
+    }
+    
+    // If the user changed screen names, don't try and update/create a new shared web credential.
+    // We'll let Safari handle creating newly saved usernames/passwords.
+    if (self.autofilledUsernameCredentialHash != [username hash]) {
+        return;
+    }
+    
+    // If the user didn't change the password from previousl filled password no update is needed.
+    if (self.autofilledPasswordCredentialHash == [password hash]) {
+        return;
+    }
+    
+    // Update the shared credential
+    CFStringRef fqdnStr = (__bridge CFStringRef)LoginSharedWebCredentialFQDN;
+    CFStringRef usernameStr = (__bridge CFStringRef)username;
+    CFStringRef passwordStr = (__bridge CFStringRef)password;
+    SecAddSharedWebCredential(fqdnStr, usernameStr, passwordStr, ^(CFErrorRef  _Nullable error) {
+        if (error) {
+            DDLogError(@"Error occurred updating shared web credential: %@", error);
+        }
+    });
 }
 
 - (void)requestSharedWebCredentials:(void(^)(NSString *username, NSString *password))completion
@@ -285,8 +320,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     
     // Disable repeat calls for shared credentials.
     self.shouldAvoidRequestingSharedCredentials = YES;
-    
-    SecRequestSharedWebCredential(NULL, NULL, ^(CFArrayRef credentials, CFErrorRef error) {
+    CFStringRef fqdnStr = (__bridge CFStringRef)LoginSharedWebCredentialFQDN;
+    SecRequestSharedWebCredential(fqdnStr, NULL, ^(CFArrayRef credentials, CFErrorRef error) {
         
         if (error != NULL) {
             DDLogError(@"Error occurred while requesting shared web credentials: %@", error);
