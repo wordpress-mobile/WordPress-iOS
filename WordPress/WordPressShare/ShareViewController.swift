@@ -1,5 +1,7 @@
 import UIKit
 import Social
+import WordPressComKit
+
 
 class ShareViewController: SLComposeServiceViewController {
     private var oauth2Token: NSString?
@@ -46,7 +48,17 @@ class ShareViewController: SLComposeServiceViewController {
 
     override func didSelectPost() {
         // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
-    
+        let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(WPAppGroupName)
+        configuration.sharedContainerIdentifier = WPAppGroupName
+
+        RequestRouter.bearerToken = oauth2Token! as String
+        
+        let service = PostService(configuration: configuration)
+        service.createPost(siteID: defaultSiteID!, title: "Testing", body: "Testing") { (post, error) -> Void in
+            print("Post \(post) Error \(error)")
+            print("Done")
+        }
+        
         // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
         self.extensionContext!.completeRequestReturningItems([], completionHandler: nil)
     }
