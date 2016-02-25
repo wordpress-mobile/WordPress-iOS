@@ -312,7 +312,7 @@ static NSString * const LoginSharedWebCredentialFQDN = @"wordpress.com";
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPAnalytics track:WPAnalyticsStatSafariCredentialsLoginUpdated];
-        })
+        });
     });
 }
 
