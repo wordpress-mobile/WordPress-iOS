@@ -72,6 +72,10 @@ class ShareViewController: SLComposeServiceViewController {
     
     private func displayBlogPicker() {
         let pickerViewController = BlogPickerViewController()
+        pickerViewController.onChange = { (siteId, description) in
+            print("New siteId \(siteId) description \(description)")
+        }
+        
         pushConfigurationViewController(pickerViewController)
     }
 }

@@ -42,6 +42,12 @@ class BlogPickerViewController : UITableViewController
         return cell!
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let site = sites![indexPath.row]
+        onChange?(siteId: site.ID, description: site.description)
+        navigationController?.popViewControllerAnimated(true)
+    }
+    
     
     // MARK: - Setup Helpers
     private func setupView() {
@@ -110,6 +116,13 @@ class BlogPickerViewController : UITableViewController
         noResultsView.titleText = NSLocalizedString("No Sites", comment: "Legend displayed when the user has no sites")
         noResultsView.hidden = hasSites
     }
+    
+
+    // MARK: Typealiases
+    typealias PickerHandler = (siteId: Int, description: String?) -> Void
+    
+    // MARK: - Public Properties
+    var onChange                : PickerHandler?
     
     // MARK: - Private Properties
     private var sites           : [Site]?
