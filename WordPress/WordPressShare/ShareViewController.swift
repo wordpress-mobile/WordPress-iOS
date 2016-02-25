@@ -1,11 +1,3 @@
-//
-//  ShareViewController.swift
-//  WordPressShare
-//
-//  Created by Aaron Douglas on 2/23/16.
-//  Copyright © 2016 WordPress. All rights reserved.
-//
-
 import UIKit
 import Social
 
