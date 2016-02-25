@@ -54,7 +54,7 @@ class ShareViewController: SLComposeServiceViewController {
         RequestRouter.bearerToken = oauth2Token! as String
         
         let service = PostService(configuration: configuration)
-        service.createPost(siteID: defaultSiteID!, title: "Testing", body: "Testing") { (post, error) -> Void in
+        service.createPost(siteID: selectedSiteID!, title: "Testing", body: "Testing") { (post, error) in
             print("Post \(post) Error \(error)")
             print("Done")
         }
