@@ -11,6 +11,7 @@ class BlogPickerViewController : UITableViewController
         super.viewDidLoad()
         setupView()
         setupTableView()
+        setupNoResultsView()
         loadSites()
     }
     
@@ -49,10 +50,19 @@ class BlogPickerViewController : UITableViewController
     }
     
     private func setupTableView() {
+        // Blur!
         let blurEffect = UIBlurEffect(style: .Light)
         tableView.backgroundColor = UIColor.clearColor()
         tableView.backgroundView = UIVisualEffectView(effect: blurEffect)
         tableView.separatorEffect = UIVibrancyEffect(forBlurEffect: blurEffect)
+        
+        // Fix: Hide the cellSeparators, when the table is empty
+        tableView.tableFooterView = UIView()
+    }
+    
+    private func setupNoResultsView() {
+        noResultsView = WPNoResultsView()
+        tableView.addSubview(noResultsView)
     }
     
     
@@ -62,10 +72,13 @@ class BlogPickerViewController : UITableViewController
         let token = authDetails!.oauth2Token
         let service = SiteService(bearerToken: token, urlSession: NSURLSession.sharedSession())
         
+        showLoadingView()
+        
         service.fetchSites { sites, error in
             dispatch_async(dispatch_get_main_queue()) {
                 self.sites = sites
                 self.tableView.reloadData()
+                self.showEmptySitesIfNeeded()
             }
         }
     }
@@ -86,8 +99,21 @@ class BlogPickerViewController : UITableViewController
     }
     
     
+    // MARK: - No Results Helpers
+    private func showLoadingView() {
+        noResultsView.titleText = NSLocalizedString("Loading Sites...", comment: "Legend displayed when loading Sites")
+        noResultsView.hidden = false
+    }
+    
+    private func showEmptySitesIfNeeded() {
+        let hasSites = (sites?.isEmpty == false) ?? false
+        noResultsView.titleText = NSLocalizedString("No Sites", comment: "Legend displayed when the user has no sites")
+        noResultsView.hidden = hasSites
+    }
+    
     // MARK: - Private Properties
-    private var sites : [Site]?
+    private var sites           : [Site]?
+    private var noResultsView   : WPNoResultsView!
     
     // MARK: - Private Constants
     private let reuseIdentifier = "reuseIdentifier"
