@@ -272,6 +272,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
         // Update the fields for display
         [weakSelf setUsernameTextValue:username];
         [weakSelf setPasswordTextValue:password];
+        
+        [WPAnalytics track:WPAnalyticsStatSafariCredentialsLoginFilled];
     }];
 }
 
