@@ -54,7 +54,8 @@ class ShareViewController: SLComposeServiceViewController {
         RequestRouter.bearerToken = oauth2Token! as String
         
         let service = PostService(configuration: configuration)
-        service.createPost(siteID: selectedSiteID!, title: "Testing", body: "Testing") { (post, error) in
+        let subjectAndBody = splitContentTextIntoSubjectAndBody(contentText)
+        service.createPost(siteID: selectedSiteID!, title: subjectAndBody.subject, body: subjectAndBody.body) { (post, error) -> Void in
             print("Post \(post) Error \(error)")
             print("Done")
         }
@@ -110,4 +111,12 @@ class ShareViewController: SLComposeServiceViewController {
         "draft" : NSLocalizedString("Draft", comment: "Draft post status"),
         "publish" : NSLocalizedString("Publish", comment: "Publish post status")]
 
+    private func splitContentTextIntoSubjectAndBody(contentText: String) -> (subject: String, body: String) {
+        let fullText = contentText
+        let firstCarriageReturnIndex = fullText.rangeOfCharacterFromSet(NSCharacterSet.newlineCharacterSet())
+        let firstLineOfText = firstCarriageReturnIndex != nil ? fullText.substringToIndex(firstCarriageReturnIndex!.startIndex) : fullText
+        let restOfText = firstCarriageReturnIndex != nil ? fullText.substringFromIndex(firstCarriageReturnIndex!.endIndex) : ""
+
+        return (firstLineOfText, restOfText)
+    }
 }
