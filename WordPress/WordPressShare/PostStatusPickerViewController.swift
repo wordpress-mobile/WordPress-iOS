@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import WordPressShared
 
-class PostStatsPickerViewController : UITableViewController
+class PostStatusPickerViewController : UITableViewController
 {
     // MARK: - View Lifecycle
     override func viewDidLoad() {
@@ -51,7 +51,6 @@ class PostStatsPickerViewController : UITableViewController
     // MARK: - Setup Helpers
     private func setupView() {
         title = NSLocalizedString("Post Status", comment: "Title for the Post Status Picker")
-        preferredContentSize = UIScreen.mainScreen().bounds.size
     }
     
     private func setupTableView() {
@@ -79,9 +78,6 @@ class PostStatsPickerViewController : UITableViewController
     }
     
     private func loadStatuses() {
-        let statuses = [
-            "draft" : NSLocalizedString("Draft", comment: "Draft post status"),
-            "publish" : NSLocalizedString("Publish", comment: "Publish post status")]
         sortedStatuses = statuses.sort({ $0.1 < $1.1 })
     }
     
@@ -92,7 +88,7 @@ class PostStatsPickerViewController : UITableViewController
     var onChange                : PickerHandler?
     
     // MARK: - Private Properties
-    private var statuses: [String: String]!
+    var statuses: [String: String]!
     private var sortedStatuses: [(String, String)]!
     private var noResultsView   : WPNoResultsView!
     
