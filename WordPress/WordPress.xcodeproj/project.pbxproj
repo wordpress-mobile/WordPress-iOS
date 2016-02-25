@@ -283,6 +283,7 @@
 		930F09191C7E1C1E00995926 /* ShareExtensionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F09161C7D110E00995926 /* ShareExtensionService.swift */; };
 		930F091D1C7E268200995926 /* WordPressShare-Internal.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 930F091C1C7E268200995926 /* WordPressShare-Internal.entitlements */; };
 		930F091F1C7E269E00995926 /* WordPressShare-Alpha.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 930F091E1C7E269E00995926 /* WordPressShare-Alpha.entitlements */; };
+		930F09211C7F9D5400995926 /* PostStatusPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930F09201C7F9D5400995926 /* PostStatusPickerViewController.swift */; };
 		931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
 		931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 930FD0A519882742000CC81D /* BlogServiceTest.m */; };
 		931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */; };
@@ -1288,6 +1289,7 @@
 		930F091B1C7E229C00995926 /* WordPressShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = WordPressShare.entitlements; sourceTree = "<group>"; };
 		930F091C1C7E268200995926 /* WordPressShare-Internal.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "WordPressShare-Internal.entitlements"; sourceTree = "<group>"; };
 		930F091E1C7E269E00995926 /* WordPressShare-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "WordPressShare-Alpha.entitlements"; sourceTree = "<group>"; };
+		930F09201C7F9D5400995926 /* PostStatusPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostStatusPickerViewController.swift; sourceTree = "<group>"; };
 		930FD0A519882742000CC81D /* BlogServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceTest.m; sourceTree = "<group>"; };
 		931D26FC19EDA10D00114F17 /* ALIterativeMigrator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALIterativeMigrator.h; sourceTree = "<group>"; };
 		931D26FD19EDA10D00114F17 /* ALIterativeMigrator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALIterativeMigrator.m; sourceTree = "<group>"; };
@@ -3032,6 +3034,7 @@
 				930F091E1C7E269E00995926 /* WordPressShare-Alpha.entitlements */,
 				B5BEA5661C7CEB4400C8035B /* Supporting Files */,
 				B5623E8D1C7CFFDF00CC29EA /* BlogPickerViewController.swift */,
+				930F09201C7F9D5400995926 /* PostStatusPickerViewController.swift */,
 				932225A91C7CE50300443B02 /* ShareViewController.swift */,
 				932225AB1C7CE50300443B02 /* MainInterface.storyboard */,
 				B5623E911C7D15E400CC29EA /* WordPressShare-Bridging-Header.h */,
@@ -5324,6 +5327,7 @@
 				B5623E8E1C7CFFDF00CC29EA /* BlogPickerViewController.swift in Sources */,
 				B51DAF061C7E544E007F474C /* WPStyleGuide+Share.swift in Sources */,
 				B5BEA5621C7CE71D00C8035B /* WPDDLogWrapper.m in Sources */,
+				930F09211C7F9D5400995926 /* PostStatusPickerViewController.swift in Sources */,
 				B5BEA55F1C7CE6D100C8035B /* Constants.m in Sources */,
 				B5BEA5601C7CE6D700C8035B /* SFHFKeychainUtils.m in Sources */,
 				B51DAF001C7E2332007F474C /* NSString+Helpers.swift in Sources */,

@@ -26,7 +26,7 @@ public class ShareExtensionService: NSObject {
                 andServiceName: WPAppOAuth2TokenKeychainServiceName,
                 accessGroup: WPAppGroupName)
         } catch {
-            print("Error while saving Share Extension OAuth bearer token: \(error)")
+            print("Error while removing Share Extension OAuth2 bearer token: \(error)")
         }
         
         if let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) {

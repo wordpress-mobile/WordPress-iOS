@@ -3,14 +3,15 @@ import Social
 
 class ShareViewController: SLComposeServiceViewController {
     private var oauth2Token: NSString?
-    private var defaultSiteID: Int?
-    private var defaultSiteName: String?
+    private var selectedSiteID: Int?
+    private var selectedSiteName: String?
+    private var postStatus = "publish"
     
     override func viewDidLoad() {
         let authDetails = ShareExtensionService.retrieveShareExtensionConfiguration()
         oauth2Token = authDetails?.oauth2Token
-        defaultSiteID = authDetails?.defaultSiteID
-        defaultSiteName = authDetails?.defaultSiteName
+        selectedSiteID = authDetails?.defaultSiteID
+        selectedSiteName = authDetails?.defaultSiteName
     }
     
     // MARK: - UIViewController Methods
@@ -53,12 +54,19 @@ class ShareViewController: SLComposeServiceViewController {
     override func configurationItems() -> [AnyObject]! {
         let blogPickerItem = SLComposeSheetConfigurationItem()
         blogPickerItem.title = NSLocalizedString("Post to:", comment: "Upload post to the selected Site")
-        blogPickerItem.value = defaultSiteName ?? NSLocalizedString("Select a site", comment: "Select a site in the share extension")
+        blogPickerItem.value = selectedSiteName ?? NSLocalizedString("Select a site", comment: "Select a site in the share extension")
         blogPickerItem.tapHandler = { [weak self] in
             self?.displayBlogPicker()
         }
         
-        return [blogPickerItem]
+        let statusPickerItem = SLComposeSheetConfigurationItem()
+        statusPickerItem.title = NSLocalizedString("Post Status:", comment: "Post status picker title in Share Extension")
+        statusPickerItem.value = self.postStatuses[postStatus]!
+        statusPickerItem.tapHandler = { [weak self] in
+            self?.displayStatusPicker()
+        }
+        
+        return [blogPickerItem, statusPickerItem]
     }
 
     
@@ -66,8 +74,28 @@ class ShareViewController: SLComposeServiceViewController {
         let pickerViewController = BlogPickerViewController()
         pickerViewController.onChange = { (siteId, description) in
             print("New siteId \(siteId) description \(description)")
+            self.selectedSiteID = siteId
+            self.selectedSiteName = description
+            self.reloadConfigurationItems()
         }
         
         pushConfigurationViewController(pickerViewController)
     }
+    
+    private func displayStatusPicker() {
+        let pickerViewController = PostStatusPickerViewController()
+        pickerViewController.statuses = postStatuses
+        pickerViewController.onChange = { (status, description) in
+            print("New post status \(status) description \(description)")
+            self.postStatus = status
+            self.reloadConfigurationItems()
+        }
+        
+        pushConfigurationViewController(pickerViewController)
+    }
+    
+    private let postStatuses = [
+        "draft" : NSLocalizedString("Draft", comment: "Draft post status"),
+        "publish" : NSLocalizedString("Publish", comment: "Publish post status")]
+
 }
