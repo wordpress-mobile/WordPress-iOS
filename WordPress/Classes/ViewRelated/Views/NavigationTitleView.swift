@@ -32,13 +32,13 @@ public class NavigationTitleView : UIView
     
     // MARK: - Helpers
     private func setupSubviews() {
-        titleLabel.font                 = WPFontManager.openSansSemiBoldFontOfSize(NavigationTitleView.defaultTitleFontSize)
+        titleLabel.font                 = WPFontManager.systemSemiBoldFontOfSize(NavigationTitleView.defaultTitleFontSize)
         titleLabel.textColor            = UIColor.whiteColor()
         titleLabel.textAlignment        = .Center
         titleLabel.backgroundColor      = UIColor.clearColor()
         titleLabel.autoresizingMask     = UIViewAutoresizing.FlexibleWidth
         
-        subtitleLabel.font              = WPFontManager.openSansRegularFontOfSize(NavigationTitleView.defaultSubtitleFontSize)
+        subtitleLabel.font              = WPFontManager.systemRegularFontOfSize(NavigationTitleView.defaultSubtitleFontSize)
         subtitleLabel.textColor         = UIColor.whiteColor()
         subtitleLabel.textAlignment     = .Center
         subtitleLabel.backgroundColor   = UIColor.clearColor()

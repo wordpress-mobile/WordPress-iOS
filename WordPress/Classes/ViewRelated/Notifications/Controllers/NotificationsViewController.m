@@ -242,7 +242,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 {
     NSParameterAssert(self.ratingsView);
     
-    UIFont *ratingsFont                             = [WPFontManager openSansRegularFontOfSize:15.0];
+    UIFont *ratingsFont                             = [WPFontManager systemRegularFontOfSize:15.0];
     self.ratingsView.label.font                     = ratingsFont;
     self.ratingsView.leftButton.titleLabel.font     = ratingsFont;
     self.ratingsView.rightButton.titleLabel.font    = ratingsFont;
