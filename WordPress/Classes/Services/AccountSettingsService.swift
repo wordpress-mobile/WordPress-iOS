@@ -152,8 +152,12 @@ class AccountSettingsService {
     }
 
     func primarySiteNameForSettings(settings: AccountSettings?) -> String {
+        guard let primarySiteID = settings?.primarySiteID else {
+            return String()
+        }
+        
         let service = BlogService(managedObjectContext: context)
-        let blog = service.blogByBlogId(settings?.primarySiteID)
+        let blog = service.blogByBlogId(primarySiteID)
         
         return blog?.settings?.name ?? String()
     }
