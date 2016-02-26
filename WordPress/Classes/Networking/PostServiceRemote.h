@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "PostServiceRemoteOptions.h"
 
 @class RemotePost;
 
@@ -23,7 +24,7 @@
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
 - (void)getPostsOfType:(NSString *)postType
-               success:(void (^)(NSArray *posts))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *error))failure;
 
 /**
@@ -36,7 +37,7 @@
  */
 - (void)getPostsOfType:(NSString *)postType
                options:(NSDictionary *)options
-               success:(void (^)(NSArray *posts))success
+               success:(void (^)(NSArray <RemotePost *> *remotePosts))success
                failure:(void (^)(NSError *error))failure;
 
 /**
@@ -93,5 +94,12 @@
 - (void)restorePost:(RemotePost *)post
             success:(void (^)(RemotePost *))success
             failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief      Returns a dictionary set with option parameters of the PostServiceRemoteOptions protocol.
+ *
+ *  @param      options  The object with set remote options.  Cannot be nil.
+ */
+- (NSDictionary *)dictionaryWithRemoteOptions:(id <PostServiceRemoteOptions>)options;
 
 @end

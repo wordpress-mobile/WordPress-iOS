@@ -27,7 +27,7 @@
 #import "WPGUIConstants.h"
 #import "WordPress-Swift.h"
 
-typedef enum {
+typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,
     PostSettingsRowTags,
     PostSettingsRowPublishDate,
@@ -38,9 +38,8 @@ typedef enum {
     PostSettingsRowFeaturedImage,
     PostSettingsRowFeaturedImageAdd,
     PostSettingsRowFeaturedLoading,
-    PostSettingsRowGeolocationAdd,
-    PostSettingsRowGeolocationMap
-} PostSettingsRow;
+    PostSettingsRowGeolocation
+};
 
 static CGFloat CellHeight = 44.0f;
 static NSInteger RowIndexForDatePicker = 0;
@@ -66,9 +65,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, strong) NSProgress *featuredImageProgress;
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
 
-@property (nonatomic, strong) SwitchTableViewCell *geoLocationSwitchCell;
 @property (nonatomic, strong) PostGeolocationCell *postGeoLocationCell;
-@property (nonatomic, strong) WPTableViewCell *geoLocationActivityCell;
+@property (nonatomic, strong) WPTableViewCell *setGeoLocationCell;
 
 @property (nonatomic, strong) LocationService *locationService;
 
@@ -294,15 +292,13 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)configureSections
 {
-    self.sections = [NSMutableArray array];
-    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionTaxonomy]];
-    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
-    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFormat]];
-    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
-
-    if (self.post.blog.settings.geolocationEnabled || self.post.geolocation) {
-        [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionGeolocation]];
-    }
+    self.sections = @[
+                      @(PostSettingsSectionTaxonomy),
+                      @(PostSettingsSectionMeta),
+                      @(PostSettingsSectionFormat),
+                      @(PostSettingsSectionFeaturedImage),
+                      @(PostSettingsSectionGeolocation)
+                      ];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -332,11 +328,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         return 1;
 
     } else if (sec == PostSettingsSectionGeolocation) {
-        if (self.post.geolocation != nil || [self.locationService locationServiceRunning]) {
-            return 2;
-        } else {
-            return 1;
-        }
+        return 1;
     }
 
     return 0;
@@ -392,7 +384,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.frame);
     NSInteger sectionId = [[self.sections objectAtIndex:indexPath.section] integerValue];
 
-    if (sectionId == PostSettingsSectionGeolocation && indexPath.row == 1 && ![self.locationService locationServiceRunning]) {
+    if (sectionId == PostSettingsSectionGeolocation && self.post.geolocation != nil) {
         return ceilf(width * 0.75f);
     }
 
@@ -459,7 +451,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         [self showFeaturedImageSelector];
     } else if (cell.tag == PostSettingsRowFeaturedImageAdd) {
         [self showFeaturedImageSelector];
-    } else if (cell.tag == PostSettingsRowGeolocationMap) {
+    } else if (cell.tag == PostSettingsRowGeolocation) {
         [self showPostGeolocationSelector];
     }
 }
@@ -618,59 +610,13 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     return cell;
 }
 
-- (void)updatePostLocationState:(BOOL)geoLocationOn {
-    if (geoLocationOn) {
-        if ([self.locationService locationServicesDisabled] || [self.locationService locationServicesDenied]) {
-            [self.locationService showAlertForLocationServicesDisabled];
-            self.geoLocationSwitchCell.on = NO;
-            return;
-        }
-        __weak __typeof__(self) weakSelf = self;
-        [self.locationService getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
-            __typeof__(weakSelf) strongSelf = weakSelf;
-            if (!strongSelf) {
-                return;
-            }
-            if (error) {
-                [strongSelf.locationService showAlertForLocationError:error];
-                strongSelf.geoLocationSwitchCell.on = NO;
-            } else  {
-                strongSelf.post.geolocation = [[Coordinate alloc] initWithCoordinate:location.coordinate];
-            }
-            [strongSelf.tableView reloadData];
-        }];
-    } else {
-        self.post.geolocation = nil;
-    }
-    [self.tableView reloadData];
-}
-
-- (SwitchTableViewCell *)geoLocationSwitchCell {
-    if (!_geoLocationSwitchCell) {
-        _geoLocationSwitchCell = [[SwitchTableViewCell alloc] init];
-        _geoLocationSwitchCell.tag = PostSettingsRowGeolocationAdd;
-        _geoLocationSwitchCell.textLabel.text = NSLocalizedString(@"Use Location", @"Label for switch in Post settings to enable geo location of a post");
-        __weak __typeof__(self) weakSelf = self;
-        [_geoLocationSwitchCell setOnChange:^(BOOL geoLocationOn) {
-            [weakSelf updatePostLocationState:geoLocationOn];
-        }];
-    }
-    _geoLocationSwitchCell.on = self.post.geolocation != nil || [self.locationService locationServiceRunning];
-    return _geoLocationSwitchCell;
-}
-
-- (NSString *)findingLocationText
-{
-    return NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
-}
-
 - (PostGeolocationCell *)postGeoLocationCell {
     if (!_postGeoLocationCell) {
         _postGeoLocationCell = [[PostGeolocationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        _postGeoLocationCell.tag = PostSettingsRowGeolocationMap;
+            _postGeoLocationCell.tag = PostSettingsRowGeolocation;
     }
     Coordinate *coordinate = self.post.geolocation;
-    NSString *address = [self findingLocationText];
+    NSString *address = NSLocalizedString(@"Finding your location...", @"Geo-tagging posts, status message when geolocation is found.");
     if (coordinate) {
         CLLocation *postLocation = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
         if ([self.locationService hasAddressForLocation:postLocation]) {
@@ -689,33 +635,25 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     return _postGeoLocationCell;
 }
 
-- (WPTableViewCell *)geoLocationActivityCell {
-    if (!_geoLocationActivityCell) {
-        _geoLocationActivityCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        _geoLocationActivityCell.accessoryType = UITableViewCellAccessoryNone;
-        [WPStyleGuide configureTableViewCell:_geoLocationActivityCell];
-        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        _geoLocationActivityCell.accessoryView = spinner;
-        [spinner startAnimating];
-        _geoLocationActivityCell.textLabel.text = [self findingLocationText];
+- (WPTableViewCell *)setGeoLocationCell {
+    if (!_setGeoLocationCell) {
+        _setGeoLocationCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        _setGeoLocationCell.accessoryType = UITableViewCellAccessoryNone;
+        _setGeoLocationCell.textLabel.text = NSLocalizedString(@"Set Location", @"Label for cell that allow users to set the location of a post");
+        _setGeoLocationCell.tag = PostSettingsRowGeolocation;
+        _setGeoLocationCell.textLabel.textAlignment = NSTextAlignmentCenter;
+        [WPStyleGuide configureTableViewActionCell:_setGeoLocationCell];
     }
-    return _geoLocationActivityCell;
+    return _setGeoLocationCell;
 }
 
 - (UITableViewCell *)configureGeolocationCellForIndexPath:(NSIndexPath *)indexPath
 {
     WPTableViewCell *cell;
-    switch (indexPath.row) {
-        case 0:
-            return self.geoLocationSwitchCell;
-        break;
-        case 1:
-            if ([self.locationService locationServiceRunning]) {
-                return self.geoLocationActivityCell;
-            } else {
-                return self.postGeoLocationCell;
-            }
-        break;
+    if (self.post.geolocation == nil) {
+        return self.setGeoLocationCell;
+    } else {
+        return self.postGeoLocationCell;
     }
     return cell;
 }
@@ -936,7 +874,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)showPostGeolocationSelector
 {
     PostGeolocationViewController *controller = [[PostGeolocationViewController alloc] initWithPost:self.post locationService:self.locationService];
-    [self.navigationController pushViewController:controller animated:YES];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)showFeaturedImageSelector
@@ -945,7 +884,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         // Check if the featured image is set, otherwise we don't want to do anything while it's still loading.
         if (self.featuredImage) {
             FeaturedImageViewController *featuredImageVC = [[FeaturedImageViewController alloc] initWithPost:self.apost];
-            [self.navigationController pushViewController:featuredImageVC animated:YES];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:featuredImageVC];
+            [self presentViewController:navigationController animated:YES completion:nil];
         }
     } else {
         if (!self.isUploadingMedia) {
