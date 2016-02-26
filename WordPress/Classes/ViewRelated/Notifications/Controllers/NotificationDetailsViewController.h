@@ -1,14 +1,9 @@
 #import <UIKit/UIKit.h>
+#import "Notifications+Definitions.h"
 
 
 
 @class Notification;
-
-typedef void (^NotificationDetailsDeletionCompletionBlock)(BOOL success);
-typedef void (^NotificationDetailsDeletionActionBlock)(NotificationDetailsDeletionCompletionBlock onCompletion);
-typedef void (^NotificationDetailsDeletionRequestBlock)(NotificationDetailsDeletionActionBlock onUndoTimeout);
-
-
 
 /**
  *  @class      NotificationDetailsViewController
@@ -28,7 +23,7 @@ typedef void (^NotificationDetailsDeletionRequestBlock)(NotificationDetailsDelet
  *              undo the destructive action, before it's effectively executed.
  */
 
-@property (nonatomic, copy) NotificationDetailsDeletionRequestBlock onDeletionRequestCallback;
+@property (nonatomic, copy) NotificationDeletionRequestBlock onDeletionRequestCallback;
 
 /**
  *	@brief		This method renders the details view, for any given notification/
