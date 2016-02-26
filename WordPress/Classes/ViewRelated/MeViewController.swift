@@ -120,23 +120,42 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         let wordPressComAccount = NSLocalizedString("WordPress.com Account", comment: "WordPress.com sign-in/sign-out section header title")
 
         if loggedIn {
-            return ImmuTable(
-                sections: [
-                    ImmuTableSection(rows: [
-                        myProfile,
-                        accountSettings,
-                        notificationSettings
-                        ]),
-                    ImmuTableSection(rows: [
-                        helpAndSupport,
-                        about
-                        ]),
-                    ImmuTableSection(
-                        headerText: wordPressComAccount,
-                        rows: [
-                            logOut
-                        ])
-                ])
+            if Feature.enabled(.MyProfile) {
+                return ImmuTable(
+                    sections: [
+                        ImmuTableSection(rows: [
+                            myProfile,
+                            accountSettings,
+                            notificationSettings
+                            ]),
+                        ImmuTableSection(rows: [
+                            helpAndSupport,
+                            about
+                            ]),
+                        ImmuTableSection(
+                            headerText: wordPressComAccount,
+                            rows: [
+                                logOut
+                            ])
+                    ])
+            } else {
+                return ImmuTable(
+                    sections: [
+                        ImmuTableSection(rows: [
+                            accountSettings,
+                            notificationSettings
+                            ]),
+                        ImmuTableSection(rows: [
+                            helpAndSupport,
+                            about
+                            ]),
+                        ImmuTableSection(
+                            headerText: wordPressComAccount,
+                            rows: [
+                                logOut
+                            ])
+                    ])
+            }
         } else { // Logged out
             return ImmuTable(
                 sections: [
