@@ -201,7 +201,7 @@ struct FeatureListItemRow : ImmuTableRow {
 
     var detailTextFont: UIFont {
         if available && webOnly {
-            return WPFontManager.openSansRegularFontOfSize(webOnlyFontSize)
+            return WPFontManager.systemRegularFontOfSize(webOnlyFontSize)
         } else {
             return WPStyleGuide.tableviewTextFont()
         }
