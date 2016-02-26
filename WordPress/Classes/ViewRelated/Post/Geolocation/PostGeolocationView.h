@@ -10,4 +10,6 @@
 @property (nonatomic) BOOL scrollEnabled;
 @property (nonatomic) BOOL chevronHidden;
 
+- (void)setCoordinate:(Coordinate *)coordinate region:(MKCoordinateRegion)region;
+
 @end

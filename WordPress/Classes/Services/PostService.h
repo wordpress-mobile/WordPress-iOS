@@ -1,11 +1,17 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
+#import "PostServiceOptions.h"
 
 @class Blog, Post, Page, AbstractPost;
 
 extern NSString * const PostServiceTypePost;
 extern NSString * const PostServiceTypePage;
 extern NSString * const PostServiceTypeAny;
+
+extern const NSUInteger PostServiceDefaultNumberToSync;
+
+typedef void(^PostServiceSyncSuccess)(NSArray *posts);
+typedef void(^PostServiceSyncFailure)(NSError *error);
 
 @interface PostService : LocalCoreDataService
 
@@ -43,102 +49,26 @@ extern NSString * const PostServiceTypeAny;
  */
 - (void)syncPostsOfType:(NSString *)postType
                 forBlog:(Blog *)blog
-                success:(void (^)())success
-                failure:(void (^)(NSError *error))failure;
+                success:(PostServiceSyncSuccess)success
+                failure:(PostServiceSyncFailure)failure;
 
 /**
- Sync additional posts from the specified blog
- Please note that success and/or failure are called in the context of the
- NSManagedObjectContext supplied when the PostService was initialized, and may not
- run on the main thread.
-
- @param postType The type (post or page) of post to sync
- @param blog The blog that has the posts.
- @param success A success block
- @param failure A failure block
- */
-- (void)loadMorePostsOfType:(NSString *)postType
-                    forBlog:(Blog *)blog
-                    success:(void (^)())success
-                    failure:(void (^)(NSError *error))failure;
-
-/**
- Sync an initial batch of posts of the specific status types from the specified blog
- Please note that success and/or failure are called in the context of the
- NSManagedObjectContext supplied when the PostService was initialized, and may not
- run on the main thread.
-
- @param postType The type (post or page) of post to sync
- @param postStatus An array of post status strings.
- @param blog The blog that has the posts.
- @param success A success block
- @param failure A failure block
- */
-- (void)syncPostsOfType:(NSString *)postType
-           withStatuses:(NSArray *)postStatus
-                forBlog:(Blog *)blog
-                success:(void (^)(BOOL hasMore))success
-                failure:(void (^)(NSError *))failure;
-
-/**
- Sync additional posts of the specific status types from the specified blog
- Please note that success and/or failure are called in the context of the
- NSManagedObjectContext supplied when the PostService was initialized, and may not
- run on the main thread.
-
- @param postType The type (post or page) of post to sync
- @param postStatus An array of post status strings.
- @param blog The blog that has the posts.
- @param success A success block
- @param failure A failure block
- */
-
-- (void)loadMorePostsOfType:(NSString *)postType
-               withStatuses:(NSArray *)postStatus
-                    forBlog:(Blog *)blog
-                    success:(void (^)(BOOL hasMore))success
-                    failure:(void (^)(NSError *))failure;
-
-/**
- Sync an initial batch of posts of the specific status types from the specified blog
- Please note that success and/or failure are called in the context of the
- NSManagedObjectContext supplied when the PostService was initialized, and may not
- run on the main thread.
-
- @param postType The type (post or page) of post to sync
- @param postStatus An array of post status strings.
- @param authorID The user ID of a specific author, or nil if everyone's posts should be synced.
- @param blog The blog that has the posts.
- @param success A success block
- @param failure A failure block
- */
-- (void)syncPostsOfType:(NSString *)postType
-           withStatuses:(NSArray *)postStatus
-               byAuthor:(NSNumber *)authorID
-                forBlog:(Blog *)blog
-                success:(void (^)(BOOL hasMore))success
-                failure:(void (^)(NSError *))failure;
-
-/**
- Sync additional posts of the specific status types from the specified blog
+ Sync a batch of posts with the specified options from the specified blog.
  Please note that success and/or failure are called in the context of the
  NSManagedObjectContext supplied when the PostService was initialized, and may not
  run on the main thread.
  
  @param postType The type (post or page) of post to sync
- @param postStatus An array of post status strings.
- @param authorID The user ID of a specific author, or nil if everyone's posts should be synced.
+ @param options Sync options for specific request parameters.
  @param blog The blog that has the posts.
  @param success A success block
  @param failure A failure block
  */
-
-- (void)loadMorePostsOfType:(NSString *)postType
-               withStatuses:(NSArray *)postStatus
-                   byAuthor:(NSNumber *)authorID
-                    forBlog:(Blog *)blog
-                    success:(void (^)(BOOL hasMore))success
-                    failure:(void (^)(NSError *))failure;
+- (void)syncPostsOfType:(NSString *)postType
+            withOptions:(PostServiceSyncOptions *)options
+                forBlog:(Blog *)blog
+                success:(PostServiceSyncSuccess)success
+                failure:(PostServiceSyncFailure)failure;
 
 /**
  Syncs local changes on a post back to the server.
@@ -147,7 +77,6 @@ extern NSString * const PostServiceTypeAny;
  @param success A success block
  @param failure A failure block
  */
-
 - (void)uploadPost:(AbstractPost *)post
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;

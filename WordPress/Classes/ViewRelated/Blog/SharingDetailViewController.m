@@ -140,6 +140,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         cell.textLabel.text = NSLocalizedString(@"Reconnect", @"Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog.");
         [WPStyleGuide configureTableViewActionCell:cell];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        cell.textLabel.textColor = [WPStyleGuide jazzyOrange];
 
     } else {
         cell.textLabel.text = NSLocalizedString(@"Disconnect", @"Verb. Text label. Tapping disconnects a third-party sharing service from the user's blog.");
@@ -182,7 +183,6 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     __weak __typeof(self) weakSelf = self;
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-
     [sharingService updateSharedForBlog:self.blog
                                  shared:shared
                  forPublicizeConnection:self.publicizeConnection
@@ -196,24 +196,33 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)reconnectPublicizeConnection
 {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+
     [self.helper reconnectPublicizeConnection:self.publicizeConnection];
 }
 
 - (void)disconnectPublicizeConnection
 {
     SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [sharingService deletePublicizeConnectionForBlog:self.blog pubConn:self.publicizeConnection success:^{
-        if (self.navigationController.topViewController == self) {
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-
-    } failure:^(NSError *error) {
+    [sharingService deletePublicizeConnectionForBlog:self.blog pubConn:self.publicizeConnection success:nil failure:^(NSError *error) {
+        DDLogError([error description]);
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
     }];
+
+    // Since the service optimistically deletes the connection, go ahead and pop.
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)promptToConfirmDisconnect
 {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+
     NSString *message = NSLocalizedString(@"Disconnecting this account means published posts will no longer be automatically shared to %@", @"Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service.");
     message = [NSString stringWithFormat:message, self.publicizeService.label];
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil
