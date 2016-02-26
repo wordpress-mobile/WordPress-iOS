@@ -71,6 +71,7 @@ class PlanPostPurchaseViewController: UIViewController {
         pageControl.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor).active = true
         pageControl.heightAnchor.constraintEqualToConstant(pageControlHeight).active = true
         
+        pageControl.addTarget(self, action: "pageControlChanged", forControlEvents: .ValueChanged)
         self.pageControl = pageControl
     }
     
@@ -96,20 +97,7 @@ class PlanPostPurchaseViewController: UIViewController {
         scrollView.pinSubviewToAllEdges(container)
         
         for pageType in pageTypes {
-            let page = PlanPostPurchasePageViewController.controller()
-            addChildViewController(page)
-            
-            page.view.translatesAutoresizingMaskIntoConstraints = false
-            container.addArrangedSubview(page.view)
-            
-            page.view.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
-            page.view.bottomAnchor.constraintEqualToAnchor(pageControl.topAnchor).active = true
-            
-            page.didMoveToParentViewController(self)
-            
-            page.pageType = pageType
-            
-            pages.append(page)
+            addNewPageViewControllerForPageType(pageType, toContainer: container)
         }
         
         pageControl.numberOfPages = pages.count
@@ -119,7 +107,43 @@ class PlanPostPurchaseViewController: UIViewController {
         self.scrollView = scrollView
     }
     
+    private func addNewPageViewControllerForPageType(pageType: PlanPostPurchasePageType, toContainer container: UIStackView) {
+        let page = PlanPostPurchasePageViewController.controller()
+        addChildViewController(page)
+        
+        page.view.translatesAutoresizingMaskIntoConstraints = false
+        container.addArrangedSubview(page.view)
+        
+        page.view.widthAnchor.constraintEqualToAnchor(view.widthAnchor).active = true
+        page.view.bottomAnchor.constraintEqualToAnchor(pageControl.topAnchor).active = true
+        
+        page.didMoveToParentViewController(self)
+        
+        page.pageType = pageType
+        
+        pages.append(page)
+    }
+    
     @IBAction func pageControlChanged() {
+        let currentIndex = currentScrollViewPage()
+        
+        guard !scrollView.dragging else {
+            // If the user is currently dragging, reset the change and ignore it
+            pageControl.currentPage = currentIndex
+            return
+        }
+        
+        // Stop the user interacting whilst we animate a scroll
+        scrollView.userInteractionEnabled = false
+        
+        var targetPage = currentIndex
+        if pageControl.currentPage > currentIndex {
+            targetPage += 1
+        } else if pageControl.currentPage < currentIndex {
+            targetPage -= 1
+        }
+        
+        scrollToPage(targetPage, animated: true)
     }
     
     func closeTapped() {
@@ -143,7 +167,17 @@ extension PlanPostPurchaseViewController: UIScrollViewDelegate {
             
             page.headingLabel.transform = CGAffineTransformMakeTranslation(offset * -headingParallaxMaxTranslation, 0)
             page.descriptionLabel.transform = CGAffineTransformMakeTranslation(offset * -descriptionParallaxMaxTranslation, 0)
+            
+            page.view.accessibilityElementsHidden = index != currentPageIndex
         }
+        
+        if scrollView.dragging {
+            pageControl.currentPage = currentPageIndex
+        }
+    }
+    
+    func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
+        scrollView.userInteractionEnabled = true
     }
     
     private func currentScrollViewPage() -> Int {
@@ -154,6 +188,16 @@ extension PlanPostPurchaseViewController: UIScrollViewDelegate {
         
         // Keep it within bounds
         return currentPage.clamp(min: 0, max: pages.count - 1)
+    }
+    
+    /// @return True if there was valid page to scroll to, false if we've reached the beginning / end
+    private func scrollToPage(page: Int, animated: Bool) -> Bool {
+        guard pages.indices.contains(page) else { return false }
+        
+        let pageWidth = view.bounds.width
+        scrollView.setContentOffset(CGPoint(x: CGFloat(page) * pageWidth, y: 0), animated: animated)
+        
+        return true
     }
 }
 
