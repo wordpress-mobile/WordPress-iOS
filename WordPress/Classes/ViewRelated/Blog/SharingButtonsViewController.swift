@@ -700,8 +700,8 @@ import WordPressShared
         var titles = [String]()
         var values = [String]()
         _ = buttonStyles.map({ (k: String, v: String) in
-            titles.append(k)
-            values.append(v)
+            titles.append(v)
+            values.append(k)
         })
 
         let currentValue = blog.settings.sharingButtonStyle
