@@ -444,7 +444,8 @@ public class SharingServiceRemote : ServiceRemoteREST
     public func updateSharingButtonsForSite(siteID: NSNumber, sharingButtons:[RemoteSharingButton], success: (([RemoteSharingButton]) -> Void)?, failure: (NSError! -> Void)?) {
         let endpoint = "sites/\(siteID)/sharing-buttons"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
-        let parameters = [SharingButtonsKeys.sharingButtons : sharingButtons]
+        let buttons = dictionariesFromRemoteSharingButtons(sharingButtons)
+        let parameters = [SharingButtonsKeys.sharingButtons : buttons]
 
         api.POST(path,
             parameters: parameters,
@@ -488,7 +489,7 @@ public class SharingServiceRemote : ServiceRemoteREST
             btn.enabled = dict.numberForKey(SharingButtonsKeys.enabled).boolValue ?? btn.enabled
             btn.visibility = dict.stringForKey(SharingButtonsKeys.visibility) ?? btn.visibility
             btn.order = order
-            order++
+            order += 1
 
             return btn
         }
@@ -496,6 +497,23 @@ public class SharingServiceRemote : ServiceRemoteREST
         return sharingButtons
     }
 
+
+    private func dictionariesFromRemoteSharingButtons(buttons: [RemoteSharingButton]) -> [NSDictionary] {
+        return buttons.map({ (let btn) -> NSDictionary in
+
+            let dict = NSMutableDictionary()
+            dict[SharingButtonsKeys.buttonID] = btn.buttonID
+            dict[SharingButtonsKeys.name] = btn.name
+            dict[SharingButtonsKeys.shortname] = btn.shortname
+            dict[SharingButtonsKeys.custom] = btn.custom
+            dict[SharingButtonsKeys.enabled] = btn.enabled
+            if let visibility = btn.visibility {
+                dict[SharingButtonsKeys.visibility] = visibility
+            }
+
+            return dict
+        })
+    }
 }
 
 
