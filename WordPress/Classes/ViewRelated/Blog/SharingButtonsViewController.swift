@@ -9,7 +9,7 @@ import WordPressShared
     let buttonSectionIndex = 0
     let moreSectionIndex = 1
 
-    var blog: Blog
+    let blog: Blog
     var buttons = [SharingButton]()
     var sections = [SharingButtonsSection]()
     var buttonsSection: SharingButtonsSection {
@@ -86,6 +86,7 @@ import WordPressShared
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
         tableView.setEditing(true, animated: false)
+        tableView.allowsSelectionDuringEditing = true
     }
 
 
@@ -652,7 +653,7 @@ import WordPressShared
 
         controller.title = labelTitle
         controller.onValueChanged = {[unowned self] (value) in
-            if value == self.blog.settings.sharingLabel {
+            guard value == self.blog.settings.sharingLabel else {
                 return
             }
             self.blog.settings.sharingLabel = value
@@ -740,7 +741,7 @@ import WordPressShared
 
         let cell = tableView.dequeueReusableCellWithIdentifier(row.cellIdentifier)!
 
-        row.configureCell?(cell);
+        row.configureCell?(cell)
 
         return cell
     }
@@ -791,9 +792,10 @@ import WordPressShared
 
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
-
         let row = sections[indexPath.section].rows[indexPath.row]
+        if row.cellIdentifier != SharingCellIdentifiers.SettingsCellIdentifier {
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        }
         row.action?()
     }
 
@@ -843,11 +845,9 @@ import WordPressShared
         buttonsArr.insertObject(theButton, atIndex: newIndex)
 
         // Update the order for all buttons
-        var idx = 0
-        for button in buttonsArr {
+        for (index, button) in buttonsArr.enumerate() {
             let sharingButton = button as! SharingButton
-            sharingButton.order = idx
-            idx += 1
+            sharingButton.order = index
         }
 
         self.saveButtonChanges(false)
@@ -870,7 +870,7 @@ import WordPressShared
 
     /// Represents a section in the sharinging management table view.
     ///
-    class SharingButtonsSection: NSObject
+    class SharingButtonsSection
     {
         var rows: [SharingButtonsRow] = [SharingButtonsRow]()
         var headerText: String?
@@ -882,7 +882,7 @@ import WordPressShared
 
     /// Represents a row in the sharing management table view.
     ///
-    class SharingButtonsRow: NSObject
+    class SharingButtonsRow
     {
         var cellIdentifier = ""
         var action: SharingButtonsRowAction?
