@@ -9,7 +9,7 @@
 #import <WordPressShared/UIImage+Util.h>
 #import <WordPressShared/WPTableViewSectionHeaderFooterView.h>
 
-typedef NS_ENUM(NSInteger, SharingSection){
+typedef NS_ENUM(NSInteger, SharingSectionIdentifier){
     SharingPublicizeServices = 0,
     SharingButtons,
     SharingSectionCount,
@@ -46,6 +46,9 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
+    // Optimistically sync the sharing buttons.
+    [self syncSharingButtonsIfNeeded];
+
     // Refreshes the tableview.
     [self refreshPublicizers];
 
@@ -73,7 +76,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return SharingSectionCount;
+    NSInteger count = SharingSectionCount;
+    if (![self.blog supportsShareButtons]) {
+        count -= 1;
+    }
+    return count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -200,10 +207,14 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UIViewController *controller;
+    if (indexPath.section == 0) {
+        PublicizeService *publicizer = self.publicizeServices[indexPath.row];
+        controller = [[SharingConnectionsViewController alloc] initWithBlog:self.blog publicizeService:publicizer];
+    } else {
+        controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
+    }
 
-    PublicizeService *publicizer = self.publicizeServices[indexPath.row];
-    SharingConnectionsViewController *controller = [[SharingConnectionsViewController alloc] initWithBlog:self.blog publicizeService:publicizer];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -248,6 +259,20 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     } failure:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Publicize connection synchronization failed", @"Message to show when Publicize connection synchronization failed")];
         [weakSelf refreshPublicizers];
+    }];
+}
+
+- (void)syncSharingButtonsIfNeeded
+{
+    // Sync sharing buttons if they have never been synced. Otherwise, the
+    // management vc can worry about fetching the latest sharing buttons.
+    SharingService *sharingService = [[SharingService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    NSArray *buttons = [sharingService allSharingButtonsForBlog:self.blog];
+    if ([buttons count] > 0) {
+        return;
+    }
+    [sharingService syncSharingButtonsForBlog:self.blog success:nil failure:^(NSError *error) {
+        DDLogError([error description]);
     }];
 }
 

@@ -609,6 +609,7 @@ public class SharingService : LocalCoreDataService
     public func allSharingButtonsForBlog(blog: Blog) -> [SharingButton] {
         let request = NSFetchRequest(entityName: SharingButton.classNameWithoutNamespaces())
         request.predicate = NSPredicate(format: "blog = %@", blog)
+        request.sortDescriptors = [NSSortDescriptor(key: "order", ascending: true)]
 
         var buttons: [SharingButton]
         do {
