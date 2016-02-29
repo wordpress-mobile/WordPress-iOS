@@ -64,6 +64,7 @@ import WordPressShared
         setupSections()
 
         syncSharingButtons()
+        syncSharingSettings()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -161,7 +162,7 @@ import WordPressShared
         row.configureCell = {[unowned self] (cell: UITableViewCell) in
             cell.editingAccessoryType = .DisclosureIndicator
             cell.textLabel?.text = self.buttonStyleTitle
-            cell.detailTextLabel?.text = self.buttonStyles[self.blog.settings.sharingButtonStyle]!
+            cell.detailTextLabel?.text = self.buttonStyles[self.blog.settings.sharingButtonStyle]
         }
         section.rows = [row]
         return section
@@ -535,6 +536,34 @@ import WordPressShared
             failure: { (error: NSError!) in
                 DDLogSwift.logError(error.description)
         })
+    }
+
+
+    /// Sync sharing settings from the user's blog and reloads the setting sections
+    /// when finished.  Fails silently if there is an error.
+    ///
+    func syncSharingSettings() {
+        let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.syncSettingsForBlog(blog, success: { [weak self] in
+                self?.reloadSettingsSections()
+            },
+            failure: { (error: NSError!) in
+                DDLogSwift.logError(error.description)
+        })
+    }
+
+
+    /// Reloads the sections for different button settings.
+    ///
+    func reloadSettingsSections() {
+        let settingsSections = NSMutableIndexSet()
+        for i in 0..<sections.count {
+            if i <= buttonSectionIndex {
+                continue
+            }
+            settingsSections.addIndex(i)
+        }
+        tableView.reloadSections(settingsSections, withRowAnimation: .Automatic)
     }
 
 
