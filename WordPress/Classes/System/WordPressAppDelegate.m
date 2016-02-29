@@ -166,11 +166,13 @@ int ddLogLevel                                                  = DDLogLevelInfo
     }
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
 {
     DDLogInfo(@"Application launched with URL: %@", url);
     BOOL returnValue = NO;
 
+    NSString *sourceApplication = [options stringForKey:UIApplicationLaunchOptionsSourceApplicationKey];
+    id annotation = [options objectForKey:UIApplicationLaunchOptionsAnnotationKey];
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
                                                           sourceApplication:sourceApplication
                                                                  annotation:annotation]) {

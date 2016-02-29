@@ -1,4 +1,4 @@
-#import "NotificationsViewController.h"
+#import "NotificationsViewController+Internal.h"
 
 #import <Simperium/Simperium.h>
 #import "WordPressAppDelegate.h"
@@ -58,24 +58,17 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 
 #pragma mark ====================================================================================
-#pragma mark Private Properties
+#pragma mark Protocols
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate,
-                                            ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
-@property (nonatomic, strong) IBOutlet UIView               *tableHeaderView;
-@property (nonatomic, strong) IBOutlet UISegmentedControl   *filtersSegmentedControl;
-@property (nonatomic, strong) IBOutlet ABXPromptView        *ratingsView;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *ratingsTopConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint   *ratingsHeightConstraint;
-@property (nonatomic, strong) WPTableViewHandler            *tableViewHandler;
-@property (nonatomic, strong) WPNoResultsView               *noResultsView;
-@property (nonatomic, strong) NSString                      *pushNotificationID;
-@property (nonatomic, strong) NSDate                        *pushNotificationDate;
-@property (nonatomic, strong) NSDate                        *lastReloadDate;
-@property (nonatomic, strong) NSMutableSet                  *notificationIdsMarkedForDeletion;
-@property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
+@interface NotificationsViewController (Protocols) <SPBucketDelegate,
+                                                    WPNoResultsViewDelegate,
+                                                    WPTableViewHandlerDelegate,
+                                                    ABXPromptViewDelegate,
+                                                    ABXFeedbackViewControllerDelegate>
+
 @end
+
 
 
 #pragma mark ====================================================================================
@@ -596,7 +589,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 #pragma mark - Undelete Mechanism
 
-- (void)showUndeleteForNotificationWithID:(NSManagedObjectID *)noteObjectID onTimeout:(NotificationDetailsDeletionActionBlock)onTimeout
+- (void)showUndeleteForNoteWithID:(NSManagedObjectID *)noteObjectID onTimeout:(NotificationDeletionActionBlock)onTimeout
 {
     // Mark this note as Pending Deletion and Reload
     [self.notificationIdsMarkedForDeletion addObject:noteObjectID];
@@ -609,7 +602,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     });
 }
 
-- (void)performDeletionActionForNotificationWithID:(NSManagedObjectID *)noteObjectID deletionBlock:(NotificationDetailsDeletionActionBlock)deletionBlock
+- (void)performDeletionActionForNotificationWithID:(NSManagedObjectID *)noteObjectID deletionBlock:(NotificationDeletionActionBlock)deletionBlock
 {
     // Was the Deletion Cancelled?
     if ([self isNoteMarkedForDeletion:noteObjectID] == false) {
@@ -771,8 +764,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     if([segue.identifier isEqualToString:detailsSegueID]) {
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
         [detailsViewController setupWithNotification:note];
-        detailsViewController.onDeletionRequestCallback = ^(NotificationDetailsDeletionActionBlock onUndoTimeout){
-            [weakSelf showUndeleteForNotificationWithID:note.objectID onTimeout:onUndoTimeout];
+        detailsViewController.onDeletionRequestCallback = ^(NotificationDeletionActionBlock onUndoTimeout){
+            [weakSelf showUndeleteForNoteWithID:note.objectID onTimeout:onUndoTimeout];
         };
         
     } else if([segue.identifier isEqualToString:readerSegueID]) {
