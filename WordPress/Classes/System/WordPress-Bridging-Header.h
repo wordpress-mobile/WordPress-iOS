@@ -24,6 +24,9 @@
 #import "MediaService.h"
 #import "MeHeaderView.h"
 
+#import "NotificationsViewController.h"
+#import "NotificationsViewController+Internal.h"
+
 #import "Notification.h"
 #import "Notification+Internals.h"
 #import "NSAttributedString+Util.h"

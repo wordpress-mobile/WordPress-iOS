@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -35,7 +35,7 @@
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author - Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Tv-jX-0Xi">
-                                                <rect key="frame" x="42" y="18.5" width="212" height="14.5"/>
+                                                <rect key="frame" x="42" y="18" width="212" height="14.5"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -145,16 +145,16 @@
                                         </connections>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="999 words" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFe-da-xxs">
-                                        <rect key="frame" x="16" y="369.5" width="69.5" height="17"/>
+                                        <rect key="frame" x="16" y="369" width="69.5" height="17"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wHE-hH-7uj">
-                                        <rect key="frame" x="16" y="394.5" width="288" height="22"/>
+                                        <rect key="frame" x="16" y="394" width="288" height="22"/>
                                         <subviews>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QCr-5u-La2">
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QCr-5u-La2">
                                                 <rect key="frame" x="0.0" y="-1" width="30" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="yIt-or-Iat"/>
@@ -168,7 +168,7 @@
                                                     <action selector="didTapTagButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="H3j-3j-nOz"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iDF-k2-iBh" customClass="PostMetaButton">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iDF-k2-iBh" customClass="PostMetaButton">
                                                 <rect key="frame" x="193" y="-1" width="32" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="6YU-TX-iww"/>
@@ -183,7 +183,7 @@
                                                     <action selector="didTapActionButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="0cK-oQ-hgZ"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nrn-14-H99" customClass="PostMetaButton">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nrn-14-H99" customClass="PostMetaButton">
                                                 <rect key="frame" x="241" y="-1" width="47" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="O9d-Bt-osU"/>
@@ -207,7 +207,7 @@
                                             <constraint firstAttribute="centerY" secondItem="QCr-5u-La2" secondAttribute="centerY" id="gOi-Kr-66n"/>
                                             <constraint firstAttribute="centerY" secondItem="nrn-14-H99" secondAttribute="centerY" id="h1p-Ao-si5"/>
                                             <constraint firstItem="nrn-14-H99" firstAttribute="leading" secondItem="iDF-k2-iBh" secondAttribute="trailing" constant="16" id="kCs-jy-XcD"/>
-                                            <constraint firstItem="iDF-k2-iBh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QCr-5u-La2" secondAttribute="trailing" id="pIN-bT-NgY"/>
+                                            <constraint firstItem="iDF-k2-iBh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QCr-5u-La2" secondAttribute="trailing" constant="8" id="pIN-bT-NgY"/>
                                             <constraint firstAttribute="trailing" secondItem="nrn-14-H99" secondAttribute="trailing" id="uur-VQ-S9s"/>
                                         </constraints>
                                     </view>
