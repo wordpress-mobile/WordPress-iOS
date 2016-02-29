@@ -76,7 +76,11 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return SharingSectionCount;
+    NSInteger count = SharingSectionCount;
+    if (![self.blog supportsShareButtons]) {
+        count -= 1;
+    }
+    return count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
