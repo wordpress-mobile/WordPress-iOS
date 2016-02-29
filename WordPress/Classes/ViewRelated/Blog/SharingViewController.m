@@ -203,9 +203,14 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    UIViewController *controller;
+    if (indexPath.section == 0) {
+        PublicizeService *publicizer = self.publicizeServices[indexPath.row];
+        controller = [[SharingConnectionsViewController alloc] initWithBlog:self.blog publicizeService:publicizer];
+    } else {
+        controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
+    }
 
-    SharingButtonsViewController *controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
