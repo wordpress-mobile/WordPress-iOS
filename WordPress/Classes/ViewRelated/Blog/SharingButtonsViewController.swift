@@ -98,8 +98,10 @@ import WordPressShared
         sections.append(setupMoreSection()) // more section should be section idx 1
         sections.append(setupShareLabelSection())
         sections.append(setupButtonStyleSection())
-        sections.append(setupReblogAndLikeSection())
-        sections.append(setupCommentLikeSection())
+        if blog.isHostedAtWPcom {
+            sections.append(setupReblogAndLikeSection())
+            sections.append(setupCommentLikeSection())
+        }
         sections.append(setupTwitterNameSection())
 
         configureTwitterNameSection()
