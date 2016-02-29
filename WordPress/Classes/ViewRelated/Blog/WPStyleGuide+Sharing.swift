@@ -37,21 +37,16 @@ extension WPStyleGuide
 
         // Handle special cases
         switch name {
-            case "print" :
-                iconName = "gridicons-print"
-                break
-            case "email" :
-                iconName = "gridicons-mail"
-                break
-            case "google-plus-one" :
-                iconName = "social-google-plus"
-                break
-            case "press-this" :
-                iconName = "social-wordpress"
-                break
-            default :
-                iconName = "social-\(name)"
-                break
+        case "print" :
+            iconName = "gridicons-print"
+        case "email" :
+            iconName = "gridicons-mail"
+        case "google-plus-one" :
+            iconName = "social-google-plus"
+        case "press-this" :
+            iconName = "social-wordpress"
+        default :
+            iconName = "social-\(name)"
         }
 
         var image = UIImage(named: iconName)
