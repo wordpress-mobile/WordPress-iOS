@@ -46,7 +46,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
-    // Optimiistically sync the sharing buttons.
+    // Optimistically sync the sharing buttons.
     [self syncSharingButtonsIfNeeded];
 
     // Refreshes the tableview.
