@@ -419,7 +419,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeatureWPComRESTAPI:
             return [self restApi] != nil;
         case BlogFeatureSharing:
-            return [self supportsPublicize] || [self supportsShareButtons];
+            return [self supportsSharing];
         case BlogFeatureStats:
             return [self restApiForStats] != nil;
         case BlogFeatureCommentLikes:
@@ -440,10 +440,15 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     }
 }
 
+-(BOOL)supportsSharing
+{
+    return ([self supportsPublicize] || [self supportsShareButtons]) && [self isAdmin] && ![self isPrivate];
+}
+
 - (BOOL)supportsPublicize
 {
     // Publicize is only supported via REST, and for admins
-    if (![self supports:BlogFeatureWPComRESTAPI] || ![self isAdmin]) {
+    if (![self supports:BlogFeatureWPComRESTAPI]) {
         return NO;
     }
 
@@ -460,7 +465,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 - (BOOL)supportsShareButtons
 {
     // Share Button settings are only supported via REST, and for admins
-    if (![self supports:BlogFeatureWPComRESTAPI] || ![self isAdmin]) {
+    if (![self supports:BlogFeatureWPComRESTAPI]) {
         return NO;
     }
 
