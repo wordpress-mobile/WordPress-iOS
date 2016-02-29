@@ -34,8 +34,8 @@ import WordPressShared
     let buttonStyleTitle = NSLocalizedString("Button Style", comment:"Title for a list of different button styles.")
     let labelTitle = NSLocalizedString("Label", comment:"Noun. Title for the setting to edit the sharing label text.")
     let twitterUsernameTitle = NSLocalizedString("Twitter Username", comment:"Title for the setting to edit the twitter username used when sharing to twitter.")
-
     let twitterServiceID = "twitter"
+    let managedObjectContext = ContextManager.sharedInstance().newMainContextChildContext()
 
 
     // MARK: - LifeCycle Methods
@@ -58,7 +58,7 @@ import WordPressShared
 
         navigationItem.title = NSLocalizedString("Manage", comment: "Verb. Title of the screen for managing sharing buttons and settings related to sharing.")
 
-        let service = SharingService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = SharingService(managedObjectContext: managedObjectContext)
         buttons = service.allSharingButtonsForBlog(self.blog)
         configureTableView()
         setupSections()
@@ -270,7 +270,12 @@ import WordPressShared
         row.configureCell = {[unowned self] (cell: UITableViewCell) in
             cell.editingAccessoryType = .DisclosureIndicator
             cell.textLabel?.text = self.twitterUsernameTitle
-            cell.detailTextLabel?.text = self.blog.settings.sharingTwitterName
+
+            var name = self.blog.settings.sharingTwitterName
+            if name.characters.count > 0 {
+                name = "@\(name)"
+            }
+            cell.detailTextLabel?.text = name
         }
         twitterSection.rows = [row]
     }
@@ -518,7 +523,7 @@ import WordPressShared
             tableView.reloadData()
         }
 
-        let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = BlogService(managedObjectContext: managedObjectContext)
         service.updateSettingsForBlog(self.blog, success: nil, failure: { [weak self] (error: NSError!) in
             DDLogSwift.logError(error.description)
             self?.showErrorSyncingMessage(error)
@@ -530,7 +535,7 @@ import WordPressShared
     /// when finished.  Fails silently if there is an error.
     ///
     func syncSharingButtons() {
-        let service = SharingService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = SharingService(managedObjectContext: managedObjectContext)
         service.syncSharingButtonsForBlog(self.blog,
             success: { [weak self] in
                 self?.reloadButtons()
@@ -545,7 +550,7 @@ import WordPressShared
     /// when finished.  Fails silently if there is an error.
     ///
     func syncSharingSettings() {
-        let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let service = BlogService(managedObjectContext: managedObjectContext)
         service.syncSettingsForBlog(blog, success: { [weak self] in
                 self?.reloadSettingsSections()
             },
@@ -622,8 +627,7 @@ import WordPressShared
     /// `buttons` property and refreshes the button section and the more section.
     ///
     func reloadButtons() {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = SharingService(managedObjectContext: context)
+        let service = SharingService(managedObjectContext: managedObjectContext)
         buttons = service.allSharingButtonsForBlog(blog)
 
         refreshButtonsSection()
@@ -637,9 +641,7 @@ import WordPressShared
     ///     - refresh: True if the tableview sections should be reloaded.
     ///
     func syncButtonChangesToBlog(refresh: Bool) {
-        let context = ContextManager.sharedInstance().mainContext
-
-        let service = SharingService(managedObjectContext: context)
+        let service = SharingService(managedObjectContext: managedObjectContext)
         service.updateSharingButtonsForBlog(blog,
             sharingButtons: buttons,
             success: {[weak self] in
@@ -746,7 +748,11 @@ import WordPressShared
             if value == self.blog.settings.sharingTwitterName {
                 return
             }
-            self.blog.settings.sharingTwitterName = value
+
+            // Remove the @ sign if it was entered. 
+            var str = NSString(string: value)
+            str = str.stringByReplacingOccurrencesOfString("@", withString: "")
+            self.blog.settings.sharingTwitterName = str as String
             self.saveBlogSettingsChanges(true)
         }
 
