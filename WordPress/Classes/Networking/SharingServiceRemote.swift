@@ -502,13 +502,13 @@ public class SharingServiceRemote : ServiceRemoteREST
         return buttons.map({ (let btn) -> NSDictionary in
 
             let dict = NSMutableDictionary()
-            dict.setObject(btn.buttonID, forKey: SharingButtonsKeys.buttonID)
-            dict.setObject(btn.name, forKey: SharingButtonsKeys.name)
-            dict.setObject(btn.shortname, forKey: SharingButtonsKeys.shortname)
-            dict.setObject(btn.custom, forKey: SharingButtonsKeys.custom)
-            dict.setObject(btn.enabled, forKey: SharingButtonsKeys.enabled)
+            dict[SharingButtonsKeys.buttonID] = btn.buttonID
+            dict[SharingButtonsKeys.name] = btn.name
+            dict[SharingButtonsKeys.shortname] = btn.shortname
+            dict[SharingButtonsKeys.custom] = btn.custom
+            dict[SharingButtonsKeys.enabled] = btn.enabled
             if let visibility = btn.visibility {
-                dict.setObject(visibility, forKey: SharingButtonsKeys.visibility)
+                dict[SharingButtonsKeys.visibility] = visibility
             }
 
             return dict
