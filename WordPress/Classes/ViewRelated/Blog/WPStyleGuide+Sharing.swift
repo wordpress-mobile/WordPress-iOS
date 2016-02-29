@@ -36,16 +36,22 @@ extension WPStyleGuide
         var iconName: String
 
         // Handle special cases
-        if name == "print" {
-            iconName = "gridicons-print"
-        } else if name == "email" {
-            iconName = "gridicons-mail"
-        } else if name == "google-plus-one" {
-            iconName = "social-google-plus"
-        } else if name == "press-this" {
-            iconName = "social-wordpress"
-        } else {
-            iconName = "social-\(name)"
+        switch name {
+            case "print" :
+                iconName = "gridicons-print"
+                break
+            case "email" :
+                iconName = "gridicons-mail"
+                break
+            case "google-plus-one" :
+                iconName = "social-google-plus"
+                break
+            case "press-this" :
+                iconName = "social-wordpress"
+                break
+            default :
+                iconName = "social-\(name)"
+                break
         }
 
         var image = UIImage(named: iconName)
