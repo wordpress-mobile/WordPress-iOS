@@ -74,14 +74,14 @@ struct MockStoreFacade: StoreFacade {
             localizedTitle: "WordPress.com Premium 1 year",
             price: NSDecimalNumber(float: 99.88),
             priceLocale: NSLocale(localeIdentifier: "en-US"),
-            productIdentifier: "com.wordpress.test.premium.1year"
+            productIdentifier: "com.wordpress.test.premium.subscription.1year"
         ),
         MockProduct(
             localizedDescription: "1 year of WordPress.com Business",
             localizedTitle: "WordPress.com Business 1 year",
             price: NSDecimalNumber(float: 299.88),
             priceLocale: NSLocale(localeIdentifier: "en-US"),
-            productIdentifier: "com.wordpress.test.business.1year"
+            productIdentifier: "com.wordpress.test.business.subscription.1year"
         )
     ]
 
