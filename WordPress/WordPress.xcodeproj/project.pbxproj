@@ -688,8 +688,6 @@
 		FF1933FF1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF1933FE1BB17DA3006825B8 /* RelatedPostsPreviewTableViewCell.m */; };
 		FF19340C1BB2F892006825B8 /* ServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = FF19340B1BB2F892006825B8 /* ServiceRemoteXMLRPC.m */; };
 		FF28B3F11AEB251200E11AAE /* InfoPListTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = FF28B3F01AEB251200E11AAE /* InfoPListTranslator.m */; };
-		FF3BD2EA1B061B9A0042E989 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF3BD2E81B061B9A0042E989 /* Fabric.framework */; };
-		FF3BD2EB1B061B9C0042E989 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF3BD2E91B061B9A0042E989 /* Crashlytics.framework */; };
 		FF3DD6BE19F2B6B3003A52CB /* RemoteMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3DD6BD19F2B6B3003A52CB /* RemoteMedia.m */; };
 		FF4258501BA092EE00580C68 /* RelatedPostsSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF42584F1BA092EE00580C68 /* RelatedPostsSettingsViewController.m */; };
 		FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF619DD41C75246900903B65 /* CLPlacemark+Formatting.swift */; };
@@ -1853,8 +1851,6 @@
 		FF19340B1BB2F892006825B8 /* ServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
 		FF28B3EF1AEB251200E11AAE /* InfoPListTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InfoPListTranslator.h; sourceTree = "<group>"; };
 		FF28B3F01AEB251200E11AAE /* InfoPListTranslator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InfoPListTranslator.m; sourceTree = "<group>"; };
-		FF3BD2E81B061B9A0042E989 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
-		FF3BD2E91B061B9A0042E989 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		FF3DD6BD19F2B6B3003A52CB /* RemoteMedia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteMedia.m; path = "Remote Objects/RemoteMedia.m"; sourceTree = "<group>"; };
 		FF3DD6BF19F2B77A003A52CB /* RemoteMedia.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RemoteMedia.h; path = "Remote Objects/RemoteMedia.h"; sourceTree = "<group>"; };
 		FF42584E1BA092EE00580C68 /* RelatedPostsSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RelatedPostsSettingsViewController.h; sourceTree = "<group>"; };
@@ -1929,7 +1925,6 @@
 				FF75933B1BE2423800814D3B /* Photos.framework in Frameworks */,
 				93E5285619A77BAC003A1A9C /* NotificationCenter.framework in Frameworks */,
 				93A3F7DE1843F6F00082FEEA /* CoreTelephony.framework in Frameworks */,
-				FF3BD2EB1B061B9C0042E989 /* Crashlytics.framework in Frameworks */,
 				8355D67E11D13EAD00A61362 /* MobileCoreServices.framework in Frameworks */,
 				A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */,
 				374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */,
@@ -1949,7 +1944,6 @@
 				835E2403126E66E50085940B /* AssetsLibrary.framework in Frameworks */,
 				83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */,
 				FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */,
-				FF3BD2EA1B061B9A0042E989 /* Fabric.framework in Frameworks */,
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
 				72015A58686C8123A3BE24EC /* Pods_WordPress.framework in Frameworks */,
@@ -2141,8 +2135,6 @@
 			isa = PBXGroup;
 			children = (
 				FF75933A1BE2423800814D3B /* Photos.framework */,
-				FF3BD2E81B061B9A0042E989 /* Fabric.framework */,
-				FF3BD2E91B061B9A0042E989 /* Crashlytics.framework */,
 				B5AA54D41A8E7510003BDD12 /* WebKit.framework */,
 				E10675C9183FA78E00E5CE5C /* XCTest.framework */,
 				93A3F7DD1843F6F00082FEEA /* CoreTelephony.framework */,
