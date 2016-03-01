@@ -120,7 +120,9 @@ class PlanPostPurchaseViewController: UIViewController {
         page.didMoveToParentViewController(self)
         
         page.pageType = pageType
-        
+        page.view.accessibilityElementsHidden = (pageType != .PurchaseComplete)
+        page.view.shouldGroupAccessibilityChildren = true
+
         pages.append(page)
     }
     
@@ -167,17 +169,32 @@ extension PlanPostPurchaseViewController: UIScrollViewDelegate {
             
             page.headingLabel.transform = CGAffineTransformMakeTranslation(offset * -headingParallaxMaxTranslation, 0)
             page.descriptionLabel.transform = CGAffineTransformMakeTranslation(offset * -descriptionParallaxMaxTranslation, 0)
-            
-            page.view.accessibilityElementsHidden = index != currentPageIndex
         }
         
         if scrollView.dragging {
             pageControl.currentPage = currentPageIndex
         }
     }
-    
+
     func scrollViewDidEndScrollingAnimation(scrollView: UIScrollView) {
         scrollView.userInteractionEnabled = true
+    }
+    
+    override func accessibilityScroll(direction: UIAccessibilityScrollDirection) -> Bool {
+        var targetPage = currentScrollViewPage()
+        
+        switch direction {
+        case .Right: targetPage -= 1
+        case .Left: targetPage += 1
+        default: break
+        }
+        
+        let success = scrollToPage(targetPage, animated: false)
+        if success {
+            UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil)
+        }
+        
+        return success
     }
     
     private func currentScrollViewPage() -> Int {
@@ -196,6 +213,12 @@ extension PlanPostPurchaseViewController: UIScrollViewDelegate {
         
         let pageWidth = view.bounds.width
         scrollView.setContentOffset(CGPoint(x: CGFloat(page) * pageWidth, y: 0), animated: animated)
+
+        for (index, pageVC) in pages.enumerate() {
+            pageVC.view.accessibilityElementsHidden = (index != page)
+        }
+
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil)
         
         return true
     }
