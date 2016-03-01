@@ -1,6 +1,8 @@
 import Foundation
 
 typealias Plan = PlanEnum
+typealias PricedPlan = (plan: Plan, price: String)
+typealias SitePlans = (activePlan: Plan, availablePlans: [PricedPlan])
 
 /// Represents a WordPress.com free or paid plan.
 /// - seealso: [WordPress.com Store](https://store.wordpress.com/plans/)
@@ -109,6 +111,12 @@ enum PlanEnum: Int {
             ]
         }
     }
+}
+
+extension Plan: Comparable {}
+
+func < (lhs: Plan, rhs: Plan) -> Bool {
+    return lhs.rawValue < rhs.rawValue
 }
 
 // We currently need to access the title of a plan in BlogDetailsViewController, which is
