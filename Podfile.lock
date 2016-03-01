@@ -21,7 +21,7 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Alamofire (3.2.0)
+  - Alamofire (3.2.1)
   - AMPopTip (0.10.1)
   - Automattic-Tracks-iOS (0.0.13):
     - CocoaLumberjack (~> 2.2.0)
@@ -229,7 +229,7 @@ DEPENDENCIES:
   - WordPressCom-Stats-iOS/Services (= 0.6.2)
   - WordPressCom-Stats-iOS/UI (= 0.6.2)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, commit
-    `139a76103e6e5dd844fa90f6d783a41bfc2d1d43`)
+    `baf69dc0911d0b6cb226dc06584470122aac4992`)
   - WPMediaPicker (~> 0.8.1)
   - wpxmlrpc (~> 0.8)
 
@@ -248,7 +248,7 @@ EXTERNAL SOURCES:
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressComKit:
-    :commit: 139a76103e6e5dd844fa90f6d783a41bfc2d1d43
+    :commit: baf69dc0911d0b6cb226dc06584470122aac4992
     :git: https://github.com/Automattic/WordPressComKit.git
 
 CHECKOUT OPTIONS:
@@ -265,13 +265,13 @@ CHECKOUT OPTIONS:
     :commit: a7dc27935fb30b1978942cb1c791d4040fe65395
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressComKit:
-    :commit: 139a76103e6e5dd844fa90f6d783a41bfc2d1d43
+    :commit: baf69dc0911d0b6cb226dc06584470122aac4992
     :git: https://github.com/Automattic/WordPressComKit.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  Alamofire: 4da478599fccddff361205c8929333d7fe18dceb
+  Alamofire: f11d8624a05f5d39e0c99309b3e600a3ba64298a
   AMPopTip: b0b5d009f3ed47b10f118438a18e0ab5cd03c40d
   Automattic-Tracks-iOS: ba47c35576a07376facc7a91740fb78867831e1c
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
