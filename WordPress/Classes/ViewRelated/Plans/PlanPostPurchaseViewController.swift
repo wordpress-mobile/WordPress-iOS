@@ -230,6 +230,8 @@ class PlanPostPurchasePageViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var actionButton: UIButton!
     
+    let purchaseCompleteImageViewSize: CGFloat = 90
+    
     var pageType: PlanPostPurchasePageType? = nil {
         didSet {
             populateViews()
@@ -271,6 +273,8 @@ class PlanPostPurchasePageViewController: UIViewController {
         case .PurchaseComplete:
             headingLabel.text = NSLocalizedString("It’s all yours! Way to go!", comment: "Heading displayed after successful purchase of a plan")
             setDescriptionText(NSLocalizedString("Your site is doing somersaults in excitement! Now explore your site’s new features and choose where you’d like to begin.", comment: "Subtitle displayed after successful purchase of a plan"))
+            imageView.widthAnchor.constraintEqualToConstant(purchaseCompleteImageViewSize).active = true
+            imageView.heightAnchor.constraintEqualToConstant(purchaseCompleteImageViewSize).active = true
             actionButton.hidden = true
         case .Customize:
             imageView.image = UIImage(named: "plans-post-purchase-customize")
