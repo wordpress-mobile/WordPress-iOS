@@ -33,10 +33,25 @@ extension WPStyleGuide
     ///
     public class func iconForService(service: NSString) -> UIImage {
         let name = service.lowercaseString.stringByReplacingOccurrencesOfString("_", withString: "-")
-        let iconName = "social-\(name)"
+        var iconName: String
+
+        // Handle special cases
+        switch name {
+        case "print" :
+            iconName = "gridicons-print"
+        case "email" :
+            iconName = "gridicons-mail"
+        case "google-plus-one" :
+            iconName = "social-google-plus"
+        case "press-this" :
+            iconName = "social-wordpress"
+        default :
+            iconName = "social-\(name)"
+        }
+
         var image = UIImage(named: iconName)
         if image == nil {
-            image = UIImage(named: "social-defautl")
+            image = UIImage(named: "social-default")
         }
         return image!.imageWithRenderingMode(.AlwaysTemplate)
     }
