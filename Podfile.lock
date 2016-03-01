@@ -197,7 +197,6 @@ DEPENDENCIES:
   - DTCoreText (= 1.6.16)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
-  - Fabric
   - FormatterKit (~> 1.8.0)
   - Helpshift (~> 4.15.0)
   - HockeySDK (~> 3.8.0)

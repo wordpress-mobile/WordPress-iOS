@@ -194,8 +194,8 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 {
     RemoteMedia * remoteMedia=[[RemoteMedia alloc] init];
     remoteMedia.mediaID =  [jsonMedia numberForKey:@"ID"];
-    remoteMedia.url = [NSURL URLWithString:jsonMedia[@"URL"]];
-    remoteMedia.guid = [NSURL URLWithString:jsonMedia[@"guid"]];
+    remoteMedia.url = [NSURL URLWithString:[jsonMedia stringForKey:@"URL"]];
+    remoteMedia.guid = [NSURL URLWithString:[jsonMedia stringForKey:@"guid"]];
     remoteMedia.date = [NSDate dateWithWordPressComJSONString:jsonMedia[@"date"]];
     remoteMedia.postID = [jsonMedia numberForKey:@"post_ID"];
     remoteMedia.file = [jsonMedia stringForKey:@"file"];
