@@ -29,7 +29,7 @@ class PlanListViewControllerTest: XCTestCase {
     // MARK: - PlanListViewModel tests
 
     func testPlanImageWhenActivePlanSet() {
-        let model = PlanListViewModel.Ready(activePlan: .Premium, plans: plansWithPrices)
+        let model = PlanListViewModel.Ready((activePlan: .Premium, availablePlans: plansWithPrices))
         let presenter = MockImmuTablePresenter()
         let tableViewModel = model.tableViewModelWithPresenter(presenter)
         let freeRow = tableViewModel.planRowAtIndex(0)
@@ -41,7 +41,7 @@ class PlanListViewControllerTest: XCTestCase {
         expect(businessRow.icon).to(equal(Plan.Business.image))
     }
 
-    let plansWithPrices: [(Plan, String)] = [
+    let plansWithPrices: [PricedPlan] = [
         (.Free, ""),
         (.Premium, "$99.99"),
         (.Business, "$299.99")
