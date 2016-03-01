@@ -62,8 +62,19 @@ class PlanComparisonViewController: UIViewController {
 
         // If the view is changing size (e.g. on rotation, or multitasking), scroll to the correct page boundary based on the new size
         coordinator.animateAlongsideTransition({ context in
-            self.scrollView.setContentOffset(CGPoint(x: CGFloat(self.currentIndex) * size.width, y: 0), animated: true)
+            self.scrollView.setContentOffset(CGPoint(x: CGFloat(self.currentIndex) * size.width, y: 0), animated: false)
         }, completion: nil)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // If this isn't wrapped in a `dispatch` block, then it's possible to get into a state where the offset of the scrollview isn't
+        // on a full page boundary, by: viewing this screen in portrait, presenting a modal, rotating to landscape, dismissing the modal.
+        // Whilst horrible, this 'fixes' the offset when the screen reappears.
+        dispatch_async(dispatch_get_main_queue()) {
+            self.scrollToPage(self.currentIndex, animated: false)
+        }
     }
     
     override func viewDidLayoutSubviews() {
