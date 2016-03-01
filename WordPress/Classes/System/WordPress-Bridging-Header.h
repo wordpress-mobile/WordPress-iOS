@@ -56,6 +56,7 @@
 #import "ServiceRemoteREST.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
+#import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"
