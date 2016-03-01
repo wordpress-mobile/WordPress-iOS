@@ -71,7 +71,7 @@ struct PlanListRow: ImmuTableRow {
 
 enum PlanListViewModel {
     case Loading
-    case Ready(SitePlans)
+    case Ready(SitePricedPlans)
     case Error(String)
 
     var noResultsViewModel: WPNoResultsView.Model? {

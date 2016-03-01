@@ -9,7 +9,7 @@ struct PlanService {
         self.remote = remote
     }
 
-    func plansWithPricesForBlog(siteID: Int, success: SitePlans -> Void, failure: ErrorType -> Void) {
+    func plansWithPricesForBlog(siteID: Int, success: SitePricedPlans -> Void, failure: ErrorType -> Void) {
         remote.getPlansForSite(siteID,
             success: {
                 activePlan, availablePlans in

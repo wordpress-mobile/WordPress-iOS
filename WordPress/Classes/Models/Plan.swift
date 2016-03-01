@@ -2,7 +2,7 @@ import Foundation
 
 typealias Plan = PlanEnum
 typealias PricedPlan = (plan: Plan, price: String)
-typealias SitePlans = (activePlan: Plan, availablePlans: [PricedPlan])
+typealias SitePricedPlans = (activePlan: Plan, availablePlans: [PricedPlan])
 
 /// Represents a WordPress.com free or paid plan.
 /// - seealso: [WordPress.com Store](https://store.wordpress.com/plans/)
