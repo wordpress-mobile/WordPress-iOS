@@ -63,6 +63,11 @@ struct MockStoreFacade: StoreFacade {
     let delay: Double
     let succeeds: Bool
 
+    init(delay: Double, succeeds: Bool) {
+        self.delay = delay
+        self.succeeds = succeeds
+    }
+
     static func succeeding(after delay: Double = 1.0) -> MockStoreFacade {
         return MockStoreFacade(delay: delay, succeeds: true)
     }
@@ -71,7 +76,7 @@ struct MockStoreFacade: StoreFacade {
         return MockStoreFacade(delay: delay, succeeds: false)
     }
 
-    let products = [
+    var products = [
         MockProduct(
             localizedDescription: "1 year of WordPress.com Premium",
             localizedTitle: "WordPress.com Premium 1 year",
@@ -97,14 +102,21 @@ struct MockStoreFacade: StoreFacade {
         } else {
             let products = products.flatMap({ $0 })
 
-            dispatch_after(
-                dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))),
-                dispatch_get_main_queue()) {
-                    if (self.succeeds) {
-                        success(products)
-                    } else {
-                        failure(ProductRequestError.MissingProduct)
-                    }
+            let completion = {
+                if (self.succeeds) {
+                    success(products)
+                } else {
+                    failure(ProductRequestError.MissingProduct)
+                }
+            }
+            if delay > 0 {
+                dispatch_after(
+                    dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))),
+                    dispatch_get_main_queue(),
+                    completion
+                )
+            } else {
+                completion()
             }
         }
     }
