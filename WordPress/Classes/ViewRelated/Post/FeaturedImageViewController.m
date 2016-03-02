@@ -6,7 +6,8 @@
 
 @interface FeaturedImageViewController ()
 
-@property (nonatomic, strong) UIBarButtonItem *deleteButton;
+@property (nonatomic, strong) UIBarButtonItem *doneButton;
+@property (nonatomic, strong) UIBarButtonItem *removeButton;
 @property (nonatomic, strong) AbstractPost *post;
 
 @end
@@ -35,12 +36,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     self.view.backgroundColor = [UIColor whiteColor];
-
-    UIBarButtonItem *rightFixedSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    rightFixedSpacer.width = -5.0f;
-    self.navigationItem.rightBarButtonItems = @[rightFixedSpacer, self.deleteButton];
+    self.navigationItem.leftBarButtonItems = @[self.doneButton];
+    self.navigationItem.rightBarButtonItems = @[self.removeButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -72,18 +70,31 @@
 
 #pragma mark - Appearance Related Methods
 
-- (UIBarButtonItem *)deleteButton
+- (UIBarButtonItem *)doneButton
 {
-    if (!_deleteButton) {
-        UIImage* image = [[UIImage imageNamed:@"gridicons-trash"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(removeFeaturedImage)];
+    if (!_doneButton) {
+        _doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Label for confirm feature image of a post")
+                                                       style:UIBarButtonItemStylePlain
+                                                      target:self
+                                                      action:@selector(confirmFeaturedImage)];
+    }
+    return _doneButton;
+}
+
+- (UIBarButtonItem *)removeButton
+{
+    if (!_removeButton) {
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Remove", @"Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.")
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(removeFeaturedImage)];
         NSString *title = NSLocalizedString(@"Remove Featured Image", @"Accessibility  Label for the Remove Feature Image icon. Tapping will show a confirmation screen for removing the feature image from the post.");
         button.accessibilityLabel = title;
         button.accessibilityIdentifier = @"Remove Featured Image";
-        _deleteButton = button;
+        _removeButton = button;
     }
     
-    return _deleteButton;
+    return _removeButton;
 }
 
 
@@ -125,11 +136,17 @@
                                   style:UIAlertActionStyleDestructive
                                 handler:^(UIAlertAction *alertAction) {
                                     [self.post setFeaturedImage:nil];
-                                    [self.navigationController popViewControllerAnimated:YES];
+                                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
                                 }];
-    alertController.popoverPresentationController.barButtonItem = self.deleteButton;
+    alertController.popoverPresentationController.barButtonItem = self.removeButton;
     [self presentViewController:alertController animated:YES completion:nil];
 
 }
+
+- (void)confirmFeaturedImage
+{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 @end
