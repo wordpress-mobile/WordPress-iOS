@@ -29,7 +29,7 @@ target 'WordPress', :exclusive => true do
   pod 'RxSwift', '~> 2.1.0'
   pod 'SVProgressHUD', '~>1.1.3'
   pod 'UIDeviceIdentifier', '~> 0.1'
-
+  pod 'Crashlytics'
   # ----------------------------
   # Forked third party libraries
   # ----------------------------
