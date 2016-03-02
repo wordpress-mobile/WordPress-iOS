@@ -884,7 +884,8 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
         // Check if the featured image is set, otherwise we don't want to do anything while it's still loading.
         if (self.featuredImage) {
             FeaturedImageViewController *featuredImageVC = [[FeaturedImageViewController alloc] initWithPost:self.apost];
-            [self.navigationController pushViewController:featuredImageVC animated:YES];
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:featuredImageVC];
+            [self presentViewController:navigationController animated:YES completion:nil];
         }
     } else {
         if (!self.isUploadingMedia) {
