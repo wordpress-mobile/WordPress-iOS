@@ -42,6 +42,9 @@ class StoreKitFacade: StoreFacade {
     func getProductsWithIdentifiers(identifiers: Set<String>, success: [Product] -> Void, failure: ErrorType -> Void) {
         let request = SKProductsRequest(productIdentifiers: identifiers)
         let delegate = ProductRequestDelegate(onSuccess: success, onError: failure)
+        delegate.retainUntilFinished(request)
+        delegate.retainUntilFinished(delegate)
+
         request.delegate = delegate
 
         request.start()
@@ -113,14 +116,16 @@ private class ProductRequestDelegate: NSObject, SKProductsRequestDelegate {
     
     let onSuccess: Success
     let onError: Failure
-    // Keeps a strong reference to self until the request finishes
-    var retainedDelegate: ProductRequestDelegate? = nil
+    var retainedObjects = [NSObject]()
 
     init(onSuccess: Success, onError: Failure) {
         self.onSuccess = onSuccess
         self.onError = onError
         super.init()
-        retainedDelegate = self
+    }
+
+    func retainUntilFinished(object: NSObject) {
+        retainedObjects.append(object)
     }
     
     @objc func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
@@ -135,7 +140,7 @@ private class ProductRequestDelegate: NSObject, SKProductsRequestDelegate {
     }
 
     @objc func requestDidFinish(request: SKRequest) {
-        retainedDelegate = nil
+        retainedObjects.removeAll()
     }
 }
 
