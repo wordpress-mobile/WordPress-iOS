@@ -10,7 +10,7 @@ enum ProductRequestError: ErrorType {
 }
 
 protocol StoreFacade {
-    func getProductsWithIdentifiers(identifiers: Set<String>, success: Products -> Void, failure: ErrorType -> Void)
+    func getProductsWithIdentifiers(identifiers: Set<String>, success: [Product] -> Void, failure: ErrorType -> Void)
 }
 
 extension StoreFacade {
@@ -40,9 +40,12 @@ extension StoreFacade {
 }
 
 class StoreKitFacade: StoreFacade {
-    func getProductsWithIdentifiers(identifiers: Set<String>, success: Products -> Void, failure: ErrorType -> Void) {
+    func getProductsWithIdentifiers(identifiers: Set<String>, success: [Product] -> Void, failure: ErrorType -> Void) {
         let request = SKProductsRequest(productIdentifiers: identifiers)
         let delegate = ProductRequestDelegate(onSuccess: success, onError: failure)
+        delegate.retainUntilFinished(request)
+        delegate.retainUntilFinished(delegate)
+
         request.delegate = delegate
 
         request.start()
@@ -61,6 +64,11 @@ struct MockStoreFacade: StoreFacade {
     let delay: Double
     let succeeds: Bool
 
+    init(delay: Double, succeeds: Bool) {
+        self.delay = delay
+        self.succeeds = succeeds
+    }
+
     static func succeeding(after delay: Double = 1.0) -> MockStoreFacade {
         return MockStoreFacade(delay: delay, succeeds: true)
     }
@@ -69,7 +77,7 @@ struct MockStoreFacade: StoreFacade {
         return MockStoreFacade(delay: delay, succeeds: false)
     }
 
-    let products = [
+    var products = [
         MockProduct(
             localizedDescription: "1 year of WordPress.com Premium",
             localizedTitle: "WordPress.com Premium 1 year",
@@ -86,7 +94,7 @@ struct MockStoreFacade: StoreFacade {
         )
     ]
 
-    func getProductsWithIdentifiers(identifiers: Set<String>, success: Products -> Void, failure: ErrorType -> Void) {
+    func getProductsWithIdentifiers(identifiers: Set<String>, success: [Product] -> Void, failure: ErrorType -> Void) {
         let products = identifiers.map({ identifier in
             return self.products.filter({ $0.productIdentifier == identifier }).first
         })
@@ -95,33 +103,42 @@ struct MockStoreFacade: StoreFacade {
         } else {
             let products = products.flatMap({ $0 })
 
-            dispatch_after(
-                dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))),
-                dispatch_get_main_queue()) {
-                    if (self.succeeds) {
-                        success(products)
-                    } else {
-                        failure(ProductRequestError.MissingProduct)
-                    }
+            let completion = {
+                if (self.succeeds) {
+                    success(products)
+                } else {
+                    failure(ProductRequestError.MissingProduct)
+                }
+            }
+            if delay > 0 {
+                dispatch_after(
+                    dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC))),
+                    dispatch_get_main_queue(),
+                    completion
+                )
+            } else {
+                completion()
             }
         }
     }
 }
 
 private class ProductRequestDelegate: NSObject, SKProductsRequestDelegate {
-    typealias Success = Products -> Void
+    typealias Success = [Product] -> Void
     typealias Failure = ErrorType -> Void
     
     let onSuccess: Success
     let onError: Failure
-    // Keeps a strong reference to self until the request finishes
-    var retainedDelegate: ProductRequestDelegate? = nil
+    var retainedObjects = [NSObject]()
 
     init(onSuccess: Success, onError: Failure) {
         self.onSuccess = onSuccess
         self.onError = onError
         super.init()
-        retainedDelegate = self
+    }
+
+    func retainUntilFinished(object: NSObject) {
+        retainedObjects.append(object)
     }
     
     @objc func productsRequest(request: SKProductsRequest, didReceiveResponse response: SKProductsResponse) {
@@ -136,11 +153,11 @@ private class ProductRequestDelegate: NSObject, SKProductsRequestDelegate {
     }
 
     @objc func requestDidFinish(request: SKRequest) {
-        retainedDelegate = nil
+        retainedObjects.removeAll()
     }
 }
 
-private func priceForProduct(identifier: String, products: Products) throws -> String {
+private func priceForProduct(identifier: String, products: [Product]) throws -> String {
     guard let product = products.filter({ $0.productIdentifier == identifier }).first else {
         throw ProductRequestError.MissingProduct
     }
@@ -153,7 +170,7 @@ private func priceForProduct(identifier: String, products: Products) throws -> S
     return price
 }
 
-private func priceForPlan(plan: Plan, products: Products) throws -> String {
+private func priceForPlan(plan: Plan, products: [Product]) throws -> String {
     guard let identifier = plan.productIdentifier else {
         return ""
     }
