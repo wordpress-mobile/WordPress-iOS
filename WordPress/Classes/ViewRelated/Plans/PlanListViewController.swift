@@ -126,7 +126,7 @@ enum PlanListViewModel {
     }
 }
 
-final class PlanListViewController: UITableViewController, ImmuTablePresenter, WPNoResultsViewDelegate {
+final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     private lazy var handler: ImmuTableViewHandler = {
         return ImmuTableViewHandler(takeOver: self)
     }()
@@ -204,11 +204,17 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter, W
                 self.viewModel = .Error(String(error))
         })
     }
+}
 
+// MARK: - WPNoResultsViewDelegate
+
+extension PlanListViewController: WPNoResultsViewDelegate {
     func didTapNoResultsView(noResultsView: WPNoResultsView!) {
         SupportViewController.showFromTabBar()
     }
 }
+
+// MARK: - UIViewControllerRestoration
 
 extension PlanListViewController: UIViewControllerRestoration {
     struct EncodingKey {
