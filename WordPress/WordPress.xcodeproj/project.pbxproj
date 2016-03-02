@@ -3032,9 +3032,6 @@
 		932225A81C7CE50300443B02 /* WordPressShare */ = {
 			isa = PBXGroup;
 			children = (
-				930F091B1C7E229C00995926 /* WordPressShare.entitlements */,
-				930F091C1C7E268200995926 /* WordPressShare-Internal.entitlements */,
-				930F091E1C7E269E00995926 /* WordPressShare-Alpha.entitlements */,
 				B5BEA5661C7CEB4400C8035B /* Supporting Files */,
 				B5623E8D1C7CFFDF00CC29EA /* BlogPickerViewController.swift */,
 				930F09201C7F9D5400995926 /* PostStatusPickerViewController.swift */,
@@ -3442,8 +3439,11 @@
 			isa = PBXGroup;
 			children = (
 				932225AE1C7CE50300443B02 /* Info.plist */,
-				B5BEA5641C7CE7E800C8035B /* WordPressSharePrefix.pch */,
+				930F091E1C7E269E00995926 /* WordPressShare-Alpha.entitlements */,
+				930F091C1C7E268200995926 /* WordPressShare-Internal.entitlements */,
 				B51DAF021C7E2C64007F474C /* WordPressShare-Lumberjack.m */,
+				930F091B1C7E229C00995926 /* WordPressShare.entitlements */,
+				B5BEA5641C7CE7E800C8035B /* WordPressSharePrefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -5643,7 +5643,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "9da9c00f-12e2-4dc7-a862-03c008e8609e";
+				PROVISIONING_PROFILE = "bf5f7d1c-99ed-4479-a4e1-59ce81b9dec3";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -6608,7 +6608,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.wordpress.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "080acc26-bd83-4aee-a4c9-160c09034e8a";
+				PROVISIONING_PROFILE = "0c7530eb-b314-43a0-adf4-a396568151d9";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
