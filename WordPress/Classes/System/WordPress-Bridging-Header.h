@@ -57,6 +57,7 @@
 #import "ServiceRemoteREST.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
+#import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "SourcePostAttribution.h"
