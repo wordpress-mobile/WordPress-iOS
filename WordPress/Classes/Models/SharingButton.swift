@@ -3,6 +3,9 @@ import CoreData
 
 @objc public class SharingButton : NSManagedObject
 {
+    static let visible = "visible"
+    static let hidden = "hidden"
+
     // Relations
     @NSManaged public var blog: Blog
 
@@ -14,4 +17,8 @@ import CoreData
     @NSManaged public var enabled: Bool
     @NSManaged public var visibility: String?
     @NSManaged public var order: NSNumber
+
+    var visible: Bool {
+        return visibility == SharingButton.visible
+    }
 }

@@ -13,7 +13,6 @@ protocol Product {
     
     var productIdentifier: String { get }
 }
-typealias Products = [Product]
 
 extension SKProduct: Product {}
 
@@ -27,7 +26,7 @@ class MockProduct: NSObject, Product {
     let localizedDescription: String
     let localizedTitle: String
     let price: NSDecimalNumber
-    let priceLocale: NSLocale
+    var priceLocale: NSLocale
     let productIdentifier: String
 
     init(localizedDescription: String, localizedTitle: String, price: NSDecimalNumber, priceLocale: NSLocale, productIdentifier: String) {
