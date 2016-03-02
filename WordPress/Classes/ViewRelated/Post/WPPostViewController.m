@@ -1655,7 +1655,7 @@ EditImageDetailsViewControllerDelegate
 - (void)dismissAssociatedAlertControllerIfVisible:(NSString *)uniqueMediaId {
     // let's see if we where displaying an action sheet for this image
     if (self.currentAlertController && [uniqueMediaId isEqualToString:self.selectedMediaID]){
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.currentAlertController dismissViewControllerAnimated:YES completion:nil];
         self.currentAlertController = nil;
     }
 }
