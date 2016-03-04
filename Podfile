@@ -31,8 +31,7 @@ target 'WordPress', :exclusive => true do
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'Simperium', '0.8.12'
   pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
-#  pod 'WordPress-iOS-Shared', '0.5.1'
-  pod 'WordPress-iOS-Shared', :branch => 'no-more-open-sans', :git => 'https://github.com/wordpress-mobile/WordPress-Shared-iOS.git'
+  pod 'WordPress-iOS-Shared', '0.5.3'
   pod 'WordPress-iOS-Editor', '1.1.2'
   pod 'WordPressCom-Stats-iOS/UI', '0.6.2'
   pod 'WordPressCom-Analytics-iOS', '0.1.3'
@@ -45,8 +44,7 @@ target 'WordPress', :exclusive => true do
 end
 
 target 'WordPressTodayWidget', :exclusive => true do
-  #pod 'WordPress-iOS-Shared', '0.5.1'
-  pod 'WordPress-iOS-Shared', :branch => 'no-more-open-sans', :git => 'https://github.com/wordpress-mobile/WordPress-Shared-iOS.git'
+  pod 'WordPress-iOS-Shared', '0.5.3'
   pod 'WordPressCom-Stats-iOS/Services', '0.6.2'
 end
 
