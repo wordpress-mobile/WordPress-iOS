@@ -18,7 +18,7 @@
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
-#import "Wordpress-Swift.h"
+#import "WordPress-Swift.h"
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 static NSString *const BlogDetailsPlanCellIdentifier = @"BlogDetailsPlanCell";
@@ -519,8 +519,16 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
 - (void)showSharing
 {
+    UIViewController *controller;
+    if (![self.blog supportsPublicize]) {
+        // if publicize is disabled, show the sharing buttons settings.
+        controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
+
+    } else {
+        controller = [[SharingViewController alloc] initWithBlog:self.blog];
+    }
+
     //TODO: (@aerych, 2016-01-14) Add tracker for sharing feature
-    SharingViewController *controller = [[SharingViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
