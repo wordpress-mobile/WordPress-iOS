@@ -33,7 +33,8 @@ target 'WordPress', :exclusive => true do
   pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
   pod 'WordPress-iOS-Shared', '0.5.3'
   pod 'WordPress-iOS-Editor', '1.1.2'
-  pod 'WordPressCom-Stats-iOS/UI', '0.6.2'
+  #pod 'WordPressCom-Stats-iOS/UI', '0.6.2'
+  pod 'WordPressCom-Stats-iOS/UI', :branch => 'no-more-open-sans', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
   pod 'WordPressCom-Analytics-iOS', '0.1.3'
   pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
   pod 'WPMediaPicker', '~> 0.8.1'
@@ -45,7 +46,8 @@ end
 
 target 'WordPressTodayWidget', :exclusive => true do
   pod 'WordPress-iOS-Shared', '0.5.3'
-  pod 'WordPressCom-Stats-iOS/Services', '0.6.2'
+  #pod 'WordPressCom-Stats-iOS/Services', '0.6.2'
+  pod 'WordPressCom-Stats-iOS/Services', :branch => 'no-more-open-sans', :git => 'https://github.com/wordpress-mobile/WordPressCom-Stats-iOS.git'
 end
 
 target :WordPressTest, :exclusive => true do
