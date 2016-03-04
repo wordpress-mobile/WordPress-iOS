@@ -156,7 +156,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 - (NSString *)titleForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        return NSLocalizedString(@"Seven days worth of log files are kept on file.", @"");
+        return NSLocalizedString(@"Up to seven days worth of logs are saved.", @"Help text shown below the list of debug logs.");
     }
     return nil;
 }
