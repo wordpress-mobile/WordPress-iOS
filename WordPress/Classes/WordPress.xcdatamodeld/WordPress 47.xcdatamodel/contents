@@ -403,7 +403,7 @@
         <attribute name="postFormat" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="postType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postType" attributeType="String" defaultValueString="post" syncable="YES"/>
         <attribute name="publicID" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
