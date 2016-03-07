@@ -385,18 +385,10 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             // If syncing "page" posts, set up the fetch for any Page entities.
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Page class])];
         } else {
-            
             // If not syncing "page" or "any" post, use the Post entity.
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
-            
-            NSPredicate *postTypePredicate;
-            if ([syncPostType isEqualToString:PostServiceTypePost]) {
-                // When fetching Posts of explicitly the type "post", also look for posts without a postType set as they are assumed "post".
-                postTypePredicate = [NSPredicate predicateWithFormat:@"(postType = %@) OR (postType = nil)", PostServiceTypePost];
-            } else {
-                // If fetching posts of a custom postType, fetch only post entities matching the syncPostType.
-                postTypePredicate = [NSPredicate predicateWithFormat:@"(postType = %@)", syncPostType];
-            }
+            // Include the postType attribute in the predicate.
+            NSPredicate *postTypePredicate = [NSPredicate predicateWithFormat:@"postType = %@", syncPostType];
             predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, postTypePredicate]];
         }
         request.predicate = predicate;
