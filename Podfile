@@ -9,38 +9,48 @@ use_frameworks!
 platform :ios, '9.0'
 
 target 'WordPress', :exclusive => true do
+  # ---------------------
+  # Third party libraries
+  # ---------------------
   pod '1PasswordExtension', '1.6.4'
   pod 'AFNetworking',	'2.6.3'
-  pod 'Reachability',	'3.2'
-  pod 'NSURL+IDN', '0.3'
-  pod 'DTCoreText',   '1.6.16'
-  pod 'UIDeviceIdentifier', '~> 0.1'
-  pod 'SVProgressHUD', '~>1.1.3'
   pod 'AMPopTip', '~> 0.7'
-  pod 'wpxmlrpc', '~> 0.8'
-  pod 'Mixpanel', '2.8.2'
   pod 'CocoaLumberjack', '~> 2.2.0'
-  pod 'HockeySDK', '~>3.8.0'
+  pod 'DTCoreText',   '1.6.16'
+  pod 'FormatterKit', '~> 1.8.0'
   pod 'Helpshift', '~>4.15.0'
+  pod 'HockeySDK', '~>3.8.0'
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
+  pod 'Mixpanel', '2.8.2'
+  pod 'Reachability',	'3.2'
+  pod 'ReactiveCocoa', '~> 2.4.7'
+  pod 'RxCocoa', '~> 2.1.0'
+  pod 'RxSwift', '~> 2.1.0'
+  pod 'SVProgressHUD', '~>1.1.3'
+  pod 'UIDeviceIdentifier', '~> 0.1'
+  pod 'Crashlytics'
+  # ----------------------------
+  # Forked third party libraries
+  # ----------------------------
+  pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
+  pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
 
+  # --------------------
+  # WordPress components
+  # --------------------
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.13'
   pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
-  pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
   pod 'NSObject-SafeExpectations', '0.0.2'
+  pod 'NSURL+IDN', '0.3'
   pod 'Simperium', '0.8.12'
-  pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
-  pod 'WordPress-iOS-Shared', '0.5.1'
+  pod 'WPMediaPicker', '~> 0.8.2'
   pod 'WordPress-iOS-Editor', '1.1.2'
-  pod 'WordPressCom-Stats-iOS/UI', '0.6.2'
+  pod 'WordPress-iOS-Shared', '0.5.1'
+  pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
   pod 'WordPressCom-Analytics-iOS', '0.1.3'
-  pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
-  pod 'WPMediaPicker', '~> 0.8.1'
-  pod 'ReactiveCocoa', '~> 2.4.7'
-  pod 'FormatterKit', '~> 1.8.0'
-  pod 'RxSwift', '~> 2.1.0'
-  pod 'RxCocoa', '~> 2.1.0'
+  pod 'WordPressCom-Stats-iOS/UI', '0.6.2'
+  pod 'wpxmlrpc', '~> 0.8'
 end
 
 target 'WordPressTodayWidget', :exclusive => true do
