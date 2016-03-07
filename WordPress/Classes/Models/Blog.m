@@ -419,7 +419,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeatureWPComRESTAPI:
             return [self restApi] != nil;
         case BlogFeatureSharing:
-            return [self supportsPublicize] || [self supportsShareButtons];
+            return [self supportsSharing];
         case BlogFeatureStats:
             return [self restApiForStats] != nil;
         case BlogFeatureCommentLikes:
@@ -440,9 +440,14 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     }
 }
 
+-(BOOL)supportsSharing
+{
+    return ([self supportsPublicize] || [self supportsShareButtons]) && [self isAdmin] && ![self isPrivate];
+}
+
 - (BOOL)supportsPublicize
 {
-    // Publicize is only supported via REST
+    // Publicize is only supported via REST, and for admins
     if (![self supports:BlogFeatureWPComRESTAPI]) {
         return NO;
     }
@@ -450,6 +455,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     if (self.isHostedAtWPcom) {
         // For WordPress.com YES unless it's disabled
         return ![[self getOptionValue:OptionsKeyPublicizeDisabled] boolValue];
+
     } else {
         // For Jetpack, check if the module is enabled
         return [self jetpackPublicizeModuleEnabled];
@@ -458,7 +464,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 - (BOOL)supportsShareButtons
 {
-    // Publicize is only supported via REST
+    // Share Button settings are only supported via REST, and for admins
     if (![self supports:BlogFeatureWPComRESTAPI]) {
         return NO;
     }
@@ -466,6 +472,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
     if (self.isHostedAtWPcom) {
         // For WordPress.com YES
         return YES;
+
     } else {
         // For Jetpack, check if the module is enabled
         return [self jetpackSharingButtonsModuleEnabled];

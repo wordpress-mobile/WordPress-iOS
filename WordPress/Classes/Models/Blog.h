@@ -155,6 +155,9 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
 - (BOOL)supports:(BlogFeature)feature;
+- (BOOL)supportsPublicize;
+- (BOOL)supportsShareButtons;
+
 /**
  *  Returnst the text description for a post format code
  *
