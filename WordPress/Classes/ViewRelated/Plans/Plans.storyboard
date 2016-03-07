@@ -222,11 +222,11 @@
                                                     <constraint firstAttribute="height" constant="60" id="pkL-hL-79c"/>
                                                 </constraints>
                                             </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="22" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAy-0N-D1K">
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" axis="vertical" distribution="fillEqually" alignment="center" spacing="22" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAy-0N-D1K">
                                                 <rect key="frame" x="24" y="72" width="536" height="59"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WordPress.com Premium" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="isU-1g-ArF" userLabel="Plan Title Label">
-                                                        <rect key="frame" x="170" y="0.0" width="197" height="18"/>
+                                                        <rect key="frame" x="170" y="0.0" width="196.5" height="18"/>
                                                         <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="16"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -238,7 +238,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$99.99 per year" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fju-eH-OS6" userLabel="Plan Price Label">
-                                                        <rect key="frame" x="214" y="41" width="109" height="18"/>
+                                                        <rect key="frame" x="213" y="41" width="109" height="18"/>
                                                         <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -246,7 +246,7 @@
                                                 </subviews>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJf-48-mlv" userLabel="Purchase Button" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="245" y="143" width="95" height="25"/>
+                                                <rect key="frame" x="244" y="143" width="95" height="25"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="WX3-mf-WwP"/>
@@ -293,6 +293,7 @@
                     </view>
                     <connections>
                         <outlet property="dropshadowImageView" destination="nps-70-EDE" id="fyT-av-Rh8"/>
+                        <outlet property="headerInfoStackView" destination="jAy-0N-D1K" id="JdG-2j-zaW"/>
                         <outlet property="planDescriptionLabel" destination="edq-hC-GnQ" id="8Cy-Z5-E3i"/>
                         <outlet property="planImageView" destination="f6b-b4-ZgP" id="6nb-u6-9DE"/>
                         <outlet property="planPriceLabel" destination="Fju-eH-OS6" id="pPs-DS-Dzv"/>
