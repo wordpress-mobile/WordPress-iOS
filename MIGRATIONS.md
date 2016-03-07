@@ -3,9 +3,9 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 47 (@kurzee 2016-02-19)
+## WordPress 47 (@kurzee 2016-03-07)
 
-- `BasePost` added new string attribute `postType` to store the associated type of a post.
+- `Post` added new string attribute `postType` to store the associated type of a `Post` entity.
 
 ## WordPress 46 (@aerych 2016-01-29)
 
