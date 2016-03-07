@@ -443,7 +443,6 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.authorID = remotePost.authorID;
     post.date_created_gmt = remotePost.date;
     post.postTitle = remotePost.title;
-    post.postType = remotePost.type;
     post.permaLink = [remotePost.URL absoluteString];
     post.content = remotePost.content;
     post.status = remotePost.status;
@@ -466,6 +465,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         postPost.likeCount = remotePost.likeCount;
         postPost.postFormat = remotePost.format;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
+        postPost.postType = remotePost.type;
         [self updatePost:postPost withRemoteCategories:remotePost.categories];
 
         Coordinate *geolocation = nil;
