@@ -67,7 +67,6 @@
         <attribute name="postTitle" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="postType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteStatusNumber" optional="YES" attributeType="Integer 16" defaultValueString="0">
             <userInfo/>
         </attribute>
@@ -404,6 +403,7 @@
         <attribute name="postFormat" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="postType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="publicID" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -601,7 +601,7 @@
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="225"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="195"/>
-        <element name="BasePost" positionX="0" positionY="0" width="128" height="315"/>
+        <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="585"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="570"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
@@ -614,7 +614,7 @@
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Person" positionX="18" positionY="153" width="128" height="180"/>
-        <element name="Post" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="Post" positionX="0" positionY="0" width="128" height="195"/>
         <element name="PostTag" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>
         <element name="PublicizeService" positionX="18" positionY="153" width="128" height="195"/>
