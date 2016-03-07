@@ -372,12 +372,9 @@
 
 - (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
 {
-    CGFloat scale = [[UIScreen mainScreen] scale];
-    CGSize realSize = CGSizeApplyAffineTransform(size, CGAffineTransformMakeScale(scale, scale));
-
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
-    [mediaService thumbnailForMedia:self size:realSize success:^(UIImage *image) {
+    [mediaService thumbnailForMedia:self size:size success:^(UIImage *image) {
         if (completionHandler) {
             completionHandler(image, nil);
         }
