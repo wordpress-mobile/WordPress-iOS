@@ -95,16 +95,16 @@
 {
     NSUUID *blockKey = [NSUUID UUID];
     __weak __typeof__(self) weakSelf = self;
-    id<NSObject> oneKey = [self.deviceLibraryDataSource registerChangeObserverBlock:^{
+    id<NSObject> oneKey = [self.deviceLibraryDataSource registerChangeObserverBlock:^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray<id<WPMediaMove>> *moved) {
         if (weakSelf.currentDataSource == weakSelf.deviceLibraryDataSource) {
             if (callback) {
-                callback();
+                callback(incrementalChanges, removed, inserted, changed, moved);
             }
         }
     }];
-    id<NSObject> secondKey = [self.mediaLibraryDataSource registerChangeObserverBlock:^{
+    id<NSObject> secondKey = [self.mediaLibraryDataSource registerChangeObserverBlock:^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray<id<WPMediaMove>> *moved) {
         if (callback) {
-            callback();
+            callback(incrementalChanges, removed, inserted, changed, moved);
         }
     }];
     
@@ -122,7 +122,7 @@
     [self.mediaLibraryDataSource unregisterChangeObserver:keys[1]];
 }
 
-- (void)loadDataWithSuccess:(WPMediaChangesBlock)successBlock
+- (void)loadDataWithSuccess:(WPMediaSuccessBlock)successBlock
                     failure:(WPMediaFailureBlock)failureBlock
 {
     [self.currentDataSource loadDataWithSuccess:successBlock failure:failureBlock];
@@ -148,6 +148,18 @@
 {
     return [self.currentDataSource mediaTypeFilter];
 }
+
+- (void)setAscendingOrdering:(BOOL)ascending
+{
+    [self.mediaLibraryDataSource setAscendingOrdering:ascending];
+    [self.deviceLibraryDataSource setAscendingOrdering:ascending];
+}
+
+- (BOOL)ascendingOrdering
+{
+    return [self.currentDataSource ascendingOrdering];
+}
+
 
 
 
