@@ -9,6 +9,8 @@ class PlanDetailViewController: UIViewController {
     private let tableViewHorizontalMargin: CGFloat = 24.0
     private let planImageDropshadowRadius: CGFloat = 3.0
     
+    var isActivePlan = false
+    
     private var viewModel: ImmuTable! = nil
     
     @IBOutlet weak var tableView: UITableView!
@@ -18,7 +20,26 @@ class PlanDetailViewController: UIViewController {
     @IBOutlet weak var planDescriptionLabel: UILabel!
     @IBOutlet weak var planPriceLabel: UILabel!
     @IBOutlet weak var purchaseButton: UIButton!
+
+    private lazy var currentPlanLabel: UIView = {
+        let label = UILabel()
+        label.font = WPFontManager.openSansSemiBoldFontOfSize(13.0)
+        label.textColor = WPStyleGuide.validGreen()
+        label.text = NSLocalizedString("Current Plan", comment: "").uppercaseStringWithLocale(NSLocale.currentLocale())
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        // Wrapper view required for spacing to work out correctly, as the header stackview
+        // is baseline-based, and so acts differently for a label vs view.
+        let wrapper = UIView()
+        wrapper.translatesAutoresizingMaskIntoConstraints = false
+        wrapper.addSubview(label)
+        wrapper.pinSubviewToAllEdges(label)
+        
+        return wrapper
+    }()
     
+    @IBOutlet weak var headerInfoStackView: UIStackView!
+
     class func controllerWithPlan(plan: Plan) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
@@ -91,13 +112,21 @@ class PlanDetailViewController: UIViewController {
         tableView.layoutMargins = UIEdgeInsetsMake(0, tableViewHorizontalMargin, 0, tableViewHorizontalMargin)
     }
     
+    lazy var paddingView = UIView()
+    
     private func populateHeader() {
         planImageView.image = plan.image
         planTitleLabel.text = plan.fullTitle
         planDescriptionLabel.text = plan.description
         planPriceLabel.text = priceDescriptionForPlan(plan)
 
-        purchaseButton.alpha = (plan == .Free) ? 0 : 1
+        if isActivePlan {
+            purchaseButton.removeFromSuperview()
+            headerInfoStackView.addArrangedSubview(currentPlanLabel)
+        } else if plan == .Free {
+            purchaseButton.removeFromSuperview()
+            headerInfoStackView.addArrangedSubview(paddingView)
+        }
     }
     
     // TODO: Prices should always come from StoreKit
