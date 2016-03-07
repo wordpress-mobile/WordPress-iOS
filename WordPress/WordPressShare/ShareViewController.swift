@@ -50,18 +50,20 @@ class ShareViewController: SLComposeServiceViewController {
         // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
         let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(WPAppGroupName)
         configuration.sharedContainerIdentifier = WPAppGroupName
-
+        
         RequestRouter.bearerToken = oauth2Token! as String
-        
-        let service = PostService(configuration: configuration)
-        let subjectAndBody = splitContentTextIntoSubjectAndBody(contentText)
-        service.createPost(siteID: selectedSiteID!, title: subjectAndBody.subject, body: subjectAndBody.body) { (post, error) -> Void in
-            print("Post \(post) Error \(error)")
-            print("Done")
+
+        loadWebsiteUrl { (url: NSURL?) in
+            let service = PostService(configuration: configuration)
+            let subjectAndBody = self.splitContentTextIntoSubjectAndBody(self.contentWithSourceURL(url))
+            service.createPost(siteID: self.selectedSiteID!, title: subjectAndBody.subject, body: subjectAndBody.body) { (post, error) -> Void in
+                print("Post \(post) Error \(error)")
+                print("Done")
+            }
+            
+            // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
+            self.extensionContext!.completeRequestReturningItems([], completionHandler: nil)
         }
-        
-        // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
-        self.extensionContext!.completeRequestReturningItems([], completionHandler: nil)
     }
 
     override func configurationItems() -> [AnyObject]! {
@@ -118,5 +120,36 @@ class ShareViewController: SLComposeServiceViewController {
         let restOfText = firstCarriageReturnIndex != nil ? fullText.substringFromIndex(firstCarriageReturnIndex!.endIndex) : ""
 
         return (firstLineOfText, restOfText)
+    }
+    
+    private func contentWithSourceURL(url: NSURL?) -> String {
+        guard let url = url else {
+            return contentText
+        }
+        
+        // Append the URL to the content itself
+        return contentText + "\n\n<a href=\"\(url.absoluteString)\">\(url.absoluteString)</a>"
+    }
+    
+    private func loadWebsiteUrl(completion: (NSURL? -> Void)) {
+        guard let item = extensionContext?.inputItems.first as? NSExtensionItem,
+            let itemProvider = item.attachments?.first as? NSItemProvider else
+        {
+            completion(nil)
+            return
+        }
+        
+        if itemProvider.hasItemConformingToTypeIdentifier("public.url") == false {
+            completion(nil)
+            return
+        }
+        
+        itemProvider.loadItemForTypeIdentifier("public.url", options: nil) { (url, error) -> Void in
+            if let theURL = url as? NSURL {
+                completion(theURL)
+            } else {
+                completion(nil)
+            }
+        }
     }
 }
