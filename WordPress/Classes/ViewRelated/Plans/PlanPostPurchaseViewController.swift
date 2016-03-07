@@ -13,7 +13,8 @@ class PlanPostPurchaseViewController: UIViewController {
     
     var pageTypes: [PlanPostPurchasePageType]!
     var pages = [PlanPostPurchasePageViewController]()
-    
+    var plan: Plan
+
     lazy private var cancelXButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(named: "gridicons-cross"), style: .Plain, target: self, action: "closeTapped")
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Dismiss the current view")
@@ -23,6 +24,7 @@ class PlanPostPurchaseViewController: UIViewController {
     
     init(plan: Plan) {
         pageTypes = PlanPostPurchasePageType.pageTypesForPlan(plan)
+        self.plan = plan
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -119,6 +121,7 @@ class PlanPostPurchaseViewController: UIViewController {
         
         page.didMoveToParentViewController(self)
         
+        page.plan = plan
         page.pageType = pageType
         page.view.accessibilityElementsHidden = (pageType != .PurchaseComplete)
         page.view.shouldGroupAccessibilityChildren = true
@@ -232,6 +235,7 @@ class PlanPostPurchasePageViewController: UIViewController {
     
     let purchaseCompleteImageViewSize: CGFloat = 90
     
+    var plan: Plan?
     var pageType: PlanPostPurchasePageType? = nil {
         didSet {
             populateViews()
@@ -271,6 +275,9 @@ class PlanPostPurchasePageViewController: UIViewController {
         
         switch pageType {
         case .PurchaseComplete:
+            if let plan = plan {
+                imageView.image = UIImage(named: "\(plan.activeImageName)-large")
+            }
             headingLabel.text = NSLocalizedString("It’s all yours! Way to go!", comment: "Heading displayed after successful purchase of a plan")
             setDescriptionText(NSLocalizedString("Your site is doing somersaults in excitement! Now explore your site’s new features and choose where you’d like to begin.", comment: "Subtitle displayed after successful purchase of a plan"))
             imageView.widthAnchor.constraintEqualToConstant(purchaseCompleteImageViewSize).active = true
