@@ -278,7 +278,12 @@ static CGFloat BlogCellRowHeight = 54.0;
 
 - (NSPredicate *)fetchRequestPredicate
 {
-    return [NSPredicate predicateWithFormat:@"visible = YES"];
+    NSString *predicate = @"(visible = YES)";
+    if (self.displaysOnlyDotcomAndJetpackSites) {
+        predicate = [predicate stringByAppendingFormat:@"AND (account != NULL OR jetpackAccount != NULL)"];
+    }
+
+    return [NSPredicate predicateWithFormat:predicate];
 }
 
 @end
