@@ -328,7 +328,7 @@ static NSString * const LoginSharedWebCredentialFQDN = @"wordpress.com";
     SecRequestSharedWebCredential(fqdnStr, NULL, ^(CFArrayRef credentials, CFErrorRef error) {
         
         if (error != NULL) {
-            DDLogError(@"Error occurred while requesting shared web credentials: %@", error);
+            DDLogError(@"Completed requesting shared web credentials with: %@", error);
             if (completion) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     completion(nil, nil);
