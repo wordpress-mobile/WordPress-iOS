@@ -11,6 +11,8 @@
 #import "BlogService.h"
 #import "CommentService.h"
 
+#import "BlogSelectorViewController.h"
+
 #import "Constants.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
@@ -23,6 +25,9 @@
 
 #import "MediaService.h"
 #import "MeHeaderView.h"
+
+#import "NotificationsViewController.h"
+#import "NotificationsViewController+Internal.h"
 
 #import "Notification.h"
 #import "Notification+Internals.h"
@@ -53,6 +58,7 @@
 #import "ServiceRemoteREST.h"
 #import "SettingsSelectionViewController.h"
 #import "SettingsMultiTextViewController.h"
+#import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"

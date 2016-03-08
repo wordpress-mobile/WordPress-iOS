@@ -386,6 +386,31 @@ static NSInteger const WPTabBarIconOffset = 5;
     [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, statsViewController]];
 }
 
+- (void)switchMySitesTabToCustomizeViewForBlog:(Blog *)blog
+{
+    [self showTabForIndex:WPTabMySites];
+    
+    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
+    blogDetailsViewController.blog = blog;
+    
+    ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:blog];
+    
+    [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, viewController]];
+    [viewController presentCustomizeForTheme:[viewController currentTheme]];
+}
+
+- (void)switchMySitesTabToThemesViewForBlog:(Blog *)blog
+{
+    [self showTabForIndex:WPTabMySites];
+    
+    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
+    blogDetailsViewController.blog = blog;
+    
+    ThemeBrowserViewController *viewController = [ThemeBrowserViewController browserWithBlog:blog];
+    
+    [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, viewController]];
+}
+
 - (NSString *)currentlySelectedScreen
 {
     // Check which tab is currently selected

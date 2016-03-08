@@ -1117,7 +1117,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)approveCommentWithBlock:(NotificationBlock *)block
 {
- 
     [WPAppAnalytics track:WPAnalyticsStatNotificationsCommentApproved withBlogID:block.metaSiteID];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -1130,9 +1129,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     }];
 
     [block setActionOverrideValue:@(true) forKey:NoteActionApproveKey];
- 
-    // Hack: force NSFetchedResultsController to reload this notification
-    [self.note didChangeOverrides];
     [self.tableView reloadData];
 }
 
@@ -1150,9 +1146,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     }];
     
     [block setActionOverrideValue:@(false) forKey:NoteActionApproveKey];
-    
-    // Hack: force NSFetchedResultsController to reload this notification
-    [self.note didChangeOverrides];
     [self.tableView reloadData];
 }
 
@@ -1162,7 +1155,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSParameterAssert(self.onDeletionRequestCallback);
     
     // Spam Action
-    NotificationDetailsDeletionActionBlock spamAction = ^(NotificationDetailsDeletionCompletionBlock onCompletion) {
+    NotificationDeletionActionBlock spamAction = ^(NotificationDeletionCompletionBlock onCompletion) {
         NSParameterAssert(onCompletion);
         
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -1188,7 +1181,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSParameterAssert(self.onDeletionRequestCallback);
     
     // Trash Action
-    NotificationDetailsDeletionActionBlock deletionAction =  ^(NotificationDetailsDeletionCompletionBlock onCompletion) {
+    NotificationDeletionActionBlock deletionAction =  ^(NotificationDeletionCompletionBlock onCompletion) {
         NSParameterAssert(onCompletion);
         
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];

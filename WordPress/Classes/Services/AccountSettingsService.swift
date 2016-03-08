@@ -151,6 +151,13 @@ class AccountSettingsService {
         return notificationObserver.map(getSettings).startWith(getSettings())
     }
 
+    func primarySiteNameForSettings(settings: AccountSettings) -> String? {        
+        let service = BlogService(managedObjectContext: context)
+        let blog = service.blogByBlogId(settings.primarySiteID)
+        
+        return blog?.settings?.name
+    }
+    
     private func getSettings(_: Any? = nil) -> AccountSettings? {
         return accountSettingsWithID(self.userID)
     }

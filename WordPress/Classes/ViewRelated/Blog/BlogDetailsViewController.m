@@ -18,7 +18,7 @@
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
-#import "Wordpress-Swift.h"
+#import "WordPress-Swift.h"
 #import "MenusViewController.h"
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
@@ -322,7 +322,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
 
-    if ([Feature enabled:FeatureFlagSharing] && [self.blog supports:BlogFeatureSharing]) {
+    if ([self.blog supports:BlogFeatureSharing]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
                                                         image:[UIImage imageNamed:@"icon-menu-sharing"]
                                                      callback:^{
@@ -525,8 +525,16 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
 - (void)showSharing
 {
+    UIViewController *controller;
+    if (![self.blog supportsPublicize]) {
+        // if publicize is disabled, show the sharing buttons settings.
+        controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
+
+    } else {
+        controller = [[SharingViewController alloc] initWithBlog:self.blog];
+    }
+
     //TODO: (@aerych, 2016-01-14) Add tracker for sharing feature
-    SharingViewController *controller = [[SharingViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
