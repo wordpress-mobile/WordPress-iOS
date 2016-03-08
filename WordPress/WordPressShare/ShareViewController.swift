@@ -54,7 +54,7 @@ class ShareViewController: SLComposeServiceViewController {
             configuration.sharedContainerIdentifier = WPAppGroupName
             let service = PostService(configuration: configuration)
             let subjectAndBody = self.splitContentTextIntoSubjectAndBody(self.contentWithSourceURL(url))
-            service.createPost(siteID: self.selectedSiteID!, title: subjectAndBody.subject, body: subjectAndBody.body) { (post, error) -> Void in
+            service.createPost(siteID: self.selectedSiteID!, status:self.postStatus, title: subjectAndBody.subject, body: subjectAndBody.body) { (post, error) -> Void in
                 print("Post \(post) Error \(error)")
             }
             
