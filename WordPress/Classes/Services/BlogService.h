@@ -54,6 +54,10 @@
                    success:(void (^)())success
                    failure:(void (^)(NSError *error))failure;
 
+- (void)syncPostTypesForBlog:(Blog *)blog
+                       success:(void (^)())success
+                       failure:(void (^)(NSError *error))failure;
+
 - (void)syncPostFormatsForBlog:(Blog *)blog
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure;
