@@ -47,7 +47,7 @@ private struct AccountSettingsController: SettingsController {
         
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
-            value: service.primarySiteNameForSettings(settings),
+            value: service.primarySiteNameForSettings(settings) ?? "",
             action: presenter.push(editPrimarySite(settings))
         )
 
