@@ -103,6 +103,8 @@ class ShareViewController: SLComposeServiceViewController {
         pushConfigurationViewController(pickerViewController)
     }
     
+    
+    // TODO: This should eventually be moved into WordPressComKit
     private let postStatuses = [
         "draft" : NSLocalizedString("Draft", comment: "Draft post status"),
         "publish" : NSLocalizedString("Publish", comment: "Publish post status")]
@@ -137,17 +139,18 @@ class ShareViewController: SLComposeServiceViewController {
             return itemProvider.hasItemConformingToTypeIdentifier("public.url")
         })
         
-        guard urlItemProviders.count > 0  else {
+        guard urlItemProviders.count > 0 else {
             completion(nil)
             return
         }
         
-        itemProviders[0].loadItemForTypeIdentifier("public.url", options: nil) { (url, error) -> Void in
-            if let theURL = url as? NSURL {
-                completion(theURL)
-            } else {
+        itemProviders.first!.loadItemForTypeIdentifier("public.url", options: nil) { (url, error) -> Void in
+            guard let theURL = url as? NSURL else {
                 completion(nil)
+                return
             }
+            
+            completion(theURL)
         }
     }
 }
