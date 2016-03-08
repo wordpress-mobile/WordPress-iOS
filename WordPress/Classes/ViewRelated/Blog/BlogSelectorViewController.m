@@ -49,18 +49,17 @@ static CGFloat BlogCellRowHeight = 54.0;
                               successHandler:(BlogSelectorSuccessDotComHandler)successHandler
                               dismissHandler:(BlogSelectorDismissHandler)dismissHandler
 {
-    // Retrieve the Blog NSManagedObjectInstance
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:context];
-    NSManagedObjectID *blogObjectID = [[service blogByBlogId:dotComID] objectID];
+    // Keep the Selected Dotcom ID
+    _selectedObjectDotcomID = dotComID;
     
     // Wrap up the main callback into something useful to us
     BlogSelectorSuccessHandler wrappedSuccessHandler = ^(NSManagedObjectID *selectedObjectID) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         Blog *blog = [context existingObjectWithID:selectedObjectID error:nil];
         successHandler(blog.dotComID);
     };
     
-    return [self initWithSelectedBlogObjectID:blogObjectID
+    return [self initWithSelectedBlogObjectID:nil
                                successHandler:wrappedSuccessHandler
                                dismissHandler:dismissHandler];
 }
@@ -99,12 +98,9 @@ static CGFloat BlogCellRowHeight = 54.0;
     [super viewWillAppear:animated];
 
     [self.navigationController setNavigationBarHidden:NO animated:animated];
-    self.resultsController.delegate = self;
-    [self.resultsController performFetch:nil];
-    [self.tableView reloadData];
 
     [self syncBlogs];
-    [self scrollToSelectedObjectID];
+    [self refreshSelectedObjectIdIfNeeded];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -114,29 +110,34 @@ static CGFloat BlogCellRowHeight = 54.0;
 }
 
 
-- (void)scrollToSelectedObjectID
-{
-    if (self.selectedObjectID == nil) {
-        return;
-    }
-    
-    NSManagedObject *obj = [self.resultsController.managedObjectContext objectWithID:self.selectedObjectID];
-    NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
-    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
-}
+#pragma mark - Helpers
 
 - (void)syncBlogs
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    
     [context performBlock:^{
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
         
-        if (defaultAccount) {
-            [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+        if (!defaultAccount) {
+            return;
         }
+        
+        [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
     }];
+}
+
+- (void)refreshSelectedObjectIdIfNeeded
+{
+    if (self.selectedObjectDotcomID == nil) {
+        return;
+    }
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:context];
+    self.selectedObjectID = [[service blogByBlogId:self.selectedObjectDotcomID] objectID];
 }
 
 
@@ -152,6 +153,7 @@ static CGFloat BlogCellRowHeight = 54.0;
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
+    [self refreshSelectedObjectIdIfNeeded];
     [self.tableView reloadData];
 }
 
