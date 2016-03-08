@@ -551,7 +551,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     PostListFilter *filter = [self currentPostListFilter];
     if (filter.oldestPostDate && !self.isSearching) {
         // Filter posts by any posts newer than the filter's oldestPostDate.
-        NSPredicate *datePredicate = [NSPredicate predicateWithFormat:@"date_created_gmt >= %@", filter.oldestPostDate];
+        NSPredicate *datePredicate = [NSPredicate predicateWithFormat:@"(date_created_gmt = NULL) OR (date_created_gmt >= %@)", filter.oldestPostDate];
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, datePredicate]];
     }
     
