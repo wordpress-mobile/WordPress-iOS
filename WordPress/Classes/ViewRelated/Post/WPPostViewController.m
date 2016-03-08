@@ -655,7 +655,7 @@ EditImageDetailsViewControllerDelegate
     void (^dismissHandler)() = ^(void) {
         [self dismissViewControllerAnimated:YES completion:nil];
     };
-    void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
+    void (^successHandler)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
         
@@ -698,8 +698,8 @@ EditImageDetailsViewControllerDelegate
     };
     
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.post.blog.objectID
-                                                                                   selectedCompletion:selectedCompletion
-                                                                                     cancelCompletion:dismissHandler];
+                                                                                       successHandler:successHandler
+                                                                                       dismissHandler:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
@@ -1655,7 +1655,7 @@ EditImageDetailsViewControllerDelegate
 - (void)dismissAssociatedAlertControllerIfVisible:(NSString *)uniqueMediaId {
     // let's see if we where displaying an action sheet for this image
     if (self.currentAlertController && [uniqueMediaId isEqualToString:self.selectedMediaID]){
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.currentAlertController dismissViewControllerAnimated:YES completion:nil];
         self.currentAlertController = nil;
     }
 }
@@ -1934,6 +1934,9 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidFinishLoadingDOM:(WPEditorViewController *)editorController
 {
+    [self.editorView setImageEditText:NSLocalizedString(@"Edit",
+                                                        @"Title of the edit-image button in the post editor.")];
+    
     [self refreshUIForCurrentPost];
 }
 
