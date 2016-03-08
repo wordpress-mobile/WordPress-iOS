@@ -1934,6 +1934,9 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidFinishLoadingDOM:(WPEditorViewController *)editorController
 {
+    [self.editorView setImageEditText:NSLocalizedString(@"Edit",
+                                                        @"Title of the edit-image button in the post editor.")];
+    
     [self refreshUIForCurrentPost];
 }
 
