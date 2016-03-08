@@ -14,14 +14,20 @@ static CGFloat BlogCellRowHeight = 54.0;
 
 @interface BlogSelectorViewController () <NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic, strong) NSManagedObjectID *selectedObjectID;
-@property (nonatomic,   copy) BlogSelectorSuccessHandler successHandler;
-@property (nonatomic,   copy) BlogSelectorDismissHandler dismissHandler;
+@property (nonatomic, strong) NSFetchedResultsController    *resultsController;
+@property (nonatomic, strong) NSNumber                      *selectedObjectDotcomID;
+@property (nonatomic, strong) NSManagedObjectID             *selectedObjectID;
+@property (nonatomic,   copy) BlogSelectorSuccessHandler    successHandler;
+@property (nonatomic,   copy) BlogSelectorDismissHandler    dismissHandler;
 
 @end
 
 @implementation BlogSelectorViewController
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (instancetype)initWithSelectedBlogObjectID:(NSManagedObjectID *)objectID
                               successHandler:(BlogSelectorSuccessHandler)successHandler
@@ -59,15 +65,11 @@ static CGFloat BlogCellRowHeight = 54.0;
                                dismissHandler:dismissHandler];
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
+    // Listen to Account Changes
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(wordPressComAccountChanged:)
                                                  name:WPAccountDefaultWordPressComAccountChangedNotification
@@ -82,10 +84,14 @@ static CGFloat BlogCellRowHeight = 54.0;
         self.navigationItem.leftBarButtonItem = cancelButtonItem;
     }
 
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-
+    // TableView
     self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    // NSFetchedResultsController
+    self.resultsController.delegate = self;
+    [self.resultsController performFetch:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -107,15 +113,6 @@ static CGFloat BlogCellRowHeight = 54.0;
     self.resultsController.delegate = nil;
 }
 
-- (NSUInteger)numSites
-{
-    return [[self.resultsController fetchedObjects] count];
-}
-
-- (BOOL)hasDotComAndSelfHosted
-{
-    return ([[self.resultsController sections] count] > 1);
-}
 
 - (void)scrollToSelectedObjectID
 {
@@ -290,13 +287,16 @@ static CGFloat BlogCellRowHeight = 54.0;
         return _resultsController;
     }
 
-    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"settings.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
-    [fetchRequest setPredicate:[self fetchRequestPredicate]];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"settings.name"
+                                                              ascending:YES
+                                                               selector:@selector(localizedCaseInsensitiveCompare:)]];
+    request.predicate = [self fetchRequestPredicate];
 
-    _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                             managedObjectContext:moc
+    _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                             managedObjectContext:context
                                                                sectionNameKeyPath:nil
                                                                         cacheName:nil];
     _resultsController.delegate = self;
@@ -306,6 +306,7 @@ static CGFloat BlogCellRowHeight = 54.0;
         DDLogError(@"Couldn't fetch sites: %@", [error localizedDescription]);
         _resultsController = nil;
     }
+    
     return _resultsController;
 }
 
