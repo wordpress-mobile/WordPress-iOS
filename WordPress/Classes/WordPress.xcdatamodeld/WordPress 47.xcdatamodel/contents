@@ -146,6 +146,7 @@
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AbstractPost" inverseName="blog" inverseEntity="AbstractPost" indexed="YES">
             <userInfo/>
         </relationship>
+        <relationship name="postTypes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PostType" inverseName="blog" inverseEntity="PostType" syncable="YES"/>
         <relationship name="settings" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="BlogSettings" inverseName="blog" inverseEntity="BlogSettings" syncable="YES"/>
         <relationship name="sharingButtons" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SharingButton" inverseName="blog" inverseEntity="SharingButton" syncable="YES"/>
         <relationship name="tags" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PostTag" inverseName="blog" inverseEntity="PostTag">
@@ -426,6 +427,12 @@
         <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="tags" inverseEntity="Blog" syncable="YES"/>
         <userInfo/>
     </entity>
+    <entity name="PostType" representedClassName="PostType" syncable="YES">
+        <attribute name="apiQueryable" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="label" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="postTypes" inverseEntity="Blog" syncable="YES"/>
+    </entity>
     <entity name="PublicizeConnection" representedClassName="WordPress.PublicizeConnection" syncable="YES">
         <attribute name="connectionID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="dateExpires" optional="YES" attributeType="Date" syncable="YES"/>
@@ -602,7 +609,7 @@
         <element name="Account" positionX="0" positionY="0" width="128" height="225"/>
         <element name="AccountSettings" positionX="18" positionY="153" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="585"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="600"/>
         <element name="BlogSettings" positionX="18" positionY="153" width="128" height="570"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
@@ -616,6 +623,7 @@
         <element name="Person" positionX="18" positionY="153" width="128" height="180"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="195"/>
         <element name="PostTag" positionX="27" positionY="153" width="128" height="105"/>
+        <element name="PostType" positionX="27" positionY="153" width="128" height="105"/>
         <element name="PublicizeConnection" positionX="27" positionY="162" width="128" height="330"/>
         <element name="PublicizeService" positionX="18" positionY="153" width="128" height="195"/>
         <element name="ReaderAbstractTopic" positionX="9" positionY="153" width="128" height="150"/>
