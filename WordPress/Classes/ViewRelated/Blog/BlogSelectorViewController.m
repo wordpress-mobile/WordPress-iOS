@@ -135,6 +135,15 @@ static CGFloat BlogCellRowHeight = 54.0;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 }
 
+
+#pragma mark - NSFetchedResultsControllerDelegate
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableView reloadData];
+}
+
+
 #pragma mark - Actions
 
 - (IBAction)cancelButtonTapped:(id)sender
