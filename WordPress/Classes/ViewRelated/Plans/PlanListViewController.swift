@@ -105,7 +105,7 @@ enum PlanListViewModel {
                     price: price,
                     description: plan.description,
                     icon: icon,
-                    action: presenter.present(self.controllerForPlanDetails(plan))
+                    action: presenter.present(self.controllerForPlanDetails(plan, activePlan: activePlan))
                 )
             })
             return ImmuTable(sections: [
@@ -116,10 +116,10 @@ enum PlanListViewModel {
         }
     }
 
-    func controllerForPlanDetails(plan: Plan) -> ImmuTableRowControllerGenerator {
+    func controllerForPlanDetails(plan: Plan, activePlan: Plan) -> ImmuTableRowControllerGenerator {
         return { row in
-            let planVC = PlanComparisonViewController.controllerWithInitialPlan(plan)
-            let navigationVC = UINavigationController(rootViewController: planVC)
+            let planVC = PlanComparisonViewController.controllerWithInitialPlan(plan, activePlan: activePlan)
+            let navigationVC = RotationAwareNavigationViewController(rootViewController: planVC)
             navigationVC.modalPresentationStyle = .FormSheet
             return navigationVC
         }
