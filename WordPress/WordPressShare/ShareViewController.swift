@@ -127,18 +127,22 @@ class ShareViewController: SLComposeServiceViewController {
     
     private func loadWebsiteUrl(completion: (NSURL? -> Void)) {
         guard let item = extensionContext?.inputItems.first as? NSExtensionItem,
-            let itemProvider = item.attachments?.first as? NSItemProvider else
+            let itemProviders = item.attachments as? [NSItemProvider] else
         {
             completion(nil)
             return
         }
         
-        if itemProvider.hasItemConformingToTypeIdentifier("public.url") == false {
+        let urlItemProviders = itemProviders.filter({ (itemProvider) -> Bool in
+            return itemProvider.hasItemConformingToTypeIdentifier("public.url")
+        })
+        
+        guard urlItemProviders.count > 0  else {
             completion(nil)
             return
         }
         
-        itemProvider.loadItemForTypeIdentifier("public.url", options: nil) { (url, error) -> Void in
+        itemProviders[0].loadItemForTypeIdentifier("public.url", options: nil) { (url, error) -> Void in
             if let theURL = url as? NSURL {
                 completion(theURL)
             } else {
