@@ -97,10 +97,7 @@ static CGFloat BlogCellRowHeight = 54.0;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
 
-    // Scroll the currently selected object into view.
-    NSManagedObject *obj = [self.resultsController.managedObjectContext objectWithID:self.selectedObjectID];
-    NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
-    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+    [self scrollToSelectedObjectID];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -118,6 +115,18 @@ static CGFloat BlogCellRowHeight = 54.0;
 {
     return ([[self.resultsController sections] count] > 1);
 }
+
+- (void)scrollToSelectedObjectID
+{
+    if (self.selectedObjectID == nil) {
+        return;
+    }
+    
+    NSManagedObject *obj = [self.resultsController.managedObjectContext objectWithID:self.selectedObjectID];
+    NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+}
+
 
 #pragma mark - Notifications
 
