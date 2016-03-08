@@ -2,7 +2,10 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="OpenSans-Italic.ttf">
@@ -10,13 +13,94 @@
         </mutableArray>
         <mutableArray key="OpenSans-Regular.ttf">
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="OpenSans-Semibold.ttf">
+            <string>OpenSans-Semibold</string>
+            <string>OpenSans-Semibold</string>
             <string>OpenSans-Semibold</string>
             <string>OpenSans-Semibold</string>
         </mutableArray>
     </customFonts>
     <scenes>
+        <!--Plan Post Purchase Page View Controller-->
+        <scene sceneID="oiW-rF-LNP">
+            <objects>
+                <viewController storyboardIdentifier="WordPress.PlanPostPurchasePageViewController" id="vJO-em-60i" customClass="PlanPostPurchasePageViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="k9t-rH-Jbp"/>
+                        <viewControllerLayoutGuide type="bottom" id="4c6-bS-ojB"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="osn-W0-3cA">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gUU-2m-nwk">
+                                <rect key="frame" x="60" y="327" width="480" height="22"/>
+                                <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plan-premium-active" translatesAutoresizingMaskIntoConstraints="NO" id="VMO-qT-QAn">
+                                <rect key="frame" x="270" y="150" width="60" height="60"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kpj-Yk-lXp" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="255.5" y="387" width="90" height="35"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="15"/>
+                                <state key="normal" title="Button"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="horizontalEdgeInset">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="verticalEdgeInset">
+                                        <real key="value" value="7"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="actionButtonTapped" destination="vJO-em-60i" eventType="touchUpInside" id="Ecq-jN-Ujz"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heading" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kgW-JO-m1p">
+                                <rect key="frame" x="20" y="285" width="560" height="29"/>
+                                <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="21"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.58997290120000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="kgW-JO-m1p" firstAttribute="trailing" secondItem="osn-W0-3cA" secondAttribute="trailingMargin" id="1VX-MR-Ugw"/>
+                            <constraint firstItem="kpj-Yk-lXp" firstAttribute="top" secondItem="gUU-2m-nwk" secondAttribute="baseline" constant="44" id="Cla-Ed-0As"/>
+                            <constraint firstItem="VMO-qT-QAn" firstAttribute="centerX" secondItem="osn-W0-3cA" secondAttribute="centerX" id="MAU-tX-lWj"/>
+                            <constraint firstItem="VMO-qT-QAn" firstAttribute="centerY" secondItem="osn-W0-3cA" secondAttribute="bottom" multiplier="0.3" id="XlD-NV-Y5G"/>
+                            <constraint firstItem="kgW-JO-m1p" firstAttribute="centerY" secondItem="osn-W0-3cA" secondAttribute="centerY" id="ZHq-2A-jXF"/>
+                            <constraint firstItem="kpj-Yk-lXp" firstAttribute="centerX" secondItem="osn-W0-3cA" secondAttribute="centerX" id="kgT-aS-cif"/>
+                            <constraint firstItem="gUU-2m-nwk" firstAttribute="trailing" secondItem="osn-W0-3cA" secondAttribute="trailingMargin" constant="-40" id="nik-K3-ma9"/>
+                            <constraint firstItem="gUU-2m-nwk" firstAttribute="firstBaseline" secondItem="kgW-JO-m1p" secondAttribute="firstBaseline" constant="37" id="qT7-wt-QtS"/>
+                            <constraint firstItem="gUU-2m-nwk" firstAttribute="leading" secondItem="osn-W0-3cA" secondAttribute="leadingMargin" constant="40" id="xXs-Cg-mi9"/>
+                            <constraint firstItem="kgW-JO-m1p" firstAttribute="leading" secondItem="osn-W0-3cA" secondAttribute="leadingMargin" id="ytW-bO-Nm9"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="actionButton" destination="kpj-Yk-lXp" id="dcL-TV-2eC"/>
+                        <outlet property="descriptionLabel" destination="gUU-2m-nwk" id="rIg-ph-7xA"/>
+                        <outlet property="headingLabel" destination="kgW-JO-m1p" id="0Wk-5O-rHb"/>
+                        <outlet property="imageView" destination="VMO-qT-QAn" id="SA3-cR-pOv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pm2-dE-4gQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view contentMode="scaleToFill" id="7uv-vQ-AXI">
+                    <rect key="frame" x="0.0" y="0.0" width="1406" height="573"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+            </objects>
+            <point key="canvasLocation" x="853" y="1059"/>
+        </scene>
         <!--Plan Comparison View Controller-->
         <scene sceneID="CYw-U0-oI7">
             <objects>
@@ -113,6 +197,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DH7-9o-kVF">
+                                <rect key="frame" x="0.0" y="220" width="600" height="380"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="msO-08-fqQ" id="cbF-gf-JY2"/>
+                                    <outlet property="delegate" destination="msO-08-fqQ" id="2cJ-7W-6ja"/>
+                                </connections>
+                            </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rNB-K6-2G7" userLabel="Header View">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="220"/>
                                 <subviews>
@@ -130,11 +222,11 @@
                                                     <constraint firstAttribute="height" constant="60" id="pkL-hL-79c"/>
                                                 </constraints>
                                             </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="22" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAy-0N-D1K">
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" axis="vertical" distribution="fillEqually" alignment="center" spacing="22" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jAy-0N-D1K">
                                                 <rect key="frame" x="24" y="72" width="536" height="59"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WordPress.com Premium" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="isU-1g-ArF" userLabel="Plan Title Label">
-                                                        <rect key="frame" x="170" y="0.0" width="197" height="18"/>
+                                                        <rect key="frame" x="170" y="0.0" width="196.5" height="18"/>
                                                         <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="16"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
@@ -146,15 +238,16 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$99.99 per year" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fju-eH-OS6" userLabel="Plan Price Label">
-                                                        <rect key="frame" x="214" y="41" width="109" height="18"/>
+                                                        <rect key="frame" x="213" y="41" width="109" height="18"/>
                                                         <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
                                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJf-48-mlv" userLabel="Purchase Button" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="245" y="143" width="95" height="25"/>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJf-48-mlv" userLabel="Purchase Button" customClass="PurchaseButton" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="244" y="143" width="95" height="25"/>
+                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="25" id="WX3-mf-WwP"/>
                                                 </constraints>
@@ -162,6 +255,9 @@
                                                 <state key="normal" title="PURCHASE">
                                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="purchaseTapped" destination="msO-08-fqQ" eventType="touchUpInside" id="Wub-Tq-SYx"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -183,14 +279,6 @@
                                     <constraint firstAttribute="height" constant="220" id="sLG-6E-6KH"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="DH7-9o-kVF">
-                                <rect key="frame" x="0.0" y="220" width="600" height="380"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <outlet property="dataSource" destination="msO-08-fqQ" id="cbF-gf-JY2"/>
-                                    <outlet property="delegate" destination="msO-08-fqQ" id="2cJ-7W-6ja"/>
-                                </connections>
-                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -205,6 +293,7 @@
                     </view>
                     <connections>
                         <outlet property="dropshadowImageView" destination="nps-70-EDE" id="fyT-av-Rh8"/>
+                        <outlet property="headerInfoStackView" destination="jAy-0N-D1K" id="JdG-2j-zaW"/>
                         <outlet property="planDescriptionLabel" destination="edq-hC-GnQ" id="8Cy-Z5-E3i"/>
                         <outlet property="planImageView" destination="f6b-b4-ZgP" id="6nb-u6-9DE"/>
                         <outlet property="planPriceLabel" destination="Fju-eH-OS6" id="pPs-DS-Dzv"/>
@@ -220,5 +309,6 @@
     </scenes>
     <resources>
         <image name="plan-premium" width="60" height="60"/>
+        <image name="plan-premium-active" width="60" height="60"/>
     </resources>
 </document>

@@ -12,6 +12,7 @@
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) AbstractPost *post;
 @property (nonatomic, assign) WPMediaType filter;
+@property (nonatomic, assign) BOOL ascendingOrdering;
 @property (nonatomic, strong) NSArray *media;
 @property (nonatomic, strong) NSMutableDictionary *observers;
 @property (nonatomic, strong) MediaService *mediaService;
@@ -30,8 +31,8 @@
     self = [super init];
     if (self) {
         _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
-        _groupObserverHandler = [_mediaGroup registerChangeObserverBlock:^{
-            [self notifyObservers];
+        _groupObserverHandler = [_mediaGroup registerChangeObserverBlock:^(BOOL incrementalChanges, NSIndexSet *removed, NSIndexSet *inserted, NSIndexSet *changed, NSArray<id<WPMediaMove>> *moved) {
+            [self notifyObserversWithIncrementalChanges:incrementalChanges removed:removed inserted:inserted changed:changed moved:moved];
         }];
         _blog = blog;
         NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
@@ -83,14 +84,14 @@
     return self.mediaGroup;
 }
 
--(void)loadDataWithSuccess:(WPMediaChangesBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
+-(void)loadDataWithSuccess:(WPMediaSuccessBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
 {
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     [mainContext performBlock:^{
         NSString *entityName = NSStringFromClass([Media class]);
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
         request.predicate = [[self class] predicateForFilter:self.filter blog:self.blog];
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
         request.sortDescriptors = @[sortDescriptor];
         NSError *error;
         self.media = [mainContext executeFetchRequest:request error:&error];
@@ -101,7 +102,7 @@
             NSString *entityName = NSStringFromClass([Media class]);
             NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
             request.predicate = [[self class] predicateForFilter:self.filter blog:self.blog];
-            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
+            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:self.ascendingOrdering];
             request.sortDescriptors = @[sortDescriptor];
             NSError *error;
             self.media = [mainContext executeFetchRequest:request error:&error];
@@ -123,10 +124,10 @@
     }];
 }
 
-- (void)notifyObservers
+- (void)notifyObserversWithIncrementalChanges:(BOOL)incrementalChanges removed:(NSIndexSet *)removed inserted:(NSIndexSet *)inserted changed:(NSIndexSet *)changed moved:(NSArray<id<WPMediaMove>> *)moved
 {
     for ( WPMediaChangesBlock callback in [self.observers allValues]) {
-        callback();
+        callback(incrementalChanges, removed, inserted, changed, moved);
     }
 }
 
@@ -254,7 +255,7 @@
         case WPMediaTypeVideo: {
             predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ && blog = %@", @"video", blog];
         } break;
-        case WPMediaTypeAll: {
+        case WPMediaTypeVideoOrImage: {
             predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@)  && blog = %@", @"image", @"video", blog];
         } break;
         default:
@@ -285,10 +286,10 @@
     return self;
 }
 
-- (void)notifyObservers
+- (void)notifyObserversWithIncrementalChanges:(BOOL)incrementalChanges removed:(NSIndexSet *)removed inserted:(NSIndexSet *)inserted changed:(NSIndexSet *)changed moved:(NSArray<id<WPMediaMove>> *)moved
 {
     for ( WPMediaChangesBlock callback in [self.observers allValues]) {
-        callback();
+        callback(incrementalChanges, removed, inserted, changed, moved);
     }
 }
 
@@ -358,7 +359,7 @@
         [mediaService getMediaLibraryCountForBlog:self.blog
                                           success:^(NSInteger count) {
                                               weakSelf.itemsCount = count;
-                                              [weakSelf notifyObservers];
+                                              [weakSelf notifyObserversWithIncrementalChanges:NO removed:nil inserted:nil changed:nil moved:nil];
                                           } failure:^(NSError *error) {
                                               DDLogError(@"%@", [error localizedDescription]);
                                           }];
