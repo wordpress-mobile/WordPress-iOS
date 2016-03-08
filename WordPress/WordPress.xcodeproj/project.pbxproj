@@ -41,6 +41,7 @@
 		08472A201C727E020040769D /* PostServiceOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08472A1F1C727E020040769D /* PostServiceOptions.m */; };
 		08A6FD9C1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A6FD9B1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m */; };
 		08B6D6F31C8F7DCE0052C52B /* PostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B6D6F11C8F7DCE0052C52B /* PostType.m */; };
+		08B6D6F91C8F7EF20052C52B /* RemotePostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B6D6F81C8F7EF20052C52B /* RemotePostType.m */; };
 		08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC67791C49B65A00153AD7 /* MenuItem.m */; };
 		08CC677F1C49B65A00153AD7 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677A1C49B65A00153AD7 /* Menu.m */; };
 		08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677D1C49B65A00153AD7 /* MenuLocation.m */; };
@@ -802,6 +803,8 @@
 		08A6FD9B1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteTaxonomyPaging.m; path = "Remote Objects/RemoteTaxonomyPaging.m"; sourceTree = "<group>"; };
 		08B6D6F01C8F7DCE0052C52B /* PostType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostType.h; sourceTree = "<group>"; };
 		08B6D6F11C8F7DCE0052C52B /* PostType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostType.m; sourceTree = "<group>"; };
+		08B6D6F71C8F7EF20052C52B /* RemotePostType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemotePostType.h; path = "Remote Objects/RemotePostType.h"; sourceTree = "<group>"; };
+		08B6D6F81C8F7EF20052C52B /* RemotePostType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemotePostType.m; path = "Remote Objects/RemotePostType.m"; sourceTree = "<group>"; };
 		08CC67771C49B52E00153AD7 /* WordPress 45.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 45.xcdatamodel"; sourceTree = "<group>"; };
 		08CC67781C49B65A00153AD7 /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItem.h; sourceTree = "<group>"; };
 		08CC67791C49B65A00153AD7 /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItem.m; sourceTree = "<group>"; };
@@ -3701,6 +3704,8 @@
 				E1A6DBD719DC7D080071AC1E /* RemotePostCategory.m */,
 				082AB9D41C4EEA72000CA523 /* RemotePostTag.h */,
 				082AB9D51C4EEA72000CA523 /* RemotePostTag.m */,
+				08B6D6F71C8F7EF20052C52B /* RemotePostType.h */,
+				08B6D6F81C8F7EF20052C52B /* RemotePostType.m */,
 				08A6FD9A1C5960AB00AC33E4 /* RemoteTaxonomyPaging.h */,
 				08A6FD9B1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m */,
 				E1A6DBD819DC7D080071AC1E /* RemotePost.h */,
@@ -4865,6 +4870,7 @@
 				5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */,
 				E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */,
 				B56F4F8F1C6B9358001CEB09 /* SettingsListPickerViewController.swift in Sources */,
+				08B6D6F91C8F7EF20052C52B /* RemotePostType.m in Sources */,
 				5D5D0027187DA9D30027CEF6 /* PostCategoriesViewController.m in Sources */,
 				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
 				85D239AE1AE5A5FC0074768D /* BlogSyncFacade.m in Sources */,
