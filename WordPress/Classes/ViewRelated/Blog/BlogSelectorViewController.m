@@ -97,6 +97,7 @@ static CGFloat BlogCellRowHeight = 54.0;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
 
+    [self syncBlogs];
     [self scrollToSelectedObjectID];
 }
 
@@ -125,6 +126,20 @@ static CGFloat BlogCellRowHeight = 54.0;
     NSManagedObject *obj = [self.resultsController.managedObjectContext objectWithID:self.selectedObjectID];
     NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+}
+
+- (void)syncBlogs
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    [context performBlock:^{
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+        
+        if (defaultAccount) {
+            [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+        }
+    }];
 }
 
 
