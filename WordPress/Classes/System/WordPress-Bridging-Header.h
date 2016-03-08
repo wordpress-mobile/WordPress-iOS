@@ -11,6 +11,8 @@
 #import "BlogService.h"
 #import "CommentService.h"
 
+#import "BlogSelectorViewController.h"
+
 #import "Constants.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
