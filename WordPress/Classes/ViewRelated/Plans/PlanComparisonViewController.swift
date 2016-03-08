@@ -9,6 +9,8 @@ class PlanComparisonViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var planStackView: UIStackView!
     
+    var activePlan: Plan?
+    
     var currentPlan: Plan = .Free {
         didSet {
             if currentPlan != oldValue {
@@ -22,7 +24,14 @@ class PlanComparisonViewController: UIViewController {
     }
     
     private lazy var viewControllers: [PlanDetailViewController] = {
-        return self.allPlans.map { PlanDetailViewController.controllerWithPlan($0) }
+        return self.allPlans.map { plan in
+            let controller = PlanDetailViewController.controllerWithPlan(plan)
+            if let activePlan = self.activePlan {
+                controller.isActivePlan = activePlan == plan
+            }
+            
+            return controller
+        }
     }()
     
     private let allPlans = [Plan.Free, Plan.Premium, Plan.Business]
@@ -34,10 +43,11 @@ class PlanComparisonViewController: UIViewController {
         return button
     }()
     
-    class func controllerWithInitialPlan(plan: Plan) -> PlanComparisonViewController {
+    class func controllerWithInitialPlan(plan: Plan, activePlan: Plan? = nil) -> PlanComparisonViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanComparisonViewController
-        
+
+        controller.activePlan = activePlan
         controller.currentPlan = plan
         
         return controller
@@ -62,8 +72,12 @@ class PlanComparisonViewController: UIViewController {
 
         // If the view is changing size (e.g. on rotation, or multitasking), scroll to the correct page boundary based on the new size
         coordinator.animateAlongsideTransition({ context in
-            self.scrollView.setContentOffset(CGPoint(x: CGFloat(self.currentIndex) * size.width, y: 0), animated: true)
+            self.scrollView.setContentOffset(CGPoint(x: CGFloat(self.currentIndex) * size.width, y: 0), animated: false)
         }, completion: nil)
+    }
+    
+    override func shouldAutorotate() -> Bool {
+        return false
     }
     
     override func viewDidLayoutSubviews() {
@@ -97,6 +111,7 @@ class PlanComparisonViewController: UIViewController {
             viewController.view.accessibilityElementsHidden = index != currentIndex
         }
     }
+    
     
     // MARK: - IBActions
     
