@@ -37,6 +37,8 @@ private struct AccountSettingsController: SettingsController {
     // MARK: - Model mapping
 
     func mapViewModel(settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
+        let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
+        
         let username = TextRow(
             title: NSLocalizedString("Username", comment: "Account Settings Username label"),
             value: settings?.username ?? "")
@@ -47,7 +49,7 @@ private struct AccountSettingsController: SettingsController {
         
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
-            value: service.primarySiteNameForSettings(settings) ?? "",
+            value: primarySiteName ?? "",
             action: presenter.push(editPrimarySite(settings))
         )
 
