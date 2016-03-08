@@ -82,15 +82,18 @@ static CGFloat BlogCellRowHeight = 54.0;
 
         self.navigationItem.leftBarButtonItem = cancelButtonItem;
     }
-
-    // TableView
-    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
-    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // NSFetchedResultsController
     self.resultsController.delegate = self;
     [self.resultsController performFetch:nil];
+    
+    // TableView
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    self.tableView.cellLayoutMarginsFollowReadableWidth = NO;
+    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    [self.tableView reloadData];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -98,9 +101,9 @@ static CGFloat BlogCellRowHeight = 54.0;
     [super viewWillAppear:animated];
 
     [self.navigationController setNavigationBarHidden:NO animated:animated];
-
+    
     [self syncBlogs];
-    [self refreshSelectedObjectIdIfNeeded];
+    [self scrollToSelectedObjectID];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -129,15 +132,32 @@ static CGFloat BlogCellRowHeight = 54.0;
     }];
 }
 
-- (void)refreshSelectedObjectIdIfNeeded
+- (void)scrollToSelectedObjectID
 {
-    if (self.selectedObjectDotcomID == nil) {
+    if (self.selectedObjectID == nil) {
         return;
     }
     
+    NSManagedObject *obj = [self.resultsController.managedObjectContext objectWithID:self.selectedObjectID];
+    NSIndexPath *indexPath = [self.resultsController indexPathForObject:obj];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+}
+
+- (NSManagedObjectID *)selectedObjectID
+{
+    if (_selectedObjectID != nil || _selectedObjectDotcomID == nil) {
+        return _selectedObjectID;
+    }
+    
+    // Retrieve
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service = [[BlogService alloc] initWithManagedObjectContext:context];
-    self.selectedObjectID = [[service blogByBlogId:self.selectedObjectDotcomID] objectID];
+    Blog *selectedBlog = [service blogByBlogId:self.selectedObjectDotcomID];
+    
+    // Cache
+    _selectedObjectID = selectedBlog.objectID;
+    
+    return _selectedObjectID;
 }
 
 
@@ -153,7 +173,6 @@ static CGFloat BlogCellRowHeight = 54.0;
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-    [self refreshSelectedObjectIdIfNeeded];
     [self.tableView reloadData];
 }
 
@@ -315,11 +334,16 @@ static CGFloat BlogCellRowHeight = 54.0;
 - (NSPredicate *)fetchRequestPredicate
 {
     NSString *predicate = @"(visible = YES)";
-    if (self.displaysOnlyDotcomAndJetpackSites) {
-        predicate = [predicate stringByAppendingFormat:@"AND (account != NULL OR jetpackAccount != NULL)"];
+    if (!self.displaysOnlyDefaultAccountSites) {
+        return [NSPredicate predicateWithFormat:predicate];
     }
-
-    return [NSPredicate predicateWithFormat:predicate];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+    predicate = [predicate stringByAppendingString:@" AND (account == %@ OR jetpackAccount == %@)"];
+    return [NSPredicate predicateWithFormat:predicate, defaultAccount, defaultAccount];
 }
 
 @end
