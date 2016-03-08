@@ -103,6 +103,7 @@
  */
 @property (nonatomic, assign) BOOL shouldReauthenticateDefaultAccount;
 
+
 /**
  *  The title of the sign in button
  */
@@ -217,6 +218,9 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 - (void)setPasswordTextReturnKeyType:(UIReturnKeyType)returnKeyType;
 - (void)setFocusToSiteUrlText;
 - (void)setFocusToMultifactorText;
+
+- (void)autoFillLoginWithSharedWebCredentialsIfAvailable;
+- (void)updateAutoFillLoginCredentialsIfNeeded:(NSString *)username password:(NSString *)password;
 
 - (void)displayErrorMessageForInvalidOrMissingFields;
 - (void)displayReservedNameErrorMessage;
