@@ -4,13 +4,26 @@ import WordPressShared
 
 class PostStatusPickerViewController : UITableViewController
 {
+    // MARK: - Initializers
+    init(statuses : [String: String]) {
+        // Note:  We'll store the sorted Post Statuses, into an array, as a (Key, Description) tuple.
+        self.sortedStatuses = statuses.sort { $0.1 < $1.1 }
+        super.init(style: .Plain)
+    }
+    
+    required init?(coder: NSCoder) {
+        sortedStatuses = [(String, String)]()
+        super.init(coder: coder)
+        assert(false, "Please, use the main initializer instead")
+    }
+    
+    
     // MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         setupTableView()
         setupNoResultsView()
-        loadStatuses()
     }
     
     
@@ -20,7 +33,7 @@ class PostStatusPickerViewController : UITableViewController
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return statuses.count
+        return sortedStatuses.count
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -34,16 +47,15 @@ class PostStatusPickerViewController : UITableViewController
             WPStyleGuide.Share.configureBlogTableViewCell(cell!)
         }
         
-        let status = sortedStatuses[indexPath.row].0
-        configureCell(cell!, status: status)
+        let description = sortedStatuses[indexPath.row].1
+        configureCell(cell!, description: description)
         
         return cell!
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let status = sortedStatuses[indexPath.row].0
-        let description = statuses[status]!
-        onChange?(postStatus: status, description: description)
+        let status = sortedStatuses[indexPath.row]
+        onChange?(postStatus: status.0, description: status.1)
         navigationController?.popViewControllerAnimated(true)
     }
     
@@ -71,15 +83,11 @@ class PostStatusPickerViewController : UITableViewController
     
     
     // MARK: - Private Helpers
-    private func configureCell(cell: UITableViewCell, status: String) {
+    private func configureCell(cell: UITableViewCell, description: String) {
         // Status' Details
-        let statusDescription = statuses[status]
-        cell.textLabel?.text = statusDescription
+        cell.textLabel?.text = description
     }
     
-    private func loadStatuses() {
-        sortedStatuses = statuses.sort({ $0.1 < $1.1 })
-    }
     
     // MARK: Typealiases
     typealias PickerHandler = (postStatus: String, description: String) -> Void
@@ -88,8 +96,7 @@ class PostStatusPickerViewController : UITableViewController
     var onChange                : PickerHandler?
     
     // MARK: - Private Properties
-    var statuses: [String: String]!
-    private var sortedStatuses: [(String, String)]!
+    private var sortedStatuses  : [(String, String)]
     private var noResultsView   : WPNoResultsView!
     
     // MARK: - Private Constants

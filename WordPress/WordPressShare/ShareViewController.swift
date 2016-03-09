@@ -93,8 +93,7 @@ class ShareViewController: SLComposeServiceViewController {
     }
     
     private func displayStatusPicker() {
-        let pickerViewController = PostStatusPickerViewController()
-        pickerViewController.statuses = postStatuses
+        let pickerViewController = PostStatusPickerViewController(statuses: postStatuses)
         pickerViewController.onChange = { (status, description) in
             self.postStatus = status
             self.reloadConfigurationItems()
