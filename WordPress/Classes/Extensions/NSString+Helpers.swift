@@ -4,8 +4,8 @@ import Foundation
 extension NSString
 {
     /// Returns the string's hostname. If there's any
-    public func hostname() -> String {
-        return NSURLComponents(string: self as String)?.host ?? String()
+    public func hostname() -> String? {
+        return NSURLComponents(string: self as String)?.host
     }
     
     /// Splits the lines contained in the current string, and returns its unique values in a NSSet instance.
