@@ -47,7 +47,7 @@ class SitePickerViewController : UITableViewController
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let site = sites[indexPath.row]
-        onChange?(siteId: site.ID, description: site.name?.characters.count > 0 ? site.name : site.URL.absoluteString.hostname())
+        onChange?(siteId: site.ID, description: site.name?.characters.count > 0 ? site.name : site.URL.host)
         navigationController?.popViewControllerAnimated(true)
     }
     
@@ -99,7 +99,7 @@ class SitePickerViewController : UITableViewController
     private func configureCell(cell: UITableViewCell, site: Site) {
         // Site's Details
         cell.textLabel?.text = site.name
-        cell.detailTextLabel?.text = site.URL.absoluteString.hostname()
+        cell.detailTextLabel?.text = site.URL.host
         
         // Site's Blavatar
         cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
