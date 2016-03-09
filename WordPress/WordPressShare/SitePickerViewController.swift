@@ -4,7 +4,7 @@ import WordPressShared
 import WordPressComKit
 
 
-class BlogPickerViewController : UITableViewController
+class SitePickerViewController : UITableViewController
 {
     // MARK: - View Lifecycle
     override func viewDidLoad() {
