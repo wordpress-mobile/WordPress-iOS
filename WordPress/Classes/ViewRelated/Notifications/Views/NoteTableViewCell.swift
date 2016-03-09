@@ -89,7 +89,14 @@ import WordPressShared
         
         // Handle non-gravatar images
         let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
-        iconImageView.downloadImage(url, placeholderImage: placeholderImage)
+        iconImageView.downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: { (error) in
+            // Note: Don't cache 404's. Otherwise Unapproved / Approved gravatars won't switch!
+            if self.gravatarURL?.isEqual(url) == true {
+                self.gravatarURL = nil
+            }
+        })
+        
+        gravatarURL = url
     }
     
     
@@ -106,6 +113,7 @@ import WordPressShared
             // Note: If we've got any issues with the Gravatar instance, fallback to the placeholder, and dont'
             // cache the URL!
             iconImageView.image = placeholderImage
+            gravatarURL = nil
             return
         }
         
