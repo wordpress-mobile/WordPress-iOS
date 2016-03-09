@@ -67,7 +67,6 @@ class BlogPickerViewController : UITableViewController
     }
     
     private func setupNoResultsView() {
-        noResultsView = WPNoResultsView()
         tableView.addSubview(noResultsView)
     }
     
@@ -133,7 +132,7 @@ class BlogPickerViewController : UITableViewController
     
     // MARK: - Private Properties
     private var sites           = [Site]()
-    private var noResultsView   : WPNoResultsView!
+    private var noResultsView   = WPNoResultsView()
     
     // MARK: - Private Constants
     private let reuseIdentifier = "reuseIdentifier"
