@@ -85,17 +85,11 @@
 {
     if(_item != item) {
         _item = item;
-        
-        MenuItemType itemType = [item itemType];
-        if(itemType == MenuItemTypeUnknown) {
-            self.selectedItemType = MenuItemTypePage;
-        }else {
-            self.selectedItemType = itemType;
-        }
+        self.selectedItemType = item.type;
     }
 }
 
-- (void)setSelectedItemType:(MenuItemType)selectedItemType
+- (void)setSelectedItemType:(NSString *)selectedItemType
 {
     if(_selectedItemType != selectedItemType) {
         _selectedItemType = selectedItemType;
@@ -104,7 +98,7 @@
     }
 }
 
-- (void)showSourceViewForItemType:(MenuItemType)itemType
+- (void)showSourceViewForItemType:(NSString *)itemType
 {
     if(self.sourceView) {
         [self.stackView removeArrangedSubview:self.sourceView];
@@ -112,33 +106,19 @@
         self.sourceView = nil;
     }
     
-    MenuItemSourceView *sourceView = nil;
-    NSString *cacheIdentifier = [self cacheIdentifierForSourceViewWithItemType:itemType];
-    if(cacheIdentifier) {
-        sourceView = [self.sourceViewCache objectForKey:cacheIdentifier];
-    }
+    MenuItemSourceView *sourceView = [self.sourceViewCache objectForKey:itemType];
     BOOL shouldSetItem = NO;
     if(!sourceView) {
-        switch (itemType) {
-            case MenuItemTypePage:
-                sourceView = [[MenuItemSourcePageView alloc] init];
-                break;
-            case MenuItemTypeLink:
-                sourceView = [[MenuItemSourceLinkView alloc] init];
-                break;
-            case MenuItemTypeCategory:
-                sourceView = [[MenuItemSourceCategoryView alloc] init];
-                break;
-            case MenuItemTypeTag:
-                sourceView = [[MenuItemSourceTagView alloc] init];
-                break;
-            case MenuItemTypePost:
-                sourceView = [[MenuItemSourcePostView alloc] init];
-                break;
-            default:
-                // TODO: support misc item sources
-                // Jan-12-2015 - Brent C.
-                break;
+        if ([itemType isEqualToString:MenuItemTypePage]) {
+            sourceView = [[MenuItemSourcePageView alloc] init];
+        } else if([itemType isEqualToString:MenuItemTypeCustom]) {
+            sourceView = [[MenuItemSourceLinkView alloc] init];
+        } else if([itemType isEqualToString:MenuItemTypeCategory]) {
+            sourceView = [[MenuItemSourceCategoryView alloc] init];
+        } else if([itemType isEqualToString:MenuItemTypeTag]) {
+            sourceView = [[MenuItemSourceTagView alloc] init];
+        } else if([itemType isEqualToString:MenuItemTypePost]) {
+            sourceView = [[MenuItemSourcePostView alloc] init];
         }
         sourceView.delegate = self;
         shouldSetItem = YES;
@@ -151,39 +131,8 @@
         if (shouldSetItem) {
             sourceView.item = self.item;
         }
-        if(cacheIdentifier) {
-            [self.sourceViewCache setObject:sourceView forKey:cacheIdentifier];
-        }
+        [self.sourceViewCache setObject:sourceView forKey:itemType];
     }
-}
-
-- (NSString *)cacheIdentifierForSourceViewWithItemType:(MenuItemType)itemType
-{
-    NSString *identifier = nil;
-    
-    switch (itemType) {
-        case MenuItemTypePage:
-            identifier = NSStringFromClass([MenuItemSourcePageView class]);
-            break;
-        case MenuItemTypeLink:
-            identifier = NSStringFromClass([MenuItemSourceLinkView class]);
-            break;
-        case MenuItemTypeCategory:
-            identifier = NSStringFromClass([MenuItemSourceCategoryView class]);
-            break;
-        case MenuItemTypeTag:
-            identifier = NSStringFromClass([MenuItemSourceTagView class]);
-            break;
-        case MenuItemTypePost:
-            identifier = NSStringFromClass([MenuItemSourcePostView class]);
-            break;
-        default:
-            // TODO: support misc item sources
-            // Jan-12-2015 - Brent C.
-            break;
-    }
-    
-    return identifier;
 }
 
 #pragma mark - MenuItemSourceHeaderViewDelegate

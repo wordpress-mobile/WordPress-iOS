@@ -8,7 +8,7 @@
 
 @property (nonatomic, weak) id <MenuItemSourceContainerViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
-@property (nonatomic, assign) MenuItemType selectedItemType;
+@property (nonatomic, strong) NSString *selectedItemType;
 
 @end
 

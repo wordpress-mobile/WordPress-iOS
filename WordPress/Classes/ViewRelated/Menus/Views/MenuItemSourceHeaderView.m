@@ -85,11 +85,11 @@
     return self;
 }
 
-- (void)setItemType:(MenuItemType)itemType
+- (void)setItemType:(NSString *)itemType
 {
     if(_itemType != itemType) {
         _itemType = itemType;
-        self.label.text = [self title];
+        self.label.text = itemType;
         [self.stackView layoutIfNeeded];
     }
 }
@@ -107,32 +107,6 @@
     CGContextMoveToPoint(context, 0, rect.size.height);
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     CGContextStrokePath(context);
-}
-
-- (NSString *)title
-{
-    NSString *title = nil;
-    switch (self.itemType) {
-        case MenuItemTypePage:
-            title = NSLocalizedString(@"Page", @"");
-            break;
-        case MenuItemTypeLink:
-            title = NSLocalizedString(@"Link", @"");
-            break;
-        case MenuItemTypeCategory:
-            title = NSLocalizedString(@"Category", @"");
-            break;
-        case MenuItemTypeTag:
-            title = NSLocalizedString(@"Tag", @"");
-            break;
-        case MenuItemTypePost:
-            title = NSLocalizedString(@"Post", @"");
-            break;
-        default:
-            break;
-    }
-    
-    return title;
 }
 
 @end

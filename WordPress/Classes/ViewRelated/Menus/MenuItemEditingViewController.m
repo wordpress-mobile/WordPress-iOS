@@ -1,4 +1,5 @@
 #import "MenuItemEditingViewController.h"
+#import "Menu.h"
 #import "MenuItem.h"
 #import "WPStyleGuide.h"
 #import "MenuItemEditingHeaderView.h"
@@ -78,6 +79,13 @@ typedef NS_ENUM(NSUInteger) {
     
     [self loadContentLayoutConstraints];
     [self updateLayoutIfNeeded];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self.typeView loadPostTypesForBlog:self.item.menu.blog];
 }
 
 - (void)viewDidLayoutSubviews
@@ -300,7 +308,7 @@ typedef NS_ENUM(NSUInteger) {
 
 #pragma mark - MenuItemTypeSelectionViewDelegate
 
-- (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(MenuItemType)itemType
+- (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(NSString *)itemType
 {
     self.sourceView.selectedItemType = itemType;
     
