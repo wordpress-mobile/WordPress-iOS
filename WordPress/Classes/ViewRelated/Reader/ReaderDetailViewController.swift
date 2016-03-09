@@ -652,7 +652,7 @@ final public class ReaderDetailViewController : UIViewController
             footerViewHeightConstraint.constant = 0.0
             UIView.animateWithDuration(0.3,
                 delay: 0.0,
-                options: UIViewAnimationOptions.BeginFromCurrentState,
+                options: [.BeginFromCurrentState, .AllowUserInteraction],
                 animations: { () -> Void in
                     self.view.layoutIfNeeded()
                 }, completion: nil)
@@ -663,7 +663,7 @@ final public class ReaderDetailViewController : UIViewController
             footerViewHeightConstraint.constant = footerViewHeightConstraintConstant
             UIView.animateWithDuration(0.3,
                 delay: 0.0,
-                options: UIViewAnimationOptions.BeginFromCurrentState,
+                options: [.BeginFromCurrentState, .AllowUserInteraction],
                 animations: { () -> Void in
                     self.view.layoutIfNeeded()
                 }, completion: nil)

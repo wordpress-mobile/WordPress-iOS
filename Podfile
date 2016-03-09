@@ -44,12 +44,12 @@ target 'WordPress', :exclusive => true do
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'NSURL+IDN', '0.3'
   pod 'Simperium', '0.8.12'
-  pod 'WPMediaPicker', '~> 0.8.2'
-  pod 'WordPress-iOS-Editor', '1.1.5'
+  pod 'WPMediaPicker', '~> 0.9.0'
+  pod 'WordPress-iOS-Editor', '1.1.3'
   pod 'WordPress-iOS-Shared', '0.5.3'
   pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
+  pod 'WordPressCom-Analytics-iOS', '0.1.4'
   pod 'WordPressCom-Stats-iOS/UI', '0.6.3'
-  pod 'WordPressCom-Analytics-iOS', '0.1.3'
   pod 'wpxmlrpc', '~> 0.8'
 end
 
