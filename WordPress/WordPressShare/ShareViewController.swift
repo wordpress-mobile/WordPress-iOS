@@ -67,7 +67,7 @@ class ShareViewController: SLComposeServiceViewController {
         blogPickerItem.title = NSLocalizedString("Post to:", comment: "Upload post to the selected Site")
         blogPickerItem.value = selectedSiteName ?? NSLocalizedString("Select a site", comment: "Select a site in the share extension")
         blogPickerItem.tapHandler = { [weak self] in
-            self?.displayBlogPicker()
+            self?.displaySitePicker()
         }
         
         let statusPickerItem = SLComposeSheetConfigurationItem()
@@ -81,8 +81,8 @@ class ShareViewController: SLComposeServiceViewController {
     }
 
     
-    private func displayBlogPicker() {
-        let pickerViewController = BlogPickerViewController()
+    private func displaySitePicker() {
+        let pickerViewController = SitePickerViewController()
         pickerViewController.onChange = { (siteId, description) in
             self.selectedSiteID = siteId
             self.selectedSiteName = description
