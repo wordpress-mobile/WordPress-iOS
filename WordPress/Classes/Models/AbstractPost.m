@@ -358,6 +358,10 @@
 
 - (BOOL)hasLocalChanges
 {
+    if([super hasLocalChanges]) {
+        return YES;
+    }
+    
     if (![self isRevision]) {
         return NO;
     }
