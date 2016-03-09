@@ -113,9 +113,9 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     NSString *path = [self pathForPostTypes];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
+    NSDictionary *parameters = @{@"context": @"edit"};
     [self.api GET:requestUrl
-       parameters:nil
+       parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
              
               NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
