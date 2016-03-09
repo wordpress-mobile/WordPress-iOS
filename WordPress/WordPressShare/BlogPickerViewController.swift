@@ -22,7 +22,7 @@ class BlogPickerViewController : UITableViewController
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sites?.count ?? 0
+        return sites.count
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -36,14 +36,14 @@ class BlogPickerViewController : UITableViewController
             WPStyleGuide.Share.configureBlogTableViewCell(cell!)
         }
         
-        let site = sites?[indexPath.row]
-        configureCell(cell!, site: site!)
+        let site = sites[indexPath.row]
+        configureCell(cell!, site: site)
         
         return cell!
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let site = sites![indexPath.row]
+        let site = sites[indexPath.row]
         onChange?(siteId: site.ID, description: site.name?.characters.count > 0 ? site.name : site.URL.absoluteString.hostname())
         navigationController?.popViewControllerAnimated(true)
     }
@@ -83,7 +83,7 @@ class BlogPickerViewController : UITableViewController
         
         service.fetchSites { sites, error in
             dispatch_async(dispatch_get_main_queue()) {
-                self.sites = sites
+                self.sites = sites ?? [Site]()
                 self.tableView.reloadData()
                 self.showEmptySitesIfNeeded()
             }
@@ -113,7 +113,7 @@ class BlogPickerViewController : UITableViewController
     }
     
     private func showEmptySitesIfNeeded() {
-        let hasSites = (sites?.isEmpty == false) ?? false
+        let hasSites = (sites.isEmpty == false)
         noResultsView.titleText = NSLocalizedString("No Sites", comment: "Legend displayed when the user has no sites")
         noResultsView.hidden = hasSites
     }
@@ -126,7 +126,7 @@ class BlogPickerViewController : UITableViewController
     var onChange                : PickerHandler?
     
     // MARK: - Private Properties
-    private var sites           : [Site]?
+    private var sites           = [Site]()
     private var noResultsView   : WPNoResultsView!
     
     // MARK: - Private Constants
