@@ -74,8 +74,12 @@ class BlogPickerViewController : UITableViewController
     
     // MARK: - Private Helpers
     private func loadSites() {
-        let authDetails = ShareExtensionService.retrieveShareExtensionConfiguration()
-        RequestRouter.bearerToken = authDetails!.oauth2Token as String
+        guard let configuration = ShareExtensionService.retrieveShareExtensionConfiguration() else {
+            showEmptySitesIfNeeded()
+            return
+        }
+        
+        RequestRouter.bearerToken = configuration.oauth2Token as String
         
         let service = SiteService()
         
