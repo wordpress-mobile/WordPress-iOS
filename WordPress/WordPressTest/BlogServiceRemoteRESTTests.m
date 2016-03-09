@@ -73,9 +73,9 @@ static NSTimeInterval const TestExpectationTimeout = 5;
     BlogServiceRemoteREST *service = nil;
     
     NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/post-types", blog.dotComID];
-    
+    NSDictionary *parameters = @{@"context": @"edit"};
     OCMStub([api GET:[OCMArg isEqual:url]
-          parameters:[OCMArg isNil]
+          parameters:[OCMArg isEqual:parameters]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
     
