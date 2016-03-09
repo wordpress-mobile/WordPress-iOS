@@ -7,18 +7,10 @@ extension UIImageView
     ///
     /// - Parameters:
     ///     - url: The URL of the target image
-    ///     - placeholderImage: Image to be displayed, temporarily, while the Download OP is executed
     ///
-    public func downloadImage(url: NSURL?, placeholderImage: UIImage?) {
-        image = placeholderImage
-
-        // Failsafe: Halt if the URL is empty
-        guard let unwrappedUrl = url else {
-            return
-        }
-        
+    public func downloadImage(url: NSURL) {
         // Hit the cache
-        if let cachedImage = Downloader.imagesCache[unwrappedUrl] {
+        if let cachedImage = Downloader.imagesCache[url] {
             self.image = cachedImage
             return
         }
@@ -30,7 +22,7 @@ extension UIImageView
         }
         
         // Hit the Backend
-        let request = NSMutableURLRequest(URL: unwrappedUrl)
+        let request = NSMutableURLRequest(URL: url)
         request.HTTPShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
         
@@ -43,7 +35,7 @@ extension UIImageView
             
             dispatch_async(dispatch_get_main_queue()) {
                 // Update the Cache
-                Downloader.imagesCache[unwrappedUrl] = image
+                Downloader.imagesCache[url] = image
                 
                 // Refresh!
                 self?.image = image
@@ -59,17 +51,14 @@ extension UIImageView
     ///
     /// - Parameters:
     ///     - url: The URL of the target blavatar
-    ///     - placeholderImage: Image to be displayed, temporarily, while the Download OP is executed
     ///
-    public func downloadBlavatar(url: NSURL?, placeholderImage: UIImage?) {
-        guard let unwrappedURL = url else {
-            image = placeholderImage
-            return
-        }
-        
-        let components = NSURLComponents(URL: unwrappedURL, resolvingAgainstBaseURL: true)
+    public func downloadBlavatar(url: NSURL) {
+        let components = NSURLComponents(URL: url, resolvingAgainstBaseURL: true)
         components?.query = String(format: Downloader.blavatarResizeFormat, blavatarSize())
-        downloadImage(components?.URL, placeholderImage: placeholderImage)
+        
+        if let updatedURL = components?.URL {
+            downloadImage(updatedURL)
+        }
     }
     
     

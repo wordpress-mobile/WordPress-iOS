@@ -99,14 +99,12 @@ class BlogPickerViewController : UITableViewController
         cell.detailTextLabel?.text = site.URL.absoluteString.hostname()
         
         // Site's Blavatar
-        let placeholderImage = WPStyleGuide.Share.blavatarPlaceholderImage
+        cell.imageView?.image = WPStyleGuide.Share.blavatarPlaceholderImage
         
         if let siteIconPath = site.icon,
             siteIconUrl = NSURL(string: siteIconPath)
         {
-            cell.imageView?.downloadBlavatar(siteIconUrl, placeholderImage: placeholderImage)
-        } else {
-            cell.imageView?.image = placeholderImage
+            cell.imageView?.downloadBlavatar(siteIconUrl)
         }
     }
     
