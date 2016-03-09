@@ -98,7 +98,9 @@ class BlogPickerViewController : UITableViewController
         // Site's Blavatar
         let placeholderImage = WPStyleGuide.Share.blavatarPlaceholderImage
         
-        if let siteIconPath = site.icon, siteIconUrl = NSURL(string: siteIconPath) {
+        if let siteIconPath = site.icon,
+            siteIconUrl = NSURL(string: siteIconPath)
+        {
             cell.imageView?.downloadBlavatar(siteIconUrl, placeholderImage: placeholderImage)
         } else {
             cell.imageView?.image = placeholderImage
