@@ -1,4 +1,5 @@
 #import "BlogServiceRemoteXMLRPC.h"
+#import "NSMutableDictionary+Helpers.h"
 #import <WordPressApi/WordPressApi.h>
 #import "WordPress-Swift.h"
 
@@ -64,10 +65,9 @@
                    success:(SuccessHandler)success
                    failure:(void (^)(NSError *error))failure
 {
-    NSDictionary *rawParameters = @{
-        @"blog_title"   : remoteBlogSettings.name,
-        @"blog_tagline" : remoteBlogSettings.tagline
-    };
+    NSMutableDictionary *rawParameters = [NSMutableDictionary dictionary];    
+    [rawParameters setValueIfNotNil:remoteBlogSettings.name forKey:@"blog_title"];
+    [rawParameters setValueIfNotNil:remoteBlogSettings.tagline forKey:@"blog_tagline"];
     
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:rawParameters];
     
