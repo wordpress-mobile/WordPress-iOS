@@ -6,9 +6,10 @@
 @interface MenuItemTypeView : UIView
 
 @property (nonatomic, weak) id <MenuItemTypeViewDelegate> delegate;
-@property (nonatomic, assign) BOOL drawsSelected;
 @property (nonatomic, assign) BOOL designIgnoresDrawingTopBorder;
-@property (nonatomic, assign) MenuItemType itemType;
+@property (nonatomic, assign) BOOL selected;
+@property (nonatomic, strong) NSString *itemType;
+@property (nonatomic, strong) NSString *itemTypeLabel;
 
 - (void)updateDesignForLayoutChangeIfNeeded;
 

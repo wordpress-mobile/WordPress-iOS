@@ -1,13 +1,14 @@
 #import "MenuItem.h"
 #import "Menu.h"
 
-NSString * const MenuItemTypeIdentifierPage = @"page";
-NSString * const MenuItemTypeIdentifierCategory = @"category";
-NSString * const MenuItemTypeIdentifierTag = @"post_tag";
-NSString * const MenuItemTypeIdentifierPost = @"post";
-NSString * const MenuItemTypeIdentifierCustom = @"custom";
-NSString * const MenuItemTypeIdentifierJetpackTestimonial = @"jetpack-testimonial";
-NSString * const MenuItemTypeIdentifierJetpackPortfolio = @"jetpack-portfolio";
+NSString * const MenuItemTypePage = @"page";
+NSString * const MenuItemTypeCustom = @"custom";
+NSString * const MenuItemTypeCategory = @"category";
+NSString * const MenuItemTypeTag = @"post_tag";
+NSString * const MenuItemTypePost = @"post";
+NSString * const MenuItemTypeJetpackTestimonial = @"jetpack-testimonial";
+NSString * const MenuItemTypeJetpackPortfolio = @"jetpack-portfolio";
+NSString * const MenuItemTypeJetpackComic = @"jetpack-comic";
 
 @implementation MenuItem
 
@@ -44,32 +45,6 @@ NSString * const MenuItemTypeIdentifierJetpackPortfolio = @"jetpack-portfolio";
         ancestor = ancestor.parent;
     };
     return otherItemIsDescendant;
-}
-
-/* Return the MenuItemType based on the matching identifier for self.type
- */
-- (MenuItemType)itemType
-{
-    NSString *typeStr = self.type;
-    MenuItemType itemType = MenuItemTypeUnknown;
-    
-    if ([typeStr isEqualToString:MenuItemTypeIdentifierPage]) {
-        itemType = MenuItemTypePage;
-    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierCustom]) {
-        itemType = MenuItemTypeCustom;
-    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierCategory]) {
-        itemType = MenuItemTypeCategory;
-    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierTag]) {
-        itemType = MenuItemTypeTag;
-    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierPost]) {
-        itemType = MenuItemTypePost;
-    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierJetpackTestimonial]) {
-        itemType = MenuItemTypeJetpackTestimonial;
-    } else if ([typeStr isEqualToString:MenuItemTypeIdentifierJetpackPortfolio]) {
-        itemType = MenuItemTypeJetpackPortfolio;
-    }
-    
-    return itemType;
 }
 
 @end

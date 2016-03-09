@@ -11,7 +11,7 @@
 
 @implementation MenuItemSourcePostView
 
-- (MenuItemType)sourceItemType
+- (NSString *)sourceItemType
 {
     return MenuItemTypePost;
 }

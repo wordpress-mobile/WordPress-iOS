@@ -11,7 +11,7 @@
 
 @implementation MenuItemSourcePageView
 
-- (MenuItemType)sourceItemType
+- (NSString *)sourceItemType
 {
     return MenuItemTypePage;
 }
