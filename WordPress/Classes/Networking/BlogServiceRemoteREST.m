@@ -3,6 +3,7 @@
 #import "WordPressComApi.h"
 #import "WordPress-Swift.h"
 #import "RemoteBlogOptionsHelper.h"
+#import "RemotePostType.h"
 
 #pragma mark - Parsing Keys
 static NSString * const RemoteBlogNameKey                                   = @"name";
@@ -42,6 +43,10 @@ static NSString * const RemoteBlogSharingCommentLikesEnabled = @"jetpack_comment
 static NSString * const RemoteBlogSharingDisabledLikes = @"disabled_likes";
 static NSString * const RemoteBlogSharingDisabledReblogs = @"disabled_reblogs";
 
+static NSString * const RemotePostTypesKey = @"post_types";
+static NSString * const RemotePostTypeNameKey = @"name";
+static NSString * const RemotePostTypeLabelKey = @"label";
+static NSString * const RemotePostTypeQueryableKey = @"api_queryable";
 
 #pragma mark - Keys used for Update Calls
 // Note: Only god knows why these don't match the "Parsing Keys"
@@ -94,6 +99,31 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
               NSDictionary *options = [RemoteBlogOptionsHelper mapOptionsFromResponse:response];
               if (success) {
                   success(options);
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
+- (void)syncPostTypesWithSuccess:(PostTypesHandler)success
+                         failure:(void (^)(NSError *error))failure
+{
+    NSString *path = [self pathForPostTypes];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+    
+    [self.api GET:requestUrl
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+             
+              NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
+              NSArray <RemotePostType *> *postTypes = [[responseObject arrayForKey:RemotePostTypesKey] wp_map:^id(NSDictionary *json) {
+                  return [self remotePostTypeWithDictionary:json];
+              }];
+              if (success) {
+                  success(postTypes);
               }
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               if (failure) {
@@ -195,6 +225,11 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     return [NSString stringWithFormat:@"sites/%@", self.siteID];
 }
 
+- (NSString *)pathForPostTypes
+{
+    return [NSString stringWithFormat:@"sites/%@/post-types", self.siteID];
+}
+
 - (NSString *)pathForPostFormats
 {
     return [NSString stringWithFormat:@"sites/%@/post-formats", self.siteID];
@@ -215,6 +250,15 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     } else {
         return @{};
     }
+}
+
+- (RemotePostType *)remotePostTypeWithDictionary:(NSDictionary *)json
+{
+    RemotePostType *postType = [[RemotePostType alloc] init];
+    postType.name = [json stringForKey:RemotePostTypeNameKey];
+    postType.label = [json stringForKey:RemotePostTypeLabelKey];
+    postType.apiQueryable = [json numberForKey:RemotePostTypeQueryableKey];
+    return postType;
 }
 
 - (RemoteBlogSettings *)remoteBlogSettingFromJSONDictionary:(NSDictionary *)json
