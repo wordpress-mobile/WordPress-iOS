@@ -1,7 +1,6 @@
 #import "WPAccount.h"
 #import "SFHFKeychainUtils.h"
 #import "WordPressComOAuthClient.h"
-#import "Constants.h"
 
 @interface WPAccount ()
 
