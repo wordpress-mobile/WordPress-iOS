@@ -1,5 +1,6 @@
 #import "MenuItemTypeSelectionView.h"
 #import "MenuItemTypeView.h"
+#import "BlogService.h"
 
 @interface MenuItemTypeSelectionView () <MenuItemTypeViewDelegate>
 
@@ -56,24 +57,29 @@
     }
     
     MenuItemTypeView *typeView = [self addTypeView:MenuItemTypePage];
-    typeView.drawsSelected = YES;
+    typeView.selected = YES;
     typeView.designIgnoresDrawingTopBorder = YES;
     self.selectedTypeView = typeView;
-    [self addTypeView:MenuItemTypeLink];
+    [self addTypeView:MenuItemTypeCustom];
     [self addTypeView:MenuItemTypeCategory];
     [self addTypeView:MenuItemTypeTag];
     [self addTypeView:MenuItemTypePost];
 }
 
-- (MenuItemTypeView *)addTypeView:(MenuItemType)itemType {
+- (MenuItemTypeView *)addTypeView:(NSString *)itemType {
     
-    MenuItemTypeView *typeView = [[MenuItemTypeView alloc] init];
+    MenuItemTypeView *typeView = [self newTypeView];
     typeView.itemType = itemType;
+    typeView.itemTypeLabel = itemType;
+    return typeView;
+}
+
+- (MenuItemTypeView *)newTypeView
+{
+    MenuItemTypeView *typeView = [[MenuItemTypeView alloc] init];
     typeView.delegate = self;
     [self.stackView addArrangedSubview:typeView];
-    
     [typeView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
-    
     [self.typeViews addObject:typeView];
     return typeView;
 }
@@ -90,6 +96,16 @@
     CGContextRestoreGState(context);
 }
 
+- (void)loadPostTypesForBlog:(Blog *)blog
+{
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:blog.managedObjectContext];
+    [service syncPostTypesForBlog:blog success:^{
+        // synced post types
+    } failure:^(NSError *error) {
+        DDLogError(@"Error syncing post-types for Menus: %@", error);
+    }];
+}
+
 - (void)updateDesignForLayoutChangeIfNeeded
 {
     for(MenuItemTypeView *typeView in self.typeViews) {
@@ -99,7 +115,7 @@
 
 #pragma mark - delegate
 
-- (void)tellDelegateTypeChanged:(MenuItemType)itemType
+- (void)tellDelegateTypeChanged:(NSString *)itemType
 {
     [self.delegate itemTypeSelectionViewChanged:self type:itemType];
 }
@@ -108,9 +124,9 @@
 
 - (void)typeViewPressedForSelection:(MenuItemTypeView *)typeView
 {
-    self.selectedTypeView.drawsSelected = NO;
+    self.selectedTypeView.selected = NO;
     self.selectedTypeView = typeView;
-    typeView.drawsSelected = YES;
+    typeView.selected = YES;
     
     [self tellDelegateTypeChanged:typeView.itemType];
 }

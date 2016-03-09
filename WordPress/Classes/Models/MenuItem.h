@@ -1,47 +1,33 @@
 #import <CoreData/CoreData.h>
 
-typedef NS_ENUM(NSUInteger, MenuItemType) {
-    MenuItemTypeUnknown = 0,
-    
-    /* The majority of MenuItems are set as pages.
-     */
-    MenuItemTypePage,
-    
-    /*  API data returns type as "custom" for MenuItems that were set with specific URL sources.
-     Locally, the UI identifies interacting with custom MenuItems as "Links" with URL sources to edit.
-     */
-    MenuItemTypeCustom,
-    MenuItemTypeLink = MenuItemTypeCustom,
-    
-    /* Taxonomy MenuItems
-     */
-    MenuItemTypeCategory,
-    MenuItemTypeTag,
-    
-    /* MenuItem to a specific post.
-     The post could be considered a custom content post on a wp.org site, and may not be considered a "blog" post by the user.
-     */
-    MenuItemTypePost,
-    
-    /* Custom Jetpack MenuItems that link to specific a post with a custom content type managed by Jetpack.
-     */
-    MenuItemTypeJetpackTestimonial,
-    MenuItemTypeJetpackPortfolio
-};
-
 @class Menu;
 
 NS_ASSUME_NONNULL_BEGIN
 
-/* API identifier values for specific MenuItem types.
+/* The majority of MenuItems are set as pages.
  */
-extern NSString * const MenuItemTypeIdentifierPage;
-extern NSString * const MenuItemTypeIdentifierCategory;
-extern NSString * const MenuItemTypeIdentifierCustom;
-extern NSString * const MenuItemTypeIdentifierTag;
-extern NSString * const MenuItemTypeIdentifierPost;
-extern NSString * const MenuItemTypeIdentifierJetpackTestimonial;
-extern NSString * const MenuItemTypeIdentifierJetpackPortfolio;
+extern NSString * const MenuItemTypePage;
+
+/*  API data returns type as "custom" for MenuItems that were set with specific URL sources.
+ Locally, the UI identifies interacting with custom MenuItems as "Links" with URL sources to edit.
+ */
+extern NSString * const MenuItemTypeCustom;
+
+/* Taxonomy MenuItems
+ */
+extern NSString * const MenuItemTypeCategory;
+extern NSString * const MenuItemTypeTag;
+
+/* MenuItem to a specific post.
+ The post could be considered a custom content post on a wp.org site, and may not be considered a "blog" post by the user.
+ */
+extern NSString * const MenuItemTypePost;
+
+/* Custom Jetpack MenuItems that link to specific a post with a custom content type managed by Jetpack.
+ */
+extern NSString * const MenuItemTypeJetpackTestimonial;
+extern NSString * const MenuItemTypeJetpackPortfolio;
+extern NSString * const MenuItemTypeJetpackComic;
 
 /**
  *  @brief    An object encapsulating an individual Menu item and it's API data.
@@ -89,13 +75,6 @@ extern NSString * const MenuItemTypeIdentifierJetpackPortfolio;
  *  @returns    YES if the item is a descendent, NO if not.
  */
 - (BOOL)isDescendantOfItem:(MenuItem *)item;
-
-/**
- *  @brief      Call this method to detect the itemType of the item for handling the item in UIs.
- *
- *  @returns    MenuItemType of the item as detected by the self.type identifier value.
- */
-- (MenuItemType)itemType;
 
 @end
 

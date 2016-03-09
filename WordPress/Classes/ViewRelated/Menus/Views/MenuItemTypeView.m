@@ -109,46 +109,38 @@
     return self;
 }
 
-- (void)setItemType:(MenuItemType)itemType
+- (void)setSelected:(BOOL)selected
 {
-    if(_itemType != itemType) {
-        _itemType = itemType;
-        [self updatedItemType];
+    if (_selected != selected) {
+        _selected = selected;
+        [self updateSelection];
     }
 }
 
-- (void)setDrawsSelected:(BOOL)drawsSelected
+- (void)setItemTypeLabel:(NSString *)itemTypeLabel
 {
-    if(_drawsSelected != drawsSelected) {
-        _drawsSelected = drawsSelected;
-        [self updateSelection];
+    if (_itemTypeLabel != itemTypeLabel) {
+        _itemTypeLabel = itemTypeLabel;
+        self.label.text = itemTypeLabel;
+        self.iconView.image = [[UIImage imageNamed:[self iconImageName]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self setNeedsDisplay];
     }
+}
+
+- (void)updateSelection
+{
+    self.label.textColor = self.selected ? [WPStyleGuide mediumBlue] : [WPStyleGuide greyDarken30];
+    if(self.selected && ![self.delegate typeViewRequiresCompactLayout:self]) {
+        [self showArrowView];
+    }else {
+        [self hideArrowView];
+    }
+    [self setNeedsDisplay];
 }
 
 - (void)updateDesignForLayoutChangeIfNeeded
 {
     [self updateSelection];
-}
-
-- (void)updatedItemType
-{
-    self.label.text = [self title];
-    self.iconView.image = [[UIImage imageNamed:[self iconImageName]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self updateSelection];
-
-    [self setNeedsDisplay];
-}
-
-- (void)updateSelection
-{
-    self.label.textColor = self.drawsSelected ? [WPStyleGuide mediumBlue] : [WPStyleGuide greyDarken30];
-    if(self.drawsSelected && ![self.delegate typeViewRequiresCompactLayout:self]) {
-        [self showArrowView];
-    }else {
-        [self hideArrowView];
-    }
-    
-    [self setNeedsDisplay];
 }
 
 - (void)showArrowView
@@ -165,32 +157,6 @@
         self.arrowView.alpha = 0.0;
         self.arrowView.hidden = YES;
     }
-}
-
-- (NSString *)title
-{
-    NSString *title = nil;
-    switch (self.itemType) {
-        case MenuItemTypePage:
-            title = NSLocalizedString(@"Page", @"");
-            break;
-        case MenuItemTypeLink:
-            title = NSLocalizedString(@"Link", @"");
-            break;
-        case MenuItemTypeCategory:
-            title = NSLocalizedString(@"Category", @"");
-            break;
-        case MenuItemTypeTag:
-            title = NSLocalizedString(@"Tag", @"");
-            break;
-        case MenuItemTypePost:
-            title = NSLocalizedString(@"Post", @"");
-            break;
-        default:
-            break;
-    }
-    
-    return title;
 }
 
 - (NSString*)iconImageName
@@ -215,7 +181,7 @@
     CGContextSetLineWidth(context, 2.0);
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
     
-    if(self.drawsSelected) {
+    if(self.selected) {
         
         if(!self.designIgnoresDrawingTopBorder) {
             CGContextMoveToPoint(context, 0, 0);
