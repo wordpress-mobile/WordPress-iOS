@@ -10,7 +10,7 @@ extension UIImageView
     ///
     public func downloadImage(url: NSURL) {
         // Hit the cache
-        if let cachedImage = Downloader.imagesCache[url] {
+        if let cachedImage = Downloader.cache.objectForKey(url) as? UIImage {
             self.image = cachedImage
             return
         }
@@ -35,7 +35,7 @@ extension UIImageView
             
             dispatch_async(dispatch_get_main_queue()) {
                 // Update the Cache
-                Downloader.imagesCache[url] = image
+                Downloader.cache.setObject(image, forKey: url)
                 
                 // Refresh!
                 self?.image = image
@@ -103,7 +103,7 @@ extension UIImageView
         static let blavatarResizeFormat = "d=404&s=%d"
         
         /// Stores all of the previously downloaded images
-        static var imagesCache = [NSURL : UIImage]()
+        static var cache = NSCache()
         
         /// Key used to associate a Download task to the current instance
         static let taskKey = "downloadTaskKey"
