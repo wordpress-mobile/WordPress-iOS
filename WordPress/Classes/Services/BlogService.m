@@ -21,6 +21,8 @@
 #import "TodayExtensionService.h"
 #import "ContextManager.h"
 #import "WordPress-Swift.h"
+#import "RemotePostType.h"
+#import "PostType.h"
 
 #import <WordPressApi/WordPressApi.h>
 
@@ -303,6 +305,15 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     } else if (success) {
         success();
     }
+}
+
+- (void)syncPostTypesForBlog:(Blog *)blog
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure
+{
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+    [remote syncPostTypesWithSuccess:[self postTypesHandlerWithBlogObjectID:blog.objectID completionHandler:success]
+                             failure:failure];
 }
 
 - (void)syncPostFormatsForBlog:(Blog *)blog
@@ -762,6 +773,37 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             }
 
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:completion];
+        }];
+    };
+}
+
+- (PostTypesHandler)postTypesHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID
+                                   completionHandler:(void (^)(void))completion
+{
+    return ^void(NSArray <RemotePostType *> *remotePostTypes) {
+        [self.managedObjectContext performBlock:^{
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
+                                                                           error:nil];
+            if (blog && remotePostTypes.count) {
+                
+                // Create new PostType entities with the RemotePostType objects.
+                NSMutableSet *postTypes = [NSMutableSet setWithCapacity:remotePostTypes.count];
+                NSString *entityName = NSStringFromClass([PostType class]);
+                for (RemotePostType *remoteType in remotePostTypes) {
+                    PostType *postType = [NSEntityDescription insertNewObjectForEntityForName:entityName
+                                                                       inManagedObjectContext:self.managedObjectContext];
+                    postType.name = remoteType.name;
+                    postType.label = remoteType.label;
+                    postType.apiQueryable = remoteType.apiQueryable;
+                    [postTypes addObject:postType];
+                }
+                // Replace the current set of postTypes with new entities.
+                blog.postTypes = [NSSet setWithSet:postTypes];
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
+            if (completion) {
+                completion();
+            }
         }];
     };
 }
