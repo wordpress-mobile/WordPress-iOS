@@ -30,7 +30,7 @@ class ShareViewController: SLComposeServiceViewController {
         
         let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
         let message = NSLocalizedString("Launch the WordPress app and sign into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
-        let accept = NSLocalizedString("Cancel Share", comment: "")
+        let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
         
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         let alertAction = UIAlertAction(title: accept, style: .Default) { (action: UIAlertAction) -> Void in
