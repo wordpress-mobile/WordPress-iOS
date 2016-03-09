@@ -84,11 +84,11 @@ class BlogPickerViewController : UITableViewController
         
         showLoadingView()
         
-        service.fetchSites { sites, error in
+        service.fetchSites { [weak self] sites, error in
             dispatch_async(dispatch_get_main_queue()) {
-                self.sites = sites ?? [Site]()
-                self.tableView.reloadData()
-                self.showEmptySitesIfNeeded()
+                self?.sites = sites ?? [Site]()
+                self?.tableView.reloadData()
+                self?.showEmptySitesIfNeeded()
             }
         }
     }
