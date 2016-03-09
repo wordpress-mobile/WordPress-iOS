@@ -4,6 +4,9 @@ import WordPressShared
 import WordPressComKit
 
 
+/// This class presents a list of Sites, and allows the user to select one from the list. Works
+/// absolutely detached from the Core Data Model, since it was designed for Extension usage.
+///
 class SitePickerViewController : UITableViewController
 {
     // MARK: - View Lifecycle
