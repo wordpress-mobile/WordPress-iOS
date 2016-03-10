@@ -43,6 +43,9 @@ import WordPressShared.WPStyleGuide
         set {
             btnLike.selected = newValue
             btnLike.accessibilityLabel = likeAccesibilityLabel
+            btnLike.accessibilityHint = likeAccessibilityHint
+            // Force button trait to avoid automatic "Selected" trait
+            btnLike.accessibilityTraits = UIAccessibilityTraitButton
         }
         get {
             return btnLike.selected
@@ -52,6 +55,9 @@ import WordPressShared.WPStyleGuide
         set {
             btnApprove.selected = newValue
             btnApprove.accessibilityLabel = approveAccesibilityLabel
+            btnApprove.accessibilityHint = approveAccesibilityHint
+            // Force button trait to avoid automatic "Selected" trait
+            btnApprove.accessibilityTraits = UIAccessibilityTraitButton
         }
         get {
             return btnApprove.selected
@@ -68,12 +74,6 @@ import WordPressShared.WPStyleGuide
         
         let textNormalColor         = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor       = WPStyleGuide.Notifications.blockActionEnabledColor
-        
-        let likeNormalTitle         = NSLocalizedString("Like",     comment: "Like a comment")
-        let likeSelectedTitle       = NSLocalizedString("Liked",    comment: "A comment has been liked")
-
-        let approveNormalTitle      = NSLocalizedString("Approve",  comment: "Approve a comment")
-        let approveSelectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
 
         let replyTitle              = NSLocalizedString("Reply",    comment: "Verb, reply to a comment")
         let spamTitle               = NSLocalizedString("Spam",     comment: "Verb, spam a comment")
@@ -148,17 +148,35 @@ import WordPressShared.WPStyleGuide
     }
     
     private var approveAccesibilityLabel : String {
-        return isApproveOn ? NSLocalizedString("Unapprove", comment: "Unapproves a comment") : NSLocalizedString("Approve", comment: "Approve a comment")
+        return isApproveOn ? approveSelectedTitle : approveNormalTitle
     }
-    
+
+    private var approveAccesibilityHint : String {
+        return isApproveOn ? approveSelectedHint : approveNormalHint
+    }
+
     private var likeAccesibilityLabel : String {
-        return isLikeOn ? NSLocalizedString("Unlike", comment: "Unlikes a comment") : NSLocalizedString("Like", comment: "Like a comment")
+        return isLikeOn ? likeSelectedTitle : likeNormalTitle
+    }
+
+    private var likeAccessibilityHint : String {
+        return isLikeOn ? likeSelectedHint : likeNormalHint
     }
     
     
     // MARK: - Private Constants
     private let buttonSpacing           = CGFloat(20)
     private let buttonSpacingCompact    = CGFloat(10)
+
+    private let likeNormalTitle         = NSLocalizedString("Like",     comment: "Like a comment")
+    private let likeSelectedTitle       = NSLocalizedString("Liked",    comment: "A comment has been liked")
+    private let likeNormalHint          = NSLocalizedString("Likes the comment",     comment: "Likes a comment. Spoken Hint.")
+    private let likeSelectedHint        = NSLocalizedString("Unlikes the comment",   comment: "Unlikes a comment. Spoken Hint.")
+    
+    private let approveNormalTitle      = NSLocalizedString("Approve",  comment: "Approve a comment")
+    private let approveSelectedTitle    = NSLocalizedString("Approved", comment: "Unapprove a comment")
+    private let approveNormalHint       = NSLocalizedString("Approves the comment",  comment: "Approves a comment. Spoken Hint.")
+    private let approveSelectedHint     = NSLocalizedString("Disapproves the comment", comment: "Unapproves a comment. Spoken Hint.")
     
     // MARK: - IBOutlets
     @IBOutlet private var actionsView   : UIStackView!
