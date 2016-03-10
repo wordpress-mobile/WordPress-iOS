@@ -655,7 +655,7 @@ EditImageDetailsViewControllerDelegate
     void (^dismissHandler)() = ^(void) {
         [self dismissViewControllerAnimated:YES completion:nil];
     };
-    void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
+    void (^successHandler)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
         
@@ -698,8 +698,8 @@ EditImageDetailsViewControllerDelegate
     };
     
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.post.blog.objectID
-                                                                                   selectedCompletion:selectedCompletion
-                                                                                     cancelCompletion:dismissHandler];
+                                                                                       successHandler:successHandler
+                                                                                       dismissHandler:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
@@ -801,13 +801,6 @@ EditImageDetailsViewControllerDelegate
     [self presentViewController:picker animated:animated completion:nil];
 }
 
-#pragma mark - Data Model: Post
-
-- (BOOL)isPostLocal
-{
-    return self.post.remoteStatus == AbstractPostRemoteStatusLocal;
-}
-
 #pragma mark - Editing
 
 - (void)cancelEditing
@@ -845,21 +838,22 @@ EditImageDetailsViewControllerDelegate
         [self actionSheetDiscardButtonPressed];
     }];
     
-	if (![self.post.original.status isEqualToString:PostStatusDraft] && ![self isPostLocal]) {
-    } else if ([self isPostLocal]) {
-        // The post is a local draft or an autosaved draft: Discard or Save
-        [alertController addActionWithTitle:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                      style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-            [self actionSheetSaveDraftButtonPressed];
-        }];
-    } else {
-        // The post was already a draft
-        [alertController addActionWithTitle:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")
-                                      style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-            [self actionSheetSaveDraftButtonPressed];
-        }];
+    if ([self.post hasLocalChanges]) {
+        if (![self.post hasRemote]) {
+            // The post is a local draft or an autosaved draft: Discard or Save
+            [alertController addActionWithTitle:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                          style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action) {
+                [self actionSheetSaveDraftButtonPressed];
+            }];
+        } else if ([self.post.status isEqualToString:PostStatusDraft]) {
+            // The post was already a draft
+            [alertController addActionWithTitle:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")
+                                          style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action) {
+                [self actionSheetSaveDraftButtonPressed];
+            }];
+        }
     }
     
     alertController.popoverPresentationController.barButtonItem = self.currentCancelButton;
@@ -983,7 +977,7 @@ EditImageDetailsViewControllerDelegate
 - (NSString *)editorTitle
 {
     NSString *title = @"";
-    if ([self isPostLocal]) {
+    if ([self.post hasNeverAttemptedToUpload]) {
         title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
     } else {
         if ([self.post.postTitle length]) {
@@ -1270,7 +1264,7 @@ EditImageDetailsViewControllerDelegate
         }
         
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
-                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0] }];
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0] }];
         
         [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
         if (![self isViewHorizontallyCompact]) {
@@ -1493,7 +1487,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)didSaveNewPost
 {
-    if ([self isPostLocal]) {
+    if ([self.post hasLocalChanges]) {
         [[WPTabBarController sharedInstance] switchTabToPostsListForPost:self.post];
     }
 }
@@ -1655,7 +1649,7 @@ EditImageDetailsViewControllerDelegate
 - (void)dismissAssociatedAlertControllerIfVisible:(NSString *)uniqueMediaId {
     // let's see if we where displaying an action sheet for this image
     if (self.currentAlertController && [uniqueMediaId isEqualToString:self.selectedMediaID]){
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.currentAlertController dismissViewControllerAnimated:YES completion:nil];
         self.currentAlertController = nil;
     }
 }
@@ -1934,6 +1928,9 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidFinishLoadingDOM:(WPEditorViewController *)editorController
 {
+    [self.editorView setImageEditText:NSLocalizedString(@"Edit",
+                                                        @"Title of the edit-image button in the post editor.")];
+    
     [self refreshUIForCurrentPost];
 }
 

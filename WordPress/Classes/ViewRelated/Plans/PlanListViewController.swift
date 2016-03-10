@@ -33,11 +33,11 @@ struct PlanListRow: ImmuTableRow {
             NSForegroundColorAttributeName: WPStyleGuide.tableViewActionColor()
         ]
         static let priceAttributes = [
-            NSFontAttributeName: WPFontManager.openSansRegularFontOfSize(14.0),
+            NSFontAttributeName: WPFontManager.systemRegularFontOfSize(14.0),
             NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
         ]
         static let pricePeriodAttributes = [
-            NSFontAttributeName: WPFontManager.openSansItalicFontOfSize(13.0),
+            NSFontAttributeName: WPFontManager.systemItalicFontOfSize(13.0),
             NSForegroundColorAttributeName: WPStyleGuide.greyLighten20()
         ]
 
@@ -48,7 +48,7 @@ struct PlanListRow: ImmuTableRow {
 
             if active {
                 let currentPlanAttributes = [
-                    NSFontAttributeName: WPFontManager.openSansSemiBoldFontOfSize(11.0),
+                    NSFontAttributeName: WPFontManager.systemSemiBoldFontOfSize(11.0),
                     NSForegroundColorAttributeName: WPStyleGuide.validGreen()
                 ]
                 let currentPlan = NSLocalizedString("Current Plan", comment: "").uppercaseStringWithLocale(NSLocale.currentLocale())
@@ -105,7 +105,7 @@ enum PlanListViewModel {
                     price: price,
                     description: plan.description,
                     icon: icon,
-                    action: presenter.present(self.controllerForPlanDetails(plan))
+                    action: presenter.present(self.controllerForPlanDetails(plan, activePlan: activePlan))
                 )
             })
             return ImmuTable(sections: [
@@ -116,10 +116,10 @@ enum PlanListViewModel {
         }
     }
 
-    func controllerForPlanDetails(plan: Plan) -> ImmuTableRowControllerGenerator {
+    func controllerForPlanDetails(plan: Plan, activePlan: Plan) -> ImmuTableRowControllerGenerator {
         return { row in
-            let planVC = PlanComparisonViewController.controllerWithInitialPlan(plan)
-            let navigationVC = UINavigationController(rootViewController: planVC)
+            let planVC = PlanComparisonViewController.controllerWithInitialPlan(plan, activePlan: activePlan)
+            let navigationVC = RotationAwareNavigationViewController(rootViewController: planVC)
             navigationVC.modalPresentationStyle = .FormSheet
             return navigationVC
         }
