@@ -2,6 +2,11 @@
 #import "NSMutableDictionary+Helpers.h"
 #import <WordPressApi/WordPressApi.h>
 #import "WordPress-Swift.h"
+#import "RemotePostType.h"
+
+static NSString * const RemotePostTypeNameKey = @"name";
+static NSString * const RemotePostTypeLabelKey = @"label";
+static NSString * const RemotePostTypePublicKey = @"public";
 
 @implementation BlogServiceRemoteXMLRPC
 
@@ -28,6 +33,12 @@
 - (void)syncOptionsWithSuccess:(OptionsHandler)success failure:(void (^)(NSError *))failure
 {
     WPXMLRPCRequestOperation *operation = [self operationForOptionsWithSuccess:success failure:failure];
+    [self.api enqueueXMLRPCRequestOperation:operation];
+}
+
+- (void)syncPostTypesWithSuccess:(PostTypesHandler)success failure:(void (^)(NSError *error))failure
+{
+    WPXMLRPCRequestOperation *operation = [self operationForPostTypesWithSuccess:success failure:failure];
     [self.api enqueueXMLRPCRequestOperation:operation];
 }
 
@@ -115,6 +126,36 @@
     return operation;
 }
 
+- (WPXMLRPCRequestOperation *)operationForPostTypesWithSuccess:(PostTypesHandler)success
+                                                         failure:(void (^)(NSError *error))failure
+{
+    NSArray *parameters = [self defaultXMLRPCArguments];
+    WPXMLRPCRequest *request = [self.api XMLRPCRequestWithMethod:@"wp.getPostTypes" parameters:parameters];
+    WPXMLRPCRequestOperation *operation = [self.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
+        NSArray <RemotePostType *> *postTypes = [[responseObject allObjects] wp_map:^id(NSDictionary *json) {
+            return [self remotePostTypeFromXMLRPCDictionary:json];
+        }];
+        if (!postTypes.count) {
+            DDLogError(@"Response to %@ did not include post types for site.", request.method);
+            failure(nil);
+            return;
+        }
+        if (success) {
+            success(postTypes);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Error syncing post types (%@): %@", operation.request.URL, error);
+        
+        if (failure) {
+            failure(error);
+        }
+    }];
+    
+    return operation;
+}
+
 - (WPXMLRPCRequestOperation *)operationForPostFormatsWithSuccess:(PostFormatsHandler)success
                                                         failure:(void (^)(NSError *error))failure
 {
@@ -160,6 +201,15 @@
     }];
 
     return operation;
+}
+
+- (RemotePostType *)remotePostTypeFromXMLRPCDictionary:(NSDictionary *)json
+{
+    RemotePostType *postType = [[RemotePostType alloc] init];
+    postType.name = [json stringForKey:RemotePostTypeNameKey];
+    postType.label = [json stringForKey:RemotePostTypeLabelKey];
+    postType.apiQueryable = [json numberForKey:RemotePostTypePublicKey];
+    return postType;
 }
 
 - (RemoteBlogSettings *)remoteBlogSettingFromXMLRPCDictionary:(NSDictionary *)json
