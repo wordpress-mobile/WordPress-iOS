@@ -309,7 +309,7 @@ EditImageDetailsViewControllerDelegate
     [super viewDidAppear:animated];
     
     if (self.failedStateRestorationMode) {
-        [self dismissEditView];
+        [self dismissEditView:NO];
     } else {
         [self refreshNavigationBarButtons:NO];
         [self.navigationController.navigationBar addSubview:self.mediaProgressView];
@@ -927,7 +927,7 @@ EditImageDetailsViewControllerDelegate
     if (self.isEditing) {
         [self cancelEditing];
     } else {
-        [self dismissEditView];
+        [self dismissEditView:NO];
     }
 }
 
@@ -1378,18 +1378,19 @@ EditImageDetailsViewControllerDelegate
     [self discardChanges];
     
     if (!self.post || self.isOpenedDirectlyForEditing) {
-        [self dismissEditView];
+        [self dismissEditView:NO];
     } else {
         [self refreshUIForCurrentPost];
     }
 }
 
 - (void)dismissEditViewAnimated:(BOOL)animated
+                   changesSaved:(BOOL)changesSaved
 {
     [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
     
     if (self.onClose) {
-        self.onClose(self);
+        self.onClose(self, changesSaved);
         self.onClose = nil;
     } else if (self.presentingViewController) {
         [self.presentingViewController dismissViewControllerAnimated:animated completion:nil];
@@ -1398,9 +1399,9 @@ EditImageDetailsViewControllerDelegate
     }
 }
 
-- (void)dismissEditView
+- (void)dismissEditView:(BOOL)changesSaved
 {
-    [self dismissEditViewAnimated:YES];
+    [self dismissEditViewAnimated:YES changesSaved:changesSaved];
 }
 
 - (void)saveAction
@@ -1429,7 +1430,7 @@ EditImageDetailsViewControllerDelegate
     }
     [self stopEditing];
     [self savePost];
-    [self dismissEditView];
+    [self dismissEditView:YES];
 }
 
 /**
@@ -2094,7 +2095,7 @@ EditImageDetailsViewControllerDelegate
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker
 {
     if (self.isOpenedDirectlyForPhotoPost) {
-        [self dismissEditViewAnimated:NO];
+        [self dismissEditViewAnimated:NO changesSaved:NO];
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
