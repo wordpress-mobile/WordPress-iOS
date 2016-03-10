@@ -1,12 +1,8 @@
 #import <UIKit/UIKit.h>
 #import "WPSearchController.h"
 
-@interface BlogListViewController : UIViewController <NSFetchedResultsControllerDelegate,
-                                                            UIDataSourceModelAssociation,
-                                                            WPSearchResultsUpdating,
-                                                            WPSearchControllerDelegate,
-                                                            UITableViewDelegate,
-                                                            UITableViewDataSource>
+
+@interface BlogListViewController : UIViewController
 
 - (void)bypassBlogListViewController;
 - (BOOL)shouldBypassBlogListViewControllerWhenSelectedFromTabBar;
