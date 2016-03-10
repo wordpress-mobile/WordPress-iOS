@@ -120,8 +120,11 @@
             sourceView = [[MenuItemSourceCategoryView alloc] init];
         } else if([itemType isEqualToString:MenuItemTypeTag]) {
             sourceView = [[MenuItemSourceTagView alloc] init];
-        } else if([itemType isEqualToString:MenuItemTypePost]) {
-            sourceView = [[MenuItemSourcePostView alloc] init];
+        } else {
+            // Default to a post view that will load posts of postType == itemType.
+            MenuItemSourcePostView *postView = [[MenuItemSourcePostView alloc] init];
+            postView.sourceItemType = itemType;
+            sourceView = postView;
         }
         sourceView.delegate = self;
         shouldSetItem = YES;

@@ -6,14 +6,15 @@
 @end
 
 @interface MenuItemSourcePostView ()
-@property (nonatomic, strong) NSDate *oldestSyncedPostDate;
 @end
 
 @implementation MenuItemSourcePostView
 
-- (NSString *)sourceItemType
+- (NSPredicate *)defaultFetchRequestPredicate
 {
-    return MenuItemTypePost;
+    NSPredicate *predicate = [super defaultFetchRequestPredicate];
+    NSPredicate *postTypePredicate = [NSPredicate predicateWithFormat:@"postType = %@", self.sourceItemType];
+    return [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, postTypePredicate]];
 }
 
 - (NSFetchRequest *)fetchRequest
@@ -31,7 +32,7 @@
 
 - (NSString *)postServiceType
 {
-    return PostServiceTypePost;
+    return self.sourceItemType;
 }
 
 @end
