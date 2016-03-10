@@ -137,6 +137,11 @@ static NSString * const RemotePostTypePublicKey = @"public";
         NSArray <RemotePostType *> *postTypes = [[responseObject allObjects] wp_map:^id(NSDictionary *json) {
             return [self remotePostTypeFromXMLRPCDictionary:json];
         }];
+        if (!postTypes.count) {
+            DDLogError(@"Response to %@ did not include post types for site.", request.method);
+            failure(nil);
+            return;
+        }
         if (success) {
             success(postTypes);
         }
