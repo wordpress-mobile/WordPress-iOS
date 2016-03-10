@@ -39,7 +39,7 @@ static CGFloat ImageHeight = 96.0;
     if (!_titleLabel) {
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _titleLabel.textColor = [WPStyleGuide darkGrey];
-        _titleLabel.font = [WPFontManager openSansSemiBoldFontOfSize:14.0];
+        _titleLabel.font = [WPFontManager systemSemiBoldFontOfSize:14.0];
         _titleLabel.numberOfLines = 0;
     }
     _titleLabel.text = self.title;
@@ -51,7 +51,7 @@ static CGFloat ImageHeight = 96.0;
     if (!_siteLabel) {
         _siteLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _siteLabel.textColor = [WPStyleGuide greyDarken20];
-        _siteLabel.font = [WPFontManager openSansItalicFontOfSize:11.0];
+        _siteLabel.font = [WPFontManager systemItalicFontOfSize:11.0];
         _siteLabel.numberOfLines = 0;
     }
     _siteLabel.text = self.site;
@@ -89,7 +89,7 @@ static CGFloat ImageHeight = 96.0;
         _headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _headerLabel.text = NSLocalizedString(@"Related Posts", @"Label for Related Post header preview");
         _headerLabel.textColor = [WPStyleGuide greyDarken20];
-        _headerLabel.font = [WPFontManager openSansSemiBoldFontOfSize:11.0];
+        _headerLabel.font = [WPFontManager systemSemiBoldFontOfSize:11.0];
         [self.contentView addSubview:_headerLabel];
         
         RelatedPostsPreview *preview1 = [[RelatedPostsPreview alloc] initWithTitle:NSLocalizedString(@"Big iPhone/iPad Update Now Available", @"Text for related post cell preview")

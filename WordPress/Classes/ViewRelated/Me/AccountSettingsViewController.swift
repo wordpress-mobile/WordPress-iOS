@@ -28,7 +28,8 @@ private struct AccountSettingsController: SettingsController {
     // MARK: - Initialization
 
     let service: AccountSettingsService
-
+    
+    
     init(service: AccountSettingsService) {
         self.service = service
     }
@@ -36,6 +37,8 @@ private struct AccountSettingsController: SettingsController {
     // MARK: - Model mapping
 
     func mapViewModel(settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
+        let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
+        
         let username = TextRow(
             title: NSLocalizedString("Username", comment: "Account Settings Username label"),
             value: settings?.username ?? "")
@@ -43,6 +46,12 @@ private struct AccountSettingsController: SettingsController {
         let email = TextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.email ?? "")
+        
+        let primarySite = EditableTextRow(
+            title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
+            value: primarySiteName ?? "",
+            action: presenter.push(editPrimarySite(settings))
+        )
 
         let webAddress = EditableTextRow(
             title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
@@ -66,6 +75,7 @@ private struct AccountSettingsController: SettingsController {
                 rows: [
                     username,
                     email,
+                    primarySite,
                     webAddress
                 ]),
             ImmuTableSection(
@@ -82,11 +92,33 @@ private struct AccountSettingsController: SettingsController {
                 footerText: nil)
             ])
     }
-
+    
+    
     // MARK: - Actions
 
     func editWebAddress() -> ImmuTableRowControllerGenerator {
         return editText(AccountSettingsChange.WebAddress, hint: NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address"))
+    }
+    
+    func editPrimarySite(settings: AccountSettings?) -> ImmuTableRowControllerGenerator {
+        return {
+            row in
+
+            let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: settings?.primarySiteID,
+                successHandler: { (dotComID : NSNumber!) in
+                    let change = AccountSettingsChange.PrimarySite(dotComID as Int)
+                    self.service.saveChange(change)
+                },
+                dismissHandler: nil)
+
+            selectorViewController.title = NSLocalizedString("Primary Site", comment: "Primary Site Picker's Title");
+            selectorViewController.displaysOnlyDefaultAccountSites = true
+            selectorViewController.displaysCancelButton = false
+            selectorViewController.dismissOnCompletion = true
+            selectorViewController.dismissOnCancellation = true
+            
+            return selectorViewController
+        }
     }
 
     func mediaSizeChanged() -> Int -> Void {
