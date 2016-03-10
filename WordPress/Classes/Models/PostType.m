@@ -1,5 +1,4 @@
 #import "PostType.h"
-#import "Blog.h"
 
 @implementation PostType
 
