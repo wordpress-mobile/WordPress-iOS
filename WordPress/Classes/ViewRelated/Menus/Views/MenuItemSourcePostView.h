@@ -2,4 +2,6 @@
 
 @interface MenuItemSourcePostView : MenuItemSourcePostAbstractView
 
+@property (nonatomic, strong) NSString *sourceItemType;
+
 @end
