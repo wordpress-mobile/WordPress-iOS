@@ -23,7 +23,7 @@ class PlanDetailViewController: UIViewController {
 
     private lazy var currentPlanLabel: UIView = {
         let label = UILabel()
-        label.font = WPFontManager.openSansSemiBoldFontOfSize(13.0)
+        label.font = WPFontManager.systemSemiBoldFontOfSize(13.0)
         label.textColor = WPStyleGuide.validGreen()
         label.text = NSLocalizedString("Current Plan", comment: "").uppercaseStringWithLocale(NSLocale.currentLocale())
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -264,7 +264,7 @@ struct FeatureListItemRow : ImmuTableRow {
 
     var detailTextFont: UIFont {
         if available && webOnly {
-            return WPFontManager.openSansRegularFontOfSize(webOnlyFontSize)
+            return WPFontManager.systemRegularFontOfSize(webOnlyFontSize)
         } else {
             return WPStyleGuide.tableviewTextFont()
         }

@@ -15,7 +15,7 @@ extern NSString * const PostTypeDefaultIdentifier;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) Coordinate *geolocation;
 @property (nonatomic, strong) NSString *tags;
-@property (nonatomic, strong) NSString * postType;
+@property (nonatomic, strong) NSString *postType;
 @property (nonatomic, strong) NSString *postFormat;
 @property (nonatomic, strong) NSString *postFormatText;
 @property (nonatomic, strong) NSSet *categories;

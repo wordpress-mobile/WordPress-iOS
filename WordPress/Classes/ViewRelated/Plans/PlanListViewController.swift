@@ -33,11 +33,11 @@ struct PlanListRow: ImmuTableRow {
             NSForegroundColorAttributeName: WPStyleGuide.tableViewActionColor()
         ]
         static let priceAttributes = [
-            NSFontAttributeName: WPFontManager.openSansRegularFontOfSize(14.0),
+            NSFontAttributeName: WPFontManager.systemRegularFontOfSize(14.0),
             NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
         ]
         static let pricePeriodAttributes = [
-            NSFontAttributeName: WPFontManager.openSansItalicFontOfSize(13.0),
+            NSFontAttributeName: WPFontManager.systemItalicFontOfSize(13.0),
             NSForegroundColorAttributeName: WPStyleGuide.greyLighten20()
         ]
 
@@ -48,7 +48,7 @@ struct PlanListRow: ImmuTableRow {
 
             if active {
                 let currentPlanAttributes = [
-                    NSFontAttributeName: WPFontManager.openSansSemiBoldFontOfSize(11.0),
+                    NSFontAttributeName: WPFontManager.systemSemiBoldFontOfSize(11.0),
                     NSForegroundColorAttributeName: WPStyleGuide.validGreen()
                 ]
                 let currentPlan = NSLocalizedString("Current Plan", comment: "").uppercaseStringWithLocale(NSLocale.currentLocale())

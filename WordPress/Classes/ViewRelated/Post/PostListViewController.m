@@ -434,9 +434,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     
     __weak __typeof(self) weakSelf = self;
     
-    postViewController.onClose = ^void(WPPostViewController *viewController) {
+    postViewController.onClose = ^void(WPPostViewController *viewController, BOOL changesSaved) {
         
-        [weakSelf setFilterWithPostStatus:viewController.post.status];
+        if (changesSaved) {
+            [weakSelf setFilterWithPostStatus:viewController.post.status];
+        }
         
         [viewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     };
@@ -486,9 +488,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         
         __weak __typeof(self) weakSelf = self;
         
-        postViewController.onClose = ^void(WPPostViewController* viewController) {
+        postViewController.onClose = ^void(WPPostViewController* viewController, BOOL changesSaved) {
             
-            [weakSelf setFilterWithPostStatus:viewController.post.status];
+            if (changesSaved) {
+                [weakSelf setFilterWithPostStatus:viewController.post.status];
+            }
             
             [viewController.navigationController popViewControllerAnimated:YES];
         };

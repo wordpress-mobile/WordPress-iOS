@@ -84,6 +84,21 @@ extern NSString * const PostStatusDeleted;
  */
 - (BOOL)isScheduled;
 
+/**
+ *  Whether there was any attempt ever to upload this post, either successful or failed.
+ *
+ *  @returns    YES if there ever was an attempt to upload this post, NO otherwise.
+ */
+- (BOOL)hasNeverAttemptedToUpload;
+
+/**
+ *  Whether the post has local changes or not.  Local changes are all changes that are have not been
+ *  published to the server yet.
+ *
+ *  @returns    YES if the post has local changes, NO otherwise.
+ */
+- (BOOL)hasLocalChanges;
+
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
 // Deletes post locally

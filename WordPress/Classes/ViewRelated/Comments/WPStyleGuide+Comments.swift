@@ -79,9 +79,9 @@ extension WPStyleGuide
         private static let timestampFont        = WPStyleGuide.subtitleFont()
         
         private static let titleFontSize        = CGFloat(14)
-        private static let titleRegularFont     = WPFontManager.openSansRegularFontOfSize(titleFontSize)
-        private static let titleBoldFont        = WPFontManager.openSansSemiBoldFontOfSize(titleFontSize)
-        private static let titleItalicsFont     = WPFontManager.openSansItalicFontOfSize(titleFontSize)
+        private static let titleRegularFont     = WPFontManager.systemRegularFontOfSize(titleFontSize)
+        private static let titleBoldFont        = WPFontManager.systemSemiBoldFontOfSize(titleFontSize)
+        private static let titleItalicsFont     = WPFontManager.systemItalicFontOfSize(titleFontSize)
         
         private static let titleLineSize        = CGFloat(18)
         private static let titleParagraph       = NSMutableParagraphStyle(minLineHeight: titleLineSize,

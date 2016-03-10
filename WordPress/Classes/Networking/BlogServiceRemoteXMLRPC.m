@@ -1,4 +1,5 @@
 #import "BlogServiceRemoteXMLRPC.h"
+#import "NSMutableDictionary+Helpers.h"
 #import <WordPressApi/WordPressApi.h>
 #import "WordPress-Swift.h"
 #import "RemotePostType.h"
@@ -75,10 +76,9 @@ static NSString * const RemotePostTypePublicKey = @"public";
                    success:(SuccessHandler)success
                    failure:(void (^)(NSError *error))failure
 {
-    NSDictionary *rawParameters = @{
-        @"blog_title"   : remoteBlogSettings.name,
-        @"blog_tagline" : remoteBlogSettings.tagline
-    };
+    NSMutableDictionary *rawParameters = [NSMutableDictionary dictionary];    
+    [rawParameters setValueIfNotNil:remoteBlogSettings.name forKey:@"blog_title"];
+    [rawParameters setValueIfNotNil:remoteBlogSettings.tagline forKey:@"blog_tagline"];
     
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:rawParameters];
     
@@ -137,11 +137,16 @@ static NSString * const RemotePostTypePublicKey = @"public";
         NSArray <RemotePostType *> *postTypes = [[responseObject allObjects] wp_map:^id(NSDictionary *json) {
             return [self remotePostTypeFromXMLRPCDictionary:json];
         }];
+        if (!postTypes.count) {
+            DDLogError(@"Response to %@ did not include post types for site.", request.method);
+            failure(nil);
+            return;
+        }
         if (success) {
             success(postTypes);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing post formats (%@): %@", operation.request.URL, error);
+        DDLogError(@"Error syncing post types (%@): %@", operation.request.URL, error);
         
         if (failure) {
             failure(error);

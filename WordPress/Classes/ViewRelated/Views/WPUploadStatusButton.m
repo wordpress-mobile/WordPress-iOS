@@ -8,7 +8,7 @@
     WPUploadStatusButton *button = [WPUploadStatusButton buttonWithType:UIButtonTypeSystem];
     button.frame = frame;
     button.titleLabel.textColor = [UIColor whiteColor];
-    button.titleLabel.font = [WPFontManager openSansBoldFontOfSize:14.0];
+    button.titleLabel.font = [WPFontManager systemBoldFontOfSize:14.0];
     button.backgroundColor = [UIColor clearColor];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
     button.autoresizingMask = UIViewAutoresizingFlexibleWidth;

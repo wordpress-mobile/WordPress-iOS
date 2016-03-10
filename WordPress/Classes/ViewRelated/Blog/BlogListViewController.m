@@ -255,7 +255,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     self.headerLabel.numberOfLines = 0;
     self.headerLabel.textAlignment = NSTextAlignmentCenter;
     self.headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-    self.headerLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
+    self.headerLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
     self.headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
     [self.headerView addSubview:self.headerLabel];
 }
