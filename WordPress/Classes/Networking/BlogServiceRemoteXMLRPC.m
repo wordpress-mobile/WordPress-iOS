@@ -141,7 +141,7 @@ static NSString * const RemotePostTypePublicKey = @"public";
             success(postTypes);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error syncing post formats (%@): %@", operation.request.URL, error);
+        DDLogError(@"Error syncing post types (%@): %@", operation.request.URL, error);
         
         if (failure) {
             failure(error);
