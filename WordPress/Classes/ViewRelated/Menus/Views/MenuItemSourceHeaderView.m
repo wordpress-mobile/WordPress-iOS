@@ -7,7 +7,6 @@
 
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UIImageView *iconView;
-@property (nonatomic, strong) UILabel *label;
 
 @end
 
@@ -75,7 +74,7 @@
             [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
             
-            self.label = label;
+            self.titleLabel = label;
         }
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
@@ -83,15 +82,6 @@
     }
     
     return self;
-}
-
-- (void)setItemType:(NSString *)itemType
-{
-    if(_itemType != itemType) {
-        _itemType = itemType;
-        self.label.text = itemType;
-        [self.stackView layoutIfNeeded];
-    }
 }
 
 - (void)tapGesture:(UITapGestureRecognizer *)tapGesture

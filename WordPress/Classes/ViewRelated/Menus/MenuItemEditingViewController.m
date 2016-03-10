@@ -7,6 +7,8 @@
 #import "MenuItemSourceContainerView.h"
 #import "MenuItemTypeSelectionView.h"
 
+NSString * const MenuItemEditingTypeSelectionChangedNotification = @"MenuItemEditingTypeSelectionChangedNotification";
+
 static CGFloat const MenuItemEditingFooterViewDefaultHeight = 60.0;
 static CGFloat const MenuItemEditingFooterViewCompactHeight = 46.0;
 
@@ -85,6 +87,7 @@ typedef NS_ENUM(NSUInteger) {
 {
     [super viewDidLoad];
     
+    self.typeView.selectedItemType = self.item.type;
     [self.typeView loadPostTypesForBlog:self.item.menu.blog];
 }
 
@@ -310,7 +313,8 @@ typedef NS_ENUM(NSUInteger) {
 
 - (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(NSString *)itemType
 {
-    self.sourceView.selectedItemType = itemType;
+    self.item.type = itemType;
+    [self.sourceView updateSourceSelectionForItem];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self transitionLayoutToDisplaySourceView];

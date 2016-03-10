@@ -6,6 +6,7 @@
 #import "MenuItemSourceCategoryView.h"
 #import "MenuItemSourceTagView.h"
 #import "MenuItemSourcePostView.h"
+#import "Menu.h"
 
 @interface MenuItemSourceContainerView () <MenuItemSourceHeaderViewDelegate, MenuItemSourceViewDelegate>
 
@@ -48,7 +49,6 @@
     {
         MenuItemSourceHeaderView *headerView = [[MenuItemSourceHeaderView alloc] init];
         headerView.delegate = self;
-        headerView.itemType = MenuItemTypePage;
         [self.stackView addArrangedSubview:headerView];
         
         NSLayoutConstraint *height = [headerView.heightAnchor constraintEqualToConstant:60.0];
@@ -73,6 +73,11 @@
     }
 }
 
+- (Blog *)blog
+{
+    return self.item.menu.blog;
+}
+
 - (void)setHeaderViewHidden:(BOOL)hidden
 {
     if(self.headerView.hidden != hidden) {
@@ -85,17 +90,15 @@
 {
     if(_item != item) {
         _item = item;
-        self.selectedItemType = item.type;
+        [self updateSourceSelectionForItem];
     }
 }
 
-- (void)setSelectedItemType:(NSString *)selectedItemType
+- (void)updateSourceSelectionForItem
 {
-    if(_selectedItemType != selectedItemType) {
-        _selectedItemType = selectedItemType;
-        self.headerView.itemType = selectedItemType;
-        [self showSourceViewForItemType:selectedItemType];
-    }
+    NSString *itemType = self.item.type;
+    self.headerView.titleLabel.text = [MenuItem labelForType:itemType blog:[self blog]];
+    [self showSourceViewForItemType:itemType];
 }
 
 - (void)showSourceViewForItemType:(NSString *)itemType
