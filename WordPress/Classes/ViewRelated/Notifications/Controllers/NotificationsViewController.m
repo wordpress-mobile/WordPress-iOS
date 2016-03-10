@@ -596,13 +596,10 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     [self reloadRowForNotificationWithID:noteObjectID];
     
     // Dispatch the Action block
-    dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NotificationsUndoTimeout * NSEC_PER_SEC));
-    dispatch_after(timeout, dispatch_get_main_queue(), ^{
-        [self performDeletionActionForNotificationWithID:noteObjectID deletionBlock:onTimeout];
-    });
+    [self performSelector:@selector(performDeletionActionForNoteWithID:) withObject:noteObjectID afterDelay:NotificationsUndoTimeout];
 }
 
-- (void)performDeletionActionForNotificationWithID:(NSManagedObjectID *)noteObjectID deletionBlock:(NotificationDeletionActionBlock)deletionBlock
+- (void)performDeletionActionForNoteWithID:(NSManagedObjectID *)noteObjectID
 {
     // Was the Deletion Cancelled?
     if ([self isNoteMarkedForDeletion:noteObjectID] == false) {
@@ -627,6 +624,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 }
 
 - (void)cancelDeletionForNotificationWithID:(NSManagedObjectID *)noteObjectID
+- (void)cancelDeletionForNoteWithID:(NSManagedObjectID *)noteObjectID
 {
     [self.notificationIdsMarkedForDeletion removeObject:noteObjectID];
     [self reloadRowForNotificationWithID:noteObjectID];
@@ -844,7 +842,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     cell.showsBottomSeparator       = !isLastRow && !isMarkedForDeletion;
     cell.selectionStyle             = isMarkedForDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
     cell.onUndelete                 = ^{
-        [weakSelf cancelDeletionForNotificationWithID:note.objectID];
+        [weakSelf cancelDeletionForNoteWithID:note.objectID];
     };
 
     [cell downloadIconWithURL:note.iconURL];
