@@ -194,7 +194,8 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        let service = PlanService(storeFacade: StoreKitFacade())
+        let storeFacade = StoreFacade(store: StoreKitStore())
+        let service = PlanService(storeFacade: storeFacade)
         service.plansWithPricesForBlog(0, success: { plansWithPrices in
             // FIXME: this will crash if there's no active plan
             // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4818

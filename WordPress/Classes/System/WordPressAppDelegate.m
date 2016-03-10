@@ -129,6 +129,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:[LoggingTransactionObserver instance]];
 
     return YES;
 }
