@@ -116,7 +116,7 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     NSDictionary *parameters = @{@"context": @"edit"};
     [self.api GET:requestUrl
        parameters:parameters
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
              
               NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
               NSArray <RemotePostType *> *postTypes = [[responseObject arrayForKey:RemotePostTypesKey] wp_map:^id(NSDictionary *json) {
