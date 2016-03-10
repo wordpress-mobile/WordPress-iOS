@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "MenuItemSourceCell.h"
-#import "MenuItem.h"
+
+@class MenuItem;
 
 @protocol MenuItemSourceContainerViewDelegate;
 
@@ -8,7 +8,8 @@
 
 @property (nonatomic, weak) id <MenuItemSourceContainerViewDelegate> delegate;
 @property (nonatomic, strong) MenuItem *item;
-@property (nonatomic, strong) NSString *selectedItemType;
+
+- (void)updateSourceSelectionForItem;
 
 @end
 

@@ -1,13 +1,14 @@
 #import "MenuItemTypeSelectionView.h"
 #import "MenuItemTypeView.h"
 #import "BlogService.h"
+#import "Blog.h"
+#import "PostType.h"
 
 @interface MenuItemTypeSelectionView () <MenuItemTypeViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) NSMutableArray *typeViews;
-@property (nonatomic, strong) MenuItemTypeView *selectedTypeView;
 
 @end
 
@@ -55,33 +56,106 @@
                                                   ]];
         self.stackView = stackView;
     }
-    
-    MenuItemTypeView *typeView = [self addTypeView:MenuItemTypePage];
-    typeView.selected = YES;
-    typeView.designIgnoresDrawingTopBorder = YES;
-    self.selectedTypeView = typeView;
-    [self addTypeView:MenuItemTypeCustom];
-    [self addTypeView:MenuItemTypeCategory];
-    [self addTypeView:MenuItemTypeTag];
-    [self addTypeView:MenuItemTypePost];
 }
 
-- (MenuItemTypeView *)addTypeView:(NSString *)itemType {
-    
-    MenuItemTypeView *typeView = [self newTypeView];
-    typeView.itemType = itemType;
-    typeView.itemTypeLabel = itemType;
-    return typeView;
+- (void)setSelectedItemType:(NSString *)selectedItemType
+{
+    if (_selectedItemType != selectedItemType) {
+        _selectedItemType = selectedItemType;
+        [self updateSelectedItemTypeView];
+    }
 }
 
-- (MenuItemTypeView *)newTypeView
+- (void)loadPostTypesForBlog:(Blog *)blog
+{
+    // Add default types.
+    [self addDefaultItemTypesForBlog:blog];
+    [self updateSelectedItemTypeView];
+    
+    // Sync the available postTypes for blog
+    __weak __typeof__(self) weakSelf = self;
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:blog.managedObjectContext];
+    [service syncPostTypesForBlog:blog success:^{
+        // synced post types
+        [weakSelf addCustomBlogPostTypesIfNeeded:blog];
+    } failure:^(NSError *error) {
+        DDLogError(@"Error syncing post-types for Menus: %@", error);
+    }];
+}
+
+- (void)updateDesignForLayoutChangeIfNeeded
+{
+    for(MenuItemTypeView *typeView in self.typeViews) {
+        [typeView updateDesignForLayoutChangeIfNeeded];
+    }
+}
+
+- (void)addDefaultItemTypesForBlog:(Blog *)blog
+{
+    MenuItemTypeView *firstTypeView = [self addTypeView:MenuItemTypePage blog:blog];
+    firstTypeView.designIgnoresDrawingTopBorder = YES;
+    
+    [self addTypeView:MenuItemTypeCustom blog:blog];
+    [self addTypeView:MenuItemTypeCategory blog:blog];
+    [self addTypeView:MenuItemTypeTag blog:blog];
+    [self addTypeView:MenuItemTypePost blog:blog];
+}
+
+- (void)addCustomBlogPostTypesIfNeeded:(Blog *)blog
+{
+    if (!blog.postTypes.count) {
+        return;
+    }
+    NSMutableArray <PostType *> *postTypes = [NSMutableArray arrayWithArray:[blog.postTypes allObjects]];
+    [postTypes sortUsingSelector:@selector(label)];
+    for (PostType *postType in postTypes) {
+        // Not queryable, skip.
+        if (!postType.apiQueryable.boolValue) {
+            continue;
+        }
+        // Already have a type for this postType, skip.
+        if ([self typeViewForItemType:postType.name]) {
+            continue;
+        }
+        // Add this postType as a typeView.
+        [self addTypeView:postType.name blog:blog];
+    }
+    [self updateSelectedItemTypeView];
+}
+
+- (void)updateSelectedItemTypeView
+{
+    for (MenuItemTypeView *typeView in self.typeViews) {
+        if (typeView.selected) {
+            typeView.selected = NO;
+        }
+    }
+    MenuItemTypeView *selectedView = [self typeViewForItemType:self.selectedItemType];
+    selectedView.selected = YES;
+}
+
+- (MenuItemTypeView *)addTypeView:(NSString *)itemType blog:(Blog *)blog
 {
     MenuItemTypeView *typeView = [[MenuItemTypeView alloc] init];
     typeView.delegate = self;
+    typeView.itemType = itemType;
+    typeView.itemTypeLabel = [MenuItem labelForType:itemType blog:blog];
     [self.stackView addArrangedSubview:typeView];
     [typeView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
     [self.typeViews addObject:typeView];
     return typeView;
+}
+
+- (MenuItemTypeView *)typeViewForItemType:(NSString *)itemType
+{
+    MenuItemTypeView *itemTypeView = nil;
+    for (MenuItemTypeView *typeView in self.typeViews) {
+        if ([typeView.itemType isEqualToString:itemType]) {
+            itemTypeView = typeView;
+            break;
+        }
+    }
+    return itemTypeView;
 }
 
 - (void)drawRect:(CGRect)rect
@@ -96,23 +170,6 @@
     CGContextRestoreGState(context);
 }
 
-- (void)loadPostTypesForBlog:(Blog *)blog
-{
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:blog.managedObjectContext];
-    [service syncPostTypesForBlog:blog success:^{
-        // synced post types
-    } failure:^(NSError *error) {
-        DDLogError(@"Error syncing post-types for Menus: %@", error);
-    }];
-}
-
-- (void)updateDesignForLayoutChangeIfNeeded
-{
-    for(MenuItemTypeView *typeView in self.typeViews) {
-        [typeView updateDesignForLayoutChangeIfNeeded];
-    }
-}
-
 #pragma mark - delegate
 
 - (void)tellDelegateTypeChanged:(NSString *)itemType
@@ -124,10 +181,7 @@
 
 - (void)typeViewPressedForSelection:(MenuItemTypeView *)typeView
 {
-    self.selectedTypeView.selected = NO;
-    self.selectedTypeView = typeView;
-    typeView.selected = YES;
-    
+    self.selectedItemType = typeView.itemType;
     [self tellDelegateTypeChanged:typeView.itemType];
 }
 
