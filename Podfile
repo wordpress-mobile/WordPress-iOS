@@ -45,23 +45,23 @@ target 'WordPress', :exclusive => true do
   pod 'NSURL+IDN', '0.3'
   pod 'Simperium', '0.8.12'
   pod 'WPMediaPicker', '~> 0.9.0'
-  pod 'WordPress-iOS-Editor', '1.1.3'
-  pod 'WordPress-iOS-Shared', '0.5.1'
+  pod 'WordPress-iOS-Editor', '1.1.5'
+  pod 'WordPress-iOS-Shared', '0.5.3'
   pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
   pod 'WordPressCom-Analytics-iOS', '0.1.4'
-  pod 'WordPressCom-Stats-iOS/UI', '0.6.2'
+  pod 'WordPressCom-Stats-iOS/UI', '0.6.3'
   pod 'wpxmlrpc', '~> 0.8'
 end
 
 target 'WordPressShare', :exclusive => true do
   pod 'CocoaLumberjack', '~> 2.2.0'
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :commit => '3457aefae79ef2c67fb26ccab57c24505caa65f9'
-  pod 'WordPress-iOS-Shared', '0.5.1'
+  pod 'WordPress-iOS-Shared', '0.5.3'
 end
 
 target 'WordPressTodayWidget', :exclusive => true do
-  pod 'WordPress-iOS-Shared', '0.5.1'
-  pod 'WordPressCom-Stats-iOS/Services', '0.6.2'
+  pod 'WordPress-iOS-Shared', '0.5.3'
+  pod 'WordPressCom-Stats-iOS/Services', '0.6.3'
 end
 
 target :WordPressTest, :exclusive => true do

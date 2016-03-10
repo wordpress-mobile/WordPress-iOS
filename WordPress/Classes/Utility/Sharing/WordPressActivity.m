@@ -63,7 +63,7 @@
 	
 	if ([WPPostViewController isNewEditorEnabled]) {
 		WPPostViewController * editPostViewController = [[WPPostViewController alloc] initWithTitle:self.title andContent:content andTags:self.tags andImage:nil];
-		editPostViewController.onClose = ^(WPPostViewController *viewController){
+		editPostViewController.onClose = ^(WPPostViewController *viewController, BOOL changesSaved){
 			[weakSelf activityDidFinish:YES];
 		};
 
