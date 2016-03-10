@@ -86,7 +86,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide littleEddieGrey];
-    label.font = [WPFontManager openSansRegularFontOfSize:16.0];
+    label.font = [WPFontManager systemRegularFontOfSize:16.0];
     label.adjustsFontSizeToFitWidth = NO;
 
     return label;
@@ -100,7 +100,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide allTAllShadeGrey];
-    label.font = [WPFontManager openSansItalicFontOfSize:12.0];
+    label.font = [WPFontManager systemItalicFontOfSize:12.0];
     label.adjustsFontSizeToFitWidth = NO;
 
     return label;
