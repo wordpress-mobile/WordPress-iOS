@@ -42,6 +42,7 @@ import WordPressShared.WPStyleGuide
     public var isLikeOn: Bool {
         set {
             btnLike.selected = newValue
+            btnLike.accessibilityLabel = likeAccesibilityLabel
         }
         get {
             return btnLike.selected
@@ -50,6 +51,7 @@ import WordPressShared.WPStyleGuide
     public var isApproveOn: Bool {
         set {
             btnApprove.selected = newValue
+            btnApprove.accessibilityLabel = approveAccesibilityLabel
         }
         get {
             return btnApprove.selected
@@ -138,13 +140,21 @@ import WordPressShared.WPStyleGuide
         onSpamClick?(sender: sender)
     }
     
-
-
+    
     // MARK: - Computed Properties
     private var buttonSpacingForCurrentTraits : CGFloat {
         let isHorizontallyCompact = traitCollection.horizontalSizeClass == .Compact && UIDevice.isPad()
         return isHorizontallyCompact ? buttonSpacingCompact : buttonSpacing
     }
+    
+    private var approveAccesibilityLabel : String {
+        return isApproveOn ? NSLocalizedString("Unapprove", comment: "Unapproves a comment") : NSLocalizedString("Approve", comment: "Approve a comment")
+    }
+    
+    private var likeAccesibilityLabel : String {
+        return isLikeOn ? NSLocalizedString("Unlike", comment: "Unlikes a comment") : NSLocalizedString("Like", comment: "Like a comment")
+    }
+    
     
     // MARK: - Private Constants
     private let buttonSpacing           = CGFloat(20)

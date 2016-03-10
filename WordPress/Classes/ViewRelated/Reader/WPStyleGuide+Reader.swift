@@ -12,7 +12,7 @@ extension WPStyleGuide
 
     public class func originalAttributionParagraphAttributes() -> [String: AnyObject] {
         let fontSize = originalAttributionFontSize()
-        let font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        let font = WPFontManager.systemRegularFontOfSize(fontSize)
 
         let lineHeight:CGFloat = Cards.defaultLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
@@ -68,7 +68,7 @@ extension WPStyleGuide
 
     public class func readerCrossPostBoldSubtitleAttributes() -> [NSObject: AnyObject] {
         let fontSize = Cards.crossPostSubtitleFontSize
-        let font = WPFontManager.openSansBoldFontOfSize(fontSize)
+        let font = WPFontManager.systemBoldFontOfSize(fontSize)
 
         let lineHeight = Cards.crossPostLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
@@ -84,7 +84,7 @@ extension WPStyleGuide
 
     public class func readerCrossPostSubtitleAttributes() -> [NSObject: AnyObject] {
         let fontSize = Cards.crossPostSubtitleFontSize
-        let font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        let font = WPFontManager.systemRegularFontOfSize(fontSize)
 
         let lineHeight = Cards.crossPostLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
@@ -130,7 +130,7 @@ extension WPStyleGuide
 
     public class func readerCardWordCountAttributes() -> [NSObject: AnyObject] {
         let fontSize = Cards.buttonFontSize
-        let font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        let font = WPFontManager.systemRegularFontOfSize(fontSize)
 
         let lineHeight = Cards.defaultLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
@@ -146,7 +146,7 @@ extension WPStyleGuide
 
     public class func readerCardReadingTimeAttributes() -> [NSObject: AnyObject] {
         let fontSize:CGFloat = Cards.subtextFontSize
-        let font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        let font = WPFontManager.systemRegularFontOfSize(fontSize)
 
         let lineHeight = Cards.defaultLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
@@ -201,7 +201,7 @@ extension WPStyleGuide
 
     public class func applyReaderCardSiteButtonStyle(button:UIButton) {
         let fontSize = Cards.buttonFontSize
-        button.titleLabel!.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        button.titleLabel!.font = WPFontManager.systemRegularFontOfSize(fontSize)
         button.setTitleColor(mediumBlue(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
         button.setTitleColor(darkGrey(), forState: .Disabled)
@@ -209,7 +209,7 @@ extension WPStyleGuide
 
     public class func applyReaderCardBylineLabelStyle(label:UILabel) {
         let fontSize:CGFloat = Cards.subtextFontSize
-        label.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
         label.textColor = greyDarken10()
     }
 
@@ -225,7 +225,7 @@ extension WPStyleGuide
         let fontSize = Cards.buttonFontSize
         button.setTitleColor(mediumBlue(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
     }
 
     public class func applyReaderCardActionButtonStyle(button:UIButton) {
@@ -234,7 +234,7 @@ extension WPStyleGuide
         button.setTitleColor(lightBlue(), forState: .Highlighted)
         button.setTitleColor(jazzyOrange(), forState: .Selected)
         button.setTitleColor(greyDarken10(), forState: .Disabled)
-        button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
     }
 
 
@@ -242,13 +242,13 @@ extension WPStyleGuide
 
     public class func applyReaderStreamHeaderTitleStyle(label:UILabel) {
         let fontSize:CGFloat = 14.0
-        label.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
         label.textColor = darkGrey()
     }
 
     public class func applyReaderStreamHeaderDetailStyle(label:UILabel) {
         let fontSize:CGFloat = Cards.subtextFontSize
-        label.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
         label.textColor = greyDarken10()
     }
 
@@ -261,7 +261,7 @@ extension WPStyleGuide
 
         button.setTitleColor(validGreen(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
 
         button.setImage(UIImage(named: "icon-reader-following"), forState: .Normal)
         button.setImage(UIImage(named: "icon-reader-follow-highlight"), forState: .Highlighted)
@@ -276,7 +276,7 @@ extension WPStyleGuide
 
         button.setTitleColor(greyLighten10(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
-        button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        button.titleLabel?.font = WPFontManager.systemRegularFontOfSize(fontSize)
 
         button.setImage(UIImage(named: "icon-reader-follow"), forState: .Normal)
         button.setImage(UIImage(named: "icon-reader-follow-highlight"), forState: .Highlighted)
@@ -290,7 +290,7 @@ extension WPStyleGuide
 
     public class func applyReaderSiteStreamCountStyle(label:UILabel) {
         let fontSize:CGFloat = 12.0
-        label.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        label.font = WPFontManager.systemRegularFontOfSize(fontSize)
         label.textColor = grey()
     }
 
@@ -303,7 +303,7 @@ extension WPStyleGuide
         button.setBackgroundImage(normalImage, forState: .Normal)
         button.setBackgroundImage(highlightedImage, forState: .Highlighted)
 
-        button.titleLabel?.font = WPFontManager.openSansSemiBoldFontOfSize(Cards.loadMoreButtonFontSize)
+        button.titleLabel?.font = WPFontManager.systemSemiBoldFontOfSize(Cards.loadMoreButtonFontSize)
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
     }
 
