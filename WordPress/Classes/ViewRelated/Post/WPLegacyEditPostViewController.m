@@ -201,7 +201,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if ([self isMediaUploading]) {
         [self refreshMediaProgress];
         UIButton *titleButton = self.uploadStatusButton;
-        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server")]                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server")]                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager systemBoldFontOfSize:14.0] }];
         [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
         [titleButton sizeToFit];
         if (self.navigationItem.titleView != titleButton){
@@ -214,11 +214,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         UIButton *titleButton = self.titleBarButton;
         self.navigationItem.titleView = titleButton;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
-                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager systemBoldFontOfSize:14.0] }];
 
         NSString *name = self.post.blog.settings.name;
         NSString *subtext = name.length == 0 ? self.post.blog.url : name;
-        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
+        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager systemRegularFontOfSize:10.0] };
         NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
                                                                                          attributes:subtextAttributes];
         [titleText appendAttributedString:titleSubtext];
@@ -254,7 +254,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self dismissViewControllerAnimated:YES completion:nil];
         self.dismissingBlogPicker = NO;
     };
-    void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
+    void (^successHandler)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
 
@@ -299,8 +299,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     };
 
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.post.blog.objectID
-                                                                                   selectedCompletion:selectedCompletion
-                                                                                     cancelCompletion:dismissHandler];
+                                                                                       successHandler:successHandler
+                                                                                       dismissHandler:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];

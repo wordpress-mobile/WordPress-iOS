@@ -120,7 +120,7 @@ import WordPressShared
         let str = String(format: pattern, blogName)
 
         let range = (str as NSString).rangeOfString(blogName)
-        let font = WPFontManager.openSansItalicFontOfSize(WPStyleGuide.originalAttributionFontSize())
+        let font = WPFontManager.systemItalicFontOfSize(WPStyleGuide.originalAttributionFontSize())
         let attributes = WPStyleGuide.siteAttributionParagraphAttributes()
         let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
         attributedString.addAttribute(NSFontAttributeName, value: font, range: range)
