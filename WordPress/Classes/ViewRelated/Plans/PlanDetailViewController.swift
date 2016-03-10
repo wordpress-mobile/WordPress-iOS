@@ -145,37 +145,19 @@ class PlanDetailViewController: UIViewController {
     //MARK: - IBActions
     
     @IBAction private func purchaseTapped() {
-        purchaseButton.selected = true
-        
-        // TODO (@frosty 2016-02-26): This is a temporary fake StoreKit
-        // transaction process to simulate navigation to the post purchase screens.
-        // This should be removed when we integrate StoreKit.
-        func showSuccessAlert() {
-            let alert = UIAlertController(title: "Thank You", message: "Your purchase was successful.", preferredStyle: .Alert)
-            alert.addActionWithTitle("OK", style: .Default, handler: { action in })
-            
-            let postPurchase = PlanPostPurchaseViewController(plan: self.plan)
-            let navigationController = RotationAwareNavigationViewController(rootViewController: postPurchase)
-            navigationController.modalTransitionStyle = .CrossDissolve
-            navigationController.modalPresentationStyle = .FormSheet
-            navigationController.navigationBar.shadowImage = UIImage(color: UIColor.clearColor(), havingSize: CGSize(width: 1, height: 1))
-            presentViewController(navigationController, animated: true, completion: nil)
-
-            navigationController.presentViewController(alert, animated: true, completion: nil)
-            
-            purchaseButton.selected = false
+        guard let identifier = plan.productIdentifier else {
+            return
         }
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), {
-            let alert = UIAlertController(title: "Confirm Your In-App Purchase", message: "Do you want to buy one WordPress.com Premium for 1 year for $99.99?", preferredStyle: .Alert)
-            alert.addActionWithTitle("Cancel", style: .Cancel, handler: { action in
+        purchaseButton.selected = true
+        let store = StoreKitStore()
+        store.getProductsWithIdentifiers(
+            Set([identifier]),
+            success: { products in
+                store.requestPayment(products[0])
+            },
+            failure: { error in
+                DDLogSwift.logError("Error fetching Store products: \(error)")
                 self.purchaseButton.selected = false
-            })
-            alert.addActionWithTitle("Buy", style: .Default, handler: { action in
-                showSuccessAlert()
-            })
-            
-            self.presentViewController(alert, animated: true, completion: nil)
         })
     }
 }
