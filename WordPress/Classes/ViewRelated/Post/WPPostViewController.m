@@ -1264,7 +1264,7 @@ EditImageDetailsViewControllerDelegate
         }
         
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
-                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0] }];
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0] }];
         
         [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
         if (![self isViewHorizontallyCompact]) {

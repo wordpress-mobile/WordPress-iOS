@@ -1,5 +1,7 @@
 #import "VerticallyStackedButton.h"
 
+static const CGFloat ImageLabelSeparation = 2.f;
+
 @implementation VerticallyStackedButton
 
 - (id)initWithFrame:(CGRect)frame {
@@ -30,7 +32,7 @@
                                                      imageSize.height));
     
     self.titleLabel.frame = CGRectIntegral(CGRectMake((CGRectGetWidth(self.frame) - titleSize.width) * 0.5f,
-                                                      CGRectGetMaxY(self.imageView.frame),
+                                                      CGRectGetMaxY(self.imageView.frame) + ImageLabelSeparation,
                                                       titleSize.width,
                                                       titleSize.height));
     

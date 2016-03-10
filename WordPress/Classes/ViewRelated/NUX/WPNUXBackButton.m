@@ -47,7 +47,7 @@ static UIEdgeInsets const WPNUXBackButtonImageEdgeInsets            = {0, -22, 0
 
 - (void)configureButton
 {
-    self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:15.0];
+    self.titleLabel.font = [WPFontManager systemRegularFontOfSize:15.0];
     [self setTitleEdgeInsets:WPNUXBackButtonTitleEdgeInsets];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateHighlighted];
