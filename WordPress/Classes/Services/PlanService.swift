@@ -1,9 +1,9 @@
 import Foundation
 
-struct PlanService {
-    let store: StoreFacade
+struct PlanService<S: Store> {
+    let store: StoreFacade<S>
 
-    init(storeFacade: StoreFacade = StoreKitFacade()) {
+    init(storeFacade: StoreFacade<S>) {
         self.store = storeFacade
     }
 

@@ -9,11 +9,29 @@ enum ProductRequestError: ErrorType {
     case InvalidProductPrice
 }
 
-protocol StoreFacade {
-    func getProductsWithIdentifiers(identifiers: Set<String>, success: [Product] -> Void, failure: ErrorType -> Void)
+class LoggingTransactionObserver: NSObject, SKPaymentTransactionObserver {
+    static let instance = LoggingTransactionObserver()
+    func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        DDLogSwift.logInfo("Updated transactions: \(transactions)")
+        for transaction in transactions {
+            switch transaction.transactionState {
+            case .Purchased, .Failed:
+                queue.finishTransaction(transaction)
+            default: break
+            }
+        }
+    }
 }
 
-extension StoreFacade {
+protocol Store {
+    typealias ProductType: Product
+    func getProductsWithIdentifiers(identifiers: Set<String>, success: [ProductType] -> Void, failure: ErrorType -> Void)
+    func requestPayment(product: ProductType)
+    var canMakePayments: Bool { get }
+}
+
+struct StoreFacade<S: Store> {
+    let store: S
     /// Requests prices for the given plans.
     ///
     /// On success, it calls the `success` function with an array of prices. If
@@ -21,7 +39,7 @@ extension StoreFacade {
     /// "free" plan and the returned price will be an empty string.
     func getPricesForPlans(plans: [Plan], success: [String] -> Void, failure: ErrorType -> Void) {
         let identifiers = Set(plans.flatMap({ $0.productIdentifier }))
-        getProductsWithIdentifiers(
+        store.getProductsWithIdentifiers(
             identifiers,
             success: { products in
                 do {
@@ -38,8 +56,9 @@ extension StoreFacade {
     }
 }
 
-class StoreKitFacade: StoreFacade {
-    func getProductsWithIdentifiers(identifiers: Set<String>, success: [Product] -> Void, failure: ErrorType -> Void) {
+class StoreKitStore: Store {
+    typealias ProductType = SKProduct
+    func getProductsWithIdentifiers(identifiers: Set<String>, success: [ProductType] -> Void, failure: ErrorType -> Void) {
         let request = SKProductsRequest(productIdentifiers: identifiers)
         let delegate = ProductRequestDelegate(onSuccess: success, onError: failure)
         delegate.retainUntilFinished(request)
@@ -49,16 +68,26 @@ class StoreKitFacade: StoreFacade {
 
         request.start()
     }
+
+    func requestPayment(product: ProductType) {
+        let payment = SKPayment(product: product)
+        SKPaymentQueue.defaultQueue().addPayment(payment)
+    }
+
+    var canMakePayments: Bool {
+        return SKPaymentQueue.canMakePayments()
+    }
 }
 
-/// Mock Store Facade to use while developing.
+/// Mock Store to use while developing.
 ///
 /// If you want to simulate a successful products request, use `MockStoreFacade.succeeding(after:)`.
 ///
 /// If you want to simulate a failure, use `MockStoreFacade.failing(after:)`.
 ///
 /// Both constructors support an optional `delay` parameter that defaults to 1 second.
-struct MockStoreFacade: StoreFacade {
+struct MockStore: Store {
+    typealias ProductType = MockProduct
     /// Response delay in seconds
     let delay: Double
     let succeeds: Bool
@@ -68,12 +97,12 @@ struct MockStoreFacade: StoreFacade {
         self.succeeds = succeeds
     }
 
-    static func succeeding(after delay: Double = 1.0) -> MockStoreFacade {
-        return MockStoreFacade(delay: delay, succeeds: true)
+    static func succeeding(after delay: Double = 1.0) -> MockStore {
+        return MockStore(delay: delay, succeeds: true)
     }
 
-    static func failing(after delay: Double = 1.0) -> MockStoreFacade {
-        return MockStoreFacade(delay: delay, succeeds: false)
+    static func failing(after delay: Double = 1.0) -> MockStore {
+        return MockStore(delay: delay, succeeds: false)
     }
 
     var products = [
@@ -93,7 +122,7 @@ struct MockStoreFacade: StoreFacade {
         )
     ]
 
-    func getProductsWithIdentifiers(identifiers: Set<String>, success: [Product] -> Void, failure: ErrorType -> Void) {
+    func getProductsWithIdentifiers(identifiers: Set<String>, success: [ProductType] -> Void, failure: ErrorType -> Void) {
         let products = identifiers.map({ identifier in
             return self.products.filter({ $0.productIdentifier == identifier }).first
         })
@@ -120,10 +149,16 @@ struct MockStoreFacade: StoreFacade {
             }
         }
     }
+
+    func requestPayment(product: ProductType) {
+        // TODO
+    }
+
+    var canMakePayments = true
 }
 
 private class ProductRequestDelegate: NSObject, SKProductsRequestDelegate {
-    typealias Success = [Product] -> Void
+    typealias Success = [SKProduct] -> Void
     typealias Failure = ErrorType -> Void
     
     let onSuccess: Success
