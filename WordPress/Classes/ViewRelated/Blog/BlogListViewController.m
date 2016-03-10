@@ -30,7 +30,13 @@ static NSInteger HideAllMinSites = 10;
 static NSInteger HideAllSitesThreshold = 6;
 static NSTimeInterval HideAllSitesInterval = 2.0;
 
-@interface BlogListViewController () <UIViewControllerRestoration>
+@interface BlogListViewController () <UIViewControllerRestoration,
+                                        UIDataSourceModelAssociation,
+                                        UITableViewDelegate,
+                                        UITableViewDataSource,
+                                        NSFetchedResultsControllerDelegate,
+                                        WPSearchResultsUpdating,
+                                        WPSearchControllerDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIView *headerView;
@@ -39,7 +45,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 @property (nonatomic, strong) IBOutlet UIView *searchWrapperView;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
-@property (nonatomic, weak) UIAlertController *addSiteAlertController;
+@property (nonatomic,   weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
 @property (nonatomic, strong) UIBarButtonItem *searchButton;
 
