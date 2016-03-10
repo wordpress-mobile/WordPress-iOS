@@ -408,7 +408,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return self.resultsController.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -461,7 +461,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 {
     Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
     NSString *name = blog.settings.name;
-    
+
     if (name.length != 0) {
         cell.textLabel.text = name;
         cell.detailTextLabel.text = [blog displayURL];
@@ -803,6 +803,9 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
     [self.tableView reloadData];
 }
+
+
+#pragma mark - NSFetchedResultsControllerDelegate
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
