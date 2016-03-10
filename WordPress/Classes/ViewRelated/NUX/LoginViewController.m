@@ -506,7 +506,7 @@ static NSString * const LoginSharedWebCredentialFQDN = @"wordpress.com";
     helpBadge.textAlignment = NSTextAlignmentCenter;
     helpBadge.backgroundColor = [UIColor UIColorFromHex:0xdd3d36];
     helpBadge.textColor = [UIColor whiteColor];
-    helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
+    helpBadge.font = [WPFontManager systemRegularFontOfSize:8.0];
     helpBadge.hidden = YES;
 
     // Add Username
@@ -612,7 +612,7 @@ static NSString * const LoginSharedWebCredentialFQDN = @"wordpress.com";
     [cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [cancelButton setExclusiveTouch:YES];
     [cancelButton setTitleEdgeInsets:LoginBackButtonTitleInsets];
-    [cancelButton.titleLabel setFont:[WPFontManager openSansRegularFontOfSize:15.0]];
+    [cancelButton.titleLabel setFont:[WPFontManager systemRegularFontOfSize:15.0]];
     [cancelButton sizeToFit];
     
     // Add status label

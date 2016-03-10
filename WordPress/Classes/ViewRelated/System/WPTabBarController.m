@@ -40,9 +40,11 @@ NSString * const WPNewPostURLParamTagsKey = @"tags";
 NSString * const WPNewPostURLParamImageKey = @"image";
 
 // Constants for the unread notification dot icon
-static NSInteger const WPNotificationBadgeIconSize = 10;
-static NSInteger const WPNotificationBadgeIconVerticalOffsetFromTop = 5;
-static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 8;
+static NSInteger const WPNotificationBadgeIconRadius = 5;
+static NSInteger const WPNotificationBadgeIconBorder = 2;
+static NSInteger const WPNotificationBadgeIconSize = (WPNotificationBadgeIconRadius + WPNotificationBadgeIconBorder) * 2;
+static NSInteger const WPNotificationBadgeIconVerticalOffsetFromTop = 6;
+static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenter = 13;
 
 static NSInteger const WPTabBarIconOffset = 5;
 
@@ -59,7 +61,7 @@ static NSInteger const WPTabBarIconOffset = 5;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
 
-@property (nonatomic, strong) UIImageView *notificationBadgeIconView;
+@property (nonatomic, strong) UIView *notificationBadgeIconView;
 
 @end
 
@@ -558,13 +560,19 @@ static NSInteger const WPTabBarIconOffset = 5;
 
 - (void)addNotificationBadgeIcon
 {
-    self.notificationBadgeIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, WPNotificationBadgeIconSize, WPNotificationBadgeIconSize)];
-    self.notificationBadgeIconView.image = [UIImage imageWithColor:[WPStyleGuide jazzyOrange]
-                                                        havingSize:CGSizeMake(WPNotificationBadgeIconSize, WPNotificationBadgeIconSize)];
-    self.notificationBadgeIconView.layer.cornerRadius = WPNotificationBadgeIconSize / 2.0;
-    self.notificationBadgeIconView.layer.masksToBounds = YES;
-    self.notificationBadgeIconView.layer.borderColor = [[UIColor whiteColor] CGColor];
-    self.notificationBadgeIconView.layer.borderWidth = 1.0;
+    CGRect badgeFrame = CGRectMake(0, 0, WPNotificationBadgeIconSize, WPNotificationBadgeIconSize);
+    self.notificationBadgeIconView = [[UIView alloc] initWithFrame:badgeFrame];
+    
+    CAShapeLayer *badgeLayer = [CAShapeLayer layer];
+    badgeLayer.contentsScale = [UIScreen mainScreen].scale;
+    CGPoint badgeCenter = CGPointMake(WPNotificationBadgeIconSize / 2.f, WPNotificationBadgeIconSize / 2.f);
+    CGFloat badgeRadius = WPNotificationBadgeIconRadius + WPNotificationBadgeIconBorder / 2.f;
+    badgeLayer.path = [UIBezierPath bezierPathWithArcCenter:badgeCenter radius:badgeRadius startAngle:0 endAngle:M_PI * 2 clockwise:NO].CGPath;
+    badgeLayer.fillColor = [WPStyleGuide jazzyOrange].CGColor;
+    badgeLayer.strokeColor = [UIColor whiteColor].CGColor;
+    badgeLayer.lineWidth = WPNotificationBadgeIconBorder;
+    [self.notificationBadgeIconView.layer addSublayer:badgeLayer];
+
     self.notificationBadgeIconView.hidden = YES;
     [self.tabBar addSubview:self.notificationBadgeIconView];
 }

@@ -116,12 +116,17 @@ static NSInteger const RemoteBlogUncategorizedCategory                      = 1;
     NSDictionary *parameters = @{@"context": @"edit"};
     [self.api GET:requestUrl
        parameters:parameters
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
              
               NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary.");
               NSArray <RemotePostType *> *postTypes = [[responseObject arrayForKey:RemotePostTypesKey] wp_map:^id(NSDictionary *json) {
                   return [self remotePostTypeWithDictionary:json];
               }];
+              if (!postTypes.count) {
+                  DDLogError(@"Response to %@ did not include post types for site.", requestUrl);
+                  failure(nil);
+                  return;
+              }
               if (success) {
                   success(postTypes);
               }

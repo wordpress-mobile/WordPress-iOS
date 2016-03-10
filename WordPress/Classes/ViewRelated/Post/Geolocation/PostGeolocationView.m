@@ -128,7 +128,7 @@ const CGFloat GeoViewMinHeight = 130.0f;
     NSString *address = self.address ? [self.address stringByAppendingString:@"\n"] : @"";
     
     NSDictionary *addressStyle = @{NSFontAttributeName:[WPStyleGuide regularTextFont], NSForegroundColorAttributeName:[WPStyleGuide darkGrey]};
-    NSDictionary *coordinateStyle = @{NSFontAttributeName:[WPFontManager openSansSemiBoldFontOfSize:11.0], NSForegroundColorAttributeName:[WPStyleGuide grey]};
+    NSDictionary *coordinateStyle = @{NSFontAttributeName:[WPFontManager systemSemiBoldFontOfSize:11.0], NSForegroundColorAttributeName:[WPStyleGuide grey]};
 
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:address attributes:addressStyle];
     NSAttributedString *coordinates = [[NSMutableAttributedString alloc] initWithString:coordText attributes:coordinateStyle];

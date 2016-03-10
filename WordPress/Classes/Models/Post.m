@@ -152,10 +152,6 @@ NSString * const PostTypeDefaultIdentifier = @"post";
 
 - (BOOL)hasLocalChanges
 {
-    if (![self isRevision]) {
-        return NO;
-    }
-    
     if ([super hasLocalChanges]) {
         return YES;
     }

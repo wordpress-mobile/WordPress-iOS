@@ -78,6 +78,16 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
              PostStatusPublish];
 }
 
+- (BOOL)hasNeverAttemptedToUpload
+{
+    return self.remoteStatus == AbstractPostRemoteStatusLocal;
+}
+
+- (BOOL)hasLocalChanges
+{
+    return self.remoteStatus == AbstractPostRemoteStatusLocal || self.remoteStatus == AbstractPostRemoteStatusFailed;
+}
+
 - (BOOL)hasRemote
 {
     return ((self.postID != nil) && ([self.postID longLongValue] > 0));
