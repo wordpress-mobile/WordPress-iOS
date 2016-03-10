@@ -18,7 +18,7 @@ target 'WordPress', :exclusive => true do
   pod 'SVProgressHUD', '~>1.1.3'
   pod 'AMPopTip', '~> 0.7'
   pod 'wpxmlrpc', '~> 0.8'
-  pod 'Mixpanel', '2.8.2'
+  pod 'Mixpanel' 
   pod 'CocoaLumberjack', '~> 2.2.0'
   pod 'HockeySDK', '~>3.8.0'
   pod 'Helpshift', '~> 5.3.0-support'
