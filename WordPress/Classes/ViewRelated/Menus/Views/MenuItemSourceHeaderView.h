@@ -6,7 +6,7 @@
 @interface MenuItemSourceHeaderView : UIView
 
 @property (nonatomic, weak) id <MenuItemSourceHeaderViewDelegate> delegate;
-@property (nonatomic, strong) NSString *itemType;
+@property (nonatomic, strong) UILabel *titleLabel;
 
 @end
 

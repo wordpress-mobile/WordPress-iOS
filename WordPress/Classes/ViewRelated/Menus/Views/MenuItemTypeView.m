@@ -98,6 +98,7 @@
             widthConstraint.active = YES;
             
             self.arrowView = iconView;
+            [self hideArrowView];
         }
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChangeNotification:) name:UIDeviceOrientationDidChangeNotification object:nil];

@@ -1,6 +1,7 @@
 #import <CoreData/CoreData.h>
 
 @class Menu;
+@class Blog;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -66,8 +67,8 @@ extern NSString * const MenuItemTypeJetpackComic;
 ///---------------------
 /// @name Helper methods
 ///---------------------
-
 + (NSString *)entityName;
++ (NSString *)labelForType:(NSString *)itemType blog:(nullable Blog *)blog;
 
 /**
  *  @brief      Call this method to know whether an item is a descendent of this item.

@@ -8,6 +8,7 @@
 @interface MenuItemTypeSelectionView : UIView
 
 @property (nonatomic, weak) id <MenuItemTypeSelectionViewDelegate> delegate;
+@property (nonatomic, strong) NSString *selectedItemType;
 
 - (void)loadPostTypesForBlog:(Blog *)blog;
 - (void)updateDesignForLayoutChangeIfNeeded;
