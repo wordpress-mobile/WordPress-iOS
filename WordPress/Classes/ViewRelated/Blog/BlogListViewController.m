@@ -729,6 +729,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [accountService setVisibility:switcher.on forBlogs:@[blog]];
 }
 
+
 #pragma mark - NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController
@@ -737,16 +738,33 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         return _resultsController;
     }
 
-    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"settings.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
-    [fetchRequest setPredicate:[self fetchRequestPredicate]];
+    // Notes:
+    // ======
+    //
+    //  -   We're grouping "Primary Sites" at the top of the list, by means of the sectionNameKeyPath property.
+    //
+    //  -   NSFetchedResultsController *requires and enforces* sectionNameKeypath never to be nil.
+    //      Otherwise, unpredictable behavior arises. This property *may* be calculated (YAY!)
+    //
+    //  -   NSFetchRequest's NSSortDescriptor(s) are required to hit actual Core Data properties, and cannot
+    //      be calculated. For that reason, we can't hit the same getter as above.
+    //
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
+    
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:self.defaultBlogAccountIdKeyPath
+                                                                   ascending:NO
+                                                                    selector:@selector(compare:)],
+                                     
+                                     [NSSortDescriptor sortDescriptorWithKey:self.siteNameKeyPath
+                                                                   ascending:YES
+                                                                    selector:@selector(localizedCaseInsensitiveCompare:)]];
+    fetchRequest.predicate = [self fetchRequestPredicate];
 
-    _resultsController = [[NSFetchedResultsController alloc]
-                          initWithFetchRequest:fetchRequest
-                          managedObjectContext:moc
-                          sectionNameKeyPath:nil
-                          cacheName:nil];
+    _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                             managedObjectContext:context
+                                                               sectionNameKeyPath:self.sectionNameKeyPath
+                                                                        cacheName:nil];
     _resultsController.delegate = self;
 
     NSError *error = nil;
@@ -756,6 +774,26 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     }
     
     return _resultsController;
+}
+
+- (NSString *)entityName
+{
+    return NSStringFromClass([Blog class]);
+}
+
+- (NSString *)sectionNameKeyPath
+{
+    return @"sectionIdentifier";
+}
+
+- (NSString *)defaultBlogAccountIdKeyPath
+{
+    return @"accountForDefaultBlog.userID";
+}
+
+- (NSString *)siteNameKeyPath
+{
+    return @"settings.name";
 }
 
 - (NSPredicate *)fetchRequestPredicate
