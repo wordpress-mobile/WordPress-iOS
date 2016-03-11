@@ -11,7 +11,7 @@ class PlanComparisonViewController: UIViewController {
     
     var activePlan: Plan?
     
-    var currentPlan: Plan = .Free {
+    var currentPlan: Plan = defaultPlans[0] {
         didSet {
             if currentPlan != oldValue {
                 updateForCurrentPlan()
@@ -34,7 +34,7 @@ class PlanComparisonViewController: UIViewController {
         }
     }()
     
-    private let allPlans = [Plan.Free, Plan.Premium, Plan.Business]
+    private let allPlans = defaultPlans
     
     lazy private var cancelXButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(named: "gridicons-cross"), style: .Plain, target: self, action: "closeTapped")

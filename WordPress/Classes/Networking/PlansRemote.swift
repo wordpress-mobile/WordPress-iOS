@@ -40,7 +40,7 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
         guard let planId = Int(item.key) else {
             throw PlansRemote.Error.DecodeError
         }
-        guard let plan = Plan(rawValue: planId) else {
+        guard let plan = defaultPlans.withID(planId) else {
             throw PlansRemote.Error.UnsupportedPlan
         }
         guard let planDetails = item.value as? [String: AnyObject] else {
