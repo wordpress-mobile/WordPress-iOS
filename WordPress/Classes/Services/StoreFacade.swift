@@ -27,7 +27,7 @@ extension StoreFacade {
                 do {
                     let pricedPlans = try plans.map({ plan -> PricedPlan in
                         let price = try priceForPlan(plan, products: products)
-                        return PricedPlan(plan: plan, price: price)
+                        return (plan, price)
                     })
                     success(pricedPlans)
                 } catch let error {
