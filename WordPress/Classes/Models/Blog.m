@@ -251,7 +251,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 }
 
 - (NSArray *)sortedPostFormatNames
-{
+{    
     return [[self sortedPostFormats] wp_map:^id(NSString *key) {
         return self.postFormats[key];
     }];
