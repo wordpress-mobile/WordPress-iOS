@@ -1,10 +1,7 @@
 import Foundation
 
+typealias PricedPlan = (plan: Plan, price: String)
 typealias SitePricedPlans = (activePlan: Plan, availablePlans: [PricedPlan])
-struct PricedPlan {
-    let plan: Plan
-    let price: String
-}
 
 /// Represents a WordPress.com free or paid plan.
 /// - seealso: [WordPress.com Store](https://store.wordpress.com/plans/)
