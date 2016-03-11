@@ -633,7 +633,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     if (self.post.postFormatText.length > 0) {
         cell.detailTextLabel.text = self.post.postFormatText;
     } else {
-        cell.detailTextLabel.text = NSLocalizedString(@"Not Available",
+        cell.detailTextLabel.text = NSLocalizedString(@"Unavailable",
                                                       @"Message to show in the post-format cell when the post format is not available");
     }
     
@@ -955,7 +955,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 
 - (void)showCantShowPostFormatsAlert
 {
-    NSString *title = NSLocalizedString(@"Unable to load post formats",
+    NSString *title = NSLocalizedString(@"Connection not available",
                                         @"Title of a prompt saying the app needs an internet connection before it can load post formats");
     
     NSString *message = NSLocalizedString(@"Please check your internet connection and try again.",
