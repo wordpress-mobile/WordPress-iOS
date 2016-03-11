@@ -22,7 +22,7 @@ target 'WordPress', :exclusive => true do
   pod 'HockeySDK', '~>3.8.0'
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
-  pod 'Mixpanel', '2.8.2'
+  pod 'Mixpanel', '2.9.4'
   pod 'Reachability',	'3.2'
   pod 'ReactiveCocoa', '~> 2.4.7'
   pod 'RxCocoa', '~> 2.1.0'

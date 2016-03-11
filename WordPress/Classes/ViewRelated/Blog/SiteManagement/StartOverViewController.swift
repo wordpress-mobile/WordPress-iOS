@@ -94,7 +94,7 @@ public class StartOverViewController: UITableViewController
             setupHelpshift(blog.account)
             
             let metadata = helpshiftMetadata(blog)
-            Helpshift.sharedInstance().showConversation(self, withOptions: metadata)
+            HelpshiftSupport.showConversation(self, withOptions: metadata)
         } else {
             if let contact = NSURL(string: "https://support.wordpress.com/contact/") {
                 UIApplication.sharedApplication().openURL(contact)
@@ -104,11 +104,11 @@ public class StartOverViewController: UITableViewController
 
     private func setupHelpshift(account: WPAccount) {
         let user = account.userID.stringValue
-        Helpshift.setUserIdentifier(user)
+        HelpshiftSupport.setUserIdentifier(user)
         
         let name = account.username
         let email = account.email
-        Helpshift.setName(name, andEmail: email)
+        HelpshiftCore.setName(name, andEmail: email)
     }
     
     private func helpshiftMetadata(blog: Blog) -> [NSObject: AnyObject] {
@@ -117,6 +117,6 @@ public class StartOverViewController: UITableViewController
             "Blog": blog.logDescription(),
             ]
 
-        return [HSCustomMetadataKey: options]
+        return [HelpshiftSupportCustomMetadataKey: options]
     }
 }
