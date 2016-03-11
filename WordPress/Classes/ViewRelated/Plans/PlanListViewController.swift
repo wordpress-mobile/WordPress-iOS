@@ -96,8 +96,7 @@ enum PlanListViewModel {
         case .Loading, .Error(_):
             return ImmuTable.Empty
         case .Ready(let activePlan, let plans):
-            let rows: [ImmuTableRow] = plans.map({ pricedPlan in
-                let (plan, price) = (pricedPlan.plan, pricedPlan.price)
+            let rows: [ImmuTableRow] = plans.map({ (plan, price) in
                 let active = (activePlan == plan)
                 let icon = active ? plan.activeImage : plan.image
                 return PlanListRow(
