@@ -115,8 +115,8 @@ final public class PushNotificationsManager : NSObject
     func registerDeviceToken(tokenData: NSData) {
         // We want to register Helpshift regardless so that way if a user isn't logged in
         // they can still get push notifications that we replied to their support ticket.
-        Helpshift.sharedInstance()?.registerDeviceToken(tokenData)
-        Mixpanel.sharedInstance()?.people?.addPushDeviceToken(tokenData)
+        HelpshiftCore.registerDeviceToken(tokenData)
+        Mixpanel.sharedInstance().people.addPushDeviceToken(tokenData)
 
         // Don't bother registering for WordPress anything if the user isn't logged in
         if !wordPressDotComAvailable {
@@ -257,7 +257,7 @@ final public class PushNotificationsManager : NSObject
         let rootViewController = sharedApplication.keyWindow?.rootViewController
         let payload = userInfo as [NSObject : AnyObject]
         
-        Helpshift.sharedInstance()?.handleRemoteNotification(payload, withController: rootViewController)
+        HelpshiftCore.handleRemoteNotification(payload, withController: rootViewController)
         WPAnalytics.track(.SupportReceivedResponseFromSupport)
         
         completionHandler?(.NewData)

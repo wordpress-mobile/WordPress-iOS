@@ -1,5 +1,5 @@
 #import <WPXMLRPC/WPXMLRPC.h>
-#import <Helpshift/Helpshift.h>
+#import <Helpshift/HelpshiftSupport.h>
 #import <WordPressShared/WPFontManager.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
@@ -1185,7 +1185,7 @@ static NSString * const LoginSharedWebCredentialFQDN = @"wordpress.com";
                                @"Username": self.viewModel.username,
                                @"SiteURL": self.viewModel.siteUrl};
 
-    [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
+    [HelpshiftSupport showConversation:self withOptions:@{HelpshiftSupportCustomMetadataKey: metaData}];
     [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
 }
 
