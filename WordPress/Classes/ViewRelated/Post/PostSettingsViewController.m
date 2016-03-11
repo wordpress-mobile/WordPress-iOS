@@ -106,8 +106,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [self setupReachability];
     
     self.title = NSLocalizedString(@"Options", nil);
 
@@ -142,6 +140,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
     _blogService = [[BlogService alloc] initWithManagedObjectContext:mainContext];
     _locationService = [LocationService sharedService];
+    
+    // It's recommended to keep this call near the end of the initial setup, since we don't want
+    // reachability callbacks to trigger before such initial setup completes.
+    //
+    [self setupReachability];
 }
 
 - (void)viewWillAppear:(BOOL)animated
