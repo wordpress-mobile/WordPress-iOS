@@ -19,16 +19,17 @@ extension StoreFacade {
     /// On success, it calls the `success` function with an array of prices. If
     /// one of the plans didn't have a product identifier, it's treated as a
     /// "free" plan and the returned price will be an empty string.
-    func getPricesForPlans(plans: [Plan], success: [String] -> Void, failure: ErrorType -> Void) {
+    func getPricesForPlans(plans: [Plan], success: [PricedPlan] -> Void, failure: ErrorType -> Void) {
         let identifiers = Set(plans.flatMap({ $0.productIdentifier }))
         getProductsWithIdentifiers(
             identifiers,
             success: { products in
                 do {
-                    let prices = try plans.map({ plan -> String in
-                        return try priceForPlan(plan, products: products)
+                    let pricedPlans = try plans.map({ plan -> PricedPlan in
+                        let price = try priceForPlan(plan, products: products)
+                        return (plan, price)
                     })
-                    success(prices)
+                    success(pricedPlans)
                 } catch let error {
                     failure(error)
                 }
