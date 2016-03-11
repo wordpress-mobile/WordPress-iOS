@@ -42,9 +42,9 @@ class PlanListViewControllerTest: XCTestCase {
     }
 
     let plansWithPrices: [PricedPlan] = [
-        (defaultPlans[0], ""),
-        (defaultPlans[1], "$99.99"),
-        (defaultPlans[2], "$299.99")
+        PricedPlan(plan: defaultPlans[0], price:""),
+        PricedPlan(plan: defaultPlans[1], price:"$99.99"),
+        PricedPlan(plan: defaultPlans[2], price:"$299.99")
     ]
 }
 
