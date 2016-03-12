@@ -33,16 +33,12 @@ class SitePickerViewController : UITableViewController
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
-        if cell == nil {
-            cell = WPTableViewCell(style: .Subtitle, reuseIdentifier: reuseIdentifier)
-            WPStyleGuide.Share.configureBlogTableViewCell(cell!)
-        }
-        
+        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
         let site = sites[indexPath.row]
-        configureCell(cell!, site: site)
         
-        return cell!
+        configureCell(cell, site: site)
+        
+        return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -67,6 +63,9 @@ class SitePickerViewController : UITableViewController
         
         // Fix: Hide the cellSeparators, when the table is empty
         tableView.tableFooterView = UIView()
+        
+        // Cells
+        tableView.registerClass(WPTableViewCellSubtitle.self, forCellReuseIdentifier: reuseIdentifier)
     }
     
     private func setupNoResultsView() {
@@ -109,6 +108,9 @@ class SitePickerViewController : UITableViewController
         {
             cell.imageView?.downloadBlavatar(siteIconUrl)
         }
+        
+        // Style
+        WPStyleGuide.Share.configureBlogTableViewCell(cell)
     }
     
     
