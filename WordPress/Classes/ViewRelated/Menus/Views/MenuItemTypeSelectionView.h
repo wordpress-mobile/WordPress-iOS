@@ -12,6 +12,7 @@
 
 - (void)loadPostTypesForBlog:(Blog *)blog;
 - (void)updateDesignForLayoutChangeIfNeeded;
+- (void)focusSelectedTypeViewIfNeeded:(BOOL)animated;
 
 @end
 

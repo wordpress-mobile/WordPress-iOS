@@ -58,6 +58,12 @@
     }
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    [self focusSelectedTypeViewIfNeeded:NO];
+}
+
 - (void)setSelectedItemType:(NSString *)selectedItemType
 {
     if (_selectedItemType != selectedItemType) {
@@ -88,6 +94,16 @@
     for(MenuItemTypeView *typeView in self.typeViews) {
         [typeView updateDesignForLayoutChangeIfNeeded];
     }
+}
+
+- (void)focusSelectedTypeViewIfNeeded:(BOOL)animated
+{
+    MenuItemTypeView *selectedTypeView = [self typeViewForItemType:self.selectedItemType];
+    CGRect frame = selectedTypeView.frame;
+    const CGFloat padding = 4.0;
+    frame.origin.y -= padding;
+    frame.size.height += padding * 2.0;
+    [self.scrollView scrollRectToVisible:frame animated:animated];
 }
 
 - (void)addDefaultItemTypesForBlog:(Blog *)blog
@@ -182,6 +198,7 @@
 - (void)typeViewPressedForSelection:(MenuItemTypeView *)typeView
 {
     self.selectedItemType = typeView.itemType;
+    [self focusSelectedTypeViewIfNeeded:YES];
     [self tellDelegateTypeChanged:typeView.itemType];
 }
 
