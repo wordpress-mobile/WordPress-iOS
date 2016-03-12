@@ -1,138 +1,117 @@
 import Foundation
 
-typealias Plan = PlanEnum
+typealias PricedPlan = (plan: Plan, price: String)
+typealias SitePricedPlans = (activePlan: Plan, availablePlans: [PricedPlan])
 
 /// Represents a WordPress.com free or paid plan.
 /// - seealso: [WordPress.com Store](https://store.wordpress.com/plans/)
-@objc
-enum PlanEnum: Int {
-    // Product IDs of the various plans (https://public-api.wordpress.com/rest/v1/plans/)
-    case Free = 1
-    case Premium = 1003
-    case Business = 1008
-    
-    var slug: String {
-        switch self {
-        case .Free:
-            return "free"
-        case .Premium:
-            return "premium"
-        case .Business:
-            return "business"
-        }
-    }
+struct Plan {
+    let id: Int
+    let slug: String
+    let title: String
+    let fullTitle: String
+    let description: String
+    let productIdentifier: String?
+    let features: [PlanFeature]
+}
 
-    /// The StoreKit product identifier, or nil for free plans
-    var productIdentifier: String? {
-        switch self {
-        case .Free:
-            return nil
-        case .Premium:
-            return "com.wordpress.test.premium.subscription.1year"
-        case .Business:
-            return "com.wordpress.test.business.subscription.1year"
-        }
+extension Plan {
+    var isFreePlan: Bool {
+        return productIdentifier == nil
     }
-    
-    /// The localized name of the plan (e.g. "Business").
-    var title: String {
-        switch self {
-        case .Free:
-            return NSLocalizedString("Free", comment: "Free plan name. As in https://store.wordpress.com/plans/")
-        case .Premium:
-            return NSLocalizedString("Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/")
-        case .Business:
-            return NSLocalizedString("Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/")
-        }
-    }
-
-    /// The localized long name of the plan (e.g. "WordPress.com Business").
-    var fullTitle: String {
-        switch self {
-        case .Free:
-            return NSLocalizedString("WordPress.com Free", comment: "Free plan name. As in https://store.wordpress.com/plans/")
-        case .Premium:
-            return NSLocalizedString("WordPress.com Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/")
-        case .Business:
-            return NSLocalizedString("WordPress.com Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/")
-        }
-    }
-
-    /// A description of the plan, explains who is the plan's target audience
-    var description: String {
-        switch self {
-        case .Free:
-            return NSLocalizedString("Anyone creating a simple blog or site.", comment: "Description of the Free plan")
-        case .Premium:
-            return NSLocalizedString("Serious bloggers and creatives.", comment: "Description of the Premium plan")
-        case .Business:
-            return NSLocalizedString("Business websites and ecommerce.", comment: "Description of the Business plan")
-        }
-    }
-    
-    /// An array of the features that this plan offers (e.g. No Ads, Premium Themes)
-    var features: [PlanFeature] {
-        switch self {
-        case .Free:
-            return [
-                .WordPressSite,
-                .FullAccess,
-                .StorageSpace(NSLocalizedString("3GB", comment: "3 gigabytes of storage")),
-                .Support(NSLocalizedString("Community", comment: "Noun. Customer support from the community (forums)."))
-            ]
-        case .Premium:
-            return [
-                .WordPressSite,
-                .FullAccess,
-                .CustomDomain,
-                .NoAds,
-                .CustomFontsAndColors,
-                .CSSEditing,
-                .VideoPress,
-                .StorageSpace(NSLocalizedString("13GB", comment: "13 gigabytes of storage")),
-                .Support(NSLocalizedString("In-App & Direct Email", comment: "Types of support available to a user."))
-            ]
-        case .Business:
-            return [
-                .WordPressSite,
-                .FullAccess,
-                .CustomDomain,
-                .NoAds,
-                .CustomFontsAndColors,
-                .CSSEditing,
-                .VideoPress,
-                .ECommerce,
-                .PremiumThemes,
-                .GoogleAnalytics,
-                .StorageSpace(NSLocalizedString("Unlimited", comment: "Unlimited data storage")),
-                .Support(NSLocalizedString("In-App & Live Chat", comment: "Types of support available to a user."))
-            ]
-        }
+    var isPaidPlan: Bool {
+        return !isFreePlan
     }
 }
 
-// We currently need to access the title of a plan in BlogDetailsViewController, which is
-// written in Objective-C. This small wrapper lets us do that.
-@objc(Plan)
-class PlanObjc: NSObject {
-    @nonobjc
-    private let plan: Plan
+extension Plan: Equatable {}
+func == (lhs: Plan, rhs: Plan) -> Bool {
+    return lhs.id == rhs.id
+}
 
-    init?(planID: Int) {
-        guard let plan = Plan(rawValue: planID) else {
-            // We need to initialize this to something before we can fail
-            // Should be fixed in Swift 2.2
-            self.plan = .Free
-            super.init()
-            return nil
-        }
+extension Plan: Comparable {}
 
-        self.plan = plan
-        super.init()
+func < (lhs: Plan, rhs: Plan) -> Bool {
+    return lhs.id < rhs.id
+}
+
+// Obj-C bridge functions
+final class PlansBridge: NSObject {
+    static func titleForPlan(withID planID: Int) -> String? {
+        return defaultPlans
+            .withID(planID)?
+            .title
     }
-    
-    var title: String {
-        return plan.title
+}
+
+
+// FIXME: not too happy with the global constant, but hardcoded plans are going away soon
+let defaultPlans: [Plan] = [
+    Plan(
+        id: 1,
+        slug: "free",
+        title: NSLocalizedString("Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
+        fullTitle: NSLocalizedString("WordPress.com Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
+        description: NSLocalizedString("Anyone creating a simple blog or site.", comment: "Description of the Free plan"),
+        productIdentifier: nil,
+        features: [
+            .WordPressSite,
+            .FullAccess,
+            .StorageSpace(NSLocalizedString("3GB", comment: "3 gigabytes of storage")),
+            .Support(NSLocalizedString("Community", comment: "Noun. Customer support from the community (forums)."))
+        ]
+    ),
+    Plan(
+        id: 1003,
+        slug: "premium",
+        title: NSLocalizedString("Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
+        fullTitle: NSLocalizedString("WordPress.com Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
+        description: NSLocalizedString("Serious bloggers and creatives.", comment: "Description of the Premium plan"),
+        productIdentifier: "com.wordpress.test.premium.subscription.1year",
+        features: [
+            .WordPressSite,
+            .FullAccess,
+            .CustomDomain,
+            .NoAds,
+            .CustomFontsAndColors,
+            .CSSEditing,
+            .VideoPress,
+            .StorageSpace(NSLocalizedString("13GB", comment: "13 gigabytes of storage")),
+            .Support(NSLocalizedString("In-App & Direct Email", comment: "Types of support available to a user."))
+        ]
+    ),
+    Plan(
+        id: 1008,
+        slug: "business",
+        title: NSLocalizedString("Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
+        fullTitle: NSLocalizedString("WordPress.com Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
+        description: NSLocalizedString("Business websites and ecommerce.", comment: "Description of the Business plan"),
+        productIdentifier: "com.wordpress.test.business.subscription.1year",
+        features: [
+            .WordPressSite,
+            .FullAccess,
+            .CustomDomain,
+            .NoAds,
+            .CustomFontsAndColors,
+            .CSSEditing,
+            .VideoPress,
+            .ECommerce,
+            .PremiumThemes,
+            .GoogleAnalytics,
+            .StorageSpace(NSLocalizedString("Unlimited", comment: "Unlimited data storage")),
+            .Support(NSLocalizedString("In-App & Live Chat", comment: "Types of support available to a user."))
+        ]
+    ),
+]
+
+protocol Identifiable {
+    var id: Int { get }
+}
+extension Plan: Identifiable {}
+
+extension Array where Element: Identifiable {
+    func withID(searchID: Int) -> Element? {
+        return filter({ $0.id == searchID }).first
     }
 }
 
@@ -227,18 +206,4 @@ enum PlanFeature: Equatable {
 
 func ==(lhs: PlanFeature, rhs: PlanFeature) -> Bool {
     return lhs.title == rhs.title
-}
-
-// Blog extension
-extension Blog {
-    /// The blog's active plan, if any.
-    /// - note: If the stored planID doesn't match a known plan, it returns `nil`
-    var plan: Plan? {
-        // FIXME: Remove cast if/when we merge https://github.com/wordpress-mobile/WordPress-iOS/pull/4762
-        // @koke 2016-02-03
-        guard let planID = planID as Int? else {
-            return nil
-        }
-        return Plan(rawValue: planID)
-    }
 }

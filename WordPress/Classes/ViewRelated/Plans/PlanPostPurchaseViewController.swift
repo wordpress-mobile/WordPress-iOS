@@ -334,9 +334,9 @@ enum PlanPostPurchasePageType: Int {
     case Themes
     
     static func pageTypesForPlan(plan: Plan) -> [PlanPostPurchasePageType] {
-        switch plan {
-        case .Premium: return [.PurchaseComplete, .Customize, .VideoPress]
-        case .Business: return [.PurchaseComplete, .Customize, .VideoPress, .Themes]
+        switch plan.slug {
+        case "premium": return [.PurchaseComplete, .Customize, .VideoPress]
+        case "business": return [.PurchaseComplete, .Customize, .VideoPress, .Themes]
         default: return []
         }
     }
