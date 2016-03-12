@@ -41,6 +41,11 @@ class ShareViewController: SLComposeServiceViewController {
         presentViewController(alertController, animated: true, completion: nil)
     }
 
+    override func loadPreviewView() -> UIView! {
+        // Hides Composer Thumbnail Preview.
+        return UIView()
+    }
+    
     override func isContentValid() -> Bool {
         // Do validation of contentText and/or NSExtensionContext attachments here
         return true
