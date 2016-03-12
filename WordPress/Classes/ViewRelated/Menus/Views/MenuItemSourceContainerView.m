@@ -103,13 +103,16 @@
 
 - (void)showSourceViewForItemType:(NSString *)itemType
 {
+    MenuItemSourceView *sourceView = [self.sourceViewCache objectForKey:itemType];
     if(self.sourceView) {
+        if (self.sourceView == sourceView) {
+            // No update needed.
+            return;
+        }
         [self.stackView removeArrangedSubview:self.sourceView];
         [self.sourceView removeFromSuperview];
         self.sourceView = nil;
     }
-    
-    MenuItemSourceView *sourceView = [self.sourceViewCache objectForKey:itemType];
     BOOL shouldSetItem = NO;
     if(!sourceView) {
         if ([itemType isEqualToString:MenuItemTypePage]) {
@@ -127,17 +130,15 @@
             sourceView = postView;
         }
         sourceView.delegate = self;
+        [sourceView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+        [self.sourceViewCache setObject:sourceView forKey:itemType];
         shouldSetItem = YES;
     }
-    
-    if(sourceView) {
-        [sourceView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-        [self.stackView addArrangedSubview:sourceView];
-        self.sourceView = sourceView;
-        if (shouldSetItem) {
-            sourceView.item = self.item;
-        }
-        [self.sourceViewCache setObject:sourceView forKey:itemType];
+    [self.stackView addArrangedSubview:sourceView];
+    self.sourceView = sourceView;
+    if (shouldSetItem) {
+        // Set the item after it's been added as an arrangedSubview.
+        sourceView.item = self.item;
     }
 }
 
