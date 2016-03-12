@@ -79,6 +79,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, assign, readwrite) BOOL visible;
 @property (nonatomic, weak, readwrite) NSNumber *isActivated;
 @property (nonatomic, strong, readwrite) NSDictionary *options;
+@property (nonatomic, strong, readwrite) NSSet *postTypes;
 @property (nonatomic, strong, readwrite) NSDictionary *postFormats;
 @property (nonatomic, strong, readwrite) WPAccount *account;
 @property (nonatomic, strong, readwrite) WPAccount *jetpackAccount;
