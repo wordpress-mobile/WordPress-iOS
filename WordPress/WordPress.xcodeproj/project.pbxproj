@@ -348,6 +348,7 @@
 		B51DAF061C7E544E007F474C /* WPStyleGuide+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51DAF051C7E544E007F474C /* WPStyleGuide+Share.swift */; };
 		B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */; };
 		B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = B526DC281B1E47FC002A8C5F /* WPStyleGuide+WebView.m */; };
+		B52937E01C94A2B100940C1C /* WPReusableTableViewCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DB8AF11C949DA90059196A /* WPReusableTableViewCells.swift */; };
 		B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */; };
 		B52C4C7F199D74AE009FD823 /* NoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C4C7E199D74AE009FD823 /* NoteTableViewCell.swift */; };
 		B52D29A51B66BEB70010BD3D /* RemoteNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D29A41B66BEB70010BD3D /* RemoteNotificationSettings.swift */; };
@@ -5361,6 +5362,7 @@
 				B51DAF031C7E2C64007F474C /* WordPressShare-Lumberjack.m in Sources */,
 				B5623E8E1C7CFFDF00CC29EA /* SitePickerViewController.swift in Sources */,
 				B51DAF061C7E544E007F474C /* WPStyleGuide+Share.swift in Sources */,
+				B52937E01C94A2B100940C1C /* WPReusableTableViewCells.swift in Sources */,
 				B5BEA5621C7CE71D00C8035B /* WPDDLogWrapper.m in Sources */,
 				930F09211C7F9D5400995926 /* PostStatusPickerViewController.swift in Sources */,
 				B5BEA55F1C7CE6D100C8035B /* Constants.m in Sources */,

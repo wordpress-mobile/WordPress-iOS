@@ -41,16 +41,12 @@ class PostStatusPickerViewController : UITableViewController
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier)
-        if cell == nil {
-            cell = WPTableViewCell(style: .Subtitle, reuseIdentifier: reuseIdentifier)
-            WPStyleGuide.Share.configureBlogTableViewCell(cell!)
-        }
-        
+        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
         let description = sortedStatuses[indexPath.row].1
-        configureCell(cell!, description: description)
         
-        return cell!
+        configureCell(cell, description: description)
+        
+        return cell
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -74,6 +70,9 @@ class PostStatusPickerViewController : UITableViewController
         
         // Fix: Hide the cellSeparators, when the table is empty
         tableView.tableFooterView = UIView()
+        
+        // Cells
+        tableView.registerClass(WPTableViewCellSubtitle.self, forCellReuseIdentifier: reuseIdentifier)
     }
     
     private func setupNoResultsView() {
@@ -86,6 +85,9 @@ class PostStatusPickerViewController : UITableViewController
     private func configureCell(cell: UITableViewCell, description: String) {
         // Status' Details
         cell.textLabel?.text = description
+        
+        // Style
+        WPStyleGuide.Share.configureBlogTableViewCell(cell)
     }
     
     
