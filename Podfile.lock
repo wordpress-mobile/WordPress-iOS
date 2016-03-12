@@ -266,7 +266,7 @@ CHECKOUT OPTIONS:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPressApi:
-    :commit: 88032f7f47e9a6f29d15206df2d682311092c0bd
+    :commit: ea0a89704232820753c2a1ceff7d812179448331
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressComKit:
     :commit: 3457aefae79ef2c67fb26ccab57c24505caa65f9
