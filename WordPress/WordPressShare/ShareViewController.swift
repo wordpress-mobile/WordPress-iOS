@@ -115,9 +115,9 @@ class ShareViewController: SLComposeServiceViewController {
 
     private func splitContentTextIntoSubjectAndBody(contentText: String) -> (subject: String, body: String) {
         let fullText = contentText
-        let firstCarriageReturnIndex = fullText.rangeOfCharacterFromSet(NSCharacterSet.newlineCharacterSet())
-        let firstLineOfText = firstCarriageReturnIndex != nil ? fullText.substringToIndex(firstCarriageReturnIndex!.startIndex) : fullText
-        let restOfText = firstCarriageReturnIndex != nil ? fullText.substringFromIndex(firstCarriageReturnIndex!.endIndex) : ""
+        let indexOfFirstNewline = fullText.rangeOfCharacterFromSet(NSCharacterSet.newlineCharacterSet())
+        let firstLineOfText = indexOfFirstNewline != nil ? fullText.substringToIndex(indexOfFirstNewline!.startIndex) : fullText
+        let restOfText = indexOfFirstNewline != nil ? fullText.substringFromIndex(indexOfFirstNewline!.endIndex) : ""
 
         return (firstLineOfText, restOfText)
     }
