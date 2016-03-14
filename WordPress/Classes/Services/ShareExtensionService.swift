@@ -1,8 +1,14 @@
 import Foundation
 
 @objc
-public class ShareExtensionService: NSObject {
-    class func configureShareExtension(oauth2Token: String, defaultSiteID: Int, defaultSiteName: String) {
+public class ShareExtensionService: NSObject
+{
+    /// Sets the OAuth Token that should be used by the Share Extension to hit the Dotcom Backend.
+    ///
+    /// -   Parameters:
+    ///     - oauth2Token: WordPress.com OAuth Token
+    ///
+    class func configureShareExtensionToken(oauth2Token: String) {
         do {
             try SFHFKeychainUtils.storeUsername(WPAppOAuth2TokenKeychainUsername,
                 andPassword: oauth2Token,
@@ -12,14 +18,26 @@ public class ShareExtensionService: NSObject {
         } catch {
             print("Error while saving Share Extension OAuth bearer token: \(error)")
         }
-        
-        if let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) {
-            userDefaults.setObject(defaultSiteID, forKey: WPShareUserDefaultsPrimarySiteID)
-            userDefaults.setObject(defaultSiteName, forKey: WPShareUserDefaultsPrimarySiteName)
-            userDefaults.synchronize()
-        }
     }
-    
+
+    /// Sets the Primary Site that should be pre-selected in the Share Extension.
+    ///
+    /// -   Parameters:
+    ///     - defaultSiteID: The ID of the Primary Site.
+    ///     - defaultSiteName: The Primary Site's Name
+    ///
+    class func configureShareExtensionDefaultSiteID(defaultSiteID: Int, defaultSiteName: String) {
+        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
+            return
+        }
+        
+        userDefaults.setObject(defaultSiteID, forKey: WPShareUserDefaultsPrimarySiteID)
+        userDefaults.setObject(defaultSiteName, forKey: WPShareUserDefaultsPrimarySiteName)
+        userDefaults.synchronize()
+    }
+
+    /// Nukes all of the Share Extension Configuration
+    ///
     class func removeShareExtensionConfiguration() {
         do {
             try SFHFKeychainUtils.deleteItemForUsername(WPAppOAuth2TokenKeychainUsername,
@@ -36,17 +54,35 @@ public class ShareExtensionService: NSObject {
         }
     }
     
-    class func retrieveShareExtensionConfiguration() -> (oauth2Token: String, defaultSiteID: Int, defaultSiteName: String)? {
-        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPAppOAuth2TokenKeychainUsername, andServiceName: WPAppOAuth2TokenKeychainServiceName, accessGroup: WPAppGroupName),
-            let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
-                return nil
+    /// Retrieves the WordPress.com OAuth Token, meant for Extension usage.
+    ///
+    /// - Returns: The OAuth Token, if any.
+    ///
+    class func retrieveShareExtensionToken() -> String? {
+        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPAppOAuth2TokenKeychainUsername,
+            andServiceName: WPAppOAuth2TokenKeychainServiceName, accessGroup: WPAppGroupName) else
+        {
+            return nil
         }
         
-        guard let primarySiteID = userDefaults.objectForKey(WPShareUserDefaultsPrimarySiteID) as? Int,
-            let primarySiteName = userDefaults.objectForKey(WPShareUserDefaultsPrimarySiteName) as? String else {
-                return nil
+        return oauth2Token
+    }
+    
+    /// Retrieves the Primary Site Details
+    ///
+    /// - Returns: Tuple with the Primary Site ID + Name. If any.
+    ///
+    class func retrieveShareExtensionPrimarySite() -> (siteID: Int, siteName: String)? {
+        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
+            return nil
         }
         
-        return (oauth2Token, primarySiteID, primarySiteName)
+        guard let siteID = userDefaults.objectForKey(WPShareUserDefaultsPrimarySiteID) as? Int,
+            let siteName = userDefaults.objectForKey(WPShareUserDefaultsPrimarySiteName) as? String else
+        {
+            return nil
+        }
+        
+        return (siteID, siteName)
     }
 }

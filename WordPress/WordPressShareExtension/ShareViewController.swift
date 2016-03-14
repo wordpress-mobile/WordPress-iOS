@@ -10,10 +10,12 @@ class ShareViewController: SLComposeServiceViewController {
     private var postStatus = "publish"
     
     override func viewDidLoad() {
-        let authDetails = ShareExtensionService.retrieveShareExtensionConfiguration()
-        oauth2Token = authDetails?.oauth2Token
-        selectedSiteID = authDetails?.defaultSiteID
-        selectedSiteName = authDetails?.defaultSiteName
+        let authToken = ShareExtensionService.retrieveShareExtensionToken()
+        let defaultSite = ShareExtensionService.retrieveShareExtensionPrimarySite()
+        
+        oauth2Token = authToken
+        selectedSiteID = defaultSite?.siteID
+        selectedSiteName = defaultSite?.siteName
     }
     
     // MARK: - UIViewController Methods
@@ -47,8 +49,10 @@ class ShareViewController: SLComposeServiceViewController {
     }
     
     override func isContentValid() -> Bool {
-        // Do validation of contentText and/or NSExtensionContext attachments here
-        return true
+        // Even when the oAuth Token is nil, it's possible the default site hasn't been retrieved yet.
+        // Let's disable Post, until the user picks a valid site.
+        //
+        return selectedSiteID != nil
     }
 
     override func didSelectPost() {
@@ -92,6 +96,7 @@ class ShareViewController: SLComposeServiceViewController {
             self.selectedSiteID = siteId
             self.selectedSiteName = description
             self.reloadConfigurationItems()
+            self.validateContent()
         }
         
         pushConfigurationViewController(pickerViewController)
