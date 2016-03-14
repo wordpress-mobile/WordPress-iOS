@@ -38,12 +38,8 @@ NSString *const WPAppDefaultsGroupName                              = @"group.or
 NSString *const WPAppKeychainAccessGroup                            = @"3TMU3BH3NK.org.wordpress";
 #endif
 
-// Note: Since we're adding a new Sharing Extension (Feb.23.2016), the former Today Widget constants are being reused.
-NSString *const WPAppOAuth2TokenKeychainUsername                    = @"OAuth2Token";
-NSString *const WPAppOAuth2TokenKeychainServiceName                 = @"TodayWidget";
-
-NSString *const WPShareUserDefaultsPrimarySiteName                  = @"WPShareUserDefaultsPrimarySiteName";
-NSString *const WPShareUserDefaultsPrimarySiteID                    = @"WPShareUserDefaultsPrimarySiteID";
+NSString *const WPShareExtensionUserDefaultsPrimarySiteName         = @"WPShareUserDefaultsPrimarySiteName";
+NSString *const WPShareExtensionUserDefaultsPrimarySiteID           = @"WPShareUserDefaultsPrimarySiteID";
 
 NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey             = @"WordPressTodayWidgetSiteId";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey           = @"WordPressTodayWidgetSiteName";

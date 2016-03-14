@@ -31,8 +31,8 @@ public class ShareExtensionService: NSObject
             return
         }
         
-        userDefaults.setObject(defaultSiteID, forKey: WPShareUserDefaultsPrimarySiteID)
-        userDefaults.setObject(defaultSiteName, forKey: WPShareUserDefaultsPrimarySiteName)
+        userDefaults.setObject(defaultSiteID, forKey: WPShareExtensionUserDefaultsPrimarySiteID)
+        userDefaults.setObject(defaultSiteName, forKey: WPShareExtensionUserDefaultsPrimarySiteName)
         userDefaults.synchronize()
     }
 
@@ -47,9 +47,9 @@ public class ShareExtensionService: NSObject
             print("Error while removing Share Extension OAuth2 bearer token: \(error)")
         }
         
-            userDefaults.removeObjectForKey(WPShareUserDefaultsPrimarySiteID)
-            userDefaults.removeObjectForKey(WPShareUserDefaultsPrimarySiteName)
         if let userDefaults = NSUserDefaults(suiteName: WPAppDefaultsGroupName) {
+            userDefaults.removeObjectForKey(WPShareExtensionUserDefaultsPrimarySiteID)
+            userDefaults.removeObjectForKey(WPShareExtensionUserDefaultsPrimarySiteName)
             userDefaults.synchronize()
         }
     }
@@ -77,8 +77,8 @@ public class ShareExtensionService: NSObject
             return nil
         }
         
-        guard let siteID = userDefaults.objectForKey(WPShareUserDefaultsPrimarySiteID) as? Int,
-            let siteName = userDefaults.objectForKey(WPShareUserDefaultsPrimarySiteName) as? String else
+        guard let siteID = userDefaults.objectForKey(WPShareExtensionUserDefaultsPrimarySiteID) as? Int,
+            let siteName = userDefaults.objectForKey(WPShareExtensionUserDefaultsPrimarySiteName) as? String else
         {
             return nil
         }
