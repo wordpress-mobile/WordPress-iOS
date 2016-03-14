@@ -1,15 +1,11 @@
 #import "WPActivityDefaults.h"
 #import "SafariActivity.h"
-#import "WordPressActivity.h"
 
 @implementation WPActivityDefaults
 
 + (NSArray *)defaultActivities
 {
-    SafariActivity *safariActivity = [[SafariActivity alloc] init];
-    WordPressActivity *wordPressActivity = [[WordPressActivity alloc] init];
-
-    return @[safariActivity, wordPressActivity];
+    return @[[SafariActivity new]];
 }
 
 + (void)trackActivityType:(NSString *)activityType
@@ -31,8 +27,6 @@
         stat = WPAnalyticsStatSentItemToPocket;
     } else if ([activityType isEqualToString:@"com.google.GooglePlus.ShareExtension"]) {
         stat = WPAnalyticsStatSentItemToGooglePlus;
-    } else if ([activityType isEqualToString:NSStringFromClass([WordPressActivity class])]) {
-        stat = WPAnalyticsStatSentItemToWordPress;
     } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard]) {
         return;
     } else {
