@@ -29,7 +29,7 @@
     [SFHFKeychainUtils storeUsername:WPAppOAuth2TokenKeychainUsername
                          andPassword:oauth2Token
                       forServiceName:WPAppOAuth2TokenKeychainServiceName
-                         accessGroup:WPAppOAuth2TokenKeychainAccessGroup
+                         accessGroup:WPAppKeychainAccessGroup
                       updateExisting:YES
                                error:&error];
     if (error) {
@@ -51,7 +51,7 @@
     
     [SFHFKeychainUtils deleteItemForUsername:WPAppOAuth2TokenKeychainUsername
                               andServiceName:WPAppOAuth2TokenKeychainServiceName
-                                 accessGroup:WPAppOAuth2TokenKeychainAccessGroup
+                                 accessGroup:WPAppKeychainAccessGroup
                                        error:nil];
 }
 
@@ -70,7 +70,7 @@
     NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPAppOAuth2TokenKeychainUsername
                                                        andServiceName:WPAppOAuth2TokenKeychainServiceName
-                                                          accessGroup:WPAppOAuth2TokenKeychainAccessGroup
+                                                          accessGroup:WPAppKeychainAccessGroup
                                                                 error:nil];
     
     if (siteId.length == 0 || oauth2Token.length == 0) {
