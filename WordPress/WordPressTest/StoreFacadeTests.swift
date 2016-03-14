@@ -4,8 +4,9 @@ import Nimble
 
 class StoreFacadeTests: XCTestCase {
     func testGetPricesForPlans() {
-        let store = MockStoreFacade.succeeding(after: 0)
-        store.getPricesForPlans(defaultPlans,
+        let store = MockStore.succeeding(after: 0)
+        let facade = StoreFacade(store: store)
+        facade.getPricesForPlans(defaultPlans,
             success: { pricedPlans in
                 expect(pricedPlans.count).to(equal(3))
                 expect(pricedPlans[0].price as String).to(equal(""))
@@ -17,10 +18,11 @@ class StoreFacadeTests: XCTestCase {
     }
 
     func testGetPricesLocalization() {
-        let store = MockStoreFacade.succeeding(after: 0)
+        let store = MockStore.succeeding(after: 0)
+        let facade = StoreFacade(store: store)
         store.products[0].priceLocale = NSLocale(localeIdentifier: "es-ES")
         store.products[1].priceLocale = NSLocale(localeIdentifier: "es-ES")
-        store.getPricesForPlans(
+        facade.getPricesForPlans(
             defaultPlans,
             success: { pricedPlans in
                 expect(pricedPlans.count).to(equal(3))
