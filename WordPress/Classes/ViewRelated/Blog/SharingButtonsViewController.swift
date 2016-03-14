@@ -524,7 +524,7 @@ import WordPressShared
         }
 
         let service = BlogService(managedObjectContext: managedObjectContext)
-        service.updateSettingsForBlog(self.blog, success: nil, failure: { [weak self] (error: NSError!) in
+        service.updateSettingsForBlog(self.blog, success: { _ in }, failure: { [weak self] (error: NSError!) in
             DDLogSwift.logError(error.description)
             self?.showErrorSyncingMessage(error)
         })
