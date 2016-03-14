@@ -21,7 +21,7 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 23;
 {
     _usernameLabel = [[UILabel alloc] init];
     [_usernameLabel setTextColor:[WPStyleGuide wordPressBlue]];
-    [_usernameLabel setFont:[WPFontManager openSansRegularFontOfSize:14.0]];
+    [_usernameLabel setFont:[WPFontManager systemRegularFontOfSize:14.0]];
     [_usernameLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.contentView addSubview:_usernameLabel];
 }
@@ -30,7 +30,7 @@ NSInteger const SuggestionsTableViewCellAvatarSize = 23;
 {
     _displayNameLabel = [[UILabel alloc] init];
     [_displayNameLabel setTextColor:[WPStyleGuide allTAllShadeGrey]];
-    [_displayNameLabel setFont:[WPFontManager openSansRegularFontOfSize:14.0]];
+    [_displayNameLabel setFont:[WPFontManager systemRegularFontOfSize:14.0]];
     [_displayNameLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     _displayNameLabel.textAlignment = NSTextAlignmentRight;
     [self.contentView addSubview:_displayNameLabel];

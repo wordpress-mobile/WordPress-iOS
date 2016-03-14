@@ -1,8 +1,11 @@
 #import <Foundation/Foundation.h>
+
 @class RemoteBlogSettings;
+@class RemotePostType;
 
 typedef void (^SettingsHandler)(RemoteBlogSettings *settings);
 typedef void (^OptionsHandler)(NSDictionary *options);
+typedef void (^PostTypesHandler)(NSArray <RemotePostType *> *postTypes);
 typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
 typedef void (^MultiAuthorCheckHandler)(BOOL isMultiAuthor);
 typedef void (^SuccessHandler)();
@@ -26,6 +29,15 @@ typedef void (^SuccessHandler)();
  */
 - (void)syncOptionsWithSuccess:(OptionsHandler)success
                        failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief      Synchronizes a blog's post types.
+ *
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)syncPostTypesWithSuccess:(PostTypesHandler)success
+                           failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Synchronizes a blog's post formats.

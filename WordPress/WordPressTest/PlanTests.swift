@@ -4,24 +4,24 @@ import Nimble
 
 class PlanTests: XCTestCase {
     func testPlanImageName() {
-        expect(Plan.Free.imageName).to(equal("plan-free"))
-        expect(Plan.Premium.imageName).to(equal("plan-premium"))
-        expect(Plan.Business.imageName).to(equal("plan-business"))
+        expect(defaultPlans[0].imageName).to(equal("plan-free"))
+        expect(defaultPlans[1].imageName).to(equal("plan-premium"))
+        expect(defaultPlans[2].imageName).to(equal("plan-business"))
 
-        expect(Plan.Free.activeImageName).to(equal("plan-free-active"))
-        expect(Plan.Premium.activeImageName).to(equal("plan-premium-active"))
-        expect(Plan.Business.activeImageName).to(equal("plan-business-active"))
+        expect(defaultPlans[0].activeImageName).to(equal("plan-free-active"))
+        expect(defaultPlans[1].activeImageName).to(equal("plan-premium-active"))
+        expect(defaultPlans[2].activeImageName).to(equal("plan-business-active"))
     }
 
     /// Since we're force unwrapping the UIImage creation, let's check the images
     /// to prevent crashing in the app
     func testPlanImage() {
-        expect(Plan.Free.image).toNot(beNil())
-        expect(Plan.Premium.image).toNot(beNil())
-        expect(Plan.Business.image).toNot(beNil())
+        expect(defaultPlans[0].image).toNot(beNil())
+        expect(defaultPlans[1].image).toNot(beNil())
+        expect(defaultPlans[2].image).toNot(beNil())
 
-        expect(Plan.Free.activeImage).toNot(beNil())
-        expect(Plan.Premium.activeImage).toNot(beNil())
-        expect(Plan.Business.activeImage).toNot(beNil())
+        expect(defaultPlans[0].activeImage).toNot(beNil())
+        expect(defaultPlans[1].activeImage).toNot(beNil())
+        expect(defaultPlans[2].activeImage).toNot(beNil())
     }
 }
