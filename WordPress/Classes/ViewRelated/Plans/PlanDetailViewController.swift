@@ -88,28 +88,33 @@ class PlanDetailViewController: UIViewController {
     private func configureImmuTable() {
         ImmuTable.registerRows([ FeatureListItemRow.self ], tableView: tableView)
         
+        let planFeatures = PlanFeature.featuresForPlan(plan)
+        
         viewModel = ImmuTable(sections:
             [ ImmuTableSection(rows: PlanFeature.allFeatures.map { feature in
-//                let available = plan.features.contains(feature)
-//
-//                if available {
-//                    // If a feature is 'available', we have to find and use the feature instance
-//                    // from the _plan's_ list of features, as it will have the correct associated values
-//                    // for any enum case that has associated values.
-//                    let index = plan.features.indexOf(feature)
-//                    let planFeature = plan.features[index!]
-//                    if let description = planFeature.description {
-//                        return TextRow(title: planFeature.title, value: description)
-//                    } else {
-//                        return FeatureListItemRow(feature: planFeature, available: available)
-//                    }
-//                }
+                let available = planFeatures.contains(feature)
+
+                if available {
+                    if let feature = planFeatures.filter({ $0 == feature }).first {
+                        if let description = feature.planSpecificDescription {
+                            return TextRow(title: feature.title, value: description)
+                        } else {
+                            return FeatureListItemRow(feature: feature, available: available)
+                        }
+                    }
+                }
                 
                 return FeatureListItemRow(feature: feature, available: false)
             } ) ]
         )
         
         tableView.layoutMargins = UIEdgeInsetsMake(0, tableViewHorizontalMargin, 0, tableViewHorizontalMargin)
+    }
+    
+    func reloadFeatures() {
+        configureImmuTable()
+
+        tableView.reloadData()
     }
     
     lazy var paddingView = UIView()
@@ -218,17 +223,20 @@ struct FeatureListItemRow : ImmuTableRow {
     
     let title: String
     let available: Bool
-    let webOnly = false
+    let webOnly: Bool
     
     let checkmarkLeftPadding: CGFloat = 16.0
     let webOnlyFontSize: CGFloat = 13.0
     
     init(feature: PlanFeature, available: Bool) {
-//        precondition(feature.description == nil, "Features with a description should use TextRow instead")
+        precondition(feature.planSpecificDescription == nil, "Features with a plan-specific description should use TextRow instead")
 
         self.title = feature.title
-//        self.webOnly = feature.webOnly
         self.available = available
+        
+        // TODO: (@frosty, 2016-03-14) Currently hardcoded because the API doesn't provide
+        // us with this info. Remove once we switch to a different design that doesn't display 'web only'.
+        self.webOnly = (feature.slug == "custom-domain")
     }
     
     func configureCell(cell: UITableViewCell) {

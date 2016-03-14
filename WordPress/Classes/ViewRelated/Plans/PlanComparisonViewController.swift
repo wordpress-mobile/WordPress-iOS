@@ -9,6 +9,8 @@ class PlanComparisonViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var planStackView: UIStackView!
     
+    let featureService = PlanFeaturesService()
+    
     var activePlan: Plan?
     
     var currentPlan: Plan = defaultPlans[0] {
@@ -52,7 +54,7 @@ class PlanComparisonViewController: UIViewController {
         
         return controller
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,8 +65,21 @@ class PlanComparisonViewController: UIViewController {
         
         navigationItem.leftBarButtonItem = cancelXButton
         
+        fetchFeatures()
         initializePlanDetailViewControllers()
         updateForCurrentPlan()
+    }
+    
+    private func fetchFeatures() {
+        featureService.updateAllPlanFeatures({ [weak self] in
+            if let viewControllers = self?.viewControllers {
+                for controller in viewControllers {
+                    controller.reloadFeatures()
+                }
+            }
+            }, failure: { error in
+                // TODO: Handle error
+        })
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {

@@ -12,7 +12,6 @@ struct Plan {
     let fullTitle: String
     let description: String
     let productIdentifier: String?
-    let features: [PlanFeature]
 }
 
 extension Plan {
@@ -59,8 +58,7 @@ let defaultPlans: [Plan] = [
         title: NSLocalizedString("Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
         fullTitle: NSLocalizedString("WordPress.com Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
         description: NSLocalizedString("Anyone creating a simple blog or site.", comment: "Description of the Free plan"),
-        productIdentifier: nil,
-        features: []
+        productIdentifier: nil
     ),
     Plan(
         id: 1003,
@@ -68,8 +66,7 @@ let defaultPlans: [Plan] = [
         title: NSLocalizedString("Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
         fullTitle: NSLocalizedString("WordPress.com Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
         description: NSLocalizedString("Serious bloggers and creatives.", comment: "Description of the Premium plan"),
-        productIdentifier: "com.wordpress.test.premium.subscription.1year",
-        features: []
+        productIdentifier: "com.wordpress.test.premium.subscription.1year"
     ),
     Plan(
         id: 1008,
@@ -77,8 +74,7 @@ let defaultPlans: [Plan] = [
         title: NSLocalizedString("Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
         fullTitle: NSLocalizedString("WordPress.com Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
         description: NSLocalizedString("Business websites and ecommerce.", comment: "Description of the Business plan"),
-        productIdentifier: "com.wordpress.test.business.subscription.1year",
-        features: []
+        productIdentifier: "com.wordpress.test.business.subscription.1year"
     ),
 ]
 
@@ -121,11 +117,19 @@ struct PlanFeature {
     let title: String
     let description: String
     let iconName: String
-    let planSpecificDescriptions = [Plan: String]()
+    let planSpecificDescription: String?
     
-    func additionalDescriptionForPlan(plan: Plan) -> String? {
-        return planSpecificDescriptions[plan]
+    static var allFeatures = [PlanFeature(slug: "custom-design", title: "Custom Design", description: "Lorem ipsum", iconName: "", planSpecificDescription: nil)]
+    
+    private typealias PlanID = Int
+    private static var planFeatures: [PlanID: [PlanFeature]] = [1003: [allFeatures.first!]]
+    
+    static func featuresForPlan(plan: Plan) -> [PlanFeature] {
+        return planFeatures[plan.id] ?? []
     }
-    
-    static var allFeatures = [PlanFeature]()
+}
+
+extension PlanFeature: Equatable {}
+func ==(lhs: PlanFeature, rhs: PlanFeature) -> Bool {
+    return lhs.slug == rhs.slug
 }

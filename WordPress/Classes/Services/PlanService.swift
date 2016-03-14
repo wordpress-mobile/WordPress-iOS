@@ -32,7 +32,9 @@ extension PlanService {
 struct PlanFeaturesService {
     private let remote = PlanFeaturesRemote(api: WordPressComApi.anonymousApi())
     
-    func allPlanFeatures(success: ([PlanFeature] -> Void), failure: (ErrorType -> Void)) {
-        remote.getPlanFeatures(success, failure: failure)
+    func updateAllPlanFeatures(success: (() -> Void), failure: (ErrorType -> Void)) {
+        remote.getPlanFeatures({ planFeatures in
+            success()
+        }, failure: failure)
     }
 }
