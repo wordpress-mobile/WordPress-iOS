@@ -46,7 +46,7 @@ static UIEdgeInsets const WPNUXSecondaryButtonTitleEdgeInsets = {0, 15.0, 0, 15.
 
 - (void)configureButton
 {
-    self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:15.0];
+    self.titleLabel.font = [WPFontManager systemRegularFontOfSize:15.0];
     self.titleLabel.minimumScaleFactor = 10.0/15.0;
     self.titleLabel.adjustsFontSizeToFitWidth = YES;
     [self setTitleEdgeInsets:WPNUXSecondaryButtonTitleEdgeInsets];

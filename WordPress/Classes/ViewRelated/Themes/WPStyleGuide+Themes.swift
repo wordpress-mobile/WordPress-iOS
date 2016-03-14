@@ -14,13 +14,13 @@ extension WPStyleGuide
         public static let currentThemeBackgroundColor = UIColor.whiteColor()
         public static let currentThemeDividerColor = WPStyleGuide.greyLighten30()
 
-        public static let currentThemeLabelFont = WPFontManager.openSansRegularFontOfSize(11)
+        public static let currentThemeLabelFont = WPFontManager.systemRegularFontOfSize(11)
         public static let currentThemeLabelColor = WPStyleGuide.greyDarken20()
         
-        public static let currentThemeNameFont = WPFontManager.openSansSemiBoldFontOfSize(14)
+        public static let currentThemeNameFont = WPFontManager.systemSemiBoldFontOfSize(14)
         public static let currentThemeNameColor = WPStyleGuide.darkGrey()
 
-        public static let currentThemeButtonFont = WPFontManager.openSansRegularFontOfSize(13)
+        public static let currentThemeButtonFont = WPFontManager.systemRegularFontOfSize(13)
         public static let currentThemeButtonColor = WPStyleGuide.darkGrey()
         
         public static func styleCurrentThemeButton(button: UIButton) {
@@ -33,9 +33,9 @@ extension WPStyleGuide
         public static let searchBarBackgroundColor = WPStyleGuide.lightGrey()
         public static let searchBarBorderColor = WPStyleGuide.greyLighten20()
 
-        public static let searchTypeTitleFont = WPFontManager.openSansSemiBoldFontOfSize(14)
+        public static let searchTypeTitleFont = WPFontManager.systemSemiBoldFontOfSize(14)
         public static let searchTypeTitleColor = WPStyleGuide.darkGrey()
-        
+
         public static func styleSearchTypeButton(button: UIButton, title: String) {
             button.setTitleColor(searchTypeTitleColor, forState: .Normal)
             button.setTitle(title, forState:.Normal)
@@ -48,8 +48,8 @@ extension WPStyleGuide
 
         // MARK: - Cell Styles
 
-        public static let cellNameFont = WPFontManager.openSansSemiBoldFontOfSize(14)
-        public static let cellInfoFont = WPFontManager.openSansSemiBoldFontOfSize(12)
+        public static let cellNameFont = WPFontManager.systemSemiBoldFontOfSize(14)
+        public static let cellInfoFont = WPFontManager.systemSemiBoldFontOfSize(12)
 
         public static let placeholderColor = WPStyleGuide.greyLighten20()
 

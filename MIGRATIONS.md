@@ -3,6 +3,12 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 47 (@kurzee 2016-03-07)
+
+- `Post` added new string attribute `postType` to store the associated string type of a `Post` entity.
+- Added `PostType` entity. Represents a post type and its info.
+- `Blog` added new relationship `postTypes` to store `PostType` entities for a site.
+
 ## WordPress 46 (@aerych 2016-01-29)
 
 - `BlogSettings` added string `sharingButtonStyle`. Stores style to use for sharing buttons.

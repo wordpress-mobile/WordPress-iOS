@@ -23,7 +23,7 @@ class PlanDetailViewController: UIViewController {
 
     private lazy var currentPlanLabel: UIView = {
         let label = UILabel()
-        label.font = WPFontManager.openSansSemiBoldFontOfSize(13.0)
+        label.font = WPFontManager.systemSemiBoldFontOfSize(13.0)
         label.textColor = WPStyleGuide.validGreen()
         label.text = NSLocalizedString("Current Plan", comment: "").uppercaseStringWithLocale(NSLocale.currentLocale())
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -123,7 +123,7 @@ class PlanDetailViewController: UIViewController {
         if isActivePlan {
             purchaseButton.removeFromSuperview()
             headerInfoStackView.addArrangedSubview(currentPlanLabel)
-        } else if plan == .Free {
+        } else if plan.isFreePlan {
             purchaseButton.removeFromSuperview()
             headerInfoStackView.addArrangedSubview(paddingView)
         }
@@ -132,13 +132,15 @@ class PlanDetailViewController: UIViewController {
     // TODO: Prices should always come from StoreKit
     // @frosty 2016-02-04
     private func priceDescriptionForPlan(plan: Plan) -> String? {
-        switch plan {
-        case .Free:
+        switch plan.slug {
+        case "free":
             return "Free for life"
-        case .Premium:
+        case "premium":
             return "$99.99 per year"
-        case .Business:
+        case "business":
             return "$299.99 per year"
+        default:
+            return nil
         }
     }
     
@@ -246,7 +248,7 @@ struct FeatureListItemRow : ImmuTableRow {
 
     var detailTextFont: UIFont {
         if available && webOnly {
-            return WPFontManager.openSansRegularFontOfSize(webOnlyFontSize)
+            return WPFontManager.systemRegularFontOfSize(webOnlyFontSize)
         } else {
             return WPStyleGuide.tableviewTextFont()
         }

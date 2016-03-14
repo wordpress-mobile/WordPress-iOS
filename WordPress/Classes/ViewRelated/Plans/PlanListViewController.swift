@@ -33,11 +33,11 @@ struct PlanListRow: ImmuTableRow {
             NSForegroundColorAttributeName: WPStyleGuide.tableViewActionColor()
         ]
         static let priceAttributes = [
-            NSFontAttributeName: WPFontManager.openSansRegularFontOfSize(14.0),
+            NSFontAttributeName: WPFontManager.systemRegularFontOfSize(14.0),
             NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
         ]
         static let pricePeriodAttributes = [
-            NSFontAttributeName: WPFontManager.openSansItalicFontOfSize(13.0),
+            NSFontAttributeName: WPFontManager.systemItalicFontOfSize(13.0),
             NSForegroundColorAttributeName: WPStyleGuide.greyLighten20()
         ]
 
@@ -48,7 +48,7 @@ struct PlanListRow: ImmuTableRow {
 
             if active {
                 let currentPlanAttributes = [
-                    NSFontAttributeName: WPFontManager.openSansSemiBoldFontOfSize(11.0),
+                    NSFontAttributeName: WPFontManager.systemSemiBoldFontOfSize(11.0),
                     NSForegroundColorAttributeName: WPStyleGuide.validGreen()
                 ]
                 let currentPlan = NSLocalizedString("Current Plan", comment: "").uppercaseStringWithLocale(NSLocale.currentLocale())
@@ -71,7 +71,7 @@ struct PlanListRow: ImmuTableRow {
 
 enum PlanListViewModel {
     case Loading
-    case Ready(activePlan: Plan, plans:[(Plan, String)])
+    case Ready(SitePricedPlans)
     case Error(String)
 
     var noResultsViewModel: WPNoResultsView.Model? {
@@ -162,15 +162,17 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     static let restorationIdentifier = "PlanList"
 
     convenience init(blog: Blog) {
-        self.init(activePlan: blog.plan)
+        precondition(blog.dotComID != nil)
+        let storeFacade = StoreFacade(store: StoreKitStore())
+        let service = PlanService(blog: blog, storeFacade: storeFacade)
+        self.init(siteID: Int(blog.dotComID), service: service)
     }
 
-    // FIXME: inject active plan for now, get it from Blog ID later
-    // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4818
-    // @koke 2016-02-29
-    let activePlan: Plan?
-    init(activePlan: Plan?) {
-        self.activePlan = activePlan
+    let siteID: Int
+    let service: PlanService<StoreKitStore>
+    init(siteID: Int, service: PlanService<StoreKitStore>) {
+        self.siteID = siteID
+        self.service = service
         super.init(style: .Grouped)
         title = NSLocalizedString("Plans", comment: "Title for the plan selector")
         restorationIdentifier = PlanListViewController.restorationIdentifier
@@ -194,16 +196,14 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        let storeFacade = StoreFacade(store: StoreKitStore())
-        let service = PlanService(storeFacade: storeFacade)
-        service.plansWithPricesForBlog(0, success: { plansWithPrices in
-            // FIXME: this will crash if there's no active plan
-            // See https://github.com/wordpress-mobile/WordPress-iOS/issues/4818
-            // @koke 2016-02-29
-            self.viewModel = .Ready(activePlan: self.activePlan!, plans: plansWithPrices)
-            }, failure: { error in
+        service.plansWithPricesForBlog(siteID,
+            success: { result in
+                self.viewModel = .Ready(result)
+            },
+            failure: { error in
                 self.viewModel = .Error(String(error))
-        })
+            }
+        )
     }
 }
 
@@ -226,21 +226,12 @@ extension PlanListViewController: UIViewControllerRestoration {
             return nil
         }
 
-        let planID: Int? = {
-            guard coder.containsValueForKey(EncodingKey.activePlan) else {
-                return nil
-            }
-            return coder.decodeIntegerForKey(EncodingKey.activePlan)
-        }()
-
-        let plan = planID.flatMap({ Plan(rawValue: $0) })
-        return PlanListViewController(activePlan: plan)
+        // TODO: postpone restoration until view model is stable
+        // @koke 2016-03-01
+        return nil
     }
 
     override func encodeRestorableStateWithCoder(coder: NSCoder) {
         super.encodeRestorableStateWithCoder(coder)
-        if let activePlan = self.activePlan {
-            coder.encodeInteger(activePlan.rawValue, forKey: EncodingKey.activePlan)
-        }
     }
 }
