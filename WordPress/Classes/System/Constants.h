@@ -20,10 +20,10 @@ extern NSString *const WPGravatarBaseURL;
 
 extern NSString *const WPNotificationsBucketName;
 
-extern NSString *const WPAppGroupName;
 extern NSString *const WPAppOAuth2TokenKeychainAccessGroup;
 extern NSString *const WPAppOAuth2TokenKeychainUsername;
 extern NSString *const WPAppOAuth2TokenKeychainServiceName;
+extern NSString *const WPAppDefaultsGroupName;
 
 extern NSString *const WPShareUserDefaultsPrimarySiteName;
 extern NSString *const WPShareUserDefaultsPrimarySiteID;

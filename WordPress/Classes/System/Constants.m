@@ -21,11 +21,11 @@ NSString *const WPGravatarBaseURL                                   = @"http://g
 NSString *const WPNotificationsBucketName                           = @"note20";
 
 #ifdef INTERNAL_BUILD
-NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
 NSString *const WPAppOAuth2TokenKeychainAccessGroup                 = @"99KV9Z6BKV.org.wordpress.internal";
+NSString *const WPAppDefaultsGroupName                              = @"group.org.wordpress.internal";
 #else
-NSString *const WPAppGroupName                                      = @"group.org.wordpress";
 NSString *const WPAppOAuth2TokenKeychainAccessGroup                 = @"3TMU3BH3NK.org.wordpress";
+NSString *const WPAppDefaultsGroupName                              = @"group.org.wordpress";
 #endif
 
 // Note: Since we're adding a new Sharing Extension (Feb.23.2016), the former Today Widget constants are being reused.
