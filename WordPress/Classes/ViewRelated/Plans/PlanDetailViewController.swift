@@ -90,22 +90,22 @@ class PlanDetailViewController: UIViewController {
         
         viewModel = ImmuTable(sections:
             [ ImmuTableSection(rows: PlanFeature.allFeatures.map { feature in
-                let available = plan.features.contains(feature)
-
-                if available {
-                    // If a feature is 'available', we have to find and use the feature instance
-                    // from the _plan's_ list of features, as it will have the correct associated values
-                    // for any enum case that has associated values.
-                    let index = plan.features.indexOf(feature)
-                    let planFeature = plan.features[index!]
-                    if let description = planFeature.description {
-                        return TextRow(title: planFeature.title, value: description)
-                    } else {
-                        return FeatureListItemRow(feature: planFeature, available: available)
-                    }
-                }
+//                let available = plan.features.contains(feature)
+//
+//                if available {
+//                    // If a feature is 'available', we have to find and use the feature instance
+//                    // from the _plan's_ list of features, as it will have the correct associated values
+//                    // for any enum case that has associated values.
+//                    let index = plan.features.indexOf(feature)
+//                    let planFeature = plan.features[index!]
+//                    if let description = planFeature.description {
+//                        return TextRow(title: planFeature.title, value: description)
+//                    } else {
+//                        return FeatureListItemRow(feature: planFeature, available: available)
+//                    }
+//                }
                 
-                return FeatureListItemRow(feature: feature, available: available)
+                return FeatureListItemRow(feature: feature, available: false)
             } ) ]
         )
         
@@ -119,7 +119,7 @@ class PlanDetailViewController: UIViewController {
         planTitleLabel.text = plan.fullTitle
         planDescriptionLabel.text = plan.description
         planPriceLabel.text = priceDescriptionForPlan(plan)
-
+        
         if isActivePlan {
             purchaseButton.removeFromSuperview()
             headerInfoStackView.addArrangedSubview(currentPlanLabel)
@@ -217,17 +217,17 @@ struct FeatureListItemRow : ImmuTableRow {
     let action: ImmuTableAction? = nil
     
     let title: String
-    let webOnly: Bool
     let available: Bool
+    let webOnly = false
     
     let checkmarkLeftPadding: CGFloat = 16.0
     let webOnlyFontSize: CGFloat = 13.0
     
     init(feature: PlanFeature, available: Bool) {
-        precondition(feature.description == nil, "Features with a description should use TextRow instead")
+//        precondition(feature.description == nil, "Features with a description should use TextRow instead")
 
         self.title = feature.title
-        self.webOnly = feature.webOnly
+//        self.webOnly = feature.webOnly
         self.available = available
     }
     
