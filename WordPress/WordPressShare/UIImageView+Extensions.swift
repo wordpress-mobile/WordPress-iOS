@@ -103,7 +103,7 @@ extension UIImageView
         static let blavatarResizeFormat = "d=404&s=%d"
         
         /// Stores all of the previously downloaded images
-        static var cache = NSCache()
+        static let cache = NSCache()
         
         /// Key used to associate a Download task to the current instance
         static let taskKey = "downloadTaskKey"
