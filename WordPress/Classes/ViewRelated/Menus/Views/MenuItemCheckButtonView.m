@@ -90,7 +90,7 @@ static CGFloat const iconPadding = 3.0;
 
 - (NSDictionary *)attributesForText
 {
-    return @{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:14.0], NSForegroundColorAttributeName: [UIColor blackColor]};
+    return @{NSFontAttributeName: [WPFontManager systemRegularFontOfSize:14.0], NSForegroundColorAttributeName: [UIColor blackColor]};
 }
 
 - (void)drawRect:(CGRect)rect

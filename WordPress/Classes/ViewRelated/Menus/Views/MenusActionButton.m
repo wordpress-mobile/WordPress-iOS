@@ -52,7 +52,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     self.tintColor = defaultContentColor;
     self.fillColor = [UIColor whiteColor];
     
-    self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
+    self.titleLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
     [self setTitleColor:defaultContentColor forState:UIControlStateNormal];
     
     [self updateDesignInsets];

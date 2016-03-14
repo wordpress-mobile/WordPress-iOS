@@ -66,7 +66,7 @@
             label.translatesAutoresizingMaskIntoConstraints = NO;
             label.numberOfLines = 1;
             label.lineBreakMode = NSLineBreakByTruncatingTail;
-            label.font = [WPFontManager openSansRegularFontOfSize:16.0];
+            label.font = [WPFontManager systemRegularFontOfSize:16.0];
             label.backgroundColor = [UIColor whiteColor];
             
             [self.stackView addArrangedSubview:label];
