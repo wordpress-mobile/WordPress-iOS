@@ -1,7 +1,8 @@
 #import "HelpShiftUtils.h"
 #import <Mixpanel/MPTweakInline.h>
 #import "WordPressComApiCredentials.h"
-#import <Helpshift/Helpshift.h>
+#import <Helpshift/HelpshiftCore.h>
+#import <Helpshift/HelpshiftSupport.h>
 
 NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
 NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
@@ -9,7 +10,7 @@ NSString *const HelpshiftUnreadCountUpdatedNotification = @"HelpshiftUnreadCount
 // This delay is required to give some time to Mixpanel to update the remote variable
 CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
-@interface HelpshiftUtils () <HelpshiftDelegate>
+@interface HelpshiftUtils () <HelpshiftSupportDelegate>
 
 @property (nonatomic, assign) NSInteger unreadNotificationCount;
 
@@ -31,8 +32,9 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
 + (void)setup
 {
-    [[Helpshift sharedInstance] setDelegate:[HelpshiftUtils sharedInstance]];
-    [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
+    [HelpshiftCore initializeWithProvider:[HelpshiftSupport sharedInstance]];
+    [[HelpshiftSupport sharedInstance] setDelegate:[HelpshiftUtils sharedInstance]];
+    [HelpshiftCore installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
 
     // We want to make sure Mixpanel updates the remote variable before we check for the flag
     [[HelpshiftUtils sharedInstance] performSelector:@selector(checkIfHelpshiftShouldBeEnabled)
@@ -83,12 +85,12 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
 + (void)refreshUnreadNotificationCount
 {
-    [[Helpshift sharedInstance] getNotificationCountFromRemote:YES];
+    [HelpshiftSupport getNotificationCountFromRemote:YES];
 }
 
-#pragma mark - Helpshift Delegate
+#pragma mark - HelpshiftSupport Delegate
 
-- (void)didReceiveInAppNotificationWithMessageCount:(NSInteger)count;
+- (void)didReceiveInAppNotificationWithMessageCount:(NSInteger)count
 {
     if (count > 0) {
         [WPAnalytics track:WPAnalyticsStatSupportReceivedResponseFromSupport];
