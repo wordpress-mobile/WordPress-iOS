@@ -174,5 +174,5 @@ class PlanFeaturesRemote: ServiceRemoteREST {
 
 private func mapPlanFeaturesResponse(response: AnyObject) throws -> [PlanFeature] {
     // TODO: Parse response!
-    return [PlanFeature(slug: "custom-design", title: "Custom Design", description: "Lorem ipsum", iconName: "")]
+    return [PlanFeature(slug: "custom-design", title: "Custom Design", description: "Lorem ipsum", iconName: "", planSpecificDescription: nil)]
 }
