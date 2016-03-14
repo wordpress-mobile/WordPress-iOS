@@ -33,8 +33,10 @@ extern NSString *const WPAppOAuth2TokenKeychainServiceName;
 extern NSString *const WPAppDefaultsGroupName;
 extern NSString *const WPAppKeychainAccessGroup;
 
-extern NSString *const WPShareUserDefaultsPrimarySiteName;
-extern NSString *const WPShareUserDefaultsPrimarySiteID;
+/// Share Extension Constants
+///
+extern NSString *const WPShareExtensionUserDefaultsPrimarySiteName;
+extern NSString *const WPShareExtensionUserDefaultsPrimarySiteID;
 
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey;
