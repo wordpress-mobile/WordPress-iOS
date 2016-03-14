@@ -38,6 +38,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         [post addCategoriesObject:category];
     }
     post.postFormat = blog.settings.defaultPostFormat;
+    post.postType = PostTypeDefaultIdentifier;
     return post;
 }
 
@@ -341,24 +342,8 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     post.remoteStatus = AbstractPostRemoteStatusLocal;
 }
 
-- (NSPredicate *)predicateForPostsWithStatuses:(NSArray *)postStatus
-                                      byAuthor:(NSNumber *)authorID
-                                       forBlog:(Blog *)blog
-{
-    NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (revision == NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
-    if ([postStatus count] > 0) {
-        NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"status IN %@", postStatus];
-        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, statusPredicate]];
-    }
-    if (authorID) {
-        NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", authorID];
-        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, authorPredicate]];
-    }
-    return predicate;
-}
-
 - (void)mergePosts:(NSArray <RemotePost *> *)remotePosts
-            ofType:(NSString *)postType
+            ofType:(NSString *)syncPostType
       withStatuses:(NSArray *)statuses
           byAuthor:(NSNumber *)authorID
            forBlog:(Blog *)blog
@@ -369,12 +354,11 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     for (RemotePost *remotePost in remotePosts) {
         AbstractPost *post = [self findPostWithID:remotePost.postID inBlog:blog];
         if (!post) {
-            if ([postType isEqualToString:PostServiceTypeAny]) {
-                postType = remotePost.type;
-            }
-            if ([postType isEqualToString:PostServiceTypePage]) {
+            if ([remotePost.type isEqualToString:PostServiceTypePage]) {
+                // Create a Page entity for posts with a remote type of "page"
                 post = [self createPageForBlog:blog];
             } else {
+                // Create a Post entity for any other posts that have a remote post type of "post" or a custom post type.
                 post = [self createPostForBlog:blog];
             }
         }
@@ -382,21 +366,47 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         [posts addObject:post];
     }
     
-    if (purge && ! [postType isEqualToString:PostServiceTypeAny]) {
-        NSSet *postsToKeep = [NSSet setWithArray:posts];
+    if (purge) {
+        // Set up predicate for fetching any posts that could be purged for the sync.
+        NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+        if ([statuses count] > 0) {
+            NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"status IN %@", statuses];
+            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, statusPredicate]];
+        }
+        if (authorID) {
+            NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", authorID];
+            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, authorPredicate]];
+        }
+        
         NSFetchRequest *request;
-        if ([postType isEqualToString:PostServiceTypePage]) {
+        if ([syncPostType isEqualToString:PostServiceTypeAny]) {
+            // If syncing "any" posts, set up the fetch for any AbstractPost entities (including child entities).
+            request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
+        } else if ([syncPostType isEqualToString:PostServiceTypePage]) {
+            // If syncing "page" posts, set up the fetch for any Page entities.
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Page class])];
         } else {
+            // If not syncing "page" or "any" post, use the Post entity.
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
+            // Include the postType attribute in the predicate.
+            NSPredicate *postTypePredicate = [NSPredicate predicateWithFormat:@"postType = %@", syncPostType];
+            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, postTypePredicate]];
         }
-        request.predicate = [self predicateForPostsWithStatuses:statuses byAuthor:authorID forBlog:blog];
-        NSArray *existingPosts = [self.managedObjectContext executeFetchRequest:request error:nil];
-        NSMutableSet *postsToDelete = [NSMutableSet setWithArray:existingPosts];
-        [postsToDelete minusSet:postsToKeep];
-        for (AbstractPost *post in postsToDelete) {
-            DDLogInfo(@"Deleting Post: %@", post);
-            [self.managedObjectContext deleteObject:post];
+        request.predicate = predicate;
+        
+        NSError *error;
+        NSArray *existingPosts = [self.managedObjectContext executeFetchRequest:request error:&error];
+        if (error) {
+            DDLogError(@"Error fetching existing posts for purging: %@", error);
+        } else {
+            NSSet *postsToKeep = [NSSet setWithArray:posts];
+            NSMutableSet *postsToDelete = [NSMutableSet setWithArray:existingPosts];
+            // Delete the posts not being updated.
+            [postsToDelete minusSet:postsToKeep];
+            for (AbstractPost *post in postsToDelete) {
+                DDLogInfo(@"Deleting Post: %@", post);
+                [self.managedObjectContext deleteObject:post];
+            }
         }
     }
     
@@ -448,6 +458,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         postPost.likeCount = remotePost.likeCount;
         postPost.postFormat = remotePost.format;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
+        postPost.postType = remotePost.type;
         [self updatePost:postPost withRemoteCategories:remotePost.categories];
 
         Coordinate *geolocation = nil;
