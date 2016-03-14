@@ -28,16 +28,22 @@ extern NSString *const WPGravatarBaseURL;
 ///
 extern NSString *const WPNotificationsBucketName;
 
-extern NSString *const WPAppOAuth2TokenKeychainUsername;
-extern NSString *const WPAppOAuth2TokenKeychainServiceName;
+/// Keychain + User Defaults Constants
+///
 extern NSString *const WPAppDefaultsGroupName;
 extern NSString *const WPAppKeychainAccessGroup;
 
 /// Share Extension Constants
 ///
+extern NSString *const WPShareExtensionTokenKeychainUsername;
+extern NSString *const WPShareExtensionTokenKeychainServiceName;
 extern NSString *const WPShareExtensionUserDefaultsPrimarySiteName;
 extern NSString *const WPShareExtensionUserDefaultsPrimarySiteID;
 
+/// Today Widget Constants
+///
+extern NSString *const WPStatsTodayWidgetTokenKeychainUsername;
+extern NSString *const WPStatsTodayWidgetTokenKeychainServiceName;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;

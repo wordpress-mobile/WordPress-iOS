@@ -10,9 +10,9 @@ public class ShareExtensionService: NSObject
     ///
     class func configureShareExtensionToken(oauth2Token: String) {
         do {
-            try SFHFKeychainUtils.storeUsername(WPAppOAuth2TokenKeychainUsername,
+            try SFHFKeychainUtils.storeUsername(WPShareExtensionTokenKeychainUsername,
                 andPassword: oauth2Token,
-                forServiceName: WPAppOAuth2TokenKeychainServiceName,
+                forServiceName: WPShareExtensionTokenKeychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup,
                 updateExisting: true)
         } catch {
@@ -40,8 +40,8 @@ public class ShareExtensionService: NSObject
     ///
     class func removeShareExtensionConfiguration() {
         do {
-            try SFHFKeychainUtils.deleteItemForUsername(WPAppOAuth2TokenKeychainUsername,
-                andServiceName: WPAppOAuth2TokenKeychainServiceName,
+            try SFHFKeychainUtils.deleteItemForUsername(WPShareExtensionTokenKeychainUsername,
+                andServiceName: WPShareExtensionTokenKeychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup)
         } catch {
             print("Error while removing Share Extension OAuth2 bearer token: \(error)")
@@ -59,7 +59,7 @@ public class ShareExtensionService: NSObject
     /// - Returns: The OAuth Token, if any.
     ///
     class func retrieveShareExtensionToken() -> String? {
-        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPAppOAuth2TokenKeychainUsername,
+        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionTokenKeychainUsername,
             andServiceName: WPShareExtensionTokenKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else
         {
             return nil
