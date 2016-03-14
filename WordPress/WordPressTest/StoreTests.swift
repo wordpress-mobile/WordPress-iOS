@@ -2,11 +2,10 @@ import XCTest
 import Nimble
 @testable import WordPress
 
-class StoreFacadeTests: XCTestCase {
+class StoreTests: XCTestCase {
     func testGetPricesForPlans() {
         let store = MockStore.succeeding(after: 0)
-        let facade = StoreFacade(store: store)
-        facade.getPricesForPlans(defaultPlans,
+        store.getPricesForPlans(defaultPlans,
             success: { pricedPlans in
                 expect(pricedPlans.count).to(equal(3))
                 expect(pricedPlans[0].price as String).to(equal(""))
@@ -19,10 +18,9 @@ class StoreFacadeTests: XCTestCase {
 
     func testGetPricesLocalization() {
         let store = MockStore.succeeding(after: 0)
-        let facade = StoreFacade(store: store)
         store.products[0].priceLocale = NSLocale(localeIdentifier: "es-ES")
         store.products[1].priceLocale = NSLocale(localeIdentifier: "es-ES")
-        facade.getPricesForPlans(
+        store.getPricesForPlans(
             defaultPlans,
             success: { pricedPlans in
                 expect(pricedPlans.count).to(equal(3))
