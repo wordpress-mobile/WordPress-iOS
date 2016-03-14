@@ -205,12 +205,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             }
             
             // Configure the Share Extension
-            if (defaultBlog != nil
-                && !defaultBlog.isDeleted) {
+            if (defaultBlog != nil && !defaultBlog.isDeleted) {
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [ShareExtensionService configureShareExtension:accountInContext.authToken
-                                                     defaultSiteID:defaultBlog.dotComID.integerValue
-                                                   defaultSiteName:defaultBlog.settings.name];
+                    [ShareExtensionService configureShareExtensionDefaultSiteID:defaultBlog.dotComID.integerValue
+                                                                defaultSiteName:defaultBlog.settings.name];
                 });
             }
 

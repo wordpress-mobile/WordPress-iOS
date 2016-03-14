@@ -942,6 +942,7 @@ int ddLogLevel = DDLogLevelInfo;
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [self loginSimperium];
+        [self setupShareExtensionToken];
     } else {
         if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
             [WPAnalytics track:WPAnalyticsStatLogout];
@@ -985,12 +986,23 @@ int ddLogLevel = DDLogLevelInfo;
     [service removeTodayWidgetConfiguration];
 }
 
+
 #pragma mark - Share Extension
+
+- (void)setupShareExtensionToken
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *account              = [accountService defaultWordPressComAccount];
+    
+    [ShareExtensionService configureShareExtensionToken:account.authToken];
+}
 
 - (void)removeShareExtensionConfiguration
 {
     [ShareExtensionService removeShareExtensionConfiguration];
 }
+
 
 #pragma mark - Simperium helpers
 
