@@ -5,6 +5,9 @@ extension WPAccount {
         switch change {
         case .DisplayName(let value):
             self.displayName = value
+        case .PrimarySite(let value):
+            let service = BlogService(managedObjectContext: managedObjectContext)
+            defaultBlog = service.blogByBlogId(value)
         default:
             break
         }
