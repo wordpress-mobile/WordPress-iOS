@@ -3,14 +3,12 @@ import UIKit
 import RxSwift
 import WordPressComAnalytics
 
-func AccountSettingsViewController(account account: WPAccount?) -> ImmuTableViewController {
-    let service = account.map({ account in
-        return AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
-    })
+func AccountSettingsViewController(account account: WPAccount) -> ImmuTableViewController {
+    let service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
     return AccountSettingsViewController(service: service)
 }
 
-func AccountSettingsViewController(service service: AccountSettingsService?) -> ImmuTableViewController {
+func AccountSettingsViewController(service service: AccountSettingsService) -> ImmuTableViewController {
     let controller = AccountSettingsController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
     return viewController
@@ -29,20 +27,15 @@ private struct AccountSettingsController: SettingsController {
 
     // MARK: - Initialization
 
-<<<<<<< HEAD:WordPress/Classes/ViewRelated/Me/AccountSettingsViewController.swift
     let service: AccountSettingsService
     
     
     init(service: AccountSettingsService) {
-=======
-    let service: AccountSettingsService?
-
-    init(service: AccountSettingsService?) {
->>>>>>> release/6.0:WordPress/Classes/ViewRelated/AccountSettingsViewController.swift
         self.service = service
     }
+    
+    // MARK: - Model mapping
 
-<<<<<<< HEAD:WordPress/Classes/ViewRelated/Me/AccountSettingsViewController.swift
     func mapViewModel(settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
         let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
         
@@ -59,49 +52,24 @@ private struct AccountSettingsController: SettingsController {
             value: primarySiteName ?? "",
             action: presenter.push(editPrimarySite(settings))
         )
-=======
-    // MARK: - ImmuTableViewController
 
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable> {
-        if let service = self.service {
-            return service.settings.map({ settings in
-                self.mapViewModel(settings, service: service, presenter: presenter)
-            })
-        } else {
-            return Observable.just(self.mapViewModel(nil, service: nil, presenter: presenter))
-        }
-    }
->>>>>>> release/6.0:WordPress/Classes/ViewRelated/AccountSettingsViewController.swift
+        let webAddress = EditableTextRow(
+            title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
+            value: settings?.webAddress ?? "",
+            action: presenter.push(editWebAddress())
+        )
 
-    var errorMessage: Observable<String?> {
-        if let service = self.service {
-            return service.refresh
-                // replace errors with .Failed status
-                .catchErrorJustReturn(.Failed)
-                // convert status to string
-                .map({ $0.errorMessage })
-        } else {
-            return Observable.just(nil)
-        }
-    }
-
-    // MARK: - Model mapping
-
-    func mapViewModel(settings: AccountSettings?, service: AccountSettingsService?, presenter: ImmuTablePresenter) -> ImmuTable {
-        let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
         let uploadSize = MediaSizeRow(
             title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
             value: Int(MediaSettings().maxImageSizeSetting),
             onChange: mediaSizeChanged())
 
-        let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
         let visualEditor = SwitchRow(
             title: NSLocalizedString("Visual Editor", comment: "Option to enable the visual editor"),
             value: WPPostViewController.isNewEditorEnabled(),
             onChange: visualEditorChanged()
         )
 
-<<<<<<< HEAD:WordPress/Classes/ViewRelated/Me/AccountSettingsViewController.swift
         return ImmuTable(sections: [
             ImmuTableSection(
                 rows: [
@@ -123,66 +91,13 @@ private struct AccountSettingsController: SettingsController {
                 ],
                 footerText: nil)
             ])
-=======
-        if Feature.enabled(.AccountSettings), let service = service {
-            let username = TextRow(
-                title: NSLocalizedString("Username", comment: "Account Settings Username label"),
-                value: settings?.username ?? "")
-            
-            let email = TextRow(
-                title: NSLocalizedString("Email", comment: "Account Settings Email label"),
-                value: settings?.email ?? "")
-            
-            let webAddress = EditableTextRow(
-                title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
-                value: settings?.webAddress ?? "",
-                action: presenter.push(editWebAddress(service))
-            )
-            
-            return ImmuTable(sections: [
-                ImmuTableSection(
-                    rows: [
-                        username,
-                        email,
-                        webAddress
-                    ]),
-                ImmuTableSection(
-                    headerText: mediaHeader,
-                    rows: [
-                        uploadSize
-                    ],
-                    footerText: nil),
-                ImmuTableSection(
-                    headerText: editorHeader,
-                    rows: [
-                        visualEditor
-                    ],
-                    footerText: nil)
-                ])
-        } else {
-            return ImmuTable(sections: [
-                ImmuTableSection(
-                    headerText: mediaHeader,
-                    rows: [
-                        uploadSize
-                    ],
-                    footerText: nil),
-                ImmuTableSection(
-                    headerText: editorHeader,
-                    rows: [
-                        visualEditor
-                    ],
-                    footerText: nil)
-                ])
-        }
->>>>>>> release/6.0:WordPress/Classes/ViewRelated/AccountSettingsViewController.swift
     }
     
     
     // MARK: - Actions
 
-    func editWebAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
-        return editText(AccountSettingsChange.WebAddress, hint: NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address"), service: service)
+    func editWebAddress() -> ImmuTableRowControllerGenerator {
+        return editText(AccountSettingsChange.WebAddress, hint: NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address"))
     }
     
     func editPrimarySite(settings: AccountSettings?) -> ImmuTableRowControllerGenerator {
