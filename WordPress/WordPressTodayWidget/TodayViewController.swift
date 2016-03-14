@@ -68,7 +68,7 @@ class TodayViewController: UIViewController {
         super.viewWillAppear(animated)
         
         // Manual state restoration
-        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
+        let sharedDefaults = NSUserDefaults(suiteName: WPAppDefaultsGroupName)!
         siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
 
         let userDefaults = NSUserDefaults.standardUserDefaults()
@@ -114,7 +114,7 @@ class TodayViewController: UIViewController {
     }
     
     func retrieveSiteConfiguration() {
-        let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
+        let sharedDefaults = NSUserDefaults(suiteName: WPAppDefaultsGroupName)!
         siteID = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber
         siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
         oauthToken = fetchOAuthBearerToken()
