@@ -127,7 +127,7 @@ class TodayViewController: UIViewController {
     }
 
     func fetchOAuthBearerToken() -> String? {
-        let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPAppOAuth2TokenKeychainUsername, andServiceName: WPAppOAuth2TokenKeychainServiceName, accessGroup: WPAppOAuth2TokenKeychainAccessGroup)
+        let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetTokenKeychainUsername, andServiceName: WPStatsTodayWidgetTokenKeychainServiceName, accessGroup: WPAppKeychainAccessGroup)
         
         return oauth2Token as String?
     }
