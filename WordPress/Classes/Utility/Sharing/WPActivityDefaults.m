@@ -1,6 +1,7 @@
 #import "WPActivityDefaults.h"
 #import "SafariActivity.h"
 
+
 @implementation WPActivityDefaults
 
 + (NSArray *)defaultActivities

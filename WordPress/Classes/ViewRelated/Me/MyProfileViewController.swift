@@ -32,29 +32,45 @@ private struct MyProfileController: SettingsController {
     init(service: AccountSettingsService) {
         self.service = service
     }
-
+    
+    // MARK: - ImmuTableViewController
+    
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable> {
+        return service.settings.map({ settings in
+            self.mapViewModel(settings, presenter: presenter)
+        })
+    }
+    
+    var errorMessage: Observable<String?> {
+        return service.refresh
+            // replace errors with .Failed status
+            .catchErrorJustReturn(.Failed)
+            // convert status to string
+            .map({ $0.errorMessage })
+    }
+    
     // MARK: - Model mapping
 
     func mapViewModel(settings: AccountSettings?, presenter: ImmuTablePresenter) -> ImmuTable {
         let firstNameRow = EditableTextRow(
             title: NSLocalizedString("First Name", comment: "My Profile first name label"),
             value: settings?.firstName ?? "",
-            action: presenter.push(editText(AccountSettingsChange.FirstName)))
+            action: presenter.push(editText(AccountSettingsChange.FirstName, service: service)))
 
         let lastNameRow = EditableTextRow(
             title: NSLocalizedString("Last Name", comment: "My Profile last name label"),
             value: settings?.lastName ?? "",
-            action: presenter.push(editText(AccountSettingsChange.LastName)))
+            action: presenter.push(editText(AccountSettingsChange.LastName, service: service)))
 
         let displayNameRow = EditableTextRow(
             title: NSLocalizedString("Display Name", comment: "My Profile display name label"),
             value: settings?.displayName ?? "",
-            action: presenter.push(editText(AccountSettingsChange.DisplayName)))
+            action: presenter.push(editText(AccountSettingsChange.DisplayName, service: service)))
 
         let aboutMeRow = EditableTextRow(
             title: NSLocalizedString("About Me", comment: "My Profile 'About me' label"),
             value: settings?.aboutMe ?? "",
-            action: presenter.push(editText(AccountSettingsChange.AboutMe)))
+            action: presenter.push(editText(AccountSettingsChange.AboutMe, service: service)))
 
         return ImmuTable(sections: [
             ImmuTableSection(rows: [
