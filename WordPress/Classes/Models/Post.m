@@ -8,6 +8,8 @@
 #import "ContextManager.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 
+NSString * const PostTypeDefaultIdentifier = @"post";
+
 @interface Post()
 @property (nonatomic, strong) NSString *storedContentPreviewForDisplay;
 @end
@@ -18,6 +20,7 @@
 @dynamic likeCount;
 @dynamic geolocation;
 @dynamic tags;
+@dynamic postType;
 @dynamic postFormat;
 @dynamic latitudeID;
 @dynamic longitudeID;
@@ -149,10 +152,6 @@
 
 - (BOOL)hasLocalChanges
 {
-    if (![self isRevision]) {
-        return NO;
-    }
-    
     if ([super hasLocalChanges]) {
         return YES;
     }

@@ -309,7 +309,7 @@ EditImageDetailsViewControllerDelegate
     [super viewDidAppear:animated];
     
     if (self.failedStateRestorationMode) {
-        [self dismissEditView];
+        [self dismissEditView:NO];
     } else {
         [self refreshNavigationBarButtons:NO];
         [self.navigationController.navigationBar addSubview:self.mediaProgressView];
@@ -801,13 +801,6 @@ EditImageDetailsViewControllerDelegate
     [self presentViewController:picker animated:animated completion:nil];
 }
 
-#pragma mark - Data Model: Post
-
-- (BOOL)isPostLocal
-{
-    return self.post.remoteStatus == AbstractPostRemoteStatusLocal;
-}
-
 #pragma mark - Editing
 
 - (void)cancelEditing
@@ -845,21 +838,22 @@ EditImageDetailsViewControllerDelegate
         [self actionSheetDiscardButtonPressed];
     }];
     
-	if (![self.post.original.status isEqualToString:PostStatusDraft] && ![self isPostLocal]) {
-    } else if ([self isPostLocal]) {
-        // The post is a local draft or an autosaved draft: Discard or Save
-        [alertController addActionWithTitle:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-                                      style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-            [self actionSheetSaveDraftButtonPressed];
-        }];
-    } else {
-        // The post was already a draft
-        [alertController addActionWithTitle:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")
-                                      style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action) {
-            [self actionSheetSaveDraftButtonPressed];
-        }];
+    if ([self.post hasLocalChanges]) {
+        if (![self.post hasRemote]) {
+            // The post is a local draft or an autosaved draft: Discard or Save
+            [alertController addActionWithTitle:NSLocalizedString(@"Save Draft", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
+                                          style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action) {
+                [self actionSheetSaveDraftButtonPressed];
+            }];
+        } else if ([self.post.status isEqualToString:PostStatusDraft]) {
+            // The post was already a draft
+            [alertController addActionWithTitle:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post.")
+                                          style:UIAlertActionStyleDefault
+                                        handler:^(UIAlertAction * action) {
+                [self actionSheetSaveDraftButtonPressed];
+            }];
+        }
     }
     
     alertController.popoverPresentationController.barButtonItem = self.currentCancelButton;
@@ -933,7 +927,7 @@ EditImageDetailsViewControllerDelegate
     if (self.isEditing) {
         [self cancelEditing];
     } else {
-        [self dismissEditView];
+        [self dismissEditView:NO];
     }
 }
 
@@ -983,7 +977,7 @@ EditImageDetailsViewControllerDelegate
 - (NSString *)editorTitle
 {
     NSString *title = @"";
-    if ([self isPostLocal]) {
+    if ([self.post hasNeverAttemptedToUpload]) {
         title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
     } else {
         if ([self.post.postTitle length]) {
@@ -1270,7 +1264,7 @@ EditImageDetailsViewControllerDelegate
         }
         
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
-                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0] }];
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0] }];
         
         [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
         if (![self isViewHorizontallyCompact]) {
@@ -1384,18 +1378,19 @@ EditImageDetailsViewControllerDelegate
     [self discardChanges];
     
     if (!self.post || self.isOpenedDirectlyForEditing) {
-        [self dismissEditView];
+        [self dismissEditView:NO];
     } else {
         [self refreshUIForCurrentPost];
     }
 }
 
 - (void)dismissEditViewAnimated:(BOOL)animated
+                   changesSaved:(BOOL)changesSaved
 {
     [WPAppAnalytics track:WPAnalyticsStatEditorClosed withBlog:self.post.blog];
     
     if (self.onClose) {
-        self.onClose(self);
+        self.onClose(self, changesSaved);
         self.onClose = nil;
     } else if (self.presentingViewController) {
         [self.presentingViewController dismissViewControllerAnimated:animated completion:nil];
@@ -1404,9 +1399,9 @@ EditImageDetailsViewControllerDelegate
     }
 }
 
-- (void)dismissEditView
+- (void)dismissEditView:(BOOL)changesSaved
 {
-    [self dismissEditViewAnimated:YES];
+    [self dismissEditViewAnimated:YES changesSaved:changesSaved];
 }
 
 - (void)saveAction
@@ -1435,7 +1430,7 @@ EditImageDetailsViewControllerDelegate
     }
     [self stopEditing];
     [self savePost];
-    [self dismissEditView];
+    [self dismissEditView:YES];
 }
 
 /**
@@ -1493,7 +1488,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)didSaveNewPost
 {
-    if ([self isPostLocal]) {
+    if ([self.post hasLocalChanges]) {
         [[WPTabBarController sharedInstance] switchTabToPostsListForPost:self.post];
     }
 }
@@ -2100,7 +2095,7 @@ EditImageDetailsViewControllerDelegate
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker
 {
     if (self.isOpenedDirectlyForPhotoPost) {
-        [self dismissEditViewAnimated:NO];
+        [self dismissEditViewAnimated:NO changesSaved:NO];
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
     }

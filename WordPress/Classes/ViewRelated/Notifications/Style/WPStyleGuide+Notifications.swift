@@ -101,8 +101,8 @@ extension WPStyleGuide
         public static let contentBlockRegularFont   = WPFontManager.merriweatherRegularFontOfSize(blockFontSize)
         public static let contentBlockBoldFont      = WPFontManager.merriweatherBoldFontOfSize(blockFontSize)
         public static let contentBlockItalicFont    = WPFontManager.merriweatherItalicFontOfSize(blockFontSize)
-        public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
-        public static let blockBoldFont             = WPFontManager.openSansSemiBoldFontOfSize(blockFontSize)
+        public static let blockRegularFont          = WPFontManager.systemRegularFontOfSize(blockFontSize)
+        public static let blockBoldFont             = WPFontManager.systemSemiBoldFontOfSize(blockFontSize)
 
         public static let blockTextColor            = WPStyleGuide.littleEddieGrey()
         public static let blockQuotedColor          = UIColor(red: 0x7E/255.0, green: 0x9E/255.0, blue: 0xB5/255.0, alpha: 0xFF/255.0)
@@ -248,14 +248,14 @@ extension WPStyleGuide
         private static let headerTitleContextColor  = WPStyleGuide.allTAllShadeGrey()
         
         // Fonts
-        private static let sectionHeaderFont        = WPFontManager.openSansSemiBoldFontOfSize(headerFontSize)
-        private static let subjectRegularFont       = WPFontManager.openSansRegularFontOfSize(subjectFontSize)
-        private static let subjectBoldFont          = WPFontManager.openSansSemiBoldFontOfSize(subjectFontSize)
-        private static let subjectItalicsFont       = WPFontManager.openSansItalicFontOfSize(subjectFontSize)
+        private static let sectionHeaderFont        = WPFontManager.systemSemiBoldFontOfSize(headerFontSize)
+        private static let subjectRegularFont       = WPFontManager.systemRegularFontOfSize(subjectFontSize)
+        private static let subjectBoldFont          = WPFontManager.systemSemiBoldFontOfSize(subjectFontSize)
+        private static let subjectItalicsFont       = WPFontManager.systemItalicFontOfSize(subjectFontSize)
         private static let subjectNoticonFont       = UIFont(name: "Noticons", size: subjectNoticonSize)
         private static let headerTitleRegularFont   = blockRegularFont
         private static let headerTitleItalicsFont   = blockItalicsFont
-        private static let blockItalicsFont         = WPFontManager.openSansItalicFontOfSize(blockFontSize)
+        private static let blockItalicsFont         = WPFontManager.systemItalicFontOfSize(blockFontSize)
         private static let blockNoticonFont         = subjectNoticonFont
     }
     
@@ -264,7 +264,7 @@ extension WPStyleGuide
     // fully migrated to Swift!. JLP 10.2.2015.
     //
     public static func configureSegmentedControl(segmentedControl: UISegmentedControl) {
-        let style = [ NSFontAttributeName: WPFontManager.openSansRegularFontOfSize(12) ]
+        let style = [ NSFontAttributeName: WPFontManager.systemRegularFontOfSize(12) ]
         
         segmentedControl.setTitleTextAttributes(style, forState: .Normal)
     }

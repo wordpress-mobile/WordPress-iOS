@@ -292,6 +292,9 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
     NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && original = nil", self.blog];
     [predicates addObject:basePredicate];
+    
+    NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"postType = %@", [self postTypeToSync]];
+    [predicates addObject:typePredicate];
 
     NSString *searchText = [self currentSearchTerm];
     NSPredicate *filterPredicate = [self currentPostListFilter].predicateForFetchRequest;
@@ -431,9 +434,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     
     __weak __typeof(self) weakSelf = self;
     
-    postViewController.onClose = ^void(WPPostViewController *viewController) {
+    postViewController.onClose = ^void(WPPostViewController *viewController, BOOL changesSaved) {
         
-        [weakSelf setFilterWithPostStatus:viewController.post.status];
+        if (changesSaved) {
+            [weakSelf setFilterWithPostStatus:viewController.post.status];
+        }
         
         [viewController.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     };
@@ -483,9 +488,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         
         __weak __typeof(self) weakSelf = self;
         
-        postViewController.onClose = ^void(WPPostViewController* viewController) {
+        postViewController.onClose = ^void(WPPostViewController* viewController, BOOL changesSaved) {
             
-            [weakSelf setFilterWithPostStatus:viewController.post.status];
+            if (changesSaved) {
+                [weakSelf setFilterWithPostStatus:viewController.post.status];
+            }
             
             [viewController.navigationController popViewControllerAnimated:YES];
         };
