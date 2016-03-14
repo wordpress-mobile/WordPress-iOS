@@ -1,11 +1,15 @@
 #import "Constants.h"
 
-NSString *const WPMobileReaderURL                                   = @"https://en.wordpress.com/reader/mobile/v2/?chrome=no";
-NSString *const WPMobileReaderDetailURL                             = @"https://en.wordpress.com/reader/mobile/v2/?template=details";
 
+/// XMLRPC Constants
+///
 NSString *const WPComXMLRPCUrl                                      = @"https://wordpress.com/xmlrpc.php";
 NSString *const WPComDefaultAccountUrlKey                           = @"AccountDefaultDotcom";
 
+/// WordPress URL's
+///
+NSString *const WPMobileReaderURL                                   = @"https://en.wordpress.com/reader/mobile/v2/?chrome=no";
+NSString *const WPMobileReaderDetailURL                             = @"https://en.wordpress.com/reader/mobile/v2/?template=details";
 NSString *const WPJetpackInformationURL                             = @"https://jetpack.me/about/";
 NSString *const WPAutomatticMainURL                                 = @"https://automattic.com/";
 NSString *const WPAutomatticTermsOfServiceURL                       = @"https://wordpress.com/tos/";
@@ -15,11 +19,17 @@ NSString *const WPGithubMainURL                                     = @"https://
 NSString *const WPTwitterWordPressHandle                            = @"@WordPressiOS";
 NSString *const WPTwitterWordPressMobileURL                         = @"https://twitter.com/WordPressiOS";
 
+/// Gravatar Constants
+///
 NSString *const WPBlavatarBaseURL                                   = @"http://gravatar.com/blavatar";
 NSString *const WPGravatarBaseURL                                   = @"http://gravatar.com/avatar";
 
+/// Notifications Constants
+///
 NSString *const WPNotificationsBucketName                           = @"note20";
 
+/// Keychain Constants
+///
 #ifdef INTERNAL_BUILD
 NSString *const WPAppOAuth2TokenKeychainAccessGroup                 = @"99KV9Z6BKV.org.wordpress.internal";
 NSString *const WPAppDefaultsGroupName                              = @"group.org.wordpress.internal";
@@ -41,11 +51,17 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPres
 NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey          = @"TodayViewCount";
 NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey       = @"TodayVisitorCount";
 
+/// iTunes Constants
+///
 NSString *const WPiTunesAppId                                       = @"335703880";
 
+/// 1Password Constants
+///
 NSString *const WPOnePasswordWordPressTitle                         = @"WordPress";
 NSString *const WPOnePasswordWordPressComURL                        = @"wordpress.com";
 NSInteger const WPOnePasswordGeneratedMinLength                     = 7;
 NSInteger const WPOnePasswordGeneratedMaxLength                     = 50;
 
+/// Scheme Constants
+///
 NSString *const WPComScheme = WPCOM_SCHEME;
