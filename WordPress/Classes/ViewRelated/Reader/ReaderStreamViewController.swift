@@ -1177,7 +1177,12 @@ import WordPressComAnalytics
 
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+
+        guard let posts = tableViewHandler.resultsController.fetchedObjects as? [ReaderPost] else {
+            DDLogSwift.logError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+            return
+        }
+
         var post = posts[indexPath.row]
 
         if post.isKindOfClass(ReaderGapMarker) {
