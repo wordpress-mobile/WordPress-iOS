@@ -68,14 +68,25 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 @property (nonatomic, strong) PostGeolocationCell *postGeoLocationCell;
 @property (nonatomic, strong) WPTableViewCell *setGeoLocationCell;
 
-@property (nonatomic, strong) LocationService *locationService;
+#pragma mark - Properties: Services
+
+@property (nonatomic, strong, readonly) BlogService *blogService;
+@property (nonatomic, strong, readonly) LocationService *locationService;
+
+#pragma mark - Properties: Reachability
+
+@property (nonatomic, strong, readwrite) Reachability *internetReachability;
 
 @end
 
 @implementation PostSettingsViewController
 
+#pragma mark - Initialization and dealloc
+
 - (void)dealloc
 {
+    [self.internetReachability stopNotifier];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removePostPropertiesObserver];
 }
@@ -90,10 +101,12 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     return self;
 }
 
+#pragma mark - UIViewController
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.title = NSLocalizedString(@"Options", nil);
 
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
@@ -104,8 +117,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     self.visibilityList = @[NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
                            NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
                            NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
-    self.formatsList = self.post.blog.sortedPostFormatNames;
-
+    
+    [self setupFormatsList];
+    
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTagsKeyboardIfAppropriate:)];
     gestureRecognizer.cancelsTouchesInView = NO;
     gestureRecognizer.numberOfTapsRequired = 1;
@@ -123,7 +137,14 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     self.tableView.accessibilityIdentifier = @"SettingsTable";
     self.isUploadingMedia = NO;
 
-    self.locationService = [LocationService sharedService];
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    _blogService = [[BlogService alloc] initWithManagedObjectContext:mainContext];
+    _locationService = [LocationService sharedService];
+    
+    // It's recommended to keep this call near the end of the initial setup, since we don't want
+    // reachability callbacks to trigger before such initial setup completes.
+    //
+    [self setupReachability];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -166,6 +187,58 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 {
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self reloadData];
+}
+
+#pragma mark - Additional setup
+
+- (void)setupFormatsList
+{
+    self.formatsList = self.post.blog.sortedPostFormatNames;
+}
+
+- (void)setupReachability
+{
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    self.internetReachability.reachableBlock = ^void(Reachability * reachability) {
+        [weakSelf internetIsReachableAgain];
+    };
+    
+    [self.internetReachability startNotifier];
+}
+
+#pragma mark - Reachability handling
+
+- (void)internetIsReachableAgain
+{
+    [self synchUnavailableData];
+}
+
+- (void)synchUnavailableData
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    if (self.formatsList.count == 0) {
+        [self synchPostFormatsAndDo:^{
+            // DRM: if we ever start synchronizing anything else that could affect the table data
+            // aside from the post formats, we will need reload the table view only once all of the
+            // synchronization calls complete.
+            //
+            [[weakSelf tableView] reloadData];
+        }];
+    }
+}
+
+- (void)synchPostFormatsAndDo:(void(^)(void))completionBlock
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    [self.blogService syncPostFormatsForBlog:self.apost.blog success:^{
+        [weakSelf setupFormatsList];
+        completionBlock();
+    } failure:nil];
 }
 
 #pragma mark - KVO
@@ -557,9 +630,16 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
 - (UITableViewCell *)configurePostFormatCellForIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self getWPTableViewCell];
-
+    
     cell.textLabel.text = NSLocalizedString(@"Post Format", @"The post formats available for the post. Should be the same as in core WP.");
-    cell.detailTextLabel.text = self.post.postFormatText;
+    
+    if (self.post.postFormatText.length > 0) {
+        cell.detailTextLabel.text = self.post.postFormatText;
+    } else {
+        cell.detailTextLabel.text = NSLocalizedString(@"Unavailable",
+                                                      @"Message to show in the post-format cell when the post format is not available");
+    }
+    
     cell.tag = PostSettingsRowFormat;
     cell.accessibilityIdentifier = @"Post Format";
     return cell;
@@ -845,6 +925,11 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     Post *post      = self.post;
     NSArray *titles = post.blog.sortedPostFormatNames;
 
+    if (![self.internetReachability isReachable] && self.formatsList.count == 0) {
+        [self showCantShowPostFormatsAlert];
+        return;
+    }
+    
     if (post == nil || titles.count == 0 || post.postFormatText == nil || self.formatsList.count == 0) {
         return;
     }
@@ -869,6 +954,25 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategories
     };
 
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)showCantShowPostFormatsAlert
+{
+    NSString *title = NSLocalizedString(@"Connection not available",
+                                        @"Title of a prompt saying the app needs an internet connection before it can load post formats");
+    
+    NSString *message = NSLocalizedString(@"Please check your internet connection and try again.",
+                                          @"Politely asks the user to check their internet connection before trying again. ");
+    
+    NSString *cancelButtonTitle = NSLocalizedString(@"OK", @"Title of a button that dismisses a prompt");
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    [alertController addCancelActionWithTitle:cancelButtonTitle handler:nil];
+    
+    [alertController presentFromRootViewController];
 }
 
 - (void)showPostGeolocationSelector
