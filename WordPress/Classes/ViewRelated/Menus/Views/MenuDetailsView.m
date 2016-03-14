@@ -36,7 +36,7 @@
     
     self.textField.text = nil;
     self.textField.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
-    self.textField.font = [WPFontManager openSansLightFontOfSize:22.0];
+    self.textField.font = [WPFontManager systemLightFontOfSize:22.0];
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
     self.textField.returnKeyType = UIReturnKeyDone;
