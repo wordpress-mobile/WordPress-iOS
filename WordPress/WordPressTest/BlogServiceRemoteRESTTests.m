@@ -62,6 +62,28 @@ static NSTimeInterval const TestExpectationTimeout = 5;
                             failure:^(NSError *error) {}];
 }
 
+#pragma mark - Synchronizing post types for a blog
+
+- (void)testThatSyncPostTypesForBlogWorks
+{
+    Blog *blog = OCMStrictClassMock([Blog class]);
+    OCMStub([blog dotComID]).andReturn(@10);
+    
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    BlogServiceRemoteREST *service = nil;
+    
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/post-types", blog.dotComID];
+    NSDictionary *parameters = @{@"context": @"edit"};
+    OCMStub([api GET:[OCMArg isEqual:url]
+          parameters:[OCMArg isEqual:parameters]
+             success:[OCMArg isNotNil]
+             failure:[OCMArg isNotNil]]);
+    
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api siteID:blog.dotComID]);
+
+    [service syncPostTypesWithSuccess:^(NSArray<RemotePostType *> *postTypes) {}
+                              failure:^(NSError *error) {}];
+}
 
 #pragma mark - Synchronizing post formats for a blog
 
