@@ -47,7 +47,7 @@ public class WP3DTouchShortcutCreator: NSObject
     public func loggedInShortcutArray() -> [UIApplicationShortcutItem] {
         var defaultBlogName: String?
         if blogService.blogCountForAllAccounts() > 1 {
-            defaultBlogName = blogService.lastUsedOrFirstBlog().settings.name
+            defaultBlogName = blogService.lastUsedOrFirstBlog()?.settings.name
         }
         
         let notificationsShortcut = UIMutableApplicationShortcutItem(type: WP3DTouchShortcutHandler.ShortcutIdentifier.Notifications.type,
