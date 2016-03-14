@@ -196,18 +196,19 @@ NSString * const PostTypeDefaultIdentifier = @"post";
 
 - (NSString *)statusForDisplay
 {
-    NSString *statusString = [self statusTitle];
-    if ([self.status isEqualToString:PostStatusPublish] || [self.status isEqualToString:PostStatusDraft]) {
-        statusString = nil;
-    }
-    if (![self hasRemote]) {
+    NSString *statusString = nil;
+    
+    if (self.isRevision) {
         NSString *localOnly = NSLocalizedString(@"Local", @"A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.");
         if (statusString) {
             statusString = [NSString stringWithFormat:@"%@, %@", statusString, localOnly];
         } else {
             statusString = localOnly;
         }
+    } else if (![self.status isEqualToString:PostStatusPublish] && ![self.status isEqualToString:PostStatusDraft]) {
+        statusString = [self statusTitle];
     }
+    
     return statusString;
 }
 

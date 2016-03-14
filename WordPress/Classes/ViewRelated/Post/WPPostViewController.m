@@ -1445,9 +1445,6 @@ EditImageDetailsViewControllerDelegate
     if (!self.post.isScheduled && [self.post.original.status isEqualToString:PostStatusDraft]  && [self.post.status isEqualToString:PostStatusPublish]) {
         self.post.dateCreated = [NSDate date];
     }
-    self.post = self.post.original;
-    [self.post applyRevision];
-    [self.post deleteRevision];
     
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
@@ -1459,6 +1456,11 @@ EditImageDetailsViewControllerDelegate
                     success:^{
                         DDLogInfo(@"post uploaded: %@", postTitle);
                         NSString *hudText;
+                        
+                        self.post = self.post.original;
+                        [self.post applyRevision];
+                        [self.post deleteRevision];
+                        
                         if (postIsScheduled) {
                             hudText = NSLocalizedString(@"Scheduled!", @"Text displayed in HUD after a post was successfully scheduled to be published.");
                         } else if ([postStatus isEqualToString:@"publish"]){
