@@ -14,7 +14,7 @@ class PostStatusPickerViewController : UITableViewController
     required init?(coder: NSCoder) {
         sortedStatuses = [(String, String)]()
         super.init(coder: coder)
-        assert(false, "Please, use the main initializer instead")
+        fatalError("Please, use the main initializer instead")
     }
     
     
