@@ -75,12 +75,12 @@ class SitePickerViewController : UITableViewController
     
     // MARK: - Private Helpers
     private func loadSites() {
-        guard let configuration = ShareExtensionService.retrieveShareExtensionConfiguration() else {
+        guard let oauth2Token = ShareExtensionService.retrieveShareExtensionToken() else {
             showEmptySitesIfNeeded()
             return
         }
         
-        RequestRouter.bearerToken = configuration.oauth2Token as String
+        RequestRouter.bearerToken = oauth2Token as String
         
         let service = SiteService()
         
