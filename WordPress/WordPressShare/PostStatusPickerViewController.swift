@@ -6,6 +6,8 @@ class PostStatusPickerViewController : UITableViewController
 {
     // MARK: - Initializers
     init(statuses : [String: String]) {
+        assert(statuses.count > 0, "Let's show at least one status!")
+        
         // Note:  We'll store the sorted Post Statuses, into an array, as a (Key, Description) tuple.
         self.sortedStatuses = statuses.sort { $0.1 < $1.1 }
         super.init(style: .Plain)
@@ -23,7 +25,6 @@ class PostStatusPickerViewController : UITableViewController
         super.viewDidLoad()
         setupView()
         setupTableView()
-        setupNoResultsView()
     }
     
     
@@ -73,11 +74,6 @@ class PostStatusPickerViewController : UITableViewController
         
         // Cells
         tableView.registerClass(WPTableViewCellSubtitle.self, forCellReuseIdentifier: reuseIdentifier)
-    }
-    
-    private func setupNoResultsView() {
-        noResultsView = WPNoResultsView()
-        tableView.addSubview(noResultsView)
     }
     
     
