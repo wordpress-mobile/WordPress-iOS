@@ -1290,7 +1290,7 @@ import WordPressComAnalytics
         let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL, forKey: "URL")
+        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL, forKey: "url")
         WPAppAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
     }
 
