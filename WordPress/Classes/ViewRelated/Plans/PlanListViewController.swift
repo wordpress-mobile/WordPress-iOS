@@ -163,8 +163,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     convenience init(blog: Blog) {
         precondition(blog.dotComID != nil)
-        let storeFacade = StoreFacade(store: StoreKitStore())
-        let service = PlanService(blog: blog, storeFacade: storeFacade)
+        let service = PlanService(blog: blog, store: StoreKitStore())
         self.init(siteID: Int(blog.dotComID), service: service)
     }
 

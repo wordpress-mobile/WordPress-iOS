@@ -1,11 +1,11 @@
 import Foundation
 
 struct PlanService<S: Store> {
-    let store: StoreFacade<S>
+    let store: S
     let remote: PlansRemote
 
-    init(remote: PlansRemote, storeFacade: StoreFacade<S>) {
-        self.store = storeFacade
+    init(remote: PlansRemote, store: S) {
+        self.store = store
         self.remote = remote
     }
 
@@ -23,8 +23,8 @@ struct PlanService<S: Store> {
 }
 
 extension PlanService {
-    init(blog: Blog, storeFacade: StoreFacade<S>) {
+    init(blog: Blog, store: S) {
         let remote = PlansRemote(api: blog.restApi())
-        self.init(remote: remote, storeFacade: storeFacade)
+        self.init(remote: remote, store: store)
     }
 }
