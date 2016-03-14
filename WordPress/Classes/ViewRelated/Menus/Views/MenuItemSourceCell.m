@@ -80,7 +80,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
             self.stackView = stackView;
         }
         
-        UIFont *labelFont = [WPFontManager openSansRegularFontOfSize:16.0];
+        UIFont *labelFont = [WPFontManager systemRegularFontOfSize:16.0];
         const CGFloat labelFontLineHeight = ceilf(labelFont.ascender + fabs(labelFont.descender));
         {
             MenuItemSourceRadioButton *radioButton = [[MenuItemSourceRadioButton alloc] init];
@@ -204,7 +204,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
         
         MenuItemSourceOptionBadgeLabel *label = [[MenuItemSourceOptionBadgeLabel alloc] init];
         label.translatesAutoresizingMaskIntoConstraints = NO;
-        label.font = [WPFontManager openSansLightFontOfSize:13.0];
+        label.font = [WPFontManager systemLightFontOfSize:13.0];
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [WPStyleGuide greyLighten10];
         label.layer.cornerRadius = 3.0;
