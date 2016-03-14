@@ -53,7 +53,7 @@ target 'WordPress', :exclusive => true do
   pod 'wpxmlrpc', '~> 0.8'
 end
 
-target 'WordPressShare', :exclusive => true do
+target 'WordPressShareExtension', :exclusive => true do
   pod 'CocoaLumberjack', '~> 2.2.0'
   pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :commit => '3457aefae79ef2c67fb26ccab57c24505caa65f9'
   pod 'WordPress-iOS-Shared', '0.5.3'
