@@ -30,8 +30,7 @@ protocol Store {
     var canMakePayments: Bool { get }
 }
 
-struct StoreFacade<S: Store> {
-    let store: S
+extension Store {
     /// Requests prices for the given plans.
     ///
     /// On success, it calls the `success` function with an array of prices. If
@@ -39,7 +38,7 @@ struct StoreFacade<S: Store> {
     /// "free" plan and the returned price will be an empty string.
     func getPricesForPlans(plans: [Plan], success: [PricedPlan] -> Void, failure: ErrorType -> Void) {
         let identifiers = Set(plans.flatMap({ $0.productIdentifier }))
-        store.getProductsWithIdentifiers(
+        getProductsWithIdentifiers(
             identifiers,
             success: { products in
                 do {
@@ -82,9 +81,9 @@ class StoreKitStore: Store {
 
 /// Mock Store to use while developing.
 ///
-/// If you want to simulate a successful products request, use `MockStoreFacade.succeeding(after:)`.
+/// If you want to simulate a successful products request, use `MockStore.succeeding(after:)`.
 ///
-/// If you want to simulate a failure, use `MockStoreFacade.failing(after:)`.
+/// If you want to simulate a failure, use `MockStore.failing(after:)`.
 ///
 /// Both constructors support an optional `delay` parameter that defaults to 1 second.
 struct MockStore: Store {
