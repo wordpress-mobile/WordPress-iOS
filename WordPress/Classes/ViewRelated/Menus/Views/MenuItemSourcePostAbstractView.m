@@ -63,10 +63,29 @@
                      }];
 }
 
+#pragma mark - TableView methods
+
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
+    if ([[self postServiceType] isEqualToString:self.item.type] && post.postID.integerValue == [self.item.contentId integerValue]) {
+        cell.sourceSelected = YES;
+    } else {
+        cell.sourceSelected = NO;
+    }
     [cell setTitle:post.titleForDisplay];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    
+    AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
+    
+    self.item.contentId = [post.postID stringValue];
+    self.item.type = [self postServiceType];
+    
+    [tableView reloadRowsAtIndexPaths:tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark - MenuItemSourcePostAbstractViewSubclass
