@@ -34,6 +34,7 @@ struct PlanFeaturesService {
     
     func updateAllPlanFeatures(success: (() -> Void), failure: (ErrorType -> Void)) {
         remote.getPlanFeatures({ planFeatures in
+            PlanFeature.planFeatures = planFeatures
             success()
         }, failure: failure)
     }
