@@ -31,11 +31,6 @@
     return [Page class];
 }
 
-- (NSString *)postServiceType
-{
-    return PostServiceTypePage;
-}
-
 - (PostServiceSyncOptions *)syncOptions
 {
     PostServiceSyncOptions *options = [super syncOptions];

@@ -121,7 +121,7 @@
         } else {
             // Default to a post view that will load posts of postType == itemType.
             MenuItemSourcePostView *postView = [[MenuItemSourcePostView alloc] init];
-            postView.sourceItemType = itemType;
+            postView.postType = itemType;
             sourceView = postView;
         }
         sourceView.delegate = self;

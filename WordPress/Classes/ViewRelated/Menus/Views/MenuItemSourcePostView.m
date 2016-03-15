@@ -10,6 +10,11 @@
 
 @implementation MenuItemSourcePostView
 
+- (NSString *)sourceItemType
+{
+    return self.postType;
+}
+
 - (NSPredicate *)defaultFetchRequestPredicate
 {
     NSPredicate *predicate = [super defaultFetchRequestPredicate];
@@ -28,11 +33,6 @@
 - (Class)entityClass
 {
     return [Post class];
-}
-
-- (NSString *)postServiceType
-{
-    return self.sourceItemType;
 }
 
 @end
