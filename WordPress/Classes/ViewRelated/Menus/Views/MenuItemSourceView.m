@@ -197,6 +197,17 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     [self.loadingView stopAnimating];
 }
 
+- (BOOL)itemTypeMatchesSourceItemType
+{
+    return [self.item.type isEqualToString:[self sourceItemType]];
+}
+
+- (NSString *)sourceItemType
+{
+    // overrided in subclasses
+    return nil;
+}
+
 #pragma mark - NSFetchedResultsController and subclass methods
 
 - (NSFetchedResultsController *)resultsController

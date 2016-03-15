@@ -68,6 +68,14 @@
  */
 - (void)hideLoadingSourcesIndicator;
 
+/* The item type matches the sourceItemType of the view.
+ */
+- (BOOL)itemTypeMatchesSourceItemType;
+
+/* The item type the view uses as a source.
+ */
+- (NSString *)sourceItemType;
+
 /* The managedObjectContext the view is working with.
  */
 - (NSManagedObjectContext *)managedObjectContext;

@@ -61,11 +61,16 @@
     return self;
 }
 
+- (NSString *)sourceItemType
+{
+    return MenuItemTypeCustom;
+}
+
 - (void)setItem:(MenuItem *)item
 {
     [super setItem:item];
     
-    if ([item.type isEqualToString:MenuItemTypeCustom]) {
+    if ([self itemTypeMatchesSourceItemType]) {
         self.textBar.textField.text = item.urlStr ?: @"";
         self.checkButtonView.checked = item.linkTarget && [item.linkTarget isEqualToString:MenuItemLinkTargetBlank];
     }
@@ -92,8 +97,8 @@
 
 - (void)sourceTextBar:(MenuItemSourceTextBar *)textBar didUpdateWithText:(NSString *)text
 {
-    if (![self.item.type isEqualToString:MenuItemTypeCustom]) {
-        self.item.type = MenuItemTypeCustom;
+    if (![self itemTypeMatchesSourceItemType]) {
+        self.item.type = [self sourceItemType];
     }
     self.item.urlStr = text.length ? text : nil;
 }

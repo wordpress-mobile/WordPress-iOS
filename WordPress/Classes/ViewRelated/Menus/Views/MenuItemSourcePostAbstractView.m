@@ -53,7 +53,7 @@
     
     PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     PostServiceSyncOptions *options = [self syncOptions];
-    [service syncPostsOfType:[self postServiceType]
+    [service syncPostsOfType:[self sourceItemType]
                  withOptions:options
                      forBlog:[self blog]
                      success:^(NSArray *posts) {
@@ -68,7 +68,7 @@
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    if ([[self postServiceType] isEqualToString:self.item.type] && post.postID.integerValue == [self.item.contentId integerValue]) {
+    if ([self itemTypeMatchesSourceItemType] && post.postID.integerValue == [self.item.contentId integerValue]) {
         cell.sourceSelected = YES;
     } else {
         cell.sourceSelected = NO;
@@ -83,7 +83,7 @@
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
     
     self.item.contentId = [post.postID stringValue];
-    self.item.type = [self postServiceType];
+    self.item.type = [self sourceItemType];
     
     [tableView reloadRowsAtIndexPaths:tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
 }
@@ -94,12 +94,6 @@
 {
     // Subclasses return the proper entity class
     return nil;
-}
-
-- (NSString *)postServiceType
-{
-    // Subclasses return the proper PostServiceType str
-    return PostServiceTypeAny;
 }
 
 - (PostServiceSyncOptions *)syncOptions
@@ -133,7 +127,7 @@
     PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     PostServiceSyncOptions *options = [self syncOptions];
     options.offset = @(self.resultsController.fetchedObjects.count);
-    [service syncPostsOfType:[self postServiceType]
+    [service syncPostsOfType:[self sourceItemType]
                  withOptions:options
                      forBlog:[self blog]
                      success:^(NSArray *posts) {
@@ -181,7 +175,7 @@
     PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     PostServiceSyncOptions *options = [self syncOptions];
     options.search = searchText;
-    [service syncPostsOfType:[self postServiceType]
+    [service syncPostsOfType:[self sourceItemType]
                  withOptions:options
                      forBlog:[self blog]
                      success:^(NSArray *posts) {

@@ -39,6 +39,11 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     [self syncTags];
 }
 
+- (NSString *)sourceItemType
+{
+    return MenuItemTypeTag;
+}
+
 - (NSFetchRequest *)fetchRequest
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -84,7 +89,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     PostTag *tag = [self.resultsController objectAtIndexPath:indexPath];
-    if ([self.item.type isEqualToString:MenuItemTypeTag] && [self.item.contentId integerValue] == [tag.tagID integerValue]) {
+    if ([self itemTypeMatchesSourceItemType] && [self.item.contentId integerValue] == [tag.tagID integerValue]) {
         cell.sourceSelected = YES;
     } else {
         cell.sourceSelected = NO;
@@ -99,7 +104,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     PostTag *tag = [self.resultsController objectAtIndexPath:indexPath];
     
     self.item.contentId = [tag.tagID stringValue];
-    self.item.type = MenuItemTypeTag;
+    self.item.type = [self sourceItemType];
     
     [tableView reloadRowsAtIndexPaths:tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
 }
