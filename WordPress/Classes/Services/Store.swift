@@ -9,20 +9,6 @@ enum ProductRequestError: ErrorType {
     case InvalidProductPrice
 }
 
-class LoggingTransactionObserver: NSObject, SKPaymentTransactionObserver {
-    static let instance = LoggingTransactionObserver()
-    func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        DDLogSwift.logInfo("Updated transactions: \(transactions)")
-        for transaction in transactions {
-            switch transaction.transactionState {
-            case .Purchased, .Failed:
-                queue.finishTransaction(transaction)
-            default: break
-            }
-        }
-    }
-}
-
 class StoreTransactionObserver: NSObject, SKPaymentTransactionObserver {
     static let instance = StoreTransactionObserver()
     func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
