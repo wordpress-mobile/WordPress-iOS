@@ -83,8 +83,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param failure a block that in invoked when the update fails.
  */
 - (void)updateSettingsForBlog:(Blog *)blog
-                     success:(void (^)())success
-                     failure:(void (^)(NSError *error))failure;
+                     success:(nullable void (^)())success
+                     failure:(nullable void (^)(NSError *error))failure;
 
 
 /**

@@ -1,6 +1,8 @@
 #import "WPActivityDefaults.h"
 #import "SafariActivity.h"
 #import "WordPressActivity.h"
+#import "BlogService.h"
+#import "ContextManager.h"
 
 @implementation WPActivityDefaults
 
@@ -9,7 +11,15 @@
     SafariActivity *safariActivity = [[SafariActivity alloc] init];
     WordPressActivity *wordPressActivity = [[WordPressActivity alloc] init];
 
-    return @[safariActivity, wordPressActivity];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:context];
+    NSInteger visibleBlogs = [service blogCountVisibleForAllAccounts];
+
+    if (visibleBlogs > 0) {
+        return @[safariActivity, wordPressActivity];
+    } else {
+        return @[safariActivity];
+    }
 }
 
 + (void)trackActivityType:(NSString *)activityType
