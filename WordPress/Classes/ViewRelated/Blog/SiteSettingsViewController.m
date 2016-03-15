@@ -53,6 +53,7 @@ NS_ENUM(NSInteger, SiteSettingsDevice) {
 
 NS_ENUM(NSInteger, SiteSettingsAdvanced) {
     SiteSettingsAdvancedStartOver = 0,
+    SiteSettingsAdvancedExportContent,
     SiteSettingsAdvancedDeleteSite,
     SiteSettingsAdvancedCount,
 };
@@ -91,6 +92,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 #pragma mark - Advanced Section
 @property (nonatomic, strong) SettingTableViewCell *startOverCell;
+@property (nonatomic, strong) WPTableViewCell *exportContentCell;
 @property (nonatomic, strong) SettingTableViewCell *deleteSiteCell;
 
 @property (nonatomic, strong) Blog *blog;
@@ -508,6 +510,19 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return _startOverCell;
 }
 
+- (WPTableViewCell *)exportContentCell
+{
+    if (_exportContentCell) {
+        return _exportContentCell;
+    }
+    
+    _exportContentCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    [WPStyleGuide configureTableViewActionCell:_exportContentCell];
+    _exportContentCell.textLabel.text = NSLocalizedString(@"Export Content", @"Label for selecting the Export Content Settings item");
+
+    return _exportContentCell;
+}
+
 - (SettingTableViewCell *)deleteSiteCell
 {
     if (_deleteSiteCell) {
@@ -525,6 +540,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     switch (row) {
         case SiteSettingsAdvancedStartOver:
             return self.startOverCell;
+
+        case SiteSettingsAdvancedExportContent:
+            return self.exportContentCell;
 
         case SiteSettingsAdvancedDeleteSite:
             return self.deleteSiteCell;
@@ -866,6 +884,10 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     switch (row) {
         case SiteSettingsAdvancedStartOver:
             [self showStartOverForBlog:self.blog];
+            break;
+
+        case SiteSettingsAdvancedExportContent:
+            [self confirmExportContent];
             break;
 
         case SiteSettingsAdvancedDeleteSite:
