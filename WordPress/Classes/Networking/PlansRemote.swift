@@ -70,7 +70,7 @@ class PlanFeaturesRemote: ServiceRemoteREST {
     private var cacheDate: NSDate?
     private let cacheFilename = "plan-features.json"
     
-    func getPlanFeatures(success: [PlanFeature] -> Void, failure: ErrorType -> Void) {
+    func getPlanFeatures(success: PlanFeatures -> Void, failure: ErrorType -> Void) {
         if let planFeatures = inMemoryPlanFeatures {
             success(planFeatures)
             return
@@ -92,9 +92,9 @@ class PlanFeaturesRemote: ServiceRemoteREST {
         }, failure: failure)
     }
     
-    private var _planFeatures: [PlanFeature]?
+    private var _planFeatures: PlanFeatures?
     
-    private var inMemoryPlanFeatures: [PlanFeature]? {
+    private var inMemoryPlanFeatures: PlanFeatures? {
         get {
             // If we have something in memory and it's less than a day old, return it.
             if let planFeatures = _planFeatures,
@@ -111,13 +111,13 @@ class PlanFeaturesRemote: ServiceRemoteREST {
         }
     }
     
-    private func cachedPlanFeatures() -> [PlanFeature]? {
+    private func cachedPlanFeatures() -> PlanFeatures? {
         guard let (planFeatures, _) = cachedPlanFeaturesWithDate() else { return nil}
 
         return planFeatures
     }
     
-    private func cachedPlanFeaturesWithDate() -> ([PlanFeature], NSDate)? {
+    private func cachedPlanFeaturesWithDate() -> (PlanFeatures, NSDate)? {
         if let cacheFileURL = cacheFileURL,
             let path = cacheFileURL.path {
                 
@@ -126,8 +126,10 @@ class PlanFeaturesRemote: ServiceRemoteREST {
                     let attributes = try NSFileManager.defaultManager().attributesOfItemAtPath(path)
                     if let modificationDate = attributes[NSFileModificationDate] as? NSDate {
                         if NSCalendar.currentCalendar().isDateInToday(modificationDate) {
-                            let response = try NSString(contentsOfURL: cacheFileURL, encoding: NSUTF8StringEncoding)
-                            return (try mapPlanFeaturesResponse(response), modificationDate)
+                            if let response = NSData(contentsOfURL: cacheFileURL) {
+                                let json = try NSJSONSerialization.JSONObjectWithData(response, options: [])
+                                return (try mapPlanFeaturesResponse(json), modificationDate)
+                            }
                         }
                     }
                 }
@@ -138,7 +140,7 @@ class PlanFeaturesRemote: ServiceRemoteREST {
         return nil
     }
     
-    private func fetchPlanFeatures(success: [PlanFeature] -> Void, failure: ErrorType -> Void) {
+    private func fetchPlanFeatures(success: PlanFeatures -> Void, failure: ErrorType -> Void) {
         let endpoint = "plans/features"
         let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_2)
         
@@ -172,7 +174,36 @@ class PlanFeaturesRemote: ServiceRemoteREST {
     }
 }
 
-private func mapPlanFeaturesResponse(response: AnyObject) throws -> [PlanFeature] {
-    // TODO: Parse response!
-    return [PlanFeature(slug: "custom-design", title: "Custom Design", description: "Lorem ipsum", iconName: "", planSpecificDescription: nil)]
+private func mapPlanFeaturesResponse(response: AnyObject) throws -> PlanFeatures {
+    guard let json = response as? [[String: AnyObject]] else {
+        throw PlansRemote.Error.DecodeError
+    }
+    
+    var features = [Int: [PlanFeature]]()
+    for featureDetails in json {
+        if let slug = featureDetails["product_slug"] as? String,
+            let title = featureDetails["title"] as? String,
+            var description = featureDetails["description"] as? String,
+            let iconName = featureDetails["icon"] as? String {
+                
+                if let planDetails = featureDetails["plans"] as? [String: AnyObject] {
+                    for (planID, planInfo) in planDetails {
+                        if let planID = Int(planID) {
+                            if features[planID] == nil {
+                                features[planID] = [PlanFeature]()
+                            }
+                            
+                            if let planInfo = planInfo as? [String: String],
+                                let planSpecificDescription = planInfo["description"] {
+                                    description = planSpecificDescription
+                            }
+                            
+                            features[planID]?.append(PlanFeature(slug: slug, title: title, description: description, iconName: iconName))
+                        }
+                    }
+                }
+        }
+    }
+    
+    return features
 }

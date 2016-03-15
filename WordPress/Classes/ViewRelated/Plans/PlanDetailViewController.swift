@@ -91,20 +91,8 @@ class PlanDetailViewController: UIViewController {
         let planFeatures = PlanFeature.featuresForPlan(plan)
         
         viewModel = ImmuTable(sections:
-            [ ImmuTableSection(rows: PlanFeature.allFeatures.map { feature in
-                let available = planFeatures.contains(feature)
-
-                if available {
-                    if let feature = planFeatures.filter({ $0 == feature }).first {
-                        if let description = feature.planSpecificDescription {
-                            return TextRow(title: feature.title, value: description)
-                        } else {
-                            return FeatureListItemRow(feature: feature, available: available)
-                        }
-                    }
-                }
-                
-                return FeatureListItemRow(feature: feature, available: false)
+            [ ImmuTableSection(rows: planFeatures.map { feature in
+                return TextRow(title: feature.title, value: feature.description)
             } ) ]
         )
         
@@ -112,9 +100,11 @@ class PlanDetailViewController: UIViewController {
     }
     
     func reloadFeatures() {
-        configureImmuTable()
+        if isViewLoaded() {
+            configureImmuTable()
 
-        tableView.reloadData()
+            tableView.reloadData()
+        }
     }
     
     lazy var paddingView = UIView()
@@ -222,17 +212,13 @@ struct FeatureListItemRow : ImmuTableRow {
     let action: ImmuTableAction? = nil
     
     let title: String
-    let available: Bool
     let webOnly: Bool
     
     let checkmarkLeftPadding: CGFloat = 16.0
     let webOnlyFontSize: CGFloat = 13.0
     
-    init(feature: PlanFeature, available: Bool) {
-        precondition(feature.planSpecificDescription == nil, "Features with a plan-specific description should use TextRow instead")
-
+    init(feature: PlanFeature) {
         self.title = feature.title
-        self.available = available
         
         // TODO: (@frosty, 2016-03-14) Currently hardcoded because the API doesn't provide
         // us with this info. Remove once we switch to a different design that doesn't display 'web only'.
@@ -248,7 +234,6 @@ struct FeatureListItemRow : ImmuTableRow {
         cell.detailTextLabel?.font = detailTextFont
         cell.detailTextLabel?.textColor = WPStyleGuide.grey()
 
-        cell.accessoryView = accessoryView
         cell.accessibilityLabel = accessibilityLabel
     }
 
@@ -256,16 +241,10 @@ struct FeatureListItemRow : ImmuTableRow {
         return title
     }
 
-    var textColor: UIColor {
-        if available {
-            return WPStyleGuide.darkGrey()
-        } else {
-            return WPStyleGuide.grey().colorWithAlphaComponent(0.5)
-        }
-    }
+    var textColor = WPStyleGuide.darkGrey()
 
     var detailText: String? {
-        if available && webOnly {
+        if webOnly {
             return NSLocalizedString("WEB ONLY", comment: "Describes a feature of a WordPress.com plan that is only available to users via the web.")
         } else {
             return nil
@@ -273,7 +252,7 @@ struct FeatureListItemRow : ImmuTableRow {
     }
 
     var detailTextFont: UIFont {
-        if available && webOnly {
+        if webOnly {
             return WPFontManager.systemRegularFontOfSize(webOnlyFontSize)
         } else {
             return WPStyleGuide.tableviewTextFont()
@@ -288,51 +267,10 @@ struct FeatureListItemRow : ImmuTableRow {
     }
 
     var availableAccessibilityLabel: String? {
-        switch (availableIndicator, webOnly) {
-        case (.Some(false), _):
-            return NSLocalizedString("Not included", comment: "Spoken text. A feature is not included in the plan")
-        case (.Some(true), true):
+        if webOnly {
             return NSLocalizedString("Included in web version", comment: "Spoken text. A feature is included in the plan")
-        case (.Some(true), false):
+        } else {
             return NSLocalizedString("Included", comment: "Spoken text. A feature is included in the plan")
-        case (.None, _):
-            return nil
         }
-    }
-
-    var availableIndicator: Bool? {
-        return available
-    }
-
-    var accessoryView: UIView? {
-        return availableIndicator.map({ available in
-            if available {
-                return availableMarker
-            } else {
-                return unavailableMarker
-            }
-        })
-    }
-    
-    private var availableMarker: UIView {
-        let checkmark = UIImageView(image: UIImage(named: "gridicons-checkmark-circle"))
-        
-        // Wrap the checkmark in a view to add some padding between it and the detailTextLabel
-        let wrapper = UIView()
-        wrapper.addSubview(checkmark)
-        
-        // Can't use autolayout here, otherwise the tableview screws things up on rotation
-        wrapper.frame = CGRect(x: 0, y: 0, width: checkmarkLeftPadding + checkmark.frame.width, height: checkmark.frame.height)
-        checkmark.frame.origin.x = checkmarkLeftPadding
-
-        return wrapper
-    }
-    
-    private var unavailableMarker: UIView {
-        let marker = UIView(frame: CGRect(x: 0, y: 0, width: 16.0, height: 2.0))
-        marker.backgroundColor = WPStyleGuide.grey()
-        marker.alpha = 0.5
-
-        return marker
     }
 }
