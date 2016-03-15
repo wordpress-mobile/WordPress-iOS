@@ -8,6 +8,5 @@
 
 @protocol MenuItemSourcePostAbstractViewSubclass <NSObject>
 - (Class)entityClass;
-- (NSString *)postServiceType;
 - (PostServiceSyncOptions *)syncOptions;
 @end

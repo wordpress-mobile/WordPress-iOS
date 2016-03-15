@@ -33,6 +33,11 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
     [self syncCategories];
 }
 
+- (NSString *)sourceItemType
+{
+    return MenuItemTypeCategory;
+}
+
 - (NSFetchRequest *)fetchRequest
 {
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -77,7 +82,7 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
 {
     PostCategory *category = [self.displayCategories objectAtIndex:indexPath.row];
     
-    if ([self.item.type isEqualToString:MenuItemTypeCategory] && [self.item.contentId integerValue] == [category.categoryID integerValue]) {
+    if ([self itemTypeMatchesSourceItemType] && [self.item.contentId integerValue] == [category.categoryID integerValue]) {
         cell.sourceSelected = YES;
     } else {
         cell.sourceSelected = NO;
@@ -96,7 +101,7 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
     PostCategory *category = [self.displayCategories objectAtIndex:indexPath.row];
     
     self.item.contentId = [category.categoryID stringValue];
-    self.item.type = MenuItemTypeCategory;
+    self.item.type = [self sourceItemType];
     
     [tableView reloadRowsAtIndexPaths:tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
 }
