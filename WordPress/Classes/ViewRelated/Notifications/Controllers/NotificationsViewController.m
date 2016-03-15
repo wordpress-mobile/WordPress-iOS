@@ -98,7 +98,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
         // Notifications that received a destructive action will allow the user to Undo this action.
         // Once the Timeout elapses, we'll move the NotificationID to the BeingDeleted collection,
         // so that it can be proactively filtered from the list.
-        self.notificationIdsMarkedForDeletion   = [NSMutableSet set];
+        self.notificationDeletionBlocks         = [NSMutableDictionary dictionary];
         self.notificationIdsBeingDeleted        = [NSMutableSet set];
     }
     
@@ -592,20 +592,18 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)showUndeleteForNoteWithID:(NSManagedObjectID *)noteObjectID onTimeout:(NotificationDeletionActionBlock)onTimeout
 {
     // Mark this note as Pending Deletion and Reload
-    [self.notificationIdsMarkedForDeletion addObject:noteObjectID];
+    self.notificationDeletionBlocks[noteObjectID] = [onTimeout copy];
     [self reloadRowForNotificationWithID:noteObjectID];
     
     // Dispatch the Action block
-    dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NotificationsUndoTimeout * NSEC_PER_SEC));
-    dispatch_after(timeout, dispatch_get_main_queue(), ^{
-        [self performDeletionActionForNotificationWithID:noteObjectID deletionBlock:onTimeout];
-    });
+    [self performSelector:@selector(performDeletionActionForNoteWithID:) withObject:noteObjectID afterDelay:NotificationsUndoTimeout];
 }
 
-- (void)performDeletionActionForNotificationWithID:(NSManagedObjectID *)noteObjectID deletionBlock:(NotificationDeletionActionBlock)deletionBlock
+- (void)performDeletionActionForNoteWithID:(NSManagedObjectID *)noteObjectID
 {
     // Was the Deletion Cancelled?
-    if ([self isNoteMarkedForDeletion:noteObjectID] == false) {
+    NotificationDeletionActionBlock deletionBlock = self.notificationDeletionBlocks[noteObjectID];
+    if (!deletionBlock) {
         return;
     }
     
@@ -616,7 +614,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     // Hit the Deletion Block
     deletionBlock(^(BOOL success) {
         // Cleanup
-        [self.notificationIdsMarkedForDeletion removeObject:noteObjectID];
+        [self.notificationDeletionBlocks removeObjectForKey:noteObjectID];
         [self.notificationIdsBeingDeleted removeObject:noteObjectID];
         
         // Error: let's unhide the row
@@ -626,15 +624,17 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     });
 }
 
-- (void)cancelDeletionForNotificationWithID:(NSManagedObjectID *)noteObjectID
+- (void)cancelDeletionForNoteWithID:(NSManagedObjectID *)noteObjectID
 {
-    [self.notificationIdsMarkedForDeletion removeObject:noteObjectID];
+    [self.notificationDeletionBlocks removeObjectForKey:noteObjectID];
     [self reloadRowForNotificationWithID:noteObjectID];
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(performDeletionActionForNoteWithID:) object:noteObjectID];
 }
 
 - (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID
 {
-    return [self.notificationIdsMarkedForDeletion containsObject:noteObjectID];
+    return [self.notificationDeletionBlocks objectForKey:noteObjectID] != nil;
 }
 
 
@@ -844,7 +844,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     cell.showsBottomSeparator       = !isLastRow && !isMarkedForDeletion;
     cell.selectionStyle             = isMarkedForDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
     cell.onUndelete                 = ^{
-        [weakSelf cancelDeletionForNotificationWithID:note.objectID];
+        [weakSelf cancelDeletionForNoteWithID:note.objectID];
     };
 
     [cell downloadIconWithURL:note.iconURL];
