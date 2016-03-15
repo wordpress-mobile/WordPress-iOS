@@ -32,7 +32,11 @@ public class WP3DTouchShortcutCreator: NSObject
         }
         
         if loggedIn {
-            createLoggedInShortcuts()
+            if hasBlog() {
+                createLoggedInShortcuts()
+            } else {
+                clearShortcuts()
+            }
         } else {
             createLoggedOutShortcuts()
         }
@@ -99,6 +103,10 @@ public class WP3DTouchShortcutCreator: NSObject
         application.shortcutItems = visibleShortcutArray
     }
     
+    private func clearShortcuts() {
+        application.shortcutItems = nil
+    }
+    
     private func createLoggedOutShortcuts() {
         application.shortcutItems = loggedOutShortcutArray()
     }
@@ -121,5 +129,9 @@ public class WP3DTouchShortcutCreator: NSObject
         }
         
         return hasWordPressComAccount() && currentBlog.supports(BlogFeature.Stats)
+    }
+    
+    private func hasBlog() -> Bool {
+        return blogService.blogCountForAllAccounts() > 0
     }
 }
