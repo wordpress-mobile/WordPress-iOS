@@ -1,6 +1,7 @@
 #import <UIKit/UIKit.h>
 
 @class MenuItem;
+@class Blog;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -8,9 +9,8 @@ extern NSString * const MenuItemEditingTypeSelectionChangedNotification;
 
 @interface MenuItemEditingViewController : UIViewController
 
-@property (nonatomic, strong) MenuItem *item;
-
-- (id)initWithItem:(MenuItem *)item;
+- (id)initWithItem:(MenuItem *)item blog:(Blog *)blog;
+- (MenuItem *)item;
 
 @end
 

@@ -11,6 +11,13 @@
 @interface MenuItemSourceView : UIView <MenuItemSourceTextBarDelegate, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, weak) id <MenuItemSourceViewDelegate> delegate;
+
+/* The blog the view is sourcing data from.
+ */
+@property (nonatomic, strong) Blog *blog;
+
+/* The MenuItem the view is editing.
+ */
 @property (nonatomic, strong) MenuItem *item;
 
 /* A stackView for adding any views that aren't cells before the tableView, Ex. searchBar, label, design views
@@ -56,10 +63,6 @@
 /* Hides the animated loading indicator shown via showLoadingSourcesIndicator.
  */
 - (void)hideLoadingSourcesIndicator;
-
-/* The blog the view is working with.
- */
-- (Blog *)blog;
 
 /* The managedObjectContext the view is working with.
  */

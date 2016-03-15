@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 
+@class Blog;
 @class MenuItem;
 
 @protocol MenuItemSourceContainerViewDelegate;
@@ -7,9 +8,10 @@
 @interface MenuItemSourceContainerView : UIView
 
 @property (nonatomic, weak) id <MenuItemSourceContainerViewDelegate> delegate;
+@property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenuItem *item;
 
-- (void)updateSourceSelectionForItem;
+- (void)updateSourceSelectionForItemType:(NSString *)itemType;
 
 @end
 

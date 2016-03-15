@@ -21,9 +21,9 @@
     return self;
 }
 
-- (void)setItem:(MenuItem *)item
+- (void)setBlog:(Blog *)blog
 {
-    [super setItem:item];
+    [super setBlog:blog];
     [self syncPosts];
 }
 
