@@ -118,6 +118,11 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     self.tableView.tableHeaderView = self.stackedTableHeaderView;
 }
 
+- (void)refresh
+{
+    [self.tableView reloadData];
+}
+
 - (void)insertSearchBarIfNeeded
 {
     if(self.searchBar) {

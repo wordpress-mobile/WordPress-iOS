@@ -36,6 +36,10 @@
  */
 @property (nonatomic, strong) MenuItemSourceTextBar *searchBar;
 
+/* Refreshes any data appearences within the view.
+ */
+- (void)refresh;
+
 /* Adds the custom searchBar view to the stackView, if not already added.
  */
 - (void)insertSearchBarIfNeeded;

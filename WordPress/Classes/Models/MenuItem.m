@@ -12,6 +12,8 @@ NSString * const MenuItemTypeJetpackTestimonial = @"jetpack-testimonial";
 NSString * const MenuItemTypeJetpackPortfolio = @"jetpack-portfolio";
 NSString * const MenuItemTypeJetpackComic = @"jetpack-comic";
 
+NSString * const MenuItemLinkTargetBlank = @"_blank";
+
 @implementation MenuItem
 
 @dynamic contentId;
