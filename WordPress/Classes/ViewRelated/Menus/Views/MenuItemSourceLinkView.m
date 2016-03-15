@@ -4,7 +4,7 @@
 #import "WPFontManager.h"
 #import "MenuItemCheckButtonView.h"
 
-@interface MenuItemSourceLinkView ()
+@interface MenuItemSourceLinkView () <MenuItemSourceTextBarDelegate>
 
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) MenuItemSourceTextBar *textBar;
@@ -45,6 +45,10 @@
         {
             MenuItemCheckButtonView *checkButtonView = [[MenuItemCheckButtonView alloc] init];
             checkButtonView.label.text = NSLocalizedString(@"Open link in new window/tab", @"Menus label for checkbox when editig item as a link.");
+            __weak __typeof__(self) weakSelf = self;
+            checkButtonView.onChecked = ^() {
+                [weakSelf updateItemLinkTargetOption];
+            };
             [self.stackView addArrangedSubview:checkButtonView];
             
             NSLayoutConstraint *heightConstraint = [checkButtonView.heightAnchor constraintEqualToConstant:[checkButtonView preferredHeightForLayout]];
@@ -57,12 +61,41 @@
     return self;
 }
 
+- (void)setItem:(MenuItem *)item
+{
+    [super setItem:item];
+    
+    if ([item.type isEqualToString:MenuItemTypeCustom]) {
+        self.textBar.textField.text = item.urlStr ?: @"";
+        self.checkButtonView.checked = item.linkTarget && [item.linkTarget isEqualToString:MenuItemLinkTargetBlank];
+    }
+}
+
+- (void)updateItemLinkTargetOption
+{
+    if (self.checkButtonView.checked) {
+        self.item.linkTarget = MenuItemLinkTargetBlank;
+    } else {
+        self.item.linkTarget = nil;
+    }
+}
+
 - (BOOL)resignFirstResponder
 {
     if([self.textBar isFirstResponder]) {
         return [self.textBar resignFirstResponder];
     }
     return [super resignFirstResponder];
+}
+
+#pragma mark - MenuItemSourceTextBarDelegate
+
+- (void)sourceTextBar:(MenuItemSourceTextBar *)textBar didUpdateWithText:(NSString *)text
+{
+    if (![self.item.type isEqualToString:MenuItemTypeCustom]) {
+        self.item.type = MenuItemTypeCustom;
+    }
+    self.item.urlStr = text.length ? text : nil;
 }
 
 @end

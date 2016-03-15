@@ -137,6 +137,8 @@
         // Set the blog and item after it's been added as an arrangedSubview.
         sourceView.blog = self.blog;
         sourceView.item = self.item;
+    } else {
+        [sourceView refresh];
     }
 }
 
