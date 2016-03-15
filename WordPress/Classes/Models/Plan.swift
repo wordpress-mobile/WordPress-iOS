@@ -112,24 +112,17 @@ extension Plan {
     }
 }
 
+typealias PlanFeatures = [Int: [PlanFeature]]
+
 struct PlanFeature {
     let slug: String
     let title: String
     let description: String
     let iconName: String
-    let planSpecificDescription: String?
-    
-    static var allFeatures = [PlanFeature(slug: "custom-design", title: "Custom Design", description: "Lorem ipsum", iconName: "", planSpecificDescription: nil)]
-    
-    private typealias PlanID = Int
-    private static var planFeatures: [PlanID: [PlanFeature]] = [1003: [allFeatures.first!]]
+
+    static var planFeatures = PlanFeatures()
     
     static func featuresForPlan(plan: Plan) -> [PlanFeature] {
         return planFeatures[plan.id] ?? []
     }
-}
-
-extension PlanFeature: Equatable {}
-func ==(lhs: PlanFeature, rhs: PlanFeature) -> Bool {
-    return lhs.slug == rhs.slug
 }
