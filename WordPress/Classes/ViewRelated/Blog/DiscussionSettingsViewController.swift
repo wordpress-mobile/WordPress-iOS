@@ -83,7 +83,7 @@ public class DiscussionSettingsViewController : UITableViewController
         }
         
         let service = BlogService(managedObjectContext: settings.managedObjectContext)
-        service.updateSettingsForBlog(settings.blog,
+        service.updateSettingsForBlog(blog,
             success: nil,
             failure: { (error: NSError!) -> Void in
                 DDLogSwift.logError("Error while persisting settings: \(error)")
