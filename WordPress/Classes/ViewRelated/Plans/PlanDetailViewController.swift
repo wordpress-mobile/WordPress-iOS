@@ -3,6 +3,7 @@ import WordPressShared
 
 class PlanDetailViewController: UIViewController {
     var plan: Plan!
+    var siteID: Int!
     
     private let cellIdentifier = "PlanFeatureListItem"
     
@@ -40,11 +41,12 @@ class PlanDetailViewController: UIViewController {
     
     @IBOutlet weak var headerInfoStackView: UIStackView!
 
-    class func controllerWithPlan(plan: Plan) -> PlanDetailViewController {
+    class func controllerWithPlan(plan: Plan, siteID: Int) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
         
         controller.plan = plan
+        controller.siteID = siteID
         
         return controller
     }
@@ -155,7 +157,7 @@ class PlanDetailViewController: UIViewController {
         store.getProductsWithIdentifiers(
             Set([identifier]),
             success: { products in
-                store.requestPayment(products[0])
+                StoreCoordinator.instance.purchasePlan(self.plan, product: products[0], forSite: self.siteID)
             },
             failure: { error in
                 DDLogSwift.logError("Error fetching Store products: \(error)")

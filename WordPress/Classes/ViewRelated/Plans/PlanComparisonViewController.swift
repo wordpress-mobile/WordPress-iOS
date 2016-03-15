@@ -10,6 +10,7 @@ class PlanComparisonViewController: UIViewController {
     @IBOutlet weak var planStackView: UIStackView!
     
     var activePlan: Plan?
+    var siteID: Int!
     
     var currentPlan: Plan = defaultPlans[0] {
         didSet {
@@ -25,7 +26,7 @@ class PlanComparisonViewController: UIViewController {
     
     private lazy var viewControllers: [PlanDetailViewController] = {
         return self.allPlans.map { plan in
-            let controller = PlanDetailViewController.controllerWithPlan(plan)
+            let controller = PlanDetailViewController.controllerWithPlan(plan, siteID: self.siteID)
             if let activePlan = self.activePlan {
                 controller.isActivePlan = activePlan == plan
             }
@@ -43,13 +44,19 @@ class PlanComparisonViewController: UIViewController {
         return button
     }()
     
-    class func controllerWithInitialPlan(plan: Plan, activePlan: Plan? = nil) -> PlanComparisonViewController {
+    class func controllerWithInitialPlan(plan: Plan, activePlan: Plan? = nil, siteID: Int) -> PlanComparisonViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanComparisonViewController
 
+        // @koke 2016-03-15
+        // This is very fragile. If we set siteID after currentPlan it will crash.
+        // Setting the current plan causes the UI to update, which lazyly loads the view controllers,
+        // and they can't be initialized properly without a siteID.
+        controller.siteID = siteID
+
         controller.activePlan = activePlan
         controller.currentPlan = plan
-        
+
         return controller
     }
     
