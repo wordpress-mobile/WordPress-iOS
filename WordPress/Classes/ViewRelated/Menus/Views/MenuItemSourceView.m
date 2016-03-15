@@ -3,6 +3,7 @@
 #import "MenusDesign.h"
 #import "Menu.h"
 #import "MenuItemSourceLoadingView.h"
+#import "Blog.h"
 
 static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;
 static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
@@ -206,14 +207,9 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     return _resultsController;
 }
 
-- (Blog *)blog
-{
-    return self.item.menu.blog;
-}
-
 - (NSManagedObjectContext *)managedObjectContext
 {
-    return self.item.managedObjectContext;
+    return self.blog.managedObjectContext;
 }
 
 - (NSFetchRequest *)fetchRequest
