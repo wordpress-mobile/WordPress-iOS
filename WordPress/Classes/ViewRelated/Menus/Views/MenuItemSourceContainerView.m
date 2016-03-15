@@ -73,11 +73,6 @@
     }
 }
 
-- (Blog *)blog
-{
-    return self.item.menu.blog;
-}
-
 - (void)setHeaderViewHidden:(BOOL)hidden
 {
     if(self.headerView.hidden != hidden) {
@@ -88,15 +83,14 @@
 
 - (void)setItem:(MenuItem *)item
 {
-    if(_item != item) {
+    if (_item != item) {
         _item = item;
-        [self updateSourceSelectionForItem];
+        [self updateSourceSelectionForItemType:item.type];
     }
 }
 
-- (void)updateSourceSelectionForItem
+- (void)updateSourceSelectionForItemType:(NSString *)itemType
 {
-    NSString *itemType = self.item.type;
     self.headerView.titleLabel.text = [MenuItem labelForType:itemType blog:[self blog]];
     [self showSourceViewForItemType:itemType];
 }
@@ -113,7 +107,8 @@
         [self.sourceView removeFromSuperview];
         self.sourceView = nil;
     }
-    BOOL shouldSetItem = NO;
+    
+    BOOL sourceViewSetupRequired = NO;
     if(!sourceView) {
         if ([itemType isEqualToString:MenuItemTypePage]) {
             sourceView = [[MenuItemSourcePageView alloc] init];
@@ -132,12 +127,15 @@
         sourceView.delegate = self;
         [sourceView setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
         [self.sourceViewCache setObject:sourceView forKey:itemType];
-        shouldSetItem = YES;
+        sourceViewSetupRequired = YES;
     }
+    
     [self.stackView addArrangedSubview:sourceView];
     self.sourceView = sourceView;
-    if (shouldSetItem) {
-        // Set the item after it's been added as an arrangedSubview.
+    
+    if (sourceViewSetupRequired) {
+        // Set the blog and item after it's been added as an arrangedSubview.
+        sourceView.blog = self.blog;
         sourceView.item = self.item;
     }
 }

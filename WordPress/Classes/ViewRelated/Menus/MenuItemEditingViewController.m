@@ -1,11 +1,13 @@
 #import "MenuItemEditingViewController.h"
 #import "Menu.h"
 #import "MenuItem.h"
+#import "Blog.h"
 #import "WPStyleGuide.h"
 #import "MenuItemEditingHeaderView.h"
 #import "MenuItemEditingFooterView.h"
 #import "MenuItemSourceContainerView.h"
 #import "MenuItemTypeSelectionView.h"
+#import "ContextManager.h"
 
 NSString * const MenuItemEditingTypeSelectionChangedNotification = @"MenuItemEditingTypeSelectionChangedNotification";
 
@@ -19,6 +21,14 @@ typedef NS_ENUM(NSUInteger) {
 }MenuItemEditingViewControllerContentLayout;
 
 @interface MenuItemEditingViewController () <MenuItemSourceContainerViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
+
+@property (nonatomic, strong) MenuItem *item;
+@property (nonatomic, strong) Blog *blog;
+
+/**
+ The "scratch pad" child context for changes on the item to save, or discard.
+ */
+@property (nonatomic, strong) NSManagedObjectContext *scratchObjectContext;
 
 @property (nonatomic, strong) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) IBOutlet UIView *contentView;
@@ -49,11 +59,21 @@ typedef NS_ENUM(NSUInteger) {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithItem:(MenuItem *)item
+- (id)initWithItem:(MenuItem *)item blog:(Blog *)blog
 {
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
     if(self) {
-        self.item = item;
+        
+        self.blog = blog;
+        
+        NSManagedObjectID *itemObjectID = item.objectID;
+        NSManagedObjectContext *scratchContext = [[ContextManager sharedInstance] newMainContextChildContext];
+        self.scratchObjectContext = scratchContext;
+        
+        [scratchContext performBlockAndWait:^{
+            MenuItem *itemInContext = [scratchContext objectWithID:itemObjectID];
+            self.item = itemInContext;
+        }];
     }
     
     return self;
@@ -65,16 +85,16 @@ typedef NS_ENUM(NSUInteger) {
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
+    
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     
     self.sourceScrollView.backgroundColor = self.view.backgroundColor;
     self.sourceScrollView.clipsToBounds = NO;
     
     self.headerView.item = self.item;
+    
     self.typeView.delegate = self;
-    self.sourceView.item = self.item;
     self.sourceView.delegate = self;
-    self.footerView.item = self.item;
     self.footerView.delegate = self;
     
     [self.stackView bringSubviewToFront:self.headerView];
@@ -89,6 +109,9 @@ typedef NS_ENUM(NSUInteger) {
     
     self.typeView.selectedItemType = self.item.type;
     [self.typeView loadPostTypesForBlog:self.item.menu.blog];
+    
+    self.sourceView.blog = self.blog;
+    self.sourceView.item = self.item;
 }
 
 - (void)viewDidLayoutSubviews
@@ -314,7 +337,7 @@ typedef NS_ENUM(NSUInteger) {
 - (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(NSString *)itemType
 {
     self.item.type = itemType;
-    [self.sourceView updateSourceSelectionForItem];
+    [self.sourceView updateSourceSelectionForItemType:itemType];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self transitionLayoutToDisplaySourceView];

@@ -215,7 +215,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)itemsView:(MenuItemsStackView *)itemsView selectedItemForEditing:(MenuItem *)item
 {
-    MenuItemEditingViewController *controller = [[MenuItemEditingViewController alloc] initWithItem:item];    
+    MenuItemEditingViewController *controller = [[MenuItemEditingViewController alloc] initWithItem:item blog:self.blog];
     [self presentViewController:controller animated:YES completion:nil];
 }
 
