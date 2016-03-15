@@ -5,30 +5,40 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/* The majority of MenuItems are set as pages.
+/**
+ The majority of MenuItems are set as pages.
  */
 extern NSString * const MenuItemTypePage;
 
-/*  API data returns type as "custom" for MenuItems that were set with specific URL sources.
+/** 
+ API data returns type as "custom" for MenuItems that were set with specific URL sources.
  Locally, the UI identifies interacting with custom MenuItems as "Links" with URL sources to edit.
  */
 extern NSString * const MenuItemTypeCustom;
 
-/* Taxonomy MenuItems
+/**
+ Taxonomy MenuItems
  */
 extern NSString * const MenuItemTypeCategory;
 extern NSString * const MenuItemTypeTag;
 
-/* MenuItem to a specific post.
+/**
+ MenuItem to a specific post.
  The post could be considered a custom content post on a wp.org site, and may not be considered a "blog" post by the user.
  */
 extern NSString * const MenuItemTypePost;
 
-/* Custom Jetpack MenuItems that link to specific a post with a custom content type managed by Jetpack.
+/**
+ Custom Jetpack MenuItems that link to specific a post with a custom content type managed by Jetpack.
  */
 extern NSString * const MenuItemTypeJetpackTestimonial;
 extern NSString * const MenuItemTypeJetpackPortfolio;
 extern NSString * const MenuItemTypeJetpackComic;
+
+/**
+ The string value for an item link target opening a new window or tab.
+ */
+extern NSString * const MenuItemLinkTargetBlank;
 
 /**
  *  @brief    An object encapsulating an individual Menu item and it's API data.

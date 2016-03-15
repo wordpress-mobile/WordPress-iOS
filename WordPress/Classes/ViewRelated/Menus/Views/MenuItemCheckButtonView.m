@@ -138,6 +138,9 @@ static CGFloat const iconPadding = 3.0;
     
     if(CGRectContainsPoint(self.bounds, self.touchesBeganLocation) && CGRectContainsPoint(self.bounds, [[touches anyObject] locationInView:self])) {
         self.checked = !self.checked;
+        if (self.onChecked) {
+            self.onChecked();
+        }
     }
     
     self.drawsHighlighted = NO;
