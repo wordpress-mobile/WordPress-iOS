@@ -12,7 +12,7 @@ public extension Blog
     }
 }
 
-/// SiteManagementService handles deletion of a user's site.
+/// SiteManagementService handles deletion of a user's site and initiating content export to a downloadable XML file
 ///
 public class SiteManagementService : LocalCoreDataService
 {
@@ -39,6 +39,26 @@ public class SiteManagementService : LocalCoreDataService
             failure: { error in
                 failure?(error)
             })
+    }
+    
+    /// Triggers content export of the specified WordPress.com site.
+    ///
+    /// - Note: An email will be sent with download link when export completes.
+    ///
+    /// - Parameters:
+    ///     - blog:    The Blog whose content to export
+    ///     - success: Optional success block with no parameters
+    ///     - failure: Optional failure block with NSError
+    ///
+    public func exportContentForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
+        let remote = siteManagementServiceRemoteForBlog(blog)
+        remote.exportContent(blog.dotComID,
+            success: {
+                success?()
+            },
+            failure: { error in
+                failure?(error)
+        })
     }
     
     /// Creates a remote service for site management
