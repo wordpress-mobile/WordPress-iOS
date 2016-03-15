@@ -529,6 +529,7 @@
 		E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E16AB93214D978240047A2E5 /* InfoPlist.strings */; };
 		E1703A5C1C28006B00C57FA0 /* UITableViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1703A5B1C28006B00C57FA0 /* UITableViewController+Helpers.swift */; };
 		E174F6E6172A73960004F23A /* WPAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = E105E9CE1726955600C0D9E7 /* WPAccount.m */; };
+		E17780801C97FA9500FA7E14 /* StoreKit+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = E177807F1C97FA9500FA7E14 /* StoreKit+Debug.swift */; };
 		E18165FD14E4428B006CE885 /* loader.html in Resources */ = {isa = PBXBuildFile; fileRef = E18165FC14E4428B006CE885 /* loader.html */; };
 		E183BD7417621D87000B0822 /* WPCookie.m in Sources */ = {isa = PBXBuildFile; fileRef = E183BD7317621D86000B0822 /* WPCookie.m */; };
 		E183EC9C16B215FE00C2EB11 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
@@ -1654,6 +1655,7 @@
 		E1756DD41694560100D9EC00 /* WordPressComApiCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressComApiCredentials.h; sourceTree = "<group>"; };
 		E1756DD51694560100D9EC00 /* WordPressComApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComApiCredentials.m; sourceTree = "<group>"; };
 		E1756E621694A08200D9EC00 /* gencredentials.rb */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = gencredentials.rb; sourceTree = "<group>"; };
+		E177807F1C97FA9500FA7E14 /* StoreKit+Debug.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "StoreKit+Debug.swift"; sourceTree = "<group>"; };
 		E17B98E7171FFB450073E30D /* WordPress 11.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 11.xcdatamodel"; sourceTree = "<group>"; };
 		E17BE7A9134DEC12007285FD /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E18165FC14E4428B006CE885 /* loader.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = loader.html; path = Resources/HTML/loader.html; sourceTree = "<group>"; };
@@ -3303,6 +3305,7 @@
 				E116D4401C50D5F400DC5593 /* Rx.swift */,
 				E678FC141C76241000F55F55 /* WPStyleGuide+ApplicationStyles.swift */,
 				E14B74101C7B16FD00C26E21 /* WPNoResultsView+Model.swift */,
+				E177807F1C97FA9500FA7E14 /* StoreKit+Debug.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -5122,6 +5125,7 @@
 				E148362F1C6DF7D8005ACF53 /* Product.swift in Sources */,
 				082AB9DD1C4F035E000CA523 /* PostTag.m in Sources */,
 				5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */,
+				E17780801C97FA9500FA7E14 /* StoreKit+Debug.swift in Sources */,
 				5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */,
 				E6431DE61C4E892900FD8D90 /* SharingDetailViewController.m in Sources */,
 				B50EED791C0E5B2400D278CA /* SettingsPickerViewController.swift in Sources */,
@@ -5420,7 +5424,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
@@ -5461,7 +5465,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress;
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "d35b9739-3b03-4c1b-a870-10cdaf94446c";
+				PROVISIONING_PROFILE = "4ef78832-3b4a-4e67-8980-f4be776bbb01";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -5485,7 +5489,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc. (PZYM8XX95Q)";
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
@@ -5744,7 +5748,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",
@@ -6013,7 +6017,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Automattic, Inc.";
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Classes\"",

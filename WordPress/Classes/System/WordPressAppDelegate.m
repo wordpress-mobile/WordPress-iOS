@@ -129,7 +129,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
-    [[SKPaymentQueue defaultQueue] addTransactionObserver:[LoggingTransactionObserver instance]];
+    [self setupStoreKit];
 
     return YES;
 }
@@ -165,6 +165,11 @@ int ddLogLevel                                                  = DDLogLevelInfo
     if ([WordPressComApiCredentials appbotXAPIKey].length > 0) {
         [[ABXApiClient instance] setApiKey:[WordPressComApiCredentials appbotXAPIKey]];
     }
+}
+
+- (void)setupStoreKit
+{
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:[StoreTransactionObserver instance]];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options

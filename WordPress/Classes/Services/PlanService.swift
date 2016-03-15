@@ -16,10 +16,38 @@ struct PlanService<S: Store> {
                 PlanStorage.activatePlan(activePlan, forSite: siteID)
                 self.store.getPricesForPlans(availablePlans,
                     success: { pricedPlans in
-                        let result = (activePlan: activePlan, availablePlans: pricedPlans)
+                        let result = (siteID: siteID, activePlan: activePlan, availablePlans: pricedPlans)
                         success(result)
                     }, failure: failure)
             }, failure: failure)
+    }
+
+    func verifyPurchase(siteID: Int, plan: Plan, receipt: NSData, completion: Bool -> Void) {
+        // Let's pretend this suceeds for now
+        PlanStorage.activatePlan(plan, forSite: siteID)
+        completion(true)
+    }
+}
+
+extension PlanService {
+    init?(siteID: Int, store: S) {
+        self.store = store
+        let manager = ContextManager.sharedInstance()
+        let context = manager.mainContext
+        let service = BlogService(managedObjectContext: context)
+        guard let blog = service.blogByBlogId(siteID) else {
+            let error = "Tried to obtain a PlanService for a non-existing site (ID: \(siteID))"
+            assertionFailure(error)
+            DDLogSwift.logError(error)
+            return nil
+        }
+        guard let account = blog.account else {
+            let error = "Tried to obtain a PlanService for a self hosted site"
+            assertionFailure(error)
+            DDLogSwift.logError(error)
+            return nil
+        }
+        self.remote = PlansRemote(api: account.restApi)
     }
 }
 

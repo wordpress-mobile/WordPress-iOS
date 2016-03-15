@@ -23,6 +23,59 @@ class LoggingTransactionObserver: NSObject, SKPaymentTransactionObserver {
     }
 }
 
+class StoreTransactionObserver: NSObject, SKPaymentTransactionObserver {
+    static let instance = StoreTransactionObserver()
+    func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+            StoreCoordinator.instance.processTransaction(transaction)
+        }
+    }
+}
+
+class StoreCoordinator {
+    static let instance = StoreCoordinator()
+    var pendingPayment: (Plan, Int)? = nil
+
+    func purchasePlan(plan: Plan, product: SKProduct, forSite siteID: Int) {
+        precondition(plan.productIdentifier == product.productIdentifier)
+        // TODO: fail better if there's a pending payment
+        precondition(pendingPayment == nil)
+        pendingPayment = (plan, siteID)
+        // TODO: support mock store for testing
+        let store = StoreKitStore()
+        store.requestPayment(product)
+    }
+
+    func processTransaction(transaction: SKPaymentTransaction) {
+        DDLogSwift.logInfo("[Store] Processing transaction \(transaction)")
+        guard transaction.transactionState == .Purchased else {
+            // Ignore other states for now
+            if transaction.transactionState == .Failed {
+                DDLogSwift.logInfo("[Store] Finishing failed transaction \(transaction)")
+                SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+            } else {
+                DDLogSwift.logInfo("[Store] Ignoring transaction \(transaction)")
+            }
+            return
+        }
+        assert(transaction.payment.productIdentifier == pendingPayment?.0.productIdentifier)
+        guard let siteID = pendingPayment?.1,
+            let plan = pendingPayment?.0,
+            let service = PlanService(siteID: siteID, store: StoreKitStore()),
+            let receiptURL = NSBundle.mainBundle().appStoreReceiptURL,
+            let receipt = NSData(contentsOfURL: receiptURL)
+            else {
+                assertionFailure()
+                return
+        }
+        DDLogSwift.logInfo("[Store] Verifying purchase for transaction \(transaction)")
+        service.verifyPurchase(siteID, plan: plan, receipt: receipt, completion: { _ in
+            DDLogSwift.logInfo("[Store] Finishing transaction \(transaction)")
+            SKPaymentQueue.defaultQueue().finishTransaction(transaction)
+        })
+    }
+}
+
 protocol Store {
     typealias ProductType: Product
     func getProductsWithIdentifiers(identifiers: Set<String>, success: [ProductType] -> Void, failure: ErrorType -> Void)
@@ -69,6 +122,10 @@ class StoreKitStore: Store {
         request.start()
     }
 
+    // FIXME @koke 2016-03-15
+    // If we call this directly, the coordinator won't know what to do with this
+    // since there will be no pending payment. Re-design the store architecture so
+    // that's not possible.
     func requestPayment(product: ProductType) {
         let payment = SKPayment(product: product)
         SKPaymentQueue.defaultQueue().addPayment(payment)
