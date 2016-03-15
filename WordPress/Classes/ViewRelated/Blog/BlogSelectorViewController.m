@@ -308,16 +308,14 @@ static CGFloat BlogCellRowHeight = 54.0;
     }
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"settings.name"
-                                                              ascending:YES
-                                                               selector:@selector(localizedCaseInsensitiveCompare:)]];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
+    request.sortDescriptors = _displaysPrimaryBlogOnTop ? self.sortDescriptorsWithAccountKeyPath : self.sortDescriptors;
     request.predicate = [self fetchRequestPredicate];
 
+    NSString *sectionNameKeyPath = _displaysPrimaryBlogOnTop ? self.sectionNameKeyPath : nil;
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                              managedObjectContext:context
-                                                               sectionNameKeyPath:nil
+                                                               sectionNameKeyPath:sectionNameKeyPath
                                                                         cacheName:nil];
     _resultsController.delegate = self;
 
@@ -328,6 +326,26 @@ static CGFloat BlogCellRowHeight = 54.0;
     }
     
     return _resultsController;
+}
+
+- (NSString *)entityName
+{
+    return NSStringFromClass([Blog class]);
+}
+
+- (NSString *)sectionNameKeyPath
+{
+    return @"sectionIdentifier";
+}
+
+- (NSString *)defaultBlogAccountIdKeyPath
+{
+    return @"accountForDefaultBlog.userID";
+}
+
+- (NSString *)siteNameKeyPath
+{
+    return @"settings.name";
 }
 
 - (NSPredicate *)fetchRequestPredicate
@@ -343,6 +361,24 @@ static CGFloat BlogCellRowHeight = 54.0;
     
     predicate = [predicate stringByAppendingString:@" AND (account == %@ OR jetpackAccount == %@)"];
     return [NSPredicate predicateWithFormat:predicate, defaultAccount, defaultAccount];
+}
+
+- (NSArray *)sortDescriptors
+{
+    return @[[NSSortDescriptor sortDescriptorWithKey:self.siteNameKeyPath
+                                           ascending:YES
+                                            selector:@selector(localizedCaseInsensitiveCompare:)]];
+}
+
+- (NSArray *)sortDescriptorsWithAccountKeyPath
+{
+    NSMutableArray *descriptors = [@[[NSSortDescriptor sortDescriptorWithKey:self.defaultBlogAccountIdKeyPath
+                                                                   ascending:NO
+                                                                    selector:@selector(compare:)]]
+                                   mutableCopy];
+    
+    [descriptors addObjectsFromArray:self.sortDescriptors];
+    return descriptors;
 }
 
 @end
