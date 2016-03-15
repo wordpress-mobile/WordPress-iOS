@@ -71,14 +71,37 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
                                    }];
 }
 
+#pragma mark - TableView methods
+
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     PostCategory *category = [self.displayCategories objectAtIndex:indexPath.row];
+    
+    if ([self.item.type isEqualToString:MenuItemTypeCategory] && [self.item.contentId integerValue] == [category.categoryID integerValue]) {
+        cell.sourceSelected = YES;
+    } else {
+        cell.sourceSelected = NO;
+    }
+    
     [cell setTitle:category.categoryName];
     
     NSInteger indentationLevel = [[self.categoryIndentationDict objectForKey:[category.categoryID stringValue]] integerValue];
     [cell setSourceHierarchyIndentation:indentationLevel];
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    
+    PostCategory *category = [self.displayCategories objectAtIndex:indexPath.row];
+    
+    self.item.contentId = [category.categoryID stringValue];
+    self.item.type = MenuItemTypeCategory;
+    
+    [tableView reloadRowsAtIndexPaths:tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
+}
+
+#pragma mark -
 
 - (void)updateDisplayCategories
 {

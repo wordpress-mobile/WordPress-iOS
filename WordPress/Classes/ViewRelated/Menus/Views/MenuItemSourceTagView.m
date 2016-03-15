@@ -79,11 +79,32 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
                         }];
 }
 
+#pragma mark - TableView methods
+
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     PostTag *tag = [self.resultsController objectAtIndexPath:indexPath];
+    if ([self.item.type isEqualToString:MenuItemTypeTag] && [self.item.contentId integerValue] == [tag.tagID integerValue]) {
+        cell.sourceSelected = YES;
+    } else {
+        cell.sourceSelected = NO;
+    }
     [cell setTitle:tag.name];
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [super tableView:tableView didSelectRowAtIndexPath:indexPath];
+    
+    PostTag *tag = [self.resultsController objectAtIndexPath:indexPath];
+    
+    self.item.contentId = [tag.tagID stringValue];
+    self.item.type = MenuItemTypeTag;
+    
+    [tableView reloadRowsAtIndexPaths:tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
+}
+
+#pragma mark - 
 
 - (void)scrollingWillDisplayEndOfTableView:(UITableView *)tableView
 {
