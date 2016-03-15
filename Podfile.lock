@@ -69,7 +69,7 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - FormatterKit/UnitOfInformationFormatter (1.8.0)
   - FormatterKit/URLRequestFormatter (1.8.0)
-  - Helpshift (4.15.0)
+  - Helpshift (5.3.0-supportXcode6)
   - HockeySDK (3.8.5):
     - HockeySDK/AllFeaturesLib (= 3.8.5)
   - HockeySDK/AllFeaturesLib (3.8.5)
@@ -79,9 +79,9 @@ PODS:
   - Lookback (1.1.4):
     - PDKTZipArchive
   - MGImageUtilities (0.0.1)
-  - Mixpanel (2.8.2):
-    - Mixpanel/Mixpanel (= 2.8.2)
-  - Mixpanel/Mixpanel (2.8.2)
+  - Mixpanel (2.9.4):
+    - Mixpanel/Mixpanel (= 2.9.4)
+  - Mixpanel/Mixpanel (2.9.4)
   - MRProgress (0.7.0):
     - MRProgress/ActivityIndicator (= 0.7.0)
     - MRProgress/Blur (= 0.7.0)
@@ -198,13 +198,13 @@ DEPENDENCIES:
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
   - FormatterKit (~> 1.8.0)
-  - Helpshift (~> 4.15.0)
+  - Helpshift (~> 5.3.0-support)
   - HockeySDK (~> 3.8.0)
   - KIF/IdentifierTests (~> 3.1)
   - Lookback (= 1.1.4)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`,
     branch `gifsupport`)
-  - Mixpanel (= 2.8.2)
+  - Mixpanel (= 2.9.4)
   - MRProgress (~> 0.7.0)
   - Nimble (~> 3.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
@@ -274,12 +274,12 @@ SPEC CHECKSUMS:
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   Fabric: 1abc1e59f11fa39ede6f690ef7309d8563e3ec59
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
-  Helpshift: 8bbba1dad877dd7fb7f18915949e5816f6471e3b
+  Helpshift: af8567ca7991c6d2c1aa76e10ee6e6893409c0a1
   HockeySDK: dd11a2b9da3372fd025643bee5bc10c8c613d169
   KIF: 2275c6d59c77e5e56f660f006b99d73780130540
   Lookback: 9ab9027ff246d2dc5ce34be483f70e4a6718280b
   MGImageUtilities: b54a815970e231903c495fff33699467158f61a0
-  Mixpanel: f4d71ac2a306e7cda6ad03d4a2be249a0fd7a967
+  Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
   Nimble: 4c353d43735b38b545cbb4cb91504588eb5de926
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
