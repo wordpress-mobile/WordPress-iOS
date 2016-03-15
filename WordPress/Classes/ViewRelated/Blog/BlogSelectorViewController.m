@@ -199,14 +199,13 @@ static CGFloat BlogCellRowHeight = 54.0;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id<NSFetchedResultsSectionInfo> sectionInfo;
-    NSInteger numberOfRows = 0;
-    if ([self.resultsController sections].count > section) {
-        sectionInfo = [[self.resultsController sections] objectAtIndex:section];
-        numberOfRows = sectionInfo.numberOfObjects;
+    NSArray *sections = self.resultsController.sections;
+    if (sections.count == 0) {
+        return 0;
     }
-
-    return numberOfRows;
+    
+    id <NSFetchedResultsSectionInfo> sectionInfo = sections[section];
+    return sectionInfo.numberOfObjects;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
