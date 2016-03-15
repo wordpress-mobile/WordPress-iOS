@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSString                      *pushNotificationID;
 @property (nonatomic, strong) NSDate                        *pushNotificationDate;
 @property (nonatomic, strong) NSDate                        *lastReloadDate;
-@property (nonatomic, strong) NSMutableSet                  *notificationIdsMarkedForDeletion;
+@property (nonatomic, strong) NSMutableDictionary           *notificationDeletionBlocks;
 @property (nonatomic, strong) NSMutableSet                  *notificationIdsBeingDeleted;
 
 @end
