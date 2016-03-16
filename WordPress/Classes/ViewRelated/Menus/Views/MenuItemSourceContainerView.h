@@ -11,6 +11,9 @@
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenuItem *item;
 
+/**
+ Toggled which sourceView should display based on the itemType.
+ */
 - (void)updateSourceSelectionForItemType:(NSString *)itemType;
 
 @end

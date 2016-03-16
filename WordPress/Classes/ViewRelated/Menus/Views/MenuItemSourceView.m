@@ -10,7 +10,8 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 @interface MenuItemSourceView () <MenuItemSourceTextBarDelegate>
 
-/* View used as the tableView.tableHeaderView container view for self.stackView.
+/**
+ View used as the tableView.tableHeaderView container view for self.stackView.
  */
 @property (nonatomic, strong) UIView *stackedTableHeaderView;
 
