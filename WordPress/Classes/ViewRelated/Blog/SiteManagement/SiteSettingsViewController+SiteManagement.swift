@@ -79,11 +79,8 @@ public extension SiteSettingsViewController
                     return
                 }
                 
-                if purchases.isEmpty {
-                    strongSelf.presentViewController(strongSelf.confirmDeleteController(), animated: true, completion: nil)
-                } else {
-                    strongSelf.warnPurchases()
-                }
+                let alertController = purchases.isEmpty ? strongSelf.confirmDeleteController() : strongSelf.warnPurchasesController()
+                strongSelf.presentViewController(alertController, animated: true, completion: nil)
             },
             failure: { error in
                 DDLogSwift.logError("Error getting purchases: \(error.localizedDescription)")
@@ -96,15 +93,9 @@ public extension SiteSettingsViewController
                 alertController.addDefaultActionWithTitle(okTitle, handler: nil)
                 
                 alertController.presentFromRootViewController()
-        })
+            })
     }
     
-    /// Warn user that purchases need removing
-    ///
-    private func warnPurchases() {
-        // WIP
-    }
-
     /// Creates confirmation alert for Delete Site
     ///
     /// - Returns: UIAlertController
@@ -174,5 +165,44 @@ public extension SiteSettingsViewController
                 
                 alertController.presentFromRootViewController()
             })
+    }
+    
+    /// Creates purchase warning alert for Delete Site
+    ///
+    /// - Returns: UIAlertController
+    ///
+    private func warnPurchasesController() -> UIAlertController {
+        let warnTitle = NSLocalizedString("Premium Upgrades", comment: "Title of alert when attempting to delete site with purchases")
+        let message = NSLocalizedString("You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site.", comment: "Message alert when attempting to delete site with purchases")
+        let alertController = UIAlertController(title: warnTitle, message: message, preferredStyle: .Alert)
+        
+        let cancelTitle = NSLocalizedString("Cancel", comment: "Alert dismissal title")
+        alertController.addCancelActionWithTitle(cancelTitle, handler: nil)
+        
+        let showTitle = NSLocalizedString("Show Purchases", comment: "Show site purchases action title")
+        alertController.addDefaultActionWithTitle(showTitle, handler: { _ in
+            self.showPurchases()
+        })
+        
+        return alertController
+    }
+    
+    /// Brings up web interface showing site purchases for cancellation
+    ///
+    private func showPurchases() {
+        let purchasesUrl = "https://wordpress.com/purchases"
+        
+        let controller = WPWebViewController()
+        controller.authToken = blog.authToken;
+        controller.username = blog.usernameForSite;
+        controller.password = blog.password;
+        controller.wpLoginURL = NSURL(string: blog.loginUrl())
+        controller.secureInteraction = true
+        controller.url = NSURL(string: purchasesUrl)
+        controller.loadViewIfNeeded()
+        controller.navigationItem.titleView = nil
+        controller.title = NSLocalizedString("Purchases", comment: "Title of screen showing site purchases")
+       
+        navigationController?.pushViewController(controller, animated:true)
     }
 }
