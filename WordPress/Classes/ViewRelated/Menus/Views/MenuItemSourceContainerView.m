@@ -152,6 +152,11 @@
 
 #pragma mark - MenuItemSourceViewDelegate
 
+- (void)sourceViewDidUpdateItem:(MenuItemSourceView *)sourceView
+{
+    [self.delegate sourceContainerViewDidUpdateItem:self];
+}
+
 - (void)sourceViewDidBeginEditingWithKeyBoard:(MenuItemSourceView *)sourceView
 {
     [self.delegate sourceContainerViewDidBeginEditingWithKeyboard:self];

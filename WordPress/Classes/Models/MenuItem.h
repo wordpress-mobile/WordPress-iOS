@@ -81,7 +81,16 @@ extern NSString * const MenuItemLinkTargetBlank;
 /// @name Helper methods
 ///---------------------
 + (NSString *)entityName;
+
+/**
+ The display label text for a MenuItemType string.
+ */
 + (NSString *)labelForType:(NSString *)itemType blog:(nullable Blog *)blog;
+
+/**
+ The localized default title text (name) to use with a newly created MenuItem.
+ */
++ (NSString *)defaultItemNameLocalized;
 
 /**
  *  @brief      Call this method to know whether an item is a descendent of this item.
