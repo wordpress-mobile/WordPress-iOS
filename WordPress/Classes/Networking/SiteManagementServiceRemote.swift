@@ -76,11 +76,39 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
         })
     }
     
+    /// Gets the list of active purchases of the specified WordPress.com site.
+    ///
+    /// - Parameters:
+    ///     - siteID:  The WordPress.com ID of the site.
+    ///     - success: Optional success block with array of purchases (if any)
+    ///     - failure: Optional failure block with NSError
+    ///
+    public func getActivePurchases(siteID: NSNumber, success: (([SitePurchase]) -> Void)?, failure: (NSError -> Void)?) {
+        let endpoint = "sites/\(siteID)/purchases"
+        let path = self.pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        
+        api.GET(path,
+            parameters: nil,
+            success: { operation, response in
+                guard let results = response as? [SitePurchase] else {
+                    failure?(SiteError.PurchasesInvalidResponse.toNSError())
+                    return
+                }
+                
+                let actives = results.filter { $0[ResultKey.Active]?.boolValue == true }
+                success?(actives)
+            },
+            failure: { operation, error in
+                failure?(error)
+        })
+    }
+
     /// Keys found in API results
     ///
     private struct ResultKey
     {
         static let Status = "status"
+        static let Active = "active"
     }
 
     /// Values found in API results
@@ -101,6 +129,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
         case ExportInvalidResponse
         case ExportMissingStatus
         case ExportFailed
+        case PurchasesInvalidResponse
         
         var description: String {
             switch self {
@@ -108,6 +137,8 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
                 return NSLocalizedString("The site could not be deleted.", comment: "Message shown when site deletion API failed")
             case .ExportInvalidResponse, .ExportMissingStatus, .ExportFailed:
                 return NSLocalizedString("The site could not be exported.", comment: "Message shown when site export API failed")
+            case .PurchasesInvalidResponse:
+                return NSLocalizedString("Could not check site purchases.", comment: "Message shown when site purchases API failed")
             }
         }
         
@@ -116,3 +147,7 @@ public class SiteManagementServiceRemote : ServiceRemoteREST
         }
     }
 }
+
+/// Returned in array from /purchases endpoint
+///
+public typealias SitePurchase = [String: AnyObject]
