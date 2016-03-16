@@ -103,6 +103,8 @@
             textField.delegate = self;
             textField.clearButtonMode = UITextFieldViewModeWhileEditing;
             textField.returnKeyType = UIReturnKeyDone;
+            textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+            textField.autocorrectionType = UITextAutocorrectionTypeNo;
             textField.opaque = YES;
             
             [textField addTarget:self action:@selector(textFieldDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];

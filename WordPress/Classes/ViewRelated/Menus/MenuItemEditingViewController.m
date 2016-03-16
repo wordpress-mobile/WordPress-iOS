@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger) {
     MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews,
 }MenuItemEditingViewControllerContentLayout;
 
-@interface MenuItemEditingViewController () <MenuItemSourceContainerViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
+@interface MenuItemEditingViewController () <MenuItemSourceContainerViewDelegate, MenuItemEditingHeaderViewDelegate, MenuItemEditingFooterViewDelegate, MenuItemTypeSelectionViewDelegate>
 
 @property (nonatomic, strong) MenuItem *item;
 @property (nonatomic, strong) Blog *blog;
@@ -350,6 +350,11 @@ typedef NS_ENUM(NSUInteger) {
 
 #pragma mark - MenuItemSourceContainerViewDelegate
 
+- (void)sourceContainerViewDidUpdateItem:(MenuItemSourceContainerView *)sourceContainerView
+{
+    self.headerView.item = sourceContainerView.item;
+}
+
 - (void)sourceContainerViewSelectedTypeHeaderView:(MenuItemSourceContainerView *)sourceView
 {
     if ([self shouldLayoutForCompactWidth]) {
@@ -367,6 +372,13 @@ typedef NS_ENUM(NSUInteger) {
 {
     self.sourceViewIsTyping = NO;
     [self updateLayoutIfNeededAnimated];
+}
+
+#pragma mark - MenuItemEditingHeaderViewDelegate
+
+- (void)editingHeaderViewDidUpdateItem:(MenuItemEditingHeaderView *)headerView
+{
+    
 }
 
 #pragma mark - MenuItemEditingFooterViewDelegate

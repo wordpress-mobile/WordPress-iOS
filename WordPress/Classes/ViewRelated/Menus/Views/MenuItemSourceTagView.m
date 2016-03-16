@@ -102,10 +102,8 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
     PostTag *tag = [self.resultsController objectAtIndexPath:indexPath];
-    
-    self.item.contentId = [tag.tagID stringValue];
-    self.item.type = [self sourceItemType];
-    
+    [self setItemSourceWithContentID:[tag.tagID stringValue] name:tag.name];
+
     [tableView reloadRowsAtIndexPaths:tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
 }
 

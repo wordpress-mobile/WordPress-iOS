@@ -98,7 +98,7 @@
 - (void)sourceTextBar:(MenuItemSourceTextBar *)textBar didUpdateWithText:(NSString *)text
 {
     if (![self itemTypeMatchesSourceItemType]) {
-        self.item.type = [self sourceItemType];
+        [self setItemSourceWithContentID:nil name:[self sourceItemType]];
     }
     self.item.urlStr = text.length ? text : nil;
 }
