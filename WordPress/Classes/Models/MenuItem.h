@@ -60,17 +60,20 @@ extern NSString * const MenuItemLinkTargetBlank;
 /// @name Relationships
 ///---------------------
 
-/* The Menu the item belongs to.
+/**
+ The Menu the item belongs to.
  */
 @property (nullable, nonatomic, retain) Menu *menu;
 
-/* Direct children of the item.
+/**
+ Direct children of the item.
  NOTE: Does not include any descendents of this item's children.
  See method isDescendantOfItem: for detecting ancestry.
  */
 @property (nullable, nonatomic, retain) NSSet<MenuItem *> *children;
 
-/* The parent of the item, if the item has one.
+/**
+ The parent of the item, if the item has one.
  */
 @property (nullable, nonatomic, retain) MenuItem *parent;
 
