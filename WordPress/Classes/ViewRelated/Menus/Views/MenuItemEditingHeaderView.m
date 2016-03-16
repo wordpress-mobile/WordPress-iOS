@@ -8,7 +8,6 @@
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) NSLayoutConstraint *stackViewTopConstraint;
 @property (nonatomic, strong) UIView *textFieldContainerView;
-@property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UIImageView *iconView;
 @property (nonatomic, assign) MenuIconType iconType;
 
@@ -85,8 +84,8 @@
 
         UIEdgeInsets margins = UIEdgeInsetsZero;
         margins.top = [self defaultStackDesignMargin];
-        margins.left = MenusDesignDefaultContentSpacing;
-        margins.right = MenusDesignDefaultContentSpacing;
+        margins.left = MenusDesignDefaultContentSpacing / 2.0;
+        margins.right = MenusDesignDefaultContentSpacing / 4.0;
         margins.bottom = margins.top;
         textFieldContainerView.layoutMargins = margins;
         
@@ -95,12 +94,17 @@
         UITextField *textField = [[UITextField alloc] init];
         textField.translatesAutoresizingMaskIntoConstraints = NO;
         textField.delegate = self;
-        textField.placeholder = NSLocalizedString(@"Title...", @"");
+        textField.placeholder = [MenuItem defaultItemNameLocalized];
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+        textField.autocorrectionType = UITextAutocorrectionTypeNo;
+        textField.returnKeyType = UIReturnKeyDone;
         textField.textColor = [WPStyleGuide darkGrey];
         textField.font = [WPStyleGuide regularTextFont];
         textField.backgroundColor = [UIColor clearColor];
         [textField addTarget:self action:@selector(textFieldKeyboardDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
-        
+        [textField addTarget:self action:@selector(textFieldValueDidChange:) forControlEvents:UIControlEventEditingChanged];
+
         [textFieldContainerView addSubview:textField];
         self.textField = textField;
         
@@ -158,11 +162,11 @@
 {
     if (_item != item) {
         _item = item;
-        
-        self.textField.text = item.name;
-        self.iconType = MenuIconTypeDefault;
-        [self setNeedsDisplay];
     }
+    
+    self.textField.text = item.name;
+    self.iconType = MenuIconTypeDefault;
+    [self setNeedsDisplay];
 }
 
 - (void)drawRect:(CGRect)rect
@@ -185,11 +189,18 @@
     CGContextRestoreGState(context);
 }
 
-#pragma mark - UITextFieldDelegate
+#pragma mark - UITextField
 
 - (void)textFieldKeyboardDidEndOnExit
 {
     [self.textField resignFirstResponder];
+}
+
+- (void)textFieldValueDidChange:(UITextField *)textField
+{
+    NSLog(@"text value did change");
+    self.item.name = textField.text.length ? textField.text : [MenuItem defaultItemNameLocalized];
+    [self.delegate editingHeaderViewDidUpdateItem:self];
 }
 
 #pragma mark - notifications

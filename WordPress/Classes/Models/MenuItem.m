@@ -13,6 +13,7 @@ NSString * const MenuItemTypeJetpackPortfolio = @"jetpack-portfolio";
 NSString * const MenuItemTypeJetpackComic = @"jetpack-comic";
 
 NSString * const MenuItemLinkTargetBlank = @"_blank";
+NSString * const MenuItemDefaultLinkTitle = @"New Item";
 
 @implementation MenuItem
 
@@ -67,7 +68,13 @@ NSString * const MenuItemLinkTargetBlank = @"_blank";
     return label;
 }
 
-/* Traverse parent's of the item until we reach nil or a parent object equal to self.
++ (NSString *)defaultItemNameLocalized
+{
+    return NSLocalizedString(@"New item", @"Menu item title text used as default when creating a new menu item.");
+}
+
+/**
+ Traverse parent's of the item until we reach nil or a parent object equal to self.
 */
 - (BOOL)isDescendantOfItem:(MenuItem *)item
 {

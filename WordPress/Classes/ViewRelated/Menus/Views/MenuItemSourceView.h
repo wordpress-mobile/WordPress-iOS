@@ -88,6 +88,14 @@
 - (BOOL)itemTypeMatchesSourceItemType;
 
 /**
+ Called when a source has been selected and the MenuItem should be updated.
+ @param contentId - The ID of the source such as a postID, tagID, categoryID, etc.
+ @param itemType - The type of the source.
+ @param name - The name that should be used for the source.
+ */
+- (void)setItemSourceWithContentID:(NSString *)contentId name:(NSString *)name;
+
+/**
  The item type the view uses as a source.
  */
 - (NSString *)sourceItemType;
@@ -131,6 +139,7 @@
 
 @protocol MenuItemSourceViewDelegate <NSObject>
 
+- (void)sourceViewDidUpdateItem:(MenuItemSourceView *)sourceView;
 - (void)sourceViewDidBeginEditingWithKeyBoard:(MenuItemSourceView *)sourceView;
 - (void)sourceViewDidEndEditingWithKeyboard:(MenuItemSourceView *)sourceView;
 

@@ -81,9 +81,7 @@
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    
-    self.item.contentId = [post.postID stringValue];
-    self.item.type = [self sourceItemType];
+    [self setItemSourceWithContentID:[post.postID stringValue] name:post.titleForDisplay];
     
     [tableView reloadRowsAtIndexPaths:tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
 }
