@@ -217,29 +217,68 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure
 {
-    NSNumber *postID = post.postID;
-    if ([postID longLongValue] > 0) {
-        RemotePost *remotePost = [self remotePostWithPost:post];
-        id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
-        [remote deletePost:remotePost success:success failure:failure];
+    void (^privateBlock)() = ^void() {
+        NSNumber *postID = post.postID;
+        if ([postID longLongValue] > 0) {
+            RemotePost *remotePost = [self remotePostWithPost:post];
+            id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+            [remote deletePost:remotePost success:success failure:failure];
+        }
+        [self.managedObjectContext deleteObject:post];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    };
+    
+    if ([post isRevision]) {
+        [self deletePost:post.original success:privateBlock failure:failure];
+    } else {
+        privateBlock();
     }
-    [self.managedObjectContext deleteObject:post];
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 - (void)trashPost:(AbstractPost *)post
           success:(void (^)())success
           failure:(void (^)(NSError *error))failure
 {
-    NSNumber *postID = post.postID;
-    if ([postID longLongValue] <= 0 || [post.status isEqualToString:PostStatusTrash]) {
-        // Local draft, or a trashed post. Hand off to the delete method.
+    if ([post.status isEqualToString:PostStatusTrash]) {
         [self deletePost:post success:success failure:failure];
         return;
     }
+    
+    void(^privateBodyBlock)() = ^void() {
+        post.restorableStatus = post.status;
+        
+        NSNumber *postID = post.postID;
+        
+        if ([post isRevision] || [postID longLongValue] <= 0) {
+            post.status = PostStatusTrash;
+            
+            if (success) {
+                success();
+            }
+            
+            return;
+        }
+        
+        [self trashRemotePostWithPost:post
+                              success:success
+                              failure:failure];
+    };
+    
+    if ([post isRevision]) {
+        [self trashPost:post.original
+                success:privateBodyBlock
+                failure:failure];
+    } else {
+        privateBodyBlock();
+    }
+}
 
-    post.restorableStatus = post.status;
+- (void)trashRemotePostWithPost:(AbstractPost*)post
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure
+{
     NSManagedObjectID *postObjectID = post.objectID;
+    
     void (^successBlock)(RemotePost *post) = ^(RemotePost *remotePost) {
         NSError *err;
         Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
@@ -258,7 +297,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             success();
         }
     };
-
+    
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
         NSError *err;
         Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
@@ -272,7 +311,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             failure(error);
         }
     };
-
+    
     RemotePost *remotePost = [self remotePostWithPost:post];
     id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
     [remote trashPost:remotePost success:successBlock failure:failureBlock];
@@ -282,13 +321,36 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             success:(void (^)())success
             failure:(void (^)(NSError *error))failure
 {
-    NSManagedObjectID *postObjectID = post.objectID;
-    if (post.restorableStatus) {
-        // Optimistically update and save.
+    void (^privateBodyBlock)() = ^void() {
         post.status = post.restorableStatus;
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        
+        if (![post isRevision] && [post.postID longLongValue] > 0) {
+            [self restoreRemotePostWithPost:post success:success failure:failure];
+        } else {
+            if (success) {
+                success();
+            }
+        }
+    };
+    
+    if (post.isRevision) {
+        [self restorePost:post.original
+                  success:privateBodyBlock
+                  failure:failure];
+        
+        return;
+    } else {
+        privateBodyBlock();
     }
+}
 
+- (void)restoreRemotePostWithPost:(AbstractPost*)post
+                          success:(void (^)())success
+                          failure:(void (^)(NSError *error))failure
+{
+    NSManagedObjectID *postObjectID = post.objectID;
+    
     void (^successBlock)(RemotePost *post) = ^(RemotePost *remotePost) {
         NSError *err;
         Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
@@ -304,7 +366,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             success();
         }
     };
-
+    
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
         NSError *err;
         Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
@@ -320,7 +382,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
             failure(error);
         }
     };
-
+    
     RemotePost *remotePost = [self remotePostWithPost:post];
     if (post.restorableStatus) {
         remotePost.status = post.restorableStatus;
@@ -331,7 +393,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
         // safest option when we don't know what the status was previously.
         remotePost.status = PostStatusDraft;
     }
-
+    
     id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
     [remote restorePost:remotePost success:successBlock failure:failureBlock];
 }
