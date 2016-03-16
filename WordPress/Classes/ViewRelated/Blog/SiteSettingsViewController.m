@@ -93,7 +93,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 #pragma mark - Advanced Section
 @property (nonatomic, strong) SettingTableViewCell *startOverCell;
 @property (nonatomic, strong) WPTableViewCell *exportContentCell;
-@property (nonatomic, strong) SettingTableViewCell *deleteSiteCell;
+@property (nonatomic, strong) WPTableViewCell *deleteSiteCell;
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSString *username;
@@ -523,15 +523,16 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return _exportContentCell;
 }
 
-- (SettingTableViewCell *)deleteSiteCell
+- (WPTableViewCell *)deleteSiteCell
 {
     if (_deleteSiteCell) {
         return _deleteSiteCell;
     }
     
-    _deleteSiteCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Delete Site", @"Label for selecting the Delete Site Settings item")
-                                                         editable:YES
-                                                  reuseIdentifier:nil];
+    _deleteSiteCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    [WPStyleGuide configureTableViewActionCell:_deleteSiteCell];
+    _deleteSiteCell.textLabel.text = NSLocalizedString(@"Delete Site", @"Label for selecting the Delete Site Settings item");
+
     return _deleteSiteCell;
 }
 
@@ -871,14 +872,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)showDeleteSiteForBlog:(Blog *)blog
-{
-    NSParameterAssert([blog supportsSiteManagementServices]);
-    
-    DeleteSiteViewController *viewController = [[DeleteSiteViewController alloc] initWithBlog:blog];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectInAdvancedSectionRow:(NSInteger)row
 {
     switch (row) {
@@ -891,7 +884,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             break;
 
         case SiteSettingsAdvancedDeleteSite:
-            [self showDeleteSiteForBlog:self.blog];
+            [self confirmDeleteSite];
             break;
     }
 }
