@@ -53,7 +53,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
-    if(self) {
+    if (self) {
         
         // using a new child context to keep local changes disacardable
         // using main queue as we still want processing done on the main thread
@@ -192,9 +192,9 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)headerViewSelectionChangedWithSelectedLocation:(MenuLocation *)location
 {
-    if(location.menu) {
+    if (location.menu) {
         [self setViewsWithMenu:location.menu];
-    }else {
+    } else  {
         [self setViewsWithMenu:[self.blog.menus firstObject]];
     }
 }
@@ -246,17 +246,17 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     
     BOOL updated = NO;
     
-    if(viewRectWithinScrollViewWindow.origin.y < visibleContentRect.origin.y + padding) {
+    if (viewRectWithinScrollViewWindow.origin.y < visibleContentRect.origin.y + padding) {
         
         offset.y -= viewRectWithinScrollViewWindow.size.height;
         updated = YES;
         
-    }else if(viewRectWithinScrollViewWindow.origin.y + viewRectWithinScrollViewWindow.size.height > (visibleContentRect.origin.y + visibleContentRect.size.height) - padding) {
+    } else  if (viewRectWithinScrollViewWindow.origin.y + viewRectWithinScrollViewWindow.size.height > (visibleContentRect.origin.y + visibleContentRect.size.height) - padding) {
         offset.y += viewRectWithinScrollViewWindow.size.height;
         updated = YES;
     }
     
-    if(updated) {
+    if (updated) {
         [UIView animateWithDuration:0.25 animations:^{
             self.scrollView.contentOffset = offset;
         }];
@@ -281,10 +281,10 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     UIEdgeInsets inset = self.scrollView.contentInset;
     UIEdgeInsets scrollInset = self.scrollView.scrollIndicatorInsets;
     
-    if(frame.origin.y > self.view.frame.size.height) {
+    if (frame.origin.y > self.view.frame.size.height) {
         inset.bottom = 0.0;
         scrollInset.bottom = 0.0;
-    }else {
+    } else  {
         inset.bottom = self.view.frame.size.height - frame.origin.y;
         scrollInset.bottom = inset.bottom;
         inset.bottom += insetPadding;
@@ -313,7 +313,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)keyboardWillChangeFrameNotification:(NSNotification *)notification
 {
-    if(self.observesKeyboardChanges) {
+    if (self.observesKeyboardChanges) {
         [self updateWithKeyboardNotification:notification];
     }
 }

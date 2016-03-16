@@ -126,11 +126,11 @@
 
 - (void)setNeedsTopConstraintsUpdateForStatusBarAppearence:(BOOL)hidden
 {
-    if(hidden) {
+    if (hidden) {
         
         self.stackViewTopConstraint.constant = [self defaultStackDesignMargin];
         
-    }else {
+    } else  {
         
         self.stackViewTopConstraint.constant = [self defaultStackDesignMargin] + [[UIApplication sharedApplication] statusBarFrame].size.height;
     }
@@ -138,15 +138,15 @@
 
 - (void)setIconType:(MenuIconType)iconType
 {
-    if(_iconType != iconType) {
+    if (_iconType != iconType) {
         _iconType = iconType;
         
-        if(iconType == MenuIconTypeNone) {
+        if (iconType == MenuIconTypeNone) {
             
             self.iconView.image = nil;
             self.iconView.hidden = YES;
             
-        }else {
+        } else  {
             
             self.iconView.hidden = NO;
             self.iconView.image = [[UIImage imageNamed:MenusDesignItemIconImageNameForType(iconType)] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -156,7 +156,7 @@
 
 - (void)setItem:(MenuItem *)item
 {
-    if(_item != item) {
+    if (_item != item) {
         _item = item;
         
         self.textField.text = item.name;

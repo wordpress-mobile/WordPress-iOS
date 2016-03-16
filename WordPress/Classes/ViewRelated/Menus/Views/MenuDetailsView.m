@@ -77,7 +77,7 @@
 
 - (void)setMenu:(Menu *)menu
 {
-    if(_menu != menu) {
+    if (_menu != menu) {
         _menu = menu;
         self.textField.text = self.menu.name;
         [self updateTextFieldDesignIconPositioning];
@@ -94,10 +94,10 @@
     CGSize textSize = [self.textField.text sizeWithAttributes:@{NSFontAttributeName: self.textField.font}];
     CGRect editingRect = [self.textField textRectForBounds:self.textField.bounds];
     CGFloat leadingConstant = editingRect.origin.x + textSize.width;
-    if(leadingConstant > self.textField.frame.size.width) {
+    if (leadingConstant > self.textField.frame.size.width) {
         leadingConstant = self.textField.frame.size.width;
         leadingConstant += 1.0; // padding
-    }else {
+    } else  {
         leadingConstant += 6.0; // padding
     }
     
@@ -151,7 +151,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if(!textField.text.length) {
+    if (!textField.text.length) {
         // restore the original name if the user cleared the text
         textField.text = self.menu.name;
     }

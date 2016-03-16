@@ -45,7 +45,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if(self) {
+    if (self) {
         {
             self.backgroundColor = [UIColor whiteColor];
             self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -167,16 +167,16 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
         _sourceHierarchyIndentation = sourceHierarchyIndentation;
         self.leadingLayoutConstraintForContentViewIndentation.constant = sourceHierarchyIndentation * MenuItemSourceCellHierarchyIdentationLength;
         
-        if(sourceHierarchyIndentation) {
+        if (sourceHierarchyIndentation) {
             
-            if(self.topLayoutDefaultConstraint.active) {
+            if (self.topLayoutDefaultConstraint.active) {
                 [NSLayoutConstraint deactivateConstraints:@[self.topLayoutDefaultConstraint]];
                 [NSLayoutConstraint activateConstraints:@[self.topLayoutConstraintForContentViewIndentation]];
             }
             
-        }else {
+        } else  {
             
-            if(self.topLayoutConstraintForContentViewIndentation.active) {
+            if (self.topLayoutConstraintForContentViewIndentation.active) {
                 [NSLayoutConstraint deactivateConstraints:@[self.topLayoutConstraintForContentViewIndentation]];
                 [NSLayoutConstraint activateConstraints:@[self.topLayoutDefaultConstraint]];
             }
@@ -200,7 +200,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
 
 - (void)insertBadgeLabelIfNeeded
 {
-    if(!self.badgeLabel) {
+    if (!self.badgeLabel) {
         
         MenuItemSourceOptionBadgeLabel *label = [[MenuItemSourceOptionBadgeLabel alloc] init];
         label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -252,7 +252,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
         self.backgroundColor = [UIColor whiteColor];
     }
     
@@ -261,7 +261,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
 
 - (void)setSelected:(BOOL)selected
 {
-    if(_selected != selected) {
+    if (_selected != selected) {
         _selected = selected;
         [self setNeedsDisplay];
     }
@@ -269,7 +269,7 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
 
 - (void)setDrawsHighlighted:(BOOL)drawsHighlighted
 {
-    if(_drawsHighlighted != drawsHighlighted) {
+    if (_drawsHighlighted != drawsHighlighted) {
         _drawsHighlighted = drawsHighlighted;
         [self setNeedsDisplay];
     }
@@ -279,15 +279,15 @@ static CGFloat const MenuItemSourceCellHierarchyIdentationLength = 17.0;
 {    
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 1.0);
-    if(self.drawsHighlighted) {
+    if (self.drawsHighlighted) {
         CGContextSetStrokeColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
-    }else {
+    } else  {
         CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten10] CGColor]);
     }
     const CGRect strokeRect = CGRectInset(rect, 1, 1);
     CGContextStrokeEllipseInRect(context, strokeRect);
     
-    if(self.selected) {
+    if (self.selected) {
         const CGRect fillRect = CGRectInset(strokeRect, 4.0, 4.0);
         CGContextSetFillColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
         CGContextFillEllipseInRect(context, fillRect);

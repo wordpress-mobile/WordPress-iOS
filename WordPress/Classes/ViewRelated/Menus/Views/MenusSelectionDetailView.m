@@ -25,7 +25,7 @@
         
         imageRect.size.width = rect.size.width;
         imageRect.size.height = ((image.size.height * imageRect.size.width) / image.size.width);
-        if(imageRect.size.height != rect.size.height) {
+        if (imageRect.size.height != rect.size.height) {
             imageRect.origin.y = -((rect.size.height / 2) - (imageRect.size.height / 2));
         }
         
@@ -68,20 +68,20 @@
 - (void)updatewithAvailableItems:(NSUInteger)numItemsAvailable selectedItem:(MenusSelectionViewItem *)selectedItem
 {
     NSString *localizedFormat = nil;
-    if([selectedItem isMenuLocation]) {
+    if ([selectedItem isMenuLocation]) {
         
-        if(numItemsAvailable > 1) {
+        if (numItemsAvailable > 1) {
             localizedFormat = NSLocalizedString(@"%i menu areas in this theme", @"The number of menu areas available in the theme");
-        }else {
+        } else  {
             localizedFormat = NSLocalizedString(@"%i menu area in this theme", @"One menu area available in the theme");
         }
         self.iconView.image = [UIImage imageNamed:@"icon-menus-locations"];
         
-    }else if([selectedItem isMenu]) {
+    } else  if ([selectedItem isMenu]) {
         
-        if(numItemsAvailable > 1) {
+        if (numItemsAvailable > 1) {
             localizedFormat = NSLocalizedString(@"%i menus available", @"The number of menus on the site and area.");
-        }else {
+        } else  {
             localizedFormat = NSLocalizedString(@"%i menu available", @"One menu is available in the site and area");
         }
         self.iconView.image = [UIImage imageNamed:@"icon-menus-menus"];
@@ -144,13 +144,13 @@
 
 - (void)setShowsDesignActive:(BOOL)showsDesignActive
 {
-    if(_showsDesignActive != showsDesignActive) {
+    if (_showsDesignActive != showsDesignActive) {
         _showsDesignActive = showsDesignActive;
         
-        if(showsDesignActive) {
+        if (showsDesignActive) {
             self.accessoryView.transform = CGAffineTransformMakeScale(0.5, 0.5);
             self.accessoryView.alpha = 0.0;
-        }else {
+        } else  {
             self.accessoryView.transform = CGAffineTransformIdentity;
             self.accessoryView.alpha = 1.0;
         }
@@ -196,14 +196,14 @@
 
 - (void)tellDelegateTapGestureRecognized:(UITapGestureRecognizer *)tap
 {
-    if([self.delegate respondsToSelector:@selector(selectionDetailView:tapGestureRecognized:)]) {
+    if ([self.delegate respondsToSelector:@selector(selectionDetailView:tapGestureRecognized:)]) {
         [self.delegate selectionDetailView:self tapGestureRecognized:tap];
     }
 }
 
 - (void)tellDelegateTouchesHighlightedStateChanged:(BOOL)highlighted
 {
-    if([self.delegate respondsToSelector:@selector(selectionDetailView:touchesHighlightedStateChanged:)]) {
+    if ([self.delegate respondsToSelector:@selector(selectionDetailView:touchesHighlightedStateChanged:)]) {
         [self.delegate selectionDetailView:self touchesHighlightedStateChanged:highlighted];
     }
 }

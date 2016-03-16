@@ -62,7 +62,7 @@ typedef NS_ENUM(NSUInteger) {
 - (id)initWithItem:(MenuItem *)item blog:(Blog *)blog
 {
     self = [super initWithNibName:NSStringFromClass([self class]) bundle:nil];
-    if(self) {
+    if (self) {
         
         self.blog = blog;
         
@@ -124,7 +124,7 @@ typedef NS_ENUM(NSUInteger) {
 {
     [super viewWillAppear:animated];
     
-    if(self.modalPresentationStyle == UIModalPresentationFormSheet) {
+    if (self.modalPresentationStyle == UIModalPresentationFormSheet) {
         self.view.superview.layer.cornerRadius = 0.0;
     }
     
@@ -187,15 +187,15 @@ typedef NS_ENUM(NSUInteger) {
 
 - (BOOL)shouldLayoutForCompactWidth
 {
-    if(IS_IPAD) {
+    if (IS_IPAD) {
         return NO;
     }
     
     BOOL horizontallyCompact = [self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithHorizontalSizeClass:UIUserInterfaceSizeClassCompact]];
     
-    if(horizontallyCompact) {
+    if (horizontallyCompact) {
         
-        if([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithVerticalSizeClass:UIUserInterfaceSizeClassCompact]]) {
+        if ([self.traitCollection containsTraitsInCollection:[UITraitCollection traitCollectionWithVerticalSizeClass:UIUserInterfaceSizeClassCompact]]) {
             horizontallyCompact = NO;
         }
     }
@@ -207,10 +207,10 @@ typedef NS_ENUM(NSUInteger) {
 
 - (void)setHeaderViewHidden:(BOOL)hidden
 {
-    if(self.headerView.hidden != hidden) {
+    if (self.headerView.hidden != hidden) {
         self.headerView.hidden = hidden;
         self.headerView.alpha = hidden ? 0.0 : 1.0;
-        if(!hidden) {
+        if (!hidden) {
             [self.headerView setNeedsDisplay];
         }
     }
@@ -222,29 +222,29 @@ typedef NS_ENUM(NSUInteger) {
     BOOL compactWidthLayout = [self shouldLayoutForCompactWidth];
     BOOL minimizeLayoutForSourceViewTypying = !IS_IPAD && self.sourceViewIsTyping;
     
-    if(minimizeLayoutForSourceViewTypying) {
+    if (minimizeLayoutForSourceViewTypying) {
         // headerView should be hidden while typing within the sourceView, to save screen space (iPhone)
         [self setHeaderViewHidden:YES];
-    }else {
+    } else  {
         [self setHeaderViewHidden:NO];
     }
     
-    if(!IS_IPAD) {
+    if (!IS_IPAD) {
         
-        if(!compactWidthLayout) {
+        if (!compactWidthLayout) {
             // on iPhone landscape we want to minimize the height of the footer to gain any vertical screen space we can
             self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewCompactHeight;
-        }else {
+        } else  {
             // restore the height of the footer on portrait since we have more vertical screen space
             self.footerViewHeightConstraint.constant = MenuItemEditingFooterViewDefaultHeight;
         }
     }
     
-    if(compactWidthLayout || minimizeLayoutForSourceViewTypying) {
+    if (compactWidthLayout || minimizeLayoutForSourceViewTypying) {
         
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
         
-    }else {
+    } else  {
         
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
     }
@@ -275,9 +275,9 @@ typedef NS_ENUM(NSUInteger) {
 
 - (void)transitionLayoutToDisplaySourceView
 {
-    if([self shouldLayoutForCompactWidth]) {
+    if ([self shouldLayoutForCompactWidth]) {
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysSourceView];
-    }else {
+    } else  {
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
     }
     
@@ -290,7 +290,7 @@ typedef NS_ENUM(NSUInteger) {
 
 - (void)setContentLayout:(MenuItemEditingViewControllerContentLayout)contentLayout
 {
-    if(_contentLayout != contentLayout) {
+    if (_contentLayout != contentLayout) {
         
         switch (_contentLayout) {
             case MenuItemEditingViewControllerContentLayoutDisplaysTypeView:
@@ -352,7 +352,7 @@ typedef NS_ENUM(NSUInteger) {
 
 - (void)sourceContainerViewSelectedTypeHeaderView:(MenuItemSourceContainerView *)sourceView
 {
-    if([self shouldLayoutForCompactWidth]) {
+    if ([self shouldLayoutForCompactWidth]) {
         [self transitionLayoutToDisplayTypeView];
     }
 }
@@ -385,9 +385,9 @@ typedef NS_ENUM(NSUInteger) {
     
     CGFloat constraintConstant = self.stackViewBottomConstraint.constant;
     
-    if(frame.origin.y > self.view.frame.size.height) {
+    if (frame.origin.y > self.view.frame.size.height) {
         constraintConstant = 0.0;
-    }else {
+    } else  {
         constraintConstant = self.view.frame.size.height - frame.origin.y;
     }
     
@@ -418,7 +418,7 @@ typedef NS_ENUM(NSUInteger) {
 
 - (void)keyboardWillChangeFrameNotification:(NSNotification *)notification
 {
-    if(self.observesKeyboardChanges) {
+    if (self.observesKeyboardChanges) {
         [self updateWithKeyboardNotification:notification];
     }
 }

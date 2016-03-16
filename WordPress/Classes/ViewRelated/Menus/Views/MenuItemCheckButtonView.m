@@ -18,7 +18,7 @@ static CGFloat const iconPadding = 3.0;
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
      
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
@@ -74,7 +74,7 @@ static CGFloat const iconPadding = 3.0;
 
 - (void)setChecked:(BOOL)checked
 {
-    if(_checked != checked) {
+    if (_checked != checked) {
         _checked = checked;
         self.iconView.alpha = checked ? 1.0 : 0.0;
     }
@@ -82,7 +82,7 @@ static CGFloat const iconPadding = 3.0;
 
 - (void)setDrawsHighlighted:(BOOL)drawsHighlighted
 {
-    if(_drawsHighlighted != drawsHighlighted) {
+    if (_drawsHighlighted != drawsHighlighted) {
         _drawsHighlighted = drawsHighlighted;
         [self setNeedsDisplay];
     }
@@ -97,9 +97,9 @@ static CGFloat const iconPadding = 3.0;
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    if(self.drawsHighlighted) {
+    if (self.drawsHighlighted) {
         CGContextSetFillColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
-    }else {
+    } else  {
         CGContextSetFillColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
     }
     
@@ -136,7 +136,7 @@ static CGFloat const iconPadding = 3.0;
 {
     [super touchesEnded:touches withEvent:event];
     
-    if(CGRectContainsPoint(self.bounds, self.touchesBeganLocation) && CGRectContainsPoint(self.bounds, [[touches anyObject] locationInView:self])) {
+    if (CGRectContainsPoint(self.bounds, self.touchesBeganLocation) && CGRectContainsPoint(self.bounds, [[touches anyObject] locationInView:self])) {
         self.checked = !self.checked;
         if (self.onChecked) {
             self.onChecked();

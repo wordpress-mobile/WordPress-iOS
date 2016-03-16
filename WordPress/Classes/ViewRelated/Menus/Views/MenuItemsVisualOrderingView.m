@@ -31,19 +31,19 @@
     CGFloat constraintConstValue = self.startingOrderedItemViewFrame.origin.y + vector.y;
     const CGFloat boundsPadding = 20.0;
     
-    if(constraintConstValue < -boundsPadding) {
+    if (constraintConstValue < -boundsPadding) {
         constraintConstValue = -boundsPadding;
-    }else  {
+    } else   {
 
         const CGFloat maxY = (self.frame.size.height - self.visualOrderingView.frame.size.height) + boundsPadding;
-        if(constraintConstValue > maxY) {
+        if (constraintConstValue > maxY) {
             constraintConstValue = maxY;
         }
     }
     
     self.topConstraintForVisualTouchUpdates.constant = constraintConstValue;
     
-    if([self.delegate respondsToSelector:@selector(visualOrderingView:animatingVisualItemViewForOrdering:)]) {
+    if ([self.delegate respondsToSelector:@selector(visualOrderingView:animatingVisualItemViewForOrdering:)]) {
         [self.delegate visualOrderingView:self animatingVisualItemViewForOrdering:self.visualOrderingView];
     }
 }

@@ -23,7 +23,7 @@
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
         
         [self setup];
     }
@@ -63,19 +63,19 @@
 
 - (void)setItem:(MenusSelectionViewItem *)item
 {
-    if(_item != item) {
+    if (_item != item) {
         _item = item;
     }
     
     NSString *displayName = item.displayName;
-    if(![self.label.text isEqualToString:displayName]) {
+    if (![self.label.text isEqualToString:displayName]) {
         self.label.text = displayName;
     }
 }
 
 - (void)setDrawsDesignLineSeparator:(BOOL)drawsDesignLineSeparator
 {
-    if(_drawsDesignLineSeparator != drawsDesignLineSeparator) {
+    if (_drawsDesignLineSeparator != drawsDesignLineSeparator) {
         _drawsDesignLineSeparator = drawsDesignLineSeparator;
         [self setNeedsDisplay];
     }
@@ -83,7 +83,7 @@
 
 - (void)setDrawsHighlighted:(BOOL)drawsHighlighted
 {
-    if(_drawsHighlighted != drawsHighlighted) {
+    if (_drawsHighlighted != drawsHighlighted) {
         _drawsHighlighted = drawsHighlighted;
         
         [self.previousItemView setNeedsDisplay];
@@ -108,23 +108,23 @@
 - (void)drawRect:(CGRect)rect
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
-    if(self.drawsHighlighted) {
+    if (self.drawsHighlighted) {
         
         [[WPStyleGuide greyLighten30] set];
         CGContextFillRect(context, rect);
         
-    }else if(self.drawsDesignLineSeparator) {
+    } else  if (self.drawsDesignLineSeparator) {
         
         // draw the line separator
         CGContextSetLineWidth(context, 1.0);
         
-        if(self.previousItemView && !self.previousItemView.drawsHighlighted) {
+        if (self.previousItemView && !self.previousItemView.drawsHighlighted) {
             // draw a line on the top
             CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, 0);
             CGContextAddLineToPoint(context, rect.size.width, 0);
         }
         
-        if(self.nextItemView && !self.nextItemView.drawsHighlighted) {
+        if (self.nextItemView && !self.nextItemView.drawsHighlighted) {
             // draw a line on the bottom
             CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, rect.size.height);
             CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
@@ -134,7 +134,7 @@
         CGContextStrokePath(context);
     }
     
-    if(self.item.selected) {
+    if (self.item.selected) {
         // draw a checkmark
         CGFloat checkStepLength = 10.0;
         CGPoint checkOrigin = CGPointZero;
