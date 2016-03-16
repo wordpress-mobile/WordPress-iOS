@@ -16,7 +16,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if(self) {
+    if (self) {
         [self setupStyling];
     }
     
@@ -26,7 +26,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if(self) {
+    if (self) {
         [self setupStyling];
     }
     
@@ -78,20 +78,20 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     const BOOL drawsDisabledHighlight = !self.enabled; // will overlay a transparent white layer to appear disabled
     
     UIBezierPath *basePath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:MenusDesignDefaultCornerRadius];
-    if(self.baseColor) {
-        if(drawHighlighted) {
+    if (self.baseColor) {
+        if (drawHighlighted) {
             [[self adjustedColorWithColor:self.baseColor delta:-0.25] set];
-        }else {
+        } else  {
             [self.baseColor set];
         }
-    }else {
+    } else  {
         [[self adjustedColorWithColor:fillColor delta:drawHighlighted ? -0.25 : -0.16] set];
     }
     
     // draw the base layer based on a darker color of the draw color
     [basePath fill];
     
-    if(drawsDisabledHighlight) {
+    if (drawsDisabledHighlight) {
         [[UIColor colorWithWhite:1.0 alpha:0.55] set];
         [basePath fill];
     }
@@ -111,7 +111,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     [fillPath applyTransform:transform];
     [fillPath fill];
     
-    if(drawsDisabledHighlight) {
+    if (drawsDisabledHighlight) {
         [[UIColor colorWithWhite:1.0 alpha:0.75] set];
         [fillPath fill];
     }
@@ -140,7 +140,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
 
 - (void)setShowsDesignHighlighted:(BOOL)showsDesignHighlighted
 {
-    if(_showsDesignHighlighted != showsDesignHighlighted) {
+    if (_showsDesignHighlighted != showsDesignHighlighted) {
         _showsDesignHighlighted = showsDesignHighlighted;
         [self setNeedsDisplay];
         [self updateDesignInsets];
@@ -164,10 +164,10 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     
     UIEdgeInsets titleEdgeInsets = UIEdgeInsetsZero;
     
-    if(highlighted) {
+    if (highlighted) {
         imageEdgeInsets.top += MenusDetailsButtonDesignPadding;
         titleEdgeInsets.top += MenusDetailsButtonDesignPadding;
-    }else {
+    } else  {
         imageEdgeInsets.bottom += MenusDetailsButtonDesignPadding;
         titleEdgeInsets.bottom += MenusDetailsButtonDesignPadding;
     }

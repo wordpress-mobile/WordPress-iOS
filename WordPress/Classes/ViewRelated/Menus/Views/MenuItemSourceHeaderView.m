@@ -15,7 +15,7 @@
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];

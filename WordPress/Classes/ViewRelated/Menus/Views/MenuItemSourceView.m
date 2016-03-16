@@ -25,7 +25,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
@@ -93,7 +93,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (BOOL)resignFirstResponder
 {
-    if([self.searchBar isFirstResponder]) {
+    if ([self.searchBar isFirstResponder]) {
         return [self.searchBar resignFirstResponder];
     }
     return [super resignFirstResponder];
@@ -105,7 +105,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 {
     [super layoutSubviews];
         
-    if(!self.tableView.tableHeaderView) {
+    if (!self.tableView.tableHeaderView) {
         // set the tableHeaderView after we have called layoutSubviews the first time
         // this add the stackedTableHeaderView to view hierarchy
         self.tableView.tableHeaderView = self.stackedTableHeaderView;
@@ -126,7 +126,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (void)insertSearchBarIfNeeded
 {
-    if(self.searchBar) {
+    if (self.searchBar) {
         return;
     }
     
@@ -214,7 +214,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 - (NSFetchedResultsController *)resultsController
 {
     NSFetchRequest *fetchRequest = nil;
-    if(!_resultsController && [self managedObjectContext] && (fetchRequest = [self fetchRequest])) {
+    if (!_resultsController && [self managedObjectContext] && (fetchRequest = [self fetchRequest])) {
         
         NSFetchedResultsController *resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:[self managedObjectContext] sectionNameKeyPath:[self fetechedResultsControllerSectionNameKeyPath] cacheName:nil];
         resultsController.delegate = self;
@@ -250,12 +250,12 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (void)performResultsControllerFetchRequest
 {
-    if(!self.resultsController) {
+    if (!self.resultsController) {
         return;
     }
     
     NSError *error;
-    if(![self.resultsController performFetch:&error]) {
+    if (![self.resultsController performFetch:&error]) {
         NSLog(@"an error ocurred: %@", error);
         // TODO: handle errors
     }
@@ -339,7 +339,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 {
     static NSString * const identifier = @"MenuItemSourceCell";
     MenuItemSourceCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if(!cell) {
+    if (!cell) {
         cell = [[MenuItemSourceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     

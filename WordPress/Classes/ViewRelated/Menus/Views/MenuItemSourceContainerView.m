@@ -66,16 +66,16 @@
 {
     [super traitCollectionDidChange:previousTraitCollection];
     
-    if(self.frame.size.width > self.frame.size.height) {
+    if (self.frame.size.width > self.frame.size.height) {
         [self setHeaderViewHidden:YES];
-    }else {
+    } else  {
         [self setHeaderViewHidden:NO];
     }
 }
 
 - (void)setHeaderViewHidden:(BOOL)hidden
 {
-    if(self.headerView.hidden != hidden) {
+    if (self.headerView.hidden != hidden) {
         self.headerView.hidden = hidden;
         self.headerView.alpha = hidden ? 0.0 : 1.0;
     }
@@ -98,7 +98,7 @@
 - (void)showSourceViewForItemType:(NSString *)itemType
 {
     MenuItemSourceView *sourceView = [self.sourceViewCache objectForKey:itemType];
-    if(self.sourceView) {
+    if (self.sourceView) {
         if (self.sourceView == sourceView) {
             // No update needed.
             return;
@@ -109,14 +109,14 @@
     }
     
     BOOL sourceViewSetupRequired = NO;
-    if(!sourceView) {
+    if (!sourceView) {
         if ([itemType isEqualToString:MenuItemTypePage]) {
             sourceView = [[MenuItemSourcePageView alloc] init];
-        } else if([itemType isEqualToString:MenuItemTypeCustom]) {
+        } else if ([itemType isEqualToString:MenuItemTypeCustom]) {
             sourceView = [[MenuItemSourceLinkView alloc] init];
-        } else if([itemType isEqualToString:MenuItemTypeCategory]) {
+        } else if ([itemType isEqualToString:MenuItemTypeCategory]) {
             sourceView = [[MenuItemSourceCategoryView alloc] init];
-        } else if([itemType isEqualToString:MenuItemTypeTag]) {
+        } else if ([itemType isEqualToString:MenuItemTypeTag]) {
             sourceView = [[MenuItemSourceTagView alloc] init];
         } else {
             // Default to a post view that will load posts of postType == itemType.

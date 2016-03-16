@@ -20,7 +20,7 @@
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
         
         self.iconType = MenuIconTypeDefault;
         
@@ -54,7 +54,7 @@
 
 - (void)setItem:(MenuItem *)item
 {
-    if(_item != item) {
+    if (_item != item) {
         _item = item;
         self.textLabel.text = item.name;
     }
@@ -62,7 +62,7 @@
 
 - (void)setShowsEditingButtonOptions:(BOOL)showsEditingButtonOptions
 {
-    if(_showsEditingButtonOptions != showsEditingButtonOptions) {
+    if (_showsEditingButtonOptions != showsEditingButtonOptions) {
         _showsEditingButtonOptions = showsEditingButtonOptions;
     }
     
@@ -72,7 +72,7 @@
 
 - (void)setShowsCancelButtonOption:(BOOL)showsCancelButtonOption
 {
-    if(_showsCancelButtonOption != showsCancelButtonOption) {
+    if (_showsCancelButtonOption != showsCancelButtonOption) {
         _showsCancelButtonOption = showsCancelButtonOption;
     }
     
@@ -117,16 +117,16 @@
     [super touchesEnded:touches withEvent:event];
     
     UITouch *touch = [touches anyObject];
-    if(CGPointEqualToPoint(self.touchesBeganLocation, CGPointZero)) {
+    if (CGPointEqualToPoint(self.touchesBeganLocation, CGPointZero)) {
         return;
     }
     
     CGPoint endedPoint = [touch locationInView:self];
-    if(CGPointEqualToPoint(endedPoint, CGPointZero)) {
+    if (CGPointEqualToPoint(endedPoint, CGPointZero)) {
         return;
     }
     
-    if(CGRectContainsPoint(self.bounds, self.touchesBeganLocation) && CGRectContainsPoint(self.bounds, endedPoint)) {
+    if (CGRectContainsPoint(self.bounds, self.touchesBeganLocation) && CGRectContainsPoint(self.bounds, endedPoint)) {
         [self.delegate itemViewSelected:self];
     }
     

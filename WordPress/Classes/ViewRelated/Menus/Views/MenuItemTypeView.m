@@ -22,7 +22,7 @@
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
         
         self.translatesAutoresizingMaskIntoConstraints = NO;
         self.backgroundColor = [UIColor whiteColor];
@@ -131,9 +131,9 @@
 - (void)updateSelection
 {
     self.label.textColor = self.selected ? [WPStyleGuide mediumBlue] : [WPStyleGuide greyDarken30];
-    if(self.selected && ![self.delegate typeViewRequiresCompactLayout:self]) {
+    if (self.selected && ![self.delegate typeViewRequiresCompactLayout:self]) {
         [self showArrowView];
-    }else {
+    } else  {
         [self hideArrowView];
     }
     [self setNeedsDisplay];
@@ -146,7 +146,7 @@
 
 - (void)showArrowView
 {
-    if(self.arrowView.hidden) {
+    if (self.arrowView.hidden) {
         self.arrowView.alpha = 1.0;
         self.arrowView.hidden = NO;
     }
@@ -154,7 +154,7 @@
 
 - (void)hideArrowView
 {
-    if(!self.arrowView.hidden) {
+    if (!self.arrowView.hidden) {
         self.arrowView.alpha = 0.0;
         self.arrowView.hidden = YES;
     }
@@ -182,9 +182,9 @@
     CGContextSetLineWidth(context, 2.0);
     CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
     
-    if(self.selected) {
+    if (self.selected) {
         
-        if(!self.designIgnoresDrawingTopBorder) {
+        if (!self.designIgnoresDrawingTopBorder) {
             CGContextMoveToPoint(context, 0, 0);
             CGContextAddLineToPoint(context, rect.size.width, 0);
         }
@@ -193,7 +193,7 @@
         CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
         CGContextStrokePath(context);
 
-    }else {
+    } else  {
         
         CGContextMoveToPoint(context, rect.size.width, 0);
         CGContextAddLineToPoint(context, rect.size.width, rect.size.height);

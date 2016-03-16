@@ -20,7 +20,7 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
         
     }
     

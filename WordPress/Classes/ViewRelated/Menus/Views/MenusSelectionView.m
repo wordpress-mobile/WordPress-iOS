@@ -26,7 +26,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 - (void)setSelected:(BOOL)selected
 {
-    if(_selected != selected) {
+    if (_selected != selected) {
         _selected = selected;
         [[NSNotificationCenter defaultCenter] postNotificationName:MenusSelectionViewItemChangedSelectedNotification object:self];
     }
@@ -46,10 +46,10 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 {
     NSString *name = nil;
     
-    if([self isMenu]) {
+    if ([self isMenu]) {
         Menu *menu = self.itemObject;
         name = menu.name;
-    }else if([self isMenuLocation]) {
+    } else  if ([self isMenuLocation]) {
         MenuLocation *location = self.itemObject;
         name = location.details;
     }
@@ -107,7 +107,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 - (void)setItems:(NSArray<MenusSelectionViewItem *> *)items
 {
-    if(_items != items) {
+    if (_items != items) {
         _items = items;
         [self reloadItemViews];
     }
@@ -115,7 +115,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 - (void)setSelectedItem:(MenusSelectionViewItem *)selectedItem
 {
-    if(_selectedItem != selectedItem) {
+    if (_selectedItem != selectedItem) {
         
         _selectedItem.selected = NO;
         selectedItem.selected = YES;
@@ -129,7 +129,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 {
     MenusSelectionViewItem *matchingItem = nil;
     for(MenusSelectionViewItem *item in self.items) {
-        if(item.itemObject == itemObject) {
+        if (item.itemObject == itemObject) {
             matchingItem = item;
             break;
         }
@@ -140,7 +140,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 - (void)setSelectionExpanded:(BOOL)selectionExpanded
 {
-    if(_selectionExpanded != selectionExpanded) {
+    if (_selectionExpanded != selectionExpanded) {
         _selectionExpanded = selectionExpanded;
         for(MenusSelectionItemView *itemView in self.itemViews) {
             itemView.hidden = !selectionExpanded;
@@ -153,7 +153,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 - (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded animated:(BOOL)animated
 {
-    if(!animated) {
+    if (!animated) {
         self.selectionExpanded = selectionItemsExpanded;
         return;
     }
@@ -212,7 +212,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 - (void)setDrawsHighlighted:(BOOL)drawsHighlighted
 {
-    if(_drawsHighlighted != drawsHighlighted) {
+    if (_drawsHighlighted != drawsHighlighted) {
         _drawsHighlighted = drawsHighlighted;
         self.backgroundColor = drawsHighlighted ? [UIColor colorWithRed:0.99 green:0.99 blue:1.0 alpha:1.0] : [UIColor whiteColor];
     }
@@ -258,18 +258,18 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
     MenusSelectionViewItem *updatedItem = notification.object;
     BOOL haveItem = NO;
     for(MenusSelectionViewItem *item in self.items) {
-        if(item == updatedItem) {
+        if (item == updatedItem) {
             haveItem = YES;
             break;
         }
     }
     
-    if(!haveItem) {
+    if (!haveItem) {
         // no updates needed
         return;
     }
     
-    if(updatedItem.selected) {
+    if (updatedItem.selected) {
         // update the detailView
         [self.detailView updatewithAvailableItems:self.items.count selectedItem:updatedItem];
     }
@@ -277,7 +277,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
     // update any itemViews using this item
     for(MenusSelectionItemView *itemView in self.itemViews) {
         
-        if(itemView.item == updatedItem) {
+        if (itemView.item == updatedItem) {
             itemView.item = updatedItem;
             break;
         }
