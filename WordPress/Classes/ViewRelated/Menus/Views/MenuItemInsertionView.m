@@ -7,7 +7,7 @@
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
         
         self.iconType = MenuIconTypeNone;
         
@@ -21,9 +21,9 @@
 - (UIColor *)contentViewBackgroundColor
 {
     UIColor *color = nil;
-    if(self.highlighted) {
+    if (self.highlighted) {
         color = [super contentViewBackgroundColor];
-    }else {
+    } else  {
         color = [UIColor colorWithWhite:0.96 alpha:1.0];
     }
     
@@ -32,7 +32,7 @@
 
 - (void)setType:(MenuItemInsertionViewType)type
 {
-    if(_type != type) {
+    if (_type != type) {
         _type = type;
         self.textLabel.text = [self textForType:type];
     }

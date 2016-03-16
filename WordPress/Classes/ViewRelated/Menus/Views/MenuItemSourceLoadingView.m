@@ -36,7 +36,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if(self) {
+    if (self) {
         
         MenuItemSourceCell *cell = [[MenuItemSourceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.frame = self.bounds;

@@ -17,7 +17,7 @@
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
         
         {
             UILabel *label = [[UILabel alloc] init];
@@ -87,7 +87,7 @@
 
 - (BOOL)resignFirstResponder
 {
-    if([self.textBar isFirstResponder]) {
+    if ([self.textBar isFirstResponder]) {
         return [self.textBar resignFirstResponder];
     }
     return [super resignFirstResponder];

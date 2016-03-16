@@ -26,7 +26,7 @@
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
         
         self.backgroundColor = [UIColor whiteColor];
         self.translatesAutoresizingMaskIntoConstraints = NO;
@@ -141,7 +141,7 @@
 - (id)initAsSearchBar
 {
     self = [self init];
-    if(self) {
+    if (self) {
         
         self.iconView.image = [[UIImage imageNamed:@"icon-menus-search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.iconView.hidden = NO;
@@ -172,7 +172,7 @@
 
 - (BOOL)resignFirstResponder
 {
-    if([self.textField isFirstResponder]) {
+    if ([self.textField isFirstResponder]) {
         return [self.textField resignFirstResponder];
     }
     
@@ -188,18 +188,18 @@
 
 - (void)setCancelLabelHidden:(BOOL)hidden animated:(BOOL)animated
 {
-    if(self.cancelLabel.hidden != hidden) {
+    if (self.cancelLabel.hidden != hidden) {
         
         void(^toggleButton)() = ^() {
             self.cancelLabel.hidden = hidden;
             self.cancelLabel.alpha = hidden ? 0.0 : 1.0;
         };
         
-        if(animated) {
+        if (animated) {
             [UIView animateWithDuration:0.20 animations:^{
                 toggleButton();
             }];
-        }else {
+        } else  {
             toggleButton();
         }
     }

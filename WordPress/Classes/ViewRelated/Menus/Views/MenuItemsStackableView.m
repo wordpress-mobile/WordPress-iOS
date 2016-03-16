@@ -32,7 +32,7 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 - (id)init
 {
     self = [super init];
-    if(self) {
+    if (self) {
         [self setup];
     }
     
@@ -117,7 +117,7 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 
 - (void)setHighlighted:(BOOL)highlighted
 {
-    if(_highlighted != highlighted) {
+    if (_highlighted != highlighted) {
         _highlighted = highlighted;
         
         self.textLabel.textColor = [self textLabelColor];
@@ -129,7 +129,7 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 
 - (void)setIsPlaceholder:(BOOL)isPlaceholder
 {
-    if(_isPlaceholder != isPlaceholder) {
+    if (_isPlaceholder != isPlaceholder) {
         _isPlaceholder = isPlaceholder;
         
         self.contentView.alpha = isPlaceholder ? 0.45 : 1.0;
@@ -141,15 +141,15 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 
 - (void)setIconType:(MenuIconType)iconType
 {
-    if(_iconType != iconType) {
+    if (_iconType != iconType) {
         _iconType = iconType;
         
-        if(iconType == MenuIconTypeNone) {
+        if (iconType == MenuIconTypeNone) {
             
             self.iconView.image = nil;
             self.iconView.hidden = YES;
             
-        }else {
+        } else  {
             
             self.iconView.hidden = NO;
             self.iconView.image = [[UIImage imageNamed:MenusDesignItemIconImageNameForType(iconType)] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -159,7 +159,7 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 
 - (void)setIndentationLevel:(NSInteger)indentationLevel
 {
-    if(_indentationLevel != indentationLevel) {
+    if (_indentationLevel != indentationLevel) {
         _indentationLevel = indentationLevel;
         self.constraintForLeadingIndentation.constant = (MenusDesignDefaultContentSpacing * indentationLevel) + MenusDesignDefaultContentSpacing;
         [self setNeedsDisplay];
@@ -169,7 +169,7 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 
 - (void)addAccessoryButton:(UIButton *)button
 {
-    if(!self.accessoryStackView) {
+    if (!self.accessoryStackView) {
         UIStackView *stackView = [[UIStackView alloc] init];
         stackView.translatesAutoresizingMaskIntoConstraints = NO;
         stackView.distribution = UIStackViewDistributionFill;
@@ -189,7 +189,7 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
     button.imageView.contentMode = UIViewContentModeScaleAspectFit;
     button.backgroundColor = [UIColor clearColor];
     
-    if(type != MenuIconTypeNone) {
+    if (type != MenuIconTypeNone) {
         [button setImage:[[UIImage imageNamed:MenusDesignItemIconImageNameForType(type)] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     }
     
@@ -215,9 +215,9 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 - (UIColor *)contentViewBackgroundColor
 {
     UIColor *color = nil;
-    if(self.highlighted) {
+    if (self.highlighted) {
         color = [WPStyleGuide mediumBlue];
-    }else {
+    } else  {
         color = [UIColor whiteColor];
     }
     
@@ -227,9 +227,9 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 - (UIColor *)textLabelColor
 {
     UIColor *color = nil;
-    if(self.highlighted) {
+    if (self.highlighted) {
         color = [UIColor whiteColor];
-    }else {
+    } else  {
         color = [WPStyleGuide darkGrey];
     }
     
@@ -239,9 +239,9 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 - (UIColor *)iconTintColor
 {
     UIColor *color = nil;
-    if(self.highlighted) {
+    if (self.highlighted) {
         color = [UIColor whiteColor];
-    }else {
+    } else  {
         color = [WPStyleGuide mediumBlue];
     }
     
@@ -338,7 +338,7 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetLineWidth(context, 1.0);
     
-    if(_isPlaceholder) {
+    if (_isPlaceholder) {
         // draw a line on the top
         // but only while reordering
         // otherwise the line stacks against the other line on the top

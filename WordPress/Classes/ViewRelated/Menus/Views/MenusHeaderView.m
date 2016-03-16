@@ -72,17 +72,17 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
 {
     [super traitCollectionDidChange:previousTraitCollection];
     
-    if(self.stackView.axis == UILayoutConstraintAxisHorizontal) {
+    if (self.stackView.axis == UILayoutConstraintAxisHorizontal) {
         // toggle the selection on a trait collection change to a horizonal axis for the stack view
         // this ensures both selection views are expanded if one already is
         // otherwise the design looks odd with too much negative space
         // see userInteractionDetectedForTogglingSelectionView:expand:
-        if(self.locationsView.selectionExpanded || self.menusView.selectionExpanded) {
-            if(self.locationsView.selectionExpanded && !self.menusView.selectionExpanded) {
+        if (self.locationsView.selectionExpanded || self.menusView.selectionExpanded) {
+            if (self.locationsView.selectionExpanded && !self.menusView.selectionExpanded) {
                 
                 [self.menusView setSelectionItemsExpanded:YES animated:NO];
                 
-            }else if(self.menusView.selectionExpanded && !self.locationsView.selectionExpanded) {
+            } else  if (self.menusView.selectionExpanded && !self.locationsView.selectionExpanded) {
              
                 [self.locationsView setSelectionItemsExpanded:YES animated:NO];
             }
@@ -154,32 +154,32 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
 
 - (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand
 {
-    if(self.stackView.axis == UILayoutConstraintAxisHorizontal) {
+    if (self.stackView.axis == UILayoutConstraintAxisHorizontal) {
         // in the horizontal axis we want to toggle expansion for both selection views
         // otherwise the design looks odd with too much negative space
         // see traitCollectionDidChange:
-        if(selectionView == self.locationsView) {
+        if (selectionView == self.locationsView) {
             [self.menusView setSelectionItemsExpanded:expand animated:YES];
-        }else if(selectionView == self.menusView) {
+        } else  if (selectionView == self.menusView) {
             [self.locationsView setSelectionItemsExpanded:expand animated:YES];
         }
         
         [selectionView setSelectionItemsExpanded:expand animated:YES];
         
-    }else {
+    } else  {
         [selectionView setSelectionItemsExpanded:expand animated:YES];
     }
 }
 
 - (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionViewItem *)item
 {
-    if([item isMenuLocation]) {
+    if ([item isMenuLocation]) {
         
         MenuLocation *location = item.itemObject;
         [self updateSelectionWithMenu:location.menu];
         [self tellDelegateSelectedLocation:item.itemObject];
         
-    }else if([item isMenu]) {
+    } else  if ([item isMenu]) {
         
         Menu *menu = item.itemObject;
         [self updateLocationSelectionWithMenu:menu];
