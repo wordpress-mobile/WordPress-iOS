@@ -884,7 +884,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             break;
 
         case SiteSettingsAdvancedDeleteSite:
-            [self confirmDeleteSite];
+            [self checkSiteDeletable];
             break;
     }
 }

@@ -63,12 +63,46 @@ public extension SiteSettingsViewController
             })
     }    
 
-    /// Presents confirmation alert for Delete Site
+    /// Requests site purchases to determine whether site is deletable
     ///
-    public func confirmDeleteSite() {
+    public func checkSiteDeletable() {
         tableView.deselectSelectedRowWithAnimation(true)
         
-        presentViewController(confirmDeleteController(), animated: true, completion: nil)
+        let status = NSLocalizedString("Checking purchases…", comment: "Overlay message displayed while checking if site has premium purchases")
+        SVProgressHUD.showWithStatus(status)
+
+        let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        service.getActivePurchasesForBlog(blog,
+            success: { [weak self] purchases in
+                SVProgressHUD.dismiss()
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                if purchases.isEmpty {
+                    strongSelf.presentViewController(strongSelf.confirmDeleteController(), animated: true, completion: nil)
+                } else {
+                    strongSelf.warnPurchases()
+                }
+            },
+            failure: { error in
+                DDLogSwift.logError("Error getting purchases: \(error.localizedDescription)")
+                SVProgressHUD.dismiss()
+                
+                let errorTitle = NSLocalizedString("Check Purchases Error", comment: "Title of alert when getting purchases fails")
+                let alertController = UIAlertController(title: errorTitle, message: error.localizedDescription, preferredStyle: .Alert)
+                
+                let okTitle = NSLocalizedString("OK", comment: "Alert dismissal title")
+                alertController.addDefaultActionWithTitle(okTitle, handler: nil)
+                
+                alertController.presentFromRootViewController()
+        })
+    }
+    
+    /// Warn user that purchases need removing
+    ///
+    private func warnPurchases() {
+        // WIP
     }
 
     /// Creates confirmation alert for Delete Site
