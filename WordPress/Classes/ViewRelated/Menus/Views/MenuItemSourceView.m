@@ -282,6 +282,19 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     }
 }
 
+- (void)deselectVisibleSourceCellsIfNeeded
+{
+    NSArray *cells = [self.tableView visibleCells];
+    for (MenuItemSourceCell *cell in cells) {
+        if (![cell isKindOfClass:[MenuItemSourceCell class]]) {
+            continue;
+        }
+        if (cell.sourceSelected) {
+            cell.sourceSelected = NO;
+        }
+    }
+}
+
 #pragma mark - subclass configuration
 
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
