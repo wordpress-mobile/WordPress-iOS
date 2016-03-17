@@ -11,7 +11,12 @@ class PlanDetailViewController: UIViewController {
     
     var isActivePlan = false
     
-    private var viewModel: ImmuTable! = nil
+    private var tableViewModel = ImmuTable.Empty {
+        didSet {
+            tableView?.reloadData()
+        }
+    }
+    var viewModel: PlanFeatureViewModel? = nil
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var planImageView: UIImageView!
@@ -40,11 +45,12 @@ class PlanDetailViewController: UIViewController {
     
     @IBOutlet weak var headerInfoStackView: UIStackView!
 
-    class func controllerWithPlan(plan: Plan) -> PlanDetailViewController {
+    class func controllerWithPlan(plan: Plan, isActive: Bool) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
         
         controller.plan = plan
+        controller.isActivePlan = isActive
         
         return controller
     }
@@ -56,11 +62,8 @@ class PlanDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = plan.title
-        
         configureAppearance()
-        configureImmuTable()
-        populateHeader()
+        configureTableView()
     }
     
     private func configureAppearance() {
@@ -76,6 +79,12 @@ class PlanDetailViewController: UIViewController {
         configurePlanImageDropshadow()
     }
     
+    private func configureTableView() {
+        ImmuTable.registerRows([ FeatureListItemRow.self ], tableView: tableView)
+    
+        tableView.layoutMargins = UIEdgeInsetsMake(0, tableViewHorizontalMargin, 0, tableViewHorizontalMargin)
+    }
+    
     private func configurePlanImageDropshadow() {
         dropshadowImageView.layer.masksToBounds = false
         dropshadowImageView.layer.shadowColor = WPStyleGuide.greyLighten30().CGColor
@@ -85,31 +94,15 @@ class PlanDetailViewController: UIViewController {
         dropshadowImageView.layer.shadowPath = UIBezierPath(ovalInRect: dropshadowImageView.bounds).CGPath
     }
     
-    private func configureImmuTable() {
-        ImmuTable.registerRows([ FeatureListItemRow.self ], tableView: tableView)
+    func reloadViewModel() {
+        let viewModel = PlanFeatureViewModel(plan: plan, isActivePlan: isActivePlan)
         
-        let planFeatures = PlanFeature.featuresForPlan(plan)
-        
-        viewModel = ImmuTable(sections:
-            [ ImmuTableSection(rows: planFeatures.map { feature in
-                return TextRow(title: feature.title, value: feature.description)
-            } ) ]
-        )
-        
-        tableView.layoutMargins = UIEdgeInsetsMake(0, tableViewHorizontalMargin, 0, tableViewHorizontalMargin)
-    }
-    
-    func reloadFeatures() {
-        if isViewLoaded() {
-            configureImmuTable()
-
-            tableView.reloadData()
-        }
+        bindViewModel(viewModel)
     }
     
     lazy var paddingView = UIView()
     
-    private func populateHeader() {
+    private func populateHeader(plan: Plan, isActivePlan: Bool) {
         planImageView.image = plan.image
         planTitleLabel.text = plan.fullTitle
         planDescriptionLabel.text = plan.description
@@ -122,6 +115,13 @@ class PlanDetailViewController: UIViewController {
             purchaseButton.removeFromSuperview()
             headerInfoStackView.addArrangedSubview(paddingView)
         }
+    }
+    
+    func bindViewModel(viewModel: PlanFeatureViewModel) {
+        self.viewModel = viewModel
+        self.tableViewModel = viewModel.tableViewModel
+        title = viewModel.plan.title
+        populateHeader(viewModel.plan, isActivePlan: viewModel.isActivePlan)
     }
     
     // TODO: Prices should always come from StoreKit
@@ -148,6 +148,8 @@ class PlanDetailViewController: UIViewController {
         // transaction process to simulate navigation to the post purchase screens.
         // This should be removed when we integrate StoreKit.
         func showSuccessAlert() {
+            guard let _ = viewModel?.plan else { return }
+            
             let alert = UIAlertController(title: "Thank You", message: "Your purchase was successful.", preferredStyle: .Alert)
             alert.addActionWithTitle("OK", style: .Default, handler: { action in })
             
@@ -175,20 +177,37 @@ class PlanDetailViewController: UIViewController {
             self.presentViewController(alert, animated: true, completion: nil)
         })
     }
+    
+    struct PlanFeatureViewModel {
+        let plan: Plan
+        let isActivePlan: Bool
+        
+        var tableViewModel: ImmuTable {
+            guard let groups = PlanFeatureGroup.groupsForPlan(plan) else {
+                return ImmuTable.Empty
+            }
+            
+            return ImmuTable(sections: groups.map { group in
+                let features = group.slugs.map { PlanFeaturesService.featureForPlan(plan, withSlug: $0) }
+                
+                return ImmuTableSection(headerText: group.title, rows: features.map({ TextRow(title: $0!.title, value: $0!.description) }), footerText: nil)
+                })
+        }
+    }
 }
 
 // MARK: Table View Data Source / Delegate
 extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return viewModel.sections.count
+        return tableViewModel.sections.count
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.sections[section].rows.count
+        return tableViewModel.sections[section].rows.count
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let row = viewModel.rowAtIndexPath(indexPath)
+        let row = tableViewModel.rowAtIndexPath(indexPath)
         let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
         
         row.configureCell(cell)
@@ -203,6 +222,10 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
         } else {
             cell.backgroundColor = WPStyleGuide.lightGrey()
         }
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return tableViewModel.sections[section].headerText
     }
 }
 
