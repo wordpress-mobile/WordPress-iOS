@@ -83,7 +83,10 @@
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
     [self setItemSourceWithContentID:[post.postID stringValue] name:post.titleForDisplay];
     
-    [tableView reloadRowsAtIndexPaths:tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
+    [self deselectVisibleSourceCellsIfNeeded];
+    
+    MenuItemSourceCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    selectedCell.sourceSelected = YES;
 }
 
 #pragma mark - MenuItemSourcePostAbstractViewSubclass
