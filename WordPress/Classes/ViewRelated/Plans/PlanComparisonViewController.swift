@@ -64,20 +64,26 @@ class PlanComparisonViewController: UIViewController {
         
         navigationItem.leftBarButtonItem = cancelXButton
         
-        fetchFeatures()
         initializePlanDetailViewControllers()
         updateForCurrentPlan()
+        fetchFeatures()
     }
     
     private func fetchFeatures() {
-        featureService.updateAllPlanFeatures({ [weak self] in
-            if let viewControllers = self?.viewControllers {
-                for controller in viewControllers {
-                    controller.reloadViewModel()
-                }
+        func setViewModelForViewControllers(action: (PlanDetailViewController -> Void)) {
+            for controller in viewControllers {
+                action(controller)
+            }
+        }
+        
+        featureService.updateAllPlanFeatures({
+            setViewModelForViewControllers{ controller in
+                controller.viewModel = PlanDetailViewController.PlanFeatureViewModel.Ready(controller.plan)
             }
             }, failure: { error in
-                // TODO: Handle error
+                setViewModelForViewControllers{ controller in
+                    controller.viewModel = PlanDetailViewController.PlanFeatureViewModel.Error(String(error))
+                }
         })
     }
     
