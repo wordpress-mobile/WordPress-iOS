@@ -3,10 +3,12 @@ import Foundation
 typealias PricedPlan = (plan: Plan, price: String)
 typealias SitePricedPlans = (activePlan: Plan, availablePlans: [PricedPlan])
 
+typealias PlanID = Int
+
 /// Represents a WordPress.com free or paid plan.
 /// - seealso: [WordPress.com Store](https://store.wordpress.com/plans/)
 struct Plan {
-    let id: Int
+    let id: PlanID
     let slug: String
     let title: String
     let fullTitle: String
@@ -42,7 +44,7 @@ func < (lhs: Plan, rhs: Plan) -> Bool {
 
 // Obj-C bridge functions
 final class PlansBridge: NSObject {
-    static func titleForPlan(withID planID: Int) -> String? {
+    static func titleForPlan(withID planID: PlanID) -> String? {
         return defaultPlans
             .withID(planID)?
             .title
@@ -112,17 +114,41 @@ extension Plan {
     }
 }
 
-typealias PlanFeatures = [Int: [PlanFeature]]
-
 struct PlanFeature {
     let slug: String
     let title: String
     let description: String
     let iconName: String
+}
 
-    static var planFeatures = PlanFeatures()
+struct PlanFeatureGroup {
+    let title: String?
+    let slugs: [String]
     
-    static func featuresForPlan(plan: Plan) -> [PlanFeature] {
-        return planFeatures[plan.id] ?? []
+    // TODO: (@frosty 2016-03-16) This hardcoding is temporary until the /sites/:id/plans endpoint
+    // supports returning this data.
+    static private var groups: [Plan: [PlanFeatureGroup]] = [
+        defaultPlans[0]: [ PlanFeatureGroup(title: nil, slugs: [ "free-blog", "space", "support" ]) ],
+        defaultPlans[1]: [ PlanFeatureGroup(title: nil, slugs: [ "custom-design",
+                                                                 "videopress",
+                                                                 "support",
+                                                                 "space",
+                                                                 "custom-domain",
+                                                                 "no-adverts/no-adverts.php" ]),
+                           PlanFeatureGroup(title: "Included with all plans", slugs: [ "free-blog" ]) ],
+        defaultPlans[2]: [ PlanFeatureGroup(title: nil, slugs: [ "premium-themes", "space", "support" ]),
+                           PlanFeatureGroup(title: "Includes WordPress.com Premium features:", slugs: [ "custom-design",
+                                                                                                        "videopress",
+                                                                                                        "custom-domain",
+                                                                                                        "no-adverts/no-adverts.php" ]),
+                           PlanFeatureGroup(title: "Included with all plans", slugs: [ "free-blog" ]) ]
+    ]
+    
+    static func groupsForPlan(plan: Plan) -> [PlanFeatureGroup]? {
+        return groups[plan]
+    }
+    
+    static func setGroups(groups: [PlanFeatureGroup], forPlan plan: Plan) {
+        self.groups[plan] = groups
     }
 }
