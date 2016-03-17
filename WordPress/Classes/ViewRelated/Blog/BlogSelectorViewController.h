@@ -15,6 +15,7 @@ typedef void (^BlogSelectorDismissHandler)();
                               successHandler:(BlogSelectorSuccessDotComHandler)successHandler
                               dismissHandler:(BlogSelectorDismissHandler)dismissHandler;
 
+@property (nonatomic, assign) BOOL displaysPrimaryBlogOnTop;
 @property (nonatomic, assign) BOOL displaysOnlyDefaultAccountSites;
 @property (nonatomic, assign) BOOL displaysCancelButton;
 @property (nonatomic, assign) BOOL dismissOnCancellation;
