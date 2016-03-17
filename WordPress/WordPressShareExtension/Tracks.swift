@@ -5,14 +5,16 @@ public class Tracks
 {
     // MARK: - Properties
     private let groupName           : String
+    private let wpcomUsername       : String?
     
     // MARK: - Constants
     private static let version      = "1.0"
     private static let userAgent    = "Nosara Extensions Client for iOS Mark " + version
     
     // MARK: - Initializers
-    init(groupName: String) {
+    init(groupName: String, wpcomUsername: String?) {
         self.groupName = groupName
+        self.wpcomUsername = wpcomUsername
     }
     
     
@@ -36,19 +38,27 @@ public class Tracks
         let appVersion  = bundle.objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
         let appCode     = bundle.objectForInfoDictionaryKey("CFBundleVersion") as? String
         
-        return [
-            "_en"                                   : eventName,
-            "_ts"                                   : timestamp,
-            "_ui"                                   : userID,
-            "_ut"                                   : "anon",
-            "_via_ua"                               : Tracks.userAgent,
-            "_rt"                                   : timestamp,
-            "device_info_app_name"                  : appName       ?? "WordPress",
-            "device_info_app_version"               : appVersion    ?? "Unknown",
-            "device_info_app_version_code"          : appCode       ?? "Unknown",
-            "device_info_os"                        : device.systemName,
-            "device_info_os_version"                : device.systemVersion
+        var payload = [
+            "_en"                           : eventName,
+            "_ts"                           : timestamp,
+            "_via_ua"                       : Tracks.userAgent,
+            "_rt"                           : timestamp,
+            "device_info_app_name"          : appName       ?? "WordPress",
+            "device_info_app_version"       : appVersion    ?? "Unknown",
+            "device_info_app_version_code"  : appCode       ?? "Unknown",
+            "device_info_os"                : device.systemName,
+            "device_info_os_version"        : device.systemVersion
         ] as [String: AnyObject]
+        
+        if let username = wpcomUsername {
+            payload["_ul"] = username
+            payload["_ut"] = "wpcom:user_id"
+        } else {
+            payload["_ui"] = userID
+            payload["_ut"] = "anon"
+        }
+        
+        return payload
     }
     
     
