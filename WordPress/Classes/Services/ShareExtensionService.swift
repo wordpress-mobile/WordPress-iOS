@@ -27,7 +27,7 @@ public class ShareExtensionService: NSObject
     ///     - defaultSiteName: The Primary Site's Name
     ///
     class func configureShareExtensionDefaultSiteID(defaultSiteID: Int, defaultSiteName: String) {
-        guard let userDefaults = NSUserDefaults(suiteName: WPAppDefaultsGroupName) else {
+        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
             return
         }
         
@@ -47,7 +47,7 @@ public class ShareExtensionService: NSObject
             print("Error while removing Share Extension OAuth2 bearer token: \(error)")
         }
         
-        if let userDefaults = NSUserDefaults(suiteName: WPAppDefaultsGroupName) {
+        if let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) {
             userDefaults.removeObjectForKey(WPShareExtensionUserDefaultsPrimarySiteID)
             userDefaults.removeObjectForKey(WPShareExtensionUserDefaultsPrimarySiteName)
             userDefaults.synchronize()
@@ -73,7 +73,7 @@ public class ShareExtensionService: NSObject
     /// - Returns: Tuple with the Primary Site ID + Name. If any.
     ///
     class func retrieveShareExtensionPrimarySite() -> (siteID: Int, siteName: String)? {
-        guard let userDefaults = NSUserDefaults(suiteName: WPAppDefaultsGroupName) else {
+        guard let userDefaults = NSUserDefaults(suiteName: WPAppGroupName) else {
             return nil
         }
         

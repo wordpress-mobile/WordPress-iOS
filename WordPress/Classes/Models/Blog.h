@@ -83,6 +83,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic, strong, readwrite) NSDictionary *postFormats;
 @property (nonatomic, strong, readwrite) WPAccount *account;
 @property (nonatomic, strong, readwrite) WPAccount *jetpackAccount;
+@property (nonatomic, strong, readwrite) WPAccount *accountForDefaultBlog;
 @property (nonatomic, assign, readwrite) BOOL videoPressEnabled;
 @property (nonatomic, assign, readwrite) BOOL isMultiAuthor;
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
