@@ -216,6 +216,10 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 - (void)setItemSourceWithContentID:(NSString *)contentId name:(NSString *)name
 {
     MenuItem *item = self.item;
+    if (item.contentId == contentId && item.type == [self sourceItemType]) {
+        // No update needed.
+        return;
+    }
     item.contentId = contentId;
     item.type = [self sourceItemType];
     if (name.length && [self.delegate sourceViewItemNameCanBeOverridden:self]) {
