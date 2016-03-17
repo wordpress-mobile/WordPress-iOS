@@ -237,13 +237,60 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     account.displayName = userDetails.displayName;
     account.dateCreated = userDetails.dateCreated;
     if (userDetails.primaryBlogID) {
-        account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", userDetails.primaryBlogID]] anyObject];
-
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        [blogService flagBlogAsLastUsed:account.defaultBlog];
+        [self configurePrimaryBlogWithID:userDetails.primaryBlogID account:account];
     }
+    
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
+- (void)configurePrimaryBlogWithID:(NSNumber *)primaryBlogID account:(WPAccount *)account
+{
+    NSParameterAssert(primaryBlogID);
+    NSParameterAssert(account);
+    
+    // Load the Default Blog
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID = %@", primaryBlogID];
+    Blog *defaultBlog = [[account.blogs filteredSetUsingPredicate:predicate] anyObject];
+    
+    if (!defaultBlog) {
+        DDLogError(@"Error: The Default Blog could not be loaded");
+        return;
+    }
+    
+    // Setup the Account
+    account.defaultBlog = defaultBlog;
+    
+    // DefaultBlog should be flagged as Last Used
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService flagBlogAsLastUsed:account.defaultBlog];
+    
+    // Update the Widget Configuration
+    TodayExtensionService *service = [TodayExtensionService new];
+    BOOL widgetIsConfigured = [service widgetIsConfigured];
+    
+    if (!widgetIsConfigured && defaultBlog != nil && !defaultBlog.isDeleted) {
+        NSNumber *siteId        = defaultBlog.dotComID;
+        NSString *blogName      = defaultBlog.settings.name;
+        NSTimeZone *timeZone    = [blogService timeZoneForBlog:defaultBlog];
+        NSString *oauth2Token   = account.authToken;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            TodayExtensionService *service = [TodayExtensionService new];
+            [service configureTodayWidgetWithSiteID:siteId
+                                           blogName:blogName
+                                       siteTimeZone:timeZone
+                                     andOAuth2Token:oauth2Token];
+        });
+    }
+    
+    // Update the Share Extension Configuration
+    if (defaultBlog != nil && !defaultBlog.isDeleted) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [ShareExtensionService configureShareExtensionDefaultSiteID:defaultBlog.dotComID.integerValue
+                                                        defaultSiteName:defaultBlog.settings.name];
+        });
+    }
 }
 
 - (void)purgeAccount:(WPAccount *)account
