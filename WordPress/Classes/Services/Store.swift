@@ -9,26 +9,34 @@ enum ProductRequestError: ErrorType {
     case InvalidProductPrice
 }
 
-class StoreTransactionObserver: NSObject, SKPaymentTransactionObserver {
-    static let instance = StoreTransactionObserver()
+class StoreKitTransactionObserver: NSObject, SKPaymentTransactionObserver {
+    static let instance = StoreKitTransactionObserver()
     func paymentQueue(queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
-            StoreCoordinator.instance.processTransaction(transaction)
+            StoreKitCoordinator.instance.processTransaction(transaction)
         }
     }
 }
 
-class StoreCoordinator {
-    static let instance = StoreCoordinator()
+// This is a workaround for StoreCoordinator not being able to have a static
+// stored property since it's a generic class.
+struct StoreKitCoordinator {
+    static let instance = StoreCoordinator(store: StoreKitStore())
+}
+
+class StoreCoordinator<S: Store> {
+    let store: S
     var pendingPayment: (Plan, Int)? = nil
 
-    func purchasePlan(plan: Plan, product: SKProduct, forSite siteID: Int) {
+    init(store: S) {
+        self.store = store
+    }
+
+    func purchasePlan(plan: Plan, product: S.ProductType, forSite siteID: Int) {
         precondition(plan.productIdentifier == product.productIdentifier)
         // TODO: fail better if there's a pending payment
         precondition(pendingPayment == nil)
         pendingPayment = (plan, siteID)
-        // TODO: support mock store for testing
-        let store = StoreKitStore()
         store.requestPayment(product)
     }
 
