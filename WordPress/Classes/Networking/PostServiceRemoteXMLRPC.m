@@ -101,7 +101,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
                          }
                      } else if (failure) {
                          NSDictionary *userInfo = @{NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Invalid value returned for new post: %@", responseObject]};
-                         NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
+                         NSError *error = [NSError errorWithDomain:WordPressAppErrorDomain code:0 userInfo:userInfo];
                          failure(error);
                      }
                  } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -120,7 +120,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
     if ([post.postID integerValue] <= 0) {
         if (failure) {
             NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Can't edit a post if it's not in the server"};
-            NSError *error = [NSError errorWithDomain:@"org.wordpress.iphone" code:0 userInfo:userInfo];
+            NSError *error = [NSError errorWithDomain:WordPressAppErrorDomain code:0 userInfo:userInfo];
             dispatch_async(dispatch_get_main_queue(), ^{
                 failure(error);
             });
