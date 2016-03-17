@@ -463,6 +463,12 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     if ( [error.localizedDescription trim].length > 0) {
         message = [error localizedDescription];
     }
+
+    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
+        //Don't display any error if user canceled basic auth authentication.
+        return;
+    }
+    
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]
         && [error code] != NSURLErrorBadURL) {
         if ([self.helpshiftEnabledFacade isHelpshiftEnabled]) {
@@ -472,7 +478,9 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         }
         return;
     }
-    
+
+
+
     if ([error code] == 403) {
         message = NSLocalizedString(@"Your username and password look incorrect can you please try entering your login details again.", "Message to show to the user when username and/or password details are incorrect");
     }
