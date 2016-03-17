@@ -469,30 +469,26 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         return;
     }
 
-    if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]
-        && [error code] != NSURLErrorBadURL) {
-        if ([self.helpshiftEnabledFacade isHelpshiftEnabled]) {
-            [self displayGenericErrorMessageWithHelpshiftButton:message];
-        } else {
-            [self displayGenericErrorMessage:message];
+    if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain]) {
+        if ([error code] == 403) {
+            message = NSLocalizedString(@"Your username and password look incorrect can you please try entering your login details again.", "Message to show to the user when username and/or password details are incorrect");
         }
+
+        if ([error code] == 405) {
+            [self displayErrorMessageForXMLRPC:message];
+            return;
+        }
+    }
+
+    if ([error code] == NSURLErrorBadURL) {
+        [self displayErrorMessageForBadUrl:message];
         return;
     }
 
-
-
-    if ([error code] == 403) {
-        message = NSLocalizedString(@"Your username and password look incorrect can you please try entering your login details again.", "Message to show to the user when username and/or password details are incorrect");
-    }
-
-    if ([error code] == 405) {
-        [self displayErrorMessageForXMLRPC:message];
+    if ([self.helpshiftEnabledFacade isHelpshiftEnabled]) {
+        [self displayGenericErrorMessageWithHelpshiftButton:message];
     } else {
-        if ([error code] == NSURLErrorBadURL) {
-            [self displayErrorMessageForBadUrl:message];
-        } else {
-            [self displayGenericErrorMessage:message];
-        }
+        [self displayGenericErrorMessage:message];
     }
 }
 
