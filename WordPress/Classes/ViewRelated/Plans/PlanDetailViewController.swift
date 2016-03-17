@@ -16,8 +16,35 @@ class PlanDetailViewController: UIViewController {
             tableView?.reloadData()
         }
     }
-    var viewModel: PlanFeatureViewModel? = nil
+    var viewModel: PlanFeatureViewModel = .Loading {
+        didSet {
+            bindViewModel(viewModel)
+            updateNoResults()
+        }
+    }
     
+    private let noResultsView = WPNoResultsView()
+    
+    func updateNoResults() {
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            showNoResults(noResultsViewModel)
+        } else {
+            hideNoResults()
+        }
+    }
+    func showNoResults(viewModel: WPNoResultsView.Model) {
+        noResultsView.bindViewModel(viewModel)
+        if noResultsView.isDescendantOfView(tableView) {
+            noResultsView.centerInSuperview()
+        } else {
+            tableView.addSubviewWithFadeAnimation(noResultsView)
+        }
+    }
+    
+    func hideNoResults() {
+        noResultsView.removeFromSuperview()
+    }
+
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var planImageView: UIImageView!
     @IBOutlet weak var dropshadowImageView: UIImageView!
@@ -54,7 +81,7 @@ class PlanDetailViewController: UIViewController {
         
         return controller
     }
-
+    
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
@@ -64,6 +91,7 @@ class PlanDetailViewController: UIViewController {
         
         configureAppearance()
         configureTableView()
+        updateNoResults()
     }
     
     private func configureAppearance() {
@@ -94,12 +122,6 @@ class PlanDetailViewController: UIViewController {
         dropshadowImageView.layer.shadowPath = UIBezierPath(ovalInRect: dropshadowImageView.bounds).CGPath
     }
     
-    func reloadViewModel() {
-        let viewModel = PlanFeatureViewModel(plan: plan, isActivePlan: isActivePlan)
-        
-        bindViewModel(viewModel)
-    }
-    
     lazy var paddingView = UIView()
     
     private func populateHeader(plan: Plan, isActivePlan: Bool) {
@@ -118,10 +140,9 @@ class PlanDetailViewController: UIViewController {
     }
     
     func bindViewModel(viewModel: PlanFeatureViewModel) {
-        self.viewModel = viewModel
         self.tableViewModel = viewModel.tableViewModel
-        title = viewModel.plan.title
-        populateHeader(viewModel.plan, isActivePlan: viewModel.isActivePlan)
+        title = plan.title
+        populateHeader(plan, isActivePlan: isActivePlan)
     }
     
     // TODO: Prices should always come from StoreKit
@@ -148,12 +169,12 @@ class PlanDetailViewController: UIViewController {
         // transaction process to simulate navigation to the post purchase screens.
         // This should be removed when we integrate StoreKit.
         func showSuccessAlert() {
-            guard let _ = viewModel?.plan else { return }
+            guard let plan = plan else { return }
             
             let alert = UIAlertController(title: "Thank You", message: "Your purchase was successful.", preferredStyle: .Alert)
             alert.addActionWithTitle("OK", style: .Default, handler: { action in })
             
-            let postPurchase = PlanPostPurchaseViewController(plan: self.plan)
+            let postPurchase = PlanPostPurchaseViewController(plan: plan)
             let navigationController = RotationAwareNavigationViewController(rootViewController: postPurchase)
             navigationController.modalTransitionStyle = .CrossDissolve
             navigationController.modalPresentationStyle = .FormSheet
@@ -178,20 +199,43 @@ class PlanDetailViewController: UIViewController {
         })
     }
     
-    struct PlanFeatureViewModel {
-        let plan: Plan
-        let isActivePlan: Bool
+    enum PlanFeatureViewModel {
+        case Loading
+        case Ready(Plan)
+        case Error(String)
         
         var tableViewModel: ImmuTable {
-            guard let groups = PlanFeatureGroup.groupsForPlan(plan) else {
+            switch self {
+            case .Loading, .Error(_):
                 return ImmuTable.Empty
-            }
-            
-            return ImmuTable(sections: groups.map { group in
-                let features = group.slugs.map { PlanFeaturesService.featureForPlan(plan, withSlug: $0) }
+            case .Ready(let plan):
+                guard let groups = PlanFeatureGroup.groupsForPlan(plan) else {
+                    return ImmuTable.Empty
+                }
                 
-                return ImmuTableSection(headerText: group.title, rows: features.map({ TextRow(title: $0!.title, value: $0!.description) }), footerText: nil)
+                return ImmuTable(sections: groups.map { group in
+                    let features = group.slugs.map { PlanFeaturesService.featureForPlan(plan, withSlug: $0) }
+                    
+                    return ImmuTableSection(headerText: group.title, rows: features.map({ TextRow(title: $0!.title, value: $0!.description) }), footerText: nil)
                 })
+            }
+        }
+        
+        var noResultsViewModel: WPNoResultsView.Model? {
+            switch self {
+            case .Loading:
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("Loading Plan...", comment: "Text displayed while loading plans details")
+                )
+            case .Ready(_):
+                return nil
+            case .Error(_):
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("Oops", comment: ""),
+                    message: NSLocalizedString("There was an error loading the plan", comment: ""),
+                    buttonTitle: NSLocalizedString("Contact support", comment: "")
+                )
+            }
         }
     }
 }
