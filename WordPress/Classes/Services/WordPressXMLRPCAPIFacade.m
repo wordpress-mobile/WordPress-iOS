@@ -23,6 +23,7 @@
 
 - (NSError *)errorForGuessXMLRPCApiFailure:(NSError *)error
 {
+    DDLogError(@"Error on trying to guess XMLRPC site: %@", error);
     if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
         return error;
     } else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
