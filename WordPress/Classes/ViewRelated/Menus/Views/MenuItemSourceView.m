@@ -2,7 +2,7 @@
 #import "MenuItemSourceTextBar.h"
 #import "MenusDesign.h"
 #import "Menu.h"
-#import "MenuItemSourceLoadingView.h"
+#import "MenuItemSourceFooterView.h"
 #import "Blog.h"
 
 static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;
@@ -15,7 +15,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
  */
 @property (nonatomic, strong) UIView *stackedTableHeaderView;
 
-@property (nonatomic, strong) MenuItemSourceLoadingView *loadingView;
+@property (nonatomic, strong) MenuItemSourceFooterView *footerView;
 @property (nonatomic, assign) BOOL observeUserScrollingForEndOfTableView;
 
 @end
@@ -82,9 +82,9 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
             _stackView = stackView;
         }
         {
-            MenuItemSourceLoadingView *loadingView = [[MenuItemSourceLoadingView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50.0)];
-            self.tableView.tableFooterView = loadingView;
-            self.loadingView = loadingView;
+            MenuItemSourceFooterView *footerView = [[MenuItemSourceFooterView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50.0)];
+            self.tableView.tableFooterView = footerView;
+            self.footerView = footerView;
         }
     }
     
@@ -200,12 +200,12 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (void)showLoadingSourcesIndicator
 {
-    [self.loadingView startAnimating];
+    [self.footerView startLoadingIndicatorAnimation];
 }
 
 - (void)hideLoadingSourcesIndicator
 {
-    [self.loadingView stopAnimating];
+    [self.footerView stopLoadingIndicatorAnimation];
 }
 
 - (BOOL)itemTypeMatchesSourceItemType

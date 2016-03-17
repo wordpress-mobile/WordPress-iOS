@@ -77,7 +77,7 @@
 		08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC67791C49B65A00153AD7 /* MenuItem.m */; };
 		08CC677F1C49B65A00153AD7 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677A1C49B65A00153AD7 /* Menu.m */; };
 		08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677D1C49B65A00153AD7 /* MenuLocation.m */; };
-		08D396C51C63F0FA00A4F771 /* MenuItemSourceLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D396C41C63F0FA00A4F771 /* MenuItemSourceLoadingView.m */; };
+		08D396C51C63F0FA00A4F771 /* MenuItemSourceFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D396C41C63F0FA00A4F771 /* MenuItemSourceFooterView.m */; };
 		08D6B2841BC6F4EE00BD022D /* MenusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */; };
 		08EEA0B91C20C013001346B9 /* MenuItemSourceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 08EEA0B81C20C013001346B9 /* MenuItemSourceCell.m */; };
 		08F10C2E1BF5286C00130AFF /* MenuItemsStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F10C2D1BF5286C00130AFF /* MenuItemsStackView.m */; };
@@ -920,8 +920,8 @@
 		08CC677B1C49B65A00153AD7 /* Menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Menu.h; sourceTree = "<group>"; };
 		08CC677C1C49B65A00153AD7 /* MenuLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuLocation.h; sourceTree = "<group>"; };
 		08CC677D1C49B65A00153AD7 /* MenuLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuLocation.m; sourceTree = "<group>"; };
-		08D396C31C63F0FA00A4F771 /* MenuItemSourceLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceLoadingView.h; sourceTree = "<group>"; };
-		08D396C41C63F0FA00A4F771 /* MenuItemSourceLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceLoadingView.m; sourceTree = "<group>"; };
+		08D396C31C63F0FA00A4F771 /* MenuItemSourceFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceFooterView.h; sourceTree = "<group>"; };
+		08D396C41C63F0FA00A4F771 /* MenuItemSourceFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemSourceFooterView.m; sourceTree = "<group>"; };
 		08D4C0E61C76F14E002E5BF6 /* WordPress 47.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 47.xcdatamodel"; sourceTree = "<group>"; };
 		08D6B2821BC6F4EE00BD022D /* MenusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenusViewController.xib; sourceTree = "<group>"; };
 		08EEA0B71C20C013001346B9 /* MenuItemSourceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemSourceCell.h; sourceTree = "<group>"; };
@@ -2246,8 +2246,8 @@
 				08B0566F1C1BCEE500256F77 /* MenuItemSourceTextBar.m */,
 				08EEA0B71C20C013001346B9 /* MenuItemSourceCell.h */,
 				08EEA0B81C20C013001346B9 /* MenuItemSourceCell.m */,
-				08D396C31C63F0FA00A4F771 /* MenuItemSourceLoadingView.h */,
-				08D396C41C63F0FA00A4F771 /* MenuItemSourceLoadingView.m */,
+				08D396C31C63F0FA00A4F771 /* MenuItemSourceFooterView.h */,
+				08D396C41C63F0FA00A4F771 /* MenuItemSourceFooterView.m */,
 				0844F5561C46EB9E00E95433 /* MenuItemCheckButtonView.h */,
 				0844F5571C46EB9E00E95433 /* MenuItemCheckButtonView.m */,
 			);
@@ -5320,7 +5320,7 @@
 				E1B289DB19F7AF7000DB0707 /* RemoteBlog.m in Sources */,
 				E1A6DBDA19DC7D080071AC1E /* RemotePostCategory.m in Sources */,
 				599738401B87AD2600EC1C30 /* WordPressComServiceRemote.m in Sources */,
-				08D396C51C63F0FA00A4F771 /* MenuItemSourceLoadingView.m in Sources */,
+				08D396C51C63F0FA00A4F771 /* MenuItemSourceFooterView.m in Sources */,
 				E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */,
 				5D0A20D41AF11A7300E5C6BC /* PhotonImageURLHelper.m in Sources */,
 				FF19340C1BB2F892006825B8 /* ServiceRemoteXMLRPC.m in Sources */,
