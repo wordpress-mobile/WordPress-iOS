@@ -16,6 +16,11 @@
  */
 - (void)updateSourceSelectionForItemType:(NSString *)itemType;
 
+/**
+ Inform the view to refresh if the item's name was edited outside of this view.
+ */
+- (void)refreshForUpdatedItemName;
+
 @end
 
 @protocol MenuItemSourceContainerViewDelegate <NSObject>

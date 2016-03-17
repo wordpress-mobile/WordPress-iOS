@@ -198,8 +198,7 @@
 
 - (void)textFieldValueDidChange:(UITextField *)textField
 {
-    NSLog(@"text value did change");
-    self.item.name = textField.text.length ? textField.text : [MenuItem defaultItemNameLocalized];
+    self.item.name = textField.text.length ? textField.text : nil;
     [self.delegate editingHeaderViewDidUpdateItem:self];
 }
 

@@ -14,6 +14,7 @@
 @property (nonatomic, strong) MenuItemSourceHeaderView *headerView;
 @property (nonatomic, strong) MenuItemSourceView *sourceView;
 @property (nonatomic, strong) NSCache *sourceViewCache;
+@property (nonatomic, assign) BOOL itemNameWasUpdatedExternally;
 
 @end
 
@@ -95,6 +96,11 @@
     [self showSourceViewForItemType:itemType];
 }
 
+- (void)refreshForUpdatedItemName
+{
+    self.itemNameWasUpdatedExternally = YES;
+}
+
 - (void)showSourceViewForItemType:(NSString *)itemType
 {
     MenuItemSourceView *sourceView = [self.sourceViewCache objectForKey:itemType];
@@ -151,6 +157,26 @@
 }
 
 #pragma mark - MenuItemSourceViewDelegate
+
+- (BOOL)sourceViewItemNameCanBeOverridden:(MenuItemSourceView *)sourceView
+{
+    // If the name is already empty or is using the default text, it can be overridden.
+    if ([self.item nameIsEmptyOrDefault]) {
+        if (self.itemNameWasUpdatedExternally) {
+            /*
+             If the item was previously updated externally, it's empty now.
+             It can overridden again unless updated again externally. (see method: refreshForUpdatedItemName)
+             */
+            self.itemNameWasUpdatedExternally = NO;
+        }
+        return YES;
+    }
+    // If the name was not updated externally, such as the MenuItemEditingHeaderView, it can be overridden.
+    if (!self.itemNameWasUpdatedExternally) {
+        return YES;
+    }
+    return NO;
+}
 
 - (void)sourceViewDidUpdateItem:(MenuItemSourceView *)sourceView
 {

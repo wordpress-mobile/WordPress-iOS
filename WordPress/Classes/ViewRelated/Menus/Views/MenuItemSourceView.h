@@ -139,6 +139,7 @@
 
 @protocol MenuItemSourceViewDelegate <NSObject>
 
+- (BOOL)sourceViewItemNameCanBeOverridden:(MenuItemSourceView *)sourceView;
 - (void)sourceViewDidUpdateItem:(MenuItemSourceView *)sourceView;
 - (void)sourceViewDidBeginEditingWithKeyBoard:(MenuItemSourceView *)sourceView;
 - (void)sourceViewDidEndEditingWithKeyboard:(MenuItemSourceView *)sourceView;
