@@ -11,7 +11,7 @@ class PlansRemote: ServiceRemoteREST {
 
     func getPlansForSite(siteID: Int, success: SitePlans -> Void, failure: ErrorType -> Void) {
         let endpoint = "sites/\(siteID)/plans"
-        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        let path = pathForEndpoint(endpoint, withVersion: ServiceRemoteRESTApiVersion_1_2)
 
         api.GET(path,
             parameters: nil,
@@ -31,26 +31,22 @@ class PlansRemote: ServiceRemoteREST {
 }
 
 private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, availablePlans: [Plan]) {
-    guard let json = response as? [String: AnyObject] else {
+    guard let json = response as? [[String: AnyObject]] else {
         throw PlansRemote.Error.DecodeError
     }
 
     let parsedResponse: (Plan?, [Plan]) = try json.reduce((nil, []), combine: {
-        (result, item: (key: String, value: AnyObject)) in
-        guard let planId = Int(item.key) else {
+        (result, planDetails: [String: AnyObject]) in
+        guard let planId = planDetails["product_id"] as? Int else {
             throw PlansRemote.Error.DecodeError
         }
         guard let plan = defaultPlans.withID(planId) else {
             throw PlansRemote.Error.UnsupportedPlan
         }
-        guard let planDetails = item.value as? [String: AnyObject] else {
-            throw PlansRemote.Error.DecodeError
-        }
   
-// TODO: @frosty (2016-03-16)
-//        if let featureGroupingsJson = planDetails["features_highlight"] as? [[String: AnyObject]] {
-//            parseFeatureGroupings(featureGroupingsJson, forPlan: plan)
-//        }
+        if let featureGroupsJson = planDetails["features_highlight"] as? [[String: AnyObject]] {
+            parseFeatureGroups(featureGroupsJson, forPlan: plan)
+        }
         
         let plans = result.1 + [plan]
         if let isCurrent = planDetails["current_plan"] as? Bool where
@@ -68,7 +64,7 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
     return (activePlan, availablePlans)
 }
 
-private func parseFeatureGroupings(json: [[String: AnyObject]], forPlan plan: Plan) {
+private func parseFeatureGroups(json: [[String: AnyObject]], forPlan plan: Plan) {
     let groups: [PlanFeatureGroup] = json.flatMap { groupJson in
         guard let slugs = groupJson["items"] as? [String] else { return nil }
         return PlanFeatureGroup(title: groupJson["title"] as? String, slugs: slugs)

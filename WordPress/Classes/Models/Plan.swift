@@ -125,24 +125,7 @@ struct PlanFeatureGroup {
     let title: String?
     let slugs: [String]
     
-    // TODO: (@frosty 2016-03-16) This hardcoding is temporary until the /sites/:id/plans endpoint
-    // supports returning this data.
-    static private var groups: [Plan: [PlanFeatureGroup]] = [
-        defaultPlans[0]: [ PlanFeatureGroup(title: nil, slugs: [ "free-blog", "space", "support" ]) ],
-        defaultPlans[1]: [ PlanFeatureGroup(title: nil, slugs: [ "custom-design",
-                                                                 "videopress",
-                                                                 "support",
-                                                                 "space",
-                                                                 "custom-domain",
-                                                                 "no-adverts/no-adverts.php" ]),
-                           PlanFeatureGroup(title: "Included with all plans", slugs: [ "free-blog" ]) ],
-        defaultPlans[2]: [ PlanFeatureGroup(title: nil, slugs: [ "premium-themes", "space", "support" ]),
-                           PlanFeatureGroup(title: "Includes WordPress.com Premium features:", slugs: [ "custom-design",
-                                                                                                        "videopress",
-                                                                                                        "custom-domain",
-                                                                                                        "no-adverts/no-adverts.php" ]),
-                           PlanFeatureGroup(title: "Included with all plans", slugs: [ "free-blog" ]) ]
-    ]
+    static private var groups = [Plan: [PlanFeatureGroup]]()
     
     static func groupsForPlan(plan: Plan) -> [PlanFeatureGroup]? {
         return groups[plan]
