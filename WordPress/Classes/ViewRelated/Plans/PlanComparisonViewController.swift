@@ -27,10 +27,9 @@ class PlanComparisonViewController: UIViewController {
     
     private lazy var viewControllers: [PlanDetailViewController] = {
         return self.allPlans.map { plan in
-            let controller = PlanDetailViewController.controllerWithPlan(plan)
-            if let activePlan = self.activePlan {
-                controller.isActivePlan = activePlan == plan
-            }
+            let isActive = self.activePlan == plan
+            
+            let controller = PlanDetailViewController.controllerWithPlan(plan, isActive: isActive)
             
             return controller
         }
@@ -74,7 +73,7 @@ class PlanComparisonViewController: UIViewController {
         featureService.updateAllPlanFeatures({ [weak self] in
             if let viewControllers = self?.viewControllers {
                 for controller in viewControllers {
-                    controller.reloadFeatures()
+                    controller.reloadViewModel()
                 }
             }
             }, failure: { error in
@@ -126,7 +125,6 @@ class PlanComparisonViewController: UIViewController {
             viewController.view.accessibilityElementsHidden = index != currentIndex
         }
     }
-    
     
     // MARK: - IBActions
     

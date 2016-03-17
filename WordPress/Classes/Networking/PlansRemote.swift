@@ -46,6 +46,12 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
         guard let planDetails = item.value as? [String: AnyObject] else {
             throw PlansRemote.Error.DecodeError
         }
+  
+// TODO: @frosty (2016-03-16)
+//        if let featureGroupingsJson = planDetails["features_highlight"] as? [[String: AnyObject]] {
+//            parseFeatureGroupings(featureGroupingsJson, forPlan: plan)
+//        }
+        
         let plans = result.1 + [plan]
         if let isCurrent = planDetails["current_plan"] as? Bool where
             isCurrent {
@@ -54,11 +60,21 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
             return (result.0, plans)
         }
     })
+    
     guard let activePlan = parsedResponse.0 else {
         throw PlansRemote.Error.NoActivePlan
     }
     let availablePlans = parsedResponse.1.sort()
     return (activePlan, availablePlans)
+}
+
+private func parseFeatureGroupings(json: [[String: AnyObject]], forPlan plan: Plan) {
+    let groups: [PlanFeatureGroup] = json.flatMap { groupJson in
+        guard let slugs = groupJson["items"] as? [String] else { return nil }
+        return PlanFeatureGroup(title: groupJson["title"] as? String, slugs: slugs)
+    }
+    
+    PlanFeatureGroup.setGroups(groups, forPlan: plan)
 }
 
 class PlanFeaturesRemote: ServiceRemoteREST {
@@ -71,11 +87,14 @@ class PlanFeaturesRemote: ServiceRemoteREST {
     private let cacheFilename = "plan-features.json"
     
     func getPlanFeatures(success: PlanFeatures -> Void, failure: ErrorType -> Void) {
+        // First we'll try and return plan features from memory, then check our disk cache,
+        // and finally hit the network if we don't have anything recent enough
         if let planFeatures = inMemoryPlanFeatures {
             success(planFeatures)
             return
         }
         
+        // If we have features cached to disk, update the in-memory list and the cache date to match
         if let (planFeatures, date) = cachedPlanFeaturesWithDate() {
             inMemoryPlanFeatures = planFeatures
             cacheDate = date
@@ -93,13 +112,12 @@ class PlanFeaturesRemote: ServiceRemoteREST {
     }
     
     private var _planFeatures: PlanFeatures?
-    
     private var inMemoryPlanFeatures: PlanFeatures? {
         get {
             // If we have something in memory and it's less than a day old, return it.
             if let planFeatures = _planFeatures,
                 let cacheDate = cacheDate where
-                NSCalendar.currentCalendar().isDateInToday(cacheDate) {
+                cacheDateIsValid(cacheDate) {
                     return planFeatures
             }
             
@@ -117,6 +135,7 @@ class PlanFeaturesRemote: ServiceRemoteREST {
         return planFeatures
     }
     
+    /// @return An optional tuple containing a collection of cached plan features and the date when they were fetched
     private func cachedPlanFeaturesWithDate() -> (PlanFeatures, NSDate)? {
         if let cacheFileURL = cacheFileURL,
             let path = cacheFileURL.path {
@@ -125,7 +144,7 @@ class PlanFeaturesRemote: ServiceRemoteREST {
                 do {
                     let attributes = try NSFileManager.defaultManager().attributesOfItemAtPath(path)
                     if let modificationDate = attributes[NSFileModificationDate] as? NSDate {
-                        if NSCalendar.currentCalendar().isDateInToday(modificationDate) {
+                        if cacheDateIsValid(modificationDate) {
                             if let response = NSData(contentsOfURL: cacheFileURL) {
                                 let json = try NSJSONSerialization.JSONObjectWithData(response, options: [])
                                 return (try mapPlanFeaturesResponse(json), modificationDate)
@@ -138,6 +157,10 @@ class PlanFeaturesRemote: ServiceRemoteREST {
         }
         
         return nil
+    }
+    
+    private func cacheDateIsValid(date: NSDate) -> Bool {
+        return NSCalendar.currentCalendar().isDateInToday(date)
     }
     
     private func fetchPlanFeatures(success: PlanFeatures -> Void, failure: ErrorType -> Void) {
@@ -179,7 +202,7 @@ private func mapPlanFeaturesResponse(response: AnyObject) throws -> PlanFeatures
         throw PlansRemote.Error.DecodeError
     }
     
-    var features = [Int: [PlanFeature]]()
+    var features = [PlanID: [PlanFeature]]()
     for featureDetails in json {
         if let slug = featureDetails["product_slug"] as? String,
             let title = featureDetails["title"] as? String,
