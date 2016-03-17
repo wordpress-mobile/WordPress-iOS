@@ -35,15 +35,16 @@ extern NSString *const WPAppKeychainAccessGroup;
 
 /// Share Extension Constants
 ///
-extern NSString *const WPShareExtensionTokenKeychainUsername;
-extern NSString *const WPShareExtensionTokenKeychainServiceName;
+extern NSString *const WPShareExtensionKeychainUsernameKey;
+extern NSString *const WPShareExtensionKeychainTokenKey;
+extern NSString *const WPShareExtensionKeychainServiceName;
 extern NSString *const WPShareExtensionUserDefaultsPrimarySiteName;
 extern NSString *const WPShareExtensionUserDefaultsPrimarySiteID;
 
 /// Today Widget Constants
 ///
-extern NSString *const WPStatsTodayWidgetTokenKeychainUsername;
-extern NSString *const WPStatsTodayWidgetTokenKeychainServiceName;
+extern NSString *const WPStatsTodayWidgetKeychainTokenKey;
+extern NSString *const WPStatsTodayWidgetKeychainServiceName;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;

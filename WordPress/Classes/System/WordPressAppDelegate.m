@@ -996,6 +996,7 @@ int ddLogLevel = DDLogLevelInfo;
     WPAccount *account              = [accountService defaultWordPressComAccount];
     
     [ShareExtensionService configureShareExtensionToken:account.authToken];
+    [ShareExtensionService configureShareExtensionUsername:account.username];
 }
 
 - (void)removeShareExtensionConfiguration

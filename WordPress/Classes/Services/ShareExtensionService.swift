@@ -10,9 +10,9 @@ public class ShareExtensionService: NSObject
     ///
     class func configureShareExtensionToken(oauth2Token: String) {
         do {
-            try SFHFKeychainUtils.storeUsername(WPShareExtensionTokenKeychainUsername,
+            try SFHFKeychainUtils.storeUsername(WPShareExtensionKeychainTokenKey,
                 andPassword: oauth2Token,
-                forServiceName: WPShareExtensionTokenKeychainServiceName,
+                forServiceName: WPShareExtensionKeychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup,
                 updateExisting: true)
         } catch {
@@ -20,6 +20,23 @@ public class ShareExtensionService: NSObject
         }
     }
 
+    /// Sets the Username that should be used by the Share Extension to hit the Dotcom Backend.
+    ///
+    /// -   Parameters:
+    ///     - oauth2Token: WordPress.com OAuth Token
+    ///
+    class func configureShareExtensionUsername(username: String) {
+        do {
+            try SFHFKeychainUtils.storeUsername(WPShareExtensionKeychainUsernameKey,
+                andPassword: username,
+                forServiceName: WPShareExtensionKeychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup,
+                updateExisting: true)
+        } catch {
+            print("Error while saving Share Extension OAuth bearer token: \(error)")
+        }
+    }
+    
     /// Sets the Primary Site that should be pre-selected in the Share Extension.
     ///
     /// -   Parameters:
@@ -40,11 +57,19 @@ public class ShareExtensionService: NSObject
     ///
     class func removeShareExtensionConfiguration() {
         do {
-            try SFHFKeychainUtils.deleteItemForUsername(WPShareExtensionTokenKeychainUsername,
-                andServiceName: WPShareExtensionTokenKeychainServiceName,
+            try SFHFKeychainUtils.deleteItemForUsername(WPShareExtensionKeychainTokenKey,
+                andServiceName: WPShareExtensionKeychainServiceName,
                 accessGroup: WPAppKeychainAccessGroup)
         } catch {
             print("Error while removing Share Extension OAuth2 bearer token: \(error)")
+        }
+
+        do {
+            try SFHFKeychainUtils.deleteItemForUsername(WPShareExtensionKeychainUsernameKey,
+                andServiceName: WPShareExtensionKeychainServiceName,
+                accessGroup: WPAppKeychainAccessGroup)
+        } catch {
+            print("Error while removing Share Extension Username: \(error)")
         }
         
         if let userDefaults = NSUserDefaults(suiteName: WPAppDefaultsGroupName) {
@@ -59,8 +84,22 @@ public class ShareExtensionService: NSObject
     /// - Returns: The OAuth Token, if any.
     ///
     class func retrieveShareExtensionToken() -> String? {
-        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionTokenKeychainUsername,
-            andServiceName: WPShareExtensionTokenKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else
+        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainTokenKey,
+            andServiceName: WPShareExtensionKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else
+        {
+            return nil
+        }
+        
+        return oauth2Token
+    }
+    
+    /// Retrieves the WordPress.com Username, meant for Extension usage.
+    ///
+    /// - Returns: The Username, if any.
+    ///
+    class func retrieveShareExtensionUsername() -> String? {
+        guard let oauth2Token = try? SFHFKeychainUtils.getPasswordForUsername(WPShareExtensionKeychainUsernameKey,
+            andServiceName: WPShareExtensionKeychainServiceName, accessGroup: WPAppKeychainAccessGroup) else
         {
             return nil
         }
