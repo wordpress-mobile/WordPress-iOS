@@ -104,12 +104,14 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-        
+    
+    BOOL needsOffsetFix = NO;
     if (!self.tableView.tableHeaderView) {
         // set the tableHeaderView after we have called layoutSubviews the first time
         // this add the stackedTableHeaderView to view hierarchy
         self.tableView.tableHeaderView = self.stackedTableHeaderView;
         [self.stackedTableHeaderView layoutIfNeeded];
+        needsOffsetFix = YES;
     }
 
     // set the stackedTableHeaderView frame height to the intrinsic height of the stackView
@@ -117,6 +119,14 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     self.stackedTableHeaderView.frame = frame;
     // reset the tableHeaderView to update the size change
     self.tableView.tableHeaderView = self.stackedTableHeaderView;
+    
+    if (needsOffsetFix) {
+        if (self.tableView.contentOffset.y == 0.0) {
+            CGPoint offset = self.tableView.contentOffset;
+            offset.y = -self.tableView.contentInset.top;
+            self.tableView.contentOffset = offset;
+        }
+    }
 }
 
 - (void)refresh
