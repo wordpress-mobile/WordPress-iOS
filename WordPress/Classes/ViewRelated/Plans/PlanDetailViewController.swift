@@ -157,7 +157,7 @@ class PlanDetailViewController: UIViewController {
         store.getProductsWithIdentifiers(
             Set([identifier]),
             success: { products in
-                StoreCoordinator.instance.purchasePlan(self.plan, product: products[0], forSite: self.siteID)
+                StoreKitCoordinator.instance.purchasePlan(self.plan, product: products[0], forSite: self.siteID)
             },
             failure: { error in
                 DDLogSwift.logError("Error fetching Store products: \(error)")
