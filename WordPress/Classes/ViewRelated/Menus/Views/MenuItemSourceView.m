@@ -218,16 +218,8 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     MenuItem *item = self.item;
     item.contentId = contentId;
     item.type = [self sourceItemType];
-    if (name.length) {
-        BOOL shouldSetName = NO;
-        if (!item.name.length) {
-            shouldSetName = YES;
-        } else if ([item.name isEqualToString:[MenuItem defaultItemNameLocalized]]) {
-            shouldSetName = YES;
-        }
-        if (shouldSetName) {
-            item.name = name;
-        }
+    if (name.length && [self.delegate sourceViewItemNameCanBeOverridden:self]) {
+        item.name = name;
     }
     [self.delegate sourceViewDidUpdateItem:self];
 }

@@ -92,7 +92,8 @@ typedef NS_ENUM(NSUInteger) {
     self.sourceScrollView.clipsToBounds = NO;
     
     self.headerView.item = self.item;
-    
+
+    self.headerView.delegate = self;
     self.typeView.delegate = self;
     self.sourceView.delegate = self;
     self.footerView.delegate = self;
@@ -378,7 +379,7 @@ typedef NS_ENUM(NSUInteger) {
 
 - (void)editingHeaderViewDidUpdateItem:(MenuItemEditingHeaderView *)headerView
 {
-    
+    [self.sourceView refreshForUpdatedItemName];
 }
 
 #pragma mark - MenuItemEditingFooterViewDelegate
