@@ -470,11 +470,11 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     }
     
     if ([error code] == 403) {
-        message = NSLocalizedString(@"Please try entering your login details again.", nil);
+        message = NSLocalizedString(@"Your username and password look incorrect can you please try entering your login details again.", "Message to show to the user when username and/or password details are incorrect");
     }
     
     if ([[message trim] length] == 0) {
-        message = NSLocalizedString(@"Sign in failed. Please try again.", nil);
+        message = NSLocalizedString(@"Sign in failed. Please try again.", "Generic message to show to the user when there is unknow login error");
     }
     
     if ([error code] == 405) {
