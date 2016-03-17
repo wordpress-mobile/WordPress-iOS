@@ -12,14 +12,10 @@
     NSParameterAssert(timeZone != nil);
     NSParameterAssert(oauth2Token.length > 0);
     
-    if (!WIDGETS_EXIST) {
-        return;
-    }
-    
     [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
     
     // Save the token and site ID to shared user defaults for use in the today widget
-    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppDefaultsGroupName];
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     [sharedDefaults setObject:timeZone.name forKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
     [sharedDefaults setObject:siteID forKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     [sharedDefaults setObject:blogName forKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
@@ -39,11 +35,8 @@
 
 - (void)removeTodayWidgetConfiguration
 {
-    if (!WIDGETS_EXIST) {
-        return;
-    }
-    
-    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppDefaultsGroupName];
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
+
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
@@ -57,16 +50,12 @@
 
 - (void)hideTodayWidgetIfNotConfigured
 {
-    if (!WIDGETS_EXIST) {
-        return;
-    }
-    
     [[NCWidgetController widgetController] setHasContent:YES forWidgetWithBundleIdentifier:@"org.wordpress.WordPressTodayWidget"];
 }
 
 - (BOOL)widgetIsConfigured
 {
-    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppDefaultsGroupName];
+    NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetKeychainTokenKey
                                                        andServiceName:WPStatsTodayWidgetKeychainServiceName

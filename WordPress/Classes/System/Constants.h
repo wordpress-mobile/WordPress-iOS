@@ -30,7 +30,7 @@ extern NSString *const WPNotificationsBucketName;
 
 /// Keychain + User Defaults Constants
 ///
-extern NSString *const WPAppDefaultsGroupName;
+extern NSString *const WPAppGroupName;
 extern NSString *const WPAppKeychainAccessGroup;
 
 /// Share Extension Constants

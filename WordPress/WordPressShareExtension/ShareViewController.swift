@@ -66,8 +66,8 @@ class ShareViewController: SLComposeServiceViewController {
         RequestRouter.bearerToken = oauth2Token! as String
 
         loadWebsiteUrl { (url: NSURL?) in
-            let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(WPAppDefaultsGroupName)
-            configuration.sharedContainerIdentifier = WPAppDefaultsGroupName
+            let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(WPAppGroupName)
+            configuration.sharedContainerIdentifier = WPAppGroupName
             let service = PostService(configuration: configuration)
             let (subject, body) = self.splitContentTextIntoSubjectAndBody(self.contentWithSourceURL(url))
             service.createPost(siteID: self.selectedSiteID!, status:self.postStatus, title: subject, body: body) { (post, error) in

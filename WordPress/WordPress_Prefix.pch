@@ -35,10 +35,6 @@
 #define IS_RETINA ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] && [[UIScreen mainScreen] scale] == 2)
 #endif
 
-#ifndef WIDGETS_EXIST
-#define WIDGETS_EXIST (NSClassFromString(@"NCWidgetController") != nil)
-#endif
-
 #ifndef WPCOM_SCHEME
 #warning WPCOM_SCHEME is not defined for this target configuration! Defaulting to "wordpress".
 #define WPCOM_SCHEME @"wordpress"
