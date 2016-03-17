@@ -480,7 +480,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         }
     }
 
-    if ([error code] == NSURLErrorBadURL) {
+    if ([error.domain isEqualToString:WordPressAppErrorDomain] && [error code] == NSURLErrorBadURL) {
         [self displayErrorMessageForBadUrl:message];
         return;
     }
