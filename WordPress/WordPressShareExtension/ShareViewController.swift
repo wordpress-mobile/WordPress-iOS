@@ -4,15 +4,18 @@ import WordPressComKit
 
 
 class ShareViewController: SLComposeServiceViewController {
+    private var wpcomUsername: String?
     private var oauth2Token: NSString?
     private var selectedSiteID: Int?
     private var selectedSiteName: String?
     private var postStatus = "publish"
     
     override func viewDidLoad() {
+        let username = ShareExtensionService.retrieveShareExtensionUsername()
         let authToken = ShareExtensionService.retrieveShareExtensionToken()
         let defaultSite = ShareExtensionService.retrieveShareExtensionPrimarySite()
         
+        wpcomUsername = username
         oauth2Token = authToken
         selectedSiteID = defaultSite?.siteID
         selectedSiteName = defaultSite?.siteName
@@ -22,6 +25,10 @@ class ShareViewController: SLComposeServiceViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         dismissIfNeeded()
+        
+        
+        let tracks = Tracks(groupName: WPAppDefaultsGroupName, wpcomUsername: wpcomUsername)
+        tracks.track("wpios_share_extension_launched")
     }
     
     // MARK: - Private Helpers
