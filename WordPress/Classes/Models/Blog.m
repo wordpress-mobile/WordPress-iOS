@@ -33,6 +33,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 @implementation Blog
 
+@dynamic accountForDefaultBlog;
 @dynamic blogID;
 @dynamic url;
 @dynamic xmlrpc;
