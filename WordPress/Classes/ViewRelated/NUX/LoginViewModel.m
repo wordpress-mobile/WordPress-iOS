@@ -460,7 +460,8 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [self.presenter dismissLoginMessage];
     
     NSString *message = [error localizedDescription];
-    if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain] && [error code] != NSURLErrorBadURL) {
+    if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]
+        && [error code] != NSURLErrorBadURL) {
         if ([self.helpshiftEnabledFacade isHelpshiftEnabled]) {
             [self displayGenericErrorMessageWithHelpshiftButton:message];
         } else {
