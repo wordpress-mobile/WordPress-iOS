@@ -29,6 +29,7 @@ public class Tracks
     // MARK: - Private Helpers
     private func payloadWithEventName(eventName: String) -> [String: AnyObject] {
         let timestamp   = NSDate().timeIntervalSince1970 * 1000
+        let userID      = NSUUID().UUIDString
         let device      = UIDevice.currentDevice()
         let bundle      = NSBundle.mainBundle()
         let appName     = bundle.objectForInfoDictionaryKey("CFBundleName") as? String
@@ -38,9 +39,8 @@ public class Tracks
         return [
             "_en"                                   : eventName,
             "_ts"                                   : timestamp,
-            "_ui"                                   : "UserID",
-            "_ul"                                   : "Username",
-            "_ut"                                   : "wpcom:user_id",
+            "_ui"                                   : userID,
+            "_ut"                                   : "anon",
             "_via_ua"                               : Tracks.userAgent,
             "_rt"                                   : timestamp,
             "device_info_app_name"                  : appName       ?? "WordPress",
