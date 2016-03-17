@@ -1,4 +1,4 @@
-#import "MenuItemSourceLoadingView.h"
+#import "MenuItemSourceFooterView.h"
 #import "MenuItemSourceCell.h"
 #import "WPStyleGuide.h"
 
@@ -16,7 +16,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 
 @end
 
-@interface MenuItemSourceLoadingView () <MenuItemSourceLoadingDrawViewDelegate>
+@interface MenuItemSourceFooterView () <MenuItemSourceLoadingDrawViewDelegate>
 
 @property (nonatomic, strong) MenuItemSourceCell *sourceCell;
 @property (nonatomic, strong) MenuItemSourceLoadingDrawView *drawView;
@@ -25,7 +25,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 
 @end
 
-@implementation MenuItemSourceLoadingView
+@implementation MenuItemSourceFooterView
 
 - (void)dealloc
 {
@@ -58,7 +58,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     return self;
 }
 
-- (void)startAnimating
+- (void)startLoadingIndicatorAnimation
 {
     if (self.isAnimating) {
         return;
@@ -77,7 +77,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
-- (void)stopAnimating
+- (void)stopLoadingIndicatorAnimation
 {
     if (!self.isAnimating) {
         return;
