@@ -1,3 +1,5 @@
+extern NSString *const WordPressAppErrorDomain;
+
 @interface WPError : NSObject
 
 

@@ -468,7 +468,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         //Don't display any error if user canceled basic auth authentication.
         return;
     }
-    
+
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]
         && [error code] != NSURLErrorBadURL) {
         if ([self.helpshiftEnabledFacade isHelpshiftEnabled]) {
