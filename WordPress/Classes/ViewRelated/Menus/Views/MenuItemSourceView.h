@@ -126,6 +126,11 @@
 - (void)performResultsControllerFetchRequest;
 
 /**
+ Deselects any visible MenuItemSourceCells that are selected.
+ */
+- (void)deselectVisibleSourceCellsIfNeeded;
+
+/**
  Method for subclasses to handle the cell configuraton based on the data being used for that subclass.
  */
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath;

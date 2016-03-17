@@ -101,7 +101,10 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
     PostCategory *category = [self.displayCategories objectAtIndex:indexPath.row];
     [self setItemSourceWithContentID:[category.categoryID stringValue] name:category.categoryName];
     
-    [tableView reloadRowsAtIndexPaths:tableView.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];
+    [self deselectVisibleSourceCellsIfNeeded];
+    
+    MenuItemSourceCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
+    selectedCell.sourceSelected = YES;
 }
 
 #pragma mark -
