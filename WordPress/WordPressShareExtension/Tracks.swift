@@ -19,8 +19,8 @@ public class Tracks
     
     
     // MARK: - Public Methods
-    public func track(eventName: String) {
-        let payload  = payloadWithEventName(eventName)
+    public func track(eventName: String, properties: [String: AnyObject]? = nil) {
+        let payload  = payloadWithEventName(eventName, properties: properties)
         let uploader = Uploader(groupName: groupName)
 
         uploader.send(payload)
@@ -29,7 +29,7 @@ public class Tracks
     
     
     // MARK: - Private Helpers
-    private func payloadWithEventName(eventName: String) -> [String: AnyObject] {
+    private func payloadWithEventName(eventName: String, properties: [String: AnyObject]?) -> [String: AnyObject] {
         let timestamp   = NSDate().timeIntervalSince1970 * 1000
         let userID      = NSUUID().UUIDString
         let device      = UIDevice.currentDevice()
@@ -38,6 +38,7 @@ public class Tracks
         let appVersion  = bundle.objectForInfoDictionaryKey("CFBundleShortVersionString") as? String
         let appCode     = bundle.objectForInfoDictionaryKey("CFBundleVersion") as? String
         
+        // Main Payload
         var payload = [
             "_en"                           : eventName,
             "_ts"                           : timestamp,
@@ -50,12 +51,20 @@ public class Tracks
             "device_info_os_version"        : device.systemVersion
         ] as [String: AnyObject]
         
+        // Username
         if let username = wpcomUsername {
             payload["_ul"] = username
             payload["_ut"] = "wpcom:user_id"
         } else {
             payload["_ui"] = userID
             payload["_ut"] = "anon"
+        }
+        
+        // Inject the custom properties
+        if let theProperties = properties {
+            for (key, value) in theProperties {
+                payload[key] = value
+            }
         }
         
         return payload
