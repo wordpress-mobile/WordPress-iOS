@@ -90,4 +90,9 @@ NSString * const MenuItemDefaultLinkTitle = @"New Item";
     return otherItemIsDescendant;
 }
 
+- (BOOL)nameIsEmptyOrDefault
+{
+    return self.name.length == 0 || [self.name isEqualToString:[MenuItem defaultItemNameLocalized]];
+}
+
 @end

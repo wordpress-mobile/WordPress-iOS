@@ -93,11 +93,15 @@ extern NSString * const MenuItemLinkTargetBlank;
 + (NSString *)defaultItemNameLocalized;
 
 /**
- *  @brief      Call this method to know whether an item is a descendent of this item.
- *
- *  @returns    YES if the item is a descendent, NO if not.
+ Call this method to know whether an item is a descendent of this item.
+ @returns YES if the item is a descendent, NO if not.
  */
 - (BOOL)isDescendantOfItem:(MenuItem *)item;
+
+/**
+ The item's name is nil, empty, or the default string.
+ */
+- (BOOL)nameIsEmptyOrDefault;
 
 @end
 
