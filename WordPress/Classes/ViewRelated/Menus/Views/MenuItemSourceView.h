@@ -43,6 +43,11 @@
 @property (nonatomic, strong) MenuItemSourceTextBar *searchBar;
 
 /**
+ Helpers flag for preventing text updates within the footerView.
+ */
+@property (nonatomic, assign) BOOL defersFooterViewMessageUpdates;
+
+/**
  Refreshes any data appearences within the view.
  */
 - (void)refresh;
