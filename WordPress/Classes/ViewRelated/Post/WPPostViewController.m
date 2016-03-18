@@ -773,7 +773,6 @@ EditImageDetailsViewControllerDelegate
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
 	vc.hidesBottomBarWhenPushed = YES;
-    [self.editorView saveSelection];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -786,13 +785,11 @@ EditImageDetailsViewControllerDelegate
     
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:self.isEditing];
 	vc.hidesBottomBarWhenPushed = YES;
-    [self.editorView saveSelection];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showMediaPickerAnimated:(BOOL)animated
 {
-    [self.editorView saveSelection];
     self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.dataSource = self.mediaLibraryDataSource;
