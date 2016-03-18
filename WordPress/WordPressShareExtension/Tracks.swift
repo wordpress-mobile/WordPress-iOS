@@ -7,22 +7,22 @@ public class Tracks
     public var wpcomUsername        : String?
     
     // MARK: - Private Properties
-    private let groupName           : String
+    private let configuration       : NSURLSessionConfiguration
     
     // MARK: - Constants
     private static let version      = "1.0"
     private static let userAgent    = "Nosara Extensions Client for iOS Mark " + version
     
     // MARK: - Initializers
-    init(groupName: String) {
-        self.groupName = groupName
+    init(configuration: NSURLSessionConfiguration) {
+        self.configuration = configuration
     }
     
     
     // MARK: - Public Methods
     public func track(eventName: String, properties: [String: AnyObject]? = nil) {
         let payload  = payloadWithEventName(eventName, properties: properties)
-        let uploader = Uploader(groupName: groupName)
+        let uploader = Uploader(configuration: configuration)
 
         uploader.send(payload)
     }
@@ -79,7 +79,7 @@ public class Tracks
     private class Uploader: NSObject, NSURLSessionDelegate
     {
         // MARK: - Properties
-        private let groupName : String
+        private let configuration : NSURLSessionConfiguration
         
         // MARK: - Constants
         private let tracksURL   = "https://public-api.wordpress.com/rest/v1.1/tracks/record"
@@ -89,8 +89,8 @@ public class Tracks
                                     "User-Agent"    : "WPiOS App Extension"]
         
         // MARK: - Initializers
-        init(groupName: String) {
-            self.groupName = groupName
+        init(configuration: NSURLSessionConfiguration) {
+            self.configuration = configuration
         }
         
         
@@ -114,10 +114,8 @@ public class Tracks
             }
             
             // Task!
-            let sc = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(groupName)
-            sc.sharedContainerIdentifier = groupName
-
-            let session = NSURLSession(configuration: sc, delegate: self, delegateQueue: NSOperationQueue.mainQueue())
+            let delegateQueue = NSOperationQueue.mainQueue()
+            let session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
             let task = session.downloadTaskWithRequest(request)
             task.resume()
         }
