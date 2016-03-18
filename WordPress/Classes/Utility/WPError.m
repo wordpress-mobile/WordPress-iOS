@@ -7,6 +7,7 @@
 #import "NSString+Helpers.h"
 #import "SupportViewController.h"
 #import "WordPress-Swift.h"
+#import <WPXMLRPC/WPXMLRPC.h>
 
 NSInteger const SupportButtonIndex = 0;
 NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
@@ -110,7 +111,7 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
 {
     NSString *cleanedErrorMsg = [error localizedDescription];
 
-    if ([error.domain isEqualToString:WordPressXMLRPCApiErrorDomain] && error.code == 401){
+    if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain] && error.code == 401){
         cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this site.", @"");
     }
 
