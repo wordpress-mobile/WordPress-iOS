@@ -1,6 +1,7 @@
 #import "MenuItemSourceFooterView.h"
 #import "MenuItemSourceCell.h"
 #import "WPStyleGuide.h"
+#import "MenusDesign.h"
 
 static NSTimeInterval const PulseAnimationDuration = 0.35;
 
@@ -18,10 +19,12 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 
 @interface MenuItemSourceFooterView () <MenuItemSourceLoadingDrawViewDelegate>
 
+@property (nonatomic, copy) NSString *labelText;
+@property (nonatomic, assign) BOOL drawsLabelTextIfNeeded;
 @property (nonatomic, strong) MenuItemSourceCell *sourceCell;
 @property (nonatomic, strong) MenuItemSourceLoadingDrawView *drawView;
-@property (nonatomic, strong) NSTimer *beginAnimationsTimer;
-@property (nonatomic, strong) NSTimer *endAnimationsTimer;
+@property (nonatomic, strong) NSTimer *beginLoadingAnimationsTimer;
+@property (nonatomic, strong) NSTimer *endLoadingAnimationsTimer;
 
 @end
 
@@ -29,14 +32,16 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 
 - (void)dealloc
 {
-    [self.beginAnimationsTimer invalidate];
-    [self.endAnimationsTimer invalidate];
+    [self.beginLoadingAnimationsTimer invalidate];
+    [self.endLoadingAnimationsTimer invalidate];
 }
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
+        
+        self.backgroundColor = [UIColor whiteColor];
         
         MenuItemSourceCell *cell = [[MenuItemSourceCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         cell.frame = self.bounds;
@@ -58,21 +63,33 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
     return self;
 }
 
+- (void)toggleMessageWithText:(NSString *)text
+{
+    self.labelText = text;
+    if (!self.beginLoadingAnimationsTimer && !self.endLoadingAnimationsTimer) {
+        self.drawsLabelTextIfNeeded = YES;
+    }
+}
+
 - (void)startLoadingIndicatorAnimation
 {
     if (self.isAnimating) {
         return;
     }
     
-    [self.beginAnimationsTimer invalidate];
-    [self.endAnimationsTimer invalidate];
+    self.drawsLabelTextIfNeeded = NO;
+    
+    [self.beginLoadingAnimationsTimer invalidate];
+    self.beginLoadingAnimationsTimer = nil;
+    [self.endLoadingAnimationsTimer invalidate];
+    self.endLoadingAnimationsTimer = nil;
     
     self.isAnimating = YES;
     self.sourceCell.hidden = NO;
     
     // Will begin animations on next runloop incase there are upcoming layout upates in-which the animation won't play.
     NSTimer *timer = [NSTimer timerWithTimeInterval:0.0 target:self selector:@selector(beginCellAnimations) userInfo:nil repeats:NO];
-    self.beginAnimationsTimer = timer;
+    self.beginLoadingAnimationsTimer = timer;
     // Add the timer to the runloop scheduling under common modes, to not pause for UIScrollView scrolling.
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
@@ -83,13 +100,15 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
         return;
     }
     
-    [self.beginAnimationsTimer invalidate];
-    [self.endAnimationsTimer invalidate];
+    [self.beginLoadingAnimationsTimer invalidate];
+    self.beginLoadingAnimationsTimer = nil;
+    [self.endLoadingAnimationsTimer invalidate];
+    self.endLoadingAnimationsTimer = nil;
     
     self.isAnimating = NO;
     // Let the animation play for just a bit before ending it. This avoids flickering.
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(endCellAnimations) userInfo:nil repeats:NO];
-    self.endAnimationsTimer = timer;
+    self.endLoadingAnimationsTimer = timer;
     // Add the timer to the runloop scheduling under common modes, to not pause for UIScrollView scrolling.
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
@@ -108,8 +127,45 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
 
 - (void)endCellAnimations
 {
+    self.drawsLabelTextIfNeeded = YES;
+    
     [self.sourceCell.layer removeAllAnimations];
     self.sourceCell.hidden = YES;
+}
+
+- (void)setLabelText:(NSString *)labelText
+{
+    if (_labelText != labelText) {
+        _labelText = labelText;
+        [self setNeedsDisplay];
+    }
+}
+
+- (void)setDrawsLabelTextIfNeeded:(BOOL)drawsLabelTextIfNeeded
+{
+    if (_drawsLabelTextIfNeeded != drawsLabelTextIfNeeded) {
+        _drawsLabelTextIfNeeded = drawsLabelTextIfNeeded;
+        [self setNeedsDisplay];
+    }
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    if (self.labelText && self.drawsLabelTextIfNeeded) {
+        CGRect textRect = CGRectInset(rect, MenusDesignDefaultContentSpacing + 4.0, 0);
+        textRect.origin.y = MenusDesignDefaultContentSpacing / 2.0;;
+        textRect.size.height -= textRect.origin.y;
+        
+        NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+        style.alignment = NSTextAlignmentLeft;
+        style.lineBreakMode = NSLineBreakByTruncatingTail;
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName: [WPStyleGuide regularTextFont],
+                                     NSForegroundColorAttributeName: [WPStyleGuide greyDarken10],
+                                     NSParagraphStyleAttributeName: style
+                                     };
+        [self.labelText drawInRect:textRect withAttributes:attributes];
+    }
 }
 
 #pragma mark - MenuItemSourceLoadingDrawViewDelegate

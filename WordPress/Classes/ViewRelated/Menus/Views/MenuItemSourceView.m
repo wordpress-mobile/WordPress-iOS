@@ -186,14 +186,22 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     // overrided in subclasses
 }
 
-- (void)showLoadingSourcesIndicatorIfEmpty
+- (void)toggleNoResultsIndiciator
 {
-    if (self.resultsController.sections.count) {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] firstObject];
-        if ([sectionInfo numberOfObjects] == 0) {
-            [self showLoadingSourcesIndicator];
+    if ([self fetchedResultsAreEmpty] && !self.defersFooterViewMessageUpdates) {
+        if (self.searchBarInputIsActive) {
+            [self.footerView toggleMessageWithText:NSLocalizedString(@"No results. Please try a different search.", @"Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc.")];
+        } else {
+            [self.footerView toggleMessageWithText:NSLocalizedString(@"Nothing found.", @"Shown when user is loading Menu item options and no items are available, such as posts, pages, etc.")];
         }
     } else {
+        [self.footerView toggleMessageWithText:nil];
+    }
+}
+
+- (void)showLoadingSourcesIndicatorIfEmpty
+{
+    if ([self fetchedResultsAreEmpty]) {
         [self showLoadingSourcesIndicator];
     }
 }
@@ -206,6 +214,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 - (void)hideLoadingSourcesIndicator
 {
     [self.footerView stopLoadingIndicatorAnimation];
+    [self toggleNoResultsIndiciator];
 }
 
 - (BOOL)itemTypeMatchesSourceItemType
@@ -278,12 +287,16 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     if (!self.resultsController) {
         return;
     }
-    
     NSError *error;
     if (![self.resultsController performFetch:&error]) {
-        NSLog(@"an error ocurred: %@", error);
-        // TODO: handle errors
+        DDLogError(@"Error occurred preforming fetch for MenuItem source of type: %@ error: %@", [self sourceItemType], error);
     }
+    [self toggleNoResultsIndiciator];
+}
+
+- (BOOL)fetchedResultsAreEmpty
+{
+    return self.resultsController.fetchedObjects.count == 0;
 }
 
 - (void)deselectVisibleSourceCellsIfNeeded
@@ -431,6 +444,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableView reloadData];
+    [self toggleNoResultsIndiciator];
 }
 
 @end
