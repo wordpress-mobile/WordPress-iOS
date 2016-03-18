@@ -1,12 +1,17 @@
 import Foundation
 
 
-/// This class encapsulates all of the interaction with the Gravatar endpoint.
+/// This Service exposes all of the valid operations we can execute, to interact with the Gravatar Service.
 ///
 public class GravatarService
 {
+    /// Designated Initializer
     ///
-    //
+    /// - Parameters:
+    ///     - context: The Core Data context that should be used by the service.
+    ///
+    /// - Returns: nil if there's no valid WordPressCom Account available.
+    ///
     public init?(context: NSManagedObjectContext) {
         let mainAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount()
         remoteApi       = mainAccount?.restApi
