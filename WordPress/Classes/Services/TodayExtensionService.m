@@ -22,9 +22,9 @@
     [sharedDefaults synchronize];
     
     NSError *error;
-    [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetTokenKeychainUsername
+    [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetKeychainTokenKey
                          andPassword:oauth2Token
-                      forServiceName:WPStatsTodayWidgetTokenKeychainServiceName
+                      forServiceName:WPStatsTodayWidgetKeychainServiceName
                          accessGroup:WPAppKeychainAccessGroup
                       updateExisting:YES
                                error:&error];
@@ -42,8 +42,8 @@
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
     [sharedDefaults synchronize];
     
-    [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetTokenKeychainUsername
-                              andServiceName:WPStatsTodayWidgetTokenKeychainServiceName
+    [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetKeychainTokenKey
+                              andServiceName:WPStatsTodayWidgetKeychainServiceName
                                  accessGroup:WPAppKeychainAccessGroup
                                        error:nil];
 }
@@ -57,8 +57,8 @@
 {
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetTokenKeychainUsername
-                                                       andServiceName:WPStatsTodayWidgetTokenKeychainServiceName
+    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetKeychainTokenKey
+                                                       andServiceName:WPStatsTodayWidgetKeychainServiceName
                                                           accessGroup:WPAppKeychainAccessGroup
                                                                 error:nil];
     

@@ -4,45 +4,43 @@ import WordPressComKit
 
 
 class ShareViewController: SLComposeServiceViewController {
+    // MARK: - Private Properties
+    private var wpcomUsername: String?
     private var oauth2Token: NSString?
     private var selectedSiteID: Int?
     private var selectedSiteName: String?
     private var postStatus = "publish"
+    private var tracks: Tracks!
     
-    override func viewDidLoad() {
-        let authToken = ShareExtensionService.retrieveShareExtensionToken()
-        let defaultSite = ShareExtensionService.retrieveShareExtensionPrimarySite()
-        
-        oauth2Token = authToken
-        selectedSiteID = defaultSite?.siteID
-        selectedSiteName = defaultSite?.siteName
-    }
     
     // MARK: - UIViewController Methods
+    override func viewDidLoad() {
+        // Retrieve all of the settings
+        let username = ShareExtensionService.retrieveShareExtensionUsername()
+        let token = ShareExtensionService.retrieveShareExtensionToken()
+        let defaultSite = ShareExtensionService.retrieveShareExtensionPrimarySite()
+        
+        // Properties
+        wpcomUsername = username
+        oauth2Token = token
+        selectedSiteID = defaultSite?.siteID
+        selectedSiteName = defaultSite?.siteName
+
+        // Tracker
+        tracks = Tracks(appGroupName: WPAppGroupName)
+        tracks.wpcomUsername = username
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        
+        tracks.trackExtensionLaunched(oauth2Token != nil)
         dismissIfNeeded()
     }
     
-    // MARK: - Private Helpers
-    private func dismissIfNeeded() {
-        guard oauth2Token == nil else {
-            return
-        }
-        
-        let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
-        let message = NSLocalizedString("Launch the WordPress app and sign into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
-        let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
-        
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let alertAction = UIAlertAction(title: accept, style: .Default) { (action: UIAlertAction) -> Void in
-            self.cancel()
-        }
-        
-        alertController.addAction(alertAction)
-        presentViewController(alertController, animated: true, completion: nil)
-    }
-
+    
+    
+    // MARK: - Overriden Methods
     override func loadPreviewView() -> UIView! {
         // Hides Composer Thumbnail Preview.
         return UIView()
@@ -55,12 +53,19 @@ class ShareViewController: SLComposeServiceViewController {
         return selectedSiteID != nil
     }
 
+    override func didSelectCancel() {
+        tracks.trackExtensionCancelled()
+        super.didSelectCancel()
+    }
+    
     override func didSelectPost() {
         RequestRouter.bearerToken = oauth2Token! as String
 
         loadWebsiteUrl { (url: NSURL?) in
-            let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(WPAppGroupName)
+            let identifier = WPAppGroupName + "." + NSUUID().UUIDString
+            let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
             configuration.sharedContainerIdentifier = WPAppGroupName
+            
             let service = PostService(configuration: configuration)
             let (subject, body) = self.splitContentTextIntoSubjectAndBody(self.contentWithSourceURL(url))
             service.createPost(siteID: self.selectedSiteID!, status:self.postStatus, title: subject, body: body) { (post, error) in
@@ -69,6 +74,8 @@ class ShareViewController: SLComposeServiceViewController {
             
             self.extensionContext!.completeRequestReturningItems([], completionHandler: nil)
         }
+        
+        tracks.trackExtensionPosted(postStatus)
     }
 
     override func configurationItems() -> [AnyObject]! {
@@ -89,6 +96,26 @@ class ShareViewController: SLComposeServiceViewController {
         return [blogPickerItem, statusPickerItem]
     }
 
+    
+    
+    // MARK: - Private Helpers
+    private func dismissIfNeeded() {
+        guard oauth2Token == nil else {
+            return
+        }
+        
+        let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
+        let message = NSLocalizedString("Launch the WordPress app and sign into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
+        let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let alertAction = UIAlertAction(title: accept, style: .Default) { (action: UIAlertAction) -> Void in
+            self.cancel()
+        }
+        
+        alertController.addAction(alertAction)
+        presentViewController(alertController, animated: true, completion: nil)
+    }
     
     private func displaySitePicker() {
         let pickerViewController = SitePickerViewController()
