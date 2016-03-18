@@ -71,8 +71,8 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
                                    success:^(NSArray<PostCategory *> *categories) {
                                        stopLoading();
                                    } failure:^(NSError *error) {
-                                       // TODO: show error message
                                        stopLoading();
+                                       [self showLoadingErrorMessageForResults];
                                    }];
 }
 
