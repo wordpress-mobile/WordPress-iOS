@@ -21,6 +21,7 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - Alamofire (3.2.1)
   - AMPopTip (0.10.2)
   - Automattic-Tracks-iOS (0.0.13):
     - CocoaLumberjack (~> 2.2.0)
@@ -49,7 +50,7 @@ PODS:
     - DTFoundation/Core
   - EmailChecker (0.1)
   - Expecta (0.3.2)
-  - Fabric (1.6.6)
+  - Fabric (1.6.7)
   - FormatterKit (1.8.0):
     - FormatterKit/AddressFormatter (= 1.8.0)
     - FormatterKit/ArrayFormatter (= 1.8.0)
@@ -70,9 +71,9 @@ PODS:
   - FormatterKit/UnitOfInformationFormatter (1.8.0)
   - FormatterKit/URLRequestFormatter (1.8.0)
   - Helpshift (5.3.0-supportXcode6)
-  - HockeySDK (3.8.5):
-    - HockeySDK/AllFeaturesLib (= 3.8.5)
-  - HockeySDK/AllFeaturesLib (3.8.5)
+  - HockeySDK (3.8.6):
+    - HockeySDK/AllFeaturesLib (= 3.8.6)
+  - HockeySDK/AllFeaturesLib (3.8.6)
   - KIF/Core (3.4.1)
   - KIF/IdentifierTests (3.4.1):
     - KIF/Core
@@ -183,6 +184,8 @@ PODS:
     - WordPress-iOS-Shared (~> 0.5.3)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
     - WordPressCom-Stats-iOS/Services
+  - WordPressComKit (0.0.1):
+    - Alamofire (~> 3.0)
   - WPMediaPicker (0.9.0)
   - wpxmlrpc (0.8.1)
 
@@ -229,6 +232,8 @@ DEPENDENCIES:
   - WordPressCom-Analytics-iOS (= 0.1.4)
   - WordPressCom-Stats-iOS/Services (= 0.6.3)
   - WordPressCom-Stats-iOS/UI (= 0.6.3)
+  - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, commit
+    `3457aefae79ef2c67fb26ccab57c24505caa65f9`)
   - WPMediaPicker (~> 0.9.0)
   - wpxmlrpc (~> 0.8)
 
@@ -246,6 +251,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
+  WordPressComKit:
+    :commit: 3457aefae79ef2c67fb26ccab57c24505caa65f9
+    :git: https://github.com/Automattic/WordPressComKit.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -258,12 +266,16 @@ CHECKOUT OPTIONS:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPressApi:
-    :commit: e89ef2bf8820d785c3fe9713ebeeb83f8a3f0429
+    :commit: f557b131d0d5c9a9eb9a06ffc2aba15a310f6b2c
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
+  WordPressComKit:
+    :commit: 3457aefae79ef2c67fb26ccab57c24505caa65f9
+    :git: https://github.com/Automattic/WordPressComKit.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  Alamofire: f11d8624a05f5d39e0c99309b3e600a3ba64298a
   AMPopTip: 0788a9452806049e3aa0d6d09324606fc41ea646
   Automattic-Tracks-iOS: ba47c35576a07376facc7a91740fb78867831e1c
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
@@ -272,10 +284,10 @@ SPEC CHECKSUMS:
   DTFoundation: 70a0765e3596f82dd421832e95c65e2166eb3102
   EmailChecker: 78dd8dfa9d004826c8b5889be6c380b72b837d44
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
-  Fabric: 1abc1e59f11fa39ede6f690ef7309d8563e3ec59
+  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   Helpshift: af8567ca7991c6d2c1aa76e10ee6e6893409c0a1
-  HockeySDK: dd11a2b9da3372fd025643bee5bc10c8c613d169
+  HockeySDK: ab68303eec6680f6b539de65d747742dd276e934
   KIF: 2275c6d59c77e5e56f660f006b99d73780130540
   Lookback: 9ab9027ff246d2dc5ce34be483f70e4a6718280b
   MGImageUtilities: b54a815970e231903c495fff33699467158f61a0
@@ -302,6 +314,7 @@ SPEC CHECKSUMS:
   WordPressApi: 78e75bd45467f8bb0f7dad41cd7c3b0a1a9d3d4c
   WordPressCom-Analytics-iOS: 1d4cf0426fdc91393ea1ba65daf19133e440ff6a
   WordPressCom-Stats-iOS: 75dbdf4765c09b90a8fe00375dc96a93e64feffa
+  WordPressComKit: 6f0c39c3e0af3599cd5244e4ec05192f5e4a7882
   WPMediaPicker: 2c399b1cbd4d8a7fcd312eb93107a349d26fb23f
   wpxmlrpc: bd391dab54e9bdceb5d1de23d161ecf1ba80f0e0
 

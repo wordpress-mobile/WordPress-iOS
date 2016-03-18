@@ -9,7 +9,10 @@
 #import "DDASLLogger.h"
 #endif
 
-int ddLogLevel                                                  = DDLogLevelInfo;
+#ifndef COCOA_LUMBERJACK
+#define COCOA_LUMBERJACK
+int ddLogLevel = DDLogLevelInfo;
+#endif
 
 @implementation WPDDLogWrapper
 

@@ -202,6 +202,15 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                              andOAuth2Token:oauth2Token];
                 });
             }
+            
+            // Configure the Share Extension
+            if (defaultBlog != nil && !defaultBlog.isDeleted) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [ShareExtensionService configureShareExtensionDefaultSiteID:defaultBlog.dotComID.integerValue
+                                                                defaultSiteName:defaultBlog.settings.name];
+                });
+            }
+
         }];
     } failure:^(NSError *error) {
         DDLogError(@"Error syncing blogs: %@", error);
