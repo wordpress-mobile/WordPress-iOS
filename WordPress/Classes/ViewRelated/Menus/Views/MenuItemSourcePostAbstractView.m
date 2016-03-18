@@ -152,6 +152,9 @@
             // same predicate, no update needed
             return;
         }
+        if (self.additionalPostsAvailableForSync) {
+            self.defersFooterViewMessageUpdates = YES;
+        }
     } else {
         predicate = defaultPredicate;
     }
@@ -165,14 +168,18 @@
 - (void)searchBarInputChangeDetectedForRemoteResultsUpdateWithText:(NSString *)searchText
 {
     if (!searchText.length || !self.additionalPostsAvailableForSync) {
+        self.defersFooterViewMessageUpdates = NO;
         return;
     }
+    
+    self.defersFooterViewMessageUpdates = NO;
+    
     [self showLoadingSourcesIndicator];
     void(^stopLoading)() = ^() {
         [self hideLoadingSourcesIndicator];
     };
-    DDLogDebug(@"MenuItemSourcePostView: Searching posts via PostService");
     
+    DDLogDebug(@"MenuItemSourcePostView: Searching posts via PostService");
     PostService *service = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     PostServiceSyncOptions *options = [self syncOptions];
     options.search = searchText;

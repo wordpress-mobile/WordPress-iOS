@@ -4,6 +4,7 @@
 
 @property (nonatomic, assign) BOOL isAnimating;
 
+- (void)toggleMessageWithText:(NSString *)text;
 - (void)startLoadingIndicatorAnimation;
 - (void)stopLoadingIndicatorAnimation;
 

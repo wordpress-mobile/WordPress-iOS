@@ -174,8 +174,10 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     NSPredicate *predicate = nil;
     
     if (searchText.length) {
+        self.defersFooterViewMessageUpdates = YES;
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[defaultPredicate, searchPredicate]];
     } else {
+        self.defersFooterViewMessageUpdates = NO;
         predicate = defaultPredicate;
     }
     
@@ -193,8 +195,11 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 - (void)searchBarInputChangeDetectedForRemoteResultsUpdateWithText:(NSString *)searchText
 {
     if (!searchText.length) {
+        self.defersFooterViewMessageUpdates = NO;
         return;
     }
+    
+    self.defersFooterViewMessageUpdates = NO;
     
     [self showLoadingSourcesIndicator];
     void(^stopLoading)() = ^() {
