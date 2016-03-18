@@ -30,6 +30,6 @@ public class GravatarService
     
     
     // MARK: - Private Properties
-    private let remoteApi       : WordPressComApi?
-    private let accountEmail    : String?
+    private let remoteApi       : WordPressComApi!
+    private let accountEmail    : String!
 }
