@@ -322,7 +322,7 @@ static NSString * const RemoteOptionValueOrderByPostID = @"ID";
 {
     // Scheduled posts are synced with a post_status of 'publish' but we want to
     // work with a status of 'future' from within the app.
-    if (date == [date laterDate:[NSDate date]]) {
+    if ([status isEqualToString:PostStatusPublish] && date == [date laterDate:[NSDate date]]) {
         return PostStatusScheduled;
     }
     return status;
