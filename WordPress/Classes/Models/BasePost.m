@@ -70,12 +70,20 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return [string stringByEllipsizingWithMaxLength:PostDerivedSummaryLength preserveWords:YES];
 }
 
+- (NSString *)availableStatusForPublishOrScheduled
+{
+    if ([self hasFuturePublishDate]) {
+        return PostStatusScheduled;
+    }
+    return PostStatusPublish;
+}
+
 - (NSArray *)availableStatusesForEditing
 {
     // Note: Read method description before changing values.
     return @[PostStatusDraft,
              PostStatusPending,
-             PostStatusPublish];
+             [self availableStatusForPublishOrScheduled]];
 }
 
 - (BOOL)hasNeverAttemptedToUpload
@@ -115,6 +123,18 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return [BasePost titleForStatus:self.status];
 }
 
+// If the post has a future publish date. This is different from "isScheduled" in that
+// a post with a draft, pending, or trashed status can also have a date_created_gmt
+// with a future value.
+- (BOOL)hasFuturePublishDate
+{
+    if (!self.date_created_gmt) {
+        return NO;
+    }
+    return (self.date_created_gmt == [self.date_created_gmt laterDate:[NSDate date]]);
+}
+
+// If the post has a scheduled status.
 - (BOOL)isScheduled
 {
     return ([self.status isEqualToString:PostStatusScheduled]);
