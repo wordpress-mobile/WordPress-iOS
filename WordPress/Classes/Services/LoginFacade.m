@@ -4,7 +4,8 @@
 #import "NSURL+IDN.h"
 #import "WordPressComOAuthClientFacade.h"
 #import "WordPressXMLRPCAPIFacade.h"
-
+#import "WPError.h"
+#import "BlogService.h"
 
 @implementation LoginFacade
 
@@ -68,6 +69,17 @@
             if ([options objectForKey:@"wordpress.com"] != nil) {
                 [self signInToWordpressDotCom:loginFields];
             } else {
+                NSString *versionString = options[@"software_version"][@"value"];
+                CGFloat version = [versionString floatValue];
+                if (version < [WordPressMinimumVersion floatValue]) {
+                    NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", nil), [xmlRPCURL host], versionString, WordPressMinimumVersion];
+                    NSError *versionError = [NSError errorWithDomain:WordPressAppErrorDomain
+                                        code:0//WordpressAppPErrorCodeInvalidVersion
+                                    userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
+                    [WPAnalytics track:WPAnalyticsStatLoginFailed];
+                    [self.delegate displayRemoteError:versionError];
+                    return;
+                }
                 NSString *xmlrpc = [xmlRPCURL absoluteString];
                 [self.delegate finishedLoginWithUsername:loginFields.username password:loginFields.password xmlrpc:xmlrpc options:options];
             }
