@@ -340,6 +340,7 @@
 		B50248C71C96FFE800AFBDED /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B50248C51C96FFE800AFBDED /* MainInterface.storyboard */; };
 		B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B50421E61B680839008EEA82 /* NoteUndoOverlayView.xib */; };
 		B50421E91B68170F008EEA82 /* NoteUndoOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50421E81B68170F008EEA82 /* NoteUndoOverlayView.swift */; };
+		B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */; };
 		B5066D031BEBFAA900355819 /* RemoteBlogSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5066D021BEBFAA900355819 /* RemoteBlogSettings.swift */; };
 		B50EED791C0E5B2400D278CA /* SettingsPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50EED781C0E5B2400D278CA /* SettingsPickerViewController.swift */; };
 		B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */; };
@@ -1408,6 +1409,7 @@
 		B50248C61C96FFE800AFBDED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		B50421E61B680839008EEA82 /* NoteUndoOverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteUndoOverlayView.xib; sourceTree = "<group>"; };
 		B50421E81B68170F008EEA82 /* NoteUndoOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteUndoOverlayView.swift; sourceTree = "<group>"; };
+		B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Tracks+ShareExtension.swift"; sourceTree = SOURCE_ROOT; };
 		B5066D021BEBFAA900355819 /* RemoteBlogSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RemoteBlogSettings.swift; path = "Remote Objects/RemoteBlogSettings.swift"; sourceTree = "<group>"; };
 		B50EED781C0E5B2400D278CA /* SettingsPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsPickerViewController.swift; sourceTree = "<group>"; };
 		B51535D31BBB16AA0029B84B /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -3518,6 +3520,7 @@
 			isa = PBXGroup;
 			children = (
 				B5FA22821C99F6180016CA7C /* Tracks.swift */,
+				B504F5F41C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift */,
 			);
 			name = Tracks;
 			sourceTree = "<group>";
@@ -5391,6 +5394,7 @@
 				B5BEA55F1C7CE6D100C8035B /* Constants.m in Sources */,
 				B50248B51C96FF8400AFBDED /* ShareViewController.swift in Sources */,
 				B5BEA5601C7CE6D700C8035B /* SFHFKeychainUtils.m in Sources */,
+				B504F5F51C9C2BD000F8B1C6 /* Tracks+ShareExtension.swift in Sources */,
 				B51DAF001C7E2332007F474C /* NSString+Helpers.swift in Sources */,
 				B5FA22831C99F6180016CA7C /* Tracks.swift in Sources */,
 			);
