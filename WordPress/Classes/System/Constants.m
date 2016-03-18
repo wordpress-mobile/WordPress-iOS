@@ -40,15 +40,16 @@ NSString *const WPAppKeychainAccessGroup                            = @"3TMU3BH3
 
 /// Share Extension Constants
 ///
-NSString *const WPShareExtensionTokenKeychainUsername               = @"OAuth2Token";
-NSString *const WPShareExtensionTokenKeychainServiceName            = @"ShareExtension";
+NSString *const WPShareExtensionKeychainUsernameKey                 = @"Username";
+NSString *const WPShareExtensionKeychainTokenKey                    = @"OAuth2Token";
+NSString *const WPShareExtensionKeychainServiceName                 = @"ShareExtension";
 NSString *const WPShareExtensionUserDefaultsPrimarySiteName         = @"WPShareUserDefaultsPrimarySiteName";
 NSString *const WPShareExtensionUserDefaultsPrimarySiteID           = @"WPShareUserDefaultsPrimarySiteID";
 
 /// Today Widget Constants
 ///
-NSString *const WPStatsTodayWidgetTokenKeychainUsername             = @"OAuth2Token";
-NSString *const WPStatsTodayWidgetTokenKeychainServiceName          = @"TodayWidget";
+NSString *const WPStatsTodayWidgetKeychainTokenKey                  = @"OAuth2Token";
+NSString *const WPStatsTodayWidgetKeychainServiceName               = @"TodayWidget";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteIdKey             = @"WordPressTodayWidgetSiteId";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey           = @"WordPressTodayWidgetSiteName";
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPressTodayWidgetTimeZone";
