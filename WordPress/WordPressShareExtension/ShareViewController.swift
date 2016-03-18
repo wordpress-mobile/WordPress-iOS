@@ -4,12 +4,15 @@ import WordPressComKit
 
 
 class ShareViewController: SLComposeServiceViewController {
+    // MARK: - Private Properties
     private var wpcomUsername: String?
     private var oauth2Token: NSString?
     private var selectedSiteID: Int?
     private var selectedSiteName: String?
     private var postStatus = "publish"
-    private let tracks = Tracks(groupName: WPAppGroupName)
+    private var configuration: NSURLSessionConfiguration!
+    private var tracks: Tracks!
+    
     
     // MARK: - UIViewController Methods
     override func viewDidLoad() {
@@ -23,8 +26,13 @@ class ShareViewController: SLComposeServiceViewController {
         oauth2Token = token
         selectedSiteID = defaultSite?.siteID
         selectedSiteName = defaultSite?.siteName
-        
+
+        // Session Configuration
+        configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(WPAppGroupName)
+        configuration.sharedContainerIdentifier = WPAppGroupName
+
         // Tracker
+        tracks = Tracks(configuration: configuration)
         tracks.wpcomUsername = username
     }
     
@@ -59,9 +67,7 @@ class ShareViewController: SLComposeServiceViewController {
         RequestRouter.bearerToken = oauth2Token! as String
 
         loadWebsiteUrl { (url: NSURL?) in
-            let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(WPAppGroupName)
-            configuration.sharedContainerIdentifier = WPAppGroupName
-            let service = PostService(configuration: configuration)
+            let service = PostService(configuration: self.configuration)
             let (subject, body) = self.splitContentTextIntoSubjectAndBody(self.contentWithSourceURL(url))
             service.createPost(siteID: self.selectedSiteID!, status:self.postStatus, title: subject, body: body) { (post, error) in
                 print("Post \(post) Error \(error)")
