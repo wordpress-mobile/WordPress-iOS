@@ -82,7 +82,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
             _stackView = stackView;
         }
         {
-            MenuItemSourceFooterView *footerView = [[MenuItemSourceFooterView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 50.0)];
+            MenuItemSourceFooterView *footerView = [[MenuItemSourceFooterView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 60.0)];
             self.tableView.tableFooterView = footerView;
             self.footerView = footerView;
         }
@@ -186,19 +186,6 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     // overrided in subclasses
 }
 
-- (void)toggleNoResultsIndiciator
-{
-    if ([self fetchedResultsAreEmpty] && !self.defersFooterViewMessageUpdates) {
-        if (self.searchBarInputIsActive) {
-            [self.footerView toggleMessageWithText:NSLocalizedString(@"No results. Please try a different search.", @"Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc.")];
-        } else {
-            [self.footerView toggleMessageWithText:NSLocalizedString(@"Nothing found.", @"Shown when user is loading Menu item options and no items are available, such as posts, pages, etc.")];
-        }
-    } else {
-        [self.footerView toggleMessageWithText:nil];
-    }
-}
-
 - (void)showLoadingSourcesIndicatorIfEmpty
 {
     if ([self fetchedResultsAreEmpty]) {
@@ -215,6 +202,12 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 {
     [self.footerView stopLoadingIndicatorAnimation];
     [self toggleNoResultsIndiciator];
+}
+
+- (void)showLoadingErrorMessageForResults
+{
+    NSString *text = NSLocalizedString(@"An error occurred loading the results, please try again in a moment.", @"The error message displayed when a user is editing a MenuItem and the results cannot be loaded, such as posts, pages, etc.");
+    [self.footerView toggleMessageWithText:text];
 }
 
 - (BOOL)itemTypeMatchesSourceItemType
@@ -241,6 +234,19 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 {
     // overrided in subclasses
     return nil;
+}
+
+- (void)toggleNoResultsIndiciator
+{
+    if ([self fetchedResultsAreEmpty] && !self.defersFooterViewMessageUpdates) {
+        if (self.searchBarInputIsActive) {
+            [self.footerView toggleMessageWithText:NSLocalizedString(@"No results. Please try a different search.", @"Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc.")];
+        } else {
+            [self.footerView toggleMessageWithText:NSLocalizedString(@"Nothing found.", @"Shown when user is loading Menu item options and no items are available, such as posts, pages, etc.")];
+        }
+    } else {
+        [self.footerView toggleMessageWithText:nil];
+    }
 }
 
 #pragma mark - NSFetchedResultsController and subclass methods

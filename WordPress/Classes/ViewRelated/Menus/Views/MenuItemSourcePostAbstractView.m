@@ -60,6 +60,7 @@
                          [self didFinishSyncingPosts:posts options:options];
                      } failure:^(NSError *error) {
                          [self didFinishSyncingPosts:nil options:options];
+                         [self showLoadingErrorMessageForResults];
                      }];
 }
 
@@ -135,6 +136,7 @@
                          [self didFinishSyncingPosts:posts options:options];
                      } failure:^(NSError *error) {
                          [self didFinishSyncingPosts:nil options:options];
+                         [self showLoadingErrorMessageForResults];
                      }];
 }
 
@@ -190,6 +192,7 @@
                          stopLoading();
                      } failure:^(NSError *error) {
                          stopLoading();
+                         [self showLoadingErrorMessageForResults];
                      }];
 }
 

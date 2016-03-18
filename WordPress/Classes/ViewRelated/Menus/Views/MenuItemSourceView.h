@@ -88,6 +88,11 @@
 - (void)hideLoadingSourcesIndicator;
 
 /**
+ Displays an error message in the footer of the tableView.
+ */
+- (void)showLoadingErrorMessageForResults;
+
+/**
  The item type matches the sourceItemType of the view.
  */
 - (BOOL)itemTypeMatchesSourceItemType;

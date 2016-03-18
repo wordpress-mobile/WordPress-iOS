@@ -79,8 +79,8 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
                         success:^(NSArray<PostTag *> *tags) {
                             stopLoading();
                         } failure:^(NSError *error) {
-                            // TODO: show error message
                             stopLoading();
+                            [self showLoadingErrorMessageForResults];
                         }];
 }
 
@@ -160,8 +160,8 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
                                  stopLoading();
                                  
                              } failure:^(NSError *error) {
-                                 // TODO: Present error message if needed.
                                  stopLoading();
+                                 [self showLoadingErrorMessageForResults];
                              }];
 }
 
@@ -216,6 +216,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
                                           stopLoading();
                                       } failure:^(NSError *error) {
                                           stopLoading();
+                                          [self showLoadingErrorMessageForResults];
                                       }];
 }
 
