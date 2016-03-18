@@ -155,10 +155,7 @@ static NSTimeInterval const PulseAnimationDuration = 0.35;
         CGRect textRect = CGRectInset(rect, MenusDesignDefaultContentSpacing + 4.0, 0);
         textRect.origin.y = MenusDesignDefaultContentSpacing / 2.0;;
         textRect.size.height -= textRect.origin.y;
-        
         NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-        style.alignment = NSTextAlignmentLeft;
-        style.lineBreakMode = NSLineBreakByTruncatingTail;
         NSDictionary *attributes = @{
                                      NSFontAttributeName: [WPStyleGuide regularTextFont],
                                      NSForegroundColorAttributeName: [WPStyleGuide greyDarken10],
