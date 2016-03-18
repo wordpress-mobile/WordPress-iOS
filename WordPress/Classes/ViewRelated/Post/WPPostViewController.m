@@ -2085,6 +2085,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
+    [self.editorView.focusedField focus];
     [self dismissViewControllerAnimated:YES completion:^{
         [self addMediaAssets:assets];
     }];
@@ -2096,6 +2097,7 @@ EditImageDetailsViewControllerDelegate
         [self dismissEditViewAnimated:NO changesSaved:NO];
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
+        [self.editorView.focusedField focus];
     }
 }
 
