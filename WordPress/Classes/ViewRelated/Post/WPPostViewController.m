@@ -1445,7 +1445,7 @@ EditImageDetailsViewControllerDelegate
 
     [self.view endEditing:YES];
     
-    if (!self.post.isScheduled && [self.post.original.status isEqualToString:PostStatusDraft]  && [self.post.status isEqualToString:PostStatusPublish]) {
+    if (!self.post.hasFuturePublishDate && [self.post.original.status isEqualToString:PostStatusDraft]  && [self.post.status isEqualToString:PostStatusPublish]) {
         self.post.dateCreated = [NSDate date];
     }
     self.post = self.post.original;
