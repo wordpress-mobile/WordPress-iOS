@@ -110,8 +110,7 @@ NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
 {
     NSString *cleanedErrorMsg = [error localizedDescription];
 
-    //org.wordpress.iphone --> XML-RPC errors
-    if ([error.domain isEqualToString:WordPressAppErrorDomain] && error.code == 401){
+    if ([error.domain isEqualToString:WordPressXMLRPCApiErrorDomain] && error.code == 401){
         cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this site.", @"");
     }
 
