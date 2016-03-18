@@ -9,47 +9,35 @@ class ShareViewController: SLComposeServiceViewController {
     private var selectedSiteID: Int?
     private var selectedSiteName: String?
     private var postStatus = "publish"
-    
-    override func viewDidLoad() {
-        let username = ShareExtensionService.retrieveShareExtensionUsername()
-        let authToken = ShareExtensionService.retrieveShareExtensionToken()
-        let defaultSite = ShareExtensionService.retrieveShareExtensionPrimarySite()
-        
-        wpcomUsername = username
-        oauth2Token = authToken
-        selectedSiteID = defaultSite?.siteID
-        selectedSiteName = defaultSite?.siteName
-    }
+    private let tracks = Tracks(groupName: WPAppGroupName)
     
     // MARK: - UIViewController Methods
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        dismissIfNeeded()
+    override func viewDidLoad() {
+        // Retrieve all of the settings
+        let username = ShareExtensionService.retrieveShareExtensionUsername()
+        let token = ShareExtensionService.retrieveShareExtensionToken()
+        let defaultSite = ShareExtensionService.retrieveShareExtensionPrimarySite()
         
+        // Properties
+        wpcomUsername = username
+        oauth2Token = token
+        selectedSiteID = defaultSite?.siteID
+        selectedSiteName = defaultSite?.siteName
         
-        let tracks = Tracks(groupName: WPAppDefaultsGroupName, wpcomUsername: wpcomUsername)
-        tracks.track("wpios_share_extension_launched")
+        // Tracker
+        tracks.wpcomUsername = username
     }
     
-    // MARK: - Private Helpers
-    private func dismissIfNeeded() {
-        guard oauth2Token == nil else {
-            return
-        }
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
-        let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
-        let message = NSLocalizedString("Launch the WordPress app and sign into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
-        let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
-        
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let alertAction = UIAlertAction(title: accept, style: .Default) { (action: UIAlertAction) -> Void in
-            self.cancel()
-        }
-        
-        alertController.addAction(alertAction)
-        presentViewController(alertController, animated: true, completion: nil)
+        tracks.trackExtensionLaunched(oauth2Token != nil)
+        dismissIfNeeded()
     }
-
+    
+    
+    
+    // MARK: - Overriden Methods
     override func loadPreviewView() -> UIView! {
         // Hides Composer Thumbnail Preview.
         return UIView()
@@ -62,6 +50,11 @@ class ShareViewController: SLComposeServiceViewController {
         return selectedSiteID != nil
     }
 
+    override func didSelectCancel() {
+        tracks.trackExtensionCancelled()
+        super.didSelectCancel()
+    }
+    
     override func didSelectPost() {
         RequestRouter.bearerToken = oauth2Token! as String
 
@@ -76,6 +69,8 @@ class ShareViewController: SLComposeServiceViewController {
             
             self.extensionContext!.completeRequestReturningItems([], completionHandler: nil)
         }
+        
+        tracks.trackExtensionPosted(postStatus)
     }
 
     override func configurationItems() -> [AnyObject]! {
@@ -96,6 +91,26 @@ class ShareViewController: SLComposeServiceViewController {
         return [blogPickerItem, statusPickerItem]
     }
 
+    
+    
+    // MARK: - Private Helpers
+    private func dismissIfNeeded() {
+        guard oauth2Token == nil else {
+            return
+        }
+        
+        let title = NSLocalizedString("No WordPress.com Account", comment: "Extension Missing Token Alert Title")
+        let message = NSLocalizedString("Launch the WordPress app and sign into your WordPress.com or Jetpack site to share.", comment: "Extension Missing Token Alert Title")
+        let accept = NSLocalizedString("Cancel Share", comment: "Dismiss Extension and cancel Share OP")
+        
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        let alertAction = UIAlertAction(title: accept, style: .Default) { (action: UIAlertAction) -> Void in
+            self.cancel()
+        }
+        
+        alertController.addAction(alertAction)
+        presentViewController(alertController, animated: true, completion: nil)
+    }
     
     private func displaySitePicker() {
         let pickerViewController = SitePickerViewController()

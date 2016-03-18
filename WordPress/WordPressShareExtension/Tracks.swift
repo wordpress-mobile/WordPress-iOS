@@ -3,18 +3,19 @@ import Foundation
 
 public class Tracks
 {
-    // MARK: - Properties
+    // MARK: - Public Properties
+    public var wpcomUsername        : String?
+    
+    // MARK: - Private Properties
     private let groupName           : String
-    private let wpcomUsername       : String?
     
     // MARK: - Constants
     private static let version      = "1.0"
     private static let userAgent    = "Nosara Extensions Client for iOS Mark " + version
     
     // MARK: - Initializers
-    init(groupName: String, wpcomUsername: String?) {
+    init(groupName: String) {
         self.groupName = groupName
-        self.wpcomUsername = wpcomUsername
     }
     
     
