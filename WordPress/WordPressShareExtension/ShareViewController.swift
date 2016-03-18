@@ -10,7 +10,6 @@ class ShareViewController: SLComposeServiceViewController {
     private var selectedSiteID: Int?
     private var selectedSiteName: String?
     private var postStatus = "publish"
-    private var configuration: NSURLSessionConfiguration!
     private var tracks: Tracks!
     
     
@@ -27,12 +26,8 @@ class ShareViewController: SLComposeServiceViewController {
         selectedSiteID = defaultSite?.siteID
         selectedSiteName = defaultSite?.siteName
 
-        // Session Configuration
-        configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(WPAppGroupName)
-        configuration.sharedContainerIdentifier = WPAppGroupName
-
         // Tracker
-        tracks = Tracks(configuration: configuration)
+        tracks = Tracks(appGroupName: WPAppGroupName)
         tracks.wpcomUsername = username
     }
     
@@ -67,7 +62,11 @@ class ShareViewController: SLComposeServiceViewController {
         RequestRouter.bearerToken = oauth2Token! as String
 
         loadWebsiteUrl { (url: NSURL?) in
-            let service = PostService(configuration: self.configuration)
+            let identifier = WPAppGroupName + "." + NSUUID().UUIDString
+            let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
+            configuration.sharedContainerIdentifier = WPAppGroupName
+            
+            let service = PostService(configuration: configuration)
             let (subject, body) = self.splitContentTextIntoSubjectAndBody(self.contentWithSourceURL(url))
             service.createPost(siteID: self.selectedSiteID!, status:self.postStatus, title: subject, body: body) { (post, error) in
                 print("Post \(post) Error \(error)")

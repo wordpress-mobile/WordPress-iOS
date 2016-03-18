@@ -7,22 +7,22 @@ public class Tracks
     public var wpcomUsername        : String?
     
     // MARK: - Private Properties
-    private let configuration       : NSURLSessionConfiguration
+    private let appGroupName        : String
     
     // MARK: - Constants
     private static let version      = "1.0"
     private static let userAgent    = "Nosara Extensions Client for iOS Mark " + version
     
     // MARK: - Initializers
-    init(configuration: NSURLSessionConfiguration) {
-        self.configuration = configuration
+    init(appGroupName: String) {
+        self.appGroupName = appGroupName
     }
     
     
     // MARK: - Public Methods
     public func track(eventName: String, properties: [String: AnyObject]? = nil) {
         let payload  = payloadWithEventName(eventName, properties: properties)
-        let uploader = Uploader(configuration: configuration)
+        let uploader = Uploader(appGroupName: appGroupName)
 
         uploader.send(payload)
     }
@@ -79,7 +79,7 @@ public class Tracks
     private class Uploader: NSObject, NSURLSessionDelegate
     {
         // MARK: - Properties
-        private let configuration : NSURLSessionConfiguration
+        private var session : NSURLSession!
         
         // MARK: - Constants
         private let tracksURL   = "https://public-api.wordpress.com/rest/v1.1/tracks/record"
@@ -89,8 +89,18 @@ public class Tracks
                                     "User-Agent"    : "WPiOS App Extension"]
         
         // MARK: - Initializers
-        init(configuration: NSURLSessionConfiguration) {
-            self.configuration = configuration
+        init(appGroupName: String) {
+            super.init()
+            
+            // Random Identifier (Each Time)
+            let identifier = appGroupName + "." + NSUUID().UUIDString
+            
+            // Session Configuration
+            let configuration = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(identifier)
+            configuration.sharedContainerIdentifier = appGroupName
+            
+            // URL Session
+            session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: NSOperationQueue.mainQueue())
         }
         
         
@@ -114,8 +124,6 @@ public class Tracks
             }
             
             // Task!
-            let delegateQueue = NSOperationQueue.mainQueue()
-            let session = NSURLSession(configuration: configuration, delegate: self, delegateQueue: delegateQueue)
             let task = session.downloadTaskWithRequest(request)
             task.resume()
         }
