@@ -1,6 +1,7 @@
 import Foundation
 
 
+
 /// This Service exposes all of the valid operations we can execute, to interact with the Gravatar Service.
 ///
 public class GravatarService
@@ -25,7 +26,14 @@ public class GravatarService
     ///
     ///
     public func uploadImage(image: UIImage) {
-        
+        let remote = GravatarServiceRemote(api: remoteApi)
+        remote.uploadImage(image) { (success, error) in
+            if success {
+                return
+            }
+            
+            DDLogSwift.logError("GravatarService.uploadImage Error: \(error)")
+        }
     }
     
     
