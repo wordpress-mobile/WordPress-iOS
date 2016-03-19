@@ -14,13 +14,14 @@ public class GravatarService
     ///
     public init?(context: NSManagedObjectContext) {
         let mainAccount = AccountService(managedObjectContext: context).defaultWordPressComAccount()
-        remoteApi       = mainAccount?.restApi
+        accountToken    = mainAccount?.restApi.authToken
         accountEmail    = mainAccount?.email
         
-        guard remoteApi != nil && remoteApi?.hasCredentials() == true else {
+        guard accountEmail?.isEmpty == false && accountToken?.isEmpty == false else {
             return nil
         }
     }
+    
     
     /// This method hits the Gravatar Endpoint, and uploads a new image, to be used as profile.
     ///
@@ -28,8 +29,8 @@ public class GravatarService
     ///     - image: The new Gravatar Image, to be uploaded
     ///     - completion: An optional closure to be executed on completion.
     ///
-    public func uploadImage(image: UIImage, completion: ((error: NSError?) -> ())?) {
-        let remote = GravatarServiceRemote(api: remoteApi)
+    public func uploadImage(image: UIImage, completion: ((error: NSError?) -> ())? = nil) {
+        let remote = GravatarServiceRemote(accountToken: accountToken, accountEmail: accountEmail)
         remote.uploadImage(image) { (error) in
             if let theError = error {
                 DDLogSwift.logError("GravatarService.uploadImage Error: \(theError)")
@@ -43,6 +44,6 @@ public class GravatarService
     
     
     // MARK: - Private Properties
-    private let remoteApi       : WordPressComApi!
-    private let accountEmail    : String!
+    private let accountToken : String!
+    private let accountEmail : String!
 }
