@@ -169,7 +169,7 @@ PODS:
   - WordPressApi (0.3.6):
     - AFNetworking (~> 2.6.0)
     - wpxmlrpc (~> 0.7)
-  - WordPressCom-Analytics-iOS (0.1.4)
+  - WordPressCom-Analytics-iOS (0.1.5)
   - WordPressCom-Stats-iOS/Services (0.6.3):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (~> 2.2.0)
@@ -226,7 +226,8 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.1.5)
   - WordPress-iOS-Shared (= 0.5.3)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
-  - WordPressCom-Analytics-iOS (= 0.1.4)
+  - WordPressCom-Analytics-iOS (from `https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git`,
+    commit `b848e7803373f843c678d7942827ea4f9fb1394c`)
   - WordPressCom-Stats-iOS/Services (= 0.6.3)
   - WordPressCom-Stats-iOS/UI (= 0.6.3)
   - WPMediaPicker (~> 0.9.0)
@@ -246,6 +247,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
+  WordPressCom-Analytics-iOS:
+    :commit: b848e7803373f843c678d7942827ea4f9fb1394c
+    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -260,6 +264,9 @@ CHECKOUT OPTIONS:
   WordPressApi:
     :commit: e89ef2bf8820d785c3fe9713ebeeb83f8a3f0429
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
+  WordPressCom-Analytics-iOS:
+    :commit: b848e7803373f843c678d7942827ea4f9fb1394c
+    :git: https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
@@ -300,7 +307,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 81649efb004edc8286d3af98225d8ec2a24452ae
   WordPress-iOS-Shared: 43f55f24f0685e431167084071b7914d7c7134a8
   WordPressApi: 78e75bd45467f8bb0f7dad41cd7c3b0a1a9d3d4c
-  WordPressCom-Analytics-iOS: 1d4cf0426fdc91393ea1ba65daf19133e440ff6a
+  WordPressCom-Analytics-iOS: 09f9a0f043840009dab297f95adbb597387bdcbf
   WordPressCom-Stats-iOS: 75dbdf4765c09b90a8fe00375dc96a93e64feffa
   WPMediaPicker: 2c399b1cbd4d8a7fcd312eb93107a349d26fb23f
   wpxmlrpc: bd391dab54e9bdceb5d1de23d161ecf1ba80f0e0
