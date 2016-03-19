@@ -89,6 +89,13 @@ public class Tracks
                                     "Accept"        : "application/json",
                                     "User-Agent"    : "WPiOS App Extension"]
         
+        
+        // MARK: - Deinitializers
+        deinit {
+            session.finishTasksAndInvalidate()
+        }
+        
+        
         // MARK: - Initializers
         init(appGroupName: String) {
             super.init()
