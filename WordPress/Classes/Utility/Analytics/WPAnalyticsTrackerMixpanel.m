@@ -873,6 +873,45 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatOpenedMyProfile:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened My Profile"];
             break;
+        case WPAnalyticsStatSiteSettingsDeleteSiteAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Delete Site Accessed"];
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSitePurchasesRequested:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Delete Site Purchases Requested"];
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSitePurchasesShowClicked:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Delete Site Show Purchases Clicked"];
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSitePurchasesShown:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Delete Site Purchases Shown"];
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSiteRequested:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Delete Site Requested"];
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSiteResponseError:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Delete Site Response Error"];
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSiteResponseOK:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Delete Site Response OK"];
+            break;
+        case WPAnalyticsStatSiteSettingsExportSiteAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Export Site Accessed"];
+            break;
+        case WPAnalyticsStatSiteSettingsExportSiteRequested:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Export Site Requested"];
+            break;
+        case WPAnalyticsStatSiteSettingsExportSiteResponseError:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Export Site Response Error"];
+            break;
+        case WPAnalyticsStatSiteSettingsExportSiteResponseOK:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Export Site Response OK"];
+            break;
+        case WPAnalyticsStatSiteSettingsStartOverAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Start Over Accessed"];
+            break;
+        case WPAnalyticsStatSiteSettingsStartOverContactSupportClicked:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Start Over Contact Support Clicked"];
+            break;
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatLogSpecialCondition:
