@@ -21,11 +21,21 @@ public class GravatarServiceRemote : ServiceRemoteREST
     ///     - image: The new Gravatar Image, to be uploaded
     ///     - completion: An optional closure to be executed on completion.
     ///
-    public func uploadImage(image: UIImage, completion: ((success: Bool, error: NSError?) -> ())?) {
+    public func uploadImage(image: UIImage, completion: ((error: NSError?) -> ())?) {
+        let targetURL       = NSURL(string: gravatarEndpointURL)!
+        let request         = NSMutableURLRequest(URL: targetURL)
+        request.HTTPMethod  = HTTPPostMethod
         
+        let payload         = UIImageJPEGRepresentation(image, defaultCompressionRatio)
+        let session         = NSURLSession.sharedSession()
+        session.uploadTaskWithRequest(request, fromData: payload) { (data, response, error) in
+            completion?(error: error)
+        }
     }
     
     
     // MARK: - Private Constants
-    private let endpointURL = "https://api.gravatar.com/v1/upload-image"
+    private let gravatarEndpointURL     = "https://api.gravatar.com/v1/upload-image"
+    private let HTTPPostMethod          = "POST"
+    private let defaultCompressionRatio = CGFloat(0.9)
 }
