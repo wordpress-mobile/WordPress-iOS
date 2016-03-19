@@ -8,11 +8,11 @@ public class GravatarServiceRemote
     /// Designated Initializer
     ///
     /// - Parameters:
-    ///     - token: A valid WordPress.com User Token
+    ///     - accountToken: A valid WordPress.com User Token
     ///     - accountEmail: Account Email
     ///
-    public init(token: String, accountEmail: String) {
-        self.token          = token
+    public init(accountToken: String, accountEmail: String) {
+        self.accountToken   = accountToken
         self.accountEmail   = accountEmail
     }
     
@@ -35,7 +35,7 @@ public class GravatarServiceRemote
         // Request
         let request = NSMutableURLRequest(URL: targetURL)
         request.HTTPMethod = UploadParameters.HTTPMethod
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(accountToken)", forHTTPHeaderField: "Authorization")
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         // Body
@@ -45,9 +45,9 @@ public class GravatarServiceRemote
         // Task
         let session = NSURLSession.sharedSession()
         let task = session.uploadTaskWithRequest(request, fromData: requestBody) { (data, response, error) in
-            if let theData = data {
-                print("TEXT: \(NSString(data: theData, encoding: NSUTF8StringEncoding))")
-            }
+//            if let theData = data {
+//                print("Gravatar Response: \(NSString(data: theData, encoding: NSUTF8StringEncoding))")
+//            }
             completion?(error: error)
         }
         
@@ -100,9 +100,9 @@ public class GravatarServiceRemote
     
     // MARK: - Private Properties
     private let accountEmail    : String
-    private let token           : String
+    private let accountToken    : String
     
-    // MARK: - Private Constants
+    // MARK: - Private Structs
     private struct UploadParameters {
         static let endpointURL          = "https://api.gravatar.com/v1/upload-image"
         static let HTTPMethod           = "POST"
