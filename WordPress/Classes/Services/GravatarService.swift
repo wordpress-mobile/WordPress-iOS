@@ -1,7 +1,6 @@
 import Foundation
 
 
-
 /// This Service exposes all of the valid operations we can execute, to interact with the Gravatar Service.
 ///
 public class GravatarService
@@ -23,16 +22,22 @@ public class GravatarService
         }
     }
     
+    /// This method hits the Gravatar Endpoint, and uploads a new image, to be used as profile.
     ///
+    /// - Parameters:
+    ///     - image: The new Gravatar Image, to be uploaded
+    ///     - completion: An optional closure to be executed on completion.
     ///
-    public func uploadImage(image: UIImage) {
+    public func uploadImage(image: UIImage, completion: ((error: NSError?) -> ())?) {
         let remote = GravatarServiceRemote(api: remoteApi)
-        remote.uploadImage(image) { (success, error) in
-            if success {
-                return
+        remote.uploadImage(image) { (error) in
+            if let theError = error {
+                DDLogSwift.logError("GravatarService.uploadImage Error: \(theError)")
+            } else {
+                DDLogSwift.logInfo("GravatarService.uploadImage Success!")
             }
             
-            DDLogSwift.logError("GravatarService.uploadImage Error: \(error)")
+            completion?(error: error)
         }
     }
     
