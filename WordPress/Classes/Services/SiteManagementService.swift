@@ -12,7 +12,7 @@ public extension Blog
     }
 }
 
-/// SiteManagementService handles deletion of a user's site.
+/// SiteManagementService handles operations for managing a WordPress.com site.
 ///
 public class SiteManagementService : LocalCoreDataService
 {
@@ -35,6 +35,44 @@ public class SiteManagementService : LocalCoreDataService
                         success?()
                     })
                 }
+            },
+            failure: { error in
+                failure?(error)
+            })
+    }
+    
+    /// Triggers content export of the specified WordPress.com site.
+    ///
+    /// - Note: An email will be sent with download link when export completes.
+    ///
+    /// - Parameters:
+    ///     - blog:    The Blog whose content to export
+    ///     - success: Optional success block with no parameters
+    ///     - failure: Optional failure block with NSError
+    ///
+    public func exportContentForBlog(blog: Blog, success: (() -> Void)?, failure: (NSError -> Void)?) {
+        let remote = siteManagementServiceRemoteForBlog(blog)
+        remote.exportContent(blog.dotComID,
+            success: {
+                success?()
+            },
+            failure: { error in
+                failure?(error)
+            })
+    }
+    
+    /// Gets the list of active purchases of the specified WordPress.com site.
+    ///
+    /// - Parameters:
+    ///     - blog:    The Blog whose site to retrieve purchases for
+    ///     - success: Optional success block with array of purchases (if any)
+    ///     - failure: Optional failure block with NSError
+    ///
+    public func getActivePurchasesForBlog(blog: Blog, success: (([SitePurchase]) -> Void)?, failure: (NSError -> Void)?) {
+        let remote = siteManagementServiceRemoteForBlog(blog)
+        remote.getActivePurchases(blog.dotComID,
+            success: { purchases in
+                success?(purchases)
             },
             failure: { error in
                 failure?(error)

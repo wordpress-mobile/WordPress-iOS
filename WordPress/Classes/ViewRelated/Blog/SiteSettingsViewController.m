@@ -53,6 +53,7 @@ NS_ENUM(NSInteger, SiteSettingsDevice) {
 
 NS_ENUM(NSInteger, SiteSettingsAdvanced) {
     SiteSettingsAdvancedStartOver = 0,
+    SiteSettingsAdvancedExportContent,
     SiteSettingsAdvancedDeleteSite,
     SiteSettingsAdvancedCount,
 };
@@ -91,7 +92,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 #pragma mark - Advanced Section
 @property (nonatomic, strong) SettingTableViewCell *startOverCell;
-@property (nonatomic, strong) SettingTableViewCell *deleteSiteCell;
+@property (nonatomic, strong) WPTableViewCell *exportContentCell;
+@property (nonatomic, strong) WPTableViewCell *deleteSiteCell;
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSString *username;
@@ -508,15 +510,29 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     return _startOverCell;
 }
 
-- (SettingTableViewCell *)deleteSiteCell
+- (WPTableViewCell *)exportContentCell
+{
+    if (_exportContentCell) {
+        return _exportContentCell;
+    }
+    
+    _exportContentCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    [WPStyleGuide configureTableViewActionCell:_exportContentCell];
+    _exportContentCell.textLabel.text = NSLocalizedString(@"Export Content", @"Label for selecting the Export Content Settings item");
+
+    return _exportContentCell;
+}
+
+- (WPTableViewCell *)deleteSiteCell
 {
     if (_deleteSiteCell) {
         return _deleteSiteCell;
     }
     
-    _deleteSiteCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Delete Site", @"Label for selecting the Delete Site Settings item")
-                                                         editable:YES
-                                                  reuseIdentifier:nil];
+    _deleteSiteCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    [WPStyleGuide configureTableViewActionCell:_deleteSiteCell];
+    _deleteSiteCell.textLabel.text = NSLocalizedString(@"Delete Site", @"Label for selecting the Delete Site Settings item");
+
     return _deleteSiteCell;
 }
 
@@ -525,6 +541,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     switch (row) {
         case SiteSettingsAdvancedStartOver:
             return self.startOverCell;
+
+        case SiteSettingsAdvancedExportContent:
+            return self.exportContentCell;
 
         case SiteSettingsAdvancedDeleteSite:
             return self.deleteSiteCell;
@@ -853,14 +872,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)showDeleteSiteForBlog:(Blog *)blog
-{
-    NSParameterAssert([blog supportsSiteManagementServices]);
-    
-    DeleteSiteViewController *viewController = [[DeleteSiteViewController alloc] initWithBlog:blog];
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-
 - (void)tableView:(UITableView *)tableView didSelectInAdvancedSectionRow:(NSInteger)row
 {
     switch (row) {
@@ -868,8 +879,12 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             [self showStartOverForBlog:self.blog];
             break;
 
+        case SiteSettingsAdvancedExportContent:
+            [self confirmExportContent];
+            break;
+
         case SiteSettingsAdvancedDeleteSite:
-            [self showDeleteSiteForBlog:self.blog];
+            [self checkSiteDeletable];
             break;
     }
 }
