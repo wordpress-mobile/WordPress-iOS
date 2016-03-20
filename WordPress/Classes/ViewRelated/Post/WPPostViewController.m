@@ -701,6 +701,7 @@ EditImageDetailsViewControllerDelegate
                                                                                        successHandler:successHandler
                                                                                        dismissHandler:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
+    vc.displaysPrimaryBlogOnTop = YES;
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
