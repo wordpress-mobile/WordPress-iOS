@@ -133,26 +133,16 @@ class PlanFeaturesRemote: ServiceRemoteREST {
     
     /// - returns: An optional tuple containing a collection of cached plan features and the date when they were fetched
     private func cachedPlanFeaturesWithDate() -> (PlanFeatures, NSDate)? {
-        if let cacheFileURL = cacheFileURL,
-            let path = cacheFileURL.path {
-                
-            if NSFileManager.defaultManager().fileExistsAtPath(path) {
-                do {
-                    let attributes = try NSFileManager.defaultManager().attributesOfItemAtPath(path)
-                    if let modificationDate = attributes[NSFileModificationDate] as? NSDate {
-                        if cacheDateIsValid(modificationDate) {
-                            if let response = NSData(contentsOfURL: cacheFileURL) {
-                                let json = try NSJSONSerialization.JSONObjectWithData(response, options: [])
-                                return (try mapPlanFeaturesResponse(json), modificationDate)
-                            }
-                        }
-                    }
-                }
-                catch {}
-            }
-        }
-        
-        return nil
+        guard let cacheFileURL = cacheFileURL,
+            let path = cacheFileURL.path,
+            let attributes = try? NSFileManager.defaultManager().attributesOfItemAtPath(path),
+            let modificationDate = attributes[NSFileModificationDate] as? NSDate,
+            let response = NSData(contentsOfURL: cacheFileURL),
+            let json = try? NSJSONSerialization.JSONObjectWithData(response, options: []),
+            let planFeatures = try? mapPlanFeaturesResponse(json)
+            where cacheDateIsValid(modificationDate) else { return nil }
+
+        return (planFeatures, modificationDate)
     }
     
     private func cacheDateIsValid(date: NSDate) -> Bool {
