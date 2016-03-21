@@ -104,7 +104,7 @@ public class GravatarServiceRemote
         static let endpointURL          = "https://api.gravatar.com/v1/upload-image"
         static let HTTPMethod           = "POST"
         static let contentType          = "application/octet-stream"
-        static let filename             = "test.png"
+        static let filename             = "profile.png"
         static let imageKey             = "filedata"
         static let accountKey           = "account"
     }
