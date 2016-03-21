@@ -383,6 +383,10 @@
 		B574CE151B5E8EA800A84FFD /* NSMutableAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B574CE141B5E8EA800A84FFD /* NSMutableAttributedString+Helpers.swift */; };
 		B576B4881C6A22FB0027C754 /* Languages.swift in Sources */ = {isa = PBXBuildFile; fileRef = B576B4871C6A22FB0027C754 /* Languages.swift */; };
 		B576B48A1C6A2EC10027C754 /* LanguagesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B576B4891C6A2EC10027C754 /* LanguagesTests.swift */; };
+		B5772AC41C9C7A070031F97E /* GravatarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5772AC31C9C7A070031F97E /* GravatarService.swift */; };
+		B5772AC61C9C84900031F97E /* GravatarServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5772AC51C9C84900031F97E /* GravatarServiceTests.swift */; };
+		B5772AC91C9C859D0031F97E /* GravatarServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5772AC71C9C85990031F97E /* GravatarServiceRemote.swift */; };
+		B5772ACB1C9DAE7C0031F97E /* NSMutableData+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5772ACA1C9DAE7C0031F97E /* NSMutableData+Helpers.swift */; };
 		B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57AF5F91ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift */; };
 		B57B92BD1B73B08100DFF00B /* SeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B92BC1B73B08100DFF00B /* SeparatorsView.swift */; };
 		B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */; };
@@ -1427,6 +1431,10 @@
 		B574CE141B5E8EA800A84FFD /* NSMutableAttributedString+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Helpers.swift"; sourceTree = "<group>"; };
 		B576B4871C6A22FB0027C754 /* Languages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Languages.swift; sourceTree = "<group>"; };
 		B576B4891C6A2EC10027C754 /* LanguagesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguagesTests.swift; sourceTree = "<group>"; };
+		B5772AC31C9C7A070031F97E /* GravatarService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarService.swift; sourceTree = "<group>"; };
+		B5772AC51C9C84900031F97E /* GravatarServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarServiceTests.swift; sourceTree = "<group>"; };
+		B5772AC71C9C85990031F97E /* GravatarServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarServiceRemote.swift; sourceTree = "<group>"; };
+		B5772ACA1C9DAE7C0031F97E /* NSMutableData+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableData+Helpers.swift"; sourceTree = "<group>"; };
 		B57AF5F91ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockActionsTableViewCell.swift; sourceTree = "<group>"; };
 		B57B92BC1B73B08100DFF00B /* SeparatorsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeparatorsView.swift; sourceTree = "<group>"; };
 		B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteTableHeaderView.swift; sourceTree = "<group>"; };
@@ -2718,6 +2726,7 @@
 				FFC6ADDC1B56F3D2002F3C84 /* ThemeServiceRemote.m */,
 				5997383E1B87AD2600EC1C30 /* WordPressComServiceRemote.h */,
 				5997383F1B87AD2600EC1C30 /* WordPressComServiceRemote.m */,
+				B5772AC71C9C85990031F97E /* GravatarServiceRemote.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -3044,7 +3053,7 @@
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				E1556CF0193F6FE900FC52EA /* CommentService.h */,
 				E1556CF1193F6FE900FC52EA /* CommentService.m */,
-				FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */,
+				B5772AC31C9C7A070031F97E /* GravatarService.swift */,
 				E1F8E1211B0B411E0073E628 /* JetpackService.h */,
 				E1F8E1221B0B411E0073E628 /* JetpackService.m */,
 				5DA3EE141925090A00294E0B /* MediaService.h */,
@@ -3067,6 +3076,7 @@
 				5D44EB371986D8BA008B7175 /* ReaderSiteService.m */,
 				5DBCD9D318F35D7500B32229 /* ReaderTopicService.h */,
 				5DBCD9D418F35D7500B32229 /* ReaderTopicService.m */,
+				FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */,
 				E616E4B21C480896002C024E /* SharingService.swift */,
 				319D6E7C19E447C80013871C /* SuggestionService.h */,
 				319D6E7D19E447C80013871C /* SuggestionService.m */,
@@ -3285,6 +3295,7 @@
 				B5E167F319C08D18009535AA /* NSCalendar+Helpers.swift */,
 				B587796F19B799D800E57C5A /* NSDate+Helpers.swift */,
 				B587797019B799D800E57C5A /* NSIndexPath+Swift.swift */,
+				B5772ACA1C9DAE7C0031F97E /* NSMutableData+Helpers.swift */,
 				B587797119B799D800E57C5A /* NSParagraphStyle+Helpers.swift */,
 				B5C7D7B71BC6B5A3008E668A /* UIAlertController+Helpers.swift */,
 				B587797219B799D800E57C5A /* UIDevice+Helpers.swift */,
@@ -3332,17 +3343,18 @@
 			isa = PBXGroup;
 			children = (
 				9363113E19FA996700B0C739 /* AccountServiceTests.swift */,
+				E12BE5EF1C524FC9000FD5CA /* AccountSettingsServiceTests.swift */,
 				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
 				930FD0A519882742000CC81D /* BlogServiceTest.m */,
-				FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */,
+				B5772AC51C9C84900031F97E /* GravatarServiceTests.swift */,
 				59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */,
 				E1C5457F1C6C79BB001CEB0E /* MediaSettingsTests.swift */,
 				B5EFB1C81B333C5A007608A3 /* NotificationsServiceTests.swift */,
 				5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */,
 				E66969C71B9E0A6800EC9C00 /* ReaderTopicServiceTest.swift */,
-				59FBD5611B5684F300734466 /* ThemeServiceTests.m */,
-				E12BE5EF1C524FC9000FD5CA /* AccountSettingsServiceTests.swift */,
+				FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */,
 				E124CE711C86D27100F7BA99 /* StoreFacadeTests.swift */,
+				59FBD5611B5684F300734466 /* ThemeServiceTests.m */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -4761,6 +4773,7 @@
 				93A379DB19FE6D3000415023 /* DDLogSwift.m in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
 				5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */,
+				B5772AC41C9C7A070031F97E /* GravatarService.swift in Sources */,
 				5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */,
 				E66969DC1B9E55C300EC9C00 /* ReaderTopicToReaderListTopic37to38.swift in Sources */,
 				B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */,
@@ -4911,6 +4924,7 @@
 				E13F23C314FE84600081D9CC /* NSMutableDictionary+Helpers.m in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
+				B5772ACB1C9DAE7C0031F97E /* NSMutableData+Helpers.swift in Sources */,
 				E1D04D8419374F2C002FADD7 /* BlogServiceRemoteREST.m in Sources */,
 				B5066D031BEBFAA900355819 /* RemoteBlogSettings.swift in Sources */,
 				5926E1E31AC4468300964783 /* WPCrashlytics.m in Sources */,
@@ -5031,6 +5045,7 @@
 				E14977181C0DC0770057CD60 /* MediaSizeSliderCell.swift in Sources */,
 				85D239BB1AE5A6620074768D /* LoginFields.m in Sources */,
 				E14836311C6DF942005ACF53 /* StoreFacade.swift in Sources */,
+				B5772AC91C9C859D0031F97E /* GravatarServiceRemote.swift in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
 				5DAE40AD19EC70930011A0AE /* ReaderPostHeaderView.m in Sources */,
 				74BB6F1A19AE7B9400FB7829 /* WPLegacyEditPageViewController.m in Sources */,
@@ -5222,6 +5237,7 @@
 				5D7A57801AFBFD940097C028 /* BasePostTest.m in Sources */,
 				8514B8D41AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m in Sources */,
 				931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */,
+				B5772AC61C9C84900031F97E /* GravatarServiceTests.swift in Sources */,
 				E1E1AA8F1B7DF54B001C8645 /* WPMapFilterReduceTest.m in Sources */,
 				E1266D2F1BBEC37B00FCB6B6 /* GravatarTest.swift in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
