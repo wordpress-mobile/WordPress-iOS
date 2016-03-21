@@ -113,6 +113,14 @@ extension PHAsset {
         return resultingMetadata
     }
 
+    /**
+     Makes sure the metadata of the image is matching the attributes in the Image.
+
+     - parameter metadata: the original metadata of the image
+     - parameter image:    the current image
+
+     - returns: a new metadata object where the values match the values on the UIImage
+     */
     func matchMetadata(metadata: [String:AnyObject], image: UIImage) -> [String:AnyObject] {
         var resultingMetadata = metadata
         let correctOrientation = image.metadataOrientation
