@@ -136,11 +136,11 @@ class PlanFeaturesRemote: ServiceRemoteREST {
         guard let cacheFileURL = cacheFileURL,
             let path = cacheFileURL.path,
             let attributes = try? NSFileManager.defaultManager().attributesOfItemAtPath(path),
-            let modificationDate = attributes[NSFileModificationDate] as? NSDate,
-            let response = NSData(contentsOfURL: cacheFileURL),
+            let modificationDate = attributes[NSFileModificationDate] as? NSDate where cacheDateIsValid(modificationDate) else { return nil }
+        
+        guard let response = NSData(contentsOfURL: cacheFileURL),
             let json = try? NSJSONSerialization.JSONObjectWithData(response, options: []),
-            let planFeatures = try? mapPlanFeaturesResponse(json)
-            where cacheDateIsValid(modificationDate) else { return nil }
+            let planFeatures = try? mapPlanFeaturesResponse(json) else { return nil }
 
         return (planFeatures, modificationDate)
     }
