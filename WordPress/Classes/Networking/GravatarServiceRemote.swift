@@ -39,7 +39,7 @@ public class GravatarServiceRemote
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         // Body
-        let gravatarData = UIImageJPEGRepresentation(image, UploadParameters.compressionRatio)!
+        let gravatarData = UIImagePNGRepresentation(image)!
         let requestBody = bodyWithGravatarData(gravatarData, account: accountEmail, boundary: boundary)
         
         // Task
@@ -103,7 +103,6 @@ public class GravatarServiceRemote
     private struct UploadParameters {
         static let endpointURL          = "https://api.gravatar.com/v1/upload-image"
         static let HTTPMethod           = "POST"
-        static let compressionRatio     = CGFloat(0.9)
         static let contentType          = "application/octet-stream"
         static let filename             = "test.png"
         static let imageKey             = "filedata"
