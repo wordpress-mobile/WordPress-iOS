@@ -981,7 +981,7 @@ int ddLogLevel = DDLogLevelInfo;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    [accountService setupExtensionsWithDefaultAccount];
+    [accountService setupAppExtensionsWithDefaultAccount];
 }
 
 

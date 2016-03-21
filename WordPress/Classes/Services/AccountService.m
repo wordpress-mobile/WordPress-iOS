@@ -209,7 +209,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         // account.objectID can be temporary, so fetch via username/xmlrpc instead.
         WPAccount *fetchedAccount = [self findAccountWithUsername:username];
         [self updateAccount:fetchedAccount withUserDetails:remoteUser];
-        [self setupExtensionsWithDefaultAccount];
+        [self setupAppExtensionsWithDefaultAccount];
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPAnalytics refreshMetadata];
         });
@@ -267,7 +267,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [blogService flagBlogAsLastUsed:account.defaultBlog];
 }
 
-- (void)setupExtensionsWithDefaultAccount
+- (void)setupAppExtensionsWithDefaultAccount
 {
     WPAccount *defaultAccount = [self defaultWordPressComAccount];
     Blog *defaultBlog = [defaultAccount defaultBlog];

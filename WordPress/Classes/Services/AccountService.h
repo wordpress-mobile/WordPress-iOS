@@ -88,7 +88,7 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 /**
  Initializes the WordPress iOS Extensions with the WordPress.com Default Account.
  */
-- (void)setupExtensionsWithDefaultAccount;
+- (void)setupAppExtensionsWithDefaultAccount;
 
 
 /**
