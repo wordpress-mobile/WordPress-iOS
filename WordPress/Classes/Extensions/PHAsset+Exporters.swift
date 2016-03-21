@@ -81,7 +81,7 @@ extension PHAsset {
             }
             self.requestMetadataWithCompletionBlock({ (metadata) -> () in
                 do {
-                    var attributesToRemove = ["Orientation", "AdjustmentXMP"]
+                    var attributesToRemove = [String]()
                     if (stripGeoLocation) {
                         attributesToRemove.append(kCGImagePropertyGPSDictionary as String)
                     }
