@@ -191,7 +191,8 @@ private func mapPlanFeaturesResponse(response: AnyObject) throws -> PlanFeatures
     
     var features = [PlanID: [PlanFeature]]()
     for featureDetails in json {
-        guard let slug = featureDetails["product_slug"] as? String,
+
+        guard var slug = featureDetails["product_slug"] as? String,
             let title = featureDetails["title"] as? String,
             var description = featureDetails["description"] as? String,
             let iconName = featureDetails["icon"] as? String,
@@ -207,6 +208,12 @@ private func mapPlanFeaturesResponse(response: AnyObject) throws -> PlanFeatures
                 if let planInfo = planInfo as? [String: String],
                     let planSpecificDescription = planInfo["description"] {
                         description = planSpecificDescription
+                }
+                    
+                // The slug currently returned for 'no ads' includes the text '/no-adverts.php'
+                // Remove this to 'normalize' all of the slugs
+                if let index = slug.characters.indexOf("/") {
+                    slug.removeRange(Range(start: index, end: slug.endIndex))
                 }
                 
                 features[planID]?.append(PlanFeature(slug: slug, title: title, description: description, iconName: iconName))
