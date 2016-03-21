@@ -71,19 +71,17 @@ class PlanComparisonViewController: UIViewController {
     
     private func fetchFeatures() {
         func setViewModelForViewControllers(action: (PlanDetailViewController -> Void)) {
-            for controller in viewControllers {
-                action(controller)
-            }
+            viewControllers.forEach { action($0) }
         }
         
         featureService.updateAllPlanFeatures({
-            setViewModelForViewControllers{ controller in
+            setViewModelForViewControllers { controller in
                 controller.viewModel = PlanDetailViewController.PlanFeatureViewModel.Ready(controller.plan)
             }
-            }, failure: { error in
-                setViewModelForViewControllers{ controller in
-                    controller.viewModel = PlanDetailViewController.PlanFeatureViewModel.Error(String(error))
-                }
+        }, failure: { error in
+            setViewModelForViewControllers { controller in
+                controller.viewModel = PlanDetailViewController.PlanFeatureViewModel.Error(String(error))
+            }
         })
     }
     
