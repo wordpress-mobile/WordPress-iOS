@@ -1,7 +1,7 @@
 #import "MenuItemSourceCell.h"
-#import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
+#import "Menu+ViewDesign.h"
 
 #pragma mark - MenuItemSourceRadioButton
 

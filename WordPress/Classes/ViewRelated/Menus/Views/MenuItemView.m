@@ -1,8 +1,8 @@
 #import "MenuItemView.h"
 #import "MenuItem.h"
 #import "WPStyleGuide.h"
-#import "MenusDesign.h"
 #import "MenusActionButton.h"
+#import "MenuItem+ViewDesign.h"
 
 @interface MenuItemView ()
 
@@ -21,27 +21,24 @@
 {
     self = [super init];
     if (self) {
-        
-        self.iconType = MenuIconTypeDefault;
-        
         {
-            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuIconTypeEdit];
+            UIButton *button = [self addAccessoryButtonIconViewWithImageName:@"gridicons-pencil"];
             [button addTarget:self action:@selector(editButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             self.editButton = button;
         }
         {
-            UIButton *button = [self addAccessoryButtonIconViewWithType:MenuIconTypeAdd];
+            UIButton *button = [self addAccessoryButtonIconViewWithImageName:@"gridicons-plus"];
             [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             self.addButton = button;
         }
         {
             MenusActionButton *button = [[MenusActionButton alloc] init];
-            button.fillColor = [UIColor whiteColor];
+            button.backgroundFillColor = [UIColor whiteColor];
             [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             [button setTitleColor:[WPStyleGuide darkGrey] forState:UIControlStateNormal];
             [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
             [button.widthAnchor constraintLessThanOrEqualToConstant:63].active = YES;
-            [button.heightAnchor constraintEqualToConstant:MenuItemsStackableViewAccessoryButtonHeight].active = YES;
+            [button.heightAnchor constraintEqualToConstant:200].active = YES;
             button.hidden = YES;
             
             [self addAccessoryButton:button];
@@ -56,6 +53,7 @@
 {
     if (_item != item) {
         _item = item;
+        self.iconView.image = [[UIImage imageNamed:[MenuItem iconImageNameForItemType:item.type]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.textLabel.text = item.name;
     }
 }

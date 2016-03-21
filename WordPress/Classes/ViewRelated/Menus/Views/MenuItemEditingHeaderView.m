@@ -1,7 +1,7 @@
 #import "MenuItemEditingHeaderView.h"
 #import "WPStyleGuide.h"
-#import "MenusDesign.h"
 #import "MenuItem.h"
+#import "MenuItem+ViewDesign.h"
 
 @interface MenuItemEditingHeaderView () <UITextFieldDelegate>
 
@@ -9,7 +9,6 @@
 @property (nonatomic, strong) NSLayoutConstraint *stackViewTopConstraint;
 @property (nonatomic, strong) UIView *textFieldContainerView;
 @property (nonatomic, strong) UIImageView *iconView;
-@property (nonatomic, assign) MenuIconType iconType;
 
 @end
 
@@ -68,7 +67,7 @@
         iconView.backgroundColor = [UIColor clearColor];
         iconView.tintColor = [UIColor whiteColor];
 
-        NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize + 4.0];
+        NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
         widthConstraint.active = YES;
         
         [self.stackView addArrangedSubview:iconView];
@@ -140,21 +139,11 @@
     }
 }
 
-- (void)setIconType:(MenuIconType)iconType
+- (void)setItemType:(NSString *)itemType
 {
-    if (_iconType != iconType) {
-        _iconType = iconType;
-        
-        if (iconType == MenuIconTypeNone) {
-            
-            self.iconView.image = nil;
-            self.iconView.hidden = YES;
-            
-        } else  {
-            
-            self.iconView.hidden = NO;
-            self.iconView.image = [[UIImage imageNamed:MenusDesignItemIconImageNameForType(iconType)] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        }
+    if (_itemType != itemType) {
+        _itemType = itemType;
+        self.iconView.image = [[UIImage imageNamed:[MenuItem iconImageNameForItemType:itemType]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }
 }
 
@@ -165,7 +154,7 @@
     }
     
     self.textField.text = item.name;
-    self.iconType = MenuIconTypeDefault;
+    self.itemType = item.type;
     [self setNeedsDisplay];
 }
 

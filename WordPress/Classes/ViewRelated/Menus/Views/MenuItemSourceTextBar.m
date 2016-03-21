@@ -1,7 +1,7 @@
 #import "MenuItemSourceTextBar.h"
-#import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
+#import "Menu+ViewDesign.h"
 
 @interface MenuItemSourceTextBarFieldObserver ()
 
@@ -91,7 +91,7 @@
             
             [self.contentStackView addArrangedSubview:iconView];
             
-            NSLayoutConstraint *width = [iconView.widthAnchor constraintEqualToConstant:14.0];
+            NSLayoutConstraint *width = [iconView.widthAnchor constraintEqualToConstant:20.0];
             width.priority = 999;
             width.active = YES;
             
@@ -145,7 +145,7 @@
     self = [self init];
     if (self) {
         
-        self.iconView.image = [[UIImage imageNamed:@"icon-menus-search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.iconView.image = [[UIImage imageNamed:@"gridicons-search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         self.iconView.hidden = NO;
         
         UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
