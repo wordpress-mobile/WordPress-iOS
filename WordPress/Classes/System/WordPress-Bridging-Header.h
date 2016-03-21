@@ -63,6 +63,7 @@
 #import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
 #import "SFHFKeychainUtils.h"
+#import "SiteSettingsViewController.h"
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"
 #import "SupportViewController.h"
