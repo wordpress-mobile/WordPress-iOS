@@ -7,23 +7,24 @@ public class Tracks
     public var wpcomUsername        : String?
     
     // MARK: - Private Properties
-    private let appGroupName        : String
+    private let uploader            : Uploader
     
     // MARK: - Constants
     private static let version      = "1.0"
     private static let userAgent    = "Nosara Extensions Client for iOS Mark " + version
     
+    
+    
     // MARK: - Initializers
     init(appGroupName: String) {
-        self.appGroupName = appGroupName
+        uploader = Uploader(appGroupName: appGroupName)
     }
+    
     
     
     // MARK: - Public Methods
     public func track(eventName: String, properties: [String: AnyObject]? = nil) {
         let payload  = payloadWithEventName(eventName, properties: properties)
-        let uploader = Uploader(appGroupName: appGroupName)
-
         uploader.send(payload)
     }
     
@@ -87,6 +88,13 @@ public class Tracks
         private let headers     = [ "Content-Type"  : "application/json",
                                     "Accept"        : "application/json",
                                     "User-Agent"    : "WPiOS App Extension"]
+        
+        
+        // MARK: - Deinitializers
+        deinit {
+            session.finishTasksAndInvalidate()
+        }
+        
         
         // MARK: - Initializers
         init(appGroupName: String) {
