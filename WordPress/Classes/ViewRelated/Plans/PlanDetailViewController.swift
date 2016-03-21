@@ -214,7 +214,7 @@ class PlanDetailViewController: UIViewController {
                 }
                 
                 return ImmuTable(sections: groups.map { group in
-                    let features = group.slugs.map { PlanFeaturesService.featureForPlan(plan, withSlug: $0) }
+                    let features = group.slugs.map { PlanService.featureForPlan(plan, withSlug: $0) }
                     
                     return ImmuTableSection(headerText: group.title, rows: features.map({ TextRow(title: $0!.title, value: $0!.description) }), footerText: nil)
                 })

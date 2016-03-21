@@ -9,7 +9,7 @@ class PlanComparisonViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var planStackView: UIStackView!
     
-    let featureService = PlanFeaturesService()
+    var service: PlanService? = nil
     
     var activePlan: Plan?
     
@@ -44,12 +44,13 @@ class PlanComparisonViewController: UIViewController {
         return button
     }()
     
-    class func controllerWithInitialPlan(plan: Plan, activePlan: Plan? = nil) -> PlanComparisonViewController {
+    class func controllerWithInitialPlan(plan: Plan, activePlan: Plan? = nil, planService: PlanService) -> PlanComparisonViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanComparisonViewController
 
         controller.activePlan = activePlan
         controller.currentPlan = plan
+        controller.service = planService
         
         return controller
     }
@@ -74,7 +75,7 @@ class PlanComparisonViewController: UIViewController {
             viewControllers.forEach { action($0) }
         }
         
-        featureService.updateAllPlanFeatures({
+        service?.updateAllPlanFeatures({
             setViewModelForViewControllers { controller in
                 controller.viewModel = PlanDetailViewController.PlanFeatureViewModel.Ready(controller.plan)
             }
