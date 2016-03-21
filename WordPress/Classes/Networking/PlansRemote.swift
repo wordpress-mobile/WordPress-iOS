@@ -200,28 +200,26 @@ private func mapPlanFeaturesResponse(response: AnyObject) throws -> PlanFeatures
     
     var features = [PlanID: [PlanFeature]]()
     for featureDetails in json {
-        if let slug = featureDetails["product_slug"] as? String,
+        guard let slug = featureDetails["product_slug"] as? String,
             let title = featureDetails["title"] as? String,
             var description = featureDetails["description"] as? String,
-            let iconName = featureDetails["icon"] as? String {
-                
-                if let planDetails = featureDetails["plans"] as? [String: AnyObject] {
-                    for (planID, planInfo) in planDetails {
-                        if let planID = Int(planID) {
-                            if features[planID] == nil {
-                                features[planID] = [PlanFeature]()
-                            }
-                            
-                            if let planInfo = planInfo as? [String: String],
-                                let planSpecificDescription = planInfo["description"] {
-                                    description = planSpecificDescription
-                            }
-                            
-                            features[planID]?.append(PlanFeature(slug: slug, title: title, description: description, iconName: iconName))
-                        }
-                    }
+            let iconName = featureDetails["icon"] as? String,
+            let planDetails = featureDetails["plans"] as? [String: AnyObject] else { throw PlansRemote.Error.DecodeError }
+        
+            for (planID, planInfo) in planDetails {
+                guard let planID = Int(planID) else { throw PlansRemote.Error.DecodeError }
+
+                if features[planID] == nil {
+                    features[planID] = [PlanFeature]()
                 }
-        }
+                    
+                if let planInfo = planInfo as? [String: String],
+                    let planSpecificDescription = planInfo["description"] {
+                        description = planSpecificDescription
+                }
+                
+                features[planID]?.append(PlanFeature(slug: slug, title: title, description: description, iconName: iconName))
+            }
     }
     
     return features
