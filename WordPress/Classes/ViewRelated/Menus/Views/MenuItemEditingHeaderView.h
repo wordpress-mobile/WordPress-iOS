@@ -7,6 +7,7 @@
 @interface MenuItemEditingHeaderView : UIView
 
 @property (nonatomic, weak) id <MenuItemEditingHeaderViewDelegate> delegate;
+@property (nonatomic, strong) NSString *itemType;
 @property (nonatomic, strong) MenuItem *item;
 @property (nonatomic, strong) UITextField *textField;
 

@@ -1,5 +1,6 @@
 #import "MenuItemsStackableView.h"
 #import "WPStyleGuide.h"
+#import "MenuItem+ViewDesign.h"
 
 @interface MenuItemDrawingView ()
 
@@ -17,7 +18,6 @@
 @end
 
 CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
-CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
 
 @interface MenuItemsStackableView ()
 
@@ -93,6 +93,7 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
         // width and height constraints are (less than or equal to) in case the view is hidden
         [iconView.widthAnchor constraintLessThanOrEqualToConstant:MenusDesignItemIconSize].active = YES;
         [iconView.heightAnchor constraintLessThanOrEqualToConstant:MenusDesignItemIconSize].active = YES;
+        iconView.tintColor = [WPStyleGuide mediumBlue];
         
         [stackView addArrangedSubview:iconView];
         self.iconView = iconView;
@@ -139,24 +140,6 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
     }
 }
 
-- (void)setIconType:(MenuIconType)iconType
-{
-    if (_iconType != iconType) {
-        _iconType = iconType;
-        
-        if (iconType == MenuIconTypeNone) {
-            
-            self.iconView.image = nil;
-            self.iconView.hidden = YES;
-            
-        } else  {
-            
-            self.iconView.hidden = NO;
-            self.iconView.image = [[UIImage imageNamed:MenusDesignItemIconImageNameForType(iconType)] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        }
-    }
-}
-
 - (void)setIndentationLevel:(NSInteger)indentationLevel
 {
     if (_indentationLevel != indentationLevel) {
@@ -173,8 +156,9 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
         UIStackView *stackView = [[UIStackView alloc] init];
         stackView.translatesAutoresizingMaskIntoConstraints = NO;
         stackView.distribution = UIStackViewDistributionFill;
-        stackView.spacing = 0.0;
+        stackView.spacing = -(MenusDesignItemIconSize / 4.0);
         [self.stackView addArrangedSubview:stackView];
+        
         self.accessoryStackView = stackView;
     }
     
@@ -182,30 +166,26 @@ CGFloat const MenuItemsStackableViewAccessoryButtonHeight = 40.0;
     [self.accessoryStackView setNeedsLayout];
 }
 
-- (UIButton *)addAccessoryButtonIconViewWithType:(MenuIconType)type
+- (UIButton *)addAccessoryButtonIconViewWithImageName:(NSString *)imageName
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.imageView.contentMode = UIViewContentModeScaleAspectFit;
     button.backgroundColor = [UIColor clearColor];
     
-    if (type != MenuIconTypeNone) {
-        [button setImage:[[UIImage imageNamed:MenusDesignItemIconImageNameForType(type)] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-    }
+    [button setImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
     
-    CGFloat buttonWidth = 30.0;
-    CGFloat buttonHeight = MenuItemsStackableViewAccessoryButtonHeight;
-    CGFloat iconSize = MenusDesignItemIconSize;
-    UIEdgeInsets imageInset = UIEdgeInsetsZero;
-    imageInset.top = (buttonHeight - iconSize) / 2.0;
-    imageInset.bottom = imageInset.top;
-    imageInset.left = (buttonWidth - iconSize) / 2.0;
-    imageInset.right = imageInset.left;
-    button.imageEdgeInsets = imageInset;
+    CGFloat width = MenusDesignItemIconSize * 2;
+    CGFloat height = width;
+    
+    UIEdgeInsets inset = button.imageEdgeInsets;
+    inset.top = (height - MenusDesignItemIconSize) / 2.0;
+    inset.bottom = inset.top;
+    button.imageEdgeInsets = inset;
     
     // width and height constraints are (less than or equal to) in case the view is hidden
-    [button.widthAnchor constraintLessThanOrEqualToConstant:buttonWidth].active = YES;
-    [button.heightAnchor constraintEqualToConstant:buttonHeight].active = YES;
+    [button.widthAnchor constraintLessThanOrEqualToConstant:width].active = YES;
+    [button.heightAnchor constraintEqualToConstant:height].active = YES;
     
     [self addAccessoryButton:button];
     

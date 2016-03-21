@@ -1,5 +1,4 @@
 #import "MenuItemSourceLinkView.h"
-#import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 #import "MenuItemCheckButtonView.h"

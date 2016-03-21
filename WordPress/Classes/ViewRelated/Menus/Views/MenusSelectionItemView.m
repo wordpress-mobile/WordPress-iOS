@@ -3,7 +3,7 @@
 #import "Menu.h"
 #import "MenuLocation.h"
 #import "WPStyleGuide.h"
-#import "MenusDesign.h"
+#import "Menu+ViewDesign.h"
 
 @interface MenusSelectionItemView ()
 
@@ -44,7 +44,7 @@
     [self addSubview:label];
     self.label = label;
     
-    UIEdgeInsets insets = MenusDesignDefaultInsets();
+    UIEdgeInsets insets = [Menu viewDefaultDesignInsets];
     insets.left = MenusDesignDefaultContentSpacing;
     insets.right = MenusDesignDefaultContentSpacing;
     

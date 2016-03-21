@@ -2,8 +2,8 @@
 
 @interface MenusActionButton : UIButton
 
-@property (nonatomic, copy) UIColor *baseColor;
-@property (nonatomic, copy) UIColor *fillColor;
+@property (nonatomic, copy) UIColor *backgroundBaseColor;
+@property (nonatomic, copy) UIColor *backgroundFillColor;
 
 - (UIImage *)templatedIconImageNamed:(NSString *)imageName;
 

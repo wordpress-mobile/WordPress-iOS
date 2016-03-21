@@ -1,7 +1,7 @@
 #import "MenuItemSourceHeaderView.h"
-#import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
+#import "Menu+ViewDesign.h"
 
 @interface MenuItemSourceHeaderView ()
 
@@ -52,7 +52,7 @@
             iconView.contentMode = UIViewContentModeScaleAspectFit;
             iconView.backgroundColor = [UIColor whiteColor];
             iconView.tintColor = [WPStyleGuide mediumBlue];
-            iconView.image = [[UIImage imageNamed:@"icon-menus-arrow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            iconView.image = [[UIImage imageNamed:@"gridicons-chevron-left"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             
             [self.stackView addArrangedSubview:iconView];
             

@@ -1,7 +1,8 @@
 #import "MenuItemTypeView.h"
-#import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
+#import "Menu+ViewDesign.h"
+#import "MenuItem+ViewDesign.h"
 
 @interface MenuItemTypeView ()
 
@@ -88,12 +89,11 @@
             iconView.contentMode = UIViewContentModeScaleAspectFit;
             iconView.backgroundColor = [UIColor whiteColor];
             iconView.tintColor = [WPStyleGuide mediumBlue];
-            iconView.image = [[UIImage imageNamed:@"icon-menus-arrow"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            iconView.transform = CGAffineTransformMakeRotation(M_PI);
+            iconView.image = [[UIImage imageNamed:@"gridicons-chevron-right"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             
             [self.stackView addArrangedSubview:iconView];
             
-            NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:14.0];
+            NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
             widthConstraint.priority = 999;
             widthConstraint.active = YES;
             
@@ -118,13 +118,20 @@
     }
 }
 
+- (void)setItemType:(NSString *)itemType
+{
+    if (_itemType != itemType) {
+        _itemType = itemType;
+        self.iconView.image = [[UIImage imageNamed:[MenuItem iconImageNameForItemType:itemType]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        [self setNeedsDisplay];
+    }
+}
+
 - (void)setItemTypeLabel:(NSString *)itemTypeLabel
 {
     if (_itemTypeLabel != itemTypeLabel) {
         _itemTypeLabel = itemTypeLabel;
         self.label.text = itemTypeLabel;
-        self.iconView.image = [[UIImage imageNamed:[self iconImageName]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        [self setNeedsDisplay];
     }
 }
 
@@ -158,13 +165,6 @@
         self.arrowView.alpha = 0.0;
         self.arrowView.hidden = YES;
     }
-}
-
-- (NSString*)iconImageName
-{
-    NSString *icon = nil;
-    icon = @"icon-menus-document";
-    return icon;
 }
 
 - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection

@@ -76,7 +76,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [super loadView];
     
     self.scrollView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.view.backgroundColor = [WPStyleGuide greyLighten30];
+    self.view.backgroundColor = [WPStyleGuide lightGrey];
     self.scrollView.backgroundColor = self.view.backgroundColor;
     self.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.scrollView.alpha = 0.0;

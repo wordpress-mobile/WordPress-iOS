@@ -4,7 +4,7 @@
 #import "UIColor+Helpers.h"
 #import "WPFontManager.h"
 #import "MenusActionButton.h"
-#import "MenusDesign.h"
+#import "Menu+ViewDesign.h"
 
 @interface MenuDetailsView () <UITextFieldDelegate>
 
@@ -32,7 +32,7 @@
     self.backgroundColor = [UIColor clearColor];
     
     self.stackView.layoutMarginsRelativeArrangement = YES;
-    self.stackView.layoutMargins = MenusDesignDefaultInsets();
+    self.stackView.layoutMargins = [Menu viewDefaultDesignInsets];
     
     self.textField.text = nil;
     self.textField.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
@@ -46,15 +46,16 @@
     self.textFieldDesignView.layer.cornerRadius = MenusDesignDefaultCornerRadius;
     self.textFieldDesignView.backgroundColor = [UIColor clearColor];
     
-    self.trashButton.fillColor = [UIColor whiteColor];
-    [self.trashButton setImage:[self.trashButton templatedIconImageNamed:@"icon-menus-trash"] forState:UIControlStateNormal];
+    [self.trashButton setTitle:nil forState:UIControlStateNormal];
+    self.trashButton.tintColor = [WPStyleGuide greyDarken30];
+    [self.trashButton setImage:[self.trashButton templatedIconImageNamed:@"gridicons-trash"] forState:UIControlStateNormal];
     
-    self.saveButton.fillColor = [WPStyleGuide mediumBlue];
+    self.saveButton.backgroundFillColor = [WPStyleGuide mediumBlue];
     [self.saveButton setTitle:NSLocalizedString(@"Save", @"Menus save button title") forState:UIControlStateNormal];
     [self.saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     
     {
-        UIImage *image = [[UIImage imageNamed:@"icon-menus-edit"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImage *image = [[UIImage imageNamed:@"gridicons-pencil"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
         imageView.translatesAutoresizingMaskIntoConstraints = NO;
         imageView.tintColor = [WPStyleGuide darkBlue];

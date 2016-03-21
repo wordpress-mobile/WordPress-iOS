@@ -338,6 +338,7 @@ typedef NS_ENUM(NSUInteger) {
 - (void)itemTypeSelectionViewChanged:(MenuItemTypeSelectionView *)typeSelectionView type:(NSString *)itemType
 {
     [self.sourceView updateSourceSelectionForItemType:itemType];
+    self.headerView.itemType = itemType;
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self transitionLayoutToDisplaySourceView];

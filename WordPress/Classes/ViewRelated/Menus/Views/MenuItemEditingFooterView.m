@@ -23,12 +23,13 @@
     }
     {
         MenusActionButton *button = self.trashButton;
+        [button setTitle:nil forState:UIControlStateNormal];
         button.tintColor = [WPStyleGuide errorRed];
-        [button setImage:[button templatedIconImageNamed:@"icon-menus-trash"] forState:UIControlStateNormal];
+        [button setImage:[button templatedIconImageNamed:@"gridicons-trash"] forState:UIControlStateNormal];
     }
     {
         MenusActionButton *button = self.saveButton;
-        button.fillColor = [WPStyleGuide mediumBlue];
+        button.backgroundFillColor = [WPStyleGuide mediumBlue];
         [button setTitle:NSLocalizedString(@"OK", @"") forState:UIControlStateNormal];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     }
