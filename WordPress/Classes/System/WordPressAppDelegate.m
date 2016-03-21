@@ -382,6 +382,9 @@ int ddLogLevel = DDLogLevelInfo;
         [MediaService cleanUnusedMediaFileFromTmpDir];
     });
     
+    // Configure Extensions
+    [self setupWordPressExtensions];
+    
     // Configure Today Widget
     [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
     
@@ -969,6 +972,16 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)handleLowMemoryWarningNote:(NSNotification *)notification
 {
     [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
+}
+
+
+#pragma mark - Extensions
+
+- (void)setupWordPressExtensions
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+    [accountService setupExtensionsWithDefaultAccount];
 }
 
 
