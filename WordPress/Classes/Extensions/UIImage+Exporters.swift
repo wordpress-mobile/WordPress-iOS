@@ -42,11 +42,18 @@ extension UIImage {
         }
     }
 
+    /**
+     Writes an image to a url location using the JPEG format.
+
+     - Parameters:
+     - url: file url to where the asset should be exported, this must be writable location
+     */
     func writeJPEGToURL(url: NSURL) throws {
         let data = UIImageJPEGRepresentation(self, 0.9)
         try data?.writeToURL(url, options: NSDataWritingOptions())
     }
 
+    // Converts the imageOrientation from the image to the CGImagePropertyOrientation to use in the file metadata.
     var metadataOrientation: CGImagePropertyOrientation {
         get {
             switch imageOrientation {
