@@ -101,11 +101,11 @@ extension PHAsset {
         var resultingMetadata = fromMetadata
         for attribute in attributes {
             resultingMetadata.removeValueForKey(attribute)
-            if attribute == "Orientation" {
+            if attribute == kCGImagePropertyOrientation as String{
                 if let tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String:AnyObject]{
-                    var tiffMetadata = tiffMetadata
-                    tiffMetadata[kCGImagePropertyTIFFOrientation as String] = 1
-                    resultingMetadata[kCGImagePropertyTIFFDictionary as String] = tiffMetadata
+                    var newTiffMetadata = tiffMetadata
+                    newTiffMetadata.removeValueForKey(kCGImagePropertyTIFFOrientation as String)
+                    resultingMetadata[kCGImagePropertyTIFFDictionary as String] = newTiffMetadata
                 }
             }
         }
