@@ -45,7 +45,7 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
         }
   
         if let featureGroupsJson = planDetails["features_highlight"] as? [[String: AnyObject]] {
-            parseFeatureGroups(featureGroupsJson, forPlan: plan)
+            try parseFeatureGroups(featureGroupsJson, forPlan: plan)
         }
         
         let plans = result.1 + [plan]
@@ -64,9 +64,9 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
     return (activePlan, availablePlans)
 }
 
-private func parseFeatureGroups(json: [[String: AnyObject]], forPlan plan: Plan) {
-    let groups: [PlanFeatureGroup] = json.flatMap { groupJson in
-        guard let slugs = groupJson["items"] as? [String] else { return nil }
+private func parseFeatureGroups(json: [[String: AnyObject]], forPlan plan: Plan) throws {
+    let groups: [PlanFeatureGroup] = try json.flatMap { groupJson in
+        guard let slugs = groupJson["items"] as? [String] else { throw PlansRemote.Error.DecodeError }
         return PlanFeatureGroup(title: groupJson["title"] as? String, slugs: slugs)
     }
     
