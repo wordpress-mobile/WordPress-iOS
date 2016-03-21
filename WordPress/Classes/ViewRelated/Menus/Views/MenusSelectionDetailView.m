@@ -1,54 +1,14 @@
 #import "MenusSelectionDetailView.h"
 #import "WPStyleGuide.h"
-#import "MenusDesign.h"
+#import "Menu+ViewDesign.h"
 #import "MenusSelectionView.h"
-
-@interface MenusSelectionIconView : UIView
-
-@property (nonatomic, strong) UIImage *image;
-@property (nonatomic, strong) UIColor *drawColor;
-
-@end
-
-@implementation MenusSelectionIconView
-
-- (void)drawRect:(CGRect)rect
-{    
-    CGRect imageRect = CGRectZero;
-    UIColor *drawColor = self.drawColor;
-    UIImage *image = self.image;
-    {
-        CGContextRef context = UIGraphicsGetCurrentContext();
-        CGContextSaveGState(context);
-        
-        CGContextSetFillColorWithColor(context, [drawColor CGColor]);
-        
-        imageRect.size.width = rect.size.width;
-        imageRect.size.height = ((image.size.height * imageRect.size.width) / image.size.width);
-        if (imageRect.size.height != rect.size.height) {
-            imageRect.origin.y = -((rect.size.height / 2) - (imageRect.size.height / 2));
-        }
-        
-        imageRect = CGRectIntegral(imageRect);
-        
-        CGContextTranslateCTM(context, 0, imageRect.size.height);
-        CGContextScaleCTM(context, 1.0, -1.0);
-        
-        CGContextClipToMask(context, imageRect, [image CGImage]);
-        CGContextFillRect(context, imageRect);
-        
-        CGContextRestoreGState(context);
-    }
-}
-
-@end
 
 @interface MenusSelectionDetailView ()
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, strong) UILabel *textLabel;
-@property (nonatomic, strong) MenusSelectionIconView *iconView;
-@property (nonatomic, strong) MenusSelectionIconView *accessoryView;
+@property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong) UIImageView *accessoryView;
 
 @end
 
@@ -75,7 +35,7 @@
         } else  {
             localizedFormat = NSLocalizedString(@"%i menu area in this theme", @"One menu area available in the theme");
         }
-        self.iconView.image = [UIImage imageNamed:@"icon-menus-locations"];
+        self.iconView.image = [[UIImage imageNamed:@"gridicons-layout"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         
     } else  if ([selectedItem isMenu]) {
         
@@ -84,11 +44,10 @@
         } else  {
             localizedFormat = NSLocalizedString(@"%i menu available", @"One menu is available in the site and area");
         }
-        self.iconView.image = [UIImage imageNamed:@"icon-menus-menus"];
+        self.iconView.image = [[UIImage imageNamed:@"gridicons-menus"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }
     
     [self setTitleText:selectedItem.displayName subTitleText:[NSString stringWithFormat:localizedFormat, numItemsAvailable]];
-    [self.iconView setNeedsDisplay];
 }
 
 - (void)setupStyling
@@ -110,11 +69,9 @@
     self.stackView.spacing = MenusDesignDefaultContentSpacing;
     
     {
-        MenusSelectionIconView *iconView = [[MenusSelectionIconView alloc] init];
-        iconView.backgroundColor = [UIColor clearColor];
-        iconView.image = [UIImage imageNamed:@"icon-menus-menus"];
-        iconView.drawColor = [WPStyleGuide darkBlue];
-        
+        UIImageView *iconView = [[UIImageView alloc] init];
+        iconView.contentMode = UIViewContentModeScaleAspectFit;
+        iconView.tintColor = [WPStyleGuide darkBlue];
         [iconView.widthAnchor constraintEqualToConstant:30].active = YES;
         [iconView.heightAnchor constraintEqualToConstant:30].active = YES;
         
@@ -129,13 +86,12 @@
         [label.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
     }
     {
-        MenusSelectionIconView *accessoryView = [[MenusSelectionIconView alloc] init];
-        accessoryView.backgroundColor = [UIColor clearColor];
-        accessoryView.image = [UIImage imageNamed:@"icon-menus-expand"];
-        accessoryView.drawColor = [WPStyleGuide mediumBlue];
-        
-        [accessoryView.widthAnchor constraintEqualToConstant:12].active = YES;
-        [accessoryView.heightAnchor constraintEqualToConstant:12].active = YES;
+        UIImageView *accessoryView = [[UIImageView alloc] init];
+        accessoryView.contentMode = UIViewContentModeScaleAspectFit;
+        accessoryView.image = [[UIImage imageNamed:@"gridicons-chevron-down"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        accessoryView.tintColor = [WPStyleGuide mediumBlue];
+        [accessoryView.widthAnchor constraintEqualToConstant:30].active = YES;
+        [accessoryView.heightAnchor constraintEqualToConstant:30].active = YES;
         
         [self.stackView addArrangedSubview:accessoryView];
         self.accessoryView = accessoryView;

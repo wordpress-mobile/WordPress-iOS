@@ -8,11 +8,11 @@
 {
     self = [super init];
     if (self) {
-        
-        self.iconType = MenuIconTypeNone;
-        
+                
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
         [self.contentView addGestureRecognizer:tap];
+        
+        self.iconView.image = [[UIImage imageNamed:@"gridicons-plus"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }
     
     return self;
@@ -24,7 +24,7 @@
     if (self.highlighted) {
         color = [super contentViewBackgroundColor];
     } else  {
-        color = [UIColor colorWithWhite:0.96 alpha:1.0];
+        color = [UIColor colorWithRed:0.973 green:0.980 blue:0.984 alpha:1.000];
     }
     
     return color;
@@ -57,6 +57,18 @@
     }
     
     return text;
+}
+
+- (UIColor *)textLabelColor
+{
+    UIColor *color = nil;
+    if (self.highlighted) {
+        color = [super textLabelColor];
+    } else  {
+        color = [WPStyleGuide darkBlue];
+    }
+    
+    return color;
 }
 
 #pragma mark - gestures

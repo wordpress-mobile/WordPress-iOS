@@ -2,8 +2,8 @@
 #import "MenusSelectionView.h"
 #import "Blog.h"
 #import "WPStyleGuide.h"
-#import "MenusDesign.h"
 #import "Menu.h"
+#import "Menu+ViewDesign.h"
 #import "MenuLocation.h"
 
 @interface MenusHeaderView () <MenusSelectionViewDelegate>
@@ -24,13 +24,13 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     [super awakeFromNib];
     
     // provide extra margin to easily draw the design stroke, see drawRect:
-    UIEdgeInsets margins = MenusDesignDefaultInsets();
+    UIEdgeInsets margins = [Menu viewDefaultDesignInsets];
     margins.bottom += MenusHeaderViewDesignStrokeWidth;
     self.stackView.layoutMargins = margins;
     self.stackView.layoutMarginsRelativeArrangement = YES;
     self.stackView.spacing = margins.left; // use a relative spacing to our margin padding
     
-    self.backgroundColor = [WPStyleGuide lightGrey];
+    self.backgroundColor = [WPStyleGuide greyLighten30];
     self.textLabel.font = [WPStyleGuide subtitleFont];
     self.textLabel.backgroundColor = [UIColor clearColor];
     

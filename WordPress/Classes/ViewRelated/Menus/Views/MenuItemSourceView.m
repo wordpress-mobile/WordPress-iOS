@@ -1,9 +1,9 @@
 #import "MenuItemSourceView.h"
 #import "MenuItemSourceTextBar.h"
-#import "MenusDesign.h"
 #import "Menu.h"
 #import "MenuItemSourceFooterView.h"
 #import "Blog.h"
+#import "Menu+ViewDesign.h"
 
 static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;
 static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;

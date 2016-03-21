@@ -1,7 +1,7 @@
 #import "MenuItemCheckButtonView.h"
-#import "MenusDesign.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
+#import "Menu+ViewDesign.h"
 
 static CGFloat const iconPadding = 3.0;
 

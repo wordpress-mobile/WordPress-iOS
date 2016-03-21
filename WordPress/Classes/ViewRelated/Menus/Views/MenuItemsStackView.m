@@ -5,7 +5,6 @@
 #import "MenuItemsStackableView.h"
 #import "MenuItemView.h"
 #import "MenuItemInsertionView.h"
-#import "MenusDesign.h"
 #import "MenuItemsVisualOrderingView.h"
 
 @interface MenuItemsStackView () <MenuItemsStackableViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
@@ -44,7 +43,7 @@
 
 - (void)setupStyling
 {
-    self.backgroundColor = [WPStyleGuide lightGrey];
+    self.backgroundColor = [WPStyleGuide greyLighten30];
 }
 
 - (void)setMenu:(Menu *)menu

@@ -1,7 +1,7 @@
 #import "MenusActionButton.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
-#import "MenusDesign.h"
+#import "Menu+ViewDesign.h"
 
 static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
 
@@ -50,7 +50,7 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     self.imageView.contentMode = UIViewContentModeScaleAspectFit;
     // tintColor used for the fill color when drawing the UIImage with the template rendering mode
     self.tintColor = defaultContentColor;
-    self.fillColor = [UIColor whiteColor];
+    self.backgroundFillColor = [UIColor whiteColor];
     
     self.titleLabel.font = [WPFontManager systemRegularFontOfSize:14.0];
     [self setTitleColor:defaultContentColor forState:UIControlStateNormal];
@@ -72,17 +72,17 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
 
 - (void)drawRect:(CGRect)rect
 {    
-    UIColor *fillColor = self.fillColor;
+    UIColor *fillColor = self.backgroundFillColor;
     
     const BOOL drawHighlighted = self.showsDesignHighlighted;
     const BOOL drawsDisabledHighlight = !self.enabled; // will overlay a transparent white layer to appear disabled
     
     UIBezierPath *basePath = [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:MenusDesignDefaultCornerRadius];
-    if (self.baseColor) {
+    if (self.backgroundBaseColor) {
         if (drawHighlighted) {
-            [[self adjustedColorWithColor:self.baseColor delta:-0.25] set];
+            [[self adjustedColorWithColor:self.backgroundBaseColor delta:-0.25] set];
         } else  {
-            [self.baseColor set];
+            [self.backgroundBaseColor set];
         }
     } else  {
         [[self adjustedColorWithColor:fillColor delta:drawHighlighted ? -0.25 : -0.16] set];
@@ -154,8 +154,8 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     // if we don't have a width, default to 20pt inset
     // this draws a nicely sized image within the button
     UIEdgeInsets imageEdgeInsets = UIEdgeInsetsZero;
-    CGFloat imageInsetHorizontal = self.frame.size.width ? (self.frame.size.width * 0.38) : 20;
-    CGFloat imageInsetVertical = self.frame.size.height ? (self.frame.size.height * 0.15) : 10;
+    CGFloat imageInsetHorizontal = self.frame.size.width ? (self.frame.size.width * 0.70) : 20;
+    CGFloat imageInsetVertical = self.frame.size.height ? (self.frame.size.height * 0.70) : 10;
 
     imageEdgeInsets.left = imageInsetHorizontal;
     imageEdgeInsets.top = imageInsetVertical;

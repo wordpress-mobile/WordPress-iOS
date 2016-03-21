@@ -2,8 +2,8 @@
 #import "Menu.h"
 #import "MenuLocation.h"
 #import "MenusSelectionDetailView.h"
-#import "MenusDesign.h"
 #import "MenusSelectionItemView.h"
+#import "Menu+ViewDesign.h"
 
 NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSelectionViewItemChangedSelectedNotification";
 NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSelectionViewItemUpdatedItemObjectNotification";
