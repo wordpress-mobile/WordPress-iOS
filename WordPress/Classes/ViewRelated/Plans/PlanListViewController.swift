@@ -91,7 +91,7 @@ enum PlanListViewModel {
         }
     }
 
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> ImmuTable {
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter, planService: PlanService) -> ImmuTable {
         switch self {
         case .Loading, .Error(_):
             return ImmuTable.Empty
@@ -105,7 +105,7 @@ enum PlanListViewModel {
                     price: price,
                     description: plan.description,
                     icon: icon,
-                    action: presenter.present(self.controllerForPlanDetails(plan, activePlan: activePlan))
+                    action: presenter.present(self.controllerForPlanDetails(plan, activePlan: activePlan, planService: planService))
                 )
             })
             return ImmuTable(sections: [
@@ -116,9 +116,9 @@ enum PlanListViewModel {
         }
     }
 
-    func controllerForPlanDetails(plan: Plan, activePlan: Plan) -> ImmuTableRowControllerGenerator {
+    func controllerForPlanDetails(plan: Plan, activePlan: Plan, planService: PlanService) -> ImmuTableRowControllerGenerator {
         return { row in
-            let planVC = PlanComparisonViewController.controllerWithInitialPlan(plan, activePlan: activePlan)
+            let planVC = PlanComparisonViewController.controllerWithInitialPlan(plan, activePlan: activePlan, planService: planService)
             let navigationVC = RotationAwareNavigationViewController(rootViewController: planVC)
             navigationVC.modalPresentationStyle = .FormSheet
             return navigationVC
@@ -132,7 +132,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     }()
     private var viewModel: PlanListViewModel = .Loading {
         didSet {
-            handler.viewModel = viewModel.tableViewModelWithPresenter(self)
+            handler.viewModel = viewModel.tableViewModelWithPresenter(self, planService: service)
             updateNoResults()
         }
     }
@@ -188,7 +188,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
         ImmuTable.registerRows([PlanListRow.self], tableView: tableView)
-        handler.viewModel = viewModel.tableViewModelWithPresenter(self)
+        handler.viewModel = viewModel.tableViewModelWithPresenter(self, planService: service)
         updateNoResults()
     }
 
