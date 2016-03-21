@@ -34,12 +34,12 @@ typealias PlanFeatures = [PlanID: [PlanFeature]]
 struct PlanFeaturesService {
     private static var planFeatures = PlanFeatures()
     
-    /// @returns All features that are part of the specified plan
+    /// - returns: All features that are part of the specified plan
     static func featuresForPlan(plan: Plan) -> [PlanFeature] {
         return planFeatures[plan.id] ?? []
     }
 
-    /// @returns The feature that is part of the specified plan, with a matching slug (if one exists).
+    /// - returns: The feature that is part of the specified plan, with a matching slug (if one exists).
     static func featureForPlan(plan: Plan, withSlug slug: String) -> PlanFeature? {
         return featuresForPlan(plan).filter({ $0.slug == slug }).first
     }
