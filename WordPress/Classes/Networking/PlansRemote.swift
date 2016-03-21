@@ -167,9 +167,10 @@ class PlanFeaturesRemote: ServiceRemoteREST {
             parameters: nil,
             success: {
                 [weak self] requestOperation, response in
-                self?.cacheResponseData(requestOperation.responseData)
                 do {
-                    try success(mapPlanFeaturesResponse(response))
+                    let planFeatures = try mapPlanFeaturesResponse(response)
+                    self?.cacheResponseData(requestOperation.responseData)
+                    success(planFeatures)
                 } catch {
                     failure(error)
                 }
