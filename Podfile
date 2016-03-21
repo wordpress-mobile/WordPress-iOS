@@ -55,7 +55,7 @@ end
 
 target 'WordPressShareExtension', :exclusive => true do
   pod 'CocoaLumberjack', '~> 2.2.0'
-  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :commit => '3457aefae79ef2c67fb26ccab57c24505caa65f9'
+  pod 'WordPressComKit', :git => 'https://github.com/Automattic/WordPressComKit.git', :tag => '0.0.1'
   pod 'WordPress-iOS-Shared', '0.5.3'
 end
 
