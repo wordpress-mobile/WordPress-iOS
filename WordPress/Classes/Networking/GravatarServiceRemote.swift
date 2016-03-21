@@ -45,9 +45,6 @@ public class GravatarServiceRemote
         // Task
         let session = NSURLSession.sharedSession()
         let task = session.uploadTaskWithRequest(request, fromData: requestBody) { (data, response, error) in
-//            if let theData = data {
-//                print("Gravatar Response: \(NSString(data: theData, encoding: NSUTF8StringEncoding))")
-//            }
             completion?(error: error)
         }
         
