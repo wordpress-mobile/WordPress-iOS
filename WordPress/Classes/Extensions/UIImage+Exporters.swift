@@ -25,7 +25,7 @@ extension UIImage {
      */
     func writeToURL(url: NSURL, type: String, compressionQuality: Float = 0.9,  metadata: [String:AnyObject]? = nil) throws {
         let properties: [String:AnyObject] = [kCGImageDestinationLossyCompressionQuality as String: compressionQuality]
-        
+
         guard let destination = CGImageDestinationCreateWithURL(url, type, 1, nil),
               let imageRef = self.CGImage
         else {
@@ -39,6 +39,26 @@ extension UIImage {
             throw errorForCode(.FailedToWrite,
                 failureReason: NSLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
             )
+        }
+    }
+
+    func writeJPEGToURL(url: NSURL) throws {
+        let data = UIImageJPEGRepresentation(self, 0.9)
+        try data?.writeToURL(url, options: NSDataWritingOptions())
+    }
+
+    var metadataOrientation: CGImagePropertyOrientation {
+        get {
+            switch imageOrientation {
+            case .Up: return CGImagePropertyOrientation.Up
+            case .Down: return CGImagePropertyOrientation.Down
+            case .Left: return CGImagePropertyOrientation.Left
+            case .Right: return CGImagePropertyOrientation.Right
+            case .UpMirrored: return CGImagePropertyOrientation.UpMirrored
+            case .DownMirrored: return CGImagePropertyOrientation.DownMirrored
+            case .LeftMirrored: return CGImagePropertyOrientation.LeftMirrored
+            case .RightMirrored: return CGImagePropertyOrientation.RightMirrored
+            }
         }
     }
 }
