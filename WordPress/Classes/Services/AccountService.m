@@ -209,6 +209,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         // account.objectID can be temporary, so fetch via username/xmlrpc instead.
         WPAccount *fetchedAccount = [self findAccountWithUsername:username];
         [self updateAccount:fetchedAccount withUserDetails:remoteUser];
+        [self setupExtensionsWithDefaultAccount];
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPAnalytics refreshMetadata];
         });
@@ -264,16 +265,28 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService flagBlogAsLastUsed:account.defaultBlog];
+}
+
+- (void)setupExtensionsWithDefaultAccount
+{
+    WPAccount *defaultAccount = [self defaultWordPressComAccount];
+    Blog *defaultBlog = [defaultAccount defaultBlog];
     
-    // Update the Widget Configuration
+    if (defaultBlog == nil || defaultBlog.isDeleted) {
+        return;
+    }
+
+    // Required Attributes
+    NSNumber *siteId    = defaultBlog.dotComID;
+    NSString *blogName  = defaultBlog.settings.name;
+    
+    // Widget Configuration
     TodayExtensionService *service = [TodayExtensionService new];
-    BOOL widgetIsConfigured = [service widgetIsConfigured];
     
-    if (!widgetIsConfigured && defaultBlog != nil && !defaultBlog.isDeleted) {
-        NSNumber *siteId        = defaultBlog.dotComID;
-        NSString *blogName      = defaultBlog.settings.name;
-        NSTimeZone *timeZone    = [blogService timeZoneForBlog:defaultBlog];
-        NSString *oauth2Token   = account.authToken;
+    if ([service widgetIsConfigured] == false) {
+        BlogService *blogService    = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        NSTimeZone *timeZone        = [blogService timeZoneForBlog:defaultBlog];
+        NSString *oauth2Token       = defaultAccount.authToken;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             TodayExtensionService *service = [TodayExtensionService new];
@@ -284,13 +297,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         });
     }
     
-    // Update the Share Extension Configuration
-    if (defaultBlog != nil && !defaultBlog.isDeleted) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [ShareExtensionService configureShareExtensionDefaultSiteID:defaultBlog.dotComID.integerValue
-                                                        defaultSiteName:defaultBlog.settings.name];
-        });
-    }
+    // Share Extension Configuration
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue
+                                                    defaultSiteName:blogName];
+    });
 }
 
 - (void)purgeAccount:(WPAccount *)account
