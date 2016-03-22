@@ -6,7 +6,7 @@ public class PeopleViewController: UITableViewController, NSFetchedResultsContro
         let request = NSFetchRequest(entityName: "Person")
         request.predicate = NSPredicate(format: "siteID = %@", self.blog!.dotComID)
         // FIXME(@koke, 2015-11-02): my user should be first
-        request.sortDescriptors = [NSSortDescriptor(key: "displayName", ascending: true, selector: "localizedCaseInsensitiveCompare:")]
+        request.sortDescriptors = [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
         let context = ContextManager.sharedInstance().mainContext
         let frc = NSFetchedResultsController(fetchRequest: request, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
         frc.delegate = self
