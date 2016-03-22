@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -o pipefail
+
 if [ $TRAVIS ]; then
   XCODE_WORKSPACE=$TRAVIS_XCODE_WORKSPACE
   XCODE_SCHEME=$TRAVIS_XCODE_SCHEME
