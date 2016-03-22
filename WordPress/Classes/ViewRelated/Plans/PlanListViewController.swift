@@ -91,7 +91,7 @@ enum PlanListViewModel {
         }
     }
 
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter, planService: PlanService) -> ImmuTable {
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter?, planService: PlanService?) -> ImmuTable {
         switch self {
         case .Loading, .Error(_):
             return ImmuTable.Empty
@@ -99,13 +99,19 @@ enum PlanListViewModel {
             let rows: [ImmuTableRow] = plans.map({ (plan, price) in
                 let active = (activePlan == plan)
                 let icon = active ? plan.activeImage : plan.image
+                var action: ImmuTableAction? = nil
+                if let presenter = presenter,
+                    let planService = planService {
+                    action = presenter.present(self.controllerForPlanDetails(plan, activePlan: activePlan, planService: planService))
+                }
+                
                 return PlanListRow(
                     title: plan.title,
                     active: active,
                     price: price,
                     description: plan.description,
                     icon: icon,
-                    action: presenter.present(self.controllerForPlanDetails(plan, activePlan: activePlan, planService: planService))
+                    action: action
                 )
             })
             return ImmuTable(sections: [
