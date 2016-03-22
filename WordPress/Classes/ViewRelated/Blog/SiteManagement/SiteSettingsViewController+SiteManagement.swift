@@ -117,7 +117,7 @@ public extension SiteSettingsViewController
         alertController.addAction(deleteAction)
         
         alertController.addTextFieldWithConfigurationHandler({ textField in
-            textField.addTarget(self, action: "alertTextFieldDidChange:", forControlEvents: .EditingChanged)
+            textField.addTarget(self, action: #selector(SiteSettingsViewController.alertTextFieldDidChange(_:)), forControlEvents: .EditingChanged)
         })
         
         return alertController
