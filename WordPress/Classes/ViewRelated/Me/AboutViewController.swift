@@ -59,13 +59,13 @@ public class AboutViewController : UITableViewController
         
         let title = NSLocalizedString("Close", comment: "Dismiss the current view")
         let style = WPStyleGuide.barButtonStyleForBordered()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: title, style: style, target: self, action: "dismissWasPressed:")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: title, style: style, target: self, action: #selector(AboutViewController.dismissWasPressed(_:)))
     }
 
     
     
     // MARK: - Button Helpers
-    @IBAction private func dismissWasPressed(sender: AnyObject) {
+    @IBAction func dismissWasPressed(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
     }
     

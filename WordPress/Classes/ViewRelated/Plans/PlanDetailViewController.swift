@@ -11,8 +11,40 @@ class PlanDetailViewController: UIViewController {
     
     var isActivePlan = false
     
-    private var viewModel: ImmuTable! = nil
+    private var tableViewModel = ImmuTable.Empty {
+        didSet {
+            tableView?.reloadData()
+        }
+    }
+    var viewModel: PlanFeatureViewModel = .Loading {
+        didSet {
+            bindViewModel(viewModel)
+            updateNoResults()
+        }
+    }
     
+    private let noResultsView = WPNoResultsView()
+    
+    func updateNoResults() {
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            showNoResults(noResultsViewModel)
+        } else {
+            hideNoResults()
+        }
+    }
+    func showNoResults(viewModel: WPNoResultsView.Model) {
+        noResultsView.bindViewModel(viewModel)
+        if noResultsView.isDescendantOfView(tableView) {
+            noResultsView.centerInSuperview()
+        } else {
+            tableView.addSubviewWithFadeAnimation(noResultsView)
+        }
+    }
+    
+    func hideNoResults() {
+        noResultsView.removeFromSuperview()
+    }
+
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var planImageView: UIImageView!
     @IBOutlet weak var dropshadowImageView: UIImageView!
@@ -40,15 +72,16 @@ class PlanDetailViewController: UIViewController {
     
     @IBOutlet weak var headerInfoStackView: UIStackView!
 
-    class func controllerWithPlan(plan: Plan) -> PlanDetailViewController {
+    class func controllerWithPlan(plan: Plan, isActive: Bool) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
         
         controller.plan = plan
+        controller.isActivePlan = isActive
         
         return controller
     }
-
+    
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
@@ -56,11 +89,9 @@ class PlanDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = plan.title
-        
         configureAppearance()
-        configureImmuTable()
-        populateHeader()
+        configureTableView()
+        updateNoResults()
     }
     
     private func configureAppearance() {
@@ -76,6 +107,12 @@ class PlanDetailViewController: UIViewController {
         configurePlanImageDropshadow()
     }
     
+    private func configureTableView() {
+        ImmuTable.registerRows([ FeatureListItemRow.self ], tableView: tableView)
+    
+        tableView.layoutMargins = UIEdgeInsetsMake(0, tableViewHorizontalMargin, 0, tableViewHorizontalMargin)
+    }
+    
     private func configurePlanImageDropshadow() {
         dropshadowImageView.layer.masksToBounds = false
         dropshadowImageView.layer.shadowColor = WPStyleGuide.greyLighten30().CGColor
@@ -85,41 +122,14 @@ class PlanDetailViewController: UIViewController {
         dropshadowImageView.layer.shadowPath = UIBezierPath(ovalInRect: dropshadowImageView.bounds).CGPath
     }
     
-    private func configureImmuTable() {
-        ImmuTable.registerRows([ FeatureListItemRow.self ], tableView: tableView)
-        
-        viewModel = ImmuTable(sections:
-            [ ImmuTableSection(rows: PlanFeature.allFeatures.map { feature in
-                let available = plan.features.contains(feature)
-
-                if available {
-                    // If a feature is 'available', we have to find and use the feature instance
-                    // from the _plan's_ list of features, as it will have the correct associated values
-                    // for any enum case that has associated values.
-                    let index = plan.features.indexOf(feature)
-                    let planFeature = plan.features[index!]
-                    if let description = planFeature.description {
-                        return TextRow(title: planFeature.title, value: description)
-                    } else {
-                        return FeatureListItemRow(feature: planFeature, available: available)
-                    }
-                }
-                
-                return FeatureListItemRow(feature: feature, available: available)
-            } ) ]
-        )
-        
-        tableView.layoutMargins = UIEdgeInsetsMake(0, tableViewHorizontalMargin, 0, tableViewHorizontalMargin)
-    }
-    
     lazy var paddingView = UIView()
     
-    private func populateHeader() {
+    private func populateHeader(plan: Plan, isActivePlan: Bool) {
         planImageView.image = plan.image
         planTitleLabel.text = plan.fullTitle
         planDescriptionLabel.text = plan.description
         planPriceLabel.text = priceDescriptionForPlan(plan)
-
+        
         if isActivePlan {
             purchaseButton.removeFromSuperview()
             headerInfoStackView.addArrangedSubview(currentPlanLabel)
@@ -127,6 +137,12 @@ class PlanDetailViewController: UIViewController {
             purchaseButton.removeFromSuperview()
             headerInfoStackView.addArrangedSubview(paddingView)
         }
+    }
+    
+    func bindViewModel(viewModel: PlanFeatureViewModel) {
+        self.tableViewModel = viewModel.tableViewModel
+        title = plan.title
+        populateHeader(plan, isActivePlan: isActivePlan)
     }
     
     // TODO: Prices should always come from StoreKit
@@ -153,10 +169,12 @@ class PlanDetailViewController: UIViewController {
         // transaction process to simulate navigation to the post purchase screens.
         // This should be removed when we integrate StoreKit.
         func showSuccessAlert() {
+            guard let plan = plan else { return }
+            
             let alert = UIAlertController(title: "Thank You", message: "Your purchase was successful.", preferredStyle: .Alert)
             alert.addActionWithTitle("OK", style: .Default, handler: { action in })
             
-            let postPurchase = PlanPostPurchaseViewController(plan: self.plan)
+            let postPurchase = PlanPostPurchaseViewController(plan: plan)
             let navigationController = RotationAwareNavigationViewController(rootViewController: postPurchase)
             navigationController.modalTransitionStyle = .CrossDissolve
             navigationController.modalPresentationStyle = .FormSheet
@@ -180,20 +198,60 @@ class PlanDetailViewController: UIViewController {
             self.presentViewController(alert, animated: true, completion: nil)
         })
     }
+    
+    enum PlanFeatureViewModel {
+        case Loading
+        case Ready(Plan)
+        case Error(String)
+        
+        var tableViewModel: ImmuTable {
+            switch self {
+            case .Loading, .Error(_):
+                return ImmuTable.Empty
+            case .Ready(let plan):
+                guard let groups = PlanFeatureGroup.groupsForPlan(plan) else {
+                    return ImmuTable.Empty
+                }
+                
+                return ImmuTable(sections: groups.map { group in
+                    let features = group.slugs.map { PlanService.featureForPlan(plan, withSlug: $0) }
+                    
+                    return ImmuTableSection(headerText: group.title, rows: features.map({ TextRow(title: $0!.title, value: $0!.description) }), footerText: nil)
+                })
+            }
+        }
+        
+        var noResultsViewModel: WPNoResultsView.Model? {
+            switch self {
+            case .Loading:
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("Loading Plan...", comment: "Text displayed while loading plans details")
+                )
+            case .Ready(_):
+                return nil
+            case .Error(_):
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("Oops", comment: ""),
+                    message: NSLocalizedString("There was an error loading the plan", comment: ""),
+                    buttonTitle: NSLocalizedString("Contact support", comment: "")
+                )
+            }
+        }
+    }
 }
 
 // MARK: Table View Data Source / Delegate
 extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return viewModel.sections.count
+        return tableViewModel.sections.count
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.sections[section].rows.count
+        return tableViewModel.sections[section].rows.count
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let row = viewModel.rowAtIndexPath(indexPath)
+        let row = tableViewModel.rowAtIndexPath(indexPath)
         let cell = tableView.dequeueReusableCellWithIdentifier(row.reusableIdentifier, forIndexPath: indexPath)
         
         row.configureCell(cell)
@@ -209,6 +267,10 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
             cell.backgroundColor = WPStyleGuide.lightGrey()
         }
     }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return tableViewModel.sections[section].headerText
+    }
 }
 
 struct FeatureListItemRow : ImmuTableRow {
@@ -218,17 +280,16 @@ struct FeatureListItemRow : ImmuTableRow {
     
     let title: String
     let webOnly: Bool
-    let available: Bool
     
     let checkmarkLeftPadding: CGFloat = 16.0
     let webOnlyFontSize: CGFloat = 13.0
     
-    init(feature: PlanFeature, available: Bool) {
-        precondition(feature.description == nil, "Features with a description should use TextRow instead")
-
+    init(feature: PlanFeature) {
         self.title = feature.title
-        self.webOnly = feature.webOnly
-        self.available = available
+        
+        // TODO: (@frosty, 2016-03-14) Currently hardcoded because the API doesn't provide
+        // us with this info. Remove once we switch to a different design that doesn't display 'web only'.
+        self.webOnly = (feature.slug == "custom-domain")
     }
     
     func configureCell(cell: UITableViewCell) {
@@ -240,7 +301,6 @@ struct FeatureListItemRow : ImmuTableRow {
         cell.detailTextLabel?.font = detailTextFont
         cell.detailTextLabel?.textColor = WPStyleGuide.grey()
 
-        cell.accessoryView = accessoryView
         cell.accessibilityLabel = accessibilityLabel
     }
 
@@ -248,16 +308,10 @@ struct FeatureListItemRow : ImmuTableRow {
         return title
     }
 
-    var textColor: UIColor {
-        if available {
-            return WPStyleGuide.darkGrey()
-        } else {
-            return WPStyleGuide.grey().colorWithAlphaComponent(0.5)
-        }
-    }
+    var textColor = WPStyleGuide.darkGrey()
 
     var detailText: String? {
-        if available && webOnly {
+        if webOnly {
             return NSLocalizedString("WEB ONLY", comment: "Describes a feature of a WordPress.com plan that is only available to users via the web.")
         } else {
             return nil
@@ -265,7 +319,7 @@ struct FeatureListItemRow : ImmuTableRow {
     }
 
     var detailTextFont: UIFont {
-        if available && webOnly {
+        if webOnly {
             return WPFontManager.systemRegularFontOfSize(webOnlyFontSize)
         } else {
             return WPStyleGuide.tableviewTextFont()
@@ -280,51 +334,10 @@ struct FeatureListItemRow : ImmuTableRow {
     }
 
     var availableAccessibilityLabel: String? {
-        switch (availableIndicator, webOnly) {
-        case (.Some(false), _):
-            return NSLocalizedString("Not included", comment: "Spoken text. A feature is not included in the plan")
-        case (.Some(true), true):
+        if webOnly {
             return NSLocalizedString("Included in web version", comment: "Spoken text. A feature is included in the plan")
-        case (.Some(true), false):
+        } else {
             return NSLocalizedString("Included", comment: "Spoken text. A feature is included in the plan")
-        case (.None, _):
-            return nil
         }
-    }
-
-    var availableIndicator: Bool? {
-        return available
-    }
-
-    var accessoryView: UIView? {
-        return availableIndicator.map({ available in
-            if available {
-                return availableMarker
-            } else {
-                return unavailableMarker
-            }
-        })
-    }
-    
-    private var availableMarker: UIView {
-        let checkmark = UIImageView(image: UIImage(named: "gridicons-checkmark-circle"))
-        
-        // Wrap the checkmark in a view to add some padding between it and the detailTextLabel
-        let wrapper = UIView()
-        wrapper.addSubview(checkmark)
-        
-        // Can't use autolayout here, otherwise the tableview screws things up on rotation
-        wrapper.frame = CGRect(x: 0, y: 0, width: checkmarkLeftPadding + checkmark.frame.width, height: checkmark.frame.height)
-        checkmark.frame.origin.x = checkmarkLeftPadding
-
-        return wrapper
-    }
-    
-    private var unavailableMarker: UIView {
-        let marker = UIView(frame: CGRect(x: 0, y: 0, width: 16.0, height: 2.0))
-        marker.backgroundColor = WPStyleGuide.grey()
-        marker.alpha = 0.5
-
-        return marker
     }
 }
