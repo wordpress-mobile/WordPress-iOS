@@ -69,8 +69,9 @@
 {
     [super setItem:item];
     
+    self.textBar.textField.text = item.urlStr ?: @"";
+    
     if ([self itemTypeMatchesSourceItemType]) {
-        self.textBar.textField.text = item.urlStr ?: @"";
         self.checkButtonView.checked = item.linkTarget && [item.linkTarget isEqualToString:MenuItemLinkTargetBlank];
     }
 }
