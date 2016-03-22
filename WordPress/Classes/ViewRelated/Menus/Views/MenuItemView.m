@@ -27,7 +27,7 @@
             self.editButton = button;
         }
         {
-            UIButton *button = [self addAccessoryButtonIconViewWithImageName:@"gridicons-plus"];
+            UIButton *button = [self addAccessoryButtonIconViewWithImageName:@"menus-add"];
             [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             self.addButton = button;
         }

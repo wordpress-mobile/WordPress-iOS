@@ -12,7 +12,7 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
         [self.contentView addGestureRecognizer:tap];
         
-        self.iconView.image = [[UIImage imageNamed:@"gridicons-plus"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.iconView.image = [[UIImage imageNamed:@"menus-add"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }
     
     return self;
