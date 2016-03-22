@@ -444,7 +444,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
 
 -(BOOL)supportsSharing
 {
-    return ([self supportsPublicize] || [self supportsShareButtons]) && [self isAdmin] && ![self isPrivate];
+    return ([self supportsPublicize] || [self supportsShareButtons]) && [self isAdmin];
 }
 
 - (BOOL)supportsPublicize
