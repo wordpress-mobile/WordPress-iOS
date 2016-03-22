@@ -281,7 +281,6 @@ typedef NS_ENUM(NSUInteger) {
     } else  {
         [self setContentLayout:MenuItemEditingViewControllerContentLayoutDisplaysTypeAndSourceViews];
     }
-    
     [UIView animateWithDuration:0.15 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         
         [self.contentView layoutIfNeeded];
