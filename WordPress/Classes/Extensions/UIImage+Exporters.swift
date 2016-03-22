@@ -25,7 +25,11 @@ extension UIImage {
      */
     func writeToURL(url: NSURL, type: String, compressionQuality: Float = 0.9,  metadata: [String:AnyObject]? = nil) throws {
         let properties: [String:AnyObject] = [kCGImageDestinationLossyCompressionQuality as String: compressionQuality]
-        
+        var finalMetadata = metadata
+        if metadata == nil {
+            finalMetadata = [kCGImagePropertyOrientation as String: Int(metadataOrientation.rawValue)]
+        }
+
         guard let destination = CGImageDestinationCreateWithURL(url, type, 1, nil),
               let imageRef = self.CGImage
         else {
@@ -34,11 +38,38 @@ extension UIImage {
                 )
         }
         CGImageDestinationSetProperties(destination, properties);
-        CGImageDestinationAddImage(destination, imageRef, metadata);
+        CGImageDestinationAddImage(destination, imageRef, finalMetadata);
         if (!CGImageDestinationFinalize(destination)) {
             throw errorForCode(.FailedToWrite,
                 failureReason: NSLocalizedString("Unable to write image to file", comment: "Error reason to display when the writing of a image to a file fails")
             )
+        }
+    }
+
+    /**
+     Writes an image to a url location using the JPEG format.
+
+     - Parameters:
+     - url: file url to where the asset should be exported, this must be writable location
+     */
+    func writeJPEGToURL(url: NSURL) throws {
+        let data = UIImageJPEGRepresentation(self, 0.9)
+        try data?.writeToURL(url, options: NSDataWritingOptions())
+    }
+
+    // Converts the imageOrientation from the image to the CGImagePropertyOrientation to use in the file metadata.
+    var metadataOrientation: CGImagePropertyOrientation {
+        get {
+            switch imageOrientation {
+            case .Up: return CGImagePropertyOrientation.Up
+            case .Down: return CGImagePropertyOrientation.Down
+            case .Left: return CGImagePropertyOrientation.Left
+            case .Right: return CGImagePropertyOrientation.Right
+            case .UpMirrored: return CGImagePropertyOrientation.UpMirrored
+            case .DownMirrored: return CGImagePropertyOrientation.DownMirrored
+            case .LeftMirrored: return CGImagePropertyOrientation.LeftMirrored
+            case .RightMirrored: return CGImagePropertyOrientation.RightMirrored
+            }
         }
     }
 }
