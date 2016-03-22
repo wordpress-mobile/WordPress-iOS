@@ -1,7 +1,7 @@
 #import "MenuItemSourceHeaderView.h"
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
-#import "Menu+ViewDesign.h"
+#import "MenuItem+ViewDesign.h"
 
 @interface MenuItemSourceHeaderView ()
 
@@ -56,7 +56,7 @@
             
             [self.stackView addArrangedSubview:iconView];
             
-            NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:14.0];
+            NSLayoutConstraint *widthConstraint = [iconView.widthAnchor constraintEqualToConstant:MenusDesignItemIconSize];
             widthConstraint.active = YES;
                         
             self.iconView = iconView;
