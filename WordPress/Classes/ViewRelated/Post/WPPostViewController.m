@@ -1461,13 +1461,11 @@ EditImageDetailsViewControllerDelegate
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
-                    success:^{
+                    success:^(AbstractPost *post){
+                        self.post = post;
+                        
                         DDLogInfo(@"post uploaded: %@", postTitle);
                         NSString *hudText;
-                        
-                        self.post = self.post.original;
-                        [self.post applyRevision];
-                        [self.post deleteRevision];
                         
                         if (postIsScheduled) {
                             hudText = NSLocalizedString(@"Scheduled!", @"Text displayed in HUD after a post was successfully scheduled to be published.");
