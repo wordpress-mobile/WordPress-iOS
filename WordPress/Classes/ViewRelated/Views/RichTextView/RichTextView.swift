@@ -161,7 +161,7 @@ import Foundation
     // MARK: - Private Methods
     private func setupSubviews() {
         gesturesRecognizer                                  = UITapGestureRecognizer()
-        gesturesRecognizer.addTarget(self, action: "handleTextViewTap:")
+        gesturesRecognizer.addTarget(self, action: #selector(RichTextView.handleTextViewTap(_:)))
         
         textView                                            = UITextView(frame: bounds)
         textView.backgroundColor                            = backgroundColor

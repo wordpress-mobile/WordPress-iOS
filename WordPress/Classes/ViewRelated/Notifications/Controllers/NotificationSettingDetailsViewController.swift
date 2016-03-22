@@ -54,7 +54,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
         // Reload whenever the app becomes active again since Push Settings may have changed in the meantime!
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self,
-            selector:   "reloadTable",
+            selector:   #selector(NotificationSettingDetailsViewController.reloadTable),
             name:       UIApplicationDidBecomeActiveNotification,
             object:     nil)
     }
@@ -73,7 +73,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
         tableView.cellLayoutMarginsFollowReadableWidth = false
     }
 
-    @IBAction private func reloadTable() {
+    @IBAction func reloadTable() {
         sections = isDeviceStreamDisabled() ? sectionsForDisabledDeviceStream() : sectionsForSettings(settings!, stream: stream!)
         tableView.reloadData()
     }
