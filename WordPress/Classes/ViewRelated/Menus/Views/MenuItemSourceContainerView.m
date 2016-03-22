@@ -66,7 +66,7 @@
 {
     [super traitCollectionDidChange:previousTraitCollection];
     
-    if (self.frame.size.width > self.frame.size.height) {
+    if (IS_IPAD || self.frame.size.width > self.frame.size.height) {
         [self setHeaderViewHidden:YES];
     } else  {
         [self setHeaderViewHidden:NO];
