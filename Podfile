@@ -18,7 +18,7 @@ target 'WordPress', :exclusive => true do
   pod 'CocoaLumberjack', '~> 2.2.0'
   pod 'DTCoreText',   '1.6.16'
   pod 'FormatterKit', '~> 1.8.0'
-  pod 'Helpshift', '~> 5.5.0-bitcode'
+  pod 'Helpshift', '~> 5.5.0'
   pod 'HockeySDK', '~>3.8.0'
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
@@ -48,7 +48,7 @@ target 'WordPress', :exclusive => true do
   pod 'NSURL+IDN', '0.3'
   pod 'Simperium', '0.8.12'
   pod 'WPMediaPicker', '~> 0.9.0'
-  pod 'WordPress-iOS-Editor', '1.1.5'
+  pod 'WordPress-iOS-Editor', '1.2'
   pod 'WordPress-iOS-Shared', '0.5.3'
   pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
   pod 'WordPressCom-Analytics-iOS', '0.1.4'
