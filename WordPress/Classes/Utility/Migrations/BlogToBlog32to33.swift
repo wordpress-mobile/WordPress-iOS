@@ -3,7 +3,7 @@ import UIKit
 class BlogToBlog32to33: NSEntityMigrationPolicy {
     
     override func createDestinationInstancesForSourceInstance(sInstance: NSManagedObject, entityMapping mapping: NSEntityMapping, manager: NSMigrationManager) throws {
-        DDLogSwift.logInfo("\(self.dynamicType) \(__FUNCTION__) (\(mapping.sourceEntityName) -> \(mapping.destinationEntityName))")
+        DDLogSwift.logInfo("\(self.dynamicType) \(#function) \(mapping.sourceEntityName) -> \(mapping.destinationEntityName))")
 
         let isWPcom = sInstance.valueForKeyPath("account.isWpcom") as? Bool ?? false
         let isJetpack = sInstance.valueForKey("isJetpack") as? Bool ?? false

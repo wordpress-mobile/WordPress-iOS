@@ -33,7 +33,7 @@ class PushAuthenticationManagerTests : XCTestCase {
         
         override func authorizeLogin(token: String, completion: ((Bool) -> ())) {
             authorizedLoginCalled = true
-            numberOfTimesAuthorizedLoginCalled++
+            numberOfTimesAuthorizedLoginCalled += 1
             tokenPassedIn = token
             completionBlockPassedIn = completion
         }

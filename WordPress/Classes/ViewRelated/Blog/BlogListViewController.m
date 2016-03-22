@@ -30,7 +30,13 @@ static NSInteger HideAllMinSites = 10;
 static NSInteger HideAllSitesThreshold = 6;
 static NSTimeInterval HideAllSitesInterval = 2.0;
 
-@interface BlogListViewController () <UIViewControllerRestoration>
+@interface BlogListViewController () <UIViewControllerRestoration,
+                                        UIDataSourceModelAssociation,
+                                        UITableViewDelegate,
+                                        UITableViewDataSource,
+                                        NSFetchedResultsControllerDelegate,
+                                        WPSearchResultsUpdating,
+                                        WPSearchControllerDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIView *headerView;
@@ -39,7 +45,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 @property (nonatomic, strong) IBOutlet UIView *searchWrapperView;
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
-@property (nonatomic, weak) UIAlertController *addSiteAlertController;
+@property (nonatomic,   weak) UIAlertController *addSiteAlertController;
 @property (nonatomic, strong) UIBarButtonItem *addSiteButton;
 @property (nonatomic, strong) UIBarButtonItem *searchButton;
 
@@ -402,7 +408,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return self.resultsController.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -455,7 +461,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 {
     Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
     NSString *name = blog.settings.name;
-    
+
     if (name.length != 0) {
         cell.textLabel.text = name;
         cell.detailTextLabel.text = [blog displayURL];
@@ -723,6 +729,7 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     [accountService setVisibility:switcher.on forBlogs:@[blog]];
 }
 
+
 #pragma mark - NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController
@@ -731,16 +738,33 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
         return _resultsController;
     }
 
-    NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"settings.name" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
-    [fetchRequest setPredicate:[self fetchRequestPredicate]];
+    // Notes:
+    // ======
+    //
+    //  -   We're grouping "Primary Sites" at the top of the list, by means of the sectionNameKeyPath property.
+    //
+    //  -   NSFetchedResultsController *requires and enforces* sectionNameKeypath never to be nil.
+    //      Otherwise, unpredictable behavior arises. This property *may* be calculated (YAY!)
+    //
+    //  -   NSFetchRequest's NSSortDescriptor(s) are required to hit actual Core Data properties, and cannot
+    //      be calculated. For that reason, we can't hit the same getter as above.
+    //
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
+    
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:self.defaultBlogAccountIdKeyPath
+                                                                   ascending:NO
+                                                                    selector:@selector(compare:)],
+                                     
+                                     [NSSortDescriptor sortDescriptorWithKey:self.siteNameKeyPath
+                                                                   ascending:YES
+                                                                    selector:@selector(localizedCaseInsensitiveCompare:)]];
+    fetchRequest.predicate = [self fetchRequestPredicate];
 
-    _resultsController = [[NSFetchedResultsController alloc]
-                          initWithFetchRequest:fetchRequest
-                          managedObjectContext:moc
-                          sectionNameKeyPath:nil
-                          cacheName:nil];
+    _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                             managedObjectContext:context
+                                                               sectionNameKeyPath:self.sectionNameKeyPath
+                                                                        cacheName:nil];
     _resultsController.delegate = self;
 
     NSError *error = nil;
@@ -750,6 +774,26 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
     }
     
     return _resultsController;
+}
+
+- (NSString *)entityName
+{
+    return NSStringFromClass([Blog class]);
+}
+
+- (NSString *)sectionNameKeyPath
+{
+    return @"sectionIdentifier";
+}
+
+- (NSString *)defaultBlogAccountIdKeyPath
+{
+    return @"accountForDefaultBlog.userID";
+}
+
+- (NSString *)siteNameKeyPath
+{
+    return @"settings.name";
 }
 
 - (NSPredicate *)fetchRequestPredicate
@@ -797,6 +841,9 @@ static NSTimeInterval HideAllSitesInterval = 2.0;
 
     [self.tableView reloadData];
 }
+
+
+#pragma mark - NSFetchedResultsControllerDelegate
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {

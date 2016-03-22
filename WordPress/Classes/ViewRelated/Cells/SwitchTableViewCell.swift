@@ -49,7 +49,7 @@ public class SwitchTableViewCell : WPTableViewCell
     
     
     // MARK: - UITapGestureRecognizer Helpers
-    @IBAction private func rowWasPressed(recognizer: UITapGestureRecognizer) {
+    @IBAction func rowWasPressed(recognizer: UITapGestureRecognizer) {
         // Manually relay the event, since .ValueChanged doesn't get posted if we toggle the switch
         // programatically
         flipSwitch.setOn(!on, animated: true)
@@ -59,7 +59,7 @@ public class SwitchTableViewCell : WPTableViewCell
     
     
     // MARK: - UISwitch Helpers
-    @IBAction private func switchDidChange(theSwitch: UISwitch) {
+    @IBAction func switchDidChange(theSwitch: UISwitch) {
         onChange?(newValue: theSwitch.on)
     }
     
@@ -70,10 +70,10 @@ public class SwitchTableViewCell : WPTableViewCell
         selectionStyle = .None
         
         contentView.addGestureRecognizer(tapGestureRecognizer)
-        tapGestureRecognizer.addTarget(self, action: "rowWasPressed:")
+        tapGestureRecognizer.addTarget(self, action: #selector(SwitchTableViewCell.rowWasPressed(_:)))
         
         flipSwitch = UISwitch()
-        flipSwitch.addTarget(self, action: "switchDidChange:", forControlEvents: .ValueChanged)
+        flipSwitch.addTarget(self, action: #selector(SwitchTableViewCell.switchDidChange(_:)), forControlEvents: .ValueChanged)
         accessoryView = flipSwitch
         
         WPStyleGuide.configureTableViewCell(self)

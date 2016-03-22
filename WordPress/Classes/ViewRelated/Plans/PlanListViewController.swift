@@ -91,7 +91,7 @@ enum PlanListViewModel {
         }
     }
 
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> ImmuTable {
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter?, planService: PlanService<StoreKitStore>?) -> ImmuTable {
         switch self {
         case .Loading, .Error(_):
             return ImmuTable.Empty
@@ -99,13 +99,19 @@ enum PlanListViewModel {
             let rows: [ImmuTableRow] = plans.map({ (plan, price) in
                 let active = (activePlan == plan)
                 let icon = active ? plan.activeImage : plan.image
+                var action: ImmuTableAction? = nil
+                if let presenter = presenter,
+                    let planService = planService {
+                    action = presenter.present(self.controllerForPlanDetails(plan, activePlan: activePlan, siteID: siteID, planService: planService))
+                }
+                
                 return PlanListRow(
                     title: plan.title,
                     active: active,
                     price: price,
                     description: plan.description,
                     icon: icon,
-                    action: presenter.present(self.controllerForPlanDetails(plan, activePlan: activePlan, siteID: siteID))
+                    action: action
                 )
             })
             return ImmuTable(sections: [
@@ -116,9 +122,9 @@ enum PlanListViewModel {
         }
     }
 
-    func controllerForPlanDetails(plan: Plan, activePlan: Plan, siteID: Int) -> ImmuTableRowControllerGenerator {
+    func controllerForPlanDetails(plan: Plan, activePlan: Plan, siteID: Int, planService: PlanService<StoreKitStore>) -> ImmuTableRowControllerGenerator {
         return { row in
-            let planVC = PlanComparisonViewController.controllerWithInitialPlan(plan, activePlan: activePlan, siteID: siteID)
+            let planVC = PlanComparisonViewController.controllerWithInitialPlan(plan, activePlan: activePlan, siteID: siteID, planService: planService)
             let navigationVC = RotationAwareNavigationViewController(rootViewController: planVC)
             navigationVC.modalPresentationStyle = .FormSheet
             return navigationVC
@@ -132,7 +138,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     }()
     private var viewModel: PlanListViewModel = .Loading {
         didSet {
-            handler.viewModel = viewModel.tableViewModelWithPresenter(self)
+            handler.viewModel = viewModel.tableViewModelWithPresenter(self, planService: service)
             updateNoResults()
         }
     }
@@ -188,7 +194,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
         ImmuTable.registerRows([PlanListRow.self], tableView: tableView)
-        handler.viewModel = viewModel.tableViewModelWithPresenter(self)
+        handler.viewModel = viewModel.tableViewModelWithPresenter(self, planService: service)
         updateNoResults()
     }
 

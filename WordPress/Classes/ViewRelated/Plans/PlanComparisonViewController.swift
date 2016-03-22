@@ -9,6 +9,8 @@ class PlanComparisonViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var planStackView: UIStackView!
     
+    var service: PlanService<StoreKitStore>? = nil
+    
     var activePlan: Plan?
     var siteID: Int!
     
@@ -26,11 +28,9 @@ class PlanComparisonViewController: UIViewController {
     
     private lazy var viewControllers: [PlanDetailViewController] = {
         return self.allPlans.map { plan in
-            let controller = PlanDetailViewController.controllerWithPlan(plan, siteID: self.siteID)
-            if let activePlan = self.activePlan {
-                controller.isActivePlan = activePlan == plan
-            }
-            
+            let isActive = self.activePlan == plan
+            let controller = PlanDetailViewController.controllerWithPlan(plan, siteID: self.siteID, isActive: isActive)
+
             return controller
         }
     }()
@@ -38,13 +38,13 @@ class PlanComparisonViewController: UIViewController {
     private let allPlans = defaultPlans
     
     lazy private var cancelXButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(named: "gridicons-cross"), style: .Plain, target: self, action: "closeTapped")
+        let button = UIBarButtonItem(image: UIImage(named: "gridicons-cross"), style: .Plain, target: self, action: #selector(PlanPostPurchaseViewController.closeTapped))
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Dismiss the current view")
         
         return button
     }()
     
-    class func controllerWithInitialPlan(plan: Plan, activePlan: Plan? = nil, siteID: Int) -> PlanComparisonViewController {
+    class func controllerWithInitialPlan(plan: Plan, activePlan: Plan? = nil, siteID: Int, planService: PlanService<StoreKitStore>) -> PlanComparisonViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanComparisonViewController
 
@@ -56,10 +56,11 @@ class PlanComparisonViewController: UIViewController {
 
         controller.activePlan = activePlan
         controller.currentPlan = plan
+        controller.service = planService
 
         return controller
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,6 +73,16 @@ class PlanComparisonViewController: UIViewController {
         
         initializePlanDetailViewControllers()
         updateForCurrentPlan()
+        fetchFeatures()
+    }
+    
+    private func fetchFeatures() {
+        service?.updateAllPlanFeatures({ [weak self] in
+            self?.viewControllers.forEach { $0.viewModel = .Ready($0.plan) }
+        }, failure: { [weak self] error in
+            self?.viewControllers.forEach { $0.viewModel = .Error(String(error))
+            }
+        })
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -118,7 +129,6 @@ class PlanComparisonViewController: UIViewController {
             viewController.view.accessibilityElementsHidden = index != currentIndex
         }
     }
-    
     
     // MARK: - IBActions
     
@@ -197,7 +207,7 @@ extension PlanComparisonViewController: UIScrollViewDelegate {
         return currentPage.clamp(min: 0, max: allPlans.count - 1)
     }
 
-    /// @return True if there was valid page to scroll to, false if we've reached the beginning / end
+    /// - returns: True if there was valid page to scroll to, false if we've reached the beginning / end
     private func scrollToPage(page: Int, animated: Bool) -> Bool {
         guard allPlans.indices.contains(page) else { return false }
         

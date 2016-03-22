@@ -1,3 +1,6 @@
+@import WordPressComStatsiOS;
+@import WordPressShared;
+
 #import "StatsViewController.h"
 #import "Blog.h"
 #import "WordPressAppDelegate.h"
@@ -7,8 +10,6 @@
 #import "BlogService.h"
 #import "SFHFKeychainUtils.h"
 #import "TodayExtensionService.h"
-#import <WordPressComStatsiOS/WPStatsViewController.h>
-#import <WordPressShared/WPNoResultsView.h>
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 #import "WPWebViewController.h"
@@ -69,7 +70,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)addStatsViewControllerToView
 {
-    if (self.presentingViewController == nil && WIDGETS_EXIST) {
+    if (self.presentingViewController == nil) {
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
         self.navigationItem.rightBarButtonItem = settingsButton;
     }
