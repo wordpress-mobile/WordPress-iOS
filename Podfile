@@ -25,8 +25,11 @@ target 'WordPress', :exclusive => true do
   pod 'Mixpanel', '2.9.4'
   pod 'Reachability',	'3.2'
   pod 'ReactiveCocoa', '~> 2.4.7'
-  pod 'RxCocoa', '~> 2.1.0'
-  pod 'RxSwift', '~> 2.1.0'
+  # Point to xcode/7.3 branch until there's a new release with the fixes.
+  # Otherwise RxTests fails to build.
+  # @koke 2016-03-22
+  pod 'RxCocoa', :git => 'https://github.com/ReactiveX/RxSwift.git', :branch => 'xcode/7.3'
+  pod 'RxSwift', :git => 'https://github.com/ReactiveX/RxSwift.git', :branch => 'xcode/7.3'
   pod 'SVProgressHUD', '~>1.1.3'
   pod 'UIDeviceIdentifier', '~> 0.1'
   pod 'Crashlytics'
@@ -65,8 +68,8 @@ target :WordPressTest, :exclusive => true do
   pod 'Specta', '1.0.5'
   pod 'Expecta', '0.3.2'
   pod 'Nimble', '~> 3.2.0'
-  pod 'RxSwift', '~> 2.1.0'
-  pod 'RxTests', '~> 2.1.0'
+  pod 'RxSwift', :git => 'https://github.com/ReactiveX/RxSwift.git', :branch => 'xcode/7.3'
+  pod 'RxTests', :git => 'https://github.com/ReactiveX/RxSwift.git', :branch => 'xcode/7.3'
 end
 
 target 'UITests', :exclusive => true do
