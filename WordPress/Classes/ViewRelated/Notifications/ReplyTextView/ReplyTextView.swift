@@ -110,7 +110,7 @@ import WordPressShared.WPStyleGuide
     
     public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         let shouldChange = delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
-        let respondsToDidType = delegate?.respondsToSelector(Selector("textView:didTypeWord:")) ?? false
+        let respondsToDidType = delegate?.respondsToSelector(#selector(ReplyTextViewDelegate.textView(_:didTypeWord:))) ?? false
 
         if shouldChange && respondsToDidType {
             let textViewText: NSString = textView.text
@@ -243,7 +243,7 @@ import WordPressShared.WPStyleGuide
         separatorsView.topVisible       = true
         
         // Recognizers
-        let recognizer                  = UITapGestureRecognizer(target: self, action: "backgroundWasTapped")
+        let recognizer                  = UITapGestureRecognizer(target: self, action: #selector(ReplyTextView.backgroundWasTapped))
         gestureRecognizers              = [recognizer]
     }
     
