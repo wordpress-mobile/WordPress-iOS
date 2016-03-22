@@ -123,6 +123,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
         
         self.textLabel.textColor = [self textLabelColor];
         self.iconView.tintColor = [self iconTintColor];
+        self.contentView.tintColor = [self iconTintColor];
         self.contentView.backgroundColor = [self contentViewBackgroundColor];
         [self.contentView setNeedsDisplay];
     }
