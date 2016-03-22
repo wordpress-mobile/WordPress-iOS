@@ -459,32 +459,36 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     
     [self.presenter dismissLoginMessage];
     
-    NSString *message = [error localizedDescription];
-    if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain] && [error code] != NSURLErrorBadURL) {
-        if ([self.helpshiftEnabledFacade isHelpshiftEnabled]) {
-            [self displayGenericErrorMessageWithHelpshiftButton:message];
-        } else {
-            [self displayGenericErrorMessage:message];
-        }
+    NSString *message = message = NSLocalizedString(@"Sign in failed. Please try again.", "Generic message to show to the user when there is unknow login error");
+    if ( [error.localizedDescription trim].length > 0) {
+        message = [error localizedDescription];
+    }
+
+    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
+        //Don't display any error if user canceled basic auth authentication.
         return;
     }
-    
-    if ([error code] == 403) {
-        message = NSLocalizedString(@"Please try entering your login details again.", nil);
-    }
-    
-    if ([[message trim] length] == 0) {
-        message = NSLocalizedString(@"Sign in failed. Please try again.", nil);
-    }
-    
-    if ([error code] == 405) {
-        [self displayErrorMessageForXMLRPC:message];
-    } else {
-        if ([error code] == NSURLErrorBadURL) {
-            [self displayErrorMessageForBadUrl:message];
-        } else {
-            [self displayGenericErrorMessage:message];
+
+    if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain]) {
+        if ([error code] == 403) {
+            message = NSLocalizedString(@"Your site was accessible but the username/password combination was not accepted. Please try again.", "Message to show to the user when username and/or password details are incorrect");
         }
+
+        if ([error code] == 405) {
+            [self displayErrorMessageForXMLRPC:message];
+            return;
+        }
+    }
+
+    if ([error.domain isEqualToString:WordPressAppErrorDomain] && [error code] == NSURLErrorBadURL) {
+        [self displayErrorMessageForBadUrl:message];
+        return;
+    }
+
+    if ([self.helpshiftEnabledFacade isHelpshiftEnabled]) {
+        [self displayGenericErrorMessageWithHelpshiftButton:message];
+    } else {
+        [self displayGenericErrorMessage:message];
     }
 }
 

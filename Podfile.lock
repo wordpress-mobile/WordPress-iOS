@@ -166,9 +166,9 @@ PODS:
   - WordPress-iOS-Shared (0.5.3):
     - AFNetworking (~> 2.5)
     - CocoaLumberjack (~> 2.2.0)
-  - WordPressApi (0.3.6):
+  - WordPressApi (0.4.0):
     - AFNetworking (~> 2.6.0)
-    - wpxmlrpc (~> 0.7)
+    - wpxmlrpc (~> 0.8)
   - WordPressCom-Analytics-iOS (0.1.4)
   - WordPressCom-Stats-iOS/Services (0.6.3):
     - AFNetworking (~> 2.6.0)
@@ -184,7 +184,7 @@ PODS:
     - WordPressCom-Analytics-iOS (~> 0.1.0)
     - WordPressCom-Stats-iOS/Services
   - WPMediaPicker (0.9.0)
-  - wpxmlrpc (0.8.1)
+  - wpxmlrpc (0.8.2)
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.6.4)
@@ -225,7 +225,7 @@ DEPENDENCIES:
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
   - WordPress-iOS-Editor (= 1.2)
   - WordPress-iOS-Shared (= 0.5.3)
-  - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
+  - WordPressApi (~> 0.4)
   - WordPressCom-Analytics-iOS (= 0.1.4)
   - WordPressCom-Stats-iOS/Services (= 0.6.3)
   - WordPressCom-Stats-iOS/UI (= 0.6.3)
@@ -244,8 +244,6 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPressApi:
-    :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -257,9 +255,6 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPressApi:
-    :commit: e89ef2bf8820d785c3fe9713ebeeb83f8a3f0429
-    :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
@@ -299,10 +294,10 @@ SPEC CHECKSUMS:
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
   WordPress-iOS-Editor: 4958ae44a2aedfa9b3a3afc9cba41e3ec989b175
   WordPress-iOS-Shared: 43f55f24f0685e431167084071b7914d7c7134a8
-  WordPressApi: 78e75bd45467f8bb0f7dad41cd7c3b0a1a9d3d4c
+  WordPressApi: 483767025bcdab26429b51bfe5171f17d3d30466
   WordPressCom-Analytics-iOS: 1d4cf0426fdc91393ea1ba65daf19133e440ff6a
   WordPressCom-Stats-iOS: 75dbdf4765c09b90a8fe00375dc96a93e64feffa
   WPMediaPicker: 2c399b1cbd4d8a7fcd312eb93107a349d26fb23f
-  wpxmlrpc: bd391dab54e9bdceb5d1de23d161ecf1ba80f0e0
+  wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
 COCOAPODS: 0.39.0
