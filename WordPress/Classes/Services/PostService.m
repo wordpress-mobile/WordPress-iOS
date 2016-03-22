@@ -167,7 +167,7 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
 }
 
 - (void)uploadPost:(AbstractPost *)post
-           success:(void (^)())success
+           success:(void (^)(AbstractPost *post))success
            failure:(void (^)(NSError *error))failure
 {
     id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
@@ -178,14 +178,27 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
     NSManagedObjectID *postObjectID = post.objectID;
     void (^successBlock)(RemotePost *post) = ^(RemotePost *post) {
         [self.managedObjectContext performBlock:^{
-            Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
+            AbstractPost *postInContext = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:nil];
             if (postInContext) {
+                
+                if ([postInContext isRevision]) {
+                    postInContext = postInContext.original;
+                    [postInContext applyRevision];
+                    [postInContext deleteRevision];
+                }
+                
                 [self updatePost:postInContext withRemotePost:post];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-            }
-            if (success) {
-                success();
+                
+                if (success) {
+                    success(postInContext);
+                }
+            } else {
+                // This can happen if the post was deleted right after triggering the upload.
+                if (success) {
+                    success(nil);
+                }
             }
         }];
     };
