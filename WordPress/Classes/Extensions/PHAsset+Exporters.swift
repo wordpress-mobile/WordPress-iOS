@@ -210,7 +210,7 @@ extension PHAsset {
                     return
                 }
                 do {
-                    try image.writeJPEGToURL(url)
+                    try image.writeToURL(url, type: self.defaultThumbnailUTI, compressionQuality: 0.9, metadata: nil)
                     successHandler(resultingSize: image.size)
                 } catch let error as NSError {
                     errorHandler(error: error)
