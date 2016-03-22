@@ -1,0 +1,6 @@
+machine:
+  xcode:
+    version: 7.2
+test:
+  override:
+    - Scripts/build.sh
