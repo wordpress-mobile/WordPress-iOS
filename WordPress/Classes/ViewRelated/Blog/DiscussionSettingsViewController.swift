@@ -57,7 +57,7 @@ public class DiscussionSettingsViewController : UITableViewController
 
     private func setupNotificationListeners() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "handleContextDidChange:",
+        notificationCenter.addObserver(self, selector: #selector(DiscussionSettingsViewController.handleContextDidChange(_:)),
             name: NSManagedObjectContextObjectsDidChangeNotification,
             object: settings.managedObjectContext)
     }
