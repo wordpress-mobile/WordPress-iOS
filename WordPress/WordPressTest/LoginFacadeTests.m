@@ -152,7 +152,7 @@ describe(@"signInWithLoginFields", ^{
                     __block NSMutableDictionary *options;
                     
                     beforeEach(^{
-                        options = [NSMutableDictionary new];
+                        options = [NSMutableDictionary dictionaryWithDictionary:@{@"software_version":@{@"value":@"4.2"}}];
                         
                         // Intercept success callback and execute it when appropriate
                         [OCMStub([mockXMLRPCAPIFacade getBlogOptionsWithEndpoint:xmlrpc username:loginFields.username password:loginFields.password success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
