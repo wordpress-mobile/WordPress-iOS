@@ -141,7 +141,7 @@ final public class ReaderDetailViewController : UIViewController
 
         // The UIApplicationDidBecomeActiveNotification notification is broadcast
         // when the app is resumed as a part of split screen multitasking on the iPad.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleApplicationDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderDetailViewController.handleApplicationDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
 
 
@@ -277,7 +277,7 @@ final public class ReaderDetailViewController : UIViewController
         bumpPageViewsForPost()
 
         NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "handleBlockSiteNotification:",
+            selector: #selector(ReaderDetailViewController.handleBlockSiteNotification(_:)),
             name: ReaderPostMenu.BlockSiteNotification,
             object: nil)
     }
@@ -294,7 +294,7 @@ final public class ReaderDetailViewController : UIViewController
         let image = UIImage(named: "icon-posts-share")!
         let button = CustomHighlightButton(frame: CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height))
         button.setImage(image, forState: .Normal)
-        button.addTarget(self, action: "didTapShareButton:", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(ReaderDetailViewController.didTapShareButton(_:)), forControlEvents: .TouchUpInside)
 
         let shareButton = UIBarButtonItem(customView: button)
         shareButton.accessibilityLabel = NSLocalizedString("Share", comment:"Spoken accessibility label")
@@ -322,7 +322,7 @@ final public class ReaderDetailViewController : UIViewController
 
         // If the button is enabled also listen for taps on the avatar.
         if blogNameButton.enabled {
-            let tgr = UITapGestureRecognizer(target: self, action: "didTapHeaderAvatar:")
+            let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderDetailViewController.didTapHeaderAvatar(_:)))
             blavatarImageView.addGestureRecognizer(tgr)
         }
 
@@ -394,7 +394,7 @@ final public class ReaderDetailViewController : UIViewController
         featuredImageView.image = image
 
         // Listen for taps so we can display the image detail
-        let tgr = UITapGestureRecognizer(target: self, action: "didTapFeaturedImage:")
+        let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderDetailViewController.didTapFeaturedImage(_:)))
         featuredImageView.addGestureRecognizer(tgr)
     }
 
@@ -463,7 +463,7 @@ final public class ReaderDetailViewController : UIViewController
         } else {
             attributionView.configureViewWithVerboseSiteAttribution(post!)
 
-            let tgr = UITapGestureRecognizer(target: self, action: "didTapDiscoverAttribution")
+            let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderDetailViewController.didTapDiscoverAttribution))
             attributionView.addGestureRecognizer(tgr)
         }
     }

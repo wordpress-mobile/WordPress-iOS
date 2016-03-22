@@ -16,7 +16,7 @@ class PlanPostPurchaseViewController: UIViewController {
     var plan: Plan
 
     lazy private var cancelXButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(named: "gridicons-cross"), style: .Plain, target: self, action: "closeTapped")
+        let button = UIBarButtonItem(image: UIImage(named: "gridicons-cross"), style: .Plain, target: self, action: #selector(PlanPostPurchaseViewController.closeTapped))
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Dismiss the current view")
         
         return button
@@ -73,7 +73,7 @@ class PlanPostPurchaseViewController: UIViewController {
         pageControl.bottomAnchor.constraintEqualToAnchor(view.bottomAnchor).active = true
         pageControl.heightAnchor.constraintEqualToConstant(pageControlHeight).active = true
         
-        pageControl.addTarget(self, action: "pageControlChanged", forControlEvents: .ValueChanged)
+        pageControl.addTarget(self, action: #selector(PlanPostPurchaseViewController.pageControlChanged), forControlEvents: .ValueChanged)
         self.pageControl = pageControl
     }
     
