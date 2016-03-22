@@ -686,7 +686,7 @@ import WordPressShared
 
         controller.title = labelTitle
         controller.onValueChanged = {[unowned self] (value) in
-            guard value == self.blog.settings.sharingLabel else {
+            guard value != self.blog.settings.sharingLabel else {
                 return
             }
             self.blog.settings.sharingLabel = value
