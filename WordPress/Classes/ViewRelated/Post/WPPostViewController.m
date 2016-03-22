@@ -230,6 +230,14 @@ EditImageDetailsViewControllerDelegate
         if (post.blog.isHostedAtWPcom) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
+        
+        if ([post isRevision]
+            && [post hasLocalChanges]
+            && post.original.postTitle.length == 0
+            && post.original.content.length == 0) {
+            
+            _ownsPost = YES;
+        }
     }
 	
     return self;
