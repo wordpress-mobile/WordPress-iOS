@@ -22,7 +22,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     required convenience init() {
         self.init(style: .Grouped)
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "refreshModelWithNotification:", name: HelpshiftUnreadCountUpdatedNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(MeViewController.refreshModelWithNotification(_:)), name: HelpshiftUnreadCountUpdatedNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {

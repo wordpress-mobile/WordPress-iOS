@@ -61,6 +61,7 @@
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
+#import "SiteSettingsViewController.h"
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"
 #import "SupportViewController.h"
