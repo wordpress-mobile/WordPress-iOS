@@ -214,9 +214,9 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift (~> 4.6.0)
   - Reachability (= 3.2)
   - ReactiveCocoa (~> 2.4.7)
-  - RxCocoa (from `https://github.com/koke/RxSwift.git`, branch `fixes-xcode-7.3`)
-  - RxSwift (from `https://github.com/koke/RxSwift.git`, branch `fixes-xcode-7.3`)
-  - RxTests (from `https://github.com/koke/RxSwift.git`, branch `fixes-xcode-7.3`)
+  - RxCocoa (from `https://github.com/ReactiveX/RxSwift.git`, branch `develop`)
+  - RxSwift (from `https://github.com/ReactiveX/RxSwift.git`, branch `develop`)
+  - RxTests (from `https://github.com/ReactiveX/RxSwift.git`, branch `develop`)
   - Simperium (= 0.8.12)
   - Specta (= 1.0.5)
   - SVProgressHUD (~> 1.1.3)
@@ -242,14 +242,14 @@ EXTERNAL SOURCES:
     :branch: gifsupport
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   RxCocoa:
-    :branch: fixes-xcode-7.3
-    :git: https://github.com/koke/RxSwift.git
+    :branch: develop
+    :git: https://github.com/ReactiveX/RxSwift.git
   RxSwift:
-    :branch: fixes-xcode-7.3
-    :git: https://github.com/koke/RxSwift.git
+    :branch: develop
+    :git: https://github.com/ReactiveX/RxSwift.git
   RxTests:
-    :branch: fixes-xcode-7.3
-    :git: https://github.com/koke/RxSwift.git
+    :branch: develop
+    :git: https://github.com/ReactiveX/RxSwift.git
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -264,14 +264,14 @@ CHECKOUT OPTIONS:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   RxCocoa:
-    :commit: 66c1283326c679d292274b94e93ac7e0298a65e5
-    :git: https://github.com/koke/RxSwift.git
+    :commit: bd8b188a4990e88513a8ca4f7903bb01a7037e60
+    :git: https://github.com/ReactiveX/RxSwift.git
   RxSwift:
-    :commit: 66c1283326c679d292274b94e93ac7e0298a65e5
-    :git: https://github.com/koke/RxSwift.git
+    :commit: bd8b188a4990e88513a8ca4f7903bb01a7037e60
+    :git: https://github.com/ReactiveX/RxSwift.git
   RxTests:
-    :commit: 66c1283326c679d292274b94e93ac7e0298a65e5
-    :git: https://github.com/koke/RxSwift.git
+    :commit: bd8b188a4990e88513a8ca4f7903bb01a7037e60
+    :git: https://github.com/ReactiveX/RxSwift.git
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
