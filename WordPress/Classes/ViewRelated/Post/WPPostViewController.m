@@ -774,7 +774,6 @@ EditImageDetailsViewControllerDelegate
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
 	vc.hidesBottomBarWhenPushed = YES;
-    [self.editorView saveSelection];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -787,13 +786,11 @@ EditImageDetailsViewControllerDelegate
     
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:self.isEditing];
 	vc.hidesBottomBarWhenPushed = YES;
-    [self.editorView saveSelection];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)showMediaPickerAnimated:(BOOL)animated
 {
-    [self.editorView saveSelection];
     self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.dataSource = self.mediaLibraryDataSource;
@@ -1695,7 +1692,7 @@ EditImageDetailsViewControllerDelegate
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         if (media.mediaType == MediaTypeImage) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary withBlog:self.post.blog];
-            [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId];
+            [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId mediaId:[media.mediaID stringValue]];
         } else if (media.mediaType == MediaTypeVideo) {
             [WPAppAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary withBlog:self.post.blog];
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
@@ -1817,7 +1814,8 @@ EditImageDetailsViewControllerDelegate
     if ([media.mediaID intValue] != 0) {
         [self trackMediaWithId:mediaUniqueID usingProgress:[NSProgress progressWithTotalUnitCount:1]];
         if ([media mediaType] == MediaTypeImage) {
-            [self.editorView insertImage:media.remoteURL alt:media.title];
+            [self.editorView insertLocalImage:media.remoteURL uniqueId:mediaUniqueID];
+            [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueID mediaId:[media.mediaID stringValue]];
         } else if ([media mediaType] == MediaTypeVideo) {
             [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media absoluteThumbnailLocalURL]];
             [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:media.posterImageURL videoPress:media.videopressGUID];
@@ -2088,6 +2086,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
+    [self.editorView.focusedField focus];
     [self dismissViewControllerAnimated:YES completion:^{
         [self addMediaAssets:assets];
     }];
@@ -2099,6 +2098,7 @@ EditImageDetailsViewControllerDelegate
         [self dismissEditViewAnimated:NO changesSaved:NO];
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
+        [self.editorView.focusedField focus];
     }
 }
 
