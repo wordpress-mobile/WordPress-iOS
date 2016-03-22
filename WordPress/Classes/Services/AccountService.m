@@ -299,8 +299,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     
     // Share Extension Configuration
     dispatch_async(dispatch_get_main_queue(), ^{
-        [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue
-                                                    defaultSiteName:blogName];
+        [ShareExtensionService configureShareExtensionDefaultSiteID:siteId.integerValue defaultSiteName:blogName];
         [ShareExtensionService configureShareExtensionToken:defaultAccount.authToken];
         [ShareExtensionService configureShareExtensionUsername:defaultAccount.username];
     });
