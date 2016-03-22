@@ -210,7 +210,7 @@ extension PlanPostPurchaseViewController: UIScrollViewDelegate {
         return currentPage.clamp(min: 0, max: pages.count - 1)
     }
     
-    /// @return True if there was valid page to scroll to, false if we've reached the beginning / end
+    /// - returns: True if there was valid page to scroll to, false if we've reached the beginning / end
     private func scrollToPage(page: Int, animated: Bool) -> Bool {
         guard pages.indices.contains(page) else { return false }
         
