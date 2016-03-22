@@ -71,7 +71,7 @@ class StoreCoordinator<S: Store> {
 }
 
 protocol Store {
-    typealias ProductType: Product
+    associatedtype ProductType: Product
     func getProductsWithIdentifiers(identifiers: Set<String>, success: [ProductType] -> Void, failure: ErrorType -> Void)
     func requestPayment(product: ProductType)
     var canMakePayments: Bool { get }
