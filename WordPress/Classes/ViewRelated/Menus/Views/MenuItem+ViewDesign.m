@@ -1,6 +1,6 @@
 #import "MenuItem+ViewDesign.h"
 
-CGFloat const MenusDesignItemIconSize = 16.0;
+CGFloat const MenusDesignItemIconSize = 18.0;
 
 @implementation MenuItem (ViewDesign)
 
