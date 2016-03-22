@@ -370,7 +370,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     [self.authorButton setTitle:[self.contentProvider authorForDisplay] forState:UIControlStateHighlighted];
     [self.authorButton setTitle:[self.contentProvider authorForDisplay] forState:UIControlStateDisabled];
 
-    if ([self.contentProvider respondsToSelector:@selector(authorURL)] && [self.contentProvider authorURL]) {
+    if ([self.contentProvider respondsToSelector:@selector(authorURL)]) {
         self.authorButton.enabled = ([[[self.contentProvider authorURL] absoluteString] length] > 0);
     }
 
