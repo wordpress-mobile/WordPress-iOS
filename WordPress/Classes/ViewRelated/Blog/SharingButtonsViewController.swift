@@ -523,7 +523,8 @@ import WordPressShared
             tableView.reloadData()
         }
 
-        let service = BlogService(managedObjectContext: managedObjectContext)
+        let context = ContextManager.sharedInstance().mainContext
+        let service = BlogService(managedObjectContext: context)
         service.updateSettingsForBlog(self.blog, success: nil, failure: { [weak self] (error: NSError!) in
             DDLogSwift.logError(error.description)
             self?.showErrorSyncingMessage(error)
