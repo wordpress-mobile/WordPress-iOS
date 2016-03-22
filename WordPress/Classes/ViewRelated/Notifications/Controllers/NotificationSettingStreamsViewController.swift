@@ -43,7 +43,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         // Reload whenever the app becomes active again since Push Settings may have changed in the meantime!
         let notificationCenter = NSNotificationCenter.defaultCenter()
         notificationCenter.addObserver(self,
-            selector:   "reloadTable",
+            selector:   #selector(NotificationSettingStreamsViewController.reloadTable),
             name:       UIApplicationDidBecomeActiveNotification,
             object:     nil)
     }
