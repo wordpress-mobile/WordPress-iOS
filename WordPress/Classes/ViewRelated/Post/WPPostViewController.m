@@ -232,7 +232,9 @@ EditImageDetailsViewControllerDelegate
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
         
-        _shouldShowUnsavedChangesAlert = [post hasLocalChanges];
+        if (post.postTitle.length > 0 || post.content.length > 0) {
+            _shouldShowUnsavedChangesAlert = [post hasLocalChanges];
+        }
         
         if ([post isRevision]
             && [post hasLocalChanges]
