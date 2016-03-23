@@ -220,8 +220,7 @@ class PlanDetailViewController: UIViewController {
                 return ImmuTable(sections: groups.map { group in
                     let features = group.slugs.flatMap { PlanService.featureForPlan(plan, withSlug: $0) }
                     let rows: [ImmuTableRow] = features.map({ feature in
-                        let iconName = "features-\(feature.slug).png"
-                        return FeatureItemRow(title: feature.title, description: feature.description, icon: UIImage(named: iconName))
+                        return FeatureItemRow(title: feature.title, description: feature.description, iconURL: feature.iconURL)
                     })
                     return ImmuTableSection(headerText: group.title, rows: rows, footerText: nil)
                 })
@@ -342,13 +341,13 @@ struct FeatureItemRow : ImmuTableRow {
     
     let title: String
     let description: String
-    let icon: UIImage?
+    let iconURL: NSURL?
     let action: ImmuTableAction? = nil
 
-    init(title: String, description: String, icon: UIImage? = nil) {
+    init(title: String, description: String, iconURL: NSURL? = nil) {
         self.title = title
         self.description = description
-        self.icon = icon
+        self.iconURL = iconURL
     }
     
     func configureCell(cell: UITableViewCell) {
@@ -360,7 +359,9 @@ struct FeatureItemRow : ImmuTableRow {
             cell.featureDescriptionLabel?.attributedText = attributedDescriptionText(description, font: featureDescriptionLabel.font)
         }
         
-        cell.featureIconImageView?.image = icon
+        if let iconURL = iconURL {
+            cell.featureIconImageView?.setImageWithURL(iconURL, placeholderImage: nil)
+        }
         
         cell.featureTitleLabel.textColor = WPStyleGuide.darkGrey()
         cell.featureDescriptionLabel.textColor = WPStyleGuide.grey()
