@@ -1,5 +1,9 @@
 extern NSString *const WordPressAppErrorDomain;
 
+typedef NS_ENUM(NSUInteger, WordPressAppErrorCode) {
+    WordPressAppErrorCodeInvalidVersion = 5000
+};
+
 @interface WPError : NSObject
 
 

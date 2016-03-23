@@ -6,6 +6,7 @@
 #import "WordPressXMLRPCAPIFacade.h"
 #import "WPError.h"
 #import "BlogService.h"
+#import "WPAppAnalytics.h"
 
 @implementation LoginFacade
 
@@ -58,6 +59,7 @@
     } failure:^(NSError *error) {
         NSDictionary *properties = @{ @"multifactor" : @(loginFields.shouldDisplayMultifactor) };
         [WPAnalytics track:WPAnalyticsStatLoginFailed withProperties:properties];
+        [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
         [self.delegate displayRemoteError:error];
     }];
 }
@@ -74,9 +76,9 @@
                 if (version < [WordPressMinimumVersion floatValue]) {
                     NSString *errorMessage = [NSString stringWithFormat:NSLocalizedString(@"WordPress version too old. The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", nil), [xmlRPCURL host], versionString, WordPressMinimumVersion];
                     NSError *versionError = [NSError errorWithDomain:WordPressAppErrorDomain
-                                        code:0//WordpressAppPErrorCodeInvalidVersion
+                                        code:WordPressAppErrorCodeInvalidVersion
                                     userInfo:@{NSLocalizedDescriptionKey:errorMessage}];
-                    [WPAnalytics track:WPAnalyticsStatLoginFailed];
+                    [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:versionError];
                     [self.delegate displayRemoteError:versionError];
                     return;
                 }
@@ -84,13 +86,13 @@
                 [self.delegate finishedLoginWithUsername:loginFields.username password:loginFields.password xmlrpc:xmlrpc options:options];
             }
         } failure:^(NSError *error) {
-            [WPAnalytics track:WPAnalyticsStatLoginFailed];
+            [WPAppAnalytics track:WPAnalyticsStatLoginFailed error:error];
             [self.delegate displayRemoteError:error];
         }];
     };
     
-    void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){
-        [WPAnalytics track:WPAnalyticsStatLoginFailedToGuessXMLRPC];
+    void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){        
+        [WPAppAnalytics track:WPAnalyticsStatLoginFailedToGuessXMLRPC error:error];
         [self.delegate displayRemoteError:error];
     };
     
