@@ -86,6 +86,12 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
+ Initializes the WordPress iOS Extensions with the WordPress.com Default Account.
+ */
+- (void)setupAppExtensionsWithDefaultAccount;
+
+
+/**
  Removes an account if it won't be used anymore.
  
  For self hosted accounts, the account will be removed if there are no associated blogs
