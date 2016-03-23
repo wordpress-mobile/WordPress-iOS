@@ -224,7 +224,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     CGRect visibleRect = [self.scrollView convertRect:viewForScrolling.frame fromView:viewForScrolling.superview];
     visibleRect.origin.y -= (self.scrollView.frame.size.height - visibleRect.size.height) / 2.0;
     visibleRect.size.height = self.scrollView.frame.size.height;
-    [self.scrollView scrollRectToVisible:visibleRect animated:NO];
+    [self.scrollView scrollRectToVisible:visibleRect animated:YES];
 }
 
 - (void)itemsView:(MenuItemsStackView *)itemsView prefersScrollingEnabled:(BOOL)enabled

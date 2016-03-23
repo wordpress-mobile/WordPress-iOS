@@ -71,7 +71,11 @@ typedef NS_ENUM(NSUInteger) {
         self.scratchObjectContext = scratchContext;
         
         [scratchContext performBlockAndWait:^{
-            MenuItem *itemInContext = [scratchContext objectWithID:itemObjectID];
+            NSError *error;
+            MenuItem *itemInContext = [scratchContext existingObjectWithID:itemObjectID error:&error];
+            if (error) {
+                DDLogError(@"Error occurred obtaining existing MenuItem object in context: %@", error);
+            }
             self.item = itemInContext;
         }];
     }
@@ -109,7 +113,7 @@ typedef NS_ENUM(NSUInteger) {
     [super viewDidLoad];
     
     self.typeView.selectedItemType = self.item.type;
-    [self.typeView loadPostTypesForBlog:self.item.menu.blog];
+    [self.typeView loadPostTypesForBlog:self.blog];
     
     self.sourceView.blog = self.blog;
     self.sourceView.item = self.item;

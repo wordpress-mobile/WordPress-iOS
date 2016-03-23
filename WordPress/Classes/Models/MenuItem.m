@@ -90,6 +90,22 @@ NSString * const MenuItemDefaultLinkTitle = @"New Item";
     return otherItemIsDescendant;
 }
 
+- (MenuItem *)lastOrderedDescendantInOrderedItems:(NSOrderedSet *)orderedItems
+{
+    MenuItem *lastChildItem = nil;
+    NSUInteger parentIndex = [orderedItems indexOfObject:self];
+    for(NSUInteger i = parentIndex + 1; i < orderedItems.count; i++) {
+        MenuItem *child = [orderedItems objectAtIndex:i];
+        if (child.parent == self) {
+            lastChildItem = child;
+        }
+        if (![lastChildItem isDescendantOfItem:self]) {
+            break;
+        }
+    }
+    return lastChildItem;
+}
+
 - (BOOL)nameIsEmptyOrDefault
 {
     return self.name.length == 0 || [self.name isEqualToString:[MenuItem defaultItemNameLocalized]];

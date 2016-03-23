@@ -10,6 +10,8 @@
 @property (nonatomic, weak) id <MenuItemsStackViewDelegate> delegate;
 @property (nonatomic, strong) Menu *menu;
 
+- (void)removeItem:(MenuItem *)item;
+
 @end
 
 @protocol MenuItemsStackViewDelegate <NSObject>

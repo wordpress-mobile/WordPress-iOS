@@ -1,17 +1,17 @@
 #import "MenuItemsStackableView.h"
 
-typedef NS_ENUM(NSUInteger) {
-    MenuItemInsertionViewTypeAbove = 1,
-    MenuItemInsertionViewTypeBelow,
-    MenuItemInsertionViewTypeChild
-}MenuItemInsertionViewType;
+typedef NS_ENUM(NSUInteger, MenuItemInsertionOrder) {
+    MenuItemInsertionOrderAbove = 1,
+    MenuItemInsertionOrderBelow,
+    MenuItemInsertionOrderChild
+};
 
 @protocol MenuItemInsertionViewDelegate;
 
 @interface MenuItemInsertionView : MenuItemsStackableView
 
 @property (nonatomic, weak) id <MenuItemsStackableViewDelegate, MenuItemInsertionViewDelegate> delegate;
-@property (nonatomic, assign) MenuItemInsertionViewType type;
+@property (nonatomic, assign) MenuItemInsertionOrder insertionOrder;
 
 @end
 
