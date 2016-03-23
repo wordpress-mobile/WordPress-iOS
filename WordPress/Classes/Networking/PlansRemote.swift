@@ -195,7 +195,8 @@ private func mapPlanFeaturesResponse(response: AnyObject) throws -> PlanFeatures
         guard let slug = featureDetails["product_slug"] as? String,
             let title = featureDetails["title"] as? String,
             var description = featureDetails["description"] as? String,
-            let iconURL = featureDetails["icon"] as? String,
+            let iconURLString = featureDetails["icon"] as? String,
+            let iconURL = NSURL(string: iconURLString),
             let planDetails = featureDetails["plans"] as? [String: AnyObject] else { throw PlansRemote.Error.DecodeError }
         
             for (planID, planInfo) in planDetails {
@@ -210,7 +211,7 @@ private func mapPlanFeaturesResponse(response: AnyObject) throws -> PlanFeatures
                         description = planSpecificDescription
                 }
                 
-                features[planID]?.append(PlanFeature(slug: slug, title: title, description: description, iconURL: NSURL(string: iconURL)))
+                features[planID]?.append(PlanFeature(slug: slug, title: title, description: description, iconURL: iconURL))
             }
     }
     
