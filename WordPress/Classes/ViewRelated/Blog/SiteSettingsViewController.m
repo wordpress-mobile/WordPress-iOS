@@ -868,6 +868,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 {
     NSParameterAssert([blog supportsSiteManagementServices]);
 
+    [WPAppAnalytics track:WPAnalyticsStatSiteSettingsStartOverAccessed withBlog:self.blog];
     StartOverViewController *viewController = [[StartOverViewController alloc] initWithBlog:blog];
     [self.navigationController pushViewController:viewController animated:YES];
 }
