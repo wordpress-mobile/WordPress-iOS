@@ -173,35 +173,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             }
             
             [self mergeBlogs:blogs withAccount:accountInContext completion:success];
-            
-            // Update the Widget Configuration
-            NSManagedObjectID *defaultBlogObjectID = accountInContext.defaultBlog.objectID;
-            if (!defaultBlogObjectID) {
-                DDLogError(@"Error: The Default Blog objectID could not be loaded");
-                return;
-            }
-            
-            Blog *defaultBlog = (Blog *)[self.managedObjectContext existingObjectWithID:defaultBlogObjectID
-                                                                                  error:nil];
-            TodayExtensionService *service = [TodayExtensionService new];
-            BOOL widgetIsConfigured = [service widgetIsConfigured];
-            
-            if (!widgetIsConfigured
-                && defaultBlog != nil
-                && !defaultBlog.isDeleted) {
-                NSNumber *siteId = defaultBlog.dotComID;
-                NSString *blogName = defaultBlog.settings.name;
-                NSTimeZone *timeZone = [self timeZoneForBlog:defaultBlog];
-                NSString *oauth2Token = accountInContext.authToken;
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    TodayExtensionService *service = [TodayExtensionService new];
-                    [service configureTodayWidgetWithSiteID:siteId
-                                                   blogName:blogName
-                                               siteTimeZone:timeZone
-                                             andOAuth2Token:oauth2Token];
-                });
-            }
+
         }];
     } failure:^(NSError *error) {
         DDLogError(@"Error syncing blogs: %@", error);
