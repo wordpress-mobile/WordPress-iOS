@@ -123,6 +123,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, assign, readwrite) BOOL ownsPost;
 
 #pragma mark - Unsaved changes support
+@property (nonatomic, assign, readwrite) BOOL hasShownUnsavedChangesAlert;
 @property (nonatomic, assign, readonly) BOOL changedToEditModeDueToUnsavedChanges;
 
 #pragma mark - State restoration
@@ -329,7 +330,9 @@ EditImageDetailsViewControllerDelegate
         }
     }
 
-    if ([self.post hasUnsavedChanges]) {
+    if (!self.hasShownUnsavedChangesAlert && [self.post hasUnsavedChanges]) {
+        
+        self.hasShownUnsavedChangesAlert = YES;
         [self showUnsavedChangesAlert];
     }
 }
