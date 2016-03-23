@@ -301,6 +301,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.post.blog.objectID
                                                                                        successHandler:successHandler
                                                                                        dismissHandler:dismissHandler];
+    vc.displaysPrimaryBlogOnTop = YES;
     vc.title = NSLocalizedString(@"Select Site", @"");
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];

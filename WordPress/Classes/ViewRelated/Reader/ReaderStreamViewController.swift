@@ -158,7 +158,7 @@ import WordPressComAnalytics
 
     public override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleApplicationDidBecomeActive:", name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderStreamViewController.handleApplicationDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
 
     public override func viewWillDisappear(animated: Bool) {
@@ -254,7 +254,7 @@ import WordPressComAnalytics
         tableView = tableViewController.tableView
         tableView.separatorStyle = .None
         refreshControl = tableViewController.refreshControl!
-        refreshControl.addTarget(self, action: Selector("handleRefresh:"), forControlEvents: .ValueChanged)
+        refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), forControlEvents: .ValueChanged)
 
         var nib = UINib(nibName: readerCardCellNibName, bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: readerCardCellReuseIdentifier)
@@ -425,7 +425,7 @@ import WordPressComAnalytics
         if !listentingForBlockedSiteNotification {
             listentingForBlockedSiteNotification = true
             NSNotificationCenter.defaultCenter().addObserver(self,
-                selector: "handleBlockSiteNotification:",
+                selector: #selector(ReaderStreamViewController.handleBlockSiteNotification(_:)),
                 name: ReaderPostMenu.BlockSiteNotification,
                 object: nil)
         }
@@ -1077,7 +1077,7 @@ import WordPressComAnalytics
         displayContext = ContextManager.sharedInstance().newMainContextChildContext()
 
         let mainContext = ContextManager.sharedInstance().mainContext
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "handleContextDidSaveNotification:", name: NSManagedObjectContextDidSaveNotification, object: mainContext)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ReaderStreamViewController.handleContextDidSaveNotification(_:)), name: NSManagedObjectContextDidSaveNotification, object: mainContext)
 
         return displayContext!
     }
@@ -1290,7 +1290,7 @@ import WordPressComAnalytics
         let controller = ReaderStreamViewController.controllerWithSiteID(post.siteID, isFeed: post.isExternal)
         navigationController?.pushViewController(controller, animated: true)
 
-        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL, forKey: "URL")
+        let properties = ReaderHelpers.statsPropertiesForPost(post, andValue: post.blogURL, forKey: "url")
         WPAppAnalytics.track(.ReaderSitePreviewed, withProperties: properties)
     }
 

@@ -57,7 +57,7 @@ public class DiscussionSettingsViewController : UITableViewController
 
     private func setupNotificationListeners() {
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "handleContextDidChange:",
+        notificationCenter.addObserver(self, selector: #selector(DiscussionSettingsViewController.handleContextDidChange(_:)),
             name: NSManagedObjectContextObjectsDidChangeNotification,
             object: settings.managedObjectContext)
     }
@@ -83,7 +83,7 @@ public class DiscussionSettingsViewController : UITableViewController
         }
         
         let service = BlogService(managedObjectContext: settings.managedObjectContext)
-        service.updateSettingsForBlog(settings.blog,
+        service.updateSettingsForBlog(blog,
             success: nil,
             failure: { (error: NSError!) -> Void in
                 DDLogSwift.logError("Error while persisting settings: \(error)")

@@ -1,4 +1,5 @@
-#import <Helpshift/Helpshift.h>
+#import <Helpshift/HelpshiftCore.h>
+#import <Helpshift/HelpshiftSupport.h>
 #import <Mixpanel/Mixpanel.h>
 #import "SFHFKeychainUtils.h"
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
@@ -60,6 +61,7 @@
 #import "SettingsMultiTextViewController.h"
 #import "SettingTableViewCell.h"
 #import "SettingsTextViewController.h"
+#import "SiteSettingsViewController.h"
 #import "SourcePostAttribution.h"
 #import "SuggestionsTableView.h"
 #import "SupportViewController.h"

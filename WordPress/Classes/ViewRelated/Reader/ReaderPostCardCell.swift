@@ -228,7 +228,7 @@ import WordPressShared
     }
 
     private func createAvatarTapGestureRecognizer() {
-        let tgr = UITapGestureRecognizer(target: self, action: Selector("didTapHeaderAvatar:"))
+        let tgr = UITapGestureRecognizer(target: self, action: #selector(ReaderPostCardCell.didTapHeaderAvatar(_:)))
         avatarImageView.addGestureRecognizer(tgr)
     }
 

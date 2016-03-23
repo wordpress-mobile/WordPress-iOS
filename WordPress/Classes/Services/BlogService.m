@@ -186,8 +186,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             TodayExtensionService *service = [TodayExtensionService new];
             BOOL widgetIsConfigured = [service widgetIsConfigured];
             
-            if (WIDGETS_EXIST
-                && !widgetIsConfigured
+            if (!widgetIsConfigured
                 && defaultBlog != nil
                 && !defaultBlog.isDeleted) {
                 NSNumber *siteId = defaultBlog.dotComID;
