@@ -17,6 +17,69 @@
 
 @implementation MediaService
 
+- (void)createMediaWithImage:(UIImage *)image
+                 withMediaID:(NSString *)mediaID
+             forPostObjectID:(NSManagedObjectID *)postObjectID
+           thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                  completion:(void (^)(Media *media, NSError *error))completion
+{
+    NSError *error = nil;
+    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
+    if (!post) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+    
+    MediaType mediaType = MediaTypeImage;
+    NSString *mediaUTI = (__bridge NSString *)kUTTypeJPEG;
+    NSString *mediaExtension = [self extensionForUTI:mediaUTI];
+    NSURL *mediaURL = [self urlForMediaWithFilename:mediaID andExtension:mediaExtension];
+    NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]] andExtension:mediaExtension];
+    
+    NSInteger maxImageSize = [[MediaSettings new] imageSizeForUpload];
+    CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
+    
+    [[self.class queueForResizeMediaOperations] addOperationWithBlock:^{
+        
+        UIImage *thumbnail = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:[UIScreen mainScreen].bounds.size interpolationQuality:kCGInterpolationHigh];
+        
+        NSError *thumbnailWritingError = nil;
+        if ([thumbnail writeToURL:mediaThumbnailURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:0.9 metadata:nil error:&thumbnailWritingError])
+        {
+            if (thumbnailCallback) {
+                thumbnailCallback(mediaThumbnailURL);
+            }
+            
+            UIImage *finalImg = image;
+            if (maxImageSize <= image.size.width || maxImageSize <= image.size.height)
+            {
+                finalImg = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:maximumResolution interpolationQuality:kCGInterpolationHigh];
+            }
+            
+            NSError *imageWritingError = nil;
+            if ([finalImg writeToURL:mediaURL type:mediaUTI compressionQuality:0.9 metadata:nil error:&imageWritingError])
+            {
+                [self createMediaForPost:postObjectID
+                                mediaURL:mediaURL
+                       mediaThumbnailURL:mediaThumbnailURL
+                               mediaType:mediaType
+                               mediaSize:[finalImg size]
+                              completion:completion];
+            }
+            else
+            {
+                completion(nil, imageWritingError);
+            }
+        }
+        else
+        {
+            completion(nil, thumbnailWritingError);
+        }
+    }];
+}
+
 - (void)createMediaWithPHAsset:(PHAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback

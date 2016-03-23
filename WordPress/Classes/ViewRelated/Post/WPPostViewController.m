@@ -1946,6 +1946,47 @@ EditImageDetailsViewControllerDelegate
     [self refreshNavigationBarButtons:NO];
 }
 
+- (void)editorViewController:(WPEditorViewController *)editorViewController imagePasted:(UIImage *)image
+{
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    __weak __typeof__(self) weakSelf = self;
+    NSString *mediaUniqueID = [self uniqueIdForMedia];
+    NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
+    createMediaProgress.totalUnitCount = 2;
+    
+    [self trackMediaWithId:mediaUniqueID usingProgress:createMediaProgress];
+    [mediaService createMediaWithImage:image
+                           withMediaID:mediaUniqueID
+                       forPostObjectID:self.post.objectID
+                     thumbnailCallback:^(NSURL *thumbnailURL) {
+                         __typeof__(self) strongSelf = weakSelf;
+                         if (!strongSelf) {
+                             return;
+                         }
+                         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                             [strongSelf.editorView insertLocalImage:thumbnailURL.path uniqueId:mediaUniqueID];
+                         }];
+                     }
+                            completion:^(Media *media, NSError *error) {
+                                __typeof__(self) strongSelf = weakSelf;
+                                if (!strongSelf) {
+                                    return;
+                                }
+                                createMediaProgress.completedUnitCount++;
+                                if (error || !media || !media.absoluteLocalURL) {
+                                    [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
+                                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to paste image",
+                                                                                  @"The title for an alert that says to the user the image they pasted couldn't be used on the post.")
+                                                        message:error.localizedDescription];
+                                    return;
+                                }
+                                [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+                            }];
+    
+    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+
+}
+
 
 - (void)editorViewController:(WPEditorViewController *)editorViewController
                  imageTapped:(NSString *)imageId
