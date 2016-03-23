@@ -351,12 +351,6 @@ struct FeatureItemRow : ImmuTableRow {
     let description: String
     let iconURL: NSURL?
     let action: ImmuTableAction? = nil
-
-    init(title: String, description: String, iconURL: NSURL? = nil) {
-        self.title = title
-        self.description = description
-        self.iconURL = iconURL
-    }
     
     func configureCell(cell: UITableViewCell) {
         guard let cell = cell as? FeatureItemCell else { return }
