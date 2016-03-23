@@ -598,6 +598,45 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatSignedInToJetpack:
             eventName = @"signed_into_jetpack";
             break;
+        case WPAnalyticsStatSiteSettingsDeleteSiteAccessed:
+            eventName = @"site_settings_delete_site_accessed";
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSitePurchasesRequested:
+            eventName = @"site_settings_delete_site_purchases_requested";
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSitePurchasesShowClicked:
+            eventName = @"site_settings_delete_site_purchases_show_clicked";
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSitePurchasesShown:
+            eventName = @"site_settings_delete_site_purchases_shown";
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSiteRequested:
+            eventName = @"site_settings_delete_site_requested";
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSiteResponseError:
+            eventName = @"site_settings_delete_site_response_error";
+            break;
+        case WPAnalyticsStatSiteSettingsDeleteSiteResponseOK:
+            eventName = @"site_settings_delete_site_response_ok";
+            break;
+        case WPAnalyticsStatSiteSettingsExportSiteAccessed:
+            eventName = @"site_settings_export_site_accessed";
+            break;
+        case WPAnalyticsStatSiteSettingsExportSiteRequested:
+            eventName = @"site_settings_export_site_requested";
+            break;
+        case WPAnalyticsStatSiteSettingsExportSiteResponseError:
+            eventName = @"site_settings_export_site_response_error";
+            break;
+        case WPAnalyticsStatSiteSettingsExportSiteResponseOK:
+            eventName = @"site_settings_export_site_response_ok";
+            break;
+        case WPAnalyticsStatSiteSettingsStartOverAccessed:
+            eventName = @"site_settings_start_over_accessed";
+            break;
+        case WPAnalyticsStatSiteSettingsStartOverContactSupportClicked:
+            eventName = @"site_settings_start_over_contact_support_clicked";
+            break;
         case WPAnalyticsStatSkippedConnectingToJetpack:
             eventName = @"skipped_connecting_to_jetpack";
             break;

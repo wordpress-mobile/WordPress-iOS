@@ -118,7 +118,7 @@ struct PlanFeature {
     let slug: String
     let title: String
     let description: String
-    let iconName: String
+    let iconURL: NSURL
 }
 
 struct PlanFeatureGroup {
