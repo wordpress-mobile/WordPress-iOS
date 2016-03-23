@@ -6,6 +6,7 @@
 #import "MenuItemView.h"
 #import "MenuItemInsertionView.h"
 #import "MenuItemsVisualOrderingView.h"
+#import "ContextManager.h"
 
 @interface MenuItemsStackView () <MenuItemsStackableViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
 
@@ -54,6 +55,11 @@
     }
 }
 
+- (void)removeItem:(MenuItem *)item
+{
+    // remove the item
+}
+
 - (void)reloadItemViews
 {
     for(MenuItemsStackableView *stackableView in self.stackView.arrangedSubviews) {
@@ -62,51 +68,54 @@
     }
     
     self.itemViews = [NSMutableSet set];
+    self.isEditingForItemViewInsertion = NO;
+    self.itemViewForInsertionToggling = nil;
     self.insertionViews = nil;
     
-    MenuItemView *lastItemView = nil;
     for(MenuItem *item in self.menu.items) {
-        
-        MenuItemView *itemView = [[MenuItemView alloc] init];
-        itemView.delegate = self;
-        // set up ordering to help with any drawing
-        itemView.item = item;
-        itemView.indentationLevel = 0;
-        
-        MenuItem *parentItem = item.parent;
-        while (parentItem) {
-            itemView.indentationLevel++;
-            parentItem = parentItem.parent;
-        }
-        
-        NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
-        heightConstraint.priority = UILayoutPriorityDefaultHigh;
-        heightConstraint.active = YES;
-        
-        [self.itemViews addObject:itemView];
-        [self.stackView addArrangedSubview:itemView];
-        
-        [itemView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
-        lastItemView = itemView;
+        [self addNewItemViewWithItem:item];
     }
 }
 
-- (MenuItemInsertionView *)addNewInsertionViewWithType:(MenuItemInsertionViewType)type forItemView:(MenuItemView *)itemView
+- (MenuItemView *)addNewItemViewWithItem:(MenuItem *)item
+{
+    MenuItemView *itemView = [[MenuItemView alloc] init];
+    itemView.delegate = self;
+    itemView.item = item;
+    itemView.indentationLevel = 0;
+    
+    NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
+    heightConstraint.priority = UILayoutPriorityDefaultHigh;
+    heightConstraint.active = YES;
+    [self.itemViews addObject:itemView];
+    [self.stackView addArrangedSubview:itemView];
+    [itemView.widthAnchor constraintEqualToAnchor:self.widthAnchor].active = YES;
+    
+    MenuItem *parentItem = item.parent;
+    while (parentItem) {
+        itemView.indentationLevel++;
+        parentItem = parentItem.parent;
+    }
+    
+    return itemView;
+}
+
+- (MenuItemInsertionView *)addNewInsertionViewWithOrder:(MenuItemInsertionOrder)insertionOrder forItemView:(MenuItemView *)itemView
 {
     NSInteger index = [self.stackView.arrangedSubviews indexOfObject:itemView];
     MenuItemInsertionView *insertionView = [[MenuItemInsertionView alloc] init];
     insertionView.delegate = self;
-    insertionView.type = type;
+    insertionView.insertionOrder = insertionOrder;
     
-    switch (type) {
-        case MenuItemInsertionViewTypeAbove:
+    switch (insertionOrder) {
+        case MenuItemInsertionOrderAbove:
             insertionView.indentationLevel = itemView.indentationLevel;
             break;
-        case MenuItemInsertionViewTypeBelow:
+        case MenuItemInsertionOrderBelow:
             insertionView.indentationLevel = itemView.indentationLevel;
             index++;
             break;
-        case MenuItemInsertionViewTypeChild:
+        case MenuItemInsertionOrderChild:
             insertionView.indentationLevel = itemView.indentationLevel + 1;
             index += 2;
             break;
@@ -126,24 +135,24 @@
 
 - (void)insertInsertionItemViewsAroundItemView:(MenuItemView *)toggledItemView
 {
-    self.itemViewForInsertionToggling = toggledItemView;
-    toggledItemView.showsCancelButtonOption = YES;
-    toggledItemView.showsEditingButtonOptions = NO;
-    
-    self.insertionViews = [NSMutableSet setWithCapacity:3];
-    [self addNewInsertionViewWithType:MenuItemInsertionViewTypeAbove forItemView:toggledItemView];
-    [self addNewInsertionViewWithType:MenuItemInsertionViewTypeBelow forItemView:toggledItemView];
-    [self addNewInsertionViewWithType:MenuItemInsertionViewTypeChild forItemView:toggledItemView];
-}
-
-- (void)insertItemInsertionViewsAroundItemView:(MenuItemView *)toggledItemView animated:(BOOL)animated
-{
     if (self.isEditingForItemViewInsertion) {
         [self removeItemInsertionViews:NO];
     }
     
     self.isEditingForItemViewInsertion = YES;
     
+    self.itemViewForInsertionToggling = toggledItemView;
+    toggledItemView.showsCancelButtonOption = YES;
+    toggledItemView.showsEditingButtonOptions = NO;
+    
+    self.insertionViews = [NSMutableSet setWithCapacity:3];
+    [self addNewInsertionViewWithOrder:MenuItemInsertionOrderAbove forItemView:toggledItemView];
+    [self addNewInsertionViewWithOrder:MenuItemInsertionOrderBelow forItemView:toggledItemView];
+    [self addNewInsertionViewWithOrder:MenuItemInsertionOrderChild forItemView:toggledItemView];
+}
+
+- (void)insertItemInsertionViewsAroundItemView:(MenuItemView *)toggledItemView animated:(BOOL)animated
+{
     CGRect previousRect = toggledItemView.frame;
     CGRect updatedRect = toggledItemView.frame;
     
@@ -401,18 +410,7 @@
             } else  {
                 if (selectedItem.parent) {
                     
-                    MenuItem *lastChildItem = nil;
-                    NSUInteger parentIndex = [orderedItems indexOfObject:selectedItem.parent];
-                    for(NSUInteger i = parentIndex + 1; i < orderedItems.count; i++) {
-                        MenuItem *child = [orderedItems objectAtIndex:i];
-                        if (child.parent == selectedItem.parent) {
-                            lastChildItem = child;
-                        }
-                        if (![lastChildItem isDescendantOfItem:selectedItem.parent]) {
-                            break;
-                        }
-                    }
-                    
+                    MenuItem *lastChildItem = [selectedItem.parent lastOrderedDescendantInOrderedItems:orderedItems];
                     // only the lastChildItem can move up the tree, otherwise it would break the visual child/parent relationship
                     if (selectedItem == lastChildItem) {
                         // try to move up the parent tree
@@ -726,7 +724,70 @@
 
 - (void)itemInsertionViewSelected:(MenuItemInsertionView *)insertionView
 {
-    // load the detail view for creating a new item
+    MenuItem *toggledItem = self.itemViewForInsertionToggling.item;
+    
+    // Create a new item.
+    MenuItem *newItem = [NSEntityDescription insertNewObjectForEntityForName:[MenuItem entityName] inManagedObjectContext:self.menu.managedObjectContext];
+    newItem.name = [MenuItem defaultItemNameLocalized];
+    newItem.type = MenuItemTypePage;
+    
+    // Insert the new item into the menu's ordered items.
+    BOOL requiresOffsetInsertionOrder = NO;
+    NSMutableOrderedSet *orderedItems = [NSMutableOrderedSet orderedSetWithOrderedSet:self.menu.items];
+    switch (insertionView.insertionOrder) {
+        
+        case MenuItemInsertionOrderAbove:
+            [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:toggledItem]];
+            newItem.parent = toggledItem.parent;
+            break;
+            
+        case MenuItemInsertionOrderBelow:
+        {
+            if (toggledItem.children.count) {
+                // Find the last child and insert below it.
+                MenuItem *lastChild = [toggledItem lastOrderedDescendantInOrderedItems:orderedItems];
+                [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:lastChild] + 1];
+                requiresOffsetInsertionOrder = YES;
+            } else {
+                [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:toggledItem] + 1];
+            }
+            newItem.parent = toggledItem.parent;
+            break;
+        }
+            
+        case MenuItemInsertionOrderChild:
+            [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:toggledItem] + 1];
+            newItem.parent = toggledItem;
+            break;
+    }
+    
+    // Update the menu items.
+    self.menu.items = orderedItems;
+    
+    // Go ahead and save the context with the new item, we can delete later if needed.
+    [[ContextManager sharedInstance] saveContextAndWait:self.menu.managedObjectContext];
+    
+    // Add and replace the insertionView with a new itemView.
+    MenuItemView *newItemView = [self addNewItemViewWithItem:newItem];
+    if (requiresOffsetInsertionOrder) {
+        // Need to find the correct index for the new itemView.
+        MenuItem *previousItem = [orderedItems objectAtIndex:[orderedItems indexOfObject:newItem] - 1];
+        MenuItemView *previousItemView = [self itemViewForItem:previousItem];
+        [self.stackView insertArrangedSubview:newItemView atIndex:[self.stackView.arrangedSubviews indexOfObject:previousItemView] + 1];
+    } else {
+        // Easily swap out the insertionView with the new itemView.
+        [self.stackView insertArrangedSubview:newItemView atIndex:[self.stackView.arrangedSubviews indexOfObject:insertionView]];
+        [self.stackView removeArrangedSubview:insertionView];
+        [insertionView removeFromSuperview];
+    }
+    [self removeItemInsertionViews:YES];
+    
+    if (requiresOffsetInsertionOrder) {
+        [self.delegate itemsView:self requiresScrollingToCenterView:newItemView];
+    }
+    
+    // Inform the delegate to begin editing the new item.
+    [self.delegate itemsView:self selectedItemForEditing:newItem];
 }
 
 @end

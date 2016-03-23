@@ -30,25 +30,25 @@
     return color;
 }
 
-- (void)setType:(MenuItemInsertionViewType)type
+- (void)setInsertionOrder:(MenuItemInsertionOrder)insertionOrder
 {
-    if (_type != type) {
-        _type = type;
-        self.textLabel.text = [self textForType:type];
+    if (_insertionOrder != insertionOrder) {
+        _insertionOrder = insertionOrder;
+        self.textLabel.text = [self textForOrder:insertionOrder];
     }
 }
 
-- (NSString *)textForType:(MenuItemInsertionViewType)type
+- (NSString *)textForOrder:(MenuItemInsertionOrder)insertionOrder
 {
     NSString *text;
-    switch (type) {
-        case MenuItemInsertionViewTypeAbove:
+    switch (insertionOrder) {
+        case MenuItemInsertionOrderAbove:
             text = NSLocalizedString(@"Add menu item above", @"");
             break;
-        case MenuItemInsertionViewTypeBelow:
+        case MenuItemInsertionOrderBelow:
             text = NSLocalizedString(@"Add menu item below", @"");
             break;
-        case MenuItemInsertionViewTypeChild:
+        case MenuItemInsertionOrderChild:
             text = NSLocalizedString(@"Add menu item to children", @"");
             break;
         default:
