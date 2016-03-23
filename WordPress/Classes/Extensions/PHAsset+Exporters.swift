@@ -81,11 +81,12 @@ extension PHAsset {
             }
             self.requestMetadataWithCompletionBlock({ (metadata) -> () in
                 do {
-                    var attributesToRemove = ["Orientation", "AdjustmentXMP"]
+                    var attributesToRemove = [String]()
                     if (stripGeoLocation) {
                         attributesToRemove.append(kCGImagePropertyGPSDictionary as String)
                     }
-                    let exportMetadata = self.removeAttributes(attributesToRemove, fromMetadata: metadata)
+                    var exportMetadata = self.removeAttributes(attributesToRemove, fromMetadata: metadata)
+                    exportMetadata = self.matchMetadata(exportMetadata, image: image)
                     try image.writeToURL(url, type: targetUTI, compressionQuality: 0.9, metadata: exportMetadata)
                     successHandler(resultingSize: image.size)
                 } catch let error as NSError {
@@ -101,17 +102,37 @@ extension PHAsset {
         var resultingMetadata = fromMetadata
         for attribute in attributes {
             resultingMetadata.removeValueForKey(attribute)
-            if attribute == "Orientation" {
+            if attribute == kCGImagePropertyOrientation as String{
                 if let tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String:AnyObject]{
-                    var tiffMetadata = tiffMetadata
-                    tiffMetadata[kCGImagePropertyTIFFOrientation as String] = 1
-                    resultingMetadata[kCGImagePropertyTIFFDictionary as String] = tiffMetadata
+                    var newTiffMetadata = tiffMetadata
+                    newTiffMetadata.removeValueForKey(kCGImagePropertyTIFFOrientation as String)
+                    resultingMetadata[kCGImagePropertyTIFFDictionary as String] = newTiffMetadata
                 }
             }
         }
         return resultingMetadata
     }
-    
+
+    /**
+     Makes sure the metadata of the image is matching the attributes in the Image.
+
+     - parameter metadata: the original metadata of the image
+     - parameter image:    the current image
+
+     - returns: a new metadata object where the values match the values on the UIImage
+     */
+    func matchMetadata(metadata: [String:AnyObject], image: UIImage) -> [String:AnyObject] {
+        var resultingMetadata = metadata
+        let correctOrientation = image.metadataOrientation
+        resultingMetadata[kCGImagePropertyOrientation as String] = Int(correctOrientation.rawValue)
+        if var tiffMetadata = resultingMetadata[kCGImagePropertyTIFFDictionary as String] as? [String:AnyObject]{
+            tiffMetadata[kCGImagePropertyTIFFOrientation as String] = Int(correctOrientation.rawValue)
+            resultingMetadata[kCGImagePropertyTIFFDictionary as String] = tiffMetadata
+        }
+
+        return resultingMetadata
+    }
+
     func exportVideoToURL(url: NSURL,
         targetUTI: String,
         maximumResolution: CGSize,
@@ -175,7 +196,7 @@ extension PHAsset {
             if (requestedSize == CGSize.zero) {
                 requestedSize = PHImageManagerMaximumSize
             }
-            let targetUTI = defaultThumbnailUTI
+            
             PHImageManager.defaultManager().requestImageForAsset(self, targetSize: requestedSize, contentMode: .AspectFit, options: options) { (image, info) -> Void in
                 guard let image = image
                 else {
@@ -189,7 +210,7 @@ extension PHAsset {
                     return
                 }
                 do {
-                    try image.writeToURL(url, type: targetUTI, compressionQuality: 0.9, metadata: nil)
+                    try image.writeToURL(url, type: self.defaultThumbnailUTI, compressionQuality: 0.9, metadata: nil)
                     successHandler(resultingSize: image.size)
                 } catch let error as NSError {
                     errorHandler(error: error)
