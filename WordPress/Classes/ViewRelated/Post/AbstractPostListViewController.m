@@ -616,17 +616,19 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // If searching, don't try and sync additional posts.
-    if (self.isSearching) {
-        return;
-    }
-    // Are we approaching the end of the table?
-    if ((indexPath.section + 1 == self.tableView.numberOfSections) &&
-        (indexPath.row + PostsLoadMoreThreshold >= [self.tableView numberOfRowsInSection:indexPath.section])) {
+    if ([self isViewOnScreen]) {
+        // If searching, don't try and sync additional posts.
+        if (self.isSearching) {
+            return;
+        }
+        // Are we approaching the end of the table?
+        if ((indexPath.section + 1 == self.tableView.numberOfSections) &&
+            (indexPath.row + PostsLoadMoreThreshold >= [self.tableView numberOfRowsInSection:indexPath.section])) {
 
-        // Only 3 rows till the end of table
-        if ([self currentPostListFilter].hasMore) {
-            [self.syncHelper syncMoreContent];
+            // Only 3 rows till the end of table
+            if ([self currentPostListFilter].hasMore) {
+                [self.syncHelper syncMoreContent];
+            }
         }
     }
 }
