@@ -48,8 +48,7 @@ target 'WordPress', :exclusive => true do
   pod 'WordPress-iOS-Editor', '1.1.5'
   pod 'WordPress-iOS-Shared', '0.5.3'
   pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
-  #pod 'WordPressCom-Analytics-iOS', '0.1.5'
-  pod 'WordPressCom-Analytics-iOS', :git => 'https://github.com/wordpress-mobile/WordPressCom-Analytics-iOS.git', :commit => 'b848e7803373f843c678d7942827ea4f9fb1394c'
+  pod 'WordPressCom-Analytics-iOS', '0.1.5'
   pod 'WordPressCom-Stats-iOS/UI', '0.6.3'
   pod 'wpxmlrpc', '~> 0.8'
 end
