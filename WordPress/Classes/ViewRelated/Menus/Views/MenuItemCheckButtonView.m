@@ -27,7 +27,7 @@ static CGFloat const iconPadding = 3.0;
         {
             UIImageView *iconView = [[UIImageView alloc] init];
             iconView.translatesAutoresizingMaskIntoConstraints = NO;
-            iconView.image = [[UIImage imageNamed:@"icon-menus-checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            iconView.image = [[UIImage imageNamed:@"gridicons-checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             iconView.tintColor = [WPStyleGuide mediumBlue];
             iconView.contentMode = UIViewContentModeScaleAspectFit;
             iconView.alpha = 0.0;
@@ -77,6 +77,7 @@ static CGFloat const iconPadding = 3.0;
     if (_checked != checked) {
         _checked = checked;
         self.iconView.alpha = checked ? 1.0 : 0.0;
+        self.drawsHighlighted = checked;
     }
 }
 
@@ -136,14 +137,14 @@ static CGFloat const iconPadding = 3.0;
 {
     [super touchesEnded:touches withEvent:event];
     
+    self.drawsHighlighted = NO;
+    
     if (CGRectContainsPoint(self.bounds, self.touchesBeganLocation) && CGRectContainsPoint(self.bounds, [[touches anyObject] locationInView:self])) {
         self.checked = !self.checked;
         if (self.onChecked) {
             self.onChecked();
         }
     }
-    
-    self.drawsHighlighted = NO;
 }
 
 @end
