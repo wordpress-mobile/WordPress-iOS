@@ -454,22 +454,28 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
         return [WPURLRequest requestWithURL:self.url userAgent:userAgent];
     }
     
-    NSURL *loginURL = self.wpLoginURL;
-    
-    if (!loginURL) {
-        // Thank you, iOS 9, everything is more compact and pretty, now.
-        NSURLComponents *components = [NSURLComponents new];
-        components.scheme           = self.url.scheme;
-        components.host             = self.url.host;
-        components.path             = @"/wp-login.php";
-        loginURL                    = components.URL;
-    }
+    NSURL *loginURL = self.wpLoginURL ?: [self authUrlFromUrl:self.url];
     return [WPURLRequest requestForAuthenticationWithURL:loginURL
                                              redirectURL:self.url
                                                 username:self.username
                                                 password:self.password
                                              bearerToken:self.authToken
                                                userAgent:userAgent];
+}
+
+- (NSURL *)authUrlFromUrl:(NSURL *)url
+{
+    // Note:
+    // WordPress CDN doesn't really deal with Auth. We'll replace `.files.wordpress.com` with `.wordpress`.
+    // Don't worry, we'll redirect the user to the pristine URL afterwards. Issue #4983
+    //
+    NSURLComponents *components = [NSURLComponents new];
+    components.scheme           = url.scheme;
+    components.host             = [url.host stringByReplacingOccurrencesOfString:@".files.wordpress.com"
+                                                                      withString:@".wordpress.com"];
+    components.path             = @"/wp-login.php";
+
+    return components.URL;
 }
 
 
