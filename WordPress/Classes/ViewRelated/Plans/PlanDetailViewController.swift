@@ -334,6 +334,14 @@ class FeatureItemCell: WPTableViewCell {
         
         separator.hidden = false
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // This is required to fix an issue where only the first line of text would
+        // is displayed on the iPhone 6(s) Plus due to a fractional Y position.
+        featureDescriptionLabel.frame = CGRectIntegral(featureDescriptionLabel.frame)
+    }
 }
 
 struct FeatureItemRow : ImmuTableRow {
