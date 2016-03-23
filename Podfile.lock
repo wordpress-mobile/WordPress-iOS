@@ -270,7 +270,7 @@ CHECKOUT OPTIONS:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: b5ffbeebdaecadc7b25f034fe5402cb724748d1b
+    :commit: d0d8a3a96ffe28eb316f07f5bfa9ccb7b3b3f50c
     :git: git@github.com:nheagy/WordPress-Editor-iOS.git
   WordPressApi:
     :commit: 32554f30f400b633deb25b75de22032716e7ccb2
