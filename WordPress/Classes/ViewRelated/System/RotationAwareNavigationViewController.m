@@ -3,6 +3,16 @@
 
 @implementation RotationAwareNavigationViewController
 
+- (BOOL)shouldAutorotate
+{
+    // Respect the top child's orientation prefs.
+    if (self.topViewController && [self.topViewController respondsToSelector:@selector(shouldAutorotate)]) {
+        return [self.topViewController shouldAutorotate];
+    }
+    
+    return [super shouldAutorotate];
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     // Respect the top child's orientation prefs.
