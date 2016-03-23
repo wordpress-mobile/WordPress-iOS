@@ -1,25 +1,12 @@
 #import "WPActivityDefaults.h"
 #import "SafariActivity.h"
-#import "WordPressActivity.h"
-#import "BlogService.h"
-#import "ContextManager.h"
+
 
 @implementation WPActivityDefaults
 
 + (NSArray *)defaultActivities
 {
-    SafariActivity *safariActivity = [[SafariActivity alloc] init];
-    WordPressActivity *wordPressActivity = [[WordPressActivity alloc] init];
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:context];
-    NSInteger visibleBlogs = [service blogCountVisibleForAllAccounts];
-
-    if (visibleBlogs > 0) {
-        return @[safariActivity, wordPressActivity];
-    } else {
-        return @[safariActivity];
-    }
+    return @[[SafariActivity new]];
 }
 
 + (void)trackActivityType:(NSString *)activityType
@@ -41,8 +28,6 @@
         stat = WPAnalyticsStatSentItemToPocket;
     } else if ([activityType isEqualToString:@"com.google.GooglePlus.ShareExtension"]) {
         stat = WPAnalyticsStatSentItemToGooglePlus;
-    } else if ([activityType isEqualToString:NSStringFromClass([WordPressActivity class])]) {
-        stat = WPAnalyticsStatSentItemToWordPress;
     } else if ([activityType isEqualToString:UIActivityTypeCopyToPasteboard]) {
         return;
     } else {
