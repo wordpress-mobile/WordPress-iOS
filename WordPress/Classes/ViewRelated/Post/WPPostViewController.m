@@ -230,6 +230,14 @@ EditImageDetailsViewControllerDelegate
         if (post.blog.isHostedAtWPcom) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
+        
+        if ([post isRevision]
+            && [post hasLocalChanges]
+            && post.original.postTitle.length == 0
+            && post.original.content.length == 0) {
+            
+            _ownsPost = YES;
+        }
     }
 	
     return self;
@@ -1446,9 +1454,6 @@ EditImageDetailsViewControllerDelegate
     if (!self.post.isScheduled && [self.post.original.status isEqualToString:PostStatusDraft]  && [self.post.status isEqualToString:PostStatusPublish]) {
         self.post.dateCreated = [NSDate date];
     }
-    self.post = self.post.original;
-    [self.post applyRevision];
-    [self.post deleteRevision];
     
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
@@ -1457,9 +1462,12 @@ EditImageDetailsViewControllerDelegate
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
-                    success:^{
+                    success:^(AbstractPost *post){
+                        self.post = post;
+                        
                         DDLogInfo(@"post uploaded: %@", postTitle);
                         NSString *hudText;
+                        
                         if (postIsScheduled) {
                             hudText = NSLocalizedString(@"Scheduled!", @"Text displayed in HUD after a post was successfully scheduled to be published.");
                         } else if ([postStatus isEqualToString:@"publish"]){
