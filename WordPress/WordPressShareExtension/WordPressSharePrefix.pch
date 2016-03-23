@@ -1,0 +1,10 @@
+#ifndef WPCOM_SCHEME
+#warning WPCOM_SCHEME is not defined for this target configuration! Defaulting to "wordpress".
+#define WPCOM_SCHEME @"wordpress"
+#endif
+
+// CocoaLumberjack Default Logging Level
+#ifndef COCOA_LUMBERJACK
+#define COCOA_LUMBERJACK
+extern int ddLogLevel;
+#endif

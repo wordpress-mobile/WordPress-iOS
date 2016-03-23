@@ -49,7 +49,7 @@ public class SettingsListEditorViewController : UITableViewController
     private func setupNavBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add,
             target: self,
-            action: Selector("addItemPressed:"))
+            action: #selector(SettingsListEditorViewController.addItemPressed(_:)))
     }
     
     private func setupTableView() {
@@ -61,7 +61,7 @@ public class SettingsListEditorViewController : UITableViewController
     
     
     // MARK: - Button Handlers
-    @IBAction private func addItemPressed(sender: AnyObject?) {
+    @IBAction func addItemPressed(sender: AnyObject?) {
         let settingsViewController = SettingsTextViewController(text: nil, placeholder: nil, hint: nil, isPassword: false)
         settingsViewController.title = insertTitle
         settingsViewController.onValueChanged = { (updatedValue : String!) in
