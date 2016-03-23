@@ -459,7 +459,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     
     [self.presenter dismissLoginMessage];
     
-    NSString *message = message = NSLocalizedString(@"Sign in failed. Please try again.", "Generic message to show to the user when there is unknow login error");
+    NSString *message = NSLocalizedString(@"Sign in failed. Please try again.", "Generic message to show to the user when there is unknow login error");
     if ( [error.localizedDescription trim].length > 0) {
         message = [error localizedDescription];
     }
