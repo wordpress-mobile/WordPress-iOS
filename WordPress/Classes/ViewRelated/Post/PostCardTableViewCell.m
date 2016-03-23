@@ -457,6 +457,8 @@ typedef NS_ENUM(NSUInteger, ActionBarMode) {
         // anything else (draft, pending, scheduled, something custom) treat as draft
         [self configureDraftActionBar];
     }
+    
+    [self.actionBar showFirstPage];
 }
 
 - (void)configurePublishedActionBar

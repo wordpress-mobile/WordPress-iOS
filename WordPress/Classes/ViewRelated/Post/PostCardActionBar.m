@@ -196,6 +196,14 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
     }
 }
 
+#pragma mark - GUI related
+
+- (void)showFirstPage
+{
+    self.currentBatch = 0;
+    
+    [self configureButtons];
+}
 
 #pragma mark - Configuration
 
