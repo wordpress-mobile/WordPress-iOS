@@ -28,7 +28,7 @@
         return error;
     } else {
         NSDictionary *userInfo = @{
-                                   NSLocalizedDescriptionKey: NSLocalizedString(@"Unable to read the WordPress site on that URL. Tap 'Need Help?' to view the FAQ.", nil),
+                                   NSLocalizedDescriptionKey: NSLocalizedString(@"Unable to read the WordPress site at that URL. Tap 'Need Help?' to view the FAQ.", nil),
                                    NSLocalizedFailureReasonErrorKey: error.localizedDescription
                                    };
         NSError *err = [NSError errorWithDomain:WordPressAppErrorDomain code:NSURLErrorBadURL userInfo:userInfo];
