@@ -183,17 +183,27 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 {
     [WPStyleGuide configureTableViewActionCell:cell];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    cell.textLabel.text = [self titleForConnectionCell];
     if (self.connecting) {
-        cell.textLabel.text = NSLocalizedString(@"Connecting...", @"Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter.");
         UIActivityIndicatorView *activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         cell.accessoryView = activityView;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [activityView startAnimating];
     } else {
-        cell.textLabel.text = NSLocalizedString(@"Connect", @"Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter.");
         cell.accessoryView = nil;
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
     }
+}
+
+- (NSString *)titleForConnectionCell
+{
+    if (self.connecting) {
+        return NSLocalizedString(@"Connecting...", @"Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter.");
+    }
+    if ([self hasConnectedAccounts]) {
+        return NSLocalizedString(@"Connect Another Account", @"Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter.");
+    }
+    return NSLocalizedString(@"Connect", @"Verb. Text label. Allows the user to connect to a third-party sharing service like Facebook or Twitter.");
 }
 
 - (void)configurePublicizeCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
