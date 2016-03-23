@@ -78,4 +78,9 @@ extern NSString * const WPAppAnalyticsKeyIsJetpack;
 
 + (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties;
 
+/**
+ *  @brief      Track Anaylytics with associate error that is translated to properties
+ */
++ (void)track:(WPAnalyticsStat)stat error:(NSError *)error;
+
 @end
