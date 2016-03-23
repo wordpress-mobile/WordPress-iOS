@@ -22,10 +22,10 @@
     [sharedDefaults synchronize];
     
     NSError *error;
-    [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
+    [SFHFKeychainUtils storeUsername:WPStatsTodayWidgetKeychainTokenKey
                          andPassword:oauth2Token
-                      forServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
-                         accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
+                      forServiceName:WPStatsTodayWidgetKeychainServiceName
+                         accessGroup:WPAppKeychainAccessGroup
                       updateExisting:YES
                                error:&error];
     if (error) {
@@ -36,14 +36,15 @@
 - (void)removeTodayWidgetConfiguration
 {
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
+
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey];
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
     [sharedDefaults removeObjectForKey:WPStatsTodayWidgetUserDefaultsSiteNameKey];
     [sharedDefaults synchronize];
     
-    [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
-                              andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
-                                 accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
+    [SFHFKeychainUtils deleteItemForUsername:WPStatsTodayWidgetKeychainTokenKey
+                              andServiceName:WPStatsTodayWidgetKeychainServiceName
+                                 accessGroup:WPAppKeychainAccessGroup
                                        error:nil];
 }
 
@@ -56,9 +57,9 @@
 {
     NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:WPAppGroupName];
     NSString *siteId = [sharedDefaults stringForKey:WPStatsTodayWidgetUserDefaultsSiteIdKey];
-    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetOAuth2TokenKeychainUsername
-                                                       andServiceName:WPStatsTodayWidgetOAuth2TokenKeychainServiceName
-                                                          accessGroup:WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup
+    NSString *oauth2Token = [SFHFKeychainUtils getPasswordForUsername:WPStatsTodayWidgetKeychainTokenKey
+                                                       andServiceName:WPStatsTodayWidgetKeychainServiceName
+                                                          accessGroup:WPAppKeychainAccessGroup
                                                                 error:nil];
     
     if (siteId.length == 0 || oauth2Token.length == 0) {
