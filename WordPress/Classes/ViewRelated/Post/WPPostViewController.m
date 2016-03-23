@@ -329,7 +329,7 @@ EditImageDetailsViewControllerDelegate
         }
     }
 
-    if (self.changedToEditModeDueToUnsavedChanges) {
+    if ([self.post hasUnsavedChanges]) {
         [self showUnsavedChangesAlert];
     }
 }
