@@ -98,6 +98,8 @@ extern NSString * const MenuItemLinkTargetBlank;
  */
 - (BOOL)isDescendantOfItem:(MenuItem *)item;
 
+- (MenuItem *)lastOrderedDescendantInOrderedItems:(NSOrderedSet *)orderedSet;
+
 /**
  The item's name is nil, empty, or the default string.
  */
