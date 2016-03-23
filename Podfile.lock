@@ -226,7 +226,8 @@ DEPENDENCIES:
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
-  - WordPress-iOS-Editor (= 1.2)
+  - WordPress-iOS-Editor (from `git@github.com:nheagy/WordPress-Editor-iOS.git`, branch
+    `655-pasting-images`)
   - WordPress-iOS-Shared (= 0.5.3)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
   - WordPressCom-Analytics-iOS (= 0.1.5)
@@ -249,6 +250,9 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-iOS-Editor:
+    :branch: 655-pasting-images
+    :git: git@github.com:nheagy/WordPress-Editor-iOS.git
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressComKit:
@@ -265,6 +269,9 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-iOS-Editor:
+    :commit: b5ffbeebdaecadc7b25f034fe5402cb724748d1b
+    :git: git@github.com:nheagy/WordPress-Editor-iOS.git
   WordPressApi:
     :commit: 32554f30f400b633deb25b75de22032716e7ccb2
     :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
