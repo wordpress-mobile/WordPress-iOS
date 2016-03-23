@@ -90,6 +90,7 @@
                           forServiceName:WordPressComOAuthKeychainServiceName
                           updateExisting:YES
                                    error:&error];
+        
         if (error) {
             DDLogError(@"Error while updating WordPressComOAuthKeychainServiceName token: %@", error);
         }
