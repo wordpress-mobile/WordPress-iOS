@@ -21,6 +21,12 @@
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion;
 
+- (void)createMediaWithImage:(UIImage *)image
+                 withMediaID:(NSString *)mediaID
+             forPostObjectID:(NSManagedObjectID *)postObjectID
+           thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                  completion:(void (^)(Media *media, NSError *error))completion;
+
 /**
  Get the Media object from the server using the blog and the mediaID as the identifier of the resource
  
