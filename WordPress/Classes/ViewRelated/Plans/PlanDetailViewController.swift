@@ -290,7 +290,7 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let title = self.tableView(tableView, titleForHeaderInSection: section) where title.characters.count > 0 {
+        if let title = self.tableView(tableView, titleForHeaderInSection: section) where !title.isEmpty {
             let header = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
             header.title = title
             return header
