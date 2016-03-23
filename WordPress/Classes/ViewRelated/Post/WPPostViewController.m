@@ -123,7 +123,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, assign, readwrite) BOOL ownsPost;
 
 #pragma mark - Unsaved changes support
-@property (nonatomic, assign, readwrite) BOOL hasShownUnsavedChangesAlert;
+@property (nonatomic, assign, readwrite) BOOL shouldShowUnsavedChangesAlert;
 @property (nonatomic, assign, readonly) BOOL changedToEditModeDueToUnsavedChanges;
 
 #pragma mark - State restoration
@@ -232,6 +232,8 @@ EditImageDetailsViewControllerDelegate
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
         
+        _shouldShowUnsavedChangesAlert = [post hasLocalChanges];
+        
         if ([post isRevision]
             && [post hasLocalChanges]
             && post.original.postTitle.length == 0
@@ -330,9 +332,8 @@ EditImageDetailsViewControllerDelegate
         }
     }
 
-    if (!self.hasShownUnsavedChangesAlert && [self.post hasUnsavedChanges]) {
-        
-        self.hasShownUnsavedChangesAlert = YES;
+    if (self.shouldShowUnsavedChangesAlert) {
+        self.shouldShowUnsavedChangesAlert = NO;
         [self showUnsavedChangesAlert];
     }
 }
