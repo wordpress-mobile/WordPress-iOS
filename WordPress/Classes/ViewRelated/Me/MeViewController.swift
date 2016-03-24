@@ -81,9 +81,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func headerView(account: WPAccount) -> MeHeaderView {
         let header = cachedHeaderView
-        header.setDisplayName(account.displayName)
-        header.setUsername(account.username)
-        header.setGravatarEmail(account.email)
+        header.displayName = account.displayName
+        header.username = account.username
+        header.gravatarEmail = account.email
         return header
     }
 
