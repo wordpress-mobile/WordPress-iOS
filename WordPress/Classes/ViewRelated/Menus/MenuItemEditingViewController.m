@@ -388,9 +388,33 @@ typedef NS_ENUM(NSUInteger) {
 
 #pragma mark - MenuItemEditingFooterViewDelegate
 
+- (void)editingFooterViewDidSelectSave:(MenuItemEditingFooterView *)footerView
+{
+    // Save the scratch context to propogate the changes to the mainContext.
+    [[ContextManager sharedInstance] saveContext:self.scratchObjectContext withCompletionBlock:^{
+        
+        // Refresh the item in the mainContext as that was the item originally referenced on init.
+        MenuItem *itemInMainContext = [self.blog.managedObjectContext objectRegisteredForID:self.item.objectID];
+        [itemInMainContext.managedObjectContext refreshObject:itemInMainContext mergeChanges:NO];
+        
+        if (self.onSelectedToSave) {
+            self.onSelectedToSave();
+        }
+    }];
+}
+
+- (void)editingFooterViewDidSelectTrash:(MenuItemEditingFooterView *)footerView
+{
+    if (self.onSelectedToTrash) {
+        self.onSelectedToTrash();
+    }
+}
+
 - (void)editingFooterViewDidSelectCancel:(MenuItemEditingFooterView *)footerView
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.onSelectedToCancel) {
+        self.onSelectedToCancel();
+    }
 }
 
 #pragma mark - notifications

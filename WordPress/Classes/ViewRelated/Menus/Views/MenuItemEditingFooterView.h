@@ -12,6 +12,8 @@
 
 @protocol MenuItemEditingFooterViewDelegate <NSObject>
 
+- (void)editingFooterViewDidSelectSave:(MenuItemEditingFooterView *)footerView;
+- (void)editingFooterViewDidSelectTrash:(MenuItemEditingFooterView *)footerView;
 - (void)editingFooterViewDidSelectCancel:(MenuItemEditingFooterView *)footerView;
 
 @end

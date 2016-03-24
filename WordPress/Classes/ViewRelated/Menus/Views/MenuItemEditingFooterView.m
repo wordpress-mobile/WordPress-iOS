@@ -26,12 +26,14 @@
         [button setTitle:nil forState:UIControlStateNormal];
         button.tintColor = [WPStyleGuide errorRed];
         [button setImage:[button templatedIconImageNamed:@"gridicons-trash"] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     }
     {
         MenusActionButton *button = self.saveButton;
         button.backgroundFillColor = [WPStyleGuide mediumBlue];
         [button setTitle:NSLocalizedString(@"OK", @"") forState:UIControlStateNormal];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     }
 }
 
@@ -49,6 +51,16 @@
 }
 
 #pragma mark - buttons
+
+- (void)saveButtonPressed
+{
+    [self.delegate editingFooterViewDidSelectSave:self];
+}
+
+- (void)trashButtonPressed
+{
+    [self.delegate editingFooterViewDidSelectTrash:self];
+}
 
 - (void)cancelButtonPressed
 {
