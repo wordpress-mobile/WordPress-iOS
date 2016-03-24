@@ -28,13 +28,13 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _gravatarImageView = [self imageViewForGravatar];
+        _gravatarImageView = [self newImageViewForGravatar];
         [self addSubview:_gravatarImageView];
 
-        _displayNameLabel = [self labelForDisplayName];
+        _displayNameLabel = [self newLabelForDisplayName];
         [self addSubview:_displayNameLabel];
 
-        _usernameLabel = [self labelForUsername];
+        _usernameLabel = [self newLabelForUsername];
         [self addSubview:_usernameLabel];
 
         [self configureConstraints];
@@ -54,6 +54,11 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     self.displayNameLabel.text = displayName;
 }
 
+- (NSString *)displayName
+{
+    return self.displayNameLabel.text;
+}
+
 - (void)setUsername:(NSString *)username
 {
     // If the username is an email, we don't want the preceding @ sign before it
@@ -61,10 +66,16 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     self.usernameLabel.text = [NSString stringWithFormat:@"%@%@", prefix, username];
 }
 
+- (NSString *)username
+{
+    return self.usernameLabel.text;
+}
+
 - (void)setGravatarEmail:(NSString *)gravatarEmail
 {
     // Since this view is only visible to the current user, we should show all ratings
     [self.gravatarImageView setImageWithGravatarEmail:gravatarEmail gravatarRating:GravatarRatingX];
+    _gravatarEmail = gravatarEmail;
 }
 
 #pragma mark - Private Methods
@@ -113,7 +124,7 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
 
 #pragma mark - Subview factories
 
-- (UILabel *)labelForDisplayName
+- (UILabel *)newLabelForDisplayName
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -128,7 +139,7 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     return label;
 }
 
-- (UILabel *)labelForUsername
+- (UILabel *)newLabelForUsername
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -143,13 +154,14 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     return label;
 }
 
-- (UIImageView *)imageViewForGravatar
+- (UIImageView *)newImageViewForGravatar
 {
     CGRect gravatarFrame = CGRectMake(0.0f, 0.0f, MeHeaderViewGravatarSize, MeHeaderViewGravatarSize);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:gravatarFrame];
-    imageView.layer.cornerRadius = MeHeaderViewGravatarSize / 2.0;
+    imageView.layer.cornerRadius = MeHeaderViewGravatarSize * 0.5;
     imageView.clipsToBounds = YES;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    
     return imageView;
 }
 
