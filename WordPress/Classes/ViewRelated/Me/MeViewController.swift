@@ -1,7 +1,8 @@
 import UIKit
 import WordPressShared
+import WPMediaPicker
 
-class MeViewController: UITableViewController, UIViewControllerRestoration {
+class MeViewController: UITableViewController, UIViewControllerRestoration, WPMediaPickerViewControllerDelegate {
     static let restorationIdentifier = "WPMeRestorationID"
     var handler: ImmuTableViewHandler!
 
@@ -75,16 +76,16 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         //
         // My guess is the table view adjusts the height of the first section
         // based on if there's a header or not.
-        tableView.tableHeaderView = account.map(headerView)
+        tableView.tableHeaderView = account.map { headerViewForAccount($0) }
         handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
     }
+    
+    private func headerViewForAccount(account: WPAccount) -> MeHeaderView {
+        headerView.displayName = account.displayName
+        headerView.username = account.username
+        headerView.gravatarEmail = account.email
 
-    private func headerView(account: WPAccount) -> MeHeaderView {
-        let header = cachedHeaderView
-        header.displayName = account.displayName
-        header.username = account.username
-        header.gravatarEmail = account.email
-        return header
+        return headerView
     }
 
     private func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
@@ -220,7 +221,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
-
+    
     private func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = LoginViewController()
@@ -259,6 +260,16 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             self.tableView.deselectSelectedRowWithAnimation(true)
         }
     }
+    
+    private func presentGravatarPicker() {
+        let pickerViewController = WPMediaPickerViewController()
+        pickerViewController.dataSource = assetDataSource
+        pickerViewController.delegate = self
+        pickerViewController.showMostRecentFirst = true
+        pickerViewController.allowMultipleSelection = false
+        
+        presentViewController(pickerViewController, animated: true, completion: nil)
+    }
 
     // MARK: - Notification observers
 
@@ -266,6 +277,17 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         reloadViewModel()
     }
 
+    // MARK: - WPMediaPickerViewControllerDelegate
+    
+    func mediaPickerController(picker: WPMediaPickerViewController, didFinishPickingAssets assets: [AnyObject]) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func mediaPickerControllerDidCancel(picker: WPMediaPickerViewController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
     // MARK: - Helpers
 
     // FIXME: (@koke 2015-12-17) Not cool. Let's stop passing managed objects
@@ -292,5 +314,15 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         service.removeDefaultWordPressComAccount()
     }
 
-    private lazy var cachedHeaderView = MeHeaderView()
+    // MARK: - Private Properties
+    
+    private lazy var headerView : MeHeaderView = {
+        let headerView = MeHeaderView()
+        headerView.onPress = { [weak self] in
+            self?.presentGravatarPicker()
+        }
+        return headerView
+    }()
+    
+    private lazy var assetDataSource = WPPHAssetDataSource()
 }
