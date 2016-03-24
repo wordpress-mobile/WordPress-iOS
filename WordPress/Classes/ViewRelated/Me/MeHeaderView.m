@@ -161,8 +161,22 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     imageView.layer.cornerRadius = MeHeaderViewGravatarSize * 0.5;
     imageView.clipsToBounds = YES;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    imageView.userInteractionEnabled = YES;
+    
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                 action:@selector(handleHeaderPress:)];
+    [imageView addGestureRecognizer:recognizer];
     
     return imageView;
+}
+
+#pragma mark - UITapGestureRecognizer Handler
+
+- (IBAction)handleHeaderPress:(id)sender
+{
+    if (self.onPress) {
+        self.onPress();
+    }
 }
 
 @end
