@@ -4,8 +4,8 @@ extern const CGFloat MeHeaderViewHeight;
 
 @interface MeHeaderView : UIView
 
-- (void)setDisplayName:(NSString *)displayName;
-- (void)setUsername:(NSString *)username;
-- (void)setGravatarEmail:(NSString *)gravatarEmail;
+@property (nonatomic, copy) NSString *displayName;
+@property (nonatomic, copy) NSString *username;
+@property (nonatomic, copy) NSString *gravatarEmail;
 
 @end
