@@ -67,9 +67,10 @@
         _item = item;
     }
     
-    NSString *displayName = item.displayName;
-    if (![self.label.text isEqualToString:displayName]) {
-        self.label.text = displayName;
+    if (item) {
+        self.label.text = item.displayName;
+    } else {
+        self.label.text = NSLocalizedString(@"+ Add new menu", @"Button text for adding a new menu to a site.");
     }
 }
 
