@@ -35,7 +35,9 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     self.textLabel.backgroundColor = [UIColor clearColor];
     
     self.locationsView.delegate = self;
+    self.locationsView.selectionType = MenusSelectionViewTypeLocations;
     self.menusView.delegate = self;
+    self.menusView.selectionType = MenusSelectionViewTypeMenus;
 }
 
 - (void)updateWithMenusForBlog:(Blog *)blog
@@ -45,9 +47,9 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
         for(MenuLocation *location in blog.menuLocations) {
             MenusSelectionViewItem *item = [MenusSelectionViewItem itemWithLocation:location];
             [items addObject:item];
+            [self.locationsView addSelectionViewItem:item];
         }
         
-        self.locationsView.items = items;
         self.locationsView.selectedItem = [items firstObject];
     }
     {
@@ -55,9 +57,9 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
         for(Menu *menu in blog.menus) {
             MenusSelectionViewItem *item = [MenusSelectionViewItem itemWithMenu:menu];
             [items addObject:item];
+            [self.menusView addSelectionViewItem:item];
         }
         
-        self.menusView.items = items;
         self.menusView.selectedItem = [items firstObject];
     }
 }
@@ -185,6 +187,12 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
         [self updateLocationSelectionWithMenu:menu];
         [self tellDelegateSelectedMenu:menu];
     }
+    [self closeSelectionsIfNeeded];
+}
+
+- (void)selectionViewSelectedOptionForCreatingNewMenu:(MenusSelectionView *)selectionView
+{
+    
     [self closeSelectionsIfNeeded];
 }
 

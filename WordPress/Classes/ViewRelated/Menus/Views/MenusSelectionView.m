@@ -66,9 +66,11 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 @interface MenusSelectionView () <MenusSelectionDetailViewDelegate, MenusSelectionItemViewDelegate>
 
+@property (nonatomic, strong) NSMutableArray <MenusSelectionViewItem *> *items;
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet MenusSelectionDetailView *detailView;
 @property (nonatomic, strong) NSMutableArray *itemViews;
+@property (nonatomic, strong) MenusSelectionItemView *addNewItemView;
 @property (nonatomic, assign) BOOL drawsHighlighted;
 
 @end
@@ -84,6 +86,9 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 {
     [super awakeFromNib];
     
+    self.items = [NSMutableArray arrayWithCapacity:5];
+    self.itemViews = [NSMutableArray array];
+
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.stackView.alignment = UIStackViewAlignmentTop;
@@ -105,14 +110,6 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 #pragma mark - instance
 
-- (void)setItems:(NSArray<MenusSelectionViewItem *> *)items
-{
-    if (_items != items) {
-        _items = items;
-        [self reloadItemViews];
-    }
-}
-
 - (void)setSelectedItem:(MenusSelectionViewItem *)selectedItem
 {
     if (_selectedItem != selectedItem) {
@@ -123,6 +120,17 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
         
         [self.detailView updatewithAvailableItems:self.items.count selectedItem:selectedItem];
     }
+}
+
+- (void)addSelectionViewItem:(MenusSelectionViewItem *)selectionItem
+{
+    if (self.selectionType == MenusSelectionViewTypeMenus && !self.addNewItemView) {
+        MenusSelectionItemView *addNewItemView = [self insertSelectionItemViewWithItem:nil];
+        self.addNewItemView = addNewItemView;
+    }
+    [self.items addObject:selectionItem];
+    [self insertSelectionItemViewWithItem:selectionItem];
+    [self.stackView insertArrangedSubview:self.addNewItemView atIndex:self.stackView.arrangedSubviews.count - 1];
 }
 
 - (MenusSelectionViewItem *)itemWithItemObjectEqualTo:(id)itemObject
@@ -169,43 +177,32 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 #pragma mark - private
 
-- (void)reloadItemViews
+- (MenusSelectionItemView *)insertSelectionItemViewWithItem:(MenusSelectionViewItem *)item
 {
-    // remove the current itemViews
-    for(UIView *view in self.itemViews) {
-        [self.stackView removeArrangedSubview:view];
-        [view removeFromSuperview];
-    }
+    MenusSelectionItemView *itemView = [[MenusSelectionItemView alloc] init];
+    itemView.item = item;
+    itemView.delegate = self;
     
-    self.itemViews = [NSMutableArray array];
+    NSLayoutConstraint *heightContrainst = [itemView.heightAnchor constraintEqualToConstant:50];
+    heightContrainst.priority = UILayoutPriorityDefaultHigh;
+    heightContrainst.active = YES;
+    itemView.hidden = YES;
     
-    // add new itemViews
-    int i = 0;
+    [self.itemViews addObject:itemView];
+    [self.stackView addArrangedSubview:itemView];
+    
+    // set the width/trailing anchor equal to the stackView
+    [itemView.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor].active = YES;
+    
+    // setup ordering to help with any drawing
     MenusSelectionItemView *lastItemView = nil;
-    for(MenusSelectionViewItem *item in self.items) {
-                
-        MenusSelectionItemView *itemView = [[MenusSelectionItemView alloc] init];
-        itemView.item = item;
-        itemView.delegate = self;
-        
-        // setup ordering to help with any drawing
+    for(MenusSelectionItemView *itemView in self.itemViews) {
         lastItemView.nextItemView = itemView;
         itemView.previousItemView = lastItemView;
-        
-        NSLayoutConstraint *heightContrainst = [itemView.heightAnchor constraintEqualToConstant:50];
-        heightContrainst.priority = UILayoutPriorityDefaultHigh;
-        heightContrainst.active = YES;
-        itemView.hidden = YES;
-
-        [self.itemViews addObject:itemView];
-        [self.stackView addArrangedSubview:itemView];
-        
-        // set the width/trailing anchor equal to the stackView
-        [itemView.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor].active = YES;
-        
-        i++;
         lastItemView = itemView;
     }
+    
+    return itemView;
 }
 
 #pragma mark - drawing
@@ -246,9 +243,16 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 - (void)selectionItemViewWasSelected:(MenusSelectionItemView *)itemView
 {
-    MenusSelectionViewItem *selectedItem = itemView.item;
-    [self setSelectedItem:selectedItem];
-    [self tellDelegateSelectedItem:selectedItem];
+    if (itemView.item) {
+    
+        MenusSelectionViewItem *selectedItem = itemView.item;
+        [self setSelectedItem:selectedItem];
+        [self tellDelegateSelectedItem:selectedItem];
+    
+    } else if (itemView == self.addNewItemView) {
+        
+        [self.delegate selectionViewSelectedOptionForCreatingNewMenu:self];
+    }
 }
 
 #pragma mark - notifications
