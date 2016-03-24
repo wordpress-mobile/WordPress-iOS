@@ -213,9 +213,34 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 #pragma mark - MenuItemsStackViewDelegate
 
-- (void)itemsView:(MenuItemsStackView *)itemsView selectedItemForEditing:(MenuItem *)item
+- (MenuItemEditingViewController *)editingControllerWithItem:(MenuItem *)item
 {
     MenuItemEditingViewController *controller = [[MenuItemEditingViewController alloc] initWithItem:item blog:self.blog];
+    void(^dismiss)() = ^() {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+    controller.onSelectedToSave = ^() {
+        [self.itemsView refreshViewWithItem:item focus:YES];
+        dismiss();
+    };
+    controller.onSelectedToTrash = ^() {
+        [self.itemsView removeItem:item];
+        dismiss();
+    };
+    controller.onSelectedToCancel = dismiss;
+    return controller;
+}
+
+- (void)itemsView:(MenuItemsStackView *)itemsView createdNewItemForEditing:(MenuItem *)item
+{
+    MenuItemEditingViewController *controller = [self editingControllerWithItem:item];
+    controller.onSelectedToCancel = controller.onSelectedToTrash;
+    [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void)itemsView:(MenuItemsStackView *)itemsView selectedItemForEditing:(MenuItem *)item
+{
+    MenuItemEditingViewController *controller = [self editingControllerWithItem:item];
     [self presentViewController:controller animated:YES completion:nil];
 }
 

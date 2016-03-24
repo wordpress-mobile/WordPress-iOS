@@ -11,6 +11,8 @@
 @property (nonatomic, assign) BOOL showsEditingButtonOptions;
 @property (nonatomic, assign) BOOL showsCancelButtonOption;
 
+- (void)refresh;
+
 @end
 
 @protocol MenuItemViewDelegate <NSObject>

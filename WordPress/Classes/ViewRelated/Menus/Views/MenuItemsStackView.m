@@ -55,9 +55,41 @@
     }
 }
 
+- (void)refreshViewWithItem:(MenuItem *)item focus:(BOOL)focusesView
+{
+    MenuItemView *itemView = [self itemViewForItem:item];
+    [itemView refresh];
+    if (focusesView) {
+        [self.delegate itemsView:self requiresScrollingToCenterView:itemView];
+    }
+}
+
 - (void)removeItem:(MenuItem *)item
 {
-    // remove the item
+    // Reassign any children to the parent of the item.
+    BOOL parentChildUpdateNeeded = NO;
+    if (item.children.count) {
+        parentChildUpdateNeeded = YES;
+        NSSet *children = [NSSet setWithSet:item.children];
+        for (MenuItem *child in children) {
+            child.parent = item.parent;
+        }
+    }
+    
+    // Remove the itemView from the stackView.
+    MenuItemView *itemView = [self itemViewForItem:item];
+    [self.stackView removeArrangedSubview:itemView];
+    [itemView removeFromSuperview];
+    [self.itemViews removeObject:itemView];
+    itemView = nil;
+    if (parentChildUpdateNeeded) {
+        [self updateParentChildIndentationForItemViews];
+    }
+    
+    // Remove the item from the context.
+    NSManagedObjectContext *managedObjectContext = item.managedObjectContext;
+    [managedObjectContext deleteObject:item];
+    [[ContextManager sharedInstance] saveContext:managedObjectContext];
 }
 
 - (void)reloadItemViews
@@ -98,6 +130,24 @@
     }
     
     return itemView;
+}
+
+- (void)updateParentChildIndentationForItemViews
+{
+    for(UIView *arrangedView in self.stackView.arrangedSubviews) {
+        if (![arrangedView isKindOfClass:[MenuItemView class]]) {
+            continue;
+        }
+        
+        MenuItemView *itemView = (MenuItemView *)arrangedView;
+        itemView.indentationLevel = 0;
+        
+        MenuItem *parentItem = itemView.item.parent;
+        while (parentItem) {
+            itemView.indentationLevel++;
+            parentItem = parentItem.parent;
+        }
+    }
 }
 
 - (MenuItemInsertionView *)addNewInsertionViewWithOrder:(MenuItemInsertionOrder)insertionOrder forItemView:(MenuItemView *)itemView
@@ -451,22 +501,7 @@
     
     // update the views based on the model changes
     if (modelUpdated) {
-        
-        for(UIView *arrangedView in self.stackView.arrangedSubviews) {
-            if (![arrangedView isKindOfClass:[MenuItemView class]]) {
-                continue;
-            }
-            
-            MenuItemView *itemView = (MenuItemView *)arrangedView;
-            itemView.indentationLevel = 0;
-            
-            MenuItem *parentItem = itemView.item.parent;
-            while (parentItem) {
-                itemView.indentationLevel++;
-                parentItem = parentItem.parent;
-            }
-        }
-        
+        [self updateParentChildIndentationForItemViews];
         [self.visualOrderingView updateForVisualOrderingMenuItemsModelChange];
     }
 }
@@ -782,12 +817,8 @@
     }
     [self removeItemInsertionViews:YES];
     
-    if (requiresOffsetInsertionOrder) {
-        [self.delegate itemsView:self requiresScrollingToCenterView:newItemView];
-    }
-    
     // Inform the delegate to begin editing the new item.
-    [self.delegate itemsView:self selectedItemForEditing:newItem];
+    [self.delegate itemsView:self createdNewItemForEditing:newItem];
 }
 
 @end
