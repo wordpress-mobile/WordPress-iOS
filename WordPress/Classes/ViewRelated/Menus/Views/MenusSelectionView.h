@@ -21,15 +21,21 @@ extern NSString * const MenusSelectionViewItemUpdatedItemObjectNotification;
 
 @end
 
+typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
+    MenusSelectionViewTypeMenus,
+    MenusSelectionViewTypeLocations
+};
+
 @protocol MenusSelectionViewDelegate;
 
 @interface MenusSelectionView : UIView
 
+@property (nonatomic, assign) MenusSelectionViewType selectionType;
 @property (nonatomic, weak) id <MenusSelectionViewDelegate> delegate;
 @property (nonatomic, readonly) BOOL selectionExpanded;
-@property (nonatomic, strong) NSArray <MenusSelectionViewItem *> *items;
 @property (nonatomic, strong) MenusSelectionViewItem *selectedItem;
 
+- (void)addSelectionViewItem:(MenusSelectionViewItem *)selectionItem;
 - (MenusSelectionViewItem *)itemWithItemObjectEqualTo:(id)itemObject;
 - (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded animated:(BOOL)animated;
 
@@ -40,5 +46,6 @@ extern NSString * const MenusSelectionViewItemUpdatedItemObjectNotification;
 // user interaction dictates the selection view should be expanded or not (closed)
 - (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand;
 - (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionViewItem *)item;
+- (void)selectionViewSelectedOptionForCreatingNewMenu:(MenusSelectionView *)selectionView;
 
 @end
