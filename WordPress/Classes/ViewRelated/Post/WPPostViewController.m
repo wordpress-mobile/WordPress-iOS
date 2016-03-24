@@ -123,6 +123,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, assign, readwrite) BOOL ownsPost;
 
 #pragma mark - Unsaved changes support
+@property (nonatomic, assign, readwrite) BOOL shouldShowUnsavedChangesAlert;
 @property (nonatomic, assign, readonly) BOOL changedToEditModeDueToUnsavedChanges;
 
 #pragma mark - State restoration
@@ -230,6 +231,18 @@ EditImageDetailsViewControllerDelegate
         if (post.blog.isHostedAtWPcom) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
+        
+        if (post.postTitle.length > 0 || post.content.length > 0) {
+            _shouldShowUnsavedChangesAlert = [post hasLocalChanges];
+        }
+        
+        if ([post isRevision]
+            && [post hasLocalChanges]
+            && post.original.postTitle.length == 0
+            && post.original.content.length == 0) {
+            
+            _ownsPost = YES;
+        }
     }
 	
     return self;
@@ -321,7 +334,8 @@ EditImageDetailsViewControllerDelegate
         }
     }
 
-    if (self.changedToEditModeDueToUnsavedChanges) {
+    if (self.shouldShowUnsavedChangesAlert) {
+        self.shouldShowUnsavedChangesAlert = NO;
         [self showUnsavedChangesAlert];
     }
 }
@@ -1446,9 +1460,6 @@ EditImageDetailsViewControllerDelegate
     if (!self.post.isScheduled && [self.post.original.status isEqualToString:PostStatusDraft]  && [self.post.status isEqualToString:PostStatusPublish]) {
         self.post.dateCreated = [NSDate date];
     }
-    self.post = self.post.original;
-    [self.post applyRevision];
-    [self.post deleteRevision];
     
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
@@ -1457,9 +1468,12 @@ EditImageDetailsViewControllerDelegate
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
-                    success:^{
+                    success:^(AbstractPost *post){
+                        self.post = post;
+                        
                         DDLogInfo(@"post uploaded: %@", postTitle);
                         NSString *hudText;
+                        
                         if (postIsScheduled) {
                             hudText = NSLocalizedString(@"Scheduled!", @"Text displayed in HUD after a post was successfully scheduled to be published.");
                         } else if ([postStatus isEqualToString:@"publish"]){
