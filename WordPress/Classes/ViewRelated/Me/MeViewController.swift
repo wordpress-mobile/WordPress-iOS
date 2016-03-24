@@ -65,7 +65,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         animateDeselectionInteractively()
     }
 
-    func reloadViewModel() {
+    private func reloadViewModel() {
         let account = defaultAccount()
         let loggedIn = account != nil
         let badgeCount = HelpshiftUtils.isHelpshiftEnabled() ? HelpshiftUtils.unreadNotificationCount() : 0
@@ -79,7 +79,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         handler.viewModel = tableViewModel(loggedIn, helpshiftBadgeCount: badgeCount)
     }
 
-    func headerView(account: WPAccount) -> MeHeaderView {
+    private func headerView(account: WPAccount) -> MeHeaderView {
         let header = cachedHeaderView
         header.displayName = account.displayName
         header.username = account.username
@@ -87,7 +87,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return header
     }
 
-    func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
+    private func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
             action: pushMyProfile())
@@ -177,7 +177,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     // MARK: - Actions
 
-    func pushMyProfile() -> ImmuTableAction {
+    private func pushMyProfile() -> ImmuTableAction {
         return { [unowned self] row in
             guard let account = self.defaultAccount() else {
                 let error = "Tried to push My Profile without a default account. This shouldn't happen"
@@ -192,7 +192,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    func pushAccountSettings() -> ImmuTableAction {
+    private func pushAccountSettings() -> ImmuTableAction {
         return { [unowned self] row in
             WPAppAnalytics.track(.OpenedAccountSettings)
             let controller = AccountSettingsViewController(account: self.defaultAccount())
@@ -200,28 +200,28 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    func pushNotificationSettings() -> ImmuTableAction {
+    private func pushNotificationSettings() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = NotificationSettingsViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
-    func pushHelp() -> ImmuTableAction {
+    private func pushHelp() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = SupportViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
-    func pushAbout() -> ImmuTableAction {
+    private func pushAbout() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = AboutViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 
-    func presentLogin() -> ImmuTableAction {
+    private func presentLogin() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = LoginViewController()
             controller.onlyDotComAllowed = true
@@ -235,7 +235,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    func confirmLogout() -> ImmuTableAction {
+    private func confirmLogout() -> ImmuTableAction {
         return { [unowned self] row in
             let format = NSLocalizedString("Disconnecting your account will remove all of @%@’s WordPress.com data from this device.", comment: "Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.")
             let title = String(format: format, self.defaultAccount()!.username)
@@ -270,7 +270,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     // FIXME: (@koke 2015-12-17) Not cool. Let's stop passing managed objects
     // and initializing stuff with safer values like userID
-    func defaultAccount() -> WPAccount? {
+    private func defaultAccount() -> WPAccount? {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         let account = service.defaultWordPressComAccount()
@@ -279,18 +279,18 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return account
     }
 
-    func refreshAccountDetails() {
+    private func refreshAccountDetails() {
         guard let account = defaultAccount() else { return }
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         service.updateUserDetailsForAccount(account, success: { _ in }, failure: { _ in })
     }
 
-    func logOut() {
+    private func logOut() {
         let context = ContextManager.sharedInstance().mainContext
         let service = AccountService(managedObjectContext: context)
         service.removeDefaultWordPressComAccount()
     }
 
-    lazy var cachedHeaderView = MeHeaderView()
+    private lazy var cachedHeaderView = MeHeaderView()
 }
