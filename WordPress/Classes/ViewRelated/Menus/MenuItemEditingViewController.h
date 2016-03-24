@@ -9,8 +9,11 @@ extern NSString * const MenuItemEditingTypeSelectionChangedNotification;
 
 @interface MenuItemEditingViewController : UIViewController
 
+@property (nonatomic, copy) void(^onSelectedToSave)();
+@property (nonatomic, copy) void(^onSelectedToTrash)();
+@property (nonatomic, copy) void(^onSelectedToCancel)();
+
 - (id)initWithItem:(MenuItem *)item blog:(Blog *)blog;
-- (MenuItem *)item;
 
 @end
 

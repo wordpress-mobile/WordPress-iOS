@@ -51,9 +51,14 @@
 {
     if (_item != item) {
         _item = item;
-        self.iconView.image = [[UIImage imageNamed:[MenuItem iconImageNameForItemType:item.type]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        self.textLabel.text = item.name;
+        [self refresh];
     }
+}
+
+- (void)refresh
+{
+    self.iconView.image = [[UIImage imageNamed:[MenuItem iconImageNameForItemType:self.item.type]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.textLabel.text = self.item.name;
 }
 
 - (void)setShowsEditingButtonOptions:(BOOL)showsEditingButtonOptions
