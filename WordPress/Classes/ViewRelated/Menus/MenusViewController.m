@@ -11,6 +11,7 @@
 #import "MenuItemsStackView.h"
 #import "MenuItemEditingViewController.h"
 #import "WPNoResultsView.h"
+#import "Menu+ViewDesign.h"
 
 typedef NS_ENUM(NSInteger) {
     MenusSectionSelection = 0,
@@ -41,6 +42,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 @property (nonatomic, strong) MenusService *menusService;
 @property (nonatomic, strong) MenuLocation *selectedMenuLocation;
 @property (nonatomic, strong) WPNoResultsView *loadingView;
+@property (nonatomic, strong) UILabel *itemsLoadingLabel;
+
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
 @property (nonatomic, assign) BOOL animatesAppearanceAfterSync;
 
@@ -97,6 +100,17 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         WPNoResultsView *loadingView = [[WPNoResultsView alloc] init];
         loadingView.titleText = NSLocalizedString(@"Loading Menus...", @"Menus label text displayed while menus are loading");;
         self.loadingView = loadingView;
+    }
+    {
+        UILabel *label = [[UILabel alloc] init];
+        label.font = [WPFontManager systemLightFontOfSize:14];
+        label.textColor = [WPStyleGuide darkBlue];
+        label.numberOfLines = 0;
+        [self.stackView addArrangedSubview:label];
+        [label.leadingAnchor constraintEqualToAnchor:self.stackView.leadingAnchor constant:MenusDesignDefaultContentSpacing].active = YES;
+        [label.trailingAnchor constraintEqualToAnchor:self.stackView.trailingAnchor constant:-MenusDesignDefaultContentSpacing].active = YES;
+        label.hidden = YES;
+        self.itemsLoadingLabel = label;
     }
 }
 
@@ -195,10 +209,55 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
 }
 
+- (void)loadDefaultMenuItemsIfNeeded
+{
+    Menu *menu = self.selectedMenuLocation.menu;
+    if (menu.items.count == 0) {
+        
+        self.itemsLoadingLabel.text = NSLocalizedString(@"Loading menu...", @"Menus label text displayed when a menu is loading.");
+        self.itemsLoadingLabel.hidden = NO;
+        
+        __weak __typeof__(self) weakSelf = self;
+        void(^successBlock)(NSArray<MenuItem *> *) = ^(NSArray<MenuItem *> *defaultItems) {
+            weakSelf.itemsLoadingLabel.hidden = YES;
+            
+            BOOL menuEqualToSelectedMenu = weakSelf.selectedMenuLocation.menu == menu;
+            if (defaultItems.count) {
+                NSOrderedSet *items = [NSOrderedSet orderedSetWithArray:defaultItems];
+                menu.items = items;
+                if (menuEqualToSelectedMenu) {
+                    weakSelf.itemsView.menu = nil;
+                    weakSelf.itemsView.menu = menu;
+                }
+            } else {
+                if (menuEqualToSelectedMenu) {
+                    [weakSelf insertBlankMenuItemIfNeeded];
+                }
+            }
+        };
+        void(^failureBlock)(NSError *) = ^(NSError *error) {
+            weakSelf.itemsLoadingLabel.text = NSLocalizedString(@"An error occurred loading the menu, pelase check your internet connection.", @"Menus error message seen when an error occurred loading a specific menu.");
+        };
+        [self.menusService generateDefaultMenuItemsForBlog:self.blog
+                                                   success:successBlock
+                                                   failure:failureBlock];
+    }
+}
+
+- (void)insertBlankMenuItemIfNeeded
+{
+    
+}
+
 - (void)setViewsWithMenu:(Menu *)menu
 {
     self.detailsView.menu = menu;
     self.itemsView.menu = menu;
+
+    self.itemsLoadingLabel.hidden = YES;
+    if ([menu.menuId isEqualToString:MenuDefaultID]) {
+        [self loadDefaultMenuItemsIfNeeded];
+    }
 }
 
 #pragma mark - MenusHeaderViewDelegate
@@ -243,9 +302,12 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     void(^deleteMenu)() = ^() {
         Menu *currentMenu = self.selectedMenuLocation.menu;
-        self.selectedMenuLocation.menu = [Menu defaultMenuForBlog:self.blog];
-        [self.headerView setSelectedMenu:self.selectedMenuLocation.menu];
-        [self setViewsWithMenu:self.selectedMenuLocation.menu];
+        Menu *defaultMenu =[Menu defaultMenuForBlog:self.blog];
+        
+        self.selectedMenuLocation.menu = defaultMenu;
+        [self.headerView setSelectedMenu:defaultMenu];
+        [self setViewsWithMenu:defaultMenu];
+        
         [self.headerView removeMenu:currentMenu];
     };
     
