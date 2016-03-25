@@ -1,25 +1,5 @@
 #import <UIKit/UIKit.h>
-
-@class Menu;
-@class MenuLocation;
-
-extern NSString * const MenusSelectionViewItemChangedSelectedNotification;
-extern NSString * const MenusSelectionViewItemUpdatedItemObjectNotification;
-
-@interface MenusSelectionViewItem : NSObject
-
-@property (nonatomic, strong) id itemObject;
-@property (nonatomic, assign) BOOL selected;
-
-+ (MenusSelectionViewItem *)itemWithMenu:(Menu *)menu;
-+ (MenusSelectionViewItem *)itemWithLocation:(MenuLocation *)location;
-
-- (BOOL)isMenu;
-- (BOOL)isMenuLocation;
-- (NSString *)displayName;
-- (void)notifyItemObjectWasUpdated;
-
-@end
+#import "MenusSelectionItem.h"
 
 typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
     MenusSelectionViewTypeMenus,
@@ -33,10 +13,11 @@ typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
 @property (nonatomic, assign) MenusSelectionViewType selectionType;
 @property (nonatomic, weak) id <MenusSelectionViewDelegate> delegate;
 @property (nonatomic, readonly) BOOL selectionExpanded;
-@property (nonatomic, strong) MenusSelectionViewItem *selectedItem;
+@property (nonatomic, strong) MenusSelectionItem *selectedItem;
 
-- (void)addSelectionViewItem:(MenusSelectionViewItem *)selectionItem;
-- (MenusSelectionViewItem *)itemWithItemObjectEqualTo:(id)itemObject;
+- (void)addSelectionViewItem:(MenusSelectionItem *)selectionItem;
+- (void)removeSelectionItem:(MenusSelectionItem *)selectionItem;
+- (MenusSelectionItem *)itemWithItemObjectEqualTo:(id)itemObject;
 - (void)setSelectionItemsExpanded:(BOOL)selectionItemsExpanded animated:(BOOL)animated;
 
 @end
@@ -45,7 +26,7 @@ typedef NS_ENUM(NSUInteger, MenusSelectionViewType) {
 
 // user interaction dictates the selection view should be expanded or not (closed)
 - (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand;
-- (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionViewItem *)item;
+- (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionItem *)item;
 - (void)selectionViewSelectedOptionForCreatingNewMenu:(MenusSelectionView *)selectionView;
 
 @end

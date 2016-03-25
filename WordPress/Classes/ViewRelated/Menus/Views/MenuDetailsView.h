@@ -14,5 +14,7 @@
 @protocol MenuDetailsViewDelegate <NSObject>
 
 - (void)detailsViewUpdatedMenuName:(MenuDetailsView *)menuDetailView;
+- (void)detailsViewSelectedToSaveMenu:(MenuDetailsView *)menuDetailView;
+- (void)detailsViewSelectedToDeleteMenu:(MenuDetailsView *)menuDetailView;
 
 @end

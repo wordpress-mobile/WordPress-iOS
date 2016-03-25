@@ -1,72 +1,11 @@
 #import "MenusSelectionView.h"
-#import "Menu.h"
-#import "MenuLocation.h"
 #import "MenusSelectionDetailView.h"
 #import "MenusSelectionItemView.h"
 #import "Menu+ViewDesign.h"
 
-NSString * const MenusSelectionViewItemChangedSelectedNotification = @"MenusSelectionViewItemChangedSelectedNotification";
-NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSelectionViewItemUpdatedItemObjectNotification";
-
-@implementation MenusSelectionViewItem
-
-+ (MenusSelectionViewItem *)itemWithMenu:(Menu *)menu
-{
-    MenusSelectionViewItem *item = [MenusSelectionViewItem new];
-    item.itemObject = menu;
-    return item;
-}
-
-+ (MenusSelectionViewItem *)itemWithLocation:(MenuLocation *)location
-{
-    MenusSelectionViewItem *item = [MenusSelectionViewItem new];
-    item.itemObject = location;
-    return item;
-}
-
-- (void)setSelected:(BOOL)selected
-{
-    if (_selected != selected) {
-        _selected = selected;
-        [[NSNotificationCenter defaultCenter] postNotificationName:MenusSelectionViewItemChangedSelectedNotification object:self];
-    }
-}
-
-- (BOOL)isMenu
-{
-    return [self.itemObject isKindOfClass:[Menu class]];
-}
-
-- (BOOL)isMenuLocation
-{
-    return [self.itemObject isKindOfClass:[MenuLocation class]];
-}
-
-- (NSString *)displayName
-{
-    NSString *name = nil;
-    
-    if ([self isMenu]) {
-        Menu *menu = self.itemObject;
-        name = menu.name;
-    } else  if ([self isMenuLocation]) {
-        MenuLocation *location = self.itemObject;
-        name = location.details;
-    }
-    
-    return name;
-}
-
-- (void)notifyItemObjectWasUpdated
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:MenusSelectionViewItemUpdatedItemObjectNotification object:self];
-}
-
-@end
-
 @interface MenusSelectionView () <MenusSelectionDetailViewDelegate, MenusSelectionItemViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray <MenusSelectionViewItem *> *items;
+@property (nonatomic, strong) NSMutableArray <MenusSelectionItem *> *items;
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet MenusSelectionDetailView *detailView;
 @property (nonatomic, strong) NSMutableArray *itemViews;
@@ -110,7 +49,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 #pragma mark - instance
 
-- (void)setSelectedItem:(MenusSelectionViewItem *)selectedItem
+- (void)setSelectedItem:(MenusSelectionItem *)selectedItem
 {
     if (_selectedItem != selectedItem) {
         
@@ -122,7 +61,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
     }
 }
 
-- (void)addSelectionViewItem:(MenusSelectionViewItem *)selectionItem
+- (void)addSelectionViewItem:(MenusSelectionItem *)selectionItem
 {
     if (self.selectionType == MenusSelectionViewTypeMenus && !self.addNewItemView) {
         MenusSelectionItemView *addNewItemView = [self insertSelectionItemViewWithItem:nil];
@@ -133,16 +72,24 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
     [self.stackView insertArrangedSubview:self.addNewItemView atIndex:self.stackView.arrangedSubviews.count - 1];
 }
 
-- (MenusSelectionViewItem *)itemWithItemObjectEqualTo:(id)itemObject
+- (void)removeSelectionItem:(MenusSelectionItem *)selectionItem
 {
-    MenusSelectionViewItem *matchingItem = nil;
-    for(MenusSelectionViewItem *item in self.items) {
+    MenusSelectionItemView *itemView = [self itemViewForSelectionItem:selectionItem];
+    [self.stackView removeArrangedSubview:itemView];
+    [self.itemViews removeObject:itemView];
+    [itemView removeFromSuperview];
+    [self.items removeObject:selectionItem];
+}
+
+- (MenusSelectionItem *)itemWithItemObjectEqualTo:(id)itemObject
+{
+    MenusSelectionItem *matchingItem = nil;
+    for(MenusSelectionItem *item in self.items) {
         if (item.itemObject == itemObject) {
             matchingItem = item;
             break;
         }
     }
-    
     return matchingItem;
 }
 
@@ -165,19 +112,14 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
         self.selectionExpanded = selectionItemsExpanded;
         return;
     }
-    
     [UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        
         self.selectionExpanded = selectionItemsExpanded;
-        
-    } completion:^(BOOL finished) {
-        
-    }];
+    } completion:nil];
 }
 
 #pragma mark - private
 
-- (MenusSelectionItemView *)insertSelectionItemViewWithItem:(MenusSelectionViewItem *)item
+- (MenusSelectionItemView *)insertSelectionItemViewWithItem:(MenusSelectionItem *)item
 {
     MenusSelectionItemView *itemView = [[MenusSelectionItemView alloc] init];
     itemView.item = item;
@@ -205,6 +147,18 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
     return itemView;
 }
 
+- (MenusSelectionItemView *)itemViewForSelectionItem:(MenusSelectionItem *)item
+{
+    MenusSelectionItemView *itemView = nil;
+    for (MenusSelectionItemView *view in self.itemViews) {
+        if (view.item == item) {
+            itemView = view;
+            break;
+        }
+    }
+    return itemView;
+}
+
 #pragma mark - drawing
 
 - (void)setDrawsHighlighted:(BOOL)drawsHighlighted
@@ -222,7 +176,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
     [self.delegate userInteractionDetectedForTogglingSelectionView:self expand:!self.selectionExpanded];
 }
 
-- (void)tellDelegateSelectedItem:(MenusSelectionViewItem *)item
+- (void)tellDelegateSelectedItem:(MenusSelectionItem *)item
 {
     [self.delegate selectionView:self selectedItem:item];
 }
@@ -245,7 +199,7 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 {
     if (itemView.item) {
     
-        MenusSelectionViewItem *selectedItem = itemView.item;
+        MenusSelectionItem *selectedItem = itemView.item;
         [self setSelectedItem:selectedItem];
         [self tellDelegateSelectedItem:selectedItem];
     
@@ -259,9 +213,9 @@ NSString * const MenusSelectionViewItemUpdatedItemObjectNotification = @"MenusSe
 
 - (void)selectionItemObjectWasUpdatedNotification:(NSNotification *)notification
 {
-    MenusSelectionViewItem *updatedItem = notification.object;
+    MenusSelectionItem *updatedItem = notification.object;
     BOOL haveItem = NO;
-    for(MenusSelectionViewItem *item in self.items) {
+    for(MenusSelectionItem *item in self.items) {
         if (item == updatedItem) {
             haveItem = YES;
             break;

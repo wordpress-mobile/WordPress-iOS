@@ -1,7 +1,5 @@
 #import "MenusSelectionItemView.h"
 #import "MenusSelectionView.h"
-#import "Menu.h"
-#import "MenuLocation.h"
 #import "WPStyleGuide.h"
 #import "Menu+ViewDesign.h"
 
@@ -61,7 +59,7 @@
     [self addGestureRecognizer:tap];
 }
 
-- (void)setItem:(MenusSelectionViewItem *)item
+- (void)setItem:(MenusSelectionItem *)item
 {
     if (_item != item) {
         _item = item;
