@@ -78,7 +78,7 @@ import WordPressShared.WPStyleGuide
         detailsLabel.font                   = Style.blockRegularFont
 
         // Setup Recognizers
-        detailsLabel.gestureRecognizers     = [ UITapGestureRecognizer(target: self, action: "detailsWasPressed:") ]
+        detailsLabel.gestureRecognizers     = [ UITapGestureRecognizer(target: self, action: #selector(NoteBlockCommentTableViewCell.detailsWasPressed(_:))) ]
         detailsLabel.userInteractionEnabled = true
         
         // Force iPad Size Class

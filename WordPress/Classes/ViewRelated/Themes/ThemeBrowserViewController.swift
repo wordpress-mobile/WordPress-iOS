@@ -296,8 +296,8 @@ public protocol ThemePresenter: class
     }
 
     private func registerForKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ThemeBrowserViewController.keyboardDidShow(_:)), name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ThemeBrowserViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     private func unregisterForKeyboardNotifications() {
@@ -727,7 +727,7 @@ public protocol ThemePresenter: class
         webViewController.title = theme.name
         var buttons: [UIBarButtonItem]?
         if activeButton && !theme.isCurrentTheme() {
-           let activate = UIBarButtonItem(title: ThemeAction.Activate.title, style: .Plain, target: self, action: "activatePresentingTheme")
+           let activate = UIBarButtonItem(title: ThemeAction.Activate.title, style: .Plain, target: self, action: #selector(ThemeBrowserViewController.activatePresentingTheme))
             buttons = [activate]
         }
         webViewController.navigationItem.rightBarButtonItems = buttons
