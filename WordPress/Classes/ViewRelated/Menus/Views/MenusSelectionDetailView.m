@@ -27,7 +27,7 @@
     [self addGestureRecognizer:tap];
 }
 
-- (void)updatewithAvailableItems:(NSUInteger)numItemsAvailable selectedItem:(MenusSelectionViewItem *)selectedItem
+- (void)updatewithAvailableItems:(NSUInteger)numItemsAvailable selectedItem:(MenusSelectionItem *)selectedItem
 {
     NSString *localizedFormat = nil;
     if ([selectedItem isMenuLocation]) {

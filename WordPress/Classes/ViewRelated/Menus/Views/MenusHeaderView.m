@@ -5,10 +5,12 @@
 #import "Menu.h"
 #import "Menu+ViewDesign.h"
 #import "MenuLocation.h"
+#import "ContextManager.h"
 
 @interface MenusHeaderView () <MenusSelectionViewDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
+@property (nonatomic, strong) Blog *blog;
 @property (nonatomic, weak) IBOutlet MenusSelectionView *locationsView;
 @property (nonatomic, weak) IBOutlet MenusSelectionView *menusView;
 @property (nonatomic, weak) IBOutlet UILabel *textLabel;
@@ -40,33 +42,48 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     self.menusView.selectionType = MenusSelectionViewTypeMenus;
 }
 
-- (void)updateWithMenusForBlog:(Blog *)blog
+- (void)setupWithMenusForBlog:(Blog *)blog
 {
-    {
-        NSMutableArray *items = [NSMutableArray arrayWithCapacity:blog.menuLocations.count];
-        for(MenuLocation *location in blog.menuLocations) {
-            MenusSelectionViewItem *item = [MenusSelectionViewItem itemWithLocation:location];
-            [items addObject:item];
-            [self.locationsView addSelectionViewItem:item];
-        }
-        
-        self.locationsView.selectedItem = [items firstObject];
+    self.blog = blog;
+    for(MenuLocation *location in blog.menuLocations) {
+        MenusSelectionItem *item = [MenusSelectionItem itemWithLocation:location];
+        [self.locationsView addSelectionViewItem:item];
     }
-    {
-        NSMutableArray *items = [NSMutableArray arrayWithCapacity:blog.menus.count];
-        for(Menu *menu in blog.menus) {
-            MenusSelectionViewItem *item = [MenusSelectionViewItem itemWithMenu:menu];
-            [items addObject:item];
-            [self.menusView addSelectionViewItem:item];
-        }
-        
-        self.menusView.selectedItem = [items firstObject];
+    for(Menu *menu in blog.menus) {
+        MenusSelectionItem *item = [MenusSelectionItem itemWithMenu:menu];
+        [self.menusView addSelectionViewItem:item];
+    }
+}
+
+- (void)updateLocationSelectionWithMenu:(Menu *)menu
+{
+    MenuLocation *selectedLocation = self.locationsView.selectedItem.itemObject;
+    selectedLocation.menu = menu;
+}
+
+- (void)updateSelectionWithLocation:(MenuLocation *)location
+{
+    MenusSelectionItem *locationItem = [self.locationsView itemWithItemObjectEqualTo:location];
+    [self.locationsView setSelectedItem:locationItem];
+}
+
+- (void)updateSelectionWithMenu:(Menu *)menu
+{
+    MenusSelectionItem *menuItem = [self.menusView itemWithItemObjectEqualTo:menu];
+    [self.menusView setSelectedItem:menuItem];
+}
+
+- (void)removeMenu:(Menu *)menu
+{
+    MenusSelectionItem *selectionItem = [self.menusView itemWithItemObjectEqualTo:menu];
+    if (selectionItem) {
+        [self.menusView removeSelectionItem:selectionItem];
     }
 }
 
 - (void)refreshMenuViewsUsingMenu:(Menu *)menu
 {
-    MenusSelectionViewItem *item = [self.menusView itemWithItemObjectEqualTo:menu];
+    MenusSelectionItem *item = [self.menusView itemWithItemObjectEqualTo:menu];
     [item notifyItemObjectWasUpdated];
 }
 
@@ -122,34 +139,16 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     });
 }
 
-- (void)updateLocationSelectionWithMenu:(Menu *)menu
-{
-    MenuLocation *selectedLocation = self.locationsView.selectedItem.itemObject;
-    selectedLocation.menu = menu;
-}
-
-- (void)updateSelectionWithLocation:(MenuLocation *)location
-{
-    MenusSelectionViewItem *locationItem = [self.locationsView itemWithItemObjectEqualTo:location];
-    [self.locationsView setSelectedItem:locationItem];
-}
-
-- (void)updateSelectionWithMenu:(Menu *)menu
-{
-    MenusSelectionViewItem *menuItem = [self.menusView itemWithItemObjectEqualTo:menu];
-    [self.menusView setSelectedItem:menuItem];
-}
-
 #pragma mark - delegate helpers
 
 - (void)tellDelegateSelectedLocation:(MenuLocation *)location
 {
-    [self.delegate headerViewSelectionChangedWithSelectedLocation:location];
+    [self.delegate headerView:self selectionChangedWithSelectedLocation:location];
 }
 
 - (void)tellDelegateSelectedMenu:(Menu *)menu
 {
-    [self.delegate headerViewSelectionChangedWithSelectedMenu:menu];
+    [self.delegate headerView:self selectionChangedWithSelectedMenu:menu];
 }
 
 #pragma mark - MenusSelectionViewDelegate
@@ -165,15 +164,15 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
         } else  if (selectionView == self.menusView) {
             [self.locationsView setSelectionItemsExpanded:expand animated:YES];
         }
-        
         [selectionView setSelectionItemsExpanded:expand animated:YES];
         
     } else  {
+        
         [selectionView setSelectionItemsExpanded:expand animated:YES];
     }
 }
 
-- (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionViewItem *)item
+- (void)selectionView:(MenusSelectionView *)selectionView selectedItem:(MenusSelectionItem *)item
 {
     if ([item isMenuLocation]) {
         
@@ -192,8 +191,41 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
 
 - (void)selectionViewSelectedOptionForCreatingNewMenu:(MenusSelectionView *)selectionView
 {
+    Menu *newMenu = [NSEntityDescription insertNewObjectForEntityForName:[Menu entityName] inManagedObjectContext:self.blog.managedObjectContext];
+    newMenu.name = [self generateIncrementalNameFromMenus:self.blog.menus];
+    newMenu.blog = self.blog;
     
+    [self.menusView addSelectionViewItem:[MenusSelectionItem itemWithMenu:newMenu]];
+    
+    [self updateLocationSelectionWithMenu:newMenu];
+    [self updateSelectionWithMenu:newMenu];
+    
+    [self tellDelegateSelectedMenu:newMenu];
     [self closeSelectionsIfNeeded];
+}
+
+
+- (NSString *)generateIncrementalNameFromMenus:(NSOrderedSet *)menus
+{
+    NSInteger highestInteger = 1;
+    for (Menu *menu in menus) {
+        if (!menu.name.length) {
+            continue;
+        }
+        NSString *nameNumberStr;
+        NSScanner *numberScanner = [NSScanner scannerWithString:menu.name];
+        NSCharacterSet *characterSet = [NSCharacterSet decimalDigitCharacterSet];
+        [numberScanner scanUpToCharactersFromSet:characterSet intoString:NULL];
+        [numberScanner scanCharactersFromSet:characterSet intoString:&nameNumberStr];
+        
+        if ([nameNumberStr integerValue] > highestInteger) {
+            highestInteger = [nameNumberStr integerValue];
+        }
+    }
+    
+    highestInteger = highestInteger + 1;
+    NSString *menuStr = NSLocalizedString(@"Menu", @"The default text used for filling the name of a menu when creating it.");
+    return [NSString stringWithFormat:@"%@ %i", menuStr, highestInteger];
 }
 
 @end
