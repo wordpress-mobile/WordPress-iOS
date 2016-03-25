@@ -5,7 +5,6 @@
 #import "Menu.h"
 #import "Menu+ViewDesign.h"
 #import "MenuLocation.h"
-#import "ContextManager.h"
 
 @interface MenusHeaderView () <MenusSelectionViewDelegate>
 
@@ -55,22 +54,9 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     }
 }
 
-- (void)updateLocationSelectionWithMenu:(Menu *)menu
+- (void)addMenu:(Menu *)menu
 {
-    MenuLocation *selectedLocation = self.locationsView.selectedItem.itemObject;
-    selectedLocation.menu = menu;
-}
-
-- (void)updateSelectionWithLocation:(MenuLocation *)location
-{
-    MenusSelectionItem *locationItem = [self.locationsView itemWithItemObjectEqualTo:location];
-    [self.locationsView setSelectedItem:locationItem];
-}
-
-- (void)updateSelectionWithMenu:(Menu *)menu
-{
-    MenusSelectionItem *menuItem = [self.menusView itemWithItemObjectEqualTo:menu];
-    [self.menusView setSelectedItem:menuItem];
+    [self.menusView addSelectionViewItem:[MenusSelectionItem itemWithMenu:menu]];
 }
 
 - (void)removeMenu:(Menu *)menu
@@ -79,6 +65,18 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     if (selectionItem) {
         [self.menusView removeSelectionItem:selectionItem];
     }
+}
+
+- (void)setSelectedLocation:(MenuLocation *)location
+{
+    MenusSelectionItem *locationItem = [self.locationsView itemWithItemObjectEqualTo:location];
+    [self.locationsView setSelectedItem:locationItem];
+}
+
+- (void)setSelectedMenu:(Menu *)menu
+{
+    MenusSelectionItem *menuItem = [self.menusView itemWithItemObjectEqualTo:menu];
+    [self.menusView setSelectedItem:menuItem];
 }
 
 - (void)refreshMenuViewsUsingMenu:(Menu *)menu
@@ -139,18 +137,6 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     });
 }
 
-#pragma mark - delegate helpers
-
-- (void)tellDelegateSelectedLocation:(MenuLocation *)location
-{
-    [self.delegate headerView:self selectionChangedWithSelectedLocation:location];
-}
-
-- (void)tellDelegateSelectedMenu:(Menu *)menu
-{
-    [self.delegate headerView:self selectionChangedWithSelectedMenu:menu];
-}
-
 #pragma mark - MenusSelectionViewDelegate
 
 - (void)userInteractionDetectedForTogglingSelectionView:(MenusSelectionView *)selectionView expand:(BOOL)expand
@@ -177,55 +163,20 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
     if ([item isMenuLocation]) {
         
         MenuLocation *location = item.itemObject;
-        [self updateSelectionWithMenu:location.menu];
-        [self tellDelegateSelectedLocation:item.itemObject];
+        [self.delegate headerView:self selectedLocation:location];
         
     } else  if ([item isMenu]) {
         
         Menu *menu = item.itemObject;
-        [self updateLocationSelectionWithMenu:menu];
-        [self tellDelegateSelectedMenu:menu];
+        [self.delegate headerView:self selectedMenu:menu];
     }
     [self closeSelectionsIfNeeded];
 }
 
 - (void)selectionViewSelectedOptionForCreatingNewMenu:(MenusSelectionView *)selectionView
 {
-    Menu *newMenu = [NSEntityDescription insertNewObjectForEntityForName:[Menu entityName] inManagedObjectContext:self.blog.managedObjectContext];
-    newMenu.name = [self generateIncrementalNameFromMenus:self.blog.menus];
-    newMenu.blog = self.blog;
-    
-    [self.menusView addSelectionViewItem:[MenusSelectionItem itemWithMenu:newMenu]];
-    
-    [self updateLocationSelectionWithMenu:newMenu];
-    [self updateSelectionWithMenu:newMenu];
-    
-    [self tellDelegateSelectedMenu:newMenu];
+    [self.delegate headerViewSelectedForCreatingNewMenu:self];
     [self closeSelectionsIfNeeded];
-}
-
-
-- (NSString *)generateIncrementalNameFromMenus:(NSOrderedSet *)menus
-{
-    NSInteger highestInteger = 1;
-    for (Menu *menu in menus) {
-        if (!menu.name.length) {
-            continue;
-        }
-        NSString *nameNumberStr;
-        NSScanner *numberScanner = [NSScanner scannerWithString:menu.name];
-        NSCharacterSet *characterSet = [NSCharacterSet decimalDigitCharacterSet];
-        [numberScanner scanUpToCharactersFromSet:characterSet intoString:NULL];
-        [numberScanner scanCharactersFromSet:characterSet intoString:&nameNumberStr];
-        
-        if ([nameNumberStr integerValue] > highestInteger) {
-            highestInteger = [nameNumberStr integerValue];
-        }
-    }
-    
-    highestInteger = highestInteger + 1;
-    NSString *menuStr = NSLocalizedString(@"Menu", @"The default text used for filling the name of a menu when creating it.");
-    return [NSString stringWithFormat:@"%@ %i", menuStr, highestInteger];
 }
 
 @end

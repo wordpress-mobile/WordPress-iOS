@@ -57,7 +57,7 @@
         selectedItem.selected = YES;
         _selectedItem = selectedItem;
         
-        [self.detailView updatewithAvailableItems:self.items.count selectedItem:selectedItem];
+        [self updateDetailsView];
     }
 }
 
@@ -70,6 +70,8 @@
     [self.items addObject:selectionItem];
     [self insertSelectionItemViewWithItem:selectionItem];
     [self.stackView insertArrangedSubview:self.addNewItemView atIndex:self.stackView.arrangedSubviews.count - 1];
+    
+    [self updateDetailsView];
 }
 
 - (void)removeSelectionItem:(MenusSelectionItem *)selectionItem
@@ -79,6 +81,8 @@
     [self.itemViews removeObject:itemView];
     [itemView removeFromSuperview];
     [self.items removeObject:selectionItem];
+    
+    [self updateDetailsView];
 }
 
 - (MenusSelectionItem *)itemWithItemObjectEqualTo:(id)itemObject
@@ -157,6 +161,13 @@
         }
     }
     return itemView;
+}
+
+- (void)updateDetailsView
+{
+    if (self.selectedItem) {
+        [self.detailView updatewithAvailableItems:self.items.count selectedItem:self.selectedItem];
+    }
 }
 
 #pragma mark - drawing

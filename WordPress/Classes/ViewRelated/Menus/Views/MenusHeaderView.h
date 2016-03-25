@@ -11,16 +11,20 @@
 @property (nonatomic, weak) id <MenusHeaderViewDelegate> delegate;
 
 - (void)setupWithMenusForBlog:(Blog *)blog;
-- (void)updateSelectionWithLocation:(MenuLocation *)location;
-- (void)updateSelectionWithMenu:(Menu *)menu;
+- (void)addMenu:(Menu *)menu;
 - (void)removeMenu:(Menu *)menu;
+
+- (void)setSelectedLocation:(MenuLocation *)location;
+- (void)setSelectedMenu:(Menu *)menu;
+
 - (void)refreshMenuViewsUsingMenu:(Menu *)menu;
 
 @end
 
 @protocol MenusHeaderViewDelegate <NSObject>
 
-- (void)headerView:(MenusHeaderView *)headerView selectionChangedWithSelectedLocation:(MenuLocation *)location;
-- (void)headerView:(MenusHeaderView *)headerView selectionChangedWithSelectedMenu:(Menu *)menu;
+- (void)headerView:(MenusHeaderView *)headerView selectedLocation:(MenuLocation *)location;
+- (void)headerView:(MenusHeaderView *)headerView selectedMenu:(Menu *)menu;
+- (void)headerViewSelectedForCreatingNewMenu:(MenusHeaderView *)headerView;
 
 @end

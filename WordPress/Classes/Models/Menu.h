@@ -4,6 +4,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString * const MenuDefaultID;
+
 /**
  *  @brief    An object encapsulating a Menu, the locations using it, and the items belonging to it.
  */
@@ -26,6 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///---------------------
 
 + (NSString *)entityName;
+
++ (Menu *)newMenu:(NSManagedObjectContext *)managedObjectContext;
++ (Menu *)defaultMenuForBlog:(Blog *)blog;
++ (Menu *)newDefaultMenu:(NSManagedObjectContext *)managedObjectContext;
++ (NSString *)generateIncrementalNameFromMenus:(NSOrderedSet *)menus;
 
 @end
 

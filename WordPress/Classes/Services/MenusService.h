@@ -4,6 +4,7 @@
 @class WPAccount;
 @class Menu;
 @class MenuLocation;
+@class MenuItem;
 
 typedef void(^MenusServiceSuccessBlock)();
 typedef void(^MenusServiceMenuRequestSuccessBlock)(Menu *menu);
@@ -82,5 +83,9 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
            forBlog:(Blog *)blog
            success:(MenusServiceSuccessBlock)success
            failure:(MenusServiceFailureBlock)failure;
+
+- (void)generateDefaultMenuItemsForBlog:(Blog *)blog
+                                success:(void(^)(NSArray <MenuItem *> *defaultItems))success
+                                failure:(void(^)(NSError *error))failure;
 
 @end
