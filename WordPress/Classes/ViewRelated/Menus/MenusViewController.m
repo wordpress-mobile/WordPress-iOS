@@ -38,7 +38,6 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenusService *menusService;
 @property (nonatomic, strong) MenuLocation *selectedMenuLocation;
-@property (nonatomic, strong) UIActivityIndicatorView *activity;
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
 
 @end
@@ -89,11 +88,6 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.headerView.delegate = self;
     self.detailsView.delegate = self;
     self.itemsView.delegate = self;
-    
-    UIActivityIndicatorView *activity = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    activity.hidesWhenStopped = YES;
-    [self.view addSubview:activity];
-    self.activity = activity;
 }
 
 - (void)viewDidLoad
@@ -120,8 +114,6 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    
-    self.activity.center = self.scrollView.center;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -137,11 +129,6 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-}
-
 #pragma mark - Views setup
 
 - (void)updateScrollViewContentSize
@@ -153,10 +140,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)syncWithBlogMenus
 {
-    [self.activity startAnimating];
     [self.menusService syncMenusForBlog:self.blog
                                 success:^{
-                                    [self.activity stopAnimating];
                                     [self didSyncBlog];
                                 }
                                 failure:^(NSError *error) {
@@ -172,20 +157,13 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.selectedMenuLocation = selectedLocation;
     
     [self.headerView setupWithMenusForBlog:self.blog];
-    [self.headerView updateSelectionWithLocation:selectedLocation];
-    [self.headerView updateSelectionWithMenu:selectedMenu];
+    [self.headerView setSelectedLocation:selectedLocation];
+    [self.headerView setSelectedMenu:selectedMenu];
     
     [self setViewsWithMenu:selectedMenu];
     [UIView animateWithDuration:0.20 animations:^{
         self.scrollView.alpha = 1.0;
     }];
-}
-
-- (void)setDefaultMenu
-{
-    self.selectedMenuLocation.menu = [self.blog.menus firstObject];
-    [self.headerView updateSelectionWithMenu:self.selectedMenuLocation.menu];
-    [self setViewsWithMenu:self.selectedMenuLocation.menu];
 }
 
 - (void)setViewsWithMenu:(Menu *)menu
@@ -196,18 +174,28 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 #pragma mark - MenusHeaderViewDelegate
 
-- (void)headerView:(MenusHeaderView *)headerView selectionChangedWithSelectedLocation:(MenuLocation *)location
+- (void)headerView:(MenusHeaderView *)headerView selectedLocation:(MenuLocation *)location
 {
-    if (location.menu) {
-        [self setViewsWithMenu:location.menu];
-    } else  {
-        [self setViewsWithMenu:[self.blog.menus firstObject]];
-    }
+    [self.headerView setSelectedMenu:location.menu];
+    [self setViewsWithMenu:location.menu];
 }
 
-- (void)headerView:(MenusHeaderView *)headerView selectionChangedWithSelectedMenu:(Menu *)menu
+- (void)headerView:(MenusHeaderView *)headerView selectedMenu:(Menu *)menu
 {
+    self.selectedMenuLocation.menu = menu;
     [self setViewsWithMenu:menu];
+}
+
+- (void)headerViewSelectedForCreatingNewMenu:(MenusHeaderView *)headerView
+{
+    Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
+    newMenu.blog = self.blog;
+    newMenu.name = [Menu generateIncrementalNameFromMenus:self.blog.menus];
+    self.selectedMenuLocation.menu = newMenu;
+    
+    [self.headerView addMenu:newMenu];
+    [self.headerView setSelectedMenu:newMenu];
+    [self setViewsWithMenu:newMenu];
 }
 
 #pragma mark - MenuDetailsViewDelegate
@@ -226,7 +214,9 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     void(^deleteMenu)() = ^() {
         Menu *currentMenu = self.selectedMenuLocation.menu;
-        [self setDefaultMenu];
+        self.selectedMenuLocation.menu = [Menu defaultMenuForBlog:self.blog];
+        [self.headerView setSelectedMenu:self.selectedMenuLocation.menu];
+        [self setViewsWithMenu:self.selectedMenuLocation.menu];
         [self.headerView removeMenu:currentMenu];
     };
     

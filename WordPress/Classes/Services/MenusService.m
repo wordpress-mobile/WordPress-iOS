@@ -8,6 +8,8 @@
 #import "RemoteMenuItem.h"
 #import "RemoteMenuLocation.h"
 #import "ContextManager.h"
+#import "PostService.h"
+#import "Page.h"
 
 @implementation MenusService
 
@@ -43,6 +45,24 @@
                 
                 return menu;
             }];
+            
+            // Create a new default menu, if needed.
+            Menu *defaultMenu = [Menu defaultMenuForBlog:blog];
+            if (!defaultMenu) {
+                defaultMenu = [Menu newDefaultMenu:self.managedObjectContext];
+            }
+            // Ensure the default menu is the first menu in the list of menus.
+            NSMutableArray *mutableMenus = [NSMutableArray arrayWithArray:menus];
+            [mutableMenus insertObject:defaultMenu atIndex:0];
+            menus = mutableMenus;
+            
+            // Set the default menu to locations, if needed.
+            for (MenuLocation *location in locations) {
+                if (location.menu) {
+                    continue;
+                }
+                location.menu = defaultMenu;
+            }
             
             blog.menuLocations = [NSOrderedSet orderedSetWithArray:locations];
             blog.menus = [NSOrderedSet orderedSetWithArray:menus];
@@ -148,6 +168,46 @@
                         success();
                         
                     } failure:failure];
+}
+
+- (void)generateDefaultMenuItemsForBlog:(Blog *)blog
+                                success:(void(^)(NSArray <MenuItem *> *defaultItems))success
+                                failure:(void(^)(NSError *error))failure
+{
+    // Get the latest list of Pages available to the site.
+    PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
+    options.statuses = @[PostStatusPublish];
+    options.order = PostServiceResultsOrderAscending;
+    options.orderBy = PostServiceResultsOrderingByTitle;
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [postService syncPostsOfType:PostServiceTypePage
+                     withOptions:options
+                         forBlog:blog
+                         success:^(NSArray *pages) {
+                             [self.managedObjectContext performBlock:^{
+                                 
+                                 if (!pages.count) {
+                                     success(nil);
+                                     return;
+                                 }
+                                 NSMutableArray *items = [NSMutableArray arrayWithCapacity:pages.count];
+                                 // Create menu items for the top parent pages.
+                                 for (Page *page in pages) {
+                                     if ([page.parentID integerValue] > 0) {
+                                         continue;
+                                     }
+                                     MenuItem *pageItem = [NSEntityDescription insertNewObjectForEntityForName:[MenuItem entityName] inManagedObjectContext:self.managedObjectContext];
+                                     pageItem.contentId = [page.postID stringValue];
+                                     pageItem.name = page.titleForDisplay;
+                                     pageItem.type = MenuItemTypePage;
+                                     [items addObject:pageItem];
+                                 }
+                                 if (success) {
+                                     success(items);
+                                 }
+                             }];
+                         }
+                         failure:failure];
 }
 
 #pragma mark - Menu managed objects from RemoteMenu objects
