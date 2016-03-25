@@ -46,11 +46,8 @@
                 return menu;
             }];
             
-            // Create a new default menu, if needed.
-            Menu *defaultMenu = [Menu defaultMenuForBlog:blog];
-            if (!defaultMenu) {
-                defaultMenu = [Menu newDefaultMenu:self.managedObjectContext];
-            }
+            // Create a new default menu.
+            Menu *defaultMenu = [Menu newDefaultMenu:self.managedObjectContext];
             // Ensure the default menu is the first menu in the list of menus.
             NSMutableArray *mutableMenus = [NSMutableArray arrayWithArray:menus];
             [mutableMenus insertObject:defaultMenu atIndex:0];
@@ -202,6 +199,9 @@
                                      pageItem.type = MenuItemTypePage;
                                      [items addObject:pageItem];
                                  }
+                                 
+                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
                                  if (success) {
                                      success(items);
                                  }
