@@ -30,8 +30,7 @@ class PlanListViewControllerTest: XCTestCase {
 
     func testPlanImageWhenActivePlanSet() {
         let model = PlanListViewModel.Ready((activePlan: defaultPlans[1], availablePlans: plansWithPrices))
-        let presenter = MockImmuTablePresenter()
-        let tableViewModel = model.tableViewModelWithPresenter(presenter)
+        let tableViewModel = model.tableViewModelWithPresenter(nil, planService: nil)
         let freeRow = tableViewModel.planRowAtIndex(0)
         let premiumRow = tableViewModel.planRowAtIndex(1)
         let businessRow = tableViewModel.planRowAtIndex(2)
