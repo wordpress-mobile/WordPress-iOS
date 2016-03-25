@@ -5,10 +5,12 @@
 #import "MenuLocation.h"
 #import "MenuItem.h"
 #import "WPStyleGuide.h"
+#import "WPFontManager.h"
 #import "MenusHeaderView.h"
 #import "MenuDetailsView.h"
 #import "MenuItemsStackView.h"
 #import "MenuItemEditingViewController.h"
+#import "WPNoResultsView.h"
 
 typedef NS_ENUM(NSInteger) {
     MenusSectionSelection = 0,
@@ -38,7 +40,9 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenusService *menusService;
 @property (nonatomic, strong) MenuLocation *selectedMenuLocation;
+@property (nonatomic, strong) WPNoResultsView *loadingView;
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
+@property (nonatomic, assign) BOOL animatesAppearanceAfterSync;
 
 @end
 
@@ -88,6 +92,12 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.headerView.delegate = self;
     self.detailsView.delegate = self;
     self.itemsView.delegate = self;
+    
+    {
+        WPNoResultsView *loadingView = [[WPNoResultsView alloc] init];
+        loadingView.titleText = NSLocalizedString(@"Loading Menus...", @"Menus label text displayed while menus are loading");;
+        self.loadingView = loadingView;
+    }
 }
 
 - (void)viewDidLoad
@@ -111,6 +121,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     [super viewWillAppear:animated];
     
+    self.animatesAppearanceAfterSync = YES;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHideNotification:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowNotification:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotification:) name:UIKeyboardWillChangeFrameNotification object:nil];
@@ -120,6 +132,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     [super viewDidAppear:animated];
 
+    self.animatesAppearanceAfterSync = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -140,18 +153,28 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)syncWithBlogMenus
 {
+    [self.loadingView showInView:self.view];
+    [self.loadingView centerInSuperview];
+
     [self.menusService syncMenusForBlog:self.blog
                                 success:^{
                                     [self didSyncBlog];
                                 }
                                 failure:^(NSError *error) {
                                     DDLogDebug(@"MenusViewController could not sync menus for blog");
-                                    [self.navigationController popViewControllerAnimated:YES];
+                                    self.loadingView.titleText = NSLocalizedString(@"An error occurred loading menus, please check your internet connection.", @"Menus text shown when an error occurred loading menus from the server.");
                                 }];
 }
 
 - (void)didSyncBlog
 {
+    if (!self.blog.menuLocations.count) {
+        self.loadingView.titleText = NSLocalizedString(@"No menus available", @"Menus text shown when no menus were available for loading the Menus editor.");
+        return;
+    }
+    
+    [self.loadingView removeFromSuperview];
+
     MenuLocation *selectedLocation = [self.blog.menuLocations firstObject];
     Menu *selectedMenu = selectedLocation.menu;
     self.selectedMenuLocation = selectedLocation;
@@ -161,9 +184,15 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [self.headerView setSelectedMenu:selectedMenu];
     
     [self setViewsWithMenu:selectedMenu];
-    [UIView animateWithDuration:0.20 animations:^{
+    
+    if (!self.animatesAppearanceAfterSync) {
         self.scrollView.alpha = 1.0;
-    }];
+    } else {
+        [UIView animateWithDuration:0.20 animations:^{
+            self.scrollView.alpha = 1.0;
+        } completion:^(BOOL finished) {
+        }];
+    }
 }
 
 - (void)setViewsWithMenu:(Menu *)menu
