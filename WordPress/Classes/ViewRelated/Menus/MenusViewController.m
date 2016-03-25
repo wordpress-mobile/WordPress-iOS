@@ -12,6 +12,7 @@
 #import "MenuItemEditingViewController.h"
 #import "WPNoResultsView.h"
 #import "Menu+ViewDesign.h"
+#import "ContextManager.h"
 
 typedef NS_ENUM(NSInteger) {
     MenusSectionSelection = 0,
@@ -246,7 +247,19 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)insertBlankMenuItemIfNeeded
 {
-    
+    Menu *menu = self.selectedMenuLocation.menu;
+    if (!menu.items.count) {
+        // Add a new empty item.
+        MenuItem *item = [NSEntityDescription insertNewObjectForEntityForName:[MenuItem entityName] inManagedObjectContext:menu.managedObjectContext];
+        item.name = [MenuItem defaultItemNameLocalized];
+        item.type = MenuItemTypePage;
+        item.menu = menu;
+        
+        [[ContextManager sharedInstance] saveContext:menu.managedObjectContext];
+        
+        self.itemsView.menu = nil;
+        self.itemsView.menu = menu;
+    }
 }
 
 - (void)setViewsWithMenu:(Menu *)menu
@@ -257,6 +270,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.itemsLoadingLabel.hidden = YES;
     if ([menu.menuId isEqualToString:MenuDefaultID]) {
         [self loadDefaultMenuItemsIfNeeded];
+    } else {
+        [self insertBlankMenuItemIfNeeded];
     }
 }
 
