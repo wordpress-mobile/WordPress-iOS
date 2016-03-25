@@ -37,6 +37,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) MenusService *menusService;
+@property (nonatomic, strong) MenuLocation *selectedMenuLocation;
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
 
@@ -166,13 +167,25 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)didSyncBlog
 {
-    [self.headerView updateWithMenusForBlog:self.blog];
-    [self setViewsWithMenu:[self.blog.menus firstObject]];
+    MenuLocation *selectedLocation = [self.blog.menuLocations firstObject];
+    Menu *selectedMenu = selectedLocation.menu;
+    self.selectedMenuLocation = selectedLocation;
     
+    [self.headerView setupWithMenusForBlog:self.blog];
+    [self.headerView updateSelectionWithLocation:selectedLocation];
+    [self.headerView updateSelectionWithMenu:selectedMenu];
+    
+    [self setViewsWithMenu:selectedMenu];
     [UIView animateWithDuration:0.20 animations:^{
-        
         self.scrollView.alpha = 1.0;
     }];
+}
+
+- (void)setDefaultMenu
+{
+    self.selectedMenuLocation.menu = [self.blog.menus firstObject];
+    [self.headerView updateSelectionWithMenu:self.selectedMenuLocation.menu];
+    [self setViewsWithMenu:self.selectedMenuLocation.menu];
 }
 
 - (void)setViewsWithMenu:(Menu *)menu
@@ -181,16 +194,9 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.itemsView.menu = menu;
 }
 
-#pragma mark - UIScrollView
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-
-}
-
 #pragma mark - MenusHeaderViewDelegate
 
-- (void)headerViewSelectionChangedWithSelectedLocation:(MenuLocation *)location
+- (void)headerView:(MenusHeaderView *)headerView selectionChangedWithSelectedLocation:(MenuLocation *)location
 {
     if (location.menu) {
         [self setViewsWithMenu:location.menu];
@@ -199,7 +205,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
 }
 
-- (void)headerViewSelectionChangedWithSelectedMenu:(Menu *)menu
+- (void)headerView:(MenusHeaderView *)headerView selectionChangedWithSelectedMenu:(Menu *)menu
 {
     [self setViewsWithMenu:menu];
 }
@@ -209,6 +215,38 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)detailsViewUpdatedMenuName:(MenuDetailsView *)menuDetailView
 {
     [self.headerView refreshMenuViewsUsingMenu:menuDetailView.menu];
+}
+
+- (void)detailsViewSelectedToSaveMenu:(MenuDetailsView *)menuDetailView
+{
+    // Save the menu via MenusService
+}
+
+- (void)detailsViewSelectedToDeleteMenu:(MenuDetailsView *)menuDetailView
+{
+    void(^deleteMenu)() = ^() {
+        Menu *currentMenu = self.selectedMenuLocation.menu;
+        [self setDefaultMenu];
+        [self.headerView removeMenu:currentMenu];
+    };
+    
+    NSString *alertTitle = NSLocalizedString(@"Are you sure you want to delete the menu?", @"Menus confirmation text for confirming if a user wants to delete a menu.");
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:alertTitle
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    NSString *confirmTitle = NSLocalizedString(@"Delete Menu", @"Menus confirmation button for deleting a menu.");
+    NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Menus cancel button for deleting a menu.");
+    UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:confirmTitle
+                                                          style:UIAlertActionStyleDestructive
+                                                        handler:^(UIAlertAction * _Nonnull action) {
+                                                            deleteMenu();
+                                                        }];
+    [alertController addAction:confirmAction];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelTitle
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    [alertController addAction:cancelAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 #pragma mark - MenuItemsStackViewDelegate

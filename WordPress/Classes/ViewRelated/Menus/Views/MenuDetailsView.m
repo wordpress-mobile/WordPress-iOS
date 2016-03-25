@@ -49,10 +49,12 @@
     [self.trashButton setTitle:nil forState:UIControlStateNormal];
     self.trashButton.tintColor = [WPStyleGuide greyDarken30];
     [self.trashButton setImage:[self.trashButton templatedIconImageNamed:@"gridicons-trash"] forState:UIControlStateNormal];
+    [self.trashButton addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     self.saveButton.backgroundFillColor = [WPStyleGuide mediumBlue];
     [self.saveButton setTitle:NSLocalizedString(@"Save", @"Menus save button title") forState:UIControlStateNormal];
     [self.saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.saveButton addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     {
         UIImage *image = [[UIImage imageNamed:@"gridicons-pencil"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -134,6 +136,18 @@
     [super traitCollectionDidChange:previousTraitCollection];
     
     [self updateTextFieldDesignIconPositioning];
+}
+
+#pragma mark - buttons
+
+- (void)saveButtonPressed
+{
+    [self.delegate detailsViewSelectedToSaveMenu:self];
+}
+
+- (void)trashButtonPressed
+{
+    [self.delegate detailsViewSelectedToDeleteMenu:self];
 }
 
 #pragma mark - delegate helpers
