@@ -650,11 +650,9 @@ EditImageDetailsViewControllerDelegate
  */
 - (void)showBlogSelectorPrompt:(WPBlogSelectorButton*)sender
 {
-    if ([self isSingleSiteMode])
-    {
+    if ([self isSingleSiteMode]) {
         [self cancelEditing];
-    }
-    else if (![self.post hasSiteSpecificChanges]) {
+    } else if (![self.post hasSiteSpecificChanges]) {
         [self showBlogSelector];
         return;
     }
@@ -1021,8 +1019,7 @@ EditImageDetailsViewControllerDelegate
     // editor screen is in preview mode, there is only 1 blog, or the user
     // is editing an existing post.
 
-    if (self.currentBlogCount <= 1 || !self.isEditing || (self.isEditing && self.post.hasRemote))
-    {
+    if (self.currentBlogCount <= 1 || !self.isEditing || (self.isEditing && self.post.hasRemote)) {
         return YES;
     }
     return NO;
