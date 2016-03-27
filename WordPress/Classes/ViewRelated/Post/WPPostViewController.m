@@ -652,6 +652,7 @@ EditImageDetailsViewControllerDelegate
 {
     if ([self isSingleSiteMode]) {
         [self cancelEditing];
+        return;
     } else if (![self.post hasSiteSpecificChanges]) {
         [self showBlogSelector];
         return;
