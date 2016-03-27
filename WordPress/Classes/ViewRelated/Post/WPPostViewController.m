@@ -650,7 +650,11 @@ EditImageDetailsViewControllerDelegate
  */
 - (void)showBlogSelectorPrompt:(WPBlogSelectorButton*)sender
 {
-    if (![self.post hasSiteSpecificChanges]) {
+    if ([self isSingleSiteMode])
+    {
+        [self cancelEditing];
+    }
+    else if (![self.post hasSiteSpecificChanges]) {
         [self showBlogSelector];
         return;
     }
@@ -1011,6 +1015,19 @@ EditImageDetailsViewControllerDelegate
     return blogCount;
 }
 
+- (BOOL)isSingleSiteMode
+{
+    // The blog picker is in single site mode if one of the following is true:
+    // editor screen is in preview mode, there is only 1 blog, or the user
+    // is editing an existing post.
+
+    if (self.currentBlogCount <= 1 || !self.isEditing || (self.isEditing && self.post.hasRemote))
+    {
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark - UI Manipulation
 
 /**
@@ -1284,10 +1301,7 @@ EditImageDetailsViewControllerDelegate
             [blogButton sizeToFit];
         }
         
-        // The blog picker is in single site mode if one of the following is true:
-        // editor screen is in preview mode, there is only 1 blog, or the user
-        // is editing an existing post.
-        if (self.currentBlogCount <= 1 || !self.isEditing || (self.isEditing && self.post.hasRemote)) {
+        if ([self isSingleSiteMode]) {
             blogButton.buttonMode = WPBlogSelectorButtonSingleSite;
         } else {
             blogButton.buttonMode = WPBlogSelectorButtonMultipleSite;
