@@ -290,7 +290,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 {
     NSMutableArray *predicates = [NSMutableArray array];
 
-    NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && original = nil", self.blog];
+    NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && revision = nil", self.blog];
     [predicates addObject:basePredicate];
     
     NSPredicate *typePredicate = [NSPredicate predicateWithFormat:@"postType = %@", [self postTypeToSync]];
