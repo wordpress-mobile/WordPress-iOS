@@ -52,6 +52,7 @@ class PlanDetailViewController: UIViewController {
     @IBOutlet weak var planDescriptionLabel: UILabel!
     @IBOutlet weak var planPriceLabel: UILabel!
     @IBOutlet weak var purchaseButton: UIButton!
+    @IBOutlet weak var separator: UIView!
 
     private lazy var currentPlanLabel: UIView = {
         let label = UILabel()
@@ -95,8 +96,6 @@ class PlanDetailViewController: UIViewController {
     }
     
     private func configureAppearance() {
-        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
-        
         planTitleLabel.textColor = WPStyleGuide.darkGrey()
         planDescriptionLabel.textColor = WPStyleGuide.grey()
         planPriceLabel.textColor = WPStyleGuide.grey()
@@ -105,12 +104,17 @@ class PlanDetailViewController: UIViewController {
         
         dropshadowImageView.backgroundColor = UIColor.whiteColor()
         configurePlanImageDropshadow()
+        
+        separator.backgroundColor = WPStyleGuide.greyLighten30()
     }
     
     private func configureTableView() {
-        ImmuTable.registerRows([ FeatureListItemRow.self ], tableView: tableView)
-    
-        tableView.layoutMargins = UIEdgeInsetsMake(0, tableViewHorizontalMargin, 0, tableViewHorizontalMargin)
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 80.0
+
+        // This is required to remove the extra grouped tableview
+        // padding at the top of the tableview
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
     }
     
     private func configurePlanImageDropshadow() {
@@ -214,9 +218,11 @@ class PlanDetailViewController: UIViewController {
                 }
                 
                 return ImmuTable(sections: groups.map { group in
-                    let features = group.slugs.map { PlanService.featureForPlan(plan, withSlug: $0) }
-                    
-                    return ImmuTableSection(headerText: group.title, rows: features.map({ TextRow(title: $0!.title, value: $0!.description) }), footerText: nil)
+                    let features = group.slugs.flatMap { PlanService.featureForPlan(plan, withSlug: $0) }
+                    let rows: [ImmuTableRow] = features.map({ feature in
+                        return FeatureItemRow(title: feature.title, description: feature.description, iconURL: feature.iconURL)
+                    })
+                    return ImmuTableSection(headerText: group.title, rows: rows, footerText: nil)
                 })
             }
         }
@@ -260,84 +266,116 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        // Rows have alternate colors
-        if indexPath.row % 2 == 0 {
-            cell.backgroundColor = WPStyleGuide.greyLighten30()
+        guard let cell = cell as? FeatureItemCell else { return }
+        
+        let separatorInset: CGFloat = 15
+        let isLastCellInSection = indexPath.row == self.tableView(tableView, numberOfRowsInSection: indexPath.section) - 1
+        let isLastSection = indexPath.section == self.numberOfSectionsInTableView(tableView) - 1
+        
+        // The separator for the last cell in each section has no insets, 
+        // except for in the last section, where there's no separator at all.
+        if isLastCellInSection {
+            if isLastSection {
+                cell.separator.hidden = true
+            } else {
+                cell.separatorInset = UIEdgeInsetsZero
+            }
         } else {
-            cell.backgroundColor = WPStyleGuide.lightGrey()
+            cell.separatorInset = UIEdgeInsets(top: 0, left: separatorInset, bottom: 0, right: separatorInset)
         }
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return tableViewModel.sections[section].headerText
     }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let title = self.tableView(tableView, titleForHeaderInSection: section) where !title.isEmpty {
+            let header = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
+            header.title = title
+            return header
+        } else {
+            return nil
+        }
+    }
 }
 
-struct FeatureListItemRow : ImmuTableRow {
-    static let cell = ImmuTableCell.Class(WPTableViewCellValue1)
+class FeatureItemCell: WPTableViewCell {
+    @IBOutlet weak var featureIconImageView: UIImageView!
+    @IBOutlet weak var featureTitleLabel: UILabel!
+    @IBOutlet weak var featureDescriptionLabel: UILabel!
+    @IBOutlet weak var separator: UIView!
+    @IBOutlet var separatorEdgeConstraints: [NSLayoutConstraint]!
     
-    let action: ImmuTableAction? = nil
+    override var separatorInset: UIEdgeInsets {
+        didSet {
+            for constraint in separatorEdgeConstraints {
+                if constraint.firstAttribute == .Leading {
+                    constraint.constant = separatorInset.left
+                } else if constraint.firstAttribute == .Trailing {
+                    constraint.constant = separatorInset.right
+                }
+            }
+            
+            separator.layoutIfNeeded()
+        }
+    }
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        layoutMargins = UIEdgeInsetsZero
+        
+        separator.backgroundColor = WPStyleGuide.greyLighten30()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        separator.hidden = false
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // This is required to fix an issue where only the first line of text would
+        // is displayed on the iPhone 6(s) Plus due to a fractional Y position.
+        featureDescriptionLabel.frame = CGRectIntegral(featureDescriptionLabel.frame)
+    }
+}
+
+struct FeatureItemRow : ImmuTableRow {
+    static let cell = ImmuTableCell.Class(FeatureItemCell)
     
     let title: String
-    let webOnly: Bool
-    
-    let checkmarkLeftPadding: CGFloat = 16.0
-    let webOnlyFontSize: CGFloat = 13.0
-    
-    init(feature: PlanFeature) {
-        self.title = feature.title
-        
-        // TODO: (@frosty, 2016-03-14) Currently hardcoded because the API doesn't provide
-        // us with this info. Remove once we switch to a different design that doesn't display 'web only'.
-        self.webOnly = (feature.slug == "custom-domain")
-    }
+    let description: String
+    let iconURL: NSURL
+    let action: ImmuTableAction? = nil
     
     func configureCell(cell: UITableViewCell) {
-        cell.textLabel?.text = text
-        cell.textLabel?.font = WPStyleGuide.tableviewTextFont()
-        cell.textLabel?.textColor = textColor
-
-        cell.detailTextLabel?.text = detailText
-        cell.detailTextLabel?.font = detailTextFont
-        cell.detailTextLabel?.textColor = WPStyleGuide.grey()
-
-        cell.accessibilityLabel = accessibilityLabel
-    }
-
-    var text: String? {
-        return title
-    }
-
-    var textColor = WPStyleGuide.darkGrey()
-
-    var detailText: String? {
-        if webOnly {
-            return NSLocalizedString("WEB ONLY", comment: "Describes a feature of a WordPress.com plan that is only available to users via the web.")
-        } else {
-            return nil
+        guard let cell = cell as? FeatureItemCell else { return }
+        
+        cell.featureTitleLabel?.text = title
+        
+        if let featureDescriptionLabel = cell.featureDescriptionLabel {
+            cell.featureDescriptionLabel?.attributedText = attributedDescriptionText(description, font: featureDescriptionLabel.font)
         }
+        
+        cell.featureIconImageView?.setImageWithURL(iconURL, placeholderImage: nil)
+        
+        cell.featureTitleLabel.textColor = WPStyleGuide.darkGrey()
+        cell.featureDescriptionLabel.textColor = WPStyleGuide.grey()
+        WPStyleGuide.configureTableViewCell(cell)
     }
-
-    var detailTextFont: UIFont {
-        if webOnly {
-            return WPFontManager.systemRegularFontOfSize(webOnlyFontSize)
-        } else {
-            return WPStyleGuide.tableviewTextFont()
-        }
-    }
-
-    var accessibilityLabel: String? {
-        guard let availableAccessibilityLabel = self.availableAccessibilityLabel else {
-            return nil
-        }
-        return String(format: "%@. %@", title, availableAccessibilityLabel)
-    }
-
-    var availableAccessibilityLabel: String? {
-        if webOnly {
-            return NSLocalizedString("Included in web version", comment: "Spoken text. A feature is included in the plan")
-        } else {
-            return NSLocalizedString("Included", comment: "Spoken text. A feature is included in the plan")
-        }
+    
+    private func attributedDescriptionText(text: String, font: UIFont) -> NSAttributedString {
+        let lineHeight: CGFloat = 18
+        
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.maximumLineHeight = lineHeight
+        paragraphStyle.minimumLineHeight = lineHeight
+        
+        let attributedText = NSMutableAttributedString(string: text, attributes: [NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName: font])
+        return attributedText
     }
 }
