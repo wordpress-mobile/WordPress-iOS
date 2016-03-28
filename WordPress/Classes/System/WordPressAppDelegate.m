@@ -60,7 +60,7 @@
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
 
-int ddLogLevel                                                  = DDLogLevelInfo;
+int ddLogLevel = DDLogLevelInfo;
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -388,6 +388,9 @@ int ddLogLevel                                                  = DDLogLevelInfo
         [MediaService cleanUnusedMediaFileFromTmpDir];
     });
     
+    // Configure Extensions
+    [self setupWordPressExtensions];
+    
     // Configure Today Widget
     [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
     
@@ -626,7 +629,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
 - (void)create3DTouchShortcutItems
 {
     WP3DTouchShortcutCreator *shortcutCreator = [WP3DTouchShortcutCreator new];
-    [shortcutCreator createShortcuts:[self isLoggedIn]];
+    [shortcutCreator createShortcutsIf3DTouchAvailable:[self isLoggedIn]];
 }
 
 #pragma mark - Analytics
@@ -948,6 +951,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [self loginSimperium];
+        [self setupShareExtensionToken];
     } else {
         if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
             [WPAnalytics track:WPAnalyticsStatLogout];
@@ -960,6 +964,7 @@ int ddLogLevel                                                  = DDLogLevelInfo
         }
         
         [self removeTodayWidgetConfiguration];
+        [self removeShareExtensionConfiguration];
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
     
@@ -976,6 +981,16 @@ int ddLogLevel                                                  = DDLogLevelInfo
 }
 
 
+#pragma mark - Extensions
+
+- (void)setupWordPressExtensions
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+    [accountService setupAppExtensionsWithDefaultAccount];
+}
+
+
 #pragma mark - Today Extension
 
 - (void)determineIfTodayWidgetIsConfiguredAndShowAppropriately
@@ -989,6 +1004,25 @@ int ddLogLevel                                                  = DDLogLevelInfo
     TodayExtensionService *service = [TodayExtensionService new];
     [service removeTodayWidgetConfiguration];
 }
+
+
+#pragma mark - Share Extension
+
+- (void)setupShareExtensionToken
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *account              = [accountService defaultWordPressComAccount];
+    
+    [ShareExtensionService configureShareExtensionToken:account.authToken];
+    [ShareExtensionService configureShareExtensionUsername:account.username];
+}
+
+- (void)removeShareExtensionConfiguration
+{
+    [ShareExtensionService removeShareExtensionConfiguration];
+}
+
 
 #pragma mark - Simperium helpers
 
