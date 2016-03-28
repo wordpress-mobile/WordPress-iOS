@@ -182,7 +182,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 
     /*
      If the date is nil it means publish immediately so set the status to publish.
-     If the date is in the future set the status to scheduled.
+     If the date is in the future set the status to scheduled if current status is published.
      If the date is now or in the past, and the status is scheduled, set the status
      to published.
      */
@@ -190,11 +190,8 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
         // A nil date means publish immediately.
         self.status = PostStatusPublish;
 
-    } else if (self.date_created_gmt == [self.date_created_gmt laterDate:[NSDate date]]) {
-        // If its a future date, and we're not trashed, then the status is scheduled.
-        if (![self.status isEqualToString:PostStatusTrash]){
-            self.status = PostStatusScheduled;
-        }
+    } else if ([self hasFuturePublishDate] && [self.status isEqualToString:PostStatusPublish]) {
+        self.status = PostStatusScheduled;
 
     } else if ([self.status isEqualToString:PostStatusScheduled]) {
         self.status = PostStatusPublish;
