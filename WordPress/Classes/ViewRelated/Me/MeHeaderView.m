@@ -78,10 +78,20 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 }
 
 - (void)setGravatarEmail:(NSString *)gravatarEmail
-{
+{    
     // Since this view is only visible to the current user, we should show all ratings
     [self.gravatarImageView setImageWithGravatarEmail:gravatarEmail gravatarRating:GravatarRatingX];
     _gravatarEmail = gravatarEmail;
+}
+
+- (UIImage *)gravatarImage
+{
+    return self.gravatarImageView.image;
+}
+
+- (void)setGravatarImage:(UIImage *)gravatarImage
+{
+    self.gravatarImageView.image = gravatarImage;
 }
 
 - (void)startActivityIndicator
@@ -192,7 +202,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 
 - (UIActivityIndicatorView *)newSpinner
 {
-    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     indicatorView.hidesWhenStopped = YES;
     indicatorView.translatesAutoresizingMaskIntoConstraints = NO;
     
