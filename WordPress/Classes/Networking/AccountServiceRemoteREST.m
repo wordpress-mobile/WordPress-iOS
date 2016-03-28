@@ -14,6 +14,10 @@ static NSString * const UserDictionaryPrimaryBlogKey = @"primary_blog";
 static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 static NSString * const UserDictionaryDateKey = @"date";
 
+@interface AccountServiceRemoteREST ()
+@property (nonatomic, strong) WordPressComApi *anonymousApi;
+@end
+
 @implementation AccountServiceRemoteREST
 
 - (void)getBlogsWithSuccess:(void (^)(NSArray *))success
@@ -111,6 +115,47 @@ static NSString * const UserDictionaryDateKey = @"date";
                    failure(error);
                }
            }];
+}
+
+- (WordPressComApi *)anonymousApi
+{
+    if (!_anonymousApi) {
+        _anonymousApi = [WordPressComApi anonymousApi];
+    }
+
+    return _anonymousApi;
+}
+
+- (void)findExistingAccountByEmail:(NSString *)email success:(void (^)(BOOL found))success failure:(void (^)(NSError *error))failure
+{
+    // TODO: We need to make a versioned flavor of this endpoint and ensure it always returns a JSON object.
+    // TODO: Remove the special case in `WordPressComApi.assertApiVersion` the endpoint is versioned.
+    NSString *path = @"https://public-api.wordpress.com/is-available/email";
+    [self.api GET:path
+       parameters:@{ @"q": email }
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              BOOL found = NO;
+              if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                  NSDictionary *dict = (NSDictionary *)responseObject;
+                  NSString *errStr = [dict stringForKey:@"error"];
+                  found = [@"taken" isEqualToString:errStr];
+              }
+
+              if (success) {
+                  success(found);
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              // The is-available endpoint is an oddball.
+              if ([operation.responseString isEqualToString:@"true"]) {
+                  if (success) {
+                      success(NO);
+                  }
+                  return;
+              }
+              if (failure) {
+                  failure(error);
+              }
+          }];
 }
 
 #pragma mark - Private Methods

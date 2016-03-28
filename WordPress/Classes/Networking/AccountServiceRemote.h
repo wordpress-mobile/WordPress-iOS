@@ -36,5 +36,16 @@
                       success:(void (^)())success
                       failure:(void (^)(NSError *error))failure;
 
+/**
+ *  @brief      Query an email address for an associated wpcom account. Used in the auth link
+ *              signup flow.
+ *
+ *  @param email
+ *  @param success
+ *  @param failure
+ */
+- (void)findExistingAccountByEmail:(NSString *)email
+                           success:(void (^)(BOOL found))success
+                           failure:(void (^)(NSError *error))failure;
 
 @end
