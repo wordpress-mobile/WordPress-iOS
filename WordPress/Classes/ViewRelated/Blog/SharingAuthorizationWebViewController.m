@@ -46,6 +46,8 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
  */
 @property (nonatomic, strong) PublicizeService *publicizer;
 
+@property (nonatomic, strong) NSMutableArray *hosts;
+
 @end
 
 @implementation SharingAuthorizationWebViewController
@@ -79,15 +81,36 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
 #pragma mark - Instance Methods
 
+- (NSMutableArray *)hosts
+{
+    if (!_hosts) {
+        _hosts = [NSMutableArray array];
+    }
+    return _hosts;
+}
+
+
+- (void)saveHostForRequest:(NSURLRequest *)request
+{
+    NSString *host = request.URL.host;
+    if (!host || [host containsString:@"wordpress"] || [self.hosts containsObject:host]) {
+        return;
+    }
+    NSArray *components = [host componentsSeparatedByString:@"."];
+    // A bit of paranioa here. The components should never be less than two but just in case...
+    NSString *hostName = ([components count] > 1) ? [components objectAtIndex:[components count] - 2] : [components firstObject];
+    [self.hosts addObject:hostName];
+}
+
 - (void)cleanup
 {
     // Log out of the authenticed service.
-    NSHTTPCookie *cookie;
     NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (cookie in [storage cookies]) {
-        NSRange range = [[cookie domain] rangeOfString:self.publicizer.serviceID];
-        if (range.location != NSNotFound) {
-            [storage deleteCookie:cookie];
+    for (NSHTTPCookie *cookie in [storage cookies]) {
+        for (NSString *host in self.hosts) {
+            if ([cookie.domain containsString:host]) {
+                [storage deleteCookie:cookie];
+            }
         }
     }
 }
@@ -209,6 +232,8 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    [self saveHostForRequest:webView.request];
+
     if (self.loadingVerify) {
         [self handleAuthorizationAllowed];
     } else {
