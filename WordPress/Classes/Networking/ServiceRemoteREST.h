@@ -4,6 +4,7 @@ typedef enum
 {
     ServiceRemoteRESTApiVersion_1_1 = 1001,
     ServiceRemoteRESTApiVersion_1_2 = 1002,
+    ServiceRemoteRESTApiVersion_1_3 = 1003,
 } ServiceRemoteRESTApiVersion;
 
 @class WordPressComApi;
