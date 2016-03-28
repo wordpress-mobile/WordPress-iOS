@@ -263,10 +263,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration, WPMe
     
     private func presentGravatarPicker() {
         let pickerViewController = WPMediaPickerViewController()
-        pickerViewController.dataSource = assetDataSource
         pickerViewController.delegate = self
         pickerViewController.showMostRecentFirst = true
         pickerViewController.allowMultipleSelection = false
+        pickerViewController.filter = .Image
         
         presentViewController(pickerViewController, animated: true, completion: nil)
     }
@@ -323,6 +323,4 @@ class MeViewController: UITableViewController, UIViewControllerRestoration, WPMe
         }
         return headerView
     }()
-    
-    private lazy var assetDataSource = WPPHAssetDataSource()
 }
