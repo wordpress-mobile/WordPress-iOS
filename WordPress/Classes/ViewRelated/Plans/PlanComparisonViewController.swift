@@ -50,7 +50,7 @@ class PlanComparisonViewController: UIViewController {
 
         // @koke 2016-03-15
         // This is very fragile. If we set siteID after currentPlan it will crash.
-        // Setting the current plan causes the UI to update, which lazyly loads the view controllers,
+        // Setting the current plan causes the UI to update, which lazily loads the view controllers,
         // and they can't be initialized properly without a siteID.
         controller.siteID = siteID
 
