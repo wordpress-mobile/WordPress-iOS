@@ -83,7 +83,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration, WPMe
     private func headerViewForAccount(account: WPAccount) -> MeHeaderView {
         headerView.displayName = account.displayName
         headerView.username = account.username
-        headerView.gravatarEmail = account.email
+        
+        // Note:
+        // This is a workaround to allow us display the new Gravatar, while it's being uploaded,
+        // without getting overwritten by any refresh calls.
+        //
+        if headerView.gravatarImage == nil {
+            headerView.gravatarEmail = account.email
+        }
 
         return headerView
     }

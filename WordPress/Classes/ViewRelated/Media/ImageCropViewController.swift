@@ -55,7 +55,8 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
     }
     
     func scrollViewDidEndZooming(scrollView: UIScrollView, withView view: UIView?, atScale scale: CGFloat) {
-        
+        // NO-OP:
+        // Required to enable scrollView Zooming
     }
     
     
