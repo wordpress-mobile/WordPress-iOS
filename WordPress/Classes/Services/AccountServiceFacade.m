@@ -11,7 +11,13 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-    return [accountService createOrUpdateAccountWithUsername:username authToken:authToken];
+    WPAccount *account = [accountService createOrUpdateAccountWithUsername:username authToken:authToken];
+    if (![accountService.defaultWordPressComAccount.uuid isEqualToString:account.uuid]) {
+        [accountService removeDefaultWordPressComAccount];
+        [accountService setDefaultWordPressComAccount:account];
+    }
+    
+    return account;
 }
 
 - (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *))failure
@@ -19,18 +25,6 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     [accountService updateUserDetailsForAccount:account success:success failure:failure];
-}
-
--(void)removeLegacyAccount:(NSString *)newUsername
-{
-    NSParameterAssert(newUsername);
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    
-    if (![accountService.defaultWordPressComAccount.username isEqual:newUsername]) {
-        [accountService removeDefaultWordPressComAccount];
-    }
 }
 
 @end

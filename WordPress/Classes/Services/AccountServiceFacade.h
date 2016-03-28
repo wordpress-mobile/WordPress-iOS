@@ -28,13 +28,6 @@
                             success:(void (^)())success
                             failure:(void (^)(NSError *error))failure;
 
-/**
- *  This will remove a previous legacy `WPAccount`.
- *
- *  @param newUsername username of the account to remove.
- */
--(void)removeLegacyAccount:(NSString *)newUsername;
-
 @end
 
 /**
