@@ -1,6 +1,7 @@
 #import "MeHeaderView.h"
 #import "Blog.h"
 #import "UIImageView+Gravatar.h"
+#import "WordPress-Swift.h"
 
 const CGFloat MeHeaderViewHeight = 210;
 const CGFloat MeHeaderViewGravatarSize = 120.0;
@@ -174,6 +175,8 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
 
 - (IBAction)handleHeaderPress:(id)sender
 {
+    [_gravatarImageView bounceAnimation];
+    
     if (self.onPress) {
         self.onPress();
     }
