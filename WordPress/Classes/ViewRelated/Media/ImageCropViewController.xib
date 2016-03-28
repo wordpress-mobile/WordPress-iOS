@@ -45,19 +45,19 @@
                         <outlet property="delegate" destination="-1" id="l8Z-LT-PDW"/>
                     </connections>
                 </scrollView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zgq-ch-pQe" userLabel="Top View">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zgq-ch-pQe" userLabel="TopView">
                     <rect key="frame" x="0.0" y="0.0" width="600" height="140"/>
                     <color key="backgroundColor" white="1" alpha="0.78000000000000003" colorSpace="calibratedWhite"/>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZ8-SI-tbl" userLabel="Bottom View">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZ8-SI-tbl" userLabel="BottomView">
                     <rect key="frame" x="0.0" y="460" width="600" height="140"/>
                     <color key="backgroundColor" white="1" alpha="0.80188577586206899" colorSpace="calibratedWhite"/>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ztZ-ry-GKZ">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ztZ-ry-GKZ" userLabel="RightView">
                     <rect key="frame" x="460" y="140" width="140" height="320"/>
                     <color key="backgroundColor" white="1" alpha="0.78485991379310349" colorSpace="calibratedWhite"/>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ned-GL-8gu">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ned-GL-8gu" userLabel="LeftView">
                     <rect key="frame" x="0.0" y="140" width="140" height="320"/>
                     <color key="backgroundColor" white="1" alpha="0.7774784482758621" colorSpace="calibratedWhite"/>
                 </view>
