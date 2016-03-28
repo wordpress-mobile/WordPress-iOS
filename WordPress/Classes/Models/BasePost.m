@@ -123,9 +123,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return [BasePost titleForStatus:self.status];
 }
 
-// If the post has a future publish date. This is different from "isScheduled" in that
-// a post with a draft, pending, or trashed status can also have a date_created_gmt
-// with a future value.
+// This is different than isScheduled. See .h for details.
 - (BOOL)hasFuturePublishDate
 {
     if (!self.date_created_gmt) {
