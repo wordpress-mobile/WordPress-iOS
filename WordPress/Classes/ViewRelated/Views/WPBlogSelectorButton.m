@@ -72,12 +72,8 @@
         UIImage *blankFillerImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         [self setImage:blankFillerImage forState:UIControlStateNormal];
-        
-        self.userInteractionEnabled = NO;
     } else {
         [self setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
-        
-        self.userInteractionEnabled = YES;
     }
 }
 
