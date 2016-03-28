@@ -11,6 +11,7 @@ public extension SiteSettingsViewController
     public func confirmExportContent() {
         tableView.deselectSelectedRowWithAnimation(true)
 
+        WPAppAnalytics.track(.SiteSettingsExportSiteAccessed, withBlog: self.blog)
         presentViewController(confirmExportController(), animated: true, completion: nil)
     }
 
@@ -43,14 +44,18 @@ public extension SiteSettingsViewController
         let status = NSLocalizedString("Exporting content…", comment: "Overlay message displayed while starting content export")
         SVProgressHUD.showWithStatus(status, maskType: .Black)
         
+        let trackedBlog = blog
+        WPAppAnalytics.track(.SiteSettingsExportSiteRequested, withBlog: trackedBlog)
         let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.exportContentForBlog(blog,
             success: {
+                WPAppAnalytics.track(.SiteSettingsExportSiteResponseOK, withBlog: trackedBlog)
                 let status = NSLocalizedString("Email sent!", comment: "Overlay message displayed when export content started")
                 SVProgressHUD.showSuccessWithStatus(status)
             },
             failure: { error in
                 DDLogSwift.logError("Error exporting content: \(error.localizedDescription)")
+                WPAppAnalytics.track(.SiteSettingsExportSiteResponseError, withBlog: trackedBlog)
                 SVProgressHUD.dismiss()
                 
                 let errorTitle = NSLocalizedString("Export Content Error", comment: "Title of alert when export content fails")
@@ -71,6 +76,7 @@ public extension SiteSettingsViewController
         let status = NSLocalizedString("Checking purchases…", comment: "Overlay message displayed while checking if site has premium purchases")
         SVProgressHUD.showWithStatus(status)
 
+        WPAppAnalytics.track(.SiteSettingsDeleteSitePurchasesRequested, withBlog: blog)
         let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.getActivePurchasesForBlog(blog,
             success: { [weak self] purchases in
@@ -79,8 +85,13 @@ public extension SiteSettingsViewController
                     return
                 }
                 
-                let alertController = purchases.isEmpty ? strongSelf.confirmDeleteController() : strongSelf.warnPurchasesController()
-                strongSelf.presentViewController(alertController, animated: true, completion: nil)
+                if purchases.isEmpty {
+                    WPAppAnalytics.track(.SiteSettingsDeleteSiteAccessed, withBlog: strongSelf.blog)
+                    strongSelf.presentViewController(strongSelf.confirmDeleteController(), animated: true, completion: nil)
+                } else {
+                    WPAppAnalytics.track(.SiteSettingsDeleteSitePurchasesShown, withBlog: strongSelf.blog)
+                    strongSelf.presentViewController(strongSelf.warnPurchasesController(), animated: true, completion: nil)
+                }
             },
             failure: { error in
                 DDLogSwift.logError("Error getting purchases: \(error.localizedDescription)")
@@ -143,9 +154,12 @@ public extension SiteSettingsViewController
         let status = NSLocalizedString("Deleting site…", comment: "Overlay message displayed while deleting site")
         SVProgressHUD.showWithStatus(status, maskType: .Black)
         
+        let trackedBlog = blog
+        WPAppAnalytics.track(.SiteSettingsDeleteSiteRequested, withBlog: trackedBlog)
         let service = SiteManagementService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.deleteSiteForBlog(blog,
             success: { [weak self] in
+                WPAppAnalytics.track(.SiteSettingsDeleteSiteResponseOK, withBlog: trackedBlog)
                 let status = NSLocalizedString("Site deleted", comment: "Overlay message displayed when site successfully deleted")
                 SVProgressHUD.showSuccessWithStatus(status)
                 
@@ -155,6 +169,7 @@ public extension SiteSettingsViewController
             },
             failure: { error in
                 DDLogSwift.logError("Error deleting site: \(error.localizedDescription)")
+                WPAppAnalytics.track(.SiteSettingsDeleteSiteResponseError, withBlog: trackedBlog)
                 SVProgressHUD.dismiss()
                 
                 let errorTitle = NSLocalizedString("Delete Site Error", comment: "Title of alert when site deletion fails")
@@ -181,6 +196,7 @@ public extension SiteSettingsViewController
         
         let showTitle = NSLocalizedString("Show Purchases", comment: "Show site purchases action title")
         alertController.addDefaultActionWithTitle(showTitle, handler: { _ in
+            WPAppAnalytics.track(.SiteSettingsDeleteSitePurchasesShowClicked, withBlog: self.blog)
             self.showPurchases()
         })
         

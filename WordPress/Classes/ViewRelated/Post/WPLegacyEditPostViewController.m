@@ -608,15 +608,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
     [self.view endEditing:YES];
 
-    [self.post.original applyRevision];
-    [self.post.original deleteRevision];
-
     if (upload) {
         NSString *postTitle = self.post.original.postTitle;
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
         [postService uploadPost:(Post *)self.post.original
-                        success:^{
+                        success:^(AbstractPost *post){
+                            self.post = post;
+                            
                             DDLogInfo(@"post uploaded: %@", postTitle);
                         } failure:^(NSError *error) {
                             DDLogError(@"post failed: %@", [error localizedDescription]);
