@@ -265,6 +265,17 @@ static const UIEdgeInsets MoreButtonImageInsets = {0.0, 0.0, 0.0, 4.0};
     }];
 }
 
+#pragma mark - Instance Methods
+
+- (void)reset
+{
+    if (self.currentBatch == 0) {
+        return;
+    }
+    self.currentBatch = 0;
+    [self configureButtons];
+}
+
 
 #pragma mark - Notifications
 

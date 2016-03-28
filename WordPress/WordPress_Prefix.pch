@@ -46,6 +46,9 @@
 #define DDLogMethodParam(param) DDLogInfo(@"%@ %@%@", self, NSStringFromSelector(_cmd), param);
 
 // CocoaLumberjack Default Logging Level
+#ifndef COCOA_LUMBERJACK
+#define COCOA_LUMBERJACK
 extern int ddLogLevel;
+#endif
 
 #endif

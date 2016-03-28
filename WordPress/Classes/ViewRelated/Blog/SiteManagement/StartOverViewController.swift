@@ -90,6 +90,7 @@ public class StartOverViewController: UITableViewController
     private func contactSupport() {
         tableView.deselectSelectedRowWithAnimation(true)
 
+        WPAppAnalytics.track(.SiteSettingsStartOverContactSupportClicked, withBlog: blog)
         if HelpshiftUtils.isHelpshiftEnabled() {
             setupHelpshift(blog.account)
             
