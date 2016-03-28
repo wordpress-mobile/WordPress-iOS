@@ -42,6 +42,27 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  */
 - (void)removeDefaultWordPressComAccount;
 
+/**
+ Query an email address for an associated wpcom account. Used in the auth link
+ signup flow.
+
+ @param email
+ @param success
+ @param failure
+ */
+- (void)findExistingAccountByEmail:(NSString *)email  success:(void (^)(BOOL found))success failure:(void (^)(NSError *error))failure;
+
+/**
+ Requets a one-time authentication link sent to an existing account associated with the
+ specified email address.
+
+ @param email
+ @param success
+ @param failure
+ */
+- (void)requestAuthenticationLink:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+
 ///-----------------------
 /// @name Account creation
 ///-----------------------
