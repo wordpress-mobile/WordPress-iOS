@@ -3,7 +3,7 @@ import WordPressShared
 
 ///
 ///
-class SigninSelfHostedViewController : SigninAbstractViewController, SigninWPComDelegate
+class SigninSelfHostedViewController : SigninAbstractViewController
 {
 
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
