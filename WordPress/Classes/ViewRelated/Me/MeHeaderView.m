@@ -8,6 +8,7 @@ const CGFloat MeHeaderViewGravatarSize = 120.0;
 const CGFloat MeHeaderViewLabelHeight = 20.0;
 const CGFloat MeHeaderViewVerticalMargin = 20.0;
 const CGFloat MeHeaderViewVerticalSpacing = 10.0;
+const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 
 @interface MeHeaderView ()
 
@@ -164,21 +165,32 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.userInteractionEnabled = YES;
     
-    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                 action:@selector(handleHeaderPress:)];
+    UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                                                             action:@selector(handleHeaderPress:)];
+    recognizer.minimumPressDuration = MeHeaderViewMinimumPressDuration;
     [imageView addGestureRecognizer:recognizer];
     
     return imageView;
 }
 
+
 #pragma mark - UITapGestureRecognizer Handler
 
-- (IBAction)handleHeaderPress:(id)sender
+- (IBAction)handleHeaderPress:(UIGestureRecognizer *)sender
 {
-    [_gravatarImageView bounceAnimation];
+    // Touch Down: Depress the gravatarImageView
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        [_gravatarImageView depressAnimation];
+        return;
+    }
     
-    if (self.onPress) {
-        self.onPress();
+    // Touch Up: Normalize the gravatarImageView
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        [_gravatarImageView normalizeAnimation];
+        
+        if (self.onPress) {
+            self.onPress();
+        }
     }
 }
 
