@@ -3,7 +3,7 @@ import Foundation
 
 /// Encapsulates UIView Animation Helpers
 ///
-extension UIImageView
+extension UIView
 {
     /// Applies a bounce animation over the receiver
     ///
@@ -43,7 +43,7 @@ extension UIImageView
     
     /// Applies a spring animation, from size 0 to final size
     ///
-    public func displayImageWithSpringAnimation(newImage: UIImage) {
+    public func displayWithSpringAnimation() {
 
         let duration        = 0.5
         let delay           = 0.2
@@ -52,7 +52,6 @@ extension UIImageView
         let scaleInitial    = CGFloat(0.0)
         let scaleFinal      = CGFloat(1.0)
 
-        image               = newImage
         hidden              = false
         transform           = CGAffineTransformMakeScale(scaleInitial, scaleInitial)
         
@@ -72,13 +71,12 @@ extension UIImageView
 
     /// Applies a fade in animation
     ///
-    public func displayImageWithFadeInAnimation(newImage: UIImage) {
+    public func displayWithFadeInAnimation() {
 
         let duration        = 0.3
         let alphaInitial    = CGFloat(0.5)
         let alphaFinal      = CGFloat(1.0)
 
-        image               = newImage;
         alpha               = alphaInitial
         
         UIView.animateWithDuration(duration) { [weak self] in
