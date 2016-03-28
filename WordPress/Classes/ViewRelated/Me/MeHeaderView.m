@@ -15,6 +15,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 @property (nonatomic, strong) UIImageView *gravatarImageView;
 @property (nonatomic, strong) UILabel *displayNameLabel;
 @property (nonatomic, strong) UILabel *usernameLabel;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -33,6 +34,9 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
         _gravatarImageView = [self newImageViewForGravatar];
         [self addSubview:_gravatarImageView];
 
+        _activityIndicator = [self newSpinner];
+        [_gravatarImageView addSubview:_activityIndicator];
+        
         _displayNameLabel = [self newLabelForDisplayName];
         [self addSubview:_displayNameLabel];
 
@@ -80,6 +84,16 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     _gravatarEmail = gravatarEmail;
 }
 
+- (void)startActivityIndicator
+{
+    [_activityIndicator startAnimating];
+}
+
+- (void)stopActivityIndicator
+{
+    [_activityIndicator stopAnimating];
+}
+
 #pragma mark - Private Methods
 
 - (void)configureConstraints
@@ -121,6 +135,9 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
                                                     attribute:NSLayoutAttributeCenterX
                                                    multiplier:1
                                                       constant:0]];
+    
+    [self.gravatarImageView pinSubviewAtCenter:_activityIndicator];
+    
     [super setNeedsUpdateConstraints];
 }
 
@@ -171,6 +188,15 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     [imageView addGestureRecognizer:recognizer];
     
     return imageView;
+}
+
+- (UIActivityIndicatorView *)newSpinner
+{
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    indicatorView.hidesWhenStopped = YES;
+    indicatorView.translatesAutoresizingMaskIntoConstraints = NO;
+    
+    return indicatorView;
 }
 
 

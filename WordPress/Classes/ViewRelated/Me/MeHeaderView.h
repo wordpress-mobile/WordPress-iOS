@@ -10,4 +10,7 @@ typedef void (^MeHeaderViewCallback)(void);
 @property (nonatomic, copy) NSString *gravatarEmail;
 @property (nonatomic, copy) MeHeaderViewCallback onPress;
 
+- (void)startActivityIndicator;
+- (void)stopActivityIndicator;
+
 @end
