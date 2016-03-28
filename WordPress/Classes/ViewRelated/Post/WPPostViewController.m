@@ -1870,7 +1870,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)actionSheetSaveDraftButtonPressed
 {
-    if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+    if (![self.post hasRemote] && (self.post.isScheduled || [self.post.status isEqualToString:PostStatusPublish])) {
         self.post.status = PostStatusDraft;
     }
     
