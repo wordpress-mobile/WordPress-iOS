@@ -69,8 +69,28 @@ static NSString * const SharingAuthorizationAccessDenied = @"error=access_denied
     return webViewController;
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [self cleanup];
+}
+
 
 #pragma mark - Instance Methods
+
+- (void)cleanup
+{
+    // Log out of the authenticed service.
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies]) {
+        NSRange range = [[cookie domain] rangeOfString:self.publicizer.serviceID];
+        if (range.location != NSNotFound) {
+            [storage deleteCookie:cookie];
+        }
+    }
+}
 
 - (IBAction)dismiss
 {
