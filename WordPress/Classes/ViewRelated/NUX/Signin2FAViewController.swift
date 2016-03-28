@@ -179,7 +179,7 @@ extension Signin2FAViewController: LoginFacadeDelegate {
     }
 
 
-    func displayLoginMessage(message: String) {
+    func displayLoginMessage(message: String!) {
         configureStatusMessage(message)
     }
 
