@@ -311,6 +311,53 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)detailsViewSelectedToSaveMenu:(MenuDetailsView *)menuDetailView
 {
     // Save the menu via MenusService
+    Menu *menuToSave = menuDetailView.menu;
+    __weak __typeof(self) weakSelf = self;
+    
+    void(^toggleIsSaving)() = ^() {
+        // Disable user interaction while we are processing the save.
+        weakSelf.scrollView.userInteractionEnabled = NO;
+        weakSelf.detailsView.isSaving = YES;
+    };
+
+    void(^toggleIsNotSaving)() = ^() {
+        weakSelf.scrollView.userInteractionEnabled = YES;
+        weakSelf.detailsView.isSaving = NO;
+    };
+    
+    void(^failureToSave)(NSError *) = ^(NSError *error) {
+        toggleIsNotSaving();
+        // Present the error message.
+        NSString *errorTitle = NSLocalizedString(@"Error Saving Menu", @"Menus error title for a menu that received an error while trying to save a menu.");
+        [WPError showNetworkingAlertWithError:error title:errorTitle];
+    };
+    
+    void(^updateMenu)() = ^() {
+        [weakSelf.menusService updateMenu:menuToSave
+                              forBlog:weakSelf.blog
+                              success:^() {
+                                  [weakSelf.itemsView reloadItems];
+                                  toggleIsNotSaving();
+                              }
+                              failure:failureToSave];
+    };
+    
+    toggleIsSaving();
+    
+    if (!menuToSave.menuId.length) {
+        // Need to create the menu first.
+        [self.menusService createMenuWithName:menuToSave.name
+                            blog:self.blog
+                         success:^(NSString *menuID) {
+                             
+                             menuToSave.menuId = menuID;
+                             updateMenu();
+                             
+                         } failure:failureToSave];
+    } else {
+        // Update the menu.
+        updateMenu();
+    }
 }
 
 - (void)detailsViewSelectedToDeleteMenu:(MenuDetailsView *)menuDetailView

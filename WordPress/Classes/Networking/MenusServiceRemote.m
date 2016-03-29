@@ -82,7 +82,6 @@
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
                if(success) {
                    NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Expected a dictionary...");
-                   
                    NSDictionary *menuDictionary = [responseObject dictionaryForKey:@"menu"];
                    success([self menuFromJSONDictionary:menuDictionary]);
                }
@@ -145,7 +144,7 @@
        parameters:nil
           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
               if(success) {
-                                    
+                  
                   NSArray *menus = [self remoteMenusFromJSONArray:[responseObject arrayForKey:@"menus"]];
                   NSArray *locations = [self remoteMenuLocationsFromJSONArray:[responseObject arrayForKey:@"locations"]];
                   success(menus, locations);
@@ -341,12 +340,12 @@
     
     if(item.children.count) {
         
-        NSMutableArray *items = [NSMutableArray arrayWithCapacity:item.children.count];
-        for(RemoteMenuItem *item in item.children) {
-            [items addObject:[self menuItemJSONDictionaryFromItem:item]];
+        NSMutableArray *dictionaryItems = [NSMutableArray arrayWithCapacity:item.children.count];
+        for(RemoteMenuItem *remoteItem in item.children) {
+            [dictionaryItems addObject:[self menuItemJSONDictionaryFromItem:remoteItem]];
         }
         
-        dictionary[@"items"] = [NSArray arrayWithArray:items];
+        dictionary[@"items"] = [NSArray arrayWithArray:dictionaryItems];
     }
     
     return [NSDictionary dictionaryWithDictionary:dictionary];

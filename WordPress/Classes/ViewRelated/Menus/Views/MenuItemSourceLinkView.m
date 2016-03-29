@@ -31,6 +31,9 @@
         {
             MenuItemSourceTextBar *textBar = [[MenuItemSourceTextBar alloc] init];
             textBar.translatesAutoresizingMaskIntoConstraints = NO;
+            textBar.textField.autocorrectionType = UITextAutocorrectionTypeNo;
+            textBar.textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+            textBar.textField.keyboardType = UIKeyboardTypeURL;
             textBar.delegate = self;
             [self.stackView addArrangedSubview:textBar];
             

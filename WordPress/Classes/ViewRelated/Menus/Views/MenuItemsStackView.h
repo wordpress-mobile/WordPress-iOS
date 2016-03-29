@@ -10,6 +10,7 @@
 @property (nonatomic, weak) id <MenuItemsStackViewDelegate> delegate;
 @property (nonatomic, strong) Menu *menu;
 
+- (void)reloadItems;
 - (void)refreshViewWithItem:(MenuItem *)item focus:(BOOL)focusesView;
 - (void)removeItem:(MenuItem *)item;
 

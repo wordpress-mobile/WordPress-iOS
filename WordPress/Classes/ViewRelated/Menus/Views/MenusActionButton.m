@@ -33,6 +33,13 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     return self;
 }
 
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+{
+    [super traitCollectionDidChange:previousTraitCollection];
+    
+    [self setNeedsDisplay];
+}
+
 - (UIImage *)templatedIconImageNamed:(NSString *)imageName
 {
     return [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
