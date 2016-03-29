@@ -273,6 +273,9 @@ static const NSInteger MinutesToReadThreshold = 2;
 
     NSArray *metadata = [dict arrayForKey:PostRESTKeyMetadata];
     for (NSDictionary *obj in metadata) {
+        if (![obj isKindOfClass:[NSDictionary class]]) {
+            continue;
+        }
         if ([[obj stringForKey:CrossPostMetaKey] isEqualToString:CrossPostMetaXPostPermalink] ||
             [[obj stringForKey:CrossPostMetaKey] isEqualToString:CrossPostMetaXCommentPermalink]) {
 

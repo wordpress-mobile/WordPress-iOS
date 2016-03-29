@@ -125,6 +125,12 @@ public class WP3DTouchShortcutCreator: NSObject
         shortcutsProvider.shortcutItems = loggedOutShortcutArray()
     }
     
+    private func is3DTouchAvailable() -> Bool {
+        let window = UIApplication.sharedApplication().keyWindow
+        
+        return window?.traitCollection.forceTouchCapability == .Available
+    }
+    
     private func hasWordPressComAccount() -> Bool {
         let accountService = AccountService(managedObjectContext: mainContext)
         

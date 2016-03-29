@@ -13,6 +13,7 @@
 #import "OnePasswordFacade.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "WPWalkthroughOverlayView.h"
+#import "WPError.h"
 
 SpecBegin(LoginViewModel)
 
@@ -1009,7 +1010,7 @@ describe(@"displayRemoteError", ^{
     context(@"for a bad URL", ^{
         
         beforeEach(^{
-            error = [NSError errorWithDomain:@"wordpress.com" code:NSURLErrorBadURL userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+            error = [NSError errorWithDomain:WordPressAppErrorDomain code:NSURLErrorBadURL userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
         });
         
         it(@"should display an overlay with a 'Need Help?'", ^{
@@ -1043,7 +1044,7 @@ describe(@"displayRemoteError", ^{
             });
             
             it(@"should display an overlay with a message about re-entering login details", ^{
-                [[mockViewModelPresenter expect] displayOverlayViewWithMessage:NSLocalizedString(@"Please try entering your login details again.", nil) firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+                [[mockViewModelPresenter expect] displayOverlayViewWithMessage:NSLocalizedString(@"Your site was accessible but the username/password combination was not accepted. Please try again.", nil) firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
                 
                 [viewModel displayRemoteError:error];
                 
@@ -1144,7 +1145,7 @@ describe(@"displayRemoteError", ^{
         context(@"when the url is bad", ^{
             
             beforeEach(^{
-                error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:NSURLErrorBadURL userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+                error = [NSError errorWithDomain:WordPressAppErrorDomain code:NSURLErrorBadURL userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
             });
             
             it(@"should display an overlay with the default button text", ^{
