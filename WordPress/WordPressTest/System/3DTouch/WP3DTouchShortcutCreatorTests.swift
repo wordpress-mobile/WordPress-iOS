@@ -15,28 +15,15 @@ class WP3DTouchShortcutCreatorTests: XCTestCase
         testShortcutCreator = nil
         super.tearDown()
     }
-    
+
+    private func is3DTouchAvailable() -> Bool {
+        let window = UIApplication.sharedApplication().keyWindow
+
+        return window?.traitCollection.forceTouchCapability == .Available
+    }
+
     func testCreateShortcutLoggedOutDoesNotCreatesLoggedOutShortcutsWith3DTouchNotAvailable() {
-        let provider = MockShortcutsProvider(available: false)
-        let testShortcutCreator = WP3DTouchShortcutCreator(shortcutsProvider: provider)
         testShortcutCreator.createShortcutsIf3DTouchAvailable(false)
-        XCTAssertEqual(provider.shortcutItems!.count, 0)
-    }
-
-    func testCreateShortcutLoggedOutCreatesLoggedInShortcutWith3DTouchAvailable() {
-        let provider = MockShortcutsProvider(available: true)
-        let testShortcutCreator = WP3DTouchShortcutCreator(shortcutsProvider: provider)
-        testShortcutCreator.createShortcutsIf3DTouchAvailable(false)
-        XCTAssertEqual(provider.shortcutItems!.count, 1)
-        XCTAssertEqual(provider.shortcutItems![0].type, "org.wordpress.LogIn")
-    }
-}
-
-class MockShortcutsProvider: ApplicationShortcutsProvider {
-    var shortcutItems: [UIApplicationShortcutItem]? = []
-    let is3DTouchAvailable: Bool
-
-    init(available: Bool) {
-        is3DTouchAvailable = available
+        XCTAssertEqual(UIApplication.sharedApplication().shortcutItems!.count, is3DTouchAvailable() ? 1:0)
     }
 }

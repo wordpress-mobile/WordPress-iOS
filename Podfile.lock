@@ -228,7 +228,7 @@ DEPENDENCIES:
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
   - WordPress-iOS-Editor (= 1.2)
   - WordPress-iOS-Shared (= 0.5.3)
-  - WordPressApi (from `https://github.com/wordpress-mobile/WordPress-API-iOS.git`)
+  - WordPressApi (= 0.4.0)
   - WordPressCom-Analytics-iOS (= 0.1.5)
   - WordPressCom-Stats-iOS/Services (= 0.6.3)
   - WordPressCom-Stats-iOS/UI (= 0.6.3)
@@ -249,8 +249,6 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPressApi:
-    :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.1
@@ -265,9 +263,6 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPressApi:
-    :commit: 32554f30f400b633deb25b75de22032716e7ccb2
-    :git: https://github.com/wordpress-mobile/WordPress-API-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.1

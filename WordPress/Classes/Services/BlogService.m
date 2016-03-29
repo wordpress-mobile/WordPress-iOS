@@ -30,7 +30,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
 NSString *const WPComGetFeatures = @"wpcom.getFeatures";
 NSString *const VideopressEnabled = @"videopress_enabled";
-NSString *const MinimumVersion = @"3.6";
+NSString *const WordPressMinimumVersion = @"4.0";
 NSString *const HttpsPrefix = @"https://";
 CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
@@ -762,14 +762,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             blog.options = [NSDictionary dictionaryWithDictionary:options];
 
             CGFloat version = [[blog version] floatValue];
-            if (version < [MinimumVersion floatValue]) {
+            if (version < [WordPressMinimumVersion floatValue]) {
                 if (blog.lastUpdateWarning == nil
-                    || [blog.lastUpdateWarning floatValue] < [MinimumVersion floatValue])
+                    || [blog.lastUpdateWarning floatValue] < [WordPressMinimumVersion floatValue])
                 {
                     // TODO :: Remove UI call from service layer
                     [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                        message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], MinimumVersion]];
-                    blog.lastUpdateWarning = MinimumVersion;
+                                        message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], WordPressMinimumVersion]];
+                    blog.lastUpdateWarning = WordPressMinimumVersion;
                 }
             }
 
