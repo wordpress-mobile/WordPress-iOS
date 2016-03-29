@@ -52,7 +52,7 @@
     [self.trashButton addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     self.saveButton.backgroundFillColor = [WPStyleGuide mediumBlue];
-    [self.saveButton setTitle:NSLocalizedString(@"Save", @"Menus save button title") forState:UIControlStateNormal];
+    [self updateSaveButtonTitle];
     [self.saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.saveButton addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
@@ -85,6 +85,24 @@
         self.textField.text = menu.name;
         self.trashButton.hidden = [menu.menuId isEqualToString:MenuDefaultID];
         [self updateTextFieldDesignIconPositioning];
+    }
+}
+
+- (void)setIsSaving:(BOOL)isSaving
+{
+    if (_isSaving != isSaving) {
+        _isSaving = isSaving;
+        self.saveButton.userInteractionEnabled = !isSaving;
+        [self updateSaveButtonTitle];
+    }
+}
+
+- (void)updateSaveButtonTitle
+{
+    if (self.isSaving) {
+        [self.saveButton setTitle:NSLocalizedString(@"Saving...", @"Menus save button title while it is saving a Menu.") forState:UIControlStateNormal];
+    } else {
+        [self.saveButton setTitle:NSLocalizedString(@"Save", @"Menus save button title") forState:UIControlStateNormal];
     }
 }
 

@@ -7,7 +7,8 @@
 @class MenuItem;
 
 typedef void(^MenusServiceSuccessBlock)();
-typedef void(^MenusServiceMenuRequestSuccessBlock)(Menu *menu);
+typedef void(^MenusServiceCreateMenuRequestSuccessBlock)(NSString *menuID);
+typedef void(^MenusServiceUpdateMenuRequestSuccessBlock)();
 typedef void(^MenusServiceMenusRequestSuccessBlock)(NSArray<Menu *> *menus);
 typedef void(^MenusServiceLocationsRequestSuccessBlock)(NSArray<MenuLocation *> *locations);
 typedef void(^MenusServiceFailureBlock)(NSError *error);
@@ -53,7 +54,7 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
  */
 - (void)createMenuWithName:(NSString *)menuName
                       blog:(Blog *)blog
-                   success:(MenusServiceMenuRequestSuccessBlock)success
+                   success:(MenusServiceCreateMenuRequestSuccessBlock)success
                    failure:(MenusServiceFailureBlock)failure;
 
 /**
@@ -67,7 +68,7 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
  */
 - (void)updateMenu:(Menu *)menu
            forBlog:(Blog *)blog
-           success:(MenusServiceMenuRequestSuccessBlock)success
+           success:(MenusServiceUpdateMenuRequestSuccessBlock)success
            failure:(MenusServiceFailureBlock)failure;
 
 /**

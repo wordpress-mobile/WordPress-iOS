@@ -51,7 +51,7 @@
 {
     if (_menu != menu) {
         _menu = menu;
-        [self reloadItemViews];
+        [self reloadItems];
     }
 }
 
@@ -89,10 +89,11 @@
     // Remove the item from the context.
     NSManagedObjectContext *managedObjectContext = item.managedObjectContext;
     [managedObjectContext deleteObject:item];
+    [managedObjectContext processPendingChanges];
     [[ContextManager sharedInstance] saveContext:managedObjectContext];
 }
 
-- (void)reloadItemViews
+- (void)reloadItems
 {
     for(MenuItemsStackableView *stackableView in self.stackView.arrangedSubviews) {
         [self.stackView removeArrangedSubview:stackableView];

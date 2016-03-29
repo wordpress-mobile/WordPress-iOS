@@ -78,7 +78,7 @@
 
 - (void)createMenuWithName:(NSString *)menuName
                       blog:(Blog *)blog
-                   success:(MenusServiceMenuRequestSuccessBlock)success
+                   success:(MenusServiceCreateMenuRequestSuccessBlock)success
                    failure:(MenusServiceFailureBlock)failure
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
@@ -90,16 +90,8 @@
                        success:^(RemoteMenu *remoteMenu) {
                            
                            [self.managedObjectContext performBlockAndWait:^{
-                               
-                               Menu *menu = [self menuFromRemoteMenu:remoteMenu];
-                               [self refreshLocationsForMenu:menu
-                                 matchingRemoteLocationNames:remoteMenu.locationNames
-                                          availableLocations:[blog.menuLocations array]];
-                               
-                               [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                               
                                if(success) {
-                                   success(menu);
+                                   success(remoteMenu.menuId);
                                }
                            }];
                            
@@ -108,7 +100,7 @@
 
 - (void)updateMenu:(Menu *)menu
            forBlog:(Blog *)blog
-           success:(MenusServiceMenuRequestSuccessBlock)success
+           success:(MenusServiceUpdateMenuRequestSuccessBlock)success
            failure:(MenusServiceFailureBlock)failure
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
@@ -133,12 +125,22 @@
                         success:^(RemoteMenu *remoteMenu) {
                             
                             [self.managedObjectContext performBlockAndWait:^{
-                                [self refreshMenu:menu withRemoteMenu:remoteMenu];
+                                
+                                /*
+                                 Update the local menu with the fresh MenuItems from remote.
+                                 We need to replace the MenuItems as it's difficult to keep track of
+                                 which items are equal to one another, especially when a menuID is unknown.
+                                 */
+                                menu.items = nil;
+                                for(RemoteMenuItem *remoteItem in remoteMenu.items) {
+                                    [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
+                                }
+                                
+                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                if(success) {
+                                    success();
+                                }
                             }];
-                            
-                            if(success) {
-                                success(menu);
-                            }
                             
                         } failure:failure];
     }];
@@ -156,6 +158,7 @@
     void(^completeMenuDeletion)() = ^() {
         [self.managedObjectContext performBlock:^{
             [self.managedObjectContext deleteObject:menu];
+            [self.managedObjectContext processPendingChanges];
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             if (success) {
                 success();
@@ -237,7 +240,12 @@
                                                          inManagedObjectContext:self.managedObjectContext];
     
     Menu *menu = [[Menu alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:self.managedObjectContext];
-    [self refreshMenu:menu withRemoteMenu:remoteMenu];
+    menu.name = remoteMenu.name;
+    menu.details = remoteMenu.details;
+    menu.menuId = remoteMenu.menuId;
+    for(RemoteMenuItem *remoteItem in remoteMenu.items) {
+        [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
+    }
     
     return menu;
 }
@@ -305,18 +313,6 @@
 
 #pragma mark - Local storage
 
-- (void)refreshMenu:(Menu *)menu withRemoteMenu:(RemoteMenu *)remoteMenu
-{
-    menu.name = remoteMenu.name;
-    menu.details = remoteMenu.details;
-    menu.menuId = remoteMenu.menuId;
-    menu.items = nil;
-    
-    for(RemoteMenuItem *remoteItem in remoteMenu.items) {
-        [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
-    }
-}
-
 - (void)refreshLocationsForMenu:(Menu *)menu
     matchingRemoteLocationNames:(NSArray *)remoteLocationNames
              availableLocations:(NSArray *)locations
@@ -352,7 +348,13 @@
 {
     NSMutableArray *remoteItems = [NSMutableArray arrayWithCapacity:menuItems.count];
     for(MenuItem *item in menuItems) {
-        [remoteItems addObject:[self remoteItemFromItem:item]];
+        // Only add top-level items since MenuItem keeps all associated items under it's children relationship.
+        if (item.parent) {
+            continue;
+        }
+        // Children of item will be added as remoteItem.children.
+        RemoteMenuItem *remoteItem = [self remoteItemFromItem:item];
+        [remoteItems addObject:remoteItem];
     }
     
     return [NSArray arrayWithArray:remoteItems];
@@ -368,12 +370,27 @@
     remoteItem.linkTitle = item.linkTitle;
     remoteItem.name = item.name;
     remoteItem.type = item.type;
-    remoteItem.typeFamily = item.typeFamily;
+    
+    if (remoteItem.type) {
+        // Override the type_family param based on the type.
+        // This is a weird behavior of the API and is not documented.
+        NSString *typeFamily = item.typeFamily;
+        if ([remoteItem.type isEqualToString:MenuItemTypeCustom]) {
+            typeFamily = @"custom";
+        } else if ([remoteItem.type isEqualToString:MenuItemTypeTag] || [remoteItem.type isEqualToString:MenuItemTypeCategory]){
+            typeFamily = @"taxonomy";
+        } else {
+            typeFamily = @"post_type";
+        }
+        if (typeFamily.length) {
+            remoteItem.typeFamily = typeFamily;
+        }
+    }
+    
     remoteItem.typeLabel = item.typeLabel;
     remoteItem.urlStr = item.urlStr;
     
     if(item.children.count) {
-        
         NSMutableArray *childRemoteItems = [NSMutableArray arrayWithCapacity:item.children.count];
         for(MenuItem *childItem in item.children) {
             [childRemoteItems addObject:[self remoteItemFromItem:childItem]];
