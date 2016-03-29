@@ -153,18 +153,27 @@
     NSParameterAssert([menu isKindOfClass:[Menu class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
+    void(^completeMenuDeletion)() = ^() {
+        [self.managedObjectContext performBlock:^{
+            [self.managedObjectContext deleteObject:menu];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            if (success) {
+                success();
+            }
+        }];
+    };
+    
+    if (!menu.menuId.length) {
+        // Menu was only created locally, no need to delete remotely.
+        completeMenuDeletion();
+        return;
+    }
+    
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
     [remote deleteMenuForId:menu.menuId
                        blog:blog
-                    success:^{
-                        
-                        [self.managedObjectContext performBlockAndWait:^{
-                            [self.managedObjectContext deleteObject:menu];
-                        }];
-                        
-                        success();
-                        
-                    } failure:failure];
+                    success:completeMenuDeletion
+                    failure:failure];
 }
 
 - (void)generateDefaultMenuItemsForBlog:(Blog *)blog
