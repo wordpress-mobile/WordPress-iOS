@@ -1,5 +1,16 @@
 import UIKit
 
+public protocol ApplicationShortcutsProvider {
+    var shortcutItems: [UIApplicationShortcutItem]? { get set }
+    var is3DTouchAvailable: Bool { get }
+}
+
+extension UIApplication: ApplicationShortcutsProvider {
+    public var is3DTouchAvailable: Bool {
+        return keyWindow?.traitCollection.forceTouchCapability == .Available
+    }
+}
+
 public class WP3DTouchShortcutCreator: NSObject
 {
     enum LoggedIn3DTouchShortcutIndex: Int {
@@ -9,9 +20,9 @@ public class WP3DTouchShortcutCreator: NSObject
         NewPost
     }
     
-    var application: UIApplication!
-    var mainContext: NSManagedObjectContext!
-    var blogService: BlogService!
+    var shortcutsProvider: ApplicationShortcutsProvider
+    let mainContext = ContextManager.sharedInstance().mainContext
+    let blogService: BlogService
     
     private let logInShortcutIconImageName = "icon-shortcut-signin"
     private let notificationsShortcutIconImageName = "icon-shortcut-notifications"
@@ -19,18 +30,21 @@ public class WP3DTouchShortcutCreator: NSObject
     private let newPhotoPostShortcutIconImageName = "icon-shortcut-new-photo"
     private let newPostShortcutIconImageName = "icon-shortcut-new-post"
     
-    override public init() {
-        super.init()
-        application = UIApplication.sharedApplication()
-        mainContext = ContextManager.sharedInstance().mainContext
+    public init(shortcutsProvider: ApplicationShortcutsProvider) {
+        self.shortcutsProvider = shortcutsProvider
         blogService = BlogService(managedObjectContext: mainContext)
+        super.init()
+    }
+
+    public convenience override init() {
+        self.init(shortcutsProvider: UIApplication.sharedApplication())
     }
     
     public func createShortcutsIf3DTouchAvailable(loggedIn: Bool) {
-        if !is3DTouchAvailable() {
+        guard shortcutsProvider.is3DTouchAvailable else {
             return
         }
-        
+
         if loggedIn {
             if hasBlog() {
                 createLoggedInShortcuts()
@@ -100,15 +114,15 @@ public class WP3DTouchShortcutCreator: NSObject
         visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.NewPhotoPost.rawValue])
         visibleShortcutArray.append(entireShortcutArray[LoggedIn3DTouchShortcutIndex.NewPost.rawValue])
         
-        application.shortcutItems = visibleShortcutArray
+        shortcutsProvider.shortcutItems = visibleShortcutArray
     }
     
     private func clearShortcuts() {
-        application.shortcutItems = nil
+        shortcutsProvider.shortcutItems = nil
     }
     
     private func createLoggedOutShortcuts() {
-        application.shortcutItems = loggedOutShortcutArray()
+        shortcutsProvider.shortcutItems = loggedOutShortcutArray()
     }
     
     private func is3DTouchAvailable() -> Bool {
