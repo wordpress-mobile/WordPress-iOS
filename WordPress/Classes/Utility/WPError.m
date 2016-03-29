@@ -7,8 +7,10 @@
 #import "NSString+Helpers.h"
 #import "SupportViewController.h"
 #import "WordPress-Swift.h"
+#import <WPXMLRPC/WPXMLRPC.h>
 
 NSInteger const SupportButtonIndex = 0;
+NSString *const WordPressAppErrorDomain = @"org.wordpress.iphone";
 
 @interface WPError ()
 
@@ -109,8 +111,7 @@ NSInteger const SupportButtonIndex = 0;
 {
     NSString *cleanedErrorMsg = [error localizedDescription];
 
-    //org.wordpress.iphone --> XML-RPC errors
-    if ([error.domain isEqualToString:@"org.wordpress.iphone"] && error.code == 401){
+    if ([error.domain isEqualToString:WPXMLRPCFaultErrorDomain] && error.code == 401){
         cleanedErrorMsg = NSLocalizedString(@"Sorry, you cannot access this feature. Please check your User Role on this site.", @"");
     }
 

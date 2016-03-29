@@ -4,6 +4,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString *const WordPressMinimumVersion;
+
 @class WPAccount;
 
 @interface BlogService : LocalCoreDataService
