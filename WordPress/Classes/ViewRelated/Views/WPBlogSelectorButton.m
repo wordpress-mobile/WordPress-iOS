@@ -50,7 +50,7 @@
 - (CGRect)titleRectForContentRect:(CGRect)contentRect
 {
     CGRect frame = [super titleRectForContentRect:contentRect];
-    frame.size.width = MIN(frame.size.width, CGRectGetWidth(contentRect) - CGRectGetWidth([super imageRectForContentRect:contentRect]) - self.imageEdgeInsets.left - self.imageEdgeInsets.right);
+    frame.size.width = MIN(frame.size.width, CGRectGetWidth(contentRect) - CGRectGetWidth([super imageRectForContentRect:contentRect]) - self.imageEdgeInsets.right);
     switch (self.buttonStyle) {
         case WPBlogSelectorButtonTypeSingleLine:
             frame.origin.x = 0.0;
@@ -72,12 +72,8 @@
         UIImage *blankFillerImage = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         [self setImage:blankFillerImage forState:UIControlStateNormal];
-        
-        self.userInteractionEnabled = NO;
     } else {
         [self setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
-        
-        self.userInteractionEnabled = YES;
     }
 }
 
