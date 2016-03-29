@@ -14,7 +14,7 @@ fi
 
 function xcbuild() {
 xcodebuild \
-  -destination "platform=iOS Simulator,name=iPhone 6" \
+  -destination "platform=iOS Simulator,name=iPhone 6s" \
   -workspace "$XCODE_WORKSPACE" \
   -scheme "$XCODE_SCHEME" \
   -sdk "$XCODE_SDK" \

@@ -207,6 +207,14 @@ static NSString * const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     [WPAnalytics track:stat withProperties:properties];
 }
 
++ (void)track:(WPAnalyticsStat)stat error:(NSError * _Nonnull)error {
+    NSDictionary *properties = @{
+                                 @"error_code" : [@(error.code) stringValue],
+                                 @"error_domain": error.domain
+    };
+    [self track:stat withProperties: properties];
+}
+
 #pragma mark - Usage tracking initialization
 
 - (void)initializeUsageTrackingIfNecessary
