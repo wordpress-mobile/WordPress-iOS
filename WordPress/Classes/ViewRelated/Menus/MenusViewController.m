@@ -315,15 +315,35 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)detailsViewSelectedToDeleteMenu:(MenuDetailsView *)menuDetailView
 {
+    Menu *menuToDelete = menuDetailView.menu;
+    __weak __typeof(self) weakSelf = self;
+    
+    void(^selectDefaultMenu)() = ^() {
+        Menu *defaultMenu =[Menu defaultMenuForBlog:weakSelf.blog];
+        weakSelf.selectedMenuLocation.menu = defaultMenu;
+        [weakSelf.headerView setSelectedMenu:defaultMenu];
+        [weakSelf setViewsWithMenu:defaultMenu];
+    };
+    
+    void(^removeMenuFromUI)() = ^() {
+        [weakSelf.headerView removeMenu:menuToDelete];
+    };
+    
+    void(^restoreMenuToUI)() = ^() {
+        [weakSelf.headerView addMenu:menuToDelete];
+    };
+    
     void(^deleteMenu)() = ^() {
-        Menu *currentMenu = self.selectedMenuLocation.menu;
-        Menu *defaultMenu =[Menu defaultMenuForBlog:self.blog];
-        
-        self.selectedMenuLocation.menu = defaultMenu;
-        [self.headerView setSelectedMenu:defaultMenu];
-        [self setViewsWithMenu:defaultMenu];
-        
-        [self.headerView removeMenu:currentMenu];
+        [weakSelf.menusService deleteMenu:menuToDelete
+                                  forBlog:weakSelf.blog
+                                  success:nil
+                                  failure:^(NSError *error) {
+                                      // Add the menu back to the list.
+                                      restoreMenuToUI();
+                                      // Present the error message.
+                                      NSString *errorTitle = NSLocalizedString(@"Error Deleting Menu", @"Menus error title for a menu that received an error while trying to delete it.");
+                                      [WPError showNetworkingAlertWithError:error title:errorTitle];
+                                  }];
     };
     
     NSString *alertTitle = NSLocalizedString(@"Are you sure you want to delete the menu?", @"Menus confirmation text for confirming if a user wants to delete a menu.");
@@ -335,6 +355,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     UIAlertAction *confirmAction = [UIAlertAction actionWithTitle:confirmTitle
                                                           style:UIAlertActionStyleDestructive
                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                            selectDefaultMenu();
+                                                            removeMenuFromUI();
                                                             deleteMenu();
                                                         }];
     [alertController addAction:confirmAction];
