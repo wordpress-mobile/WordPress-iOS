@@ -154,8 +154,8 @@ static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
     // if we don't have a width, default to 20pt inset
     // this draws a nicely sized image within the button
     UIEdgeInsets imageEdgeInsets = UIEdgeInsetsZero;
-    CGFloat imageInsetHorizontal = self.frame.size.width ? (self.frame.size.width * 0.70) : 20;
-    CGFloat imageInsetVertical = self.frame.size.height ? (self.frame.size.height * 0.70) : 10;
+    CGFloat imageInsetHorizontal = self.frame.size.width ? (self.frame.size.width * 0.22) : 20;
+    CGFloat imageInsetVertical = self.frame.size.height ? (self.frame.size.height * 0.22) : 10;
 
     imageEdgeInsets.left = imageInsetHorizontal;
     imageEdgeInsets.top = imageInsetVertical;

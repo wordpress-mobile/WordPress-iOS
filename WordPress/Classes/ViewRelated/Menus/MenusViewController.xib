@@ -77,7 +77,7 @@
                                                     </connections>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" text="uses" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="50" translatesAutoresizingMaskIntoConstraints="NO" id="zti-gC-KhM">
-                                                    <rect key="frame" x="285" y="25" width="30" height="14.5"/>
+                                                    <rect key="frame" x="285" y="25.5" width="30" height="14.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="D9J-3A-ryX"/>
                                                     </constraints>
@@ -159,10 +159,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="240" horizontalCompressionResistancePriority="760" placeholderIntrinsicWidth="471" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="2bo-01-wsh">
-                                                    <rect key="frame" x="0.0" y="10" width="471" height="50"/>
+                                                    <rect key="frame" x="0.0" y="10" width="490" height="50"/>
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Menu name text field" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3sy-f5-O7T">
-                                                            <rect key="frame" x="10" y="10" width="451" height="30"/>
+                                                            <rect key="frame" x="10" y="10" width="470" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                             <connections>
@@ -180,11 +180,11 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ga-QQ-XHS" customClass="MenusActionButton">
-                                                    <rect key="frame" x="481" y="15" width="46" height="40"/>
+                                                    <rect key="frame" x="500" y="15" width="27" height="40"/>
                                                     <color key="backgroundColor" red="1" green="0.051290923320000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="bqh-BP-dK2"/>
-                                                        <constraint firstAttribute="width" constant="46" id="ySG-js-cq2"/>
+                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="46" id="ySG-js-cq2"/>
                                                     </constraints>
                                                     <state key="normal" title="Trash">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
