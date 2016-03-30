@@ -19,7 +19,7 @@ target 'WordPress', :exclusive => true do
   pod 'DTCoreText',   '1.6.16'
   pod 'FormatterKit', '~> 1.8.0'
   pod 'Helpshift', '~> 5.5.0'
-  pod 'HockeySDK', '~>3.8.0'
+  pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
   pod 'Mixpanel', '2.9.4'
