@@ -1199,7 +1199,7 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)optionsBarButtonItem
 {
 	if (!_optionsBarButtonItem) {
-        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
+        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"gridicons-cog"
                                                                       frame:NavigationBarButtonRect
                                                                      target:self
                                                                    selector:@selector(showSettings)];
@@ -1220,7 +1220,7 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)previewBarButtonItem
 {
 	if (!_previewBarButtonItem) {
-        WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-preview"
+        WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"gridicons-visible"
                                                                       frame:NavigationBarButtonRect
                                                                      target:self
                                                                    selector:@selector(showPreview)];
