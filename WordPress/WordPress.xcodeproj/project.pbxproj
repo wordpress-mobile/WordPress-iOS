@@ -304,6 +304,8 @@
 		93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 93B853221B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m */; };
 		93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C1147E18EC5DD500DAC95C /* AccountService.m */; };
 		93C1148518EDF6E100DAC95C /* BlogService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C1148418EDF6E100DAC95C /* BlogService.m */; };
+		93C3C2571CAB031E0092F837 /* Info-Internal.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C3C2561CAB031E0092F837 /* Info-Internal.plist */; };
+		93C3C2591CAB032C0092F837 /* Info-Alpha.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C3C2581CAB032C0092F837 /* Info-Alpha.plist */; };
 		93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F581762410B000C966D /* ActivityLogDetailViewController.m */; };
 		93C486501810442200A24725 /* SupportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93027BB71758332300483FFD /* SupportViewController.m */; };
 		93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F55176237A4000C966D /* ActivityLogViewController.m */; };
@@ -1327,6 +1329,8 @@
 		93C1147E18EC5DD500DAC95C /* AccountService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountService.m; sourceTree = "<group>"; };
 		93C1148318EDF6E100DAC95C /* BlogService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogService.h; sourceTree = "<group>"; };
 		93C1148418EDF6E100DAC95C /* BlogService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogService.m; sourceTree = "<group>"; };
+		93C3C2561CAB031E0092F837 /* Info-Internal.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Info-Internal.plist"; path = "WordPressShareExtension/Info-Internal.plist"; sourceTree = SOURCE_ROOT; };
+		93C3C2581CAB032C0092F837 /* Info-Alpha.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Alpha.plist"; sourceTree = SOURCE_ROOT; };
 		93CD939219099BE70049096E /* authtoken.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = authtoken.json; sourceTree = "<group>"; };
 		93D6D6461924FDAD00A4F44A /* TaxonomyServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemote.h; sourceTree = "<group>"; };
 		93D86B931C63EC31003D8E3E /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -3455,6 +3459,8 @@
 			isa = PBXGroup;
 			children = (
 				B50248B91C96FFCC00AFBDED /* Info.plist */,
+				93C3C2581CAB032C0092F837 /* Info-Alpha.plist */,
+				93C3C2561CAB031E0092F837 /* Info-Internal.plist */,
 				B50248BA1C96FFCC00AFBDED /* WordPressShare-Alpha.entitlements */,
 				B50248BB1C96FFCC00AFBDED /* WordPressShare-Internal.entitlements */,
 				B50248BC1C96FFCC00AFBDED /* WordPressShare-Lumberjack.m */,
@@ -4475,6 +4481,7 @@
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
 				B54E1DF21A0A7BAA00807537 /* ReplyTextView.xib in Resources */,
 				5D4C8A001AB88F58007464B3 /* PostCardImageCell.xib in Resources */,
+				93C3C2571CAB031E0092F837 /* Info-Internal.plist in Resources */,
 				B50421E71B680839008EEA82 /* NoteUndoOverlayView.xib in Resources */,
 				FFC6ADD51B56F295002F3C84 /* AboutViewController.xib in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
@@ -4506,6 +4513,7 @@
 				5D732F991AE84E5400CD89E7 /* PostListFooterView.xib in Resources */,
 				5D6C4AFF1B603CE9005E3C43 /* EditCommentViewController.xib in Resources */,
 				B51535D41BBB16AA0029B84B /* Launch Screen.storyboard in Resources */,
+				93C3C2591CAB032C0092F837 /* Info-Alpha.plist in Resources */,
 				5D6C4B021B603D1F005E3C43 /* WPWebViewController.xib in Resources */,
 				A2787D0219002AB1000D6CA6 /* HelpshiftConfig.plist in Resources */,
 				E6D3E84B1BEBD888002692E8 /* ReaderCrossPostCell.xib in Resources */,
@@ -6262,11 +6270,11 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
+				INFOPLIST_FILE = "WordPressShareExtension/Info-Internal.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShare;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.internal.WordPressShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "1d5ffa61-8ba3-424b-9783-4df845454ee9";
 				SKIP_INSTALL = YES;
@@ -6312,11 +6320,11 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = WordPressShareExtension/Info.plist;
+				INFOPLIST_FILE = "WordPressShareExtension/Info-Alpha.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.WordPressShare;
+				PRODUCT_BUNDLE_IDENTIFIER = org.wordpress.alpha.WordPressShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "381be51c-8c04-446c-9a30-3b9f81a1ede9";
 				SKIP_INSTALL = YES;
