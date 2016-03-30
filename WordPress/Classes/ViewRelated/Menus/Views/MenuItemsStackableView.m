@@ -43,7 +43,10 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.backgroundColor = [UIColor clearColor];
-
+    
+    self.layoutMargins = UIEdgeInsetsMake(0, [Menu viewDefaultDesignInsets].left, 0, 0);
+    UILayoutGuide *layoutMarginsGuide = self.layoutMarginsGuide;
+    
     MenuItemDrawingView *contentView = [[MenuItemDrawingView alloc] init];
     contentView.drawDelegate = self;
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -53,7 +56,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
     [self addSubview:contentView];
     self.contentView = contentView;
     
-    NSLayoutConstraint *leadingConstraint = [contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:MenusDesignDefaultContentSpacing];
+    NSLayoutConstraint *leadingConstraint = [contentView.leadingAnchor constraintEqualToAnchor:layoutMarginsGuide.leadingAnchor];
     self.constraintForLeadingIndentation = leadingConstraint;
     leadingConstraint.active = YES;
     
@@ -145,7 +148,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
 {
     if (_indentationLevel != indentationLevel) {
         _indentationLevel = indentationLevel;
-        self.constraintForLeadingIndentation.constant = (MenusDesignDefaultContentSpacing * indentationLevel) + MenusDesignDefaultContentSpacing;
+        self.constraintForLeadingIndentation.constant = (MenusDesignDefaultContentSpacing * indentationLevel);
         [self setNeedsDisplay];
         [self.contentView setNeedsDisplay];
     }
