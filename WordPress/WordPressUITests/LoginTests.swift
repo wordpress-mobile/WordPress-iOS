@@ -108,7 +108,7 @@ class LoginTests: XCTestCase {
 
         app.tables.cells.staticTexts["Remove Site"].tap()
 
-        app.sheets.buttons["Remove Site"].tap()
+        app.buttons["Remove Site"].tap()
     }
 
     func testCreateAccount() {
