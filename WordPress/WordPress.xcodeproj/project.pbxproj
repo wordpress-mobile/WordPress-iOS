@@ -363,6 +363,7 @@
 		B535209F1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209E1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift */; };
 		B53AD9BC1BE95687009AB87E /* SettingsTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */; };
 		B53AD9BF1BE9584B009AB87E /* SettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */; };
+		B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */; };
 		B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */; };
 		B54106901B6FE38400C880D0 /* WPWebViewController+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = B541068F1B6FE38400C880D0 /* WPWebViewController+Auth.swift */; };
 		B541276B1C0F7D610015CA80 /* SettingsMultiTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B541276A1C0F7D610015CA80 /* SettingsMultiTextViewController.m */; };
@@ -1436,6 +1437,7 @@
 		B53AD9B91BE95687009AB87E /* SettingsTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTextViewController.m; sourceTree = "<group>"; };
 		B53AD9BD1BE9584A009AB87E /* SettingsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsSelectionViewController.h; sourceTree = "<group>"; };
 		B53AD9BE1BE9584A009AB87E /* SettingsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsSelectionViewController.m; sourceTree = "<group>"; };
+		B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GravatarPickerViewController.swift; sourceTree = "<group>"; };
 		B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Helpers.swift"; sourceTree = "<group>"; };
 		B541068F1B6FE38400C880D0 /* WPWebViewController+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPWebViewController+Auth.swift"; sourceTree = "<group>"; };
 		B54127691C0F7D610015CA80 /* SettingsMultiTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsMultiTextViewController.h; sourceTree = "<group>"; };
@@ -2370,6 +2372,7 @@
 				315FC2C41A2CB29300E7CDA2 /* MeHeaderView.m */,
 				E1B23B071BFB3B370006559B /* MyProfileViewController.swift */,
 				E14B40FE1C58B93F005046F6 /* SettingsCommon.swift */,
+				B53B02B21CAC3AAC003190A0 /* GravatarPickerViewController.swift */,
 			);
 			path = Me;
 			sourceTree = "<group>";
@@ -5283,6 +5286,7 @@
 				E1A6DBDA19DC7D080071AC1E /* RemotePostCategory.m in Sources */,
 				599738401B87AD2600EC1C30 /* WordPressComServiceRemote.m in Sources */,
 				E61084C21B9B47BA008050C5 /* ReaderTagTopic.swift in Sources */,
+				B53B02B31CAC3AAC003190A0 /* GravatarPickerViewController.swift in Sources */,
 				5D0A20D41AF11A7300E5C6BC /* PhotonImageURLHelper.m in Sources */,
 				FF19340C1BB2F892006825B8 /* ServiceRemoteXMLRPC.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
