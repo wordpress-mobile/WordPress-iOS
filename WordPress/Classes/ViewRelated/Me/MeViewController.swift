@@ -193,7 +193,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             
             self?.dismissViewControllerAnimated(true, completion: nil)
         }
-        
+        pickerViewController.modalPresentationStyle = .FormSheet
         presentViewController(pickerViewController, animated: true, completion: nil)
     }
     
@@ -298,6 +298,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         service?.uploadImage(newGravatar) { [weak self] error in
             dispatch_async(dispatch_get_main_queue(), {
                 self?.headerView.stopActivityIndicator()
+                self?.reloadViewModel()
             })
         }
     }
