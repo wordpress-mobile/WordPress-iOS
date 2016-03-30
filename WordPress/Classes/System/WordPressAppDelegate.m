@@ -6,7 +6,6 @@
 // Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
-#import <HockeySDK/HockeySDK.h>
 #import <Reachability/Reachability.h>
 #import <Simperium/Simperium.h>
 #import <SVProgressHUD/SVProgressHUD.h>
@@ -14,6 +13,9 @@
 #import <WordPressApi/WordPressApi.h>
 #import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
+#ifdef INTERNAL_BUILD
+#import <HockeySDK/HockeySDK.h>
+#endif
 
 // Analytics & crash logging
 #import "WPAppAnalytics.h"
@@ -62,7 +64,12 @@
 
 int ddLogLevel = DDLogLevelInfo;
 
-@interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
+#ifdef INTERNAL_BUILD
+@interface WordPressAppDelegate () <BITHockeyManagerDelegate>
+@end
+#endif
+
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 @property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
@@ -171,13 +178,16 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogInfo(@"Application launched with URL: %@", url);
     BOOL returnValue = NO;
 
+#ifdef INTERNAL_BUILD
     NSString *sourceApplication = [options stringForKey:UIApplicationLaunchOptionsSourceApplicationKey];
     id annotation = [options objectForKey:UIApplicationLaunchOptionsAnnotationKey];
+    
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
                                                           sourceApplication:sourceApplication
                                                                  annotation:annotation]) {
         returnValue = YES;
     }
+#endif
 
     if ([WordPressApi handleOpenURL:url]) {
         returnValue = YES;
@@ -667,18 +677,20 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)configureHockeySDK
 {
-#ifndef INTERNAL_BUILD
-    return;
-#endif
+#ifdef INTERNAL_BUILD
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
                                                            delegate:self];
     [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+#endif
+
+    return;
 }
 
 #pragma mark - BITCrashManagerDelegate
 
+#ifdef INTERNAL_BUILD
 - (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager
 {
     NSString *description = [self.logger getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
@@ -688,6 +700,7 @@ int ddLogLevel = DDLogLevelInfo;
 
     return description;
 }
+#endif
 
 #pragma mark - Networking setup
 
