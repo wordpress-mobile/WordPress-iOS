@@ -875,8 +875,9 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
 
             [[ContextManager sharedInstance] saveContext:context];
 
-            [accountService updateUserDetailsForAccount:defaultAccount success:nil failure:nil];
-            [blogService syncBlog:blog completionHandler:nil];
+            [blogService syncBlog:blog completionHandler:^{
+                [accountService updateUserDetailsForAccount:defaultAccount success:nil failure:nil];                
+            }];
             [WPAnalytics refreshMetadata];
             [self setAuthenticating:NO];
             [self dismissViewControllerAnimated:YES completion:nil];
