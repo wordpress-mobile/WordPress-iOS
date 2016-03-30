@@ -1,8 +1,7 @@
 import UIKit
 import WordPressShared
-import WPMediaPicker
 
-class MeViewController: UITableViewController, UIViewControllerRestoration, WPMediaPickerViewControllerDelegate {
+class MeViewController: UITableViewController, UIViewControllerRestoration {
     static let restorationIdentifier = "WPMeRestorationID"
     var handler: ImmuTableViewHandler!
 
@@ -185,6 +184,19 @@ class MeViewController: UITableViewController, UIViewControllerRestoration, WPMe
 
     // MARK: - Actions
 
+    private func presentGravatarPicker() {
+        let pickerViewController = GravatarPickerViewController()
+        pickerViewController.onCompletion = { [weak self] image in
+            if let updatedGravatarImage = image {
+                self?.uploadGravatarImage(updatedGravatarImage)
+            }
+            
+            self?.dismissViewControllerAnimated(true, completion: nil)
+        }
+        
+        presentViewController(pickerViewController, animated: true, completion: nil)
+    }
+    
     private func pushMyProfile() -> ImmuTableAction {
         return { [unowned self] row in
             guard let account = self.defaultAccount() else {
@@ -267,33 +279,28 @@ class MeViewController: UITableViewController, UIViewControllerRestoration, WPMe
             self.tableView.deselectSelectedRowWithAnimation(true)
         }
     }
-    
-    private func presentGravatarPicker() {
-        let pickerViewController = WPMediaPickerViewController()
-        pickerViewController.delegate = self
-        pickerViewController.showMostRecentFirst = true
-        pickerViewController.allowMultipleSelection = false
-        pickerViewController.filter = .Image
-        
-        presentViewController(pickerViewController, animated: true, completion: nil)
-    }
 
+    
     // MARK: - Notification observers
 
     func refreshModelWithNotification(notification: NSNotification) {
         reloadViewModel()
     }
 
-    // MARK: - WPMediaPickerViewControllerDelegate
     
-    func mediaPickerController(picker: WPMediaPickerViewController, didFinishPickingAssets assets: [AnyObject]) {
-        dismissViewControllerAnimated(true, completion: nil)
+    // MARK: - Gravatar Helpers
+    
+    private func uploadGravatarImage(newGravatar: UIImage) {
+        headerView.startActivityIndicator()
+        headerView.gravatarImage = newGravatar
+        
+        let service = GravatarService(context: ContextManager.sharedInstance().mainContext)
+        service?.uploadImage(newGravatar) { [weak self] error in
+            dispatch_async(dispatch_get_main_queue(), {
+                self?.headerView.stopActivityIndicator()
+            })
+        }
     }
-    
-    func mediaPickerControllerDidCancel(picker: WPMediaPickerViewController) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-    
     
     // MARK: - Helpers
 
