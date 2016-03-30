@@ -1,7 +1,12 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
-@class Blog, PostCategory;
+@class Blog;
+@class PostCategory;
+
+typedef NS_ENUM(NSInteger, PostCategoryServiceErrors) {
+    PostCategoryServiceErrorsBlogNotFound
+};
 
 @interface PostCategoryService : LocalCoreDataService
 
