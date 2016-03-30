@@ -42,8 +42,13 @@ NSString * const MenuDefaultID = @"0";
     // Create a new default menu.
     Menu *defaultMenu = [self newMenu:managedObjectContext];
     defaultMenu.menuId = MenuDefaultID;
-    defaultMenu.name = NSLocalizedString(@"Default Menu", @"Menu name for the defaut menu that is automatically generated.");
+    defaultMenu.name = [self defaultMenuName];
     return defaultMenu;
+}
+
++ (NSString *)defaultMenuName
+{
+    return NSLocalizedString(@"Default Menu", @"Menu name for the defaut menu that is automatically generated.");
 }
 
 + (NSString *)generateIncrementalNameFromMenus:(NSOrderedSet *)menus
