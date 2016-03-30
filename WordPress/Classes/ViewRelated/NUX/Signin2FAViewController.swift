@@ -5,7 +5,7 @@ import WordPressShared
 
 ///
 ///
-class Signin2FAViewController : SigninAbstractViewController, SigninWPComDelegate
+class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler
 {
 
     @IBOutlet weak var verificationCodeField: UITextField!
@@ -51,7 +51,7 @@ class Signin2FAViewController : SigninAbstractViewController, SigninWPComDelegat
     // MARK: Configuration Methods
 
 
-    ///
+    /// Configures the appearance of the button to request a 2fa code be sent via SMS.
     ///
     func configureSendCodeButtonText() {
         // Text: Verification Code SMS
@@ -78,14 +78,17 @@ class Signin2FAViewController : SigninAbstractViewController, SigninWPComDelegat
     }
 
 
+    /// Displays the specified text in the status label.
     ///
+    /// - Parameters:
+    ///     - message: The text to display in the label.
     ///
     func configureStatusMessage(message: String) {
         statusLabel.text = message
     }
 
 
-    ///
+    /// Configures the appearance and state of the submit button.
     ///
     func configureSubmitButton(animating: Bool) {
         submitButton.showActivityIndicator(animating)
@@ -97,7 +100,10 @@ class Signin2FAViewController : SigninAbstractViewController, SigninWPComDelegat
     }
 
 
+    /// Sets the view's state to loading or not loading.
     ///
+    /// - Parameters:
+    ///     - loading: True if the form should be configured to a "loading" state.
     ///
     func configureLoading(loading: Bool) {
         verificationCodeField.enablesReturnKeyAutomatically = !loading
@@ -109,7 +115,8 @@ class Signin2FAViewController : SigninAbstractViewController, SigninWPComDelegat
     // MARK: - Instance Methods
 
 
-    ///
+    /// Validates what is entered in the various form fields and, if valid,
+    /// proceeds with the submit action.
     ///
     func validateForm() {
         view.endEditing(true)

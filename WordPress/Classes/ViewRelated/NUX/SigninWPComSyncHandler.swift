@@ -1,7 +1,7 @@
 import UIKit
 import WordPressComAnalytics
 
-protocol SigninWPComDelegate: class
+protocol SigninWPComSyncHandler: class
 {
     func configureLoading(loading: Bool)
     func configureStatusMessage(message: String)
@@ -15,15 +15,18 @@ protocol SigninWPComDelegate: class
 }
 
 
-extension SigninWPComDelegate
+extension SigninWPComSyncHandler
 {
 
+    /// Syncs account and blog information for the authenticated wpcom user.
     ///
+    /// - Parameters: 
+    ///     - username: The username.
+    ///     - authToken: The authentication token.
+    ///     - requiredMultifactor: Whether a multifactor code was required while authenticating.
     ///
     func syncWPCom(username: String, authToken: String, requiredMultifactor: Bool) {
         updateSafariCredentialsIfNeeded()
-
-// TODO: self.shouldReauthenticateDefaultAccount / [self.accountServiceFacade removeLegacyAccount:username];
 
         configureStatusMessage(NSLocalizedString("Getting account information", comment:"Alerts the user that wpcom account information is being retrieved."));
 
@@ -44,7 +47,10 @@ extension SigninWPComDelegate
     }
 
 
-    ///
+    /// Cleans up the view after a successful sync and dismisses the NUX controller.
+    /// 
+    /// - Parameters: 
+    ///     - requiredMultifactor: Whether a multifactor code was required while authenticating.
     ///
     func handleSyncSuccess(requiredMultifactor: Bool) {
         configureStatusMessage("")
@@ -60,7 +66,8 @@ extension SigninWPComDelegate
     }
 
 
-    ///
+    /// Handles an error while syncing account and blog information for the 
+    /// authenticated user.
     ///
     func handleSyncFailure(error: NSError) {
         configureStatusMessage("")

@@ -3,7 +3,12 @@ import WordPressComAnalytics
 import WordPressShared
 import wpxmlrpc
 
-class SigninAbstractViewController : UIViewController, SigninErrorViewControllerDelegate
+/// A base class for the various NUX related related view controllers. 
+/// The base class sets up and configures common functionality, such as the help 
+/// button and badge.
+/// It is assumed that NUX controllers will always be presented modally.
+///
+class NUXAbstractViewController : UIViewController
 {
     var helpBadge: WPNUXHelpBadgeLabel!
     var helpButton: UIButton!
@@ -49,30 +54,31 @@ class SigninAbstractViewController : UIViewController, SigninErrorViewController
     // MARK: Setup and Configuration
 
 
-    ///
+    /// Sets up a gesture recognizer to detect taps on the view, but not its content.
     ///
     func setupBackgroundTapGestureRecognizer() {
-        let tgr = UITapGestureRecognizer(target: self, action: #selector(SigninAbstractViewController.handleBackgroundTapGesture(_:)))
+        let tgr = UITapGestureRecognizer(target: self, action: #selector(NUXAbstractViewController.handleBackgroundTapGesture(_:)))
         view.addGestureRecognizer(tgr)
     }
 
 
-    ///
+    /// Sets up the cancel button for the navbar if its needed. 
+    /// The cancel button is only shown when its appropriate to dismiss the modal view controller.
     ///
     func setupCancelButtonIfNeeded() {
         if !shouldShowCancelButton() {
             return
         }
 
-        let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(SigninAbstractViewController.handleCancelButtonTapped(_:)))
+        let cancelButton = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(NUXAbstractViewController.handleCancelButtonTapped(_:)))
         navigationItem.leftBarButtonItem = cancelButton
     }
 
 
-    ///
+    /// Sets up the help button and the helpshift conversation badge.
     ///
     func setupHelpButtonAndBadge() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SigninAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: HelpshiftUnreadCountUpdatedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: HelpshiftUnreadCountUpdatedNotification, object: nil)
 
         let buttonView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
 
@@ -80,7 +86,7 @@ class SigninAbstractViewController : UIViewController, SigninErrorViewController
         helpButton.setImage(UIImage(named: "btn-help"), forState: .Normal)
         helpButton.sizeToFit()
         helpButton.accessibilityLabel = NSLocalizedString("Help", comment: "Help button")
-        helpButton.addTarget(self, action: #selector(SigninAbstractViewController.handleHelpButtonTapped(_:)), forControlEvents: .TouchUpInside)
+        helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), forControlEvents: .TouchUpInside)
         var frame = helpButton.frame
         frame.origin.x = buttonView.frame.width - frame.width
         frame.origin.y = (buttonView.frame.height - frame.height) / 2
@@ -138,24 +144,48 @@ class SigninAbstractViewController : UIViewController, SigninErrorViewController
     }
 
 
-    ///
+    /// It is assumed that NUX view controllers are always presented modally. 
+    /// This method dismisses the view controller.
     ///
     func dismiss() {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
 
+    // MARK: - Notifications
+
+
+    /// Updates the badge count and its visibility.
     ///
-    ///
-    func openForgotPasswordURL() {
-        let baseURL = loginFields.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(loginFields.siteUrl)
-        let forgotPasswordURL = NSURL(string: baseURL + "/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F")!
-        UIApplication.sharedApplication().openURL(forgotPasswordURL)
+    func handleHelpshiftUnreadCountUpdated(notification: NSNotification) {
+        let count = HelpshiftUtils.unreadNotificationCount()
+        helpBadge.text = "\(count)"
+        helpBadge.hidden = (count == 0)
     }
 
 
-    // MARK: - SigninErrorViewController Delegate Methods
+    // MARK: - Actions
 
+
+    func handleBackgroundTapGesture(tgr: UITapGestureRecognizer) {
+        view.endEditing(true)
+    }
+
+
+    func handleCancelButtonTapped(sender: UIButton) {
+        dismiss()
+    }
+
+
+    func handleHelpButtonTapped(sender: UIButton) {
+        displaySupportViewController()
+    }
+
+}
+
+
+extension NUXAbstractViewController : SigninErrorViewControllerDelegate
+{
 
     /// Displays the support vc.
     ///
@@ -201,36 +231,6 @@ class SigninAbstractViewController : UIViewController, SigninErrorViewController
         }
         let navController = UINavigationController(rootViewController: controller)
         navigationController?.presentViewController(navController, animated: true, completion: nil)
-    }
-
-
-    // MARK: - Notifications
-
-
-    /// Updates the badge count and its visibility.
-    ///
-    func handleHelpshiftUnreadCountUpdated(notification: NSNotification) {
-        let count = HelpshiftUtils.unreadNotificationCount()
-        helpBadge.text = "\(count)"
-        helpBadge.hidden = (count == 0)
-    }
-
-
-    // MARK: - Actions
-
-
-    func handleBackgroundTapGesture(tgr: UITapGestureRecognizer) {
-        view.endEditing(true)
-    }
-
-
-    func handleCancelButtonTapped(sender: UIButton) {
-        dismiss()
-    }
-
-
-    func handleHelpButtonTapped(sender: UIButton) {
-        displaySupportViewController()
     }
 
 }

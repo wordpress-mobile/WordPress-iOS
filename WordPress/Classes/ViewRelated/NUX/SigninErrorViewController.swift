@@ -3,7 +3,9 @@ import WordPressShared
 import wpxmlrpc
 
 
-///
+/// A view controller for prompting a user about sign in related errors. 
+/// It provides for a title, message, and for specialized button actions. 
+/// It is assumed the controller will always be presented modally.
 ///
 class SigninErrorViewController : UIViewController
 {
@@ -94,7 +96,12 @@ class SigninErrorViewController : UIViewController
     // MARK: - Instance Methods
 
 
+    /// The preferred method for presenting the error view controller full screen 
+    /// and modal.  This method takes care of configuring presentation style and
+    /// context so the controller is correctly displayed full screen.
     ///
+    /// - Parameters:
+    ///     - controller: The controller to use as the presenter.
     ///
     func presentFromController(controller: UIViewController) {
         controller.providesPresentationContextTransitionStyle = true
@@ -103,7 +110,7 @@ class SigninErrorViewController : UIViewController
     }
 
 
-    ///
+    /// Dismisses the modal controller.
     ///
     func dismiss() {
         dismissViewControllerAnimated(false, completion: nil)
@@ -281,21 +288,21 @@ class SigninErrorViewController : UIViewController
 }
 
 
-///
+/// Defines responsibilities for the delegate of a SigninErrorViewController.
 ///
 protocol SigninErrorViewControllerDelegate
 {
-    ///
+    /// Delegates should implement this method and display the support view controller when called.
     ///
     func displaySupportViewController()
 
 
-    ///
+    /// Delegates should implement this method and display the helpshift conversation when called.
     ///
     func displayHelpshiftConversationView()
 
 
-    ///
+    /// Delegates should implement this method and display the in-app web browser when called.
     ///
     func displayWebviewForURL(url: NSURL, username: String?, password: String?)
 }

@@ -2,9 +2,9 @@ import UIKit
 import WordPressComAnalytics
 import WordPressShared
 
+/// Provides a form and functionality for signing a user in to WordPress.com
 ///
-///
-class SigninWPComViewController : SigninAbstractViewController, SigninWPComDelegate
+class SigninWPComViewController : NUXAbstractViewController, SigninWPComSyncHandler
 {
 
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
@@ -72,7 +72,7 @@ class SigninWPComViewController : SigninAbstractViewController, SigninWPComDeleg
     // MARK: Setup and Configuration
 
 
-    ///
+    /// Sets up a 1Password button if 1Password is available.
     ///
     func setupOnePasswordButtonIfNeeded() {
         WPStyleGuide.configureOnePasswordButtonForTextfield(usernameField,
@@ -81,7 +81,7 @@ class SigninWPComViewController : SigninAbstractViewController, SigninWPComDeleg
     }
 
 
-    ///
+    /// Configures the content of the text fields based on what is saved in `loginFields`.
     ///
     func configureTextFields() {
         usernameField.text = loginFields.username
@@ -89,14 +89,17 @@ class SigninWPComViewController : SigninAbstractViewController, SigninWPComDeleg
     }
 
 
-    ///
+    /// Displays the specified text in the status label. 
+    /// 
+    /// - Parameters:
+    ///     - message: The text to display in the label.
     ///
     func configureStatusMessage(message: String) {
         statusLabel.text = message
     }
 
 
-    ///
+    /// Configures the appearance and state of the submit button.
     ///
     func configureSubmitButton(animating: Bool) {
         submitButton.showActivityIndicator(animating)
@@ -109,7 +112,10 @@ class SigninWPComViewController : SigninAbstractViewController, SigninWPComDeleg
     }
 
 
+    /// Sets the view's state to loading or not loading.
     ///
+    /// - Parameters:
+    ///     - loading: True if the form should be configured to a "loading" state.
     ///
     func configureLoading(loading: Bool) {
         usernameField.enabled = !loading
@@ -122,7 +128,8 @@ class SigninWPComViewController : SigninAbstractViewController, SigninWPComDeleg
     // MARK: - Instance Methods
 
 
-    ///
+    /// Validates what is entered in the various form fields and, if valid,
+    /// proceeds with the submit action.
     ///
     func validateForm() {
         view.endEditing(true)
@@ -178,7 +185,7 @@ class SigninWPComViewController : SigninAbstractViewController, SigninWPComDeleg
 
 
     @IBAction func handleForgotPasswordButtonTapped(sender: UIButton) {
-        openForgotPasswordURL()
+        SigninHelpers.openForgotPasswordURL(loginFields)
     }
 
 
