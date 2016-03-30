@@ -310,23 +310,50 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)detailsViewSelectedToSaveMenu:(MenuDetailsView *)menuDetailView
 {
-    // Save the menu via MenusService
+    // Buckle up, we gotta save this Menu!
     Menu *menuToSave = menuDetailView.menu;
+    
+    // Check if user is trying to save the Default Menu.
+    if ([menuToSave.menuId isEqualToString:MenuDefaultID]) {
+        
+        // Create a new menu to use instead of the Default Menu.
+        Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
+        newMenu.blog = self.blog;
+        if ([menuToSave.name isEqualToString:[Menu defaultMenuName]]) {
+            // Don't use "Default Menu" as the name of the menu.
+            newMenu.name = [Menu generateIncrementalNameFromMenus:self.blog.menus];
+        } else {
+            newMenu.name = menuToSave.name;
+        }
+        
+        Menu *defaultMenu = menuToSave;
+        // We'll save the newMenu instead.
+        menuToSave = newMenu;
+        // Use the items the user customized on the Default Menu as the items on the newMenu to save.
+        menuToSave.items = defaultMenu.items;
+        
+        // Reset the Default Menu.
+        defaultMenu.items = nil;
+        defaultMenu.name = [Menu defaultMenuName];
+        
+        // Add and select the new Menu in the UI.
+        self.selectedMenuLocation.menu = menuToSave;
+        [self.headerView addMenu:menuToSave];
+        [self.headerView setSelectedMenu:menuToSave];
+        [self setViewsWithMenu:menuToSave];
+    }
+    
     __weak __typeof(self) weakSelf = self;
     
-    void(^toggleIsSaving)() = ^() {
+    void(^toggleIsSaving)(BOOL) = ^(BOOL saving) {
         // Disable user interaction while we are processing the save.
-        weakSelf.scrollView.userInteractionEnabled = NO;
-        weakSelf.detailsView.isSaving = YES;
-    };
-
-    void(^toggleIsNotSaving)() = ^() {
-        weakSelf.scrollView.userInteractionEnabled = YES;
-        weakSelf.detailsView.isSaving = NO;
+        weakSelf.scrollView.userInteractionEnabled = !saving;
+        // Toggle the detailsView button for "Saving...".
+        weakSelf.detailsView.isSaving = saving;
     };
     
     void(^failureToSave)(NSError *) = ^(NSError *error) {
-        toggleIsNotSaving();
+        toggleIsSaving(NO);
         // Present the error message.
         NSString *errorTitle = NSLocalizedString(@"Error Saving Menu", @"Menus error title for a menu that received an error while trying to save a menu.");
         [WPError showNetworkingAlertWithError:error title:errorTitle];
@@ -334,25 +361,25 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     
     void(^updateMenu)() = ^() {
         [weakSelf.menusService updateMenu:menuToSave
-                              forBlog:weakSelf.blog
-                              success:^() {
-                                  [weakSelf.itemsView reloadItems];
-                                  toggleIsNotSaving();
-                              }
-                              failure:failureToSave];
+                                  forBlog:weakSelf.blog
+                                  success:^() {
+                                      // Refresh the items stack since the items may have changed.
+                                      [weakSelf.itemsView reloadItems];
+                                      toggleIsSaving(NO);
+                                  }
+                                  failure:failureToSave];
     };
     
-    toggleIsSaving();
+    toggleIsSaving(YES);
     
     if (!menuToSave.menuId.length) {
         // Need to create the menu first.
         [self.menusService createMenuWithName:menuToSave.name
                             blog:self.blog
                          success:^(NSString *menuID) {
-                             
+                             // Set the new menuID and continue the update.
                              menuToSave.menuId = menuID;
                              updateMenu();
-                             
                          } failure:failureToSave];
     } else {
         // Update the menu.
