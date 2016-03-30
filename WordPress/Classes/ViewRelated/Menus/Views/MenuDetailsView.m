@@ -5,6 +5,7 @@
 #import "WPFontManager.h"
 #import "MenusActionButton.h"
 #import "Menu+ViewDesign.h"
+#import "Blog.h"
 
 @interface MenuDetailsView () <UITextFieldDelegate>
 
@@ -15,6 +16,7 @@
 @property (nonatomic, weak) IBOutlet MenusActionButton *saveButton;
 @property (nonatomic, strong) UIImageView *textFieldDesignIcon;
 @property (nonatomic, strong) NSLayoutConstraint *textFieldDesignIconLeadingConstraint;
+@property (nonatomic, copy) NSString *editingBeginningName;
 
 @end
 
@@ -35,6 +37,7 @@
     self.stackView.layoutMargins = [Menu viewDefaultDesignInsets];
     
     self.textField.text = nil;
+    self.textField.placeholder = NSLocalizedString(@"Menu", @"Menus placeholder text for the name field of a menu with no name.");
     self.textField.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
     self.textField.font = [WPFontManager systemLightFontOfSize:22.0];
     self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -42,6 +45,7 @@
     self.textField.returnKeyType = UIReturnKeyDone;
     self.textField.adjustsFontSizeToFitWidth = NO;
     [self.textField addTarget:self action:@selector(hideTextFieldKeyboard) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
     
     self.textFieldDesignView.layer.cornerRadius = MenusDesignDefaultCornerRadius;
     self.textFieldDesignView.backgroundColor = [UIColor clearColor];
@@ -55,6 +59,7 @@
     [self updateSaveButtonTitle];
     [self.saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.saveButton addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    self.saveButton.enabled = NO;
     
     {
         UIImage *image = [[UIImage imageNamed:@"gridicons-pencil"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -85,6 +90,14 @@
         self.textField.text = menu.name;
         self.trashButton.hidden = [menu.menuId isEqualToString:MenuDefaultID];
         [self updateTextFieldDesignIconPositioning];
+    }
+}
+
+- (void)setSavingEnabled:(BOOL)savingEnabled
+{
+    if (_savingEnabled != savingEnabled) {
+        _savingEnabled = savingEnabled;
+        self.saveButton.enabled = savingEnabled;
     }
 }
 
@@ -157,6 +170,11 @@
     [self updateTextFieldDesignIconPositioning];
 }
 
+- (BOOL)resignFirstResponder
+{
+    return [self.textField resignFirstResponder];
+}
+
 #pragma mark - buttons
 
 - (void)saveButtonPressed
@@ -178,21 +196,30 @@
 
 #pragma mark - UITextField
 
+- (void)textFieldValueChanged:(UITextField *)textField
+{
+    if (textField.text.length) {
+        // Update the Menu name.
+        self.menu.name = textField.text;
+    } else {
+        // Restore the original menu name.
+        self.menu.name = self.editingBeginningName;
+        // Show it as a placeholder for now.
+        textField.placeholder = self.menu.name;
+    }
+    [self tellDelegateMenuNameChanged];
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    self.editingBeginningName = textField.text;
     [self showTextFieldEditingState:0.3 animationOptions:UIViewAnimationOptionCurveEaseOut];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (!textField.text.length) {
-        // restore the original name if the user cleared the text
-        textField.text = self.menu.name;
-    }
-    
-    // update the menu CoreData object
-    self.menu.name = textField.text;
-    [self tellDelegateMenuNameChanged];
+    // Update the textField to the set menu name if needed.
+    textField.text = self.menu.name;
     
     [self updateTextFieldDesignIconPositioning];
     [UIView animateWithDuration:0.25 animations:^{

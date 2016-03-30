@@ -504,6 +504,7 @@
     if (modelUpdated) {
         [self updateParentChildIndentationForItemViews];
         [self.visualOrderingView updateForVisualOrderingMenuItemsModelChange];
+        [self.delegate itemsView:self didUpdateMenuItemsOrdering:self.menu];
     }
 }
 
@@ -629,6 +630,7 @@
         }];
         
         self.menu.items = orderedItems;
+        [self.delegate itemsView:self didUpdateMenuItemsOrdering:self.menu];
     }
     
     return updated;

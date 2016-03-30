@@ -8,6 +8,7 @@
 
 @property (nonatomic, strong) Menu *menu;
 @property (nonatomic, weak) id <MenuDetailsViewDelegate> delegate;
+@property (nonatomic, assign) BOOL savingEnabled;
 @property (nonatomic, assign) BOOL isSaving;
 
 @end
