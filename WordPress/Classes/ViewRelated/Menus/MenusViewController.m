@@ -455,6 +455,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     };
     controller.onSelectedToTrash = ^() {
         [self.itemsView removeItem:item];
+        [self insertBlankMenuItemIfNeeded];
         dismiss();
     };
     controller.onSelectedToCancel = dismiss;
