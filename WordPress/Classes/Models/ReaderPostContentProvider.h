@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import "WPContentViewProvider.h"
+#import "PostContentProvider.h"
 
 typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
     SourceAttributionStyleNone,
@@ -7,7 +7,7 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
     SourceAttributionStyleSite,
 };
 
-@protocol ReaderPostContentProvider <WPContentViewProvider>
+@protocol ReaderPostContentProvider <PostContentProvider>
 - (NSURL *)siteIconForDisplayOfSize:(NSInteger)size;
 - (SourceAttributionStyle)sourceAttributionStyle;
 - (NSString *)sourceAuthorNameForDisplay;
