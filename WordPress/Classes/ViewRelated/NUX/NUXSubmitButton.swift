@@ -1,6 +1,9 @@
 import UIKit
 import WordPressShared
 
+/// A stylized button used by NUX controllers. The button presents white text 
+/// surrounded by a white border.  It also can display a `UIActivityIndicatorView`.
+///
 @objc class NUXSubmitButton : UIButton
 {
     let activityIndicator: UIActivityIndicatorView = {
@@ -48,7 +51,7 @@ import WordPressShared
     // MARK: - Configuration
 
 
-    ///
+    /// Configure the appearance of the configure button.
     ///
     func configureButton() {
         contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
@@ -60,7 +63,7 @@ import WordPressShared
 
         titleLabel?.font = WPFontManager.systemRegularFontOfSize(18.0)
         setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        setTitleColor(UIColor(white: 1.0, alpha: 0.5), forState: .Disabled)
+        setTitleColor(UIColor(white: 1.0, alpha: 0.25), forState: .Disabled)
 
 
         let capInsets = UIEdgeInsets(top: cornerRadius, left: cornerRadius, bottom: cornerRadius, right: cornerRadius)
@@ -74,10 +77,10 @@ import WordPressShared
     }
 
 
-    ///
+    /// Configures the border color.
     ///
     func configureBorderColor() {
-        let color = enabled || activityIndicator.isAnimating() ? UIColor.whiteColor() : UIColor(white: 1.0, alpha: 0.5)
+        let color = enabled || activityIndicator.isAnimating() ? UIColor.whiteColor() : UIColor(white: 1.0, alpha: 0.25)
         layer.borderColor = color.CGColor
     }
 
@@ -85,7 +88,11 @@ import WordPressShared
     // MARK: - Instance Methods
 
 
+    /// Toggles the visibility of the activity indicator.  When visible the button
+    /// title is hidden. 
     ///
+    /// - Parameters:
+    ///     - show: True to show the spinner. False hides it.
     ///
     func showActivityIndicator(show: Bool) {
         if show {
@@ -96,5 +103,4 @@ import WordPressShared
         configureBorderColor()
         setNeedsLayout()
     }
-
 }
