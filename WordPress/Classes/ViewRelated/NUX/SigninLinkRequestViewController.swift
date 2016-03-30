@@ -4,7 +4,7 @@ import UIKit
 /// authentication link be emailed to the user.  Allows the user to signin via
 /// email instead of their password.
 ///
-class SigninLinkRequestViewController : SigninAbstractViewController
+class SigninLinkRequestViewController : NUXAbstractViewController
 {
 
     @IBOutlet var label: UILabel!
@@ -34,24 +34,10 @@ class SigninLinkRequestViewController : SigninAbstractViewController
     }
 
 
-    // MARK: - Actions
-
-
-    @IBAction func handleSendLinkTapped(sender: UIButton) {
-        requestAuthenticationLink()
-    }
-
-
-    @IBAction func handleUsePasswordTapped(sender: UIButton) {
-        let controller = SigninWPComViewController.controller(loginFields)
-        navigationController?.pushViewController(controller, animated: true)
-    }
-
-
     // MARK: - Instance Methods
 
 
-    ///
+    /// Makes the call to request a magic authentication link be emailed to the user.
     ///
     func requestAuthenticationLink() {
         guard let email = loginFields.username else {
@@ -71,10 +57,25 @@ class SigninLinkRequestViewController : SigninAbstractViewController
     }
 
 
-    ///
+    /// Displays the next step in the magic links sign in flow. 
     ///
     func didRequestAuthenticationLink() {
         let controller = SigninLinkMailViewController.controller(loginFields)
         navigationController?.pushViewController(controller, animated: true)
     }
+
+
+    // MARK: - Actions
+
+
+    @IBAction func handleSendLinkTapped(sender: UIButton) {
+        requestAuthenticationLink()
+    }
+
+
+    @IBAction func handleUsePasswordTapped(sender: UIButton) {
+        let controller = SigninWPComViewController.controller(loginFields)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
 }

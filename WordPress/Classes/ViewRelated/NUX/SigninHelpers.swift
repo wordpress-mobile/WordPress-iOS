@@ -82,6 +82,23 @@ class SigninHelpers
     }
 
 
+    // MARK: - Other Helpers
+
+
+    /// Opens Safari to display the forgot password page for a wpcom or self-hosted 
+    /// based on the passed LoginFields instance.
+    ///
+    /// - Parameters:
+    ///     - loginFields: A LoginFields instance.
+    ///
+    class func openForgotPasswordURL(loginFields: LoginFields) {
+        let baseURL = loginFields.userIsDotCom ? "https://wordpress.com" : SigninHelpers.baseSiteURL(loginFields.siteUrl)
+        let forgotPasswordURL = NSURL(string: baseURL + "/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F")!
+        UIApplication.sharedApplication().openURL(forgotPasswordURL)
+    }
+
+
+
     // MARK: - 1Password Helper
 
 

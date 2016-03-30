@@ -4,8 +4,7 @@ import WordPressShared
 
 /// This vc is the entry point for the normal sign in flow.
 ///
-///
-class SigninEmailViewController : SigninAbstractViewController
+class SigninEmailViewController : NUXAbstractViewController
 {
 
     @IBOutlet var onePasswordButton: UIButton!
@@ -65,7 +64,7 @@ class SigninEmailViewController : SigninAbstractViewController
     // MARK: - Setup and Configuration
 
 
-    ///
+    /// Sets up a 1Password button if 1Password is available.
     ///
     func setupOnePasswordButtonIfNeeded() {
         WPStyleGuide.configureOnePasswordButtonForTextfield(emailTextField,
@@ -74,7 +73,8 @@ class SigninEmailViewController : SigninAbstractViewController
     }
 
 
-    ///
+    /// Configures the button for requesting Safari stored credentials.
+    /// The button should only be visible if Safari stored credentials are available.
     ///
     func configureSafariPasswordButton(animated: Bool) {
         if safariPasswordButton.hidden != didFindSafariSharedCredentials {
@@ -96,14 +96,15 @@ class SigninEmailViewController : SigninAbstractViewController
     }
 
 
-    ///
+    /// Configures the email text field, updating its text based on what's stored
+    /// in `loginFields`.
     ///
     func configureEmailField() {
         emailTextField.text = loginFields.username
     }
 
 
-    ///
+    /// Configures whether appearance of the submit button.
     ///
     func configureSubmitButton() {
         submitButton.enabled = !loginFields.username.isEmpty
@@ -112,10 +113,22 @@ class SigninEmailViewController : SigninAbstractViewController
     }
 
 
+    /// Sets the view's state to loading or not loading.
+    ///
+    /// - Parameters:
+    ///     - loading: True if the form should be configured to a "loading" state.
+    ///
+    func configureLoading(loading: Bool) {
+        emailTextField.enabled = !loading
+        submitButton.enabled = !loading
+        submitButton.showActivityIndicator(loading)
+    }
+
+
     // MARK: - Instance Methods
 
 
-    ///
+    /// Makes the call to retrieve Safari shared credentials if they exist.
     ///
     func fetchSharedWebCredentialsIfAvailable() {
         didRequestSafariSharedCredentials = true
@@ -125,7 +138,12 @@ class SigninEmailViewController : SigninAbstractViewController
     }
 
 
+    /// Handles Safari shared credentials if any where found.
     ///
+    /// - Parameters:
+    ///     - found: True if credentails were found. 
+    ///     - username: The selected username or nil.
+    ///     - password: The selected password or nil.
     ///
     func handleFetchedWebCredentials(found: Bool, username: String?, password: String?) {
         didFindSafariSharedCredentials = found
@@ -149,7 +167,12 @@ class SigninEmailViewController : SigninAbstractViewController
     }
 
 
+    /// Displays the wpcom sign in form, optionally telling it to immedately make
+    /// the call to authenticate with the available credentials.
     ///
+    /// - Parameters:
+    ///     - immediateSignin: True if the newly loaded controller should immedately attempt
+    /// to authenticate the user with the available credentails.  Default is `false`.
     ///
     func signinWithUsernamePassword(immediateSignin: Bool = false) {
         let controller = SigninWPComViewController.controller(loginFields, immediateSignin: immediateSignin)
@@ -157,7 +180,7 @@ class SigninEmailViewController : SigninAbstractViewController
     }
 
 
-    ///
+    /// Displays the self-hosted sign in form.
     ///
     func signinToSelfHostedSite() {
         let controller = SigninSelfHostedViewController.controller(loginFields);
@@ -165,7 +188,8 @@ class SigninEmailViewController : SigninAbstractViewController
     }
 
 
-    ///
+    /// Proceeds along the "magic link" sign-in flow, showing a form that let's 
+    /// the user request a magic link.
     ///
     func requestLink() {
         let controller = SigninLinkRequestViewController.controller(loginFields)
@@ -173,7 +197,8 @@ class SigninEmailViewController : SigninAbstractViewController
     }
 
 
-    ///
+    /// Validates what is entered in the various form fields and, if valid, 
+    /// proceeds with the submit action.
     ///
     func validateForm() {
         let emailOrUsername = loginFields.username
@@ -189,12 +214,12 @@ class SigninEmailViewController : SigninAbstractViewController
             return
         }
 
-        setLoading(true)
+        configureLoading(true)
 
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.findExistingAccountByEmail(emailOrUsername,
            success: { [weak self] (found: Bool) in
-                self?.setLoading(false)
+                self?.configureLoading(false)
                 if (found) {
                     self?.requestLink()
                 } else {
@@ -203,18 +228,9 @@ class SigninEmailViewController : SigninAbstractViewController
 
             }, failure: { [weak self] (error: NSError!) in
                 DDLogSwift.logError(error.localizedDescription)
-                self?.setLoading(false)
+                self?.configureLoading(false)
                 self?.displayError(error)
             })
-    }
-
-
-    ///
-    ///
-    func setLoading(loading: Bool) {
-        emailTextField.enabled = !loading
-        submitButton.enabled = !loading
-        submitButton.showActivityIndicator(loading)
     }
 
 
