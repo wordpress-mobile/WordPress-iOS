@@ -9,7 +9,7 @@ class SigninWPComViewController : NUXAbstractViewController, SigninWPComSyncHand
 
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
     @IBOutlet weak var passwordField: WPWalkthroughTextField!
-    @IBOutlet weak var submitButton: WPNUXMainButton!
+    @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
     var onePasswordButton: UIButton!
 

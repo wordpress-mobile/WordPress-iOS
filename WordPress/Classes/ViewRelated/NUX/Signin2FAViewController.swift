@@ -10,7 +10,7 @@ class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandle
 
     @IBOutlet weak var verificationCodeField: UITextField!
     @IBOutlet weak var sendCodeButton: UIButton!
-    @IBOutlet weak var submitButton: WPNUXMainButton!
+    @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
 
     lazy private var loginFacade: LoginFacade = {

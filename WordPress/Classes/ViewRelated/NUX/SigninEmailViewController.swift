@@ -9,7 +9,7 @@ class SigninEmailViewController : NUXAbstractViewController
 
     @IBOutlet var onePasswordButton: UIButton!
     @IBOutlet var emailTextField: WPWalkthroughTextField!
-    @IBOutlet var submitButton: WPNUXMainButton!
+    @IBOutlet var submitButton: NUXSubmitButton!
     @IBOutlet var selfHostedButton: WPNUXSecondaryButton!
     @IBOutlet var createSiteButton: WPNUXSecondaryButton!
     @IBOutlet var safariPasswordButton: WPNUXSecondaryButton!
@@ -43,6 +43,9 @@ class SigninEmailViewController : NUXAbstractViewController
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+
+        // The old create account vc hides the nav bar, so make sure its always visible.
+        navigationController?.setNavigationBarHidden(false, animated: false)
 
         // Update special case login fields.
         loginFields.userIsDotCom = false
@@ -108,8 +111,6 @@ class SigninEmailViewController : NUXAbstractViewController
     ///
     func configureSubmitButton() {
         submitButton.enabled = !loginFields.username.isEmpty
-
-        submitButton.alpha = submitButton.enabled ? 1.0 : 5.0;
     }
 
 
