@@ -288,6 +288,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)headerView:(MenusHeaderView *)headerView selectedLocation:(MenuLocation *)location
 {
+    self.selectedMenuLocation = location;
     [self.headerView setSelectedMenu:location.menu];
     [self setViewsWithMenu:location.menu];
 }
