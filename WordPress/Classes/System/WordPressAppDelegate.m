@@ -612,7 +612,7 @@ int ddLogLevel = DDLogLevelInfo;
 
     // TODO: Remember to change this when switching to the new signin feature.
     UIViewController *controller = presentedViewController.visibleViewController;
-    return [controller isKindOfClass:[LoginViewController class]] || [controller isKindOfClass:[SigninAbstractViewController class]];
+    return [controller isKindOfClass:[LoginViewController class]] || [controller isKindOfClass:[NUXAbstractViewController class]];
 }
 
 - (BOOL)noWordPressDotComAccount

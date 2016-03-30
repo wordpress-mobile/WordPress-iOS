@@ -1,9 +1,10 @@
 import UIKit
 import WordPressShared
 
+/// Provides a form and functionality to sign-in and add an existing self-hosted 
+/// site to the app.
 ///
-///
-class SigninSelfHostedViewController : SigninAbstractViewController
+class SigninSelfHostedViewController : NUXAbstractViewController
 {
 
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
@@ -58,7 +59,7 @@ class SigninSelfHostedViewController : SigninAbstractViewController
     // MARK: Setup and Configuration
 
 
-    ///
+    /// Sets up a 1Password button if 1Password is available.
     ///
     func setupOnePasswordButtonIfNeeded() {
         WPStyleGuide.configureOnePasswordButtonForTextfield(usernameField,
@@ -67,7 +68,7 @@ class SigninSelfHostedViewController : SigninAbstractViewController
     }
 
 
-    ///
+    /// Configures the content of the text fields based on what is saved in `loginFields`.
     ///
     func configureTextFields() {
         usernameField.text = loginFields.username
@@ -76,7 +77,7 @@ class SigninSelfHostedViewController : SigninAbstractViewController
     }
 
 
-    ///
+    /// Configures the appearance and state of the forgot password button.
     ///
     func configureForgotPasswordButton() {
         var status = ""
@@ -88,7 +89,7 @@ class SigninSelfHostedViewController : SigninAbstractViewController
     }
 
 
-    ///
+    /// Configures the appearance and state of the submit button.
     ///
     func configureSubmitButton(animating: Bool) {
         submitButton.showActivityIndicator(animating)
@@ -102,7 +103,10 @@ class SigninSelfHostedViewController : SigninAbstractViewController
     }
 
 
+    /// Sets the view's state to loading or not loading.
     ///
+    /// - Parameters:
+    ///     - loading: True if the form should be configured to a "loading" state.
     ///
     func configureLoading(loading: Bool) {
         usernameField.enabled = !loading
@@ -116,7 +120,8 @@ class SigninSelfHostedViewController : SigninAbstractViewController
     // MARK: - Instance Methods
 
 
-    ///
+    /// Validates what is entered in the various form fields and, if valid,
+    /// proceeds with the submit action.
     ///
     func validateForm() {
         view.endEditing(true)
@@ -155,7 +160,6 @@ class SigninSelfHostedViewController : SigninAbstractViewController
     /// Displays an alert prompting that a site address is needed before 1Password can be used.
     ///
     func displayOnePasswordEmptySiteAlert() {
-        // TODO: This can move to the self-hosted vc.
         let message = NSLocalizedString("A site address is required before 1Password can be used.",
                                         comment: "Error message displayed when the user is Signing into a self hosted site and tapped the 1Password Button before typing his siteURL")
 
@@ -204,7 +208,7 @@ class SigninSelfHostedViewController : SigninAbstractViewController
 
 
     @IBAction func handleForgotPasswordButtonTapped(sender: UIButton) {
-        openForgotPasswordURL()
+        SigninHelpers.openForgotPasswordURL(loginFields)
     }
 
 }
