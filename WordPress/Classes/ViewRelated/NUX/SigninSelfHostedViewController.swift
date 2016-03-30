@@ -10,7 +10,7 @@ class SigninSelfHostedViewController : NUXAbstractViewController
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
     @IBOutlet weak var passwordField: WPWalkthroughTextField!
     @IBOutlet weak var siteURLField: WPWalkthroughTextField!
-    @IBOutlet weak var submitButton: WPNUXMainButton!
+    @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var forgotPasswordButton: WPNUXSecondaryButton!
     var onePasswordButton: UIButton!
