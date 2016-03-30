@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
-#import "WPContentViewProvider.h"
+#import "PostContentProvider.h"
 
-@protocol WPCommentContentViewProvider <WPContentViewProvider>
+@protocol WPCommentContentViewProvider <PostContentProvider>
 
 - (BOOL)isLiked;
 - (BOOL)authorIsPostAuthor;
