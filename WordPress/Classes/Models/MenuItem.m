@@ -94,7 +94,7 @@ NSString * const MenuItemDefaultLinkTitle = @"New Item";
 {
     MenuItem *lastChildItem = nil;
     NSUInteger parentIndex = [orderedItems indexOfObject:self];
-    for(NSUInteger i = parentIndex + 1; i < orderedItems.count; i++) {
+    for (NSUInteger i = parentIndex + 1; i < orderedItems.count; i++) {
         MenuItem *child = [orderedItems objectAtIndex:i];
         if (child.parent == self) {
             lastChildItem = child;

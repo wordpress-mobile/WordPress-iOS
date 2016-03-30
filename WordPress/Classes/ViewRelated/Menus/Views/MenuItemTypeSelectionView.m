@@ -91,7 +91,7 @@
 
 - (void)updateDesignForLayoutChangeIfNeeded
 {
-    for(MenuItemTypeView *typeView in self.typeViews) {
+    for (MenuItemTypeView *typeView in self.typeViews) {
         [typeView updateDesignForLayoutChangeIfNeeded];
     }
 }

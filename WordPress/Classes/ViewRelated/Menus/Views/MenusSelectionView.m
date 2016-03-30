@@ -88,7 +88,7 @@
 - (MenusSelectionItem *)itemWithItemObjectEqualTo:(id)itemObject
 {
     MenusSelectionItem *matchingItem = nil;
-    for(MenusSelectionItem *item in self.items) {
+    for (MenusSelectionItem *item in self.items) {
         if (item.itemObject == itemObject) {
             matchingItem = item;
             break;
@@ -101,7 +101,7 @@
 {
     if (_selectionExpanded != selectionExpanded) {
         _selectionExpanded = selectionExpanded;
-        for(MenusSelectionItemView *itemView in self.itemViews) {
+        for (MenusSelectionItemView *itemView in self.itemViews) {
             itemView.hidden = !selectionExpanded;
             itemView.alpha = itemView.hidden ? 0.0 : 1.0;
         }
@@ -142,7 +142,7 @@
     
     // setup ordering to help with any drawing
     MenusSelectionItemView *lastItemView = nil;
-    for(MenusSelectionItemView *itemView in self.itemViews) {
+    for (MenusSelectionItemView *itemView in self.itemViews) {
         lastItemView.nextItemView = itemView;
         itemView.previousItemView = lastItemView;
         lastItemView = itemView;
@@ -226,7 +226,7 @@
 {
     MenusSelectionItem *updatedItem = notification.object;
     BOOL haveItem = NO;
-    for(MenusSelectionItem *item in self.items) {
+    for (MenusSelectionItem *item in self.items) {
         if (item == updatedItem) {
             haveItem = YES;
             break;
@@ -244,7 +244,7 @@
     }
     
     // update any itemViews using this item
-    for(MenusSelectionItemView *itemView in self.itemViews) {
+    for (MenusSelectionItemView *itemView in self.itemViews) {
         
         if (itemView.item == updatedItem) {
             itemView.item = updatedItem;
