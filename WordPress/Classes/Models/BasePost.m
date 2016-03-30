@@ -190,9 +190,12 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
         // A nil date means publish immediately.
         self.status = PostStatusPublish;
 
-    } else if ([self hasFuturePublishDate] && [self.status isEqualToString:PostStatusPublish]) {
-        self.status = PostStatusScheduled;
-
+    } else if ([self hasFuturePublishDate]) {
+        // Needs to be a nested conditional so future date + scheduled status
+        // is handled correctly.
+        if ([self.status isEqualToString:PostStatusPublish]) {
+            self.status = PostStatusScheduled;
+        }
     } else if ([self.status isEqualToString:PostStatusScheduled]) {
         self.status = PostStatusPublish;
     }
