@@ -1,8 +1,6 @@
 import XCTest
 
 class LoginTests: XCTestCase {
-
-    lazy var app = XCUIApplication()
         
     override func setUp() {
         super.setUp()
@@ -16,16 +14,12 @@ class LoginTests: XCTestCase {
 
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
         // Logout first if needed
-        if !app.textFields["Username / Email"].exists {
-            app.tabBars["Main Navigation"].buttons["Me"].tap()
-            app.tables.elementBoundByIndex(0).swipeUp()
-            app.tables.cells.elementBoundByIndex(5).tap()
-            app.alerts.buttons["Disconnect"].tap()
-        }
+        logoutIfNeeded()
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        logoutIfNeeded()
         super.tearDown()
     }
 
@@ -127,11 +121,9 @@ class LoginTests: XCTestCase {
         passwordField.tap()
         passwordField.typeText(WordPressTestCredentials.oneStepPassword)
 
-        /* Disabled for now because Create an Account is crashing
         app.buttons["Create Account"].tap()
 
         self.waitForElementToAppear(app.tabBars["Main Navigation"])
- */
     }
 }
 
