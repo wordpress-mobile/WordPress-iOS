@@ -216,8 +216,8 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     NSMutableArray *marr = [NSMutableArray array];
     [marr addObject:[self generalSectionViewModel]];
     [marr addObject:[self publishTypeSectionViewModel]];
-    if ([self.blog supports:BlogFeatureThemeBrowsing]) {
-        [marr addObject:[self appearanceSectionViewModel]];
+    if ([self.blog supports:BlogFeatureThemeBrowsing] || [self.blog supports:BlogFeatureMenus]) {
+        [marr addObject:[self personalizeSectionViewModel]];
     }
     [marr addObject:[self configurationSectionViewModel]];
 
@@ -296,22 +296,24 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
 }
 
-- (BlogDetailsSection *)appearanceSectionViewModel
+- (BlogDetailsSection *)personalizeSectionViewModel
 {
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
-                                                    image:[UIImage imageNamed:@"icon-menu-theme"]
-                                                 callback:^{
-                                                     [weakSelf showThemes];
-                                                 }]];
-    
-    [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Menus", @"Menus option in the blog details")
-                                                    image:[UIImage imageNamed:@"icon-menu-posts"]
-                                                 callback:^{
-                                                     [weakSelf showMenus];
-                                                 }]];
-
+    if ([self.blog supports:BlogFeatureThemeBrowsing]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
+                                                        image:[UIImage imageNamed:@"icon-menu-theme"]
+                                                     callback:^{
+                                                         [weakSelf showThemes];
+                                                     }]];
+    }
+    if ([self.blog supports:BlogFeatureMenus]) {
+        [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Menus", @"Menus option in the blog details")
+                                                        image:[UIImage imageNamed:@"icon-menu-posts"]
+                                                     callback:^{
+                                                         [weakSelf showMenus];
+                                                     }]];
+    }
     NSString *title =NSLocalizedString(@"Personalize", @"Section title for the personalize table section in the blog details screen.");
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows];
 }
@@ -555,6 +557,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
 - (void)showMenus
 {
+    //TODO: (@kurzee, 2016-03-30) Add tracker for menus feature.
     MenusViewController *viewController = [[MenusViewController alloc] initWithBlog:self.blog];
     [self.navigationController pushViewController:viewController
                                          animated:YES];
