@@ -47,6 +47,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 @property (nonatomic, assign) BOOL observesKeyboardChanges;
 @property (nonatomic, assign) BOOL animatesAppearanceAfterSync;
+@property (nonatomic, assign) BOOL savingEnabled;
 
 @end
 
@@ -275,6 +276,14 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
 }
 
+- (void)setSavingEnabled:(BOOL)savingEnabled
+{
+    if (_savingEnabled != savingEnabled) {
+        _savingEnabled = savingEnabled;
+        self.detailsView.savingEnabled = savingEnabled;
+    }
+}
+
 #pragma mark - MenusHeaderViewDelegate
 
 - (void)headerView:(MenusHeaderView *)headerView selectedLocation:(MenuLocation *)location
@@ -285,6 +294,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 
 - (void)headerView:(MenusHeaderView *)headerView selectedMenu:(Menu *)menu
 {
+    self.savingEnabled = YES;
+    
     self.selectedMenuLocation.menu = menu;
     [self setViewsWithMenu:menu];
 }
@@ -299,6 +310,8 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     [self.headerView addMenu:newMenu];
     [self.headerView setSelectedMenu:newMenu];
     [self setViewsWithMenu:newMenu];
+    
+    self.savingEnabled = YES;
 }
 
 #pragma mark - MenuDetailsViewDelegate
@@ -306,10 +319,13 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 - (void)detailsViewUpdatedMenuName:(MenuDetailsView *)menuDetailView
 {
     [self.headerView refreshMenuViewsUsingMenu:menuDetailView.menu];
+    self.savingEnabled = YES;
 }
 
 - (void)detailsViewSelectedToSaveMenu:(MenuDetailsView *)menuDetailView
 {
+    [self.detailsView resignFirstResponder];
+    
     // Buckle up, we gotta save this Menu!
     Menu *menuToSave = menuDetailView.menu;
     
@@ -450,10 +466,16 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         [self dismissViewControllerAnimated:YES completion:nil];
     };
     controller.onSelectedToSave = ^() {
+        self.savingEnabled = YES;
         [self.itemsView refreshViewWithItem:item focus:YES];
         dismiss();
     };
     controller.onSelectedToTrash = ^() {
+        if (item.itemId) {
+            // If the item had an ID, saving is enabled.
+            // Otherwise the item was local only.
+            self.savingEnabled = YES;
+        }
         [self.itemsView removeItem:item];
         [self insertBlankMenuItemIfNeeded];
         dismiss();
@@ -473,6 +495,11 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     MenuItemEditingViewController *controller = [self editingControllerWithItem:item];
     [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void)itemsView:(MenuItemsStackView *)itemsView didUpdateMenuItemsOrdering:(Menu *)menu
+{
+    self.savingEnabled = YES;
 }
 
 - (void)itemsView:(MenuItemsStackView *)itemsView requiresScrollingToCenterView:(UIView *)viewForScrolling
