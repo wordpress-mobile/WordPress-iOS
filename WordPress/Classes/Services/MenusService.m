@@ -18,7 +18,7 @@
 - (BOOL)blogSupportsMenusCustomization:(Blog *)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    return blog.restApi;
+    return blog.restApi && [blog dotComID];
 }
 
 #pragma mark - Remote queries: Getting menus
