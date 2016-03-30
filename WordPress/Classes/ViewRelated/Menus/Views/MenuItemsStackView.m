@@ -95,7 +95,7 @@
 
 - (void)reloadItems
 {
-    for(MenuItemsStackableView *stackableView in self.stackView.arrangedSubviews) {
+    for (MenuItemsStackableView *stackableView in self.stackView.arrangedSubviews) {
         [self.stackView removeArrangedSubview:stackableView];
         [stackableView removeFromSuperview];
     }
@@ -105,7 +105,7 @@
     self.itemViewForInsertionToggling = nil;
     self.insertionViews = nil;
     
-    for(MenuItem *item in self.menu.items) {
+    for (MenuItem *item in self.menu.items) {
         [self addNewItemViewWithItem:item];
     }
 }
@@ -135,7 +135,7 @@
 
 - (void)updateParentChildIndentationForItemViews
 {
-    for(UIView *arrangedView in self.stackView.arrangedSubviews) {
+    for (UIView *arrangedView in self.stackView.arrangedSubviews) {
         if (![arrangedView isKindOfClass:[MenuItemView class]]) {
             continue;
         }
@@ -216,14 +216,14 @@
     // since we are adding content above the toggledItemView, the toggledItemView (focus) will move downwards with the updated content size
     updatedRect.origin.y += MenuItemsStackableViewDefaultHeight;
     
-    for(MenuItemInsertionView *insertionView in self.insertionViews) {
+    for (MenuItemInsertionView *insertionView in self.insertionViews) {
         insertionView.hidden = YES;
         insertionView.alpha = 0.0;
     }
     
     [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
         
-        for(MenuItemInsertionView *insertionView in self.insertionViews) {
+        for (MenuItemInsertionView *insertionView in self.insertionViews) {
             insertionView.hidden = NO;
             insertionView.alpha = 1.0;
         }
@@ -238,7 +238,7 @@
 
 - (void)removeItemInsertionViews
 {
-    for(MenuItemInsertionView *insertionView in self.insertionViews) {
+    for (MenuItemInsertionView *insertionView in self.insertionViews) {
         [self.stackView removeArrangedSubview:insertionView];
         [insertionView removeFromSuperview];
     }
@@ -265,7 +265,7 @@
     
     [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
         
-        for(MenuItemInsertionView *insertionView in self.insertionViews) {
+        for (MenuItemInsertionView *insertionView in self.insertionViews) {
             insertionView.hidden = YES;
             insertionView.alpha = 0.0;
         }
@@ -283,7 +283,7 @@
 - (MenuItemView *)itemViewForItem:(MenuItem *)item
 {
     MenuItemView *itemView = nil;
-    for(MenuItemView *arrangedItemView in self.itemViews) {
+    for (MenuItemView *arrangedItemView in self.itemViews) {
         if (arrangedItemView.item == item) {
             itemView = arrangedItemView;
             break;
@@ -320,7 +320,7 @@
         return;
     }
     
-    for(MenuItemView *itemView in self.itemViews) {
+    for (MenuItemView *itemView in self.itemViews) {
         if (CGRectContainsPoint(itemView.frame, location)) {
             [self beginOrdering:itemView];
             break;
@@ -481,7 +481,7 @@
         
         //// if the touch is over a different item, detect which item to replace the ordering with
         
-        for(MenuItemView *itemView in self.itemViews) {
+        for (MenuItemView *itemView in self.itemViews) {
             // enumerate the itemViews lists since we don't care about other views in the stackView.arrangedSubviews list
             if (itemView == selectedItemView) {
                 continue;
@@ -539,7 +539,7 @@
         
         // get the item and its descendants
         NSMutableArray *movingItems = [NSMutableArray array];
-        for(NSUInteger i = [orderedItems indexOfObject:item]; i < orderedItems.count; i++) {
+        for (NSUInteger i = [orderedItems indexOfObject:item]; i < orderedItems.count; i++) {
             MenuItem *orderedItem = [orderedItems objectAtIndex:i];
             if (orderedItem != item && ![orderedItem isDescendantOfItem:item]) {
                 break;
@@ -621,7 +621,7 @@
         // update the stackView arrangedSubviews ordering to reflect the ordering in orderedItems
         [self.stackView sendSubviewToBack:otherItemView];
         [self orderingAnimationWithBlock:^{
-            for(NSUInteger i = 0; i < orderedItems.count; i++) {
+            for (NSUInteger i = 0; i < orderedItems.count; i++) {
                 
                 MenuItem *item = [orderedItems objectAtIndex:i];
                 MenuItemView *itemView = [self itemViewForItem:item];
@@ -641,7 +641,7 @@
     MenuItem *availableItem = nil;
     NSUInteger itemIndex = [self.menu.items indexOfObject:item];
     
-    for(NSUInteger i = itemIndex + 1; itemIndex < self.menu.items.count; i++) {
+    for (NSUInteger i = itemIndex + 1; itemIndex < self.menu.items.count; i++) {
         
         MenuItem *anItem = [self.menu.items objectAtIndex:i];
         if (![anItem isDescendantOfItem:item]) {
@@ -676,7 +676,7 @@
     NSArray *arrangedViews = self.stackView.arrangedSubviews;
     
     NSUInteger itemViewIndex = [arrangedViews indexOfObject:selectedItemView];
-    for(NSUInteger i = itemViewIndex + 1; i < arrangedViews.count; i++) {
+    for (NSUInteger i = itemViewIndex + 1; i < arrangedViews.count; i++) {
         UIView *view = [arrangedViews objectAtIndex:i];
         if ([view isKindOfClass:[MenuItemView class]]) {
             MenuItemView *itemView = (MenuItemView *)view;

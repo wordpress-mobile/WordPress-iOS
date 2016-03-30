@@ -44,11 +44,11 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
 - (void)setupWithMenusForBlog:(Blog *)blog
 {
     self.blog = blog;
-    for(MenuLocation *location in blog.menuLocations) {
+    for (MenuLocation *location in blog.menuLocations) {
         MenusSelectionItem *item = [MenusSelectionItem itemWithLocation:location];
         [self.locationsView addSelectionViewItem:item];
     }
-    for(Menu *menu in blog.menus) {
+    for (Menu *menu in blog.menus) {
         MenusSelectionItem *item = [MenusSelectionItem itemWithMenu:menu];
         [self.menusView addSelectionViewItem:item];
     }

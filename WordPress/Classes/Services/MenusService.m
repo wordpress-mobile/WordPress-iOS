@@ -67,7 +67,7 @@
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
         
-        if(success) {
+        if (success) {
             success();
         }
         
@@ -90,7 +90,7 @@
                        success:^(RemoteMenu *remoteMenu) {
                            
                            [self.managedObjectContext performBlockAndWait:^{
-                               if(success) {
+                               if (success) {
                                    success(remoteMenu.menuId);
                                }
                            }];
@@ -110,8 +110,8 @@
     [self.managedObjectContext performBlockAndWait:^{
         
         NSMutableArray *locationNames = [NSMutableArray arrayWithCapacity:menu.locations.count];
-        for(MenuLocation *location in menu.locations) {
-            if(location.name.length) {
+        for (MenuLocation *location in menu.locations) {
+            if (location.name.length) {
                 [locationNames addObject:location.name];
             }
         }
@@ -132,12 +132,12 @@
                                  which items are equal to one another, especially when a menuID is unknown.
                                  */
                                 menu.items = nil;
-                                for(RemoteMenuItem *remoteItem in remoteMenu.items) {
+                                for (RemoteMenuItem *remoteItem in remoteMenu.items) {
                                     [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
                                 }
                                 
                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                                if(success) {
+                                if (success) {
                                     success();
                                 }
                             }];
@@ -227,7 +227,7 @@
 - (NSArray *)menusFromRemoteMenus:(NSArray<RemoteMenu *> *)remoteMenus
 {
     NSMutableArray *menus = [NSMutableArray arrayWithCapacity:remoteMenus.count];
-    for(RemoteMenu *remoteMenu in remoteMenus) {
+    for (RemoteMenu *remoteMenu in remoteMenus) {
         [menus addObject:[self menuFromRemoteMenu:remoteMenu]];
     }
     
@@ -243,7 +243,7 @@
     menu.name = remoteMenu.name;
     menu.details = remoteMenu.details;
     menu.menuId = remoteMenu.menuId;
-    for(RemoteMenuItem *remoteItem in remoteMenu.items) {
+    for (RemoteMenuItem *remoteItem in remoteMenu.items) {
         [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
     }
     
@@ -270,9 +270,9 @@
     item.urlStr = remoteMenuItem.urlStr;
     item.menu = menu;
     
-    if(remoteMenuItem.children) {
+    if (remoteMenuItem.children) {
         
-        for(RemoteMenuItem *childRemoteItem in remoteMenuItem.children) {
+        for (RemoteMenuItem *childRemoteItem in remoteMenuItem.children) {
             MenuItem *childItem = [self addMenuItemFromRemoteMenuItem:childRemoteItem forMenu:menu];
             childItem.parent = item;
         }
@@ -290,7 +290,7 @@
     [self.managedObjectContext performBlockAndWait:^{
         
         // remove the current menus related to the blog
-        for(RemoteMenuLocation *remoteMenuLocation in remoteMenuLocations) {
+        for (RemoteMenuLocation *remoteMenuLocation in remoteMenuLocations) {
             [locations addObject:[self menuLocationFromRemoteMenuLocation:remoteMenuLocation]];
         }
     }];
@@ -318,7 +318,7 @@
              availableLocations:(NSArray *)locations
 {
     NSArray *menuLocations = nil;
-    if(remoteLocationNames.count) {
+    if (remoteLocationNames.count) {
         menuLocations = [locations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name IN %@", remoteLocationNames]];
     }
     
@@ -347,7 +347,7 @@
 - (NSArray *)remoteItemsFromMenuItems:(NSOrderedSet<MenuItem *> *)menuItems
 {
     NSMutableArray *remoteItems = [NSMutableArray arrayWithCapacity:menuItems.count];
-    for(MenuItem *item in menuItems) {
+    for (MenuItem *item in menuItems) {
         // Only add top-level items since MenuItem keeps all associated items under it's children relationship.
         if (item.parent) {
             continue;
@@ -390,9 +390,9 @@
     remoteItem.typeLabel = item.typeLabel;
     remoteItem.urlStr = item.urlStr;
     
-    if(item.children.count) {
+    if (item.children.count) {
         NSMutableArray *childRemoteItems = [NSMutableArray arrayWithCapacity:item.children.count];
-        for(MenuItem *childItem in item.children) {
+        for (MenuItem *childItem in item.children) {
             [childRemoteItems addObject:[self remoteItemFromItem:childItem]];
         }
         remoteItem.children = childRemoteItems;
