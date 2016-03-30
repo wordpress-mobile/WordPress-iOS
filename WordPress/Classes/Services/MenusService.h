@@ -85,6 +85,14 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
            success:(MenusServiceSuccessBlock)success
            failure:(MenusServiceFailureBlock)failure;
 
+/**
+ *  @brief      Generate a list MenuItems from the blog's top-level pages.
+ *
+ *  @param      blog      The blog to use for pages.  Cannot be nil.
+ *  @param      success   The success handler.  Can be nil.
+ *  @param      failure   The failure handler.  Can be nil.
+ *
+ */
 - (void)generateDefaultMenuItemsForBlog:(Blog *)blog
                                 success:(void(^)(NSArray <MenuItem *> *defaultItems))success
                                 failure:(void(^)(NSError *error))failure;
