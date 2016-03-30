@@ -70,12 +70,20 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return [string stringByEllipsizingWithMaxLength:PostDerivedSummaryLength preserveWords:YES];
 }
 
+- (NSString *)availableStatusForPublishOrScheduled
+{
+    if ([self hasFuturePublishDate]) {
+        return PostStatusScheduled;
+    }
+    return PostStatusPublish;
+}
+
 - (NSArray *)availableStatusesForEditing
 {
     // Note: Read method description before changing values.
     return @[PostStatusDraft,
              PostStatusPending,
-             PostStatusPublish];
+             [self availableStatusForPublishOrScheduled]];
 }
 
 - (BOOL)hasNeverAttemptedToUpload
@@ -115,6 +123,16 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return [BasePost titleForStatus:self.status];
 }
 
+// This is different than isScheduled. See .h for details.
+- (BOOL)hasFuturePublishDate
+{
+    if (!self.date_created_gmt) {
+        return NO;
+    }
+    return (self.date_created_gmt == [self.date_created_gmt laterDate:[NSDate date]]);
+}
+
+// If the post has a scheduled status.
 - (BOOL)isScheduled
 {
     return ([self.status isEqualToString:PostStatusScheduled]);
@@ -164,7 +182,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 
     /*
      If the date is nil it means publish immediately so set the status to publish.
-     If the date is in the future set the status to scheduled.
+     If the date is in the future set the status to scheduled if current status is published.
      If the date is now or in the past, and the status is scheduled, set the status
      to published.
      */
@@ -172,12 +190,12 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
         // A nil date means publish immediately.
         self.status = PostStatusPublish;
 
-    } else if (self.date_created_gmt == [self.date_created_gmt laterDate:[NSDate date]]) {
-        // If its a future date, and we're not trashed, then the status is scheduled.
-        if (![self.status isEqualToString:PostStatusTrash]){
+    } else if ([self hasFuturePublishDate]) {
+        // Needs to be a nested conditional so future date + scheduled status
+        // is handled correctly.
+        if ([self.status isEqualToString:PostStatusPublish]) {
             self.status = PostStatusScheduled;
         }
-
     } else if ([self.status isEqualToString:PostStatusScheduled]) {
         self.status = PostStatusPublish;
     }

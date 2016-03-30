@@ -1444,6 +1444,13 @@ EditImageDetailsViewControllerDelegate
     [self dismissEditView:YES];
 }
 
+- (BOOL)shouldPublishImmediately
+{
+    return !self.post.hasFuturePublishDate &&
+        [self.post.original.status isEqualToString:PostStatusDraft] &&
+        [self.post.status isEqualToString:PostStatusPublish];
+}
+
 /**
  *  @brief      Saves the post being edited and uploads it.
  *  @details    Saves the post being edited and uploads it. If the post is NOT already scheduled, 
@@ -1456,7 +1463,7 @@ EditImageDetailsViewControllerDelegate
 
     [self.view endEditing:YES];
     
-    if (!self.post.isScheduled && [self.post.original.status isEqualToString:PostStatusDraft]  && [self.post.status isEqualToString:PostStatusPublish]) {
+    if ([self shouldPublishImmediately]) {
         self.post.dateCreated = [NSDate date];
     }
     
@@ -1875,7 +1882,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)actionSheetSaveDraftButtonPressed
 {
-    if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+    if (![self.post hasRemote] && (self.post.isScheduled || [self.post.status isEqualToString:PostStatusPublish])) {
         self.post.status = PostStatusDraft;
     }
     
