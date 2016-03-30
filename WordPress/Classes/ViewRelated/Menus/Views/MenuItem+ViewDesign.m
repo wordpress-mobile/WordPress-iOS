@@ -14,7 +14,7 @@ CGFloat const MenusDesignItemIconSize = 18.0;
         imageName = @"gridicons-link";
     } else if ([itemType isEqualToString:MenuItemTypeCategory]) {
         imageName = @"gridicons-folder";
-    } else if([itemType isEqualToString:MenuItemTypeTag]) {
+    } else if ([itemType isEqualToString:MenuItemTypeTag]) {
         imageName = @"gridicons-tag";
     }
     
