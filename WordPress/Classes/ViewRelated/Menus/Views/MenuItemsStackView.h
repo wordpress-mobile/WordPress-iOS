@@ -20,6 +20,7 @@
 
 - (void)itemsView:(MenuItemsStackView *)itemsView createdNewItemForEditing:(MenuItem *)item;
 - (void)itemsView:(MenuItemsStackView *)itemsView selectedItemForEditing:(MenuItem *)item;
+- (void)itemsView:(MenuItemsStackView *)itemsView didUpdateMenuItemsOrdering:(Menu *)menu;
 - (void)itemsView:(MenuItemsStackView *)itemsView requiresScrollingToCenterView:(UIView *)viewForScrolling;
 - (void)itemsView:(MenuItemsStackView *)itemsView prefersScrollingEnabled:(BOOL)enabled;
 - (void)itemsView:(MenuItemsStackView *)itemsView prefersAdjustingScrollingOffsetForAnimatingView:(UIView *)view;
