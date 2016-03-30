@@ -309,7 +309,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     }
     if ([self.blog supports:BlogFeatureMenus]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Menus", @"Menus option in the blog details")
-                                                        image:[UIImage imageNamed:@"icon-menu-posts"]
+                                                        image:[[UIImage imageNamed:@"gridicons-menus"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                                      callback:^{
                                                          [weakSelf showMenus];
                                                      }]];
@@ -434,6 +434,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
+    cell.imageView.tintColor = [WPStyleGuide greyLighten10];
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
 
