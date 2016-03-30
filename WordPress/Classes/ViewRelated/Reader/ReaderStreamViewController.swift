@@ -252,6 +252,7 @@ import WordPressComAnalytics
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
+        tableView.accessibilityIdentifier = "Reader"
         tableView.separatorStyle = .None
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), forControlEvents: .ValueChanged)
