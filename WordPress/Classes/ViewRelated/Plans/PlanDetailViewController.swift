@@ -2,9 +2,66 @@ import UIKit
 import WordPressShared
 
 class PlanDetailViewController: UIViewController {
-    var plan: Plan!
-    var siteID: Int!
-    
+    struct ViewModel {
+        let plan: Plan
+        let siteID: Int
+
+        let isActivePlan: Bool
+
+        /// Plan price, or `nil` for a free plan
+        let price: String?
+
+        let features: FeaturesViewModel
+
+        enum FeaturesViewModel {
+            case Loading
+            case Error(String)
+            case Ready([PlanFeatureGroup])
+        }
+
+        func withFeatures(features: FeaturesViewModel) -> ViewModel {
+            return ViewModel(
+                plan: plan,
+                siteID: siteID,
+                isActivePlan: isActivePlan,
+                price: price,
+                features: features
+            )
+        }
+
+        var tableViewModel: ImmuTable {
+            switch features {
+            case .Loading, .Error(_):
+                return ImmuTable.Empty
+            case .Ready(let groups):
+                return ImmuTable(sections: groups.map { group in
+                    let features = group.slugs.flatMap { PlanService<StoreKitStore>.featureForPlan(plan, withSlug: $0) }
+                    let rows: [ImmuTableRow] = features.map({ feature in
+                        return FeatureItemRow(title: feature.title, description: feature.description, iconURL: feature.iconURL)
+                    })
+                    return ImmuTableSection(headerText: group.title, rows: rows, footerText: nil)
+                    })
+            }
+        }
+
+        var noResultsViewModel: WPNoResultsView.Model? {
+            switch features {
+            case .Loading:
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("Loading Plan...", comment: "Text displayed while loading plans details")
+                )
+            case .Ready(_):
+                return nil
+            case .Error(_):
+                return WPNoResultsView.Model(
+                    title: NSLocalizedString("Oops", comment: ""),
+                    message: NSLocalizedString("There was an error loading the plan", comment: ""),
+                    buttonTitle: NSLocalizedString("Contact support", comment: "")
+                )
+            }
+        }
+    }
+
     private let cellIdentifier = "PlanFeatureListItem"
     
     private let tableViewHorizontalMargin: CGFloat = 24.0
@@ -17,7 +74,7 @@ class PlanDetailViewController: UIViewController {
             tableView?.reloadData()
         }
     }
-    var viewModel: PlanFeatureViewModel = .Loading {
+    var viewModel: ViewModel! {
         didSet {
             bindViewModel(viewModel)
             updateNoResults()
@@ -74,14 +131,12 @@ class PlanDetailViewController: UIViewController {
     
     @IBOutlet weak var headerInfoStackView: UIStackView!
 
-    class func controllerWithPlan(plan: Plan, siteID: Int, isActive: Bool) -> PlanDetailViewController {
+    class func controllerWithPlan(plan: Plan, siteID: Int, isActive: Bool, price: String?) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
-        
-        controller.plan = plan
-        controller.siteID = siteID
-        controller.isActivePlan = isActive
-        
+
+        controller.viewModel = ViewModel(plan: plan, siteID: siteID, isActivePlan: isActive, price: price, features: .Loading)
+
         return controller
     }
     
@@ -145,10 +200,10 @@ class PlanDetailViewController: UIViewController {
         }
     }
     
-    func bindViewModel(viewModel: PlanFeatureViewModel) {
+    func bindViewModel(viewModel: ViewModel) {
         self.tableViewModel = viewModel.tableViewModel
-        title = plan.title
-        populateHeader(plan, isActivePlan: isActivePlan)
+        title = viewModel.plan.title
+        populateHeader(viewModel.plan, isActivePlan: viewModel.isActivePlan)
     }
     
     // TODO: Prices should always come from StoreKit
@@ -169,62 +224,20 @@ class PlanDetailViewController: UIViewController {
     //MARK: - IBActions
     
     @IBAction private func purchaseTapped() {
-        guard let identifier = plan.productIdentifier else {
+        guard let identifier = viewModel.plan.productIdentifier else {
             return
         }
         purchaseButton.selected = true
         let store = StoreKitStore()
         store.getProductsWithIdentifiers(
             Set([identifier]),
-            success: { products in
-                StoreKitCoordinator.instance.purchasePlan(self.plan, product: products[0], forSite: self.siteID)
+            success: { [viewModel] products in
+                StoreKitCoordinator.instance.purchasePlan(viewModel.plan, product: products[0], forSite: viewModel.siteID)
             },
             failure: { error in
                 DDLogSwift.logError("Error fetching Store products: \(error)")
                 self.purchaseButton.selected = false
         })
-    }
-    
-    enum PlanFeatureViewModel {
-        case Loading
-        case Ready(Plan)
-        case Error(String)
-        
-        var tableViewModel: ImmuTable {
-            switch self {
-            case .Loading, .Error(_):
-                return ImmuTable.Empty
-            case .Ready(let plan):
-                guard let groups = PlanFeatureGroup.groupsForPlan(plan) else {
-                    return ImmuTable.Empty
-                }
-                
-                return ImmuTable(sections: groups.map { group in
-                    let features = group.slugs.flatMap { PlanService<StoreKitStore>.featureForPlan(plan, withSlug: $0) }
-                    let rows: [ImmuTableRow] = features.map({ feature in
-                        return FeatureItemRow(title: feature.title, description: feature.description, iconURL: feature.iconURL)
-                    })
-                    return ImmuTableSection(headerText: group.title, rows: rows, footerText: nil)
-                })
-            }
-        }
-        
-        var noResultsViewModel: WPNoResultsView.Model? {
-            switch self {
-            case .Loading:
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("Loading Plan...", comment: "Text displayed while loading plans details")
-                )
-            case .Ready(_):
-                return nil
-            case .Error(_):
-                return WPNoResultsView.Model(
-                    title: NSLocalizedString("Oops", comment: ""),
-                    message: NSLocalizedString("There was an error loading the plan", comment: ""),
-                    buttonTitle: NSLocalizedString("Contact support", comment: "")
-                )
-            }
-        }
     }
 }
 
