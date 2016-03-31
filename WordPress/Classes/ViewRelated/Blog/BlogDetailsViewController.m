@@ -65,7 +65,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     self = [super init];
     if (self) {
         _title = title;
-        _image = image;
+        _image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         _callback = callback;
         _identifier = identifier;
     }
@@ -230,21 +230,21 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"View Site", @"Action title. Opens the user's site in an in-app browser")
-                                                    image:[UIImage imageNamed:@"icon-menu-viewsite"]
+                                                    image:[UIImage imageNamed:@"gridicons-house"]
                                                  callback:^{
                                                      [weakSelf showViewSite];
                                                  }]];
 
     if ([self shouldShowWPAdminRow]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"WP Admin", @"Action title. Noun. Opens the user's WordPress Admin in an external browser.")
-                                                        image:[UIImage imageNamed:@"icon-menu-viewadmin"]
+                                                        image:[UIImage imageNamed:@"gridicons-my-sites"]
                                                      callback:^{
                                                          [weakSelf showViewAdmin];
                                                      }]];
     }
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Stats", @"Noun. Abbv. of Statistics. Links to a blog's Stats screen.")
-                                                    image:[UIImage imageNamed:@"icon-menu-stats"]
+                                                    image:[UIImage imageNamed:@"gridicons-stats-alt"]
                                                  callback:^{
                                                      [weakSelf showStats];
                                                  }]];
@@ -252,7 +252,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     if ([Feature enabled:FeatureFlagPlans] && [self.blog supports:BlogFeaturePlans]) {
         BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Plans", @"Action title. Noun. Links to a blog's Plans screen.")
                                                          identifier:BlogDetailsPlanCellIdentifier
-                                                              image:[UIImage imageNamed:@"icon-menu-plans"]
+                                                              image:[UIImage imageNamed:@"gridicons-clipboard"]
                                                            callback:^{
                                                                [weakSelf showPlans];
                                                            }];
@@ -270,19 +270,19 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Blog Posts", @"Noun. Title. Links to the blog's Posts screen.")
-                                                    image:[UIImage imageNamed:@"icon-menu-posts"]
+                                                    image:[UIImage imageNamed:@"gridicons-posts"]
                                                  callback:^{
                                                      [weakSelf showPostList];
                                                  }]];
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Pages", @"Noun. Title. Links to the blog's Pages screen.")
-                                                    image:[UIImage imageNamed:@"icon-menu-pages"]
+                                                    image:[UIImage imageNamed:@"gridicons-pages"]
                                                  callback:^{
                                                      [weakSelf showPageList];
                                                  }]];
 
     BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Comments", @"Noun. Title. Links to the blog's Comments screen.")
-                                                          image:[UIImage imageNamed:@"icon-menu-comments"]
+                                                          image:[UIImage imageNamed:@"gridicons-comment"]
                                                        callback:^{
                                                            [weakSelf showComments];
                                                        }];
@@ -301,7 +301,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     __weak __typeof(self) weakSelf = self;
     NSMutableArray *rows = [NSMutableArray array];
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Themes", @"Themes option in the blog details")
-                                                    image:[UIImage imageNamed:@"icon-menu-theme"]
+                                                    image:[UIImage imageNamed:@"gridicons-themes"]
                                                  callback:^{
                                                      [weakSelf showThemes];
                                                  }]];
@@ -317,7 +317,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
     if ([self.blog supports:BlogFeatureSharing]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Sharing", @"Noun. Title. Links to a blog's sharing options.")
-                                                        image:[UIImage imageNamed:@"icon-menu-sharing"]
+                                                        image:[UIImage imageNamed:@"gridicons-share"]
                                                      callback:^{
                                                          [weakSelf showSharing];
                                                      }]];
@@ -325,14 +325,14 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
 
     if ([Feature enabled:FeatureFlagPeople] && [self.blog supports:BlogFeaturePeople]) {
         [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"People", @"Noun. Title. Links to the people management feature.")
-                                                        image:[UIImage imageNamed:@"icon-menu-people"]
+                                                        image:[UIImage imageNamed:@"gridicons-user"]
                                                      callback:^{
                                                          [weakSelf showPeople];
                                                      }]];
     }
 
     [rows addObject:[[BlogDetailsRow alloc] initWithTitle:NSLocalizedString(@"Settings", @"Noun. Title. Links to the blog's Settings screen.")
-                                                    image:[UIImage imageNamed:@"icon-menu-settings"]
+                                                    image:[UIImage imageNamed:@"gridicons-cog"]
                                                  callback:^{
                                                      [weakSelf showSettings];
                                                  }]];
@@ -426,6 +426,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:row.identifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
+    cell.imageView.tintColor = [WPStyleGuide greyLighten10];
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
 
