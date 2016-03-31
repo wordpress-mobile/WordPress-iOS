@@ -3,6 +3,7 @@ import WordPressShared
 
 class PlanDetailViewController: UIViewController {
     var plan: Plan!
+    var siteID: Int!
     
     private let cellIdentifier = "PlanFeatureListItem"
     
@@ -73,11 +74,12 @@ class PlanDetailViewController: UIViewController {
     
     @IBOutlet weak var headerInfoStackView: UIStackView!
 
-    class func controllerWithPlan(plan: Plan, isActive: Bool) -> PlanDetailViewController {
+    class func controllerWithPlan(plan: Plan, siteID: Int, isActive: Bool) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
         
         controller.plan = plan
+        controller.siteID = siteID
         controller.isActivePlan = isActive
         
         return controller
@@ -167,39 +169,19 @@ class PlanDetailViewController: UIViewController {
     //MARK: - IBActions
     
     @IBAction private func purchaseTapped() {
-        purchaseButton.selected = true
-        
-        // TODO (@frosty 2016-02-26): This is a temporary fake StoreKit
-        // transaction process to simulate navigation to the post purchase screens.
-        // This should be removed when we integrate StoreKit.
-        func showSuccessAlert() {
-            guard let plan = plan else { return }
-            
-            let alert = UIAlertController(title: "Thank You", message: "Your purchase was successful.", preferredStyle: .Alert)
-            alert.addActionWithTitle("OK", style: .Default, handler: { action in })
-            
-            let postPurchase = PlanPostPurchaseViewController(plan: plan)
-            let navigationController = RotationAwareNavigationViewController(rootViewController: postPurchase)
-            navigationController.modalTransitionStyle = .CrossDissolve
-            navigationController.modalPresentationStyle = .FormSheet
-            navigationController.navigationBar.shadowImage = UIImage(color: UIColor.clearColor(), havingSize: CGSize(width: 1, height: 1))
-            presentViewController(navigationController, animated: true, completion: nil)
-
-            navigationController.presentViewController(alert, animated: true, completion: nil)
-            
-            purchaseButton.selected = false
+        guard let identifier = plan.productIdentifier else {
+            return
         }
-        
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), {
-            let alert = UIAlertController(title: "Confirm Your In-App Purchase", message: "Do you want to buy one WordPress.com Premium for 1 year for $99.99?", preferredStyle: .Alert)
-            alert.addActionWithTitle("Cancel", style: .Cancel, handler: { action in
+        purchaseButton.selected = true
+        let store = StoreKitStore()
+        store.getProductsWithIdentifiers(
+            Set([identifier]),
+            success: { products in
+                StoreKitCoordinator.instance.purchasePlan(self.plan, product: products[0], forSite: self.siteID)
+            },
+            failure: { error in
+                DDLogSwift.logError("Error fetching Store products: \(error)")
                 self.purchaseButton.selected = false
-            })
-            alert.addActionWithTitle("Buy", style: .Default, handler: { action in
-                showSuccessAlert()
-            })
-            
-            self.presentViewController(alert, animated: true, completion: nil)
         })
     }
     
@@ -218,7 +200,7 @@ class PlanDetailViewController: UIViewController {
                 }
                 
                 return ImmuTable(sections: groups.map { group in
-                    let features = group.slugs.flatMap { PlanService.featureForPlan(plan, withSlug: $0) }
+                    let features = group.slugs.flatMap { PlanService<StoreKitStore>.featureForPlan(plan, withSlug: $0) }
                     let rows: [ImmuTableRow] = features.map({ feature in
                         return FeatureItemRow(title: feature.title, description: feature.description, iconURL: feature.iconURL)
                     })
