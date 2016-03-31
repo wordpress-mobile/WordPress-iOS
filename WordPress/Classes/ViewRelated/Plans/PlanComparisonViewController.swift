@@ -59,7 +59,7 @@ class PlanComparisonViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = WPStyleGuide.greyLighten30()
-        divider.backgroundColor = WPStyleGuide.greyLighten20()
+        divider.backgroundColor = WPStyleGuide.greyLighten30()
         pageControl.currentPageIndicatorTintColor = WPStyleGuide.grey()
         pageControl.pageIndicatorTintColor = WPStyleGuide.grey().colorWithAlphaComponent(0.5)
         
