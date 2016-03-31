@@ -133,7 +133,7 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
     if (![response isKindOfClass:[NSDictionary class]]) {
         return response;
     }
-    if (![(NSDictionary *)response objectForKey:@"access_token"]) {
+    if ([(NSDictionary *)response objectForKey:@"access_token"] == nil) {
         return response;
     }
     NSMutableDictionary *dict = [(NSDictionary *)response mutableCopy];
