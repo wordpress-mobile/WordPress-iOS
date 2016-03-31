@@ -4,6 +4,8 @@ import SVProgressHUD
 public class ReaderPostMenu
 {
     public static let BlockSiteNotification = "ReaderPostMenuBlockSiteNotification"
+    
+    private static let sharingController = PostSharingController()
 
     struct ReaderPostMenuButtonTitles
     {
@@ -49,7 +51,7 @@ public class ReaderPostMenu
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
             style: .Default,
             handler: { (action:UIAlertAction) in
-                ReaderHelpers.sharePost(post, fromView: anchorView, inViewController: viewController)
+                sharingController.shareReaderPost(post, fromView: anchorView, inViewController: viewController)
         })
 
         if UIDevice.isPad() {

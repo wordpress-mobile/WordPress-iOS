@@ -118,6 +118,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 
 #pragma mark - Post info
 @property (nonatomic, assign, readwrite) BOOL ownsPost;
@@ -125,6 +126,9 @@ EditImageDetailsViewControllerDelegate
 #pragma mark - Unsaved changes support
 @property (nonatomic, assign, readwrite) BOOL shouldShowUnsavedChangesAlert;
 @property (nonatomic, assign, readonly) BOOL changedToEditModeDueToUnsavedChanges;
+
+#pragma mark - Sharing
+@property (nonatomic, strong, readonly) PostSharingController *sharingController;
 
 #pragma mark - State restoration
 /**
@@ -243,6 +247,8 @@ EditImageDetailsViewControllerDelegate
             
             _ownsPost = YES;
         }
+        
+        _sharingController = [[PostSharingController alloc] init];
     }
 	
     return self;
@@ -781,6 +787,17 @@ EditImageDetailsViewControllerDelegate
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+#pragma mark - Toolbar options
+
+- (void)sharePost
+{
+    if ([self.post isKindOfClass:[Post class]]) {
+        Post *post = (Post *)self.post;
+        
+        [self.sharingController sharePost:post fromView:self.view inViewController:self];
+    }
+}
+
 - (void)showSettings
 {
     if ([self isMediaUploading]) {
@@ -1084,8 +1101,12 @@ EditImageDetailsViewControllerDelegate
         
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
 	} else {
-		NSArray* rightBarButtons = @[self.editBarButtonItem,
-									 [self previewBarButtonItem]];
+        NSMutableArray* rightBarButtons = @[self.editBarButtonItem,
+                                            [self previewBarButtonItem]];
+        
+        if ([self.post isKindOfClass:[Post class]]) {
+            [rightBarButtons addObject:[self shareBarButtonItem]];
+        }
 		
 		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
 	}
@@ -1253,6 +1274,27 @@ EditImageDetailsViewControllerDelegate
     }
 
 	return _saveBarButtonItem;
+}
+
+- (UIBarButtonItem *)shareBarButtonItem
+{
+    if (!_shareBarButtonItem) {
+        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-share"
+                                                                      frame:NavigationBarButtonRect
+                                                                     target:self
+                                                                   selector:@selector(sharePost)];
+
+        button.removeDefaultRightSpacing = YES;
+        button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        button.removeDefaultLeftSpacing = YES;
+        button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
+        button.accessibilityLabel = title;
+        button.accessibilityIdentifier = @"Share";
+        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    }
+    
+    return _shareBarButtonItem;
 }
 
 - (NSString*)saveBarButtonItemTitle
