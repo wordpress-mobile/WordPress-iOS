@@ -13,9 +13,6 @@
 #import <WordPressApi/WordPressApi.h>
 #import <WordPress_AppbotX/ABX.h>
 #import <WordPressShared/UIImage+Util.h>
-#ifdef INTERNAL_BUILD
-#import <HockeySDK/HockeySDK.h>
-#endif
 
 // Analytics & crash logging
 #import "WPAppAnalytics.h"
@@ -41,6 +38,7 @@
 #import "AppRatingUtility.h"
 #import "ContextManager.h"
 #import "HelpshiftUtils.h"
+#import "HockeyManager.h"
 #import "WPLookbackPresenter.h"
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
@@ -64,11 +62,6 @@
 
 int ddLogLevel = DDLogLevelInfo;
 
-#ifdef INTERNAL_BUILD
-@interface WordPressAppDelegate () <BITHockeyManagerDelegate>
-@end
-#endif
-
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
@@ -77,6 +70,7 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, strong, readwrite) WPLookbackPresenter            *lookbackPresenter;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) Simperium                      *simperium;
+@property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, strong, readwrite) WPUserAgent                    *userAgent;
@@ -178,16 +172,9 @@ int ddLogLevel = DDLogLevelInfo;
     DDLogInfo(@"Application launched with URL: %@", url);
     BOOL returnValue = NO;
 
-#ifdef INTERNAL_BUILD
-    NSString *sourceApplication = [options stringForKey:UIApplicationLaunchOptionsSourceApplicationKey];
-    id annotation = [options objectForKey:UIApplicationLaunchOptionsAnnotationKey];
-    
-    if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
-                                                          sourceApplication:sourceApplication
-                                                                 annotation:annotation]) {
+    if ([self.hockey handleOpenURL:url options:options]) {
         returnValue = YES;
     }
-#endif
 
     if ([WordPressApi handleOpenURL:url]) {
         returnValue = YES;
@@ -677,30 +664,9 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)configureHockeySDK
 {
-#ifdef INTERNAL_BUILD
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
-                                                           delegate:self];
-    [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
-    [[BITHockeyManager sharedHockeyManager] startManager];
-    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-#endif
-
-    return;
+    self.hockey = [HockeyManager new];
+    [self.hockey configure];
 }
-
-#pragma mark - BITCrashManagerDelegate
-
-#ifdef INTERNAL_BUILD
-- (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager
-{
-    NSString *description = [self.logger getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
-    if ([description length] == 0) {
-        return nil;
-    }
-
-    return description;
-}
-#endif
 
 #pragma mark - Networking setup
 
