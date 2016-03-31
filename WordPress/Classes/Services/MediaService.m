@@ -46,35 +46,28 @@
         UIImage *thumbnail = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:[UIScreen mainScreen].bounds.size interpolationQuality:kCGInterpolationHigh];
         
         NSError *thumbnailWritingError = nil;
-        if ([thumbnail writeToURL:mediaThumbnailURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:0.9 metadata:nil error:&thumbnailWritingError])
-        {
+        if ([thumbnail writeToURL:mediaThumbnailURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:0.9 metadata:nil error:&thumbnailWritingError]) {
             if (thumbnailCallback) {
                 thumbnailCallback(mediaThumbnailURL);
             }
             
             UIImage *finalImg = image;
-            if (maxImageSize <= image.size.width || maxImageSize <= image.size.height)
-            {
+            if (maxImageSize <= image.size.width || maxImageSize <= image.size.height) {
                 finalImg = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:maximumResolution interpolationQuality:kCGInterpolationHigh];
             }
             
             NSError *imageWritingError = nil;
-            if ([finalImg writeToURL:mediaURL type:mediaUTI compressionQuality:0.9 metadata:nil error:&imageWritingError])
-            {
+            if ([finalImg writeToURL:mediaURL type:mediaUTI compressionQuality:0.9 metadata:nil error:&imageWritingError]) {
                 [self createMediaForPost:postObjectID
                                 mediaURL:mediaURL
                        mediaThumbnailURL:mediaThumbnailURL
                                mediaType:mediaType
                                mediaSize:[finalImg size]
                               completion:completion];
-            }
-            else
-            {
+            } else {
                 completion(nil, imageWritingError);
             }
-        }
-        else
-        {
+        } else {
             completion(nil, thumbnailWritingError);
         }
     }];
