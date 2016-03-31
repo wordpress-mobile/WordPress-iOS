@@ -2,11 +2,13 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ImageCropViewController" customModule="WordPress" customModuleProvider="target">
             <connections>
                 <outlet property="imageView" destination="MlB-lW-cDq" id="yPd-ZA-8aI"/>
+                <outlet property="overlayView" destination="yWF-i0-HDh" id="sEm-Qi-wwm"/>
                 <outlet property="scrollView" destination="iG3-Bs-5pI" id="Wfv-GY-6fJ"/>
                 <outlet property="view" destination="iN0-l3-epB" id="gy0-14-5mK"/>
             </connections>
@@ -21,22 +23,13 @@
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="320" translatesAutoresizingMaskIntoConstraints="NO" id="MlB-lW-cDq">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="320" id="U9O-tJ-Zbr"/>
-                                <constraint firstAttribute="width" constant="320" id="vju-kV-UZx"/>
-                            </constraints>
-                            <variation key="default">
-                                <mask key="constraints">
-                                    <exclude reference="U9O-tJ-Zbr"/>
-                                    <exclude reference="vju-kV-UZx"/>
-                                </mask>
-                            </variation>
                         </imageView>
                     </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="320" id="8RA-DN-R2m"/>
+                        <constraint firstAttribute="width" priority="750" constant="320" id="8RA-DN-R2m"/>
+                        <constraint firstAttribute="width" secondItem="iG3-Bs-5pI" secondAttribute="height" multiplier="1:1" id="9Gp-EZ-uuz"/>
                         <constraint firstItem="MlB-lW-cDq" firstAttribute="top" secondItem="iG3-Bs-5pI" secondAttribute="top" id="9tb-Sb-ybb"/>
-                        <constraint firstAttribute="height" constant="320" id="Tp6-3J-Jb6"/>
                         <constraint firstAttribute="trailing" secondItem="MlB-lW-cDq" secondAttribute="trailing" id="cHi-re-Pzw"/>
                         <constraint firstItem="MlB-lW-cDq" firstAttribute="leading" secondItem="iG3-Bs-5pI" secondAttribute="leading" id="lkH-pz-xQk"/>
                         <constraint firstAttribute="bottom" secondItem="MlB-lW-cDq" secondAttribute="bottom" id="uZo-fy-Aje"/>
@@ -45,43 +38,44 @@
                         <outlet property="delegate" destination="-1" id="l8Z-LT-PDW"/>
                     </connections>
                 </scrollView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zgq-ch-pQe" userLabel="TopView">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="140"/>
-                    <color key="backgroundColor" white="1" alpha="0.78000000000000003" colorSpace="calibratedWhite"/>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xZ8-SI-tbl" userLabel="BottomView">
-                    <rect key="frame" x="0.0" y="460" width="600" height="140"/>
-                    <color key="backgroundColor" white="1" alpha="0.80188577586206899" colorSpace="calibratedWhite"/>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ztZ-ry-GKZ" userLabel="RightView">
-                    <rect key="frame" x="460" y="140" width="140" height="320"/>
-                    <color key="backgroundColor" white="1" alpha="0.78485991379310349" colorSpace="calibratedWhite"/>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ned-GL-8gu" userLabel="LeftView">
-                    <rect key="frame" x="0.0" y="140" width="140" height="320"/>
-                    <color key="backgroundColor" white="1" alpha="0.7774784482758621" colorSpace="calibratedWhite"/>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yWF-i0-HDh" userLabel="OverlayView" customClass="GravatarOverlayView" customModule="WordPress" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <subviews>
+                        <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n1J-uZ-Oic">
+                            <rect key="frame" x="140" y="140" width="320" height="320"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" priority="750" constant="320" id="35p-T3-ycK"/>
+                                <constraint firstAttribute="width" secondItem="n1J-uZ-Oic" secondAttribute="height" multiplier="1:1" id="Wbg-9h-KyK"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="n1J-uZ-Oic" firstAttribute="centerY" secondItem="yWF-i0-HDh" secondAttribute="centerY" id="MiN-SA-sIe"/>
+                        <constraint firstItem="n1J-uZ-Oic" firstAttribute="centerX" secondItem="yWF-i0-HDh" secondAttribute="centerX" id="zgv-Gg-CPf"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="outerColor">
+                            <color key="value" white="1" alpha="0.78000000000000003" colorSpace="calibratedWhite"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <integer key="value" value="3"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="circleView" destination="n1J-uZ-Oic" id="EUo-jm-3dx"/>
+                    </connections>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="Zgq-ch-pQe" secondAttribute="trailing" id="1pZ-Kq-3Ox"/>
-                <constraint firstItem="xZ8-SI-tbl" firstAttribute="top" secondItem="ned-GL-8gu" secondAttribute="bottom" id="3Ax-Vk-O43"/>
+                <constraint firstItem="yWF-i0-HDh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="7Td-b6-iRI"/>
                 <constraint firstItem="iG3-Bs-5pI" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="7ah-S7-600"/>
-                <constraint firstItem="xZ8-SI-tbl" firstAttribute="top" secondItem="ztZ-ry-GKZ" secondAttribute="bottom" id="D49-t4-fVj"/>
-                <constraint firstItem="xZ8-SI-tbl" firstAttribute="top" secondItem="iG3-Bs-5pI" secondAttribute="bottom" id="QCa-Wc-x8M"/>
+                <constraint firstAttribute="trailing" secondItem="yWF-i0-HDh" secondAttribute="trailing" id="Gm9-4h-zRh"/>
                 <constraint firstItem="iG3-Bs-5pI" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="UqC-nn-p3j"/>
-                <constraint firstAttribute="trailing" secondItem="xZ8-SI-tbl" secondAttribute="trailing" id="Wd4-ob-djO"/>
-                <constraint firstItem="Zgq-ch-pQe" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="XV4-AH-2EJ"/>
-                <constraint firstItem="ztZ-ry-GKZ" firstAttribute="top" secondItem="Zgq-ch-pQe" secondAttribute="bottom" id="Yar-AZ-YY4"/>
-                <constraint firstItem="ztZ-ry-GKZ" firstAttribute="leading" secondItem="iG3-Bs-5pI" secondAttribute="trailing" id="aTi-C5-P2K"/>
-                <constraint firstItem="ned-GL-8gu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="ab8-OU-cHi"/>
-                <constraint firstItem="iG3-Bs-5pI" firstAttribute="top" secondItem="Zgq-ch-pQe" secondAttribute="bottom" id="b0J-2x-RFw"/>
-                <constraint firstItem="ned-GL-8gu" firstAttribute="top" secondItem="Zgq-ch-pQe" secondAttribute="bottom" id="bMB-hi-z9F"/>
-                <constraint firstAttribute="trailing" secondItem="ztZ-ry-GKZ" secondAttribute="trailing" id="by6-qD-azO"/>
-                <constraint firstItem="iG3-Bs-5pI" firstAttribute="leading" secondItem="ned-GL-8gu" secondAttribute="trailing" id="cjW-Ne-V9c"/>
-                <constraint firstItem="xZ8-SI-tbl" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="t25-k1-QTg"/>
-                <constraint firstAttribute="bottom" secondItem="xZ8-SI-tbl" secondAttribute="bottom" id="yfP-yv-sra"/>
-                <constraint firstItem="Zgq-ch-pQe" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="yvM-Oz-ZsZ"/>
+                <constraint firstAttribute="bottom" secondItem="yWF-i0-HDh" secondAttribute="bottom" id="V3C-1s-jKA"/>
+                <constraint firstItem="yWF-i0-HDh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="aLt-zo-SZu"/>
             </constraints>
         </view>
     </objects>
