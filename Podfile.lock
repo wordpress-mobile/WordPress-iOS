@@ -234,7 +234,8 @@ DEPENDENCIES:
   - WordPressCom-Stats-iOS/UI (= 0.6.3)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag
     `0.0.1`)
-  - WPMediaPicker (~> 0.9.0)
+  - WPMediaPicker (from `https://github.com/wordpress-mobile/MediaPicker-iOS.git`,
+    branch `feature/postprocessing-api`)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -252,6 +253,9 @@ EXTERNAL SOURCES:
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.1
+  WPMediaPicker:
+    :branch: feature/postprocessing-api
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -266,6 +270,9 @@ CHECKOUT OPTIONS:
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
     :tag: 0.0.1
+  WPMediaPicker:
+    :commit: 2a0989b4788e9b7f403b8157bb7d07dc6848b470
+    :git: https://github.com/wordpress-mobile/MediaPicker-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
