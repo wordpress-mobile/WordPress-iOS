@@ -67,8 +67,6 @@ class PlanDetailViewController: UIViewController {
     private let tableViewHorizontalMargin: CGFloat = 24.0
     private let planImageDropshadowRadius: CGFloat = 3.0
     
-    var isActivePlan = false
-    
     private var tableViewModel = ImmuTable.Empty {
         didSet {
             tableView?.reloadData()
@@ -76,8 +74,12 @@ class PlanDetailViewController: UIViewController {
     }
     var viewModel: ViewModel! {
         didSet {
-            bindViewModel(viewModel)
-            updateNoResults()
+            self.tableViewModel = viewModel.tableViewModel
+            title = viewModel.plan.title
+            if isViewLoaded() {
+                populateHeader()
+                updateNoResults()
+            }
         }
     }
     
@@ -109,7 +111,7 @@ class PlanDetailViewController: UIViewController {
     @IBOutlet weak var planTitleLabel: UILabel!
     @IBOutlet weak var planDescriptionLabel: UILabel!
     @IBOutlet weak var planPriceLabel: UILabel!
-    @IBOutlet weak var purchaseButton: UIButton!
+    @IBOutlet weak var purchaseButton: UIButton?
     @IBOutlet weak var separator: UIView!
 
     private lazy var currentPlanLabel: UIView = {
@@ -149,6 +151,7 @@ class PlanDetailViewController: UIViewController {
         
         configureAppearance()
         configureTableView()
+        populateHeader()
         updateNoResults()
     }
     
@@ -157,7 +160,7 @@ class PlanDetailViewController: UIViewController {
         planDescriptionLabel.textColor = WPStyleGuide.grey()
         planPriceLabel.textColor = WPStyleGuide.grey()
         
-        purchaseButton.tintColor = WPStyleGuide.wordPressBlue()
+        purchaseButton?.tintColor = WPStyleGuide.wordPressBlue()
         
         dropshadowImageView.backgroundColor = UIColor.whiteColor()
         configurePlanImageDropshadow()
@@ -185,39 +188,19 @@ class PlanDetailViewController: UIViewController {
     
     lazy var paddingView = UIView()
     
-    private func populateHeader(plan: Plan, isActivePlan: Bool) {
+    private func populateHeader() {
+        let plan = viewModel.plan
         planImageView.image = plan.image
         planTitleLabel.text = plan.fullTitle
         planDescriptionLabel.text = plan.description
-        planPriceLabel.text = priceDescriptionForPlan(plan)
+        planPriceLabel.text = viewModel.price
         
-        if isActivePlan {
-            purchaseButton.removeFromSuperview()
+        if viewModel.isActivePlan {
+            purchaseButton?.removeFromSuperview()
             headerInfoStackView.addArrangedSubview(currentPlanLabel)
         } else if plan.isFreePlan {
-            purchaseButton.removeFromSuperview()
+            purchaseButton?.removeFromSuperview()
             headerInfoStackView.addArrangedSubview(paddingView)
-        }
-    }
-    
-    func bindViewModel(viewModel: ViewModel) {
-        self.tableViewModel = viewModel.tableViewModel
-        title = viewModel.plan.title
-        populateHeader(viewModel.plan, isActivePlan: viewModel.isActivePlan)
-    }
-    
-    // TODO: Prices should always come from StoreKit
-    // @frosty 2016-02-04
-    private func priceDescriptionForPlan(plan: Plan) -> String? {
-        switch plan.slug {
-        case "free":
-            return "Free for life"
-        case "premium":
-            return "$99.99 per year"
-        case "business":
-            return "$299.99 per year"
-        default:
-            return nil
         }
     }
     
@@ -227,7 +210,7 @@ class PlanDetailViewController: UIViewController {
         guard let identifier = viewModel.plan.productIdentifier else {
             return
         }
-        purchaseButton.selected = true
+        purchaseButton?.selected = true
         let store = StoreKitStore()
         store.getProductsWithIdentifiers(
             Set([identifier]),
@@ -236,7 +219,7 @@ class PlanDetailViewController: UIViewController {
             },
             failure: { error in
                 DDLogSwift.logError("Error fetching Store products: \(error)")
-                self.purchaseButton.selected = false
+                self.purchaseButton?.selected = false
         })
     }
 }
