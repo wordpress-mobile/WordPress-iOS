@@ -1,5 +1,56 @@
 import Foundation
 import WordPressShared
+import UIKit
+
+
+//
+//
+class GravatarOverlayView : UIView
+{
+    // MARK: - IBOutlets
+    @IBOutlet private var circleView : UIView!
+    
+    // MARK: - Public Properties
+    var borderWidth = CGFloat(3)
+    var borderColor : UIColor?
+    var outerColor : UIColor?
+    
+    // MARK: - Overriden Methods
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        setNeedsDisplay()
+    }
+    
+    override func drawRect(rect: CGRect) {
+        super.drawRect(rect)
+
+        let context = UIGraphicsGetCurrentContext()
+        
+        // Determine the ellipse position by means of circleView Outlet
+        let delta = borderWidth - 1.0
+        let ellipseRect = circleView.frame.insetBy(dx: delta, dy: delta)
+        print("Draw: \(ellipseRect)")
+        // Setup
+        CGContextSaveGState(context)
+        CGContextSetLineWidth(context, borderWidth)
+        CGContextSetAllowsAntialiasing(context, true)
+        CGContextSetShouldAntialias(context, true)
+        
+        // Outer
+        outerColor?.setFill()
+        CGContextAddRect(context, bounds)
+        CGContextAddEllipseInRect(context, ellipseRect)
+        CGContextEOFillPath(context)
+        
+        // Border
+        borderColor?.setStroke()
+        CGContextAddEllipseInRect(context, ellipseRect)
+        CGContextStrokePath(context)
+        
+        // Wrap Up
+        CGContextRestoreGState(context)
+    }
+}
 
 
 /// This ViewController allows the user to resize and crop any given UIImage.
@@ -43,8 +94,30 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
         scrollView.maximumZoomScale = minimumScale * maximumScaleFactor
         scrollView.zoomScale = minimumScale
         
-        scrollView.layer.borderWidth = imageBorderWidth
-        scrollView.layer.borderColor = WPStyleGuide.newKidOnTheBlockBlue().CGColor
+        // Setup: Overlay
+        overlayView.borderColor = WPStyleGuide.newKidOnTheBlockBlue()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        overlayView.setNeedsDisplay()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        overlayView.setNeedsDisplay()
+    }
+    
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
+        overlayView.setNeedsDisplay()
+    }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        
+        self.view.layoutIfNeeded()
+        self.overlayView.setNeedsDisplay()
     }
     
     
@@ -90,7 +163,6 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
     
     // MARK: - Private Constants
     private let maximumScaleFactor  = CGFloat(3)
-    private let imageBorderWidth    = CGFloat(3)
     
     // MARK: - Private Properties
     private var rawImage                : UIImage!
@@ -98,4 +170,5 @@ class ImageCropViewController : UIViewController, UIScrollViewDelegate
     // MARK: - IBOutlets
     @IBOutlet private var scrollView    : UIScrollView!
     @IBOutlet private var imageView     : UIImageView!
+    @IBOutlet private var overlayView   : GravatarOverlayView!
 }
