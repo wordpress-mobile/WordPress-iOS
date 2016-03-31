@@ -29,7 +29,8 @@ class PlanComparisonViewController: UIViewController {
     private lazy var viewControllers: [PlanDetailViewController] = {
         return self.allPlans.map { plan in
             let isActive = self.activePlan == plan
-            let controller = PlanDetailViewController.controllerWithPlan(plan, siteID: self.siteID, isActive: isActive)
+            // TODO: Pass the prices, we should know them when showing the details
+            let controller = PlanDetailViewController.controllerWithPlan(plan, siteID: self.siteID, isActive: isActive, price: "FIXME")
 
             return controller
         }
@@ -78,9 +79,14 @@ class PlanComparisonViewController: UIViewController {
     
     private func fetchFeatures() {
         service?.updateAllPlanFeatures({ [weak self] in
-            self?.viewControllers.forEach { $0.viewModel = .Ready($0.plan) }
+            self?.viewControllers.forEach { controller in
+                let groups = PlanFeatureGroup.groupsForPlan(controller.viewModel.plan)
+                // TODO: Avoid the optional groups
+                controller.viewModel = controller.viewModel.withFeatures(.Ready(groups!))
+            }
         }, failure: { [weak self] error in
-            self?.viewControllers.forEach { $0.viewModel = .Error(String(error))
+            self?.viewControllers.forEach { controller in
+                controller.viewModel = controller.viewModel.withFeatures(.Error(String(error)))
             }
         })
     }
