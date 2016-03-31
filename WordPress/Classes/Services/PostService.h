@@ -3,6 +3,7 @@
 #import "PostServiceOptions.h"
 
 @class Blog, Post, Page, AbstractPost;
+@class RemotePost;
 
 extern NSString * const PostServiceTypePost;
 extern NSString * const PostServiceTypePage;
@@ -74,11 +75,15 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
  Syncs local changes on a post back to the server.
 
  @param post The post or page to upload
- @param success A success block
+ @param success A success block.  If the post object exists locally (in CoreData) when the upload
+        succeeds, then this block will also return a pointer to the updated local AbstractPost
+        object.  It's important to note this object may not be the same one as the `post` input 
+        parameter, since if the input post was a revision, it will no longer exist once the upload
+        succeeds.
  @param failure A failure block
  */
 - (void)uploadPost:(AbstractPost *)post
-           success:(void (^)())success
+           success:(void (^)(AbstractPost *post))success
            failure:(void (^)(NSError *error))failure;
 
 /**
@@ -90,7 +95,7 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
  @param failure A failure block
  */
 - (void)deletePost:(AbstractPost *)post
-           success:(void (^)())success
+           success:(void (^)(AbstractPost *post))success
            failure:(void (^)(NSError *error))failure;
 
 /**
