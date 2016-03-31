@@ -25,18 +25,24 @@ class MainNavigationTests: XCTestCase {
     }
 
     func testTabBarNavigation() {
-        app.tabBars["Main Navigation"].buttons["My Sites"].tap()
-        app.tabBars["Main Navigation"].buttons["My Sites"].tap()
+
+        let mainNavigationTabBar = app.tabBars["Main Navigation"]
+        
+        mainNavigationTabBar.buttons["My Sites"].tap()
+        mainNavigationTabBar.buttons["My Sites"].tap()
         self.waitForElementToAppear(app.tables["Blogs"])
 
-        app.tabBars["Main Navigation"].buttons["Reader"].tap()
+        mainNavigationTabBar.buttons["Reader"].tap()
         self.waitForElementToAppear(app.tables["Reader"])
 
-        app.tabBars["Main Navigation"].buttons["Me"].tap()
+        mainNavigationTabBar.buttons["Me"].tap()
         self.waitForElementToAppear(app.staticTexts["Me"])
 
-        app.tabBars["Main Navigation"].buttons["Notifications"].tap()
+        mainNavigationTabBar.buttons["Notifications"].tap()
         self.waitForElementToAppear(app.staticTexts["Notifications"])
+
+        mainNavigationTabBar.buttons["New Post"].tap()
+        app.navigationBars["WPPostView"].buttons["Cancel"].tap()
     }
 
 }
