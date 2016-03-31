@@ -21,7 +21,7 @@
                 <scrollView multipleTouchEnabled="YES" contentMode="scaleAspectFit" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" minimumZoomScale="0.0" maximumZoomScale="2" translatesAutoresizingMaskIntoConstraints="NO" id="iG3-Bs-5pI">
                     <rect key="frame" x="140" y="140" width="320" height="320"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="320" translatesAutoresizingMaskIntoConstraints="NO" id="MlB-lW-cDq">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="320" placeholderIntrinsicHeight="320" translatesAutoresizingMaskIntoConstraints="NO" id="MlB-lW-cDq">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                         </imageView>
                     </subviews>
@@ -38,23 +38,9 @@
                         <outlet property="delegate" destination="-1" id="l8Z-LT-PDW"/>
                     </connections>
                 </scrollView>
-                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yWF-i0-HDh" userLabel="OverlayView" customClass="GravatarOverlayView" customModule="WordPress" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                    <subviews>
-                        <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n1J-uZ-Oic">
-                            <rect key="frame" x="140" y="140" width="320" height="320"/>
-                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="width" priority="750" constant="320" id="35p-T3-ycK"/>
-                                <constraint firstAttribute="width" secondItem="n1J-uZ-Oic" secondAttribute="height" multiplier="1:1" id="Wbg-9h-KyK"/>
-                            </constraints>
-                        </view>
-                    </subviews>
+                <view autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="yWF-i0-HDh" userLabel="OverlayView" customClass="GravatarOverlayView" customModule="WordPress" customModuleProvider="target">
+                    <rect key="frame" x="140" y="140" width="320" height="320"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="n1J-uZ-Oic" firstAttribute="centerY" secondItem="yWF-i0-HDh" secondAttribute="centerY" id="MiN-SA-sIe"/>
-                        <constraint firstItem="n1J-uZ-Oic" firstAttribute="centerX" secondItem="yWF-i0-HDh" secondAttribute="centerX" id="zgv-Gg-CPf"/>
-                    </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="outerColor">
                             <color key="value" white="1" alpha="0.78000000000000003" colorSpace="calibratedWhite"/>
@@ -63,19 +49,52 @@
                             <integer key="value" value="3"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
-                    <connections>
-                        <outlet property="circleView" destination="n1J-uZ-Oic" id="EUo-jm-3dx"/>
-                    </connections>
+                </view>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wMs-L3-kiw" userLabel="TopView">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="140"/>
+                    <color key="backgroundColor" white="1" alpha="0.78000000000000003" colorSpace="calibratedWhite"/>
+                </view>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CIV-wF-xm3" userLabel="BottomView">
+                    <rect key="frame" x="0.0" y="460" width="600" height="140"/>
+                    <color key="backgroundColor" white="1" alpha="0.78000000000000003" colorSpace="calibratedWhite"/>
+                </view>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JDj-Kq-dIA" userLabel="LeftView">
+                    <rect key="frame" x="0.0" y="140" width="140" height="320"/>
+                    <color key="backgroundColor" white="1" alpha="0.78000000000000003" colorSpace="calibratedWhite"/>
+                </view>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vtv-wR-v7J" userLabel="RightView">
+                    <rect key="frame" x="460" y="140" width="140" height="320"/>
+                    <color key="backgroundColor" white="1" alpha="0.78000000000000003" colorSpace="calibratedWhite"/>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="yWF-i0-HDh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="7Td-b6-iRI"/>
+                <constraint firstItem="iG3-Bs-5pI" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" id="1MZ-qy-XcE"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="iG3-Bs-5pI" secondAttribute="trailing" id="6ff-rO-SZb"/>
+                <constraint firstAttribute="bottom" secondItem="CIV-wF-xm3" secondAttribute="bottom" id="6uT-qF-mu9"/>
                 <constraint firstItem="iG3-Bs-5pI" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="7ah-S7-600"/>
-                <constraint firstAttribute="trailing" secondItem="yWF-i0-HDh" secondAttribute="trailing" id="Gm9-4h-zRh"/>
+                <constraint firstAttribute="trailing" secondItem="wMs-L3-kiw" secondAttribute="trailing" id="8PE-cs-IZH"/>
+                <constraint firstItem="wMs-L3-kiw" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="8nN-Q2-ld7"/>
+                <constraint firstItem="CIV-wF-xm3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="9Bw-YV-fkL"/>
+                <constraint firstItem="JDj-Kq-dIA" firstAttribute="top" secondItem="wMs-L3-kiw" secondAttribute="bottom" id="9qj-Z7-Xvt"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="iG3-Bs-5pI" secondAttribute="bottom" id="ASM-Kd-EkX"/>
+                <constraint firstItem="CIV-wF-xm3" firstAttribute="top" secondItem="yWF-i0-HDh" secondAttribute="bottom" id="E6Y-Th-MGE"/>
+                <constraint firstItem="wMs-L3-kiw" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="EvU-qf-WOG"/>
+                <constraint firstItem="iG3-Bs-5pI" firstAttribute="width" secondItem="yWF-i0-HDh" secondAttribute="width" id="FHj-Mv-QmB"/>
+                <constraint firstItem="CIV-wF-xm3" firstAttribute="top" secondItem="JDj-Kq-dIA" secondAttribute="bottom" id="Ngn-dB-83N"/>
+                <constraint firstItem="vtv-wR-v7J" firstAttribute="leading" secondItem="yWF-i0-HDh" secondAttribute="trailing" id="Od3-z7-wia"/>
+                <constraint firstItem="yWF-i0-HDh" firstAttribute="leading" secondItem="JDj-Kq-dIA" secondAttribute="trailing" id="QhZ-5v-8og"/>
+                <constraint firstItem="yWF-i0-HDh" firstAttribute="top" secondItem="wMs-L3-kiw" secondAttribute="bottom" id="S3e-3j-EWL"/>
                 <constraint firstItem="iG3-Bs-5pI" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="UqC-nn-p3j"/>
-                <constraint firstAttribute="bottom" secondItem="yWF-i0-HDh" secondAttribute="bottom" id="V3C-1s-jKA"/>
-                <constraint firstItem="yWF-i0-HDh" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="aLt-zo-SZu"/>
+                <constraint firstItem="iG3-Bs-5pI" firstAttribute="height" secondItem="yWF-i0-HDh" secondAttribute="height" id="faC-J8-34W"/>
+                <constraint firstItem="JDj-Kq-dIA" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="o8i-jP-y6V"/>
+                <constraint firstItem="iG3-Bs-5pI" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="leading" id="p2n-i5-Bed"/>
+                <constraint firstAttribute="trailing" secondItem="vtv-wR-v7J" secondAttribute="trailing" id="pqO-jB-EK0"/>
+                <constraint firstAttribute="trailing" secondItem="CIV-wF-xm3" secondAttribute="trailing" id="q1U-fn-Mco"/>
+                <constraint firstItem="vtv-wR-v7J" firstAttribute="top" secondItem="wMs-L3-kiw" secondAttribute="bottom" id="qZi-NS-LM0"/>
+                <constraint firstItem="CIV-wF-xm3" firstAttribute="top" secondItem="vtv-wR-v7J" secondAttribute="bottom" id="uM1-oI-nwL"/>
+                <constraint firstItem="iG3-Bs-5pI" firstAttribute="top" secondItem="yWF-i0-HDh" secondAttribute="top" id="xZ8-Zi-fGu"/>
+                <constraint firstItem="iG3-Bs-5pI" firstAttribute="leading" secondItem="yWF-i0-HDh" secondAttribute="leading" id="zi7-sK-Kjp"/>
             </constraints>
         </view>
     </objects>
