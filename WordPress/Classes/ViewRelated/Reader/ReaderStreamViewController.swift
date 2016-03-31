@@ -50,6 +50,8 @@ import WordPressComAnalytics
     private var needsRefreshCachedCellHeightsBeforeLayout = false
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
+    
+    private let sharingController = PostSharingController()
 
     private var siteID:NSNumber? {
         didSet {
@@ -547,11 +549,8 @@ import WordPressComAnalytics
         // Share
         alertController.addActionWithTitle(ActionSheetButtonTitles.share,
             style: .Default,
-            handler: { (action:UIAlertAction) in
-                if let post = self.postForObjectIDOfPostForMenu() {
-                    self.sharePost(post)
-                }
-                self.cleanUpAfterPostMenu()
+            handler: { [weak self] (action:UIAlertAction) in
+                self?.sharePost()
         })
 
         if UIDevice.isPad() {
@@ -566,6 +565,14 @@ import WordPressComAnalytics
             presentViewController(alertController, animated: true, completion: nil)
         }
     }
+    
+    private func sharePost() {
+        if let post = postForObjectIDOfPostForMenu() {
+            sharingController.shareReaderPost(post, fromView: anchorViewForMenu!, inViewController: self)
+        }
+        
+        cleanUpAfterPostMenu()
+    }
 
     private func postForObjectIDOfPostForMenu() -> ReaderPost? {
         do {
@@ -579,28 +586,6 @@ import WordPressComAnalytics
     private func cleanUpAfterPostMenu() {
         objectIDOfPostForMenu = nil
         anchorViewForMenu = nil
-    }
-
-    private func sharePost(post: ReaderPost) {
-        let controller = ReaderHelpers.shareController(
-            post.titleForDisplay(),
-            summary: post.contentPreviewForDisplay(),
-            tags: post.tags,
-            link: post.permaLink
-        )
-
-        if !UIDevice.isPad() {
-            presentViewController(controller, animated: true, completion: nil)
-            return
-        }
-
-        // Silly iPad popover rules.
-        controller.modalPresentationStyle = .Popover
-        presentViewController(controller, animated: true, completion: nil)
-        let presentationController = controller.popoverPresentationController
-        presentationController?.permittedArrowDirections = .Unknown
-        presentationController?.sourceView = anchorViewForMenu!
-        presentationController?.sourceRect = anchorViewForMenu!.bounds
     }
 
     private func toggleFollowingForPost(post:ReaderPost) {
