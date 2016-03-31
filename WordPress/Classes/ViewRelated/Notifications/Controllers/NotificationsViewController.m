@@ -320,7 +320,14 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (BOOL)shouldDisplayFilters
 {
-    return !self.showsJetpackMessage && !self.showsEmptyStateLegend;
+    // Note:
+    // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
+    // results, which are filtered by the active predicate!).
+    //
+    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
+    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
+    
+    return notesBucket.numObjects > 0;
 }
 
 
