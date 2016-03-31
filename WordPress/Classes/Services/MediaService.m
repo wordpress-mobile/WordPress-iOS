@@ -31,7 +31,6 @@
         }
         return;
     }
-    
     MediaType mediaType = MediaTypeImage;
     NSString *mediaUTI = (__bridge NSString *)kUTTypeJPEG;
     NSString *mediaExtension = [self extensionForUTI:mediaUTI];
@@ -42,34 +41,38 @@
     CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
     
     [[self.class queueForResizeMediaOperations] addOperationWithBlock:^{
-        
         UIImage *thumbnail = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:[UIScreen mainScreen].bounds.size interpolationQuality:kCGInterpolationHigh];
         
         NSError *thumbnailWritingError = nil;
-        if ([thumbnail writeToURL:mediaThumbnailURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:0.9 metadata:nil error:&thumbnailWritingError]) {
-            if (thumbnailCallback) {
-                thumbnailCallback(mediaThumbnailURL);
-            }
-            
-            UIImage *finalImg = image;
-            if (maxImageSize <= image.size.width || maxImageSize <= image.size.height) {
-                finalImg = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:maximumResolution interpolationQuality:kCGInterpolationHigh];
-            }
-            
-            NSError *imageWritingError = nil;
-            if ([finalImg writeToURL:mediaURL type:mediaUTI compressionQuality:0.9 metadata:nil error:&imageWritingError]) {
-                [self createMediaForPost:postObjectID
-                                mediaURL:mediaURL
-                       mediaThumbnailURL:mediaThumbnailURL
-                               mediaType:mediaType
-                               mediaSize:[finalImg size]
-                              completion:completion];
-            } else {
-                completion(nil, imageWritingError);
-            }
-        } else {
+        BOOL thumbnailWritingSuccess = [thumbnail writeToURL:mediaThumbnailURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:0.9 metadata:nil error:&thumbnailWritingError];
+        if (!thumbnailWritingSuccess) {
             completion(nil, thumbnailWritingError);
+            return;
         }
+
+        if (thumbnailCallback) {
+            thumbnailCallback(mediaThumbnailURL);
+        }
+        
+        UIImage *finalImg = image;
+        if (maxImageSize <= image.size.width || maxImageSize <= image.size.height) {
+            finalImg = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:maximumResolution interpolationQuality:kCGInterpolationHigh];
+        }
+        
+        NSError *imageWritingError = nil;
+        BOOL imageWritingSuccess = [finalImg writeToURL:mediaURL type:mediaUTI compressionQuality:0.9 metadata:nil error:&imageWritingError];
+        if (!imageWritingSuccess)
+        {
+            completion(nil, imageWritingError);
+            return;
+        }
+
+        [self createMediaForPost:postObjectID
+                        mediaURL:mediaURL
+               mediaThumbnailURL:mediaThumbnailURL
+                       mediaType:mediaType
+                       mediaSize:[finalImg size]
+                      completion:completion];
     }];
 }
 
@@ -87,12 +90,11 @@
         return;
     }
     MediaType mediaType = MediaTypeDocument;
-    NSSet *allowedFileTypes = nil;
     NSString *assetUTI = [asset originalUTI];
     NSString *extension = [self extensionForUTI:assetUTI];
     if (asset.mediaType == PHAssetMediaTypeImage) {
         mediaType = MediaTypeImage;
-        allowedFileTypes = post.blog.allowedFileTypes;
+        NSSet *allowedFileTypes = post.blog.allowedFileTypes;
         if (![allowedFileTypes containsObject:extension]) {
             assetUTI = (__bridge NSString *)kUTTypeJPEG;
             extension = [self extensionForUTI:assetUTI];
@@ -102,11 +104,10 @@
          because we have an exception on the server for mobile that allows video uploads event 
          if videopress is not enabled.
         */
-        if (![post.blog isHostedAtWPcom] && ![allowedFileTypes containsObject:extension]) {
+        if (![post.blog isHostedAtWPcom]) {
             assetUTI = (__bridge NSString *)kUTTypeQuickTimeMovie;
             extension = [self extensionForUTI:assetUTI];
         }
-        allowedFileTypes = nil;
         mediaType = MediaTypeVideo;
     }
     
