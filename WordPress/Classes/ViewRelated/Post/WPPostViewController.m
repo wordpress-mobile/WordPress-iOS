@@ -1812,6 +1812,7 @@ EditImageDetailsViewControllerDelegate
                            }];
                        }
                               completion:^(Media *media, NSError *error){
+                                  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                                   __typeof__(self) strongSelf = weakSelf;
                                   if (!strongSelf) {
                                       return;
@@ -1825,6 +1826,7 @@ EditImageDetailsViewControllerDelegate
                                       return;
                                   }
                                   [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+                                  }];
                               }];
 }
 
