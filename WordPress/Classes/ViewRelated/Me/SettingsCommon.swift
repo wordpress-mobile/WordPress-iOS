@@ -11,17 +11,20 @@ extension SettingsController {
         }
     }
 
-    func controllerForEditableText(row: EditableTextRow, changeType: (AccountSettingsChangeWithString), hint: String? = nil, isPassword: Bool = false, service: AccountSettingsService) -> SettingsTextViewController {
+    func controllerForEditableText(row: EditableTextRow,
+                                   changeType: AccountSettingsChangeWithString,
+                                   hint: String? = nil,
+                                   isEmail: Bool = false,
+                                   isPassword: Bool = false,
+                                   service: AccountSettingsService) -> SettingsTextViewController
+    {
         let title = row.title
         let value = row.value
 
-        let controller = SettingsTextViewController(
-            text: value,
-            placeholder: "\(title)...",
-            hint: hint,
-            isPassword: isPassword)
+        let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
 
         controller.title = title
+        controller.isPassword = isPassword
         controller.onValueChanged = {
             value in
 
