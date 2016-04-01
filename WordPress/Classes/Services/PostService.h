@@ -95,7 +95,7 @@ typedef void(^PostServiceSyncFailure)(NSError *error);
  @param failure A failure block
  */
 - (void)deletePost:(AbstractPost *)post
-           success:(void (^)(AbstractPost *post))success
+           success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
 
 /**
