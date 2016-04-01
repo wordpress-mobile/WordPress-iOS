@@ -473,7 +473,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
     }
     
-    return NSLocalizedString(@"Be the first to leave a commment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
+    return NSLocalizedString(@"Be the first to leave a comment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
 }
 
 // Call when changing orientation, or when split view size changes.
@@ -1103,7 +1103,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 #pragma mark - CommentContentView Delegate methods
 
-- (void)commentView:(CommentContentView *)commentView updatedAttachmentViewsForProvider:(id<WPContentViewProvider>)contentProvider
+- (void)commentView:(CommentContentView *)commentView updatedAttachmentViewsForProvider:(id<PostContentProvider>)contentProvider
 {
     Comment *comment = (Comment *)contentProvider;
     NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
@@ -1134,7 +1134,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)handleReplyTapped:(id<WPContentViewProvider>)contentProvider
+- (void)handleReplyTapped:(id<PostContentProvider>)contentProvider
 {
     // if a row is already selected don't allow selection of another
     if (self.replyTextView.isFirstResponder) {
@@ -1154,7 +1154,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self refreshReplyTextViewPlaceholder];
 }
 
-- (void)toggleLikeStatus:(id<WPContentViewProvider>)contentProvider
+- (void)toggleLikeStatus:(id<PostContentProvider>)contentProvider
 {
     Comment *comment = (Comment *)contentProvider;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];

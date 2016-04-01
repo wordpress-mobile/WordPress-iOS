@@ -43,11 +43,11 @@ target 'WordPress', :exclusive => true do
   pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'NSURL+IDN', '0.3'
-  pod 'Simperium', '0.8.12'
+  pod 'Simperium', '0.8.15'
   pod 'WPMediaPicker', '~> 0.9.0'
   pod 'WordPress-iOS-Editor', :git => 'git@github.com:nheagy/WordPress-Editor-iOS.git', :branch => '655-pasting-images'
   pod 'WordPress-iOS-Shared', '0.5.3'
-  pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
+  pod 'WordPressApi', '0.4.0'
   pod 'WordPressCom-Analytics-iOS', '0.1.5'
   pod 'WordPressCom-Stats-iOS/UI', '0.6.3'
   pod 'wpxmlrpc', '~> 0.8'

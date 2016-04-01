@@ -1,7 +1,7 @@
 import Foundation
 
 typealias PricedPlan = (plan: Plan, price: String)
-typealias SitePricedPlans = (activePlan: Plan, availablePlans: [PricedPlan])
+typealias SitePricedPlans = (siteID: Int, activePlan: Plan, availablePlans: [PricedPlan])
 
 typealias PlanID = Int
 
