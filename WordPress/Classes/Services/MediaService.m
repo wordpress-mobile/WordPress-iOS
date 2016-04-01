@@ -71,10 +71,6 @@
             extension = [self extensionForUTI:assetUTI];
         }
     } else if (mediaType == MediaTypeVideo) {
-        /** HACK: Sergio Estevao (2015-11-09): We ignore allowsFileTypes for videos in WP.com
-         because we have an exception on the server for mobile that allows video uploads event
-         if videopress is not enabled.
-         */
         if (![post.blog isHostedAtWPcom]) {
             assetUTI = (__bridge NSString *)kUTTypeQuickTimeMovie;
             extension = [self extensionForUTI:assetUTI];
