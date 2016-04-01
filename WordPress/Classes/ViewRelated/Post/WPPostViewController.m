@@ -1127,9 +1127,11 @@ EditImageDetailsViewControllerDelegate
 			 @"Expected imageName to be a non nil string.");
 
 	UIImage* image = [UIImage imageNamed:imageName];
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 	
 	WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
 	
+    button.tintColor = [UIColor whiteColor];
 	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 	
