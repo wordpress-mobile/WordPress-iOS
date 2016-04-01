@@ -950,8 +950,8 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (NSString *)noResultsMessageText
 {
-    NSString *jetapackMessage   = NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Notifications message displayed when a self-hosted user is not connected to Jetpack");
-    return self.shouldDisplayJetpackMessage ? jetapackMessage : nil;
+    NSString *jetpackMessage   = NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Notifications message displayed when a self-hosted user is not connected to Jetpack");
+    return self.shouldDisplayJetpackMessage ? jetpackMessage : nil;
 }
 
 - (UIView *)noResultsAccessoryView
