@@ -32,14 +32,14 @@ class GravatarPickerViewController : UIViewController, WPMediaPickerViewControll
             return
         }
         
-        asset.exportMaximumSizeImage { [weak self] (image, info) in
+        asset.exportMaximumSizeImage { (image, info) in
             guard let rawGravatar = image else {
-                self?.onCompletion?(nil)
+                self.onCompletion?(nil)
                 return
             }
             
             // Proceed Cropping
-            let imageCropViewController = self?.newImageCropViewController(rawGravatar)
+            let imageCropViewController = self.newImageCropViewController(rawGravatar)
             picker.showAfterViewController(imageCropViewController)
         }
     }
