@@ -4,10 +4,19 @@ protocol SettingsController: ImmuTableController {}
 
 // MARK: - Actions
 extension SettingsController {
-    func editText(changeType: (AccountSettingsChangeWithString), hint: String? = nil, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
+    func editText(changeType: AccountSettingsChangeWithString,
+                  hint: String? = nil,
+                  isEmail: Bool = false,
+                  isPassword: Bool = false,
+                  service: AccountSettingsService) -> ImmuTableRowControllerGenerator
+    {
         return { row in
-            let row = row as! EditableTextRow
-            return self.controllerForEditableText(row, changeType: changeType, hint: hint, service: service)
+            return self.controllerForEditableText(row as! EditableTextRow,
+                                                  changeType: changeType,
+                                                  hint: hint,
+                                                  isEmail: isEmail,
+                                                  isPassword: isPassword,
+                                                  service: service)
         }
     }
 
@@ -24,6 +33,7 @@ extension SettingsController {
         let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
 
         controller.title = title
+        controller.isEmail = isEmail
         controller.isPassword = isPassword
         controller.onValueChanged = {
             value in
