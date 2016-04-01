@@ -33,7 +33,6 @@ target 'WordPress', :exclusive => true do
   # ----------------------------
   # Forked third party libraries
   # ----------------------------
-  pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
   pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
 
   # --------------------
