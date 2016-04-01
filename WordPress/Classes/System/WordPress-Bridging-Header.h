@@ -86,7 +86,7 @@
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
 #import "WPBlogTableViewCell.h"
-#import "WPContentViewProvider.h"
+#import "PostContentProvider.h"
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
