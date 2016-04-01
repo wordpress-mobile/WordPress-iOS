@@ -63,7 +63,12 @@ class SigninHelpers
     // MARK: - Validation Helpers
 
 
+    /// Checks whether credentials have been populated.
     ///
+    /// - Parameters:
+    ///     - loginFields: An instance of LoginFields to check
+    ///
+    /// - Returns: True if credentails have been provided. False otherwise.
     ///
     class func validateFieldsPopulatedForSignin(loginFields: LoginFields) -> Bool {
         return !loginFields.username.isEmpty &&
@@ -72,7 +77,12 @@ class SigninHelpers
     }
 
 
+    /// Simple validation check to confirm LoginFields has a valid site URL.
     ///
+    /// - Parameters:
+    ///     - loginFields: An instance of LoginFields to check
+    ///
+    /// - Returns: True if the siteUrl contains a valid URL. False otherwise.
     ///
     class func validateSiteForSignin(loginFields: LoginFields) -> Bool {
         guard let _ = NSURL(string: NSURL.IDNEncodedURL(loginFields.siteUrl)) else {
