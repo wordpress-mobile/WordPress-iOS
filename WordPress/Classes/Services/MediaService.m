@@ -23,64 +23,32 @@
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion
 {
-    NSError *error = nil;
-    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
-    if (!post) {
-        if (completion) {
-            completion(nil, error);
-        }
-        return;
-    }
-    MediaType mediaType = MediaTypeImage;
-    NSString *mediaUTI = (__bridge NSString *)kUTTypeJPEG;
-    NSString *mediaExtension = [self extensionForUTI:mediaUTI];
-    NSURL *mediaURL = [self urlForMediaWithFilename:mediaID andExtension:mediaExtension];
-    NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]] andExtension:mediaExtension];
-    
-    NSInteger maxImageSize = [[MediaSettings new] imageSizeForUpload];
-    CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
-    
-    [[self.class queueForResizeMediaOperations] addOperationWithBlock:^{
-        UIImage *thumbnail = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:[UIScreen mainScreen].bounds.size interpolationQuality:kCGInterpolationHigh];
-        
-        NSError *thumbnailWritingError = nil;
-        BOOL thumbnailWritingSuccess = [thumbnail writeToURL:mediaThumbnailURL type:(__bridge NSString *)kUTTypeJPEG compressionQuality:0.9 metadata:nil error:&thumbnailWritingError];
-        if (!thumbnailWritingSuccess) {
-            completion(nil, thumbnailWritingError);
-            return;
-        }
+    [self createMediaWith:image
+          forPostObjectID:postObjectID
+                mediaName:mediaID
+        thumbnailCallback:thumbnailCallback
+               completion:completion
+     ];
+}
 
-        if (thumbnailCallback) {
-            thumbnailCallback(mediaThumbnailURL);
-        }
-        
-        UIImage *finalImg = image;
-        if (maxImageSize <= image.size.width || maxImageSize <= image.size.height) {
-            finalImg = [image resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:maximumResolution interpolationQuality:kCGInterpolationHigh];
-        }
-        
-        NSError *imageWritingError = nil;
-        BOOL imageWritingSuccess = [finalImg writeToURL:mediaURL type:mediaUTI compressionQuality:0.9 metadata:nil error:&imageWritingError];
-        if (!imageWritingSuccess)
-        {
-            completion(nil, imageWritingError);
-            return;
-        }
-
-        [self createMediaForPost:postObjectID
-                        mediaURL:mediaURL
-               mediaThumbnailURL:mediaThumbnailURL
-                       mediaType:mediaType
-                       mediaSize:[finalImg size]
-                      completion:completion];
-    }];
+- (void)createMediaWithPHAsset:(PHAsset *)asset
+               forPostObjectID:(NSManagedObjectID *)postObjectID
+             thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                    completion:(void (^)(Media *media, NSError *error))completion
+{
+    NSString *mediaName = [asset originalFilename];
+    
+    [self createMediaWith:asset
+          forPostObjectID:postObjectID
+                mediaName:mediaName
+        thumbnailCallback:thumbnailCallback
+               completion:completion
+     ];
 }
 
 - (void)createMediaWith:(id<ExportableAsset>)asset
         forPostObjectID:(NSManagedObjectID *)postObjectID
               mediaName:(NSString *)mediaName
-              mediaType:(MediaType *)mediaTypeX
-               mediaUTI:(NSString *)assetUTIX
       thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
              completion:(void (^)(Media *media, NSError *error))completion
 {
@@ -152,51 +120,6 @@
                          }
                      }];
     }];
-}
-
-- (void)createMediaWithPHAsset:(PHAsset *)asset
-             forPostObjectID:(NSManagedObjectID *)postObjectID
-           thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
-                  completion:(void (^)(Media *media, NSError *error))completion
-{
-    NSError *error = nil;
-    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
-    if (!post) {
-        if (completion) {
-            completion(nil, error);
-        }
-        return;
-    }
-    MediaType mediaType = MediaTypeDocument;
-    NSString *assetUTI = [asset originalUTI];
-    NSString *extension = [self extensionForUTI:assetUTI];
-    if (asset.mediaType == PHAssetMediaTypeImage) {
-        mediaType = MediaTypeImage;
-        NSSet *allowedFileTypes = post.blog.allowedFileTypes;
-        if (![allowedFileTypes containsObject:extension]) {
-            assetUTI = (__bridge NSString *)kUTTypeJPEG;
-        }
-    } else if (asset.mediaType == PHAssetMediaTypeVideo) {
-        /** HACK: Sergio Estevao (2015-11-09): We ignore allowsFileTypes for videos in WP.com
-         because we have an exception on the server for mobile that allows video uploads event 
-         if videopress is not enabled.
-        */
-        if (![post.blog isHostedAtWPcom]) {
-            assetUTI = (__bridge NSString *)kUTTypeQuickTimeMovie;
-        }
-        mediaType = MediaTypeVideo;
-    }
-
-    NSString *mediaName = [asset originalFilename];
-    
-    [self createMediaWith:asset
-          forPostObjectID:postObjectID
-                mediaName:mediaName
-                mediaType:mediaType
-                 mediaUTI:assetUTI
-        thumbnailCallback:thumbnailCallback
-               completion:completion
-     ];
 }
 
 - (void) createMediaForPost:(NSManagedObjectID *)postObjectID
