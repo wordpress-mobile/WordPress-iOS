@@ -3,19 +3,26 @@
 #import "WPStyleGuide.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 
+
+
+#pragma mark - Constants
+
 static CGFloat const HorizontalMargin = 15.0f;
 
+
+#pragma mark - Private Properties
+
 @interface SettingsTextViewController() <UITextFieldDelegate>
-
-@property (nonatomic, strong) WPTableViewCell *textFieldCell;
-@property (nonatomic, strong) UITextField *textField;
-@property (nonatomic, strong) UIView *hintView;
-@property (nonatomic, strong) NSString *hint;
-@property (nonatomic, assign) BOOL isPassword;
-@property (nonatomic, strong) NSString *placeholder;
-@property (nonatomic, strong) NSString *text;
-
+@property (nonatomic, strong) WPTableViewCell   *textFieldCell;
+@property (nonatomic, strong) UITextField       *textField;
+@property (nonatomic, strong) UIView            *hintView;
+@property (nonatomic, strong) NSString          *hint;
+@property (nonatomic, strong) NSString          *placeholder;
+@property (nonatomic, strong) NSString          *text;
 @end
+
+
+#pragma mark - SettingsTextViewController
 
 @implementation SettingsTextViewController
 
@@ -24,25 +31,24 @@ static CGFloat const HorizontalMargin = 15.0f;
     _textField.delegate = nil;
 }
 
-- (instancetype)initWithText:(NSString *)text
-                 placeholder:(NSString *)placeholder
-                        hint:(NSString *)hint
-                  isPassword:(BOOL)isPassword
+- (instancetype)initWithStyle:(UITableViewStyle)style
+{
+    return [self initWithText:@"" placeholder:@"" hint:@""];
+}
+
+- (instancetype)initWithText:(NSString *)text placeholder:(NSString *)placeholder hint:(NSString *)hint
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _text = text;
         _placeholder = placeholder;
         _hint = hint;
-        _isPassword = isPassword;
     }
     return self;
 }
 
-- (instancetype)initWithStyle:(UITableViewStyle)style
-{
-    return [self initWithText:@"" placeholder:@"" hint:@"" isPassword:NO];
-}
+
+#pragma mark - View Lifecycle
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -55,6 +61,24 @@ static CGFloat const HorizontalMargin = 15.0f;
     [super viewDidLoad];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    if (self.onValueChanged && ![self.textField.text isEqualToString:self.text]) {
+        self.onValueChanged(self.textField.text);
+    }
+    
+    [super viewWillDisappear:animated];
+}
+
+
+#pragma mark - Helpers
+
+- (void)setIsPassword:(BOOL)isPassword
+{
+    _isPassword = isPassword;
+    self.textField.secureTextEntry = isPassword;
 }
 
 - (WPTableViewCell *)textFieldCell
@@ -72,7 +96,6 @@ static CGFloat const HorizontalMargin = 15.0f;
     self.textField.placeholder = self.placeholder;
     self.textField.returnKeyType = UIReturnKeyDone;
     self.textField.keyboardType = UIKeyboardTypeDefault;
-    self.textField.secureTextEntry = self.isPassword;
     self.textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.textField.delegate = self;
     
@@ -86,20 +109,15 @@ static CGFloat const HorizontalMargin = 15.0f;
     if (_hintView) {
         return _hintView;
     }
+    
     WPTableViewSectionHeaderFooterView *footerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
     [footerView setTitle:_hint];
     _hintView = footerView;
     return _hintView;
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    if (self.onValueChanged && ![self.textField.text isEqualToString:self.text]) {
-        self.onValueChanged(self.textField.text);
-    }
-        
-    [super viewWillDisappear:animated];
-}
+
+#pragma mark - UITableViewDelegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -113,10 +131,10 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 && indexPath.row == 0)
-    {
+    if (indexPath.section == 0 && indexPath.row == 0) {
         return self.textFieldCell;
     }
+    
     return nil;
 }
 
