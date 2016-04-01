@@ -1101,8 +1101,8 @@ EditImageDetailsViewControllerDelegate
         
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
 	} else {
-        NSMutableArray* rightBarButtons = @[self.editBarButtonItem,
-                                            [self previewBarButtonItem]];
+        NSMutableArray* rightBarButtons = [[NSMutableArray alloc] initWithArray:@[self.editBarButtonItem,
+                                                                                  [self previewBarButtonItem]]];
         
         if ([self.post isKindOfClass:[Post class]]) {
             [rightBarButtons addObject:[self shareBarButtonItem]];
