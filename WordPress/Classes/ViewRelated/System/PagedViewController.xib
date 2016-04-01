@@ -77,7 +77,7 @@
                 <constraint firstItem="zq7-WR-Khc" firstAttribute="leading" secondItem="738-EE-kwR" secondAttribute="leading" id="EBW-CO-mV7"/>
                 <constraint firstAttribute="bottom" secondItem="zq7-WR-Khc" secondAttribute="bottom" id="JBT-lu-ELa"/>
                 <constraint firstAttribute="trailing" secondItem="zq7-WR-Khc" secondAttribute="trailing" id="hgv-Jp-E0H"/>
-                <constraint firstItem="F8R-PU-KTv" firstAttribute="width" secondItem="738-EE-kwR" secondAttribute="width" priority="250" id="xkT-Vs-oM2"/>
+                <constraint firstItem="F8R-PU-KTv" firstAttribute="width" secondItem="738-EE-kwR" secondAttribute="width" priority="250" placeholder="YES" id="xkT-Vs-oM2"/>
             </constraints>
         </view>
     </objects>
