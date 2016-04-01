@@ -73,3 +73,57 @@ extension UIImage {
         }
     }
 }
+
+extension UIImage: ExportableAsset
+{
+    func exportToURL(url: NSURL,
+                     targetUTI: String,
+                     maximumResolution: CGSize,
+                     stripGeoLocation: Bool,
+                     successHandler: SuccessHandler,
+                     errorHandler: ErrorHandler)
+    {
+        var finalImage = self
+        if (maximumResolution.width <= self.size.width || maximumResolution.height <= self.size.height) {
+            finalImage = self.resizedImageWithContentMode(.ScaleAspectFit, bounds:maximumResolution, interpolationQuality:.High)
+        }
+        
+        do {
+            try finalImage.writeToURL(url, type:targetUTI, compressionQuality:0.9, metadata: nil)
+            successHandler(resultingSize: finalImage.size)
+        } catch let error as NSError {
+            errorHandler(error: error)
+        }
+    }
+    
+    func exportThumbnailToURL(url: NSURL,
+                              targetSize: CGSize,
+                              synchronous: Bool,
+                              successHandler: SuccessHandler,
+                              errorHandler: ErrorHandler)
+    {
+        let thumbnail = self.resizedImageWithContentMode(.ScaleAspectFit, bounds:targetSize, interpolationQuality:.High)
+        do {
+            try self.writeToURL(url, type:kUTTypeJPEG as String, compressionQuality:0.9, metadata:nil)
+            successHandler(resultingSize: thumbnail.size)
+        } catch let error as NSError {
+            errorHandler(error:error)
+        }
+    }
+    
+    func originalUTI() -> String? {
+        return kUTTypeJPEG as String
+    }
+    
+    var assetMediaType: MediaType {
+        get {
+            return .Image
+        }
+    }
+    
+    var defaultThumbnailUTI: String {
+        get {
+            return kUTTypeJPEG as String
+        }
+    }
+}
