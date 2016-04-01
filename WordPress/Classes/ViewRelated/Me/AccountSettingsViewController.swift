@@ -82,9 +82,11 @@ private struct AccountSettingsController: SettingsController {
                 title: NSLocalizedString("Username", comment: "Account Settings Username label"),
                 value: settings?.username ?? "")
             
-            let email = TextRow(
+            let email = EditableTextRow(
                 title: NSLocalizedString("Email", comment: "Account Settings Email label"),
-                value: settings?.email ?? "")
+                value: settings?.email ?? "",
+                action: presenter.push(editEmailAddress(service))
+            )
             
             let primarySite = EditableTextRow(
                 title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
@@ -140,8 +142,14 @@ private struct AccountSettingsController: SettingsController {
     
     // MARK: - Actions
 
+    func editEmailAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
+        let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
+        return editText(AccountSettingsChange.Email, hint: hint, isEmail: true, service: service)
+    }
+    
     func editWebAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
-        return editText(AccountSettingsChange.WebAddress, hint: NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address"), service: service)
+        let hint = NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address")
+        return editText(AccountSettingsChange.WebAddress, hint: hint, service: service)
     }
     
     func editPrimarySite(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
