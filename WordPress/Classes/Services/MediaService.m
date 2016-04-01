@@ -76,6 +76,84 @@
     }];
 }
 
+- (void)createMediaWith:(id<ExportableAsset>)asset
+        forPostObjectID:(NSManagedObjectID *)postObjectID
+              mediaName:(NSString *)mediaName
+              mediaType:(MediaType *)mediaTypeX
+               mediaUTI:(NSString *)assetUTIX
+      thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+             completion:(void (^)(Media *media, NSError *error))completion
+{
+    NSError *error = nil;
+    AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
+    if (!post) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+    
+    MediaType mediaType = [asset assetMediaType];
+    NSString *assetUTI = [asset originalUTI];
+    NSString *extension = [self extensionForUTI:assetUTI];
+    if (mediaType == MediaTypeImage) {
+        NSSet *allowedFileTypes = post.blog.allowedFileTypes;
+        if (![allowedFileTypes containsObject:extension]) {
+            assetUTI = (__bridge NSString *)kUTTypeJPEG;
+            extension = [self extensionForUTI:assetUTI];
+        }
+    } else if (mediaType == MediaTypeVideo) {
+        /** HACK: Sergio Estevao (2015-11-09): We ignore allowsFileTypes for videos in WP.com
+         because we have an exception on the server for mobile that allows video uploads event
+         if videopress is not enabled.
+         */
+        if (![post.blog isHostedAtWPcom]) {
+            assetUTI = (__bridge NSString *)kUTTypeQuickTimeMovie;
+            extension = [self extensionForUTI:assetUTI];
+        }
+    }
+    
+    BOOL geoLocationEnabled = post.blog.settings.geolocationEnabled;
+    NSURL *mediaURL = [self urlForMediaWithFilename:mediaName andExtension:extension];
+    NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
+                                                andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
+    NSInteger maxImageSize = [[MediaSettings new] imageSizeForUpload];
+    CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
+    [[self.class queueForResizeMediaOperations] addOperationWithBlock:^{
+        [asset exportThumbnailToURL:mediaThumbnailURL
+                         targetSize:[UIScreen mainScreen].bounds.size
+                        synchronous:YES
+                     successHandler:^(CGSize thumbnailSize) {
+                         if (thumbnailCallback) {
+                             thumbnailCallback(mediaThumbnailURL);
+                         }
+                         
+                         [asset exportToURL:mediaURL
+                                  targetUTI:assetUTI
+                          maximumResolution:maximumResolution
+                           stripGeoLocation:!geoLocationEnabled
+                             successHandler:^(CGSize resultingSize)
+                          {
+                              [self createMediaForPost:postObjectID
+                                              mediaURL:mediaURL
+                                     mediaThumbnailURL:mediaThumbnailURL
+                                             mediaType:mediaType
+                                             mediaSize:resultingSize
+                                            completion:completion];
+                          }
+                               errorHandler:^(NSError *error) {
+                                   if (completion){
+                                       completion(nil, error);
+                                   }
+                               }];
+                     } errorHandler:^(NSError *error) {
+                         if (completion){
+                             completion(nil, error);
+                         }
+                     }];
+    }];
+}
+
 - (void)createMediaWithPHAsset:(PHAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
@@ -97,7 +175,6 @@
         NSSet *allowedFileTypes = post.blog.allowedFileTypes;
         if (![allowedFileTypes containsObject:extension]) {
             assetUTI = (__bridge NSString *)kUTTypeJPEG;
-            extension = [self extensionForUTI:assetUTI];
         }
     } else if (asset.mediaType == PHAssetMediaTypeVideo) {
         /** HACK: Sergio Estevao (2015-11-09): We ignore allowsFileTypes for videos in WP.com
@@ -106,53 +183,20 @@
         */
         if (![post.blog isHostedAtWPcom]) {
             assetUTI = (__bridge NSString *)kUTTypeQuickTimeMovie;
-            extension = [self extensionForUTI:assetUTI];
         }
         mediaType = MediaTypeVideo;
     }
-    
-    BOOL geoLocationEnabled = post.blog.settings.geolocationEnabled;
-    
-    NSInteger maxImageSize = [[MediaSettings new] imageSizeForUpload];
-    CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
 
-    NSURL *mediaURL = [self urlForMediaWithFilename:[asset originalFilename] andExtension:extension];
-    NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
-                                                andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
+    NSString *mediaName = [asset originalFilename];
     
-    [[self.class queueForResizeMediaOperations] addOperationWithBlock:^{
-        [asset exportThumbnailToURL:mediaThumbnailURL
-                         targetSize:[UIScreen mainScreen].bounds.size
-                        synchronous:YES
-                     successHandler:^(CGSize thumbnailSize) {
-            if (thumbnailCallback) {
-                thumbnailCallback(mediaThumbnailURL);
-            }
-
-            [asset exportToURL:mediaURL
-                     targetUTI:assetUTI
-             maximumResolution:maximumResolution
-              stripGeoLocation:!geoLocationEnabled
-                successHandler:^(CGSize resultingSize)
-                {
-                    [self createMediaForPost:postObjectID
-                                    mediaURL:mediaURL
-                           mediaThumbnailURL:mediaThumbnailURL
-                                   mediaType:mediaType
-                                   mediaSize:resultingSize
-                                  completion:completion];
-                }
-                errorHandler:^(NSError *error) {
-                   if (completion){
-                       completion(nil, error);
-                   }
-                }];
-            } errorHandler:^(NSError *error) {
-                if (completion){
-                    completion(nil, error);
-                }
-            }];
-    }];
+    [self createMediaWith:asset
+          forPostObjectID:postObjectID
+                mediaName:mediaName
+                mediaType:mediaType
+                 mediaUTI:assetUTI
+        thumbnailCallback:thumbnailCallback
+               completion:completion
+     ];
 }
 
 - (void) createMediaForPost:(NSManagedObjectID *)postObjectID

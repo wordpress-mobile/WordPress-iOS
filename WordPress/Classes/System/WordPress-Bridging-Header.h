@@ -24,6 +24,7 @@
 
 #import "LoginViewController.h"
 
+#import "Media.h"
 #import "MediaService.h"
 #import "MeHeaderView.h"
 
