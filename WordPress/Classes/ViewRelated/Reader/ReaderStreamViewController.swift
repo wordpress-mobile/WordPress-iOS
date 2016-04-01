@@ -20,7 +20,6 @@ import WordPressComAnalytics
     private var crossPostCellForLayout:ReaderCrossPostCell!
     private var resultsStatusView: WPNoResultsView!
     private var footerView: PostListFooterView!
-    private var objectIDOfPostForMenu: NSManagedObjectID?
 
     private let footerViewNibName = "PostListFooterView"
     private let readerCardCellNibName = "ReaderPostCardCell"
@@ -498,13 +497,11 @@ import WordPressComAnalytics
     }
 
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
-        objectIDOfPostForMenu = post.objectID
 
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addCancelActionWithTitle(ActionSheetButtonTitles.cancel,
             handler: { (action:UIAlertAction) in
-                self.cleanUpAfterPostMenu()
             })
 
         // Block button
@@ -512,10 +509,9 @@ import WordPressComAnalytics
             alertController.addActionWithTitle(ActionSheetButtonTitles.blockSite,
                 style: .Destructive,
                 handler: { (action:UIAlertAction) in
-                    if let post = self.postForObjectIDOfPostForMenu() {
+                    if let post = self.postWithObjectID(post.objectID) {
                         self.blockSiteForPost(post)
                     }
-                    self.cleanUpAfterPostMenu()
                 })
         }
 
@@ -525,10 +521,9 @@ import WordPressComAnalytics
             alertController.addActionWithTitle(buttonTitle,
                 style: .Default,
                 handler: { (action:UIAlertAction) in
-                    if let post = self.postForObjectIDOfPostForMenu() {
+                    if let post = self.postWithObjectID(post.objectID) {
                         self.toggleFollowingForPost(post)
                     }
-                    self.cleanUpAfterPostMenu()
                 })
         }
 
@@ -536,20 +531,18 @@ import WordPressComAnalytics
         alertController.addActionWithTitle(ActionSheetButtonTitles.visit,
             style: .Default,
             handler: { (action:UIAlertAction) in
-                if let post = self.postForObjectIDOfPostForMenu() {
+                if let post = self.postWithObjectID(post.objectID) {
                     self.visitSiteForPost(post)
                 }
-                self.cleanUpAfterPostMenu()
         })
 
         // Share
         alertController.addActionWithTitle(ActionSheetButtonTitles.share,
             style: .Default,
             handler: { (action:UIAlertAction) in
-                if let post = self.postForObjectIDOfPostForMenu() {
+                if let post = self.postWithObjectID(post.objectID) {
                     self.sharePost(post, fromView: anchorView)
                 }
-                self.cleanUpAfterPostMenu()
         })
 
         if UIDevice.isPad() {
@@ -565,17 +558,13 @@ import WordPressComAnalytics
         }
     }
 
-    private func postForObjectIDOfPostForMenu() -> ReaderPost? {
+    private func postWithObjectID(objectID: NSManagedObjectID) -> ReaderPost? {
         do {
-            return try managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!) as? ReaderPost
+            return try managedObjectContext().existingObjectWithID(objectID) as? ReaderPost
         } catch let error as NSError {
             DDLogSwift.logError(error.localizedDescription)
             return nil
         }
-    }
-
-    private func cleanUpAfterPostMenu() {
-        objectIDOfPostForMenu = nil
     }
 
     private func sharePost(post: ReaderPost, fromView anchorView: UIView) {
