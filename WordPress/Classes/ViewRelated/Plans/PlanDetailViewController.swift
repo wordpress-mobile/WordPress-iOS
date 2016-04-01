@@ -76,6 +76,7 @@ class PlanDetailViewController: UIViewController {
         didSet {
             self.tableViewModel = viewModel.tableViewModel
             title = viewModel.plan.title
+            accessibilityLabel = viewModel.plan.fullTitle
             if isViewLoaded() {
                 populateHeader()
                 updateNoResults()
