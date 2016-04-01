@@ -100,25 +100,25 @@
                                   targetUTI:assetUTI
                           maximumResolution:maximumResolution
                            stripGeoLocation:!geoLocationEnabled
-                             successHandler:^(CGSize resultingSize)
-                          {
-                              [self createMediaForPost:postObjectID
-                                              mediaURL:mediaURL
-                                     mediaThumbnailURL:mediaThumbnailURL
-                                             mediaType:mediaType
-                                             mediaSize:resultingSize
-                                            completion:completion];
-                          }
+                             successHandler:^(CGSize resultingSize) {
+                                 [self createMediaForPost:postObjectID
+                                                 mediaURL:mediaURL
+                                        mediaThumbnailURL:mediaThumbnailURL
+                                                mediaType:mediaType
+                                                mediaSize:resultingSize
+                                               completion:completion];
+                             }
                                errorHandler:^(NSError *error) {
                                    if (completion){
                                        completion(nil, error);
                                    }
                                }];
-                     } errorHandler:^(NSError *error) {
-                         if (completion){
-                             completion(nil, error);
-                         }
-                     }];
+                     }
+                       errorHandler:^(NSError *error) {
+                           if (completion){
+                               completion(nil, error);
+                           }
+                       }];
     }];
 }
 
