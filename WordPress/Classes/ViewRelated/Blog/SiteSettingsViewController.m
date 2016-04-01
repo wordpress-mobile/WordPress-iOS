@@ -720,8 +720,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
     SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.password
                                                                                                placeholder:NSLocalizedString(@"Enter password", @"(placeholder) Help enter WordPress password")
-                                                                                                      hint:@""
-                                                                                                isPassword:YES];
+                                                                                                      hint:@""];
+    siteTitleViewController.isPassword = YES;
     siteTitleViewController.title = NSLocalizedString(@"Password", @"Title for screen that shows self hosted password editor.");
     siteTitleViewController.onValueChanged = ^(id value) {
         if (![value isEqualToString:self.blog.password]) {
@@ -740,8 +740,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
     SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.settings.name
                                                                                                placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
-                                                                                                      hint:@""
-                                                                                                isPassword:NO];
+                                                                                                      hint:@""];
     siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
     siteTitleViewController.onValueChanged = ^(NSString *value) {
         self.siteTitleCell.detailTextLabel.text = value;
