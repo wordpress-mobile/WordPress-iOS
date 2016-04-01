@@ -96,6 +96,12 @@
                                [self.managedObjectContext performBlock:^{
                                    Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
                                    if (!blog) {
+                                       if (failure) {
+                                           NSError *error = [NSError errorWithDomain:NSStringFromClass([self class])
+                                                                                code:PostCategoryServiceErrorsBlogNotFound
+                                                                            userInfo:nil];
+                                           failure(error);
+                                       }
                                        return;
                                    }
                                    [self mergeCategories:categories
