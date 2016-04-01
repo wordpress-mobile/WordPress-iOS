@@ -26,7 +26,7 @@ public class AboutViewController : UITableViewController
     private func setupTableView() {
         // Load and Tint the Logo
         let color                   = WPStyleGuide.wordPressBlue()
-        let tintedImage             = UIImage(named: "icon-wp")?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        let tintedImage             = UIImage(named: "icon-wp")?.imageWithRenderingMode(.AlwaysTemplate)
         let imageView               = UIImageView(image: tintedImage)
         imageView.tintColor = color
         imageView.autoresizingMask  = [.FlexibleLeftMargin, .FlexibleRightMargin]

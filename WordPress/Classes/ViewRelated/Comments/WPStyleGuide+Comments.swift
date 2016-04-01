@@ -65,7 +65,7 @@ extension WPStyleGuide
         
         public static func timestampImage(isApproved approved: Bool) -> UIImage {
             let timestampImage = UIImage(named: "reader-postaction-time")!
-            return approved ? timestampImage : timestampImage.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+            return approved ? timestampImage : timestampImage.imageWithRenderingMode(.AlwaysTemplate)
         }
 
 
