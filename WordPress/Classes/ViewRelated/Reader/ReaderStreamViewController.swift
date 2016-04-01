@@ -21,7 +21,6 @@ import WordPressComAnalytics
     private var resultsStatusView: WPNoResultsView!
     private var footerView: PostListFooterView!
     private var objectIDOfPostForMenu: NSManagedObjectID?
-    private var anchorViewForMenu: UIView?
 
     private let footerViewNibName = "PostListFooterView"
     private let readerCardCellNibName = "ReaderPostCardCell"
@@ -500,7 +499,6 @@ import WordPressComAnalytics
 
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
         objectIDOfPostForMenu = post.objectID
-        anchorViewForMenu = anchorView
 
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
@@ -549,7 +547,7 @@ import WordPressComAnalytics
             style: .Default,
             handler: { (action:UIAlertAction) in
                 if let post = self.postForObjectIDOfPostForMenu() {
-                    self.sharePost(post)
+                    self.sharePost(post, fromView: anchorView)
                 }
                 self.cleanUpAfterPostMenu()
         })
@@ -559,8 +557,8 @@ import WordPressComAnalytics
             presentViewController(alertController, animated: true, completion: nil)
             let presentationController = alertController.popoverPresentationController
             presentationController?.permittedArrowDirections = .Any
-            presentationController?.sourceView = anchorViewForMenu!
-            presentationController?.sourceRect = anchorViewForMenu!.bounds
+            presentationController?.sourceView = anchorView
+            presentationController?.sourceRect = anchorView.bounds
 
         } else {
             presentViewController(alertController, animated: true, completion: nil)
@@ -578,10 +576,9 @@ import WordPressComAnalytics
 
     private func cleanUpAfterPostMenu() {
         objectIDOfPostForMenu = nil
-        anchorViewForMenu = nil
     }
 
-    private func sharePost(post: ReaderPost) {
+    private func sharePost(post: ReaderPost, fromView anchorView: UIView) {
         let controller = ReaderHelpers.shareController(
             post.titleForDisplay(),
             summary: post.contentPreviewForDisplay(),
@@ -599,8 +596,8 @@ import WordPressComAnalytics
         presentViewController(controller, animated: true, completion: nil)
         let presentationController = controller.popoverPresentationController
         presentationController?.permittedArrowDirections = .Unknown
-        presentationController?.sourceView = anchorViewForMenu!
-        presentationController?.sourceRect = anchorViewForMenu!.bounds
+        presentationController?.sourceView = anchorView
+        presentationController?.sourceRect = anchorView.bounds
     }
 
     private func toggleFollowingForPost(post:ReaderPost) {
