@@ -183,7 +183,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 {
 }
 
-#pragma mark - WPContentViewProvider protocol
+#pragma mark - PostContentProvider protocol
 
 - (NSString *)titleForDisplay
 {
