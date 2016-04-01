@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "Blog.h"
 #import "DateUtils.h"
-#import "WPContentViewProvider.h"
+#import "PostContentProvider.h"
 
 typedef enum {
     AbstractPostRemoteStatusPushing,    // Uploading post
@@ -18,7 +18,7 @@ extern NSString * const PostStatusScheduled;
 extern NSString * const PostStatusTrash;
 extern NSString * const PostStatusDeleted;
 
-@interface BasePost : NSManagedObject<WPContentViewProvider>
+@interface BasePost : NSManagedObject<PostContentProvider>
 
 // Attributes
 @property (nonatomic, strong) NSNumber * postID;
