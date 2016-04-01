@@ -1,7 +1,6 @@
 import UIKit
 import WordPressComAnalytics
 import WordPressShared
-import wpxmlrpc
 
 /// A base class for the various NUX related related view controllers. 
 /// The base class sets up and configures common functionality, such as the help 
