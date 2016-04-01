@@ -1126,7 +1126,8 @@ EditImageDetailsViewControllerDelegate
 	NSAssert([imageName isKindOfClass:[NSString class]],
 			 @"Expected imageName to be a non nil string.");
 
-	UIImage* image = [UIImage imageNamed:imageName];
+    UIImage* image = [UIImage imageNamed:imageName];
+    image = [image resizedImage:CGSizeMake(32, 32) interpolationQuality:kCGInterpolationDefault];
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 	
 	WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
@@ -1144,7 +1145,7 @@ EditImageDetailsViewControllerDelegate
         return _cancelChevronButton;
     }
     
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-chevron"
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"gridicons-chevron-left"
                                                                         frame:NavigationBarButtonRect
                                                                        target:self
                                                                      selector:@selector(cancelEditing)];
@@ -1164,7 +1165,7 @@ EditImageDetailsViewControllerDelegate
         return _cancelXButton;
     }
     
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"gridicons-cross"
                                                                         frame:NavigationBarButtonRect
                                                                        target:self
                                                                      selector:@selector(cancelEditing)];
