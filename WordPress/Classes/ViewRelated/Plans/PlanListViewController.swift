@@ -91,18 +91,18 @@ enum PlanListViewModel {
         }
     }
 
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter?, planService: PlanService?) -> ImmuTable {
+    func tableViewModelWithPresenter(presenter: ImmuTablePresenter?, planService: PlanService<StoreKitStore>?) -> ImmuTable {
         switch self {
         case .Loading, .Error(_):
             return ImmuTable.Empty
-        case .Ready(let activePlan, let plans):
+        case .Ready(let siteID, let activePlan, let plans):
             let rows: [ImmuTableRow] = plans.map({ (plan, price) in
                 let active = (activePlan == plan)
                 let icon = active ? plan.activeImage : plan.image
                 var action: ImmuTableAction? = nil
                 if let presenter = presenter,
                     let planService = planService {
-                    action = presenter.present(self.controllerForPlanDetails(plan, activePlan: activePlan, planService: planService))
+                    action = presenter.present(self.controllerForPlanDetails(plan, activePlan: activePlan, siteID: siteID, planService: planService))
                 }
                 
                 return PlanListRow(
@@ -122,9 +122,9 @@ enum PlanListViewModel {
         }
     }
 
-    func controllerForPlanDetails(plan: Plan, activePlan: Plan, planService: PlanService) -> ImmuTableRowControllerGenerator {
+    func controllerForPlanDetails(plan: Plan, activePlan: Plan, siteID: Int, planService: PlanService<StoreKitStore>) -> ImmuTableRowControllerGenerator {
         return { row in
-            let planVC = PlanComparisonViewController.controllerWithInitialPlan(plan, activePlan: activePlan, planService: planService)
+            let planVC = PlanComparisonViewController.controllerWithInitialPlan(plan, activePlan: activePlan, siteID: siteID, planService: planService)
             let navigationVC = RotationAwareNavigationViewController(rootViewController: planVC)
             navigationVC.modalPresentationStyle = .FormSheet
             return navigationVC
@@ -169,13 +169,13 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     convenience init(blog: Blog) {
         precondition(blog.dotComID != nil)
-        let service = PlanService(blog: blog)
+        let service = PlanService(blog: blog, store: StoreKitStore())
         self.init(siteID: Int(blog.dotComID), service: service)
     }
 
     let siteID: Int
-    let service: PlanService
-    init(siteID: Int, service: PlanService) {
+    let service: PlanService<StoreKitStore>
+    init(siteID: Int, service: PlanService<StoreKitStore>) {
         self.siteID = siteID
         self.service = service
         super.init(style: .Grouped)
@@ -201,11 +201,14 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-        service.plansWithPricesForBlog(siteID, success: { result in
-            self.viewModel = .Ready(result)
-            }, failure: { error in
+        service.plansWithPricesForBlog(siteID,
+            success: { result in
+                self.viewModel = .Ready(result)
+            },
+            failure: { error in
                 self.viewModel = .Error(String(error))
-        })
+            }
+        )
     }
 }
 
