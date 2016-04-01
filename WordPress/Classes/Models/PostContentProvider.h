@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@protocol WPContentViewProvider <NSObject>
+@protocol PostContentProvider <NSObject>
 - (NSString *)titleForDisplay;
 - (NSString *)authorForDisplay;
 - (NSString *)blogNameForDisplay;
