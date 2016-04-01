@@ -426,7 +426,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
 #pragma mark - Cell Delegate Methods
 
-- (void)cell:(UITableViewCell *)cell receivedMenuActionFromButton:(UIButton *)button forProvider:(id<WPContentViewProvider>)contentProvider
+- (void)cell:(UITableViewCell *)cell receivedMenuActionFromButton:(UIButton *)button forProvider:(id<PostContentProvider>)contentProvider
 {
     Page *page = (Page *)contentProvider;
     NSManagedObjectID *objectID = page.objectID;
@@ -510,7 +510,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
     return page;
 }
 
-- (void)cell:(UITableViewCell *)cell receivedRestoreActionForProvider:(id<WPContentViewProvider>)contentProvider
+- (void)cell:(UITableViewCell *)cell receivedRestoreActionForProvider:(id<PostContentProvider>)contentProvider
 {
     AbstractPost *apost = (AbstractPost *)contentProvider;
     [self restorePost:apost];

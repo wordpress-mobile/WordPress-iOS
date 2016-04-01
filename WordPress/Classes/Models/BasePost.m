@@ -130,10 +130,6 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     [self setRemoteStatusNumber:[NSNumber numberWithInt:aStatus]];
 }
 
-- (void)upload
-{
-}
-
 + (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus
 {
     switch ([remoteStatus intValue]) {
@@ -187,7 +183,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 {
 }
 
-#pragma mark - WPContentViewProvider protocol
+#pragma mark - PostContentProvider protocol
 
 - (NSString *)titleForDisplay
 {

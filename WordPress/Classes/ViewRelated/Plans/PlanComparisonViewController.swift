@@ -9,9 +9,10 @@ class PlanComparisonViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var planStackView: UIStackView!
     
-    var service: PlanService? = nil
+    var service: PlanService<StoreKitStore>? = nil
     
     var activePlan: Plan?
+    var siteID: Int!
     
     var currentPlan: Plan = defaultPlans[0] {
         didSet {
@@ -28,9 +29,8 @@ class PlanComparisonViewController: UIViewController {
     private lazy var viewControllers: [PlanDetailViewController] = {
         return self.allPlans.map { plan in
             let isActive = self.activePlan == plan
-            
-            let controller = PlanDetailViewController.controllerWithPlan(plan, isActive: isActive)
-            
+            let controller = PlanDetailViewController.controllerWithPlan(plan, siteID: self.siteID, isActive: isActive)
+
             return controller
         }
     }()
@@ -44,14 +44,20 @@ class PlanComparisonViewController: UIViewController {
         return button
     }()
     
-    class func controllerWithInitialPlan(plan: Plan, activePlan: Plan? = nil, planService: PlanService) -> PlanComparisonViewController {
+    class func controllerWithInitialPlan(plan: Plan, activePlan: Plan? = nil, siteID: Int, planService: PlanService<StoreKitStore>) -> PlanComparisonViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanComparisonViewController
+
+        // @koke 2016-03-15
+        // This is very fragile. If we set siteID after currentPlan it will crash.
+        // Setting the current plan causes the UI to update, which lazily loads the view controllers,
+        // and they can't be initialized properly without a siteID.
+        controller.siteID = siteID
 
         controller.activePlan = activePlan
         controller.currentPlan = plan
         controller.service = planService
-        
+
         return controller
     }
 
