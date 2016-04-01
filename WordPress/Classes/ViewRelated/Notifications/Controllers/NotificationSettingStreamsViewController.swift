@@ -171,7 +171,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
             imageName = "notifications-phone"
         }
 
-        return UIImage(named: imageName)?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        return UIImage(named: imageName)?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     
