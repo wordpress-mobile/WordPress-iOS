@@ -13,6 +13,7 @@ class SigninEmailViewController : NUXAbstractViewController
     @IBOutlet var selfHostedButton: WPNUXSecondaryButton!
     @IBOutlet var createSiteButton: WPNUXSecondaryButton!
     @IBOutlet var safariPasswordButton: WPNUXSecondaryButton!
+    @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
