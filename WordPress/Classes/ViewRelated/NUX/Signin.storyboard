@@ -348,111 +348,133 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="b8y-9Y-dkU">
-                                <rect key="frame" x="268" y="100" width="64" height="64"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="64" id="3Zk-24-qTP"/>
-                                    <constraint firstAttribute="height" constant="64" id="LvE-AN-pgi"/>
-                                </constraints>
-                            </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Bli-Rb-X9m">
-                                <rect key="frame" x="0.0" y="180" width="600" height="88"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7OQ-0t-1zq">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email or username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GLH-TC-M0d" customClass="WPWalkthroughTextField">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="Username / Email"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-username-field"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="NO"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="handleTextFieldDidChange:" destination="lmD-c6-SLs" eventType="editingChanged" id="v8D-Ni-JQA"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BtS-3D-CIU" customClass="WPWalkthroughTextField">
-                                        <rect key="frame" x="0.0" y="44" width="600" height="44"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-password-field"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="handleSubmitForm" destination="lmD-c6-SLs" eventType="primaryActionTriggered" id="gEy-n9-AGo"/>
-                                            <action selector="handleTextFieldDidChange:" destination="lmD-c6-SLs" eventType="editingChanged" id="TIx-xK-PLT"/>
-                                        </connections>
-                                    </textField>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZWc-TJ-W9T">
+                                        <rect key="frame" x="0.0" y="156" width="600" height="287"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="b8y-9Y-dkU">
+                                                <rect key="frame" x="268" y="0.0" width="64" height="64"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="64" id="3Zk-24-qTP"/>
+                                                    <constraint firstAttribute="height" constant="64" id="LvE-AN-pgi"/>
+                                                </constraints>
+                                            </imageView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Bli-Rb-X9m">
+                                                <rect key="frame" x="0.0" y="80" width="600" height="88"/>
+                                                <subviews>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email or username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GLH-TC-M0d" customClass="WPWalkthroughTextField">
+                                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="Username / Email"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-username-field"/>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="NO"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="handleTextFieldDidChange:" destination="lmD-c6-SLs" eventType="editingChanged" id="v8D-Ni-JQA"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BtS-3D-CIU" customClass="WPWalkthroughTextField">
+                                                        <rect key="frame" x="0.0" y="44" width="600" height="44"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-password-field"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="handleSubmitForm" destination="lmD-c6-SLs" eventType="primaryActionTriggered" id="gEy-n9-AGo"/>
+                                                            <action selector="handleTextFieldDidChange:" destination="lmD-c6-SLs" eventType="editingChanged" id="TIx-xK-PLT"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                            </stackView>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="276" y="184" width="47" height="41"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="41" id="H3A-PM-OJr"/>
+                                                </constraints>
+                                                <state key="normal" title="Sign in">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="handleSubmitButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="hX6-w6-i2P"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-6g-BI3" customClass="WPNUXSecondaryButton">
+                                                <rect key="frame" x="238" y="241" width="123" height="30"/>
+                                                <state key="normal" title="Forgot password?">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="handleForgotPasswordButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="q8s-z9-VIK"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-I8-yWG">
+                                                <rect key="frame" x="279" y="246" width="42" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="E3x-LN-sUk" firstAttribute="centerX" secondItem="ZWc-TJ-W9T" secondAttribute="centerX" id="2Nr-lV-Lpc"/>
+                                            <constraint firstItem="Bli-Rb-X9m" firstAttribute="leading" secondItem="ZWc-TJ-W9T" secondAttribute="leading" id="5ft-3X-heS"/>
+                                            <constraint firstItem="0P1-6g-BI3" firstAttribute="centerX" secondItem="ZWc-TJ-W9T" secondAttribute="centerX" id="Ac5-gX-Tj9"/>
+                                            <constraint firstItem="0P1-6g-BI3" firstAttribute="top" secondItem="E3x-LN-sUk" secondAttribute="bottom" constant="16" id="AuD-of-4H8"/>
+                                            <constraint firstItem="ZqY-I8-yWG" firstAttribute="centerY" secondItem="0P1-6g-BI3" secondAttribute="centerY" id="CDH-z5-RaI"/>
+                                            <constraint firstAttribute="bottom" secondItem="0P1-6g-BI3" secondAttribute="bottom" constant="16" id="Lqs-3r-wCl"/>
+                                            <constraint firstItem="b8y-9Y-dkU" firstAttribute="top" secondItem="ZWc-TJ-W9T" secondAttribute="top" id="PR2-UH-g9g"/>
+                                            <constraint firstItem="b8y-9Y-dkU" firstAttribute="centerX" secondItem="ZWc-TJ-W9T" secondAttribute="centerX" id="gtz-Y4-awV"/>
+                                            <constraint firstItem="ZqY-I8-yWG" firstAttribute="centerX" secondItem="ZWc-TJ-W9T" secondAttribute="centerX" id="ixN-Ey-ZDo"/>
+                                            <constraint firstItem="E3x-LN-sUk" firstAttribute="top" secondItem="Bli-Rb-X9m" secondAttribute="bottom" constant="16" id="rH4-gZ-2cM"/>
+                                            <constraint firstItem="Bli-Rb-X9m" firstAttribute="top" secondItem="b8y-9Y-dkU" secondAttribute="bottom" constant="16" id="tsR-uu-P03"/>
+                                            <constraint firstAttribute="trailing" secondItem="Bli-Rb-X9m" secondAttribute="trailing" id="uqX-Vs-LCe"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="320" id="x4J-Ye-wHM"/>
+                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="leading" secondItem="7OQ-0t-1zq" secondAttribute="leading" id="P9q-Yk-vce"/>
+                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="centerY" secondItem="7OQ-0t-1zq" secondAttribute="centerY" priority="900" id="QmU-X4-ywf"/>
+                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="width" secondItem="7OQ-0t-1zq" secondAttribute="width" priority="320" id="RVD-6P-4iA"/>
+                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7OQ-0t-1zq" secondAttribute="top" constant="16" id="VLg-UB-2XP"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZWc-TJ-W9T" secondAttribute="trailing" id="dKJ-Hw-hpF"/>
+                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="centerX" secondItem="7OQ-0t-1zq" secondAttribute="centerX" id="jcM-uc-2PV"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="x4J-Ye-wHM"/>
+                                        <exclude reference="RVD-6P-4iA"/>
+                                        <exclude reference="jcM-uc-2PV"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
                                     <mask key="constraints">
-                                        <include reference="x4J-Ye-wHM"/>
+                                        <exclude reference="P9q-Yk-vce"/>
+                                        <include reference="RVD-6P-4iA"/>
+                                        <exclude reference="dKJ-Hw-hpF"/>
+                                        <include reference="jcM-uc-2PV"/>
                                     </mask>
                                 </variation>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="276" y="284" width="47" height="41"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="41" id="H3A-PM-OJr"/>
-                                </constraints>
-                                <state key="normal" title="Sign in">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="handleSubmitButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="hX6-w6-i2P"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-6g-BI3" customClass="WPNUXSecondaryButton">
-                                <rect key="frame" x="239" y="341" width="123" height="30"/>
-                                <state key="normal" title="Forgot password?">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="handleForgotPasswordButtonTapped:" destination="lmD-c6-SLs" eventType="touchUpInside" id="q8s-z9-VIK"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-I8-yWG">
-                                <rect key="frame" x="279" y="333" width="42" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="E3x-LN-sUk" firstAttribute="centerX" secondItem="tEh-Nj-xof" secondAttribute="centerX" id="4vb-zf-sWO"/>
-                            <constraint firstItem="0P1-6g-BI3" firstAttribute="top" secondItem="E3x-LN-sUk" secondAttribute="bottom" constant="16" id="9cI-zc-fdn"/>
-                            <constraint firstItem="ZqY-I8-yWG" firstAttribute="top" secondItem="E3x-LN-sUk" secondAttribute="bottom" constant="8" id="FTg-F5-PKZ"/>
-                            <constraint firstItem="0P1-6g-BI3" firstAttribute="centerX" secondItem="tEh-Nj-xof" secondAttribute="centerX" id="Jiv-ZY-DLP"/>
-                            <constraint firstItem="Bli-Rb-X9m" firstAttribute="centerX" secondItem="tEh-Nj-xof" secondAttribute="centerX" id="MLN-vW-w0e"/>
-                            <constraint firstAttribute="trailing" secondItem="Bli-Rb-X9m" secondAttribute="trailing" id="TKr-Zi-1fE"/>
-                            <constraint firstItem="b8y-9Y-dkU" firstAttribute="centerX" secondItem="tEh-Nj-xof" secondAttribute="centerX" id="Z3r-TQ-KPi"/>
-                            <constraint firstItem="b8y-9Y-dkU" firstAttribute="top" secondItem="dAs-4b-ACP" secondAttribute="bottom" constant="80" id="Zfa-zz-FTP"/>
-                            <constraint firstItem="E3x-LN-sUk" firstAttribute="top" secondItem="Bli-Rb-X9m" secondAttribute="bottom" constant="16" id="nMA-Tm-Ykg"/>
-                            <constraint firstItem="Bli-Rb-X9m" firstAttribute="leading" secondItem="tEh-Nj-xof" secondAttribute="leading" id="ojK-2L-Dos"/>
-                            <constraint firstItem="ZqY-I8-yWG" firstAttribute="centerX" secondItem="tEh-Nj-xof" secondAttribute="centerX" id="uZj-Rz-nbk"/>
-                            <constraint firstItem="Bli-Rb-X9m" firstAttribute="top" secondItem="b8y-9Y-dkU" secondAttribute="bottom" constant="16" id="zw7-ey-AKI"/>
+                            <constraint firstAttribute="trailing" secondItem="7OQ-0t-1zq" secondAttribute="trailing" id="1LF-21-aUE"/>
+                            <constraint firstItem="7OQ-0t-1zq" firstAttribute="leading" secondItem="tEh-Nj-xof" secondAttribute="leading" id="2v0-ee-Bno"/>
+                            <constraint firstItem="7OQ-0t-1zq" firstAttribute="top" secondItem="dAs-4b-ACP" secondAttribute="bottom" constant="-20" id="6Lb-n5-RrE"/>
+                            <constraint firstItem="kOH-fr-1L0" firstAttribute="top" secondItem="7OQ-0t-1zq" secondAttribute="bottom" id="cuz-xK-BSJ"/>
                         </constraints>
-                        <variation key="heightClass=regular-widthClass=regular">
-                            <mask key="constraints">
-                                <exclude reference="TKr-Zi-1fE"/>
-                                <exclude reference="ojK-2L-Dos"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
+                        <outlet property="bottomContentConstraint" destination="cuz-xK-BSJ" id="fwY-mo-qJg"/>
                         <outlet property="passwordField" destination="BtS-3D-CIU" id="FjI-Ba-FDh"/>
                         <outlet property="statusLabel" destination="ZqY-I8-yWG" id="JAz-Px-ECW"/>
                         <outlet property="submitButton" destination="E3x-LN-sUk" id="9eE-vi-xgc"/>
