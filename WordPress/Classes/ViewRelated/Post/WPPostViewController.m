@@ -1651,6 +1651,7 @@ EditImageDetailsViewControllerDelegate
     }
     [self.mediaInProgress removeObjectForKey:uniqueMediaId];
     [self dismissAssociatedAlertControllerIfVisible:uniqueMediaId];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)setError:(NSError *)error inProgressOfMediaWithId:(NSString *)uniqueMediaId
@@ -1812,12 +1813,15 @@ EditImageDetailsViewControllerDelegate
                            }];
                        }
                               completion:^(Media *media, NSError *error){
+                                  [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                                   __typeof__(self) strongSelf = weakSelf;
                                   if (!strongSelf) {
                                       return;
                                   }
                                   createMediaProgress.completedUnitCount++;
                                   if (error || !media || !media.absoluteLocalURL) {
+                                      [strongSelf.editorView removeImage:mediaUniqueID];
+                                      [strongSelf.editorView removeVideo:mediaUniqueID];
                                       [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
                                       [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
                                                                                     @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
@@ -1825,6 +1829,7 @@ EditImageDetailsViewControllerDelegate
                                       return;
                                   }
                                   [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+                                  }];
                               }];
 }
 
