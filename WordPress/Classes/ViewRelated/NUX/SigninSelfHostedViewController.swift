@@ -13,6 +13,7 @@ class SigninSelfHostedViewController : NUXAbstractViewController
     @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var forgotPasswordButton: WPNUXSecondaryButton!
+    @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
 
     lazy var loginFacade: LoginFacade = {
