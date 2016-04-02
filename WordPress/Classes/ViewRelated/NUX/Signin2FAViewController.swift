@@ -13,6 +13,7 @@ class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandle
     @IBOutlet weak var sendCodeButton: UIButton!
     @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
 
     lazy private var loginFacade: LoginFacade = {
         let facade = LoginFacade()
