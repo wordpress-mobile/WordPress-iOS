@@ -49,13 +49,13 @@ target 'WordPress', :exclusive => true do
   pod 'WordPress-iOS-Shared', '0.5.3'
   pod 'WordPressApi', :git => "https://github.com/wordpress-mobile/WordPress-API-iOS.git"
   pod 'WordPressCom-Analytics-iOS', '0.1.4'
-  pod 'WordPressCom-Stats-iOS/UI', '0.6.3'
+  pod 'WordPressCom-Stats-iOS/UI', '0.6.5'
   pod 'wpxmlrpc', '~> 0.8'
 end
 
 target 'WordPressTodayWidget', :exclusive => true do
   pod 'WordPress-iOS-Shared', '0.5.3'
-  pod 'WordPressCom-Stats-iOS/Services', '0.6.3'
+  pod 'WordPressCom-Stats-iOS/Services', '0.6.5'
 end
 
 target :WordPressTest, :exclusive => true do
