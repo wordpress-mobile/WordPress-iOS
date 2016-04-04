@@ -73,6 +73,8 @@ static CGFloat const HorizontalMargin = 15.0f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+
+    [self.view endEditing:YES];
     
     if (self.onValueChanged && ![self.textField.text isEqualToString:self.text] && self.textPassesValidation) {
         self.onValueChanged(self.textField.text);
@@ -85,7 +87,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 - (void)setupModalButtonsIfNeeded
 {
     // Proceed only if this is the only VC in the current navigationController
-    if (self.isBeingPresented == true || self.navigationController.viewControllers.count > 1) {
+    if (self.isBeingPresented == true || self.isRootViewController == false) {
         return;
     }
     
@@ -99,6 +101,11 @@ static CGFloat const HorizontalMargin = 15.0f;
                                                                                            action:@selector(doneButtonWasPressed:)];
 }
 
+- (BOOL)isRootViewController
+{
+    return self.navigationController.viewControllers.count == 1;
+}
+
 - (IBAction)cancelButtonWasPressed:(id)sender
 {
     [self dismissViewControllerAnimated:true completion:nil];
@@ -108,8 +115,10 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     if (self.textPassesValidation == false) {
         [self displayValidationAlert];
-    } else {
+    } else if (self.isRootViewController && self.presentingViewController) {
         [self dismissViewControllerAnimated:true completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
@@ -219,6 +228,10 @@ static CGFloat const HorizontalMargin = 15.0f;
         [self.navigationController popViewControllerAnimated:YES];
     }
 
+    if ([string isEqualToString:@"\n"]) {
+        [self doneButtonWasPressed:self];
+    }
+    
     return YES;
 }
 
