@@ -186,6 +186,15 @@ static CGFloat BlogCellRowHeight = 54.0;
     }
     
     if (self.dismissOnCancellation) {
+        [self dismissViewController];
+    }
+}
+
+- (void)dismissViewController
+{
+    if (self.isModal && self.isRootInNavigation) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
@@ -277,7 +286,7 @@ static CGFloat BlogCellRowHeight = 54.0;
             self.successHandler(self.selectedObjectID);
             
             if (self.dismissOnCompletion) {
-                [self.navigationController popViewControllerAnimated:YES];
+                [self dismissViewController];
             }
         });
     }
