@@ -2,21 +2,24 @@
 
 def print_credentials(name, user, password)
     print <<-EOF
-NSString * const #{name}User = @"#{user}";
-NSString * const #{name}Password = @"#{password}";
+
+static let #{name}User = "#{user}"
+static let #{name}Password = "#{password}"
 EOF
 end
 
 def print_class(one_step_user, one_step_password, two_step_user, two_step_password, self_hosted_user, self_hosted_password, self_hosted_site_url, self_hosted_site_name)
   print <<-EOF
-#import "WordPressTestCredentials.h"
+public class WordPressTestCredentials {
 EOF
   print_credentials("oneStep", one_step_user, one_step_password);
   print_credentials("twoStep", two_step_user, two_step_password);
   print_credentials("selfHosted", self_hosted_user, self_hosted_password);
   print <<-EOF
-NSString * const selfHostedSiteURL = @"#{self_hosted_site_url}";
-NSString * const selfHostedSiteName = @"#{self_hosted_site_name}";
+static let selfHostedSiteURL = "#{self_hosted_site_url}"
+static let selfHostedSiteName = "#{self_hosted_site_name}"
+
+}
 EOF
 end
 
