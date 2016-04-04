@@ -119,9 +119,7 @@ class LoginTests: XCTestCase {
 
         let passwordField = app.secureTextFields["Password"]
         passwordField.tap()
-        passwordField.typeText(WordPressTestCredentials.oneStepPassword)
-
-        app.buttons["Back"].tap()
+        passwordField.typeText(WordPressTestCredentials.oneStepPassword)        
     }
 }
 
