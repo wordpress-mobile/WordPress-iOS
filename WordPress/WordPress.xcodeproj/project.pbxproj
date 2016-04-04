@@ -640,6 +640,7 @@
 		E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */ = {isa = PBXBuildFile; fileRef = E2AA87A418523E5300886693 /* UIView+Subviews.m */; };
 		E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = E2E7EB45185FB140004F5E72 /* WPBlogSelectorButton.m */; };
 		E603C7701BC94AED00AD49D7 /* WordPress-37-38.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E603C76F1BC94AED00AD49D7 /* WordPress-37-38.xcmappingmodel */; };
+		E60646801CB3133000A3073F /* SigninEditingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E606467F1CB3133000A3073F /* SigninEditingState.swift */; };
 		E61084BE1B9B47BA008050C5 /* ReaderAbstractTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084B91B9B47BA008050C5 /* ReaderAbstractTopic.swift */; };
 		E61084BF1B9B47BA008050C5 /* ReaderDefaultTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BA1B9B47BA008050C5 /* ReaderDefaultTopic.swift */; };
 		E61084C01B9B47BA008050C5 /* ReaderListTopic.swift in Sources */ = {isa = PBXBuildFile; fileRef = E61084BB1B9B47BA008050C5 /* ReaderListTopic.swift */; };
@@ -1841,6 +1842,7 @@
 		E2E7EB44185FB140004F5E72 /* WPBlogSelectorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBlogSelectorButton.h; sourceTree = "<group>"; };
 		E2E7EB45185FB140004F5E72 /* WPBlogSelectorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBlogSelectorButton.m; sourceTree = "<group>"; };
 		E603C76F1BC94AED00AD49D7 /* WordPress-37-38.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-37-38.xcmappingmodel"; sourceTree = "<group>"; };
+		E606467F1CB3133000A3073F /* SigninEditingState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SigninEditingState.swift; sourceTree = "<group>"; };
 		E61084B91B9B47BA008050C5 /* ReaderAbstractTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderAbstractTopic.swift; sourceTree = "<group>"; };
 		E61084BA1B9B47BA008050C5 /* ReaderDefaultTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderDefaultTopic.swift; sourceTree = "<group>"; };
 		E61084BB1B9B47BA008050C5 /* ReaderListTopic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderListTopic.swift; sourceTree = "<group>"; };
@@ -4169,6 +4171,7 @@
 				85D239B71AE5A6620074768D /* LoginFields.h */,
 				85D239B81AE5A6620074768D /* LoginFields.m */,
 				E6417BAB1CA07F7F0084050A /* SigninHelpers.swift */,
+				E606467F1CB3133000A3073F /* SigninEditingState.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -5108,6 +5111,7 @@
 				E6D2E16C1B8B423B0000ED14 /* ReaderStreamHeader.swift in Sources */,
 				5DF6571B1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m in Sources */,
 				E166FA1D1BB0658600374B5B /* Person.swift in Sources */,
+				E60646801CB3133000A3073F /* SigninEditingState.swift in Sources */,
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
 				313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,

@@ -46,18 +46,24 @@ import WordPressShared
     }
 
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        configureViewForEditingIfNeeded()
+    }
+
+
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
         registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
 
-        verificationCodeField.becomeFirstResponder()
     }
 
 
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
         unregisterForKeyboardEvents()
     }
 
@@ -125,6 +131,20 @@ import WordPressShared
         configureSubmitButton(loading)
     }
 
+
+    /// Configure the view for an editing state. Should only be called from viewWillAppear
+    /// as this method skips animating any change in height.
+    ///
+    func configureViewForEditingIfNeeded() {
+        // Check the helper to determine whether an editiing state should be assumed.
+        if SigninEditingState.signinEditingStateActive {
+            verificationCodeField.becomeFirstResponder()
+            bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeight
+        } else {
+            bottomContentConstraint.constant = 0
+        }
+    }
+    
 
     // MARK: - Instance Methods
 
