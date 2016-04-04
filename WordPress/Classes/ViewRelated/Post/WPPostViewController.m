@@ -1147,10 +1147,12 @@ EditImageDetailsViewControllerDelegate
 	NSAssert([imageName isKindOfClass:[NSString class]],
 			 @"Expected imageName to be a non nil string.");
 
-	UIImage* image = [UIImage imageNamed:imageName];
+    UIImage* image = [UIImage imageNamed:imageName];
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 	
 	WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
 	
+    button.tintColor = [UIColor whiteColor];
 	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 	
@@ -1183,7 +1185,7 @@ EditImageDetailsViewControllerDelegate
         return _cancelXButton;
     }
     
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"gridicons-cross"
                                                                         frame:NavigationBarButtonRect
                                                                        target:self
                                                                      selector:@selector(cancelEditing)];
@@ -1220,7 +1222,7 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)optionsBarButtonItem
 {
 	if (!_optionsBarButtonItem) {
-        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
+        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"gridicons-cog"
                                                                       frame:NavigationBarButtonRect
                                                                      target:self
                                                                    selector:@selector(showSettings)];
@@ -1241,7 +1243,7 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)previewBarButtonItem
 {
 	if (!_previewBarButtonItem) {
-        WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-preview"
+        WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"gridicons-visible"
                                                                       frame:NavigationBarButtonRect
                                                                      target:self
                                                                    selector:@selector(showPreview)];
