@@ -39,6 +39,9 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
             return
         }
 
+        SigninEditingState.signinLastKeyboardHeight = keyboardInfo.keyboardFrame.height
+        SigninEditingState.signinEditingStateActive = true
+
         bottomContentConstraint.constant = keyboardInfo.keyboardFrame.height
         UIView.animateWithDuration(keyboardInfo.animationDuration,
                                    delay: 0,
@@ -54,8 +57,10 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     ///
     func keyboardWillHide(notification: NSNotification) {
         guard let keyboardInfo = keyboardFrameAndDurationFromNotification(notification) else {
-                return
+            return
         }
+
+        SigninEditingState.signinEditingStateActive = false
 
         bottomContentConstraint.constant = 0
         UIView.animateWithDuration(keyboardInfo.animationDuration,
