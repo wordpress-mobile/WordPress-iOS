@@ -185,8 +185,8 @@ import WordPressShared
         loginFields.password = password
 
         // Persist credentials as autofilled credentials so we can update them later if needed.
-        loginFields.safariStoredUsernameHash = UInt(username.hash)
-        loginFields.safariStoredPasswordHash = UInt(password.hash)
+        loginFields.safariStoredUsernameHash = username.hash
+        loginFields.safariStoredPasswordHash = password.hash
 
         signinWithUsernamePassword(false)
 
