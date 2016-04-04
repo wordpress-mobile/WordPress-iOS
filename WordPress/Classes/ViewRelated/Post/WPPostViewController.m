@@ -1281,7 +1281,7 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)shareBarButtonItem
 {
     if (!_shareBarButtonItem) {
-        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-share"
+        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"gridicons-share-ios"
                                                                       frame:NavigationBarButtonRect
                                                                      target:self
                                                                    selector:@selector(sharePost)];
