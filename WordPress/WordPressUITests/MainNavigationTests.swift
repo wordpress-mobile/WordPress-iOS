@@ -25,6 +25,7 @@ class MainNavigationTests: XCTestCase {
     }
 
     func testTabBarNavigation() {
+        let app = XCUIApplication()
 
         let mainNavigationTabBar = app.tabBars["Main Navigation"]
         

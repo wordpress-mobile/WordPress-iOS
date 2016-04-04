@@ -2,10 +2,6 @@ import XCTest
 
 extension XCTestCase {
 
-    var app: XCUIApplication {
-        get { return XCUIApplication()}
-    }
-
      public func waitForElementToAppear(element: XCUIElement,
                                         file: String = #file, line: UInt = #line) {
         let existsPredicate = NSPredicate(format: "exists == true")
@@ -22,15 +18,19 @@ extension XCTestCase {
     }
 
     public func logoutIfNeeded() {
+        let app = XCUIApplication()
         if !app.textFields["Username / Email"].exists && !app.textFields["Username"].exists{
             app.tabBars["Main Navigation"].buttons["Me"].tap()
             app.tables.elementBoundByIndex(0).swipeUp()
-            app.tables.cells.elementBoundByIndex(5).tap()
+            app.tables.cells.staticTexts["Disconnect from WordPress.com"].tap()
             app.alerts.buttons["Disconnect"].tap()
+            //Give some time to everything get proper saved.
+            sleep(2)
         }
     }
 
     public func login() {
+        let app = XCUIApplication()
         let usernameEmailTextField =  app.textFields["Username / Email"]
         usernameEmailTextField.tap()
         usernameEmailTextField.typeText(WordPressTestCredentials.oneStepUser)
@@ -45,6 +45,7 @@ extension XCTestCase {
     }
 
     public func loginOther() {
+        let app = XCUIApplication()
         let usernameEmailTextField =  app.textFields["Username / Email"]
         usernameEmailTextField.tap()
         usernameEmailTextField.typeText(WordPressTestCredentials.twoStepUser)
