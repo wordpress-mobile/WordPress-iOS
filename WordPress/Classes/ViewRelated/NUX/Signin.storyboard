@@ -7,7 +7,7 @@
         <!--Signin Email View Controller-->
         <scene sceneID="w6Y-pB-a3f">
             <objects>
-                <viewController storyboardIdentifier="SigninEmailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fwZ-QE-5et" customClass="SigninEmailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SigninEmailViewController" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="fwZ-QE-5et" customClass="SigninEmailViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bn3-aC-RIM"/>
                         <viewControllerLayoutGuide type="bottom" id="tip-gy-Hwr"/>
@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="18V-ZM-xlT">
-                                        <rect key="frame" x="0.0" y="125" width="600" height="222"/>
+                                        <rect key="frame" x="0.0" y="166" width="600" height="222"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="Fj6-gt-Ex5">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -95,22 +95,22 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="18V-ZM-xlT" firstAttribute="centerY" secondItem="JBb-dd-foh" secondAttribute="centerY" priority="900" constant="-64" id="0sT-Hy-mAD"/>
                                     <constraint firstAttribute="trailing" secondItem="18V-ZM-xlT" secondAttribute="trailing" id="9tR-rM-JfT"/>
                                     <constraint firstItem="18V-ZM-xlT" firstAttribute="leading" secondItem="JBb-dd-foh" secondAttribute="leading" id="IBM-8C-blc"/>
-                                    <constraint firstItem="18V-ZM-xlT" firstAttribute="centerX" secondItem="JBb-dd-foh" secondAttribute="centerX" id="T1S-0G-rqS"/>
-                                    <constraint firstItem="18V-ZM-xlT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JBb-dd-foh" secondAttribute="top" constant="16" id="u02-xZ-qlg"/>
+                                    <constraint firstItem="XXO-aV-keK" firstAttribute="centerY" secondItem="JBb-dd-foh" secondAttribute="centerY" priority="900" constant="-32" id="iah-J8-nUj"/>
+                                    <constraint firstItem="18V-ZM-xlT" firstAttribute="centerX" secondItem="JBb-dd-foh" secondAttribute="centerX" id="sIT-ge-7gg"/>
+                                    <constraint firstItem="18V-ZM-xlT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JBb-dd-foh" secondAttribute="top" constant="64" id="u02-xZ-qlg"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="T1S-0G-rqS"/>
+                                        <exclude reference="sIT-ge-7gg"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
                                     <mask key="constraints">
                                         <exclude reference="9tR-rM-JfT"/>
                                         <exclude reference="IBM-8C-blc"/>
-                                        <include reference="T1S-0G-rqS"/>
+                                        <include reference="sIT-ge-7gg"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -185,8 +185,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5AW-qg-L9w">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mjx-cz-sDG">
-                                        <rect key="frame" x="0.0" y="134.5" width="600" height="331"/>
+                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Mjx-cz-sDG">
+                                        <rect key="frame" x="0.0" y="122" width="600" height="331"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="j7V-eN-ivW">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -195,7 +195,7 @@
                                                     <constraint firstAttribute="width" constant="64" id="fFw-o1-gWS"/>
                                                 </constraints>
                                             </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tW0-In-DwC">
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="tW0-In-DwC">
                                                 <rect key="frame" x="0.0" y="80" width="600" height="132"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username / Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ESh-DI-dtB" customClass="WPWalkthroughTextField">
@@ -241,6 +241,9 @@
                                                         </connections>
                                                     </textField>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="132" id="F1M-fZ-NLz"/>
+                                                </constraints>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
                                                 <rect key="frame" x="271" y="228" width="58" height="41"/>
@@ -300,14 +303,20 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="Mjx-cz-sDG" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5AW-qg-L9w" secondAttribute="top" constant="16" id="3Js-t7-yPG"/>
+                                    <constraint firstItem="Mjx-cz-sDG" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5AW-qg-L9w" secondAttribute="top" constant="64" id="3Js-t7-yPG"/>
                                     <constraint firstItem="Mjx-cz-sDG" firstAttribute="centerX" secondItem="5AW-qg-L9w" secondAttribute="centerX" id="98r-Gx-edy"/>
                                     <constraint firstAttribute="trailing" secondItem="Mjx-cz-sDG" secondAttribute="trailing" id="e7Q-wh-S1Y"/>
-                                    <constraint firstItem="Mjx-cz-sDG" firstAttribute="centerY" secondItem="5AW-qg-L9w" secondAttribute="centerY" priority="900" id="u33-kd-EGz"/>
+                                    <constraint firstItem="tW0-In-DwC" firstAttribute="centerY" secondItem="5AW-qg-L9w" secondAttribute="centerY" priority="900" constant="-32" id="gJr-NG-5Ge"/>
                                     <constraint firstItem="Mjx-cz-sDG" firstAttribute="leading" secondItem="5AW-qg-L9w" secondAttribute="leading" id="vrg-3c-mtK"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="98r-Gx-edy"/>
+                                    </mask>
+                                </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
                                     <mask key="constraints">
+                                        <include reference="98r-Gx-edy"/>
                                         <exclude reference="e7Q-wh-S1Y"/>
                                         <exclude reference="vrg-3c-mtK"/>
                                     </mask>
@@ -351,8 +360,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7OQ-0t-1zq">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZWc-TJ-W9T">
-                                        <rect key="frame" x="0.0" y="156" width="600" height="287"/>
+                                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ZWc-TJ-W9T">
+                                        <rect key="frame" x="0.0" y="144" width="600" height="287"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="b8y-9Y-dkU">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -361,7 +370,7 @@
                                                     <constraint firstAttribute="height" constant="64" id="LvE-AN-pgi"/>
                                                 </constraints>
                                             </imageView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Bli-Rb-X9m">
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Bli-Rb-X9m">
                                                 <rect key="frame" x="0.0" y="80" width="600" height="88"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email or username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GLH-TC-M0d" customClass="WPWalkthroughTextField">
@@ -394,13 +403,16 @@
                                                         </connections>
                                                     </textField>
                                                 </subviews>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="88" id="Wme-B3-0UH"/>
+                                                </constraints>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="276" y="184" width="47" height="41"/>
+                                                <rect key="frame" x="272.5" y="184" width="54" height="41"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="41" id="H3A-PM-OJr"/>
                                                 </constraints>
-                                                <state key="normal" title="Sign in">
+                                                <state key="normal" title="SIGN IN">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -427,6 +439,7 @@
                                         <constraints>
                                             <constraint firstItem="E3x-LN-sUk" firstAttribute="centerX" secondItem="ZWc-TJ-W9T" secondAttribute="centerX" id="2Nr-lV-Lpc"/>
                                             <constraint firstItem="Bli-Rb-X9m" firstAttribute="leading" secondItem="ZWc-TJ-W9T" secondAttribute="leading" id="5ft-3X-heS"/>
+                                            <constraint firstAttribute="width" constant="320" id="8EH-3z-HFm"/>
                                             <constraint firstItem="0P1-6g-BI3" firstAttribute="centerX" secondItem="ZWc-TJ-W9T" secondAttribute="centerX" id="Ac5-gX-Tj9"/>
                                             <constraint firstItem="0P1-6g-BI3" firstAttribute="top" secondItem="E3x-LN-sUk" secondAttribute="bottom" constant="16" id="AuD-of-4H8"/>
                                             <constraint firstItem="ZqY-I8-yWG" firstAttribute="centerY" secondItem="0P1-6g-BI3" secondAttribute="centerY" id="CDH-z5-RaI"/>
@@ -438,27 +451,34 @@
                                             <constraint firstItem="Bli-Rb-X9m" firstAttribute="top" secondItem="b8y-9Y-dkU" secondAttribute="bottom" constant="16" id="tsR-uu-P03"/>
                                             <constraint firstAttribute="trailing" secondItem="Bli-Rb-X9m" secondAttribute="trailing" id="uqX-Vs-LCe"/>
                                         </constraints>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="8EH-3z-HFm"/>
+                                            </mask>
+                                        </variation>
+                                        <variation key="heightClass=regular-widthClass=regular">
+                                            <mask key="constraints">
+                                                <include reference="8EH-3z-HFm"/>
+                                            </mask>
+                                        </variation>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="ZWc-TJ-W9T" firstAttribute="leading" secondItem="7OQ-0t-1zq" secondAttribute="leading" id="P9q-Yk-vce"/>
-                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="centerY" secondItem="7OQ-0t-1zq" secondAttribute="centerY" priority="900" id="QmU-X4-ywf"/>
-                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="width" secondItem="7OQ-0t-1zq" secondAttribute="width" priority="320" id="RVD-6P-4iA"/>
-                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7OQ-0t-1zq" secondAttribute="top" constant="16" id="VLg-UB-2XP"/>
+                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7OQ-0t-1zq" secondAttribute="top" constant="64" id="VLg-UB-2XP"/>
                                     <constraint firstAttribute="trailing" secondItem="ZWc-TJ-W9T" secondAttribute="trailing" id="dKJ-Hw-hpF"/>
                                     <constraint firstItem="ZWc-TJ-W9T" firstAttribute="centerX" secondItem="7OQ-0t-1zq" secondAttribute="centerX" id="jcM-uc-2PV"/>
+                                    <constraint firstItem="Bli-Rb-X9m" firstAttribute="centerY" secondItem="7OQ-0t-1zq" secondAttribute="centerY" priority="900" constant="-32" id="pKc-9i-CzT"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
-                                        <exclude reference="RVD-6P-4iA"/>
                                         <exclude reference="jcM-uc-2PV"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
                                     <mask key="constraints">
                                         <exclude reference="P9q-Yk-vce"/>
-                                        <include reference="RVD-6P-4iA"/>
                                         <exclude reference="dKJ-Hw-hpF"/>
                                         <include reference="jcM-uc-2PV"/>
                                     </mask>
@@ -501,7 +521,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L68-uO-e3A">
-                                        <rect key="frame" x="0.0" y="171.5" width="600" height="257"/>
+                                        <rect key="frame" x="0.0" y="166" width="600" height="257"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="vv1-my-h8X">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -539,11 +559,11 @@
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="280" y="140" width="40" height="41"/>
+                                                <rect key="frame" x="275" y="140" width="50" height="41"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="41" id="eoc-KU-71N"/>
                                                 </constraints>
-                                                <state key="normal" title="Verify">
+                                                <state key="normal" title="VERIFY">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -563,7 +583,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhF-jf-Wcv">
-                                                <rect key="frame" x="279" y="208.5" width="42" height="21"/>
+                                                <rect key="frame" x="279" y="208" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -602,8 +622,8 @@
                                     <constraint firstItem="L68-uO-e3A" firstAttribute="centerX" secondItem="hTY-xb-H5h" secondAttribute="centerX" id="5w6-D7-NpW"/>
                                     <constraint firstAttribute="trailing" secondItem="L68-uO-e3A" secondAttribute="trailing" id="LlH-nI-0ys"/>
                                     <constraint firstItem="L68-uO-e3A" firstAttribute="leading" secondItem="hTY-xb-H5h" secondAttribute="leading" id="PEJ-fI-cb6"/>
-                                    <constraint firstItem="L68-uO-e3A" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hTY-xb-H5h" secondAttribute="top" constant="16" id="uxt-ER-8Hi"/>
-                                    <constraint firstItem="L68-uO-e3A" firstAttribute="centerY" secondItem="hTY-xb-H5h" secondAttribute="centerY" priority="900" id="vod-mN-UnN"/>
+                                    <constraint firstItem="A2K-lq-6XM" firstAttribute="centerY" secondItem="hTY-xb-H5h" secondAttribute="centerY" priority="900" constant="-32" id="cMC-S2-j55"/>
+                                    <constraint firstItem="L68-uO-e3A" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hTY-xb-H5h" secondAttribute="top" constant="64" id="uxt-ER-8Hi"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">

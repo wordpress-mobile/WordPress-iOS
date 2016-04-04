@@ -54,6 +54,7 @@ import WordPressShared
 
         configureTextFields()
         configureSubmitButton(false)
+        configureViewForEditingIfNeeded()
     }
 
 
@@ -62,11 +63,11 @@ import WordPressShared
 
         registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
+
     }
 
-
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
         unregisterForKeyboardEvents()
     }
 
@@ -129,6 +130,20 @@ import WordPressShared
         siteURLField.enabled = !loading
 
         configureSubmitButton(loading)
+    }
+
+
+    /// Configure the view for an editing state. Should only be called from viewWillAppear
+    /// as this method skips animating any change in height.
+    ///
+    func configureViewForEditingIfNeeded() {
+        // Check the helper to determine whether an editiing state should be assumed.
+        if SigninEditingState.signinEditingStateActive {
+            usernameField.becomeFirstResponder()
+            bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeight
+        } else {
+            bottomContentConstraint.constant = 0
+        }
     }
 
 
