@@ -75,7 +75,7 @@ static CGFloat BlogCellRowHeight = 54.0;
                                                object:nil];
 
     // Cancel button
-    if ([UIDevice isPhone] && self.displaysCancelButton) {
+    if (self.displaysCancelButton) {
         UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                           target:self
                                                                                           action:@selector(cancelButtonTapped:)];
