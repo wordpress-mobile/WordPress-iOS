@@ -274,6 +274,7 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
 
 
     func displayRemoteError(error: NSError!) {
+        displayLoginMessage("")
         configureLoading(false)
         displayError(error)
     }
