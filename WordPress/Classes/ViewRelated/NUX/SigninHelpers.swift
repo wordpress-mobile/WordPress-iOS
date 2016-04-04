@@ -172,12 +172,12 @@ class SigninHelpers
 
         // If the user changed screen names, don't try and update/create a new shared web credential.
         // We'll let Safari handle creating newly saved usernames/passwords.
-        if loginFields.safariStoredUsernameHash != UInt(loginFields.username.hash) {
+        if loginFields.safariStoredUsernameHash != loginFields.username.hash {
             return
         }
 
         // If the user didn't change the password from previousl filled password no update is needed.
-        if loginFields.safariStoredPasswordHash == UInt(loginFields.password.hash) {
+        if loginFields.safariStoredPasswordHash == loginFields.password.hash {
             return
         }
 
