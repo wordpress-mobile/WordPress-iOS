@@ -2,6 +2,7 @@
 #import "WPTextFieldTableViewCell.h"
 #import "WPStyleGuide.h"
 #import "WPTableViewSectionHeaderFooterView.h"
+#import "WordPress-Swift.h"
 
 
 
@@ -50,12 +51,6 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 #pragma mark - View Lifecycle
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [self.textField becomeFirstResponder];
-    [super viewDidAppear:animated];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -63,21 +58,92 @@ static CGFloat const HorizontalMargin = 15.0f;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self setupModalButtonsIfNeeded];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.textField becomeFirstResponder];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
-    if (self.onValueChanged && ![self.textField.text isEqualToString:self.text]) {
+    [super viewWillDisappear:animated];
+    
+    if (self.onValueChanged && ![self.textField.text isEqualToString:self.text] && self.textPassesValidation) {
         self.onValueChanged(self.textField.text);
     }
-    
-    [super viewWillDisappear:animated];
 }
 
 
 #pragma mark - Helpers
 
+- (void)setupModalButtonsIfNeeded
+{
+    // Proceed only if this is the only VC in the current navigationController
+    if (self.isBeingPresented == true || self.navigationController.viewControllers.count > 1) {
+        return;
+    }
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self
+                                                                                          action:@selector(cancelButtonWasPressed:)];
+    
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                           target:self
+                                                                                           action:@selector(doneButtonWasPressed:)];
+}
+
+- (IBAction)cancelButtonWasPressed:(id)sender
+{
+    [self dismissViewControllerAnimated:true completion:nil];
+}
+
+- (IBAction)doneButtonWasPressed:(id)sender
+{
+    if (self.textPassesValidation == false) {
+        [self displayValidationAlert];
+    } else {
+        [self dismissViewControllerAnimated:true completion:nil];
+    }
+}
+
+
+#pragma mark - Validation
+
+- (void)displayValidationAlert
+{
+    NSString *title = NSLocalizedString(@"Invalid Email", @"Invalid Email");
+    NSString *message = NSLocalizedString(@"Please, enter a valid email", @"Text displayed whenever an invalid email is entered.");
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                             message:message
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+
+    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Accept", @"Accept") handler:nil];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+- (BOOL)textPassesValidation
+{
+    return (self.isEmail == false || (self.isEmail && self.textField.text.isValidEmail));
+}
+
+
+#pragma mark - Properties
+
+- (BOOL)isPassword
+{
+    return self.textField.secureTextEntry;
+}
+
 - (void)setIsPassword:(BOOL)isPassword
 {
-    _isPassword = isPassword;
     self.textField.secureTextEntry = isPassword;
 }
 
