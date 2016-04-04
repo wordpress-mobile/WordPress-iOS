@@ -246,11 +246,11 @@
                                                 </constraints>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="271" y="228" width="58" height="41"/>
+                                                <rect key="frame" x="266.5" y="228" width="67" height="41"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="41" id="NKL-1C-mN4"/>
                                                 </constraints>
-                                                <state key="normal" title="Add Site">
+                                                <state key="normal" title="ADD SITE">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
