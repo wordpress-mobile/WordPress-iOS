@@ -74,10 +74,6 @@ target :WordPressTest, :exclusive => true do
   pod 'RxTests', '~> 2.3.1'
 end
 
-target 'UITests', :exclusive => true do
-    pod 'KIF/IdentifierTests', '~>3.1'
-end
-
 post_install do |installer_representation|
   # We need to add in AF_APP_EXTENSIONS=1 to AFNetworking used by the Today Extension otherwise the build will fail. See - https://github.com/AFNetworking/AFNetworking/pull/2589
   installer_representation.pods_project.targets.each do |target|
