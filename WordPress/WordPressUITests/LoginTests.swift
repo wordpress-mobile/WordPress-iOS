@@ -121,9 +121,7 @@ class LoginTests: XCTestCase {
         passwordField.tap()
         passwordField.typeText(WordPressTestCredentials.oneStepPassword)
 
-        app.buttons["Create Account"].tap()
-
-        self.waitForElementToAppear(app.tabBars["Main Navigation"])
+        app.buttons["Back"].tap()
     }
 }
 
