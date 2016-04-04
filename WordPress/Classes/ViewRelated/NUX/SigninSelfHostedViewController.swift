@@ -4,7 +4,7 @@ import WordPressShared
 /// Provides a form and functionality to sign-in and add an existing self-hosted 
 /// site to the app.
 ///
-class SigninSelfHostedViewController : NUXAbstractViewController
+@objc class SigninSelfHostedViewController : NUXAbstractViewController, SigninKeyboardResponder
 {
 
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
@@ -54,6 +54,20 @@ class SigninSelfHostedViewController : NUXAbstractViewController
 
         configureTextFields()
         configureSubmitButton(false)
+    }
+
+
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
+    }
+
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        unregisterForKeyboardEvents()
     }
 
 
@@ -212,6 +226,18 @@ class SigninSelfHostedViewController : NUXAbstractViewController
         SigninHelpers.openForgotPasswordURL(loginFields)
     }
 
+
+    // MARK: - Keyboard Notifications
+
+
+    func handleKeyboardWillShow(notification: NSNotification) {
+        keyboardWillShow(notification)
+    }
+
+
+    func handleKeyboardWillHide(notification: NSNotification) {
+        keyboardWillHide(notification)
+    }
 }
 
 

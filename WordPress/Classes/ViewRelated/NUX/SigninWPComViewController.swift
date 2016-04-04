@@ -4,7 +4,7 @@ import WordPressShared
 
 /// Provides a form and functionality for signing a user in to WordPress.com
 ///
-class SigninWPComViewController : NUXAbstractViewController, SigninWPComSyncHandler
+@objc class SigninWPComViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder
 {
 
     @IBOutlet weak var usernameField: WPWalkthroughTextField!
@@ -63,10 +63,19 @@ class SigninWPComViewController : NUXAbstractViewController, SigninWPComSyncHand
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
+        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
+
         if immediateSignin {
             validateForm()
             immediateSignin = false
         }
+    }
+
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        unregisterForKeyboardEvents()
     }
 
 
@@ -196,6 +205,19 @@ class SigninWPComViewController : NUXAbstractViewController, SigninWPComSyncHand
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
             self.validateForm()
         }
+    }
+
+
+    // MARK: - Keyboard Notifications
+
+
+    func handleKeyboardWillShow(notification: NSNotification) {
+        keyboardWillShow(notification)
+    }
+
+
+    func handleKeyboardWillHide(notification: NSNotification) {
+        keyboardWillHide(notification)
     }
 }
 

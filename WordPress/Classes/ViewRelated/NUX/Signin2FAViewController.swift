@@ -6,7 +6,7 @@ import WordPressShared
 /// Provides a form and functionality for entering a two factor auth code and 
 /// signing into WordPress.com
 ///
-class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler
+@objc class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandler, SigninKeyboardResponder
 {
 
     @IBOutlet weak var verificationCodeField: UITextField!
@@ -49,7 +49,16 @@ class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandle
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
+        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
+
         verificationCodeField.becomeFirstResponder()
+    }
+
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        unregisterForKeyboardEvents()
     }
 
 
@@ -181,6 +190,19 @@ class Signin2FAViewController : NUXAbstractViewController, SigninWPComSyncHandle
 
         loginFacade.requestOneTimeCodeWithLoginFields(loginFields)
     }
+
+
+    // MARK: - Keyboard Notifications
+
+
+    func handleKeyboardWillShow(notification: NSNotification) {
+        keyboardWillShow(notification)
+    }
+
+
+    func handleKeyboardWillHide(notification: NSNotification) {
+        keyboardWillHide(notification)
+    }
 }
 
 
@@ -200,5 +222,4 @@ extension Signin2FAViewController: LoginFacadeDelegate {
         configureSubmitButton(false)
         displayError(error)
     }
-
 }

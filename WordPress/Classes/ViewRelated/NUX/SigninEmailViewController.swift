@@ -4,7 +4,7 @@ import WordPressShared
 
 /// This vc is the entry point for the normal sign in flow.
 ///
-class SigninEmailViewController : NUXAbstractViewController
+@objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder
 {
 
     @IBOutlet var onePasswordButton: UIButton!
@@ -59,9 +59,18 @@ class SigninEmailViewController : NUXAbstractViewController
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
+        registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
+                                  keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))
+
         if !didRequestSafariSharedCredentials {
             fetchSharedWebCredentialsIfAvailable()
         }
+    }
+
+
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        unregisterForKeyboardEvents()
     }
 
 
@@ -277,5 +286,18 @@ class SigninEmailViewController : NUXAbstractViewController
     @IBAction func handleTextFieldDidChange(sender: UITextField) {
         loginFields.username = emailTextField.nonNilTrimmedText()
         configureSubmitButton()
+    }
+
+
+    // MARK: - Keyboard Notifications
+
+
+    func handleKeyboardWillShow(notification: NSNotification) {
+        keyboardWillShow(notification)
+    }
+
+
+    func handleKeyboardWillHide(notification: NSNotification) {
+        keyboardWillHide(notification)
     }
 }
