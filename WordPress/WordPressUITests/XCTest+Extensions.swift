@@ -22,7 +22,7 @@ extension XCTestCase {
     }
 
     public func logoutIfNeeded() {
-        if !app.textFields["Username / Email"].exists {
+        if !app.textFields["Username / Email"].exists && !app.textFields["Username"].exists{
             app.tabBars["Main Navigation"].buttons["Me"].tap()
             app.tables.elementBoundByIndex(0).swipeUp()
             app.tables.cells.elementBoundByIndex(5).tap()
