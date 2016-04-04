@@ -16,7 +16,13 @@ protocol SigninKeyboardResponder: class
 extension SigninKeyboardResponder where Self: NUXAbstractViewController
 {
 
+    /// Registeres the receiver for keyboard events using the passed selectors.
+    /// We pass the selectors this way so we can encapsulate functionality in a
+    /// Swift protocol extension and still play nice with Objective C code.
     ///
+    /// - Parameters
+    ///     - keyboardWillShowAction: A Selector to use for the UIKeyboardWillShowNotification observer.
+    ///     - keyboardWillHideAction: A Selector to use for the UIKeyboardWillHideNotification observer.
     ///
     func registerForKeyboardEvents(keyboardWillShowAction: Selector, keyboardWillHideAction: Selector) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: keyboardWillShowAction, name: UIKeyboardWillShowNotification, object: nil)
@@ -24,7 +30,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     }
 
 
-    ///
+    /// Unregisters the receiver from keyboard events.
     ///
     func unregisterForKeyboardEvents() {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
@@ -32,7 +38,10 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     }
 
 
+    /// Process the passed NSNotification from a UIKeyboardWillShowNotification.
     ///
+    /// - Parameters:
+    ///     - notification: the NSNotification object from a UIKeyboardWillShowNotification.
     ///
     func keyboardWillShow(notification: NSNotification) {
         guard let keyboardInfo = keyboardFrameAndDurationFromNotification(notification) else {
@@ -57,7 +66,10 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     }
 
 
+    /// Process the passed NSNotification from a UIKeyboardWillHideNotification.
     ///
+    /// - Parameters:
+    ///     - notification: the NSNotification object from a UIKeyboardWillHideNotification.
     ///
     func keyboardWillHide(notification: NSNotification) {
         guard let keyboardInfo = keyboardFrameAndDurationFromNotification(notification) else {
@@ -81,7 +93,13 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     }
 
 
+    /// Retrieves the keyboard frame and the animation duration from a keyboard 
+    /// notificaiton.
     ///
+    /// - Parameters: 
+    ///     - notification: the NSNotification object from a keyboard notification.
+    ///
+    /// - Returns: An tupile optional containing the `keyboardFrame` and the `animationDuration`, or nil.
     ///
     func keyboardFrameAndDurationFromNotification(notification: NSNotification) -> (keyboardFrame: CGRect, animationDuration: Double)? {
 
