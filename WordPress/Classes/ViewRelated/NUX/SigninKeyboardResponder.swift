@@ -42,6 +42,10 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
         SigninEditingState.signinLastKeyboardHeight = keyboardInfo.keyboardFrame.height
         SigninEditingState.signinEditingStateActive = true
 
+        if bottomContentConstraint.constant == keyboardInfo.keyboardFrame.height {
+            return
+        }
+
         bottomContentConstraint.constant = keyboardInfo.keyboardFrame.height
         UIView.animateWithDuration(keyboardInfo.animationDuration,
                                    delay: 0,
@@ -61,6 +65,10 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
         }
 
         SigninEditingState.signinEditingStateActive = false
+
+        if bottomContentConstraint.constant == 0 {
+            return
+        }
 
         bottomContentConstraint.constant = 0
         UIView.animateWithDuration(keyboardInfo.animationDuration,
