@@ -29,7 +29,7 @@ class PlanListViewControllerTest: XCTestCase {
     // MARK: - PlanListViewModel tests
 
     func testPlanImageWhenActivePlanSet() {
-        let model = PlanListViewModel.Ready((activePlan: defaultPlans[1], availablePlans: plansWithPrices))
+        let model = PlanListViewModel.Ready((siteID: 123, activePlan: defaultPlans[1], availablePlans: plansWithPrices))
         let tableViewModel = model.tableViewModelWithPresenter(nil, planService: nil)
         let freeRow = tableViewModel.planRowAtIndex(0)
         let premiumRow = tableViewModel.planRowAtIndex(1)
