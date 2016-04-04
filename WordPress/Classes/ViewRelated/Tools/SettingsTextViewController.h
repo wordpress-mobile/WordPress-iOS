@@ -11,6 +11,10 @@ typedef void (^SettingsTextChanged)(NSString *);
 //
 @property (nonatomic, copy) SettingsTextChanged onValueChanged;
 
+// Property to indicate whether email validation should be performed, or not.
+//
+@property (nonatomic, assign) BOOL isEmail;
+
 // Indicates whether secure text entry is requried, or not.
 //
 @property (nonatomic, assign) BOOL isPassword;
