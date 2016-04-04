@@ -6,7 +6,6 @@
 // Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import <Crashlytics/Crashlytics.h>
-#import <HockeySDK/HockeySDK.h>
 #import <Reachability/Reachability.h>
 #import <Simperium/Simperium.h>
 #import <SVProgressHUD/SVProgressHUD.h>
@@ -39,6 +38,7 @@
 #import "AppRatingUtility.h"
 #import "ContextManager.h"
 #import "HelpshiftUtils.h"
+#import "HockeyManager.h"
 #import "WPLookbackPresenter.h"
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
@@ -62,7 +62,7 @@
 
 int ddLogLevel = DDLogLevelInfo;
 
-@interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 @property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
@@ -70,6 +70,7 @@ int ddLogLevel = DDLogLevelInfo;
 @property (nonatomic, strong, readwrite) WPLookbackPresenter            *lookbackPresenter;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) Simperium                      *simperium;
+@property (nonatomic, strong, readwrite) HockeyManager                  *hockey;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, strong, readwrite) WPUserAgent                    *userAgent;
@@ -129,6 +130,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
+    [self setupStoreKit];
 
     return YES;
 }
@@ -166,16 +168,17 @@ int ddLogLevel = DDLogLevelInfo;
     }
 }
 
+- (void)setupStoreKit
+{
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:[StoreKitTransactionObserver instance]];
+}
+
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options
 {
     DDLogInfo(@"Application launched with URL: %@", url);
     BOOL returnValue = NO;
 
-    NSString *sourceApplication = [options stringForKey:UIApplicationLaunchOptionsSourceApplicationKey];
-    id annotation = [options objectForKey:UIApplicationLaunchOptionsAnnotationKey];
-    if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
-                                                          sourceApplication:sourceApplication
-                                                                 annotation:annotation]) {
+    if ([self.hockey handleOpenURL:url options:options]) {
         returnValue = YES;
     }
 
@@ -667,26 +670,8 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)configureHockeySDK
 {
-#ifndef INTERNAL_BUILD
-    return;
-#endif
-    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
-                                                           delegate:self];
-    [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
-    [[BITHockeyManager sharedHockeyManager] startManager];
-    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-}
-
-#pragma mark - BITCrashManagerDelegate
-
-- (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager
-{
-    NSString *description = [self.logger getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
-    if ([description length] == 0) {
-        return nil;
-    }
-
-    return description;
+    self.hockey = [HockeyManager new];
+    [self.hockey configure];
 }
 
 #pragma mark - Networking setup

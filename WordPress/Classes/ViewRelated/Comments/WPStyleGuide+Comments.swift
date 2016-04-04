@@ -1,5 +1,4 @@
 import Foundation
-import MGImageUtilities
 import WordPressShared
 
 /**
@@ -66,7 +65,7 @@ extension WPStyleGuide
         
         public static func timestampImage(isApproved approved: Bool) -> UIImage {
             let timestampImage = UIImage(named: "reader-postaction-time")!
-            return approved ? timestampImage : timestampImage.imageTintedWithColor(WPStyleGuide.alertYellowDark())
+            return approved ? timestampImage : timestampImage.imageWithRenderingMode(.AlwaysTemplate)
         }
 
 
