@@ -250,6 +250,7 @@ extension SigninWPComViewController: LoginFacadeDelegate {
 
 
     func displayRemoteError(error: NSError!) {
+        configureStatusMessage("")
         configureSubmitButton(false)
         displayError(error)
     }
