@@ -698,12 +698,6 @@
                                     <constraint firstAttribute="width" constant="289" id="srW-sl-8A7"/>
                                 </constraints>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bottom Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fps-Lb-ZoW">
-                                <rect key="frame" x="268" y="497" width="64.5" height="12"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JxF-Rn-MsR" customClass="WPNUXSecondaryButton">
                                 <rect key="frame" x="16" y="554" width="46" height="30"/>
                                 <state key="normal" title="Button"/>
@@ -727,8 +721,6 @@
                             <constraint firstItem="JxF-Rn-MsR" firstAttribute="leading" secondItem="0fR-cZ-XSB" secondAttribute="leading" constant="16" id="G0b-wk-FMG"/>
                             <constraint firstItem="4Zz-sQ-RPP" firstAttribute="top" secondItem="1qa-33-ovF" secondAttribute="bottom" constant="16" id="OBS-pf-MQk"/>
                             <constraint firstAttribute="trailing" secondItem="1qa-33-ovF" secondAttribute="trailing" constant="16" id="Pn4-gK-NFy"/>
-                            <constraint firstItem="4Zz-sQ-RPP" firstAttribute="top" secondItem="fps-Lb-ZoW" secondAttribute="bottom" constant="91" id="kxD-Vw-Ep6"/>
-                            <constraint firstItem="fps-Lb-ZoW" firstAttribute="centerX" secondItem="0fR-cZ-XSB" secondAttribute="centerX" id="xCM-3b-uHJ"/>
                         </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="UNR-EL-usp" appends="YES" id="6dE-8z-pgD"/>
@@ -736,7 +728,6 @@
                     </view>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="bottomLabel" destination="fps-Lb-ZoW" id="bEu-sp-dEA"/>
                         <outlet property="descriptionLabel" destination="WGk-iP-Ea8" id="lZc-4O-sll"/>
                         <outlet property="icon" destination="v7t-tc-0qh" id="6A6-lC-f2N"/>
                         <outlet property="primaryButton" destination="1qa-33-ovF" id="gqu-30-5dP"/>
