@@ -11,8 +11,8 @@
 @property (nonatomic, copy) NSString *multifactorCode;
 @property (nonatomic, assign) BOOL userIsDotCom;
 @property (nonatomic, assign) BOOL shouldDisplayMultifactor;
-@property (nonatomic, assign) NSUInteger safariStoredUsernameHash;
-@property (nonatomic, assign) NSUInteger safariStoredPasswordHash;
+@property (nonatomic, assign) NSInteger safariStoredUsernameHash;
+@property (nonatomic, assign) NSInteger safariStoredPasswordHash;
 
 /**
  *  Helper method to initialize this class
