@@ -87,7 +87,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 - (void)setupModalButtonsIfNeeded
 {
     // Proceed only if this is the only VC in the current navigationController
-    if (self.isBeingPresented == true || self.isRootViewController == false) {
+    if (self.isBeingPresented == true || self.isModal == false) {
         return;
     }
     
@@ -101,11 +101,6 @@ static CGFloat const HorizontalMargin = 15.0f;
                                                                                            action:@selector(doneButtonWasPressed:)];
 }
 
-- (BOOL)isRootViewController
-{
-    return self.navigationController.viewControllers.count == 1;
-}
-
 - (IBAction)cancelButtonWasPressed:(id)sender
 {
     [self dismissViewControllerAnimated:true completion:nil];
@@ -115,7 +110,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     if (self.textPassesValidation == false) {
         [self displayValidationAlert];
-    } else if (self.isRootViewController && self.presentingViewController) {
+    } else if (self.isRootInNavigation && self.isModal) {
         [self dismissViewControllerAnimated:true completion:nil];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
