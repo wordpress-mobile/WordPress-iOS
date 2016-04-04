@@ -127,9 +127,6 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, assign, readwrite) BOOL shouldShowUnsavedChangesAlert;
 @property (nonatomic, assign, readonly) BOOL changedToEditModeDueToUnsavedChanges;
 
-#pragma mark - Sharing
-@property (nonatomic, strong, readonly) PostSharingController *sharingController;
-
 #pragma mark - State restoration
 /**
  *  @brief      In failed state restoration, this VC will be restored empty and closed immediately.
@@ -247,8 +244,6 @@ EditImageDetailsViewControllerDelegate
             
             _ownsPost = YES;
         }
-        
-        _sharingController = [[PostSharingController alloc] init];
     }
 	
     return self;
@@ -794,7 +789,9 @@ EditImageDetailsViewControllerDelegate
     if ([self.post isKindOfClass:[Post class]]) {
         Post *post = (Post *)self.post;
         
-        [self.sharingController sharePost:post fromView:self.view inViewController:self];
+        PostSharingController *sharingController = [[PostSharingController alloc] init];
+        
+        [sharingController sharePost:post fromView:self.view inViewController:self];
     }
 }
 

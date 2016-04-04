@@ -48,8 +48,6 @@ import WordPressComAnalytics
     private var needsRefreshCachedCellHeightsBeforeLayout = false
     private var didSetupView = false
     private var listentingForBlockedSiteNotification = false
-    
-    private let sharingController = PostSharingController()
 
     private var siteID:NSNumber? {
         didSet {
@@ -561,6 +559,8 @@ import WordPressComAnalytics
     
     private func sharePost(postID: NSManagedObjectID, fromView anchorView: UIView) {
         if let post = self.postWithObjectID(postID) {
+            let sharingController = PostSharingController()
+            
             sharingController.shareReaderPost(post, fromView: anchorView, inViewController: self)
         }
     }
