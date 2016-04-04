@@ -20,8 +20,6 @@ import WordPressComAnalytics
     private var crossPostCellForLayout:ReaderCrossPostCell!
     private var resultsStatusView: WPNoResultsView!
     private var footerView: PostListFooterView!
-    private var objectIDOfPostForMenu: NSManagedObjectID?
-    private var anchorViewForMenu: UIView?
 
     private let footerViewNibName = "PostListFooterView"
     private let readerCardCellNibName = "ReaderPostCardCell"
@@ -254,6 +252,7 @@ import WordPressComAnalytics
         assert(tableViewController != nil, "The tableViewController must be assigned before configuring the tableView")
 
         tableView = tableViewController.tableView
+        tableView.accessibilityIdentifier = "Reader"
         tableView.separatorStyle = .None
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: #selector(ReaderStreamViewController.handleRefresh(_:)), forControlEvents: .ValueChanged)
@@ -501,14 +500,11 @@ import WordPressComAnalytics
     }
 
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
-        objectIDOfPostForMenu = post.objectID
-        anchorViewForMenu = anchorView
 
         // Create the action sheet
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
         alertController.addCancelActionWithTitle(ActionSheetButtonTitles.cancel,
             handler: { (action:UIAlertAction) in
-                self.cleanUpAfterPostMenu()
             })
 
         // Block button
@@ -516,10 +512,9 @@ import WordPressComAnalytics
             alertController.addActionWithTitle(ActionSheetButtonTitles.blockSite,
                 style: .Destructive,
                 handler: { (action:UIAlertAction) in
-                    if let post = self.postForObjectIDOfPostForMenu() {
+                    if let post = self.postWithObjectID(post.objectID) {
                         self.blockSiteForPost(post)
                     }
-                    self.cleanUpAfterPostMenu()
                 })
         }
 
@@ -529,10 +524,9 @@ import WordPressComAnalytics
             alertController.addActionWithTitle(buttonTitle,
                 style: .Default,
                 handler: { (action:UIAlertAction) in
-                    if let post = self.postForObjectIDOfPostForMenu() {
+                    if let post = self.postWithObjectID(post.objectID) {
                         self.toggleFollowingForPost(post)
                     }
-                    self.cleanUpAfterPostMenu()
                 })
         }
 
@@ -540,17 +534,16 @@ import WordPressComAnalytics
         alertController.addActionWithTitle(ActionSheetButtonTitles.visit,
             style: .Default,
             handler: { (action:UIAlertAction) in
-                if let post = self.postForObjectIDOfPostForMenu() {
+                if let post = self.postWithObjectID(post.objectID) {
                     self.visitSiteForPost(post)
                 }
-                self.cleanUpAfterPostMenu()
         })
 
         // Share
         alertController.addActionWithTitle(ActionSheetButtonTitles.share,
             style: .Default,
             handler: { [weak self] (action:UIAlertAction) in
-                self?.sharePost()
+                self?.sharePost(post.objectID, fromView: anchorView)
         })
 
         if UIDevice.isPad() {
@@ -558,34 +551,27 @@ import WordPressComAnalytics
             presentViewController(alertController, animated: true, completion: nil)
             let presentationController = alertController.popoverPresentationController
             presentationController?.permittedArrowDirections = .Any
-            presentationController?.sourceView = anchorViewForMenu!
-            presentationController?.sourceRect = anchorViewForMenu!.bounds
+            presentationController?.sourceView = anchorView
+            presentationController?.sourceRect = anchorView.bounds
 
         } else {
             presentViewController(alertController, animated: true, completion: nil)
         }
     }
     
-    private func sharePost() {
-        if let post = postForObjectIDOfPostForMenu() {
-            sharingController.shareReaderPost(post, fromView: anchorViewForMenu!, inViewController: self)
+    private func sharePost(postID: NSManagedObjectID, fromView anchorView: UIView) {
+        if let post = self.postWithObjectID(postID) {
+            sharingController.shareReaderPost(post, fromView: anchorView, inViewController: self)
         }
-        
-        cleanUpAfterPostMenu()
     }
 
-    private func postForObjectIDOfPostForMenu() -> ReaderPost? {
+    private func postWithObjectID(objectID: NSManagedObjectID) -> ReaderPost? {
         do {
-            return try managedObjectContext().existingObjectWithID(objectIDOfPostForMenu!) as? ReaderPost
+            return try managedObjectContext().existingObjectWithID(objectID) as? ReaderPost
         } catch let error as NSError {
             DDLogSwift.logError(error.localizedDescription)
             return nil
         }
-    }
-
-    private func cleanUpAfterPostMenu() {
-        objectIDOfPostForMenu = nil
-        anchorViewForMenu = nil
     }
 
     private func toggleFollowingForPost(post:ReaderPost) {

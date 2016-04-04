@@ -1,5 +1,4 @@
 import Foundation
-import MGImageUtilities
 import WordPressShared
 import WordPressComAnalytics
 
@@ -149,6 +148,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         let disabled                = isDisabledDeviceStream(stream)
         
         cell.imageView?.image       = imageForStreamKind(stream.kind)
+        cell.imageView?.tintColor   = WPStyleGuide.greyLighten10()
         cell.textLabel?.text        = stream.kind.description() ?? String()
         cell.detailTextLabel?.text  = disabled ? NSLocalizedString("Off", comment: "Disabled") : String()
         cell.accessoryType          = .DisclosureIndicator
@@ -170,9 +170,8 @@ public class NotificationSettingStreamsViewController : UITableViewController
         case .Device:
             imageName = "notifications-phone"
         }
-        
-        let tintColor = WPStyleGuide.greyLighten10()
-        return UIImage(named: imageName)?.imageTintedWithColor(tintColor)
+
+        return UIImage(named: imageName)?.imageWithRenderingMode(.AlwaysTemplate)
     }
     
     
