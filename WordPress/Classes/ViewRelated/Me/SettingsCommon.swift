@@ -8,15 +8,22 @@ extension SettingsController {
                   hint: String? = nil,
                   isEmail: Bool = false,
                   isPassword: Bool = false,
+                  isPresented: Bool = false,
                   service: AccountSettingsService) -> ImmuTableRowControllerGenerator
     {
         return { row in
-            return self.controllerForEditableText(row as! EditableTextRow,
-                                                  changeType: changeType,
-                                                  hint: hint,
-                                                  isEmail: isEmail,
-                                                  isPassword: isPassword,
-                                                  service: service)
+            let editionViewController = self.controllerForEditableText(row as! EditableTextRow,
+                                                                       changeType: changeType,
+                                                                       hint: hint,
+                                                                       isEmail: isEmail,
+                                                                       isPassword: isPassword,
+                                                                       service: service)
+            
+            if isPresented {
+                return UINavigationController(rootViewController: editionViewController)
+            }
+            
+            return editionViewController
         }
     }
 
