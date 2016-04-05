@@ -110,6 +110,9 @@ public class CommentsTableViewCell : WPTableViewCell
     
     private func refreshImages() {
         timestampImageView.image = Style.timestampImage(isApproved: approved)
+        if !approved {
+            timestampImageView.tintColor = WPStyleGuide.alertYellowDark()
+        }
     }
     
     
