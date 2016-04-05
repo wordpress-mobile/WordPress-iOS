@@ -574,10 +574,21 @@
                                                 <rect key="frame" x="262" y="197" width="76" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="fzI-rH-0f8"/>
+                                                    <constraint firstAttribute="width" constant="280" id="pQI-Fa-Vwc"/>
                                                 </constraints>
                                                 <state key="normal" title="Send Code">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="pQI-Fa-Vwc"/>
+                                                    </mask>
+                                                </variation>
+                                                <variation key="heightClass=regular-widthClass=regular">
+                                                    <mask key="constraints">
+                                                        <include reference="pQI-Fa-Vwc"/>
+                                                    </mask>
+                                                </variation>
                                                 <connections>
                                                     <action selector="handleSendVerificationButtonTapped:" destination="bAd-Df-IzS" eventType="touchUpInside" id="rvK-YF-gYu"/>
                                                 </connections>
@@ -765,21 +776,21 @@
                                     <action selector="handleUsePasswordTapped:" destination="Kvo-Y2-yhG" eventType="touchUpInside" id="T8m-o8-zic"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aIL-4S-0WC">
-                                <rect key="frame" x="160" y="247.5" width="280" height="105"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aIL-4S-0WC">
+                                <rect key="frame" x="0.0" y="228" width="600" height="81"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get a link sent to your email to sign in instantly." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qd9-rU-gsy">
-                                        <rect key="frame" x="0.0" y="0.0" width="280" height="48"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Get a link sent to your email to sign in instantly." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qd9-rU-gsy">
+                                        <rect key="frame" x="91" y="0.0" width="420" height="24"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="64" width="280" height="41"/>
+                                        <rect key="frame" x="262" y="40" width="77" height="41"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="41" id="GRI-y6-q3i"/>
                                         </constraints>
-                                        <state key="normal" title="Send Link">
+                                        <state key="normal" title="SEND LINK">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -788,17 +799,41 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="280" id="BqL-up-9NH"/>
+                                    <constraint firstAttribute="width" constant="320" id="BqL-up-9NH"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="BqL-up-9NH"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="BqL-up-9NH"/>
+                                    </mask>
+                                </variation>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="aIL-4S-0WC" firstAttribute="centerY" secondItem="HnR-5a-suO" secondAttribute="centerY" id="Sb2-Ms-Z0S"/>
+                            <constraint firstAttribute="trailing" secondItem="aIL-4S-0WC" secondAttribute="trailing" id="E8X-IA-Ven"/>
+                            <constraint firstItem="aIL-4S-0WC" firstAttribute="centerY" secondItem="HnR-5a-suO" secondAttribute="centerY" constant="-32" id="Sb2-Ms-Z0S"/>
                             <constraint firstItem="B6x-b7-hU9" firstAttribute="centerX" secondItem="HnR-5a-suO" secondAttribute="centerX" id="X1e-sC-AwE"/>
                             <constraint firstItem="h4a-j8-84P" firstAttribute="top" secondItem="B6x-b7-hU9" secondAttribute="bottom" constant="20" id="ZHg-Ic-dKW"/>
+                            <constraint firstItem="aIL-4S-0WC" firstAttribute="leading" secondItem="HnR-5a-suO" secondAttribute="leading" id="dgF-cH-Vns"/>
                             <constraint firstItem="aIL-4S-0WC" firstAttribute="centerX" secondItem="HnR-5a-suO" secondAttribute="centerX" id="zw6-fq-yvA"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="zw6-fq-yvA"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <exclude reference="E8X-IA-Ven"/>
+                                <exclude reference="dgF-cH-Vns"/>
+                                <include reference="zw6-fq-yvA"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="label" destination="qd9-rU-gsy" id="2iZ-L4-Dnh"/>
@@ -821,21 +856,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="gFo-6w-GTA">
-                                <rect key="frame" x="160" y="247.5" width="280" height="105"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="gFo-6w-GTA">
+                                <rect key="frame" x="0.0" y="228" width="600" height="81"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We've sent a link to your email address" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkM-xx-821">
-                                        <rect key="frame" x="0.0" y="0.0" width="280" height="48"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We've sent a link to your email address" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkM-xx-821">
+                                        <rect key="frame" x="126.5" y="0.0" width="347" height="24"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="64" width="280" height="41"/>
+                                        <rect key="frame" x="260" y="40" width="80" height="41"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="41" id="tyz-kt-Arb"/>
                                         </constraints>
-                                        <state key="normal" title="Open Mail">
+                                        <state key="normal" title="OPEN MAIL">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -844,8 +879,18 @@
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="280" id="mJd-Nb-Mr6"/>
+                                    <constraint firstAttribute="width" constant="320" id="mJd-Nb-Mr6"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="mJd-Nb-Mr6"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="mJd-Nb-Mr6"/>
+                                    </mask>
+                                </variation>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0O-LO-6ax" customClass="WPNUXSecondaryButton">
                                 <rect key="frame" x="202" y="554" width="195" height="30"/>
@@ -859,11 +904,25 @@
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="gFo-6w-GTA" firstAttribute="centerY" secondItem="Xyo-MA-Ddd" secondAttribute="centerY" id="DUO-qS-4k6"/>
+                            <constraint firstItem="gFo-6w-GTA" firstAttribute="centerY" secondItem="Xyo-MA-Ddd" secondAttribute="centerY" constant="-32" id="DUO-qS-4k6"/>
                             <constraint firstItem="b0O-LO-6ax" firstAttribute="centerX" secondItem="Xyo-MA-Ddd" secondAttribute="centerX" id="RM7-fX-URR"/>
                             <constraint firstItem="vKK-Mm-0yR" firstAttribute="top" secondItem="b0O-LO-6ax" secondAttribute="bottom" constant="16" id="T3w-we-LXY"/>
                             <constraint firstItem="gFo-6w-GTA" firstAttribute="centerX" secondItem="Xyo-MA-Ddd" secondAttribute="centerX" id="elE-ZX-Lz3"/>
+                            <constraint firstItem="gFo-6w-GTA" firstAttribute="leading" secondItem="Xyo-MA-Ddd" secondAttribute="leading" id="wMQ-pf-gBT"/>
+                            <constraint firstAttribute="trailing" secondItem="gFo-6w-GTA" secondAttribute="trailing" id="we1-Dj-rfy"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="elE-ZX-Lz3"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <include reference="elE-ZX-Lz3"/>
+                                <exclude reference="wMQ-pf-gBT"/>
+                                <exclude reference="we1-Dj-rfy"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="label" destination="pkM-xx-821" id="nOS-5r-86h"/>
