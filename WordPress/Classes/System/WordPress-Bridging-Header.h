@@ -93,7 +93,6 @@
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
 #import "WPBlogTableViewCell.h"
-#import "WPContentViewProvider.h"
 #import "WPError.h"
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
