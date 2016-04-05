@@ -74,7 +74,7 @@ class PlanDetailViewController: UIViewController {
     }
     var viewModel: ViewModel! {
         didSet {
-            self.tableViewModel = viewModel.tableViewModel
+            tableViewModel = viewModel.tableViewModel
             title = viewModel.plan.title
             accessibilityLabel = viewModel.plan.fullTitle
             if isViewLoaded() {
