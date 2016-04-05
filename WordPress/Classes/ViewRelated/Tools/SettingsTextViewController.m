@@ -56,13 +56,13 @@ static CGFloat const HorizontalMargin = 15.0f;
     [super viewDidLoad];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    [self startListeningNotifications];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self setupModalButtonsIfNeeded];
+    [self setupNavigationButtonsIfNeeded];
+    [self startListeningToNotifications];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -74,21 +74,18 @@ static CGFloat const HorizontalMargin = 15.0f;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
     [self.view endEditing:YES];
     
-    if (self.onValueChanged && ![self.textField.text isEqualToString:self.text] && self.textPassesValidation) {
-        self.onValueChanged(self.textField.text);
-    }
+    [self stopListeningToNotifications];
+    [self notifyValueDidChangeIfNeeded];
 }
 
 
-#pragma mark - Helpers
+#pragma mark - NavigationItem Buttons
 
-- (void)setupModalButtonsIfNeeded
+- (void)setupNavigationButtonsIfNeeded
 {
-    // Proceed only if this is the only VC in the current navigationController
-    if (self.isBeingPresented == true || self.isModal == false) {
+    if (self.shouldDisplayNavigationButtons == NO) {
         return;
     }
     
@@ -102,36 +99,53 @@ static CGFloat const HorizontalMargin = 15.0f;
                                                                                            action:@selector(doneButtonWasPressed:)];
 }
 
-- (void)startListeningNotifications
+- (BOOL)shouldDisplayNavigationButtons
 {
-    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
-    [notificationCenter addObserver:self
-                           selector:@selector(validateTextInput:)
-                               name:UITextFieldTextDidChangeNotification
-                             object:_textField];
+    return self.isModal;
 }
 
 - (IBAction)cancelButtonWasPressed:(id)sender
 {
-    [self dismissViewControllerAnimated:true completion:nil];
+    // Make sure the callback doesn't get hit
+    self.onValueChanged = nil;
+    [self dismissViewController];
 }
 
 - (IBAction)doneButtonWasPressed:(id)sender
 {
-    if (self.isRootInNavigation && self.isModal) {
-        [self dismissViewControllerAnimated:true completion:nil];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
+    [self notifyValueDidChangeIfNeeded];
+    [self dismissViewController];
+}
+
+
+#pragma mark - Notifications
+
+- (void)startListeningToNotifications
+{
+    if (self.shouldDisplayNavigationButtons == false) {
+        return;
     }
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(validateTextInput:) name:UITextFieldTextDidChangeNotification object:_textField];
+}
+
+- (void)stopListeningToNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
 #pragma mark - Validation
 
+- (BOOL)textPassesValidation
+{
+    return (self.isEmail == false || (self.isEmail && self.textField.text.isValidEmail));
+}
+
 - (void)validateTextInput:(id)sender
 {
-    BOOL isValid = (self.isEmail == false || (self.isEmail && self.textField.text.isValidEmail));
-    self.navigationItem.rightBarButtonItem.enabled = isValid;
+    self.navigationItem.rightBarButtonItem.enabled = [self textPassesValidation];
 }
 
 
@@ -197,11 +211,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0 && indexPath.row == 0) {
-        return self.textFieldCell;
-    }
-    
-    return nil;
+    return self.textFieldCell;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -210,20 +220,38 @@ static CGFloat const HorizontalMargin = 15.0f;
 }
 
 
-#pragma mark - UITextFieldDelegate Methods
+#pragma mark - Helpers
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (void)dismissViewController
 {
-    NSRange newLineRange = [string rangeOfCharacterFromSet:[NSCharacterSet newlineCharacterSet]];    
-    if (newLineRange.location != NSNotFound) {
+    if (self.isModal) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
 
-    if ([string isEqualToString:@"\n"]) {
+- (void)notifyValueDidChangeIfNeeded
+{
+    if (self.onValueChanged == nil || [self.textField.text isEqualToString:self.text]) {
+        return;
+    }
+    
+    self.onValueChanged(self.textField.text);
+    self.onValueChanged = nil;
+}
+
+
+#pragma mark - UITextFieldDelegate Methods
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    BOOL isValid = self.textPassesValidation;
+    if (isValid) {
         [self doneButtonWasPressed:self];
     }
     
-    return YES;
+    return isValid;
 }
 
 @end
