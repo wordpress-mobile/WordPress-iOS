@@ -8,7 +8,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
 {
 
     @IBOutlet var label: UILabel!
-    @IBOutlet var sendLinkButton: UIButton!
+    @IBOutlet var sendLinkButton: NUXSubmitButton!
 
 
     ///
@@ -34,6 +34,13 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     }
 
 
+    func configureLoading(animating: Bool) {
+        sendLinkButton.showActivityIndicator(animating)
+
+        sendLinkButton.enabled = !animating
+    }
+
+
     // MARK: - Instance Methods
 
 
@@ -44,15 +51,16 @@ class SigninLinkRequestViewController : NUXAbstractViewController
             return
         }
 
-        sendLinkButton.enabled = false
+        configureLoading(true)
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.requestAuthenticationLink(email,
             success: { [weak self] in
                 self?.didRequestAuthenticationLink()
+                self?.configureLoading(false)
 
             }, failure: { [weak self] (error: NSError!) in
-                DDLogSwift.logError(error.description)
-                self?.sendLinkButton.enabled = true
+                self?.displayError(error)
+                self?.configureLoading(false)
             })
     }
 
