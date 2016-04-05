@@ -169,7 +169,7 @@ private struct AccountSettingsController: SettingsController {
             selectorViewController.dismissOnCompletion = true
             selectorViewController.dismissOnCancellation = true
             
-            return UINavigationController(rootViewController: selectorViewController)
+            return selectorViewController
         }
     }
 
