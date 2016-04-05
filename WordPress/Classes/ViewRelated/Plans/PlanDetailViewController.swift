@@ -201,7 +201,7 @@ class PlanDetailViewController: UIViewController {
         planDescriptionLabel.text = plan.description
         planPriceLabel.text = viewModel.priceText
 
-        if isActivePlan {
+        if viewModel.isActivePlan {
             purchaseButton?.removeFromSuperview()
             headerStackView.addArrangedSubview(currentPlanLabel)
         } else if plan.isFreePlan {
