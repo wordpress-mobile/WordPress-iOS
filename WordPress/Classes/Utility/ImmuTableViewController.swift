@@ -21,8 +21,8 @@ extension ImmuTablePresenter where Self: UIViewController {
     func present(controllerGenerator: ImmuTableRowControllerGenerator) -> ImmuTableAction {
         return {
             [unowned self] in
-            let controller = controllerGenerator($0)
-            self.presentViewController(controller, animated: true, completion: nil)
+            let navigationController = UINavigationController(rootViewController: controllerGenerator($0))
+            self.presentViewController(navigationController, animated: true, completion: nil)
         }
     }
 }
