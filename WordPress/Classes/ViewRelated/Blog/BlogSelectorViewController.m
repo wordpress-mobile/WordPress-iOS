@@ -186,18 +186,10 @@ static CGFloat BlogCellRowHeight = 54.0;
     }
     
     if (self.dismissOnCancellation) {
-        [self dismissViewController];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
-- (void)dismissViewController
-{
-    if (self.isModal && self.isRootInNavigation) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-}
 
 #pragma mark - Table view data source
 
@@ -286,7 +278,7 @@ static CGFloat BlogCellRowHeight = 54.0;
             self.successHandler(self.selectedObjectID);
             
             if (self.dismissOnCompletion) {
-                [self dismissViewController];
+                [self dismissViewControllerAnimated:YES completion:nil];
             }
         });
     }
