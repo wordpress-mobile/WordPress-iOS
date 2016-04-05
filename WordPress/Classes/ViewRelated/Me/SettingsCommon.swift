@@ -6,7 +6,6 @@ protocol SettingsController: ImmuTableController {}
 extension SettingsController {
     func editText(changeType: AccountSettingsChangeWithString,
                   hint: String? = nil,
-                  isEmail: Bool = false,
                   isPresented: Bool = false,
                   service: AccountSettingsService) -> ImmuTableRowControllerGenerator
     {
@@ -14,7 +13,7 @@ extension SettingsController {
             let editionViewController = self.controllerForEditableText(row as! EditableTextRow,
                                                                        changeType: changeType,
                                                                        hint: hint,
-                                                                       isEmail: isEmail,
+                                                                       isEmail: false,
                                                                        service: service)
             
             if isPresented {
@@ -25,6 +24,26 @@ extension SettingsController {
         }
     }
 
+    func editEmailAddress(changeType: AccountSettingsChangeWithString,
+                          hint: String? = nil,
+                          isPresented: Bool = false,
+                          service: AccountSettingsService) -> ImmuTableRowControllerGenerator
+    {
+        return { row in
+            let editionViewController = self.controllerForEditableText(row as! EditableTextRow,
+                                                                       changeType: changeType,
+                                                                       hint: hint,
+                                                                       isEmail: true,
+                                                                       service: service)
+            
+            if isPresented {
+                return UINavigationController(rootViewController: editionViewController)
+            }
+            
+            return editionViewController
+        }
+    }
+    
     func controllerForEditableText(row: EditableTextRow,
                                    changeType: AccountSettingsChangeWithString,
                                    hint: String? = nil,
