@@ -116,12 +116,15 @@
     NSString *type = media.mimeType;
     NSString *filename = media.file;
     
-    NSDictionary *data = @{
+    NSMutableDictionary *data = [NSMutableDictionary dictionaryWithDictionary:@{
                            @"name": filename,
                            @"type": type,
-                           @"post_id": media.postID,
                            @"bits": [NSInputStream inputStreamWithFileAtPath:path],
-                           };
+                           }];
+    if ([media.postID compare:@(0)] == NSOrderedDescending) {
+        data[@"post_id"] = media.postID;
+    }
+
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:data];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *directory = [paths objectAtIndex:0];

@@ -122,10 +122,13 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", self.siteID];
     NSString *requestUrl = [self pathForEndpoint:apiPath
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{}];
+    if ([media.postID compare:@(0)] == NSOrderedDescending) {
+        parameters[@"attrs[0][parent_id]"] = media.postID;
+    }
     NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST"
                                                                                     URLString:[[NSURL URLWithString:requestUrl relativeToURL:self.api.baseURL] absoluteString]
-                                                                                   parameters:@{ @"attrs[0][parent_id]" : media.postID }
+                                                                                   parameters:parameters
                                                                     constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSURL *url = [[NSURL alloc] initFileURLWithPath:path];
         [formData appendPartWithFileURL:url name:@"media[]" fileName:filename mimeType:type error:nil];
