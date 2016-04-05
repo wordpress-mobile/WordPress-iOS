@@ -48,4 +48,15 @@
                            success:(void (^)(BOOL found))success
                            failure:(void (^)(NSError *error))failure;
 
+/**
+*  @brief      Request an authentication link be sent to the email address provided.
+*
+*  @param email
+*  @param success
+*  @param failure
+*/
+- (void)requestWPComAuthLinkForEmail:(NSString *)email
+                             success:(void (^)())success
+                             failure:(void (^)(NSError *error))failure;
+
 @end

@@ -145,7 +145,16 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (void)requestAuthenticationLink:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    success();
+    id<AccountServiceRemote> remote = [[AccountServiceRemoteREST alloc] initWithApi:[WordPressComApi anonymousApi]];
+    [remote requestWPComAuthLinkForEmail:email success:^{
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 
 
