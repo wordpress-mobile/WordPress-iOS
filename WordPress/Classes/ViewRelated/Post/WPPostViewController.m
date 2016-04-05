@@ -719,7 +719,7 @@ EditImageDetailsViewControllerDelegate
                                                                                        dismissHandler:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
     vc.displaysPrimaryBlogOnTop = YES;
-    vc.displaysCancelButton = [UIDevice isPhone];
+    vc.displaysCancelButton = [self isViewHorizontallyCompact];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
@@ -1110,14 +1110,6 @@ EditImageDetailsViewControllerDelegate
 }
 
 #pragma mark - Custom UI elements
-
-- (BOOL)isViewHorizontallyCompact
-{
-    if ([self respondsToSelector:@selector(traitCollection)] == false) {
-        return ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) == false;
-    }
-    return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact;
-}
 
 - (WPButtonForNavigationBar*)buttonForBarWithImageNamed:(NSString*)imageName
 												  frame:(CGRect)frame
