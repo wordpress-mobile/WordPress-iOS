@@ -620,6 +620,8 @@
 		E1D86E691B2B414300DD2192 /* WordPress-32-33.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = E1D86E681B2B414300DD2192 /* WordPress-32-33.xcmappingmodel */; };
 		E1D91456134A853D0089019C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E1D91454134A853D0089019C /* Localizable.strings */; };
 		E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */; };
+		E1DD4CCB1CAE41B800C3863E /* PagedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1DD4CCA1CAE41B800C3863E /* PagedViewController.swift */; };
+		E1DD4CCD1CAE41C800C3863E /* PagedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */; };
 		E1DF5DFD19E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DF5DFA19E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.m */; };
 		E1DF5DFE19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = E1DF5DFC19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.m */; };
 		E1E1AA8D1B7DEDFC001C8645 /* WPMapFilterReduce.m in Sources */ = {isa = PBXBuildFile; fileRef = E1E1AA8C1B7DEDFC001C8645 /* WPMapFilterReduce.m */; };
@@ -1787,6 +1789,8 @@
 		E1D91457134A854A0089019C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1D95EB617A28F5E00A3E9F3 /* WPActivityDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPActivityDefaults.h; sourceTree = "<group>"; };
 		E1D95EB717A28F5E00A3E9F3 /* WPActivityDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPActivityDefaults.m; sourceTree = "<group>"; };
+		E1DD4CCA1CAE41B800C3863E /* PagedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PagedViewController.swift; sourceTree = "<group>"; };
+		E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PagedViewController.xib; sourceTree = "<group>"; };
 		E1DF5DF919E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemoteREST.h; sourceTree = "<group>"; };
 		E1DF5DFA19E7CFAE004E70D5 /* TaxonomyServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaxonomyServiceRemoteREST.m; sourceTree = "<group>"; };
 		E1DF5DFB19E7CFAE004E70D5 /* TaxonomyServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaxonomyServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
@@ -2979,6 +2983,8 @@
 				5DBFC8AA1A9C0EEF00E00DE4 /* WPScrollableViewController.h */,
 				FFA9148D1BA6E5170068F8BF /* RotationAwareNavigationViewController.h */,
 				FFA9148E1BA6E5170068F8BF /* RotationAwareNavigationViewController.m */,
+				E1DD4CCA1CAE41B800C3863E /* PagedViewController.swift */,
+				E1DD4CCC1CAE41C800C3863E /* PagedViewController.xib */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -4501,6 +4507,7 @@
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
 				B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
+				E1DD4CCD1CAE41C800C3863E /* PagedViewController.xib in Resources */,
 				E6A3384E1BB0A50900371587 /* ReaderGapMarkerCell.xib in Resources */,
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
@@ -4915,6 +4922,7 @@
 				B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */,
+				E1DD4CCB1CAE41B800C3863E /* PagedViewController.swift in Sources */,
 				B535209B1AF7BBB800B33BA8 /* PushAuthenticationManager.swift in Sources */,
 				319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */,
 				F1A0C49C1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m in Sources */,
