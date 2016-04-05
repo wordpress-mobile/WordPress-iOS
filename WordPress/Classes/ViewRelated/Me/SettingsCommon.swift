@@ -16,14 +16,16 @@ extension SettingsController {
     {
         return { row in
             let editableRow = row as! EditableTextRow
-            return self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, isEmail: true, service: service)
+            let settingsViewController =  self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, service: service)
+            settingsViewController.mode = .Email
+            
+            return settingsViewController
         }
     }
     
     func controllerForEditableText(row: EditableTextRow,
                                    changeType: AccountSettingsChangeWithString,
                                    hint: String? = nil,
-                                   isEmail: Bool = false,
                                    service: AccountSettingsService) -> SettingsTextViewController
     {
         let title = row.title
@@ -32,7 +34,6 @@ extension SettingsController {
         let controller = SettingsTextViewController(text: value, placeholder: "\(title)...", hint: hint)
 
         controller.title = title
-        controller.isEmail = isEmail
         controller.onValueChanged = {
             value in
 

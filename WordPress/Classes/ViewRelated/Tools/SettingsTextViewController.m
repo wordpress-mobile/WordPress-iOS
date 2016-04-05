@@ -140,7 +140,8 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (BOOL)textPassesValidation
 {
-    return (self.isEmail == false || (self.isEmail && self.textField.text.isValidEmail));
+    BOOL isEmail = (self.mode == SettingsTextModesEmail);
+    return (isEmail == false || (isEmail && self.textField.text.isValidEmail));
 }
 
 - (void)validateTextInput:(id)sender
@@ -151,14 +152,10 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 #pragma mark - Properties
 
-- (BOOL)isPassword
+- (void)setMode:(SettingsTextModes)mode
 {
-    return self.textField.secureTextEntry;
-}
-
-- (void)setIsPassword:(BOOL)isPassword
-{
-    self.textField.secureTextEntry = isPassword;
+    _mode = mode;
+    [self updateModeSettings:mode];
 }
 
 - (WPTableViewCell *)textFieldCell
@@ -167,21 +164,30 @@ static CGFloat const HorizontalMargin = 15.0f;
         return _textFieldCell;
     }
     _textFieldCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    
-    self.textField = [[UITextField alloc] initWithFrame:CGRectInset(_textFieldCell.bounds, HorizontalMargin, 0)];
-    self.textField.clearButtonMode = UITextFieldViewModeAlways;
-    self.textField.font = [WPStyleGuide tableviewTextFont];
-    self.textField.textColor = [WPStyleGuide darkGrey];
-    self.textField.text = self.text;
-    self.textField.placeholder = self.placeholder;
-    self.textField.returnKeyType = UIReturnKeyDone;
-    self.textField.keyboardType = UIKeyboardTypeDefault;
-    self.textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.textField.delegate = self;
-    
     [_textFieldCell.contentView addSubview:self.textField];
+    _textField.frame = CGRectInset(_textFieldCell.bounds, HorizontalMargin, 0);
     
     return _textFieldCell;
+}
+
+- (UITextField *)textField
+{
+    if (_textField) {
+        return _textField;
+    }
+    
+    _textField = [[UITextField alloc] initWithFrame:CGRectZero];
+    _textField.clearButtonMode = UITextFieldViewModeAlways;
+    _textField.font = [WPStyleGuide tableviewTextFont];
+    _textField.textColor = [WPStyleGuide darkGrey];
+    _textField.text = self.text;
+    _textField.placeholder = self.placeholder;
+    _textField.returnKeyType = UIReturnKeyDone;
+    _textField.keyboardType = UIKeyboardTypeDefault;
+    _textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    _textField.delegate = self;
+
+    return _textField;
 }
 
 - (UIView *)hintView
@@ -239,6 +245,27 @@ static CGFloat const HorizontalMargin = 15.0f;
     
     self.onValueChanged(self.textField.text);
     self.onValueChanged = nil;
+}
+
+
+- (void)updateModeSettings:(SettingsTextModes)newMode
+{
+    BOOL requiresSecureTextEntry = NO;
+    
+    switch (newMode) {
+        case SettingsTextModesPassword:
+        {
+            requiresSecureTextEntry = YES;
+        }
+            break;
+        default:
+        {
+            // No OP
+        }
+            break;
+    }
+    
+    self.textField.secureTextEntry = requiresSecureTextEntry;
 }
 
 
