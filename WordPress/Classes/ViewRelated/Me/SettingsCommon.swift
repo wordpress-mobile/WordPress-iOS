@@ -4,43 +4,19 @@ protocol SettingsController: ImmuTableController {}
 
 // MARK: - Actions
 extension SettingsController {
-    func editText(changeType: AccountSettingsChangeWithString,
-                  hint: String? = nil,
-                  isPresented: Bool = false,
-                  service: AccountSettingsService) -> ImmuTableRowControllerGenerator
+    func editText(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRowControllerGenerator
     {
         return { row in
-            let editionViewController = self.controllerForEditableText(row as! EditableTextRow,
-                                                                       changeType: changeType,
-                                                                       hint: hint,
-                                                                       isEmail: false,
-                                                                       service: service)
-            
-            if isPresented {
-                return UINavigationController(rootViewController: editionViewController)
-            }
-            
-            return editionViewController
+            let editableRow = row as! EditableTextRow
+            return self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, service: service)
         }
     }
 
-    func editEmailAddress(changeType: AccountSettingsChangeWithString,
-                          hint: String? = nil,
-                          isPresented: Bool = false,
-                          service: AccountSettingsService) -> ImmuTableRowControllerGenerator
+    func editEmailAddress(changeType: AccountSettingsChangeWithString, hint: String? = nil, service: AccountSettingsService) -> ImmuTableRowControllerGenerator
     {
         return { row in
-            let editionViewController = self.controllerForEditableText(row as! EditableTextRow,
-                                                                       changeType: changeType,
-                                                                       hint: hint,
-                                                                       isEmail: true,
-                                                                       service: service)
-            
-            if isPresented {
-                return UINavigationController(rootViewController: editionViewController)
-            }
-            
-            return editionViewController
+            let editableRow = row as! EditableTextRow
+            return self.controllerForEditableText(editableRow, changeType: changeType, hint: hint, isEmail: true, service: service)
         }
     }
     
