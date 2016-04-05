@@ -203,4 +203,23 @@
     XCTAssert([testSet count] == 0, @"Invalid count");
 }
 
+- (void)testIsValidEmail
+{
+    // Although rare, TLDs can have email too
+    XCTAssertTrue([@"koke@com" isValidEmail]);
+    
+    
+    // The hyphen is permitted if it is surrounded by characters, digits or hyphens,
+    // although it is not to start or end a label
+    XCTAssertTrue([@"koke@-example.com" isValidEmail]);
+    XCTAssertTrue([@"koke@example-.com" isValidEmail]);
+    
+    // https://en.wikipedia.org/wiki/International_email
+    XCTAssertTrue([@"用户@例子.广告" isValidEmail]);
+    XCTAssertTrue([@"उपयोगकर्ता@उदाहरण.कॉम" isValidEmail]);
+    
+    // Now, the invalid scenario
+    XCTAssertFalse([@"notavalid.email" isValidEmail]);
+}
+
 @end

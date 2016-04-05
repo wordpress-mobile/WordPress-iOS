@@ -26,7 +26,7 @@ extension NSString
     ///
     public func isValidEmail() -> Bool {
         // From http://stackoverflow.com/a/3638271/1379066
-        let emailRegex = ".+@([A-Za-z0-9-]+\\.)+[A-Za-z]{2}[A-Za-z]*"
+        let emailRegex = "^[^@\\s]+@[^@\\s]+$"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         
         return emailTest.evaluateWithObject(self)
