@@ -8,8 +8,8 @@ class PlanDetailViewController: UIViewController {
 
         let isActivePlan: Bool
 
-        /// Plan price, or `nil` for a free plan
-        let price: String?
+        /// Plan price. Empty string for a free plan
+        let price: String
 
         let features: FeaturesViewModel
 
@@ -58,6 +58,14 @@ class PlanDetailViewController: UIViewController {
                     message: NSLocalizedString("There was an error loading the plan", comment: ""),
                     buttonTitle: NSLocalizedString("Contact support", comment: "")
                 )
+            }
+        }
+
+        var priceText: String {
+            if price.isEmpty  {
+                return NSLocalizedString("Free for life", comment: "Price label for the free plan")
+            } else {
+                return String(format: NSLocalizedString("%@ per year", comment: "Plan yearly price"), price)
             }
         }
     }
@@ -134,7 +142,7 @@ class PlanDetailViewController: UIViewController {
     
     @IBOutlet weak var headerInfoStackView: UIStackView!
 
-    class func controllerWithPlan(plan: Plan, siteID: Int, isActive: Bool, price: String?) -> PlanDetailViewController {
+    class func controllerWithPlan(plan: Plan, siteID: Int, isActive: Bool, price: String) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
 
@@ -194,7 +202,7 @@ class PlanDetailViewController: UIViewController {
         planImageView.image = plan.image
         planTitleLabel.text = plan.fullTitle
         planDescriptionLabel.text = plan.description
-        planPriceLabel.text = viewModel.price
+        planPriceLabel.text = viewModel.priceText
         
         if viewModel.isActivePlan {
             purchaseButton?.removeFromSuperview()
