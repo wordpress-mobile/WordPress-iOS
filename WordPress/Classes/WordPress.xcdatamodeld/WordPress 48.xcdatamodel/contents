@@ -292,7 +292,7 @@
         <attribute name="orientation" optional="YES" attributeType="String" defaultValueString="portrait">
             <userInfo/>
         </attribute>
-        <attribute name="postID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="postID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="progress" optional="YES" transient="YES" attributeType="Float" defaultValueString="0">
             <userInfo/>
         </attribute>
