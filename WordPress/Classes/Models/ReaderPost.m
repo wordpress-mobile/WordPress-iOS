@@ -144,7 +144,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return ([content rangeOfString:featuredImage].location != NSNotFound);
 }
 
-#pragma mark - WPContentViewProvider protocol
+#pragma mark - PostContentProvider protocol
 
 - (NSString *)blogNameForDisplay
 {

@@ -1,7 +1,6 @@
 @import XCTest;
 @import OHHTTPStubs;
 @import OHHTTPStubs.OHPathHelpers;
-@import MGImageUtilities;
 
 #import "WPAvatarSource.h"
 
@@ -45,9 +44,9 @@
 
     XCTestExpectation *fetchExpectation = [self expectationWithDescription:@"fetch and download"];
     [_source fetchImageForGravatarEmail:email withSize:size success:^(UIImage *image) {
+        [fetchExpectation fulfill];
         XCTAssertNotNil(image, @"avatar should be downloaded");
         XCTAssertEqual(image.size.width, 48.f, @"avatar should be resized");
-        [fetchExpectation fulfill];
     }];
     [self waitForExpectationsWithTimeout:5.0 handler:nil];
 
