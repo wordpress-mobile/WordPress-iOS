@@ -180,10 +180,6 @@ class PlanDetailViewController: UIViewController {
     private func configureTableView() {
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 80.0
-
-        // This is required to remove the extra grouped tableview
-        // padding at the top of the tableview
-        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
     }
     
     private func configurePlanImageDropshadow() {
