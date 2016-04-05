@@ -144,7 +144,7 @@ private struct AccountSettingsController: SettingsController {
 
     func editEmailAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
         let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
-        return editText(AccountSettingsChange.Email, hint: hint, isEmail: true, isPresented: true, service: service)
+        return editEmailAddress(AccountSettingsChange.Email, hint: hint, isPresented: true, service: service)
     }
     
     func editWebAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
