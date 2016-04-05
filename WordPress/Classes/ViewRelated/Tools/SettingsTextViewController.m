@@ -56,6 +56,7 @@ static CGFloat const HorizontalMargin = 15.0f;
     [super viewDidLoad];
     [WPStyleGuide resetReadableMarginsForTableView:self.tableView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [self startListeningNotifications];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -101,6 +102,15 @@ static CGFloat const HorizontalMargin = 15.0f;
                                                                                            action:@selector(doneButtonWasPressed:)];
 }
 
+- (void)startListeningNotifications
+{
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(validateTextInput:)
+                               name:UITextFieldTextDidChangeNotification
+                             object:_textField];
+}
+
 - (IBAction)cancelButtonWasPressed:(id)sender
 {
     [self dismissViewControllerAnimated:true completion:nil];
@@ -108,9 +118,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (IBAction)doneButtonWasPressed:(id)sender
 {
-    if (self.textPassesValidation == false) {
-        [self displayValidationAlert];
-    } else if (self.isRootInNavigation && self.isModal) {
+    if (self.isRootInNavigation && self.isModal) {
         [self dismissViewControllerAnimated:true completion:nil];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
@@ -120,22 +128,10 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 #pragma mark - Validation
 
-- (void)displayValidationAlert
+- (void)validateTextInput:(id)sender
 {
-    NSString *title = NSLocalizedString(@"Invalid Email", @"Invalid Email");
-    NSString *message = NSLocalizedString(@"Please, enter a valid email", @"Text displayed whenever an invalid email is entered.");
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
-                                                                             message:message
-                                                                      preferredStyle:UIAlertControllerStyleAlert];
-
-    [alertController addDefaultActionWithTitle:NSLocalizedString(@"Accept", @"Accept") handler:nil];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-}
-
-- (BOOL)textPassesValidation
-{
-    return (self.isEmail == false || (self.isEmail && self.textField.text.isValidEmail));
+    BOOL isValid = (self.isEmail == false || (self.isEmail && self.textField.text.isValidEmail));
+    self.navigationItem.rightBarButtonItem.enabled = isValid;
 }
 
 
