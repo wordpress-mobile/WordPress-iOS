@@ -1,5 +1,7 @@
 #!/bin/sh
 # Using commit hash argument, search for references to deleted image assets.
+# Argument 1 is the hash of the commit with asset deletions.
+# Argument 2 is the directory to search for usage of the deleted assets.
 
 SEARCH_DIR=$2
 
