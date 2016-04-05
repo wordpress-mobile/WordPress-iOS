@@ -125,7 +125,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     
     NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST"
                                                                                     URLString:[[NSURL URLWithString:requestUrl relativeToURL:self.api.baseURL] absoluteString]
-                                                                                   parameters:nil
+                                                                                   parameters:@{ @"attrs[0][parent_id]" : media.postID }
                                                                     constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSURL *url = [[NSURL alloc] initFileURLWithPath:path];
         [formData appendPartWithFileURL:url name:@"media[]" fileName:filename mimeType:type error:nil];

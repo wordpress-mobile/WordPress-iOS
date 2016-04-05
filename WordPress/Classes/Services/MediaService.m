@@ -109,6 +109,7 @@
     [self.managedObjectContext performBlock:^{
         AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
         Media *media = [self newMediaForPost:post];
+        media.postID = post.postID;
         media.filename = [mediaURL lastPathComponent];
         media.absoluteLocalURL = [mediaURL path];
         media.absoluteThumbnailLocalURL = [mediaThumbnailURL path];
@@ -574,6 +575,7 @@ static NSString * const MediaDirectory = @"Media";
     media.videopressGUID = remoteMedia.videopressGUID;
     media.length = remoteMedia.length;
     media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL;
+    media.postID = remoteMedia.postID;
 }
 
 - (RemoteMedia *)remoteMediaFromMedia:(Media *)media
@@ -593,6 +595,7 @@ static NSString * const MediaDirectory = @"Media";
     remoteMedia.mimeType = [self mimeTypeForFilename:media.localThumbnailURL];
 	remoteMedia.videopressGUID = media.videopressGUID;
     remoteMedia.remoteThumbnailURL = media.remoteThumbnailURL;
+    remoteMedia.postID = media.postID;
     return remoteMedia;
 }
 

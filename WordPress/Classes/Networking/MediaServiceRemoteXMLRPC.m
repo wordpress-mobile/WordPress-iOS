@@ -119,6 +119,7 @@
     NSDictionary *data = @{
                            @"name": filename,
                            @"type": type,
+                           @"post_id": media.postID,
                            @"bits": [NSInputStream inputStreamWithFileAtPath:path],
                            };
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:data];
@@ -204,6 +205,7 @@
     remoteMedia.descriptionText = [xmlRPC stringForKey:@"description"];
     remoteMedia.extension = [remoteMedia.file pathExtension];
     remoteMedia.length = [xmlRPC numberForKeyPath:@"metadata.length"];
+    remoteMedia.postID = [xmlRPC numberForKeyPath:@"parent"];
     return remoteMedia;
 }
 
