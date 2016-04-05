@@ -320,7 +320,14 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (BOOL)shouldDisplayFilters
 {
-    return !self.showsJetpackMessage && !self.showsEmptyStateLegend;
+    // Note:
+    // Filters should only be hidden whenever there are no Notifications in the bucket (contrary to the FRC's
+    // results, which are filtered by the active predicate!).
+    //
+    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
+    SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
+    
+    return notesBucket.numObjects > 0;
 }
 
 
@@ -890,7 +897,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 - (void)showNoResultsViewIfNeeded
 {
     // Remove If Needed
-    if (!self.showsEmptyStateLegend) {
+    if (!self.shouldDisplayNoResultsView) {
         [self.noResultsView removeFromSuperview];
         
         // Show filters if we have results
@@ -905,14 +912,14 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
         [self.tableView addSubviewWithFadeAnimation:noResultsView];
     }
     
-    // Hide the filter header if we're showing the Jetpack prompt
-    [self hideFiltersSegmentedControlIfApplicable];
-    
     // Refresh its properties: The user may have signed into WordPress.com
     noResultsView.titleText         = self.noResultsTitleText;
     noResultsView.messageText       = self.noResultsMessageText;
     noResultsView.accessoryView     = self.noResultsAccessoryView;
     noResultsView.buttonTitle       = self.noResultsButtonText;
+    
+    // Hide the filter header if we're showing the Jetpack prompt
+    [self hideFiltersSegmentedControlIfApplicable];
 }
 
 - (WPNoResultsView *)noResultsView
@@ -926,7 +933,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (NSString *)noResultsTitleText
 {
-    if (self.showsJetpackMessage) {
+    if (self.shouldDisplayJetpackMessage) {
         return NSLocalizedString(@"Connect to Jetpack", @"Notifications title displayed when a self-hosted user is not connected to Jetpack");
     }
     
@@ -943,21 +950,21 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
 
 - (NSString *)noResultsMessageText
 {
-    NSString *jetapackMessage   = NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Notifications message displayed when a self-hosted user is not connected to Jetpack");
-    return self.showsJetpackMessage ? jetapackMessage : nil;
+    NSString *jetpackMessage   = NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Notifications message displayed when a self-hosted user is not connected to Jetpack");
+    return self.shouldDisplayJetpackMessage ? jetpackMessage : nil;
 }
 
 - (UIView *)noResultsAccessoryView
 {
-    return self.showsJetpackMessage ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]] : nil;
+    return self.shouldDisplayJetpackMessage ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]] : nil;
 }
  
 - (NSString *)noResultsButtonText
 {
-    return self.showsJetpackMessage ? NSLocalizedString(@"Learn more", @"") : nil;
+    return self.shouldDisplayJetpackMessage ? NSLocalizedString(@"Learn more", @"") : nil;
 }
  
-- (BOOL)showsJetpackMessage
+- (BOOL)shouldDisplayJetpackMessage
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -966,7 +973,7 @@ typedef NS_ENUM(NSUInteger, NotificationFilter)
     return showsJetpackMessage;
 }
 
-- (BOOL)showsEmptyStateLegend
+- (BOOL)shouldDisplayNoResultsView
 {
     return (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
 }
