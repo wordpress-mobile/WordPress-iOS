@@ -302,7 +302,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                                                                        successHandler:successHandler
                                                                                        dismissHandler:dismissHandler];
     vc.displaysPrimaryBlogOnTop = YES;
-    vc.displaysCancelButton = [UIDevice isPhone];
+    vc.displaysCancelButton = [self isViewHorizontallyCompact];
     vc.title = NSLocalizedString(@"Select Site", @"");
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
