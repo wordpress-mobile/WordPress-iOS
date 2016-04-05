@@ -19,7 +19,7 @@ target 'WordPress', :exclusive => true do
   pod 'DTCoreText',   '1.6.16'
   pod 'FormatterKit', '~> 1.8.0'
   pod 'Helpshift', '~> 5.5.0'
-  pod 'HockeySDK', '~>3.8.0'
+  pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
   pod 'Mixpanel', '2.9.4'
@@ -33,7 +33,6 @@ target 'WordPress', :exclusive => true do
   # ----------------------------
   # Forked third party libraries
   # ----------------------------
-  pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
   pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
 
   # --------------------
@@ -73,10 +72,6 @@ target :WordPressTest, :exclusive => true do
   pod 'Nimble', '~> 3.2.0'
   pod 'RxSwift', '~> 2.3.1'
   pod 'RxTests', '~> 2.3.1'
-end
-
-target 'UITests', :exclusive => true do
-    pod 'KIF/IdentifierTests', '~>3.1'
 end
 
 post_install do |installer_representation|
