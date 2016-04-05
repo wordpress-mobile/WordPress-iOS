@@ -7,7 +7,6 @@ extension SettingsController {
     func editText(changeType: AccountSettingsChangeWithString,
                   hint: String? = nil,
                   isEmail: Bool = false,
-                  isPassword: Bool = false,
                   isPresented: Bool = false,
                   service: AccountSettingsService) -> ImmuTableRowControllerGenerator
     {
@@ -16,7 +15,6 @@ extension SettingsController {
                                                                        changeType: changeType,
                                                                        hint: hint,
                                                                        isEmail: isEmail,
-                                                                       isPassword: isPassword,
                                                                        service: service)
             
             if isPresented {
@@ -31,7 +29,6 @@ extension SettingsController {
                                    changeType: AccountSettingsChangeWithString,
                                    hint: String? = nil,
                                    isEmail: Bool = false,
-                                   isPassword: Bool = false,
                                    service: AccountSettingsService) -> SettingsTextViewController
     {
         let title = row.title
@@ -41,7 +38,6 @@ extension SettingsController {
 
         controller.title = title
         controller.isEmail = isEmail
-        controller.isPassword = isPassword
         controller.onValueChanged = {
             value in
 
