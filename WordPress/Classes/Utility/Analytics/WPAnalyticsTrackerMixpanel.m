@@ -840,17 +840,17 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatLoginFailedToGuessXMLRPC:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Failed To Guess XMLRPC"];
             break;
+        case WPAnalyticsStatLoginAutoFillCredentialsFilled:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Auto Fill Credentials Filled"];
+            break;
+        case WPAnalyticsStatLoginAutoFillCredentialsUpdated:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Auto Fill Credentials Updated"];
+            break;
         case WPAnalyticsStatTwoFactorSentSMS:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Two Factor - Sent Verification Code SMS"];
             break;
         case WPAnalyticsStatTwoFactorCodeRequested:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Two Factor - Requested Verification Code"];
-            break;
-        case WPAnalyticsStatSafariCredentialsLoginFilled:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Safari Credentials - Login Filled"];
-            break;
-        case WPAnalyticsStatSafariCredentialsLoginUpdated:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Safari Credentials - Login Updated"];
             break;
         case WPAnalyticsStatShortcutLogIn:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Log In"];
