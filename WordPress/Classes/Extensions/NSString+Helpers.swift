@@ -3,17 +3,13 @@ import Foundation
 
 extension NSString
 {
-    /// Returns the string's hostname
-    ///
-    /// -   returns: hostname, if any
+    /// Returns the string's hostname, if any
     ///
     public func hostname() -> String? {
         return NSURLComponents(string: self as String)?.host
     }
     
-    /// Splits the lines contained in the current string
-    ///
-    /// -   returns: the unique values in a NSSet instance
+    /// Splits the lines contained in the current string, and returns the unique values in a NSSet instance
     ///
     public func uniqueStringComponentsSeparatedByNewline() -> NSSet {
         let components = componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())
@@ -26,9 +22,7 @@ extension NSString
         return uniqueSet
     }
     
-    /// Validates the current string.
-    ///
-    /// -   returns: true if passes validation
+    /// Validates the current string. Returns true if passes validation
     ///
     public func isValidEmail() -> Bool {
         // From http://stackoverflow.com/a/3638271/1379066
