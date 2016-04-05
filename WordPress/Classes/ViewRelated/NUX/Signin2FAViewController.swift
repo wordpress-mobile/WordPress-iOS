@@ -43,6 +43,7 @@ import WordPressShared
 
         configureSendCodeButtonText()
         configureStatusMessage("")
+        configureSubmitButton(false)
     }
 
 
@@ -78,12 +79,11 @@ import WordPressShared
         let string = NSLocalizedString("Enter the code on your authenticator app or <u>send the code via text message</u>.",
                                        comment: "Message displayed when a verification code is needed")
         let options = [
-            NSFontAttributeName : WPNUXUtility.confirmationLabelFont(),
-            NSForegroundColorAttributeName: UIColor.whiteColor(),
             NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType
         ]
 
-        let attributedCode = try! NSMutableAttributedString(data: string.dataUsingEncoding(NSUTF8StringEncoding)!,
+        let styledString = "<style>body {font-family: sans-serif; font-size:14px; color: #ffffff;}</style>" + string
+        let attributedCode = try! NSMutableAttributedString(data: styledString.dataUsingEncoding(NSUTF8StringEncoding)!,
                                                             options: options,
                                                             documentAttributes: nil)
 
@@ -105,6 +105,8 @@ import WordPressShared
     ///
     func configureStatusMessage(message: String) {
         statusLabel.text = message
+
+        sendCodeButton.hidden = !message.isEmpty
     }
 
 
