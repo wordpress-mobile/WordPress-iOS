@@ -125,7 +125,7 @@
                                                 newRect.size.width,
                                                 newRect.size.height,
                                                 CGImageGetBitsPerComponent(imageRef),
-                                                0,
+                                                CGImageGetBytesPerRow(imageRef),
                                                 CGImageGetColorSpace(imageRef),
                                                 bitmapInfo);
 

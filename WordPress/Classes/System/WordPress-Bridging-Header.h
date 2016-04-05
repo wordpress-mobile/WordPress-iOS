@@ -47,6 +47,7 @@
 #import "OnePasswordFacade.h"
 
 #import "PhotonImageURLHelper.h"
+#import "PostContentProvider.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
 

@@ -100,7 +100,7 @@ NSString * const CommentStatusDraft = @"draft";
 }
 
 
-#pragma mark - WPContentViewProvider protocol
+#pragma mark - PostContentProvider protocol
 
 - (BOOL)isPrivateContent
 {
