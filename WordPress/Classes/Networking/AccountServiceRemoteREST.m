@@ -158,6 +158,31 @@ static NSString * const UserDictionaryDateKey = @"date";
           }];
 }
 
+- (void)requestWPComAuthLinkForEmail:(NSString *)email success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    NSAssert([email length] > 0, @"Needs an email address.");
+
+    NSString *path = [self pathForEndpoint:@"auth/send-login-email"
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+
+    [self.api POST:path
+        parameters:@{
+                     @"email": email,
+                     @"client_id": [WordPressComApiCredentials client],
+                     @"client_secret": [WordPressComApiCredentials secret],
+                     }
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+
 #pragma mark - Private Methods
 
 - (RemoteUser *)remoteUserFromDictionary:(NSDictionary *)dictionary
