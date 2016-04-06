@@ -3,7 +3,7 @@
 
 @implementation WPNUXBackButton
 
-// There's some extra space in the btn-back and btn-back-tap images to improve the
+// There's some extra space in the back button images to improve the
 // tap area of this image and in order for sizeToFit to work correctly we have to take
 // this extra space into account.
 static CGFloat const WPNUXBackButtonExtraHorizontalWidthForSpace    = 30;
