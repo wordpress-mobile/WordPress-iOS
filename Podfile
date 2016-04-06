@@ -19,7 +19,7 @@ target 'WordPress', :exclusive => true do
   pod 'DTCoreText',   '1.6.16'
   pod 'FormatterKit', '~> 1.8.0'
   pod 'Helpshift', '~> 5.5.0'
-  pod 'HockeySDK', '~>3.8.0'
+  pod 'HockeySDK', '~> 3.8.0', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'Lookback', '1.1.4', :configurations => ['Release-Internal', 'Release-Alpha']
   pod 'MRProgress', '~>0.7.0'
   pod 'Mixpanel', '2.9.4'
@@ -33,7 +33,6 @@ target 'WordPress', :exclusive => true do
   # ----------------------------
   # Forked third party libraries
   # ----------------------------
-  pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
   pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '87bae8c770cfc4e053119f2d00f76b2f653b26ce'
 
   # --------------------
@@ -43,12 +42,12 @@ target 'WordPress', :exclusive => true do
   pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'NSURL+IDN', '0.3'
-  pod 'Simperium', '0.8.12'
+  pod 'Simperium', '0.8.15'
   pod 'WPMediaPicker', '~> 0.9.0'
   pod 'WordPress-iOS-Editor', '1.2'
   pod 'WordPress-iOS-Shared', '0.5.3'
   pod 'WordPressApi', '0.4.0'
-  pod 'WordPressCom-Analytics-iOS', '0.1.5'
+  pod 'WordPressCom-Analytics-iOS', '0.1.6'
   pod 'WordPressCom-Stats-iOS/UI', '0.6.3'
   pod 'wpxmlrpc', '~> 0.8'
 end
@@ -73,10 +72,6 @@ target :WordPressTest, :exclusive => true do
   pod 'Nimble', '~> 3.2.0'
   pod 'RxSwift', '~> 2.3.1'
   pod 'RxTests', '~> 2.3.1'
-end
-
-target 'UITests', :exclusive => true do
-    pod 'KIF/IdentifierTests', '~>3.1'
 end
 
 post_install do |installer_representation|
