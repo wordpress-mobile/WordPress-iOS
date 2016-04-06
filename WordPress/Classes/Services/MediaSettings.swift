@@ -8,6 +8,8 @@ protocol MediaSettingsStorage {
 class MediaSettings: NSObject {
     // MARK: - Constants
     private let maxImageSizeKey = "SavedMaxImageSizeSetting"
+    private let removeLocationKey = "SavedRemoveLocationSetting"
+
     private let minImageDimension = 150
     private let maxImageDimension = 3000
 
@@ -63,6 +65,19 @@ class MediaSettings: NSObject {
         set {
             let size = newValue.clamp(min: minImageDimension, max: maxImageDimension)
             storage.setValue(size, forKey: maxImageSizeKey)
+        }
+    }
+
+    var removeLocationSetting: Bool {
+        get {
+            if let savedRemoveLocation = storage.valueForKey(removeLocationKey) as? Bool {
+                return savedRemoveLocation
+            } else {
+                return true;
+            }
+        }
+        set {
+            storage.setValue(newValue, forKey: removeLocationKey)
         }
     }
 
