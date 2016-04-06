@@ -12,4 +12,6 @@ typedef void (^MeHeaderViewCallback)(void);
 @property (nonatomic,   copy) MeHeaderViewCallback  onGravatarPress;
 @property (nonatomic, assign) BOOL                  showsActivityIndicator;
 
+- (void)reloadGravatarImageIgnorningCache;
+
 @end
