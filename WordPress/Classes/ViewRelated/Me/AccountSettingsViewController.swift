@@ -68,6 +68,12 @@ private struct AccountSettingsController: SettingsController {
             value: Int(MediaSettings().maxImageSizeSetting),
             onChange: mediaSizeChanged())
 
+        let mediaRemoveLocation = SwitchRow(
+            title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
+            value: Bool(MediaSettings().removeLocationSetting),
+            onChange: mediaRemoveLocationChanged()
+        )
+
         let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
         let visualEditor = SwitchRow(
             title: NSLocalizedString("Visual Editor", comment: "Option to enable the visual editor"),
@@ -109,7 +115,8 @@ private struct AccountSettingsController: SettingsController {
                 ImmuTableSection(
                     headerText: mediaHeader,
                     rows: [
-                        uploadSize
+                        uploadSize,
+                        mediaRemoveLocation
                     ],
                     footerText: nil),
                 ImmuTableSection(
@@ -169,6 +176,13 @@ private struct AccountSettingsController: SettingsController {
         return {
             value in
             MediaSettings().maxImageSizeSetting = value
+        }
+    }
+
+    func mediaRemoveLocationChanged() -> Bool -> Void {
+        return {
+            value in
+            MediaSettings().removeLocationSetting = value
         }
     }
 
