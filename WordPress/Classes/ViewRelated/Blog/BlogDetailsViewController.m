@@ -528,7 +528,7 @@ NSInteger const BlogDetailAccountHideViewAdminDay = 7;
         controller = [[SharingViewController alloc] initWithBlog:self.blog];
     }
 
-    //TODO: (@aerych, 2016-01-14) Add tracker for sharing feature
+    [WPAppAnalytics track:WPAnalyticsStatOpenedSharingManagement withBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
