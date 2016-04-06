@@ -92,6 +92,12 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 - (void)setGravatarImage:(UIImage *)gravatarImage
 {
     self.gravatarImageView.image = gravatarImage;
+    
+    // Note:
+    // We need to update AFNetworking's internal cache. Otherwise, any upcoming query to refresh the gravatar
+    // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
+    //
+    [self.gravatarImageView cacheGravatarImage:gravatarImage gravatarRating:GravatarRatingX emailAddress:self.gravatarEmail];
 }
 
 - (BOOL)showsActivityIndicator
@@ -108,6 +114,20 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
         [_activityIndicator stopAnimating];
     }
 }
+
+- (void)reloadGravatarImageIgnorningCache
+{
+    // Note:
+    // Since NSURLCache is broken, since iOS 8 (Ref. http://blog.airsource.co.uk/2014/10/11/nsurlcache-ios8-broken/)
+    // we can't just clean up the stored response for a URL. Instead... we need to force a reload.
+    // Thanks Apple, we also love you.
+    //
+    [self.gravatarImageView setImageWithGravatarEmail:self.gravatarEmail
+                                        fallbackImage:nil
+                                       gravatarRating:GravatarRatingX
+                                               policy:NSURLRequestReloadIgnoringLocalCacheData];
+}
+
 
 #pragma mark - Private Methods
 

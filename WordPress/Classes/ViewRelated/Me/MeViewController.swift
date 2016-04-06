@@ -85,14 +85,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     private func headerViewForAccount(account: WPAccount) -> MeHeaderView {
         headerView.displayName = account.displayName
         headerView.username = account.username
-        
-        // Note:
-        // This is a workaround to allow us display the new Gravatar, while it's being uploaded,
-        // without getting overwritten by any refresh calls.
-        //
-        if gravatarUploadInProgress == false {
-            headerView.gravatarEmail = account.email
-        }
+        headerView.gravatarEmail = account.email
 
         return headerView
     }
@@ -301,7 +294,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         service?.uploadImage(newGravatar) { [weak self] error in
             dispatch_async(dispatch_get_main_queue(), {
                 self?.gravatarUploadInProgress = false
-                self?.reloadViewModel()
+                self?.headerView.reloadGravatarImageIgnorningCache()
             })
         }
     }
