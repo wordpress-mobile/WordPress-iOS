@@ -292,12 +292,14 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     
     private func uploadGravatarImage(newGravatar: UIImage) {
         headerView.startActivityIndicator()
+        headerView.userInteractionEnabled = false
         headerView.gravatarImage = newGravatar
         
         let service = GravatarService(context: ContextManager.sharedInstance().mainContext)
         service?.uploadImage(newGravatar) { [weak self] error in
             dispatch_async(dispatch_get_main_queue(), {
                 self?.headerView.stopActivityIndicator()
+                self?.headerView.userInteractionEnabled = true
                 self?.reloadViewModel()
             })
         }
