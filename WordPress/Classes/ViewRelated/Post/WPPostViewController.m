@@ -791,7 +791,7 @@ EditImageDetailsViewControllerDelegate
         
         PostSharingController *sharingController = [[PostSharingController alloc] init];
         
-        [sharingController sharePost:post fromView:self.view inViewController:self];
+        [sharingController sharePost:post fromBarButtonItem:[self shareBarButtonItem] inViewController:self];
     }
 }
 
