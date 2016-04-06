@@ -35,8 +35,7 @@ class PlanDetailViewController: UIViewController {
                 return ImmuTable.Empty
             case .Ready(let groups):
                 return ImmuTable(sections: groups.map { group in
-                    let features = group.slugs.flatMap { PlanService<StoreKitStore>.featureForPlan(plan, withSlug: $0) }
-                    let rows: [ImmuTableRow] = features.map({ feature in
+                    let rows: [ImmuTableRow] = group.features.map({ feature in
                         return FeatureItemRow(title: feature.title, description: feature.description, iconURL: feature.iconURL)
                     })
                     return ImmuTableSection(headerText: group.title, rows: rows, footerText: nil)
