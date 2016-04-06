@@ -62,7 +62,6 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     [super viewWillAppear:animated];
     [self setupNavigationButtonsIfNeeded];
-    [self startListeningToNotifications];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -75,8 +74,6 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
-    
-    [self stopListeningToNotifications];
     [self notifyValueDidChangeIfNeeded];
 }
 
@@ -97,6 +94,8 @@ static CGFloat const HorizontalMargin = 15.0f;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                            target:self
                                                                                            action:@selector(doneButtonWasPressed:)];
+    
+    [_textField addTarget:self action:@selector(validateTextInput:) forControlEvents:UIControlEventEditingChanged];
 }
 
 - (BOOL)shouldDisplayNavigationButtons
@@ -115,24 +114,6 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     [self notifyValueDidChangeIfNeeded];
     [self dismissViewController];
-}
-
-
-#pragma mark - Notifications
-
-- (void)startListeningToNotifications
-{
-    if (self.shouldDisplayNavigationButtons == false) {
-        return;
-    }
-    
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(validateTextInput:) name:UITextFieldTextDidChangeNotification object:_textField];
-}
-
-- (void)stopListeningToNotifications
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
