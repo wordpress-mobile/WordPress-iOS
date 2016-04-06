@@ -208,6 +208,8 @@
     // Although rare, TLDs can have email too
     XCTAssertTrue([@"koke@com" isValidEmail]);
     
+    // Unusual but valid!
+    XCTAssertTrue([@"\"Jorge Bernal\"@example.com" isValidEmail]);
     
     // The hyphen is permitted if it is surrounded by characters, digits or hyphens,
     // although it is not to start or end a label
@@ -220,6 +222,7 @@
     
     // Now, the invalid scenario
     XCTAssertFalse([@"notavalid.email" isValidEmail]);
+    XCTAssertFalse([@"koke@@com" isValidEmail]);
 }
 
 @end
