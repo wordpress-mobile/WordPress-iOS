@@ -22,6 +22,7 @@ extension ImmuTablePresenter where Self: UIViewController {
         return {
             [unowned self] in
             let navigationController = UINavigationController(rootViewController: controllerGenerator($0))
+            navigationController.modalPresentationStyle = .FormSheet
             self.presentViewController(navigationController, animated: true, completion: nil)
         }
     }
