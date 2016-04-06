@@ -94,14 +94,19 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     self.gravatarImageView.image = gravatarImage;
 }
 
-- (void)startActivityIndicator
+- (BOOL)showsActivityIndicator
 {
-    [_activityIndicator startAnimating];
+    // Note: ActivityIndicator will be visible only while it's beign animated
+    return [_activityIndicator isAnimating];
 }
 
-- (void)stopActivityIndicator
+- (void)setShowsActivityIndicator:(BOOL)showsActivityIndicator
 {
-    [_activityIndicator stopAnimating];
+    if (showsActivityIndicator) {
+        [_activityIndicator startAnimating];
+    } else {
+        [_activityIndicator stopAnimating];
+    }
 }
 
 #pragma mark - Private Methods
