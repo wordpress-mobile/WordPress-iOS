@@ -1,4 +1,5 @@
 import UIKit
+import WordPressComAnalytics
 import WordPressShared
 
 /// Manages which sharing button are displayed, their order, and other settings 
@@ -190,6 +191,11 @@ import WordPressShared
                 switchCell.onChange = { newValue in
                     self.blog.settings.sharingDisabledReblogs = !newValue
                     self.saveBlogSettingsChanges(false)
+
+                    let properties: [NSObject: AnyObject] = [
+                        "checked": Int(newValue)
+                    ]
+                    WPAppAnalytics.track(.SharingButtonShowReblogChanged, withProperties:properties, withBlog: self.blog)
                 }
             }
         }
@@ -525,10 +531,16 @@ import WordPressShared
 
         let context = ContextManager.sharedInstance().mainContext
         let service = BlogService(managedObjectContext: context)
-        service.updateSettingsForBlog(self.blog, success: nil, failure: { [weak self] (error: NSError!) in
-            DDLogSwift.logError(error.description)
-            self?.showErrorSyncingMessage(error)
-        })
+        let dotComID = blog.dotComID
+        service.updateSettingsForBlog(
+            self.blog,
+            success: {
+                WPAppAnalytics.track(.SharingButtonSettingsChanged, withBlogID: dotComID)
+            },
+            failure: { [weak self] (error: NSError!) in
+                DDLogSwift.logError(error.description)
+                self?.showErrorSyncingMessage(error)
+            })
     }
 
 
@@ -889,6 +901,7 @@ import WordPressShared
         }
 
         self.saveButtonChanges(false)
+        WPAppAnalytics.track(.SharingButtonOrderChanged, withBlog: blog)
     }
 
 
