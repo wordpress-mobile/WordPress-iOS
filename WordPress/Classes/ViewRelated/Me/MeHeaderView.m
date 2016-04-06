@@ -224,8 +224,12 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     if (sender.state == UIGestureRecognizerStateEnded) {
         [_gravatarImageView normalizeAnimation];
         
-        if (self.onPress) {
-            self.onPress();
+        // Hit the callback only if we're still within Gravatar Bounds
+        CGPoint touchInGravatar = [sender locationInView:_gravatarImageView];
+        BOOL gravatarContainsTouch = CGRectContainsPoint(_gravatarImageView.bounds, touchInGravatar);
+
+        if (self.onGravatarPress && gravatarContainsTouch) {
+            self.onGravatarPress();
         }
     }
 }

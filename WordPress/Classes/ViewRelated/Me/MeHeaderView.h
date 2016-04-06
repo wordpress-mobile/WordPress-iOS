@@ -9,7 +9,7 @@ typedef void (^MeHeaderViewCallback)(void);
 @property (nonatomic,   copy) NSString              *username;
 @property (nonatomic,   copy) NSString              *gravatarEmail;
 @property (nonatomic, strong) UIImage               *gravatarImage;
-@property (nonatomic,   copy) MeHeaderViewCallback  onPress;
+@property (nonatomic,   copy) MeHeaderViewCallback  onGravatarPress;
 
 - (void)startActivityIndicator;
 - (void)stopActivityIndicator;
