@@ -1,7 +1,6 @@
 #import "LocalCoreDataService.h"
 
 @class Blog;
-@class WPAccount;
 @class Menu;
 @class MenuLocation;
 @class MenuItem;
