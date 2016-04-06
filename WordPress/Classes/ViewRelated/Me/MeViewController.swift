@@ -36,6 +36,9 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        // Preventing MultiTouch Scenarios
+        view.exclusiveTouch = true
+        
         ImmuTable.registerRows([
             NavigationItemRow.self,
             BadgeNavigationItemRow.self,
