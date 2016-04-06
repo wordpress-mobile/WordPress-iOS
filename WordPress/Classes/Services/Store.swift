@@ -70,6 +70,10 @@ class StoreCoordinator<S: Store> {
     }
 }
 
+enum StoreError: ErrorType {
+    case UnavailableOnSimulator
+}
+
 protocol Store {
     associatedtype ProductType: Product
     func getProductsWithIdentifiers(identifiers: Set<String>, success: [ProductType] -> Void, failure: ErrorType -> Void)
@@ -95,6 +99,7 @@ extension Store {
                     })
                     success(pricedPlans)
                 } catch let error {
+                    DDLogSwift.logError("Error loading plan prices: \(error)")
                     failure(error)
                 }
             },
@@ -106,14 +111,18 @@ extension Store {
 class StoreKitStore: Store {
     typealias ProductType = SKProduct
     func getProductsWithIdentifiers(identifiers: Set<String>, success: [ProductType] -> Void, failure: ErrorType -> Void) {
-        let request = SKProductsRequest(productIdentifiers: identifiers)
-        let delegate = ProductRequestDelegate(onSuccess: success, onError: failure)
-        delegate.retainUntilFinished(request)
-        delegate.retainUntilFinished(delegate)
+        #if (arch(i386) || arch(x86_64))
+            failure(StoreError.UnavailableOnSimulator)
+        #else
+            let request = SKProductsRequest(productIdentifiers: identifiers)
+            let delegate = ProductRequestDelegate(onSuccess: success, onError: failure)
+            delegate.retainUntilFinished(request)
+            delegate.retainUntilFinished(delegate)
 
-        request.delegate = delegate
+            request.delegate = delegate
 
-        request.start()
+            request.start()
+        #endif
     }
 
     // FIXME @koke 2016-03-15

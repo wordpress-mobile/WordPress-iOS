@@ -72,7 +72,7 @@ struct PlanListRow: ImmuTableRow {
 enum PlanListViewModel {
     case Loading
     case Ready(SitePricedPlans)
-    case Error(String)
+    case Error(String?)
 
     var noResultsViewModel: WPNoResultsView.Model? {
         switch self {
@@ -82,10 +82,11 @@ enum PlanListViewModel {
             )
         case .Ready(_):
             return nil
-        case .Error(_):
+        case .Error(let customMessage):
+            let message = customMessage ?? NSLocalizedString("There was an error loading plans", comment: "")
             return WPNoResultsView.Model(
                 title: NSLocalizedString("Oops", comment: ""),
-                message: NSLocalizedString("There was an error loading plans", comment: ""),
+                message: message,
                 buttonTitle: NSLocalizedString("Contact support", comment: "")
             )
         }
@@ -207,7 +208,16 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
                 self.viewModel = .Ready(result)
             },
             failure: { error in
-                self.viewModel = .Error(String(error))
+                let message: String? = {
+                    switch error {
+                    case StoreError.UnavailableOnSimulator:
+                        // Not localized as it's only helpful for development
+                        return "Plans are not available on the Simulator"
+                    default:
+                        return nil
+                    }
+                }()
+                self.viewModel = .Error(message)
             }
         )
     }
