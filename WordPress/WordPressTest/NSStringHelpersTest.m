@@ -222,7 +222,6 @@
     
     // Now, the invalid scenario
     XCTAssertFalse([@"notavalid.email" isValidEmail]);
-    XCTAssertFalse([@"koke@@com" isValidEmail]);
 }
 
 @end
