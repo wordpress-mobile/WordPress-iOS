@@ -187,6 +187,54 @@
                 failure:failureBlock];
 }
 
+- (void)updateMedia:(Media *)media
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    NSManagedObjectID *mediaObjectID = media.objectID;
+    void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
+        [self.managedObjectContext performBlock:^{
+            NSError * error = nil;
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
+            if (!mediaInContext){
+                DDLogError(@"Error updateing media object: %@", error);
+                if (failure){
+                    failure(error);
+                }
+                return;
+            }
+
+            [self updateMedia:mediaInContext withRemoteMedia:media];
+            mediaInContext.remoteStatus = MediaRemoteStatusSync;
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                if (success) {
+                    success();
+                }
+            }];
+        }];
+    };
+    void (^failureBlock)(NSError *error) = ^(NSError *error) {
+        [self.managedObjectContext performBlock:^{
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+            if (mediaInContext) {
+                mediaInContext.remoteStatus = MediaRemoteStatusFailed;
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
+            if (failure) {
+                failure([self translateMediaUploadError:error]);
+            }
+        }];
+    };
+
+    [remote updateMedia:remoteMedia
+                success:successBlock
+                failure:failureBlock];
+}
+
 - (NSError *)translateMediaUploadError:(NSError *)error {
     NSError *newError = error;
     if (error.domain == WordPressComApiErrorDomain) {
