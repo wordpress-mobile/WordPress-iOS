@@ -38,6 +38,27 @@ import SVProgressHUD
         return controller
     }
     
+    func sharePost(title: String, summary: String, tags: String, link: String, fromBarButtonItem anchorBarButtonItem:UIBarButtonItem, inViewController viewController:UIViewController) {
+        let controller = shareController(
+            title,
+            summary: summary,
+            tags: tags,
+            link: link)
+        
+        if !UIDevice.isPad() {
+            viewController.presentViewController(controller, animated: true, completion: nil)
+            return
+        }
+        
+        // Silly iPad popover rules.
+        controller.modalPresentationStyle = .Popover
+        viewController.presentViewController(controller, animated: true, completion: nil)
+        if let presentationController = controller.popoverPresentationController {
+            presentationController.permittedArrowDirections = .Unknown
+            presentationController.barButtonItem = anchorBarButtonItem
+        }
+    }
+    
     func sharePost(title: String, summary: String, tags: String, link: String, fromView anchorView:UIView, inViewController viewController:UIViewController) {
         let controller = shareController(
             title,
@@ -58,6 +79,17 @@ import SVProgressHUD
             presentationController.sourceView = anchorView
             presentationController.sourceRect = anchorView.bounds
         }
+    }
+    
+    func sharePost(post: Post, fromBarButtonItem anchorBarButtonItem:UIBarButtonItem, inViewController viewController:UIViewController) {
+        
+        sharePost(
+            post.titleForDisplay(),
+            summary: post.contentPreviewForDisplay(),
+            tags: post.tags,
+            link: post.permaLink,
+            fromBarButtonItem: anchorBarButtonItem,
+            inViewController: viewController)
     }
     
     func sharePost(post: Post, fromView anchorView:UIView, inViewController viewController:UIViewController) {
