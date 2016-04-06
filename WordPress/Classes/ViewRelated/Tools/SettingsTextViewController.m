@@ -231,6 +231,7 @@ static CGFloat const HorizontalMargin = 15.0f;
     
     if (newMode == SettingsTextModesPassword) {
         requiresSecureTextEntry = YES;
+    } else if (newMode == SettingsTextModesEmail) {
         keyboardType = UIKeyboardTypeEmailAddress;
     }
     
