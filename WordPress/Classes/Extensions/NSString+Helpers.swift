@@ -25,7 +25,7 @@ extension NSString
     /// Validates the current string. Returns true if passes validation
     ///
     public func isValidEmail() -> Bool {
-        let emailRegex = "^[^@]+@[^@]+$"
+        let emailRegex = "^.+@.+$"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         
         return emailTest.evaluateWithObject(self)
