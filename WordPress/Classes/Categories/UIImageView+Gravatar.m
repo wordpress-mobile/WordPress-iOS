@@ -3,6 +3,9 @@
 #import "NSString+Helpers.h"
 #import "Constants.h"
 
+
+#pragma mark - Constants
+
 NSInteger const BlavatarDefaultSize = 40;
 NSInteger const GravatarDefaultSize = 80;
 
@@ -15,7 +18,11 @@ NSString *const GravatarRatingPG = @"pg";
 NSString *const GravatarRatingR = @"r";
 NSString *const GravatarRatingX = @"x";
 
+
+#pragma mark - 
 @implementation UIImageView (Gravatar)
+
+#pragma mark - Gravatar Helpers
 
 - (void)setImageWithGravatarEmail:(NSString *)emailAddress
 {
@@ -24,12 +31,7 @@ NSString *const GravatarRatingX = @"x";
 
 - (void)setImageWithGravatarEmail:(NSString *)emailAddress gravatarRating:(NSString *)rating
 {
-    static UIImage *gravatarDefaultImage;
-    if (gravatarDefaultImage == nil) {
-        gravatarDefaultImage = [UIImage imageNamed:GravatarDefault];
-    }
-
-    [self setImageWithURL:[self gravatarURLForEmail:emailAddress gravatarRating:rating] placeholderImage:gravatarDefaultImage];
+    [self setImageWithGravatarEmail:emailAddress fallbackImage:self.gravatarDefaultImage gravatarRating:rating];
 }
 
 - (void)setImageWithGravatarEmail:(NSString *)emailAddress fallbackImage:(UIImage *)fallbackImage
@@ -39,14 +41,38 @@ NSString *const GravatarRatingX = @"x";
 
 - (void)setImageWithGravatarEmail:(NSString *)emailAddress fallbackImage:(UIImage *)fallbackImage gravatarRating:(NSString *)rating
 {
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self gravatarURLForEmail:emailAddress gravatarRating:rating]];
-    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-
-    __weak UIImageView *weakSelf = self;
-    [self setImageWithURLRequest:request placeholderImage:fallbackImage success:nil failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error){
-        weakSelf.image = fallbackImage;
-    }];
+    [self setImageWithGravatarEmail:emailAddress
+                      fallbackImage:fallbackImage
+                     gravatarRating:rating
+                             policy:NSURLRequestUseProtocolCachePolicy];
+    
 }
+
+- (void)setImageWithGravatarEmail:(NSString *)emailAddress
+                    fallbackImage:(UIImage *)fallbackImage
+                   gravatarRating:(NSString *)rating
+                           policy:(NSURLRequestCachePolicy)policy
+{
+    NSURL *targetURL = [self gravatarURLForEmail:emailAddress gravatarRating:rating];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:targetURL];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    request.cachePolicy = policy;
+    
+    [self setImageWithURLRequest:request placeholderImage:fallbackImage success:nil failure:nil];
+}
+
+- (void)cacheGravatarImage:(UIImage *)gravatar gravatarRating:(NSString *)rating emailAddress:(NSString *)emailAddress
+{
+    NSURL *url = [self gravatarURLForEmail:emailAddress gravatarRating:rating];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+    
+    [[[self class] sharedImageCache] cacheImage:gravatar forRequest:request];
+}
+
+
+
+#pragma mark - Site Icon Helpers
 
 - (void)setImageWithSiteIcon:(NSString *)siteIcon
 {
@@ -65,6 +91,9 @@ NSString *const GravatarRatingX = @"x";
         [self setImageWithURL:[self blavatarURLForHost:siteIcon] placeholderImage:placeholderImage];
     }
 }
+
+
+#pragma mark - Gravatar Private Methods
 
 - (NSURL *)gravatarURLForEmail:(NSString *)email gravatarRating:(NSString *)rating
 {
@@ -89,6 +118,20 @@ NSString *const GravatarRatingX = @"x";
     return urlComponents.URL;
 }
 
+- (UIImage *)gravatarDefaultImage
+{
+    static UIImage *defaultImage;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        defaultImage = [UIImage imageNamed:GravatarDefault];
+    });
+    
+    return defaultImage;
+}
+
+
+#pragma mark - Blavatar Helpers
+
 - (NSURL *)blavatarURLForHost:(NSString *)host
 {
     return [self blavatarURLForHost:host withSize:[self sizeForBlavatarDownload]];
@@ -99,6 +142,9 @@ NSString *const GravatarRatingX = @"x";
     NSString *blavatarUrl = [NSString stringWithFormat:@"%@/%@?d=404&s=%d", WPBlavatarBaseURL, [host md5], size];
     return [NSURL URLWithString:blavatarUrl];
 }
+
+
+#pragma mark - Blavatar Private Methods
 
 - (NSURL *)blavatarURLForBlavatarURL:(NSString *)path
 {
