@@ -54,7 +54,7 @@
         mediaType = MediaTypeVideo;
     }
     
-    BOOL geoLocationEnabled = post.blog.settings.geolocationEnabled;
+    BOOL geoLocationEnabled = NO;
     
     NSInteger maxImageSize = [[MediaSettings new] imageSizeForUpload];
     CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
