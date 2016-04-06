@@ -193,15 +193,13 @@
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
     RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
-
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     NSManagedObjectID *mediaObjectID = media.objectID;
     void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
         [self.managedObjectContext performBlock:^{
             NSError * error = nil;
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
             if (!mediaInContext){
-                DDLogError(@"Error updateing media object: %@", error);
+                DDLogError(@"Error updating media object: %@", error);
                 if (failure){
                     failure(error);
                 }
@@ -209,7 +207,6 @@
             }
 
             [self updateMedia:mediaInContext withRemoteMedia:media];
-            mediaInContext.remoteStatus = MediaRemoteStatusSync;
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (success) {
                     success();
@@ -221,7 +218,6 @@
         [self.managedObjectContext performBlock:^{
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
             if (mediaInContext) {
-                mediaInContext.remoteStatus = MediaRemoteStatusFailed;
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
             if (failure) {
