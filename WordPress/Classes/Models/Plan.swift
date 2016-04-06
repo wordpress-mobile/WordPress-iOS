@@ -9,11 +9,11 @@ typealias PlanID = Int
 /// - seealso: [WordPress.com Store](https://store.wordpress.com/plans/)
 struct Plan {
     let id: PlanID
-    let slug: String
     let title: String
     let fullTitle: String
     let description: String
     let productIdentifier: String?
+    let featureGroups: [PlanFeatureGroupPlaceholder]
 }
 
 extension Plan {
@@ -56,27 +56,27 @@ final class PlansBridge: NSObject {
 let defaultPlans: [Plan] = [
     Plan(
         id: 1,
-        slug: "free",
         title: NSLocalizedString("Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
         fullTitle: NSLocalizedString("WordPress.com Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
         description: NSLocalizedString("Anyone creating a simple blog or site.", comment: "Description of the Free plan"),
-        productIdentifier: nil
+        productIdentifier: nil,
+        featureGroups: []
     ),
     Plan(
         id: 1003,
-        slug: "premium",
         title: NSLocalizedString("Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
         fullTitle: NSLocalizedString("WordPress.com Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
         description: NSLocalizedString("Serious bloggers and creatives.", comment: "Description of the Premium plan"),
-        productIdentifier: "com.wordpress.test.premium.subscription.1year"
+        productIdentifier: "com.wordpress.test.premium.subscription.1year",
+        featureGroups: []
     ),
     Plan(
         id: 1008,
-        slug: "business",
         title: NSLocalizedString("Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
         fullTitle: NSLocalizedString("WordPress.com Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
         description: NSLocalizedString("Business websites and ecommerce.", comment: "Description of the Business plan"),
-        productIdentifier: "com.wordpress.test.business.subscription.1year"
+        productIdentifier: "com.wordpress.test.business.subscription.1year",
+        featureGroups: []
     ),
 ]
 
@@ -93,6 +93,21 @@ extension Array where Element: Identifiable {
 
 // Icons
 extension Plan {
+    // Temporary hardcoded map
+    // We need to store plan image URLs and use those
+    // https://github.com/wordpress-mobile/WordPress-iOS/issues/5099
+    var slug: String {
+        switch id {
+        case 1:
+            return "free"
+        case 1003:
+            return "premium"
+        case 1008:
+            return "business"
+        default:
+            return ""
+        }
+    }
     /// The name of the image that represents the plan when it's not the current plan
     var imageName: String {
         return "plan-\(slug)"
@@ -121,17 +136,12 @@ struct PlanFeature {
     let iconURL: NSURL
 }
 
-struct PlanFeatureGroup {
+struct PlanFeatureGroupPlaceholder {
     let title: String?
     let slugs: [String]
-    
-    static private var groups = [Plan: [PlanFeatureGroup]]()
-    
-    static func groupsForPlan(plan: Plan) -> [PlanFeatureGroup]? {
-        return groups[plan]
-    }
-    
-    static func setGroups(groups: [PlanFeatureGroup], forPlan plan: Plan) {
-        self.groups[plan] = groups
-    }
+}
+
+struct PlanFeatureGroup {
+    let title: String?
+    let features: [PlanFeature]
 }
