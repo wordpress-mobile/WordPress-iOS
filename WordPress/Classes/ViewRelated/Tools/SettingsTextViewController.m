@@ -74,7 +74,10 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
-    [self notifyValueDidChangeIfNeeded];
+    
+    if (self.isModal == NO) {
+        [self notifyValueDidChange];
+    }
 }
 
 
@@ -112,7 +115,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (IBAction)doneButtonWasPressed:(id)sender
 {
-    [self notifyValueDidChangeIfNeeded];
+    [self notifyValueDidChange];
     [self dismissViewController];
 }
 
@@ -218,12 +221,16 @@ static CGFloat const HorizontalMargin = 15.0f;
     }
 }
 
-- (void)notifyValueDidChangeIfNeeded
+- (void)notifyValueDidChange
 {
     if (self.onValueChanged == nil || [self.textField.text isEqualToString:self.text]) {
         return;
     }
     
+    // `onValueChanged` should only be called *once*. We'll clean up its reference, in order to prevent double call,
+    // in the scenario in which the VC is in a NavigationController stack, and gets dismissed thru the keyboard.
+    // This is done for simplicity reasons, instead of adding yet another boolean to track state.
+    //
     self.onValueChanged(self.textField.text);
     self.onValueChanged = nil;
 }
