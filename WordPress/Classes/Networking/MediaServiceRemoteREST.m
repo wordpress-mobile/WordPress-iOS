@@ -186,6 +186,32 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     [self.api.operationQueue addOperation:operation];
 }
 
+- (void)updateMedia:(RemoteMedia *)media
+            success:(void (^)(RemoteMedia *remoteMedia))success
+            failure:(void (^)(NSError *error))failure
+{
+    NSParameterAssert([media isKindOfClass:[RemoteMedia class]]);
+
+    NSString *path = [NSString stringWithFormat:@"sites/%@/media/%@", self.siteID, media.mediaID];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
+
+    NSDictionary *parameters = [self parametersFromRemoteMedia:media];
+
+    [self.api POST:requestUrl
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               RemoteMedia *media = [self remoteMediaFromJSONDictionary:responseObject];
+               if (success) {
+                   success(media);
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
 - (NSArray *)remoteMediaFromJSONArray:(NSArray *)jsonMedia
 {
     return [jsonMedia wp_map:^id(NSDictionary *json) {
@@ -216,5 +242,26 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     return remoteMedia;
 }
 
+- (NSDictionary *)parametersFromRemoteMedia:(RemoteMedia *)remoteMedia
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+
+    if (remoteMedia.postID != nil) {
+        parameters[@"parent_id"] = remoteMedia.postID;
+    }
+    if (remoteMedia.title != nil) {
+        parameters[@"title"] = remoteMedia.title;
+    }
+
+    if (remoteMedia.caption != nil) {
+        parameters[@"caption"] = remoteMedia.caption;
+    }
+
+    if (remoteMedia.descriptionText != nil) {
+        parameters[@"description"] = remoteMedia.descriptionText;
+    }
+
+    return [NSDictionary dictionaryWithDictionary:parameters];
+}
 
 @end

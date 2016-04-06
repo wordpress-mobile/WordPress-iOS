@@ -184,6 +184,16 @@
     [self.api.operationQueue addOperation:operation];
 }
 
+- (void)updateMedia:(RemoteMedia *)media
+            success:(void (^)(RemoteMedia *remoteMedia))success
+            failure:(void (^)(NSError *error))failure
+{
+    //HACK: Sergio Estevao: 2016-04-06 this option doens't exist on XML-RPC so we will always say that all was good
+    if (success) {
+        success(media);
+    }
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)remoteMediaFromXMLRPCArray:(NSArray *)xmlrpcArray
