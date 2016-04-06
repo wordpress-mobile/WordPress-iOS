@@ -55,7 +55,7 @@
     }
 
     MediaSettings *mediaSettings = [MediaSettings new];
-    BOOL stripGeoLocation = !mediaSettings.removeLocationSetting;
+    BOOL stripGeoLocation = mediaSettings.removeLocationSetting;
     
     NSInteger maxImageSize = [mediaSettings imageSizeForUpload];
     CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
