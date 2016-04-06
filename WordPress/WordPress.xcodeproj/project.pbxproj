@@ -39,6 +39,11 @@
 		082AB9D91C4EEEF4000CA523 /* PostTagService.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9D81C4EEEF4000CA523 /* PostTagService.m */; };
 		082AB9DD1C4F035E000CA523 /* PostTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 082AB9DC1C4F035E000CA523 /* PostTag.m */; };
 		08472A201C727E020040769D /* PostServiceOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08472A1F1C727E020040769D /* PostServiceOptions.m */; };
+		0861CCF01CB5A3C5007505DB /* RemoteMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 0861CCEB1CB5A3C5007505DB /* RemoteMenu.m */; };
+		0861CCF11CB5A3C5007505DB /* RemoteMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 0861CCED1CB5A3C5007505DB /* RemoteMenuItem.m */; };
+		0861CCF21CB5A3C5007505DB /* RemoteMenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0861CCEF1CB5A3C5007505DB /* RemoteMenuLocation.m */; };
+		0861CCF51CB5A4A5007505DB /* MenusServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 0861CCF41CB5A4A5007505DB /* MenusServiceRemote.m */; };
+		0861CCF81CB5A4E8007505DB /* MenusService.m in Sources */ = {isa = PBXBuildFile; fileRef = 0861CCF71CB5A4E8007505DB /* MenusService.m */; };
 		08A6FD9C1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A6FD9B1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m */; };
 		08B6D6F31C8F7DCE0052C52B /* PostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B6D6F11C8F7DCE0052C52B /* PostType.m */; };
 		08B6D6F91C8F7EF20052C52B /* RemotePostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B6D6F81C8F7EF20052C52B /* RemotePostType.m */; };
@@ -836,6 +841,16 @@
 		082AB9DC1C4F035E000CA523 /* PostTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTag.m; sourceTree = "<group>"; };
 		08472A1E1C7273FA0040769D /* PostServiceOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostServiceOptions.h; sourceTree = "<group>"; };
 		08472A1F1C727E020040769D /* PostServiceOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceOptions.m; sourceTree = "<group>"; };
+		0861CCEA1CB5A3C5007505DB /* RemoteMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteMenu.h; path = "Remote Objects/RemoteMenu.h"; sourceTree = "<group>"; };
+		0861CCEB1CB5A3C5007505DB /* RemoteMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteMenu.m; path = "Remote Objects/RemoteMenu.m"; sourceTree = "<group>"; };
+		0861CCEC1CB5A3C5007505DB /* RemoteMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteMenuItem.h; path = "Remote Objects/RemoteMenuItem.h"; sourceTree = "<group>"; };
+		0861CCED1CB5A3C5007505DB /* RemoteMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteMenuItem.m; path = "Remote Objects/RemoteMenuItem.m"; sourceTree = "<group>"; };
+		0861CCEE1CB5A3C5007505DB /* RemoteMenuLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteMenuLocation.h; path = "Remote Objects/RemoteMenuLocation.h"; sourceTree = "<group>"; };
+		0861CCEF1CB5A3C5007505DB /* RemoteMenuLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteMenuLocation.m; path = "Remote Objects/RemoteMenuLocation.m"; sourceTree = "<group>"; };
+		0861CCF31CB5A4A5007505DB /* MenusServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusServiceRemote.h; sourceTree = "<group>"; };
+		0861CCF41CB5A4A5007505DB /* MenusServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemote.m; sourceTree = "<group>"; };
+		0861CCF61CB5A4E8007505DB /* MenusService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenusService.h; sourceTree = "<group>"; };
+		0861CCF71CB5A4E8007505DB /* MenusService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusService.m; sourceTree = "<group>"; };
 		08A6FD9A1C5960AB00AC33E4 /* RemoteTaxonomyPaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteTaxonomyPaging.h; path = "Remote Objects/RemoteTaxonomyPaging.h"; sourceTree = "<group>"; };
 		08A6FD9B1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteTaxonomyPaging.m; path = "Remote Objects/RemoteTaxonomyPaging.m"; sourceTree = "<group>"; };
 		08B6D6F01C8F7DCE0052C52B /* PostType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostType.h; sourceTree = "<group>"; };
@@ -2758,6 +2773,8 @@
 				E149D64B19349E69006A843D /* MediaServiceRemoteREST.m */,
 				E149D64C19349E69006A843D /* MediaServiceRemoteXMLRPC.h */,
 				E149D64D19349E69006A843D /* MediaServiceRemoteXMLRPC.m */,
+				0861CCF31CB5A4A5007505DB /* MenusServiceRemote.h */,
+				0861CCF41CB5A4A5007505DB /* MenusServiceRemote.m */,
 				B5EFB1C41B31BAA2007608A3 /* NotificationsServiceRemote.swift */,
 				E166FA211BB1359E00374B5B /* PeopleRemote.swift */,
 				93D6D6461924FDAD00A4F44A /* TaxonomyServiceRemote.h */,
@@ -3142,6 +3159,8 @@
 				FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */,
 				5DA3EE141925090A00294E0B /* MediaService.h */,
 				5DA3EE151925090A00294E0B /* MediaService.m */,
+				0861CCF61CB5A4E8007505DB /* MenusService.h */,
+				0861CCF71CB5A4E8007505DB /* MenusService.m */,
 				E1C5457D1C6B962D001CEB0E /* MediaSettings.swift */,
 				B5EFB1C11B31B98E007608A3 /* NotificationsService.swift */,
 				E1209FA31BB4978B00D69778 /* PeopleService.swift */,
@@ -3905,6 +3924,12 @@
 				E1B289DA19F7AF7000DB0707 /* RemoteBlog.m */,
 				FF3DD6BF19F2B77A003A52CB /* RemoteMedia.h */,
 				FF3DD6BD19F2B6B3003A52CB /* RemoteMedia.m */,
+				0861CCEA1CB5A3C5007505DB /* RemoteMenu.h */,
+				0861CCEB1CB5A3C5007505DB /* RemoteMenu.m */,
+				0861CCEC1CB5A3C5007505DB /* RemoteMenuItem.h */,
+				0861CCED1CB5A3C5007505DB /* RemoteMenuItem.m */,
+				0861CCEE1CB5A3C5007505DB /* RemoteMenuLocation.h */,
+				0861CCEF1CB5A3C5007505DB /* RemoteMenuLocation.m */,
 				B52D29A41B66BEB70010BD3D /* RemoteNotificationSettings.swift */,
 				E6E27D5F1C613B3C0063F821 /* RemoteSharingButton.swift */,
 				5DED0E121B42E3E400431FCD /* RemoteSourcePostAttribution.h */,
@@ -4905,6 +4930,7 @@
 				5D7DEA2919D488DD0032EE77 /* WPStyleGuide+ReaderComments.swift in Sources */,
 				E1D86E691B2B414300DD2192 /* WordPress-32-33.xcmappingmodel in Sources */,
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
+				0861CCF21CB5A3C5007505DB /* RemoteMenuLocation.m in Sources */,
 				5D2B30B91B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift in Sources */,
 				E1C265C91BECFCDD00DC4C6B /* WPCrashlyticsLogger.m in Sources */,
 				319D6E7B19E447500013871C /* Suggestion.m in Sources */,
@@ -5062,6 +5088,7 @@
 				B587798019B799D800E57C5A /* UITableView+Helpers.swift in Sources */,
 				B587797E19B799D800E57C5A /* UIImageView+Animations.swift in Sources */,
 				E1B9128B1BB0129C003C25B9 /* WPStyleGuide+People.swift in Sources */,
+				0861CCF01CB5A3C5007505DB /* RemoteMenu.m in Sources */,
 				5D7B414719E482C9007D9EC7 /* WPRichTextImage.swift in Sources */,
 				E1703A5C1C28006B00C57FA0 /* UITableViewController+Helpers.swift in Sources */,
 				598DD1711B97985700146967 /* ThemeBrowserCell.swift in Sources */,
@@ -5122,6 +5149,7 @@
 				08CC677F1C49B65A00153AD7 /* Menu.m in Sources */,
 				BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */,
 				B532D4E9199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift in Sources */,
+				0861CCF11CB5A3C5007505DB /* RemoteMenuItem.m in Sources */,
 				B5E06E311A9CD31D00128985 /* WPURLRequest.m in Sources */,
 				E1A0FAE7162F11CF0063B098 /* UIDevice+Helpers.m in Sources */,
 				FA5C740F1C599BA7000B528C /* TableViewHeaderDetailView.swift in Sources */,
@@ -5153,10 +5181,12 @@
 				E149ABF91CA1A42000A2AD2C /* Store.swift in Sources */,
 				E116D4411C50D5F400DC5593 /* Rx.swift in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
+				0861CCF81CB5A4E8007505DB /* MenusService.m in Sources */,
 				E603C7701BC94AED00AD49D7 /* WordPress-37-38.xcmappingmodel in Sources */,
 				FF0AAE0D1A16550D0089841D /* WPMediaProgressTableViewController.m in Sources */,
 				E14200781C117A2E00B3B115 /* ManagedAccountSettings.swift in Sources */,
 				08B6D6F31C8F7DCE0052C52B /* PostType.m in Sources */,
+				0861CCF51CB5A4A5007505DB /* MenusServiceRemote.m in Sources */,
 				59A9AB351B4C33A500A433DC /* ThemeService.m in Sources */,
 				5DFA7EC11AF7CB6B0072023B /* PageListViewController.m in Sources */,
 				5D6C4B111B604190005E3C43 /* NSAttributedString+RichTextView.swift in Sources */,
