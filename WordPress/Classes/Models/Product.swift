@@ -16,12 +16,6 @@ protocol Product {
 
 extension SKProduct: Product {}
 
-extension SKProduct {
-    public override var description: String {
-        return "<SKProduct: \(productIdentifier), title: \(localizedTitle)>"
-    }
-}
-
 class MockProduct: NSObject, Product {
     let localizedDescription: String
     let localizedTitle: String
