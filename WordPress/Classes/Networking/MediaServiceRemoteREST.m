@@ -123,7 +123,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *requestUrl = [self pathForEndpoint:apiPath
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{}];
-    if ([media.postID compare:@(0)] == NSOrderedDescending) {
+    if (media.postID != nil && [media.postID compare:@(0)] == NSOrderedDescending) {
         parameters[@"attrs[0][parent_id]"] = media.postID;
     }
     NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST"
