@@ -90,7 +90,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         // This is a workaround to allow us display the new Gravatar, while it's being uploaded,
         // without getting overwritten by any refresh calls.
         //
-        if headerView.gravatarImage == nil {
+        if gravatarUploadInProgress == false {
             headerView.gravatarEmail = account.email
         }
 
@@ -294,15 +294,13 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     // MARK: - Gravatar Helpers
     
     private func uploadGravatarImage(newGravatar: UIImage) {
-        headerView.startActivityIndicator()
-        headerView.userInteractionEnabled = false
+        gravatarUploadInProgress = true
         headerView.gravatarImage = newGravatar
-        
+
         let service = GravatarService(context: ContextManager.sharedInstance().mainContext)
         service?.uploadImage(newGravatar) { [weak self] error in
             dispatch_async(dispatch_get_main_queue(), {
-                self?.headerView.stopActivityIndicator()
-                self?.headerView.userInteractionEnabled = true
+                self?.gravatarUploadInProgress = false
                 self?.reloadViewModel()
             })
         }
@@ -335,6 +333,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     }
 
     // MARK: - Private Properties
+    private var gravatarUploadInProgress = false {
+        didSet {
+            headerView.showsActivityIndicator = gravatarUploadInProgress
+            headerView.userInteractionEnabled = !gravatarUploadInProgress
+        }
+    }
     
     private lazy var headerView : MeHeaderView = {
         let headerView = MeHeaderView()
