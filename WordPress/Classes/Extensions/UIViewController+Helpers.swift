@@ -24,10 +24,4 @@ extension UIViewController
     public func isModal() -> Bool {
         return self.presentingViewController != nil
     }
-    
-    /// Determines if the current ViewController is the only one in the Navigation stack
-    ///
-    public func isRootInNavigation() -> Bool {
-        return navigationController?.viewControllers.count == 1
-    }
 }
