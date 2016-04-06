@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 
 // Renders an "Outer Ellipse Overlay", to be used on top of the Gravatar Image
