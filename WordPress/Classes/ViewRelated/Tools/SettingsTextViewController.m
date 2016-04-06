@@ -232,20 +232,14 @@ static CGFloat const HorizontalMargin = 15.0f;
 - (void)updateModeSettings:(SettingsTextModes)newMode
 {
     BOOL requiresSecureTextEntry = NO;
+    UIKeyboardType keyboardType = UIKeyboardTypeDefault;
     
-    switch (newMode) {
-        case SettingsTextModesPassword:
-        {
-            requiresSecureTextEntry = YES;
-        }
-            break;
-        default:
-        {
-            // No OP
-        }
-            break;
+    if (newMode == SettingsTextModesPassword) {
+        requiresSecureTextEntry = YES;
+        keyboardType = UIKeyboardTypeEmailAddress;
     }
     
+    self.textField.keyboardType = keyboardType;
     self.textField.secureTextEntry = requiresSecureTextEntry;
 }
 
