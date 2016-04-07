@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="18V-ZM-xlT">
-                                        <rect key="frame" x="0.0" y="166" width="600" height="222"/>
+                                        <rect key="frame" x="0.0" y="166" width="600" height="215"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="Fj6-gt-Ex5">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -56,11 +56,12 @@
                                                     <action selector="handleTextFieldDidChange:" destination="fwZ-QE-5et" eventType="editingChanged" id="LoF-5Q-Yw5"/>
                                                 </connections>
                                             </textField>
-                                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZC-xf-OAn" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="280" y="142" width="39" height="41"/>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZC-xf-OAn" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="281" y="142" width="37" height="34"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="41" id="wqw-xG-CxW"/>
+                                                    <constraint firstAttribute="height" constant="34" id="wqw-xG-CxW"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="NEXT">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -186,7 +187,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Mjx-cz-sDG">
-                                        <rect key="frame" x="0.0" y="122" width="600" height="331"/>
+                                        <rect key="frame" x="0.0" y="122" width="600" height="324"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="j7V-eN-ivW">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -245,11 +246,12 @@
                                                     <constraint firstAttribute="height" constant="132" id="F1M-fZ-NLz"/>
                                                 </constraints>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="266" y="228" width="67" height="41"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="268" y="228" width="63" height="34"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="41" id="NKL-1C-mN4"/>
+                                                    <constraint firstAttribute="height" constant="34" id="NKL-1C-mN4"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="ADD SITE">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -258,7 +260,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rvr-W4-OS1">
-                                                <rect key="frame" x="279" y="290" width="42" height="21"/>
+                                                <rect key="frame" x="279" y="283" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -361,7 +363,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ZWc-TJ-W9T">
-                                        <rect key="frame" x="0.0" y="144" width="600" height="287"/>
+                                        <rect key="frame" x="0.0" y="144" width="600" height="280"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="b8y-9Y-dkU">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -407,11 +409,12 @@
                                                     <constraint firstAttribute="height" constant="88" id="Wme-B3-0UH"/>
                                                 </constraints>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="273" y="184" width="54" height="41"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="274.5" y="184" width="51" height="34"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="41" id="H3A-PM-OJr"/>
+                                                    <constraint firstAttribute="height" constant="34" id="H3A-PM-OJr"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="SIGN IN">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -420,7 +423,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-I8-yWG">
-                                                <rect key="frame" x="279" y="246" width="42" height="21"/>
+                                                <rect key="frame" x="279" y="239" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -521,7 +524,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L68-uO-e3A">
-                                        <rect key="frame" x="0.0" y="166" width="600" height="257"/>
+                                        <rect key="frame" x="0.0" y="166" width="600" height="250"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="vv1-my-h8X">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -558,11 +561,12 @@
                                                     <action selector="handleTextFieldDidChange:" destination="bAd-Df-IzS" eventType="editingChanged" id="GF2-jv-Gg2"/>
                                                 </connections>
                                             </textField>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="275" y="140" width="50" height="41"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                                <rect key="frame" x="276.5" y="140" width="47" height="34"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="41" id="eoc-KU-71N"/>
+                                                    <constraint firstAttribute="height" constant="34" id="eoc-KU-71N"/>
                                                 </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <state key="normal" title="VERIFY">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -571,7 +575,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="309-z3-fPx" customClass="WPNUXSecondaryButton">
-                                                <rect key="frame" x="262" y="197" width="76" height="44"/>
+                                                <rect key="frame" x="262" y="190" width="76" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="fzI-rH-0f8"/>
                                                     <constraint firstAttribute="width" constant="280" id="pQI-Fa-Vwc"/>
@@ -594,7 +598,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhF-jf-Wcv">
-                                                <rect key="frame" x="279" y="208" width="42" height="21"/>
+                                                <rect key="frame" x="279" y="201" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -781,19 +785,20 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aIL-4S-0WC">
-                                <rect key="frame" x="0.0" y="228" width="600" height="81"/>
+                                <rect key="frame" x="0.0" y="231" width="600" height="74"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Get a link sent to your email to sign in instantly." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qd9-rU-gsy">
-                                        <rect key="frame" x="91" y="0.0" width="420" height="24"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get a link sent to your email to signin instantly." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CmN-ir-1YK">
+                                        <rect key="frame" x="93" y="0.0" width="414" height="24"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="262" y="40" width="77" height="41"/>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iIy-Sm-1r0" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="264" y="40" width="72" height="34"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="41" id="GRI-y6-q3i"/>
+                                            <constraint firstAttribute="height" constant="34" id="GRI-y6-q3i"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <state key="normal" title="SEND LINK">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -840,7 +845,7 @@
                         </variation>
                     </view>
                     <connections>
-                        <outlet property="label" destination="qd9-rU-gsy" id="2iZ-L4-Dnh"/>
+                        <outlet property="label" destination="CmN-ir-1YK" id="Xhc-3L-kvy"/>
                         <outlet property="sendLinkButton" destination="iIy-Sm-1r0" id="9My-fJ-l9S"/>
                     </connections>
                 </viewController>
@@ -861,19 +866,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="gFo-6w-GTA">
-                                <rect key="frame" x="0.0" y="228" width="600" height="81"/>
+                                <rect key="frame" x="0.0" y="231" width="600" height="74"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We've sent a link to your email address" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pkM-xx-821">
-                                        <rect key="frame" x="126.5" y="0.0" width="347" height="24"/>
+                                        <rect key="frame" x="126" y="0.0" width="347" height="24"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                        <rect key="frame" x="260" y="40" width="80" height="41"/>
+                                    <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Iy-9H-ykD" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                        <rect key="frame" x="262" y="40" width="75" height="34"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="41" id="tyz-kt-Arb"/>
+                                            <constraint firstAttribute="height" constant="34" id="tyz-kt-Arb"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <state key="normal" title="OPEN MAIL">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
