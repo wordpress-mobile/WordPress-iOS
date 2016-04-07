@@ -69,7 +69,7 @@ extension UIImageView
     ///
     /// Hope buddah, and the code reviewer, can forgive me for this hack.
     ///
-    func setGravatarImageOverride(image: UIImage, rating: GravatarRatings, email: String)
+    func overrideGravatarImageCache(image: UIImage, rating: GravatarRatings, email: String)
     {
         let targetSize = gravatarDefaultSize()
         let targetURL = gravatarUrlForEmail(email, size: targetSize, rating: rating.stringValue())
