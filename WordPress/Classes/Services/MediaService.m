@@ -53,10 +53,11 @@
         allowedFileTypes = nil;
         mediaType = MediaTypeVideo;
     }
+
+    MediaSettings *mediaSettings = [MediaSettings new];
+    BOOL stripGeoLocation = mediaSettings.removeLocationSetting;
     
-    BOOL geoLocationEnabled = post.blog.settings.geolocationEnabled;
-    
-    NSInteger maxImageSize = [[MediaSettings new] imageSizeForUpload];
+    NSInteger maxImageSize = [mediaSettings imageSizeForUpload];
     CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
 
     NSURL *mediaURL = [self urlForMediaWithFilename:[asset originalFilename] andExtension:extension];
@@ -75,7 +76,7 @@
             [asset exportToURL:mediaURL
                      targetUTI:assetUTI
              maximumResolution:maximumResolution
-              stripGeoLocation:!geoLocationEnabled
+              stripGeoLocation:stripGeoLocation
                 successHandler:^(CGSize resultingSize)
                 {
                     [self createMediaForPost:postObjectID
