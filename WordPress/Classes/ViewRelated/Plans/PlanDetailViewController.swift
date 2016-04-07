@@ -200,7 +200,7 @@ class PlanDetailViewController: UIViewController {
         let plan = viewModel.plan
         planImageView.image = plan.image
         planTitleLabel.text = plan.fullTitle
-        planDescriptionLabel.text = plan.description
+        planDescriptionLabel.text = plan.tagline
         planPriceLabel.text = viewModel.priceText
         
         if viewModel.isActivePlan {
