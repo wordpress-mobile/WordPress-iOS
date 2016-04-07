@@ -11,7 +11,7 @@ struct Plan {
     let id: PlanID
     let title: String
     let fullTitle: String
-    let description: String
+    let tagline: String
     let productIdentifier: String?
     let featureGroups: [PlanFeatureGroupPlaceholder]
 }
@@ -58,7 +58,7 @@ let defaultPlans: [Plan] = [
         id: 1,
         title: NSLocalizedString("Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
         fullTitle: NSLocalizedString("WordPress.com Free", comment: "Free plan name. As in https://store.wordpress.com/plans/"),
-        description: NSLocalizedString("Anyone creating a simple blog or site.", comment: "Description of the Free plan"),
+        tagline: NSLocalizedString("Anyone creating a simple blog or site.", comment: "Description of the Free plan"),
         productIdentifier: nil,
         featureGroups: []
     ),
@@ -66,7 +66,7 @@ let defaultPlans: [Plan] = [
         id: 1003,
         title: NSLocalizedString("Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
         fullTitle: NSLocalizedString("WordPress.com Premium", comment: "Premium paid plan name. As in https://store.wordpress.com/plans/"),
-        description: NSLocalizedString("Serious bloggers and creatives.", comment: "Description of the Premium plan"),
+        tagline: NSLocalizedString("Serious bloggers and creatives.", comment: "Description of the Premium plan"),
         productIdentifier: "com.wordpress.test.premium.subscription.1year",
         featureGroups: []
     ),
@@ -74,7 +74,7 @@ let defaultPlans: [Plan] = [
         id: 1008,
         title: NSLocalizedString("Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
         fullTitle: NSLocalizedString("WordPress.com Business", comment: "Business paid plan name. As in https://store.wordpress.com/plans/"),
-        description: NSLocalizedString("Business websites and ecommerce.", comment: "Description of the Business plan"),
+        tagline: NSLocalizedString("Business websites and ecommerce.", comment: "Description of the Business plan"),
         productIdentifier: "com.wordpress.test.business.subscription.1year",
         featureGroups: []
     ),
