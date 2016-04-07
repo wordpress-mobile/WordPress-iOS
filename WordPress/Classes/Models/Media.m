@@ -23,6 +23,7 @@
 @dynamic videopressGUID;
 @dynamic localThumbnailURL;
 @dynamic remoteThumbnailURL;
+@dynamic postID;
 
 @synthesize unattached;
 
