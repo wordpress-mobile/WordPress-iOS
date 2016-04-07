@@ -54,7 +54,7 @@ import SVProgressHUD
         controller.modalPresentationStyle = .Popover
         viewController.presentViewController(controller, animated: true, completion: nil)
         if let presentationController = controller.popoverPresentationController {
-            presentationController.permittedArrowDirections = .Unknown
+            presentationController.permittedArrowDirections = .Any
             presentationController.barButtonItem = anchorBarButtonItem
         }
     }
@@ -75,7 +75,7 @@ import SVProgressHUD
         controller.modalPresentationStyle = .Popover
         viewController.presentViewController(controller, animated: true, completion: nil)
         if let presentationController = controller.popoverPresentationController {
-            presentationController.permittedArrowDirections = .Unknown
+            presentationController.permittedArrowDirections = .Any
             presentationController.sourceView = anchorView
             presentationController.sourceRect = anchorView.bounds
         }
