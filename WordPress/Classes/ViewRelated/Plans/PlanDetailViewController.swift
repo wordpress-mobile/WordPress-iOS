@@ -140,8 +140,6 @@ class PlanDetailViewController: UIViewController {
         return wrapper
     }()
 
-    @IBOutlet weak var headerInfoStackView: UIStackView!
-
     class func controllerWithPlan(plan: Plan, siteID: Int, isActive: Bool, price: String) -> PlanDetailViewController {
         let storyboard = UIStoryboard(name: "Plans", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier(NSStringFromClass(self)) as! PlanDetailViewController
@@ -162,6 +160,15 @@ class PlanDetailViewController: UIViewController {
         configureTableView()
         populateHeader()
         updateNoResults()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        let size = headerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        headerView.frame.size.height = size.height
+        tableView.tableHeaderView = headerView
+        view.layoutIfNeeded()
     }
 
     private func configureAppearance() {
@@ -191,9 +198,9 @@ class PlanDetailViewController: UIViewController {
         dropshadowImageView.layer.shadowPath = UIBezierPath(ovalInRect: dropshadowImageView.bounds).CGPath
     }
 
-    @IBOutlet weak var headerStackView: UIStackView!
     @IBOutlet weak var headerView: UIView!
-
+    @IBOutlet weak var purchaseWrapperView: UIView!
+    
     private func populateHeader() {
         let plan = viewModel.plan
         planImageView.image = plan.image
@@ -203,16 +210,13 @@ class PlanDetailViewController: UIViewController {
 
         if viewModel.isActivePlan {
             purchaseButton?.removeFromSuperview()
-            headerStackView.addArrangedSubview(currentPlanLabel)
+            purchaseWrapperView.addSubview(currentPlanLabel)
+            purchaseWrapperView.pinSubviewToAllEdgeMargins(currentPlanLabel)
         } else if plan.isFreePlan {
             purchaseButton?.removeFromSuperview()
-
-            // Table header views don't play nicely with Auto Layout, so we need to calculate
-            // the new size and then reset the table's header view property for it to take effect
-            let size = headerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-            headerView.frame.size.height = size.height
-            tableView.tableHeaderView = headerView
         }
+        
+        headerView.layoutIfNeeded()
     }
 
     //MARK: - IBActions
