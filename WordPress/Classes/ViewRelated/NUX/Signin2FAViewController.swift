@@ -247,7 +247,7 @@ extension Signin2FAViewController: LoginFacadeDelegate {
 
     func displayRemoteError(error: NSError!) {
         configureStatusMessage("")
-        configureSubmitButton(false)
+        configureLoading(false)
         displayError(error)
     }
 }
