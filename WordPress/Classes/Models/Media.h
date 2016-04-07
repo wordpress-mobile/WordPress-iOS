@@ -60,6 +60,7 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) NSString *localThumbnailURL;
 @property (nonatomic, strong) NSString *absoluteThumbnailLocalURL;
 @property (nonatomic, strong, readonly) NSString *posterImageURL;
+@property (nonatomic, strong) NSNumber *postID;
 
 
 - (void)mediaTypeFromUrl:(NSString *)ext;

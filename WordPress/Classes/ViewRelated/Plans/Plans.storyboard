@@ -86,90 +86,6 @@
             </objects>
             <point key="canvasLocation" x="853" y="1059"/>
         </scene>
-        <!--Plan Comparison View Controller-->
-        <scene sceneID="CYw-U0-oI7">
-            <objects>
-                <viewController storyboardIdentifier="WordPress.PlanComparisonViewController" id="s5h-iz-0HE" customClass="PlanComparisonViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="lq2-Q7-GhV"/>
-                        <viewControllerLayoutGuide type="bottom" id="Ygn-aZ-YVi"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="DDG-cG-6UG">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ZY0-qL-r53">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <subviews>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ftR-lg-UD4">
-                                        <rect key="frame" x="0.0" y="0.0" width="600" height="540"/>
-                                        <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Ba2-eJ-6aE">
-                                                <rect key="frame" x="0.0" y="0.0" width="600" height="540"/>
-                                            </stackView>
-                                        </subviews>
-                                        <constraints>
-                                            <constraint firstItem="Ba2-eJ-6aE" firstAttribute="leading" secondItem="ftR-lg-UD4" secondAttribute="leading" id="2Zx-zX-Oqk"/>
-                                            <constraint firstAttribute="bottom" secondItem="Ba2-eJ-6aE" secondAttribute="bottom" id="ciG-Fi-9vX"/>
-                                            <constraint firstItem="Ba2-eJ-6aE" firstAttribute="top" secondItem="ftR-lg-UD4" secondAttribute="top" id="jxy-j0-dHk"/>
-                                            <constraint firstAttribute="trailing" secondItem="Ba2-eJ-6aE" secondAttribute="trailing" id="mMa-Dr-hN7"/>
-                                            <constraint firstItem="Ba2-eJ-6aE" firstAttribute="height" secondItem="ftR-lg-UD4" secondAttribute="height" placeholder="YES" id="mek-QN-aIi" userLabel="Placeholder content height"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="delegate" destination="s5h-iz-0HE" id="JhT-Ps-vCX"/>
-                                        </connections>
-                                    </scrollView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f0d-zt-grM">
-                                        <rect key="frame" x="0.0" y="540" width="600" height="1"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="Ar8-74-nXx"/>
-                                        </constraints>
-                                    </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8En-Ia-Wlh">
-                                        <rect key="frame" x="0.0" y="541" width="600" height="59"/>
-                                        <subviews>
-                                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="HLT-dO-RyH">
-                                                <rect key="frame" x="8" y="8" width="584" height="43"/>
-                                                <color key="pageIndicatorTintColor" red="0.72326811719999995" green="0.869224102" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="currentPageIndicatorTintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                <connections>
-                                                    <action selector="pageControlChanged" destination="s5h-iz-0HE" eventType="valueChanged" id="I3s-63-M21"/>
-                                                </connections>
-                                            </pageControl>
-                                        </subviews>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="bottomMargin" secondItem="HLT-dO-RyH" secondAttribute="bottom" id="81N-Sg-1d8"/>
-                                            <constraint firstAttribute="height" constant="59" id="9sq-hY-CdS"/>
-                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="trailing" secondItem="8En-Ia-Wlh" secondAttribute="trailingMargin" id="OiO-eD-sc9"/>
-                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="leading" secondItem="8En-Ia-Wlh" secondAttribute="leadingMargin" id="dei-oZ-v5R"/>
-                                            <constraint firstItem="HLT-dO-RyH" firstAttribute="top" secondItem="8En-Ia-Wlh" secondAttribute="topMargin" id="mHh-yT-0WZ"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="ZY0-qL-r53" firstAttribute="top" secondItem="DDG-cG-6UG" secondAttribute="top" id="9aF-PV-qII"/>
-                            <constraint firstItem="Ygn-aZ-YVi" firstAttribute="top" secondItem="ZY0-qL-r53" secondAttribute="bottom" id="FF2-u9-9d4"/>
-                            <constraint firstItem="Ba2-eJ-6aE" firstAttribute="width" secondItem="DDG-cG-6UG" secondAttribute="width" placeholder="YES" id="HyI-ca-bSZ" userLabel="Placeholder content width"/>
-                            <constraint firstAttribute="trailing" secondItem="ZY0-qL-r53" secondAttribute="trailing" id="eQp-nW-JVq"/>
-                            <constraint firstItem="ZY0-qL-r53" firstAttribute="leading" secondItem="DDG-cG-6UG" secondAttribute="leading" id="eUm-og-PEa"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="divider" destination="f0d-zt-grM" id="at9-Wz-9lj"/>
-                        <outlet property="pageControl" destination="HLT-dO-RyH" id="lQJ-N9-WAz"/>
-                        <outlet property="planStackView" destination="Ba2-eJ-6aE" id="LYo-0W-yKg"/>
-                        <outlet property="scrollView" destination="ftR-lg-UD4" id="wfO-df-2xS"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SjQ-fQ-CVI" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="853" y="-327"/>
-        </scene>
         <!--Plan Detail View Controller-->
         <scene sceneID="9Cj-IU-3xt">
             <objects>
@@ -206,19 +122,19 @@
                                                         <rect key="frame" x="24" y="72" width="536" height="59"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WordPress.com Premium" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="isU-1g-ArF" userLabel="Plan Title Label">
-                                                                <rect key="frame" x="173" y="0.0" width="192" height="17"/>
+                                                                <rect key="frame" x="172" y="0.0" width="192" height="17"/>
                                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Perfect for bloggers, creatives, &amp; other professionals" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edq-hC-GnQ" userLabel="Plan Description Label">
-                                                                <rect key="frame" x="108" y="22" width="321" height="17"/>
+                                                                <rect key="frame" x="108" y="22" width="321" height="16"/>
                                                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="13"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$99.99 per year" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fju-eH-OS6" userLabel="Plan Price Label">
-                                                                <rect key="frame" x="213" y="43" width="111" height="17"/>
+                                                                <rect key="frame" x="213" y="42" width="111" height="17"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <nil key="highlightedColor"/>
@@ -272,7 +188,7 @@
                                         <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="WordPress.FeatureItemCell" rowHeight="80" id="zaq-fe-bpz" customClass="FeatureItemCell" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="49.5" width="600" height="80"/>
+                                                <rect key="frame" x="0.0" y="50" width="600" height="80"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zaq-fe-bpz" id="dGV-Jz-XSf">
                                                     <rect key="frame" x="0.0" y="0.0" width="600" height="80"/>

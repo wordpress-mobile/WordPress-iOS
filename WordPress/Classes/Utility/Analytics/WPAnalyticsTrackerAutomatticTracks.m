@@ -312,6 +312,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatLoginFailedToGuessXMLRPC:
             eventName = @"login_failed_to_guess_xmlrpc";
             break;
+        case WPAnalyticsStatLoginAutoFillCredentialsFilled:
+            eventName = @"login_autofill_credentials_filled";
+            break;
+        case WPAnalyticsStatLoginAutoFillCredentialsUpdated:
+            eventName = @"login_autofill_credentials_updated";
+            break;
         case WPAnalyticsStatLogout:
             eventName = @"account_logout";
             break;
@@ -537,12 +543,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatReaderTagUnfollowed:
             eventName = @"reader_reader_tag_unfollowed";
-            break;
-        case WPAnalyticsStatSafariCredentialsLoginFilled:
-            eventName = @"safari_credentials_login_filled";
-            break;
-        case WPAnalyticsStatSafariCredentialsLoginUpdated:
-            eventName = @"safari_credentials_login_updated";
             break;
         case WPAnalyticsStatSelectedInstallJetpack:
             eventName = @"stats_install_jetpack_selected";
