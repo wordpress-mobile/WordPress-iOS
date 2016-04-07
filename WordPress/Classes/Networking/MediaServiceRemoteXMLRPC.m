@@ -116,11 +116,15 @@
     NSString *type = media.mimeType;
     NSString *filename = media.file;
     
-    NSDictionary *data = @{
+    NSMutableDictionary *data = [NSMutableDictionary dictionaryWithDictionary:@{
                            @"name": filename,
                            @"type": type,
                            @"bits": [NSInputStream inputStreamWithFileAtPath:path],
-                           };
+                           }];
+    if ([media.postID compare:@(0)] == NSOrderedDescending) {
+        data[@"post_id"] = media.postID;
+    }
+
     NSArray *parameters = [self XMLRPCArgumentsWithExtra:data];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
     NSString *directory = [paths objectAtIndex:0];
@@ -180,6 +184,16 @@
     [self.api.operationQueue addOperation:operation];
 }
 
+- (void)updateMedia:(RemoteMedia *)media
+            success:(void (^)(RemoteMedia *remoteMedia))success
+            failure:(void (^)(NSError *error))failure
+{
+    //HACK: Sergio Estevao: 2016-04-06 this option doens't exist on XML-RPC so we will always say that all was good
+    if (success) {
+        success(media);
+    }
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)remoteMediaFromXMLRPCArray:(NSArray *)xmlrpcArray
@@ -204,6 +218,7 @@
     remoteMedia.descriptionText = [xmlRPC stringForKey:@"description"];
     remoteMedia.extension = [remoteMedia.file pathExtension];
     remoteMedia.length = [xmlRPC numberForKeyPath:@"metadata.length"];
+    remoteMedia.postID = [xmlRPC numberForKeyPath:@"parent"];
     return remoteMedia;
 }
 

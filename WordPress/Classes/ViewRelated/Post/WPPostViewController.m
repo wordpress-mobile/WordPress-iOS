@@ -1474,8 +1474,7 @@ EditImageDetailsViewControllerDelegate
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
                     success:^(AbstractPost *post){
-                        self.post = post;
-                        
+                        self.post = post;                        
                         DDLogInfo(@"post uploaded: %@", postTitle);
                         NSString *hudText;
                         

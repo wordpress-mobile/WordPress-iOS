@@ -613,7 +613,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         NSString *postTitle = self.post.original.postTitle;
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-        [postService uploadPost:(Post *)self.post.original
+        [postService uploadPost:(Post *)self.post
                         success:^(AbstractPost *post){
                             self.post = post;
                             
