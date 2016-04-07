@@ -192,8 +192,8 @@ import WordPressShared
                     self.blog.settings.sharingDisabledReblogs = !newValue
                     self.saveBlogSettingsChanges(false)
 
-                    let properties: [NSObject: AnyObject] = [
-                        "checked": Int(newValue)
+                    let properties = [
+                        "checked": String(Int(newValue))
                     ]
                     WPAppAnalytics.track(.SharingButtonShowReblogChanged, withProperties:properties, withBlog: self.blog)
                 }
