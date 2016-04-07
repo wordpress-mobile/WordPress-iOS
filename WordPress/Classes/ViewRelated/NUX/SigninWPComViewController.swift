@@ -12,6 +12,7 @@ import WordPressShared
     @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
+    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
 
     var immediateSignin = false;
@@ -144,8 +145,10 @@ import WordPressShared
         if SigninEditingState.signinEditingStateActive {
             passwordField.becomeFirstResponder()
             bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeight
+            verticalCenterConstraint.constant = 0
         } else {
             bottomContentConstraint.constant = 0
+            verticalCenterConstraint.constant = SigninFormVerticalOffset
         }
     }
 

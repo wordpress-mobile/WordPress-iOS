@@ -1,10 +1,13 @@
 import UIKit
 
+let SigninFormVerticalOffset: CGFloat = -32.0
+
 ///
 ///
 protocol SigninKeyboardResponder: class
 {
     var bottomContentConstraint: NSLayoutConstraint! {get}
+    var verticalCenterConstraint: NSLayoutConstraint! {get}
 
     func keyboardWillShow(notification: NSNotification)
     func keyboardWillHide(notification: NSNotification)
@@ -56,6 +59,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
         }
 
         bottomContentConstraint.constant = keyboardInfo.keyboardFrame.height
+        verticalCenterConstraint.constant = 0
         UIView.animateWithDuration(keyboardInfo.animationDuration,
                                    delay: 0,
                                    options: .BeginFromCurrentState,
@@ -83,6 +87,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
         }
 
         bottomContentConstraint.constant = 0
+        verticalCenterConstraint.constant = SigninFormVerticalOffset
         UIView.animateWithDuration(keyboardInfo.animationDuration,
                                    delay: 0,
                                    options: .BeginFromCurrentState,

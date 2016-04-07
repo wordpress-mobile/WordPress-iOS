@@ -14,6 +14,7 @@ import WordPressShared
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var forgotPasswordButton: WPNUXSecondaryButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
+    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
     var onePasswordButton: UIButton!
 
     lazy var loginFacade: LoginFacade = {
@@ -141,8 +142,10 @@ import WordPressShared
         if SigninEditingState.signinEditingStateActive {
             usernameField.becomeFirstResponder()
             bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeight
+            verticalCenterConstraint.constant = 0
         } else {
             bottomContentConstraint.constant = 0
+            verticalCenterConstraint.constant = SigninFormVerticalOffset
         }
     }
 
