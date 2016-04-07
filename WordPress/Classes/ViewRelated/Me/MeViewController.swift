@@ -96,6 +96,10 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             title: NSLocalizedString("Account Settings", comment: "Link to Account Settings section"),
             action: pushAccountSettings())
 
+        let appSettings = NavigationItemRow(
+            title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
+            action: pushAppSettings())
+
         let notificationSettings = NavigationItemRow(
             title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
             action: pushNotificationSettings())
@@ -126,6 +130,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                         ImmuTableSection(rows: [
                             myProfile,
                             accountSettings,
+                            appSettings,
                             notificationSettings
                             ]),
                         ImmuTableSection(rows: [
@@ -142,7 +147,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 return ImmuTable(
                     sections: [
                         ImmuTableSection(rows: [
-                            accountSettings,
+                            appSettings,
                             notificationSettings
                             ]),
                         ImmuTableSection(rows: [
@@ -160,7 +165,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             return ImmuTable(
                 sections: [
                     ImmuTableSection(rows: [
-                        accountSettings,
+                        appSettings,
                         ]),
                     ImmuTableSection(rows: [
                         helpAndSupport,
@@ -196,6 +201,13 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         return { [unowned self] row in
             WPAppAnalytics.track(.OpenedAccountSettings)
             let controller = AccountSettingsViewController(account: self.defaultAccount())
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+
+    func pushAppSettings() -> ImmuTableAction {
+        return { [unowned self] row in
+            let controller = AppSettingsViewController(account: self.defaultAccount())
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }

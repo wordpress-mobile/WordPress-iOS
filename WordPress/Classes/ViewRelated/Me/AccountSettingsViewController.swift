@@ -22,9 +22,8 @@ private struct AccountSettingsController: SettingsController {
     var immuTableRows: [ImmuTableRow.Type] {
         return [
             TextRow.self,
-            EditableTextRow.self,
-            MediaSizeRow.self,
-            SwitchRow.self]
+            EditableTextRow.self
+        ]
     }
 
     // MARK: - Initialization
@@ -62,26 +61,7 @@ private struct AccountSettingsController: SettingsController {
     // MARK: - Model mapping
 
     func mapViewModel(settings: AccountSettings?, service: AccountSettingsService?, presenter: ImmuTablePresenter) -> ImmuTable {
-        let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
-        let uploadSize = MediaSizeRow(
-            title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
-            value: Int(MediaSettings().maxImageSizeSetting),
-            onChange: mediaSizeChanged())
-
-        let mediaRemoveLocation = SwitchRow(
-            title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
-            value: Bool(MediaSettings().removeLocationSetting),
-            onChange: mediaRemoveLocationChanged()
-        )
-
-        let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
-        let visualEditor = SwitchRow(
-            title: NSLocalizedString("Visual Editor", comment: "Option to enable the visual editor"),
-            value: WPPostViewController.isNewEditorEnabled(),
-            onChange: visualEditorChanged()
-        )
-
-        if Feature.enabled(.AccountSettings), let service = service {
+        if let service = service {
             let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
             
             let username = TextRow(
@@ -113,33 +93,16 @@ private struct AccountSettingsController: SettingsController {
                         email,
                         primarySite,
                         webAddress
-                    ]),
-                ImmuTableSection(
-                    headerText: mediaHeader,
-                    rows: [
-                        uploadSize,
-                        mediaRemoveLocation
-                    ],
-                    footerText: nil),
-                ImmuTableSection(
-                    headerText: editorHeader,
-                    rows: [
-                        visualEditor
-                    ],
-                    footerText: nil)
+                    ])
                 ])
         } else {
+            let loading = TextRow(
+                title: NSLocalizedString("Loading Settings...", comment: "Loading Settings label"),
+                value: "")
             return ImmuTable(sections: [
                 ImmuTableSection(
-                    headerText: mediaHeader,
                     rows: [
-                        uploadSize
-                    ],
-                    footerText: nil),
-                ImmuTableSection(
-                    headerText: editorHeader,
-                    rows: [
-                        visualEditor
+                        loading
                     ],
                     footerText: nil)
                 ])
@@ -177,32 +140,6 @@ private struct AccountSettingsController: SettingsController {
             selectorViewController.dismissOnCancellation = true
             
             return selectorViewController
-        }
-    }
-
-    func mediaSizeChanged() -> Int -> Void {
-        return {
-            value in
-            MediaSettings().maxImageSizeSetting = value
-        }
-    }
-
-    func mediaRemoveLocationChanged() -> Bool -> Void {
-        return {
-            value in
-            MediaSettings().removeLocationSetting = value
-        }
-    }
-
-    func visualEditorChanged() -> Bool -> Void {
-        return {
-            enabled in
-            if enabled {
-                WPAnalytics.track(.EditorToggledOn)
-            } else {
-                WPAnalytics.track(.EditorToggledOff)
-            }
-            WPPostViewController.setNewEditorEnabled(enabled)
         }
     }
 }
