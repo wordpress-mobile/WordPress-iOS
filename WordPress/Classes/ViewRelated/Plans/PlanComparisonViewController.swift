@@ -1,9 +1,10 @@
 import UIKit
+import Gridicons
 import WordPressShared
 
 class PlanComparisonViewController: PagedViewController {
     lazy private var cancelXButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(named: "gridicons-cross"), style: .Plain, target: self, action: #selector(PlanComparisonViewController.closeTapped))
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.Cross), style: .Plain, target: self, action: #selector(PlanComparisonViewController.closeTapped))
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Dismiss the current view")
 
         return button
