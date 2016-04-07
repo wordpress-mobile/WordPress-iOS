@@ -17,7 +17,7 @@ extension WPStyleGuide
         let horizontalPadding = 8.0;
         let imageView = UIImageView(frame:CGRect(x: 0, y: 0, width: imageSize + horizontalPadding, height: imageSize))
 
-        imageView.image = Gridicon.iconOfType(.Notice, withSize: CGSize(width: imageSize, height: imageSize))
+        imageView.image = UIImage(named: "sharing-notice")
         imageView.tintColor = jazzyOrange()
         imageView.contentMode = .Right
         return imageView
