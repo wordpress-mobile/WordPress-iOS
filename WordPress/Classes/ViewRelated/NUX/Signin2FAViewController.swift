@@ -66,6 +66,11 @@ import WordPressShared
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         unregisterForKeyboardEvents()
+
+        // Multifactor codes are time sensitive, so clear the stored code if the
+        // user dismisses the view. They'll need to reentered it upon return. 
+        loginFields.multifactorCode = ""
+        verificationCodeField.text = ""
     }
 
 
