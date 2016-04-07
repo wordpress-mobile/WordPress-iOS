@@ -1,6 +1,8 @@
 import UIKit
 import WordPressShared
 
+let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
+
 /// A stylized button used by NUX controllers. The button presents white text 
 /// surrounded by a white border.  It also can display a `UIActivityIndicatorView`.
 ///
@@ -18,6 +20,14 @@ import WordPressShared
             configureBorderColor()
         }
     }
+
+
+    override var highlighted: Bool {
+        didSet {
+            configureBorderColor()
+        }
+    }
+
 
     // MARK: - LifeCycle Methods
 
@@ -58,20 +68,19 @@ import WordPressShared
 
         let cornerRadius = CGFloat(5.0)
         layer.cornerRadius = cornerRadius
-        layer.borderWidth = 2
+        layer.borderWidth = 1
         layer.borderColor = UIColor.whiteColor().CGColor
 
-        titleLabel?.font = WPFontManager.systemRegularFontOfSize(18.0)
+        titleLabel?.font = WPFontManager.systemRegularFontOfSize(14.0)
         setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        setTitleColor(UIColor(white: 1.0, alpha: 0.25), forState: .Disabled)
-
+        setTitleColor(WPStyleGuide.lightBlue(), forState: .Highlighted)
+        setTitleColor(UIColor(white: 1.0, alpha: NUXSubmitButtonDisabledAlpha), forState: .Disabled)
 
         let capInsets = UIEdgeInsets(top: cornerRadius, left: cornerRadius, bottom: cornerRadius, right: cornerRadius)
         let normalImage = UIImage(color: WPStyleGuide.wordPressBlue(), havingSize: CGSize(width: 44, height: 44))
-        let highlightImage = UIImage(color: UIColor.whiteColor(), havingSize: CGSize(width: 44, height: 44))
 
         setBackgroundImage(normalImage.resizableImageWithCapInsets(capInsets), forState: .Normal)
-        setBackgroundImage(highlightImage.resizableImageWithCapInsets(capInsets), forState: .Highlighted)
+        setBackgroundImage(normalImage.resizableImageWithCapInsets(capInsets), forState: .Highlighted)
 
         addSubview(activityIndicator)
     }
@@ -80,7 +89,12 @@ import WordPressShared
     /// Configures the border color.
     ///
     func configureBorderColor() {
-        let color = enabled || activityIndicator.isAnimating() ? UIColor.whiteColor() : UIColor(white: 1.0, alpha: 0.25)
+        var color: UIColor
+        if enabled {
+            color = highlighted ? WPStyleGuide.lightBlue() : UIColor.whiteColor()
+        } else {
+            color = UIColor(white: 1.0, alpha: NUXSubmitButtonDisabledAlpha)
+        }
         layer.borderColor = color.CGColor
     }
 
