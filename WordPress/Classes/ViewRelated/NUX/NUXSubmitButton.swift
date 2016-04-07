@@ -64,7 +64,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
     /// Configure the appearance of the configure button.
     ///
     func configureButton() {
-        contentEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
+        contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
 
         let cornerRadius = CGFloat(5.0)
         layer.cornerRadius = cornerRadius
