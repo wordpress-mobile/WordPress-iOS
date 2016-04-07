@@ -12,6 +12,8 @@
 #import "ContextManager.h"
 #import "NSDate+WordPressJSON.h"
 #import "CommentService.h"
+#import "MediaService.h"
+#import "Media.h"
 #import "WordPress-Swift.h"
 
 NSString * const PostServiceTypePost = @"post";
@@ -189,6 +191,13 @@ const NSUInteger PostServiceDefaultNumberToSync = 40;
                 
                 [self updatePost:postInContext withRemotePost:post];
                 postInContext.remoteStatus = AbstractPostRemoteStatusSync;
+                MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.managedObjectContext];
+                for (Media *media in postInContext.media) {
+                    if ([media.postID longLongValue] <= 0) {
+                        media.postID = post.postID;
+                        [mediaService updateMedia:media success:nil failure:nil];
+                    }
+                }
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                 
                 if (success) {
