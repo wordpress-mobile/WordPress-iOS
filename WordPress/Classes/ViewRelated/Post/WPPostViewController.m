@@ -118,6 +118,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 
 #pragma mark - Post info
 @property (nonatomic, assign, readwrite) BOOL ownsPost;
@@ -782,6 +783,19 @@ EditImageDetailsViewControllerDelegate
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
+#pragma mark - Toolbar options
+
+- (void)sharePost
+{
+    if ([self.post isKindOfClass:[Post class]]) {
+        Post *post = (Post *)self.post;
+        
+        PostSharingController *sharingController = [[PostSharingController alloc] init];
+        
+        [sharingController sharePost:post fromView:[self shareBarButtonItem].customView inViewController:self];
+    }
+}
+
 - (void)showSettings
 {
     if ([self isMediaUploading]) {
@@ -1085,8 +1099,12 @@ EditImageDetailsViewControllerDelegate
         
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
 	} else {
-		NSArray* rightBarButtons = @[self.editBarButtonItem,
-									 [self previewBarButtonItem]];
+        NSMutableArray* rightBarButtons = [[NSMutableArray alloc] initWithArray:@[self.editBarButtonItem,
+                                                                                  [self previewBarButtonItem]]];
+        
+        if ([self.post isKindOfClass:[Post class]]) {
+            [rightBarButtons addObject:[self shareBarButtonItem]];
+        }
 		
 		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
 	}
@@ -1119,10 +1137,12 @@ EditImageDetailsViewControllerDelegate
 	NSAssert([imageName isKindOfClass:[NSString class]],
 			 @"Expected imageName to be a non nil string.");
 
-	UIImage* image = [UIImage imageNamed:imageName];
+    UIImage* image = [UIImage imageNamed:imageName];
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 	
 	WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
 	
+    button.tintColor = [UIColor whiteColor];
 	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
 	
@@ -1155,7 +1175,7 @@ EditImageDetailsViewControllerDelegate
         return _cancelXButton;
     }
     
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"gridicons-cross"
                                                                         frame:NavigationBarButtonRect
                                                                        target:self
                                                                      selector:@selector(cancelEditing)];
@@ -1192,7 +1212,7 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)optionsBarButtonItem
 {
 	if (!_optionsBarButtonItem) {
-        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
+        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"gridicons-cog"
                                                                       frame:NavigationBarButtonRect
                                                                      target:self
                                                                    selector:@selector(showSettings)];
@@ -1213,7 +1233,7 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)previewBarButtonItem
 {
 	if (!_previewBarButtonItem) {
-        WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-preview"
+        WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"gridicons-visible"
                                                                       frame:NavigationBarButtonRect
                                                                      target:self
                                                                    selector:@selector(showPreview)];
@@ -1246,6 +1266,27 @@ EditImageDetailsViewControllerDelegate
     }
 
 	return _saveBarButtonItem;
+}
+
+- (UIBarButtonItem *)shareBarButtonItem
+{
+    if (!_shareBarButtonItem) {
+        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"gridicons-share-ios"
+                                                                      frame:NavigationBarButtonRect
+                                                                     target:self
+                                                                   selector:@selector(sharePost)];
+
+        button.removeDefaultRightSpacing = YES;
+        button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        button.removeDefaultLeftSpacing = YES;
+        button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
+        button.accessibilityLabel = title;
+        button.accessibilityIdentifier = @"Share";
+        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    }
+    
+    return _shareBarButtonItem;
 }
 
 - (NSString*)saveBarButtonItemTitle
