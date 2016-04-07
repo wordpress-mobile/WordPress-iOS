@@ -5,22 +5,22 @@
 #import "RemoteMenuItem.h"
 #import "RemoteMenuLocation.h"
 
-static NSString * const MenusRemoteKeyID = @"id";
-static NSString * const MenusRemoteKeyMenu = @"menu";
-static NSString * const MenusRemoteKeyMenus = @"menus";
-static NSString * const MenusRemoteKeyLocations = @"locations";
-static NSString * const MenusRemoteKeyContentID = @"content_id";
-static NSString * const MenusRemoteKeyDescription = @"description";
-static NSString * const MenusRemoteKeyLinkTarget = @"link_target";
-static NSString * const MenusRemoteKeyLinkTitle = @"link_title";
-static NSString * const MenusRemoteKeyName = @"name";
-static NSString * const MenusRemoteKeyType = @"type";
-static NSString * const MenusRemoteKeyTypeFamily = @"type_family";
-static NSString * const MenusRemoteKeyTypeLabel = @"type_label";
-static NSString * const MenusRemoteKeyURL = @"url";
-static NSString * const MenusRemoteKeyItems = @"items";
-static NSString * const MenusRemoteKeyDeleted = @"deleted";
-static NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
+NSString * const MenusRemoteKeyID = @"id";
+NSString * const MenusRemoteKeyMenu = @"menu";
+NSString * const MenusRemoteKeyMenus = @"menus";
+NSString * const MenusRemoteKeyLocations = @"locations";
+NSString * const MenusRemoteKeyContentID = @"content_id";
+NSString * const MenusRemoteKeyDescription = @"description";
+NSString * const MenusRemoteKeyLinkTarget = @"link_target";
+NSString * const MenusRemoteKeyLinkTitle = @"link_title";
+NSString * const MenusRemoteKeyName = @"name";
+NSString * const MenusRemoteKeyType = @"type";
+NSString * const MenusRemoteKeyTypeFamily = @"type_family";
+NSString * const MenusRemoteKeyTypeLabel = @"type_label";
+NSString * const MenusRemoteKeyURL = @"url";
+NSString * const MenusRemoteKeyItems = @"items";
+NSString * const MenusRemoteKeyDeleted = @"deleted";
+NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 
 @implementation MenusServiceRemote
 
