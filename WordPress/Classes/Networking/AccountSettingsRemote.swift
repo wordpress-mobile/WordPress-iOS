@@ -138,7 +138,7 @@ class AccountSettingsRemote: ServiceRemoteREST {
         case .AboutMe(_):
             return "description"
         case .Email(_):
-            return "email"
+            return "user_email"
         case .PrimarySite(_):
             return "primary_site_ID"
         case .WebAddress(_):

@@ -40,6 +40,7 @@ target 'WordPress', :exclusive => true do
   # --------------------
   pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.13'
   pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
+  pod 'Gridicons', :podspec => 'https://raw.github.com/Automattic/Gridicons-iOS/develop/Gridicons.podspec'
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'NSURL+IDN', '0.3'
   pod 'Simperium', '0.8.15'
@@ -47,7 +48,7 @@ target 'WordPress', :exclusive => true do
   pod 'WordPress-iOS-Editor', '1.2'
   pod 'WordPress-iOS-Shared', '0.5.3'
   pod 'WordPressApi', '0.4.0'
-  pod 'WordPressCom-Analytics-iOS', '0.1.5'
+  pod 'WordPressCom-Analytics-iOS', '0.1.6'
   pod 'WordPressCom-Stats-iOS/UI', '0.6.3'
   pod 'wpxmlrpc', '~> 0.8'
 end
@@ -69,7 +70,7 @@ target :WordPressTest, :exclusive => true do
   pod 'OCMock', '3.1.2'
   pod 'Specta', '1.0.5'
   pod 'Expecta', '0.3.2'
-  pod 'Nimble', '~> 3.2.0'
+  pod 'Nimble', '~> 4.0.0'
   pod 'RxSwift', '~> 2.3.1'
   pod 'RxTests', '~> 2.3.1'
 end

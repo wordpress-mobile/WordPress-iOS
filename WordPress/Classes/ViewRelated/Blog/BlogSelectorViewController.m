@@ -75,7 +75,7 @@ static CGFloat BlogCellRowHeight = 54.0;
                                                object:nil];
 
     // Cancel button
-    if ([UIDevice isPhone] && self.displaysCancelButton) {
+    if (self.displaysCancelButton) {
         UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                           target:self
                                                                                           action:@selector(cancelButtonTapped:)];
@@ -186,9 +186,10 @@ static CGFloat BlogCellRowHeight = 54.0;
     }
     
     if (self.dismissOnCancellation) {
-        [self.navigationController popViewControllerAnimated:YES];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
+
 
 #pragma mark - Table view data source
 
@@ -277,7 +278,7 @@ static CGFloat BlogCellRowHeight = 54.0;
             self.successHandler(self.selectedObjectID);
             
             if (self.dismissOnCompletion) {
-                [self.navigationController popViewControllerAnimated:YES];
+                [self dismissViewControllerAnimated:YES completion:nil];
             }
         });
     }
