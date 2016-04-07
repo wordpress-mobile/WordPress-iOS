@@ -107,43 +107,40 @@
     NSParameterAssert([menu isKindOfClass:[Menu class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
-    [self.managedObjectContext performBlockAndWait:^{
-        
-        NSMutableArray *locationNames = [NSMutableArray arrayWithCapacity:menu.locations.count];
-        for (MenuLocation *location in menu.locations) {
-            if (location.name.length) {
-                [locationNames addObject:location.name];
-            }
+    NSMutableArray *locationNames = [NSMutableArray arrayWithCapacity:menu.locations.count];
+    for (MenuLocation *location in menu.locations) {
+        if (location.name.length) {
+            [locationNames addObject:location.name];
         }
-        
-        MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
-        [remote updateMenuForId:menu.menuId
-                           blog:blog
-                       withName:menu.name
-                  withLocations:locationNames
-                      withItems:[self remoteItemsFromMenuItems:menu.items]
-                        success:^(RemoteMenu *remoteMenu) {
+    }
+    
+    MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
+    [remote updateMenuForId:menu.menuId
+                       blog:blog
+                   withName:menu.name
+              withLocations:locationNames
+                  withItems:[self remoteItemsFromMenuItems:menu.items]
+                    success:^(RemoteMenu *remoteMenu) {
+                        
+                        [self.managedObjectContext performBlockAndWait:^{
                             
-                            [self.managedObjectContext performBlockAndWait:^{
-                                
-                                /*
-                                 Update the local menu with the fresh MenuItems from remote.
-                                 We need to replace the MenuItems as it's difficult to keep track of
-                                 which items are equal to one another, especially when a menuID is unknown.
-                                 */
-                                menu.items = nil;
-                                for (RemoteMenuItem *remoteItem in remoteMenu.items) {
-                                    [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
-                                }
-                                
-                                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-                                if (success) {
-                                    success();
-                                }
-                            }];
+                            /*
+                             Update the local menu with the fresh MenuItems from remote.
+                             We need to replace the MenuItems as it's difficult to keep track of
+                             which items are equal to one another, especially when a menuID is unknown.
+                             */
+                            menu.items = nil;
+                            for (RemoteMenuItem *remoteItem in remoteMenu.items) {
+                                [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
+                            }
                             
-                        } failure:failure];
-    }];
+                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                            if (success) {
+                                success();
+                            }
+                        }];
+                        
+                    } failure:failure];
 }
 
 - (void)deleteMenu:(Menu *)menu
