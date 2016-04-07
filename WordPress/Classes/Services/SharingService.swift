@@ -96,7 +96,7 @@ public class SharingService : LocalCoreDataService
             keyringConnectionID: keyring.keyringID,
             externalUserID: externalUserID,
             success: {(remoteConnection: RemotePublicizeConnection) in
-                let properties:[NSObject: AnyObject] = [
+                let properties = [
                     "service" : keyring.service
                 ]
                 WPAppAnalytics.track(.SharingPublicizeConnected, withProperties: properties, withBlogID: dotComID)
@@ -149,9 +149,9 @@ public class SharingService : LocalCoreDataService
                 shared: shared,
                 forSite: siteID,
                 success: {(remoteConnection: RemotePublicizeConnection) in
-                    let properties:[NSObject: AnyObject] = [
+                    let properties = [
                         "service" : pubConn.service,
-                        "is_site_wide" : Int(shared)
+                        "is_site_wide" : String(Int(shared))
                     ]
                     WPAppAnalytics.track(.SharingPublicizeConnectionAvailableToAllChanged, withProperties: properties, withBlogID: siteID)
                     do {
@@ -239,7 +239,7 @@ public class SharingService : LocalCoreDataService
         remote.deletePublicizeConnection(siteID,
             connectionID: pubConn.connectionID,
             success: {
-                let properties:[NSObject: AnyObject] = [
+                let properties = [
                     "service" : pubConn.service
                 ]
                 WPAppAnalytics.track(.SharingPublicizeDisconnected, withProperties: properties, withBlogID: siteID)
