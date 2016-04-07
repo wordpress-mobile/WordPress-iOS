@@ -80,24 +80,10 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 - (void)setGravatarEmail:(NSString *)gravatarEmail
 {    
     // Since this view is only visible to the current user, we should show all ratings
-    [self.gravatarImageView setImageWithGravatarEmail:gravatarEmail gravatarRating:GravatarRatingX];
+    [self.gravatarImageView downloadGravatarWithEmail:gravatarEmail
+                                               rating:GravatarRatingsX
+                                               policy:NSURLRequestUseProtocolCachePolicy];
     _gravatarEmail = gravatarEmail;
-}
-
-- (UIImage *)gravatarImage
-{
-    return self.gravatarImageView.image;
-}
-
-- (void)setGravatarImage:(UIImage *)gravatarImage
-{
-    self.gravatarImageView.image = gravatarImage;
-    
-    // Note:
-    // We need to update AFNetworking's internal cache. Otherwise, any upcoming query to refresh the gravatar
-    // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
-    //
-    [self.gravatarImageView cacheGravatarImage:gravatarImage gravatarRating:GravatarRatingX emailAddress:self.gravatarEmail];
 }
 
 - (BOOL)showsActivityIndicator
@@ -115,16 +101,29 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     }
 }
 
+- (void)overrideGravatarImage:(UIImage *)gravatarImage
+{
+    self.gravatarImageView.image = gravatarImage;
+    
+    // Note:
+    // We need to update AFNetworking's internal cache. Otherwise, any upcoming query to refresh the gravatar
+    // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
+    //
+    [self.gravatarImageView overrideGravatarImageCache:gravatarImage rating:GravatarRatingsX email:self.gravatarEmail];
+}
+
 - (void)reloadGravatarImageIgnorningCache
 {
     // Note:
-    // Since NSURLCache is broken, since iOS 8 (Ref. http://blog.airsource.co.uk/2014/10/11/nsurlcache-ios8-broken/)
-    // we can't just clean up the stored response for a URL. Instead... we need to force a reload.
-    // Thanks Apple, we also love you.
+    // Under normal conditions, we might just clear NSURLCache reference, in the `overrideGravatarImage` method.
+    // However, since Apple is so awesome, NSURLCache has been broken since iOS 8.
+    // For that reason, we need to force a refresh, as soon as the new gravatar has been uploaded... just to
+    // keep NSURLCache's contents current. Ref: http://blog.airsource.co.uk/2014/10/11/nsurlcache-ios8-broken/
     //
-    [self.gravatarImageView setImageWithGravatarEmail:self.gravatarEmail
-                                        fallbackImage:nil
-                                       gravatarRating:GravatarRatingX
+    // God, forgive me, since i've hacked.
+    //
+    [self.gravatarImageView downloadGravatarWithEmail:self.gravatarEmail
+                                               rating:GravatarRatingsX
                                                policy:NSURLRequestReloadIgnoringLocalCacheData];
 }
 
