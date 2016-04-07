@@ -41,7 +41,7 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
         guard let planId = planDetails["product_id"] as? Int,
             let title = planDetails["product_name_short"] as? String,
             let fullTitle = planDetails["product_name"] as? String,
-            let description = planDetails["description"] as? String,
+            let tagline = planDetails["tagline"] as? String,
             let featureGroupsJson = planDetails["features_highlight"] as? [[String: AnyObject]] else {
             throw PlansRemote.Error.DecodeError
         }
@@ -49,7 +49,7 @@ private func mapPlansResponse(response: AnyObject) throws -> (activePlan: Plan, 
         let productIdentifier = (planDetails["apple_sku"] as? String).flatMap({ $0.nonEmptyString() })
         let featureGroups = try parseFeatureGroups(featureGroupsJson)
 
-        let plan = Plan(id: planId, title: title, fullTitle: fullTitle, description: description, productIdentifier: productIdentifier, featureGroups: featureGroups)
+        let plan = Plan(id: planId, title: title, fullTitle: fullTitle, tagline: tagline, productIdentifier: productIdentifier, featureGroups: featureGroups)
 
         let plans = result.1 + [plan]
         if let isCurrent = planDetails["current_plan"] as? Bool where
