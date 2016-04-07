@@ -68,6 +68,12 @@ private struct AccountSettingsController: SettingsController {
             value: Int(MediaSettings().maxImageSizeSetting),
             onChange: mediaSizeChanged())
 
+        let mediaRemoveLocation = SwitchRow(
+            title: NSLocalizedString("Remove Location From Media", comment: "Option to enable the removal of location information/gps from photos and videos"),
+            value: Bool(MediaSettings().removeLocationSetting),
+            onChange: mediaRemoveLocationChanged()
+        )
+
         let editorHeader = NSLocalizedString("Editor", comment: "Title label for the editor settings section in the app settings")
         let visualEditor = SwitchRow(
             title: NSLocalizedString("Visual Editor", comment: "Option to enable the visual editor"),
@@ -82,20 +88,22 @@ private struct AccountSettingsController: SettingsController {
                 title: NSLocalizedString("Username", comment: "Account Settings Username label"),
                 value: settings?.username ?? "")
             
-            let email = TextRow(
+            let email = EditableTextRow(
                 title: NSLocalizedString("Email", comment: "Account Settings Email label"),
-                value: settings?.email ?? "")
+                value: settings?.email ?? "",
+                action: presenter.present(editEmailAddress(service))
+            )
             
             let primarySite = EditableTextRow(
                 title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
                 value: primarySiteName ?? "",
-                action: presenter.push(editPrimarySite(settings, service: service))
+                action: presenter.present(editPrimarySite(settings, service: service))
             )
             
             let webAddress = EditableTextRow(
                 title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
                 value: settings?.webAddress ?? "",
-                action: presenter.push(editWebAddress(service))
+                action: presenter.present(editWebAddress(service))
             )
             
             return ImmuTable(sections: [
@@ -109,7 +117,8 @@ private struct AccountSettingsController: SettingsController {
                 ImmuTableSection(
                     headerText: mediaHeader,
                     rows: [
-                        uploadSize
+                        uploadSize,
+                        mediaRemoveLocation
                     ],
                     footerText: nil),
                 ImmuTableSection(
@@ -140,8 +149,14 @@ private struct AccountSettingsController: SettingsController {
     
     // MARK: - Actions
 
+    func editEmailAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
+        let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
+        return editEmailAddress(AccountSettingsChange.Email, hint: hint, displaysNavigationButtons: true, service: service)
+    }
+    
     func editWebAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
-        return editText(AccountSettingsChange.WebAddress, hint: NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address"), service: service)
+        let hint = NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address")
+        return editText(AccountSettingsChange.WebAddress, hint: hint, displaysNavigationButtons: true, service: service)
     }
     
     func editPrimarySite(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
@@ -157,7 +172,7 @@ private struct AccountSettingsController: SettingsController {
 
             selectorViewController.title = NSLocalizedString("Primary Site", comment: "Primary Site Picker's Title");
             selectorViewController.displaysOnlyDefaultAccountSites = true
-            selectorViewController.displaysCancelButton = false
+            selectorViewController.displaysCancelButton = true
             selectorViewController.dismissOnCompletion = true
             selectorViewController.dismissOnCancellation = true
             
@@ -169,6 +184,13 @@ private struct AccountSettingsController: SettingsController {
         return {
             value in
             MediaSettings().maxImageSizeSetting = value
+        }
+    }
+
+    func mediaRemoveLocationChanged() -> Bool -> Void {
+        return {
+            value in
+            MediaSettings().removeLocationSetting = value
         }
     }
 

@@ -44,13 +44,6 @@ NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingCount,
 };
 
-NS_ENUM(NSInteger, SiteSettingsDevice) {
-    SiteSettingsDeviceGeotagging = 0,
-    SiteSettingsDeviceDefaultCategory,
-    SiteSettingsDeviceDefaultPostFormat,
-    SiteSettingsDeviceCount,
-};
-
 NS_ENUM(NSInteger, SiteSettingsAdvanced) {
     SiteSettingsAdvancedStartOver = 0,
     SiteSettingsAdvancedExportContent,
@@ -63,7 +56,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
     SiteSettingsSectionDiscussion,
-    SiteSettingsSectionDevice,
     SiteSettingsSectionRemoveSite,
     SiteSettingsSectionAdvanced,
 };
@@ -163,8 +155,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         [sections addObject:@(SiteSettingsSectionDiscussion)];
     }
 
-    [sections addObject:@(SiteSettingsSectionDevice)];
-
     if ([self.blog supports:BlogFeatureRemovable]) {
         [sections addObject:@(SiteSettingsSectionRemoveSite)];
     }
@@ -215,15 +205,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionDiscussion:
         {
             return 1;
-        }
-        case SiteSettingsSectionDevice:
-        {
-            if ([self.blog supports:BlogFeatureWPComRESTAPI]) {
-                // NOTE: Brent Coursey (2016-02-03): Only show geotagging cell for user of the REST API (REST).
-                // Any post default options are available in the Writing section for REST users.
-                return 1;
-            }
-            return SiteSettingsDeviceCount;
         }
         case SiteSettingsSectionRemoveSite:
         {
@@ -281,21 +262,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
     }
     return nil;
-}
-
-- (SwitchTableViewCell *)geotaggingCell
-{
-    if (_geotaggingCell) {
-        return _geotaggingCell;
-    }
-    _geotaggingCell = [SwitchTableViewCell new];
-    _geotaggingCell.name = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
-    _geotaggingCell.on = self.blog.settings.geolocationEnabled;
-    __weak SiteSettingsViewController *weakSelf = self;
-    _geotaggingCell.onChange = ^(BOOL value){
-        [weakSelf toggleGeolocation:value];
-    };
-    return _geotaggingCell;
 }
 
 - (SettingTableViewCell *)defaultCategoryCell
@@ -380,23 +346,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
         case (SiteSettingsWritingRelatedPosts):
             return self.relatedPostsCell;
-    }
-    return nil;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForDeviceSettingsAtRow:(NSInteger)row
-{
-    switch (row) {
-        case (SiteSettingsDeviceGeotagging):
-            return self.geotaggingCell;
-
-        case (SiteSettingsDeviceDefaultCategory):
-            [self configureDefaultCategoryCell];
-            return self.defaultCategoryCell;
-
-        case (SiteSettingsDeviceDefaultPostFormat):
-            [self configureDefaultPostFormatCell];
-            return self.defaultPostFormatCell;
     }
     return nil;
 }
@@ -569,9 +518,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
         case SiteSettingsSectionDiscussion:
             return self.discussionSettingsCell;
 
-        case SiteSettingsSectionDevice:
-            return [self tableView:tableView cellForDeviceSettingsAtRow:indexPath.row];
-
         case SiteSettingsSectionRemoveSite:
             return self.removeSiteCell;
 
@@ -624,10 +570,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
         case SiteSettingsSectionWriting:
             headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
-            break;
-
-        case SiteSettingsSectionDevice:
-            headingTitle = NSLocalizedString(@"This Device", @"Title for the device section in site settings screen");
             break;
 
         case SiteSettingsSectionAdvanced:
@@ -720,9 +662,9 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
     SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.password
                                                                                                placeholder:NSLocalizedString(@"Enter password", @"(placeholder) Help enter WordPress password")
-                                                                                                      hint:@""
-                                                                                                isPassword:YES];
+                                                                                                      hint:@""];
     siteTitleViewController.title = NSLocalizedString(@"Password", @"Title for screen that shows self hosted password editor.");
+    siteTitleViewController.mode = SettingsTextModesPassword;
     siteTitleViewController.onValueChanged = ^(id value) {
         if (![value isEqualToString:self.blog.password]) {
             self.password = value;
@@ -740,8 +682,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 
     SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.settings.name
                                                                                                placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
-                                                                                                      hint:@""
-                                                                                                isPassword:NO];
+                                                                                                      hint:@""];
     siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
     siteTitleViewController.onValueChanged = ^(NSString *value) {
         self.siteTitleCell.detailTextLabel.text = value;
@@ -851,19 +792,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectInDeviceSectionRow:(NSInteger)row
-{
-    switch (row) {
-        case SiteSettingsDeviceDefaultCategory:
-            [self showDefaultCategorySelector];
-            break;
-
-        case SiteSettingsDeviceDefaultPostFormat:
-            [self showPostFormatSelector];
-            break;
-    }
-}
-
 - (void)showStartOverForBlog:(Blog *)blog
 {
     NSParameterAssert([blog supportsSiteManagementServices]);
@@ -910,10 +838,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
             [self showDiscussionSettingsForBlog:self.blog];
             break;
 
-        case SiteSettingsSectionDevice:
-            [self tableView:tableView didSelectInDeviceSectionRow:indexPath.row];
-            break;
-
         case SiteSettingsSectionRemoveSite:
             [self showRemoveSiteForBlog:self.blog];
             [tableView deselectSelectedRowWithAnimation:YES];
@@ -946,14 +870,6 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     }];
     
 }
-
-- (void)toggleGeolocation:(BOOL)value
-{
-    // Save the change
-    self.blog.settings.geolocationEnabled = value;
-    [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
-}
-
 
 #pragma mark - Authentication methods
 
