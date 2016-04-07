@@ -6,7 +6,7 @@ import Foundation
 extension UIImageView
 {
     /// Helper Enum that specifies all of the available Gravatar Image Ratings
-    /// TODO: Conver toa  pure Swift String Enum. It's done this way to maintain ObjC Compatibility
+    /// TODO: Convert into a pure Swift String Enum. It's done this way to maintain ObjC Compatibility
     ///
     @objc
     public enum GravatarRatings : Int {
