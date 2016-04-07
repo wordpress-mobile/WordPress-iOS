@@ -2,11 +2,6 @@ import Foundation
 
 typealias PlanFeatures = [PlanID: [PlanFeature]]
 
-// FIXME: @koke 2016-03-22
-// Quickly moved this to a top level variable to get around a conflict issue
-// Refactor this into something better
-private var planFeatures = PlanFeatures()
-
 struct PlanService<S: Store> {
     // FIXME: @koke 2016-03-22
     // This was going to be generic but it's causing a lot of trouble. Figure out conflicts first
@@ -94,21 +89,30 @@ extension PlanService {
     }
 }
 
+enum PlanServiceError: ErrorType {
+    case MissingFeaturesForPlan
+    case MissingFeatureForSlug
+}
+
 extension PlanService {
-    /// - returns: All features that are part of the specified plan
-    static func featuresForPlan(plan: Plan) -> [PlanFeature] {
-        return planFeatures[plan.id] ?? []
+    func featureGroupsForPlan(plan: Plan, features: PlanFeatures) throws -> [PlanFeatureGroup] {
+        guard let planFeatures = features[plan.id] else {
+            throw PlanServiceError.MissingFeaturesForPlan
+        }
+        return try plan.featureGroups.map({ group in
+            let features: [PlanFeature] = try group.slugs.map({ slug in
+                guard let feature = planFeatures.filter({ $0.slug == slug }).first else {
+                    throw PlanServiceError.MissingFeatureForSlug
+                }
+                return feature
+            })
+            return PlanFeatureGroup(title: group.title, features: features)
+        })
     }
 
-    /// - returns: The feature that is part of the specified plan, with a matching slug (if one exists).
-    static func featureForPlan(plan: Plan, withSlug slug: String) -> PlanFeature? {
-        return featuresForPlan(plan).filter({ $0.slug == slug }).first
-    }
-
-    func updateAllPlanFeatures(success: () -> Void, failure: ErrorType -> Void) {
+    func updateAllPlanFeatures(success success: PlanFeatures -> Void, failure: ErrorType -> Void) {
         featuresRemote.getPlanFeatures({
-            planFeatures = $0
-            success()
+            success($0)
         }, failure: failure)
     }
 }
