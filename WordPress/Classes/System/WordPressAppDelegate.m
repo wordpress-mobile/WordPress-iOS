@@ -191,7 +191,7 @@ int ddLogLevel = DDLogLevelInfo;
 
         if ([URLString rangeOfString:@"newpost"].length) {
             returnValue = [self handleNewPostRequestWithURL:url];
-        } else if ([URLString rangeOfString:@"auth"].length) {
+        } else if ([URLString rangeOfString:@"magic-login"].length) {
             returnValue = [self handleOpenWithAuthenticationURL:url];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
@@ -443,10 +443,14 @@ int ddLogLevel = DDLogLevelInfo;
     // TODO: Final implementation depends on what we end up doing on the API side
     // of things.  For now, assume we receive back an auth token.
     NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    // URL should be formated as wordpress://magic-links/bearer-token
+    NSArray *pathComponents = [[url path] componentsSeparatedByString:@"/"];
 
-    NSDictionary *params = [[url query] dictionaryFromQueryString];
-    DDLogInfo(@"App launched with authentication link %@", params);
+    NSAssert([pathComponents count] == 2, @"The URL did not have the expected path.");
 
+    DDLogInfo(@"App launched with authentication link");
+
+    NSString *token = [pathComponents lastObject];
     // if already logged in, do nothing.
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     if (service.defaultWordPressComAccount) {
@@ -455,7 +459,7 @@ int ddLogLevel = DDLogLevelInfo;
     }
 
     // Show the signin view controller configured to perform the auth request.
-    [self showSigninScreen:params animated:NO thenEditor:NO];
+    [self showSigninScreen:token animated:NO thenEditor:NO];
 
     return YES;
 }
@@ -570,7 +574,7 @@ int ddLogLevel = DDLogLevelInfo;
     [self showSigninScreen:nil animated:animated thenEditor:thenEditor];
 }
 
-- (void)showSigninScreen:(NSDictionary *)params animated:(BOOL)animated thenEditor:(BOOL)thenEditor
+- (void)showSigninScreen:(NSString *)token animated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
     // TODO: Need to figure out how signing in via the token is going to work.
 
@@ -649,8 +653,8 @@ int ddLogLevel = DDLogLevelInfo;
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [MFMailComposeViewController class] ]] setBarTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [MFMailComposeViewController class] ]] setTintColor:defaultTintColor];
 
-    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setShadowImage:[UIImage imageWithColor:[WPStyleGuide wordPressBlue] havingSize:CGSizeMake(320.0, 4.0)]];
-    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setBackgroundImage:[UIImage imageWithColor:[WPStyleGuide wordPressBlue] havingSize:CGSizeMake(320.0, 4.0)] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setShadowImage:[UIImage imageWithColor:[UIColor clearColor] havingSize:CGSizeMake(320.0, 4.0)]];
+    [[UINavigationBar appearanceWhenContainedInInstancesOfClasses:@[ [NUXNavigationController class]]] setBackgroundImage:[UIImage imageWithColor:[UIColor clearColor] havingSize:CGSizeMake(320.0, 4.0)] forBarMetrics:UIBarMetricsDefault];
 
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
     [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];

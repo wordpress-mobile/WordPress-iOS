@@ -14,6 +14,7 @@ import WordPressShared
     @IBOutlet weak var submitButton: NUXSubmitButton!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
+    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
 
     lazy private var loginFacade: LoginFacade = {
         let facade = LoginFacade()
@@ -147,8 +148,10 @@ import WordPressShared
         if SigninEditingState.signinEditingStateActive {
             verificationCodeField.becomeFirstResponder()
             bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeight
+            verticalCenterConstraint.constant = 0
         } else {
             bottomContentConstraint.constant = 0
+            verticalCenterConstraint.constant = SigninFormVerticalOffset
         }
     }
     
