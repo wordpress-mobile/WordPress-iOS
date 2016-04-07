@@ -110,7 +110,7 @@ enum PlanListViewModel {
                     title: plan.title,
                     active: active,
                     price: price,
-                    description: plan.description,
+                    description: plan.tagline,
                     icon: icon,
                     action: action
                 )

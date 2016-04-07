@@ -9,4 +9,9 @@ extension String {
     func stringByEncodingXMLCharacters() -> String {
         return NSString.encodeXMLCharactersIn(self)
     }
+
+    /// Returns `self` if not empty, or `nil` otherwise
+    func nonEmptyString() -> String? {
+        return isEmpty ? nil : self
+    }
 }
