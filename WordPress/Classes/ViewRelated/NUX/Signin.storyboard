@@ -100,7 +100,7 @@
                                     <constraint firstItem="18V-ZM-xlT" firstAttribute="leading" secondItem="JBb-dd-foh" secondAttribute="leading" id="IBM-8C-blc"/>
                                     <constraint firstItem="XXO-aV-keK" firstAttribute="centerY" secondItem="JBb-dd-foh" secondAttribute="centerY" priority="900" constant="-32" id="iah-J8-nUj"/>
                                     <constraint firstItem="18V-ZM-xlT" firstAttribute="centerX" secondItem="JBb-dd-foh" secondAttribute="centerX" id="sIT-ge-7gg"/>
-                                    <constraint firstItem="18V-ZM-xlT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JBb-dd-foh" secondAttribute="top" constant="20" id="u02-xZ-qlg"/>
+                                    <constraint firstItem="18V-ZM-xlT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JBb-dd-foh" secondAttribute="top" id="u02-xZ-qlg"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -168,6 +168,7 @@
                         <outlet property="safariPasswordButton" destination="DvS-7c-C5u" id="QWl-vu-AuY"/>
                         <outlet property="selfHostedButton" destination="5Hn-ZK-h9k" id="sXi-3F-Eur"/>
                         <outlet property="submitButton" destination="OZC-xf-OAn" id="k1c-SJ-qiK"/>
+                        <outlet property="verticalCenterConstraint" destination="iah-J8-nUj" id="yM3-vH-3tw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wWl-qb-1Yp" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -307,12 +308,12 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="Mjx-cz-sDG" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5AW-qg-L9w" secondAttribute="top" constant="20" id="3Js-t7-yPG"/>
+                                    <constraint firstItem="Mjx-cz-sDG" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5AW-qg-L9w" secondAttribute="top" id="3Js-t7-yPG"/>
                                     <constraint firstItem="Mjx-cz-sDG" firstAttribute="centerX" secondItem="5AW-qg-L9w" secondAttribute="centerX" id="98r-Gx-edy"/>
                                     <constraint firstAttribute="bottom" secondItem="Gzk-TE-YfP" secondAttribute="bottom" priority="900" constant="16" id="Y7X-lt-40l"/>
                                     <constraint firstAttribute="trailing" secondItem="Mjx-cz-sDG" secondAttribute="trailing" id="e7Q-wh-S1Y"/>
                                     <constraint firstItem="tW0-In-DwC" firstAttribute="centerY" secondItem="5AW-qg-L9w" secondAttribute="centerY" priority="900" constant="-32" id="gJr-NG-5Ge"/>
-                                    <constraint firstItem="Gzk-TE-YfP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SBB-7Z-qWs" secondAttribute="bottom" constant="32" id="pGO-BI-6Kb"/>
+                                    <constraint firstItem="Gzk-TE-YfP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SBB-7Z-qWs" secondAttribute="bottom" constant="16" id="pGO-BI-6Kb"/>
                                     <constraint firstItem="Gzk-TE-YfP" firstAttribute="centerX" secondItem="5AW-qg-L9w" secondAttribute="centerX" id="vGs-D3-oey"/>
                                     <constraint firstItem="Mjx-cz-sDG" firstAttribute="leading" secondItem="5AW-qg-L9w" secondAttribute="leading" id="vrg-3c-mtK"/>
                                 </constraints>
@@ -346,6 +347,7 @@
                         <outlet property="statusLabel" destination="Rvr-W4-OS1" id="Q45-a6-AOn"/>
                         <outlet property="submitButton" destination="SBB-7Z-qWs" id="jfi-ms-7V1"/>
                         <outlet property="usernameField" destination="ESh-DI-dtB" id="T1z-yJ-peq"/>
+                        <outlet property="verticalCenterConstraint" destination="gJr-NG-5Ge" id="BoC-Nh-oVK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X4T-gd-ISx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -475,7 +477,7 @@
                                     <constraint firstItem="0P1-6g-BI3" firstAttribute="centerX" secondItem="7OQ-0t-1zq" secondAttribute="centerX" id="Epk-Ar-sKI"/>
                                     <constraint firstItem="0P1-6g-BI3" firstAttribute="top" relation="greaterThanOrEqual" secondItem="E3x-LN-sUk" secondAttribute="bottom" constant="16" id="No0-9M-kRI"/>
                                     <constraint firstItem="ZWc-TJ-W9T" firstAttribute="leading" secondItem="7OQ-0t-1zq" secondAttribute="leading" id="P9q-Yk-vce"/>
-                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7OQ-0t-1zq" secondAttribute="top" constant="20" id="VLg-UB-2XP"/>
+                                    <constraint firstItem="ZWc-TJ-W9T" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7OQ-0t-1zq" secondAttribute="top" id="VLg-UB-2XP"/>
                                     <constraint firstAttribute="trailing" secondItem="ZWc-TJ-W9T" secondAttribute="trailing" id="dKJ-Hw-hpF"/>
                                     <constraint firstItem="ZWc-TJ-W9T" firstAttribute="centerX" secondItem="7OQ-0t-1zq" secondAttribute="centerX" id="jcM-uc-2PV"/>
                                     <constraint firstItem="Bli-Rb-X9m" firstAttribute="centerY" secondItem="7OQ-0t-1zq" secondAttribute="centerY" priority="900" constant="-32" id="pKc-9i-CzT"/>
@@ -509,6 +511,7 @@
                         <outlet property="statusLabel" destination="ZqY-I8-yWG" id="JAz-Px-ECW"/>
                         <outlet property="submitButton" destination="E3x-LN-sUk" id="9eE-vi-xgc"/>
                         <outlet property="usernameField" destination="GLH-TC-M0d" id="wBH-SI-k2G"/>
+                        <outlet property="verticalCenterConstraint" destination="pKc-9i-CzT" id="eH3-le-a0J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z8b-3z-D46" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -645,9 +648,9 @@
                                     <constraint firstAttribute="trailing" secondItem="L68-uO-e3A" secondAttribute="trailing" id="LlH-nI-0ys"/>
                                     <constraint firstItem="L68-uO-e3A" firstAttribute="leading" secondItem="hTY-xb-H5h" secondAttribute="leading" id="PEJ-fI-cb6"/>
                                     <constraint firstItem="A2K-lq-6XM" firstAttribute="centerY" secondItem="hTY-xb-H5h" secondAttribute="centerY" priority="900" constant="-32" id="cMC-S2-j55"/>
-                                    <constraint firstItem="309-z3-fPx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6eO-V2-a64" secondAttribute="bottom" constant="18" id="fyg-7f-d6n"/>
+                                    <constraint firstItem="309-z3-fPx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6eO-V2-a64" secondAttribute="bottom" constant="8" id="fyg-7f-d6n"/>
                                     <constraint firstAttribute="bottom" secondItem="309-z3-fPx" secondAttribute="bottom" priority="900" constant="16" id="ktW-fc-fOm"/>
-                                    <constraint firstItem="L68-uO-e3A" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hTY-xb-H5h" secondAttribute="top" constant="20" id="uxt-ER-8Hi"/>
+                                    <constraint firstItem="L68-uO-e3A" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hTY-xb-H5h" secondAttribute="top" id="uxt-ER-8Hi"/>
                                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="309-z3-fPx" secondAttribute="trailing" constant="16" id="v7I-T9-tHq"/>
                                     <constraint firstItem="309-z3-fPx" firstAttribute="centerX" secondItem="hTY-xb-H5h" secondAttribute="centerX" id="z7o-Uk-VHb"/>
                                 </constraints>
@@ -681,6 +684,7 @@
                         <outlet property="statusLabel" destination="zhF-jf-Wcv" id="RYg-gQ-1dz"/>
                         <outlet property="submitButton" destination="6eO-V2-a64" id="O2y-fh-zZd"/>
                         <outlet property="verificationCodeField" destination="A2K-lq-6XM" id="U35-Ci-hs6"/>
+                        <outlet property="verticalCenterConstraint" destination="cMC-S2-j55" id="FMH-Ok-y2a"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PwX-lW-aCa" userLabel="First Responder" sceneMemberID="firstResponder"/>

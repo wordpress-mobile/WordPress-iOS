@@ -14,6 +14,7 @@ import WordPressShared
     @IBOutlet var createSiteButton: WPNUXSecondaryButton!
     @IBOutlet var safariPasswordButton: WPNUXSecondaryButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
+    @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
 
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
@@ -146,7 +147,9 @@ import WordPressShared
         if SigninEditingState.signinEditingStateActive {
             emailTextField.becomeFirstResponder()
             bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeight
+            verticalCenterConstraint.constant = 0
         } else {
+            verticalCenterConstraint.constant = SigninFormVerticalOffset
             bottomContentConstraint.constant = 0
         }
     }
