@@ -96,7 +96,11 @@ class NUXAbstractViewController : UIViewController
         helpBadge.hidden = true
         buttonView.addSubview(helpBadge)
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: buttonView)
+        let spacer = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
+        spacer.width = -8
+
+        let barButton = UIBarButtonItem(customView: buttonView)
+        navigationItem.rightBarButtonItems = [spacer, barButton]
     }
 
 
