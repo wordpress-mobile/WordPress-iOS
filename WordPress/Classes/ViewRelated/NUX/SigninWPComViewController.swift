@@ -251,12 +251,15 @@ extension SigninWPComViewController: LoginFacadeDelegate {
 
     func displayRemoteError(error: NSError!) {
         configureStatusMessage("")
-        configureSubmitButton(false)
+        configureLoading(false)
         displayError(error)
     }
 
 
     func needsMultifactorCode() {
+        configureStatusMessage("")
+        configureLoading(false)
+
         WPAppAnalytics.track(.TwoFactorCodeRequested)
         // Credentials were good but a 2fa code is needed.
         loginFields.shouldDisplayMultifactor = true // technically not needed
