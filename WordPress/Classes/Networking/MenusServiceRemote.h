@@ -1,5 +1,22 @@
 #import "ServiceRemoteREST.h"
 
+extern NSString * const MenusRemoteKeyID;
+extern NSString * const MenusRemoteKeyMenu;
+extern NSString * const MenusRemoteKeyMenus;
+extern NSString * const MenusRemoteKeyLocations;
+extern NSString * const MenusRemoteKeyContentID;
+extern NSString * const MenusRemoteKeyDescription;
+extern NSString * const MenusRemoteKeyLinkTarget;
+extern NSString * const MenusRemoteKeyLinkTitle;
+extern NSString * const MenusRemoteKeyName;
+extern NSString * const MenusRemoteKeyType;
+extern NSString * const MenusRemoteKeyTypeFamily;
+extern NSString * const MenusRemoteKeyTypeLabel;
+extern NSString * const MenusRemoteKeyURL;
+extern NSString * const MenusRemoteKeyItems;
+extern NSString * const MenusRemoteKeyDeleted;
+extern NSString * const MenusRemoteKeyLocationDefaultState;
+
 @class Blog;
 @class RemoteMenu;
 @class RemoteMenuItem;
