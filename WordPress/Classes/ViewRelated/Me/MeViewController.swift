@@ -288,7 +288,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     
     private func uploadGravatarImage(newGravatar: UIImage) {
         gravatarUploadInProgress = true
-        headerView.gravatarImage = newGravatar
+        headerView.overrideGravatarImage(newGravatar)
 
         let service = GravatarService(context: ContextManager.sharedInstance().mainContext)
         service?.uploadImage(newGravatar) { [weak self] error in
