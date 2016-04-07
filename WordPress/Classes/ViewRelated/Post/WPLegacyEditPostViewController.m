@@ -302,8 +302,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                                                                        successHandler:successHandler
                                                                                        dismissHandler:dismissHandler];
     vc.displaysPrimaryBlogOnTop = YES;
+    vc.displaysCancelButton = [self isViewHorizontallyCompact];
     vc.title = NSLocalizedString(@"Select Site", @"");
-
+    
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
