@@ -42,8 +42,6 @@ public class CommentsTableViewCell : WPTableViewCell
             return
         }
         
-        let placeholderImage = Style.gravatarPlaceholderImage(isApproved: approved)
-
         let gravatar = url.flatMap { Gravatar($0) }
         gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
 
@@ -51,12 +49,13 @@ public class CommentsTableViewCell : WPTableViewCell
     }
     
     public func downloadGravatarWithGravatarEmail(email: String?) {
-        // TODO: For consistency / clarity, let's rename UIImageView+Gravatar helpers in another PR.
-        // This helper downloads an image, and it's not simply assigning it!
-        let fallbackImage = Style.gravatarPlaceholderImage(isApproved: approved)
-        gravatarImageView.setImageWithGravatarEmail(email, fallbackImage: fallbackImage)
+        guard let unwrappedEmail = email else {
+            gravatarImageView.image = placeholderImage
+            return
+        }
+        
+        gravatarImageView.downloadGravatarWithEmail(unwrappedEmail, placeholderImage: placeholderImage)
     }
-    
     
     
     // MARK: - Overwritten Methods
@@ -165,6 +164,11 @@ public class CommentsTableViewCell : WPTableViewCell
     
     // MARK: - Private Properties
     private var gravatarURL : NSURL?
+    
+    // MARK: - Private Calculated Properties
+    private var placeholderImage : UIImage {
+        return Style.gravatarPlaceholderImage(isApproved: approved)
+    }
     
     // MARK: - IBOutlets
     @IBOutlet private var layoutView            : UIView!
