@@ -32,8 +32,7 @@ extension UIImageView
     ///     -   email: the user's email
     ///     -   rating: expected image rating
     ///
-    func downloadGravatarWithEmail(email : String, rating : GravatarRatings)
-    {
+    func downloadGravatarWithEmail(email : String, rating : GravatarRatings) {
         downloadGravatarWithEmail(email, rating: rating, placeholderImage : GravatarDefaults.placeholderImage)
     }
     
@@ -44,11 +43,7 @@ extension UIImageView
     ///     -   rating: expected image rating
     ///     -   placeholderImage: Image to be used as Placeholder
     ///
-    func downloadGravatarWithEmail(email            : String,
-                                   rating           : GravatarRatings = GravatarDefaults.rating,
-                                   placeholderImage : UIImage)
-    {
-
+    func downloadGravatarWithEmail(email : String, rating : GravatarRatings = GravatarDefaults.rating, placeholderImage : UIImage) {
         let targetSize = gravatarDefaultSize()
         let targetURL = gravatarUrlForEmail(email, size: targetSize, rating: rating.stringValue())
         let targetRequest = NSURLRequest(URL: targetURL!)
@@ -70,8 +65,7 @@ extension UIImageView
     /// P.s.:
     /// Hope buddah, and the code reviewer, can forgive me for this hack.
     ///
-    func overrideGravatarImageCache(image: UIImage, rating: GravatarRatings, email: String)
-    {
+    func overrideGravatarImageCache(image: UIImage, rating: GravatarRatings, email: String) {
         guard let targetURL = gravatarUrlForEmail(email, size: gravatarDefaultSize(), rating: rating.stringValue()) else {
             return
         }
@@ -86,14 +80,6 @@ extension UIImageView
     
     // MARK: - Private Helpers
     
-    /// Private helper structure: contains the default Gravatar parameters
-    ///
-    private struct GravatarDefaults {
-        static let placeholderImage = UIImage(named: "gravatar.png")!
-        static let imageSize = 80
-        static let rating = GravatarRatings.G
-    }
-    
     /// Returns the Gravatar URL, for a given email, with the specified size + rating.
     ///
     /// -   Parameters:
@@ -103,21 +89,27 @@ extension UIImageView
     ///
     /// -   Returns: Gravatar's URL
     ///
-    private func gravatarUrlForEmail(email: String, size: NSInteger, rating: String) -> NSURL?
-    {
+    private func gravatarUrlForEmail(email: String, size: NSInteger, rating: String) -> NSURL? {
         let targetURL = String(format: "%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, email.md5(), size, rating)
         return NSURL(string: targetURL)
     }
     
     /// Returns the required gravatar size. If the current view's size is zero, falls back to the default size.
     ///
-    private func gravatarDefaultSize() -> Int
-    {
+    private func gravatarDefaultSize() -> Int {
         guard CGSizeEqualToSize(bounds.size, CGSizeZero) == false else {
             return GravatarDefaults.imageSize
         }
 
         let targetSize = max(bounds.width, bounds.height) * UIScreen.mainScreen().scale
         return Int(targetSize)
+    }
+    
+    /// Private helper structure: contains the default Gravatar parameters
+    ///
+    private struct GravatarDefaults {
+        static let placeholderImage = UIImage(named: "gravatar.png")!
+        static let imageSize = 80
+        static let rating = GravatarRatings.G
     }
 }
