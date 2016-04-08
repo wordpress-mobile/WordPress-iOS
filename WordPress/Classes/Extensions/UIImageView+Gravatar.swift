@@ -31,34 +31,29 @@ extension UIImageView
     /// -   Parameters:
     ///     -   email: the user's email
     ///     -   rating: expected image rating
-    ///     -   policy: NSURLRequest's Cache Policy. Useful to force reload an image, that might have been changed.
     ///
-    func downloadGravatarWithEmail(email : String, rating : GravatarRatings, policy : NSURLRequestCachePolicy)
+    func downloadGravatarWithEmail(email : String, rating : GravatarRatings)
     {
-        downloadGravatarWithEmail(email, placeholderImage : GravatarDefaults.placeholder, rating: rating, policy: policy)
+        downloadGravatarWithEmail(email, rating: rating, placeholderImage : GravatarDefaults.placeholderImage)
     }
     
     /// Downloads and sets the User's Gravatar, given his email.
     ///
     /// -   Parameters:
     ///     -   email: the user's email
-    ///     -   placeholderImage: Image to be used as Placeholder
     ///     -   rating: expected image rating
-    ///     -   policy: NSURLRequest's Cache Policy. Useful to force reload an image, that might have been changed.
+    ///     -   placeholderImage: Image to be used as Placeholder
     ///
-    func downloadGravatarWithEmail(email : String,
-                                   placeholderImage : UIImage       = GravatarDefaults.placeholder,
-                                   rating : GravatarRatings         = GravatarDefaults.rating,
-                                   policy : NSURLRequestCachePolicy = GravatarDefaults.policy)
+    func downloadGravatarWithEmail(email            : String,
+                                   rating           : GravatarRatings = GravatarDefaults.rating,
+                                   placeholderImage : UIImage)
     {
 
         let targetSize = gravatarDefaultSize()
         let targetURL = gravatarUrlForEmail(email, size: targetSize, rating: rating.stringValue())
-        
-        let request = NSMutableURLRequest(URL: targetURL!)
-        request.cachePolicy = policy
+        let targetRequest = NSURLRequest(URL: targetURL!)
 
-        setImageWithURLRequest(request, placeholderImage: placeholderImage, success: nil, failure: nil)
+        setImageWithURLRequest(targetRequest, placeholderImage: placeholderImage, success: nil, failure: nil)
     }
     
     /// Sets an Image Override in the AFNetworking's Private Cache.
@@ -86,10 +81,9 @@ extension UIImageView
     /// Private helper structure: contains the default Gravatar parameters
     ///
     private struct GravatarDefaults {
-        static let placeholder = UIImage(named: "gravatar.png")!
-        static let size = 80
+        static let placeholderImage = UIImage(named: "gravatar.png")!
+        static let imageSize = 80
         static let rating = GravatarRatings.G
-        static let policy = NSURLRequestCachePolicy.UseProtocolCachePolicy
     }
     
     /// Returns the Gravatar URL, for a given email, with the specified size + rating.
@@ -112,7 +106,7 @@ extension UIImageView
     private func gravatarDefaultSize() -> Int
     {
         guard CGSizeEqualToSize(bounds.size, CGSizeZero) == false else {
-            return GravatarDefaults.size
+            return GravatarDefaults.imageSize
         }
 
         let targetSize = max(bounds.width, bounds.height) * UIScreen.mainScreen().scale
