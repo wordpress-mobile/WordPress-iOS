@@ -13,4 +13,9 @@ extension String {
     func trim() -> String {
         return stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
     }
+
+    /// Returns `self` if not empty, or `nil` otherwise
+    func nonEmptyString() -> String? {
+        return isEmpty ? nil : self
+    }
 }

@@ -48,6 +48,7 @@
 
 #import "PhotonImageURLHelper.h"
 #import "PostContentProvider.h"
+#import "Post.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
 
