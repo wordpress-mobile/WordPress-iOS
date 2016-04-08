@@ -193,7 +193,7 @@ import WordPressShared
 
         signinWithUsernamePassword(false)
 
-        WPAppAnalytics.track(WPAnalyticsStat.SafariCredentialsLoginFilled)
+        WPAppAnalytics.track(.LoginAutoFillCredentialsFilled)
     }
 
 
@@ -237,7 +237,7 @@ import WordPressShared
             return
         }
 
-        guard SigninHelpers.resemblesEmailAddress(emailOrUsername) else {
+        guard emailOrUsername.isValidEmail() else {
             // A username was entered, not an email address.
             // Proceed to the password form.
             signinWithUsernamePassword()

@@ -8,24 +8,6 @@ import WordPressComAnalytics
 {
     private static let AuthenticationEmailKey = "AuthenticationEmailKey"
 
-    /// Check if the passed string resembles an email address.
-    ///
-    /// - Parameters:
-    ///     - string: A string that is potentially an email address.
-    ///
-    class func resemblesEmailAddress(string: String) -> Bool {
-        // Matches a string that:
-        // - Is one or more non-whitespace characters excluding @.
-        // - Followed by one @ sign.
-        // - Followed by one or more non-whitespace characters excluding . and @.
-        // - Followed by one .
-        // - Followed by one ore more non-whitespace characters excluding @.
-        let regex = try! NSRegularExpression(pattern: "^[^@\\s]+@[^@.\\s]+\\.[^@\\s]+$", options: .CaseInsensitive)
-        let matches = regex.matchesInString(string, options: .ReportCompletion, range: NSRange(location: 0, length: string.characters.count))
-        return matches.count > 0
-    }
-
-
     /// The base site URL path derived from `loginFields.siteUrl`
     ///
     /// - Parameters:
@@ -223,7 +205,7 @@ import WordPressComAnalytics
                 return
             }
             dispatch_async(dispatch_get_main_queue(), {
-                WPAppAnalytics.track(WPAnalyticsStat.SafariCredentialsLoginUpdated)
+                WPAppAnalytics.track(.LoginAutoFillCredentialsUpdated)
             })
         })
     }
