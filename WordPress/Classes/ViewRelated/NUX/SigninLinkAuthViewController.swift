@@ -22,8 +22,7 @@ import WordPressShared
     ///
     /// - Parameters:
     ///     - email: The user's email address tied to their wpcom account.
-    ///     - token: A string containing .
-
+    ///     - token: The user's auth token.
     ///
     class func controller(email: String, token: String) -> SigninLinkAuthViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
