@@ -294,7 +294,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
         service?.uploadImage(newGravatar) { [weak self] error in
             dispatch_async(dispatch_get_main_queue(), {
                 self?.gravatarUploadInProgress = false
-                self?.headerView.reloadGravatarImageIgnorningCache()
+                self?.reloadViewModel()
             })
         }
     }

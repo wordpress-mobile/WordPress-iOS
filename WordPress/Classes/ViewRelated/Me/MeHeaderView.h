@@ -15,8 +15,4 @@ typedef void (^MeHeaderViewCallback)(void);
 ///
 - (void)overrideGravatarImage:(UIImage *)gravatarImage;
 
-/// Forces reload a Gravatar Image, ignorning NSURLCache's contents.
-///
-- (void)reloadGravatarImageIgnorningCache;
-
 @end
