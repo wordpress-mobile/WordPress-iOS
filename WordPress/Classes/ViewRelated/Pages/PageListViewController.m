@@ -1,10 +1,11 @@
 #import "PageListViewController.h"
 
-#import "AbstractPostListViewControllerSubclass.h"
+#import "AbstractPostListViewController.h"
 #import "EditPageViewController.h"
 #import "Page.h"
 #import "PageListSectionHeaderView.h"
 #import "PageListTableViewCell.h"
+#import "PostService.h"
 #import "WPLegacyEditPageViewController.h"
 #import "WPAppAnalytics.h"
 
