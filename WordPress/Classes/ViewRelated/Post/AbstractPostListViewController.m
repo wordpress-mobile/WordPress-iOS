@@ -20,7 +20,8 @@ const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 
 const CGFloat DefaultHeightForFooterView = 44.0;
 
-@interface AbstractPostListViewController()
+@interface AbstractPostListViewController() <WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate>
+
 @property (nonatomic) BOOL needsRefreshCachedCellHeightsBeforeLayout;
 @end
 
