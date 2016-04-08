@@ -3,21 +3,14 @@ import UIKit
 import RxSwift
 import WordPressComAnalytics
 
-func AccountSettingsViewController(account account: WPAccount?) -> ImmuTableViewController {
-    let service = account.map({ account in
-        return AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
-    })
-    return AccountSettingsViewController(service: service)
-}
-
-func AccountSettingsViewController(service service: AccountSettingsService?) -> ImmuTableViewController {
-    let controller = AccountSettingsController(service: service)
+func ApplicationSettingsViewController() -> ImmuTableViewController {
+    let controller = ApplicationSettingsController()
     let viewController = ImmuTableViewController(controller: controller)
     return viewController
 }
 
-private struct AccountSettingsController: SettingsController {
-    let title = NSLocalizedString("Account Settings", comment: "Account Settings Title");
+private struct ApplicationSettingsController: SettingsController {
+    let title = NSLocalizedString("App Settings", comment: "App Settings Title");
 
     var immuTableRows: [ImmuTableRow.Type] {
         return [
@@ -29,34 +22,16 @@ private struct AccountSettingsController: SettingsController {
 
     // MARK: - Initialization
 
-    let service: AccountSettingsService?
-
-    init(service: AccountSettingsService?) {
-        self.service = service
-    }
+    init() {}
     
     // MARK: - ImmuTableViewController
 
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable> {
-        if let service = self.service {
-            return service.settings.map({ settings in
-                self.mapViewModel(settings, service: service, presenter: presenter)
-            })
-        } else {
-            return Observable.just(self.mapViewModel(nil, service: nil, presenter: presenter))
-        }
+        return Observable.just(self.mapViewModel(nil, service: nil, presenter: presenter))
     }
 
     var errorMessage: Observable<String?> {
-        if let service = self.service {
-            return service.refresh
-                // replace errors with .Failed status
-                .catchErrorJustReturn(.Failed)
-                // convert status to string
-                .map({ $0.errorMessage })
-        } else {
-            return Observable.just(nil)
-        }
+        return Observable.just(nil)
     }
 
     // MARK: - Model mapping
@@ -81,69 +56,21 @@ private struct AccountSettingsController: SettingsController {
             onChange: visualEditorChanged()
         )
 
-        if Feature.enabled(.AccountSettings), let service = service {
-            let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
-            
-            let username = TextRow(
-                title: NSLocalizedString("Username", comment: "Account Settings Username label"),
-                value: settings?.username ?? "")
-            
-            let email = EditableTextRow(
-                title: NSLocalizedString("Email", comment: "Account Settings Email label"),
-                value: settings?.email ?? "",
-                action: presenter.present(editEmailAddress(service))
-            )
-            
-            let primarySite = EditableTextRow(
-                title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
-                value: primarySiteName ?? "",
-                action: presenter.present(editPrimarySite(settings, service: service))
-            )
-            
-            let webAddress = EditableTextRow(
-                title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
-                value: settings?.webAddress ?? "",
-                action: presenter.present(editWebAddress(service))
-            )
-            
-            return ImmuTable(sections: [
-                ImmuTableSection(
-                    rows: [
-                        username,
-                        email,
-                        primarySite,
-                        webAddress
-                    ]),
-                ImmuTableSection(
-                    headerText: mediaHeader,
-                    rows: [
-                        uploadSize,
-                        mediaRemoveLocation
-                    ],
-                    footerText: nil),
-                ImmuTableSection(
-                    headerText: editorHeader,
-                    rows: [
-                        visualEditor
-                    ],
-                    footerText: nil)
-                ])
-        } else {
-            return ImmuTable(sections: [
-                ImmuTableSection(
-                    headerText: mediaHeader,
-                    rows: [
-                        uploadSize
-                    ],
-                    footerText: nil),
-                ImmuTableSection(
-                    headerText: editorHeader,
-                    rows: [
-                        visualEditor
-                    ],
-                    footerText: nil)
-                ])
-        }
+        return ImmuTable(sections: [
+            ImmuTableSection(
+                headerText: mediaHeader,
+                rows: [
+                    uploadSize,
+                    mediaRemoveLocation
+                ],
+                footerText: nil),
+            ImmuTableSection(
+                headerText: editorHeader,
+                rows: [
+                    visualEditor
+                ],
+                footerText: nil)
+            ])
     }
     
     
