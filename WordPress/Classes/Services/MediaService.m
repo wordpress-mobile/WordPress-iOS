@@ -77,12 +77,16 @@
         }
     }
     
-    BOOL geoLocationEnabled = post.blog.settings.geolocationEnabled;
+    MediaSettings *mediaSettings = [MediaSettings new];
+    BOOL stripGeoLocation = mediaSettings.removeLocationSetting;
+
+    NSInteger maxImageSize = [mediaSettings imageSizeForUpload];
+    CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
+    
     NSURL *mediaURL = [self urlForMediaWithFilename:mediaName andExtension:extension];
     NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
                                                 andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
-    NSInteger maxImageSize = [[MediaSettings new] imageSizeForUpload];
-    CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
+    
     [[self.class queueForResizeMediaOperations] addOperationWithBlock:^{
         [asset exportThumbnailToURL:mediaThumbnailURL
                          targetSize:[UIScreen mainScreen].bounds.size
@@ -95,7 +99,7 @@
                          [asset exportToURL:mediaURL
                                   targetUTI:assetUTI
                           maximumResolution:maximumResolution
-                           stripGeoLocation:!geoLocationEnabled
+                           stripGeoLocation:stripGeoLocation
                              successHandler:^(CGSize resultingSize) {
                                  [self createMediaForPost:postObjectID
                                                  mediaURL:mediaURL
@@ -129,6 +133,7 @@
     [self.managedObjectContext performBlock:^{
         AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
         Media *media = [self newMediaForPost:post];
+        media.postID = post.postID;
         media.filename = [mediaURL lastPathComponent];
         media.absoluteLocalURL = [mediaURL path];
         media.absoluteThumbnailLocalURL = [mediaThumbnailURL path];
@@ -202,6 +207,50 @@
     
     [remote createMedia:remoteMedia
                progress:progress
+                success:successBlock
+                failure:failureBlock];
+}
+
+- (void)updateMedia:(Media *)media
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
+    RemoteMedia *remoteMedia = [self remoteMediaFromMedia:media];
+    NSManagedObjectID *mediaObjectID = media.objectID;
+    void (^successBlock)(RemoteMedia *media) = ^(RemoteMedia *media) {
+        [self.managedObjectContext performBlock:^{
+            NSError * error = nil;
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
+            if (!mediaInContext){
+                DDLogError(@"Error updating media object: %@", error);
+                if (failure){
+                    failure(error);
+                }
+                return;
+            }
+
+            [self updateMedia:mediaInContext withRemoteMedia:media];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                if (success) {
+                    success();
+                }
+            }];
+        }];
+    };
+    void (^failureBlock)(NSError *error) = ^(NSError *error) {
+        [self.managedObjectContext performBlock:^{
+            Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:nil];
+            if (mediaInContext) {
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
+            if (failure) {
+                failure([self translateMediaUploadError:error]);
+            }
+        }];
+    };
+
+    [remote updateMedia:remoteMedia
                 success:successBlock
                 failure:failureBlock];
 }
@@ -594,6 +643,7 @@ static NSString * const MediaDirectory = @"Media";
     media.videopressGUID = remoteMedia.videopressGUID;
     media.length = remoteMedia.length;
     media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL;
+    media.postID = remoteMedia.postID;
 }
 
 - (RemoteMedia *)remoteMediaFromMedia:(Media *)media
@@ -613,6 +663,7 @@ static NSString * const MediaDirectory = @"Media";
     remoteMedia.mimeType = [self mimeTypeForFilename:media.localThumbnailURL];
 	remoteMedia.videopressGUID = media.videopressGUID;
     remoteMedia.remoteThumbnailURL = media.remoteThumbnailURL;
+    remoteMedia.postID = media.postID;
     return remoteMedia;
 }
 

@@ -540,10 +540,8 @@ import WordPressComAnalytics
         // Share
         alertController.addActionWithTitle(ActionSheetButtonTitles.share,
             style: .Default,
-            handler: { (action:UIAlertAction) in
-                if let post = self.postWithObjectID(post.objectID) {
-                    self.sharePost(post, fromView: anchorView)
-                }
+            handler: { [weak self] (action:UIAlertAction) in
+                self?.sharePost(post.objectID, fromView: anchorView)
         })
 
         if UIDevice.isPad() {
@@ -558,6 +556,14 @@ import WordPressComAnalytics
             presentViewController(alertController, animated: true, completion: nil)
         }
     }
+    
+    private func sharePost(postID: NSManagedObjectID, fromView anchorView: UIView) {
+        if let post = self.postWithObjectID(postID) {
+            let sharingController = PostSharingController()
+            
+            sharingController.shareReaderPost(post, fromView: anchorView, inViewController: self)
+        }
+    }
 
     private func postWithObjectID(objectID: NSManagedObjectID) -> ReaderPost? {
         do {
@@ -566,28 +572,6 @@ import WordPressComAnalytics
             DDLogSwift.logError(error.localizedDescription)
             return nil
         }
-    }
-
-    private func sharePost(post: ReaderPost, fromView anchorView: UIView) {
-        let controller = ReaderHelpers.shareController(
-            post.titleForDisplay(),
-            summary: post.contentPreviewForDisplay(),
-            tags: post.tags,
-            link: post.permaLink
-        )
-
-        if !UIDevice.isPad() {
-            presentViewController(controller, animated: true, completion: nil)
-            return
-        }
-
-        // Silly iPad popover rules.
-        controller.modalPresentationStyle = .Popover
-        presentViewController(controller, animated: true, completion: nil)
-        let presentationController = controller.popoverPresentationController
-        presentationController?.permittedArrowDirections = .Unknown
-        presentationController?.sourceView = anchorView
-        presentationController?.sourceRect = anchorView.bounds
     }
 
     private func toggleFollowingForPost(post:ReaderPost) {
