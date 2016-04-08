@@ -211,8 +211,10 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (indexPath.section == 0) {
         PublicizeService *publicizer = self.publicizeServices[indexPath.row];
         controller = [[SharingConnectionsViewController alloc] initWithBlog:self.blog publicizeService:publicizer];
+        [WPAppAnalytics track:WPAnalyticsStatSharingOpenedPublicize withBlog:self.blog];
     } else {
         controller = [[SharingButtonsViewController alloc] initWithBlog:self.blog];
+        [WPAppAnalytics track:WPAnalyticsStatSharingOpenedSharingButtonSettings withBlog:self.blog];
     }
 
     [self.navigationController pushViewController:controller animated:YES];

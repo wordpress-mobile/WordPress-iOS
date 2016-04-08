@@ -1,9 +1,10 @@
 import UIKit
+import Gridicons
 import WordPressShared
 
 class PlanComparisonViewController: PagedViewController {
     lazy private var cancelXButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(named: "gridicons-cross"), style: .Plain, target: self, action: #selector(PlanComparisonViewController.closeTapped))
+        let button = UIBarButtonItem(image: Gridicon.iconOfType(.Cross), style: .Plain, target: self, action: #selector(PlanComparisonViewController.closeTapped))
         button.accessibilityLabel = NSLocalizedString("Close", comment: "Dismiss the current view")
 
         return button
@@ -56,12 +57,17 @@ class PlanComparisonViewController: PagedViewController {
     }
 
     private func fetchFeatures() {
-        service.updateAllPlanFeatures({ [weak self] in
-            self?.detailViewControllers.forEach { controller in
-                let groups = PlanFeatureGroup.groupsForPlan(controller.viewModel.plan)
-                // TODO: Avoid the optional groups
-                controller.viewModel = controller.viewModel.withFeatures(.Ready(groups!))
-            }
+        service.updateAllPlanFeatures(
+            success: { [weak self, service] features in
+                self?.detailViewControllers.forEach { controller in
+                    let plan = controller.viewModel.plan
+                    do {
+                        let groups = try service.featureGroupsForPlan(plan, features: features)
+                        controller.viewModel = controller.viewModel.withFeatures(.Ready(groups))
+                    } catch {
+                        controller.viewModel = controller.viewModel.withFeatures(.Error(String(error)))
+                    }
+                }
             }, failure: { [weak self] error in
                 self?.detailViewControllers.forEach { controller in
                     controller.viewModel = controller.viewModel.withFeatures(.Error(String(error)))
