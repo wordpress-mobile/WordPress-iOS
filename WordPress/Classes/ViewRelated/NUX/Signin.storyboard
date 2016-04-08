@@ -691,6 +691,44 @@
             </objects>
             <point key="canvasLocation" x="3070" y="942"/>
         </scene>
+        <!--Signin Link Auth View Controller-->
+        <scene sceneID="SIF-Pr-Kgx">
+            <objects>
+                <viewController storyboardIdentifier="SigninLinkAuthViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VcT-PA-0lj" customClass="SigninLinkAuthViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="e8j-zJ-CeU"/>
+                        <viewControllerLayoutGuide type="bottom" id="ftd-m3-Cpd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="r0Z-0G-9xo">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="9Sq-F3-Spn">
+                                <rect key="frame" x="290" y="290" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bnl-db-peA">
+                                <rect key="frame" x="283.5" y="326" width="33" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.52941176469999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="9Sq-F3-Spn" firstAttribute="centerY" secondItem="r0Z-0G-9xo" secondAttribute="centerY" id="8Be-YU-NCR"/>
+                            <constraint firstItem="Bnl-db-peA" firstAttribute="top" secondItem="9Sq-F3-Spn" secondAttribute="bottom" constant="16" id="Yb3-kS-EHZ"/>
+                            <constraint firstItem="9Sq-F3-Spn" firstAttribute="centerX" secondItem="r0Z-0G-9xo" secondAttribute="centerX" id="vkr-b3-dH1"/>
+                            <constraint firstItem="Bnl-db-peA" firstAttribute="centerX" secondItem="9Sq-F3-Spn" secondAttribute="centerX" id="ygB-CM-DyB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="statusLabel" destination="Bnl-db-peA" id="ekO-Re-yc4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N85-VU-x1x" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3059" y="268"/>
+        </scene>
         <!--Signin Error View Controller-->
         <scene sceneID="zKv-KR-qqw">
             <objects>

@@ -4,8 +4,10 @@ import WordPressComAnalytics
 
 /// A collection of helper methods for NUX.
 ///
-class SigninHelpers
+@objc class SigninHelpers: NSObject
 {
+    private static let AuthenticationEmailKey = "AuthenticationEmailKey"
+
     /// Check if the passed string resembles an email address.
     ///
     /// - Parameters:
@@ -89,6 +91,35 @@ class SigninHelpers
             return false
         }
         return true
+    }
+
+
+    // MARK: - Helpers for Saved Magic Link Email
+
+
+    /// Saves the specified email address in NSUserDefaults
+    ///
+    /// - Parameters:
+    ///     - email: The email address to save.
+    ///
+    class func saveEmailAddressForTokenAuth(email: String) {
+        NSUserDefaults.standardUserDefaults().setObject(email, forKey: AuthenticationEmailKey)
+    }
+
+
+    /// Removes the saved email address from NSUserDefaults
+    ///
+    class func deleteEmailAddressForTokenAuth() {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(AuthenticationEmailKey)
+    }
+
+
+    /// Fetches a saved email address if one exists.
+    ///
+    /// - Returns: The email address as a string or nil.
+    ///
+    class func getEmailAddressForTokenAuth() -> String? {
+        return NSUserDefaults.standardUserDefaults().stringForKey(AuthenticationEmailKey)
     }
 
 
