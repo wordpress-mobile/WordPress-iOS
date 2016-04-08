@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import Gridicons
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
     static let restorationIdentifier = "WPMeRestorationID"
@@ -90,23 +91,28 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
+            icon: Gridicon.iconOfType(.User),
             action: pushMyProfile())
 
         let accountSettings = NavigationItemRow(
             title: NSLocalizedString("Account Settings", comment: "Link to Account Settings section"),
+            icon: Gridicon.iconOfType(.Cog),
             action: pushAccountSettings())
 
         let notificationSettings = NavigationItemRow(
             title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
+            icon: Gridicon.iconOfType(.Bell),
             action: pushNotificationSettings())
 
         let helpAndSupport = BadgeNavigationItemRow(
             title: NSLocalizedString("Help & Support", comment: "Link to Help section"),
+            icon: Gridicon.iconOfType(.Help),
             badgeCount: helpshiftBadgeCount,
             action: pushHelp())
 
         let about = NavigationItemRow(
             title: NSLocalizedString("About", comment: "Link to About section (contains info about the app)"),
+            icon: Gridicon.iconOfType(.Info),
             action: pushAbout())
 
         let logIn = ButtonRow(
