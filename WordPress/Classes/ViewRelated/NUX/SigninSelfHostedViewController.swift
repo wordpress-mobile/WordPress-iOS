@@ -23,10 +23,11 @@ import WordPressShared
         return facade
     }()
 
-    lazy var blogSyncFacade = BlogSyncFacade()
-
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
+    ///
+    /// - Parameters:
+    ///     - loginFields: A LoginFields instance containing any prefilled credentials.
     ///
     class func controller(loginFields: LoginFields) -> SigninSelfHostedViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
@@ -259,7 +260,7 @@ extension SigninSelfHostedViewController: LoginFacadeDelegate {
 
     func finishedLoginWithUsername(username: String!, password: String!, xmlrpc: String!, options: [NSObject : AnyObject]!) {
         displayLoginMessage("")
-        blogSyncFacade.syncBlogWithUsername(username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
+        BlogSyncFacade().syncBlogWithUsername(username, password: password, xmlrpc: xmlrpc, options: options) { [weak self] in
             self?.configureLoading(false)
             self?.dismiss()
         }
