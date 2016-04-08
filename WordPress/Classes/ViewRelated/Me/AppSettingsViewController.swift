@@ -1,42 +1,45 @@
 import Foundation
 import UIKit
-import RxSwift
+import WordPressShared
 import WordPressComAnalytics
 
-func AppSettingsViewController(account account: WPAccount?) -> ImmuTableViewController {
-    return AppSettingsViewController()
-}
+public class AppSettingsViewController: UITableViewController {
 
-func AppSettingsViewController() -> ImmuTableViewController {
-    let controller = AppSettingsController()
-    let viewController = ImmuTableViewController(controller: controller)
-    return viewController
-}
-
-private struct AppSettingsController: SettingsController {
-    let title = NSLocalizedString("App Settings", comment: "App Settings Title");
-
-    var immuTableRows: [ImmuTableRow.Type] {
-        return [
-            MediaSizeRow.self,
-            SwitchRow.self]
-    }
-
+    private var handler: ImmuTableViewHandler!
     // MARK: - Initialization
 
-    // MARK: - ImmuTableViewController
-
-    func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable> {
-        return Observable.just(self.mapViewModel(nil, service: nil, presenter: presenter))
+    override init(style: UITableViewStyle) {
+        super.init(style: style)
+        navigationItem.title = NSLocalizedString("App Settings", comment: "App Settings Title")
     }
 
-    var errorMessage: Observable<String?> {
-        return Observable.just(nil)
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
+
+    public required convenience init() {
+        self.init(style: .Grouped)
+    }
+    
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+
+        ImmuTable.registerRows([
+            MediaSizeRow.self,
+            SwitchRow.self
+            ], tableView: self.tableView)
+
+        handler = ImmuTableViewHandler(takeOver: self)
+        handler.viewModel = tableViewModel()
+            
+        WPStyleGuide.resetReadableMarginsForTableView(tableView)
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+    }
+
 
     // MARK: - Model mapping
 
-    func mapViewModel(settings: AccountSettings?, service: AccountSettingsService?, presenter: ImmuTablePresenter) -> ImmuTable {
+    func tableViewModel() -> ImmuTable {
         let mediaHeader = NSLocalizedString("Media", comment: "Title label for the media settings section in the app settings")
         let uploadSize = MediaSizeRow(
             title: NSLocalizedString("Max Image Upload Size", comment: "Title for the image size settings option."),
