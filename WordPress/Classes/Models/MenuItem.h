@@ -45,16 +45,16 @@ extern NSString * const MenuItemLinkTargetBlank;
  */
 @interface MenuItem : NSManagedObject
 
-@property (nullable, nonatomic, retain) NSNumber *contentID;
-@property (nullable, nonatomic, retain) NSString *details;
-@property (nullable, nonatomic, retain) NSNumber *itemID;
-@property (nullable, nonatomic, retain) NSString *linkTarget;
-@property (nullable, nonatomic, retain) NSString *linkTitle;
-@property (nullable, nonatomic, retain) NSString *name;
-@property (nullable, nonatomic, retain) NSString *type;
-@property (nullable, nonatomic, retain) NSString *typeFamily;
-@property (nullable, nonatomic, retain) NSString *typeLabel;
-@property (nullable, nonatomic, retain) NSString *urlStr;
+@property (nullable, nonatomic, strong) NSNumber *contentID;
+@property (nullable, nonatomic, strong) NSString *details;
+@property (nullable, nonatomic, strong) NSNumber *itemID;
+@property (nullable, nonatomic, strong) NSString *linkTarget;
+@property (nullable, nonatomic, strong) NSString *linkTitle;
+@property (nullable, nonatomic, strong) NSString *name;
+@property (nullable, nonatomic, strong) NSString *type;
+@property (nullable, nonatomic, strong) NSString *typeFamily;
+@property (nullable, nonatomic, strong) NSString *typeLabel;
+@property (nullable, nonatomic, strong) NSString *urlStr;
 
 ///---------------------
 /// @name Relationships
@@ -63,19 +63,19 @@ extern NSString * const MenuItemLinkTargetBlank;
 /**
  The Menu the item belongs to.
  */
-@property (nullable, nonatomic, retain) Menu *menu;
+@property (nullable, nonatomic, strong) Menu *menu;
 
 /**
  Direct children of the item.
  NOTE: Does not include any descendents of this item's children.
  See method isDescendantOfItem: for detecting ancestry.
  */
-@property (nullable, nonatomic, retain) NSSet<MenuItem *> *children;
+@property (nullable, nonatomic, strong) NSSet<MenuItem *> *children;
 
 /**
  The parent of the item, if the item has one.
  */
-@property (nullable, nonatomic, retain) MenuItem *parent;
+@property (nullable, nonatomic, strong) MenuItem *parent;
 
 ///---------------------
 /// @name Helper methods

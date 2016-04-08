@@ -8,10 +8,10 @@
 #import "MenuItem.h"
 
 @interface MenuForStubbing : Menu
-@property (nullable, nonatomic, retain) NSNumber *menuID;
-@property (nullable, nonatomic, retain) NSString *name;
-@property (nullable, nonatomic, retain) NSSet<MenuLocation *> *locations;
-@property (nullable, nonatomic, retain) NSOrderedSet<MenuItem *> *items;
+@property (nullable, nonatomic, strong) NSNumber *menuID;
+@property (nullable, nonatomic, strong) NSString *name;
+@property (nullable, nonatomic, strong) NSSet<MenuLocation *> *locations;
+@property (nullable, nonatomic, strong) NSOrderedSet<MenuItem *> *items;
 @end
 
 @implementation MenuForStubbing
@@ -30,18 +30,18 @@
 @end
 
 @interface MenuItemForStubbing : MenuItem
-@property (nullable, nonatomic, retain) NSNumber *itemID;
-@property (nullable, nonatomic, retain) NSNumber *contentID;
-@property (nullable, nonatomic, retain) NSString *details;
-@property (nullable, nonatomic, retain) NSString *linkTarget;
-@property (nullable, nonatomic, retain) NSString *linkTitle;
-@property (nullable, nonatomic, retain) NSString *name;
-@property (nullable, nonatomic, retain) NSString *type;
-@property (nullable, nonatomic, retain) NSString *typeFamily;
-@property (nullable, nonatomic, retain) NSString *typeLabel;
-@property (nullable, nonatomic, retain) NSString *urlStr;
-@property (nullable, nonatomic, retain) NSSet<MenuItem *> *children;
-@property (nullable, nonatomic, retain) MenuItem *parent;
+@property (nullable, nonatomic, strong) NSNumber *itemID;
+@property (nullable, nonatomic, strong) NSNumber *contentID;
+@property (nullable, nonatomic, strong) NSString *details;
+@property (nullable, nonatomic, strong) NSString *linkTarget;
+@property (nullable, nonatomic, strong) NSString *linkTitle;
+@property (nullable, nonatomic, strong) NSString *name;
+@property (nullable, nonatomic, strong) NSString *type;
+@property (nullable, nonatomic, strong) NSString *typeFamily;
+@property (nullable, nonatomic, strong) NSString *typeLabel;
+@property (nullable, nonatomic, strong) NSString *urlStr;
+@property (nullable, nonatomic, strong) NSSet<MenuItem *> *children;
+@property (nullable, nonatomic, strong) MenuItem *parent;
 @end
 @implementation MenuItemForStubbing
 @synthesize itemID;

@@ -11,17 +11,17 @@ extern NSInteger const MenuDefaultID;
  */
 @interface Menu : NSManagedObject
 
-@property (nullable, nonatomic, retain) NSString *details;
-@property (nullable, nonatomic, retain) NSNumber *menuID;
-@property (nullable, nonatomic, retain) NSString *name;
+@property (nullable, nonatomic, strong) NSString *details;
+@property (nullable, nonatomic, strong) NSNumber *menuID;
+@property (nullable, nonatomic, strong) NSString *name;
 
 ///---------------------
 /// @name Relationships
 ///---------------------
 
-@property (nullable, nonatomic, retain) NSOrderedSet<MenuItem *> *items;
-@property (nullable, nonatomic, retain) NSSet<MenuLocation *> *locations;
-@property (nullable, nonatomic, retain) Blog *blog;
+@property (nullable, nonatomic, strong) NSOrderedSet<MenuItem *> *items;
+@property (nullable, nonatomic, strong) NSSet<MenuLocation *> *locations;
+@property (nullable, nonatomic, strong) Blog *blog;
 
 ///---------------------
 /// @name Helper methods
