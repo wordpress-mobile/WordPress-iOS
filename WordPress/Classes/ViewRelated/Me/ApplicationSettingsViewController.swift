@@ -76,37 +76,6 @@ private struct ApplicationSettingsController: SettingsController {
     
     // MARK: - Actions
 
-    func editEmailAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
-        let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
-        return editEmailAddress(AccountSettingsChange.Email, hint: hint, displaysNavigationButtons: true, service: service)
-    }
-    
-    func editWebAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
-        let hint = NSLocalizedString("Shown publicly when you comment on blogs.", comment: "Help text when editing web address")
-        return editText(AccountSettingsChange.WebAddress, hint: hint, displaysNavigationButtons: true, service: service)
-    }
-    
-    func editPrimarySite(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
-        return {
-            row in
-
-            let selectorViewController = BlogSelectorViewController(selectedBlogDotComID: settings?.primarySiteID,
-                successHandler: { (dotComID : NSNumber!) in
-                    let change = AccountSettingsChange.PrimarySite(dotComID as Int)
-                    service.saveChange(change)
-                },
-                dismissHandler: nil)
-
-            selectorViewController.title = NSLocalizedString("Primary Site", comment: "Primary Site Picker's Title");
-            selectorViewController.displaysOnlyDefaultAccountSites = true
-            selectorViewController.displaysCancelButton = true
-            selectorViewController.dismissOnCompletion = true
-            selectorViewController.dismissOnCancellation = true
-            
-            return selectorViewController
-        }
-    }
-
     func mediaSizeChanged() -> Int -> Void {
         return {
             value in
