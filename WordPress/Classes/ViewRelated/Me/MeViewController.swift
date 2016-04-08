@@ -199,15 +199,17 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func pushAccountSettings() -> ImmuTableAction {
         return { [unowned self] row in
-            WPAppAnalytics.track(.OpenedAccountSettings)
-            let controller = AccountSettingsViewController(account: self.defaultAccount())
-            self.navigationController?.pushViewController(controller, animated: true)
+            if let account = self.defaultAccount() {
+                WPAppAnalytics.track(.OpenedAccountSettings)
+                let controller = AccountSettingsViewController(account: account)
+                self.navigationController?.pushViewController(controller, animated: true)
+            }
         }
     }
 
     func pushAppSettings() -> ImmuTableAction {
         return { [unowned self] row in
-            let controller = AppSettingsViewController(account: self.defaultAccount())
+            let controller = AppSettingsViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }

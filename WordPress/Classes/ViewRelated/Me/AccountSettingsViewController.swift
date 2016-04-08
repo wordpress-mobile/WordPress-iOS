@@ -3,14 +3,12 @@ import UIKit
 import RxSwift
 import WordPressComAnalytics
 
-func AccountSettingsViewController(account account: WPAccount?) -> ImmuTableViewController {
-    let service = account.map({ account in
-        return AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
-    })
+func AccountSettingsViewController(account account: WPAccount) -> ImmuTableViewController {    
+    let service = AccountSettingsService(userID: account.userID.integerValue, api: account.restApi)
     return AccountSettingsViewController(service: service)
 }
 
-func AccountSettingsViewController(service service: AccountSettingsService?) -> ImmuTableViewController {
+func AccountSettingsViewController(service service: AccountSettingsService) -> ImmuTableViewController {
     let controller = AccountSettingsController(service: service)
     let viewController = ImmuTableViewController(controller: controller)
     return viewController
@@ -28,85 +26,64 @@ private struct AccountSettingsController: SettingsController {
 
     // MARK: - Initialization
 
-    let service: AccountSettingsService?
+    let service: AccountSettingsService
 
-    init(service: AccountSettingsService?) {
+    init(service: AccountSettingsService) {
         self.service = service
     }
     
     // MARK: - ImmuTableViewController
 
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable> {
-        if let service = self.service {
-            return service.settings.map({ settings in
-                self.mapViewModel(settings, service: service, presenter: presenter)
-            })
-        } else {
-            return Observable.just(self.mapViewModel(nil, service: nil, presenter: presenter))
-        }
+        return service.settings.map({ settings in
+            self.mapViewModel(settings, service: self.service, presenter: presenter)
+        })
     }
 
     var errorMessage: Observable<String?> {
-        if let service = self.service {
-            return service.refresh
-                // replace errors with .Failed status
-                .catchErrorJustReturn(.Failed)
-                // convert status to string
-                .map({ $0.errorMessage })
-        } else {
-            return Observable.just(nil)
-        }
+        return service.refresh
+            // replace errors with .Failed status
+            .catchErrorJustReturn(.Failed)
+            // convert status to string
+            .map({ $0.errorMessage })
     }
 
     // MARK: - Model mapping
 
-    func mapViewModel(settings: AccountSettings?, service: AccountSettingsService?, presenter: ImmuTablePresenter) -> ImmuTable {
-        if let service = service {
-            let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
-            
-            let username = TextRow(
-                title: NSLocalizedString("Username", comment: "Account Settings Username label"),
-                value: settings?.username ?? "")
-            
-            let email = EditableTextRow(
-                title: NSLocalizedString("Email", comment: "Account Settings Email label"),
-                value: settings?.email ?? "",
-                action: presenter.present(editEmailAddress(service))
-            )
-            
-            let primarySite = EditableTextRow(
-                title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
-                value: primarySiteName ?? "",
-                action: presenter.present(editPrimarySite(settings, service: service))
-            )
-            
-            let webAddress = EditableTextRow(
-                title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
-                value: settings?.webAddress ?? "",
-                action: presenter.present(editWebAddress(service))
-            )
-            
-            return ImmuTable(sections: [
-                ImmuTableSection(
-                    rows: [
-                        username,
-                        email,
-                        primarySite,
-                        webAddress
-                    ])
+    func mapViewModel(settings: AccountSettings?, service: AccountSettingsService, presenter: ImmuTablePresenter) -> ImmuTable {
+        let primarySiteName = settings.flatMap { service.primarySiteNameForSettings($0) }
+        
+        let username = TextRow(
+            title: NSLocalizedString("Username", comment: "Account Settings Username label"),
+            value: settings?.username ?? "")
+        
+        let email = EditableTextRow(
+            title: NSLocalizedString("Email", comment: "Account Settings Email label"),
+            value: settings?.email ?? "",
+            action: presenter.present(editEmailAddress(service))
+        )
+        
+        let primarySite = EditableTextRow(
+            title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
+            value: primarySiteName ?? "",
+            action: presenter.present(editPrimarySite(settings, service: service))
+        )
+        
+        let webAddress = EditableTextRow(
+            title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
+            value: settings?.webAddress ?? "",
+            action: presenter.present(editWebAddress(service))
+        )
+        
+        return ImmuTable(sections: [
+            ImmuTableSection(
+                rows: [
+                    username,
+                    email,
+                    primarySite,
+                    webAddress
                 ])
-        } else {
-            let loading = TextRow(
-                title: NSLocalizedString("Loading Settings...", comment: "Loading Settings label"),
-                value: "")
-            return ImmuTable(sections: [
-                ImmuTableSection(
-                    rows: [
-                        loading
-                    ],
-                    footerText: nil)
-                ])
-        }
+            ])
     }
     
     
