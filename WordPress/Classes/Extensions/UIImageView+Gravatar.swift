@@ -56,22 +56,30 @@ extension UIImageView
         setImageWithURLRequest(targetRequest, placeholderImage: placeholderImage, success: nil, failure: nil)
     }
     
-    /// Sets an Image Override in the AFNetworking's Private Cache.
-    /// Note: *WHY* is this required?. *WHY* life has to be so complicated?, is the universe against us?
+    /// Sets an Image Override in both, AFNetworking's Private Cache + NSURLCache
     ///
-    /// RE: This has been implemented as a workaround. During Upload, we want any async calls made to
-    /// the `downloadGravatar` API to return the "Fresh" image.
+    /// Note I: 
+    /// *WHY* is this required?. *WHY* life has to be so complicated?, is the universe against us?
+    /// This has been implemented as a workaround. During Upload, we want any async calls made to the 
+    /// `downloadGravatar` API to return the "Fresh" image.
     ///
+    /// Note II: 
+    /// We cannot just clear NSURLCache, since the helper that's supposed to do that, is broken since iOS 8.
+    /// Ref: Ref: http://blog.airsource.co.uk/2014/10/11/nsurlcache-ios8-broken/
+    ///
+    /// P.s.:
     /// Hope buddah, and the code reviewer, can forgive me for this hack.
     ///
     func overrideGravatarImageCache(image: UIImage, rating: GravatarRatings, email: String)
     {
-        let targetSize = gravatarDefaultSize()
-        let targetURL = gravatarUrlForEmail(email, size: targetSize, rating: rating.stringValue())
+        guard let targetURL = gravatarUrlForEmail(email, size: gravatarDefaultSize(), rating: rating.stringValue()) else {
+            return
+        }
         
-        let request = NSURLRequest(URL: targetURL!)
+        let request = NSURLRequest(URL: targetURL)
         
         self.dynamicType.sharedImageCache().cacheImage(image, forRequest: request)
+        NSURLCache.sharedURLCache().cacheImage(image, forRequest: request)
     }
     
     
