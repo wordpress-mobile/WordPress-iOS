@@ -440,17 +440,13 @@ int ddLogLevel = DDLogLevelInfo;
  */
 - (BOOL)handleOpenWithAuthenticationURL:(NSURL *)url
 {
-    // TODO: Final implementation depends on what we end up doing on the API side
-    // of things.  For now, assume we receive back an auth token.
-    NSParameterAssert([url isKindOfClass:[NSURL class]]);
-    // URL should be formated as wordpress://magic-links/bearer-token
-    NSArray *pathComponents = [[url path] componentsSeparatedByString:@"/"];
-
-    NSAssert([pathComponents count] == 2, @"The URL did not have the expected path.");
-
     DDLogInfo(@"App launched with authentication link");
+    NSParameterAssert([url isKindOfClass:[NSURL class]]);
+    NSDictionary *params = [[url query] dictionaryFromQueryString];
 
-    NSString *token = [pathComponents lastObject];
+    NSString *token = [params objectForKey:@"token"];
+    NSAssert(token != nil, @"The URL did not have the expected path.");
+
     // if already logged in, do nothing.
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     if (service.defaultWordPressComAccount) {
@@ -576,11 +572,28 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)showSigninScreen:(NSString *)token animated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
-    // TODO: Need to figure out how signing in via the token is going to work.
+    // Complete a magic link signin if needed.
+    NSString *savedEmail = [SigninHelpers getEmailAddressForTokenAuth];
+    if (token && savedEmail) {
+        SigninLinkAuthViewController *controller = [SigninLinkAuthViewController controller:savedEmail token:token];
+        UINavigationController *navigationController = [[NUXNavigationController alloc] initWithRootViewController:controller];
+        UIViewController *rootViewController = self.window.rootViewController;
+        if (rootViewController.presentedViewController)  {
+            [rootViewController.presentedViewController dismissViewControllerAnimated:NO completion:^{
+                [rootViewController presentViewController:navigationController animated:NO completion:nil];
+            }];
+        } else {
+            [rootViewController presentViewController:navigationController animated:NO completion:nil];
+        }
+        // Its convenient to clean up the saved email address here.
+        [SigninHelpers deleteEmailAddressForTokenAuth];
+        return;
+    }
 
+    // Show the normal signin screen.
     SigninEmailViewController *controller = controller = [SigninEmailViewController controller:nil];
     UINavigationController *navigationController = [[NUXNavigationController alloc] initWithRootViewController:controller];
-    [self.window.rootViewController presentViewController:navigationController animated:false completion:nil];
+    [self.window.rootViewController presentViewController:navigationController animated:NO completion:nil];
 }
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
