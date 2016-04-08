@@ -48,7 +48,7 @@
 		08A6FD9C1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 08A6FD9B1C5960AB00AC33E4 /* RemoteTaxonomyPaging.m */; };
 		08B6D6F31C8F7DCE0052C52B /* PostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B6D6F11C8F7DCE0052C52B /* PostType.m */; };
 		08B6D6F91C8F7EF20052C52B /* RemotePostType.m in Sources */ = {isa = PBXBuildFile; fileRef = 08B6D6F81C8F7EF20052C52B /* RemotePostType.m */; };
-		08C8C7071CB5B11200A3C7F6 /* MenusServicRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C8C7061CB5B11200A3C7F6 /* MenusServicRemoteTests.m */; };
+		08C8C7071CB5B11200A3C7F6 /* MenusServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 08C8C7061CB5B11200A3C7F6 /* MenusServiceRemoteTests.m */; };
 		08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC67791C49B65A00153AD7 /* MenuItem.m */; };
 		08CC677F1C49B65A00153AD7 /* Menu.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677A1C49B65A00153AD7 /* Menu.m */; };
 		08CC67801C49B65A00153AD7 /* MenuLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 08CC677D1C49B65A00153AD7 /* MenuLocation.m */; };
@@ -860,7 +860,7 @@
 		08B6D6F11C8F7DCE0052C52B /* PostType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostType.m; sourceTree = "<group>"; };
 		08B6D6F71C8F7EF20052C52B /* RemotePostType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemotePostType.h; path = "Remote Objects/RemotePostType.h"; sourceTree = "<group>"; };
 		08B6D6F81C8F7EF20052C52B /* RemotePostType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemotePostType.m; path = "Remote Objects/RemotePostType.m"; sourceTree = "<group>"; };
-		08C8C7061CB5B11200A3C7F6 /* MenusServicRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServicRemoteTests.m; sourceTree = "<group>"; };
+		08C8C7061CB5B11200A3C7F6 /* MenusServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenusServiceRemoteTests.m; sourceTree = "<group>"; };
 		08CC67771C49B52E00153AD7 /* WordPress 45.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 45.xcdatamodel"; sourceTree = "<group>"; };
 		08CC67781C49B65A00153AD7 /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItem.h; sourceTree = "<group>"; };
 		08CC67791C49B65A00153AD7 /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItem.m; sourceTree = "<group>"; };
@@ -2447,7 +2447,7 @@
 				E13BF2C91C522A1300275BE9 /* AccountSettingsRemoteTests.swift */,
 				591CFB081B28AC8C009E61B3 /* BlogServiceRemoteRESTTests.m */,
 				FA9E74471C50382D00C6B1D2 /* SiteManagementServiceRemoteTests.swift */,
-				08C8C7061CB5B11200A3C7F6 /* MenusServicRemoteTests.m */,
+				08C8C7061CB5B11200A3C7F6 /* MenusServiceRemoteTests.m */,
 				59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */,
 				59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */,
 				598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */,
@@ -5465,7 +5465,7 @@
 				E1C9AA561C10427100732665 /* MathTest.swift in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
 				59E2AAEC1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m in Sources */,
-				08C8C7071CB5B11200A3C7F6 /* MenusServicRemoteTests.m in Sources */,
+				08C8C7071CB5B11200A3C7F6 /* MenusServiceRemoteTests.m in Sources */,
 				5D7A57801AFBFD940097C028 /* BasePostTest.m in Sources */,
 				8514B8D41AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m in Sources */,
 				931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */,
