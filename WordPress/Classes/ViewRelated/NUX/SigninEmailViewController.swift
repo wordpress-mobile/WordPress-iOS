@@ -24,6 +24,9 @@ import WordPressShared
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
+    /// - Parameters:
+    ///     - loginFields: Optional. A LoginFields instance containing any prefilled credentials.
+    ///
     class func controller(loginFields: LoginFields? = nil) -> SigninEmailViewController {
         let storyboard = UIStoryboard(name: "Signin", bundle: NSBundle.mainBundle())
         let controller = storyboard.instantiateViewControllerWithIdentifier("SigninEmailViewController") as! SigninEmailViewController
