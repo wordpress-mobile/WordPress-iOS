@@ -1,5 +1,5 @@
 import Foundation
-
+import WordPressComAnalytics
 
 /// SharingService is responsible for wrangling publicize services, publicize
 /// connections, and keyring connections.
@@ -91,11 +91,15 @@ public class SharingService : LocalCoreDataService
     {
         let blogObjectID = blog.objectID
         let remote = SharingServiceRemote(api: apiForBlog(blog))
-
-        remote.createPublicizeConnection(blog.dotComID,
+        let dotComID = blog.dotComID
+        remote.createPublicizeConnection(dotComID,
             keyringConnectionID: keyring.keyringID,
             externalUserID: externalUserID,
             success: {(remoteConnection: RemotePublicizeConnection) in
+                let properties = [
+                    "service" : keyring.service
+                ]
+                WPAppAnalytics.track(.SharingPublicizeConnected, withProperties: properties, withBlogID: dotComID)
                 do {
                     let pubConn = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
                     ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
@@ -145,6 +149,11 @@ public class SharingService : LocalCoreDataService
                 shared: shared,
                 forSite: siteID,
                 success: {(remoteConnection: RemotePublicizeConnection) in
+                    let properties = [
+                        "service" : pubConn.service,
+                        "is_site_wide" : String(Int(shared))
+                    ]
+                    WPAppAnalytics.track(.SharingPublicizeConnectionAvailableToAllChanged, withProperties: properties, withBlogID: siteID)
                     do {
                         _ = try self.createOrReplacePublicizeConnectionForBlogWithObjectID(blogObjectID, remoteConnection: remoteConnection)
                         ContextManager.sharedInstance().saveContext(self.managedObjectContext, withCompletionBlock: {
@@ -230,6 +239,10 @@ public class SharingService : LocalCoreDataService
         remote.deletePublicizeConnection(siteID,
             connectionID: pubConn.connectionID,
             success: {
+                let properties = [
+                    "service" : pubConn.service
+                ]
+                WPAppAnalytics.track(.SharingPublicizeDisconnected, withProperties: properties, withBlogID: siteID)
                 success?()
             },
             failure: { (error:NSError!) in

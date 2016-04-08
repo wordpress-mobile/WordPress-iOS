@@ -49,7 +49,9 @@ public class ReaderPostMenu
         alertController.addActionWithTitle(ReaderPostMenuButtonTitles.share,
             style: .Default,
             handler: { (action:UIAlertAction) in
-                ReaderHelpers.sharePost(post, fromView: anchorView, inViewController: viewController)
+                let sharingController = PostSharingController();
+                
+                sharingController.shareReaderPost(post, fromView: anchorView, inViewController: viewController)
         })
 
         if UIDevice.isPad() {

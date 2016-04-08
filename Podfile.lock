@@ -21,7 +21,7 @@ PODS:
   - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - Alamofire (3.2.1)
+  - Alamofire (3.3.1)
   - AMPopTip (0.10.2)
   - Automattic-Tracks-iOS (0.0.13):
     - CocoaLumberjack (~> 2.2.0)
@@ -42,11 +42,11 @@ PODS:
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.9)
-  - DTFoundation/DTAnimatedGIF (1.7.9)
-  - DTFoundation/DTHTMLParser (1.7.9):
+  - DTFoundation/Core (1.7.10)
+  - DTFoundation/DTAnimatedGIF (1.7.10)
+  - DTFoundation/DTHTMLParser (1.7.10):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.9):
+  - DTFoundation/UIKit (1.7.10):
     - DTFoundation/Core
   - EmailChecker (0.1)
   - Expecta (0.3.2)
@@ -70,7 +70,8 @@ PODS:
   - FormatterKit/TimeIntervalFormatter (1.8.0)
   - FormatterKit/UnitOfInformationFormatter (1.8.0)
   - FormatterKit/URLRequestFormatter (1.8.0)
-  - Helpshift (5.5.0)
+  - Gridicons (0.1)
+  - Helpshift (5.5.1)
   - HockeySDK (3.8.6):
     - HockeySDK/AllFeaturesLib (= 3.8.6)
   - HockeySDK/AllFeaturesLib (3.8.6)
@@ -107,7 +108,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
-  - Nimble (3.2.0)
+  - Nimble (4.0.0)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.1.2)
@@ -126,7 +127,7 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (4.6.0)
   - OHHTTPStubs/Swift (4.6.0):
     - OHHTTPStubs/Core
-  - PDKTZipArchive (0.3.5)
+  - PDKTZipArchive (0.4.1)
   - Reachability (3.2)
   - ReactiveCocoa (2.4.7):
     - ReactiveCocoa/UI (= 2.4.7)
@@ -166,7 +167,7 @@ PODS:
   - WordPressApi (0.4.0):
     - AFNetworking (~> 2.6.0)
     - wpxmlrpc (~> 0.8)
-  - WordPressCom-Analytics-iOS (0.1.6)
+  - WordPressCom-Analytics-iOS (0.1.8)
   - WordPressCom-Stats-iOS/Services (0.6.3):
     - AFNetworking (~> 2.6.0)
     - CocoaLumberjack (~> 2.2.0)
@@ -182,7 +183,7 @@ PODS:
     - WordPressCom-Stats-iOS/Services
   - WordPressComKit (0.0.1):
     - Alamofire (~> 3.0)
-  - WPMediaPicker (0.9.0)
+  - WPMediaPicker (0.9.1)
   - wpxmlrpc (0.8.2)
 
 DEPENDENCIES:
@@ -197,12 +198,13 @@ DEPENDENCIES:
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
   - FormatterKit (~> 1.8.0)
+  - Gridicons (from `https://raw.github.com/Automattic/Gridicons-iOS/develop/Gridicons.podspec`)
   - Helpshift (~> 5.5.0)
   - HockeySDK (~> 3.8.0)
   - Lookback (= 1.1.4)
   - Mixpanel (= 2.9.4)
   - MRProgress (~> 0.7.0)
-  - Nimble (~> 3.2.0)
+  - Nimble (~> 4.0.0)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock (= 3.1.2)
@@ -222,7 +224,7 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (= 1.2)
   - WordPress-iOS-Shared (= 0.5.3)
   - WordPressApi (= 0.4.0)
-  - WordPressCom-Analytics-iOS (= 0.1.6)
+  - WordPressCom-Analytics-iOS (= 0.1.8)
   - WordPressCom-Stats-iOS/Services (= 0.6.3)
   - WordPressCom-Stats-iOS/UI (= 0.6.3)
   - WordPressComKit (from `https://github.com/Automattic/WordPressComKit.git`, tag
@@ -236,6 +238,8 @@ EXTERNAL SOURCES:
     :tag: 0.0.13
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
+  Gridicons:
+    :podspec: https://raw.github.com/Automattic/Gridicons-iOS/develop/Gridicons.podspec
   WordPress-AppbotX:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -257,28 +261,29 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   1PasswordExtension: 9f471645d378283cb88c6d4bf502e4381a42c0ad
   AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
-  Alamofire: f11d8624a05f5d39e0c99309b3e600a3ba64298a
+  Alamofire: 369bc67b6f5ac33ded3648d7bd21c5bfb91c2ecc
   AMPopTip: 0788a9452806049e3aa0d6d09324606fc41ea646
   Automattic-Tracks-iOS: ba47c35576a07376facc7a91740fb78867831e1c
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   DTCoreText: 934a16fe9ffdd169c96261721b39dc312b75713d
-  DTFoundation: 70a0765e3596f82dd421832e95c65e2166eb3102
+  DTFoundation: 3b6b1b817d2a7fb02e7eaf2596c922a68145bd43
   EmailChecker: 78dd8dfa9d004826c8b5889be6c380b72b837d44
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
-  Helpshift: b60067446b513002bd7ed8f13b7b67e4fb7f9237
+  Gridicons: 6dfc3f24cc81ee8aae3492c2ba814bd45fcdf0c7
+  Helpshift: 1b89b3632bf46af10d2c9d9f448e64a0ccf667ec
   HockeySDK: ab68303eec6680f6b539de65d747742dd276e934
   Lookback: 9ab9027ff246d2dc5ce34be483f70e4a6718280b
   Mixpanel: 80d2ca9bb38ae91c1044d738e80fe448377ac89f
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
-  Nimble: 703854335d181df169bbca9c97117b5cf8c47c1d
+  Nimble: 72bcc3e2f02242e6bfaaf8d9412ca7bfe3d8b417
   NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
   NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
   OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
   OHHTTPStubs: cb1aefbbeb4de4e741644455d4b945538e5248a2
-  PDKTZipArchive: 81c4824eb5587131e422fc58b92c043c4aa96466
+  PDKTZipArchive: 22bbab52b49f46a3adf1acf134311fd252c43feb
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
   RxCocoa: a2baaf3462b989559a51dce59d78fbebb8fe0afa
@@ -292,10 +297,10 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 4958ae44a2aedfa9b3a3afc9cba41e3ec989b175
   WordPress-iOS-Shared: 43f55f24f0685e431167084071b7914d7c7134a8
   WordPressApi: 483767025bcdab26429b51bfe5171f17d3d30466
-  WordPressCom-Analytics-iOS: bffa9d5d6d8611cf371f368713481c2300138caf
+  WordPressCom-Analytics-iOS: ea4c9017698781ad54a30c4bbac3ad83f7838611
   WordPressCom-Stats-iOS: 75dbdf4765c09b90a8fe00375dc96a93e64feffa
   WordPressComKit: 6f0c39c3e0af3599cd5244e4ec05192f5e4a7882
-  WPMediaPicker: 2c399b1cbd4d8a7fcd312eb93107a349d26fb23f
+  WPMediaPicker: 7dde7576a67a9a494733555a89c9ff8418f5eede
   wpxmlrpc: 38623cc415117914d6ab5bf2ab8a57a4076cc469
 
 COCOAPODS: 0.39.0

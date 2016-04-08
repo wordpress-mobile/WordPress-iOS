@@ -1,4 +1,5 @@
 import UIKit
+import Gridicons
 import WordPressShared
 
 /// Displays a list of available keyring connection accounts that can be used to
@@ -47,7 +48,7 @@ import WordPressShared
     /// Configures the appearance of the nav bar.
     ///
     private func configureNavbar() {
-        let image = UIImage(named: "gridicons-cross")
+        let image = Gridicon.iconOfType(.Cross)
         let closeButton = UIBarButtonItem(image: image, style: .Plain, target: self, action: #selector(SharingAccountViewController.handleCloseTapped(_:)))
         closeButton.tintColor = UIColor.whiteColor()
         navigationItem.leftBarButtonItem = closeButton
