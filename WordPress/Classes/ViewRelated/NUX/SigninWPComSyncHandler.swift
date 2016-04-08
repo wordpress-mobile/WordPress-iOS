@@ -1,6 +1,10 @@
 import UIKit
 import WordPressComAnalytics
 
+/// A protocol and extension encapsulating syncing behavior common to WPCom 
+/// signin controllers.  Responsible for syncing account information and blog 
+/// details of the user.
+///
 protocol SigninWPComSyncHandler: class
 {
     func configureLoading(loading: Bool)
@@ -58,7 +62,7 @@ extension SigninWPComSyncHandler
         dismiss()
 
         let properties = [
-            "multifactor": "\(Int(requiredMultifactor))",
+            "multifactor": String(Int(requiredMultifactor)),
             "dotcom_user": "1"
         ]
 
