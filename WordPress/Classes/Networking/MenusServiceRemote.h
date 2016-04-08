@@ -54,7 +54,7 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  *  @param      failure     The failure handler.  Can be nil.
  *
  */
-- (void)updateMenuForId:(NSString *)menuId
+- (void)updateMenuForID:(NSNumber *)menuID
                    blog:(Blog *)blog
                withName:(NSString *)updatedName
           withLocations:(NSArray<NSString *> *)locationNames
@@ -71,7 +71,7 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  *  @param      failure     The failure handler.  Can be nil.
  *
  */
-- (void)deleteMenuForId:(NSString *)menuId
+- (void)deleteMenuForID:(NSNumber *)menuID
                    blog:(Blog *)blog
                 success:(MenusServiceRemoteSuccessBlock)success
                 failure:(MenusServiceRemoteFailureBlock)failure;

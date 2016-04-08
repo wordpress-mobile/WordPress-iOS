@@ -4,7 +4,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString * const MenuDefaultID;
+extern NSInteger const MenuDefaultID;
 
 /**
  *  @brief    An object encapsulating a Menu, the locations using it, and the items belonging to it.
@@ -12,7 +12,7 @@ extern NSString * const MenuDefaultID;
 @interface Menu : NSManagedObject
 
 @property (nullable, nonatomic, retain) NSString *details;
-@property (nullable, nonatomic, retain) NSString *menuId;
+@property (nullable, nonatomic, retain) NSNumber *menuID;
 @property (nullable, nonatomic, retain) NSString *name;
 
 ///---------------------

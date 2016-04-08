@@ -91,7 +91,7 @@
                            
                            [self.managedObjectContext performBlockAndWait:^{
                                if (success) {
-                                   success(remoteMenu.menuId);
+                                   success(remoteMenu.menuID);
                                }
                            }];
                            
@@ -115,7 +115,7 @@
     }
     
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
-    [remote updateMenuForId:menu.menuId
+    [remote updateMenuForID:menu.menuID
                        blog:blog
                    withName:menu.name
               withLocations:locationNames
@@ -163,14 +163,14 @@
         }];
     };
     
-    if (!menu.menuId.length) {
+    if (!menu.menuID.integerValue) {
         // Menu was only created locally, no need to delete remotely.
         completeMenuDeletion();
         return;
     }
     
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
-    [remote deleteMenuForId:menu.menuId
+    [remote deleteMenuForID:menu.menuID
                        blog:blog
                     success:completeMenuDeletion
                     failure:failure];
@@ -203,7 +203,7 @@
                                          continue;
                                      }
                                      MenuItem *pageItem = [NSEntityDescription insertNewObjectForEntityForName:[MenuItem entityName] inManagedObjectContext:self.managedObjectContext];
-                                     pageItem.contentId = [page.postID stringValue];
+                                     pageItem.contentID = page.postID;
                                      pageItem.name = page.titleForDisplay;
                                      pageItem.type = MenuItemTypePage;
                                      [items addObject:pageItem];
@@ -239,7 +239,7 @@
     Menu *menu = [[Menu alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:self.managedObjectContext];
     menu.name = remoteMenu.name;
     menu.details = remoteMenu.details;
-    menu.menuId = remoteMenu.menuId;
+    menu.menuID = remoteMenu.menuID;
     for (RemoteMenuItem *remoteItem in remoteMenu.items) {
         [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
     }
@@ -255,8 +255,8 @@
                                                          inManagedObjectContext:self.managedObjectContext];
     
     MenuItem *item = [[MenuItem alloc] initWithEntity:entityDescription insertIntoManagedObjectContext:self.managedObjectContext];
-    item.itemId = remoteMenuItem.itemId;
-    item.contentId = remoteMenuItem.contentId;
+    item.itemID = remoteMenuItem.itemID;
+    item.contentID = remoteMenuItem.contentID;
     item.details = remoteMenuItem.details;
     item.linkTarget = remoteMenuItem.linkTarget;
     item.linkTitle = remoteMenuItem.linkTitle;
@@ -360,8 +360,8 @@
 - (RemoteMenuItem *)remoteItemFromItem:(MenuItem *)item
 {
     RemoteMenuItem *remoteItem = [[RemoteMenuItem alloc] init];
-    remoteItem.itemId = item.itemId;
-    remoteItem.contentId = item.contentId;
+    remoteItem.itemID = item.itemID;
+    remoteItem.contentID = item.contentID;
     remoteItem.details = item.details;
     remoteItem.linkTarget = item.linkTarget;
     remoteItem.linkTitle = item.linkTitle;

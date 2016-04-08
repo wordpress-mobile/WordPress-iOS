@@ -82,7 +82,7 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
 {
     PostCategory *category = [self.displayCategories objectAtIndex:indexPath.row];
     
-    if ([self itemTypeMatchesSourceItemType] && [self.item.contentId integerValue] == [category.categoryID integerValue]) {
+    if ([self itemTypeMatchesSourceItemType] && [self.item.contentID integerValue] == [category.categoryID integerValue]) {
         cell.sourceSelected = YES;
     } else {
         cell.sourceSelected = NO;
@@ -99,7 +99,7 @@ static NSUInteger const MenuItemSourceCategorySyncLimit = 1000;
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
     PostCategory *category = [self.displayCategories objectAtIndex:indexPath.row];
-    [self setItemSourceWithContentID:[category.categoryID stringValue] name:category.categoryName];
+    [self setItemSourceWithContentID:category.categoryID name:category.categoryName];
     
     [self deselectVisibleSourceCellsIfNeeded];
     

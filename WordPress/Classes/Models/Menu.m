@@ -3,12 +3,12 @@
 #import "MenuLocation.h"
 #import "Blog.h"
 
-NSString * const MenuDefaultID = @"0";
+NSInteger const MenuDefaultID = 0;
 
 @implementation Menu
 
 @dynamic details;
-@dynamic menuId;
+@dynamic menuID;
 @dynamic name;
 @dynamic items;
 @dynamic locations;
@@ -29,7 +29,7 @@ NSString * const MenuDefaultID = @"0";
 {
     Menu *defaultMenu = nil;
     for (Menu *menu in blog.menus) {
-        if ([menu.menuId isEqualToString:MenuDefaultID]) {
+        if (menu.menuID.integerValue == MenuDefaultID) {
             defaultMenu = menu;
             break;
         }
@@ -41,7 +41,7 @@ NSString * const MenuDefaultID = @"0";
 {
     // Create a new default menu.
     Menu *defaultMenu = [self newMenu:managedObjectContext];
-    defaultMenu.menuId = MenuDefaultID;
+    defaultMenu.menuID = @(MenuDefaultID);
     defaultMenu.name = [self defaultMenuName];
     return defaultMenu;
 }

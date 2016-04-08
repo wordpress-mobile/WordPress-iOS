@@ -22,7 +22,7 @@
     MenusServiceRemote *service = nil;
     
     RemoteMenu *menu = OCMClassMock([RemoteMenu class]);
-    OCMStub([menu menuId]).andReturn(@"MenuId");
+    OCMStub([menu menuID]).andReturn(@(1));
     OCMStub([menu name]).andReturn(@"Name");
 
     NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/new", [blog dotComID]];
@@ -56,10 +56,10 @@
     MenusServiceRemote *service = nil;
     
     RemoteMenu *menu = OCMClassMock([RemoteMenu class]);
-    OCMStub([menu menuId]).andReturn(@"MenuId");
+    OCMStub([menu menuID]).andReturn(@(1));
     OCMStub([menu name]).andReturn(@"Name");
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@", [blog dotComID], menu.menuId];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@", [blog dotComID], menu.menuID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
@@ -68,7 +68,7 @@
     
     XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithApi:api]);
 
-    [service updateMenuForId:menu.menuId
+    [service updateMenuForID:menu.menuID
                         blog:blog
                     withName:menu.name
                withLocations:nil
@@ -86,10 +86,10 @@
     MenusServiceRemote *service = nil;
     
     RemoteMenu *menu = OCMClassMock([RemoteMenu class]);
-    OCMStub([menu menuId]).andReturn(@"MenuId");
+    OCMStub([menu menuID]).andReturn(@(1));
     OCMStub([menu name]).andReturn(@"Name");
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuId];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
@@ -98,7 +98,7 @@
     
     XCTAssertNoThrow(service = [[MenusServiceRemote alloc] initWithApi:api]);
     
-    [service deleteMenuForId:menu.menuId
+    [service deleteMenuForID:menu.menuID
                         blog:blog
                     success:^{}
                     failure:^(NSError *error) {}];
