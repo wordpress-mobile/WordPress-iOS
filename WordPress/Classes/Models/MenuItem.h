@@ -45,9 +45,9 @@ extern NSString * const MenuItemLinkTargetBlank;
  */
 @interface MenuItem : NSManagedObject
 
-@property (nullable, nonatomic, retain) NSString *contentId;
+@property (nullable, nonatomic, retain) NSNumber *contentID;
 @property (nullable, nonatomic, retain) NSString *details;
-@property (nullable, nonatomic, retain) NSString *itemId;
+@property (nullable, nonatomic, retain) NSNumber *itemID;
 @property (nullable, nonatomic, retain) NSString *linkTarget;
 @property (nullable, nonatomic, retain) NSString *linkTitle;
 @property (nullable, nonatomic, retain) NSString *name;

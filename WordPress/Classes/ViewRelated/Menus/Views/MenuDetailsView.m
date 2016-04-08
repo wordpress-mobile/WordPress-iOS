@@ -88,7 +88,7 @@
     if (_menu != menu) {
         _menu = menu;
         self.textField.text = menu.name;
-        self.trashButton.hidden = [menu.menuId isEqualToString:MenuDefaultID];
+        self.trashButton.hidden = menu.menuID.integerValue == MenuDefaultID;
         [self updateTextFieldDesignIconPositioning];
     }
 }

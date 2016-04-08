@@ -69,7 +69,7 @@
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    if ([self itemTypeMatchesSourceItemType] && post.postID.integerValue == [self.item.contentId integerValue]) {
+    if ([self itemTypeMatchesSourceItemType] && post.postID.integerValue == [self.item.contentID integerValue]) {
         cell.sourceSelected = YES;
     } else {
         cell.sourceSelected = NO;
@@ -82,7 +82,7 @@
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
     AbstractPost *post = [self.resultsController objectAtIndexPath:indexPath];
-    [self setItemSourceWithContentID:[post.postID stringValue] name:post.titleForDisplay];
+    [self setItemSourceWithContentID:post.postID name:post.titleForDisplay];
     
     [self deselectVisibleSourceCellsIfNeeded];
     

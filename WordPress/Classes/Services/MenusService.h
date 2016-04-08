@@ -6,7 +6,7 @@
 @class MenuItem;
 
 typedef void(^MenusServiceSuccessBlock)();
-typedef void(^MenusServiceCreateMenuRequestSuccessBlock)(NSString *menuID);
+typedef void(^MenusServiceCreateMenuRequestSuccessBlock)(NSNumber *menuID);
 typedef void(^MenusServiceUpdateMenuRequestSuccessBlock)();
 typedef void(^MenusServiceMenusRequestSuccessBlock)(NSArray<Menu *> *menus);
 typedef void(^MenusServiceLocationsRequestSuccessBlock)(NSArray<MenuLocation *> *locations);

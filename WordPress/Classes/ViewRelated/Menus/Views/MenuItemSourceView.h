@@ -103,7 +103,7 @@
  @param itemType - The type of the source.
  @param name - The name that should be used for the source.
  */
-- (void)setItemSourceWithContentID:(NSString *)contentId name:(NSString *)name;
+- (void)setItemSourceWithContentID:(NSNumber *)contentID name:(NSString *)name;
 
 /**
  The item type the view uses as a source.

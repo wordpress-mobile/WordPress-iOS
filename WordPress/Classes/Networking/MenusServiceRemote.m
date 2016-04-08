@@ -45,11 +45,11 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
                if (success) {
                    NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Expected a dictionary");
                    
-                   NSString *menuId = [responseObject stringForKey:MenusRemoteKeyID];
+                   NSNumber *menuID = [responseObject numberForKey:MenusRemoteKeyID];
                    RemoteMenu *menu = nil;
-                   if (menuId.length) {
+                   if (menuID) {
                        menu = [RemoteMenu new];
-                       menu.menuId = menuId;
+                       menu.menuID = menuID;
                        menu.name = menuName;
                    }
                    
@@ -63,7 +63,7 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
            }];
 }
 
-- (void)updateMenuForId:(NSString *)menuId
+- (void)updateMenuForID:(NSNumber *)menuID
                    blog:(Blog *)blog
                withName:(NSString *)updatedName
           withLocations:(NSArray <NSString *> *)locationNames
@@ -73,9 +73,9 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
-    NSParameterAssert([menuId isKindOfClass:[NSString class]]);
+    NSParameterAssert([menuID isKindOfClass:[NSNumber class]]);
     
-    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@", blogId, menuId];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@", blogId, menuID];
     NSString *requestURL = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
@@ -92,7 +92,7 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     
     // temporarily need to force the id for the menu update to work until fixed in Jetpack endpoints
     // Brent Coursey - 10/1/2015
-    [params setObject:menuId forKey:MenusRemoteKeyID];
+    [params setObject:menuID forKey:MenusRemoteKeyID];
     
     [self.api POST:requestURL
         parameters:params
@@ -110,16 +110,16 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
            }];
 }
 
-- (void)deleteMenuForId:(NSString *)menuId
+- (void)deleteMenuForID:(NSNumber *)menuID
                    blog:(Blog *)blog
                 success:(MenusServiceRemoteSuccessBlock)success
                 failure:(MenusServiceRemoteFailureBlock)failure
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
-    NSParameterAssert([menuId isKindOfClass:[NSString class]]);
+    NSParameterAssert([menuID isKindOfClass:[NSNumber class]]);
     
-    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@/delete", blogId, menuId];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/menus/%@/delete", blogId, menuID];
     NSString *requestURL = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     [self.api POST:requestURL
@@ -215,14 +215,14 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     
-    NSString *menuId = [dictionary stringForKey:MenusRemoteKeyID];
-    if (!menuId.length) {
+    NSNumber *menuID = [dictionary numberForKey:MenusRemoteKeyID];
+    if (!menuID.integerValue) {
         // empty menu dictionary
         return nil;
     }
     
     RemoteMenu *menu = [RemoteMenu new];
-    menu.menuId = menuId;
+    menu.menuID = menuID;
     menu.details = [dictionary stringForKey:MenusRemoteKeyDescription];
     menu.name = [dictionary stringForKey:MenusRemoteKeyName];
     menu.locationNames = [dictionary arrayForKey:MenusRemoteKeyLocations];
@@ -247,8 +247,8 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     
     RemoteMenuItem *item = [RemoteMenuItem new];
-    item.itemId = [dictionary stringForKey:MenusRemoteKeyID];
-    item.contentId = [dictionary stringForKey:MenusRemoteKeyContentID];
+    item.itemID = [dictionary numberForKey:MenusRemoteKeyID];
+    item.contentID = [dictionary numberForKey:MenusRemoteKeyContentID];
     item.details = [dictionary stringForKey:MenusRemoteKeyDescription];
     item.linkTarget = [dictionary stringForKey:MenusRemoteKeyLinkTarget];
     item.linkTitle = [dictionary stringForKey:MenusRemoteKeyLinkTitle];
@@ -315,12 +315,12 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     
-    if (item.itemId.length) {
-        dictionary[MenusRemoteKeyID] = item.itemId;
+    if (item.itemID.integerValue) {
+        dictionary[MenusRemoteKeyID] = item.itemID;
     }
     
-    if (item.contentId.length) {
-        dictionary[MenusRemoteKeyContentID] = item.contentId;
+    if (item.contentID.integerValue) {
+        dictionary[MenusRemoteKeyContentID] = item.contentID;
     }
     
     if (item.details.length) {

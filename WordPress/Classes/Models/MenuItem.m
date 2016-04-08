@@ -17,9 +17,9 @@ NSString * const MenuItemDefaultLinkTitle = @"New Item";
 
 @implementation MenuItem
 
-@dynamic contentId;
+@dynamic contentID;
 @dynamic details;
-@dynamic itemId;
+@dynamic itemID;
 @dynamic linkTarget;
 @dynamic linkTitle;
 @dynamic name;
