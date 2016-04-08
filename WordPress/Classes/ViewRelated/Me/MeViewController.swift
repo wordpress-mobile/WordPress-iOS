@@ -98,7 +98,12 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             title: NSLocalizedString("Account Settings", comment: "Link to Account Settings section"),
             icon: Gridicon.iconOfType(.Cog),
             action: pushAccountSettings())
-
+        
+        let applicationSettings = NavigationItemRow(
+            title: NSLocalizedString("Application Settings", comment: "Link to Application Settings section"),
+            icon: Gridicon.iconOfType(.Phone),
+            action: pushApplicationSettings())
+        
         let notificationSettings = NavigationItemRow(
             title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
             icon: Gridicon.iconOfType(.Bell),
@@ -132,6 +137,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                         ImmuTableSection(rows: [
                             myProfile,
                             accountSettings,
+                            applicationSettings,
                             notificationSettings
                             ]),
                         ImmuTableSection(rows: [
@@ -205,7 +211,15 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
-
+    
+    func pushApplicationSettings() -> ImmuTableAction {
+        return { [unowned self] row in
+            WPAppAnalytics.track(.OpenedAccountSettings)
+            let controller = AccountSettingsViewController(account: self.defaultAccount())
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+    }
+    
     func pushNotificationSettings() -> ImmuTableAction {
         return { [unowned self] row in
             let controller = NotificationSettingsViewController()
