@@ -144,13 +144,9 @@ import WordPressShared
     ///
     func configureViewForEditingIfNeeded() {
         // Check the helper to determine whether an editiing state should be assumed.
+        adjustViewForKeyboard(SigninEditingState.signinEditingStateActive)
         if SigninEditingState.signinEditingStateActive {
             emailTextField.becomeFirstResponder()
-            bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeight
-            verticalCenterConstraint.constant = 0
-        } else {
-            verticalCenterConstraint.constant = SigninFormVerticalOffset
-            bottomContentConstraint.constant = 0
         }
     }
 
