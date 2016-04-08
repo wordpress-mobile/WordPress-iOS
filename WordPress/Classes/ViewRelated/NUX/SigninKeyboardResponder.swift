@@ -9,11 +9,12 @@ protocol SigninKeyboardResponder: class
     var bottomContentConstraint: NSLayoutConstraint! {get}
     var verticalCenterConstraint: NSLayoutConstraint! {get}
 
-    func keyboardWillShow(notification: NSNotification)
-    func keyboardWillHide(notification: NSNotification)
-
     func registerForKeyboardEvents(keyboardWillShowAction: Selector, keyboardWillHideAction: Selector)
     func unregisterForKeyboardEvents()
+    func adjustViewForKeyboard(visibleKeyboard: Bool)
+
+    func keyboardWillShow(notification: NSNotification)
+    func keyboardWillHide(notification: NSNotification)
 }
 
 extension SigninKeyboardResponder where Self: NUXAbstractViewController
@@ -41,6 +42,22 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     }
 
 
+    /// Adjusts constraint constants to adapt the view for a visible keyboard.
+    ///
+    /// - Parameters:
+    ///     - visibleKeyboard: Whether to configure for a visible keyboard or without a keyboard.
+    ///
+    func adjustViewForKeyboard(visibleKeyboard: Bool) {
+        if visibleKeyboard && SigninEditingState.signinLastKeyboardHeight > 0 {
+            bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeight
+            verticalCenterConstraint.constant = 0
+        } else {
+            bottomContentConstraint.constant = 0
+            verticalCenterConstraint.constant = SigninFormVerticalOffset
+        }
+    }
+
+
     /// Process the passed NSNotification from a UIKeyboardWillShowNotification.
     ///
     /// - Parameters:
@@ -58,8 +75,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
             return
         }
 
-        bottomContentConstraint.constant = keyboardInfo.keyboardFrame.height
-        verticalCenterConstraint.constant = 0
+        adjustViewForKeyboard(true)
         UIView.animateWithDuration(keyboardInfo.animationDuration,
                                    delay: 0,
                                    options: .BeginFromCurrentState,
@@ -86,8 +102,7 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
             return
         }
 
-        bottomContentConstraint.constant = 0
-        verticalCenterConstraint.constant = SigninFormVerticalOffset
+        adjustViewForKeyboard(false)
         UIView.animateWithDuration(keyboardInfo.animationDuration,
                                    delay: 0,
                                    options: .BeginFromCurrentState,
