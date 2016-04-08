@@ -42,6 +42,7 @@ class SigninLinkMailViewController : NUXAbstractViewController
 
 
     @IBAction func handleUsePasswordTapped(sender: UIButton) {
+        WPAppAnalytics.track(.LoginMagicLinkExited)
         let controller = SigninWPComViewController.controller(loginFields)
         navigationController?.pushViewController(controller, animated: true)
     }

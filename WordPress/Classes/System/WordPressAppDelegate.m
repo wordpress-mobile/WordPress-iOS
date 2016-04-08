@@ -454,6 +454,9 @@ int ddLogLevel = DDLogLevelInfo;
         return YES;
     }
 
+    // Bump stat for opening the app via a magic link.
+    [WPAppAnalytics track:WPAnalyticsStatLoginMagicLinkOpened];
+
     // Show the signin view controller configured to perform the auth request.
     [self showSigninScreen:token animated:NO thenEditor:NO];
 
