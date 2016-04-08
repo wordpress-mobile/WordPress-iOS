@@ -1,9 +1,10 @@
 #import "AbstractPostListViewController.h"
 
-#import "AbstractPostListViewControllerSubclass.h"
 #import "AbstractPost.h"
 #import "SiteSettingsViewController.h"
 #import "PostPreviewViewController.h"
+#import "PostService.h"
+#import "PostServiceOptions.h"
 #import "SettingsSelectionViewController.h"
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
@@ -19,7 +20,8 @@ const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 
 const CGFloat DefaultHeightForFooterView = 44.0;
 
-@interface AbstractPostListViewController()
+@interface AbstractPostListViewController() <WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate>
+
 @property (nonatomic) BOOL needsRefreshCachedCellHeightsBeforeLayout;
 @end
 
