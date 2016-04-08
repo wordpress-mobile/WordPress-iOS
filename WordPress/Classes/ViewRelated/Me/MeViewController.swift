@@ -141,8 +141,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                             notificationSettings
                             ]),
                         ImmuTableSection(rows: [
-                            helpAndSupport,
-                            about
+                            helpAndSupport
                             ]),
                         ImmuTableSection(
                             headerText: wordPressComAccount,
