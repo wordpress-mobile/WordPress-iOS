@@ -68,6 +68,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     /// Displays the next step in the magic links sign in flow. 
     ///
     func didRequestAuthenticationLink() {
+        SigninHelpers.saveEmailAddressForTokenAuth(loginFields.username)
         let controller = SigninLinkMailViewController.controller(loginFields)
         navigationController?.pushViewController(controller, animated: true)
     }
