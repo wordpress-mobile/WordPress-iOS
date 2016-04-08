@@ -1,9 +1,10 @@
 #import "AbstractPostListViewController.h"
 
-#import "AbstractPostListViewControllerSubclass.h"
 #import "AbstractPost.h"
 #import "SiteSettingsViewController.h"
 #import "PostPreviewViewController.h"
+#import "PostService.h"
+#import "PostServiceOptions.h"
 #import "SettingsSelectionViewController.h"
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
