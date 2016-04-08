@@ -46,7 +46,7 @@ import WordPressShared
         super.viewDidLoad()
 
         setupOnePasswordButtonIfNeeded()
-        displayLoginMessage("")
+        configureStatusMessage("")
     }
 
 
