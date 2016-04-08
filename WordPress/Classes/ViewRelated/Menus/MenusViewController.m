@@ -284,6 +284,28 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     }
 }
 
+- (NSString *)generateIncrementalMenuName
+{
+    NSInteger highestInteger = 0;
+    for (Menu *menu in self.blog.menus) {
+        if (!menu.name.length) {
+            continue;
+        }
+        NSString *nameNumberStr;
+        NSScanner *numberScanner = [NSScanner scannerWithString:menu.name];
+        NSCharacterSet *characterSet = [NSCharacterSet decimalDigitCharacterSet];
+        [numberScanner scanUpToCharactersFromSet:characterSet intoString:NULL];
+        [numberScanner scanCharactersFromSet:characterSet intoString:&nameNumberStr];
+        
+        if ([nameNumberStr integerValue] > highestInteger) {
+            highestInteger = [nameNumberStr integerValue];
+        }
+    }
+    highestInteger = highestInteger + 1;
+    NSString *menuStr = NSLocalizedString(@"Menu", @"The default text used for filling the name of a menu when creating it.");
+    return [NSString stringWithFormat:@"%@ %i", menuStr, highestInteger];
+}
+
 #pragma mark - MenusHeaderViewDelegate
 
 - (void)headerView:(MenusHeaderView *)headerView selectedLocation:(MenuLocation *)location
@@ -305,7 +327,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
 {
     Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
     newMenu.blog = self.blog;
-    newMenu.name = [Menu generateIncrementalNameFromMenus:self.blog.menus];
+    newMenu.name = [self generateIncrementalMenuName];
     self.selectedMenuLocation.menu = newMenu;
     
     [self.headerView addMenu:newMenu];
@@ -338,7 +360,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         newMenu.blog = self.blog;
         if ([menuToSave.name isEqualToString:[Menu defaultMenuName]]) {
             // Don't use "Default Menu" as the name of the menu.
-            newMenu.name = [Menu generateIncrementalNameFromMenus:self.blog.menus];
+            newMenu.name = [self generateIncrementalMenuName];
         } else {
             newMenu.name = menuToSave.name;
         }
