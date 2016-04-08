@@ -22,9 +22,6 @@ import WordPressShared
         return facade
     }()
 
-    lazy var blogSyncFacade = BlogSyncFacade()
-    lazy var accountServiceFacade = AccountServiceFacade()
-
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
