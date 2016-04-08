@@ -53,6 +53,21 @@
             success:(void (^)())success
             failure:(void (^)(NSError *error))failure;
 
+
+/**
+ Updates the media object details to the server. This method doesn't allow you to update media file,
+ because that always stays static after the initial upload, it only allows to change details like,
+ caption, alternative text, etc...
+
+ @param media object to upload to the server.
+ @sucess a block that will be invoked when the media upload finished with success
+ @failure a block that will be invoked when there is upload error.
+ */
+
+- (void)updateMedia:(Media *)media
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure;
+
 /**
  Find the media object in the local database.
  

@@ -62,6 +62,8 @@ final public class ReaderDetailViewController : UIViewController
     private var didBumpStats = false
     private var didBumpPageViews = false
     private var footerViewHeightConstraintConstant = CGFloat(0.0)
+    
+    private let sharingController = PostSharingController()
 
     public var post: ReaderPost? {
         didSet {
@@ -841,7 +843,7 @@ final public class ReaderDetailViewController : UIViewController
 
 
     func didTapShareButton(sender: UIButton) {
-        ReaderHelpers.sharePost(post!, fromView: sender, inViewController: self)
+        sharingController.shareReaderPost(post!, fromView: sender, inViewController: self)
     }
 
 
