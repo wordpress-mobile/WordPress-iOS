@@ -80,9 +80,7 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
 - (void)setGravatarEmail:(NSString *)gravatarEmail
 {    
     // Since this view is only visible to the current user, we should show all ratings
-    [self.gravatarImageView downloadGravatarWithEmail:gravatarEmail
-                                               rating:GravatarRatingsX
-                                               policy:NSURLRequestUseProtocolCachePolicy];
+    [self.gravatarImageView downloadGravatarWithEmail:gravatarEmail rating:GravatarRatingsX];
     _gravatarEmail = gravatarEmail;
 }
 
@@ -110,21 +108,6 @@ const NSTimeInterval MeHeaderViewMinimumPressDuration = 0.001;
     // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
     //
     [self.gravatarImageView overrideGravatarImageCache:gravatarImage rating:GravatarRatingsX email:self.gravatarEmail];
-}
-
-- (void)reloadGravatarImageIgnorningCache
-{
-    // Note:
-    // Under normal conditions, we might just clear NSURLCache reference, in the `overrideGravatarImage` method.
-    // However, since Apple is so awesome, NSURLCache has been broken since iOS 8.
-    // For that reason, we need to force a refresh, as soon as the new gravatar has been uploaded... just to
-    // keep NSURLCache's contents current. Ref: http://blog.airsource.co.uk/2014/10/11/nsurlcache-ios8-broken/
-    //
-    // God, forgive me, since i've hacked.
-    //
-    [self.gravatarImageView downloadGravatarWithEmail:self.gravatarEmail
-                                               rating:GravatarRatingsX
-                                               policy:NSURLRequestReloadIgnoringLocalCacheData];
 }
 
 
