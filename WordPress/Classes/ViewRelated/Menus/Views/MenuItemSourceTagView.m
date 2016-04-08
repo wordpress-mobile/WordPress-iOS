@@ -89,7 +89,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
 - (void)configureSourceCell:(MenuItemSourceCell *)cell forIndexPath:(NSIndexPath *)indexPath
 {
     PostTag *tag = [self.resultsController objectAtIndexPath:indexPath];
-    if ([self itemTypeMatchesSourceItemType] && [self.item.contentId integerValue] == [tag.tagID integerValue]) {
+    if ([self itemTypeMatchesSourceItemType] && [self.item.contentID integerValue] == [tag.tagID integerValue]) {
         cell.sourceSelected = YES;
     } else {
         cell.sourceSelected = NO;
@@ -102,7 +102,7 @@ static NSUInteger const MenuItemSourceTagSyncLimit = 100;
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
     PostTag *tag = [self.resultsController objectAtIndexPath:indexPath];
-    [self setItemSourceWithContentID:[tag.tagID stringValue] name:tag.name];
+    [self setItemSourceWithContentID:tag.tagID name:tag.name];
 
     [self deselectVisibleSourceCellsIfNeeded];
     

@@ -2,8 +2,8 @@
 
 @interface RemoteMenuItem : NSObject
 
-@property (nonatomic, copy) NSString *itemId;
-@property (nonatomic, copy) NSString *contentId;
+@property (nonatomic, copy) NSNumber *itemID;
+@property (nonatomic, copy) NSNumber *contentID;
 @property (nonatomic, copy) NSString *details;
 @property (nonatomic, copy) NSString *linkTarget;
 @property (nonatomic, copy) NSString *linkTitle;

@@ -269,7 +269,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     self.itemsView.menu = menu;
 
     self.itemsLoadingLabel.hidden = YES;
-    if ([menu.menuId isEqualToString:MenuDefaultID]) {
+    if (menu.menuID.integerValue == MenuDefaultID) {
         [self loadDefaultMenuItemsIfNeeded];
     } else {
         [self insertBlankMenuItemIfNeeded];
@@ -353,7 +353,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     Menu *menuToSave = menuDetailView.menu;
     
     // Check if user is trying to save the Default Menu.
-    if ([menuToSave.menuId isEqualToString:MenuDefaultID]) {
+    if (menuToSave.menuID.integerValue == MenuDefaultID) {
         
         // Create a new menu to use instead of the Default Menu.
         Menu *newMenu = [Menu newMenu:self.blog.managedObjectContext];
@@ -411,13 +411,13 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
     
     toggleIsSaving(YES);
     
-    if (!menuToSave.menuId.length) {
+    if (!menuToSave.menuID.integerValue) {
         // Need to create the menu first.
         [self.menusService createMenuWithName:menuToSave.name
                             blog:self.blog
-                         success:^(NSString *menuID) {
+                         success:^(NSNumber *menuID) {
                              // Set the new menuID and continue the update.
-                             menuToSave.menuId = menuID;
+                             menuToSave.menuID = menuID;
                              updateMenu();
                          } failure:failureToSave];
     } else {
@@ -494,7 +494,7 @@ static NSString * const MenusSectionMenuItemsKey = @"menu_items";
         dismiss();
     };
     controller.onSelectedToTrash = ^() {
-        if (item.itemId) {
+        if (item.itemID.integerValue) {
             // If the item had an ID, saving is enabled.
             // Otherwise the item was local only.
             self.savingEnabled = YES;

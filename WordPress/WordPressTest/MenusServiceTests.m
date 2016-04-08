@@ -8,7 +8,7 @@
 #import "MenuItem.h"
 
 @interface MenuForStubbing : Menu
-@property (nullable, nonatomic, retain) NSString *menuId;
+@property (nullable, nonatomic, retain) NSNumber *menuID;
 @property (nullable, nonatomic, retain) NSString *name;
 @property (nullable, nonatomic, retain) NSSet<MenuLocation *> *locations;
 @property (nullable, nonatomic, retain) NSOrderedSet<MenuItem *> *items;
@@ -16,7 +16,7 @@
 
 @implementation MenuForStubbing
 @synthesize name;
-@synthesize menuId;
+@synthesize menuID;
 @synthesize locations;
 @synthesize items;
 @end
@@ -30,9 +30,9 @@
 @end
 
 @interface MenuItemForStubbing : MenuItem
-@property (nullable, nonatomic, retain) NSString *contentId;
+@property (nullable, nonatomic, retain) NSNumber *itemID;
+@property (nullable, nonatomic, retain) NSNumber *contentID;
 @property (nullable, nonatomic, retain) NSString *details;
-@property (nullable, nonatomic, retain) NSString *itemId;
 @property (nullable, nonatomic, retain) NSString *linkTarget;
 @property (nullable, nonatomic, retain) NSString *linkTitle;
 @property (nullable, nonatomic, retain) NSString *name;
@@ -44,9 +44,9 @@
 @property (nullable, nonatomic, retain) MenuItem *parent;
 @end
 @implementation MenuItemForStubbing
-@synthesize contentId;
+@synthesize itemID;
+@synthesize contentID;
 @synthesize details;
-@synthesize itemId;
 @synthesize linkTarget;
 @synthesize linkTitle;
 @synthesize name;
@@ -77,7 +77,7 @@
     
     OCMStub([blog restApi]).andReturn(api);
     OCMStub([blog dotComID]).andReturn(@1);
-    OCMStub([blog supports:BlogFeatureThemeBrowsing]).andReturn(YES);
+    OCMStub([blog supports:BlogFeatureMenus]).andReturn(YES);
     
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
     
@@ -160,7 +160,7 @@
     XCTAssertNoThrow(service = [[MenusService alloc] initWithManagedObjectContext:context]);
     XCTAssertNoThrow([service createMenuWithName:name
                                             blog:blog
-                                         success:^(NSString *menuID) {}
+                                         success:^(NSNumber *menuID) {}
                                          failure:^(NSError *error) {}]);
 }
 
@@ -179,8 +179,8 @@
     NSSet *locations = [NSSet setWithObject:location];
     
     MenuItem *item = OCMStrictClassMock([MenuItemForStubbing class]);
-    OCMStub([item itemId]).andReturn(@"1");
-    OCMStub([item contentId]).andReturn(@"1");
+    OCMStub([item itemID]).andReturn(@(1));
+    OCMStub([item contentID]).andReturn(@(1));
     OCMStub([item details]).andReturn(@"item details");
     OCMStub([item linkTarget]).andReturn(MenuItemLinkTargetBlank);
     OCMStub([item linkTitle]).andReturn(@"Item");
@@ -194,12 +194,12 @@
     NSOrderedSet *items = [NSOrderedSet orderedSetWithObject:item];
     
     Menu *menu = OCMStrictClassMock([MenuForStubbing class]);
-    OCMStub([menu menuId]).andReturn(@"1");
+    OCMStub([menu menuID]).andReturn(@(1));
     OCMStub([menu locations]).andReturn(locations);
     OCMStub([menu name]).andReturn(@"name");
     OCMStub([menu items]).andReturn(items);
 
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@", [blog dotComID], menu.menuId];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@", [blog dotComID], menu.menuID];
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
               success:[OCMArg isNotNil]
@@ -226,9 +226,9 @@
     OCMStub([blog supports:BlogFeatureMenus]).andReturn(YES);
     
     Menu *menu = OCMStrictClassMock([MenuForStubbing class]);
-    OCMStub([menu menuId]).andReturn(@"1");
+    OCMStub([menu menuID]).andReturn(@(1));
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuId];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
@@ -256,9 +256,9 @@
     OCMStub([blog supports:BlogFeatureMenus]).andReturn(YES);
     
     Menu *menu = OCMStrictClassMock([MenuForStubbing class]);
-    OCMStub([menu menuId]).andReturn(nil);
+    OCMStub([menu menuID]).andReturn(nil);
     
-    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuId];
+    NSString* url = [NSString stringWithFormat:@"v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuID];
     
     OCMStub([api POST:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
