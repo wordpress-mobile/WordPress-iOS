@@ -5,6 +5,23 @@
 #import "RemoteMenuItem.h"
 #import "RemoteMenuLocation.h"
 
+NSString * const MenusRemoteKeyID = @"id";
+NSString * const MenusRemoteKeyMenu = @"menu";
+NSString * const MenusRemoteKeyMenus = @"menus";
+NSString * const MenusRemoteKeyLocations = @"locations";
+NSString * const MenusRemoteKeyContentID = @"content_id";
+NSString * const MenusRemoteKeyDescription = @"description";
+NSString * const MenusRemoteKeyLinkTarget = @"link_target";
+NSString * const MenusRemoteKeyLinkTitle = @"link_title";
+NSString * const MenusRemoteKeyName = @"name";
+NSString * const MenusRemoteKeyType = @"type";
+NSString * const MenusRemoteKeyTypeFamily = @"type_family";
+NSString * const MenusRemoteKeyTypeLabel = @"type_label";
+NSString * const MenusRemoteKeyURL = @"url";
+NSString * const MenusRemoteKeyItems = @"items";
+NSString * const MenusRemoteKeyDeleted = @"deleted";
+NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
+
 @implementation MenusServiceRemote
 
 #pragma mark - Remote queries: Creating and modifying menus
@@ -23,12 +40,12 @@
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api POST:requestURL
-        parameters:@{@"name": menuName}
+        parameters:@{MenusRemoteKeyName: menuName}
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
                if (success) {
                    NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Expected a dictionary");
                    
-                   NSString *menuId = [responseObject stringForKey:@"id"];
+                   NSString *menuId = [responseObject stringForKey:MenusRemoteKeyID];
                    RemoteMenu *menu = nil;
                    if (menuId.length) {
                        menu = [RemoteMenu new];
@@ -64,25 +81,25 @@
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:2];
     if (updatedName.length) {
-        [params setObject:updatedName forKey:@"name"];
+        [params setObject:updatedName forKey:MenusRemoteKeyName];
     }
     if (updatedItems.count) {
-        [params setObject:[self menuItemJSONDictionariesFromMenuItems:updatedItems] forKey:@"items"];
+        [params setObject:[self menuItemJSONDictionariesFromMenuItems:updatedItems] forKey:MenusRemoteKeyItems];
     }
     if (locationNames.count) {
-        [params setObject:locationNames forKey:@"locations"];
+        [params setObject:locationNames forKey:MenusRemoteKeyLocations];
     }
     
     // temporarily need to force the id for the menu update to work until fixed in Jetpack endpoints
     // Brent Coursey - 10/1/2015
-    [params setObject:menuId forKey:@"id"];
+    [params setObject:menuId forKey:MenusRemoteKeyID];
     
     [self.api POST:requestURL
         parameters:params
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
                if (success) {
                    NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Expected a dictionary...");
-                   NSDictionary *menuDictionary = [responseObject dictionaryForKey:@"menu"];
+                   NSDictionary *menuDictionary = [responseObject dictionaryForKey:MenusRemoteKeyMenu];
                    success([self menuFromJSONDictionary:menuDictionary]);
                }
            } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
@@ -112,7 +129,7 @@
                    NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Expected a dictionary");
                    
                    NSDictionary *response = responseObject;
-                   BOOL deleted = [[response numberForKey:@"deleted"] boolValue];
+                   BOOL deleted = [[response numberForKey:MenusRemoteKeyDeleted] boolValue];
                    if (deleted) {
                        success();
                    } else {
@@ -145,8 +162,8 @@
           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
               if (success) {
                   
-                  NSArray *menus = [self remoteMenusFromJSONArray:[responseObject arrayForKey:@"menus"]];
-                  NSArray *locations = [self remoteMenuLocationsFromJSONArray:[responseObject arrayForKey:@"locations"]];
+                  NSArray *menus = [self remoteMenusFromJSONArray:[responseObject arrayForKey:MenusRemoteKeyMenus]];
+                  NSArray *locations = [self remoteMenuLocationsFromJSONArray:[responseObject arrayForKey:MenusRemoteKeyLocations]];
                   success(menus, locations);
               }
               
@@ -198,7 +215,7 @@
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     
-    NSString *menuId = [dictionary stringForKey:@"id"];
+    NSString *menuId = [dictionary stringForKey:MenusRemoteKeyID];
     if (!menuId.length) {
         // empty menu dictionary
         return nil;
@@ -206,11 +223,11 @@
     
     RemoteMenu *menu = [RemoteMenu new];
     menu.menuId = menuId;
-    menu.details = [dictionary stringForKey:@"description"];
-    menu.name = [dictionary stringForKey:@"name"];
-    menu.locationNames = [dictionary arrayForKey:@"locations"];
+    menu.details = [dictionary stringForKey:MenusRemoteKeyDescription];
+    menu.name = [dictionary stringForKey:MenusRemoteKeyName];
+    menu.locationNames = [dictionary arrayForKey:MenusRemoteKeyLocations];
     
-    NSArray *itemDicts = [dictionary arrayForKey:@"items"];
+    NSArray *itemDicts = [dictionary arrayForKey:MenusRemoteKeyItems];
     if (itemDicts.count) {
         menu.items = [self menuItemsFromJSONDictionaries:itemDicts parent:nil];
     }
@@ -230,18 +247,18 @@
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     
     RemoteMenuItem *item = [RemoteMenuItem new];
-    item.itemId = [dictionary stringForKey:@"id"];
-    item.contentId = [dictionary stringForKey:@"content_id"];
-    item.details = [dictionary stringForKey:@"description"];
-    item.linkTarget = [dictionary stringForKey:@"link_target"];
-    item.linkTitle = [dictionary stringForKey:@"link_title"];
-    item.name = [dictionary stringForKey:@"name"];
-    item.type = [dictionary stringForKey:@"type"];
-    item.typeFamily = [dictionary stringForKey:@"type_family"];
-    item.typeLabel = [dictionary stringForKey:@"type_label"];
-    item.urlStr = [dictionary stringForKey:@"url"];
+    item.itemId = [dictionary stringForKey:MenusRemoteKeyID];
+    item.contentId = [dictionary stringForKey:MenusRemoteKeyContentID];
+    item.details = [dictionary stringForKey:MenusRemoteKeyDescription];
+    item.linkTarget = [dictionary stringForKey:MenusRemoteKeyLinkTarget];
+    item.linkTitle = [dictionary stringForKey:MenusRemoteKeyLinkTitle];
+    item.name = [dictionary stringForKey:MenusRemoteKeyName];
+    item.type = [dictionary stringForKey:MenusRemoteKeyType];
+    item.typeFamily = [dictionary stringForKey:MenusRemoteKeyTypeFamily];
+    item.typeLabel = [dictionary stringForKey:MenusRemoteKeyTypeLabel];
+    item.urlStr = [dictionary stringForKey:MenusRemoteKeyURL];
     
-    NSArray *itemDicts = [dictionary arrayForKey:@"items"];
+    NSArray *itemDicts = [dictionary arrayForKey:MenusRemoteKeyItems];
     if (itemDicts.count) {
         item.children = [self menuItemsFromJSONDictionaries:itemDicts parent:item];
     }
@@ -261,9 +278,9 @@
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     
     RemoteMenuLocation *location = [RemoteMenuLocation new];
-    location.defaultState = [dictionary stringForKey:@"defaultState"];
-    location.details = [dictionary stringForKey:@"description"];
-    location.name = [dictionary stringForKey:@"name"];
+    location.defaultState = [dictionary stringForKey:MenusRemoteKeyLocationDefaultState];
+    location.details = [dictionary stringForKey:MenusRemoteKeyDescription];
+    location.name = [dictionary stringForKey:MenusRemoteKeyName];
     
     return location;
 }
@@ -299,43 +316,43 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     
     if (item.itemId.length) {
-        dictionary[@"id"] = item.itemId;
+        dictionary[MenusRemoteKeyID] = item.itemId;
     }
     
     if (item.contentId.length) {
-        dictionary[@"content_id"] = item.contentId;
+        dictionary[MenusRemoteKeyContentID] = item.contentId;
     }
     
     if (item.details.length) {
-        dictionary[@"description"] = item.details;
+        dictionary[MenusRemoteKeyDescription] = item.details;
     }
     
     if (item.linkTarget.length) {
-        dictionary[@"link_target"] = item.linkTarget;
+        dictionary[MenusRemoteKeyLinkTarget] = item.linkTarget;
     }
     
     if (item.linkTitle.length) {
-        dictionary[@"link_title"] = item.linkTitle;
+        dictionary[MenusRemoteKeyLinkTitle] = item.linkTitle;
     }
     
     if (item.name.length) {
-        dictionary[@"name"] = item.name;
+        dictionary[MenusRemoteKeyName] = item.name;
     }
     
     if (item.type.length) {
-        dictionary[@"type"] = item.type;
+        dictionary[MenusRemoteKeyType] = item.type;
     }
     
     if (item.typeFamily.length) {
-        dictionary[@"type_family"] = item.typeFamily;
+        dictionary[MenusRemoteKeyTypeFamily] = item.typeFamily;
     }
     
     if (item.typeLabel.length) {
-        dictionary[@"type_label"] = item.typeLabel;
+        dictionary[MenusRemoteKeyTypeLabel] = item.typeLabel;
     }
     
     if (item.urlStr.length) {
-        dictionary[@"url"] = item.urlStr;
+        dictionary[MenusRemoteKeyURL] = item.urlStr;
     }
     
     if (item.children.count) {
@@ -345,7 +362,7 @@
             [dictionaryItems addObject:[self menuItemJSONDictionaryFromItem:remoteItem]];
         }
         
-        dictionary[@"items"] = [NSArray arrayWithArray:dictionaryItems];
+        dictionary[MenusRemoteKeyItems] = [NSArray arrayWithArray:dictionaryItems];
     }
     
     return [NSDictionary dictionaryWithDictionary:dictionary];
@@ -354,7 +371,7 @@
 - (NSDictionary *)menuLocationJSONDictionaryFromLocation:(RemoteMenuLocation *)location
 {
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setObject:@"name" forKey:location.name];
+    [dictionary setObject:MenusRemoteKeyName forKey:location.name];
     
     return [NSDictionary dictionaryWithDictionary:dictionary];
 }
