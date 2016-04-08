@@ -19,8 +19,6 @@ import WordPressShared
     var didFindSafariSharedCredentials = false
     var didRequestSafariSharedCredentials = false
 
-    lazy var accountServiceRemote = AccountServiceRemoteREST()
-
 
     /// A convenience method for obtaining an instance of the controller from a storyboard.
     ///
