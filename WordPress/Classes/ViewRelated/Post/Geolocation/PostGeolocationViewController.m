@@ -10,6 +10,8 @@
 #import "WPTableViewCell.h"
 #import "WordPress-Swift.h"
 
+@import Gridicons;
+
 static NSString *CLPlacemarkTableViewCellIdentifier = @"CLPlacemarkTableViewCellIdentifier";
 
 typedef NS_ENUM(NSInteger, SearchResultsSection) {
@@ -333,9 +335,8 @@ typedef NS_ENUM(NSInteger, SearchResultsSection) {
 - (UITableViewCell *)currentLocationCell {
     if (_currentLocationCell == nil) {
         UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        UIImage *image = [[UIImage imageNamed:@"gridicons-location"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         cell.textLabel.text = NSLocalizedString(@"Use Current Location", @"Label for cell that sets the location of a post to the current location");
-        cell.imageView.image = image;
+        cell.imageView.image = [Gridicon iconOfType:GridiconTypeLocation];
         cell.imageView.tintColor = [WPStyleGuide mediumBlue];
         cell.textLabel.font = [WPStyleGuide regularTextFont];
         cell.textLabel.textColor = [WPStyleGuide darkGrey];

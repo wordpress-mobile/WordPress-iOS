@@ -13,7 +13,7 @@
 #import "WPStyleGuide+WebView.h"
 #import "WordPress-Swift.h"
 
-
+@import Gridicons;
 
 #pragma mark - Constants
 
@@ -90,6 +90,11 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     self.dismissButton.accessibilityLabel   = NSLocalizedString(@"Dismiss", @"Dismiss a view. Verb");
     self.backButton.accessibilityLabel      = NSLocalizedString(@"Back",    @"Previous web page");
     self.forwardButton.accessibilityLabel   = NSLocalizedString(@"Forward", @"Next web page");
+    
+    self.optionsButton.image                = [Gridicon iconOfType:GridiconTypeShareIOS];
+    self.dismissButton.image                = [Gridicon iconOfType:GridiconTypeCross];
+    self.backButton.image                   = [Gridicon iconOfType:GridiconTypeChevronLeft];
+    self.forwardButton.image                = [Gridicon iconOfType:GridiconTypeChevronRight];
     
     // Toolbar: Hidden by default!
     self.toolbar.barTintColor               = [UIColor whiteColor];

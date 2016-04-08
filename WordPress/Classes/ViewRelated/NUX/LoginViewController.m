@@ -289,7 +289,7 @@ static NSString * const LoginSharedWebCredentialFQDN = @"wordpress.com";
         weakSelf.autofilledUsernameCredentialHash = [username hash];
         weakSelf.autofilledPasswordCredentialHash = [password hash];
         
-        [WPAnalytics track:WPAnalyticsStatSafariCredentialsLoginFilled];
+        [WPAnalytics track:WPAnalyticsStatLoginAutoFillCredentialsFilled];
     }];
 }
 
@@ -321,7 +321,7 @@ static NSString * const LoginSharedWebCredentialFQDN = @"wordpress.com";
             return;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            [WPAnalytics track:WPAnalyticsStatSafariCredentialsLoginUpdated];
+            [WPAnalytics track:WPAnalyticsStatLoginAutoFillCredentialsUpdated];
         });
     });
 }
