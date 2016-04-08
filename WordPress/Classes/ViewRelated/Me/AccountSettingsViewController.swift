@@ -113,20 +113,7 @@ private struct AccountSettingsController: SettingsController {
                         email,
                         primarySite,
                         webAddress
-                    ]),
-                ImmuTableSection(
-                    headerText: mediaHeader,
-                    rows: [
-                        uploadSize,
-                        mediaRemoveLocation
-                    ],
-                    footerText: nil),
-                ImmuTableSection(
-                    headerText: editorHeader,
-                    rows: [
-                        visualEditor
-                    ],
-                    footerText: nil)
+                    ])
                 ])
         } else {
             return ImmuTable(sections: [
