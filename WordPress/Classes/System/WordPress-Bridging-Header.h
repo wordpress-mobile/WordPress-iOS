@@ -5,6 +5,7 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <NSObject_SafeExpectations/NSDictionary+SafeExpectations.h>
 
+#import "AbstractPostListViewController.h"
 #import "AccountService.h"
 #import "AppRatingUtility.h"
 
@@ -42,8 +43,11 @@
 
 #import "PhotonImageURLHelper.h"
 #import "Post.h"
+#import "PostCardTableViewCell.h"
+#import "PostCardTableViewCellDelegate.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
+#import "PrivateSiteURLProtocol.h"
 #import "WPPostViewController.h"
 
 #import "ReachabilityUtils.h"
