@@ -1,8 +1,11 @@
 import UIKit
 
+// The signin forms are centered, and then slightly adjusted by half the combined
+// height of the status bar and navigation bar. -(20 + 44) / 2.
 let SigninFormVerticalOffset: CGFloat = -32.0
 
-///
+/// A protocol and extension encapsulating common keyboard releated logic for 
+/// Signin controllers.
 ///
 protocol SigninKeyboardResponder: class
 {
