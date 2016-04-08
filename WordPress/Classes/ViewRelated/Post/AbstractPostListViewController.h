@@ -16,11 +16,7 @@ extern const NSInteger PostsFetchRequestBatchSize;
 extern const NSInteger PostsLoadMoreThreshold;
 extern const CGSize PreferredFiltersPopoverContentSize;
 
-@interface AbstractPostListViewController : UIViewController <WPContentSyncHelperDelegate,
-WPNoResultsViewDelegate,
-WPSearchControllerDelegate,
-WPSearchResultsUpdating,
-WPTableViewHandlerDelegate>
+@interface AbstractPostListViewController : UIViewController
 
 @property (nonatomic, strong) Blog* __nullable blog;
 
@@ -69,5 +65,6 @@ WPTableViewHandlerDelegate>
 - (BOOL)isSearching;
 - (NSString* _Nullable)currentSearchTerm;
 - (NSDictionary* _Nonnull)propertiesForAnalytics;
+- (NSManagedObjectContext* _Nonnull)managedObjectContext;
 
 @end
