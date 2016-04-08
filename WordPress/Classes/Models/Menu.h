@@ -33,7 +33,6 @@ extern NSString * const MenuDefaultID;
 + (Menu *)defaultMenuForBlog:(Blog *)blog;
 + (Menu *)newDefaultMenu:(NSManagedObjectContext *)managedObjectContext;
 + (NSString *)defaultMenuName;
-+ (NSString *)generateIncrementalNameFromMenus:(NSOrderedSet *)menus;
 
 @end
 
