@@ -51,27 +51,4 @@ NSString * const MenuDefaultID = @"0";
     return NSLocalizedString(@"Default Menu", @"Menu name for the defaut menu that is automatically generated.");
 }
 
-+ (NSString *)generateIncrementalNameFromMenus:(NSOrderedSet *)menus
-{
-    NSInteger highestInteger = 0;
-    for (Menu *menu in menus) {
-        if (!menu.name.length) {
-            continue;
-        }
-        NSString *nameNumberStr;
-        NSScanner *numberScanner = [NSScanner scannerWithString:menu.name];
-        NSCharacterSet *characterSet = [NSCharacterSet decimalDigitCharacterSet];
-        [numberScanner scanUpToCharactersFromSet:characterSet intoString:NULL];
-        [numberScanner scanCharactersFromSet:characterSet intoString:&nameNumberStr];
-        
-        if ([nameNumberStr integerValue] > highestInteger) {
-            highestInteger = [nameNumberStr integerValue];
-        }
-    }
-    highestInteger = highestInteger + 1;
-    NSString *menuStr = NSLocalizedString(@"Menu", @"The default text used for filling the name of a menu when creating it.");
-    return [NSString stringWithFormat:@"%@ %i", menuStr, highestInteger];
-}
-
-
 @end
