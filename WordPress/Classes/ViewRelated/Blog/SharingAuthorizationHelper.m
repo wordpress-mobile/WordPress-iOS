@@ -59,7 +59,7 @@
 - (void)handleReconnectSucceeded
 {
     [self dismissNavViewController];
-    NSString *message = NSLocalizedString(@"%@ was reconnected.", @"Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service naem.");
+    NSString *message = NSLocalizedString(@"%@ was reconnected.", @"Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name.");
     message = [NSString stringWithFormat:message, self.publicizeService.label];
     [SVProgressHUD showSuccessWithStatus:message];
 }
