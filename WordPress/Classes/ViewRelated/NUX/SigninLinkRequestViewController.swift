@@ -59,6 +59,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
                 self?.configureLoading(false)
 
             }, failure: { [weak self] (error: NSError!) in
+                WPAppAnalytics.track(.LoginMagicLinkFailed)
                 self?.displayError(error)
                 self?.configureLoading(false)
             })
@@ -68,6 +69,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     /// Displays the next step in the magic links sign in flow. 
     ///
     func didRequestAuthenticationLink() {
+        WPAppAnalytics.track(.LoginMagicLinkRequested)
         SigninHelpers.saveEmailAddressForTokenAuth(loginFields.username)
         let controller = SigninLinkMailViewController.controller(loginFields)
         navigationController?.pushViewController(controller, animated: true)
@@ -83,6 +85,7 @@ class SigninLinkRequestViewController : NUXAbstractViewController
 
 
     @IBAction func handleUsePasswordTapped(sender: UIButton) {
+        WPAppAnalytics.track(.LoginMagicLinkExited)
         let controller = SigninWPComViewController.controller(loginFields)
         navigationController?.pushViewController(controller, animated: true)
     }
