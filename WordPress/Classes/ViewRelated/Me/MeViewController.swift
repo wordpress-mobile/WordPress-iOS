@@ -100,7 +100,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             action: pushAccountSettings())
         
         let applicationSettings = NavigationItemRow(
-            title: NSLocalizedString("Application Settings", comment: "Link to Application Settings section"),
+            title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
             icon: Gridicon.iconOfType(.Phone),
             action: pushApplicationSettings())
         
