@@ -3,10 +3,16 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
-## WordPress 49 (@jleandroperez 2016-04-11)
+## (@jleandroperez 2016-04-11)
 
 - `AccountSettings` added new string `emailPendingAddress`. Whenever it's not nil, contains the new User's Email Address.
 - `AccountSettings` added new bool `emailPendingChange`. Indicates whether there's a pending Email change, or not.
+
+## (@kurzee 2016-04-08)
+
+- `Menu` changing `menuId` attribute to `menuID` as a int_32 number instead of string.
+- `MenuItem` changing `itemId` attribute to `itemID` as an int_32 number instead of string.
+- `MenuItem` changing `contentId` attribute to `contentID` as an int_64 number instead of string.
 
 ## WordPress 48 (@sergioestevao 2016-04-05)
 
