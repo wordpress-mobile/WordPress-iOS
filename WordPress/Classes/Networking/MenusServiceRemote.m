@@ -4,6 +4,7 @@
 #import "RemoteMenu.h"
 #import "RemoteMenuItem.h"
 #import "RemoteMenuLocation.h"
+#import "WordPressRestApi.h"
 
 NSString * const MenusRemoteKeyID = @"id";
 NSString * const MenusRemoteKeyMenu = @"menu";
@@ -43,8 +44,11 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
         parameters:@{MenusRemoteKeyName: menuName}
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
                if (success) {
-                   NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Expected a dictionary");
-                   
+                   if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                       NSString *message = NSLocalizedString(@"An error occurred creating the Menu.", @"An error description explaining that a Menu could not be created.");
+                       [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
+                       return;
+                   }
                    NSNumber *menuID = [responseObject numberForKey:MenusRemoteKeyID];
                    RemoteMenu *menu = nil;
                    if (menuID) {
@@ -52,7 +56,6 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
                        menu.menuID = menuID;
                        menu.name = menuName;
                    }
-                   
                    success(menu);
                }
            } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
@@ -98,7 +101,11 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
         parameters:params
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
                if (success) {
-                   NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Expected a dictionary...");
+                   if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                       NSString *message = NSLocalizedString(@"An error occurred updating the Menu.", @"An error description explaining that a Menu could not be updated.");
+                       [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
+                       return;
+                   }
                    NSDictionary *menuDictionary = [responseObject dictionaryForKey:MenusRemoteKeyMenu];
                    success([self menuFromJSONDictionary:menuDictionary]);
                }
@@ -126,8 +133,11 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
         parameters:nil
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
                if (success) {
-                   NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Expected a dictionary");
-                   
+                   if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                       NSString *message = NSLocalizedString(@"An error occurred deleting the Menu.", @"An error description explaining that a Menu could not be deleted.");
+                       [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
+                       return;
+                   }
                    NSDictionary *response = responseObject;
                    BOOL deleted = [[response numberForKey:MenusRemoteKeyDeleted] boolValue];
                    if (deleted) {
@@ -160,8 +170,12 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     [self.api GET:requestURL
        parameters:nil
           success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+              if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                  NSString *message = NSLocalizedString(@"An error occurred fetching the Menus.", @"An error description explaining that Menus could not be fetched.");
+                  [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
+                  return;
+              }
               if (success) {
-                  
                   NSArray *menus = [self remoteMenusFromJSONArray:[responseObject arrayForKey:MenusRemoteKeyMenus]];
                   NSArray *locations = [self remoteMenuLocationsFromJSONArray:[responseObject arrayForKey:MenusRemoteKeyLocations]];
                   success(menus, locations);
@@ -214,6 +228,9 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 - (RemoteMenu *)menuFromJSONDictionary:(NSDictionary *)dictionary
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
+    if (![dictionary isKindOfClass:[NSDictionary class]]) {
+        return nil;
+    }
     
     NSNumber *menuID = [dictionary numberForKey:MenusRemoteKeyID];
     if (!menuID.integerValue) {
@@ -245,6 +262,9 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 - (RemoteMenuItem *)menuItemFromJSONDictionary:(NSDictionary *)dictionary
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
+    if (![dictionary isKindOfClass:[NSDictionary class]]) {
+        return nil;
+    }
     
     RemoteMenuItem *item = [RemoteMenuItem new];
     item.itemID = [dictionary numberForKey:MenusRemoteKeyID];
@@ -276,6 +296,9 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 - (RemoteMenuLocation *)menuLocationFromJSONDictionary:(NSDictionary *)dictionary
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
+    if (![dictionary isKindOfClass:[NSDictionary class]]) {
+        return nil;
+    }
     
     RemoteMenuLocation *location = [RemoteMenuLocation new];
     location.defaultState = [dictionary stringForKey:MenusRemoteKeyLocationDefaultState];
@@ -374,6 +397,19 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     [dictionary setObject:MenusRemoteKeyName forKey:location.name];
     
     return [NSDictionary dictionaryWithDictionary:dictionary];
+}
+
+#pragma mark - errors
+
+- (void)handleResponseErrorWithMessage:(NSString *)message url:(NSString *)urlStr failure:(MenusServiceRemoteFailureBlock)failure
+{
+    DDLogError(@"%@ - URL: %@", message, urlStr);
+    NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+                                         code:NSURLErrorBadServerResponse
+                                     userInfo:@{NSLocalizedDescriptionKey: message}];
+    if (failure) {
+        failure(error);
+    }
 }
 
 @end
