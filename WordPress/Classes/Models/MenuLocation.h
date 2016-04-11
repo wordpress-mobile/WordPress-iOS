@@ -9,16 +9,16 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface MenuLocation : NSManagedObject
 
-@property (nullable, nonatomic, retain) NSString *defaultState;
-@property (nullable, nonatomic, retain) NSString *details;
-@property (nullable, nonatomic, retain) NSString *name;
+@property (nullable, nonatomic, strong) NSString *defaultState;
+@property (nullable, nonatomic, strong) NSString *details;
+@property (nullable, nonatomic, strong) NSString *name;
 
 ///---------------------
 /// @name Relationships
 ///---------------------
 
-@property (nullable, nonatomic, retain) Blog *blog;
-@property (nullable, nonatomic, retain) Menu *menu;
+@property (nullable, nonatomic, strong) Blog *blog;
+@property (nullable, nonatomic, strong) Menu *menu;
 
 ///---------------------
 /// @name Helper methods
