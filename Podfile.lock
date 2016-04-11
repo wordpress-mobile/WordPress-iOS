@@ -161,7 +161,7 @@ PODS:
     - NSObject-SafeExpectations (~> 0.0.2)
     - WordPress-iOS-Shared (~> 0.5.3)
     - WordPressCom-Analytics-iOS (~> 0.1.0)
-  - WordPress-iOS-Shared (0.5.3):
+  - WordPress-iOS-Shared (0.5.4):
     - AFNetworking (~> 2.5)
     - CocoaLumberjack (~> 2.2.0)
   - WordPressApi (0.4.0):
@@ -222,7 +222,7 @@ DEPENDENCIES:
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `87bae8c770cfc4e053119f2d00f76b2f653b26ce`)
   - WordPress-iOS-Editor (= 1.2)
-  - WordPress-iOS-Shared (= 0.5.3)
+  - WordPress-iOS-Shared (= 0.5.4)
   - WordPressApi (= 0.4.0)
   - WordPressCom-Analytics-iOS (= 0.1.8)
   - WordPressCom-Stats-iOS/Services (= 0.6.3)
@@ -295,7 +295,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: a959a6d4f51036b4180dd31fb26483a820f1cc46
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
   WordPress-iOS-Editor: 4958ae44a2aedfa9b3a3afc9cba41e3ec989b175
-  WordPress-iOS-Shared: 43f55f24f0685e431167084071b7914d7c7134a8
+  WordPress-iOS-Shared: 244f9ba88baea771e4509636029ee48340a4f98a
   WordPressApi: 483767025bcdab26429b51bfe5171f17d3d30466
   WordPressCom-Analytics-iOS: ea4c9017698781ad54a30c4bbac3ad83f7838611
   WordPressCom-Stats-iOS: 75dbdf4765c09b90a8fe00375dc96a93e64feffa
