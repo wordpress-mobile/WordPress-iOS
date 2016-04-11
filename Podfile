@@ -48,7 +48,7 @@ target 'WordPress', :exclusive => true do
   pod 'WordPress-iOS-Editor', '1.2'
   pod 'WordPress-iOS-Shared', '0.5.4'
   pod 'WordPressApi', '0.4.0'
-  pod 'WordPressCom-Analytics-iOS', '0.1.8'
+  pod 'WordPressCom-Analytics-iOS', '0.1.9'
   pod 'WordPressCom-Stats-iOS/UI', '0.6.3'
   pod 'wpxmlrpc', '~> 0.8'
 end

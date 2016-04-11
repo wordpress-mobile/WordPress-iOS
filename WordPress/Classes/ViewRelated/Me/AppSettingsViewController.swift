@@ -26,7 +26,8 @@ public class AppSettingsViewController: UITableViewController {
 
         ImmuTable.registerRows([
             MediaSizeRow.self,
-            SwitchRow.self
+            SwitchRow.self,
+            NavigationItemRow.self
             ], tableView: self.tableView)
 
         handler = ImmuTableViewHandler(takeOver: self)
@@ -58,6 +59,12 @@ public class AppSettingsViewController: UITableViewController {
             value: WPPostViewController.isNewEditorEnabled(),
             onChange: visualEditorChanged()
         )
+        
+        let aboutHeader = NSLocalizedString("About", comment: "Link to About section (contains info about the app)")
+        let aboutApp = NavigationItemRow(
+            title: NSLocalizedString("WordPress for iOS", comment: "Link to About screen for WordPress for iOS"),
+            action: pushAbout()
+        )
 
         return ImmuTable(sections: [
             ImmuTableSection(
@@ -71,6 +78,12 @@ public class AppSettingsViewController: UITableViewController {
                 headerText: editorHeader,
                 rows: [
                     visualEditor
+                ],
+                footerText: nil),
+            ImmuTableSection(
+                headerText: aboutHeader,
+                rows: [
+                    aboutApp
                 ],
                 footerText: nil)
             ])
@@ -102,6 +115,13 @@ public class AppSettingsViewController: UITableViewController {
                 WPAnalytics.track(.EditorToggledOff)
             }
             WPPostViewController.setNewEditorEnabled(enabled)
+        }
+    }
+    
+    func pushAbout() -> ImmuTableAction {
+        return { [unowned self] row in
+            let controller = AboutViewController()
+            self.navigationController?.pushViewController(controller, animated: true)
         }
     }
 }
