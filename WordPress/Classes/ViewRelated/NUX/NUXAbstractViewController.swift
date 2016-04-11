@@ -13,6 +13,9 @@ class NUXAbstractViewController : UIViewController
     var helpButton: UIButton!
     var loginFields = LoginFields()
 
+    let helpButtonMarginSpacerWidth = CGFloat(-8)
+    let helpBadgeSize = CGSize(width: 12, height: 10)
+    let helpButtonContainerFrame = CGRect(x: 0, y: 0, width: 44, height: 44)
 
     // MARK: - Lifecycle Methods
 
@@ -79,27 +82,34 @@ class NUXAbstractViewController : UIViewController
     func setupHelpButtonAndBadge() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NUXAbstractViewController.handleHelpshiftUnreadCountUpdated(_:)), name: HelpshiftUnreadCountUpdatedNotification, object: nil)
 
-        let buttonView = UIView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
+        let customView = UIView(frame: helpButtonContainerFrame)
 
         helpButton = UIButton(type: .Custom)
         helpButton.setImage(UIImage(named: "btn-help"), forState: .Normal)
         helpButton.sizeToFit()
         helpButton.accessibilityLabel = NSLocalizedString("Help", comment: "Help button")
         helpButton.addTarget(self, action: #selector(NUXAbstractViewController.handleHelpButtonTapped(_:)), forControlEvents: .TouchUpInside)
-        var frame = helpButton.frame
-        frame.origin.x = buttonView.frame.width - frame.width
-        frame.origin.y = (buttonView.frame.height - frame.height) / 2
-        helpButton.frame = frame
-        buttonView.addSubview(helpButton)
 
-        helpBadge = WPNUXHelpBadgeLabel(frame: CGRect(x: (frame.origin.x + frame.width) - 6, y: frame.origin.y - 5, width: 12, height: 10))
+        var frame = helpButton.frame
+        frame.origin.x = helpButtonContainerFrame.width - frame.width
+        frame.origin.y = (helpButtonContainerFrame.height - frame.height) / 2
+        helpButton.frame = frame
+        customView.addSubview(helpButton)
+
+        let badgeFrame = CGRect(
+            x: frame.maxX - (helpBadgeSize.width / 2),
+            y: frame.minY - (helpBadgeSize.height / 2),
+            width: helpBadgeSize.width,
+            height: helpBadgeSize.height
+        )
+        helpBadge = WPNUXHelpBadgeLabel(frame: badgeFrame)
         helpBadge.hidden = true
-        buttonView.addSubview(helpBadge)
+        customView.addSubview(helpBadge)
 
         let spacer = UIBarButtonItem(barButtonSystemItem: .FixedSpace, target: nil, action: nil)
-        spacer.width = -8
+        spacer.width = helpButtonMarginSpacerWidth
 
-        let barButton = UIBarButtonItem(customView: buttonView)
+        let barButton = UIBarButtonItem(customView: customView)
         navigationItem.rightBarButtonItems = [spacer, barButton]
     }
 
