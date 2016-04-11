@@ -115,7 +115,8 @@ class AccountSettingsRemote: ServiceRemoteREST {
             aboutMe = response["description"] as? String,
             username = response["user_login"] as? String,
             email = response["user_email"] as? String,
-            emailChangePending = response["user_email_change_pending"] as? Bool,
+            emailPendingAddress = response["new_user_email"] as? String?,
+            emailPendingChange = response["user_email_change_pending"] as? Bool,
             primarySiteID = response["primary_site_ID"] as? Int,
             webAddress = response["user_URL"] as? String,
             language = response["language"] as? String else {
@@ -125,7 +126,17 @@ class AccountSettingsRemote: ServiceRemoteREST {
 
         let aboutMeText = aboutMe.stringByDecodingXMLCharacters()
 
-        return AccountSettings(firstName: firstName, lastName: lastName, displayName: displayName, aboutMe: aboutMeText, username: username, email: email, emailChangePending: emailChangePending, primarySiteID: primarySiteID, webAddress: webAddress, language: language)
+        return AccountSettings(firstName: firstName,
+                               lastName: lastName,
+                               displayName: displayName,
+                               aboutMe: aboutMeText,
+                               username: username,
+                               email: email,
+                               emailPendingAddress: emailPendingAddress,
+                               emailPendingChange: emailPendingChange,
+                               primarySiteID: primarySiteID,
+                               webAddress: webAddress,
+                               language: language)
     }
 
     private func fieldNameForChange(change: AccountSettingsChange) -> String {
@@ -140,7 +151,7 @@ class AccountSettingsRemote: ServiceRemoteREST {
             return "description"
         case .Email(_):
             return "user_email"
-        case .EmailChangePending(_):
+        case .EmailPendingChange(_):
             return "user_email_change_pending"
         case .PrimarySite(_):
             return "primary_site_ID"
