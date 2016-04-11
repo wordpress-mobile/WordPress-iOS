@@ -1,5 +1,6 @@
 import UIKit
 import WordPressShared
+import Gridicons
 
 class MeViewController: UITableViewController, UIViewControllerRestoration {
     static let restorationIdentifier = "WPMeRestorationID"
@@ -90,23 +91,32 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
     func tableViewModel(loggedIn: Bool, helpshiftBadgeCount: Int) -> ImmuTable {
         let myProfile = NavigationItemRow(
             title: NSLocalizedString("My Profile", comment: "Link to My Profile section"),
+            icon: Gridicon.iconOfType(.User),
             action: pushMyProfile())
 
         let accountSettings = NavigationItemRow(
             title: NSLocalizedString("Account Settings", comment: "Link to Account Settings section"),
+            icon: Gridicon.iconOfType(.Cog),
             action: pushAccountSettings())
+
+        let appSettings = NavigationItemRow(
+            title: NSLocalizedString("App Settings", comment: "Link to App Settings section"),
+            action: pushAppSettings())
 
         let notificationSettings = NavigationItemRow(
             title: NSLocalizedString("Notification Settings", comment: "Link to Notification Settings section"),
+            icon: Gridicon.iconOfType(.Bell),
             action: pushNotificationSettings())
 
         let helpAndSupport = BadgeNavigationItemRow(
             title: NSLocalizedString("Help & Support", comment: "Link to Help section"),
+            icon: Gridicon.iconOfType(.Help),
             badgeCount: helpshiftBadgeCount,
             action: pushHelp())
 
         let about = NavigationItemRow(
             title: NSLocalizedString("About", comment: "Link to About section (contains info about the app)"),
+            icon: Gridicon.iconOfType(.Info),
             action: pushAbout())
 
         let logIn = ButtonRow(
@@ -126,6 +136,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                         ImmuTableSection(rows: [
                             myProfile,
                             accountSettings,
+                            appSettings,
                             notificationSettings
                             ]),
                         ImmuTableSection(rows: [
@@ -142,7 +153,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
                 return ImmuTable(
                     sections: [
                         ImmuTableSection(rows: [
-                            accountSettings,
+                            appSettings,
                             notificationSettings
                             ]),
                         ImmuTableSection(rows: [
@@ -160,7 +171,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
             return ImmuTable(
                 sections: [
                     ImmuTableSection(rows: [
-                        accountSettings,
+                        appSettings,
                         ]),
                     ImmuTableSection(rows: [
                         helpAndSupport,
@@ -194,8 +205,17 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func pushAccountSettings() -> ImmuTableAction {
         return { [unowned self] row in
-            WPAppAnalytics.track(.OpenedAccountSettings)
-            let controller = AccountSettingsViewController(account: self.defaultAccount())
+            if let account = self.defaultAccount() {
+                WPAppAnalytics.track(.OpenedAccountSettings)
+                let controller = AccountSettingsViewController(account: account)
+                self.navigationController?.pushViewController(controller, animated: true)
+            }
+        }
+    }
+
+    func pushAppSettings() -> ImmuTableAction {
+        return { [unowned self] row in
+            let controller = AppSettingsViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
     }
