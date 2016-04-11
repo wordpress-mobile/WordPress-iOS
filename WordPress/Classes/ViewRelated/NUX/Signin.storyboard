@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="18V-ZM-xlT">
-                                        <rect key="frame" x="0.0" y="166" width="600" height="174"/>
+                                        <rect key="frame" x="0.0" y="134" width="600" height="174"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="Fj6-gt-Ex5">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -98,7 +98,7 @@
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="18V-ZM-xlT" secondAttribute="trailing" id="9tR-rM-JfT"/>
                                     <constraint firstItem="18V-ZM-xlT" firstAttribute="leading" secondItem="JBb-dd-foh" secondAttribute="leading" id="IBM-8C-blc"/>
-                                    <constraint firstItem="XXO-aV-keK" firstAttribute="centerY" secondItem="JBb-dd-foh" secondAttribute="centerY" priority="900" constant="-32" id="iah-J8-nUj"/>
+                                    <constraint firstItem="XXO-aV-keK" firstAttribute="centerY" secondItem="JBb-dd-foh" secondAttribute="centerY" priority="900" constant="-64" id="iah-J8-nUj"/>
                                     <constraint firstItem="18V-ZM-xlT" firstAttribute="centerX" secondItem="JBb-dd-foh" secondAttribute="centerX" id="sIT-ge-7gg"/>
                                     <constraint firstItem="18V-ZM-xlT" firstAttribute="top" relation="greaterThanOrEqual" secondItem="JBb-dd-foh" secondAttribute="top" id="u02-xZ-qlg"/>
                                 </constraints>
@@ -118,7 +118,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="wGR-td-aHF">
                                 <rect key="frame" x="195" y="460" width="210" height="124"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Hn-ZK-h9k" customClass="WPNUXSecondaryButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Hn-ZK-h9k">
                                         <rect key="frame" x="0.0" y="0.0" width="210" height="28"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Add a self-hosted WordPress site">
@@ -128,7 +128,7 @@
                                             <action selector="handleSelfHostedButtonTapped:" destination="fwZ-QE-5et" eventType="touchUpInside" id="4IZ-FX-3q3"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PCj-nt-T9Y" customClass="WPNUXSecondaryButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PCj-nt-T9Y">
                                         <rect key="frame" x="0.0" y="48" width="210" height="28"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Create a site">
@@ -138,7 +138,7 @@
                                             <action selector="handleCreateSiteButtonTapped:" destination="fwZ-QE-5et" eventType="touchUpInside" id="MD0-Ps-Pw9"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DvS-7c-C5u" customClass="WPNUXSecondaryButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DvS-7c-C5u">
                                         <rect key="frame" x="0.0" y="96" width="210" height="28"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Sign in with Safari saved password">
@@ -191,7 +191,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Mjx-cz-sDG">
-                                        <rect key="frame" x="0.0" y="122" width="600" height="294"/>
+                                        <rect key="frame" x="0.0" y="90" width="600" height="294"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="j7V-eN-ivW">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -295,7 +295,7 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gzk-TE-YfP" customClass="WPNUXSecondaryButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gzk-TE-YfP">
                                         <rect key="frame" x="237" y="556" width="125" height="28"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Lost your password?">
@@ -312,7 +312,7 @@
                                     <constraint firstItem="Mjx-cz-sDG" firstAttribute="centerX" secondItem="5AW-qg-L9w" secondAttribute="centerX" id="98r-Gx-edy"/>
                                     <constraint firstAttribute="bottom" secondItem="Gzk-TE-YfP" secondAttribute="bottom" priority="900" constant="16" id="Y7X-lt-40l"/>
                                     <constraint firstAttribute="trailing" secondItem="Mjx-cz-sDG" secondAttribute="trailing" id="e7Q-wh-S1Y"/>
-                                    <constraint firstItem="tW0-In-DwC" firstAttribute="centerY" secondItem="5AW-qg-L9w" secondAttribute="centerY" priority="900" constant="-32" id="gJr-NG-5Ge"/>
+                                    <constraint firstItem="tW0-In-DwC" firstAttribute="centerY" secondItem="5AW-qg-L9w" secondAttribute="centerY" priority="900" constant="-64" id="gJr-NG-5Ge"/>
                                     <constraint firstItem="Gzk-TE-YfP" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SBB-7Z-qWs" secondAttribute="bottom" constant="16" id="pGO-BI-6Kb"/>
                                     <constraint firstItem="Gzk-TE-YfP" firstAttribute="centerX" secondItem="5AW-qg-L9w" secondAttribute="centerX" id="vGs-D3-oey"/>
                                     <constraint firstItem="Mjx-cz-sDG" firstAttribute="leading" secondItem="5AW-qg-L9w" secondAttribute="leading" id="vrg-3c-mtK"/>
@@ -370,7 +370,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ZWc-TJ-W9T">
-                                        <rect key="frame" x="0.0" y="144" width="600" height="250"/>
+                                        <rect key="frame" x="0.0" y="112" width="600" height="250"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="b8y-9Y-dkU">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -461,7 +461,7 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-6g-BI3" customClass="WPNUXSecondaryButton">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0P1-6g-BI3">
                                         <rect key="frame" x="237" y="556" width="125" height="28"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Lost your password?">
@@ -480,7 +480,7 @@
                                     <constraint firstItem="ZWc-TJ-W9T" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7OQ-0t-1zq" secondAttribute="top" id="VLg-UB-2XP"/>
                                     <constraint firstAttribute="trailing" secondItem="ZWc-TJ-W9T" secondAttribute="trailing" id="dKJ-Hw-hpF"/>
                                     <constraint firstItem="ZWc-TJ-W9T" firstAttribute="centerX" secondItem="7OQ-0t-1zq" secondAttribute="centerX" id="jcM-uc-2PV"/>
-                                    <constraint firstItem="Bli-Rb-X9m" firstAttribute="centerY" secondItem="7OQ-0t-1zq" secondAttribute="centerY" priority="900" constant="-32" id="pKc-9i-CzT"/>
+                                    <constraint firstItem="Bli-Rb-X9m" firstAttribute="centerY" secondItem="7OQ-0t-1zq" secondAttribute="centerY" priority="900" constant="-64" id="pKc-9i-CzT"/>
                                     <constraint firstAttribute="bottom" secondItem="0P1-6g-BI3" secondAttribute="bottom" priority="900" constant="16" id="rWH-Vw-X45"/>
                                 </constraints>
                                 <variation key="default">
@@ -534,7 +534,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L68-uO-e3A">
-                                        <rect key="frame" x="0.0" y="166" width="600" height="206"/>
+                                        <rect key="frame" x="0.0" y="134" width="600" height="206"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="vv1-my-h8X">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -616,13 +616,13 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="309-z3-fPx" customClass="WPNUXSecondaryButton">
-                                        <rect key="frame" x="264" y="540" width="72" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="309-z3-fPx">
+                                        <rect key="frame" x="266.5" y="540" width="67" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="fzI-rH-0f8"/>
                                             <constraint firstAttribute="width" constant="280" id="pQI-Fa-Vwc"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <state key="normal" title="Send Code">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -647,7 +647,7 @@
                                     <constraint firstItem="309-z3-fPx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hTY-xb-H5h" secondAttribute="leading" constant="16" id="A2d-ec-KhC"/>
                                     <constraint firstAttribute="trailing" secondItem="L68-uO-e3A" secondAttribute="trailing" id="LlH-nI-0ys"/>
                                     <constraint firstItem="L68-uO-e3A" firstAttribute="leading" secondItem="hTY-xb-H5h" secondAttribute="leading" id="PEJ-fI-cb6"/>
-                                    <constraint firstItem="A2K-lq-6XM" firstAttribute="centerY" secondItem="hTY-xb-H5h" secondAttribute="centerY" priority="900" constant="-32" id="cMC-S2-j55"/>
+                                    <constraint firstItem="A2K-lq-6XM" firstAttribute="centerY" secondItem="hTY-xb-H5h" secondAttribute="centerY" priority="900" constant="-64" id="cMC-S2-j55"/>
                                     <constraint firstItem="309-z3-fPx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6eO-V2-a64" secondAttribute="bottom" constant="6" id="fyg-7f-d6n"/>
                                     <constraint firstAttribute="bottom" secondItem="309-z3-fPx" secondAttribute="bottom" priority="900" constant="16" id="ktW-fc-fOm"/>
                                     <constraint firstItem="L68-uO-e3A" firstAttribute="top" relation="greaterThanOrEqual" secondItem="hTY-xb-H5h" secondAttribute="top" id="uxt-ER-8Hi"/>
@@ -745,14 +745,14 @@
                                 <rect key="frame" x="156" y="198" width="289" height="116"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-alert" translatesAutoresizingMaskIntoConstraints="NO" id="v7t-tc-0qh">
-                                        <rect key="frame" x="113.5" y="0.0" width="62" height="52"/>
+                                        <rect key="frame" x="113" y="0.0" width="62" height="52"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="62" id="4hX-6S-Ug0"/>
                                             <constraint firstAttribute="height" constant="52" id="toG-vl-LrL"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="99N-tl-1Nv">
-                                        <rect key="frame" x="121.5" y="60" width="46" height="30"/>
+                                        <rect key="frame" x="121" y="60" width="46" height="30"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="25"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -775,8 +775,12 @@
                                     <action selector="handleSecondaryButtonTapped:" destination="TLA-Qm-IoF" eventType="touchUpInside" id="usW-OP-FqJ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qa-33-ovF" customClass="WPNUXPrimaryButton">
-                                <rect key="frame" x="538" y="554" width="46" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qa-33-ovF" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="541" y="550" width="43" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="sdW-W7-7yC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
                                     <action selector="handlePrimaryButtonTapped:" destination="TLA-Qm-IoF" eventType="touchUpInside" id="IhP-yF-kQB"/>
@@ -826,7 +830,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get a link sent to your email to signin instantly." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CmN-ir-1YK">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get a link sent to your email to signin instantly." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CmN-ir-1YK">
                                 <rect key="frame" x="123" y="246" width="354" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="320" id="cYD-Pv-crb"/>
@@ -858,8 +862,9 @@
                                     <action selector="handleSendLinkTapped:" destination="Kvo-Y2-yhG" eventType="touchUpInside" id="YlN-8X-mwf"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6x-b7-hU9" customClass="WPNUXSecondaryButton">
-                                <rect key="frame" x="203" y="554" width="195" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B6x-b7-hU9">
+                                <rect key="frame" x="214.5" y="556" width="172" height="28"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <state key="normal" title="Enter your password instead">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -940,8 +945,9 @@
                                     <action selector="handleOpenMailTapped:" destination="GSd-vy-rpZ" eventType="touchUpInside" id="aHi-O1-8ah"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0O-LO-6ax" customClass="WPNUXSecondaryButton">
-                                <rect key="frame" x="202" y="554" width="195" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0O-LO-6ax">
+                                <rect key="frame" x="213.5" y="556" width="172" height="28"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <state key="normal" title="Enter your password instead">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
