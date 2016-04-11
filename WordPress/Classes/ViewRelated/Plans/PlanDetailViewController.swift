@@ -198,7 +198,7 @@ class PlanDetailViewController: UIViewController {
     
     private func populateHeader() {
         let plan = viewModel.plan
-        planImageView.image = plan.image
+        planImageView.setImageWithURL(plan.iconUrl)
         planTitleLabel.text = plan.fullTitle
         planDescriptionLabel.text = plan.tagline
         planPriceLabel.text = viewModel.priceText
