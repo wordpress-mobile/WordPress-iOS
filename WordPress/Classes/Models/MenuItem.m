@@ -90,7 +90,10 @@ NSString * const MenuItemDefaultLinkTitle = @"New Item";
     return otherItemIsDescendant;
 }
 
-- (MenuItem *)lastOrderedDescendantInOrderedItems:(NSOrderedSet *)orderedItems
+/**
+ Traverse the orderedItems for parent items equal to self or that are a descendant of self (a child of a child).
+ */
+- (MenuItem *)lastDescendantInOrderedItems:(NSOrderedSet *)orderedItems
 {
     MenuItem *lastChildItem = nil;
     NSUInteger parentIndex = [orderedItems indexOfObject:self];
