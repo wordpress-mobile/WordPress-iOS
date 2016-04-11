@@ -8,6 +8,7 @@ extension SettingsController {
         return { row in
             let controller = generator(row)
             let navigation = UINavigationController(rootViewController: controller)
+            navigation.modalPresentationStyle = .FormSheet
             return navigation
         }
     }
