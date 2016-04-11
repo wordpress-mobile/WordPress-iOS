@@ -693,59 +693,11 @@ final public class ReaderDetailViewController : UIViewController
 
 
     private func bumpPageViewsForPost() {
-        if didBumpPageViews || (post!.isExternal && !post!.isJetpack) {
+        if didBumpPageViews {
             return
         }
         didBumpPageViews = true
-
-        // Don't bump page views for feeds else the wrong blog/post get's bumped
-        if post!.isExternal && !post!.isJetpack {
-            return
-        }
-
-        // If the user is an admin on the post's site do not bump the page view unless
-        // the the post is private.
-        if !post!.isPrivate() && isUserAdminOnSiteWithID(post!.siteID) {
-            return
-        }
-
-        let site = NSURL(string: post!.blogURL)
-        if site?.host == nil {
-            return
-        }
-
-        let pixel = "https://pixel.wp.com/g.gif"
-        let params:NSArray = [
-            "v=wpcom",
-            "reader=1",
-            "ref=\(DetailAnalyticsConstants.PixelStatReferrer)",
-            "host=\(site!.host!)",
-            "blog=\(post!.siteID)",
-            "post=\(post!.postID)",
-            NSString(format:"t=%d", arc4random())
-        ]
-
-        let userAgent = WordPressAppDelegate.sharedInstance().userAgent.wordPressUserAgent
-        let path  = NSString(format: "%@?%@", pixel, params.componentsJoinedByString("&")) as String
-        let url = NSURL(string: path)
-
-        let request = NSMutableURLRequest(URL: url!)
-        request.setValue(userAgent, forHTTPHeaderField: "User-Agent")
-        request.addValue(DetailAnalyticsConstants.PixelStatReferrer, forHTTPHeaderField: "Referer")
-
-        let session = NSURLSession.sharedSession()
-        let task = session.dataTaskWithRequest(request)
-        task.resume()
-    }
-
-
-    private func isUserAdminOnSiteWithID(siteID:NSNumber) -> Bool {
-        let context = ContextManager.sharedInstance().mainContext
-        let blogService = BlogService(managedObjectContext: context)
-        if let blog = blogService.blogByBlogId(siteID) {
-            return blog.isAdmin
-        }
-        return false
+        ReaderHelpers.bumpPageViewForPost(post!)
     }
 
 
