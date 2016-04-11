@@ -67,11 +67,13 @@
     [self updateSecureTextEntryToggleImage];
 
     // Apply styles to the placeholder if one was set in IB.
-    NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName : WPStyleGuide.greyLighten10,
-                                 NSFontAttributeName : self.font,
-                                 };
-    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.placeholder attributes:attributes];
+    if (self.placeholder) {
+        NSDictionary *attributes = @{
+                                     NSForegroundColorAttributeName : WPStyleGuide.greyLighten10,
+                                     NSFontAttributeName : self.font,
+                                     };
+        self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.placeholder attributes:attributes];
+    }
 }
 
 - (CGSize)intrinsicContentSize
