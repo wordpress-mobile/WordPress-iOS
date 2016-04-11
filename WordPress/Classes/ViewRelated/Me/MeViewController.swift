@@ -208,7 +208,7 @@ class MeViewController: UITableViewController, UIViewControllerRestoration {
 
     func pushAppSettings() -> ImmuTableAction {
         return { [unowned self] row in
-            WPAppAnalytics.track(.OpenedAccountSettings) // TODO - Add a new metric enum for Application Settings
+            WPAppAnalytics.track(.OpenedAppSettings)
             let controller = AppSettingsViewController()
             self.navigationController?.pushViewController(controller, animated: true)
         }
