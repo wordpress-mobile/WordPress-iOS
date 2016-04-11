@@ -51,7 +51,7 @@
 - (void)commonInit
 {
     self.textInsets = UIEdgeInsetsMake(7, 10, 7, 10);
-    self.layer.cornerRadius = 1.0;
+    self.layer.cornerRadius = 0.0;
     self.clipsToBounds = YES;
     self.showTopLineSeparator = NO;
     self.showSecureTextEntryToggle = NO;
@@ -66,6 +66,12 @@
     [self addSubview:self.secureTextEntryToggle];
     [self updateSecureTextEntryToggleImage];
 
+    // Apply styles to the placeholder if one was set in IB.
+    NSDictionary *attributes = @{
+                                 NSForegroundColorAttributeName : WPStyleGuide.greyLighten10,
+                                 NSFontAttributeName : self.font,
+                                 };
+    self.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.placeholder attributes:attributes];
 }
 
 - (CGSize)intrinsicContentSize
