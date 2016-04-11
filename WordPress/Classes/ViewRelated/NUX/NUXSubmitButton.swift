@@ -77,7 +77,7 @@ let NUXSubmitButtonDisabledAlpha = CGFloat(0.25)
         setTitleColor(UIColor(white: 1.0, alpha: NUXSubmitButtonDisabledAlpha), forState: .Disabled)
 
         let capInsets = UIEdgeInsets(top: cornerRadius, left: cornerRadius, bottom: cornerRadius, right: cornerRadius)
-        let normalImage = UIImage(color: WPStyleGuide.wordPressBlue(), havingSize: CGSize(width: 44, height: 44))
+        let normalImage = UIImage(color: UIColor.clearColor(), havingSize: CGSize(width: 44, height: 44))
 
         setBackgroundImage(normalImage.resizableImageWithCapInsets(capInsets), forState: .Normal)
         setBackgroundImage(normalImage.resizableImageWithCapInsets(capInsets), forState: .Highlighted)
