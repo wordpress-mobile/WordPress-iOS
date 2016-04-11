@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 49 (@jleandroperez 2016-04-11)
+
+- `AccountSettings` added new bool `emailChangePending`. Indicates whether there's a pending Email change, or not.
+
 ## WordPress 48 (@sergioestevao 2016-04-05)
 
 - `Media` added new integer attribute `postID` to store the post to where the media is attached to.
