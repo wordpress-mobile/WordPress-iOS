@@ -10,6 +10,7 @@ struct AccountSettings {
     // MARK: - Account Settings
     let username: String    // user_login
     let email: String       // user_email
+    let emailChangePending: Bool // user_email_change_pending
     let primarySiteID: Int  // primary_site_ID
     let webAddress: String  // user_URL
     let language: String    // language
@@ -24,6 +25,7 @@ extension AccountSettings {
 
         username = managed.username
         email = managed.email
+        emailChangePending = managed.emailChangePending
         primarySiteID = managed.primarySiteID.integerValue
         webAddress = managed.webAddress
         language = managed.language
