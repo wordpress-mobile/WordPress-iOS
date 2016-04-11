@@ -69,9 +69,14 @@ import WordPressComAnalytics
     /// - Returns: True if the siteUrl contains a valid URL. False otherwise.
     ///
     class func validateSiteForSignin(loginFields: LoginFields) -> Bool {
-        guard let _ = NSURL(string: NSURL.IDNEncodedURL(loginFields.siteUrl)) else {
+        guard let url = NSURL(string: NSURL.IDNEncodedURL(loginFields.siteUrl)) else {
             return false
         }
+
+        if url.absoluteString.isEmpty {
+            return false
+        }
+
         return true
     }
 
