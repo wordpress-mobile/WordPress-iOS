@@ -82,6 +82,7 @@
 		46FE8276184FD8A200535844 /* WordPressComOAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E1634518183B733B005E967F /* WordPressComOAuthClient.m */; };
 		569F82D137E95E035ED304F4 /* Pods_WordPressTodayWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD8A4A8FA463E3CB668C322B /* Pods_WordPressTodayWidget.framework */; };
 		5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */; };
+		590E873D1CB8406000D1B734 /* AbstractPostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 590E873C1CB8406000D1B734 /* AbstractPostListViewController.swift */; };
 		591A428C1A6DC1B0003807A6 /* WPBackgroundDimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 591A428B1A6DC1B0003807A6 /* WPBackgroundDimmerView.m */; };
 		591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */; };
 		591CFB061B28A960009E61B3 /* AccountServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 591CFB051B28A960009E61B3 /* AccountServiceRemoteRESTTests.m */; };
@@ -928,6 +929,7 @@
 		530333B5718B13D6C0EF4814 /* Pods-WordPressShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressShareExtension.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPButtonForNavigationBar.m; sourceTree = "<group>"; usesTabs = 0; };
 		5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPButtonForNavigationBar.h; sourceTree = "<group>"; usesTabs = 0; };
+		590E873C1CB8406000D1B734 /* AbstractPostListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractPostListViewController.swift; sourceTree = "<group>"; };
 		591252291A38AE9C00468279 /* TodayWidgetPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayWidgetPrefix.pch; sourceTree = "<group>"; };
 		591A428A1A6DC1B0003807A6 /* WPBackgroundDimmerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBackgroundDimmerView.h; sourceTree = "<group>"; };
 		591A428B1A6DC1B0003807A6 /* WPBackgroundDimmerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBackgroundDimmerView.m; sourceTree = "<group>"; };
@@ -2639,6 +2641,7 @@
 			children = (
 				5DA912F21B03A6B300CBC13E /* AbstractPostListViewController.h */,
 				5DA912F31B03A6B300CBC13E /* AbstractPostListViewController.m */,
+				590E873C1CB8406000D1B734 /* AbstractPostListViewController.swift */,
 				5DBFC8A51A9BC34F00E00DE4 /* PostListViewController.h */,
 				5DBFC8A61A9BC34F00E00DE4 /* PostListViewController.m */,
 			);
@@ -5296,6 +5299,7 @@
 				5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */,
 				B587798219B799D800E57C5A /* UIView+Helpers.swift in Sources */,
 				E166FA221BB1359E00374B5B /* PeopleRemote.swift in Sources */,
+				590E873D1CB8406000D1B734 /* AbstractPostListViewController.swift in Sources */,
 				B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */,
 				FFAC89101A96A85800CC06AC /* NSProcessInfo+Util.m in Sources */,
 				FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */,
