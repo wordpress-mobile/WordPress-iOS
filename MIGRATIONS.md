@@ -5,7 +5,8 @@ data model as well as any custom migrations.
 
 ## WordPress 49 (@jleandroperez 2016-04-11)
 
-- `AccountSettings` added new bool `emailChangePending`. Indicates whether there's a pending Email change, or not.
+- `AccountSettings` added new string `emailPendingAddress`. Whenever it's not nil, contains the new User's Email Address.
+- `AccountSettings` added new bool `emailPendingChange`. Indicates whether there's a pending Email change, or not.
 
 ## WordPress 48 (@sergioestevao 2016-04-05)
 
