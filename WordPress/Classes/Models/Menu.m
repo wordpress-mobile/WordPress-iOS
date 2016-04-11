@@ -39,7 +39,6 @@ NSInteger const MenuDefaultID = 0;
 
 + (Menu *)newDefaultMenu:(NSManagedObjectContext *)managedObjectContext
 {
-    // Create a new default menu.
     Menu *defaultMenu = [self newMenu:managedObjectContext];
     defaultMenu.menuID = @(MenuDefaultID);
     defaultMenu.name = [self defaultMenuName];
