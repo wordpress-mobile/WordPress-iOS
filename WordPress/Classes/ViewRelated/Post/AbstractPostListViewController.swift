@@ -69,7 +69,7 @@ class AbstractPostListViewController : UIViewController {
     var syncHelper : WPContentSyncHelper
     var noResultsView : WPNoResultsView
     var postListFooterView : PostListFooterView
-    var animatedBox : WPAnimatedBox
+    var animatedBox : WPAnimatedBox?
     
     @IBOutlet var filterButton : NavBarTitleDropdownButton!
     @IBOutlet var rightBarButtonView : UIView!
@@ -81,10 +81,10 @@ class AbstractPostListViewController : UIViewController {
     @IBOutlet var searchWrapperViewHeightConstraint : NSLayoutConstraint!
     
     var searchController : WPSearchController // Stand-in for UISearchController
-    var allPostListFilters = [NSString: NSArray]()
+    private var allPostListFilters = [NSString: NSArray]()
     private(set) var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
     
-    private let needsRefreshCachedCellHeightsBeforeLayout = false
+    private var needsRefreshCachedCellHeightsBeforeLayout = false
     
     // MARK: - Lifecycle
     
@@ -122,56 +122,224 @@ class AbstractPostListViewController : UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(AbstractPostListViewController.handleApplicationDidBecomeActive(_:)), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        searchController.active = false
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        
+        coordinator.animateAlongsideTransition({(context: UIViewControllerTransitionCoordinatorContext) -> () in
+            if UIDevice.isPad() == false && searchWrapperViewHeightConstraint.constant > 0 {
+                searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
+            }
+        }, completion: nil)
+    }
+    
+    override func willAnimateRotationToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+        super.willAnimateRotationToInterfaceOrientation(toInterfaceOrientation, duration: duration)
+        
+        let width = CGRectGetWidth(view.frame)
+        tableViewHandler.refreshCachedRowHeightsForWidth(width)
+    }
+    
+    override func traitCollectionDidChange(previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        needsRefreshCachedCellHeightsBeforeLayout = true
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        if needsRefreshCachedCellHeightsBeforeLayout {
+            needsRefreshCachedCellHeightsBeforeLayout = false
+            
+            let width = CGRectGetWidth(view.frame)
+            
+            tableViewHandler.refreshCachedRowHeightsForWidth(width)
+            tableView.reloadRowsAtIndexPaths(tableView.indexPathsForVisibleRows, withRowAnimation:UITableViewRowAnimationNone)
+        }
+    }
+    
+    // MARK: - Multitasking Support
+    
+    func handleApplicationDidBecomeActive(notification: NSNotification) {
+        needsRefreshCachedCellHeightsBeforeLayout = false
+    }
+    
+    // MARK: - Configuration
+    
+    func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyleLightContent
+    }
+    
+    func configureNavbar() {
+        // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
+        // this VC's title.
+        //
+        let backButton = UIBarButtonItem(title: "", style: .Plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = backButton
+        
+        let rightBarButtonItem = UIBarButtonItem(customView: rightBarButtonView)
+        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(rightBarButtonItem, forNavigationItem:navigationItem)
+        
+        navigationItem.titleView = filterButton
+        updateFilterTitle()
+    }
+    
+    func configureCellsForLayout() {
+        assert(false, "You should implement this method in the subclass")
+    }
+    
+    func configureTableView() {
+        assert(false, "You should implement this method in the subclass")
+    }
+    
+    func configureFooterView() {
+        
+        let mainBundle = NSBundle.mainBundle()
+        
+        postListFooterView = mainBundle.loadNibNamed("PostListFooterView", owner: nil, options: nil)[0] as PostListFooterView!
+        postListFooterView.showSpinner(false)
+        
+        var frame = postListFooterView.frame
+        frame.size.height = heightForFooterView()
+        
+        postListFooterView.frame = frame
+        tableView.tableFooterView = postListFooterView
+    }
+    
+    func configureTableViewHandler() {
+        tableViewHandler = WPTableViewHandler(tableView: tableView)
+        tableViewHandler.cacheRowHeights = true
+        tableViewHandler.delegate = self
+        tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone
+    }
+    
+    func configureSyncHelper() {
+        syncHelper = WPContentSyncHelper()
+        syncHelper.delegate = self
+    }
+    
+    func configureNoResultsView() {
+        guard isViewLoaded() == true else {
+            return
+        }
+        
+        if noResultsView == nil {
+            noResultsView = WPNoResultsView()
+            noResultsView.delegate = self
+        }
+        
+        if tableViewHandler.resultsController.fetchedObjects.count > 0 {
+            noResultsView.removeFromSuperview()
+            postListFooterView.hidden = false
+            return
+        }
+        postListFooterView.hidden = true
+        
+        // Refresh the NoResultsView Properties
+        noResultsView.titleText = noResultsTitleText
+        noResultsView.messageText = noResultsMessageText
+        noResultsView.accessoryView = noResultsAccessoryView
+        noResultsView.buttonTitle = noResultsButtonText
+        
+        // Only add and animate no results view if it isn't already
+        // in the table view
+        if noResultsView.isDescendantOfView(tableView) == false {
+            tableView.addSubviewWithFadeAnimation(noResultsView)
+        } else {
+            noResultsView.centerInSuperview()
+        }
+        
+        tableView.sendSubviewToBack(noResultsView)
+    }
+    
+    func noResultsTitleText() -> String {
+        assert(false, "You should implement this method in the subclass")
+    }
+    
+    func noResultsMessageText() -> String {
+        assert(false, "You should implement this method in the subclass")
+    }
+    
+    func noResultsAccessoryView() -> UIView {
+        if syncHelper.isSyncing() {
+            if animatedBox == nil {
+                animatedBox = WPAnimatedBox.newAnimatedBox()
+            }
+            
+            return animatedBox!
+        }
+        
+        return UIImageView(image: UIImage(named: "illustration-posts"))
+    }
+    
 /*
-     - (void)viewDidAppear:(BOOL)animated
+     - (UIView *)noResultsAccessoryView {
+     if (self.syncHelper.isSyncing) {
+     if (!self.animatedBox) {
+     self.animatedBox = [WPAnimatedBox newAnimatedBox];
+     }
+     return self.animatedBox;
+     }
+     return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"illustration-posts"]];
+     }
+     
+     - (NSString *)noResultsButtonText
      {
-     [super viewDidAppear:animated];
-     
-     [self automaticallySyncIfAppropriate];
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleApplicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+     AssertSubclassMethod();
+     return nil;
      }
      
-     - (void)viewWillDisappear:(BOOL)animated
+     - (void)configureAuthorFilter
      {
-     [super viewWillDisappear:animated];
-     self.searchController.active = NO;
-     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+     AssertSubclassMethod();
      }
      
-     - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+     - (void)configureSearchController
      {
-     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-     if (![UIDevice isPad] && (self.searchWrapperViewHeightConstraint.constant > 0)) {
-     self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
-     }
-     } completion:nil];
+     self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
+     
+     WPSearchControllerConfigurator *searchControllerConfigurator = [[WPSearchControllerConfigurator alloc] initWithSearchController:self.searchController withSearchWrapperView:self.searchWrapperView];
+     [searchControllerConfigurator configureSearchControllerAndWrapperView];
+     [self configureSearchBarPlaceholder];
+     self.searchController.delegate = self;
+     self.searchController.searchResultsUpdater = self;
      }
      
-     - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+     - (void)configureSearchBarPlaceholder
      {
-     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-     CGFloat width = CGRectGetWidth(self.view.frame);
-     [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+     // Adjust color depending on where the search bar is being presented.
+     UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
+     NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
+     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
+     [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setAttributedPlaceholder:attrPlacholderText];
+     [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
      }
      
-     - (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection
+     - (void)configureSearchWrapper
      {
-     [super traitCollectionDidChange:previousTraitCollection];
-     self.needsRefreshCachedCellHeightsBeforeLayout = YES;
+     self.searchWrapperView.backgroundColor = [WPStyleGuide wordPressBlue];
      }
      
-     - (void)viewWillLayoutSubviews
+     - (NSDictionary *)propertiesForAnalytics
      {
-     [super viewWillLayoutSubviews];
+     NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:3];
+     properties[@"type"] = [self postTypeToSync];
+     properties[@"filter"] = self.currentPostListFilter.title;
      
-     if (self.needsRefreshCachedCellHeightsBeforeLayout) {
-     self.needsRefreshCachedCellHeightsBeforeLayout = NO;
-     
-     CGFloat width = CGRectGetWidth(self.view.frame);
-     [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
-     [self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationNone];
+     NSNumber *dotComID = self.blog.dotComID;
+     if (dotComID) {
+     properties[WPAppAnalyticsKeyBlogID] = dotComID;
      }
+     
+     return properties;
      }
  */
     
@@ -274,199 +442,20 @@ class AbstractPostListViewController : UIViewController {
 
 @implementation AbstractPostListViewController
 
-
-#pragma mark - Multitasking support
-
-- (void)handleApplicationDidBecomeActive:(NSNotification *)notification
-{
-    self.needsRefreshCachedCellHeightsBeforeLayout = YES;
-}
-
-
-#pragma mark - Configuration
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
-    }
-        
-        - (void)configureFilters
-            {
-                // PostFilters are created as needed, see method 'availablePostListFilters'.
-                self.allPostListFilters = [NSMutableDictionary dictionaryWithCapacity:2];
-            }
-            
-            - (void)configureNavbar
-                {
-                    // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
-                    // this VC's title.
-                    //
-                    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
-                    self.navigationItem.backBarButtonItem = backButton;
-                    
-                    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarButtonView];
-                    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
-                    
-                    self.navigationItem.titleView = self.filterButton;
-                    [self updateFilterTitle];
-                }
-                
-                - (void)configureCellsForLayout
-                    {
-                        AssertSubclassMethod();
-                    }
-                    
-                    - (void)configureTableView
-                        {
-                            AssertSubclassMethod();
-                        }
-                        
-                        - (void)configureFooterView
-                            {
-                                self.postListFooterView = (PostListFooterView *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([PostListFooterView class]) owner:nil options:nil] firstObject];
-                                [self.postListFooterView showSpinner:NO];
-                                CGRect frame = self.postListFooterView.frame;
-                                frame.size.height = [self heightForFooterView];
-                                self.postListFooterView.frame = frame;
-                                self.tableView.tableFooterView = self.postListFooterView;
-                            }
-                            
-                            - (void)configureTableViewHandler
-                                {
-                                    self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-                                    self.tableViewHandler.cacheRowHeights = YES;
-                                    self.tableViewHandler.delegate = self;
-                                    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
-                                }
-                                
-                                - (void)configureSyncHelper
-                                    {
-                                        self.syncHelper = [[WPContentSyncHelper alloc] init];
-                                        self.syncHelper.delegate = self;
-                                    }
-                                    
-                                    - (void)configureNoResultsView
-                                        {
-                                            if (!self.isViewLoaded) {
-                                                return;
-                                            }
-                                            
-                                            if (!self.noResultsView) {
-                                                self.noResultsView = [[WPNoResultsView alloc] init];
-                                                self.noResultsView.delegate = self;
-                                            }
-                                            
-                                            if ([self.tableViewHandler.resultsController.fetchedObjects count] > 0) {
-                                                [self.noResultsView removeFromSuperview];
-                                                self.postListFooterView.hidden = NO;
-                                                return;
-                                            }
-                                            self.postListFooterView.hidden = YES;
-                                            
-                                            // Refresh the NoResultsView Properties
-                                            self.noResultsView.titleText        = self.noResultsTitleText;
-                                            self.noResultsView.messageText      = self.noResultsMessageText;
-                                            self.noResultsView.accessoryView    = self.noResultsAccessoryView;
-                                            self.noResultsView.buttonTitle      = self.noResultsButtonText;
-                                            
-                                            // Only add and animate no results view if it isn't already
-                                            // in the table view
-                                            if (![self.noResultsView isDescendantOfView:self.tableView]) {
-                                                [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
-                                            } else {
-                                                [self.noResultsView centerInSuperview];
-                                            }
-                                            
-                                            [self.tableView sendSubviewToBack:self.noResultsView];
-                                        }
-                                        
-                                        - (NSString *)noResultsTitleText
-                                            {
-                                                AssertSubclassMethod();
-                                                return nil;
-                                            }
-                                            
-                                            - (NSString *)noResultsMessageText
-                                                {
-                                                    AssertSubclassMethod();
-                                                    return nil;
-                                                }
-                                                
-                                                - (UIView *)noResultsAccessoryView {
-                                                    if (self.syncHelper.isSyncing) {
-                                                        if (!self.animatedBox) {
-                                                            self.animatedBox = [WPAnimatedBox newAnimatedBox];
-                                                        }
-                                                        return self.animatedBox;
-                                                    }
-                                                    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"illustration-posts"]];
-                                                    }
-                                                    
-                                                    - (NSString *)noResultsButtonText
-                                                        {
-                                                            AssertSubclassMethod();
-                                                            return nil;
-                                                        }
-                                                        
-                                                        - (void)configureAuthorFilter
-                                                            {
-                                                                AssertSubclassMethod();
-                                                            }
-                                                            
-                                                            - (void)configureSearchController
-                                                                {
-                                                                    self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
-                                                                    
-                                                                    WPSearchControllerConfigurator *searchControllerConfigurator = [[WPSearchControllerConfigurator alloc] initWithSearchController:self.searchController withSearchWrapperView:self.searchWrapperView];
-                                                                    [searchControllerConfigurator configureSearchControllerAndWrapperView];
-                                                                    [self configureSearchBarPlaceholder];
-                                                                    self.searchController.delegate = self;
-                                                                    self.searchController.searchResultsUpdater = self;
-                                                                }
-                                                                
-                                                                - (void)configureSearchBarPlaceholder
-                                                                    {
-                                                                        // Adjust color depending on where the search bar is being presented.
-                                                                        UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
-                                                                        NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
-                                                                        NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
-                                                                        [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setAttributedPlaceholder:attrPlacholderText];
-                                                                        [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
-                                                                    }
-                                                                    
-                                                                    - (void)configureSearchWrapper
-                                                                        {
-                                                                            self.searchWrapperView.backgroundColor = [WPStyleGuide wordPressBlue];
-                                                                        }
-                                                                        
-                                                                        - (NSDictionary *)propertiesForAnalytics
-                                                                            {
-                                                                                NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:3];
-                                                                                properties[@"type"] = [self postTypeToSync];
-                                                                                properties[@"filter"] = self.currentPostListFilter.title;
-                                                                                
-                                                                                NSNumber *dotComID = self.blog.dotComID;
-                                                                                if (dotComID) {
-                                                                                    properties[WPAppAnalyticsKeyBlogID] = dotComID;
-                                                                                }
-                                                                                
-                                                                                return properties;
-}
-
 #pragma mark - Actions
 
 
-    
+ 
     - (IBAction)handleAddButtonTapped:(id)sender
 {
     [self createPost];
     }
-    
+ 
     - (IBAction)handleSearchButtonTapped:(id)sender
 {
     [self toggleSearch];
     }
-    
+ 
     - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
     [WPAnalytics track:WPAnalyticsStatPostListNoResultsButtonPressed withProperties:[self propertiesForAnalytics]];
@@ -477,7 +466,7 @@ class AbstractPostListViewController : UIViewController {
     }
     [self createPost];
     }
-    
+ 
     - (IBAction)didTapFilterButton:(id)sender
 {
     [self displayFilters];
@@ -491,12 +480,12 @@ class AbstractPostListViewController : UIViewController {
     // Subclasses should override.
     return PostServiceTypeAny;
     }
-    
+ 
     - (NSDate *)lastSyncDate
         {
             return self.blog.lastPostsSync;
         }
-        
+ 
         - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     if ([self.recentlyTrashedPostObjectIDs count]) {
@@ -506,15 +495,15 @@ class AbstractPostListViewController : UIViewController {
     PostListFilter *filter = [self currentPostListFilter];
     NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
     __weak __typeof(self) weakSelf = self;
-    
+ 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    
+ 
     PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
     options.statuses = filter.statuses;
     options.authorID = author;
     options.number = @([self numberOfPostsPerSync]);
     options.purgesLocalSync = YES;
-    
+ 
     [postService syncPostsOfType:[self postTypeToSync]
     withOptions:options
     forBlog:self.blog
@@ -534,18 +523,18 @@ class AbstractPostListViewController : UIViewController {
     }
     }];
     }
-    
+ 
     - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     [WPAnalytics track:WPAnalyticsStatPostListLoadedMore withProperties:[self propertiesForAnalytics]];
     [self.postListFooterView showSpinner:YES];
-    
+ 
     PostListFilter *filter = [self currentPostListFilter];
     NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
     __weak __typeof(self) weakSelf = self;
-    
+ 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    
+ 
     PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
     options.statuses = filter.statuses;
     options.authorID = author;
