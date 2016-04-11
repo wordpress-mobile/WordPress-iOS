@@ -1,9 +1,10 @@
 #import "PostListViewController.h"
 
-#import "AbstractPostListViewControllerSubclass.h"
+#import "AbstractPostListViewController.h"
 #import "Post.h"
 #import "PostCardTableViewCell.h"
 #import "RestorePostTableViewCell.h"
+#import "PostService.h"
 #import "PrivateSiteURLProtocol.h"
 #import "StatsPostDetailsTableViewController.h"
 #import "WPStatsService.h"
@@ -12,6 +13,7 @@
 #import "WPTableImageSource.h"
 #import <WordPressShared/UIImage+Util.h>
 #import "WPAppAnalytics.h"
+#import "WPStyleGuide+Posts.h"
 
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
