@@ -161,15 +161,6 @@ class PlanDetailViewController: UIViewController {
         populateHeader()
         updateNoResults()
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        let size = headerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
-        headerView.frame.size.height = size.height
-        tableView.tableHeaderView = headerView
-        view.layoutIfNeeded()
-    }
 
     private func configureAppearance() {
         planTitleLabel.textColor = WPStyleGuide.darkGrey()
@@ -217,6 +208,13 @@ class PlanDetailViewController: UIViewController {
         }
         
         headerView.layoutIfNeeded()
+        
+        // Table header views don't automatically resize using Auto Layout,
+        // so we need to calculate the correct size to fit the content, update the frame,
+        // and then reset the tableHeaderView property so that the new size takes effect. 
+        let size = headerView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        headerView.frame.size.height = size.height
+        tableView.tableHeaderView = headerView
     }
 
     //MARK: - IBActions
