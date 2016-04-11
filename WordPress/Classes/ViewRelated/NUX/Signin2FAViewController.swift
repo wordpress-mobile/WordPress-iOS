@@ -85,7 +85,7 @@ import WordPressShared
             NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType
         ]
 
-        let styledString = "<style>body {font-family: sans-serif; font-size:14px; color: #ffffff;}</style>" + string
+        let styledString = "<style>body {font-family: sans-serif; font-size:14px; color: #ffffff; text-align:center;}</style>" + string
         let attributedCode = try! NSMutableAttributedString(data: styledString.dataUsingEncoding(NSUTF8StringEncoding)!,
                                                             options: options,
                                                             documentAttributes: nil)
