@@ -128,12 +128,19 @@ static NSString * const UserDictionaryDateKey = @"date";
 
 - (void)findExistingAccountByEmail:(NSString *)email success:(void (^)(BOOL found))success failure:(void (^)(NSError *error))failure
 {
-    // TODO: We need to make a versioned flavor of this endpoint and ensure it always returns a JSON object.
-    // TODO: Remove the special case in `WordPressComApi.assertApiVersion` the endpoint is versioned.
+    // TODO: (Aerych 2016-04) We need to make a versioned flavor of this endpoint
+    // and ensure it always returns a JSON object. See 7724 in the relevant trac.
+    // Remove the special case in `WordPressComApi.assertApiVersion` once the
+    // endpoint is versioned.
     NSString *path = @"https://public-api.wordpress.com/is-available/email";
     [self.api GET:path
        parameters:@{ @"q": email }
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              // If no email address is found the endpoint will reply with a
+              // 200 status code and an JSON object describing an error.
+              // The error is that the queried email address is not available,
+              // which is our success case. Test the error response for the
+              // "taken" reason to confirm the email address exists.
               BOOL found = NO;
               if ([responseObject isKindOfClass:[NSDictionary class]]) {
                   NSDictionary *dict = (NSDictionary *)responseObject;
@@ -146,6 +153,11 @@ static NSString * const UserDictionaryDateKey = @"date";
               }
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               // The is-available endpoint is an oddball.
+              // Rather than returning a proper JSON object it can return a simple
+              // string, which is subsequently evaluated as an error condition.
+              // A response of "true" means that the queried email address was available.
+              // We, in turn, treat this as a failure since we're looking for an
+              // existing email account as our success case.
               if ([operation.responseString isEqualToString:@"true"]) {
                   if (success) {
                       success(NO);
