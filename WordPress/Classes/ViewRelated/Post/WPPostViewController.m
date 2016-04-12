@@ -42,6 +42,8 @@
 #import "WPDeviceIdentification.h"
 #import "WPAppAnalytics.h"
 
+@import Gridicons;
+
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
@@ -118,6 +120,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *shareBarButtonItem;
 
 #pragma mark - Post info
 @property (nonatomic, assign, readwrite) BOOL ownsPost;
@@ -719,6 +722,7 @@ EditImageDetailsViewControllerDelegate
                                                                                        dismissHandler:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
     vc.displaysPrimaryBlogOnTop = YES;
+    vc.displaysCancelButton = [self isViewHorizontallyCompact];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
@@ -779,6 +783,19 @@ EditImageDetailsViewControllerDelegate
     }];
     [alertController addCancelActionWithTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".") handler:nil];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+#pragma mark - Toolbar options
+
+- (void)sharePost
+{
+    if ([self.post isKindOfClass:[Post class]]) {
+        Post *post = (Post *)self.post;
+        
+        PostSharingController *sharingController = [[PostSharingController alloc] init];
+        
+        [sharingController sharePost:post fromView:[self shareBarButtonItem].customView inViewController:self];
+    }
 }
 
 - (void)showSettings
@@ -1084,8 +1101,12 @@ EditImageDetailsViewControllerDelegate
         
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
 	} else {
-		NSArray* rightBarButtons = @[self.editBarButtonItem,
-									 [self previewBarButtonItem]];
+        NSMutableArray* rightBarButtons = [[NSMutableArray alloc] initWithArray:@[self.editBarButtonItem,
+                                                                                  [self previewBarButtonItem]]];
+        
+        if ([self.post isKindOfClass:[Post class]]) {
+            [rightBarButtons addObject:[self shareBarButtonItem]];
+        }
 		
 		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
 	}
@@ -1110,30 +1131,18 @@ EditImageDetailsViewControllerDelegate
 
 #pragma mark - Custom UI elements
 
-- (BOOL)isViewHorizontallyCompact
+- (WPButtonForNavigationBar*)buttonForBarWithImage:(UIImage *)image
+                                             frame:(CGRect)frame
+                                            target:(id)target
+                                          selector:(SEL)selector
 {
-    if ([self respondsToSelector:@selector(traitCollection)] == false) {
-        return ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) == false;
-    }
-    return self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassCompact;
-}
-
-- (WPButtonForNavigationBar*)buttonForBarWithImageNamed:(NSString*)imageName
-												  frame:(CGRect)frame
-												 target:(id)target
-											   selector:(SEL)selector
-{
-	NSAssert([imageName isKindOfClass:[NSString class]],
-			 @"Expected imageName to be a non nil string.");
-
-	UIImage* image = [UIImage imageNamed:imageName];
-	
-	WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
-	
-	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-	
-	return button;
+    WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
+    
+    button.tintColor = [UIColor whiteColor];
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+    
+    return button;
 }
 
 - (UIBarButtonItem*)cancelChevronButton
@@ -1142,10 +1151,13 @@ EditImageDetailsViewControllerDelegate
         return _cancelChevronButton;
     }
     
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-chevron"
-                                                                        frame:NavigationBarButtonRect
-                                                                       target:self
-                                                                     selector:@selector(cancelEditing)];
+    UIImage *image = [UIImage imageNamed:@"icon-posts-editor-chevron"];
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImage:image
+                                                                   frame:NavigationBarButtonRect
+                                                                  target:self
+                                                                selector:@selector(cancelEditing)];
     cancelButton.removeDefaultLeftSpacing = YES;
     cancelButton.removeDefaultRightSpacing = YES;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
@@ -1162,10 +1174,11 @@ EditImageDetailsViewControllerDelegate
         return _cancelXButton;
     }
     
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
-                                                                        frame:NavigationBarButtonRect
-                                                                       target:self
-                                                                     selector:@selector(cancelEditing)];
+    UIImage *image = [Gridicon iconOfType:GridiconTypeCross];
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImage:image
+                                                                   frame:NavigationBarButtonRect
+                                                                  target:self
+                                                                selector:@selector(cancelEditing)];
     cancelButton.removeDefaultLeftSpacing = YES;
     cancelButton.removeDefaultRightSpacing = YES;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
@@ -1199,10 +1212,11 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)optionsBarButtonItem
 {
 	if (!_optionsBarButtonItem) {
-        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
-                                                                      frame:NavigationBarButtonRect
-                                                                     target:self
-                                                                   selector:@selector(showSettings)];
+        UIImage *image = [Gridicon iconOfType:GridiconTypeCog];
+        WPButtonForNavigationBar *button = [self buttonForBarWithImage:image
+                                                                 frame:NavigationBarButtonRect
+                                                                target:self
+                                                              selector:@selector(showSettings)];
         
         button.removeDefaultRightSpacing = YES;
         button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
@@ -1220,10 +1234,11 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)previewBarButtonItem
 {
 	if (!_previewBarButtonItem) {
-        WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-preview"
-                                                                      frame:NavigationBarButtonRect
-                                                                     target:self
-                                                                   selector:@selector(showPreview)];
+        UIImage *image = [Gridicon iconOfType:GridiconTypeVisible];
+        WPButtonForNavigationBar* button = [self buttonForBarWithImage:image
+                                                                 frame:NavigationBarButtonRect
+                                                                target:self
+                                                              selector:@selector(showPreview)];
         
         button.removeDefaultRightSpacing = YES;
         button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
@@ -1253,6 +1268,28 @@ EditImageDetailsViewControllerDelegate
     }
 
 	return _saveBarButtonItem;
+}
+
+- (UIBarButtonItem *)shareBarButtonItem
+{
+    if (!_shareBarButtonItem) {
+        UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
+        WPButtonForNavigationBar *button = [self buttonForBarWithImage:image
+                                                                 frame:NavigationBarButtonRect
+                                                                target:self
+                                                              selector:@selector(sharePost)];
+
+        button.removeDefaultRightSpacing = YES;
+        button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        button.removeDefaultLeftSpacing = YES;
+        button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
+        NSString *title = NSLocalizedString(@"Share", @"Title of the share button in the Post Editor.");
+        button.accessibilityLabel = title;
+        button.accessibilityIdentifier = @"Share";
+        _shareBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    }
+    
+    return _shareBarButtonItem;
 }
 
 - (NSString*)saveBarButtonItemTitle
@@ -1481,8 +1518,7 @@ EditImageDetailsViewControllerDelegate
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
                     success:^(AbstractPost *post){
-                        self.post = post;
-                        
+                        self.post = post;                        
                         DDLogInfo(@"post uploaded: %@", postTitle);
                         NSString *hudText;
                         

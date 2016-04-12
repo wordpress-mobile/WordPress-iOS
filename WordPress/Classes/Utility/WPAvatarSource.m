@@ -1,6 +1,5 @@
-#import <MGImageUtilities/UIImage+ProportionalFill.h>
 #import "NSString+Helpers.h"
-
+#import "UIImage+Resize.h"
 #import "WPAvatarSource.h"
 #import "WPImageSource.h"
 
@@ -219,17 +218,9 @@ static NSString *const GravatarBaseUrl = @"http://gravatar.com";
     return size;
 }
 
-/**
- Wrapper method to resize an image
-
- It uses a modified version of MGImageUtilities to return opaque images.
- I tried to use UIImage+Resize, but had some problems if it wasn't run on the main thread.
-
- The wrapper is still here in case we need to switch the resizing mechanism in the future.
- */
 - (UIImage *)resizeImage:(UIImage *)image toSize:(CGSize)size
 {
-    return [image imageCroppedToFitSize:size ignoreAlpha:YES];
+    return [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:size interpolationQuality:kCGInterpolationHigh];
 }
 
 - (NSURL *)URLWithHash:(NSString *)hash type:(WPAvatarSourceType)type

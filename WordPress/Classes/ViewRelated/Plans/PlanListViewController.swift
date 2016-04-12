@@ -20,6 +20,7 @@ struct PlanListRow: ImmuTableRow {
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.text = description
         cell.detailTextLabel?.textColor = WPStyleGuide.grey()
+        cell.detailTextLabel?.font = WPFontManager.systemRegularFontOfSize(14.0)
         cell.separatorInset = UIEdgeInsetsZero
     }
 
@@ -37,8 +38,8 @@ struct PlanListRow: ImmuTableRow {
             NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
         ]
         static let pricePeriodAttributes = [
-            NSFontAttributeName: WPFontManager.systemItalicFontOfSize(13.0),
-            NSForegroundColorAttributeName: WPStyleGuide.greyLighten20()
+            NSFontAttributeName: WPFontManager.systemItalicFontOfSize(14.0),
+            NSForegroundColorAttributeName: WPStyleGuide.grey()
         ]
 
         static func attributedTitle(title: String, price: String, active: Bool) -> NSAttributedString {
@@ -102,14 +103,15 @@ enum PlanListViewModel {
                 var action: ImmuTableAction? = nil
                 if let presenter = presenter,
                     let planService = planService {
-                    action = presenter.present(self.controllerForPlanDetails(plan, activePlan: activePlan, siteID: siteID, planService: planService))
+                    let sitePricedPlans = (siteID: siteID, activePlan: activePlan, availablePlans: plans)
+                    action = presenter.present(self.controllerForPlanDetails(sitePricedPlans, initialPlan: plan, planService: planService))
                 }
                 
                 return PlanListRow(
                     title: plan.title,
                     active: active,
                     price: price,
-                    description: plan.description,
+                    description: plan.tagline,
                     icon: icon,
                     action: action
                 )
@@ -122,9 +124,9 @@ enum PlanListViewModel {
         }
     }
 
-    func controllerForPlanDetails(plan: Plan, activePlan: Plan, siteID: Int, planService: PlanService<StoreKitStore>) -> ImmuTableRowControllerGenerator {
+    func controllerForPlanDetails(sitePricedPlans: SitePricedPlans, initialPlan: Plan, planService: PlanService<StoreKitStore>) -> ImmuTableRowControllerGenerator {
         return { row in
-            let planVC = PlanComparisonViewController.controllerWithInitialPlan(plan, activePlan: activePlan, siteID: siteID, planService: planService)
+            let planVC = PlanComparisonViewController(sitePricedPlans: sitePricedPlans, initialPlan: initialPlan, service: planService)
             let navigationVC = RotationAwareNavigationViewController(rootViewController: planVC)
             navigationVC.modalPresentationStyle = .FormSheet
             return navigationVC
