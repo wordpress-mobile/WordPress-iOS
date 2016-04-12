@@ -20,7 +20,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="18V-ZM-xlT">
-                                        <rect key="frame" x="0.0" y="134" width="600" height="174"/>
+                                        <rect key="frame" x="0.0" y="142" width="600" height="166"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="Fj6-gt-Ex5">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -30,7 +30,7 @@
                                                 </constraints>
                                             </imageView>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email or username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XXO-aV-keK" customClass="WPWalkthroughTextField">
-                                                <rect key="frame" x="0.0" y="80" width="600" height="44"/>
+                                                <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="320" id="7hw-mi-ba0"/>
@@ -57,7 +57,7 @@
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZC-xf-OAn" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="281" y="140" width="37" height="34"/>
+                                                <rect key="frame" x="281" y="132" width="37" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="wqw-xG-CxW"/>
                                                 </constraints>
@@ -73,7 +73,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="OZC-xf-OAn" firstAttribute="top" secondItem="XXO-aV-keK" secondAttribute="bottom" constant="16" id="5Uo-87-MNu"/>
-                                            <constraint firstItem="XXO-aV-keK" firstAttribute="top" secondItem="Fj6-gt-Ex5" secondAttribute="bottom" constant="16" id="BzB-Xw-3G3"/>
+                                            <constraint firstItem="XXO-aV-keK" firstAttribute="top" secondItem="Fj6-gt-Ex5" secondAttribute="bottom" constant="8" id="BzB-Xw-3G3"/>
                                             <constraint firstItem="OZC-xf-OAn" firstAttribute="centerX" secondItem="18V-ZM-xlT" secondAttribute="centerX" id="H8u-DM-Yh5"/>
                                             <constraint firstItem="Fj6-gt-Ex5" firstAttribute="centerX" secondItem="18V-ZM-xlT" secondAttribute="centerX" id="S2r-sa-7yw"/>
                                             <constraint firstAttribute="bottom" secondItem="OZC-xf-OAn" secondAttribute="bottom" id="bhj-sR-FxP"/>
@@ -191,7 +191,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Mjx-cz-sDG">
-                                        <rect key="frame" x="0.0" y="90" width="600" height="294"/>
+                                        <rect key="frame" x="0.0" y="98" width="600" height="286"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="j7V-eN-ivW">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -201,7 +201,7 @@
                                                 </constraints>
                                             </imageView>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="tW0-In-DwC">
-                                                <rect key="frame" x="0.0" y="80" width="600" height="132"/>
+                                                <rect key="frame" x="0.0" y="72" width="600" height="132"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username / Email" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ESh-DI-dtB" customClass="WPWalkthroughTextField">
                                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -251,7 +251,7 @@
                                                 </constraints>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SBB-7Z-qWs" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="268" y="228" width="63" height="34"/>
+                                                <rect key="frame" x="268" y="220" width="63" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="NKL-1C-mN4"/>
                                                 </constraints>
@@ -264,7 +264,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rvr-W4-OS1">
-                                                <rect key="frame" x="283.5" y="278" width="33" height="16"/>
+                                                <rect key="frame" x="283.5" y="270" width="33" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -273,7 +273,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="tW0-In-DwC" firstAttribute="leading" secondItem="Mjx-cz-sDG" secondAttribute="leading" id="03E-NW-xAt"/>
-                                            <constraint firstItem="tW0-In-DwC" firstAttribute="top" secondItem="j7V-eN-ivW" secondAttribute="bottom" constant="16" id="2HK-NQ-Riu"/>
+                                            <constraint firstItem="tW0-In-DwC" firstAttribute="top" secondItem="j7V-eN-ivW" secondAttribute="bottom" constant="8" id="2HK-NQ-Riu"/>
                                             <constraint firstItem="SBB-7Z-qWs" firstAttribute="centerX" secondItem="Mjx-cz-sDG" secondAttribute="centerX" id="8lY-1S-hbu"/>
                                             <constraint firstItem="j7V-eN-ivW" firstAttribute="top" secondItem="Mjx-cz-sDG" secondAttribute="top" id="Oxp-xv-smR"/>
                                             <constraint firstItem="j7V-eN-ivW" firstAttribute="centerX" secondItem="Mjx-cz-sDG" secondAttribute="centerX" id="Rpx-V8-o1R"/>
@@ -370,7 +370,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ZWc-TJ-W9T">
-                                        <rect key="frame" x="0.0" y="112" width="600" height="250"/>
+                                        <rect key="frame" x="0.0" y="120" width="600" height="242"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="b8y-9Y-dkU">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -380,7 +380,7 @@
                                                 </constraints>
                                             </imageView>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Bli-Rb-X9m">
-                                                <rect key="frame" x="0.0" y="80" width="600" height="88"/>
+                                                <rect key="frame" x="0.0" y="72" width="600" height="88"/>
                                                 <subviews>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email or username" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GLH-TC-M0d" customClass="WPWalkthroughTextField">
                                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
@@ -417,7 +417,7 @@
                                                 </constraints>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E3x-LN-sUk" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="274" y="184" width="51" height="34"/>
+                                                <rect key="frame" x="274" y="176" width="51" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="H3A-PM-OJr"/>
                                                 </constraints>
@@ -430,7 +430,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqY-I8-yWG">
-                                                <rect key="frame" x="283.5" y="234" width="33" height="16"/>
+                                                <rect key="frame" x="283.5" y="226" width="33" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -447,7 +447,7 @@
                                             <constraint firstAttribute="bottom" secondItem="ZqY-I8-yWG" secondAttribute="bottom" id="odU-QZ-0v2"/>
                                             <constraint firstItem="ZqY-I8-yWG" firstAttribute="top" secondItem="E3x-LN-sUk" secondAttribute="bottom" constant="16" id="ozh-ob-edN"/>
                                             <constraint firstItem="E3x-LN-sUk" firstAttribute="top" secondItem="Bli-Rb-X9m" secondAttribute="bottom" constant="16" id="rH4-gZ-2cM"/>
-                                            <constraint firstItem="Bli-Rb-X9m" firstAttribute="top" secondItem="b8y-9Y-dkU" secondAttribute="bottom" constant="16" id="tsR-uu-P03"/>
+                                            <constraint firstItem="Bli-Rb-X9m" firstAttribute="top" secondItem="b8y-9Y-dkU" secondAttribute="bottom" constant="8" id="tsR-uu-P03"/>
                                             <constraint firstAttribute="trailing" secondItem="Bli-Rb-X9m" secondAttribute="trailing" id="uqX-Vs-LCe"/>
                                         </constraints>
                                         <variation key="default">
@@ -534,7 +534,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L68-uO-e3A">
-                                        <rect key="frame" x="0.0" y="134" width="600" height="206"/>
+                                        <rect key="frame" x="0.0" y="142" width="600" height="198"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-wp" translatesAutoresizingMaskIntoConstraints="NO" id="vv1-my-h8X">
                                                 <rect key="frame" x="268" y="0.0" width="64" height="64"/>
@@ -544,7 +544,7 @@
                                                 </constraints>
                                             </imageView>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Verification Code" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A2K-lq-6XM" customClass="WPWalkthroughTextField">
-                                                <rect key="frame" x="0.0" y="80" width="600" height="44"/>
+                                                <rect key="frame" x="0.0" y="72" width="600" height="44"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="Verification Code"/>
                                                 <constraints>
@@ -572,7 +572,7 @@
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
-                                                <rect key="frame" x="276" y="140" width="47" height="34"/>
+                                                <rect key="frame" x="276" y="132" width="47" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="eoc-KU-71N"/>
                                                 </constraints>
@@ -585,7 +585,7 @@
                                                 </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zhF-jf-Wcv">
-                                                <rect key="frame" x="283" y="190" width="33" height="16"/>
+                                                <rect key="frame" x="283" y="182" width="33" height="16"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -599,7 +599,7 @@
                                             <constraint firstItem="zhF-jf-Wcv" firstAttribute="centerX" secondItem="L68-uO-e3A" secondAttribute="centerX" id="QKp-In-Bta"/>
                                             <constraint firstAttribute="trailing" secondItem="A2K-lq-6XM" secondAttribute="trailing" id="Wm5-NI-VWk"/>
                                             <constraint firstItem="vv1-my-h8X" firstAttribute="top" secondItem="L68-uO-e3A" secondAttribute="top" id="aXX-Le-Woy"/>
-                                            <constraint firstItem="A2K-lq-6XM" firstAttribute="top" secondItem="vv1-my-h8X" secondAttribute="bottom" constant="16" id="eFh-ZA-vwL"/>
+                                            <constraint firstItem="A2K-lq-6XM" firstAttribute="top" secondItem="vv1-my-h8X" secondAttribute="bottom" constant="8" id="eFh-ZA-vwL"/>
                                             <constraint firstItem="6eO-V2-a64" firstAttribute="centerX" secondItem="L68-uO-e3A" secondAttribute="centerX" id="ju9-Hp-MkM"/>
                                             <constraint firstItem="vv1-my-h8X" firstAttribute="centerX" secondItem="L68-uO-e3A" secondAttribute="centerX" id="knm-Sa-d16"/>
                                             <constraint firstAttribute="width" constant="320" id="mig-hQ-ky8"/>
