@@ -54,6 +54,7 @@
                                                 <connections>
                                                     <action selector="handleSubmitForm" destination="fwZ-QE-5et" eventType="primaryActionTriggered" id="8l9-uh-Gyz"/>
                                                     <action selector="handleTextFieldDidChange:" destination="fwZ-QE-5et" eventType="editingChanged" id="LoF-5Q-Yw5"/>
+                                                    <outlet property="delegate" destination="fwZ-QE-5et" id="Urv-t1-Fui"/>
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OZC-xf-OAn" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">
@@ -215,6 +216,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <action selector="handleTextFieldDidChange:" destination="SZS-o3-1P7" eventType="editingChanged" id="5b1-ZP-8Yq"/>
+                                                            <outlet property="delegate" destination="SZS-o3-1P7" id="NfG-gH-Yct"/>
                                                         </connections>
                                                     </textField>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oi5-Kd-TEW" customClass="WPWalkthroughTextField">
@@ -229,6 +231,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <action selector="handleTextFieldDidChange:" destination="SZS-o3-1P7" eventType="editingChanged" id="iSC-pZ-T1j"/>
+                                                            <outlet property="delegate" destination="SZS-o3-1P7" id="4VW-gO-0pR"/>
                                                         </connections>
                                                     </textField>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Site Address (URL)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="n1u-7J-ObZ" customClass="WPWalkthroughTextField">
@@ -241,8 +244,8 @@
                                                             <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-url-field"/>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <action selector="handleSubmitForm" destination="SZS-o3-1P7" eventType="primaryActionTriggered" id="VZS-I1-eO7"/>
                                                             <action selector="handleTextFieldDidChange:" destination="SZS-o3-1P7" eventType="editingChanged" id="gp3-nb-MgL"/>
+                                                            <outlet property="delegate" destination="SZS-o3-1P7" id="km3-FK-YEm"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -394,6 +397,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <action selector="handleTextFieldDidChange:" destination="lmD-c6-SLs" eventType="editingChanged" id="v8D-Ni-JQA"/>
+                                                            <outlet property="delegate" destination="lmD-c6-SLs" id="Id1-wX-gEq"/>
                                                         </connections>
                                                     </textField>
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BtS-3D-CIU" customClass="WPWalkthroughTextField">
@@ -407,8 +411,8 @@
                                                             <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-password-field"/>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <action selector="handleSubmitForm" destination="lmD-c6-SLs" eventType="primaryActionTriggered" id="gEy-n9-AGo"/>
                                                             <action selector="handleTextFieldDidChange:" destination="lmD-c6-SLs" eventType="editingChanged" id="TIx-xK-PLT"/>
+                                                            <outlet property="delegate" destination="lmD-c6-SLs" id="8se-wA-BuN"/>
                                                         </connections>
                                                     </textField>
                                                 </subviews>
@@ -569,6 +573,7 @@
                                                 <connections>
                                                     <action selector="handleSubmitForm" destination="bAd-Df-IzS" eventType="primaryActionTriggered" id="2LU-aF-Jpd"/>
                                                     <action selector="handleTextFieldDidChange:" destination="bAd-Df-IzS" eventType="editingChanged" id="GF2-jv-Gg2"/>
+                                                    <outlet property="delegate" destination="bAd-Df-IzS" id="Bgq-yf-mas"/>
                                                 </connections>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6eO-V2-a64" customClass="NUXSubmitButton" customModule="WordPress" customModuleProvider="target">

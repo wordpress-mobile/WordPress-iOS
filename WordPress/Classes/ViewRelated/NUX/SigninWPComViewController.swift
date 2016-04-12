@@ -199,11 +199,6 @@ import WordPressShared
     }
 
 
-    @IBAction func handleSubmitForm() {
-        validateForm()
-    }
-
-
     @IBAction func handleSubmitButtonTapped(sender: UIButton) {
         validateForm()
     }
@@ -273,6 +268,8 @@ extension SigninWPComViewController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         if textField == usernameField {
             passwordField.becomeFirstResponder()
+        } else if submitButton.enabled {
+            validateForm()
         }
         return true
     }
