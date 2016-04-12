@@ -65,7 +65,9 @@ static CGFloat kNormalAlpha = 1.0f;
 {
 	self.adjustsImageWhenHighlighted = NO;
 	
-	[self addTarget:self action:@selector(touchDown:) forControlEvents:UIControlEventTouchDown];
+    [self addTarget:self action:@selector(touchDown:) forControlEvents:UIControlEventTouchDown];
+    [self addTarget:self action:@selector(touchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    [self addTarget:self action:@selector(touchUpOutside:) forControlEvents:UIControlEventTouchUpOutside];
 	[self addTarget:self action:@selector(touchDragInside:) forControlEvents:UIControlEventTouchDragInside];
 	[self addTarget:self action:@selector(touchDragOutside:) forControlEvents:UIControlEventTouchDragOutside];
 }
@@ -73,6 +75,16 @@ static CGFloat kNormalAlpha = 1.0f;
 - (void)touchDown:(id)sender
 {
 	[self setAlpha:kHighlightedAlpha];
+}
+
+- (void)touchUpInside:(id)sender
+{
+    [self setAlpha:kNormalAlpha];
+}
+
+- (void)touchUpOutside:(id)sender
+{
+    [self setAlpha:kNormalAlpha];
 }
 
 - (void)touchDragInside:(id)sender

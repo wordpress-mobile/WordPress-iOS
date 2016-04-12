@@ -1,11 +1,10 @@
-#import <MGImageUtilities/UIImage+ProportionalFill.h>
-
 #import "WPTableImageSource.h"
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "PhotonImageURLHelper.h"
 #import "WPAccount.h"
 #import "WPImageSource.h"
+#import "UIImage+Resize.h"
 
 static const NSInteger WPTableImageSourceMaxPhotonQuality = 100;
 static const NSInteger WPTableImageSourceMinPhotonQuality = 1;
@@ -197,17 +196,9 @@ static const NSInteger WPTableImageSourceMinPhotonQuality = 1;
     });
 }
 
-/**
- Wrapper method to resize an image
-
- It uses a modified version of MGImageUtilities to return opaque images.
- I tried to use UIImage+Resize, but had some problems if it wasn't run on the main thread.
-
- The wrapper is still here in case we need to switch the resizing mechanism in the future.
- */
 - (UIImage *)resizeImage:(UIImage *)image toSize:(CGSize)size
 {
-    return [image imageCroppedToFitSize:size ignoreAlpha:NO];
+    return [image resizedImageWithContentMode:UIViewContentModeScaleAspectFill bounds:size interpolationQuality:kCGInterpolationHigh];
 }
 
 #pragma mark - Cache handling

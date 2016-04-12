@@ -1,4 +1,5 @@
 import Foundation
+import Gridicons
 import WordPressShared
 
 /// A WPStyleGuide extension with styles and methods specific to the
@@ -16,8 +17,7 @@ extension WPStyleGuide
         let horizontalPadding = 8.0;
         let imageView = UIImageView(frame:CGRect(x: 0, y: 0, width: imageSize + horizontalPadding, height: imageSize))
 
-        let noticeImage = UIImage(named: "gridicons-notice")
-        imageView.image = noticeImage?.imageWithRenderingMode(.AlwaysTemplate)
+        imageView.image = UIImage(named: "sharing-notice")
         imageView.tintColor = jazzyOrange()
         imageView.contentMode = .Right
         return imageView
@@ -38,9 +38,9 @@ extension WPStyleGuide
         // Handle special cases
         switch name {
         case "print" :
-            iconName = "gridicons-print"
+            return Gridicon.iconOfType(.Print)
         case "email" :
-            iconName = "gridicons-mail"
+            return Gridicon.iconOfType(.Mail)
         case "google-plus-one" :
             iconName = "social-google-plus"
         case "press-this" :

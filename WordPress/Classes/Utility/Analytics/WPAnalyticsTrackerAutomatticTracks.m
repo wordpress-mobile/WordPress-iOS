@@ -312,6 +312,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatLoginFailedToGuessXMLRPC:
             eventName = @"login_failed_to_guess_xmlrpc";
             break;
+        case WPAnalyticsStatLoginAutoFillCredentialsFilled:
+            eventName = @"login_autofill_credentials_filled";
+            break;
+        case WPAnalyticsStatLoginAutoFillCredentialsUpdated:
+            eventName = @"login_autofill_credentials_updated";
+            break;
         case WPAnalyticsStatLogout:
             eventName = @"account_logout";
             break;
@@ -394,6 +400,10 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatOpenedSiteSettings:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"settings" };
+            break;
+        case WPAnalyticsStatOpenedSharingManagement:
+            eventName = @"site_menu_opened";
+            eventProperties = @{ TracksEventPropertyMenuItemKey : @"sharing_management" };
             break;
         case WPAnalyticsStatOpenedSupport:
             eventName = @"support_opened";
@@ -537,12 +547,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatReaderTagUnfollowed:
             eventName = @"reader_reader_tag_unfollowed";
-            break;
-        case WPAnalyticsStatSafariCredentialsLoginFilled:
-            eventName = @"safari_credentials_login_filled";
-            break;
-        case WPAnalyticsStatSafariCredentialsLoginUpdated:
-            eventName = @"safari_credentials_login_updated";
             break;
         case WPAnalyticsStatSelectedInstallJetpack:
             eventName = @"stats_install_jetpack_selected";
@@ -728,9 +732,44 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatOpenedAccountSettings:
             eventName = @"account_settings_opened";
             break;
+        case WPAnalyticsStatOpenedAppSettings:
+            eventName = @"app_settings_opened";
+            break;
         case WPAnalyticsStatOpenedMyProfile:
             eventName = @"my_profile_opened";
             break;
+        case WPAnalyticsStatSharingButtonSettingsChanged:
+            eventName = @"sharing_buttons_settings_changed";
+            break;
+        case WPAnalyticsStatSharingButtonOrderChanged:
+            eventName = @"sharing_buttons_order_changed";
+            break;
+        case WPAnalyticsStatSharingButtonShowReblogChanged:
+            eventName = @"sharing_buttons_show_reblog_changed";
+            break;
+        case WPAnalyticsStatSharingOpenedPublicize:
+            eventName = @"publicize_opened";
+            break;
+        case WPAnalyticsStatSharingOpenedSharingButtonSettings:
+            eventName = @"sharing_buttons_opened";
+            break;
+        case WPAnalyticsStatSharingPublicizeConnected:
+            eventName = @"publicize_service_connected";
+            break;
+        case WPAnalyticsStatSharingPublicizeDisconnected:
+            eventName = @"publicize_service_disconnected";
+            break;
+        case WPAnalyticsStatSharingPublicizeConnectionAvailableToAllChanged:
+            eventName = @"publicize_connection_availability_changed";
+            break;
+
+            // to be implemented with Signin refactor
+        case WPAnalyticsStatLoginMagicLinkExited:
+        case WPAnalyticsStatLoginMagicLinkFailed:
+        case WPAnalyticsStatLoginMagicLinkOpened:
+        case WPAnalyticsStatLoginMagicLinkRequested:
+        case WPAnalyticsStatLoginMagicLinkSucceeded:
+
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:

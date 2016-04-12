@@ -41,6 +41,7 @@
 #import "UIApplication+Helpers.h"
 
 #import "PhotonImageURLHelper.h"
+#import "Post.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
 #import "WPPostViewController.h"
