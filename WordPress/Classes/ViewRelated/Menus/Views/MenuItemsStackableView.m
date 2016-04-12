@@ -170,14 +170,14 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
     [self.accessoryStackView setNeedsLayout];
 }
 
-- (UIButton *)addAccessoryButtonIconViewWithImageName:(NSString *)imageName
+- (UIButton *)addAccessoryButtonIconViewWithImage:(UIImage *)image
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.imageView.contentMode = UIViewContentModeScaleAspectFit;
     button.backgroundColor = [UIColor clearColor];
     
-    [button setImage:[[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+    [button setImage:image forState:UIControlStateNormal];
     
     CGFloat width = MenusDesignItemIconSize * 2;
     CGFloat height = width;

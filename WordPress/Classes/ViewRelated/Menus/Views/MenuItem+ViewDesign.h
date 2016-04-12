@@ -5,6 +5,6 @@ extern CGFloat const MenusDesignItemIconSize;
 
 @interface MenuItem (ViewDesign)
 
-+ (NSString *)iconImageNameForItemType:(NSString *)itemType;
++ (UIImage *)iconImageForItemType:(NSString *)itemType;
 
 @end

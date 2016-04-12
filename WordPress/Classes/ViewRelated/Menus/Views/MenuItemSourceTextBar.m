@@ -3,6 +3,8 @@
 #import "WPFontManager.h"
 #import "Menu+ViewDesign.h"
 
+@import Gridicons;
+
 @interface MenuItemSourceTextBarFieldObserver ()
 
 @property (nonatomic, strong) UITextField *textField;
@@ -145,7 +147,7 @@
     self = [self init];
     if (self) {
         
-        self.iconView.image = [[UIImage imageNamed:@"gridicons-search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.iconView.image = [Gridicon iconOfType:GridiconTypeSearch];
         self.iconView.hidden = NO;
         
         UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];

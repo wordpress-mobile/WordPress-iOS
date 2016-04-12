@@ -7,6 +7,8 @@
 #import "Menu+ViewDesign.h"
 #import "Blog.h"
 
+@import Gridicons;
+
 @interface MenuDetailsView () <UITextFieldDelegate>
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
@@ -52,7 +54,7 @@
     
     [self.trashButton setTitle:nil forState:UIControlStateNormal];
     self.trashButton.tintColor = [WPStyleGuide greyDarken30];
-    [self.trashButton setImage:[self.trashButton templatedIconImageNamed:@"gridicons-trash"] forState:UIControlStateNormal];
+    [self.trashButton setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
     [self.trashButton addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     self.saveButton.backgroundFillColor = [WPStyleGuide mediumBlue];
@@ -62,7 +64,7 @@
     self.saveButton.enabled = NO;
     
     {
-        UIImage *image = [[UIImage imageNamed:@"gridicons-pencil"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIImage *image = [Gridicon iconOfType:GridiconTypePencil];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
         imageView.translatesAutoresizingMaskIntoConstraints = NO;
         imageView.tintColor = [WPStyleGuide darkBlue];

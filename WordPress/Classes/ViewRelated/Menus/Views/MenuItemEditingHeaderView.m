@@ -143,7 +143,7 @@
 {
     if (_itemType != itemType) {
         _itemType = itemType;
-        self.iconView.image = [[UIImage imageNamed:[MenuItem iconImageNameForItemType:itemType]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.iconView.image = [MenuItem iconImageForItemType:itemType];
     }
 }
 
