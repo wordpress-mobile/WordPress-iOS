@@ -20,6 +20,7 @@ struct PlanListRow: ImmuTableRow {
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.text = description
         cell.detailTextLabel?.textColor = WPStyleGuide.grey()
+        cell.detailTextLabel?.font = WPFontManager.systemRegularFontOfSize(14.0)
         cell.separatorInset = UIEdgeInsetsZero
     }
 
@@ -37,8 +38,8 @@ struct PlanListRow: ImmuTableRow {
             NSForegroundColorAttributeName: WPStyleGuide.darkGrey()
         ]
         static let pricePeriodAttributes = [
-            NSFontAttributeName: WPFontManager.systemItalicFontOfSize(13.0),
-            NSForegroundColorAttributeName: WPStyleGuide.greyLighten20()
+            NSFontAttributeName: WPFontManager.systemItalicFontOfSize(14.0),
+            NSForegroundColorAttributeName: WPStyleGuide.grey()
         ]
 
         static func attributedTitle(title: String, price: String, active: Bool) -> NSAttributedString {
