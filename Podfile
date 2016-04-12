@@ -44,7 +44,7 @@ target 'WordPress', :exclusive => true do
   pod 'NSObject-SafeExpectations', '0.0.2'
   pod 'NSURL+IDN', '0.3'
   pod 'Simperium', '0.8.15'
-  pod 'WPMediaPicker', '~> 0.9.0'
+  pod 'WPMediaPicker', '~> 0.9.1'
   pod 'WordPress-iOS-Editor', '1.2'
   pod 'WordPress-iOS-Shared', '0.5.4'
   pod 'WordPressApi', '0.4.0'
