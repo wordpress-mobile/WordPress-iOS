@@ -2,6 +2,8 @@
 #import "MenusActionButton.h"
 #import "WPStyleGuide.h"
 
+@import Gridicons;
+
 @interface MenuItemEditingFooterView ()
 
 @property (nonatomic, strong) IBOutlet MenusActionButton *cancelButton;
@@ -25,7 +27,7 @@
         MenusActionButton *button = self.trashButton;
         [button setTitle:nil forState:UIControlStateNormal];
         button.tintColor = [WPStyleGuide errorRed];
-        [button setImage:[button templatedIconImageNamed:@"gridicons-trash"] forState:UIControlStateNormal];
+        [button setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     }
     {

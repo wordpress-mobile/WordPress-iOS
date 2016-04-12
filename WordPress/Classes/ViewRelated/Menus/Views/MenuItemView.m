@@ -4,6 +4,8 @@
 #import "MenusActionButton.h"
 #import "MenuItem+ViewDesign.h"
 
+@import Gridicons;
+
 @interface MenuItemView ()
 
 @property (nonatomic, strong) UIButton *editButton;
@@ -22,12 +24,12 @@
     self = [super init];
     if (self) {
         {
-            UIButton *button = [self addAccessoryButtonIconViewWithImageName:@"gridicons-pencil"];
+            UIButton *button = [self addAccessoryButtonIconViewWithImage:[Gridicon iconOfType:GridiconTypePencil]];
             [button addTarget:self action:@selector(editButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             self.editButton = button;
         }
         {
-            UIButton *button = [self addAccessoryButtonIconViewWithImageName:@"menus-add"];
+            UIButton *button = [self addAccessoryButtonIconViewWithImage:[Gridicon iconOfType:GridiconTypePlus]];
             [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             self.addButton = button;
         }
@@ -57,7 +59,7 @@
 
 - (void)refresh
 {
-    self.iconView.image = [[UIImage imageNamed:[MenuItem iconImageNameForItemType:self.item.type]] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.iconView.image = [MenuItem iconImageForItemType:self.item.type];
     self.textLabel.text = self.item.name;
 }
 

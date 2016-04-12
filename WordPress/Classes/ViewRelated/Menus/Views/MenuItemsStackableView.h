@@ -24,7 +24,7 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 @property (nonatomic, strong) UIImageView *iconView;
 
 - (void)addAccessoryButton:(UIButton *)button;
-- (UIButton *)addAccessoryButtonIconViewWithImageName:(NSString *)imageName;
+- (UIButton *)addAccessoryButtonIconViewWithImage:(UIImage *)image;
 
 // called on init and when highlighted value changes
 - (UIColor *)contentViewBackgroundColor;

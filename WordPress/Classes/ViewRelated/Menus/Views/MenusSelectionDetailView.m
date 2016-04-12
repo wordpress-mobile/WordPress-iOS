@@ -3,6 +3,8 @@
 #import "Menu+ViewDesign.h"
 #import "MenusSelectionView.h"
 
+@import Gridicons;
+
 @interface MenusSelectionDetailView ()
 
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
@@ -37,7 +39,7 @@
         } else  {
             localizedFormat = NSLocalizedString(@"%i menu area in this theme", @"One menu area available in the theme");
         }
-        self.iconView.image = [[UIImage imageNamed:@"gridicons-layout"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.iconView.image = [Gridicon iconOfType:GridiconTypeLayout];
         
     } else  if ([selectedItem isMenu]) {
         
@@ -46,7 +48,7 @@
         } else  {
             localizedFormat = NSLocalizedString(@"%i menu available", @"One menu is available in the site and area");
         }
-        self.iconView.image = [[UIImage imageNamed:@"gridicons-menus"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.iconView.image = [Gridicon iconOfType:GridiconTypeMenus];
     }
     
     [self setTitleText:selectedItem.displayName subTitleText:[NSString stringWithFormat:localizedFormat, numItemsAvailable]];
@@ -120,7 +122,7 @@
     {
         UIImageView *accessoryView = [[UIImageView alloc] init];
         accessoryView.contentMode = UIViewContentModeScaleAspectFit;
-        accessoryView.image = [[UIImage imageNamed:@"gridicons-chevron-down"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        accessoryView.image = [Gridicon iconOfType:GridiconTypeChevronDown];
         accessoryView.tintColor = [WPStyleGuide mediumBlue];
         [accessoryView.widthAnchor constraintEqualToConstant:30].active = YES;
         [accessoryView.heightAnchor constraintEqualToConstant:30].active = YES;
