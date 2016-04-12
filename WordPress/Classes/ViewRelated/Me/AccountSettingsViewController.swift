@@ -78,19 +78,19 @@ private struct AccountSettingsController: SettingsController {
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.email ?? "",
-            action: presenter.present(editEmailAddress(service))
+            action: presenter.present(insideNavigationController(editEmailAddress(service)))
         )
         
         let primarySite = EditableTextRow(
             title: NSLocalizedString("Primary Site", comment: "Primary Web Site"),
             value: primarySiteName ?? "",
-            action: presenter.present(editPrimarySite(settings, service: service))
+            action: presenter.present(insideNavigationController(editPrimarySite(settings, service: service)))
         )
         
         let webAddress = EditableTextRow(
             title: NSLocalizedString("Web Address", comment: "Account Settings Web Address label"),
             value: settings?.webAddress ?? "",
-            action: presenter.present(editWebAddress(service))
+            action: presenter.present(insideNavigationController(editWebAddress(service)))
         )
         
         return ImmuTable(sections: [

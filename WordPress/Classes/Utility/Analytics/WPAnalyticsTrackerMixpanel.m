@@ -873,6 +873,9 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatOpenedAccountSettings:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened Account Settings"];
             break;
+        case WPAnalyticsStatOpenedAppSettings:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened App Settings"];
+            break;
         case WPAnalyticsStatOpenedMyProfile:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened My Profile"];
             break;
