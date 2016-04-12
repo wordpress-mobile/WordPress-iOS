@@ -902,7 +902,7 @@ describe(@"displayRemoteError", ^{
     NSString *sharedExamplesForAButtonThatOpensUpTheFAQ = @"a button that opens up the FAQ";
     sharedExamplesFor(sharedExamplesForAButtonThatOpensUpTheFAQ, ^(NSDictionary *data) {
         it(@"should open the FAQ on the website", ^{
-            [[mockViewModelPresenter expect] displayWebViewForURL:[NSURL URLWithString:@"https://apps.wordpress.org/support/#faq-ios-3"] username:nil password:nil];
+            [[mockViewModelPresenter expect] displayWebViewForURL:[NSURL URLWithString:@"https://apps.wordpress.com/support/#faq-ios-3"] username:nil password:nil];
             
             [viewModel displayRemoteError:error];
             
