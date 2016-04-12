@@ -18,14 +18,24 @@ import WordPressShared
 /// nil if you want to hide the error view.
 ///
 class NoticeAnimator: Animator {
-    let animationDuration = 0.3
-    let targetHeight: CGFloat = 40
+    let animationDuration   = 0.3
+    let minimumHeight       = CGFloat(40)
+    let padding             = UIOffset(horizontal: 15, vertical: 20)
 
     private var noticeLabel: PaddedLabel? = nil
     private var message: String? = nil
     private var showingMessage: Bool {
         return (message != nil)
     }
+    private var messageHeight : CGFloat {
+        guard let label = noticeLabel?.label, let message = message else {
+            return minimumHeight
+        }
+        
+        let height = message.suggestedSizeWithFont(label.font, width: label.frame.width).height + padding.vertical
+        return max(round(height), minimumHeight)
+    }
+    
     let targetView: UIView
     var targetTableView: UITableView? {
         return targetView as? UITableView
@@ -53,6 +63,7 @@ class NoticeAnimator: Animator {
         if previouslyShowing != showingMessage {
             animateWithDuration(animationDuration, preamble: preamble, animations: animations, cleanup: cleanup)
         }
+        
         if showingMessage {
             noticeLabel?.label.text = message
         }
@@ -73,22 +84,22 @@ class NoticeAnimator: Animator {
 
     private func animations() {
         if showingMessage {
-            noticeLabel?.frame.size.height = targetHeight
+            noticeLabel?.frame.size.height = messageHeight
             noticeLabel?.label.alpha = 1
 
-            targetTableView?.contentInset.top += targetHeight
+            targetTableView?.contentInset.top += messageHeight
             if targetTableView?.contentOffset.y == 0 {
-                targetTableView?.contentOffset.y = -targetHeight
+                targetTableView?.contentOffset.y = -messageHeight
             }
         } else {
             noticeLabel?.frame.size.height = 0
             noticeLabel?.label.alpha = 0
 
-            targetTableView?.contentInset.top -= targetHeight
+            targetTableView?.contentInset.top -= messageHeight
         }
         targetView.layoutIfNeeded()
     }
-
+    
     private func cleanup() {
         if !showingMessage {
             noticeLabel?.removeFromSuperview()
@@ -98,10 +109,11 @@ class NoticeAnimator: Animator {
 
     private func createNoticeLabel() -> PaddedLabel {
         let paddedLabel = PaddedLabel()
-        paddedLabel.padding.horizontal = 15
+        paddedLabel.padding.horizontal = padding.horizontal
         paddedLabel.label.textColor = UIColor.whiteColor()
         paddedLabel.backgroundColor = WPStyleGuide.mediumBlue()
         paddedLabel.label.font = WPStyleGuide.regularTextFont()
+        paddedLabel.label.numberOfLines = 0
         return paddedLabel
     }
 }
