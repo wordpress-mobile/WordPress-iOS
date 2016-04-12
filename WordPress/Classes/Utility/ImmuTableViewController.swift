@@ -46,7 +46,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     private var visibleSubject = PublishSubject<Bool>()
 
-    private var errorAnimator: ErrorAnimator!
+    private var noticeAnimator: NoticeAnimator!
 
     let controller: ImmuTableController
 
@@ -82,7 +82,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        errorAnimator = ErrorAnimator(target: view)
+        noticeAnimator = NoticeAnimator(target: view)
 
         WPStyleGuide.resetReadableMarginsForTableView(tableView)
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
@@ -90,7 +90,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        errorAnimator.layout()
+        noticeAnimator.layout()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -113,7 +113,7 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
 
     var noticeMessage: String? = nil {
         didSet {
-            errorAnimator.animateErrorMessage(noticeMessage)
+            noticeAnimator.animateMessage(noticeMessage)
         }
     }
 
