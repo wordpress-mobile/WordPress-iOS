@@ -694,7 +694,7 @@ import WordPressShared
     func handleEditLabel() {
         let text = blog.settings.sharingLabel
         let placeholder = NSLocalizedString("Type a label", comment: "A placeholder for the sharing label.")
-        let hint = NSLocalizedString("Change the text of the sharing button's label. This text won't appear until you add at least one sharing button.", comment: "Instructions for editing the sharing label.")
+        let hint = NSLocalizedString("Change the text of the sharing buttons' label. This text won't appear until you add at least one sharing button.", comment: "Instructions for editing the sharing label.")
         let controller = SettingsTextViewController(text: text, placeholder: placeholder, hint: hint)
 
         controller.title = labelTitle
