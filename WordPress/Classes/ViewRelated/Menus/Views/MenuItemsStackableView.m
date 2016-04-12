@@ -17,7 +17,7 @@
 
 @end
 
-CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
+CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 
 @interface MenuItemsStackableView ()
 
@@ -42,21 +42,18 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
 - (void)setup
 {
     self.translatesAutoresizingMaskIntoConstraints = NO;
-    self.backgroundColor = [UIColor clearColor];
-    
-    self.layoutMargins = UIEdgeInsetsMake(0, [Menu viewDefaultDesignInsets].left, 0, 0);
-    UILayoutGuide *layoutMarginsGuide = self.layoutMarginsGuide;
+    self.backgroundColor = [UIColor whiteColor];
     
     MenuItemDrawingView *contentView = [[MenuItemDrawingView alloc] init];
     contentView.drawDelegate = self;
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
     contentView.tintColor = [self iconTintColor];
-    contentView.backgroundColor = [self contentViewBackgroundColor];
+    contentView.backgroundColor = [UIColor whiteColor];
 
     [self addSubview:contentView];
     self.contentView = contentView;
     
-    NSLayoutConstraint *leadingConstraint = [contentView.leadingAnchor constraintEqualToAnchor:layoutMarginsGuide.leadingAnchor];
+    NSLayoutConstraint *leadingConstraint = [contentView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor];
     self.constraintForLeadingIndentation = leadingConstraint;
     leadingConstraint.active = YES;
     
@@ -84,7 +81,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
     stackView.layoutMarginsRelativeArrangement = YES;
     stackView.distribution = UIStackViewDistributionFill;
     stackView.alignment = UIStackViewAlignmentCenter;
-    stackView.spacing = MenusDesignDefaultContentSpacing;
+    stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
     
     self.stackView = stackView;
     
@@ -96,7 +93,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
         // width and height constraints are (less than or equal to) in case the view is hidden
         [iconView.widthAnchor constraintLessThanOrEqualToConstant:MenusDesignItemIconSize].active = YES;
         [iconView.heightAnchor constraintLessThanOrEqualToConstant:MenusDesignItemIconSize].active = YES;
-        iconView.tintColor = [WPStyleGuide mediumBlue];
+        iconView.tintColor = [WPStyleGuide grey];
         
         [stackView addArrangedSubview:iconView];
         self.iconView = iconView;
@@ -226,7 +223,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 55.0;
     if (self.highlighted) {
         color = [UIColor whiteColor];
     } else  {
-        color = [WPStyleGuide mediumBlue];
+        color = [WPStyleGuide grey];
     }
     
     return color;
