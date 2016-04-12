@@ -646,6 +646,9 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatOpenedNotificationSettingDetails:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Accessed Details"];
             break;
+        case WPAnalyticsStatOpenedSharingManagement:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Sharing Management"];
+            break;
         case WPAnalyticsStatOpenedSiteSettings:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Settings"];
             break;
@@ -840,17 +843,17 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatLoginFailedToGuessXMLRPC:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Failed To Guess XMLRPC"];
             break;
+        case WPAnalyticsStatLoginAutoFillCredentialsFilled:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Auto Fill Credentials Filled"];
+            break;
+        case WPAnalyticsStatLoginAutoFillCredentialsUpdated:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Auto Fill Credentials Updated"];
+            break;
         case WPAnalyticsStatTwoFactorSentSMS:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Two Factor - Sent Verification Code SMS"];
             break;
         case WPAnalyticsStatTwoFactorCodeRequested:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Two Factor - Requested Verification Code"];
-            break;
-        case WPAnalyticsStatSafariCredentialsLoginFilled:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Safari Credentials - Login Filled"];
-            break;
-        case WPAnalyticsStatSafariCredentialsLoginUpdated:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Safari Credentials - Login Updated"];
             break;
         case WPAnalyticsStatShortcutLogIn:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"3D Touch Shortcut - Log In"];
@@ -869,6 +872,9 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatOpenedAccountSettings:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened Account Settings"];
+            break;
+        case WPAnalyticsStatOpenedAppSettings:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened App Settings"];
             break;
         case WPAnalyticsStatOpenedMyProfile:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Me - Opened My Profile"];
@@ -912,6 +918,39 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatSiteSettingsStartOverContactSupportClicked:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Settings - Start Over Contact Support Clicked"];
             break;
+        case WPAnalyticsStatSharingButtonSettingsChanged:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Sharing Management - Sharing Buttons Settings Changed"];
+            break;
+        case WPAnalyticsStatSharingButtonOrderChanged:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Sharing Management - Sharing Buttons Order Changed"];
+            break;
+        case WPAnalyticsStatSharingButtonShowReblogChanged:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Sharing Management - Sharing Buttons Show Reblog Changed"];
+            break;
+        case WPAnalyticsStatSharingOpenedPublicize:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Sharing Management - Publicize Opened"];
+            break;
+        case WPAnalyticsStatSharingOpenedSharingButtonSettings:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Sharing Management - Sharing Buttons Opened"];
+            break;
+        case WPAnalyticsStatSharingPublicizeConnected:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Sharing Management - Publicize Service Connected"];
+            break;
+        case WPAnalyticsStatSharingPublicizeDisconnected:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Sharing Management - Publicize Service Disconnected"];
+            break;
+        case WPAnalyticsStatSharingPublicizeConnectionAvailableToAllChanged:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Sharing Management - Publicize Connection Availablility Changed"];
+            break;
+
+            // to be implemented with the sign in refactor
+        case WPAnalyticsStatLoginMagicLinkExited:
+        case WPAnalyticsStatLoginMagicLinkFailed:
+        case WPAnalyticsStatLoginMagicLinkOpened:
+        case WPAnalyticsStatLoginMagicLinkRequested:
+        case WPAnalyticsStatLoginMagicLinkSucceeded:
+
+
         case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatLogSpecialCondition:

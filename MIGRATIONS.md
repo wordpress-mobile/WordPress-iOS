@@ -3,6 +3,16 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## (@kurzee 2016-04-08)
+
+- `Menu` changing `menuId` attribute to `menuID` as a int_32 number instead of string.
+- `MenuItem` changing `itemId` attribute to `itemID` as an int_32 number instead of string.
+- `MenuItem` changing `contentId` attribute to `contentID` as an int_64 number instead of string.
+
+## WordPress 48 (@sergioestevao 2016-04-05)
+
+- `Media` added new integer attribute `postID` to store the post to where the media is attached to.
+
 ## WordPress 47 (@kurzee 2016-03-07)
 
 - `Post` added new string attribute `postType` to store the associated string type of a `Post` entity.
