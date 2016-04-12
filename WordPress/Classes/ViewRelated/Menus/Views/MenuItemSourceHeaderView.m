@@ -3,6 +3,8 @@
 #import "WPFontManager.h"
 #import "MenuItem+ViewDesign.h"
 
+@import Gridicons;
+
 @interface MenuItemSourceHeaderView ()
 
 @property (nonatomic, strong) UIStackView *stackView;
@@ -52,7 +54,7 @@
             iconView.contentMode = UIViewContentModeScaleAspectFit;
             iconView.backgroundColor = [UIColor whiteColor];
             iconView.tintColor = [WPStyleGuide mediumBlue];
-            iconView.image = [[UIImage imageNamed:@"gridicons-chevron-left"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            iconView.image = [Gridicon iconOfType:GridiconTypeChevronLeft];
             
             [self.stackView addArrangedSubview:iconView];
             

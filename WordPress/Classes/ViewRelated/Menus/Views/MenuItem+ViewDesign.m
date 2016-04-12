@@ -1,24 +1,26 @@
 #import "MenuItem+ViewDesign.h"
 
+@import Gridicons;
+
 CGFloat const MenusDesignItemIconSize = 18.0;
 
 @implementation MenuItem (ViewDesign)
 
-+ (NSString *)iconImageNameForItemType:(NSString *)itemType
++ (UIImage *)iconImageForItemType:(NSString *)itemType
 {
-    NSString *imageName = nil;
+    UIImage *image = nil;
     
     if ([itemType isEqualToString:MenuItemTypePage]) {
-        imageName = @"gridicons-pages";
+        image = [Gridicon iconOfType:GridiconTypePages];
     } else if ([itemType isEqualToString:MenuItemTypeCustom]) {
-        imageName = @"gridicons-link";
+        image = [Gridicon iconOfType:GridiconTypeLink];
     } else if ([itemType isEqualToString:MenuItemTypeCategory]) {
-        imageName = @"gridicons-folder";
+        image = [Gridicon iconOfType:GridiconTypeFolder];
     } else if ([itemType isEqualToString:MenuItemTypeTag]) {
-        imageName = @"gridicons-tag";
+        image = [Gridicon iconOfType:GridiconTypeTag];
     }
     
-    return imageName ?: @"gridicons-posts";
+    return image ?: [Gridicon iconOfType:GridiconTypePosts];
 }
 
 @end

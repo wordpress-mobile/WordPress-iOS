@@ -3,6 +3,8 @@
 #import "WPFontManager.h"
 #import "Menu+ViewDesign.h"
 
+@import Gridicons;
+
 static CGFloat const iconPadding = 3.0;
 
 @interface MenuItemCheckButtonView ()
@@ -27,7 +29,7 @@ static CGFloat const iconPadding = 3.0;
         {
             UIImageView *iconView = [[UIImageView alloc] init];
             iconView.translatesAutoresizingMaskIntoConstraints = NO;
-            iconView.image = [[UIImage imageNamed:@"gridicons-checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            iconView.image = [Gridicon iconOfType:GridiconTypeCheckmark];
             iconView.tintColor = [WPStyleGuide mediumBlue];
             iconView.contentMode = UIViewContentModeScaleAspectFit;
             iconView.alpha = 0.0;
