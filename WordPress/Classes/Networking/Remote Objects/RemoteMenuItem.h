@@ -2,18 +2,18 @@
 
 @interface RemoteMenuItem : NSObject
 
-@property (nonatomic, copy) NSNumber *itemID;
-@property (nonatomic, copy) NSNumber *contentID;
-@property (nonatomic, copy) NSString *details;
-@property (nonatomic, copy) NSString *linkTarget;
-@property (nonatomic, copy) NSString *linkTitle;
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *type;
-@property (nonatomic, copy) NSString *typeFamily;
-@property (nonatomic, copy) NSString *typeLabel;
-@property (nonatomic, copy) NSString *urlStr;
+@property (nullable, nonatomic, copy) NSNumber *itemID;
+@property (nullable, nonatomic, copy) NSNumber *contentID;
+@property (nullable, nonatomic, copy) NSString *details;
+@property (nullable, nonatomic, copy) NSString *linkTarget;
+@property (nullable, nonatomic, copy) NSString *linkTitle;
+@property (nullable, nonatomic, copy) NSString *name;
+@property (nullable, nonatomic, copy) NSString *type;
+@property (nullable, nonatomic, copy) NSString *typeFamily;
+@property (nullable, nonatomic, copy) NSString *typeLabel;
+@property (nullable, nonatomic, copy) NSString *urlStr;
 
-@property (nonatomic, strong) NSArray<RemoteMenuItem *> *children;
-@property (nonatomic, weak) RemoteMenuItem *parentItem;
+@property (nullable, nonatomic, strong) NSArray<RemoteMenuItem *> *children;
+@property (nullable, nonatomic, weak) RemoteMenuItem *parentItem;
 
 @end
