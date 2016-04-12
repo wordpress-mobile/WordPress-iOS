@@ -40,7 +40,7 @@ private struct AccountSettingsController: SettingsController {
         })
     }
 
-    var errorMessage: Observable<String?> {
+    var refreshStatusMessage: Observable<String?> {
         return service.refresh
             // replace errors with .Failed status
             .catchErrorJustReturn(.Failed)
@@ -48,6 +48,24 @@ private struct AccountSettingsController: SettingsController {
             .map({ $0.errorMessage })
     }
 
+    var emailNoticeMessage: Observable<String?> {
+        return service.settings.map {
+            guard let pendingAddress = $0?.emailPendingAddress where $0?.emailPendingChange == true else {
+                return nil
+            }
+            
+            return NSLocalizedString("There is a pending change of your email to \(pendingAddress). Please check your inbox for a confirmation link.",
+                                    comment: "Displayed when there's a pending Email Change")
+        }
+    }
+
+    var noticeMessage: Observable<String?> {
+        return Observable.combineLatest(refreshStatusMessage, emailNoticeMessage) { refresh, email -> String? in
+            return refresh ?? email
+        }
+    }
+
+    
     // MARK: - Model mapping
 
     func mapViewModel(settings: AccountSettings?, service: AccountSettingsService, presenter: ImmuTablePresenter) -> ImmuTable {
