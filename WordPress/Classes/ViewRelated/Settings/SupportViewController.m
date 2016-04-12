@@ -442,7 +442,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
             if ([HelpshiftUtils isHelpshiftEnabled]) {
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeFAQs];
             } else {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://apps.wordpress.org/support/"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://apps.wordpress.com/support/"]];
             }
         } else if (indexPath.row == SettingsSectionFAQForumsRowContact) {
             if ([HelpshiftUtils isHelpshiftEnabled]) {
