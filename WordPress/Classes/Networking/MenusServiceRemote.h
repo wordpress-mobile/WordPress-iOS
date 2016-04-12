@@ -26,8 +26,8 @@ extern NSString * const MenusRemoteKeyLocationDefaultState;
 
 typedef void(^MenusServiceRemoteSuccessBlock)();
 typedef void(^MenusServiceRemoteMenuRequestSuccessBlock)(RemoteMenu *menu);
-typedef void(^MenusServiceRemoteMenusRequestSuccessBlock)(NSArray<RemoteMenu *> *menus, NSArray<RemoteMenuLocation *> *locations);
-typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
+typedef void(^MenusServiceRemoteMenusRequestSuccessBlock)(NSArray<RemoteMenu *> * _Nullable menus,  NSArray<RemoteMenuLocation *> * _Nullable locations);
+typedef void(^MenusServiceRemoteFailureBlock)(NSError * _Nonnull error);
 
 @interface MenusServiceRemote : ServiceRemoteREST
 
