@@ -16,29 +16,31 @@
 
 @end
 
-static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
-
 @implementation MenusHeaderView
 
 - (void)awakeFromNib
 {
     [super awakeFromNib];
     
-    // provide extra margin to easily draw the design stroke, see drawRect:
-    UIEdgeInsets margins = [Menu viewDefaultDesignInsets];
-    margins.bottom += MenusHeaderViewDesignStrokeWidth;
-    self.stackView.layoutMargins = margins;
+    // Tweak for offsetting the design stroke so it doesn't edge against the screen.
+    UIEdgeInsets margin = UIEdgeInsetsZero;
+    margin.left = -MenusDesignStrokeWidth;
+    margin.right = -MenusDesignStrokeWidth;
+    self.stackView.layoutMargins = margin;
     self.stackView.layoutMarginsRelativeArrangement = YES;
-    self.stackView.spacing = margins.left; // use a relative spacing to our margin padding
+    self.stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
     
     self.backgroundColor = [WPStyleGuide greyLighten30];
-    self.textLabel.font = [WPStyleGuide subtitleFont];
-    self.textLabel.backgroundColor = [UIColor clearColor];
     
     self.locationsView.delegate = self;
     self.locationsView.selectionType = MenusSelectionViewTypeLocations;
     self.menusView.delegate = self;
     self.menusView.selectionType = MenusSelectionViewTypeMenus;
+    
+    self.textLabel.font = [WPStyleGuide subtitleFont];
+    self.textLabel.backgroundColor = [UIColor clearColor];
+    self.textLabel.textColor = [WPStyleGuide greyDarken20];
+    self.textLabel.text = NSLocalizedString(@"USES", @"Menus label for describing which menu the location uses in the header.");
 }
 
 - (void)setupWithMenusForBlog:(Blog *)blog
@@ -105,25 +107,6 @@ static CGFloat const MenusHeaderViewDesignStrokeWidth = 2.0;
             }
         }
     }
-    
-    // required to redraw the stroke because our intrinsicContentSize changed based on the stack view axis change
-    // perhaps this won't be needed in a future version of iOS
-    // via Brent Coursey 10/30/15
-    [self setNeedsDisplay];
-}
-
-- (void)drawRect:(CGRect)rect
-{    
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGContextSetLineWidth(context, MenusHeaderViewDesignStrokeWidth);
-    
-    const CGFloat lineY = rect.size.height - (MenusHeaderViewDesignStrokeWidth / 2);
-    CGContextMoveToPoint(context, rect.origin.x, lineY);
-    CGContextAddLineToPoint(context, rect.size.width - rect.origin.x, lineY);
-    
-    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
-    CGContextStrokePath(context);
 }
 
 #pragma mark - private

@@ -12,6 +12,9 @@
 @property (nonatomic, strong) MenusSelectionItemView *addNewItemView;
 @property (nonatomic, assign) BOOL drawsHighlighted;
 
+@property (nonatomic, strong) CALayer *leftBorder;
+@property (nonatomic, strong) CALayer *rightBorder;
+
 @end
 
 @implementation MenusSelectionView
@@ -29,6 +32,7 @@
     self.itemViews = [NSMutableArray array];
 
     self.translatesAutoresizingMaskIntoConstraints = NO;
+    
     self.stackView.translatesAutoresizingMaskIntoConstraints = NO;
     self.stackView.alignment = UIStackViewAlignmentTop;
     self.stackView.spacing = 0.0;
@@ -43,8 +47,8 @@
 - (void)setupStyling
 {
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.cornerRadius = MenusDesignDefaultCornerRadius / 2.0;
-    self.layer.masksToBounds = YES; // could be a performance hit with more implmentation
+    self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
+    self.layer.borderWidth = 1.0;
 }
 
 #pragma mark - instance
@@ -129,7 +133,7 @@
     itemView.item = item;
     itemView.delegate = self;
     
-    NSLayoutConstraint *heightContrainst = [itemView.heightAnchor constraintEqualToConstant:50];
+    NSLayoutConstraint *heightContrainst = [itemView.heightAnchor constraintEqualToConstant:44];
     heightContrainst.priority = UILayoutPriorityDefaultHigh;
     heightContrainst.active = YES;
     itemView.hidden = YES;

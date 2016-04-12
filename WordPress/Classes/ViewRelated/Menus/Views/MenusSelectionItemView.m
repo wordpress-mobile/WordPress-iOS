@@ -117,19 +117,13 @@
         // draw the line separator
         CGContextSetLineWidth(context, 1.0);
         
-        if (self.previousItemView && !self.previousItemView.drawsHighlighted) {
-            // draw a line on the top
-            CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, 0);
-            CGContextAddLineToPoint(context, rect.size.width, 0);
-        }
-        
         if (self.nextItemView && !self.nextItemView.drawsHighlighted) {
             // draw a line on the bottom
-            CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, rect.size.height);
-            CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+            CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, rect.size.height - 0.5);
+            CGContextAddLineToPoint(context, rect.size.width, rect.size.height - 0.5);
         }
         
-        CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten30] CGColor]);
+        CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
         CGContextStrokePath(context);
     }
     
