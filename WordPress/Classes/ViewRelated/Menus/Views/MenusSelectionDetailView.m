@@ -2,6 +2,7 @@
 #import "WPStyleGuide.h"
 #import "Menu+ViewDesign.h"
 #import "MenusSelectionView.h"
+#import "WPFontManager.h"
 
 @import Gridicons;
 
@@ -66,16 +67,9 @@
         UIStackView *stackView = self.stackView;
         UIEdgeInsets margins = UIEdgeInsetsZero;
         CGFloat spacing = MenusDesignDefaultContentSpacing;
-        if (IS_IPHONE) {
-            // If we know we're on an iPhone and the screen is 320pts, lessen the padding.
-            // Otherwise things get a bit crowded.
-            CGRect screenBounds = [UIScreen mainScreen].bounds;
-            if (screenBounds.size.width == 320 || screenBounds.size.height == 320) {
-                spacing = MenusDesignDefaultContentSpacing / 2.0;
-            }
-        }
-        margins.left = spacing;
-        margins.right = spacing;
+        // Spacing + tweak for design stroke offset. 
+        margins.left = spacing + MenusDesignStrokeWidth;
+        margins.right = spacing + MenusDesignStrokeWidth;
         stackView.layoutMargins = margins;
         stackView.layoutMarginsRelativeArrangement = YES;
         stackView.distribution = UIStackViewDistributionFill;
@@ -85,9 +79,9 @@
     {
         UIImageView *iconView = [[UIImageView alloc] init];
         iconView.contentMode = UIViewContentModeScaleAspectFit;
-        iconView.tintColor = [WPStyleGuide darkBlue];
-        [iconView.widthAnchor constraintEqualToConstant:30].active = YES;
-        [iconView.heightAnchor constraintEqualToConstant:30].active = YES;
+        iconView.tintColor = [WPStyleGuide grey];
+        [iconView.widthAnchor constraintEqualToConstant:24].active = YES;
+        [iconView.heightAnchor constraintEqualToConstant:24].active = YES;
         [self.stackView addArrangedSubview:iconView];
         self.iconView = iconView;
     }
@@ -103,7 +97,7 @@
     {
         UILabel *label = [[UILabel alloc] init];
         label.numberOfLines = 0;
-        label.font = [WPStyleGuide subtitleFont];
+        label.font = [WPFontManager systemRegularFontOfSize:12.0];
         label.textColor = [WPStyleGuide grey];
         self.subTitleLabel = label;
         [self.labelsStackView addArrangedSubview:label];
@@ -111,7 +105,7 @@
     {
         UILabel *label = [[UILabel alloc] init];
         label.numberOfLines = 1;
-        label.font = [WPStyleGuide regularTextFontSemiBold];
+        label.font = [WPStyleGuide regularTextFont];
         label.textColor = [WPStyleGuide darkGrey];
         label.adjustsFontSizeToFitWidth = YES;
         label.minimumScaleFactor = 0.50;
@@ -123,9 +117,9 @@
         UIImageView *accessoryView = [[UIImageView alloc] init];
         accessoryView.contentMode = UIViewContentModeScaleAspectFit;
         accessoryView.image = [Gridicon iconOfType:GridiconTypeChevronDown];
-        accessoryView.tintColor = [WPStyleGuide mediumBlue];
-        [accessoryView.widthAnchor constraintEqualToConstant:30].active = YES;
-        [accessoryView.heightAnchor constraintEqualToConstant:30].active = YES;
+        accessoryView.tintColor = [WPStyleGuide greyLighten20];
+        [accessoryView.widthAnchor constraintEqualToConstant:24].active = YES;
+        [accessoryView.heightAnchor constraintEqualToConstant:24].active = YES;
         [self.stackView addArrangedSubview:accessoryView];
         self.accessoryView = accessoryView;
     }

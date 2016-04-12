@@ -67,7 +67,7 @@
         UIImage *image = [Gridicon iconOfType:GridiconTypePencil];
         UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
         imageView.translatesAutoresizingMaskIntoConstraints = NO;
-        imageView.tintColor = [WPStyleGuide darkBlue];
+        imageView.tintColor = [WPStyleGuide grey];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.textFieldDesignIcon = imageView;
         
@@ -77,8 +77,8 @@
         self.textFieldDesignIconLeadingConstraint = leadingConstraint;
         [self updateTextFieldDesignIconPositioning];
         [NSLayoutConstraint activateConstraints:@[
-                                                  [imageView.widthAnchor constraintEqualToConstant:12],
-                                                  [imageView.heightAnchor constraintEqualToConstant:12],
+                                                  [imageView.widthAnchor constraintEqualToConstant:14],
+                                                  [imageView.heightAnchor constraintEqualToConstant:14],
                                                   [imageView.centerYAnchor constraintEqualToAnchor:self.textField.centerYAnchor],
                                                   leadingConstraint
                                                   ]];

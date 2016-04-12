@@ -1,4 +1,5 @@
 
+extern CGFloat const MenusDesignStrokeWidth;
 extern CGFloat const MenusDesignDefaultCornerRadius;
 extern CGFloat const MenusDesignDefaultContentSpacing;
 
