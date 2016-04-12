@@ -4,10 +4,19 @@ import Foundation
 extension UIImageView
 {
     public func downloadImage(url: NSURL?, placeholderImage: UIImage?) {
-        downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: nil)
+        downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: nil, processImage: nil)
     }
-        
-    public func downloadImage(url: NSURL?, placeholderImage: UIImage?, success: ((UIImage) -> ())?, failure: ((NSError!) -> ())?) {
+
+    public func downloadResizedImage(url: NSURL?, placeholderImage: UIImage?, pointSize size: CGSize) {
+        let scale = UIScreen.mainScreen().scale
+        let pixelSize = CGSize(width: size.width * scale, height: size.height * scale)
+        let processor: UIImage -> UIImage = { image in
+            return image.resizedImageWithContentMode(.ScaleAspectFill, bounds: pixelSize, interpolationQuality: .High)
+        }
+        downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: nil, processImage: processor)
+    }
+
+    public func downloadImage(url: NSURL?, placeholderImage: UIImage?, success: ((UIImage) -> ())?, failure: ((NSError!) -> ())?, processImage processor: (UIImage -> UIImage)? = nil) {
         // Failsafe: Halt if the URL is empty
         guard let unwrappedUrl = url else {
             image = placeholderImage
@@ -22,9 +31,16 @@ extension UIImageView
             placeholderImage: placeholderImage,
             success: { [weak self]
                 (request: NSURLRequest, response: NSHTTPURLResponse?, image: UIImage) -> Void in
-                
-                self?.image = image
-                success?(image)
+
+                let processedImage: UIImage
+                if let imageProcessor = processor {
+                    processedImage = imageProcessor(image)
+                } else {
+                    processedImage = image
+                }
+
+                self?.image = processedImage
+                success?(processedImage)
             },
             failure: {
                 (request: NSURLRequest, response: NSHTTPURLResponse?, error: NSError) -> Void in
