@@ -6,6 +6,8 @@
 #import "RemoteMenuLocation.h"
 #import "WordPressRestApi.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 NSString * const MenusRemoteKeyID = @"id";
 NSString * const MenusRemoteKeyMenu = @"menu";
 NSString * const MenusRemoteKeyMenus = @"menus";
@@ -29,8 +31,8 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 
 - (void)createMenuWithName:(NSString *)menuName
                       blog:(Blog *)blog
-                   success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-                   failure:(MenusServiceRemoteFailureBlock)failure
+                   success:(nullable MenusServiceRemoteMenuRequestSuccessBlock)success
+                   failure:(nullable MenusServiceRemoteFailureBlock)failure
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
@@ -43,23 +45,22 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     [self.api POST:requestURL
         parameters:@{MenusRemoteKeyName: menuName}
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+               void(^responseFailure)() = ^() {
+                   NSString *message = NSLocalizedString(@"An error occurred creating the Menu.", @"An error description explaining that a Menu could not be created.");
+                   [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
+               };
+               NSNumber *menuID = [responseObject numberForKey:MenusRemoteKeyID];
+               if (!menuID) {
+                   responseFailure();
+                   return;
+               }
                if (success) {
-                   if (![responseObject isKindOfClass:[NSDictionary class]]) {
-                       NSString *message = NSLocalizedString(@"An error occurred creating the Menu.", @"An error description explaining that a Menu could not be created.");
-                       [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
-                       return;
-                   }
-                   NSNumber *menuID = [responseObject numberForKey:MenusRemoteKeyID];
-                   RemoteMenu *menu = nil;
-                   if (menuID) {
-                       menu = [RemoteMenu new];
-                       menu.menuID = menuID;
-                       menu.name = menuName;
-                   }
+                   RemoteMenu *menu = [RemoteMenu new];
+                   menu.menuID = menuID;
+                   menu.name = menuName;
                    success(menu);
                }
            } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-               
                if (failure) {
                    failure(error);
                }
@@ -68,11 +69,11 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 
 - (void)updateMenuForID:(NSNumber *)menuID
                    blog:(Blog *)blog
-               withName:(NSString *)updatedName
-          withLocations:(NSArray <NSString *> *)locationNames
-              withItems:(NSArray <RemoteMenuItem *> *)updatedItems
-                success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-                failure:(MenusServiceRemoteFailureBlock)failure
+               withName:(nullable NSString *)updatedName
+          withLocations:(nullable NSArray <NSString *> *)locationNames
+              withItems:(nullable NSArray <RemoteMenuItem *> *)updatedItems
+                success:(nullable MenusServiceRemoteMenuRequestSuccessBlock)success
+                failure:(nullable MenusServiceRemoteFailureBlock)failure
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
@@ -100,17 +101,23 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     [self.api POST:requestURL
         parameters:params
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+               void(^responseFailure)() = ^() {
+                   NSString *message = NSLocalizedString(@"An error occurred updating the Menu.", @"An error description explaining that a Menu could not be updated.");
+                   [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
+               };
+               if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                   responseFailure();
+                   return;
+               }
+               RemoteMenu *menu = [self menuFromJSONDictionary:[responseObject dictionaryForKey:MenusRemoteKeyMenu]];
+               if (!menu) {
+                   responseFailure();
+                   return;
+               }
                if (success) {
-                   if (![responseObject isKindOfClass:[NSDictionary class]]) {
-                       NSString *message = NSLocalizedString(@"An error occurred updating the Menu.", @"An error description explaining that a Menu could not be updated.");
-                       [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
-                       return;
-                   }
-                   NSDictionary *menuDictionary = [responseObject dictionaryForKey:MenusRemoteKeyMenu];
-                   success([self menuFromJSONDictionary:menuDictionary]);
+                   success(menu);
                }
            } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-               
                if (failure) {
                    failure(error);
                }
@@ -119,8 +126,8 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 
 - (void)deleteMenuForID:(NSNumber *)menuID
                    blog:(Blog *)blog
-                success:(MenusServiceRemoteSuccessBlock)success
-                failure:(MenusServiceRemoteFailureBlock)failure
+                success:(nullable MenusServiceRemoteSuccessBlock)success
+                failure:(nullable MenusServiceRemoteFailureBlock)failure
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
@@ -132,22 +139,23 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     [self.api POST:requestURL
         parameters:nil
            success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
-               if (success) {
-                   if (![responseObject isKindOfClass:[NSDictionary class]]) {
-                       NSString *message = NSLocalizedString(@"An error occurred deleting the Menu.", @"An error description explaining that a Menu could not be deleted.");
-                       [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
-                       return;
-                   }
-                   NSDictionary *response = responseObject;
-                   BOOL deleted = [[response numberForKey:MenusRemoteKeyDeleted] boolValue];
-                   if (deleted) {
+               void(^responseFailure)() = ^() {
+                   NSString *message = NSLocalizedString(@"An error occurred deleting the Menu.", @"An error description explaining that a Menu could not be deleted.");
+                   [self handleResponseErrorWithMessage:message url:requestURL failure:failure];
+               };
+               if (![responseObject isKindOfClass:[NSDictionary class]]) {
+                   responseFailure();
+                   return;
+               }
+               BOOL deleted = [[responseObject numberForKey:MenusRemoteKeyDeleted] boolValue];
+               if (deleted) {
+                   if (success) {
                        success();
-                   } else {
-                       failure(nil);
                    }
+               } else {
+                   responseFailure();
                }
            } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-               
                if (failure) {
                    failure(error);
                }
@@ -157,8 +165,8 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 #pragma mark - Remote queries: Getting menus
 
 - (void)getMenusForBlog:(Blog *)blog
-                success:(MenusServiceRemoteMenusRequestSuccessBlock)success
-                failure:(MenusServiceRemoteFailureBlock)failure
+                success:(nullable MenusServiceRemoteMenusRequestSuccessBlock)success
+                failure:(nullable MenusServiceRemoteFailureBlock)failure
 {
     NSNumber *blogId = [blog dotComID];
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
@@ -182,7 +190,6 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
               }
               
           } failure:^(AFHTTPRequestOperation * _Nonnull operation, NSError * _Nonnull error) {
-              
               if (failure) {
                   failure(error);
               }
@@ -191,17 +198,16 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 
 #pragma mark - Remote Model from JSON
 
-- (NSArray *)remoteMenusFromJSONArray:(NSArray<NSDictionary *> *)jsonMenus
+- (nullable NSArray *)remoteMenusFromJSONArray:(nullable NSArray<NSDictionary *> *)jsonMenus
 {
     return [jsonMenus wp_map:^id(NSDictionary *dictionary) {
         return [self menuFromJSONDictionary:dictionary];
     }];
 }
 
-- (NSArray *)menuItemsFromJSONDictionaries:(NSArray<NSDictionary *> *)dictionaries parent:(RemoteMenuItem *)parent
+- (nullable NSArray *)menuItemsFromJSONDictionaries:(nullable NSArray<NSDictionary *> *)dictionaries parent:(nullable RemoteMenuItem *)parent
 {
     NSParameterAssert([dictionaries isKindOfClass:[NSArray class]]);
-    
     return [dictionaries wp_map:^id(NSDictionary *dictionary) {
         
         RemoteMenuItem *item = [self menuItemFromJSONDictionary:dictionary];
@@ -211,7 +217,7 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
     }];
 }
 
-- (NSArray *)remoteMenuLocationsFromJSONArray:(NSArray<NSDictionary *> *)jsonLocations
+- (nullable NSArray *)remoteMenuLocationsFromJSONArray:(nullable NSArray<NSDictionary *> *)jsonLocations
 {
     return [jsonLocations wp_map:^id(NSDictionary *dictionary) {
         return [self menuLocationFromJSONDictionary:dictionary];
@@ -225,7 +231,7 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
  *
  *  @returns    A remote menu object.
  */
-- (RemoteMenu *)menuFromJSONDictionary:(NSDictionary *)dictionary
+- (nullable RemoteMenu *)menuFromJSONDictionary:(nullable NSDictionary *)dictionary
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     if (![dictionary isKindOfClass:[NSDictionary class]]) {
@@ -259,10 +265,10 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
  *
  *  @returns    A remote menu item object.
  */
-- (RemoteMenuItem *)menuItemFromJSONDictionary:(NSDictionary *)dictionary
+- (nullable RemoteMenuItem *)menuItemFromJSONDictionary:(nullable NSDictionary *)dictionary
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
-    if (![dictionary isKindOfClass:[NSDictionary class]]) {
+    if (![dictionary isKindOfClass:[NSDictionary class]] || !dictionary.count) {
         return nil;
     }
     
@@ -293,10 +299,10 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
  *
  *  @returns    A remote menu location object.
  */
-- (RemoteMenuLocation *)menuLocationFromJSONDictionary:(NSDictionary *)dictionary
+- (nullable RemoteMenuLocation *)menuLocationFromJSONDictionary:(nullable NSDictionary *)dictionary
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
-    if (![dictionary isKindOfClass:[NSDictionary class]]) {
+    if (![dictionary isKindOfClass:[NSDictionary class]] || !dictionary.count) {
         return nil;
     }
     
@@ -401,7 +407,7 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 
 #pragma mark - errors
 
-- (void)handleResponseErrorWithMessage:(NSString *)message url:(NSString *)urlStr failure:(MenusServiceRemoteFailureBlock)failure
+- (void)handleResponseErrorWithMessage:(NSString *)message url:(NSString *)urlStr failure:(nullable MenusServiceRemoteFailureBlock)failure
 {
     DDLogError(@"%@ - URL: %@", message, urlStr);
     NSError *error = [NSError errorWithDomain:NSURLErrorDomain
@@ -413,3 +419,5 @@ NSString * const MenusRemoteKeyLocationDefaultState = @"defaultState";
 }
 
 @end
+
+NS_ASSUME_NONNULL_END
