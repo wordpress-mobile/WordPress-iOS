@@ -52,8 +52,8 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
     ///     - visibleKeyboard: Whether to configure for a visible keyboard or without a keyboard.
     ///
     func adjustViewForKeyboard(visibleKeyboard: Bool) {
-        if visibleKeyboard && SigninEditingState.signinLastKeyboardHeight > 0 {
-            bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeight
+        if visibleKeyboard && SigninEditingState.signinLastKeyboardHeightDelta > 0 {
+            bottomContentConstraint.constant = SigninEditingState.signinLastKeyboardHeightDelta
             verticalCenterConstraint.constant = 0
         } else {
             bottomContentConstraint.constant = 0
@@ -72,10 +72,10 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
             return
         }
 
-        SigninEditingState.signinLastKeyboardHeight = keyboardInfo.keyboardFrame.height
+        SigninEditingState.signinLastKeyboardHeightDelta = heightDeltaFromKeyboardFrame(keyboardInfo.keyboardFrame)
         SigninEditingState.signinEditingStateActive = true
 
-        if bottomContentConstraint.constant == keyboardInfo.keyboardFrame.height {
+        if bottomContentConstraint.constant == SigninEditingState.signinLastKeyboardHeightDelta {
             return
         }
 
@@ -134,6 +134,17 @@ extension SigninKeyboardResponder where Self: NUXAbstractViewController
                 return nil
         }
         return (keyboardFrame: frame, animationDuration: duration)
+    }
+
+
+    func heightDeltaFromKeyboardFrame(keyboardFrame: CGRect) -> CGFloat {
+        // If an external keyboard is connected, the ending keyboard frame's maxY
+        // will exceed the height of the view controller's view.  
+        // There is no need to adjust the view in this case so just return 0.0.
+        if (keyboardFrame.maxY > self.view.frame.height) {
+            return 0.0
+        }
+        return keyboardFrame.height
     }
 
 }
