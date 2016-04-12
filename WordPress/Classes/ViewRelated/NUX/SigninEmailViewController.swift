@@ -51,7 +51,7 @@ import WordPressShared
         navigationController?.setNavigationBarHidden(false, animated: false)
 
         // Update special case login fields.
-        loginFields.userIsDotCom = false
+        loginFields.userIsDotCom = true
 
         configureEmailField()
         configureSubmitButton()
