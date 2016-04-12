@@ -4,6 +4,7 @@ import WordPressShared
 struct PlanListRow: ImmuTableRow {
     static let cell = ImmuTableCell.Class(WPTableViewCellSubtitle)
     static let customHeight: Float? = 92
+    private let iconSize = CGSize(width: 60, height: 60)
 
     let title: String
     let active: Bool
@@ -15,7 +16,7 @@ struct PlanListRow: ImmuTableRow {
 
     func configureCell(cell: UITableViewCell) {
         WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
-        cell.imageView?.setImageWithURL(iconUrl)
+        cell.imageView?.downloadResizedImage(iconUrl, placeholderImage: UIImage(named: "plan-placeholder")!, pointSize: iconSize)
         cell.textLabel?.attributedText = attributedTitle
         cell.textLabel?.adjustsFontSizeToFitWidth = true
         cell.detailTextLabel?.text = description
