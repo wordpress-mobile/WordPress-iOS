@@ -56,17 +56,19 @@ import WordPressShared.WPStyleGuide
 
     // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
-        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
         let gravatar = url.flatMap { Gravatar($0) }
 
         gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
     }
 
-    public func downloadGravatarWithGravatarEmail(email: String?) {
-        let fallbackImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
-        gravatarImageView.setImageWithGravatarEmail(email, fallbackImage: fallbackImage)
+    public func downloadGravatarWithEmail(email: String?) {
+        guard let unwrappedEmail = email else {
+            gravatarImageView.image = placeholderImage
+            return
+        }
+        
+        gravatarImageView.downloadGravatarWithEmail(unwrappedEmail, placeholderImage: placeholderImage)
     }
-    
 
     
     // MARK: - View Methods
@@ -154,10 +156,14 @@ import WordPressShared.WPStyleGuide
     }
 
 
-
     // MARK: - Aliases
     typealias Style = WPStyleGuide.Notifications
     
+    // MARK: - Private Calculated Properties
+    private var placeholderImage : UIImage {
+        return Style.blockGravatarPlaceholderImage(isApproved: isApproved)
+    }
+
     // MARK: - Private Constants
     private let separatorApprovedInsets             = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
     private let separatorUnapprovedInsets           = UIEdgeInsetsZero
