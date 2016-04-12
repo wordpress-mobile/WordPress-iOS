@@ -166,7 +166,7 @@ import WordPressShared
 
 
         // Is everything filled out?
-        if verificationCodeField.nonNilTrimmedText().isEmpty {
+        if loginFields.multifactorCode.isEmpty {
             WPError.showAlertWithTitle(NSLocalizedString("Error", comment: "Title of an error message"),
                                        message: NSLocalizedString("Please fill out all the fields", comment: "A short prompt asking the user to properly fill out all login fields."),
                                        withSupportButton: false)
