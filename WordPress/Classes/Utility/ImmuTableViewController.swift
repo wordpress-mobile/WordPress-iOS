@@ -31,7 +31,7 @@ extension ImmuTablePresenter where Self: UIViewController {
 protocol ImmuTableController {
     var title: String { get }
     var immuTableRows: [ImmuTableRow.Type] { get }
-    var errorMessage: Observable<String?> { get }
+    var noticeMessage: Observable<String?> { get }
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter) -> Observable<ImmuTable>
 }
 
@@ -67,11 +67,11 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
                 self?.handler.viewModel = $0
                 })
             .addDisposableTo(bag)
-        controller.errorMessage
+        controller.noticeMessage
             .pausable(visible)
             .observeOn(MainScheduler.instance)
             .subscribeNext({ [weak self] in
-                self?.errorMessage = $0
+                self?.noticeMessage = $0
                 })
             .addDisposableTo(bag)
     }
@@ -112,9 +112,9 @@ final class ImmuTableViewController: UITableViewController, ImmuTablePresenter {
         ImmuTable.registerRows(rows, tableView: tableView)
     }
 
-    var errorMessage: String? = nil {
+    var noticeMessage: String? = nil {
         didSet {
-            errorAnimator.animateErrorMessage(errorMessage)
+            errorAnimator.animateErrorMessage(noticeMessage)
         }
     }
 
