@@ -1,29 +1,29 @@
 import UIKit
 import WordPressShared
 
-/// ErrorAnimator is a helper class to animate error messages.
+/// NoticeAnimator is a helper class to animate error messages.
 ///
 /// The error messages show at the top of the target view, and are meant to
 /// appear to be attached to a navigation bar. The expected usage is to display
 /// offline status or requests taking longer than usual.
 ///
-/// To use an ErrorAnimator, you need to keep a reference to it, and call two
+/// To use an NoticeAnimator, you need to keep a reference to it, and call two
 /// methods:
 ///
 ///  - `layout()` from your `UIView.layoutSubviews()` or
 /// `UIViewController.viewDidLayoutSubviews()`. Failure to do this won't render
 /// the animation correctly.
 ///
-///  - `animateErrorMessage(_)` when you want to change the error displayed. Pass
+///  - `animateMessage(_)` when you want to change the message displayed. Pass
 /// nil if you want to hide the error view.
 ///
-class ErrorAnimator: Animator {
+class NoticeAnimator: Animator {
     let animationDuration = 0.3
     let targetHeight: CGFloat = 40
 
-    private var errorLabel: PaddedLabel? = nil
+    private var noticeLabel: PaddedLabel? = nil
     private var message: String? = nil
-    private var showingError: Bool {
+    private var showingMessage: Bool {
         return (message != nil)
     }
     let targetView: UIView
@@ -37,33 +37,33 @@ class ErrorAnimator: Animator {
     }
 
     func layout() {
-        if let errorLabel = errorLabel {
-            let errorFrame = errorLabel.frame
+        if let noticeLabel = noticeLabel {
+            let errorFrame = noticeLabel.frame
             var frame = targetView.bounds
             frame.size.height = errorFrame.height
-            errorLabel.frame = frame
+            noticeLabel.frame = frame
         }
     }
 
-    func animateErrorMessage(message: String?) {
-        let previouslyShowing = showingError
+    func animateMessage(message: String?) {
+        let previouslyShowing = showingMessage
         // Are we showing or hiding the message
         self.message = message
 
-        if previouslyShowing != showingError {
+        if previouslyShowing != showingMessage {
             animateWithDuration(animationDuration, preamble: preamble, animations: animations, cleanup: cleanup)
         }
-        if showingError {
-            errorLabel?.label.text = message
+        if showingMessage {
+            noticeLabel?.label.text = message
         }
     }
 
     private func preamble() {
-        if showingError {
-            errorLabel = createErrorLabel()
-            targetView.addSubview(errorLabel!)
-            errorLabel?.frame.size.height = 0
-            errorLabel?.label.alpha = 0
+        if showingMessage {
+            noticeLabel = createNoticeLabel()
+            targetView.addSubview(noticeLabel!)
+            noticeLabel?.frame.size.height = 0
+            noticeLabel?.label.alpha = 0
         }
 
         UIView.performWithoutAnimation { [unowned self] in
@@ -72,17 +72,17 @@ class ErrorAnimator: Animator {
     }
 
     private func animations() {
-        if showingError {
-            errorLabel?.frame.size.height = targetHeight
-            errorLabel?.label.alpha = 1
+        if showingMessage {
+            noticeLabel?.frame.size.height = targetHeight
+            noticeLabel?.label.alpha = 1
 
             targetTableView?.contentInset.top += targetHeight
             if targetTableView?.contentOffset.y == 0 {
                 targetTableView?.contentOffset.y = -targetHeight
             }
         } else {
-            errorLabel?.frame.size.height = 0
-            errorLabel?.label.alpha = 0
+            noticeLabel?.frame.size.height = 0
+            noticeLabel?.label.alpha = 0
 
             targetTableView?.contentInset.top -= targetHeight
         }
@@ -90,13 +90,13 @@ class ErrorAnimator: Animator {
     }
 
     private func cleanup() {
-        if !showingError {
-            errorLabel?.removeFromSuperview()
-            errorLabel = nil
+        if !showingMessage {
+            noticeLabel?.removeFromSuperview()
+            noticeLabel = nil
         }
     }
 
-    private func createErrorLabel() -> PaddedLabel {
+    private func createNoticeLabel() -> PaddedLabel {
         let paddedLabel = PaddedLabel()
         paddedLabel.padding.horizontal = 15
         paddedLabel.label.textColor = UIColor.whiteColor()
