@@ -151,8 +151,9 @@ class NUXAbstractViewController : UIViewController
     ///     - error: An NSError instance
     ///
     func displayError(error: NSError) {
+        let presentingController = navigationController ?? self
         let controller = SigninErrorViewController.controller()
-        controller.presentFromController(self)
+        controller.presentFromController(presentingController)
         controller.displayError(error, loginFields: loginFields, delegate: self)
     }
 
