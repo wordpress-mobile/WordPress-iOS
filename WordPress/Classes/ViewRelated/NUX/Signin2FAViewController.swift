@@ -86,16 +86,22 @@ import WordPressShared
         ]
 
         let styledString = "<style>body {font-family: sans-serif; font-size:14px; color: #ffffff; text-align:center;}</style>" + string
-        let attributedCode = try! NSMutableAttributedString(data: styledString.dataUsingEncoding(NSUTF8StringEncoding)!,
-                                                            options: options,
-                                                            documentAttributes: nil)
 
-        let attributedCodeHighlighted = attributedCode.mutableCopy() as! NSMutableAttributedString
+        guard let data = styledString.dataUsingEncoding(NSUTF8StringEncoding),
+            attributedCode = try? NSMutableAttributedString(data: data, options: options, documentAttributes: nil),
+            attributedCodeHighlighted = attributedCode.mutableCopy() as? NSMutableAttributedString
+            else {
+                return
+        }
+
         attributedCodeHighlighted.applyForegroundColor(WPNUXUtility.confirmationLabelColor())
 
-        sendCodeButton.titleLabel!.lineBreakMode = .ByWordWrapping
-        sendCodeButton.titleLabel!.textAlignment = .Center
-        sendCodeButton.titleLabel!.numberOfLines = 3
+        if let titleLabel = sendCodeButton.titleLabel  {
+            titleLabel.lineBreakMode = .ByWordWrapping
+            titleLabel.textAlignment = .Center
+            titleLabel.numberOfLines = 3
+        }
+
         sendCodeButton.setAttributedTitle(attributedCode, forState: .Normal)
         sendCodeButton.setAttributedTitle(attributedCodeHighlighted, forState: .Highlighted)
     }
