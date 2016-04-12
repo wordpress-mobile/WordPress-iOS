@@ -12,6 +12,8 @@ class AccountSettingsServiceTests: XCTestCase {
             aboutMe: "A description about me",
             username: "koketest",
             email: "koke@example.com",
+            emailPendingAddress: "A string of stuff",
+            emailPendingChange: true,
             primarySiteID: 16764956,
             webAddress: "http://koke.me",
             language: "es"
