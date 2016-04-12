@@ -3,6 +3,7 @@
 /**
  *  This class is a wrapper for the fields needed for logging into a WordPress site.
  */
+NS_ASSUME_NONNULL_BEGIN
 @interface LoginFields : NSObject
 
 @property (nonatomic, copy) NSString *username;
@@ -34,4 +35,4 @@
                shouldDisplayMultiFactor:(BOOL)shouldDisplayMultifactor;
 
 @end
-
+NS_ASSUME_NONNULL_END

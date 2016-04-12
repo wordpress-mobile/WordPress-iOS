@@ -53,8 +53,9 @@ class SigninLinkRequestViewController : NUXAbstractViewController
     /// Makes the call to request a magic authentication link be emailed to the user.
     ///
     func requestAuthenticationLink() {
-        guard let email = loginFields.username where email.isValidEmail() else {
-            // This is a bit of paranioa as in practice it should never happen. 
+        let email = loginFields.username
+        guard email.isValidEmail() else {
+            // This is a bit of paranioa as in practice it should never happen.
             // However, let's make sure we give the user some useful feedback just in case.
             DDLogSwift.logError("Attempted to request authentication link, but the email address did not appear valid.")
             WPError.showAlertWithTitle(NSLocalizedString("Can Not Request Link", comment: "Title of an alert letting the user know"),
