@@ -234,8 +234,12 @@ import WordPressShared
 
         guard emailOrUsername.isValidEmail() else {
             // A username was entered, not an email address.
-            // Proceed to the password form.
-            signinWithUsernamePassword()
+            // Proceed to the next form:
+            if SigninHelpers.isUsernameReserved(emailOrUsername) {
+                signinToSelfHostedSite()
+            } else {
+                signinWithUsernamePassword()
+            }
             return
         }
 
