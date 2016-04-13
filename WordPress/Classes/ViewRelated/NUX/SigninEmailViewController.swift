@@ -133,7 +133,7 @@ import WordPressShared
     /// - Parameters:
     ///     - loading: True if the form should be configured to a "loading" state.
     ///
-    func configureLoading(loading: Bool) {
+    func configureViewLoading(loading: Bool) {
         emailTextField.enabled = !loading
         submitButton.enabled = !loading
         submitButton.showActivityIndicator(loading)
@@ -241,12 +241,12 @@ import WordPressShared
             return
         }
 
-        configureLoading(true)
+        configureViewLoading(true)
 
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         service.findExistingAccountByEmail(emailOrUsername,
            success: { [weak self] (found: Bool) in
-                self?.configureLoading(false)
+                self?.configureViewLoading(false)
                 if (found) {
                     self?.requestLink()
                 } else {
@@ -255,7 +255,7 @@ import WordPressShared
 
             }, failure: { [weak self] (error: NSError!) in
                 DDLogSwift.logError(error.localizedDescription)
-                self?.configureLoading(false)
+                self?.configureViewLoading(false)
                 self?.displayError(error)
             })
     }
