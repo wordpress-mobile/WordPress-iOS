@@ -324,7 +324,7 @@
     }
     
     for (MenuItemView *itemView in self.itemViews) {
-        if (CGRectContainsPoint(itemView.frame, location)) {
+        if (CGRectContainsPoint([itemView orderingToggleRect], [[touches anyObject] locationInView:itemView])) {
             [self beginOrdering:itemView];
             break;
         }
@@ -336,12 +336,13 @@
     CGPoint location = [[touches anyObject] locationInView:self];
     
     CGPoint startLocation = self.touchesBeganLocation;
+    
     self.touchesMovedLocation = location;
     CGPoint vector = CGPointZero;
     vector.x = location.x - startLocation.x;
     vector.y = location.y - startLocation.y;
     
-    if (self.isEditingForItemViewInsertion) {
+    if (self.isEditingForItemViewInsertion || !self.itemViewForOrdering) {
         return;
     }
     
@@ -742,11 +743,6 @@
 #pragma mark - MenuItemViewDelegate
 
 - (void)itemViewSelected:(MenuItemView *)itemView
-{
-    [self.delegate itemsView:self selectedItemForEditing:itemView.item];
-}
-
-- (void)itemViewEditingButtonPressed:(MenuItemView *)itemView
 {
     [self.delegate itemsView:self selectedItemForEditing:itemView.item];
 }

@@ -1,5 +1,6 @@
 #import "MenuItemsStackableView.h"
 #import "WPStyleGuide.h"
+#import "WPFontManager.h"
 #import "MenuItem+ViewDesign.h"
 
 @interface MenuItemDrawingView ()
@@ -105,7 +106,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
         label.translatesAutoresizingMaskIntoConstraints = NO;
         label.numberOfLines = 0;
         label.textColor = [self textLabelColor];
-        label.font = [WPStyleGuide regularTextFont];
+        label.font = [WPFontManager systemRegularFontOfSize:17.0];
         label.backgroundColor = [UIColor clearColor];
         self.textLabel = label;
         [stackView addArrangedSubview:label];

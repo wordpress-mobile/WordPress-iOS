@@ -97,7 +97,7 @@
     {
         UILabel *label = [[UILabel alloc] init];
         label.numberOfLines = 0;
-        label.font = [WPFontManager systemRegularFontOfSize:12.0];
+        label.font = [WPFontManager systemRegularFontOfSize:13.0];
         label.textColor = [WPStyleGuide grey];
         self.subTitleLabel = label;
         [self.labelsStackView addArrangedSubview:label];
@@ -105,7 +105,7 @@
     {
         UILabel *label = [[UILabel alloc] init];
         label.numberOfLines = 1;
-        label.font = [WPStyleGuide regularTextFont];
+        label.font = [WPFontManager systemRegularFontOfSize:17.0];
         label.textColor = [WPStyleGuide darkGrey];
         label.adjustsFontSizeToFitWidth = YES;
         label.minimumScaleFactor = 0.50;
