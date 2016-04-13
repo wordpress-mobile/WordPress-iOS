@@ -59,6 +59,7 @@
 #import "WPPostViewController.h"
 #import "WPTabBarController.h"
 #import <WPMediaPicker/WPMediaPicker.h>
+#import <WordPressEditor/WPLegacyEditorFormatToolbar.h>
 
 int ddLogLevel = DDLogLevelInfo;
 
@@ -621,6 +622,10 @@ int ddLogLevel = DDLogLevelInfo;
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager systemSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
     [[UICollectionView appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaPickerViewController class] ]] setBackgroundColor:[WPStyleGuide greyLighten30]];
     [[WPMediaCollectionViewCell appearanceWhenContainedInInstancesOfClasses:@[ [WPMediaCollectionViewController class] ]] setBackgroundColor:[WPStyleGuide lightGrey]];
+
+    [[WPLegacyEditorFormatToolbar appearance] setBarTintColor:[[WPStyleGuide lightGrey] colorWithAlphaComponent:0.5]];
+    [[WPLegacyEditorFormatToolbar appearance] setTintColor:[WPStyleGuide greyLighten10]];
+    [[UIBarButtonItem appearanceWhenContainedInInstancesOfClasses:@[[WPLegacyEditorFormatToolbar class]]] setTintColor:[WPStyleGuide greyLighten10]];
 }
 
 - (void)create3DTouchShortcutItems
