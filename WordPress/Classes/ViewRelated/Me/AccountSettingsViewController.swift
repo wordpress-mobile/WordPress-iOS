@@ -50,15 +50,10 @@ private struct AccountSettingsController: SettingsController {
 
     var emailNoticeMessage: Observable<String?> {
         return service.settings.map {
-            guard let pendingAddress = $0?.emailPendingAddress where $0?.emailPendingChange == true else {
-                return nil
-            }
-            
-            return NSLocalizedString("There is a pending change of your email to \(pendingAddress). Please check your inbox for a confirmation link.",
-                                    comment: "Displayed when there's a pending Email Change")
+            return self.noticeForAccountSettings($0)
         }
     }
-
+    
     var noticeMessage: Observable<String?> {
         return Observable.combineLatest(refreshStatusMessage, emailNoticeMessage) { refresh, email -> String? in
             return refresh ?? email
@@ -78,7 +73,7 @@ private struct AccountSettingsController: SettingsController {
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
             value: settings?.emailPendingAddress ?? settings?.email ?? "",
-            action: presenter.present(insideNavigationController(editEmailAddress(service)))
+            action: presenter.present(insideNavigationController(editEmailAddress(settings, service: service)))
         )
         
         let primarySite = EditableTextRow(
@@ -107,9 +102,20 @@ private struct AccountSettingsController: SettingsController {
     
     // MARK: - Actions
 
-    func editEmailAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
-        let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
-        return editEmailAddress(AccountSettingsChange.Email, hint: hint, displaysNavigationButtons: true, service: service)
+    func editEmailAddress(settings: AccountSettings?, service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
+        return { row in
+            let editableRow = row as! EditableTextRow
+            let hint = NSLocalizedString("Will not be publicly displayed.", comment: "Help text when editing email address")
+            let settingsViewController =  self.controllerForEditableText(editableRow,
+                                                                         changeType: AccountSettingsChange.Email,
+                                                                         hint: hint,
+                                                                         displaysNavigationButtons: true,
+                                                                         service: service)
+            settingsViewController.mode = .Email
+            settingsViewController.notice = self.noticeForAccountSettings(settings)
+            
+            return settingsViewController
+        }
     }
     
     func editWebAddress(service: AccountSettingsService) -> ImmuTableRowControllerGenerator {
@@ -137,5 +143,16 @@ private struct AccountSettingsController: SettingsController {
             return selectorViewController
         }
     }
+    
+    
+    // MARK: - Private Helpers
+    
+    private func noticeForAccountSettings(settings: AccountSettings?) -> String? {
+        guard let pendingAddress = settings?.emailPendingAddress where settings?.emailPendingChange == true else {
+            return nil
+        }
+        
+        return NSLocalizedString("There is a pending change of your email to \(pendingAddress). Please check your inbox for a confirmation link.",
+                                 comment: "Displayed when there's a pending Email Change")
+    }
 }
-
