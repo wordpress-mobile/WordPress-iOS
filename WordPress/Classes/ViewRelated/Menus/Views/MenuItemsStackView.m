@@ -465,7 +465,7 @@
             } else  {
                 if (selectedItem.parent) {
                     
-                    MenuItem *lastChildItem = [selectedItem.parent lastOrderedDescendantInOrderedItems:orderedItems];
+                    MenuItem *lastChildItem = [selectedItem.parent lastDescendantInOrderedItems:orderedItems];
                     // only the lastChildItem can move up the tree, otherwise it would break the visual child/parent relationship
                     if (selectedItem == lastChildItem) {
                         // try to move up the parent tree
@@ -782,7 +782,7 @@
         {
             if (toggledItem.children.count) {
                 // Find the last child and insert below it.
-                MenuItem *lastChild = [toggledItem lastOrderedDescendantInOrderedItems:orderedItems];
+                MenuItem *lastChild = [toggledItem lastDescendantInOrderedItems:orderedItems];
                 [orderedItems insertObject:newItem atIndex:[orderedItems indexOfObject:lastChild] + 1];
                 requiresOffsetInsertionOrder = YES;
             } else {
