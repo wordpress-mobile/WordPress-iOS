@@ -18,102 +18,133 @@ import WordPressShared
 /// nil if you want to hide the error view.
 ///
 class NoticeAnimator: Animator {
-    let animationDuration   = 0.3
-    let minimumHeight       = CGFloat(40)
-    let padding             = UIOffset(horizontal: 15, vertical: 20)
-
-    private var noticeLabel: PaddedLabel? = nil
-    private var message: String? = nil
-    private var showingMessage: Bool {
-        return (message != nil)
-    }
-    private var messageHeight : CGFloat {
-        guard let label = noticeLabel?.label, let message = message else {
-            return minimumHeight
-        }
-        
-        let height = message.suggestedSizeWithFont(label.font, width: label.frame.width).height + padding.vertical
-        return max(round(height), minimumHeight)
+    
+    // MARK: - Private Constants
+    private struct Defaults {
+        static let animationDuration   = 0.3
+        static let padding             = UIOffset(horizontal: 15, vertical: 20)
+        static let labelFont           = WPStyleGuide.regularTextFont()
     }
     
-    let targetView: UIView
-    var targetTableView: UITableView? {
+    
+    // MARK: - Private properties
+    private var previousHeight : CGFloat = 0
+    private var message : String? {
+        get {
+            return noticeLabel.label.text
+        }
+        set {
+            noticeLabel.label.text = newValue
+        }
+    }
+    
+    
+    // MARK: - Private Immutable Properties
+    private let targetView : UIView
+    private let noticeLabel : PaddedLabel = {
+        let label = PaddedLabel()
+        label.backgroundColor = WPStyleGuide.mediumBlue()
+        label.clipsToBounds = true
+        label.padding.horizontal = Defaults.padding.horizontal
+        label.label.textColor = UIColor.whiteColor()
+        label.label.font = Defaults.labelFont
+        label.label.numberOfLines = 0
+        return label
+    }()
+    
+    
+    // MARK: - Private Computed Properties
+    private var shouldDisplayMessage : Bool {
+        return message != nil
+    }
+    private var targetTableView: UITableView? {
         return targetView as? UITableView
     }
 
+    
+    
+    // MARK: - Initializers
     init(target: UIView) {
         targetView = target
         super.init()
     }
 
+    
+    
+    // MARK: - Public Methods
     func layout() {
-        if let noticeLabel = noticeLabel {
-            let errorFrame = noticeLabel.frame
-            var frame = targetView.bounds
-            frame.size.height = errorFrame.height
-            noticeLabel.frame = frame
-        }
+        var targetFrame = targetView.bounds
+        targetFrame.size.height = heightForMessage(message)
+        noticeLabel.frame = targetFrame
     }
 
     func animateMessage(message: String?) {
-        let previouslyShowing = showingMessage
-        // Are we showing or hiding the message
+        let shouldAnimate = self.message != message
         self.message = message
 
-        if previouslyShowing != showingMessage {
-            animateWithDuration(animationDuration, preamble: preamble, animations: animations, cleanup: cleanup)
-        }
-        
-        if showingMessage {
-            noticeLabel?.label.text = message
+        if shouldAnimate {
+            animateWithDuration(Defaults.animationDuration, preamble: preamble, animations: animations, cleanup: cleanup)
         }
     }
 
+    
+    
+    // MARK: - Animation Methods
     private func preamble() {
-        if showingMessage {
-            noticeLabel = createNoticeLabel()
-            targetView.addSubview(noticeLabel!)
-            noticeLabel?.frame.size.height = 0
-            noticeLabel?.label.alpha = 0
+        if shouldDisplayMessage == true && noticeLabel.superview == nil {
+            targetView.addSubview(noticeLabel)
+            noticeLabel.frame.size.height = CGSizeZero.height
+            noticeLabel.label.alpha = 0
         }
 
-        UIView.performWithoutAnimation { [unowned self] in
-            self.targetView.layoutIfNeeded()
+        UIView.performWithoutAnimation { [weak self] in
+            self?.targetView.layoutIfNeeded()
         }
     }
 
     private func animations() {
-        if showingMessage {
-            noticeLabel?.frame.size.height = messageHeight
-            noticeLabel?.label.alpha = 1
+        let height = heightForMessage(message)
+        
+        if shouldDisplayMessage {
+            // Position + Size + Alpha
+            noticeLabel.frame.origin.y = -height
+            noticeLabel.frame.size.height = height
+            noticeLabel.label.alpha = 1
 
-            targetTableView?.contentInset.top += messageHeight
+            // Table Insets + Offset
+            targetTableView?.contentInset.top += height - previousHeight
             if targetTableView?.contentOffset.y == 0 {
-                targetTableView?.contentOffset.y = -messageHeight
+                targetTableView?.contentOffset.y = -height + previousHeight
             }
-        } else {
-            noticeLabel?.frame.size.height = 0
-            noticeLabel?.label.alpha = 0
 
-            targetTableView?.contentInset.top -= messageHeight
+        } else {
+            // Size + Alpha
+            noticeLabel.frame.size.height = CGSizeZero.height
+            noticeLabel.label.alpha = 0
+
+            // Table Insets
+            targetTableView?.contentInset.top -= height
         }
-        targetView.layoutIfNeeded()
+        
+        previousHeight = height
     }
     
     private func cleanup() {
-        if !showingMessage {
-            noticeLabel?.removeFromSuperview()
-            noticeLabel = nil
+        if shouldDisplayMessage == false {
+            noticeLabel.removeFromSuperview()
+            previousHeight = CGSizeZero.height
         }
     }
 
-    private func createNoticeLabel() -> PaddedLabel {
-        let paddedLabel = PaddedLabel()
-        paddedLabel.padding.horizontal = padding.horizontal
-        paddedLabel.label.textColor = UIColor.whiteColor()
-        paddedLabel.backgroundColor = WPStyleGuide.mediumBlue()
-        paddedLabel.label.font = WPStyleGuide.regularTextFont()
-        paddedLabel.label.numberOfLines = 0
-        return paddedLabel
+    
+    
+    // MARK: - Helpers
+    private func heightForMessage(message : String?) -> CGFloat {
+        guard let message = message else {
+            return CGSizeZero.height
+        }
+        
+        let size = message.suggestedSizeWithFont(Defaults.labelFont, width: targetView.frame.width)
+        return round(size.height + Defaults.padding.vertical)
     }
 }
