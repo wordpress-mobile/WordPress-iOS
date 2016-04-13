@@ -10,8 +10,6 @@ import WordPressShared
     @IBOutlet var onePasswordButton: UIButton!
     @IBOutlet var emailTextField: WPWalkthroughTextField!
     @IBOutlet var submitButton: NUXSubmitButton!
-    @IBOutlet var selfHostedButton: WPNUXSecondaryButton!
-    @IBOutlet var createSiteButton: WPNUXSecondaryButton!
     @IBOutlet var safariPasswordButton: WPNUXSecondaryButton!
     @IBOutlet var bottomContentConstraint: NSLayoutConstraint!
     @IBOutlet var verticalCenterConstraint: NSLayoutConstraint!
