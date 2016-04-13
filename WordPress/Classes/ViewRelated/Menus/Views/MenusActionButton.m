@@ -3,8 +3,6 @@
 #import "WPFontManager.h"
 #import "Menu+ViewDesign.h"
 
-static CGFloat const MenusDetailsButtonDesignPadding = 2.0;
-
 @interface MenusActionButton ()
 
 @property (nonatomic, assign) BOOL showsDesignHighlighted;
