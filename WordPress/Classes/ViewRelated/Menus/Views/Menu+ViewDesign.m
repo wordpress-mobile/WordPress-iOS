@@ -1,8 +1,8 @@
 #import "Menu+ViewDesign.h"
 
-CGFloat const MenusDesignStrokeWidth = 1.0;
+CGFloat const MenusDesignStrokeWidth = 0.5;
 CGFloat const MenusDesignDefaultCornerRadius = 4.0;
-CGFloat const MenusDesignDefaultContentSpacing = 14.0;
+CGFloat const MenusDesignDefaultContentSpacing = 16.0;
 
 @implementation Menu (ViewDesign)
 

@@ -68,8 +68,8 @@
         UIEdgeInsets margins = UIEdgeInsetsZero;
         CGFloat spacing = MenusDesignDefaultContentSpacing;
         // Spacing + tweak for design stroke offset. 
-        margins.left = spacing + MenusDesignStrokeWidth;
-        margins.right = spacing + MenusDesignStrokeWidth;
+        margins.left = spacing;
+        margins.right = spacing;
         stackView.layoutMargins = margins;
         stackView.layoutMarginsRelativeArrangement = YES;
         stackView.distribution = UIStackViewDistributionFill;

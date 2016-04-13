@@ -7,6 +7,7 @@
 #import "MenuItemInsertionView.h"
 #import "MenuItemsVisualOrderingView.h"
 #import "ContextManager.h"
+#import "Menu+ViewDesign.h"
 
 @interface MenuItemsStackView () <MenuItemsStackableViewDelegate, MenuItemViewDelegate, MenuItemInsertionViewDelegate, MenuItemsVisualOrderingViewDelegate>
 
@@ -45,6 +46,8 @@
 - (void)setupStyling
 {
     self.backgroundColor = [WPStyleGuide greyLighten30];
+    self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
+    self.layer.borderWidth = MenusDesignStrokeWidth;
 }
 
 - (void)setMenu:(Menu *)menu
