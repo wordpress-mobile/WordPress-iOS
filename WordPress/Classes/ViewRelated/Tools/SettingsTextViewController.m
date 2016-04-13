@@ -10,12 +10,18 @@
 
 static CGFloat const HorizontalMargin = 15.0f;
 
+typedef NS_ENUM(NSInteger, SettingsTextSections) {
+    SettingsTextSectionsTextfield = 0,
+    SettingsTextSectionsAction,
+    SettingsTextSectionsCount
+};
 
 #pragma mark - Private Properties
 
 @interface SettingsTextViewController() <UITextFieldDelegate>
 @property (nonatomic, strong) NoticeAnimator    *noticeAnimator;
 @property (nonatomic, strong) WPTableViewCell   *textFieldCell;
+@property (nonatomic, strong) WPTableViewCell   *actionCell;
 @property (nonatomic, strong) UITextField       *textField;
 @property (nonatomic, strong) UIView            *hintView;
 @property (nonatomic, strong) NSString          *hint;
@@ -165,6 +171,21 @@ static CGFloat const HorizontalMargin = 15.0f;
     return _textFieldCell;
 }
 
+- (WPTableViewCell *)actionCell
+{
+    if (_actionCell) {
+        return _actionCell;
+    }
+    _actionCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    _actionCell.frame = CGRectInset(_actionCell.bounds, HorizontalMargin, 0);
+    _actionCell.textLabel.text = self.actionText;
+    _actionCell.textLabel.textAlignment = NSTextAlignmentCenter;
+    
+    [WPStyleGuide configureTableViewActionCell:_actionCell];
+    
+    return _actionCell;
+}
+
 - (UITextField *)textField
 {
     if (_textField) {
@@ -202,7 +223,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return _displaysActionButton ? SettingsTextSectionsCount : SettingsTextSectionsCount - 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -212,12 +233,25 @@ static CGFloat const HorizontalMargin = 15.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return self.textFieldCell;
+    if (indexPath.section == 0) {
+        return self.textFieldCell;
+    }
+    
+    return self.actionCell;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    return self.hintView;
+    return section == 0 ? self.hintView : nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectSelectedRowWithAnimation:YES];
+    
+    if (indexPath.section == SettingsTextSectionsAction && self.onActionPress != nil) {
+        self.onActionPress();
+    }
 }
 
 
