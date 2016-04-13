@@ -123,7 +123,7 @@ class NoticeAnimator: Animator {
             noticeLabel.label.alpha = 0
 
             // Table Insets
-            targetTableView?.contentInset.top -= height
+            targetTableView?.contentInset.top -= previousHeight
         }
         
         previousHeight = height
