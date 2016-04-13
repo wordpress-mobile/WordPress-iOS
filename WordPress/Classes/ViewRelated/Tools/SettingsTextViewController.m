@@ -251,6 +251,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     
     if (indexPath.section == SettingsTextSectionsAction && self.onActionPress != nil) {
         self.onActionPress();
+        [self dismissViewController];
     }
 }
 
@@ -280,13 +281,16 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 {
     BOOL requiresSecureTextEntry = NO;
     UIKeyboardType keyboardType = UIKeyboardTypeDefault;
+    UITextAutocapitalizationType autocapitalizationType = UITextAutocapitalizationTypeWords;
     
     if (newMode == SettingsTextModesPassword) {
         requiresSecureTextEntry = YES;
     } else if (newMode == SettingsTextModesEmail) {
         keyboardType = UIKeyboardTypeEmailAddress;
+        autocapitalizationType = UITextAutocapitalizationTypeNone;
     }
     
+    self.textField.autocapitalizationType = autocapitalizationType;
     self.textField.keyboardType = keyboardType;
     self.textField.secureTextEntry = requiresSecureTextEntry;
 }
