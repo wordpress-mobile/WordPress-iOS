@@ -8,6 +8,7 @@ typedef NS_ENUM(NSInteger, SettingsTextModes) {
     SettingsTextModesPassword
 };
 
+typedef void (^SettingsTextAction)(void);
 typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 
 /// Reusable component that renders a UITextField + Hint onscreen. Useful for Text / Password / Email data entry.
@@ -18,9 +19,21 @@ typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 ///
 @property (nullable, nonatomic, copy) SettingsTextChanged onValueChanged;
 
+/// Block to be executed whenever the Action, if visible, is pressed.
+///
+@property (nullable, nonatomic, copy) SettingsTextAction onActionPress;
+
 /// Specifies the Notice Message that should be displayed on top of the table.
 ///
 @property (nullable, nonatomic, copy) NSString *notice;
+
+/// Specifies the Action Button Text. If visible.
+///
+@property (nullable, nonatomic, copy) NSString *actionText;
+
+/// Indicates whether an action button should be displayed at the bottom, or not.
+///
+@property (nonatomic, assign) BOOL displaysActionButton;
 
 /// Specifies whether we should display navigation buttons (Cancel / Done) or not.
 ///
