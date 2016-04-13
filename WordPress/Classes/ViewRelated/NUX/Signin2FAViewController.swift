@@ -164,13 +164,6 @@ import WordPressShared
     func validateForm() {
         view.endEditing(true)
 
-        // is reachable?
-        if !ReachabilityUtils.isInternetReachable() {
-            ReachabilityUtils.showAlertNoInternetConnection()
-            return
-        }
-
-
         // Is everything filled out?
         if loginFields.multifactorCode.isEmpty {
             WPError.showAlertWithTitle(NSLocalizedString("Error", comment: "Title of an error message"),
