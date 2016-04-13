@@ -7,8 +7,8 @@ import WordPressComAnalytics
 ///
 protocol SigninWPComSyncHandler: class
 {
-    func configureLoading(loading: Bool)
-    func configureStatusMessage(message: String)
+    func configureViewLoading(loading: Bool)
+    func configureStatusLabel(message: String)
     func dismiss()
     func displayError(error: NSError)
     func updateSafariCredentialsIfNeeded()
@@ -32,7 +32,7 @@ extension SigninWPComSyncHandler
     func syncWPCom(username: String, authToken: String, requiredMultifactor: Bool) {
         updateSafariCredentialsIfNeeded()
 
-        configureStatusMessage(NSLocalizedString("Getting account information", comment:"Alerts the user that wpcom account information is being retrieved."));
+        configureStatusLabel(NSLocalizedString("Getting account information", comment:"Alerts the user that wpcom account information is being retrieved."));
 
         let accountFacade = AccountServiceFacade()
         let account = accountFacade.createOrUpdateWordPressComAccountWithUsername(username, authToken: authToken)
@@ -57,8 +57,8 @@ extension SigninWPComSyncHandler
     ///     - requiredMultifactor: Whether a multifactor code was required while authenticating.
     ///
     func handleSyncSuccess(requiredMultifactor: Bool) {
-        configureStatusMessage("")
-        configureLoading(false)
+        configureStatusLabel("")
+        configureViewLoading(false)
         dismiss()
 
         let properties = [
@@ -74,8 +74,8 @@ extension SigninWPComSyncHandler
     /// authenticated user.
     ///
     func handleSyncFailure(error: NSError) {
-        configureStatusMessage("")
-        configureLoading(false)
+        configureStatusLabel("")
+        configureViewLoading(false)
 
         // At this point the user is authed and there is a valid account in core data.
         // Make a note of the error and just dismiss the vc. There might be some
