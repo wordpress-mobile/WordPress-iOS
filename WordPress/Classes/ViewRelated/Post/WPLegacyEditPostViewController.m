@@ -24,6 +24,7 @@
 #import "WPAndDeviceMediaLibraryDataSource.h"
 #import "NSString+Helpers.h"	
 #import "WPAppAnalytics.h"
+@import Gridicons;
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
@@ -39,6 +40,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 @property (nonatomic, strong) UIProgressView * mediaProgressView;
 @property (nonatomic, strong) NSMutableDictionary *mediaInProgress;
 @property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaLibraryDataSource;
+@property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
+@property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
 
 @end
 
@@ -213,15 +217,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     } else {
         UIButton *titleButton = self.titleBarButton;
         self.navigationItem.titleView = titleButton;
-        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", [self editorTitle]]
+        NSString *name = self.post.blog.settings.name;
+        NSString *title = name.length == 0 ? self.post.blog.url : name;
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", title]
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager systemBoldFontOfSize:14.0] }];
 
-        NSString *name = self.post.blog.settings.name;
-        NSString *subtext = name.length == 0 ? self.post.blog.url : name;
-        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager systemRegularFontOfSize:10.0] };
-        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
-                                                                                         attributes:subtextAttributes];
-        [titleText appendAttributedString:titleSubtext];
         [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
 
         [titleButton sizeToFit];
@@ -463,7 +463,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
 
         } else if ([self.post.status isEqualToString:PostStatusPublish]) {
-            buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
+            buttonTitle = NSLocalizedString(@"Post", @"Publish button label.");
 
         } else {
             buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
@@ -472,23 +472,56 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
     }
 
-    if (self.navigationItem.rightBarButtonItem == nil) {
-        UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-                                                                       style:[WPStyleGuide barButtonStyleForDone]
-                                                                      target:self
-                                                                      action:@selector(saveAction)];
-        
-        // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
-        [saveButton setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
-        [saveButton setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
-        self.navigationItem.rightBarButtonItem = saveButton;
-    } else {
-        self.navigationItem.rightBarButtonItem.title = buttonTitle;
+    self.saveBarButtonItem.title = buttonTitle;
+    BOOL updateEnabled = [self.post canSave];
+    [self.saveBarButtonItem setEnabled:updateEnabled];
+    self.navigationItem.rightBarButtonItems = @[self.saveBarButtonItem, self.optionsBarButtonItem, self.previewBarButtonItem];
+}
+
+- (UIBarButtonItem *)optionsBarButtonItem
+{
+    if (!_optionsBarButtonItem) {
+        UIImage *image = [Gridicon iconOfType:GridiconTypeCog];
+        _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:self
+                                                                action:@selector(showSettings)];
+
+        NSString *optionsTitle = NSLocalizedString(@"Options", @"Title of the Post Settings navigation button in the Post Editor. Tapping shows settings and options related to the post being edited.");
+        _optionsBarButtonItem.accessibilityLabel = optionsTitle;
+        _optionsBarButtonItem.accessibilityIdentifier = @"Options";
     }
 
-    BOOL updateEnabled = [self.post canSave];
-    [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
+    return _optionsBarButtonItem;
 }
+
+- (UIBarButtonItem *)previewBarButtonItem
+{
+    if (!_previewBarButtonItem) {
+        UIImage *image = [Gridicon iconOfType:GridiconTypeVisible];
+        _previewBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image
+                                                                 style:UIBarButtonItemStylePlain
+                                                                target:self
+                                                                action:@selector(showPreview)];
+        _previewBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
+    }
+
+    return _previewBarButtonItem;
+}
+
+- (UIBarButtonItem *)saveBarButtonItem
+{
+    if (!_saveBarButtonItem) {
+        _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).")
+                                                              style:UIBarButtonItemStylePlain
+                                                             target:self
+                                                             action:@selector(saveAction)];
+        _saveBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
+    }
+
+    return _saveBarButtonItem;
+}
+
 
 - (void)refreshUIForCurrentPost
 {
@@ -510,7 +543,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (UIButton *)titleBarButton
 {
     if (!_titleBarButton) {
-        UIButton *titleButton = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 33.0f) buttonStyle:WPBlogSelectorButtonTypeStacked];
+        UIButton *titleButton = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 33.0f) buttonStyle:WPBlogSelectorButtonTypeSingleLine];
         [titleButton addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
         _titleBarButton = titleButton;
     }
@@ -520,7 +553,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (UIButton *)uploadStatusButton
 {
     if (!_uploadStatusButton) {
-        UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 250.0f, 33.0f) buttonStyle:WPBlogSelectorButtonTypeStacked];
+        UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 250.0f, 33.0f) buttonStyle:WPBlogSelectorButtonTypeSingleLine];
         [button addTarget:self action:@selector(showMediaProgress) forControlEvents:UIControlEventTouchUpInside];
         _uploadStatusButton = button;
     }
@@ -635,7 +668,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)logSavePostStats
 {
-    NSString *buttonTitle = self.navigationItem.rightBarButtonItem.title;
+    NSString *buttonTitle = self.saveBarButtonItem.title;
     
     NSInteger originalWordCount = [self.post.original.content wordCount];
     NSInteger wordCount = [self.post.content wordCount];
