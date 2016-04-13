@@ -1,5 +1,7 @@
 #import "LocalCoreDataService.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class Blog;
 @class Menu;
 @class MenuLocation;
@@ -8,8 +10,8 @@
 typedef void(^MenusServiceSuccessBlock)();
 typedef void(^MenusServiceCreateMenuRequestSuccessBlock)(NSNumber *menuID);
 typedef void(^MenusServiceUpdateMenuRequestSuccessBlock)();
-typedef void(^MenusServiceMenusRequestSuccessBlock)(NSArray<Menu *> *menus);
-typedef void(^MenusServiceLocationsRequestSuccessBlock)(NSArray<MenuLocation *> *locations);
+typedef void(^MenusServiceMenusRequestSuccessBlock)(NSArray<Menu *> * _Nullable menus);
+typedef void(^MenusServiceLocationsRequestSuccessBlock)(NSArray<MenuLocation *> * _Nullable locations);
 typedef void(^MenusServiceFailureBlock)(NSError *error);
 
 @interface MenusService : LocalCoreDataService
@@ -37,8 +39,8 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
  *
  */
 - (void)syncMenusForBlog:(Blog *)blog
-                 success:(MenusServiceSuccessBlock)success
-                 failure:(MenusServiceFailureBlock)failure;
+                 success:(nullable MenusServiceSuccessBlock)success
+                 failure:(nullable MenusServiceFailureBlock)failure;
 
 #pragma mark - Creating and updating menus
 
@@ -53,8 +55,8 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
  */
 - (void)createMenuWithName:(NSString *)menuName
                       blog:(Blog *)blog
-                   success:(MenusServiceCreateMenuRequestSuccessBlock)success
-                   failure:(MenusServiceFailureBlock)failure;
+                   success:(nullable MenusServiceCreateMenuRequestSuccessBlock)success
+                   failure:(nullable MenusServiceFailureBlock)failure;
 
 /**
  *  @brief      Updates a menu.
@@ -67,8 +69,8 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
  */
 - (void)updateMenu:(Menu *)menu
            forBlog:(Blog *)blog
-           success:(MenusServiceUpdateMenuRequestSuccessBlock)success
-           failure:(MenusServiceFailureBlock)failure;
+           success:(nullable MenusServiceUpdateMenuRequestSuccessBlock)success
+           failure:(nullable MenusServiceFailureBlock)failure;
 
 /**
  *  @brief      Delete a menu.
@@ -81,8 +83,8 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
  */
 - (void)deleteMenu:(Menu *)menu
            forBlog:(Blog *)blog
-           success:(MenusServiceSuccessBlock)success
-           failure:(MenusServiceFailureBlock)failure;
+           success:(nullable MenusServiceSuccessBlock)success
+           failure:(nullable MenusServiceFailureBlock)failure;
 
 /**
  *  @brief      Generate a list MenuItems from the blog's top-level pages.
@@ -93,7 +95,9 @@ typedef void(^MenusServiceFailureBlock)(NSError *error);
  *
  */
 - (void)generateDefaultMenuItemsForBlog:(Blog *)blog
-                                success:(void(^)(NSArray <MenuItem *> *defaultItems))success
-                                failure:(void(^)(NSError *error))failure;
+                                success:(nullable void(^)(NSArray <MenuItem *> * _Nullable defaultItems))success
+                                failure:(nullable MenusServiceFailureBlock)failure;
 
 @end
+
+NS_ASSUME_NONNULL_END
