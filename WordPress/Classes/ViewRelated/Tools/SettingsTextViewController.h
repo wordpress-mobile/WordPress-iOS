@@ -18,6 +18,10 @@ typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 ///
 @property (nullable, nonatomic, copy) SettingsTextChanged onValueChanged;
 
+/// Specifies the Notice Message that should be displayed on top of the table.
+///
+@property (nullable, nonatomic, copy) NSString *notice;
+
 /// Specifies whether we should display navigation buttons (Cancel / Done) or not.
 ///
 @property (nonatomic, assign) BOOL displaysNavigationButtons;

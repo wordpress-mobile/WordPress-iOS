@@ -14,6 +14,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 #pragma mark - Private Properties
 
 @interface SettingsTextViewController() <UITextFieldDelegate>
+@property (nonatomic, strong) NoticeAnimator    *noticeAnimator;
 @property (nonatomic, strong) WPTableViewCell   *textFieldCell;
 @property (nonatomic, strong) UITextField       *textField;
 @property (nonatomic, strong) UIView            *hintView;
@@ -62,6 +63,7 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     [super viewWillAppear:animated];
     [self setupNavigationButtonsIfNeeded];
+    [self setupNoticeAnimatorIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -78,6 +80,12 @@ static CGFloat const HorizontalMargin = 15.0f;
     if (self.displaysNavigationButtons == NO) {
         [self notifyValueDidChangeIfNeeded];
     }
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self.noticeAnimator layout];
 }
 
 
@@ -110,6 +118,16 @@ static CGFloat const HorizontalMargin = 15.0f;
 {
     [self notifyValueDidChangeIfNeeded];
     [self dismissViewController];
+}
+
+- (void)setupNoticeAnimatorIfNeeded
+{
+    if (self.notice == nil) {
+        return;
+    }
+    
+    self.noticeAnimator = [[NoticeAnimator alloc] initWithTarget:self.view];
+    [self.noticeAnimator animateMessage:self.notice];
 }
 
 
