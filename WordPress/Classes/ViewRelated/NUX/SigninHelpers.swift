@@ -47,6 +47,17 @@ import WordPressComAnalytics
     // MARK: - Validation Helpers
 
 
+    /// Checks if the passed string matches a reserved username.
+    /// 
+    /// - Parameters:
+    ///     - username: The username to test.
+    ///
+    class func isUsernameReserved(username: String) -> Bool {
+        let name = username.lowercaseString.trim()
+        return ["admin", "administrator", "root"].contains(name)
+    }
+
+
     /// Checks whether credentials have been populated.
     ///
     /// - Parameters:
