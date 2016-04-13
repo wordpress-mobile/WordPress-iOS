@@ -259,7 +259,7 @@ CHECKOUT OPTIONS:
     :commit: 87bae8c770cfc4e053119f2d00f76b2f653b26ce
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 83dec3ecf49fcbc15974d2dc44b40502f021863e
+    :commit: 7d9b1122ab3d1bb7e848fb3343564857a91a9470
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
   WordPressComKit:
     :git: https://github.com/Automattic/WordPressComKit.git
