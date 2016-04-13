@@ -48,7 +48,7 @@
 {
     self.backgroundColor = [UIColor whiteColor];
     self.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
-    self.layer.borderWidth = 1.0;
+    self.layer.borderWidth = MenusDesignStrokeWidth;
 }
 
 #pragma mark - instance

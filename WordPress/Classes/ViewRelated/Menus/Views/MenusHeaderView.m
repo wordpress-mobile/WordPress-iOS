@@ -21,13 +21,7 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    // Tweak for offsetting the design stroke so it doesn't edge against the screen.
-    UIEdgeInsets margin = UIEdgeInsetsZero;
-    margin.left = -MenusDesignStrokeWidth;
-    margin.right = -MenusDesignStrokeWidth;
-    self.stackView.layoutMargins = margin;
-    self.stackView.layoutMarginsRelativeArrangement = YES;
+
     self.stackView.spacing = MenusDesignDefaultContentSpacing / 2.0;
     
     self.backgroundColor = [WPStyleGuide greyLighten30];

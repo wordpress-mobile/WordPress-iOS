@@ -44,6 +44,8 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     self.translatesAutoresizingMaskIntoConstraints = NO;
     self.backgroundColor = [UIColor whiteColor];
     
+    _drawsLineSeparator = YES;
+    
     MenuItemDrawingView *contentView = [[MenuItemDrawingView alloc] init];
     contentView.drawDelegate = self;
     contentView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -133,9 +135,16 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 {
     if (_isPlaceholder != isPlaceholder) {
         _isPlaceholder = isPlaceholder;
-        
         self.contentView.alpha = isPlaceholder ? 0.45 : 1.0;
-        
+        [self setNeedsDisplay];
+        [self.contentView setNeedsDisplay];
+    }
+}
+
+- (void)setDrawsLineSeparator:(BOOL)drawsLineSeparator
+{
+    if (_drawsLineSeparator != drawsLineSeparator) {
+        _drawsLineSeparator = drawsLineSeparator;
         [self setNeedsDisplay];
         [self.contentView setNeedsDisplay];
     }
@@ -270,7 +279,7 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     
     CGRect dashRect = CGRectInset(self.contentView.frame, 8.0, 8.0);
     
-    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten10] CGColor]);
+    CGContextSetStrokeColorWithColor(context, [[WPStyleGuide mediumBlue] CGColor]);
     CGContextSetLineWidth(context, 1.0);
     
     const CGFloat dashLength = 6.0;
@@ -316,26 +325,18 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 
 - (void)drawingViewDrawRect:(CGRect)rect
 {
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 1.0);
-    
-    if (_isPlaceholder) {
-        // draw a line on the top
-        // but only while reordering
-        // otherwise the line stacks against the other line on the top
-        CGContextMoveToPoint(context, 0, 0);
-        CGContextAddLineToPoint(context, rect.size.width, 0);
+    if (self.highlighted || !self.drawsLineSeparator) {
+        return;
     }
     
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetLineWidth(context, MenusDesignStrokeWidth);
+    
     // draw a line on the bottom
-    CGContextMoveToPoint(context, 0, rect.size.height);
-    CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
+    CGContextMoveToPoint(context, self.stackView.layoutMargins.left, rect.size.height - (MenusDesignStrokeWidth / 2.0));
+    CGContextAddLineToPoint(context, rect.size.width, rect.size.height - (MenusDesignStrokeWidth / 2.0));
     
-    // draw a line on the left
-    CGContextMoveToPoint(context, 0, 0);
-    CGContextAddLineToPoint(context, 0, rect.size.height);
-    
-    UIColor *borderColor = _isPlaceholder ? [WPStyleGuide lightBlue] : [WPStyleGuide greyLighten30];
+    UIColor *borderColor = [WPStyleGuide greyLighten20];
     CGContextSetStrokeColorWithColor(context, [borderColor CGColor]);
     CGContextStrokePath(context);
 }
