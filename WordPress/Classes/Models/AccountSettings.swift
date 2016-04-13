@@ -32,4 +32,12 @@ extension AccountSettings {
         webAddress = managed.webAddress
         language = managed.language
     }
+    
+    var emailForDisplay : String {
+        if let unwrappedPendingEmail = emailPendingAddress where unwrappedPendingEmail.isEmpty == false {
+            return unwrappedPendingEmail
+        }
+
+        return email
+    }
 }
