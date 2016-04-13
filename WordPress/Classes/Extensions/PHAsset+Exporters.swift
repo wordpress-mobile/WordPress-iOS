@@ -58,17 +58,10 @@ extension PHAsset {
         successHandler: SuccessHandler,
         errorHandler: ErrorHandler) {
         
-        let options = PHImageRequestOptions()
-        options.version = .Current
-        options.deliveryMode = .HighQualityFormat
-        options.resizeMode = .Exact
-        options.synchronous = false
-        options.networkAccessAllowed = true
-
         let pixelSize = CGSize(width: pixelWidth, height: pixelHeight)
         let requestedSize = maximumResolution.clamp(min: CGSizeZero, max: pixelSize)
 
-            PHImageManager.defaultManager().requestImageForAsset(self, targetSize: requestedSize, contentMode: .AspectFit, options: options) { (image, info) -> Void in
+        exportImageWithSize(requestedSize) { (image, info) in
             guard let image = image else {
                 if let error = info?[PHImageErrorKey] as? NSError {
                     errorHandler(error: error)
@@ -95,6 +88,29 @@ extension PHAsset {
             }, failureBlock:{(error) -> () in
                 errorHandler(error: error)
             })
+        }
+    }
+    
+    func exportMaximumSizeImage(completion: (UIImage?, [NSObject : AnyObject]?) -> Void) {
+        let targetSize = CGSize(width: pixelWidth, height: pixelHeight)
+        exportImageWithSize(targetSize, completion: completion)
+    }
+    
+    func exportImageWithSize(targetSize: CGSize, completion: (UIImage?, [NSObject : AnyObject]?) -> Void) {
+        let options = PHImageRequestOptions()
+        options.version = .Current
+        options.deliveryMode = .HighQualityFormat
+        options.resizeMode = .Exact
+        options.synchronous = false
+        options.networkAccessAllowed = true
+        
+        let manager = PHImageManager.defaultManager()
+        manager.requestImageForAsset(self,
+                                     targetSize: targetSize,
+                                     contentMode: .AspectFit,
+                                     options: options)
+        { (image, info) in
+            completion(image, info)
         }
     }
     

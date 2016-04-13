@@ -42,6 +42,8 @@
 #import "WPDeviceIdentification.h"
 #import "WPAppAnalytics.h"
 
+@import Gridicons;
+
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
@@ -1129,24 +1131,18 @@ EditImageDetailsViewControllerDelegate
 
 #pragma mark - Custom UI elements
 
-- (WPButtonForNavigationBar*)buttonForBarWithImageNamed:(NSString*)imageName
-												  frame:(CGRect)frame
-												 target:(id)target
-											   selector:(SEL)selector
+- (WPButtonForNavigationBar*)buttonForBarWithImage:(UIImage *)image
+                                             frame:(CGRect)frame
+                                            target:(id)target
+                                          selector:(SEL)selector
 {
-	NSAssert([imageName isKindOfClass:[NSString class]],
-			 @"Expected imageName to be a non nil string.");
-
-    UIImage* image = [UIImage imageNamed:imageName];
-    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-	
-	WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
-	
+    WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
+    
     button.tintColor = [UIColor whiteColor];
-	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-	
-	return button;
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+    
+    return button;
 }
 
 - (UIBarButtonItem*)cancelChevronButton
@@ -1155,10 +1151,13 @@ EditImageDetailsViewControllerDelegate
         return _cancelChevronButton;
     }
     
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-chevron"
-                                                                        frame:NavigationBarButtonRect
-                                                                       target:self
-                                                                     selector:@selector(cancelEditing)];
+    UIImage *image = [UIImage imageNamed:@"icon-posts-editor-chevron"];
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImage:image
+                                                                   frame:NavigationBarButtonRect
+                                                                  target:self
+                                                                selector:@selector(cancelEditing)];
     cancelButton.removeDefaultLeftSpacing = YES;
     cancelButton.removeDefaultRightSpacing = YES;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
@@ -1175,10 +1174,11 @@ EditImageDetailsViewControllerDelegate
         return _cancelXButton;
     }
     
-    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"gridicons-cross"
-                                                                        frame:NavigationBarButtonRect
-                                                                       target:self
-                                                                     selector:@selector(cancelEditing)];
+    UIImage *image = [Gridicon iconOfType:GridiconTypeCross];
+    WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImage:image
+                                                                   frame:NavigationBarButtonRect
+                                                                  target:self
+                                                                selector:@selector(cancelEditing)];
     cancelButton.removeDefaultLeftSpacing = YES;
     cancelButton.removeDefaultRightSpacing = YES;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
@@ -1212,10 +1212,11 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)optionsBarButtonItem
 {
 	if (!_optionsBarButtonItem) {
-        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"gridicons-cog"
-                                                                      frame:NavigationBarButtonRect
-                                                                     target:self
-                                                                   selector:@selector(showSettings)];
+        UIImage *image = [Gridicon iconOfType:GridiconTypeCog];
+        WPButtonForNavigationBar *button = [self buttonForBarWithImage:image
+                                                                 frame:NavigationBarButtonRect
+                                                                target:self
+                                                              selector:@selector(showSettings)];
         
         button.removeDefaultRightSpacing = YES;
         button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
@@ -1233,10 +1234,11 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)previewBarButtonItem
 {
 	if (!_previewBarButtonItem) {
-        WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"gridicons-visible"
-                                                                      frame:NavigationBarButtonRect
-                                                                     target:self
-                                                                   selector:@selector(showPreview)];
+        UIImage *image = [Gridicon iconOfType:GridiconTypeVisible];
+        WPButtonForNavigationBar* button = [self buttonForBarWithImage:image
+                                                                 frame:NavigationBarButtonRect
+                                                                target:self
+                                                              selector:@selector(showPreview)];
         
         button.removeDefaultRightSpacing = YES;
         button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
@@ -1271,10 +1273,11 @@ EditImageDetailsViewControllerDelegate
 - (UIBarButtonItem *)shareBarButtonItem
 {
     if (!_shareBarButtonItem) {
-        WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"gridicons-share-ios"
-                                                                      frame:NavigationBarButtonRect
-                                                                     target:self
-                                                                   selector:@selector(sharePost)];
+        UIImage *image = [Gridicon iconOfType:GridiconTypeShareIOS];
+        WPButtonForNavigationBar *button = [self buttonForBarWithImage:image
+                                                                 frame:NavigationBarButtonRect
+                                                                target:self
+                                                              selector:@selector(sharePost)];
 
         button.removeDefaultRightSpacing = YES;
         button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;

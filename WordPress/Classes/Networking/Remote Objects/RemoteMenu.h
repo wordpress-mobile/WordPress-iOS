@@ -5,10 +5,10 @@
 
 @interface RemoteMenu : NSObject
 
-@property (nonatomic, copy) NSNumber *menuID;
-@property (nonatomic, copy) NSString *details;
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, strong) NSArray<RemoteMenuItem *> *items;
-@property (nonatomic, strong) NSArray<NSString *> *locationNames;
+@property (nullable, nonatomic, copy) NSNumber *menuID;
+@property (nullable, nonatomic, copy) NSString *details;
+@property (nullable, nonatomic, copy) NSString *name;
+@property (nullable, nonatomic, strong) NSArray<RemoteMenuItem *> *items;
+@property (nullable, nonatomic, strong) NSArray<NSString *> *locationNames;
 
 @end

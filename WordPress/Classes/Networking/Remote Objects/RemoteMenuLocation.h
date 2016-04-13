@@ -2,8 +2,8 @@
 
 @interface RemoteMenuLocation : NSObject
 
-@property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *defaultState;
-@property (nonatomic, copy) NSString *details;
+@property (nullable, nonatomic, copy) NSString *name;
+@property (nullable, nonatomic, copy) NSString *defaultState;
+@property (nullable, nonatomic, copy) NSString *details;
 
 @end
