@@ -39,7 +39,7 @@ import WordPressShared
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureStatusMessage("")
+        configureStatusLabel("")
     }
 
 
@@ -67,12 +67,12 @@ import WordPressShared
     /// - Parameters:
     ///     - message: The text to display in the label.
     ///
-    func configureStatusMessage(message: String) {
+    func configureStatusLabel(message: String) {
         statusLabel.text = message
     }
 
 
-    func configureLoading(loading: Bool) {
+    func configureViewLoading(loading: Bool) {
         // Noop
     }
 
