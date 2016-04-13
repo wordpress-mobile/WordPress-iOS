@@ -43,7 +43,7 @@
 import Foundation
 import WordPressShared
 
-class AbstractPostListViewController : UIViewController {
+class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
     
     typealias WPNoResultsView = WordPressShared.WPNoResultsView
     
@@ -67,7 +67,7 @@ class AbstractPostListViewController : UIViewController {
     var refreshControl : UIRefreshControl?
     var tableViewHandler : WPTableViewHandler
     var syncHelper : WPContentSyncHelper
-    var noResultsView : WPNoResultsView
+    var noResultsView : WPNoResultsView?
     var postListFooterView : PostListFooterView
     var animatedBox : WPAnimatedBox?
     
@@ -133,9 +133,11 @@ class AbstractPostListViewController : UIViewController {
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
-        coordinator.animateAlongsideTransition({(context: UIViewControllerTransitionCoordinatorContext) -> () in
-            if UIDevice.isPad() == false && searchWrapperViewHeightConstraint.constant > 0 {
-                searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
+        coordinator.animateAlongsideTransition({[weak self] (context: UIViewControllerTransitionCoordinatorContext) -> () in
+            if let strongSelf = self {
+                if UIDevice.isPad() == false && strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
+                    strongSelf.searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
+                }
             }
         }, completion: nil)
     }
@@ -162,7 +164,10 @@ class AbstractPostListViewController : UIViewController {
             let width = CGRectGetWidth(view.frame)
             
             tableViewHandler.refreshCachedRowHeightsForWidth(width)
-            tableView.reloadRowsAtIndexPaths(tableView.indexPathsForVisibleRows, withRowAnimation:UITableViewRowAnimationNone)
+            
+            if let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows {
+                tableView.reloadRowsAtIndexPaths(indexPathsForVisibleRows, withRowAnimation: .None)
+            }
         }
     }
     
@@ -174,8 +179,8 @@ class AbstractPostListViewController : UIViewController {
     
     // MARK: - Configuration
     
-    func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyleLightContent
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
     
     func configureNavbar() {
@@ -204,7 +209,7 @@ class AbstractPostListViewController : UIViewController {
         
         let mainBundle = NSBundle.mainBundle()
         
-        postListFooterView = mainBundle.loadNibNamed("PostListFooterView", owner: nil, options: nil)[0] as PostListFooterView!
+        postListFooterView = mainBundle.loadNibNamed("PostListFooterView", owner: nil, options: nil)[0] as! PostListFooterView
         postListFooterView.showSpinner(false)
         
         var frame = postListFooterView.frame
@@ -218,7 +223,7 @@ class AbstractPostListViewController : UIViewController {
         tableViewHandler = WPTableViewHandler(tableView: tableView)
         tableViewHandler.cacheRowHeights = true
         tableViewHandler.delegate = self
-        tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone
+        tableViewHandler.updateRowAnimation = .None
     }
     
     func configureSyncHelper() {
@@ -226,17 +231,23 @@ class AbstractPostListViewController : UIViewController {
         syncHelper.delegate = self
     }
     
+    func getNoResultsView() -> WPNoResultsView {
+        if noResultsView == nil {
+            noResultsView = WPNoResultsView()
+            noResultsView!.delegate = self
+        }
+        
+        return noResultsView!
+    }
+    
     func configureNoResultsView() {
         guard isViewLoaded() == true else {
             return
         }
         
-        if noResultsView == nil {
-            noResultsView = WPNoResultsView()
-            noResultsView.delegate = self
-        }
+        let noResultsView = getNoResultsView()
         
-        if tableViewHandler.resultsController.fetchedObjects.count > 0 {
+        if tableViewHandler.resultsController.fetchedObjects?.count > 0 {
             noResultsView.removeFromSuperview()
             postListFooterView.hidden = false
             return
@@ -244,10 +255,10 @@ class AbstractPostListViewController : UIViewController {
         postListFooterView.hidden = true
         
         // Refresh the NoResultsView Properties
-        noResultsView.titleText = noResultsTitleText
-        noResultsView.messageText = noResultsMessageText
-        noResultsView.accessoryView = noResultsAccessoryView
-        noResultsView.buttonTitle = noResultsButtonText
+        noResultsView.titleText = noResultsTitleText()
+        noResultsView.messageText = noResultsMessageText()
+        noResultsView.accessoryView = noResultsAccessoryView()
+        noResultsView.buttonTitle = noResultsButtonText()
         
         // Only add and animate no results view if it isn't already
         // in the table view
@@ -269,7 +280,7 @@ class AbstractPostListViewController : UIViewController {
     }
     
     func noResultsAccessoryView() -> UIView {
-        if syncHelper.isSyncing() {
+        if syncHelper.isSyncing {
             if animatedBox == nil {
                 animatedBox = WPAnimatedBox.newAnimatedBox()
             }
@@ -280,28 +291,25 @@ class AbstractPostListViewController : UIViewController {
         return UIImageView(image: UIImage(named: "illustration-posts"))
     }
     
+    func noResultsButtonText() -> String {
+        assert(false, "You should implement this method in the subclass")
+    }
+    
+    func configureAuthorFilter() {
+        assert(false, "You should implement this method in the subclass")
+    }
+    
+    func configureSearchController() {
+        searchController = WPSearchController(searchResultsController: nil)
+        
+        let searchControllerConfigurator = WPSearchControllerConfigurator(searchController: searchController, withSearchWrapperView: searchWrapperView)
+        searchControllerConfigurator.configureSearchControllerAndWrapperView()
+        configureSearchBarPlaceholder()
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
+    }
+    
 /*
-     - (UIView *)noResultsAccessoryView {
-     if (self.syncHelper.isSyncing) {
-     if (!self.animatedBox) {
-     self.animatedBox = [WPAnimatedBox newAnimatedBox];
-     }
-     return self.animatedBox;
-     }
-     return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"illustration-posts"]];
-     }
-     
-     - (NSString *)noResultsButtonText
-     {
-     AssertSubclassMethod();
-     return nil;
-     }
-     
-     - (void)configureAuthorFilter
-     {
-     AssertSubclassMethod();
-     }
-     
      - (void)configureSearchController
      {
      self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
