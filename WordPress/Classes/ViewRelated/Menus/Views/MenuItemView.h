@@ -12,13 +12,13 @@
 @property (nonatomic, assign) BOOL showsCancelButtonOption;
 
 - (void)refresh;
+- (CGRect)orderingToggleRect;
 
 @end
 
 @protocol MenuItemViewDelegate <NSObject>
 
 - (void)itemViewSelected:(MenuItemView *)itemView;
-- (void)itemViewEditingButtonPressed:(MenuItemView *)itemView;
 - (void)itemViewAddButtonPressed:(MenuItemView *)itemView;
 - (void)itemViewCancelButtonPressed:(MenuItemView *)itemView;
 

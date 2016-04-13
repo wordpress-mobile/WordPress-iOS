@@ -157,17 +157,24 @@
                                         <outlet property="textLabel" destination="zti-gC-KhM" id="VNP-Tg-D18"/>
                                     </connections>
                                 </view>
+                                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BXd-x3-ckW" userLabel="Design Spacer View">
+                                    <rect key="frame" x="0.0" y="65" width="600" height="12"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="12" id="PV0-nL-yVm"/>
+                                    </constraints>
+                                </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EN3-TW-klK" customClass="MenuDetailsView">
-                                    <rect key="frame" x="0.0" y="65" width="600" height="70"/>
+                                    <rect key="frame" x="0.0" y="77" width="600" height="70"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="yZs-u8-1Mv">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="230" placeholderIntrinsicWidth="471" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="2bo-01-wsh">
-                                                    <rect key="frame" x="0.0" y="10" width="462" height="50"/>
+                                                    <rect key="frame" x="0.0" y="10" width="484" height="50"/>
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Menu name text field" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3sy-f5-O7T">
-                                                            <rect key="frame" x="10" y="10" width="442" height="30"/>
+                                                            <rect key="frame" x="10" y="10" width="464" height="30"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                             <connections>
@@ -185,10 +192,10 @@
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ga-QQ-XHS" customClass="MenusActionButton">
-                                                    <rect key="frame" x="472" y="15" width="46" height="40"/>
+                                                    <rect key="frame" x="494" y="15" width="36" height="40"/>
                                                     <color key="backgroundColor" red="1" green="0.051290923320000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" priority="999" constant="46" id="Nmc-m4-zvg"/>
+                                                        <constraint firstAttribute="width" priority="999" constant="36" id="Nmc-m4-zvg"/>
                                                         <constraint firstAttribute="height" constant="40" id="bqh-BP-dK2"/>
                                                     </constraints>
                                                     <state key="normal">
@@ -196,12 +203,12 @@
                                                     </state>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yBv-SA-Km5" customClass="MenusActionButton">
-                                                    <rect key="frame" x="528" y="15" width="72" height="40"/>
+                                                    <rect key="frame" x="540" y="15" width="60" height="40"/>
                                                     <color key="backgroundColor" red="0.1076004438" green="0.55510221439999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="Zpd-0L-IEa"/>
                                                     </constraints>
-                                                    <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="16" maxY="0.0"/>
+                                                    <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                                                     <state key="normal" title="Save">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -228,10 +235,10 @@
                                     </connections>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="obX-Ts-DGu" customClass="MenuItemsStackView">
-                                    <rect key="frame" x="0.0" y="135" width="600" height="401"/>
+                                    <rect key="frame" x="0.0" y="147" width="600" height="389"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="w8Q-MA-p0C">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="401"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="389"/>
                                         </stackView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -249,6 +256,7 @@
                             <constraints>
                                 <constraint firstItem="P7u-xT-eP5" firstAttribute="width" secondItem="6gb-mh-Ce6" secondAttribute="width" id="95d-fB-mct"/>
                                 <constraint firstItem="EN3-TW-klK" firstAttribute="width" secondItem="6gb-mh-Ce6" secondAttribute="width" id="OcM-SO-N7v"/>
+                                <constraint firstItem="BXd-x3-ckW" firstAttribute="width" secondItem="6gb-mh-Ce6" secondAttribute="width" id="R4D-Ky-3rE"/>
                                 <constraint firstItem="obX-Ts-DGu" firstAttribute="width" secondItem="6gb-mh-Ce6" secondAttribute="width" id="eQ3-4L-yN3"/>
                             </constraints>
                         </stackView>

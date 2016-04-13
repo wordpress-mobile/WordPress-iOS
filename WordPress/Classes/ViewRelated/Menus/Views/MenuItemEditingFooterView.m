@@ -32,7 +32,6 @@
     }
     {
         MenusActionButton *button = self.saveButton;
-        button.backgroundFillColor = [WPStyleGuide mediumBlue];
         [button setTitle:NSLocalizedString(@"OK", @"") forState:UIControlStateNormal];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
