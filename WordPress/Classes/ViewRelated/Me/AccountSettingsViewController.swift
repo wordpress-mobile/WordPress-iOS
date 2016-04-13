@@ -72,7 +72,7 @@ private struct AccountSettingsController: SettingsController {
         
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
-            value: settings?.emailPendingAddress ?? settings?.email ?? "",
+            value: settings?.emailForDisplay ?? "",
             action: presenter.present(insideNavigationController(editEmailAddress(settings, service: service)))
         )
         
@@ -113,6 +113,12 @@ private struct AccountSettingsController: SettingsController {
                                                                          service: service)
             settingsViewController.mode = .Email
             settingsViewController.notice = self.noticeForAccountSettings(settings)
+            settingsViewController.displaysActionButton = settings?.emailPendingChange ?? false
+            settingsViewController.actionText = NSLocalizedString("Revert Pending Change", comment: "Cancels a pending Email Change")
+            settingsViewController.onActionPress = {
+                let change = AccountSettingsChange.EmailPendingChange(false)
+                service.saveChange(change)
+            }
             
             return settingsViewController
         }
