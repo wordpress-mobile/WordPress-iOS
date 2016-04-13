@@ -77,7 +77,7 @@ private struct AccountSettingsController: SettingsController {
         
         let email = EditableTextRow(
             title: NSLocalizedString("Email", comment: "Account Settings Email label"),
-            value: settings?.email ?? "",
+            value: settings?.emailPendingAddress ?? settings?.email ?? "",
             action: presenter.present(insideNavigationController(editEmailAddress(service)))
         )
         
