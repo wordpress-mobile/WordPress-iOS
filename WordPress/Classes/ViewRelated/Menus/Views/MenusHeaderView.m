@@ -5,6 +5,7 @@
 #import "Menu.h"
 #import "Menu+ViewDesign.h"
 #import "MenuLocation.h"
+#import "WPFontManager.h"
 
 @interface MenusHeaderView () <MenusSelectionViewDelegate>
 
@@ -31,7 +32,7 @@
     self.menusView.delegate = self;
     self.menusView.selectionType = MenusSelectionViewTypeMenus;
     
-    self.textLabel.font = [WPStyleGuide subtitleFont];
+    self.textLabel.font = [WPFontManager systemRegularFontOfSize:13];
     self.textLabel.backgroundColor = [UIColor clearColor];
     self.textLabel.textColor = [WPStyleGuide greyDarken20];
     self.textLabel.text = NSLocalizedString(@"USES", @"Menus label for describing which menu the location uses in the header.");

@@ -14,7 +14,7 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
         [self.contentView addGestureRecognizer:tap];
         
-        self.iconView.tintColor = [WPStyleGuide mediumBlue];
+        self.iconView.tintColor = [WPStyleGuide wordPressBlue];
         self.iconView.image = [Gridicon iconOfType:GridiconTypePlus];
     }
     
@@ -56,7 +56,7 @@
     if (self.highlighted) {
         color = [super textLabelColor];
     } else  {
-        color = [WPStyleGuide mediumBlue];
+        color = [WPStyleGuide wordPressBlue];
     }
     
     return color;

@@ -3,13 +3,14 @@
 #import "WPStyleGuide.h"
 #import "MenusActionButton.h"
 #import "MenuItem+ViewDesign.h"
+#import "WPFontManager.h"
 
 @import Gridicons;
 
 @interface MenuItemView ()
 
-@property (nonatomic, strong) UIButton *editButton;
 @property (nonatomic, strong) UIButton *addButton;
+@property (nonatomic, strong) UIButton *orderingButton;
 @property (nonatomic, strong) MenusActionButton *cancelButton;
 @property (nonatomic, assign) CGPoint touchesBeganLocation;
 
@@ -24,21 +25,24 @@
     self = [super init];
     if (self) {
         {
-            UIButton *button = [self addAccessoryButtonIconViewWithImage:[Gridicon iconOfType:GridiconTypePencil]];
-            [button addTarget:self action:@selector(editButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-            self.editButton = button;
-        }
-        {
             UIButton *button = [self addAccessoryButtonIconViewWithImage:[Gridicon iconOfType:GridiconTypePlus]];
+            button.tintColor = [WPStyleGuide wordPressBlue];
             [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             self.addButton = button;
         }
         {
+            UIImage *image = [[UIImage imageNamed:@"menus-move-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            UIButton *button = [self addAccessoryButtonIconViewWithImage:image];
+            button.tintColor = [WPStyleGuide greyLighten20];
+            button.userInteractionEnabled = NO;
+            self.orderingButton = button;
+        }
+        {
             MenusActionButton *button = [[MenusActionButton alloc] init];
-            button.backgroundFillColor = [UIColor whiteColor];
             [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-            [button setTitleColor:[WPStyleGuide darkGrey] forState:UIControlStateNormal];
+            [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
             [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
+            button.titleLabel.font = [WPFontManager systemRegularFontOfSize:16.0];
             [button.widthAnchor constraintLessThanOrEqualToConstant:63].active = YES;
             button.hidden = YES;
             [self addAccessoryButton:button];
@@ -63,13 +67,16 @@
     self.textLabel.text = self.item.name;
 }
 
+- (CGRect)orderingToggleRect
+{
+    return [self convertRect:self.orderingButton.frame fromView:self.orderingButton.superview];
+}
+
 - (void)setShowsEditingButtonOptions:(BOOL)showsEditingButtonOptions
 {
     if (_showsEditingButtonOptions != showsEditingButtonOptions) {
         _showsEditingButtonOptions = showsEditingButtonOptions;
     }
-    
-    self.editButton.hidden = !showsEditingButtonOptions;
     self.addButton.hidden = !showsEditingButtonOptions;
 }
 
@@ -78,7 +85,7 @@
     if (_showsCancelButtonOption != showsCancelButtonOption) {
         _showsCancelButtonOption = showsCancelButtonOption;
     }
-    
+    self.orderingButton.hidden = showsCancelButtonOption;
     self.cancelButton.hidden = !showsCancelButtonOption;
 }
 
@@ -92,11 +99,6 @@
 - (void)cancelButtonPressed
 {
     [self.delegate itemViewCancelButtonPressed:self];
-}
-
-- (void)editButtonPressed
-{
-    [self.delegate itemViewEditingButtonPressed:self];
 }
 
 #pragma mark - touches

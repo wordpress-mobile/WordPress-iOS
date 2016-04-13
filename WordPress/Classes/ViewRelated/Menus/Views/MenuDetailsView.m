@@ -37,6 +37,7 @@
     
     self.stackView.layoutMarginsRelativeArrangement = YES;
     self.stackView.layoutMargins = [Menu viewDefaultDesignInsets];
+    self.stackView.spacing = 4.0;
     
     self.textField.text = nil;
     self.textField.placeholder = NSLocalizedString(@"Menu", @"Menus placeholder text for the name field of a menu with no name.");
@@ -53,13 +54,11 @@
     self.textFieldDesignView.backgroundColor = [UIColor clearColor];
     
     [self.trashButton setTitle:nil forState:UIControlStateNormal];
-    self.trashButton.tintColor = [WPStyleGuide greyDarken30];
+    self.trashButton.tintColor = [WPStyleGuide grey];
     [self.trashButton setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
     [self.trashButton addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
-    self.saveButton.backgroundFillColor = [WPStyleGuide mediumBlue];
     [self updateSaveButtonTitle];
-    [self.saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.saveButton addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     self.saveButton.enabled = NO;
     
