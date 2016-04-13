@@ -343,8 +343,7 @@ static NSInteger const WPTabBarIconOffset = 5;
     }
 
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    navController.navigationBar.translucent = NO;
-    [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
+    navController.navigationBar.translucent = NO;    
     [self presentViewController:navController animated:animated completion:nil];
 }
 

@@ -463,8 +463,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     UINavigationController* __nonnull navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
     navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
     navController.restorationClass = [WPLegacyEditPostViewController class];
-    
-    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
+        
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
     
     [self presentViewController:navController animated:YES completion:nil];
@@ -505,7 +504,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         // In legacy mode, view means edit
         WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithPost:apost];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-        [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
         navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
         navController.restorationClass = [WPLegacyEditPostViewController class];
