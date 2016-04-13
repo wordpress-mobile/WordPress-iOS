@@ -433,6 +433,7 @@ NSString * const OptionsKeyPublicizeDisabled = @"publicize_permanently_disabled"
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
         case BlogFeatureThemeBrowsing:
+        case BlogFeatureMenus:
             return [self isHostedAtWPcom] && [self isAdmin];
         case BlogFeaturePrivate:
             // Private visibility is only supported by wpcom blogs
