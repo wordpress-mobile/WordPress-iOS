@@ -211,6 +211,12 @@ import WordPressShared
     }
 
 
+    @IBAction func handleSelfHostedButtonTapped(sender: UIButton) {
+        let controller = SigninSelfHostedViewController.controller(loginFields);
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
+
     // MARK: - Keyboard Notifications
 
 
