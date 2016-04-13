@@ -1,5 +1,7 @@
 #import "MenuItemInsertionView.h"
 
+@import Gridicons;
+
 @implementation MenuItemInsertionView
 
 @dynamic delegate;
@@ -12,22 +14,11 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureRecognized:)];
         [self.contentView addGestureRecognizer:tap];
         
-        self.iconView.image = [[UIImage imageNamed:@"menus-add"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        self.iconView.tintColor = [WPStyleGuide mediumBlue];
+        self.iconView.image = [Gridicon iconOfType:GridiconTypePlus];
     }
     
     return self;
-}
-
-- (UIColor *)contentViewBackgroundColor
-{
-    UIColor *color = nil;
-    if (self.highlighted) {
-        color = [super contentViewBackgroundColor];
-    } else  {
-        color = [UIColor colorWithRed:0.973 green:0.980 blue:0.984 alpha:1.000];
-    }
-    
-    return color;
 }
 
 - (void)setInsertionOrder:(MenuItemInsertionOrder)insertionOrder
@@ -65,7 +56,7 @@
     if (self.highlighted) {
         color = [super textLabelColor];
     } else  {
-        color = [WPStyleGuide darkBlue];
+        color = [WPStyleGuide mediumBlue];
     }
     
     return color;

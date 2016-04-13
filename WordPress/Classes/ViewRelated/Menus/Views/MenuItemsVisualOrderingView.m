@@ -63,6 +63,7 @@
     MenuItemView *orderingView = [[MenuItemView alloc] init];
     orderingView.item = item;
     orderingView.indentationLevel = self.itemView.indentationLevel;
+    orderingView.drawsLineSeparator = NO;
     orderingView.alpha = 0.65;
     orderingView.userInteractionEnabled = NO;
     

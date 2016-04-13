@@ -18,10 +18,14 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 @property (nonatomic, strong) MenuItemDrawingView *contentView;
 @property (nonatomic, assign) BOOL highlighted;
 @property (nonatomic, assign) BOOL isPlaceholder;
+@property (nonatomic, assign) BOOL drawsLineSeparator;
 @property (nonatomic, assign) NSInteger indentationLevel;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UILabel *textLabel;
 @property (nonatomic, strong) UIImageView *iconView;
+
+@property (nonatomic, weak) MenuItemsStackableView *previous;
+@property (nonatomic, weak) MenuItemsStackableView *next;
 
 - (void)addAccessoryButton:(UIButton *)button;
 - (UIButton *)addAccessoryButtonIconViewWithImage:(UIImage *)image;
