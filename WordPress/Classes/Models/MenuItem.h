@@ -98,7 +98,13 @@ extern NSString * const MenuItemLinkTargetBlank;
  */
 - (BOOL)isDescendantOfItem:(MenuItem *)item;
 
-- (MenuItem *)lastOrderedDescendantInOrderedItems:(NSOrderedSet *)orderedSet;
+/**
+ Search an ordered set for the last occurring descendant of self.
+ Useful for detecting the end of a list of related parent/child items for additions and ordering.
+ @param orderedItems an ordered set of items nested top-down as a parent followed by children. (as returned from the Menus API)
+ @returns MenuItem the last child of self to occur in the ordered set.
+ */
+- (MenuItem *)lastDescendantInOrderedItems:(NSOrderedSet *)orderedItems;
 
 /**
  The item's name is nil, empty, or the default string.

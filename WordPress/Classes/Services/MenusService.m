@@ -11,6 +11,8 @@
 #import "PostService.h"
 #import "Page.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation MenusService
 
 #pragma mark - Menus availability
@@ -24,62 +26,64 @@
 #pragma mark - Remote queries: Getting menus
 
 - (void)syncMenusForBlog:(Blog *)blog
-                 success:(MenusServiceSuccessBlock)success
-                 failure:(MenusServiceFailureBlock)failure
+                 success:(nullable MenusServiceSuccessBlock)success
+                 failure:(nullable MenusServiceFailureBlock)failure
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
-    [remote getMenusForBlog:blog success:^(NSArray *remoteMenus, NSArray *remoteLocations) {
+    [remote getMenusForBlog:blog
+                    success:^(NSArray<RemoteMenu *> * _Nullable remoteMenus, NSArray<RemoteMenuLocation *> * _Nullable remoteLocations) {
         
-        [self.managedObjectContext performBlockAndWait:^{
-            
-            NSArray *locations = [self menuLocationsFromRemoteMenuLocations:remoteLocations];
-            NSArray *menus = [remoteMenus wp_map:^Menu *(RemoteMenu *remoteMenu) {
-                
-                Menu *menu = [self menuFromRemoteMenu:remoteMenu];
-                [self refreshLocationsForMenu:menu
-                  matchingRemoteLocationNames:remoteMenu.locationNames
-                           availableLocations:locations];
-                
-                return menu;
-            }];
-            
-            // Create a new default menu.
-            Menu *defaultMenu = [Menu newDefaultMenu:self.managedObjectContext];
-            // Ensure the default menu is the first menu in the list of menus.
-            NSMutableArray *mutableMenus = [NSMutableArray arrayWithArray:menus];
-            [mutableMenus insertObject:defaultMenu atIndex:0];
-            menus = mutableMenus;
-            
-            // Set the default menu to locations, if needed.
-            for (MenuLocation *location in locations) {
-                if (location.menu) {
-                    continue;
-                }
-                location.menu = defaultMenu;
-            }
-            
-            blog.menuLocations = [NSOrderedSet orderedSetWithArray:locations];
-            blog.menus = [NSOrderedSet orderedSetWithArray:menus];
-            
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        }];
-        
-        if (success) {
-            success();
-        }
-        
-    } failure:failure];
+                        [self.managedObjectContext performBlock:^{
+                            
+                            NSArray *locations = nil;
+                            if (remoteLocations.count) {
+                                locations = [self menuLocationsFromRemoteMenuLocations:remoteLocations];
+                            }
+                            NSArray *menus = [remoteMenus wp_map:^Menu *(RemoteMenu *remoteMenu) {
+                                Menu *menu = [self menuFromRemoteMenu:remoteMenu];
+                                [self refreshLocationsForMenu:menu
+                                  matchingRemoteLocationNames:remoteMenu.locationNames
+                                           availableLocations:locations];
+                                return menu;
+                            }];
+                            
+                            // Create a new default menu.
+                            Menu *defaultMenu = [Menu newDefaultMenu:self.managedObjectContext];
+                            // Ensure the default menu is the first menu in the list of menus.
+                            NSMutableArray *mutableMenus = [NSMutableArray arrayWithArray:menus];
+                            [mutableMenus insertObject:defaultMenu atIndex:0];
+                            menus = mutableMenus;
+                            
+                            // Set the default menu to locations, if needed.
+                            for (MenuLocation *location in locations) {
+                                if (location.menu) {
+                                    continue;
+                                }
+                                location.menu = defaultMenu;
+                            }
+                            
+                            blog.menuLocations = [NSOrderedSet orderedSetWithArray:locations];
+                            blog.menus = [NSOrderedSet orderedSetWithArray:menus];
+                            
+                            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                            
+                            if (success) {
+                                success();
+                            }
+                        }];
+                    }
+                    failure:failure];
 }
 
 #pragma mark - Creating and updating menus
 
 - (void)createMenuWithName:(NSString *)menuName
                       blog:(Blog *)blog
-                   success:(MenusServiceCreateMenuRequestSuccessBlock)success
-                   failure:(MenusServiceFailureBlock)failure
+                   success:(nullable MenusServiceCreateMenuRequestSuccessBlock)success
+                   failure:(nullable MenusServiceFailureBlock)failure
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
@@ -87,31 +91,38 @@
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
     [remote createMenuWithName:menuName
                           blog:blog
-                       success:^(RemoteMenu *remoteMenu) {
-                           
-                           [self.managedObjectContext performBlockAndWait:^{
+                       success:^(RemoteMenu * _Nonnull remoteMenu) {
+                           [self.managedObjectContext performBlock:^{
                                if (success) {
                                    success(remoteMenu.menuID);
                                }
                            }];
-                           
-                       } failure:failure];
+                       }
+                       failure:failure];
 }
 
 - (void)updateMenu:(Menu *)menu
            forBlog:(Blog *)blog
-           success:(MenusServiceUpdateMenuRequestSuccessBlock)success
-           failure:(MenusServiceFailureBlock)failure
+           success:(nullable MenusServiceUpdateMenuRequestSuccessBlock)success
+           failure:(nullable MenusServiceFailureBlock)failure
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert([menu isKindOfClass:[Menu class]]);
     NSAssert([self blogSupportsMenusCustomization:blog], @"Do not call this method on unsupported blogs, check with blogSupportsMenusCustomization first.");
     
-    NSMutableArray *locationNames = [NSMutableArray arrayWithCapacity:menu.locations.count];
-    for (MenuLocation *location in menu.locations) {
-        if (location.name.length) {
-            [locationNames addObject:location.name];
+    NSMutableArray *locationNames = nil;
+    if (menu.locations.count) {
+        locationNames = [NSMutableArray arrayWithCapacity:menu.locations.count];
+        for (MenuLocation *location in menu.locations) {
+            if (location.name.length) {
+                [locationNames addObject:location.name];
+            }
         }
+    }
+    
+    NSArray *remoteItems = nil;
+    if (menu.items.count) {
+        remoteItems = [self remoteItemsFromMenuItems:menu.items];
     }
     
     MenusServiceRemote *remote = [[MenusServiceRemote alloc] initWithApi:blog.restApi];
@@ -119,11 +130,9 @@
                        blog:blog
                    withName:menu.name
               withLocations:locationNames
-                  withItems:[self remoteItemsFromMenuItems:menu.items]
-                    success:^(RemoteMenu *remoteMenu) {
-                        
-                        [self.managedObjectContext performBlockAndWait:^{
-                            
+                  withItems:remoteItems
+                    success:^(RemoteMenu * _Nonnull remoteMenu) {
+                        [self.managedObjectContext performBlock:^{
                             /*
                              Update the local menu with the fresh MenuItems from remote.
                              We need to replace the MenuItems as it's difficult to keep track of
@@ -133,20 +142,19 @@
                             for (RemoteMenuItem *remoteItem in remoteMenu.items) {
                                 [self addMenuItemFromRemoteMenuItem:remoteItem forMenu:menu];
                             }
-                            
                             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                             if (success) {
                                 success();
                             }
                         }];
-                        
-                    } failure:failure];
+                    }
+                    failure:failure];
 }
 
 - (void)deleteMenu:(Menu *)menu
            forBlog:(Blog *)blog
-           success:(MenusServiceSuccessBlock)success
-           failure:(MenusServiceFailureBlock)failure
+           success:(nullable MenusServiceSuccessBlock)success
+           failure:(nullable MenusServiceFailureBlock)failure
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert([menu isKindOfClass:[Menu class]]);
@@ -177,8 +185,8 @@
 }
 
 - (void)generateDefaultMenuItemsForBlog:(Blog *)blog
-                                success:(void(^)(NSArray <MenuItem *> *defaultItems))success
-                                failure:(void(^)(NSError *error))failure
+                                success:(nullable void(^)(NSArray <MenuItem *> * _Nullable defaultItems))success
+                                failure:(nullable MenusServiceFailureBlock)failure
 {
     // Get the latest list of Pages available to the site.
     PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
@@ -220,16 +228,6 @@
 }
 
 #pragma mark - Menu managed objects from RemoteMenu objects
-
-- (NSArray *)menusFromRemoteMenus:(NSArray<RemoteMenu *> *)remoteMenus
-{
-    NSMutableArray *menus = [NSMutableArray arrayWithCapacity:remoteMenus.count];
-    for (RemoteMenu *remoteMenu in remoteMenus) {
-        [menus addObject:[self menuFromRemoteMenu:remoteMenu]];
-    }
-    
-    return [NSArray arrayWithArray:menus];
-}
 
 - (Menu *)menuFromRemoteMenu:(RemoteMenu *)remoteMenu
 {
@@ -311,15 +309,16 @@
 #pragma mark - Local storage
 
 - (void)refreshLocationsForMenu:(Menu *)menu
-    matchingRemoteLocationNames:(NSArray *)remoteLocationNames
-             availableLocations:(NSArray *)locations
+    matchingRemoteLocationNames:(nullable NSArray *)remoteLocationNames
+             availableLocations:(nullable NSArray *)locations
 {
     NSArray *menuLocations = nil;
     if (remoteLocationNames.count) {
         menuLocations = [locations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name IN %@", remoteLocationNames]];
     }
-    
-    [menu setLocations:[NSSet setWithArray:menuLocations]];
+    if (menuLocations.count) {
+        [menu setLocations:[NSSet setWithArray:menuLocations]];
+    }
 }
 
 - (Menu *)findMenuWithId:(NSString *)menuId
@@ -399,3 +398,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

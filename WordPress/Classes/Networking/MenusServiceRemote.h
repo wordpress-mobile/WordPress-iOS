@@ -1,5 +1,7 @@
 #import "ServiceRemoteREST.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern NSString * const MenusRemoteKeyID;
 extern NSString * const MenusRemoteKeyMenu;
 extern NSString * const MenusRemoteKeyMenus;
@@ -24,8 +26,8 @@ extern NSString * const MenusRemoteKeyLocationDefaultState;
 
 typedef void(^MenusServiceRemoteSuccessBlock)();
 typedef void(^MenusServiceRemoteMenuRequestSuccessBlock)(RemoteMenu *menu);
-typedef void(^MenusServiceRemoteMenusRequestSuccessBlock)(NSArray<RemoteMenu *> *menus, NSArray<RemoteMenuLocation *> *locations);
-typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
+typedef void(^MenusServiceRemoteMenusRequestSuccessBlock)(NSArray<RemoteMenu *> * _Nullable menus,  NSArray<RemoteMenuLocation *> * _Nullable locations);
+typedef void(^MenusServiceRemoteFailureBlock)(NSError * _Nonnull error);
 
 @interface MenusServiceRemote : ServiceRemoteREST
 
@@ -42,8 +44,8 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  */
 - (void)createMenuWithName:(NSString *)menuName
                       blog:(Blog *)blog
-                   success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-                   failure:(MenusServiceRemoteFailureBlock)failure;
+                   success:(nullable MenusServiceRemoteMenuRequestSuccessBlock)success
+                   failure:(nullable MenusServiceRemoteFailureBlock)failure;
 
 /**
  *  @brief      Update a menu on a blog.
@@ -56,11 +58,11 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  */
 - (void)updateMenuForID:(NSNumber *)menuID
                    blog:(Blog *)blog
-               withName:(NSString *)updatedName
-          withLocations:(NSArray<NSString *> *)locationNames
-              withItems:(NSArray<RemoteMenuItem *> *)updatedItems
-                success:(MenusServiceRemoteMenuRequestSuccessBlock)success
-                failure:(MenusServiceRemoteFailureBlock)failure;
+               withName:(nullable NSString *)updatedName
+          withLocations:(nullable NSArray<NSString *> *)locationNames
+              withItems:(nullable NSArray<RemoteMenuItem *> *)updatedItems
+                success:(nullable MenusServiceRemoteMenuRequestSuccessBlock)success
+                failure:(nullable MenusServiceRemoteFailureBlock)failure;
 
 /**
  *  @brief      Delete a menu from a blog.
@@ -73,8 +75,8 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  */
 - (void)deleteMenuForID:(NSNumber *)menuID
                    blog:(Blog *)blog
-                success:(MenusServiceRemoteSuccessBlock)success
-                failure:(MenusServiceRemoteFailureBlock)failure;
+                success:(nullable MenusServiceRemoteSuccessBlock)success
+                failure:(nullable MenusServiceRemoteFailureBlock)failure;
 
 #pragma mark - Remote queries: Getting menus
 
@@ -87,7 +89,9 @@ typedef void(^MenusServiceRemoteFailureBlock)(NSError *error);
  *
  */
 - (void)getMenusForBlog:(Blog *)blog
-                success:(MenusServiceRemoteMenusRequestSuccessBlock)success
-                failure:(MenusServiceRemoteFailureBlock)failure;
+                success:(nullable MenusServiceRemoteMenusRequestSuccessBlock)success
+                failure:(nullable MenusServiceRemoteFailureBlock)failure;
 
 @end
+
+NS_ASSUME_NONNULL_END
