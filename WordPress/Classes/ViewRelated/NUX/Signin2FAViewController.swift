@@ -40,7 +40,7 @@ import WordPressShared
         super.viewDidLoad()
 
         configureSendCodeButtonText()
-        configureStatusMessage("")
+        configureStatusLabel("")
         configureSubmitButton(false)
     }
 
@@ -112,7 +112,7 @@ import WordPressShared
     /// - Parameters:
     ///     - message: The text to display in the label.
     ///
-    func configureStatusMessage(message: String) {
+    func configureStatusLabel(message: String) {
         statusLabel.text = message
 
         sendCodeButton.hidden = !message.isEmpty
@@ -131,12 +131,12 @@ import WordPressShared
     }
 
 
-    /// Sets the view's state to loading or not loading.
+    /// Configure the view's loading state.
     ///
     /// - Parameters:
     ///     - loading: True if the form should be configured to a "loading" state.
     ///
-    func configureLoading(loading: Bool) {
+    func configureViewLoading(loading: Bool) {
         verificationCodeField.enablesReturnKeyAutomatically = !loading
 
         configureSubmitButton(loading)
@@ -180,7 +180,7 @@ import WordPressShared
             return
         }
 
-        configureLoading(true)
+        configureViewLoading(true)
 
         loginFacade.signInWithLoginFields(loginFields)
     }
@@ -243,13 +243,13 @@ extension Signin2FAViewController: LoginFacadeDelegate {
 
 
     func displayLoginMessage(message: String!) {
-        configureStatusMessage(message)
+        configureStatusLabel(message)
     }
 
 
     func displayRemoteError(error: NSError!) {
-        configureStatusMessage("")
-        configureLoading(false)
+        configureStatusLabel("")
+        configureViewLoading(false)
         displayError(error)
     }
 }
