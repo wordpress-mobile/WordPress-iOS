@@ -91,14 +91,14 @@ class NoticeAnimator: Animator {
     
     // MARK: - Animation Methods
     private func preamble() {
+        UIView.performWithoutAnimation { [weak self] in
+            self?.targetView.layoutIfNeeded()
+        }
+        
         if shouldDisplayMessage == true && noticeLabel.superview == nil {
             targetView.addSubview(noticeLabel)
             noticeLabel.frame.size.height = CGSizeZero.height
             noticeLabel.label.alpha = 0
-        }
-
-        UIView.performWithoutAnimation { [weak self] in
-            self?.targetView.layoutIfNeeded()
         }
     }
 
