@@ -365,7 +365,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         if ([self.comment avatarURLForDisplay]) {
             [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
         } else {
-            [cell downloadGravatarWithGravatarEmail:[self.comment gravatarEmailForDisplay]];
+            [cell downloadGravatarWithEmail:[self.comment gravatarEmailForDisplay]];
         }
     }
 

@@ -60,6 +60,7 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
         buttons.forEach { $0.exclusiveTouch = true }
 
         applyStyles()
+        setTextForLabels()
     }
     
     private func applyStyles() {
@@ -77,6 +78,13 @@ public class ThemeBrowserHeaderView: UICollectionReusableView
 
         searchBar.backgroundColor = Styles.searchBarBackgroundColor
         searchBarBorders.forEach { $0.backgroundColor = Styles.searchBarBorderColor }
+    }
+    
+    private func setTextForLabels() {
+        currentThemeLabel.text = NSLocalizedString("Current Theme", comment: "Current Theme text that appears in the Theme Browser Header")
+        customizeButton.setTitle(NSLocalizedString("Customize", comment: "Customize button that appears in the Theme Browser Header"), forState: .Normal)
+        detailsButton.setTitle(NSLocalizedString("Details", comment: "Details button that appears in the Theme Browser Header"), forState: .Normal)
+        supportButton.setTitle(NSLocalizedString("Support", comment: "Support button that appears in the Theme Browser Header"), forState: .Normal)
     }
     
     override public func prepareForReuse() {

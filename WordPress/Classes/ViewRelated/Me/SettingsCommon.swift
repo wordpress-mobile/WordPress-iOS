@@ -4,6 +4,15 @@ protocol SettingsController: ImmuTableController {}
 
 // MARK: - Actions
 extension SettingsController {
+    func insideNavigationController(generator: ImmuTableRowControllerGenerator) -> ImmuTableRowControllerGenerator {
+        return { row in
+            let controller = generator(row)
+            let navigation = UINavigationController(rootViewController: controller)
+            navigation.modalPresentationStyle = .FormSheet
+            return navigation
+        }
+    }
+
     func editText(changeType: AccountSettingsChangeWithString,
                   hint: String? = nil,
                   displaysNavigationButtons: Bool = false,
