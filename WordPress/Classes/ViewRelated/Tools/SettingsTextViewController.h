@@ -8,7 +8,7 @@ typedef NS_ENUM(NSInteger, SettingsTextModes) {
     SettingsTextModesPassword
 };
 
-typedef void (^SettingsTextChanged)(NSString *);
+typedef void (^SettingsTextChanged)(NSString * _Nonnull);
 
 /// Reusable component that renders a UITextField + Hint onscreen. Useful for Text / Password / Email data entry.
 ///
@@ -16,7 +16,7 @@ typedef void (^SettingsTextChanged)(NSString *);
 
 /// Block to be executed on dismiss, if the value was effectively updated.
 ///
-@property (nonatomic, copy) SettingsTextChanged onValueChanged;
+@property (nullable, nonatomic, copy) SettingsTextChanged onValueChanged;
 
 /// Specifies whether we should display navigation buttons (Cancel / Done) or not.
 ///
@@ -37,6 +37,8 @@ typedef void (^SettingsTextChanged)(NSString *);
 ///  - placeholder: Placeholder string to be displayed, in case the text is empty.
 ///  - hint: String to be displayed at the bottom.
 ///
-- (instancetype)initWithText:(NSString *)text placeholder:(NSString *)placeholder hint:(NSString *)hint;
+- (nonnull instancetype)initWithText:(NSString * __nullable)text
+                         placeholder:(NSString * __nullable)placeholder
+                                hint:(NSString * __nullable)hint;
 
 @end
