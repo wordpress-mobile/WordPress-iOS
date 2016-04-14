@@ -91,6 +91,37 @@ enum PlanListViewModel {
             )
         }
     }
+    
+    func tableFooterView() -> UIView? {
+        switch self {
+        case .Ready:
+            let title = footerTitle
+            let footerView = WPTableViewSectionHeaderFooterView(reuseIdentifier: "ToSFooterView", style: .Footer)
+        
+            footerView.attributedTitle = title
+            footerView.frame.size.height = WPTableViewSectionHeaderFooterView.heightForFooter(title.string, width: footerView.bounds.width)
+            
+            return footerView
+        default:
+            return nil
+        }
+    }
+    
+    private var footerTitle: NSAttributedString {
+        let plainTosText = NSLocalizedString("By checking out, you agree to our fascinating Terms of Service.",
+                                             comment: "TOS label when making a purchase");
+        let tosText = NSLocalizedString("Terms of Service",
+                                        comment: "'Terms of Service' should be the same text that is in 'TOS label when making a purchase'")
+        
+        let attributedText = NSMutableAttributedString(string: plainTosText)
+        
+        let range = (plainTosText as NSString).rangeOfString(tosText, options: .CaseInsensitiveSearch)
+        if range.location != NSNotFound {
+            attributedText.addAttribute(NSForegroundColorAttributeName, value: WPStyleGuide.wordPressBlue(), range: range)
+        }
+        
+        return attributedText
+    }
 
     func tableViewModelWithPresenter(presenter: ImmuTablePresenter?, planService: PlanService<StoreKitStore>?) -> ImmuTable {
         switch self {
@@ -142,18 +173,32 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
         didSet {
             handler.viewModel = viewModel.tableViewModelWithPresenter(self, planService: service)
             updateNoResults()
+            updateFooterView()
         }
     }
+    
+    func updateFooterView() {
+        tableView.tableFooterView = viewModel.tableFooterView()
 
-    private let noResultsView = WPNoResultsView()
-
-    func updateNoResults() {
-            if let noResultsViewModel = viewModel.noResultsViewModel {
-                showNoResults(noResultsViewModel)
-            } else {
-                hideNoResults()
-            }
+        if let footerView = tableView.tableFooterView {
+            // Don't add a recognizer if we already have one
+            if footerView.gestureRecognizers?.count > 0 { return }
+            
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(footerTapped))
+            footerView.addGestureRecognizer(tapRecognizer)
+        }
     }
+    
+    private let noResultsView = WPNoResultsView()
+    
+    func updateNoResults() {
+        if let noResultsViewModel = viewModel.noResultsViewModel {
+            showNoResults(noResultsViewModel)
+        } else {
+            hideNoResults()
+        }
+    }
+    
     func showNoResults(viewModel: WPNoResultsView.Model) {
         noResultsView.bindViewModel(viewModel)
         if noResultsView.isDescendantOfView(tableView) {
@@ -162,7 +207,7 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
             tableView.addSubviewWithFadeAnimation(noResultsView)
         }
     }
-
+    
     func hideNoResults() {
         noResultsView.removeFromSuperview()
     }
@@ -211,6 +256,12 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
                 self.viewModel = .Error(String(error))
             }
         )
+    }
+    
+    func footerTapped() {
+        let webViewController = WPWebViewController(URL: NSURL(string: WPAutomatticTermsOfServiceURL)!)
+        let navController = UINavigationController(rootViewController: webViewController)
+        presentViewController(navController, animated: true, completion: nil)
     }
 }
 
