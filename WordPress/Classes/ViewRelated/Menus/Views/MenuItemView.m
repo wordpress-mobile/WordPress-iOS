@@ -26,21 +26,18 @@
     if (self) {
         {
             UIButton *button = [self addAccessoryButtonIconViewWithImage:[Gridicon iconOfType:GridiconTypePlus]];
-            button.tintColor = [WPStyleGuide wordPressBlue];
             [button addTarget:self action:@selector(addButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             self.addButton = button;
         }
         {
             UIImage *image = [[UIImage imageNamed:@"menus-move-icon"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             UIButton *button = [self addAccessoryButtonIconViewWithImage:image];
-            button.tintColor = [WPStyleGuide greyLighten20];
             button.userInteractionEnabled = NO;
             self.orderingButton = button;
         }
         {
             UIButton *button = [[UIButton alloc] init];
             [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-            [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
             button.titleLabel.font = [WPFontManager systemRegularFontOfSize:16.0];
             [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
             
@@ -60,6 +57,8 @@
             
             self.cancelButton = button;
         }
+        
+        self.highlighted = NO;
     }
     
     return self;
@@ -70,6 +69,24 @@
     if (_item != item) {
         _item = item;
         [self refresh];
+    }
+}
+
+- (void)setHighlighted:(BOOL)highlighted
+{
+    [super setHighlighted:highlighted];
+    
+    if (highlighted) {
+        
+        [self.cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.addButton.tintColor = [UIColor whiteColor];
+        self.orderingButton.tintColor = [UIColor whiteColor];
+        
+    } else {
+     
+        [self.cancelButton setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
+        self.addButton.tintColor = [WPStyleGuide wordPressBlue];
+        self.orderingButton.tintColor = [WPStyleGuide greyLighten20];
     }
 }
 
