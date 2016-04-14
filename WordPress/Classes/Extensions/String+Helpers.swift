@@ -18,4 +18,16 @@ extension String {
     func nonEmptyString() -> String? {
         return isEmpty ? nil : self
     }
+
+    /// Remove the specified suffix from the string and returns the new string. 
+    ///
+    /// - Parameters: 
+    ///     - suffix: The suffxing to remove.  This can be a regular expression but should not include an ending `$`.
+    ///
+    func trimSuffix(suffix: String) -> String {
+        if let regex = try? NSRegularExpression(pattern: "\(suffix)$", options: .CaseInsensitive) {
+            return regex.stringByReplacingMatchesInString(self, options: .ReportCompletion, range: NSRange(location: 0, length: self.characters.count), withTemplate: "")
+        }
+        return self
+    }
 }
