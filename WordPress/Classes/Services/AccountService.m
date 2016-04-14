@@ -128,12 +128,12 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 }
 
-- (void)findExistingAccountByEmail:(NSString *)email success:(void (^)(BOOL found))success failure:(void (^)(NSError *error))failure
+- (void)isEmailAvailable:(NSString *)email success:(void (^)(BOOL available))success failure:(void (^)(NSError *error))failure
 {
     id<AccountServiceRemote> remote = [[AccountServiceRemoteREST alloc] initWithApi:[WordPressComApi anonymousApi]];
-    [remote findExistingAccountByEmail:email success:^(BOOL found) {
+    [remote isEmailAvailable:email success:^(BOOL available) {
         if (success) {
-            success(found);
+            success(available);
         }
     } failure:^(NSError *error) {
         if (failure) {
