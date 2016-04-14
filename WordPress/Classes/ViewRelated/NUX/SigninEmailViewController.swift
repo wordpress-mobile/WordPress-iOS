@@ -255,16 +255,18 @@ import WordPressShared
         configureViewLoading(true)
 
         let service = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.findExistingAccountByEmail(emailOrUsername,
-           success: { [weak self] (found: Bool) in
+        service.isEmailAvailable(emailOrUsername,
+            success: { [weak self] (available: Bool) in
                 self?.configureViewLoading(false)
-                if (found) {
-                    self?.requestLink()
-                } else {
+                if (available) {
+                    // No matching email address found so treat this as a 
+                    // self-hosted sign in.
                     self?.signinToSelfHostedSite()
+                } else {
+                    self?.requestLink()
                 }
-
-            }, failure: { [weak self] (error: NSError!) in
+            },
+            failure: { [weak self] (error: NSError!) in
                 DDLogSwift.logError(error.localizedDescription)
                 self?.configureViewLoading(false)
                 self?.displayError(error)
