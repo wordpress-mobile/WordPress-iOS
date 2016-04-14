@@ -41,6 +41,8 @@
 */
 
 import Foundation
+import WordPressApi
+import WordPressComAnalytics
 import WordPressShared
 
 class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
@@ -309,47 +311,35 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         searchController.searchResultsUpdater = self
     }
     
-/*
-     - (void)configureSearchController
-     {
-     self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
-     
-     WPSearchControllerConfigurator *searchControllerConfigurator = [[WPSearchControllerConfigurator alloc] initWithSearchController:self.searchController withSearchWrapperView:self.searchWrapperView];
-     [searchControllerConfigurator configureSearchControllerAndWrapperView];
-     [self configureSearchBarPlaceholder];
-     self.searchController.delegate = self;
-     self.searchController.searchResultsUpdater = self;
-     }
-     
-     - (void)configureSearchBarPlaceholder
-     {
-     // Adjust color depending on where the search bar is being presented.
-     UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
-     NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
-     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
-     [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setAttributedPlaceholder:attrPlacholderText];
-     [[UITextField appearanceWhenContainedInInstancesOfClasses:@[ [UISearchBar class], [self class] ]] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
-     }
-     
-     - (void)configureSearchWrapper
-     {
-     self.searchWrapperView.backgroundColor = [WPStyleGuide wordPressBlue];
-     }
-     
-     - (NSDictionary *)propertiesForAnalytics
-     {
-     NSMutableDictionary *properties = [NSMutableDictionary dictionaryWithCapacity:3];
-     properties[@"type"] = [self postTypeToSync];
-     properties[@"filter"] = self.currentPostListFilter.title;
-     
-     NSNumber *dotComID = self.blog.dotComID;
-     if (dotComID) {
-     properties[WPAppAnalyticsKeyBlogID] = dotComID;
-     }
-     
-     return properties;
-     }
- */
+    func configureSearchBarPlaceholder() {
+        // Adjust color depending on where the search bar is being presented.
+        let placeholderColor = WPStyleGuide.wordPressBlue()
+        let placeholderText = NSLocalizedString("Search", comment: "Placeholder text for the search bar on the post screen.")
+        let attrPlacholderText = NSAttributedString(string: placeholderText, attributes: WPStyleGuide.defaultSearchBarTextAttributes(placeholderColor) as? [String:AnyObject])
+        
+        let defaultTextAttributes = WPStyleGuide.defaultSearchBarTextAttributes(UIColor.whiteColor()) as! [String:AnyObject]
+        
+        UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, self.dynamicType]).attributedPlaceholder = attrPlacholderText
+        
+        UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self, self.dynamicType]).defaultTextAttributes = defaultTextAttributes
+    }
+    
+    func configureSearchWrapper() {
+        searchWrapperView.backgroundColor = WPStyleGuide.wordPressBlue()
+    }
+    
+    func propertiesForAnalytics() -> [String:AnyObject] {
+        var properties = [String:AnyObject]()
+        
+        properties["type"] = postTypeToSync()
+        properties["filter"] = currentPostListFilter().title
+        
+        if let dotComID = blog.dotComID {
+            properties[WPAppAnalyticsKeyBlogID] = dotComID
+        }
+        
+        return properties
+    }
     
     // MARK: - Actions
     
@@ -376,7 +366,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             return
         }
         
-        self.createPost()
+        createPost()
     }
     
     @IBAction func didTapFilterButton(sender: AnyObject) {
@@ -415,17 +405,193 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     func updateFilter(filter: PostListFilter, withSyncedPosts posts:[AbstractPost], syncOptions options: PostServiceSyncOptions) {
-        let oldestPost = posts.lastObject
+        let oldestPost = posts[posts.count - 1]
         
         // Reset the filter to only show the latest sync point.
-        filter.oldestPostDate = oldestPost.dateCreated
-        filter.hasMore = posts.count >= options.number.unsignedIntegerValue
+        filter.oldestPostDate = oldestPost.dateCreated()
+        filter.hasMore = posts.count >= options.number.integerValue
         
         updateAndPerformFetchRequestRefreshingCachedRowHeights()
     }
     
-    func numberOfPostsPerSync() {
+    func numberOfPostsPerSync() -> UInt {
         return PostServiceDefaultNumberToSync
+    }
+    
+    // MARK: - Sync Helper Delegate Methods
+    
+    func postTypeToSync() -> String {
+        // Subclasses should override.
+        return PostServiceTypeAny
+    }
+    
+    func lastSyncDate() -> NSDate {
+        return blog.lastPostsSync;
+    }
+    
+    func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: (Bool) -> (), failure: (NSError) -> ()) {
+        
+        if recentlyTrashedPostObjectIDs.count > 0 {
+            recentlyTrashedPostObjectIDs.removeAll()
+            updateAndPerformFetchRequestRefreshingCachedRowHeights()
+        }
+        
+        let filter = currentPostListFilter()
+        let author = shouldShowOnlyMyPosts() ? blog.account.userID : nil
+        
+        let postService = PostService(managedObjectContext: managedObjectContext)
+        
+        let options = PostServiceSyncOptions()
+        options.statuses = filter.statuses
+        options.authorID = author
+        options.number = numberOfPostsPerSync()
+        options.purgesLocalSync = true
+        
+        postService.syncPostsOfType(
+            postTypeToSync(),
+            withOptions: options,
+            forBlog: blog,
+            success: {[weak self] (posts: [AbstractPost]) -> () in
+                guard let strongSelf = self, let success = success else {
+                    return
+                }
+                
+                strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                success(filter.hasMore)
+            }, failure: {[weak self] (error: NSError) -> () in
+                
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                if let failure = failure {
+                    failure(error)
+                }
+                
+                if userInteraction == true {
+                    strongSelf.handleSyncFailure(error)
+                }
+        })
+    }
+    
+    func syncHelper(syncHelper: WPContentSyncHelper, syncMoreWithSuccess success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
+        
+        WPAnalytics.track(.PostListLoadedMore, withProperties: propertiesForAnalytics())
+        postListFooterView.showSpinner(true)
+        
+        let filter = currentPostListFilter()
+        let author = shouldShowOnlyMyPosts() ? blog.account.userID : nil
+        
+        let postService = PostService(managedObjectContext: managedObjectContext)
+        
+        let options = PostServiceSyncOptions()
+        options.statuses = filter.statuses
+        options.authorID = author
+        options.number = numberOfPostsPerSync()
+        options.offset = tableViewHandler.resultsController.fetchedObjects?.count
+        
+        postService.syncPostsOfType(
+            postTypeToSync(),
+            withOptions: options,
+            forBlog: blog,
+            success: {[weak self] (posts: [AbstractPost]) -> () in
+                guard let strongSelf = self, let success = success else {
+                    return
+                }
+                
+                strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
+                success(filter.hasMore)
+            }, failure: {[weak self] (error: NSError) -> () in
+                
+                guard let strongSelf = self else {
+                    return
+                }
+                
+                if let failure = failure {
+                    failure(error)
+                }
+                
+                strongSelf.handleSyncFailure(error)
+            })
+    }
+    
+    func syncContentEnded() {
+        refreshControl?.endRefreshing()
+        postListFooterView.showSpinner(false)
+        
+        noResultsView?.removeFromSuperview()
+        
+        if tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            // This is a special case.  Core data can be a bit slow about notifying
+            // NSFetchedResultsController delegates about changes to the fetched results.
+            // To compensate, call configureNoResultsView after a short delay.
+            // It will be redisplayed if necessary.
+            
+            performSelector(#selector(configureNoResultsView(_:)), withObject: self, afterDelay: 0.1)
+        }
+    }
+    
+    func handleSyncFailure(error: NSError) {
+        if error.domain == WPXMLRPCClientErrorDomain
+            && error.code == self.dynamicType.HTTPErrorCodeForbidden {
+            promptForPassword()
+            return
+        }
+        
+        WPError.showNetworkingAlertWithError(error, title: NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails."))
+    }
+    
+    func promptForPassword() {
+        let message = NSLocalizedString("The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", comment: "")
+        WPError.showAlertWithTitle(NSLocalizedString("Unable to Connect", comment: ""), message: message)
+        
+        // bad login/pass combination
+        let editSiteViewController = SiteSettingsViewController(blog: blog)
+        editSiteViewController.isCancellable = false
+        
+        let navController = UINavigationController(rootViewController: editSiteViewController)
+        navController.navigationBar.translucent = false
+        
+        if UIDevice.isPad() {
+            navController.modalTransitionStyle = .CrossDissolve
+            navController.modalPresentationStyle = .FormSheet
+        }
+        
+        presentViewController(navController, animated: true, completion: nil)
+    }
+    
+    // MARK: - Search Controller Delegate Methods
+    
+    func presentSearchController(searchController: WPSearchController!) {
+        WPAnalytics.track(.PostListSearchOpened, withProperties: propertiesForAnalytics())
+        
+        navigationController?.setNavigationBarHidden(true, animated: true) // Remove this line when switching to UISearchController.
+        searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
+        
+        UIView.animateWithDuration(SearchBarAnimationDuration, delay: 0.0, options: UIViewAnimationOptions.TransitionNone, animations: { [weak self] in
+            self?.view.layoutIfNeeded()
+            }, completion: { (finished: Bool) -> () in
+                searchController.searchBar.becomeFirstResponder()
+        })
+    }
+    
+    func willDismissSearchController(searchController: WPSearchController!) {
+        searchController.searchBar.resignFirstResponder()
+        navigationController?.setNavigationBarHidden(false, animated: true) // Remove this line when switching to UISearchController
+        searchWrapperViewHeightConstraint.constant = 0
+        
+        UIView.animateWithDuration(SearchBarAnimationDuration) { [weak self] in
+            self?.view.layoutIfNeeded()
+        }
+        
+        searchController.searchBar.text = nil
+        resetTableViewContentOffset()
+        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+    }
+    
+    func updateSearchResultsForSearchController(searchController: WPSearchController!) {
+        resetTableViewContentOffset()
+        updateAndPerformFetchRequestRefreshingCachedRowHeights()
     }
     
 }
@@ -449,169 +615,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 @end
 
 @implementation AbstractPostListViewController
-
-#pragma mark - Actions
-
-
- 
-    - (IBAction)handleAddButtonTapped:(id)sender
-{
-    [self createPost];
-    }
- 
-    - (IBAction)handleSearchButtonTapped:(id)sender
-{
-    [self toggleSearch];
-    }
- 
-    - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
-{
-    [WPAnalytics track:WPAnalyticsStatPostListNoResultsButtonPressed withProperties:[self propertiesForAnalytics]];
-    if ([self currentPostListFilter].filterType == PostListStatusFilterScheduled) {
-        NSInteger index = [self indexForFilterWithType:PostListStatusFilterDraft];
-        [self setCurrentFilterIndex:index];
-        return;
-    }
-    [self createPost];
-    }
- 
-    - (IBAction)didTapFilterButton:(id)sender
-{
-    [self displayFilters];
-}
-
-
-#pragma mark - Sync Helper Delegate Methods
-
-- (NSString *)postTypeToSync
-{
-    // Subclasses should override.
-    return PostServiceTypeAny;
-    }
- 
-    - (NSDate *)lastSyncDate
-        {
-            return self.blog.lastPostsSync;
-        }
- 
-        - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
-{
-    if ([self.recentlyTrashedPostObjectIDs count]) {
-        [self.recentlyTrashedPostObjectIDs removeAllObjects];
-        [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
-    }
-    PostListFilter *filter = [self currentPostListFilter];
-    NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
-    __weak __typeof(self) weakSelf = self;
- 
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
- 
-    PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
-    options.statuses = filter.statuses;
-    options.authorID = author;
-    options.number = @([self numberOfPostsPerSync]);
-    options.purgesLocalSync = YES;
- 
-    [postService syncPostsOfType:[self postTypeToSync]
-    withOptions:options
-    forBlog:self.blog
-    success:^(NSArray *posts) {
-    if  (success) {
-    [weakSelf updateFilter:filter
-    withSyncedPosts:posts
-    syncOptions:options];
-    success(filter.hasMore);
-    }
-    } failure:^(NSError *error) {
-    if (failure) {
-    failure(error);
-    }
-    if (userInteraction) {
-    [self handleSyncFailure:error];
-    }
-    }];
-    }
- 
-    - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
-{
-    [WPAnalytics track:WPAnalyticsStatPostListLoadedMore withProperties:[self propertiesForAnalytics]];
-    [self.postListFooterView showSpinner:YES];
- 
-    PostListFilter *filter = [self currentPostListFilter];
-    NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
-    __weak __typeof(self) weakSelf = self;
- 
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
- 
-    PostServiceSyncOptions *options = [[PostServiceSyncOptions alloc] init];
-    options.statuses = filter.statuses;
-    options.authorID = author;
-    options.number = @([self numberOfPostsPerSync]);
-    options.offset = @([self.tableViewHandler.resultsController.fetchedObjects count]);
-    
-    [postService syncPostsOfType:[self postTypeToSync]
-    withOptions:options
-    forBlog:self.blog
-    success:^(NSArray *posts) {
-    if (success) {
-    [weakSelf updateFilter:filter
-    withSyncedPosts:posts
-    syncOptions:options];
-    success(filter.hasMore);
-    }
-    } failure:^(NSError *error) {
-    if (failure) {
-    failure(error);
-    }
-    [self handleSyncFailure:error];
-    }];
-    }
-    
-    - (void)syncContentEnded
-        {
-            [self.refreshControl endRefreshing];
-            [self.postListFooterView showSpinner:NO];
-            
-            [self.noResultsView removeFromSuperview];
-            if ([[self.tableViewHandler.resultsController fetchedObjects] count] == 0) {
-                // This is a special case.  Core data can be a bit slow about notifying
-                // NSFetchedResultsController delegates about changes to the fetched results.
-                // To compensate, call configureNoResultsView after a short delay.
-                // It will be redisplayed if necessary.
-                [self performSelector:@selector(configureNoResultsView) withObject:self afterDelay:0.1];
-            }
-        }
-        
-        - (void)handleSyncFailure:(NSError *)error
-{
-    if ([error.domain isEqualToString:WPXMLRPCClientErrorDomain]) {
-        if (error.code == HTTPErrorCodeForbidden) {
-            [self promptForPassword];
-            return;
-        }
-    }
-    [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.")];
-    }
-    
-    - (void)promptForPassword
-        {
-            NSString *message = NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"");
-            [WPError showAlertWithTitle:NSLocalizedString(@"Unable to Connect", @"") message:message];
-            
-            // bad login/pass combination
-            SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
-            editSiteViewController.isCancellable = YES;
-            
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
-            navController.navigationBar.translucent = NO;
-            
-            if (IS_IPAD) {
-                navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                navController.modalPresentationStyle = UIModalPresentationFormSheet;
-            }
-            
-            [self presentViewController:navController animated:YES completion:nil];
-}
 
 
 #pragma mark - TableView Handler Delegate Methods
@@ -1054,44 +1057,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     NSUInteger index = [self indexOfFilterThatDisplaysPostsWithStatus:status];
     
     [self setCurrentFilterIndex:index];
-}
-
-
-#pragma mark - Search Controller Delegate Methods
-
-- (void)presentSearchController:(WPSearchController *)searchController
-{
-    [WPAnalytics track:WPAnalyticsStatPostListSearchOpened withProperties:[self propertiesForAnalytics]];
-    [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
-    self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
-    [UIView animateWithDuration:SearchBarAnimationDuration
-        delay:0.0
-        options:0
-        animations:^{
-        [self.view layoutIfNeeded];
-        } completion:^(BOOL finished) {
-        [self.searchController.searchBar becomeFirstResponder];
-        }];
-    }
-    
-    - (void)willDismissSearchController:(WPSearchController *)searchController
-{
-    [self.searchController.searchBar resignFirstResponder];
-    [self.navigationController setNavigationBarHidden:NO animated:YES]; // Remove this line when switching to UISearchController.
-    self.searchWrapperViewHeightConstraint.constant = 0;
-    [UIView animateWithDuration:SearchBarAnimationDuration animations:^{
-        [self.view layoutIfNeeded];
-        }];
-    
-    self.searchController.searchBar.text = nil;
-    [self resetTableViewContentOffset];
-    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
-    }
-    
-    - (void)updateSearchResultsForSearchController:(WPSearchController *)searchController
-{
-    [self resetTableViewContentOffset];
-    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
 @end
