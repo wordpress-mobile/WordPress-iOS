@@ -40,6 +40,7 @@
 
 */
 
+import CocoaLumberjack
 import Foundation
 import WordPressApi
 import WordPressComAnalytics
@@ -341,12 +342,163 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return properties
     }
     
+    // MARK: TableViewHandler Delegte Methods
+    
+    func entityName() -> String {
+        assert(false, "You should implement this method in the subclass")
+    }
+    
+    func managedObjectContext() -> NSManagedObjectContext {
+        return ContextManager.sharedInstance().mainContext
+    }
+    
+    func fetchRequest() {
+        let fetchRequest = NSFetchRequest(entityName: entityName())
+        
+        fetchRequest.predicate = predicateForFetchRequest()
+        fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
+        fetchRequest.fetchBatchSize = self.dynamicType.PostsFetchRequestBatchSize
+        fetchRequest.fetchLimit = numberOfPostsPerSync()
+        
+        return fetchRequest
+    }
+  
+    func sortDescriptorsForFetchRequest() -> [NSSortDescriptor] {
+        // Ascending only for scheduled posts/pages.
+        let ascending = currentPostListFilter().filterType == .Scheduled
+        
+        let sortDescriptorLocal = NSSortDescriptor(key: "metaIsLocal", ascending: false)
+        let sortDescriptorImmediately = NSSortDescriptor(key: "metaPublishImmediately", ascending: false)
+        let sortDescriptorDate = NSSortDescriptor(key: "date_created_gmt", ascending: ascending)
+        
+        return [sortDescriptorLocal, sortDescriptorImmediately, sortDescriptorDate]
+    }
+    
+    func updateAndPerformFetchRequest() {
+        assert(NSThread.isMainThread(), "AbstractPostListViewController Error: NSFetchedResultsController accessed in BG")
+        
+        let predicate = predicateForFetchRequest()
+        let sortDescriptors = sortDescriptorsForFetchRequest()
+        
+        let error : NSError?
+        let fetchRequest = tableViewHandler.resultsController.fetchRequest
+        
+        // Set the predicate based on filtering by the oldestPostDate and not searching.
+        let filter = currentPostListFilter()
+        
+        if let oldestPostDate = filter.oldestPostDate where isSearching() == false {
+            
+            // Filter posts by any posts newer than the filter's oldestPostDate.
+            // Also include any posts that don't have a date set, such as local posts created without a connection.
+            let datePredicate = NSPredicate(format: "(date_created_gmt = NULL) OR (date_created_gmt >= %@)", oldestPostDate)
+            
+            predicate = NSCompoundPredicate.init(andPredicateWithSubpredicates: [predicate, datePredicate])
+        }
+        
+        // Set up the fetchLimit based on filtering or searching
+        if filter.oldestPostDate != nil || isSearching() == true {
+            // If filtering by the oldestPostDate or searching, the fetchLimit should be disabled.
+            fetchRequest.fetchLimit = 0
+        } else {
+            // If not filtering by the oldestPostDate or searching, set the fetchLimit to the default number of posts.
+            fetchRequest.fetchLimit = numberOfPostsPerSync()
+        }
+        
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = sortDescriptors
+        
+        do {
+            try tableViewHandler.resultsController.performFetch()
+        } catch {
+            DDLogError("Error fetching posts after updating the fetch request predicate: %@", error);
+        }
+    }
+    
+/*
+         // Set up the fetchLimit based on filtering or searching
+         if (filter.oldestPostDate || self.isSearching) {
+            // If filtering by the oldestPostDate or searching, the fetchLimit should be disabled.
+            fetchRequest.fetchLimit = 0;
+         } else {
+            // If not filtering by the oldestPostDate or searching, set the fetchLimit to the default number of posts.
+            fetchRequest.fetchLimit = [self numberOfPostsPerSync];
+         }
+         
+         [fetchRequest setPredicate:predicate];
+         [fetchRequest setSortDescriptors:sortDescriptors];
+         
+         [self.tableViewHandler.resultsController performFetch:&error];
+         if (error) {
+            DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
+         }
+     }
+     
+     - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
+     {
+     [self updateAndPerformFetchRequest];
+     
+     CGFloat width = CGRectGetWidth(self.tableView.bounds);
+     [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+     
+     [self.tableView reloadData];
+     [self configureNoResultsView];
+     }
+     
+     - (void)resetTableViewContentOffset
+     {
+     // Reset the tableView contentOffset to the top before we make any dataSource changes.
+     CGPoint tableOffset = self.tableView.contentOffset;
+     tableOffset.y = -self.tableView.contentInset.top;
+     self.tableView.contentOffset = tableOffset;
+     }
+     
+     - (NSPredicate *)predicateForFetchRequest
+     {
+     AssertSubclassMethod();
+     return nil;
+     }
+     
+ */
+    
+    // MARK: - Table View Handling
+    
+    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        assert(false, "You should implement this method in the subclass")
+    }
+    
+    func tableViewDidChangeContent(tableView: UITableView!) {
+        // After any change, make sure that the no results view is properly
+        // configured.
+        
+        configureNoResultsView()
+    }
+    
+    func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!, forRowAtIndexPath indexPath: NSIndexPath!) {
+        guard isViewOnScreen() && !isSearching() else {
+            return
+        }
+        
+        // Are we approaching the end of the table?
+        if indexPath.section + 1 == tableView.numberOfSections
+            && indexPath.row + self.dynamicType.PostsLoadMoreThreshold >= tableView.numberOfRowsInSection(indexPath.section) {
+            
+            // Only 3 rows till the end of table
+            if currentPostListFilter().hasMore {
+                syncHelper.syncMoreContent()
+            }
+        }
+    }
+    
+    func configureCell(cell: UITableViewCell!, atIndexPath indexPath: NSIndexPath!) {
+        assert(false, "You should implement this method in the subclass")
+    }
+    
     // MARK: - Actions
     
     @IBAction func refresh(sender: AnyObject) {
         syncItemsWithUserInteraction(true)
         
-        WPAnalytics.track(track:WPAnalyticsStatPostListPullToRefresh, withProperties: propertiesForAnalytics())
+        WPAnalytics.track(.PostListPullToRefresh, withProperties: propertiesForAnalytics())
     }
     
     @IBAction func handleAddButtonTapped(sender: AnyObject) {
@@ -358,10 +510,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     @IBAction func didTapNoResultsView(noResultsView: WPNoResultsView) {
-        WPAnalytics.track(WPAnalyticsStatPostListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
+        WPAnalytics.track(.PostListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
         
-        if currentPostListFilter().filterType == PostListStatusFilterScheduled {
-            let index = indexForFilterWithType(PostListStatusFilterDraft)
+        if currentPostListFilter().filterType == .Scheduled {
+            let index = indexForFilterWithType(.Draft)
             setCurrentFilterIndex(index)
             return
         }
@@ -381,7 +533,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             DDLogVerbose("View is not visible and will not check for auto refresh.")
             return
         }
-     
+
         // Do not start auto-sync if connection is down
         let appDelegate = WordPressAppDelegate.sharedInstance()
         
@@ -389,31 +541,30 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             configureNoResultsView()
             return
         }
-        
-        let lastSynced = lastSyncDate
-        if lastSynced == nil || ABS(lastSynced.timeIntervalSinceNow()) > PostsControllerRefreshInterval {
+
+        if let lastSynced = lastSyncDate() where abs(lastSynced.timeIntervalSinceNow) > self.dynamicType.PostsControllerRefreshInterval {
             // Update in the background
             syncItemsWithUserInteraction(false)
         } else {
             configureNoResultsView()
         }
     }
-    
+
     func syncItemsWithUserInteraction(userInteraction: Bool) {
         syncHelper.syncContentWithUserInteraction(userInteraction)
         configureNoResultsView()
     }
-    
+
     func updateFilter(filter: PostListFilter, withSyncedPosts posts:[AbstractPost], syncOptions options: PostServiceSyncOptions) {
         let oldestPost = posts[posts.count - 1]
-        
+
         // Reset the filter to only show the latest sync point.
         filter.oldestPostDate = oldestPost.dateCreated()
         filter.hasMore = posts.count >= options.number.integerValue
-        
+
         updateAndPerformFetchRequestRefreshingCachedRowHeights()
     }
-    
+
     func numberOfPostsPerSync() -> UInt {
         return PostServiceDefaultNumberToSync
     }
@@ -425,7 +576,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return PostServiceTypeAny
     }
     
-    func lastSyncDate() -> NSDate {
+    func lastSyncDate() -> NSDate? {
         return blog.lastPostsSync;
     }
     
@@ -482,7 +633,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         let filter = currentPostListFilter()
         let author = shouldShowOnlyMyPosts() ? blog.account.userID : nil
         
-        let postService = PostService(managedObjectContext: managedObjectContext)
+        let postService = PostService(managedObjectContext: managedObjectContext())
         
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses
@@ -953,137 +1104,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
 @end
 
 @implementation AbstractPostListViewController
-
-
-#pragma mark - TableView Handler Delegate Methods
-
-- (NSString *)entityName
-{
-    AssertSubclassMethod();
-    return nil;
-    }
-    
-    - (NSManagedObjectContext *)managedObjectContext
-        {
-            return [[ContextManager sharedInstance] mainContext];
-        }
-        
-        - (NSFetchRequest *)fetchRequest
-            {
-                NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-                fetchRequest.predicate = [self predicateForFetchRequest];
-                fetchRequest.sortDescriptors = [self sortDescriptorsForFetchRequest];
-                fetchRequest.fetchBatchSize = PostsFetchRequestBatchSize;
-                fetchRequest.fetchLimit = [self numberOfPostsPerSync];
-                return fetchRequest;
-            }
-            
-            - (NSArray *)sortDescriptorsForFetchRequest
-                {
-                    // Ascending only for scheduled posts/pages.
-                    BOOL ascending = self.currentPostListFilter.filterType == PostListStatusFilterScheduled;
-                    NSSortDescriptor *sortDescriptorLocal = [NSSortDescriptor sortDescriptorWithKey:@"metaIsLocal" ascending:NO];
-                    NSSortDescriptor *sortDescriptorImmediately = [NSSortDescriptor sortDescriptorWithKey:@"metaPublishImmediately" ascending:NO];
-                    NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:ascending];
-                    return @[sortDescriptorLocal, sortDescriptorImmediately, sortDescriptorDate];
-                }
-                
-                - (void)updateAndPerformFetchRequest
-                    {
-                        NSAssert([NSThread isMainThread], @"AbstractPostListViewController Error: NSFetchedResultsController accessed in BG");
-                        NSPredicate *predicate = [self predicateForFetchRequest];
-                        NSArray *sortDescriptors = [self sortDescriptorsForFetchRequest];
-                        NSError *error = nil;
-                        NSFetchRequest *fetchRequest = self.tableViewHandler.resultsController.fetchRequest;
-                        
-                        // Set the predicate based on filtering by the oldestPostDate and not searching.
-                        PostListFilter *filter = [self currentPostListFilter];
-                        if (filter.oldestPostDate && !self.isSearching) {
-                            // Filter posts by any posts newer than the filter's oldestPostDate.
-                            // Also include any posts that don't have a date set, such as local posts created without a connection.
-                            NSPredicate *datePredicate = [NSPredicate predicateWithFormat:@"(date_created_gmt = NULL) OR (date_created_gmt >= %@)", filter.oldestPostDate];
-                            predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, datePredicate]];
-                        }
-                        
-                        // Set up the fetchLimit based on filtering or searching
-                        if (filter.oldestPostDate || self.isSearching) {
-                            // If filtering by the oldestPostDate or searching, the fetchLimit should be disabled.
-                            fetchRequest.fetchLimit = 0;
-                        } else {
-                            // If not filtering by the oldestPostDate or searching, set the fetchLimit to the default number of posts.
-                            fetchRequest.fetchLimit = [self numberOfPostsPerSync];
-                        }
-                        
-                        [fetchRequest setPredicate:predicate];
-                        [fetchRequest setSortDescriptors:sortDescriptors];
-                        
-                        [self.tableViewHandler.resultsController performFetch:&error];
-                        if (error) {
-                            DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
-                        }
-                    }
-                    
-                    - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
-                        {
-                            [self updateAndPerformFetchRequest];
-                            
-                            CGFloat width = CGRectGetWidth(self.tableView.bounds);
-                            [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
-                            
-                            [self.tableView reloadData];
-                            [self configureNoResultsView];
-                        }
-                        
-                        - (void)resetTableViewContentOffset
-                            {
-                                // Reset the tableView contentOffset to the top before we make any dataSource changes.
-                                CGPoint tableOffset = self.tableView.contentOffset;
-                                tableOffset.y = -self.tableView.contentInset.top;
-                                self.tableView.contentOffset = tableOffset;
-                            }
-                            
-                            - (NSPredicate *)predicateForFetchRequest
-                                {
-                                    AssertSubclassMethod();
-                                    return nil;
-}
-
-
-#pragma mark - Table View Handling
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AssertSubclassMethod();
-    }
-    
-    - (void)tableViewDidChangeContent:(UITableView *)tableView
-{
-    // After any change, make sure that the no results view is properly
-    // configured.
-    [self configureNoResultsView];
-    }
-    
-    - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (![self isViewOnScreen] || self.isSearching) {
-        return;
-    }
-    
-    // Are we approaching the end of the table?
-    if ((indexPath.section + 1 == self.tableView.numberOfSections) &&
-        (indexPath.row + PostsLoadMoreThreshold >= [self.tableView numberOfRowsInSection:indexPath.section])) {
-        
-        // Only 3 rows till the end of table
-        if ([self currentPostListFilter].hasMore) {
-            [self.syncHelper syncMoreContent];
-        }
-    }
-    }
-    
-    - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    AssertSubclassMethod();
-}
 
 @end
 */
