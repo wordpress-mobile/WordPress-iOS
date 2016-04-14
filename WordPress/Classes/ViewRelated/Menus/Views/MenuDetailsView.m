@@ -36,7 +36,10 @@
     self.backgroundColor = [UIColor clearColor];
     
     self.stackView.layoutMarginsRelativeArrangement = YES;
-    self.stackView.layoutMargins = [Menu viewDefaultDesignInsets];
+    UIEdgeInsets margin = [Menu viewDefaultDesignInsets];
+    margin.top = 0;
+    margin.bottom = 0;
+    self.stackView.layoutMargins = margin;
     self.stackView.spacing = 4.0;
     
     self.textField.text = nil;

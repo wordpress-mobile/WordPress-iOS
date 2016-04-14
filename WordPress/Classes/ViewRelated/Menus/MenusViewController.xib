@@ -165,16 +165,16 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EN3-TW-klK" customClass="MenuDetailsView">
-                                    <rect key="frame" x="0.0" y="77" width="600" height="70"/>
+                                    <rect key="frame" x="0.0" y="77" width="600" height="52"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="yZs-u8-1Mv">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="70"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="52"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" horizontalHuggingPriority="230" placeholderIntrinsicWidth="471" placeholderIntrinsicHeight="50" translatesAutoresizingMaskIntoConstraints="NO" id="2bo-01-wsh">
-                                                    <rect key="frame" x="0.0" y="10" width="484" height="50"/>
+                                                    <rect key="frame" x="0.0" y="6" width="484" height="40"/>
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Menu name text field" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3sy-f5-O7T">
-                                                            <rect key="frame" x="10" y="10" width="464" height="30"/>
+                                                            <rect key="frame" x="10" y="0.0" width="464" height="40"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                             <textInputTraits key="textInputTraits"/>
                                                             <connections>
@@ -184,15 +184,14 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="50" id="0Ky-xr-Li7"/>
                                                         <constraint firstItem="3sy-f5-O7T" firstAttribute="leading" secondItem="2bo-01-wsh" secondAttribute="leading" constant="10" id="1qU-vz-Cbc"/>
-                                                        <constraint firstItem="3sy-f5-O7T" firstAttribute="top" secondItem="2bo-01-wsh" secondAttribute="top" constant="10" id="OlL-qP-cAf"/>
+                                                        <constraint firstItem="3sy-f5-O7T" firstAttribute="height" secondItem="2bo-01-wsh" secondAttribute="height" id="Xpc-Up-FTV"/>
+                                                        <constraint firstItem="3sy-f5-O7T" firstAttribute="centerY" secondItem="2bo-01-wsh" secondAttribute="centerY" id="c8o-qS-Ny4"/>
                                                         <constraint firstAttribute="trailing" secondItem="3sy-f5-O7T" secondAttribute="trailing" constant="10" id="frX-s2-VlH"/>
-                                                        <constraint firstAttribute="bottom" secondItem="3sy-f5-O7T" secondAttribute="bottom" constant="10" id="ggD-n7-eZz"/>
                                                     </constraints>
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Ga-QQ-XHS" customClass="MenusActionButton">
-                                                    <rect key="frame" x="494" y="15" width="36" height="40"/>
+                                                    <rect key="frame" x="494" y="6" width="36" height="40"/>
                                                     <color key="backgroundColor" red="1" green="0.051290923320000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" priority="999" constant="36" id="Nmc-m4-zvg"/>
@@ -203,7 +202,7 @@
                                                     </state>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="260" horizontalCompressionResistancePriority="760" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yBv-SA-Km5" customClass="MenusActionButton">
-                                                    <rect key="frame" x="540" y="15" width="60" height="40"/>
+                                                    <rect key="frame" x="540" y="6" width="60" height="40"/>
                                                     <color key="backgroundColor" red="0.1076004438" green="0.55510221439999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="Zpd-0L-IEa"/>
@@ -214,6 +213,10 @@
                                                     </state>
                                                 </button>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="2bo-01-wsh" secondAttribute="bottom" constant="6" id="3Ij-qF-Jhb"/>
+                                                <constraint firstItem="2bo-01-wsh" firstAttribute="top" secondItem="yZs-u8-1Mv" secondAttribute="top" constant="6" id="JqV-Jn-73H"/>
+                                            </constraints>
                                         </stackView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -221,8 +224,8 @@
                                         <constraint firstItem="yZs-u8-1Mv" firstAttribute="height" secondItem="EN3-TW-klK" secondAttribute="height" id="ABS-8N-pax"/>
                                         <constraint firstItem="yZs-u8-1Mv" firstAttribute="leading" secondItem="EN3-TW-klK" secondAttribute="leading" id="LYL-Pv-GN4"/>
                                         <constraint firstAttribute="bottom" secondItem="yZs-u8-1Mv" secondAttribute="bottom" id="MZ1-Ik-q3l"/>
+                                        <constraint firstAttribute="height" constant="52" id="T03-MX-fSw"/>
                                         <constraint firstAttribute="trailing" secondItem="yZs-u8-1Mv" secondAttribute="trailing" id="TiN-gk-Nkk"/>
-                                        <constraint firstAttribute="height" constant="70" id="ZjP-3s-h2S"/>
                                         <constraint firstItem="yZs-u8-1Mv" firstAttribute="width" secondItem="EN3-TW-klK" secondAttribute="width" id="dpd-Se-lKB"/>
                                         <constraint firstItem="yZs-u8-1Mv" firstAttribute="top" secondItem="EN3-TW-klK" secondAttribute="top" id="m3c-lQ-m8h"/>
                                     </constraints>
@@ -235,10 +238,10 @@
                                     </connections>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="obX-Ts-DGu" customClass="MenuItemsStackView">
-                                    <rect key="frame" x="0.0" y="147" width="600" height="389"/>
+                                    <rect key="frame" x="0.0" y="129" width="600" height="407"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="w8Q-MA-p0C">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="389"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="407"/>
                                         </stackView>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
