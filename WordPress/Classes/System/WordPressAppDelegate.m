@@ -192,7 +192,8 @@ int ddLogLevel = DDLogLevelInfo;
         if ([URLString rangeOfString:@"newpost"].length) {
             returnValue = [self handleNewPostRequestWithURL:url];
         } else if ([URLString rangeOfString:@"magic-login"].length) {
-            returnValue = [self handleOpenWithAuthenticationURL:url];
+            DDLogInfo(@"App launched with authentication link");
+            returnValue = [SigninHelpers openAuthenticationURL:url fromRootViewController:self.window.rootViewController];
         } else if ([URLString rangeOfString:@"viewpost"].length) {
             // View the post specified by the shared blog ID and post ID
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -436,35 +437,6 @@ int ddLogLevel = DDLogLevelInfo;
 #pragma mark - OpenURL helpers
 
 /**
-
- */
-- (BOOL)handleOpenWithAuthenticationURL:(NSURL *)url
-{
-    DDLogInfo(@"App launched with authentication link");
-    NSParameterAssert([url isKindOfClass:[NSURL class]]);
-    NSDictionary *params = [[url query] dictionaryFromQueryString];
-
-    NSString *token = [params objectForKey:@"token"];
-    NSAssert(token != nil, @"The URL did not have the expected path.");
-
-    // if already logged in, do nothing.
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    if (service.defaultWordPressComAccount) {
-        DDLogInfo(@"App opened with authentication link but there is already an existing wpcom account. %@", service.defaultWordPressComAccount);
-        return YES;
-    }
-
-    // Bump stat for opening the app via a magic link.
-    [WPAppAnalytics track:WPAnalyticsStatLoginMagicLinkOpened];
-
-    // Show the signin view controller configured to perform the auth request.
-    [self showSigninScreen:token animated:NO thenEditor:NO];
-
-    return YES;
-}
-
-
-/**
  *  @brief      Handle the a new post request by URL.
  *  
  *  @param      url     The URL with the request info.  Cannot be nil.
@@ -570,30 +542,6 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)showSigninScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
-    [self showSigninScreen:nil animated:animated thenEditor:thenEditor];
-}
-
-- (void)showSigninScreen:(NSString *)token animated:(BOOL)animated thenEditor:(BOOL)thenEditor
-{
-    // Complete a magic link signin if needed.
-    NSString *savedEmail = [SigninHelpers getEmailAddressForTokenAuth];
-    if (token && savedEmail) {
-        SigninLinkAuthViewController *controller = [SigninLinkAuthViewController controller:savedEmail token:token];
-        UINavigationController *navigationController = [[NUXNavigationController alloc] initWithRootViewController:controller];
-        UIViewController *rootViewController = self.window.rootViewController;
-        if (rootViewController.presentedViewController)  {
-            [rootViewController.presentedViewController dismissViewControllerAnimated:NO completion:^{
-                [rootViewController presentViewController:navigationController animated:NO completion:nil];
-            }];
-        } else {
-            [rootViewController presentViewController:navigationController animated:NO completion:nil];
-        }
-        // Its convenient to clean up the saved email address here.
-        [SigninHelpers deleteEmailAddressForTokenAuth];
-        return;
-    }
-
-    // Show the normal signin screen.
     SigninEmailViewController *controller = controller = [SigninEmailViewController controller:nil];
     UINavigationController *navigationController = [[NUXNavigationController alloc] initWithRootViewController:controller];
     [self.window.rootViewController presentViewController:navigationController animated:NO completion:nil];

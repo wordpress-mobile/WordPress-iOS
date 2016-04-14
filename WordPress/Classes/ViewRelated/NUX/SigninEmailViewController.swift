@@ -4,6 +4,12 @@ import WordPressShared
 
 /// This vc is the entry point for the normal sign in flow.
 ///
+/// - Note: The sign in flow should be managed b ya NUXNavigationController for
+/// appearance reasons. 
+/// By convention the NUXNavigationController should be presented
+/// from UIApplication.sharedApplication.keyWindow.rootViewController to ensure 
+/// that the final step in the magic link auth flow can be performed correctly.
+///
 @objc class SigninEmailViewController: NUXAbstractViewController, SigninKeyboardResponder
 {
 
@@ -59,6 +65,9 @@ import WordPressShared
 
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+
+        assert(SigninHelpers.controllerWasPresentedFromRootViewController(self),
+               "Only present parts of the magic link signin flow from the application's root vc.")
 
         registerForKeyboardEvents(#selector(SigninEmailViewController.handleKeyboardWillShow(_:)),
                                   keyboardWillHideAction: #selector(SigninEmailViewController.handleKeyboardWillHide(_:)))

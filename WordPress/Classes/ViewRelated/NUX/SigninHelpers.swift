@@ -8,6 +8,91 @@ import WordPressComAnalytics
 {
     private static let AuthenticationEmailKey = "AuthenticationEmailKey"
 
+
+    /// Present a signin view controller to handle an authentication link.
+    ///
+    /// - Parameters:
+    ///     - url: The authentication URL
+    ///     - rootViewController: The view controller to act as the presenter for
+    ///     the signin view controller. By convention this is the app's root vc.
+    ///
+    class func openAuthenticationURL(url: NSURL, fromRootViewController rootViewController: UIViewController) -> Bool {
+        guard let token = url.query?.dictionaryFromQueryString().stringForKey("token") else {
+            DDLogSwift.logError("Signin Error: The authentication URL did not have the expected path.")
+            return false
+        }
+
+        let accountService = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        if let account = accountService.defaultWordPressComAccount() {
+            DDLogSwift.logInfo("App opened with authentication link but there is already an existing wpcom account. \(account)")
+            return false
+        }
+
+        var controller: UIViewController
+        if let email = getEmailAddressForTokenAuth() {
+            controller = SigninLinkAuthViewController.controller(email, token: token)
+            WPAppAnalytics.track(.LoginMagicLinkOpened)
+        } else {
+            controller = SigninEmailViewController.controller()
+        }
+        let navController = UINavigationController(rootViewController: controller)
+
+        // The way the magic link flow works the `SigninLinkMailViewController`,
+        // or some other view controller, might still be presented when the app
+        // is resumed by tapping on the auth link.
+        // We need to do a little work to present the SigninLinkAuth controller 
+        // from the right place.
+        // - If the rootViewController is not presenting another vc then just
+        // present the auth controller.
+        // - If the rootViewController is presenting another NUX vc, dismiss the 
+        // NUX vc then present the auth controller.
+        // - If the rootViewController is presenting *any* other vc, present the
+        // auth controller from the presented vc.
+        if let presenter = rootViewController.presentedViewController where presenter.isKindOfClass(NUXNavigationController.self) {
+            rootViewController.dismissViewControllerAnimated(false, completion: {
+                rootViewController.presentViewController(navController, animated: false, completion: nil)
+            })
+        } else {
+            let presenter = controllerForAuthControllerPresenter(rootViewController)
+            presenter.presentViewController(navController, animated: false, completion: nil)
+        }
+
+        deleteEmailAddressForTokenAuth()
+        return true
+    }
+
+
+    /// Determine the proper UIViewController to use as a presenter for the auth controller.
+    ///
+    /// - Parameters: 
+    ///     - controller: A UIViewController. By convention this should be the app's rootViewController
+    ///
+    /// - Return: The view controller to use as the presenter.
+    ///
+    class func controllerForAuthControllerPresenter(controller: UIViewController) -> UIViewController {
+        var presenter = controller
+        while let presented = presenter.presentedViewController {
+            presenter = presented
+        }
+        return presenter
+    }
+
+
+    /// Check if the specified controller was presented from the application's root vc.
+    ///
+    /// - Parameters:
+    ///     - controller: A UIViewController
+    ///
+    /// - Return: True if presented from the root vc.
+    ///
+    class func controllerWasPresentedFromRootViewController(controller: UIViewController) -> Bool {
+        guard let presentingViewController = controller.presentingViewController else {
+            return false
+        }
+        return presentingViewController == UIApplication.sharedApplication().keyWindow?.rootViewController
+    }
+
+
     /// The base site URL path derived from `loginFields.siteUrl`
     ///
     /// - Parameters:
