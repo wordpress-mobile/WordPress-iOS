@@ -11,7 +11,7 @@
 
 @property (nonatomic, strong) UIButton *addButton;
 @property (nonatomic, strong) UIButton *orderingButton;
-@property (nonatomic, strong) MenusActionButton *cancelButton;
+@property (nonatomic, strong) UIButton *cancelButton;
 @property (nonatomic, assign) CGPoint touchesBeganLocation;
 
 @end
@@ -38,14 +38,26 @@
             self.orderingButton = button;
         }
         {
-            MenusActionButton *button = [[MenusActionButton alloc] init];
+            UIButton *button = [[UIButton alloc] init];
             [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
             [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-            [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
             button.titleLabel.font = [WPFontManager systemRegularFontOfSize:16.0];
-            [button.widthAnchor constraintLessThanOrEqualToConstant:63].active = YES;
+            [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
+            
+            UIEdgeInsets inset = button.contentEdgeInsets;
+            inset.left = 6.0;
+            inset.right = inset.left;
+            button.contentEdgeInsets = inset;
             button.hidden = YES;
-            [self addAccessoryButton:button];
+            
+            [self.accessoryStackView addArrangedSubview:button];
+            [button setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+            [button setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+            
+            NSLayoutConstraint *heightConstraint = [button.heightAnchor constraintEqualToAnchor:self.accessoryStackView.heightAnchor];
+            heightConstraint.priority = 999;
+            heightConstraint.active = YES;
+            
             self.cancelButton = button;
         }
     }

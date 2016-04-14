@@ -120,7 +120,7 @@
     itemView.item = item;
     itemView.indentationLevel = 0;
     
-    NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
+    NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintGreaterThanOrEqualToConstant:MenuItemsStackableViewDefaultHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
     [self.itemViews addObject:itemView];
