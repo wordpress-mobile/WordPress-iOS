@@ -288,6 +288,14 @@ extension PlanDetailViewController: UITableViewDataSource, UITableViewDelegate {
             return nil
         }
     }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if let headerView = self.tableView(tableView, viewForHeaderInSection: section) as? WPTableViewSectionHeaderFooterView {
+            return WPTableViewSectionHeaderFooterView.heightForHeader(headerView.title, width: CGRectGetWidth(view.bounds))
+        } else {
+            return 0
+        }
+    }
 }
 
 class FeatureItemCell: WPTableViewCell {
