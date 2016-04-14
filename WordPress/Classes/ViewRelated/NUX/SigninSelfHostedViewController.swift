@@ -55,7 +55,7 @@ import WordPressShared
         loginFields.userIsDotCom = false
 
         configureTextFields()
-        configureSubmitButton(false)
+        configureSubmitButton(animating: false)
         configureViewForEditingIfNeeded()
     }
 
@@ -109,7 +109,7 @@ import WordPressShared
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
+    func configureSubmitButton(animating animating: Bool) {
         submitButton.showActivityIndicator(animating)
 
         submitButton.enabled = (
@@ -131,7 +131,7 @@ import WordPressShared
         passwordField.enabled = !loading
         siteURLField.enabled = !loading
 
-        configureSubmitButton(loading)
+        configureSubmitButton(animating: loading)
     }
 
 
@@ -202,7 +202,7 @@ import WordPressShared
         loginFields.siteUrl = SigninHelpers.baseSiteURL(siteURLField.nonNilTrimmedText())
 
         configureForgotPasswordButton()
-        configureSubmitButton(false)
+        configureSubmitButton(animating: false)
     }
 
 
