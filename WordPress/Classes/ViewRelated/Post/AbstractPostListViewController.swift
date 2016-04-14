@@ -1,46 +1,3 @@
-/*
- 
-#import <UIKit/UIKit.h>
-#import "NavbarTitleDropdownButton.h"
-#import "PostListFilter.h"
-#import "WordPress-swift.h"
-
-@class Blog;
-
-@interface AbstractPostListViewController : UIViewController
-
-/**
- *  Sets the filtering of this VC to show the posts with the specified status.
- *
- *  @param      status      The status of the type of post we want to show.
- */
-- (void)setFilterWithPostStatus:(NSString* __nonnull)status;
-
-- (NSString* _Nonnull)postTypeToSync;
-- (NSDate* _Nullable)lastSyncDate;
-- (void)syncItemsWithUserInteraction:(BOOL)userInteraction;
-- (BOOL)canFilterByAuthor;
-- (BOOL)shouldShowOnlyMyPosts;
-- (PostAuthorFilter)currentPostAuthorFilter;
-- (void)setCurrentPostAuthorFilter:(PostAuthorFilter)filter;
-- (PostListFilter * _Nullable)currentPostListFilter;
-- (CGFloat)heightForFooterView;
-- (void)publishPost:(AbstractPost* _Nonnull)apost;
-- (void)viewPost:(AbstractPost* _Nonnull)apost;
-- (void)deletePost:(AbstractPost* _Nonnull)apost;
-- (void)restorePost:(AbstractPost* _Nonnull)apost;
-- (void)updateAndPerformFetchRequestRefreshingCachedRowHeights;
-- (void)resetTableViewContentOffset;
-- (BOOL)isSearching;
-- (NSString* _Nullable)currentSearchTerm;
-- (NSDictionary* _Nonnull)propertiesForAnalytics;
-- (NSManagedObjectContext* _Nonnull)managedObjectContext;
-
-@end
-
-*/
-
-import CocoaLumberjack
 import Foundation
 import WordPressApi
 import WordPressComAnalytics
@@ -99,7 +56,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         
         refreshControl?.addTarget(self, action: #selector(AbstractPostListViewController.refresh(_:)), forControlEvents: .ValueChanged)
         
-        configuerFilters()
         configureCellsForLayout()
         configureTableView()
         configureFooterView()
@@ -137,10 +93,12 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
         coordinator.animateAlongsideTransition({[weak self] (context: UIViewControllerTransitionCoordinatorContext) -> () in
-            if let strongSelf = self {
-                if UIDevice.isPad() == false && strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
-                    strongSelf.searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
-                }
+            guard let strongSelf = self else {
+                return
+            }
+            
+            if UIDevice.isPad() == false && strongSelf.searchWrapperViewHeightConstraint.constant > 0 {
+                strongSelf.searchWrapperViewHeightConstraint.constant = CGFloat(strongSelf.heightForSearchWrapperView())
             }
         }, completion: nil)
     }
@@ -181,6 +139,13 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     }
     
     // MARK: - Configuration
+    
+    
+    func heightForFooterView() -> Float
+    {
+        return self.dynamicType.PostListHeightForFooterView;
+    }
+
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return .LightContent
@@ -352,13 +317,13 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return ContextManager.sharedInstance().mainContext
     }
     
-    func fetchRequest() {
+    func fetchRequest() -> NSFetchRequest {
         let fetchRequest = NSFetchRequest(entityName: entityName())
         
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
         fetchRequest.fetchBatchSize = self.dynamicType.PostsFetchRequestBatchSize
-        fetchRequest.fetchLimit = numberOfPostsPerSync()
+        fetchRequest.fetchLimit = Int(numberOfPostsPerSync())
         
         return fetchRequest
     }
@@ -377,10 +342,8 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func updateAndPerformFetchRequest() {
         assert(NSThread.isMainThread(), "AbstractPostListViewController Error: NSFetchedResultsController accessed in BG")
         
-        let predicate = predicateForFetchRequest()
+        var predicate = predicateForFetchRequest()
         let sortDescriptors = sortDescriptorsForFetchRequest()
-        
-        let error : NSError?
         let fetchRequest = tableViewHandler.resultsController.fetchRequest
         
         // Set the predicate based on filtering by the oldestPostDate and not searching.
@@ -401,7 +364,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             fetchRequest.fetchLimit = 0
         } else {
             // If not filtering by the oldestPostDate or searching, set the fetchLimit to the default number of posts.
-            fetchRequest.fetchLimit = numberOfPostsPerSync()
+            fetchRequest.fetchLimit = Int(numberOfPostsPerSync())
         }
         
         fetchRequest.predicate = predicate
@@ -410,55 +373,30 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         do {
             try tableViewHandler.resultsController.performFetch()
         } catch {
-            DDLogError("Error fetching posts after updating the fetch request predicate: %@", error);
+            DDLogSwift.logError("Error fetching posts after updating the fetch request predicate: \(error)");
         }
     }
     
-/*
-         // Set up the fetchLimit based on filtering or searching
-         if (filter.oldestPostDate || self.isSearching) {
-            // If filtering by the oldestPostDate or searching, the fetchLimit should be disabled.
-            fetchRequest.fetchLimit = 0;
-         } else {
-            // If not filtering by the oldestPostDate or searching, set the fetchLimit to the default number of posts.
-            fetchRequest.fetchLimit = [self numberOfPostsPerSync];
-         }
-         
-         [fetchRequest setPredicate:predicate];
-         [fetchRequest setSortDescriptors:sortDescriptors];
-         
-         [self.tableViewHandler.resultsController performFetch:&error];
-         if (error) {
-            DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
-         }
-     }
-     
-     - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
-     {
-     [self updateAndPerformFetchRequest];
-     
-     CGFloat width = CGRectGetWidth(self.tableView.bounds);
-     [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
-     
-     [self.tableView reloadData];
-     [self configureNoResultsView];
-     }
-     
-     - (void)resetTableViewContentOffset
-     {
-     // Reset the tableView contentOffset to the top before we make any dataSource changes.
-     CGPoint tableOffset = self.tableView.contentOffset;
-     tableOffset.y = -self.tableView.contentInset.top;
-     self.tableView.contentOffset = tableOffset;
-     }
-     
-     - (NSPredicate *)predicateForFetchRequest
-     {
-     AssertSubclassMethod();
-     return nil;
-     }
-     
- */
+    func updateAndPerformFetchRequestRefreshingCachedRowHeights() {
+        updateAndPerformFetchRequest()
+        
+        let width = CGRectGetWidth(tableView.bounds)
+        tableViewHandler.refreshCachedRowHeightsForWidth(width)
+        
+        tableView.reloadData()
+        configureNoResultsView()
+    }
+    
+    func resetTableViewContentOffset() {
+        // Reset the tableView contentOffset to the top before we make any dataSource changes.
+        var tableOffset = tableView.contentOffset
+        tableOffset.y = -tableView.contentInset.top
+        tableView.contentOffset = tableOffset
+    }
+    
+    func predicateForFetchRequest() -> NSPredicate {
+        assert(false, "You should implement this method in the subclass")
+    }
     
     // MARK: - Table View Handling
     
@@ -530,7 +468,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     func automaticallySyncIfAppropriate() {
         // Only automatically refresh if the view is loaded and visible on the screen
         if isViewLoaded() == false || view.window == nil {
-            DDLogVerbose("View is not visible and will not check for auto refresh.")
+            DDLogSwift.logVerbose("View is not visible and will not check for auto refresh.")
             return
         }
 
@@ -590,7 +528,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         let filter = currentPostListFilter()
         let author = shouldShowOnlyMyPosts() ? blog.account.userID : nil
         
-        let postService = PostService(managedObjectContext: managedObjectContext)
+        let postService = PostService(managedObjectContext: managedObjectContext())
         
         let options = PostServiceSyncOptions()
         options.statuses = filter.statuses
@@ -678,7 +616,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             // To compensate, call configureNoResultsView after a short delay.
             // It will be redisplayed if necessary.
             
-            performSelector(#selector(configureNoResultsView(_:)), withObject: self, afterDelay: 0.1)
+            performSelector(#selector(configureNoResultsView), withObject: self, afterDelay: 0.1)
         }
     }
     
@@ -801,28 +739,31 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         
         let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         
-        postService.restorePost(apost, success: { 
-            // Make sure the post still exists.
-            let err : NSError?
-            let apost = managedObjectContext().existingObjectWithID(postObjectID, error: &err)
+        postService.restorePost(apost, success: { [weak self] in
             
-            if err != nil {
-                DDLogError("%@", err);
+            guard let strongSelf = self else {
+                return
             }
             
-            guard let post = apost else {
+            var apost : AbstractPost
+            
+            // Make sure the post still exists.
+            do {
+                apost = try strongSelf.managedObjectContext().existingObjectWithID(postObjectID) as! AbstractPost
+            } catch {
+                DDLogSwift.logError("\(error)")
                 return
             }
             
             // If the post was restored, see if it appears in the current filter.
             // If not, prompt the user to let it know under which filter it appears.
-            let filter = filterThatDisplaysPostsWithStatus(post.status)
+            let filter = strongSelf.filterThatDisplaysPostsWithStatus(apost.status)
             
-            if filter == currentPostListFilter() {
+            if filter == strongSelf.currentPostListFilter() {
                 return
             }
             
-            promptThatPostRestoredToFilter(filter)
+            strongSelf.promptThatPostRestoredToFilter(filter)
         }) { [weak self] (error: NSError!) in
             
             guard let strongSelf = self else {
@@ -1055,7 +996,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         WPAnalytics.track(.PostListSearchOpened, withProperties: propertiesForAnalytics())
         
         navigationController?.setNavigationBarHidden(true, animated: true) // Remove this line when switching to UISearchController.
-        searchWrapperViewHeightConstraint.constant = heightForSearchWrapperView()
+        searchWrapperViewHeightConstraint.constant = CGFloat(heightForSearchWrapperView())
         
         UIView.animateWithDuration(SearchBarAnimationDuration, delay: 0.0, options: UIViewAnimationOptions.TransitionNone, animations: { [weak self] in
             self?.view.layoutIfNeeded()
@@ -1082,36 +1023,4 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         resetTableViewContentOffset()
         updateAndPerformFetchRequestRefreshingCachedRowHeights()
     }
-    
 }
-
-/*
-#import "AbstractPostListViewController.h"
-
-#import "AbstractPost.h"
-#import "SiteSettingsViewController.h"
-#import "PostPreviewViewController.h"
-#import "PostService.h"
-#import "PostServiceOptions.h"
-#import "SettingsSelectionViewController.h"
-#import "UIView+Subviews.h"
-#import "WordPressAppDelegate.h"
-#import "WPAppAnalytics.h"
-#import "WPSearchControllerConfigurator.h"
-#import <WordPressApi/WordPressApi.h>
-
-@interface AbstractPostListViewController() <WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate>
-@end
-
-@implementation AbstractPostListViewController
-
-@end
-*/
-
-
-
-
-
-
-
-
