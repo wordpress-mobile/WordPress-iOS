@@ -120,7 +120,7 @@
     itemView.item = item;
     itemView.indentationLevel = 0;
     
-    NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintGreaterThanOrEqualToConstant:MenuItemsStackableViewDefaultHeight];
+    NSLayoutConstraint *heightConstraint = [itemView.heightAnchor constraintEqualToConstant:MenuItemsStackableViewDefaultHeight];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
     [self.itemViews addObject:itemView];
@@ -224,7 +224,7 @@
         insertionView.alpha = 0.0;
     }
     
-    [UIView animateWithDuration:0.3 delay:0.0 options:0 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         
         for (MenuItemInsertionView *insertionView in self.insertionViews) {
             insertionView.hidden = NO;
@@ -235,6 +235,7 @@
         [self.delegate itemsViewAnimatingContentSizeChanges:self focusedRect:previousRect updatedFocusRect:updatedRect];
         
     } completion:^(BOOL finished) {
+        
         
     }];
 }
@@ -741,6 +742,19 @@
 }
 
 #pragma mark - MenuItemViewDelegate
+
+- (void)stackableItemView:(MenuItemsStackableView *)stackableView highlighted:(BOOL)highlighted
+{
+    // Toggle drawing the line separator on the previous view in the stackView.
+    // Otherwise the drawn line stacks oddling against the highlighted drawing.
+    NSUInteger indexOfView = [self.stackView.arrangedSubviews indexOfObject:stackableView];
+    if (indexOfView > 0) {
+        MenuItemsStackableView *view = [self.stackView.arrangedSubviews objectAtIndex:indexOfView - 1];
+        if ([view isKindOfClass:[MenuItemsStackableView class]]) {
+            view.drawsLineSeparator = !highlighted;
+        }
+    }
+}
 
 - (void)itemViewSelected:(MenuItemView *)itemView
 {
