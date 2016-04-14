@@ -189,7 +189,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)setupNavbar
 {
     if (self.navigationItem.leftBarButtonItem == nil) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"Label for the button to close the post editor.") style:UIBarButtonItemStylePlain target:self action:@selector(cancelEditing)];
+        UIImage *image = [Gridicon iconOfType:GridiconTypeCross];
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithImage:image
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(cancelEditing)];
+        cancelButton.accessibilityLabel = NSLocalizedString(@"Close", @"Label for the button to close the post editor.");
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
     self.navigationItem.backBarButtonItem.title = [self editorTitle];
