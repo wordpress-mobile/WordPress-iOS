@@ -41,7 +41,7 @@ import WordPressShared
 
         configureSendCodeButtonText()
         configureStatusLabel("")
-        configureSubmitButton(false)
+        configureSubmitButton(animating: false)
     }
 
 
@@ -121,7 +121,7 @@ import WordPressShared
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
+    func configureSubmitButton(animating animating: Bool) {
         submitButton.showActivityIndicator(animating)
 
         submitButton.enabled = (
@@ -139,7 +139,7 @@ import WordPressShared
     func configureViewLoading(loading: Bool) {
         verificationCodeField.enablesReturnKeyAutomatically = !loading
 
-        configureSubmitButton(loading)
+        configureSubmitButton(animating: loading)
     }
 
 
@@ -192,7 +192,7 @@ import WordPressShared
     @IBAction func handleTextFieldDidChange(sender: UITextField) {
         loginFields.multifactorCode = verificationCodeField.nonNilTrimmedText()
 
-        configureSubmitButton(false)
+        configureSubmitButton(animating: false)
     }
 
 

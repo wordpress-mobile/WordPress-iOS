@@ -57,7 +57,7 @@ import WordPressShared
         loginFields.userIsDotCom = true
 
         configureTextFields()
-        configureSubmitButton(false)
+        configureSubmitButton(animating: false)
         configureViewForEditingIfNeeded()
     }
 
@@ -113,7 +113,7 @@ import WordPressShared
 
     /// Configures the appearance and state of the submit button.
     ///
-    func configureSubmitButton(animating: Bool) {
+    func configureSubmitButton(animating animating: Bool) {
         submitButton.showActivityIndicator(animating)
 
         submitButton.enabled = (
@@ -133,7 +133,7 @@ import WordPressShared
         usernameField.enabled = !loading
         passwordField.enabled = !loading
         
-        configureSubmitButton(loading)
+        configureSubmitButton(animating: loading)
     }
 
 
@@ -206,7 +206,7 @@ import WordPressShared
         loginFields.username = usernameField.nonNilTrimmedText()
         loginFields.password = passwordField.nonNilTrimmedText()
 
-        configureSubmitButton(false)
+        configureSubmitButton(animating: false)
     }
 
 
