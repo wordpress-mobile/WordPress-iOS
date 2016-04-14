@@ -23,6 +23,7 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 @property (nonatomic, strong) UIStackView *stackView;
 @property (nonatomic, strong) UILabel *textLabel;
 @property (nonatomic, strong) UIImageView *iconView;
+@property (nonatomic, strong) UIStackView *accessoryStackView;
 
 @property (nonatomic, weak) MenuItemsStackableView *previous;
 @property (nonatomic, weak) MenuItemsStackableView *next;
