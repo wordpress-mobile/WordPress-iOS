@@ -39,6 +39,5 @@ extern CGFloat const MenuItemsStackableViewDefaultHeight;
 @end
 
 @protocol MenuItemsStackableViewDelegate <NSObject>
-@optional
-
+- (void)stackableItemView:(MenuItemsStackableView *)stackableView highlighted:(BOOL)highlighted;
 @end
