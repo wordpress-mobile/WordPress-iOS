@@ -117,13 +117,10 @@ import WordPressComAnalytics
             path = "http://\(path)"
         }
 
-        let wpLogin = try! NSRegularExpression(pattern: "/wp-login.php$", options: .CaseInsensitive)
-        let wpadmin = try! NSRegularExpression(pattern: "/wp-admin/?$", options: .CaseInsensitive)
-        let trailingSlash = try! NSRegularExpression(pattern: "/?$", options: .CaseInsensitive)
-
-        path = wpLogin.stringByReplacingMatchesInString(path, options: .ReportCompletion, range: NSRange(location: 0, length: path.characters.count), withTemplate: "")
-        path = wpadmin.stringByReplacingMatchesInString(path, options: .ReportCompletion, range: NSRange(location: 0, length: path.characters.count), withTemplate: "")
-        path = trailingSlash.stringByReplacingMatchesInString(path, options: .ReportCompletion, range: NSRange(location: 0, length: path.characters.count), withTemplate: "")
+        path = path
+            .trimSuffix("/wp-login.php")
+            .trimSuffix("/wp-admin/?")
+            .trimSuffix("/?")
 
         return path
     }
