@@ -560,6 +560,38 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         presentViewController(navController, animated: true, completion: nil)
     }
     
+    // MARK: - Post Actions
+    
+    func createPost() {
+        assert(false, "You should implement this method in the subclass")
+    }
+    
+    // MARK: - Search Related
+    
+    func toggleSearch() {
+        searchController.active = !searchController.active
+    }
+    
+    func heightForSearchWrapperView() -> Float {
+        
+        guard let navigationController = navigationController else {
+            return Float(SearchWrapperViewMinHeight)
+        }
+        
+        let navBar = navigationController.navigationBar
+        let height = CGRectGetHeight(navBar.frame) + UIApplication.sharedApplication().statusBarFrame.size.height
+        
+        return max(Float(height), Float(SearchWrapperViewMinHeight))
+    }
+    
+    func isSearching() -> Bool {
+        return searchController.active && currentSearchTerm()?.characters.count > 0
+    }
+    
+    func currentSearchTerm() -> String? {
+        return searchController.searchBar.text
+    }
+    
     // MARK: - Filter Related
     
     func canFilterByAuthor() -> Bool {
@@ -600,143 +632,139 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return availablePostListFilters()[index]
     }
     
-    func indexOfFilterThatDisplaysPostsWithStatus(postStatus: String) -> UInt {
+    func indexOfFilterThatDisplaysPostsWithStatus(postStatus: String) -> Int {
         var index = 0
         var found = false
         
-        for filter in availablePostListFilters() {
-            if filter.statuses.containsObject(postStatus) {
-                
+        for (idx, filter) in availablePostListFilters().enumerate() {
+            
+            let statuses = filter.statuses as! [String]
+            
+            if statuses.contains(postStatus) {
+                found = true
+                index = idx
+                break
             }
+        }
+        
+        if found == false {
+            // The draft filter is the catch all by convention.
+            index = indexForFilterWithType(.Draft)
+        }
+        
+        return index
+    }
+
+    func indexForFilterWithType(filterType: PostListStatusFilter) -> Int {
+        if let index = availablePostListFilters().indexOf({ (filter: PostListFilter) -> Bool in
+            return filter.filterType == filterType
+        }) {
+            return index
+        } else {
+            return NSNotFound
         }
     }
     
-/*
-     
-     - (NSUInteger)indexOfFilterThatDisplaysPostsWithStatus:(NSString *)postStatus
-     {
-     __block NSUInteger index = 0;
-     __block BOOL found = NO;
-     
-     [self.availablePostListFilters enumerateObjectsUsingBlock:^(PostListFilter* _Nonnull filter, NSUInteger idx, BOOL* _Nonnull stop) {
-     if ([filter.statuses containsObject:postStatus]) {
-     index = idx;
-     found = YES;
-     *stop = YES;
+    func keyForCurrentListStatusFilter() -> String {
+        assert(false, "You should implement this method in the subclass")
+    }
+    
+    func currentFilterIndex() -> Int {
+        
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        
+        if let filter = userDefaults.objectForKey(keyForCurrentListStatusFilter()) as? Int
+            where filter < availablePostListFilters().count {
+            
+            return filter
+        } else {
+            return 0 // first item is the default
+        }
      }
-     }];
-     
-     if (!found) {
-     // The draft filter is the catch all by convention.
-     index = [self indexForFilterWithType:PostListStatusFilterDraft];
-     }
-     
-     return index;
-     }
-     
-     - (NSInteger)indexForFilterWithType:(PostListStatusFilter)filterType
-     {
-     NSInteger index = [self.availablePostListFilters indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-     PostListFilter *filter = (PostListFilter *)obj;
-     return filter.filterType == filterType;
-     }];
-     return index;
-     }
-     
-     - (NSString *)keyForCurrentListStatusFilter
-     {
-     AssertSubclassMethod();
-     return nil;
-     }
-     
-     - (NSInteger)currentFilterIndex
-     {
-     NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:[self keyForCurrentListStatusFilter]];
-     if (!filter || [filter integerValue] >= [self.availablePostListFilters count]) {
-     return 0; // first item is the default
-     }
-     return [filter integerValue];
-     }
-     
-     - (void)setCurrentFilterIndex:(NSInteger)newIndex
-     {
-     NSInteger index = [self currentFilterIndex];
-     if (newIndex == index) {
-     return;
-     }
-     [WPAnalytics track:WPAnalyticsStatPostListStatusFilterChanged withProperties:[self propertiesForAnalytics]];
-     [[NSUserDefaults standardUserDefaults] setObject:@(newIndex) forKey:[self keyForCurrentListStatusFilter]];
-     [NSUserDefaults resetStandardUserDefaults];
-     
-     [self.recentlyTrashedPostObjectIDs removeAllObjects];
-     [self updateFilterTitle];
-     [self resetTableViewContentOffset];
-     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
-     }
-     
-     - (void)updateFilterTitle
-     {
-     [self.filterButton setAttributedTitleForTitle:[self currentPostListFilter].title];
-     }
-     
-     - (void)displayFilters
-     {
-     NSArray *titles = [self.availablePostListFilters wp_map:^id(PostListFilter *filter) {
-     return filter.title;
-     }];
-     NSDictionary *dict = @{
-     SettingsSelectionDefaultValueKey   : [self.availablePostListFilters firstObject],
-     SettingsSelectionTitleKey          : NSLocalizedString(@"Filters", @"Title of the list of post status filters."),
-     SettingsSelectionTitlesKey         : titles,
-     SettingsSelectionValuesKey         : self.availablePostListFilters,
-     SettingsSelectionCurrentValueKey   : [self currentPostListFilter]
-     };
-     
-     SettingsSelectionViewController *controller = [[SettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
-     controller.onItemSelected = ^(NSDictionary *selectedValue) {
-     [self setCurrentFilterIndex:[self.availablePostListFilters indexOfObject:selectedValue]];
-     [self dismissViewControllerAnimated:YES completion:nil];
-     };
-     
-     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-     if ([UIDevice isPad]) {
-     [self displayFilterPopover:navController];
-     } else {
-     [self displayFilterModal:navController];
-     }
-     }
-     
-     - (void)displayFilterPopover:(UIViewController *)controller
-     {
-     controller.preferredContentSize = PreferredFiltersPopoverContentSize;
-     
-     CGRect titleRect = self.navigationItem.titleView.frame;
-     titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-     
-     controller.modalPresentationStyle = UIModalPresentationPopover;
-     [self presentViewController:controller animated:YES completion:nil];
-     
-     UIPopoverPresentationController *presentationController = controller.popoverPresentationController;
-     presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-     presentationController.sourceView = self.navigationController.view;
-     presentationController.sourceRect = titleRect;
-     }
-     
-     - (void)displayFilterModal:(UIViewController *)controller
-     {
-     controller.modalPresentationStyle = UIModalPresentationPageSheet;
-     controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-     [self presentViewController:controller animated:YES completion:nil];
-     }
-     
-     
-     - (void)setFilterWithPostStatus:(NSString* __nonnull)status
-     {
-     NSUInteger index = [self indexOfFilterThatDisplaysPostsWithStatus:status];
-     
-     [self setCurrentFilterIndex:index];
-     }
- */
+    
+    func setCurrentFilterIndex(newIndex: Int) {
+        let index = currentFilterIndex()
+        
+        guard newIndex != index else {
+            return
+        }
+        
+        WPAnalytics.track(.PostListStatusFilterChanged, withProperties: propertiesForAnalytics())
+        NSUserDefaults.standardUserDefaults().setObject(newIndex, forKey: keyForCurrentListStatusFilter())
+        NSUserDefaults.resetStandardUserDefaults()
+        
+        recentlyTrashedPostObjectIDs.removeAll()
+        updateFilterTitle()
+        resetTableViewContentOffset()
+        updateAndPerformFetchRequestRefreshingCachedRowHeights()
+    }
+    
+    func updateFilterTitle() {
+        filterButton.setAttributedTitleForTitle(currentPostListFilter().title)
+    }
+    
+    func displayFilters() {
+        let titles = availablePostListFilters().map { (filter: PostListFilter) -> String in
+            return filter.title!
+        }
+        
+        let dict = [SettingsSelectionDefaultValueKey: availablePostListFilters()[0],
+                    SettingsSelectionTitleKey: NSLocalizedString("Filters", comment: "Title of the list of post status filters."),
+                    SettingsSelectionTitlesKey: titles,
+                    SettingsSelectionValuesKey: availablePostListFilters(),
+                    SettingsSelectionCurrentValueKey: currentPostListFilter()]
+        
+        let controller = SettingsSelectionViewController(style: .Plain, andDictionary: dict)
+        controller.onItemSelected = { [weak self] (selectedValue: AnyObject!) -> () in
+            if let strongSelf = self,
+                let index = strongSelf.availablePostListFilters().indexOf(selectedValue as! PostListFilter) {
+                
+                strongSelf.setCurrentFilterIndex(index)
+                strongSelf.dismissViewControllerAnimated(true, completion: nil)
+            }
+        }
+        
+        let navController = UINavigationController(rootViewController: controller)
+        
+        if UIDevice.isPad() {
+            displayFilterPopover(navController)
+        } else {
+            displayFilterModal(navController)
+        }
+    }
+    
+    func displayFilterPopover(controller: UIViewController) {
+        controller.preferredContentSize = self.dynamicType.PreferredFiltersPopoverContentSize
+        
+        guard let navigationController = navigationController,
+            let titleView = navigationItem.titleView else {
+                
+            return
+        }
+        
+        let titleRect = navigationController.view.convertRect(
+            titleView.frame,
+            fromView: titleView.superview)
+        
+        controller.modalPresentationStyle = .Popover
+        presentViewController(controller, animated: true, completion: nil)
+        
+        let presentationController = controller.popoverPresentationController
+        presentationController?.permittedArrowDirections = .Any
+        presentationController?.sourceView = navigationController.view
+        presentationController?.sourceRect = titleRect
+    }
+    
+    func displayFilterModal(controller: UIViewController) {
+        controller.modalPresentationStyle = .PageSheet
+        controller.modalTransitionStyle = .CoverVertical
+        presentViewController(controller, animated: true, completion: nil)
+    }
+    
+    func setFilterWithPostStatus(status: String) {
+        let index = indexOfFilterThatDisplaysPostsWithStatus(status)
+        setCurrentFilterIndex(index)
+    }
     
     // MARK: - Search Controller Delegate Methods
     
@@ -1027,40 +1055,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     - (void)promptThatPostRestoredToFilter:(PostListFilter *)filter
 {
     AssertSubclassMethod();
-}
-
-
-#pragma mark - Instance Methods
-
-#pragma mark - Post Actions
-
-- (void)createPost
-{
-    AssertSubclassMethod();
-}
-
-#pragma mark - Search related
-
-- (void)toggleSearch
-{
-    self.searchController.active = !self.searchController.active;
-    }
-    
-    - (CGFloat)heightForSearchWrapperView
-        {
-            UINavigationBar *navBar = self.navigationController.navigationBar;
-            CGFloat height = CGRectGetHeight(navBar.frame) + [UIApplication sharedApplication].statusBarFrame.size.height;
-            return MAX(height, SearchWrapperViewMinHeight);
-        }
-        
-        - (BOOL)isSearching
-            {
-                return self.searchController.isActive && [[self currentSearchTerm] length]> 0;
-            }
-            
-            - (NSString *)currentSearchTerm
-                {
-                    return self.searchController.searchBar.text;
 }
 
 @end
