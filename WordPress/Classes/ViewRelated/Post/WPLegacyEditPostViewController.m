@@ -1,5 +1,4 @@
 #import "WPLegacyEditPostViewController.h"
-#import "WPLegacyEditPostViewController_Internal.h"
 #import "ContextManager.h"
 #import "Post.h"
 #import "Coordinate.h"
@@ -25,12 +24,22 @@
 #import "NSString+Helpers.h"	
 #import "WPAppAnalytics.h"
 @import Gridicons;
+#import "WPLegacyEditPostViewController.h"
+#import "PostSettingsViewController.h"
+#import "PostPreviewViewController.h"
+#import "AbstractPost.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
 static void *ProgressObserverContext = &ProgressObserverContext;
 
-@interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
+
+@interface WPLegacyEditPostViewController ()<UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration, WPMediaPickerViewControllerDelegate>
+
+@property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
+@property (nonatomic, assign) EditPostViewControllerMode editMode;
+@property (nonatomic, strong) AbstractPost *post;
+@property (readonly) BOOL hasChanges;
 
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIButton *uploadStatusButton;
@@ -181,6 +190,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     CGRect frame = self.mediaProgressView.frame;
     frame.size.width = self.view.frame.size.width;
     frame.origin.y = self.navigationController.navigationBar.frame.size.height-frame.size.height;
+    self.mediaProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     [self.mediaProgressView setFrame:frame];
 }
 
@@ -196,9 +206,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                                                         action:@selector(cancelEditing)];
         cancelButton.accessibilityLabel = NSLocalizedString(@"Close", @"Label for the button to close the post editor.");
         self.navigationItem.leftBarButtonItem = cancelButton;
-    }
-    self.navigationItem.backBarButtonItem.title = [self editorTitle];
-    self.title = [self editorTitle];
+    }    
+    //self.title = [self editorTitle];
 
     // Configure the custom title view, or just set the navigationItem title.
     // Only show the blog selector in the nav title view if we're editing a new post
@@ -219,11 +228,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     } else if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WPTabBarController sharedInstance] isNavigatingMySitesTab]) {
         self.navigationItem.titleView = nil;
         self.navigationItem.title = [self editorTitle];
+        [self.navigationController.navigationBar layoutIfNeeded];
     } else {
         UIButton *titleButton = self.titleBarButton;
         self.navigationItem.titleView = titleButton;
-        NSString *name = self.post.blog.settings.name;
-        NSString *title = name.length == 0 ? self.post.blog.url : name;
+        NSString *title = [self editorTitle];
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", title]
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager systemBoldFontOfSize:14.0] }];
 
@@ -439,15 +448,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (NSString *)editorTitle
 {
     NSString *title = @"";
-    if (self.editMode == EditPostViewControllerModeNewPost) {
-        title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
-    } else {
-        if ([self.post.postTitle length]) {
-            title = self.post.postTitle;
-        } else {
-            title = NSLocalizedString(@"Edit Post", @"Post Editor screen title.");
-        }
-    }
+    NSString *name = self.post.blog.settings.name;
+    title = [name trim].length == 0 ? self.post.blog.url : name;
     return title;
 }
 
@@ -708,7 +710,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)autosaveContent
 {
     self.post.postTitle = self.titleText;
-    self.navigationItem.title = [self editorTitle];
 
     self.post.content = self.bodyText;
     if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound) {
@@ -1026,7 +1027,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (BOOL)editorShouldBeginEditing:(WPLegacyEditorViewController *)editorController
 {
     self.post.postTitle = self.titleText;
-    self.navigationItem.title = [self editorTitle];
 
     [self refreshButtons];
     return YES;
