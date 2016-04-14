@@ -12,6 +12,8 @@ class ManagedAccountSettings: NSManagedObject {
 
         username = accountSettings.username
         email = accountSettings.email
+        emailPendingAddress = accountSettings.emailPendingAddress
+        emailPendingChange = accountSettings.emailPendingChange
         primarySiteID = accountSettings.primarySiteID
         webAddress = accountSettings.webAddress
         language = accountSettings.language
@@ -39,6 +41,8 @@ class ManagedAccountSettings: NSManagedObject {
             self.aboutMe = value
         case .Email(let value):
             self.email = value
+        case .EmailPendingChange(let value):
+            self.emailPendingChange = value
         case .PrimarySite(let value):
             self.primarySiteID = value
         case .WebAddress(let value):
@@ -62,6 +66,8 @@ class ManagedAccountSettings: NSManagedObject {
             return .AboutMe(self.aboutMe)
         case .Email(_):
             return .Email(self.email)
+        case .EmailPendingChange(_):
+            return .EmailPendingChange(self.emailPendingChange)
         case .PrimarySite(_):
             return .PrimarySite(self.primarySiteID.integerValue)
         case .WebAddress(_):
@@ -78,6 +84,7 @@ enum AccountSettingsChange {
     case DisplayName(String)
     case AboutMe(String)
     case Email(String)
+    case EmailPendingChange(Bool)
     case PrimarySite(Int)
     case WebAddress(String)
     case Language(String)
@@ -94,6 +101,8 @@ enum AccountSettingsChange {
             return value
         case .Email(let value):
             return value
+        case .EmailPendingChange(let value):
+            return String(value)
         case .PrimarySite(let value):
             return String(value)
         case .WebAddress(let value):
