@@ -108,16 +108,24 @@ enum PlanListViewModel {
     }
     
     private var footerTitle: NSAttributedString {
-        let plainTosText = NSLocalizedString("By checking out, you agree to our fascinating Terms of Service.",
+        let plainTosText = NSLocalizedString("By checking out, you agree to our fascinating terms and conditions.",
                                              comment: "TOS label when making a purchase");
-        let tosText = NSLocalizedString("Terms of Service",
-                                        comment: "'Terms of Service' should be the same text that is in 'TOS label when making a purchase'")
+        let tosText = NSLocalizedString("fascinating terms and conditions",
+                                        comment: "'fascinating terms and conditions' should be the same  text that is at the end of 'TOS label when making a purchase'")
         
         let attributedText = NSMutableAttributedString(string: plainTosText)
         
+        // Highlight 'tosText' within the full string
         let range = (plainTosText as NSString).rangeOfString(tosText, options: .CaseInsensitiveSearch)
         if range.location != NSNotFound {
             attributedText.addAttribute(NSForegroundColorAttributeName, value: WPStyleGuide.wordPressBlue(), range: range)
+        }
+        
+        // Add a non-breaking space between the final words so that we don't end up with an orphan
+        // word on the final line when wrapped.
+        let finalSpaceRange = (plainTosText as NSString).rangeOfString(" ", options: .BackwardsSearch)
+        if finalSpaceRange.location != NSNotFound {
+            attributedText.replaceCharactersInRange(finalSpaceRange, withString: "\u{00a0}")
         }
         
         return attributedText
