@@ -18,13 +18,12 @@
 
 @end
 
-CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
+CGFloat const MenuItemsStackableViewDefaultHeight = 54.0;
 
 @interface MenuItemsStackableView ()
 
 @property (nonatomic, assign) BOOL showsReorderingOptions;
 @property (nonatomic, weak) NSLayoutConstraint *constraintForLeadingIndentation;
-@property (nonatomic, strong) UIStackView *accessoryStackView;
 
 @end
 
@@ -71,10 +70,10 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
     [contentView addSubview:stackView];
     
     [NSLayoutConstraint activateConstraints:@[
-                                             [stackView.topAnchor constraintEqualToAnchor:contentView.topAnchor],
-                                             [stackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor],
-                                             [stackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor],
-                                             [stackView.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor]
+                                              [stackView.topAnchor constraintEqualToAnchor:contentView.topAnchor],
+                                              [stackView.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor],
+                                              [stackView.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor],
+                                              [stackView.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor]
                                               ]];
     
     UIEdgeInsets margins = UIEdgeInsetsZero;
@@ -97,23 +96,21 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
         [iconView.widthAnchor constraintLessThanOrEqualToConstant:MenusDesignItemIconSize].active = YES;
         [iconView.heightAnchor constraintLessThanOrEqualToConstant:MenusDesignItemIconSize].active = YES;
         iconView.tintColor = [WPStyleGuide grey];
-        
         [stackView addArrangedSubview:iconView];
         self.iconView = iconView;
     }
     {
         UILabel *label = [[UILabel alloc] init];
         label.translatesAutoresizingMaskIntoConstraints = NO;
-        label.numberOfLines = 0;
+        label.numberOfLines = 2;
         label.textColor = [self textLabelColor];
         label.font = [WPFontManager systemRegularFontOfSize:17.0];
         label.backgroundColor = [UIColor clearColor];
-        self.textLabel = label;
         [stackView addArrangedSubview:label];
-        
         [label.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
-        [label setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         [label setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [label setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        self.textLabel = label;
     }
 }
 
@@ -167,9 +164,9 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
         UIStackView *stackView = [[UIStackView alloc] init];
         stackView.translatesAutoresizingMaskIntoConstraints = NO;
         stackView.distribution = UIStackViewDistributionFill;
-        stackView.spacing = -(MenusDesignItemIconSize / 4.0);
+        [stackView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+        [stackView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         [self.stackView addArrangedSubview:stackView];
-        
         self.accessoryStackView = stackView;
     }
     
@@ -181,23 +178,29 @@ CGFloat const MenuItemsStackableViewDefaultHeight = 44.0;
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
-    button.imageView.contentMode = UIViewContentModeScaleAspectFit;
     button.backgroundColor = [UIColor clearColor];
     
     [button setImage:image forState:UIControlStateNormal];
     
-    CGFloat width = MenusDesignItemIconSize * 2;
-    CGFloat height = width;
+    CGFloat padding = 6.0;
+    CGFloat width = MenusDesignItemIconSize + (padding * 2);
+    CGFloat height = MenusDesignItemIconSize + (padding * 2);
     
     UIEdgeInsets inset = button.imageEdgeInsets;
-    inset.top = (height - MenusDesignItemIconSize) / 2.0;
-    inset.bottom = inset.top;
+    inset.top = padding;
+    inset.bottom = padding;
+    inset.left = padding;
+    inset.right = padding;
     button.imageEdgeInsets = inset;
     
-    // width and height constraints are (less than or equal to) in case the view is hidden
-    [button.widthAnchor constraintLessThanOrEqualToConstant:width].active = YES;
-    [button.heightAnchor constraintEqualToConstant:height].active = YES;
-    
+    NSLayoutConstraint *widthConstraint = [button.widthAnchor constraintEqualToConstant:width];
+    widthConstraint.priority = 999;
+    NSLayoutConstraint *heightConstraint = [button.heightAnchor constraintEqualToConstant:height];
+    heightConstraint.priority = 999;
+    [NSLayoutConstraint activateConstraints:@[
+                                              widthConstraint,
+                                              heightConstraint
+                                              ]];
     [self addAccessoryButton:button];
     
     return button;
