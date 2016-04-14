@@ -42,8 +42,12 @@
 
 #import "PhotonImageURLHelper.h"
 #import "Post.h"
+#import "PostContentProvider.h"
+#import "PostListFilter.h"
 #import "PostListFooterView.h"
 #import "PostMetaButton.h"
+#import "PostService.h"
+#import "PostServiceOptions.h"
 #import "WPPostViewController.h"
 
 #import "ReachabilityUtils.h"
@@ -86,7 +90,7 @@
 #import "WPAnalyticsTrackerWPCom.h"
 #import "WPAppAnalytics.h"
 #import "WPBlogTableViewCell.h"
-#import "PostContentProvider.h"
+#import "WPError.h"
 #import "WPGUIConstants.h"
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
