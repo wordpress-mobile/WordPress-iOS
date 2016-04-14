@@ -8,7 +8,7 @@
 
 #pragma mark - Constants
 
-static CGFloat const HorizontalMargin = 15.0f;
+static CGFloat const SettingsTextHorizontalMargin = 15.0f;
 
 typedef NS_ENUM(NSInteger, SettingsTextSections) {
     SettingsTextSectionsTextfield = 0,
@@ -166,7 +166,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
     }
     _textFieldCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     [_textFieldCell.contentView addSubview:self.textField];
-    _textField.frame = CGRectInset(_textFieldCell.bounds, HorizontalMargin, 0);
+    _textField.frame = CGRectInset(_textFieldCell.bounds, SettingsTextHorizontalMargin, 0);
     
     return _textFieldCell;
 }
@@ -177,7 +177,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
         return _actionCell;
     }
     _actionCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    _actionCell.frame = CGRectInset(_actionCell.bounds, HorizontalMargin, 0);
+    _actionCell.frame = CGRectInset(_actionCell.bounds, SettingsTextHorizontalMargin, 0);
     _actionCell.textLabel.text = self.actionText;
     _actionCell.textLabel.textAlignment = NSTextAlignmentCenter;
     
@@ -233,7 +233,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
+    if (indexPath.section == SettingsTextSectionsTextfield) {
         return self.textFieldCell;
     }
     
@@ -242,7 +242,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    return section == 0 ? self.hintView : nil;
+    return (section == SettingsTextSectionsTextfield) ? self.hintView : nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
