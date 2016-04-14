@@ -598,84 +598,99 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     
     func deletePost(apost: AbstractPost) {
         WPAnalytics.track(.PostListTrashAction, withProperties: propertiesForAnalytics())
+        
+        let postObjectID = apost.objectID
+        
+        recentlyTrashedPostObjectIDs.append(postObjectID)
+        
+        // Update the fetch request *before* making the service call.
+        updateAndPerformFetchRequest()
+        
+        let indexPath = tableViewHandler.resultsController.indexPathForObject(apost)
+        
+        if let indexPath = indexPath {
+            tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
+            tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        }
+        
+        let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        
+        postService.trashPost(apost, success: nil) { [weak self] (error: NSError!) in
+            
+            guard let strongSelf = self else {
+                return
+            }
+            
+            if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
+                strongSelf.promptForPassword()
+            } else {
+                WPError.showXMLRPCErrorAlert(error)
+            }
+            
+            if let index = strongSelf.recentlyTrashedPostObjectIDs.indexOf(postObjectID) {
+                strongSelf.recentlyTrashedPostObjectIDs.removeAtIndex(index)
+                
+                if let indexPath = indexPath {
+                    strongSelf.tableViewHandler.invalidateCachedRowHeightAtIndexPath(indexPath)
+                    strongSelf.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                }
+            }
+        }
     }
     
-/*
-     
-     - (void)deletePost:(AbstractPost *)apost
-     {
-     [WPAnalytics track:WPAnalyticsStatPostListTrashAction withProperties:[self propertiesForAnalytics]];
-     NSManagedObjectID *postObjectID = apost.objectID;
-     
-     [self.recentlyTrashedPostObjectIDs addObject:postObjectID];
-     
-     // Update the fetch request *before* making the service call.
-     [self updateAndPerformFetchRequest];
-     
-     NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:apost];
-     [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
-     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-     
-     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-     [postService trashPost:apost
-     success:nil
-     failure:^(NSError *error) {
-     if([error code] == HTTPErrorCodeForbidden) {
-     [self promptForPassword];
-     } else {
-     [WPError showXMLRPCErrorAlert:error];
-     }
-     
-     [self.recentlyTrashedPostObjectIDs removeObject:postObjectID];
-     [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
-     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-     }];
-     }
-     
-     - (void)restorePost:(AbstractPost *)apost
-     {
-     [WPAnalytics track:WPAnalyticsStatPostListRestoreAction withProperties:[self propertiesForAnalytics]];
-     // if the post was recently deleted, update the status helper and reload the cell to display a spinner
-     NSManagedObjectID *postObjectID = apost.objectID;
-     
-     [self.recentlyTrashedPostObjectIDs removeObject:postObjectID];
-     
-     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-     [postService restorePost:apost
-     success:^() {
-     // Make sure the post still exists.
-     NSError *err;
-     AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
-     if (err) {
-     DDLogError(@"%@", err);
-     }
-     if (!post) {
-     return;
-     }
-     
-     // If the post was restored, see if it appears in the current filter.
-     // If not, prompt the user to let it know under which filter it appears.
-     PostListFilter *filter = [self filterThatDisplaysPostsWithStatus:post.status];
-     if ([filter isEqual:[self currentPostListFilter]]) {
-     return;
-     }
-     [self promptThatPostRestoredToFilter:filter];
-     }
-     failure:^(NSError *error) {
-     if([error code] == 403) {
-     [self promptForPassword];
-     } else {
-     [WPError showXMLRPCErrorAlert:error];
-     }
-     [self.recentlyTrashedPostObjectIDs addObject:postObjectID];
-     }];
-     }
-     
-     - (void)promptThatPostRestoredToFilter:(PostListFilter *)filter
-     {
-     AssertSubclassMethod();
-     }
- */
+    func restorePost(apost: AbstractPost) {
+        WPAnalytics.track(.PostListRestoreAction, withProperties: propertiesForAnalytics())
+        
+        // if the post was recently deleted, update the status helper and reload the cell to display a spinner
+        let postObjectID = apost.objectID
+        
+        if let index = recentlyTrashedPostObjectIDs.indexOf(postObjectID) {
+            recentlyTrashedPostObjectIDs.removeAtIndex(index)
+        }
+        
+        let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        
+        postService.restorePost(apost, success: { 
+            // Make sure the post still exists.
+            let err : NSError?
+            let apost = managedObjectContext().existingObjectWithID(postObjectID, error: &err)
+            
+            if err != nil {
+                DDLogError("%@", err);
+            }
+            
+            guard let post = apost else {
+                return
+            }
+            
+            // If the post was restored, see if it appears in the current filter.
+            // If not, prompt the user to let it know under which filter it appears.
+            let filter = filterThatDisplaysPostsWithStatus(post.status)
+            
+            if filter == currentPostListFilter() {
+                return
+            }
+            
+            promptThatPostRestoredToFilter(filter)
+        }) { [weak self] (error: NSError!) in
+            
+            guard let strongSelf = self else {
+                return
+            }
+            
+            if error.code == strongSelf.dynamicType.HTTPErrorCodeForbidden {
+                strongSelf.promptForPassword()
+            } else {
+                WPError.showXMLRPCErrorAlert(error)
+            }
+            
+            strongSelf.recentlyTrashedPostObjectIDs.append(postObjectID)
+        }
+    }
+    
+    func promptThatPostRestoredToFilter(filter: PostListFilter) {
+        assert(false, "You should implement this method in the subclass")
+    }
     
     // MARK: - Post Actions
     
