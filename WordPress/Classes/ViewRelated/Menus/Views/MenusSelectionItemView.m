@@ -115,12 +115,12 @@
     } else  if (self.drawsDesignLineSeparator) {
         
         // draw the line separator
-        CGContextSetLineWidth(context, 1.0);
+        CGContextSetLineWidth(context, MenusDesignStrokeWidth);
         
         if (self.nextItemView && !self.nextItemView.drawsHighlighted) {
             // draw a line on the bottom
-            CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, rect.size.height - 0.5);
-            CGContextAddLineToPoint(context, rect.size.width, rect.size.height - 0.5);
+            CGContextMoveToPoint(context, MenusDesignDefaultContentSpacing, rect.size.height - (MenusDesignStrokeWidth / 2.0));
+            CGContextAddLineToPoint(context, rect.size.width, rect.size.height - (MenusDesignStrokeWidth / 2.0));
         }
         
         CGContextSetStrokeColorWithColor(context, [[WPStyleGuide greyLighten20] CGColor]);
