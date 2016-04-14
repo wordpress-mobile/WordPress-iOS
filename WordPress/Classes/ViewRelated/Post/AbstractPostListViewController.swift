@@ -49,9 +49,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     
     typealias WPNoResultsView = WordPressShared.WPNoResultsView
     
-    enum PostAuthorFilter {
-        case Mine
-        case Everyone
+    enum PostAuthorFilter : UInt {
+        case Mine = 0
+        case Everyone = 1
     }
     
     private static let PostsControllerRefreshInterval = NSTimeInterval(300)
@@ -83,7 +83,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     @IBOutlet var searchWrapperViewHeightConstraint : NSLayoutConstraint!
     
     var searchController : WPSearchController // Stand-in for UISearchController
-    private var allPostListFilters = [NSString: NSArray]()
+    private var allPostListFilters = [NSString: [PostListFilter]]()
     private(set) var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
     
     private var needsRefreshCachedCellHeightsBeforeLayout = false
@@ -560,6 +560,184 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         presentViewController(navController, animated: true, completion: nil)
     }
     
+    // MARK: - Filter Related
+    
+    func canFilterByAuthor() -> Bool {
+        return blog.isMultiAuthor && blog.account.userID != nil && blog.isHostedAtWPcom
+    }
+    
+    func shouldShowOnlyMyPosts() -> Bool {
+        let filter = currentPostAuthorFilter()
+        return filter == .Mine
+    }
+    
+    func currentPostAuthorFilter() -> PostAuthorFilter {
+        return .Everyone
+    }
+    
+    func setCurrentPostAuthorFilter(filter: PostAuthorFilter) {
+        // Noop. The default implementation is read only.
+        // Subclasses may override the getter and setter for their own filter storage.
+    }
+    
+    func availablePostListFilters() -> [PostListFilter] {
+        let currentAuthorFilter = currentPostAuthorFilter()
+        let authorFilterKey = "filter_key_\(currentAuthorFilter.rawValue)"
+        
+        if allPostListFilters[authorFilterKey] == nil {
+            allPostListFilters[authorFilterKey] = PostListFilter.newPostListFilters()
+        }
+        
+        return allPostListFilters[authorFilterKey]!
+    }
+  
+    func currentPostListFilter() -> PostListFilter {
+        return self.availablePostListFilters()[currentFilterIndex()]
+    }
+    
+    func filterThatDisplaysPostsWithStatus(postStatus: String) -> PostListFilter {
+        let index = indexOfFilterThatDisplaysPostsWithStatus(postStatus)
+        return availablePostListFilters()[index]
+    }
+    
+    func indexOfFilterThatDisplaysPostsWithStatus(postStatus: String) -> UInt {
+        var index = 0
+        var found = false
+        
+        for filter in availablePostListFilters() {
+            if filter.statuses.containsObject(postStatus) {
+                
+            }
+        }
+    }
+    
+/*
+     
+     - (NSUInteger)indexOfFilterThatDisplaysPostsWithStatus:(NSString *)postStatus
+     {
+     __block NSUInteger index = 0;
+     __block BOOL found = NO;
+     
+     [self.availablePostListFilters enumerateObjectsUsingBlock:^(PostListFilter* _Nonnull filter, NSUInteger idx, BOOL* _Nonnull stop) {
+     if ([filter.statuses containsObject:postStatus]) {
+     index = idx;
+     found = YES;
+     *stop = YES;
+     }
+     }];
+     
+     if (!found) {
+     // The draft filter is the catch all by convention.
+     index = [self indexForFilterWithType:PostListStatusFilterDraft];
+     }
+     
+     return index;
+     }
+     
+     - (NSInteger)indexForFilterWithType:(PostListStatusFilter)filterType
+     {
+     NSInteger index = [self.availablePostListFilters indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+     PostListFilter *filter = (PostListFilter *)obj;
+     return filter.filterType == filterType;
+     }];
+     return index;
+     }
+     
+     - (NSString *)keyForCurrentListStatusFilter
+     {
+     AssertSubclassMethod();
+     return nil;
+     }
+     
+     - (NSInteger)currentFilterIndex
+     {
+     NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:[self keyForCurrentListStatusFilter]];
+     if (!filter || [filter integerValue] >= [self.availablePostListFilters count]) {
+     return 0; // first item is the default
+     }
+     return [filter integerValue];
+     }
+     
+     - (void)setCurrentFilterIndex:(NSInteger)newIndex
+     {
+     NSInteger index = [self currentFilterIndex];
+     if (newIndex == index) {
+     return;
+     }
+     [WPAnalytics track:WPAnalyticsStatPostListStatusFilterChanged withProperties:[self propertiesForAnalytics]];
+     [[NSUserDefaults standardUserDefaults] setObject:@(newIndex) forKey:[self keyForCurrentListStatusFilter]];
+     [NSUserDefaults resetStandardUserDefaults];
+     
+     [self.recentlyTrashedPostObjectIDs removeAllObjects];
+     [self updateFilterTitle];
+     [self resetTableViewContentOffset];
+     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
+     }
+     
+     - (void)updateFilterTitle
+     {
+     [self.filterButton setAttributedTitleForTitle:[self currentPostListFilter].title];
+     }
+     
+     - (void)displayFilters
+     {
+     NSArray *titles = [self.availablePostListFilters wp_map:^id(PostListFilter *filter) {
+     return filter.title;
+     }];
+     NSDictionary *dict = @{
+     SettingsSelectionDefaultValueKey   : [self.availablePostListFilters firstObject],
+     SettingsSelectionTitleKey          : NSLocalizedString(@"Filters", @"Title of the list of post status filters."),
+     SettingsSelectionTitlesKey         : titles,
+     SettingsSelectionValuesKey         : self.availablePostListFilters,
+     SettingsSelectionCurrentValueKey   : [self currentPostListFilter]
+     };
+     
+     SettingsSelectionViewController *controller = [[SettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
+     controller.onItemSelected = ^(NSDictionary *selectedValue) {
+     [self setCurrentFilterIndex:[self.availablePostListFilters indexOfObject:selectedValue]];
+     [self dismissViewControllerAnimated:YES completion:nil];
+     };
+     
+     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+     if ([UIDevice isPad]) {
+     [self displayFilterPopover:navController];
+     } else {
+     [self displayFilterModal:navController];
+     }
+     }
+     
+     - (void)displayFilterPopover:(UIViewController *)controller
+     {
+     controller.preferredContentSize = PreferredFiltersPopoverContentSize;
+     
+     CGRect titleRect = self.navigationItem.titleView.frame;
+     titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
+     
+     controller.modalPresentationStyle = UIModalPresentationPopover;
+     [self presentViewController:controller animated:YES completion:nil];
+     
+     UIPopoverPresentationController *presentationController = controller.popoverPresentationController;
+     presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+     presentationController.sourceView = self.navigationController.view;
+     presentationController.sourceRect = titleRect;
+     }
+     
+     - (void)displayFilterModal:(UIViewController *)controller
+     {
+     controller.modalPresentationStyle = UIModalPresentationPageSheet;
+     controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+     [self presentViewController:controller animated:YES completion:nil];
+     }
+     
+     
+     - (void)setFilterWithPostStatus:(NSString* __nonnull)status
+     {
+     NSUInteger index = [self indexOfFilterThatDisplaysPostsWithStatus:status];
+     
+     [self setCurrentFilterIndex:index];
+     }
+ */
+    
     // MARK: - Search Controller Delegate Methods
     
     func presentSearchController(searchController: WPSearchController!) {
@@ -883,180 +1061,6 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             - (NSString *)currentSearchTerm
                 {
                     return self.searchController.searchBar.text;
-}
-
-
-#pragma mark - Filter related
-
-- (BOOL)canFilterByAuthor
-{
-    return [self.blog isMultiAuthor] && self.blog.account.userID && [self.blog isHostedAtWPcom];
-    }
-    
-    - (BOOL)shouldShowOnlyMyPosts
-        {
-            PostAuthorFilter filter = [self currentPostAuthorFilter];
-            return filter == PostAuthorFilterMine;
-        }
-        
-        - (PostAuthorFilter)currentPostAuthorFilter
-            {
-                return PostAuthorFilterEveryone;
-            }
-            
-            - (void)setCurrentPostAuthorFilter:(PostAuthorFilter)filter
-{
-    // Noop. The default implementation is read only.
-    // Subclasses may override the getter and setter for their own filter storage.
-    }
-    
-    - (NSArray *)availablePostListFilters
-        {
-            PostAuthorFilter currentAuthorFilter = [self currentPostAuthorFilter];
-            NSString *authorFilterKey = [NSString stringWithFormat:@"filter_key_%@", [[NSNumber numberWithUnsignedInteger:currentAuthorFilter] stringValue]];
-            
-            if (![self.allPostListFilters objectForKey:authorFilterKey]) {
-                [self.allPostListFilters setObject:[PostListFilter newPostListFilters] forKey:authorFilterKey];
-            }
-            
-            return [self.allPostListFilters objectForKey:authorFilterKey];
-        }
-        
-        - (PostListFilter *)currentPostListFilter
-            {
-                return self.availablePostListFilters[[self currentFilterIndex]];
-            }
-            
-            - (PostListFilter *)filterThatDisplaysPostsWithStatus:(NSString *)postStatus
-{
-    NSUInteger index = [self indexOfFilterThatDisplaysPostsWithStatus:postStatus];
-    
-    return self.availablePostListFilters[index];
-    }
-    
-    
-    - (NSUInteger)indexOfFilterThatDisplaysPostsWithStatus:(NSString *)postStatus
-{
-    __block NSUInteger index = 0;
-    __block BOOL found = NO;
-    
-    [self.availablePostListFilters enumerateObjectsUsingBlock:^(PostListFilter* _Nonnull filter, NSUInteger idx, BOOL* _Nonnull stop) {
-        if ([filter.statuses containsObject:postStatus]) {
-        index = idx;
-        found = YES;
-        *stop = YES;
-        }
-        }];
-    
-    if (!found) {
-        // The draft filter is the catch all by convention.
-        index = [self indexForFilterWithType:PostListStatusFilterDraft];
-    }
-    
-    return index;
-    }
-    
-    - (NSInteger)indexForFilterWithType:(PostListStatusFilter)filterType
-{
-    NSInteger index = [self.availablePostListFilters indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-        PostListFilter *filter = (PostListFilter *)obj;
-        return filter.filterType == filterType;
-        }];
-    return index;
-    }
-    
-    - (NSString *)keyForCurrentListStatusFilter
-        {
-            AssertSubclassMethod();
-            return nil;
-        }
-        
-        - (NSInteger)currentFilterIndex
-            {
-                NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:[self keyForCurrentListStatusFilter]];
-                if (!filter || [filter integerValue] >= [self.availablePostListFilters count]) {
-                    return 0; // first item is the default
-                }
-                return [filter integerValue];
-            }
-            
-            - (void)setCurrentFilterIndex:(NSInteger)newIndex
-{
-    NSInteger index = [self currentFilterIndex];
-    if (newIndex == index) {
-        return;
-    }
-    [WPAnalytics track:WPAnalyticsStatPostListStatusFilterChanged withProperties:[self propertiesForAnalytics]];
-    [[NSUserDefaults standardUserDefaults] setObject:@(newIndex) forKey:[self keyForCurrentListStatusFilter]];
-    [NSUserDefaults resetStandardUserDefaults];
-    
-    [self.recentlyTrashedPostObjectIDs removeAllObjects];
-    [self updateFilterTitle];
-    [self resetTableViewContentOffset];
-    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
-    }
-    
-    - (void)updateFilterTitle
-        {
-            [self.filterButton setAttributedTitleForTitle:[self currentPostListFilter].title];
-        }
-        
-        - (void)displayFilters
-            {
-                NSArray *titles = [self.availablePostListFilters wp_map:^id(PostListFilter *filter) {
-                    return filter.title;
-                    }];
-                NSDictionary *dict = @{
-                    SettingsSelectionDefaultValueKey   : [self.availablePostListFilters firstObject],
-                    SettingsSelectionTitleKey          : NSLocalizedString(@"Filters", @"Title of the list of post status filters."),
-                    SettingsSelectionTitlesKey         : titles,
-                    SettingsSelectionValuesKey         : self.availablePostListFilters,
-                    SettingsSelectionCurrentValueKey   : [self currentPostListFilter]
-                };
-                
-                SettingsSelectionViewController *controller = [[SettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
-                controller.onItemSelected = ^(NSDictionary *selectedValue) {
-                    [self setCurrentFilterIndex:[self.availablePostListFilters indexOfObject:selectedValue]];
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                };
-                
-                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-                if ([UIDevice isPad]) {
-                    [self displayFilterPopover:navController];
-                } else {
-                    [self displayFilterModal:navController];
-                }
-            }
-            
-            - (void)displayFilterPopover:(UIViewController *)controller
-{
-    controller.preferredContentSize = PreferredFiltersPopoverContentSize;
-    
-    CGRect titleRect = self.navigationItem.titleView.frame;
-    titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-    
-    controller.modalPresentationStyle = UIModalPresentationPopover;
-    [self presentViewController:controller animated:YES completion:nil];
-    
-    UIPopoverPresentationController *presentationController = controller.popoverPresentationController;
-    presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-    presentationController.sourceView = self.navigationController.view;
-    presentationController.sourceRect = titleRect;
-    }
-    
-    - (void)displayFilterModal:(UIViewController *)controller
-{
-    controller.modalPresentationStyle = UIModalPresentationPageSheet;
-    controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:controller animated:YES completion:nil];
-    }
-    
-    
-    - (void)setFilterWithPostStatus:(NSString* __nonnull)status
-{
-    NSUInteger index = [self indexOfFilterThatDisplaysPostsWithStatus:status];
-    
-    [self setCurrentFilterIndex:index];
 }
 
 @end
