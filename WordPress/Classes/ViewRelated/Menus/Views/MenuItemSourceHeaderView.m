@@ -53,7 +53,7 @@
             iconView.translatesAutoresizingMaskIntoConstraints = NO;
             iconView.contentMode = UIViewContentModeScaleAspectFit;
             iconView.backgroundColor = [UIColor whiteColor];
-            iconView.tintColor = [WPStyleGuide mediumBlue];
+            iconView.tintColor = [WPStyleGuide grey];
             iconView.image = [Gridicon iconOfType:GridiconTypeChevronLeft];
             
             [self.stackView addArrangedSubview:iconView];

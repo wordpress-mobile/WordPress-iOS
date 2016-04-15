@@ -60,7 +60,7 @@
             iconView.translatesAutoresizingMaskIntoConstraints = NO;
             iconView.contentMode = UIViewContentModeScaleAspectFit;
             iconView.backgroundColor = [UIColor whiteColor];
-            iconView.tintColor = [WPStyleGuide mediumBlue];
+            iconView.tintColor = [WPStyleGuide grey];
             
             [self.stackView addArrangedSubview:iconView];
             
@@ -90,7 +90,7 @@
             iconView.translatesAutoresizingMaskIntoConstraints = NO;
             iconView.contentMode = UIViewContentModeScaleAspectFit;
             iconView.backgroundColor = [UIColor whiteColor];
-            iconView.tintColor = [WPStyleGuide mediumBlue];
+            iconView.tintColor = [WPStyleGuide grey];
             iconView.image = [Gridicon iconOfType:GridiconTypeChevronRight];
             
             [self.stackView addArrangedSubview:iconView];
@@ -139,7 +139,7 @@
 
 - (void)updateSelection
 {
-    self.label.textColor = self.selected ? [WPStyleGuide mediumBlue] : [WPStyleGuide greyDarken30];
+    self.label.textColor = self.selected ? [WPStyleGuide wordPressBlue] : [WPStyleGuide greyDarken30];
     if (self.selected && ![self.delegate typeViewRequiresCompactLayout:self]) {
         [self showArrowView];
     } else  {
