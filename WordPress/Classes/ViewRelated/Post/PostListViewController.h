@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "AbstractPostListViewController.h"
+#import <WordPress-Swift.h>
 
 @class Blog;
 

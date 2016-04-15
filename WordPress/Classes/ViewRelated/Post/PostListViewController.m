@@ -1,6 +1,5 @@
 #import "PostListViewController.h"
 
-#import "AbstractPostListViewController.h"
 #import "Post.h"
 #import "PostCardTableViewCell.h"
 #import "RestorePostTableViewCell.h"

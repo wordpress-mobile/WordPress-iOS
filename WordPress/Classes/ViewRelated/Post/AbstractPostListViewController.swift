@@ -3,7 +3,7 @@ import WordPressApi
 import WordPressComAnalytics
 import WordPressShared
 
-class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
+@objc class AbstractPostListViewController : UIViewController, WPContentSyncHelperDelegate, WPNoResultsViewDelegate, WPSearchControllerDelegate, WPSearchResultsUpdating, WPTableViewHandlerDelegate {
     
     typealias WPNoResultsView = WordPressShared.WPNoResultsView
     
@@ -18,17 +18,37 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     private static let PostsLoadMoreThreshold = Int(4)
     private static let PreferredFiltersPopoverContentSize = CGSize(width: 320.0, height: 220.0)
     
-    static let heightForFooterView = 44.0
+    static let DefaultHeightForFooterView = Float(44.0);
     
-    var blog : Blog
+    var blog : Blog!
+    var postListViewController : UITableViewController!
     
-    var postListViewController : UITableViewController
-    var tableView : UITableView
-    var refreshControl : UIRefreshControl?
-    var tableViewHandler : WPTableViewHandler
-    var syncHelper : WPContentSyncHelper
+    lazy var tableView : UITableView = {
+        return self.postListViewController.tableView;
+    }()
+    
+    var refreshControl : UIRefreshControl!
+    
+    lazy var tableViewHandler : WPTableViewHandler = {
+        let tableViewHandler = WPTableViewHandler(tableView: self.tableView)
+        
+        tableViewHandler.cacheRowHeights = true
+        tableViewHandler.delegate = self
+        tableViewHandler.updateRowAnimation = .None
+        
+        return tableViewHandler
+    }()
+    
+    lazy var syncHelper : WPContentSyncHelper = {
+        let syncHelper = WPContentSyncHelper()
+        
+        syncHelper.delegate = self
+        
+        return syncHelper
+    }()
+    
     var noResultsView : WPNoResultsView?
-    var postListFooterView : PostListFooterView
+    var postListFooterView : PostListFooterView!
     var animatedBox : WPAnimatedBox?
     
     @IBOutlet var filterButton : NavBarTitleDropdownButton!
@@ -40,10 +60,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     @IBOutlet var authorsFilterViewHeightConstraint : NSLayoutConstraint!
     @IBOutlet var searchWrapperViewHeightConstraint : NSLayoutConstraint!
     
-    var searchController : WPSearchController // Stand-in for UISearchController
+    var searchController : WPSearchController! // Stand-in for UISearchController
     private var allPostListFilters = [NSString: [PostListFilter]]()
     private(set) var recentlyTrashedPostObjectIDs = [NSManagedObjectID]() // IDs of trashed posts. Cleared on refresh or when filter changes.
-    
+
     private var needsRefreshCachedCellHeightsBeforeLayout = false
     
     // MARK: - Lifecycle
@@ -59,11 +79,9 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         configureCellsForLayout()
         configureTableView()
         configureFooterView()
-        configureSyncHelper()
         configureNavbar()
         configureSearchController()
         configureAuthorFilter()
-        configureTableViewHandler()
         
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
         tableView.reloadData()
@@ -143,7 +161,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
     
     func heightForFooterView() -> Float
     {
-        return self.dynamicType.PostListHeightForFooterView;
+        return self.dynamicType.DefaultHeightForFooterView;
     }
 
     
@@ -181,22 +199,10 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         postListFooterView.showSpinner(false)
         
         var frame = postListFooterView.frame
-        frame.size.height = heightForFooterView()
+        frame.size.height = CGFloat(heightForFooterView())
         
         postListFooterView.frame = frame
         tableView.tableFooterView = postListFooterView
-    }
-    
-    func configureTableViewHandler() {
-        tableViewHandler = WPTableViewHandler(tableView: tableView)
-        tableViewHandler.cacheRowHeights = true
-        tableViewHandler.delegate = self
-        tableViewHandler.updateRowAnimation = .None
-    }
-    
-    func configureSyncHelper() {
-        syncHelper = WPContentSyncHelper()
-        syncHelper.delegate = self
     }
     
     func getNoResultsView() -> WPNoResultsView {
@@ -507,7 +513,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return PostServiceDefaultNumberToSync
     }
     
-    // MARK: - Sync Helper Delegate Methods
+    // MARK: - WPContentSyncHelperDelegate
     
     func postTypeToSync() -> String {
         // Subclasses should override.
@@ -518,7 +524,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         return blog.lastPostsSync;
     }
     
-    func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: (Bool) -> (), failure: (NSError) -> ()) {
+    func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> ())?, failure: ((error: NSError) -> ())?) {
         
         if recentlyTrashedPostObjectIDs.count > 0 {
             recentlyTrashedPostObjectIDs.removeAll()
@@ -540,21 +546,26 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             postTypeToSync(),
             withOptions: options,
             forBlog: blog,
-            success: {[weak self] (posts: [AbstractPost]) -> () in
-                guard let strongSelf = self, let success = success else {
+            success: {[weak self] (posts: [AbstractPost]?) -> () in
+                guard let strongSelf = self,
+                    let posts = posts else {
                     return
                 }
                 
                 strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
-                success(filter.hasMore)
-            }, failure: {[weak self] (error: NSError) -> () in
                 
-                guard let strongSelf = self else {
+                if let success = success {
+                    success(hasMore: filter.hasMore)
+                }
+            }, failure: {[weak self] (error: NSError?) -> () in
+                
+                guard let strongSelf = self,
+                    let error = error else {
                     return
                 }
                 
                 if let failure = failure {
-                    failure(error)
+                    failure(error: error)
                 }
                 
                 if userInteraction == true {
@@ -583,21 +594,26 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
             postTypeToSync(),
             withOptions: options,
             forBlog: blog,
-            success: {[weak self] (posts: [AbstractPost]) -> () in
-                guard let strongSelf = self, let success = success else {
-                    return
+            success: {[weak self] (posts: [AbstractPost]?) -> () in
+                guard let strongSelf = self,
+                    let posts = posts else {
+                        return
                 }
                 
                 strongSelf.updateFilter(filter, withSyncedPosts: posts, syncOptions: options)
-                success(filter.hasMore)
-            }, failure: {[weak self] (error: NSError) -> () in
                 
-                guard let strongSelf = self else {
-                    return
+                if let success = success {
+                    success(hasMore: filter.hasMore)
+                }
+            }, failure: {[weak self] (error: NSError?) -> () in
+                
+                guard let strongSelf = self,
+                    let error = error else {
+                        return
                 }
                 
                 if let failure = failure {
-                    failure(error)
+                    failure(error: error)
                 }
                 
                 strongSelf.handleSyncFailure(error)
@@ -862,9 +878,7 @@ class AbstractPostListViewController : UIViewController, WPContentSyncHelperDele
         
         for (idx, filter) in availablePostListFilters().enumerate() {
             
-            let statuses = filter.statuses as! [String]
-            
-            if statuses.contains(postStatus) {
+            if let statuses = filter.statuses where statuses.contains(postStatus) {
                 found = true
                 index = idx
                 break
