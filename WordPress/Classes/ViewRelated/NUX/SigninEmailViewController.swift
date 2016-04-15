@@ -291,6 +291,7 @@ import WordPressShared
         view.endEditing(true)
 
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
+            self.emailTextField.text = loginFields.username
             self.signinWithUsernamePassword(true)
         }
     }

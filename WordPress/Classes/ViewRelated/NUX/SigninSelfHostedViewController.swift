@@ -221,6 +221,8 @@ import WordPressShared
         }
 
         SigninHelpers.fetchOnePasswordCredentials(self, sourceView: sender, loginFields: loginFields) { [unowned self] (loginFields) in
+            self.usernameField.text = loginFields.username
+            self.passwordField.text = loginFields.password
             self.validateForm()
         }
     }
