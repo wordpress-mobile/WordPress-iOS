@@ -146,7 +146,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
     searchBar.delegate = self;
     [self.stackView addArrangedSubview:searchBar];
     
-    NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:48.0];
+    NSLayoutConstraint *heightConstraint = [searchBar.heightAnchor constraintEqualToConstant:44.0];
     heightConstraint.priority = UILayoutPriorityDefaultHigh;
     heightConstraint.active = YES;
     

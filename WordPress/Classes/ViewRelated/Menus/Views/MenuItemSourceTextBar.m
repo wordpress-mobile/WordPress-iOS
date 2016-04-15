@@ -61,7 +61,7 @@
             UIView *contentView = [[UIView alloc] init];
             contentView.translatesAutoresizingMaskIntoConstraints = NO;
             contentView.layer.borderColor = [[WPStyleGuide greyLighten20] CGColor];
-            contentView.layer.borderWidth = 1.0;
+            contentView.layer.borderWidth = MenusDesignStrokeWidth;
             contentView.backgroundColor = [UIColor whiteColor];
             
             [self.stackView addArrangedSubview:contentView];
@@ -88,7 +88,7 @@
         {
             UIImageView *iconView = [[UIImageView alloc] init];
             iconView.translatesAutoresizingMaskIntoConstraints = NO;
-            iconView.tintColor = [WPStyleGuide greyDarken30];
+            iconView.tintColor = [WPStyleGuide greyDarken10];
             iconView.contentMode = UIViewContentModeScaleAspectFit;
             
             [self.contentStackView addArrangedSubview:iconView];
@@ -152,7 +152,7 @@
         
         UIFont *font = [WPFontManager systemRegularFontOfSize:16.0];
         NSString *placeholder = NSLocalizedString(@"Search...", @"Menus search bar placeholder text.");
-        NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [WPStyleGuide greyLighten10]};
+        NSDictionary *attributes = @{NSFontAttributeName: font, NSForegroundColorAttributeName: [WPStyleGuide greyDarken10]};
         self.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeholder attributes:attributes];
     }
     
