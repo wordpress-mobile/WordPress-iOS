@@ -4,6 +4,7 @@
 #import "MenuItemSourceFooterView.h"
 #import "Blog.h"
 #import "Menu+ViewDesign.h"
+#import "WPStyleGuide.h"
 
 static NSTimeInterval const SearchBarFetchRequestUpdateDelay = 0.10;
 static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
@@ -35,7 +36,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
             tableView.translatesAutoresizingMaskIntoConstraints = NO;
             tableView.dataSource = self;
             tableView.delegate = self;
-            tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            tableView.separatorColor = [WPStyleGuide greyLighten20];
             UIEdgeInsets inset = tableView.contentInset;
             inset.top = MenusDesignDefaultContentSpacing / 2.0;
             tableView.contentInset = inset;
@@ -413,7 +414,7 @@ static NSTimeInterval const SearchBarRemoteServiceUpdateDelay = 0.25;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - delegate
