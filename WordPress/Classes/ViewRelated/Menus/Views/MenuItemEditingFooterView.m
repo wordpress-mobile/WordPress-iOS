@@ -1,14 +1,14 @@
 #import "MenuItemEditingFooterView.h"
-#import "MenusActionButton.h"
 #import "WPStyleGuide.h"
+#import "WPFontManager.h"
 
 @import Gridicons;
 
 @interface MenuItemEditingFooterView ()
 
-@property (nonatomic, strong) IBOutlet MenusActionButton *cancelButton;
-@property (nonatomic, strong) IBOutlet MenusActionButton *trashButton;
-@property (nonatomic, strong) IBOutlet MenusActionButton *saveButton;
+@property (nonatomic, strong) IBOutlet UIButton *cancelButton;
+@property (nonatomic, strong) IBOutlet UIButton *trashButton;
+@property (nonatomic, strong) IBOutlet UIButton *saveButton;
 
 @end
 
@@ -17,24 +17,33 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-
     {
-        MenusActionButton *button = self.cancelButton;
-        [button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
+        UIButton *button = self.cancelButton;
+        button.titleLabel.font = [WPFontManager systemRegularFontOfSize:18.0];
+        [button setTitleColor:[WPStyleGuide darkGrey] forState:UIControlStateNormal];
+        [button setTitleColor:[WPStyleGuide greyDarken20] forState:UIControlStateHighlighted];
+        [button setTitle:NSLocalizedString(@"Cancel", @"Menus: Cancel button title for canceling an edited menu item.") forState:UIControlStateNormal];
         [button addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        button.backgroundColor = [UIColor clearColor];
     }
     {
-        MenusActionButton *button = self.trashButton;
+        UIButton *button = self.trashButton;
+        button.adjustsImageWhenHighlighted = YES;
         [button setTitle:nil forState:UIControlStateNormal];
-        button.tintColor = [WPStyleGuide errorRed];
+        button.tintColor = [WPStyleGuide grey];
         [button setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        button.backgroundColor = [UIColor clearColor];
     }
     {
-        MenusActionButton *button = self.saveButton;
-        [button setTitle:NSLocalizedString(@"OK", @"") forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        UIButton *button = self.saveButton;
+        button.titleLabel.font = [WPFontManager systemSemiBoldFontOfSize:18.0];
+        [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
+        [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+        [button setTitleColor:[WPStyleGuide greyLighten20] forState:UIControlStateDisabled];
+        [button setTitle:NSLocalizedString(@"Save", @"Menus: Save button title for saving an edited menu item.") forState:UIControlStateNormal];
         [button addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+        button.backgroundColor = [UIColor clearColor];
     }
 }
 
