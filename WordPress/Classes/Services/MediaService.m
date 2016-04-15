@@ -17,10 +17,40 @@
 
 @implementation MediaService
 
-- (void)createMediaWithPHAsset:(PHAsset *)asset
+- (void)createMediaWithImage:(UIImage *)image
+                 withMediaID:(NSString *)mediaID
              forPostObjectID:(NSManagedObjectID *)postObjectID
            thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
                   completion:(void (^)(Media *media, NSError *error))completion
+{
+    [self createMediaWith:image
+          forPostObjectID:postObjectID
+                mediaName:mediaID
+        thumbnailCallback:thumbnailCallback
+               completion:completion
+     ];
+}
+
+- (void)createMediaWithPHAsset:(PHAsset *)asset
+               forPostObjectID:(NSManagedObjectID *)postObjectID
+             thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+                    completion:(void (^)(Media *media, NSError *error))completion
+{
+    NSString *mediaName = [asset originalFilename];
+    
+    [self createMediaWith:asset
+          forPostObjectID:postObjectID
+                mediaName:mediaName
+        thumbnailCallback:thumbnailCallback
+               completion:completion
+     ];
+}
+
+- (void)createMediaWith:(id<ExportableAsset>)asset
+        forPostObjectID:(NSManagedObjectID *)postObjectID
+              mediaName:(NSString *)mediaName
+      thumbnailCallback:(void (^)(NSURL *thumbnailURL))thumbnailCallback
+             completion:(void (^)(Media *media, NSError *error))completion
 {
     NSError *error = nil;
     AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
@@ -30,37 +60,30 @@
         }
         return;
     }
-    MediaType mediaType = MediaTypeDocument;
-    NSSet *allowedFileTypes = nil;
+    
+    MediaType mediaType = [asset assetMediaType];
     NSString *assetUTI = [asset originalUTI];
     NSString *extension = [self extensionForUTI:assetUTI];
-    if (asset.mediaType == PHAssetMediaTypeImage) {
-        mediaType = MediaTypeImage;
-        allowedFileTypes = post.blog.allowedFileTypes;
+    if (mediaType == MediaTypeImage) {
+        NSSet *allowedFileTypes = post.blog.allowedFileTypes;
         if (![allowedFileTypes containsObject:extension]) {
             assetUTI = (__bridge NSString *)kUTTypeJPEG;
             extension = [self extensionForUTI:assetUTI];
         }
-    } else if (asset.mediaType == PHAssetMediaTypeVideo) {
-        /** HACK: Sergio Estevao (2015-11-09): We ignore allowsFileTypes for videos in WP.com
-         because we have an exception on the server for mobile that allows video uploads event 
-         if videopress is not enabled.
-        */
-        if (![post.blog isHostedAtWPcom] && ![allowedFileTypes containsObject:extension]) {
+    } else if (mediaType == MediaTypeVideo) {
+        if (![post.blog isHostedAtWPcom]) {
             assetUTI = (__bridge NSString *)kUTTypeQuickTimeMovie;
             extension = [self extensionForUTI:assetUTI];
         }
-        allowedFileTypes = nil;
-        mediaType = MediaTypeVideo;
     }
-
+    
     MediaSettings *mediaSettings = [MediaSettings new];
     BOOL stripGeoLocation = mediaSettings.removeLocationSetting;
-    
+
     NSInteger maxImageSize = [mediaSettings imageSizeForUpload];
     CGSize maximumResolution = CGSizeMake(maxImageSize, maxImageSize);
-
-    NSURL *mediaURL = [self urlForMediaWithFilename:[asset originalFilename] andExtension:extension];
+    
+    NSURL *mediaURL = [self urlForMediaWithFilename:mediaName andExtension:extension];
     NSURL *mediaThumbnailURL = [self urlForMediaWithFilename:[self pathForThumbnailOfFile:[mediaURL lastPathComponent]]
                                                 andExtension:[self extensionForUTI:[asset defaultThumbnailUTI]]];
     
@@ -69,33 +92,33 @@
                          targetSize:[UIScreen mainScreen].bounds.size
                         synchronous:YES
                      successHandler:^(CGSize thumbnailSize) {
-            if (thumbnailCallback) {
-                thumbnailCallback(mediaThumbnailURL);
-            }
-
-            [asset exportToURL:mediaURL
-                     targetUTI:assetUTI
-             maximumResolution:maximumResolution
-              stripGeoLocation:stripGeoLocation
-                successHandler:^(CGSize resultingSize)
-                {
-                    [self createMediaForPost:postObjectID
-                                    mediaURL:mediaURL
-                           mediaThumbnailURL:mediaThumbnailURL
-                                   mediaType:mediaType
-                                   mediaSize:resultingSize
-                                  completion:completion];
-                }
-                errorHandler:^(NSError *error) {
-                   if (completion){
-                       completion(nil, error);
-                   }
-                }];
-            } errorHandler:^(NSError *error) {
-                if (completion){
-                    completion(nil, error);
-                }
-            }];
+                         if (thumbnailCallback) {
+                             thumbnailCallback(mediaThumbnailURL);
+                         }
+                         
+                         [asset exportToURL:mediaURL
+                                  targetUTI:assetUTI
+                          maximumResolution:maximumResolution
+                           stripGeoLocation:stripGeoLocation
+                             successHandler:^(CGSize resultingSize) {
+                                 [self createMediaForPost:postObjectID
+                                                 mediaURL:mediaURL
+                                        mediaThumbnailURL:mediaThumbnailURL
+                                                mediaType:mediaType
+                                                mediaSize:resultingSize
+                                               completion:completion];
+                             }
+                               errorHandler:^(NSError *error) {
+                                   if (completion){
+                                       completion(nil, error);
+                                   }
+                               }];
+                     }
+                       errorHandler:^(NSError *error) {
+                           if (completion){
+                               completion(nil, error);
+                           }
+                       }];
     }];
 }
 
