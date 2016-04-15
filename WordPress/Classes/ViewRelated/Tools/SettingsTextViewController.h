@@ -18,10 +18,6 @@ typedef void (^SettingsTextChanged)(NSString *);
 ///
 @property (nonatomic, copy) SettingsTextChanged onValueChanged;
 
-/// Specifies whether we should display navigation buttons (Cancel / Done) or not.
-///
-@property (nonatomic, assign) BOOL displaysNavigationButtons;
-
 /// Sets the Text Input Mode:
 ///
 /// - SettingsTextModesText: Default mode
