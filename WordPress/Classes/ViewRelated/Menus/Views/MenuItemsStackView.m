@@ -21,6 +21,10 @@
 @property (nonatomic, assign) CGPoint touchesBeganLocation;
 @property (nonatomic, assign) CGPoint touchesMovedLocation;
 @property (nonatomic, assign) BOOL showingTouchesOrdering;
+
+@property (nonatomic, assign) BOOL observesOrderingTouches;
+@property (nonatomic, assign) BOOL observesParentChildNestingTouches;
+
 @property (nonatomic, strong) MenuItemView *itemViewForOrdering;
 @property (nonatomic, strong) MenuItemsVisualOrderingView *visualOrderingView;
 
@@ -324,7 +328,15 @@
     }
     
     for (MenuItemView *itemView in self.itemViews) {
+        if (CGRectContainsPoint(itemView.frame, [[touches anyObject] locationInView:itemView.superview])) {
+            self.observesParentChildNestingTouches = YES;
+        } else {
+            continue;
+        }
         if (CGRectContainsPoint([itemView orderingToggleRect], [[touches anyObject] locationInView:itemView])) {
+            self.observesOrderingTouches = YES;
+        }
+        if (self.observesParentChildNestingTouches || self.observesOrderingTouches) {
             [self beginOrdering:itemView];
             break;
         }
@@ -342,16 +354,21 @@
     vector.x = location.x - startLocation.x;
     vector.y = location.y - startLocation.y;
     
-    if (self.isEditingForItemViewInsertion || !self.itemViewForOrdering) {
+    if (self.isEditingForItemViewInsertion || !(self.observesOrderingTouches || self.observesParentChildNestingTouches)) {
         return;
     }
     
-    [self showOrdering];
+    if (self.observesOrderingTouches) {
+        // Only show ordering visual for ordering, not for parent/child nesting.
+        [self showOrdering];
+    }
     [self orderingTouchesMoved:touches withEvent:event vector:vector];
 }
 
 - (void)updateWithTouchesStopped:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
+    self.observesOrderingTouches = NO;
+    self.observesParentChildNestingTouches = NO;
     self.touchesBeganLocation = CGPointZero;
     self.touchesMovedLocation = CGPointZero;
     [self endReordering];
@@ -387,8 +404,6 @@
 {
     self.itemViewForOrdering = orderingView;
     [self prepareVisualOrderingViewWithItemView:orderingView];
-    
-    [self.delegate itemsView:self prefersScrollingEnabled:NO];
 }
 
 - (void)showOrdering
@@ -424,82 +439,88 @@
     
     const CGPoint touchPoint = [[touches anyObject] locationInView:self];
     MenuItemView *selectedItemView = self.itemViewForOrdering;
-    
     MenuItem *selectedItem = selectedItemView.item;
-    
-    //// horiztonal indentation detection (child relationships)
-    //// detect if the user is moving horizontally to the right or left to change the indentation
-    
-    // first check to see if we should pay attention to touches that might signal a change in indentation
-    const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > ((selectedItemView.frame.size.width * 5.0) / 100); // a travel of x% should be considered for updating relationships
     BOOL modelUpdated = NO;
-    
-    [self.visualOrderingView updateVisualOrderingWithTouchLocation:touchPoint vector:vector];
-    
-    if (detectedHorizontalOrderingTouches) {
+
+    if (self.observesParentChildNestingTouches) {
+        //// horiztonal indentation detection (child relationships)
+        //// detect if the user is moving horizontally to the right or left to change the indentation
         
-        NSOrderedSet *orderedItems = self.menu.items;
-        NSUInteger selectedItemIndex = [orderedItems indexOfObject:selectedItem];
+        // first check to see if we should pay attention to touches that might signal a change in indentation
+        const BOOL detectedHorizontalOrderingTouches = fabs(vector.x) > ((selectedItemView.frame.size.width * 5.0) / 100); // a travel of x% should be considered for updating relationships
         
-        // check if not first item in order
-        if (selectedItemIndex > 0) {
-            // detect the child/parent relationship changes and update the model
-            if (vector.x > 0) {
-                // trying to make a child
-                MenuItem *previousItem = [orderedItems objectAtIndex:selectedItemIndex - 1];
-                MenuItem *parent = previousItem;
-                MenuItem *newParent = nil;
-                while (parent) {
-                    if (parent == selectedItem.parent) {
-                        break;
+        [self.visualOrderingView updateVisualOrderingWithTouchLocation:touchPoint vector:vector];
+        
+        if (detectedHorizontalOrderingTouches) {
+            
+            NSOrderedSet *orderedItems = self.menu.items;
+            NSUInteger selectedItemIndex = [orderedItems indexOfObject:selectedItem];
+            
+            // check if not first item in order
+            if (selectedItemIndex > 0) {
+                // detect the child/parent relationship changes and update the model
+                if (vector.x > 0) {
+                    // trying to make a child
+                    MenuItem *previousItem = [orderedItems objectAtIndex:selectedItemIndex - 1];
+                    MenuItem *parent = previousItem;
+                    MenuItem *newParent = nil;
+                    while (parent) {
+                        if (parent == selectedItem.parent) {
+                            break;
+                        }
+                        newParent = parent;
+                        parent = parent.parent;
                     }
-                    newParent = parent;
-                    parent = parent.parent;
-                }
-                
-                if (newParent) {
-                    selectedItem.parent = newParent;
-                    modelUpdated = YES;
-                }
-                
-            } else  {
-                if (selectedItem.parent) {
                     
-                    MenuItem *lastChildItem = [selectedItem.parent lastDescendantInOrderedItems:orderedItems];
-                    // only the lastChildItem can move up the tree, otherwise it would break the visual child/parent relationship
-                    if (selectedItem == lastChildItem) {
-                        // try to move up the parent tree
-                        MenuItem *parent = selectedItem.parent.parent;
-                        selectedItem.parent = parent;
+                    if (newParent) {
+                        selectedItem.parent = newParent;
                         modelUpdated = YES;
                     }
+                    
+                } else  {
+                    if (selectedItem.parent) {
+                        
+                        MenuItem *lastChildItem = [selectedItem.parent lastDescendantInOrderedItems:orderedItems];
+                        // only the lastChildItem can move up the tree, otherwise it would break the visual child/parent relationship
+                        if (selectedItem == lastChildItem) {
+                            // try to move up the parent tree
+                            MenuItem *parent = selectedItem.parent.parent;
+                            selectedItem.parent = parent;
+                            modelUpdated = YES;
+                        }
+                    }
                 }
             }
+            
+            // reset the vector to observe the next delta of interest
+            [self resetTouchesMovedObservationVectorX];
         }
-        
-        // reset the vector to observe the next delta of interest
-        [self resetTouchesMovedObservationVectorX];
     }
     
-    if (!CGRectContainsPoint(selectedItemView.frame, touchPoint)) {
+    if (self.observesOrderingTouches) {
+        [self.delegate itemsView:self prefersScrollingEnabled:NO];
         
-        //// if the touch is over a different item, detect which item to replace the ordering with
-        
-        for (MenuItemView *itemView in self.itemViews) {
-            // enumerate the itemViews lists since we don't care about other views in the stackView.arrangedSubviews list
-            if (itemView == selectedItemView) {
-                continue;
-            }
-            // detect if the touch within a padded inset of an itemView under the touchPoint
-            const CGRect orderingDetectionRect = CGRectInset(itemView.frame, 10.0, 10.0);
-            if (CGRectContainsPoint(orderingDetectionRect, touchPoint)) {
-                
-                // reorder the model if needed or available
-                BOOL orderingUpdate = [self handleOrderingTouchForItemView:selectedItemView withOtherItemView:itemView touchLocation:touchPoint];
-                if (orderingUpdate) {
-                    modelUpdated = YES;
+        //// vertical ordering detection (order of the items in the menu)
+        if (!CGRectContainsPoint(selectedItemView.frame, touchPoint)) {
+            
+            //// if the touch is over a different item, detect which item to replace the ordering with
+            
+            for (MenuItemView *itemView in self.itemViews) {
+                // enumerate the itemViews lists since we don't care about other views in the stackView.arrangedSubviews list
+                if (itemView == selectedItemView) {
+                    continue;
                 }
-                break;
+                // detect if the touch within a padded inset of an itemView under the touchPoint
+                const CGRect orderingDetectionRect = CGRectInset(itemView.frame, 10.0, 10.0);
+                if (CGRectContainsPoint(orderingDetectionRect, touchPoint)) {
+                    
+                    // reorder the model if needed or available
+                    BOOL orderingUpdate = [self handleOrderingTouchForItemView:selectedItemView withOtherItemView:itemView touchLocation:touchPoint];
+                    if (orderingUpdate) {
+                        modelUpdated = YES;
+                    }
+                    break;
+                }
             }
         }
     }
