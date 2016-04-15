@@ -281,7 +281,7 @@ typedef NS_ENUM(NSInteger, SettingsTextSections) {
 {
     BOOL requiresSecureTextEntry = NO;
     UIKeyboardType keyboardType = UIKeyboardTypeDefault;
-    UITextAutocapitalizationType autocapitalizationType = UITextAutocapitalizationTypeWords;
+    UITextAutocapitalizationType autocapitalizationType = UITextAutocapitalizationTypeSentences;
     
     if (newMode == SettingsTextModesPassword) {
         requiresSecureTextEntry = YES;
