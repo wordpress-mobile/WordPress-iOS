@@ -59,8 +59,8 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TSX-DY-vhd" customClass="MenuItemEditingFooterView">
                             <rect key="frame" x="0.0" y="540" width="600" height="60"/>
                             <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OMP-D5-S0L" customClass="MenusActionButton">
-                                    <rect key="frame" x="479" y="10" width="46" height="40"/>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OMP-D5-S0L">
+                                    <rect key="frame" x="277" y="10" width="46" height="40"/>
                                     <color key="backgroundColor" red="1" green="0.051290923320000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="46" id="2Vp-2e-bOh"/>
@@ -69,7 +69,7 @@
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Run-fF-RWC" customClass="MenusActionButton">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Run-fF-RWC">
                                     <rect key="frame" x="535" y="10" width="55" height="40"/>
                                     <color key="backgroundColor" red="0.1076004438" green="0.55510221439999996" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
@@ -79,7 +79,7 @@
                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                 </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2XB-S1-3jp" customClass="MenusActionButton">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2XB-S1-3jp">
                                     <rect key="frame" x="10" y="10" width="63" height="40"/>
                                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -92,6 +92,7 @@
                             <constraints>
                                 <constraint firstItem="2XB-S1-3jp" firstAttribute="leading" secondItem="TSX-DY-vhd" secondAttribute="leading" constant="10" id="2tk-qW-IH2"/>
                                 <constraint firstAttribute="height" constant="60" id="E2v-oz-4Rk"/>
+                                <constraint firstItem="OMP-D5-S0L" firstAttribute="centerX" secondItem="TSX-DY-vhd" secondAttribute="centerX" id="OLS-y3-6hw"/>
                                 <constraint firstItem="OMP-D5-S0L" firstAttribute="top" secondItem="TSX-DY-vhd" secondAttribute="top" constant="10" id="OmD-iy-VlC"/>
                                 <constraint firstAttribute="trailing" secondItem="Run-fF-RWC" secondAttribute="trailing" constant="10" id="TFR-ne-IFi"/>
                                 <constraint firstAttribute="bottom" secondItem="OMP-D5-S0L" secondAttribute="bottom" constant="10" id="g96-Ih-nZt"/>
@@ -99,7 +100,6 @@
                                 <constraint firstAttribute="bottom" secondItem="2XB-S1-3jp" secondAttribute="bottom" constant="10" id="ocG-1d-vr9"/>
                                 <constraint firstAttribute="bottom" secondItem="Run-fF-RWC" secondAttribute="bottom" constant="10" id="q5H-bx-znA"/>
                                 <constraint firstItem="Run-fF-RWC" firstAttribute="top" secondItem="TSX-DY-vhd" secondAttribute="top" constant="10" id="tfp-Ch-3TN"/>
-                                <constraint firstItem="Run-fF-RWC" firstAttribute="leading" secondItem="OMP-D5-S0L" secondAttribute="trailing" constant="10" id="yAS-8T-w7A"/>
                             </constraints>
                             <connections>
                                 <outlet property="cancelButton" destination="2XB-S1-3jp" id="7MP-Vo-yX5"/>

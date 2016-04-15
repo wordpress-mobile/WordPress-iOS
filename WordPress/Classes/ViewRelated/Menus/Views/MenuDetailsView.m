@@ -3,7 +3,6 @@
 #import "WPStyleGuide.h"
 #import "UIColor+Helpers.h"
 #import "WPFontManager.h"
-#import "MenusActionButton.h"
 #import "Menu+ViewDesign.h"
 #import "Blog.h"
 
@@ -14,8 +13,8 @@
 @property (nonatomic, weak) IBOutlet UIStackView *stackView;
 @property (nonatomic, weak) IBOutlet UITextField *textField;
 @property (nonatomic, weak) IBOutlet UIView *textFieldDesignView;
-@property (nonatomic, weak) IBOutlet MenusActionButton *trashButton;
-@property (nonatomic, weak) IBOutlet MenusActionButton *saveButton;
+@property (nonatomic, weak) IBOutlet UIButton *trashButton;
+@property (nonatomic, weak) IBOutlet UIButton *saveButton;
 @property (nonatomic, strong) UIImageView *textFieldDesignIcon;
 @property (nonatomic, strong) NSLayoutConstraint *textFieldDesignIconLeadingConstraint;
 @property (nonatomic, copy) NSString *editingBeginningName;
@@ -42,28 +41,39 @@
     self.stackView.layoutMargins = margin;
     self.stackView.spacing = 4.0;
     
-    self.textField.text = nil;
-    self.textField.placeholder = NSLocalizedString(@"Menu", @"Menus placeholder text for the name field of a menu with no name.");
-    self.textField.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
-    self.textField.font = [WPFontManager systemLightFontOfSize:22.0];
-    self.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    self.textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-    self.textField.returnKeyType = UIReturnKeyDone;
-    self.textField.adjustsFontSizeToFitWidth = NO;
-    [self.textField addTarget:self action:@selector(hideTextFieldKeyboard) forControlEvents:UIControlEventEditingDidEndOnExit];
-    [self.textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+    UITextField *textField = self.textField;
+    textField.text = nil;
+    textField.placeholder = NSLocalizedString(@"Menu", @"Menus placeholder text for the name field of a menu with no name.");
+    textField.textColor = [UIColor colorWithWhite:0.25 alpha:1.0];
+    textField.font = [WPFontManager systemLightFontOfSize:22.0];
+    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+    textField.returnKeyType = UIReturnKeyDone;
+    textField.adjustsFontSizeToFitWidth = NO;
+    [textField addTarget:self action:@selector(hideTextFieldKeyboard) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
     
-    self.textFieldDesignView.layer.cornerRadius = MenusDesignDefaultCornerRadius;
-    self.textFieldDesignView.backgroundColor = [UIColor clearColor];
+    UIView *textFieldDesignView = self.textFieldDesignView;
+    textFieldDesignView.layer.cornerRadius = MenusDesignDefaultCornerRadius;
+    textFieldDesignView.backgroundColor = [UIColor clearColor];
     
-    [self.trashButton setTitle:nil forState:UIControlStateNormal];
-    self.trashButton.tintColor = [WPStyleGuide grey];
-    [self.trashButton setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
-    [self.trashButton addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    UIButton *trashButton = self.trashButton;
+    [trashButton setTitle:nil forState:UIControlStateNormal];
+    trashButton.tintColor = [WPStyleGuide grey];
+    [trashButton setImage:[Gridicon iconOfType:GridiconTypeTrash] forState:UIControlStateNormal];
+    [trashButton addTarget:self action:@selector(trashButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    trashButton.backgroundColor = [UIColor clearColor];
+    trashButton.adjustsImageWhenHighlighted = YES;
     
+    UIButton *saveButton = self.saveButton;
     [self updateSaveButtonTitle];
-    [self.saveButton addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    self.saveButton.enabled = NO;
+    saveButton.titleLabel.font = [WPFontManager systemSemiBoldFontOfSize:18.0];
+    [saveButton setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
+    [saveButton setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    [saveButton setTitleColor:[WPStyleGuide greyLighten20] forState:UIControlStateDisabled];
+    saveButton.enabled = NO;
+    saveButton.backgroundColor = [UIColor clearColor];
+    [saveButton addTarget:self action:@selector(saveButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     
     {
         UIImage *image = [Gridicon iconOfType:GridiconTypePencil];
@@ -73,7 +83,7 @@
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         self.textFieldDesignIcon = imageView;
         
-        [self.textFieldDesignView addSubview:imageView];
+        [textFieldDesignView addSubview:imageView];
         
         NSLayoutConstraint *leadingConstraint = [imageView.leadingAnchor constraintEqualToAnchor:self.textField.leadingAnchor];
         self.textFieldDesignIconLeadingConstraint = leadingConstraint;
